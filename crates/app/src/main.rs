@@ -144,14 +144,22 @@ pub fn offscreen() -> bool {
 /// open from scripts, and the clipboard belongs to the person at the computer (Add URL's
 /// address came from it, and was fetched). It may wait for the clipboard's owner for ever:
 /// never called on the window's thread, only by `clipboard`'s reader (#418, #661).
-pub fn clipboard_text() -> Option<String> {
+pub fn clipboard_text() -> clipboard::Read {
     // Off-screen test copies: MDM_TEST_CLIPBOARD=<file> is what they find in the clipboard
     // (#709's checks of Add batch download from clipboard), read when they ask, as the
-    // clipboard would be; the person's own clipboard is never read.
+    // clipboard would be; the person's own clipboard is never read. No file: an empty
+    // clipboard; a file that can't be read (a check holds it open, #1157's): one that can't be.
     if offscreen()
         && let Some(file) = std::env::var_os("MDM_TEST_CLIPBOARD")
     {
-        return std::fs::read_to_string(file).ok();
+        return match std::fs::read_to_string(file) {
+            Ok(text) => clipboard::Read::Text(text),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => clipboard::Read::NoText,
+            Err(e) => {
+                tracing::debug!("clipboard: not read now ({e})");
+                clipboard::Read::Failed
+            }
+        };
     }
     // Nor in unit tests: the person's clipboard isn't theirs, and tests opening a window that
     // reads it (Download video's) on parallel threads corrupted the heap (Windows' clipboard,
@@ -160,8 +168,23 @@ pub fn clipboard_text() -> Option<String> {
 }
 
 /// The system clipboard's text, read with arboard (under [`clipboard_lock`], [`read_clipboard`]).
-fn system_clipboard_text() -> Option<String> {
-    arboard::Clipboard::new().ok()?.get_text().ok()
+/// An empty clipboard, or one that holds no text (or none arboard can convert), has no text; any
+/// other error is a read that failed now (another program has the clipboard open, the system
+/// refused) and says nothing of what it holds (#1157). On X11, arboard answers an owner that
+/// doesn't answer in time as having no text: the two can't be told apart there.
+fn system_clipboard_text() -> clipboard::Read {
+    let got = arboard::Clipboard::new().and_then(|mut c| c.get_text());
+    match got {
+        Ok(text) => clipboard::Read::Text(text),
+        Err(arboard::Error::ContentNotAvailable | arboard::Error::ConversionFailure) => {
+            clipboard::Read::NoText
+        }
+        Err(e) => {
+            // At most once a second (the watch's look), and only while it fails.
+            tracing::debug!("clipboard: not read now ({e})");
+            clipboard::Read::Failed
+        }
+    }
 }
 
 /// A number that changes whenever the clipboard does, so the watch for copied links
@@ -201,11 +224,15 @@ fn clipboard_lock() -> Option<egui_winit::clipboard::SystemClipboardLock> {
     lock
 }
 
-fn read_clipboard(off: bool, read: impl FnOnce() -> Option<String>) -> Option<String> {
+/// `read` under [`clipboard_lock`]; `off`: not read at all, no text. A wait for the lock that
+/// ran out is a read that failed: the clipboard wasn't looked at.
+fn read_clipboard(off: bool, read: impl FnOnce() -> clipboard::Read) -> clipboard::Read {
     if off {
-        return None;
+        return clipboard::Read::NoText;
     }
-    let _lock = clipboard_lock()?;
+    let Some(_lock) = clipboard_lock() else {
+        return clipboard::Read::Failed;
+    };
     read()
 }
 
@@ -547,6 +574,7 @@ fn app() -> eframe::Result {
 #[cfg(test)]
 mod tests {
     use super::{Start, start_mode};
+    use crate::clipboard::Read;
 
     /// The tests that take the process-wide clipboard lock, one at a time: they run in parallel
     /// in one process, and the reads of one waited out the others' (more than the 500 ms a read
@@ -577,13 +605,13 @@ mod tests {
         let mut asked = false;
         let got = super::read_clipboard(true, || {
             asked = true;
-            Some("https://meet.example/abc".into())
+            Read::Text("https://meet.example/abc".into())
         });
-        assert_eq!(got, None);
+        assert_eq!(got, Read::NoText);
         assert!(!asked, "the clipboard isn't even opened");
         assert_eq!(
-            super::read_clipboard(false, || Some("x".into())),
-            Some("x".into())
+            super::read_clipboard(false, || Read::Text("x".into())),
+            Read::Text("x".into())
         );
         assert_eq!(
             super::write_clipboard(true, "magnet:?xt=urn:btih:ab".into()),
@@ -592,6 +620,34 @@ mod tests {
         assert_eq!(
             super::write_clipboard(false, "magnet:?xt=urn:btih:ab".into()),
             Some("magnet:?xt=urn:btih:ab".into())
+        );
+    }
+
+    /// #1157: a read that waited out the lock (another use of the clipboard in MDM held it) is
+    /// a read that failed, not an empty clipboard: the watch for copied links keeps what it saw.
+    #[test]
+    fn a_read_that_waits_out_the_lock_failed() {
+        let _one = clipboard_test();
+        let (held, holding) = std::sync::mpsc::channel();
+        let (release, released) = std::sync::mpsc::channel::<()>();
+        let holder = std::thread::spawn(move || {
+            let _lock = super::clipboard_lock().expect("the lock is free");
+            held.send(()).unwrap();
+            let _ = released.recv();
+        });
+        holding.recv().unwrap();
+        let mut asked = false;
+        let got = super::read_clipboard(false, || {
+            asked = true;
+            Read::Text("x".into())
+        });
+        assert_eq!(got, Read::Failed);
+        assert!(!asked, "not read without the lock");
+        release.send(()).unwrap();
+        holder.join().unwrap();
+        assert_eq!(
+            super::read_clipboard(false, || Read::Text("x".into())),
+            Read::Text("x".into())
         );
     }
 
@@ -613,7 +669,7 @@ mod tests {
                             most.fetch_max(now, Ordering::SeqCst);
                             std::thread::sleep(std::time::Duration::from_millis(1));
                             inside.fetch_sub(1, Ordering::SeqCst);
-                            None
+                            Read::NoText
                         });
                     }
                 })
@@ -691,6 +747,7 @@ mod tests {
                                     // The clipboard monitor's and Add URL's reads.
                                     0 | 1 => {
                                         super::read_clipboard(false, super::system_clipboard_text)
+                                            .text()
                                     }
                                     // A text box's paste.
                                     2 | 3 => egui.get(),

@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ **Offer to download links copied to the clipboard** no longer opens Download File Info again
+  for a link still on the clipboard after a moment another program held it
+  ([#1157](https://github.com/anefzaoui/misterdownloadmanager/issues/1157))
 - ✅ A malformed stream playlist no longer stops the video downloader: that download fails and
   says why ([#1141](https://github.com/anefzaoui/misterdownloadmanager/issues/1141))
 - ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →

@@ -4162,6 +4162,8 @@ impl App {
         };
         let name = mdm_engine::naming::file_name(None, &url);
         if mdm_engine::supported(&url) && self.settings.clipboard_type(&name) {
+            // Where a Download File Info came from, without the address (#1157).
+            tracing::info!("clipboard: a newly copied link, offered for download");
             let cmd = ipc::Command {
                 url: Some(text),
                 ..Default::default()
