@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A crash while checking for updates on some computers; a check that goes wrong says why
+  ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
 - ✅ Reading a page's text stops at the right closing tag
 - ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
   the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
