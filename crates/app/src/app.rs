@@ -175,49 +175,85 @@ fn replaced_files(items: &[Item], id: u64, yt_dlp: bool) -> Option<Vec<PathBuf>>
 /// folder may own: one named after its name or stem and a dot, letter case aside. Nothing for a
 /// download that isn't a video.
 fn video_leftovers(items: &[Item], id: u64, outputs: bool) -> Vec<PathBuf> {
-    let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
-    let Some(item) = items.iter().find(|i| i.id == id && i.video.is_some()) else {
-        return Vec::new();
-    };
-    let (Some(dir), Some(stem)) = (item.dest.parent(), item.dest.file_stem()) else {
-        return Vec::new();
-    };
-    let folder = low(dir);
-    let others: Vec<&Item> = items.iter().filter(|i| i.id != id).collect();
-    let named: Vec<String> = others
-        .iter()
-        .filter(|o| o.dest.parent().is_some_and(|p| low(p) == folder))
-        .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
-        .flatten()
-        .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
-        .collect();
-    // The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
-    // no other leftover is named), while still beside its file.
-    let kept = item.video.iter().flat_map(|v| &v.parts).filter(|p| {
-        p.parent().is_some_and(|p| low(p) == folder)
-            && p.file_name().is_some_and(|n| {
-                n.to_string_lossy()
-                    .to_lowercase()
-                    .starts_with(&format!("{}.", stem.to_string_lossy().to_lowercase()))
+    LeftoverSearch::of(items, id, outputs).map_or_else(Vec::new, LeftoverSearch::find)
+}
+
+/// [`video_leftovers`] in two steps: what to look for, from the list (no disk), then the look in
+/// the folder, which can be made beside the window (a deleted video's, #1170).
+struct LeftoverSearch {
+    dir: PathBuf,
+    stem: String,
+    outputs: bool,
+    /// Lowercase `name.` and `stem.` of the other downloads in that folder: their files.
+    named: Vec<String>,
+    /// Lowercase: the other downloads' own places in that folder.
+    others: Vec<String>,
+    /// The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
+    /// no other leftover is named), in its folder and named after its stem.
+    kept: Vec<PathBuf>,
+}
+
+impl LeftoverSearch {
+    fn of(items: &[Item], id: u64, outputs: bool) -> Option<LeftoverSearch> {
+        let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+        let item = items.iter().find(|i| i.id == id && i.video.is_some())?;
+        let (dir, stem) = (item.dest.parent()?, item.dest.file_stem()?);
+        let folder = low(dir);
+        let stem = stem.to_string_lossy().into_owned();
+        // The other downloads in that folder (one elsewhere has no file there).
+        let others: Vec<&Item> = items
+            .iter()
+            .filter(|i| i.id != id && i.dest.parent().is_some_and(|p| low(p) == folder))
+            .collect();
+        let named = others
+            .iter()
+            .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
+            .flatten()
+            .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
+            .collect();
+        let prefix = format!("{}.", stem.to_lowercase());
+        let kept = item
+            .video
+            .iter()
+            .flat_map(|v| &v.parts)
+            .filter(|p| {
+                p.parent().is_some_and(|p| low(p) == folder)
+                    && p.file_name()
+                        .is_some_and(|n| n.to_string_lossy().to_lowercase().starts_with(&prefix))
             })
-    });
-    let mut found = mdm_tools::video::own_files(dir, &stem.to_string_lossy(), outputs);
-    for p in kept {
-        if p.is_file() && !found.iter().any(|f| low(f) == low(p)) {
-            found.push(p.clone());
-        }
-    }
-    found
-        .into_iter()
-        .filter(|f| {
-            let name = f
-                .file_name()
-                .map(|n| n.to_string_lossy().to_lowercase())
-                .unwrap_or_default();
-            !named.iter().any(|n| name.starts_with(n))
-                && !others.iter().any(|o| low(&o.dest) == low(f))
+            .cloned()
+            .collect();
+        Some(LeftoverSearch {
+            dir: dir.to_owned(),
+            stem,
+            outputs,
+            named,
+            others: others.iter().map(|o| low(&o.dest)).collect(),
+            kept,
         })
-        .collect()
+    }
+
+    /// The look in the folder (the disk).
+    fn find(self) -> Vec<PathBuf> {
+        let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+        let mut found = mdm_tools::video::own_files(&self.dir, &self.stem, self.outputs);
+        for p in self.kept {
+            if p.is_file() && !found.iter().any(|f| low(f) == low(&p)) {
+                found.push(p);
+            }
+        }
+        found
+            .into_iter()
+            .filter(|f| {
+                let name = f
+                    .file_name()
+                    .map(|n| n.to_string_lossy().to_lowercase())
+                    .unwrap_or_default();
+                !self.named.iter().any(|n| name.starts_with(n))
+                    && !self.others.iter().any(|o| *o == low(f))
+            })
+            .collect()
+    }
 }
 
 /// The quality menu's answer for its choice after the duplicate check: a new download started or
@@ -394,6 +430,27 @@ enum RssEvent {
 /// A download's standing (a gone one counts as complete: nothing to start).
 fn member_in(members: &std::collections::HashMap<u64, Member>, id: u64) -> Member {
     members.get(&id).copied().unwrap_or(Member::Complete)
+}
+
+/// What Stop All stops (#1164): every queue that runs (the main queue, synchronization queues,
+/// the user's: one left running would start its next download as soon as this one stopped),
+/// with its downloads; then, by hand, the other downloads that run (`live`) or would start
+/// again by themselves (`pending`), each once. A running queue's downloads aren't stopped by
+/// hand: starting the queue again, by hand or on its schedule, goes on with them.
+fn stop_all_plan(
+    queues: &[Queue],
+    live: impl IntoIterator<Item = u64>,
+    pending: impl IntoIterator<Item = u64>,
+) -> (Vec<usize>, Vec<u64>) {
+    let running: Vec<usize> = (0..queues.len()).filter(|q| queues[*q].running).collect();
+    let in_running = |id: &u64| running.iter().any(|q| queues[*q].items.contains(id));
+    let mut ids: Vec<u64> = Vec::new();
+    for id in live.into_iter().chain(pending) {
+        if !in_running(&id) && !ids.contains(&id) {
+            ids.push(id);
+        }
+    }
+    (running, ids)
 }
 
 /// A file move's answer, from its thread.
@@ -929,6 +986,8 @@ pub struct App {
     assistive_checked: Option<Instant>,
     /// Archives extracted when their download completes (#37).
     extracts: crate::extractq::Extracts,
+    /// Deleted downloads' files, deleted beside the window (#1170).
+    deleter: crate::deleter::Deleter,
     /// Add category / Properties from the Categories tree.
     category_dlg: Option<crate::categories::CategoryDialog>,
     /// The category dialog was opened by Download File Info's "+" (its result is picked there).
@@ -1419,9 +1478,10 @@ impl App {
     /// Every way MDM is asked to quit comes here: File → Exit, the tray's Exit, `/exit` (the
     /// command line, a second launch), Update now, and a queue's or a download's "Exit when done".
     /// The close that follows quits whatever Options' "Keep running when closing the window" says
-    /// (`tray::on_close`); only closing the window itself follows that setting. The list and the
-    /// settings are saved as the app goes (`Drop`), and the crash monitor is told it's a clean exit
-    /// (main.rs). A headless run stops at its next pass (`wants_exit`).
+    /// (`tray::on_close`); only closing the window itself follows that setting. As the app goes
+    /// (`Drop`: `finish`) the downloads stop where they are and the list and the settings are
+    /// saved, and the crash monitor is told it's a clean exit (main.rs). A headless run stops at
+    /// its next pass (`wants_exit`). The session's end does the same at once (`end_session`).
     fn quit(&mut self, ctx: &egui::Context) {
         tracing::info!("quitting");
         self.exiting = true;
@@ -1638,6 +1698,11 @@ impl App {
             link_parts: Default::default(),
             assistive_checked: None,
             extracts: Default::default(),
+            deleter: {
+                // A file that couldn't go is said in the notice: drawn when it is told.
+                let ctx = ctx.clone();
+                crate::deleter::Deleter::new(move || ctx.request_repaint())
+            },
             queue_pick: None,
             drop_target: None,
             drops: Default::default(),
@@ -2069,6 +2134,9 @@ impl App {
         self.name_guessed(id, fi.name_guessed());
         self.set_direct(id, fi.direct);
         self.number_at_start(id);
+        if let Some(item) = self.item(id) {
+            item.replace_file = fi.replaces();
+        }
         self.selection.set(id);
         if matches!(start, Start::Now) {
             // Later: the answer is closed (its download starts some other time).
@@ -2128,10 +2196,15 @@ impl App {
         }
         let dest = fi.dest();
         let now = matches!(start, Start::Now);
+        // A file chosen to be replaced (#1088) is replaced only by a download started with Start
+        // or Later: one started behind the dialog (never told to replace anything) starts over
+        // under its name, so that a Cancel still leaves the file there as it was.
+        let replace = fi.replaces();
         let Some(item) = self.item(id) else { return };
         item.category = fi.category;
         item.description = fi.description.clone();
-        let moved = item.dest != dest;
+        let moved = item.dest != dest || replace.is_some();
+        item.replace_file = replace;
         self.selection.set(id);
         if moved {
             // Another name or folder than the one it started at: the data so far goes and it
@@ -2748,6 +2821,7 @@ impl App {
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
+            "delete-completed" => self.run(Cmd::DeleteCompleted, None, ctx),
             "progress" => {
                 if let Some(id) = last
                     && !self.progress.iter().any(|p| p.id == id)
@@ -3278,6 +3352,9 @@ impl App {
             self.claim_place(id);
         }
         let Some(item) = self.item(id) else { return };
+        // The file at its place, chosen to be replaced (#1088): replaced as it completes, on a
+        // first start and on a resume alike. A place moved since doesn't replace anything.
+        opts.replace_existing = item.replaces();
         let _guard = rt.enter();
         // Resume whenever there is something to resume. If that fails, say why and keep the
         // data: starting over would overwrite it, and that is only ever the user's choice.
@@ -3468,18 +3545,55 @@ impl App {
 
     /// The user's Stop (or Pause): it stays stopped, even in a queue that is running (#341).
     fn stop_by_hand(&mut self, id: u64) {
-        self.stop(id);
+        self.halt(id);
         self.stopped_by_hand.insert(id);
     }
 
+    /// Stop, and not start again by itself for a network adapter, a speed limit or the
+    /// download limit (#1164): the user's Stop, Stop All and a queue's stop.
+    fn halt(&mut self, id: u64) {
+        self.stop(id);
+        self.adapter_paused.retain(|x| *x != id);
+        self.limit_restarts.retain(|x| *x != id);
+        if let Some(at) = self.quota.held.iter().position(|x| *x == id) {
+            self.quota.held.remove(at);
+            if let Some(item) = self.item(id)
+                && item.live.is_none()
+                && item.status == Status::Queued
+            {
+                item.status = Status::Stopped;
+            }
+            self.dirty = true;
+        }
+    }
+
+    /// Downloads waiting to start again by themselves: for the network adapter (#35), a new
+    /// speed limit (#708) or room under the download limit.
+    fn restarts_pending(&self) -> Vec<u64> {
+        let mut ids = self.adapter_paused.clone();
+        ids.extend(&self.limit_restarts);
+        ids.extend(&self.quota.held);
+        ids
+    }
+
+    /// Stop All (and Pause All) has something to stop: a download, a queue, or a download that
+    /// would start again by itself.
+    fn can_stop_all(&self) -> bool {
+        self.items.iter().any(|i| i.live.is_some())
+            || self.queues.iter().any(|q| q.running)
+            || !self.restarts_pending().is_empty()
+    }
+
+    /// Stop All: everything stops, the queues too (#1164), and nothing starts again by itself.
+    /// A running queue's downloads stop with it (not by hand), so starting it again, or its
+    /// schedule, goes on with them.
     fn stop_all(&mut self) {
-        let running: Vec<u64> = self
-            .items
-            .iter()
-            .filter(|i| i.live.is_some())
-            .map(|i| i.id)
-            .collect();
-        for id in running {
+        let live = self.items.iter().filter(|i| i.live.is_some()).map(|i| i.id);
+        let (queues, ids) = stop_all_plan(&self.queues, live, self.restarts_pending());
+        for q in queues {
+            self.stop_queue(q);
+        }
+        for id in ids {
             self.stop_by_hand(id);
         }
     }
@@ -3489,15 +3603,18 @@ impl App {
         self.remove_downloads(&[id], false);
     }
 
-    /// Take downloads off the list (not while they run; see [`Self::remove_download`]). When
+    /// Take downloads off the list (not while they run; see [`Self::take_off_list`]). When
     /// the selection goes with them, the row that comes after them is selected, as in Explorer,
-    /// so Delete can be pressed again.
+    /// so Delete can be pressed again. With `files`, their files go too, together, beside the
+    /// window (#1170).
     fn remove_downloads(&mut self, ids: &[u64], files: bool) {
         let before = self.shown_ids();
         self.extracts.forget(ids);
-        for id in ids {
-            self.remove_download(*id, files);
-        }
+        let doomed = ids
+            .iter()
+            .filter_map(|id| self.take_off_list(*id, files))
+            .collect();
+        self.deleter.delete(doomed);
         let after = self.shown_ids();
         self.selection.after_removal(&before, &after);
     }
@@ -3526,51 +3643,43 @@ impl App {
         });
     }
 
-    /// Take a download off the list (not while it runs); with `files`, its file goes from disk
-    /// too: a finished file, or the data so far (a torrent's files when its session runs).
-    fn remove_download(&mut self, id: u64, files: bool) {
-        if self.item(id).is_some_and(|i| i.live.is_none()) {
-            self.release_link(id);
-            if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
-                self.torrent_host.forget(&self.rt, &spec.hash, files);
-            } else if files
-                && let Some(i) = self.items.iter().find(|i| i.id == id)
-                // A gallery's folder stays (it may hold other files; #58).
-                && i.gallery.is_none()
-            {
-                // The file itself: one that can't go (open in a player) is said, not skipped
-                // silently; the row still leaves the list.
-                if i.status == Status::Complete
-                    && let Err(e) = std::fs::remove_file(&i.dest)
-                    && e.kind() != std::io::ErrorKind::NotFound
-                {
-                    dialogs::tell(
-                        crate::i18n::mark("Delete"),
-                        crate::i18n::fmt(
-                            crate::i18n::t("{file} could not be deleted from the disk: {error}"),
-                            &[
-                                ("file", &crate::i18n::isolate(&i.file_name)),
-                                ("error", &e.to_string()),
-                            ],
-                        ),
-                    );
-                }
-                let _ = std::fs::remove_file(mdm_engine::naming::part_path(&i.dest));
-                let _ = std::fs::remove_file(state_path(&i.dest));
-                // A video's streams and their parts, kept for Resume (an unfinished run, a
-                // failed merge): they go with it.
-                for f in video_leftovers(&self.items, id, false) {
-                    let _ = std::fs::remove_file(f);
-                }
-            }
-            self.items.retain(|i| i.id != id);
-            for q in &mut self.queues {
-                q.items.retain(|i| *i != id);
-            }
-            self.progress.retain(|p| p.id != id);
-            self.selection.forget(id);
-            self.dirty = true;
+    /// Take a download off the list (not while it runs); with `files`, what of it goes from the
+    /// disk: a finished file, or the data so far (a torrent's files when its session runs, which
+    /// the session deletes). No disk here: the files are handed back, for [`crate::deleter`],
+    /// their place held from now on.
+    fn take_off_list(&mut self, id: u64, files: bool) -> Option<crate::deleter::Doomed> {
+        if !self.item(id).is_some_and(|i| i.live.is_none()) {
+            return None;
         }
+        self.release_link(id);
+        let mut doomed = None;
+        if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
+            self.torrent_host.forget(&self.rt, &spec.hash, files);
+        } else if files
+            && let Some(i) = self.items.iter().find(|i| i.id == id)
+            // A gallery's folder stays (it may hold other files; #58).
+            && i.gallery.is_none()
+        {
+            // Its state and part file; a video's streams and their parts, kept for Resume (an
+            // unfinished run, a failed merge), looked for in its turn; its finished file, which
+            // is said if it can't go (open in a player); the row leaves the list all the same.
+            let later = LeftoverSearch::of(&self.items, id, false)
+                .map(|s| Box::new(move || s.find()) as crate::deleter::Later);
+            doomed = Some(crate::deleter::Doomed::new(
+                i.file_name.clone(),
+                i.dest.clone(),
+                i.status == Status::Complete,
+                later,
+            ));
+        }
+        self.items.retain(|i| i.id != id);
+        for q in &mut self.queues {
+            q.items.retain(|i| *i != id);
+        }
+        self.progress.retain(|p| p.id != id);
+        self.selection.forget(id);
+        self.dirty = true;
+        doomed
     }
 
     /// Delete / Remove / Delete All Completed: asks first (unless "Don't show this dialog
@@ -4041,21 +4150,32 @@ impl App {
         // No answer from the shell is not such a "no" (#750, `tray::on_close`). Everywhere else
         // closing closes, as any window's does: Options' "Keep running when closing the window"
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
-        // back, and one that merely minimized could never be closed).
-        // Asked to quit (`quit`: File → Exit, Exit when done…), the close quits whatever the option.
+        // back, and one that merely minimized could never be closed). macOS (#1125): the window
+        // closes into the Dock, as Mac apps' do, and a click on MDM's icon there brings it back.
+        // Asked to quit (`quit`: File → Exit, Cmd+Q, MDM → Quit, Exit when done…), the close quits
+        // whatever the option.
         if ctx.input(|i| i.viewport().close_requested()) {
             use crate::tray::OnClose;
             let quitting = self.exiting;
             let keep = self.settings.close_to_tray;
             let tray = self.tray.is_some();
+            #[cfg(target_os = "macos")]
+            let dock = crate::unix::open_events::dock_reopens();
+            #[cfg(not(target_os = "macos"))]
+            let dock = false;
             // The shell's answer, only when it matters (macOS: asked afresh).
-            let icon = if keep && tray && !quitting {
+            let icon = if keep && tray && !quitting && !dock {
                 self.tray_icon_now()
             } else {
                 crate::tray::Icon::Gone
             };
             let taskbar = cfg!(not(target_os = "linux"));
-            match crate::tray::on_close(quitting, keep, tray, icon, taskbar) {
+            match crate::tray::on_close(quitting, keep, tray, icon, taskbar, dock) {
+                OnClose::Hide if dock => {
+                    tracing::info!("close: hidden; MDM's icon in the Dock brings it back");
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                    self.hide_to_tray(ctx);
+                }
                 OnClose::Hide => {
                     tracing::info!("close: hidden to the notification area (tray icon: {icon:?})");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
@@ -6246,6 +6366,8 @@ impl App {
             });
         }
         let mut answer = ipc::api::ActAnswer::default();
+        // The deleted ones' files, together beside the window (#1170).
+        let mut doomed = Vec::new();
         for &id in ids {
             let Some(item) = self.item(id) else {
                 answer.skipped.push(ipc::api::Skipped {
@@ -6271,7 +6393,7 @@ impl App {
                 }
                 _ if running => Some("running: pause it first"),
                 _ => {
-                    self.remove_download(id, action == "delete");
+                    doomed.extend(self.take_off_list(id, action == "delete"));
                     None
                 }
             };
@@ -6283,6 +6405,7 @@ impl App {
                 None => answer.done.push(id),
             }
         }
+        self.deleter.delete(doomed);
         Ok(answer)
     }
 
@@ -6397,7 +6520,7 @@ impl App {
     fn stop_queue(&mut self, q: usize) {
         self.queues[q].running = false;
         for id in self.queues[q].items.clone() {
-            self.stop(id);
+            self.halt(id);
         }
     }
 
@@ -7419,7 +7542,7 @@ impl App {
         let running = picked.iter().any(|i| i.live.is_some());
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
-        let any_running = self.items.iter().any(|i| i.live.is_some());
+        let can_stop_all = self.can_stop_all();
         let off = |label| I(label, Cmd::None, false, false);
         #[allow(unused_mut)]
         let mut menu = match index {
@@ -7505,8 +7628,8 @@ impl App {
                 ),
             ],
             2 => vec![
-                I("&Pause All", Cmd::StopAll, any_running, false),
-                I("&Stop All", Cmd::StopAll, any_running, false),
+                I("&Pause All", Cmd::StopAll, can_stop_all, false),
+                I("&Stop All", Cmd::StopAll, can_stop_all, false),
                 Sep,
                 I(
                     "&Delete All Completed",
@@ -8634,7 +8757,7 @@ impl App {
         let running = picked.iter().any(|i| i.live.is_some());
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
-        let any_running = self.items.iter().any(|i| i.live.is_some());
+        let can_stop_all = self.can_stop_all();
         let any_complete = self.items.iter().any(|i| i.status == Status::Complete);
         let buttons = [
             (Icon::AddUrl, "Add URL", true, Cmd::AddUrl),
@@ -8643,7 +8766,7 @@ impl App {
             (Icon::Resume, "Resume", resumable, Cmd::Resume),
             // i18n: verb: stop the selected downloads
             (Icon::Stop, "Stop", running, Cmd::Stop),
-            (Icon::StopAll, "Stop All", any_running, Cmd::StopAll),
+            (Icon::StopAll, "Stop All", can_stop_all, Cmd::StopAll),
             // i18n: verb: delete the selected downloads
             (Icon::Delete, "Delete", deletable, Cmd::Remove),
             (
@@ -11124,6 +11247,9 @@ impl App {
             {
                 crate::crash::step(crate::crash::Step::Taskbar);
                 crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+                for window in &mut self.progress {
+                    window.update_taskbar(self.items.iter().find(|item| item.id == window.id));
+                }
             }
         }
         if self
@@ -11314,10 +11440,71 @@ impl App {
 }
 
 impl Drop for App {
+    /// Exit, a closed window that quits, a headless run's end: [`App::finish`].
     fn drop(&mut self) {
+        // macOS ends the program right after this when it quits MDM itself (Cmd+Q, MDM → Quit,
+        // the Dock's Quit, logging out): eframe drops the app on the way, and `main` never
+        // gets its turn to say the exit was clean (#1125).
+        #[cfg(target_os = "macos")]
+        let by_the_system = !self.exiting;
+        self.finish(None);
+        #[cfg(target_os = "macos")]
+        if by_the_system {
+            tracing::info!("quit by macOS (Cmd+Q, the menu's or the Dock's Quit, logging out)");
+            crate::crash::clean_exit();
+        }
+    }
+}
+
+/// How long the session's end may take ([`App::end_session`]): Windows lists a program that
+/// takes 5 s over it as one that keeps the computer from shutting down. Windows only so far
+/// (main.rs says what Linux and macOS do).
+#[cfg(windows)]
+const SESSION_END: Duration = Duration::from_millis(4000);
+
+/// What of [`SESSION_END`] is kept for writing the list, after the downloads' last saves.
+const SESSION_END_LIST: Duration = Duration::from_millis(1200);
+
+/// How long an Exit waits for the running downloads' last saves (its window is gone by then).
+const EXIT_STOP_WAIT: Duration = Duration::from_secs(10);
+
+impl App {
+    /// The session is ending (Windows: shut down, restart, sign out, or an installer closing
+    /// MDM through the Restart Manager; `win32::on_session_end`): what an Exit does at its end,
+    /// now, within [`SESSION_END`], on the window's thread between two frames. Nobody is there to
+    /// answer a question: nothing is asked. The process ends right after (main.rs).
+    #[cfg(windows)]
+    pub fn end_session(&mut self) {
+        tracing::info!("the session is ending: stopping the downloads and saving the list");
+        self.exiting = true;
+        self.finish(Some(Instant::now() + SESSION_END));
+    }
+
+    /// The tray icon goes, as at an Exit: when only MDM is closed (the Restart Manager) and the
+    /// session goes on, it would stay in the notification area until the pointer passed over it.
+    /// Last, once all is saved: the shell may be slow to answer (#747).
+    #[cfg(windows)]
+    pub fn take_down_tray(&mut self) {
+        self.tray = None;
+    }
+
+    /// Every end's last work, once (`Drop`, or [`App::end_session`] before the process ends):
+    /// the downloads that run stop and save where they are, so they resume there at the next
+    /// start; a rename on completion under way finishes; the feeds, the list and the settings
+    /// are written. `deadline`: the session's end, which can't wait for a disk that holds its
+    /// writes; an Exit waits for the list however long it takes.
+    fn finish(&mut self, deadline: Option<Instant>) {
+        let began = Instant::now();
+        // The longest first: the downloads save while the rest is done.
+        let stopping = self.stop_for_the_end();
+        let left = |cap: Duration| {
+            deadline.map_or(cap, |d| {
+                d.saturating_duration_since(Instant::now()).min(cap)
+            })
+        };
         // Let any rename on completion under way finish and update `item.dest` before saving.
         for (id, rx) in std::mem::take(&mut self.renaming) {
-            if let Ok((r, sharing_error)) = rx.recv_timeout(Duration::from_secs(2)) {
+            if let Ok((r, sharing_error)) = rx.recv_timeout(left(Duration::from_secs(2))) {
                 self.apply_finished_rename(id, r, sharing_error, false);
             }
         }
@@ -11326,18 +11513,86 @@ impl Drop for App {
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();
+        let saves_by = deadline.map_or(began + EXIT_STOP_WAIT, |d| {
+            d.checked_sub(SESSION_END_LIST).unwrap_or(d)
+        });
+        let unsaved = self.wait_stopped(&stopping, saves_by);
+        match (stopping.len(), unsaved) {
+            (0, _) => {}
+            (n, 0) => tracing::info!(
+                "{n} download(s) stopped, each saved where it was ({} ms)",
+                began.elapsed().as_millis()
+            ),
+            (n, u) => tracing::warn!(
+                "{n} download(s) stopped, {u} still saving after {} ms: those resume from \
+                 their last save",
+                began.elapsed().as_millis()
+            ),
+        }
+        // The files of downloads deleted just before (#1170), a little while: a disk that holds
+        // them doesn't hold the end (they stay then).
+        if !self.deleter.finish(left(Duration::from_secs(3))) {
+            tracing::warn!("delete: some deleted downloads' files were still being deleted");
+        }
         // The feeds as last handed to their saver.
-        self.rss_saver.flush();
-        // What the saver has in hand first, then the last state, written here and now.
-        self.saver.flush();
-        let _ = store::save(
+        if !self.rss_saver.flush_until(deadline) {
+            tracing::warn!("rss: the feeds weren't written in time");
+        }
+        // The last state, after what the saver has in hand.
+        if let Err(e) = self.saver.save(
             self.next_id,
             &self.items,
             &self.list.layout(),
             &self.settings,
             &self.queues,
-        );
+        ) {
+            tracing::warn!("the list wasn't saved: {e}");
+        } else if !self.saver.flush_until(deadline) {
+            tracing::warn!("the list wasn't written in time (the disk held it)");
+        } else if deadline.is_some() {
+            tracing::info!("the list is saved ({} ms)", began.elapsed().as_millis());
+        }
     }
+
+    /// The end ([`App::finish`]): the file downloads that run are stopped as Stop stops them,
+    /// which flushes what they received and saves their resume state; their ids. Torrents keep
+    /// their own resume data as they go, and a video's or a gallery's helpers end with MDM.
+    fn stop_for_the_end(&self) -> Vec<u64> {
+        self.items
+            .iter()
+            .filter_map(|i| match i.live.as_ref().map(|l| &l.dl) {
+                Some(model::Job::File(d)) => {
+                    d.cancel();
+                    Some(i.id)
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
+    /// Wait until the downloads `ids` have ended (their last state saved) or `until`; how many
+    /// still run then.
+    fn wait_stopped(&self, ids: &[u64], until: Instant) -> usize {
+        loop {
+            let running = self
+                .items
+                .iter()
+                .filter(|i| ids.contains(&i.id))
+                .filter_map(|i| i.live.as_ref())
+                .filter(|l| !ended(&l.dl.snapshot().state))
+                .count();
+            if running == 0 || Instant::now() >= until {
+                return running;
+            }
+            std::thread::sleep(Duration::from_millis(10));
+        }
+    }
+}
+
+/// A download's run is over, its last state saved: done, failed or stopped.
+fn ended(state: &mdm_engine::download::State) -> bool {
+    use mdm_engine::download::State;
+    matches!(state, State::Done | State::Failed | State::Cancelled)
 }
 
 /// The event log's line when a seeding limit stops a torrent's sharing.
@@ -12721,5 +12976,43 @@ mod alt_key_tests {
             &mut alone
         ));
         assert!(!alt_alone_released(&[alt(false)], &mut down, &mut alone));
+    }
+}
+
+#[cfg(test)]
+mod stop_all_tests {
+    use super::*;
+
+    fn queue(name: &str, sync: bool, items: &[u64], running: bool) -> Queue {
+        Queue {
+            items: items.to_vec(),
+            running,
+            ..Queue::new(name, sync)
+        }
+    }
+
+    /// #1164: Stop All turns off every running queue (the main one, a synchronization queue, the
+    /// user's), so none starts its next download; their downloads stop with them, not by hand
+    /// (the queue goes on with them when started again); the rest stop by hand, once each.
+    #[test]
+    fn stop_all_stops_every_running_queue_too() {
+        let queues = [
+            queue("Main download queue", false, &[1, 2, 3], true),
+            queue("Synchronization queue", true, &[4], true),
+            queue("Queue # 3", false, &[5, 6], false),
+            queue("Queue # 4", false, &[7], true),
+        ];
+        // 1 and 4 run in their queues, 5 was started by hand in a queue that is off, 8 is in no
+        // queue; 9 waits to start again by itself (a new speed limit), 8 too (listed twice).
+        let (stop, by_hand) = stop_all_plan(&queues, [1, 4, 5, 8], [9, 8, 2]);
+        assert_eq!(stop, [0, 1, 3]);
+        assert_eq!(by_hand, [5, 8, 9]);
+    }
+
+    #[test]
+    fn nothing_running_stops_nothing() {
+        let queues = [queue("Main download queue", false, &[1], false)];
+        let (stop, by_hand) = stop_all_plan(&queues, [], []);
+        assert!(stop.is_empty() && by_hand.is_empty());
     }
 }

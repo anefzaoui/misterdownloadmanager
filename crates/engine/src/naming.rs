@@ -692,7 +692,8 @@ fn fitted(dir: &Path, name: &str) -> String {
 /// finds as its own (a video: yt-dlp reuses a file of the stem already there, and after an
 /// MP3's conversion deletes it, #32). The stem is first shortened so that the helper's files fit
 /// the path limits ([`fit_stem`], #1102), then numbered on until no file in `dir` starts with it
-/// and a dot, letter case aside, and `in_use` (the other downloads' stems in `dir`) says no.
+/// and a dot, letter case aside, no name held in this process ([`reserve`]) does either, and
+/// `in_use` (the other downloads' stems in `dir`) says no.
 pub fn stem_destination(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -> PathBuf {
     let name = fit_stem(dir, name).unwrap_or_else(|| name.to_owned());
     stem_place(dir, &name, in_use)
@@ -721,6 +722,7 @@ fn stem_place(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -> PathBuf 
             .iter()
             .any(|n| n.starts_with(&prefix) || *n == s.to_lowercase())
             && !is_reserved(&p)
+            && !stem_reserved(dir, s)
             && !in_use(s)
     };
     std::iter::once(stem.to_owned())
@@ -771,6 +773,7 @@ impl Stems {
             .find(|s| {
                 !self.taken.contains(&s.to_lowercase())
                     && !is_reserved(&self.dir.join(format!("{s}{ext}")))
+                    && !stem_reserved(&self.dir, s)
             })
             .expect("unbounded search finds a free name");
         self.taken.insert(s.to_lowercase());
@@ -865,6 +868,19 @@ pub fn unique_path(dir: &Path, name: &str) -> PathBuf {
         .expect("unbounded search finds a free name")
 }
 
+/// `dir/name` for a download that replaces the file there as it completes (the user chose to,
+/// `Options::replace_existing`): a file at that name doesn't count as taken. Another download's
+/// does (its part file, or that name reserved in this process), and a folder there: then the next
+/// free numbered name, as [`unique_path`] gives it.
+pub fn replacing_path(dir: &Path, name: &str) -> PathBuf {
+    let first = dir.join(name);
+    if first.is_dir() || part_path(&first).exists() || is_reserved(&first) {
+        unique_path(dir, name)
+    } else {
+        first
+    }
+}
+
 /// Destinations of downloads running in this process: one destination, one download.
 fn active() -> &'static Mutex<HashSet<PathBuf>> {
     static ACTIVE: OnceLock<Mutex<HashSet<PathBuf>>> = OnceLock::new();
@@ -873,6 +889,21 @@ fn active() -> &'static Mutex<HashSet<PathBuf>> {
 
 fn is_reserved(p: &Path) -> bool {
     active().lock().unwrap().contains(p)
+}
+
+/// Whether a name held in this process ([`reserve`]) in `dir` is `stem` or starts with it and a
+/// dot, letter case aside: a stem a video must leave alone, as it leaves one a file there has
+/// (a file whose deletion is under way holds its name until it is gone, #1170).
+fn stem_reserved(dir: &Path, stem: &str) -> bool {
+    let stem = stem.to_lowercase();
+    let prefix = format!("{stem}.");
+    active().lock().unwrap().iter().any(|p| {
+        p.parent() == Some(dir)
+            && p.file_name().is_some_and(|n| {
+                let n = n.to_string_lossy().to_lowercase();
+                n == stem || n.starts_with(&prefix)
+            })
+    })
 }
 
 /// Holds a destination for one download; released when dropped.
@@ -929,6 +960,29 @@ mod tests {
             stem_destination(other.path(), "Song.mp3", none),
             other.path().join("Song.mp3")
         );
+    }
+
+    /// #1170: a name held in this process (a deleted download's, until its files are gone)
+    /// takes its stem for every extension, as a file there would; only in its own folder.
+    #[test]
+    fn a_held_name_takes_its_stem() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let none = |_: &str| false;
+        let held = reserve(&d.join("Talk.MP4")).unwrap();
+        assert_eq!(
+            stem_destination(d, "talk.webm", none),
+            d.join("talk (1).webm")
+        );
+        let mut stems = Stems::new(d, []);
+        assert_eq!(stems.pick("Talk.mkv"), d.join("Talk (1).mkv"));
+        let elsewhere = tempfile::tempdir().unwrap();
+        assert_eq!(
+            stem_destination(elsewhere.path(), "Talk.webm", none),
+            elsewhere.path().join("Talk.webm")
+        );
+        drop(held);
+        assert_eq!(stem_destination(d, "Talk.webm", none), d.join("Talk.webm"));
     }
 
     /// #69: a playlist's names, the folder read once: the same rule as `stem_destination`, each
@@ -1488,6 +1542,37 @@ mod tests {
         assert_eq!(unique_path(d.path(), "a.zip"), d.path().join("a (2).zip"));
         std::fs::write(d.path().join("README"), b"").unwrap();
         assert_eq!(unique_path(d.path(), "README"), d.path().join("README (1)"));
+    }
+
+    /// #1088: a file the user chose to replace keeps its name for the download; another
+    /// download's part file, a name reserved by one running, or a folder doesn't.
+    #[test]
+    fn a_file_chosen_to_be_replaced_keeps_its_name() {
+        let d = tempfile::tempdir().unwrap();
+        let file = d.path().join("taken.7z");
+        assert_eq!(replacing_path(d.path(), "taken.7z"), file);
+        std::fs::write(&file, b"old").unwrap();
+        assert_eq!(replacing_path(d.path(), "taken.7z"), file);
+        // Never the file itself: it stays until the download completes.
+        assert_eq!(std::fs::read(&file).unwrap(), b"old");
+        // Another download's part file.
+        std::fs::write(part_path(&file), b"").unwrap();
+        assert_eq!(
+            replacing_path(d.path(), "taken.7z"),
+            d.path().join("taken (1).7z")
+        );
+        std::fs::remove_file(part_path(&file)).unwrap();
+        // A download running in this process.
+        let held = reserve(&file).unwrap();
+        assert_eq!(
+            replacing_path(d.path(), "taken.7z"),
+            d.path().join("taken (1).7z")
+        );
+        drop(held);
+        assert_eq!(replacing_path(d.path(), "taken.7z"), file);
+        // A folder of that name.
+        std::fs::create_dir(d.path().join("box")).unwrap();
+        assert_eq!(replacing_path(d.path(), "box"), d.path().join("box (1)"));
     }
 
     /// Windows with long paths off, as #1102's report: 259 UTF-16 units a path, 255 a name.

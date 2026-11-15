@@ -111,6 +111,30 @@ fn volume_names() {
     assert_eq!(base_name(Path::new("movie.part1.rar")), "movie");
 }
 
+/// A name whose lowercase is longer in bytes than the name itself (`İ` to `i̇`): the base is
+/// cut by the suffix's length, not at an offset measured in the lowercase.
+#[test]
+fn a_volume_name_whose_lowercase_is_longer() {
+    let five = "İ".repeat(5);
+    assert_eq!(
+        volume_key(&format!("{five}.rar")).map(|v| v.base),
+        Some(five.clone())
+    );
+    assert_eq!(
+        volume_key(&format!("{five}.r00")).map(|v| v.base),
+        Some(five.clone())
+    );
+    assert_eq!(
+        volume_key(&format!("{five}.7z.001")).map(|v| v.base),
+        Some(five.clone())
+    );
+    assert_eq!(
+        volume_key(&format!("{five}.part2.rar")).map(|v| v.base),
+        Some(five)
+    );
+    assert_eq!(volume_key("İ.rar").map(|v| v.base), Some("İ".to_owned()));
+}
+
 #[test]
 fn zip_smart_folder_and_marks() {
     let t = tempfile::tempdir().unwrap();
