@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ No more **The window stopped responding** report in the first minutes after MDM starts with
+  the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
+  lasts past the first three minutes)
+  (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
 - ✅ Windows and macOS: names in any script a font on the computer has show their letters, whatever
   the interface language: the system's own font for the scripts MDM lists none for
   ([#1125](https://github.com/anefzaoui/misterdownloadmanager/issues/1125))
