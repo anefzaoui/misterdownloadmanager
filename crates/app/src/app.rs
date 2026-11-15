@@ -674,16 +674,26 @@ fn place_to_take(item: &Item, items: &[Item]) -> Option<PathBuf> {
             .file_stem()
             .map(|s| s.to_string_lossy().to_lowercase())
     };
-    if item.video.is_some() {
-        // yt-dlp takes any `<stem>.*` there as its own (#32): the stem has to be free.
-        others()
-            .any(|o| stem(o) == stem(item) && o.holds_place())
-            .then(|| {
-                mdm_engine::naming::stem_destination(dir, &item.file_name, |s| {
-                    let s = s.to_lowercase();
-                    others().any(|o| stem(o).as_ref() == Some(&s) && o.holds_place())
-                })
-            })
+    if let Some(video) = &item.video {
+        // yt-dlp takes any `<stem>.*` there as its own (#32): the stem has to be free. A page's
+        // title named before titles were fitted to the path limits with the files a video has
+        // beside it (#1102) is shortened now; a name the user typed stays as typed.
+        let too_long = !video.named
+            && !item
+                .dest
+                .file_stem()
+                .is_some_and(|s| mdm_engine::naming::stem_fits(dir, &s.to_string_lossy()));
+        let in_use = |s: &str| {
+            let s = s.to_lowercase();
+            others().any(|o| stem(o).as_ref() == Some(&s) && o.holds_place())
+        };
+        (too_long || others().any(|o| stem(o) == stem(item) && o.holds_place())).then(|| {
+            if video.named {
+                mdm_engine::naming::typed_stem_destination(dir, &item.file_name, in_use)
+            } else {
+                mdm_engine::naming::stem_destination(dir, &item.file_name, in_use)
+            }
+        })
     } else {
         others()
             .any(|o| lower(&o.dest) == lower(&item.dest) && o.holds_place())
@@ -919,6 +929,8 @@ pub struct App {
     /// Link grabber (#37): links from the browser, Tasks → Import, drops and pastes, in
     /// packages to tick before adding.
     grabber: Option<crate::grabber::Grabber>,
+    /// A page's links from the browser that came in parts, until the last one is in.
+    link_parts: crate::linkparts::LinkParts,
     /// When `follow_assistive_technology` last asked (#131).
     assistive_checked: Option<Instant>,
     /// Archives extracted when their download completes (#37).
@@ -1489,10 +1501,10 @@ impl App {
             if settings.launch_on_startup && mdm_ipc::portable_dir().is_none() {
                 crate::unix::update_run_at_startup();
             }
-            if mdm_ipc::portable_dir().is_none() && !crate::offscreen() {
-                crate::unix::register_browsers();
-            }
         }
+        // Browser integration: a registration that leads nowhere is repaired (#818); Linux and
+        // macOS, which have no installer step, register with each browser here too.
+        crate::extension::repair_at_start();
         // The categories, for code that only has a `Category` (the list's own below too).
         settings.publish_categories();
         // The remote control (#141): off unless Options → Remote turned it on.
@@ -1635,6 +1647,7 @@ impl App {
             category_dlg: None,
             category_for_file_info: false,
             grabber: None,
+            link_parts: Default::default(),
             assistive_checked: None,
             extracts: Default::default(),
             queue_pick: None,
@@ -2274,6 +2287,8 @@ impl App {
         // The browser had started it: the host is already sending the file (#44).
         item.direct = crate::debrid::browser_started(&context);
         item.referer = context.referer.clone().filter(|r| !r.is_empty());
+        // The page it was started from (#607), whole: Refresh download address opens it.
+        item.page = context.page_url.clone().filter(|p| !p.is_empty());
         item.context = context;
         self.items.push(item);
         self.dirty = true;
@@ -2945,6 +2960,22 @@ impl App {
             self.select_download_of(address);
             return;
         }
+        // The browser's right-click menu's links: a long list comes in parts (the browser hands
+        // over 1 MB a message), kept until the last is in, then shown as one list.
+        let cmd = if cmd.links_part.is_some() {
+            match self.link_parts.add(cmd, Instant::now()) {
+                crate::linkparts::Placed::Whole(whole) if !whole.links.is_empty() => *whole,
+                crate::linkparts::Placed::Waiting { got, count } => {
+                    tracing::debug!(
+                        "browser integration: {got} of {count} parts of a page's links"
+                    );
+                    return;
+                }
+                _ => return,
+            }
+        } else {
+            cmd
+        };
         // The browser's right-click menu: a page's (or a selection's) links, to tick in Import.
         if !cmd.links.is_empty() {
             self.show_for_dialog(ctx);
@@ -4621,16 +4652,23 @@ impl App {
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_else(|| "video".into());
         // yt-dlp takes any `<stem>.*` there as its own: a stem no file and no other download
-        // in the folder has, whatever the extension (#32).
+        // in the folder has, whatever the extension (#32). The page's title is shortened to
+        // fit the path limits with the files the video has beside it; a name the user typed is
+        // kept as typed (#1102).
         let items = &self.items;
-        let dest = mdm_engine::naming::stem_destination(&folder, &name, |stem| {
+        let in_use = |stem: &str| {
             items.iter().any(|i| {
                 i.dest.parent() == Some(folder.as_path())
                     && i.dest
                         .file_stem()
                         .is_some_and(|s| s.to_string_lossy().to_lowercase() == stem.to_lowercase())
             })
-        });
+        };
+        let dest = if add.named {
+            mdm_engine::naming::typed_stem_destination(&folder, &name, in_use)
+        } else {
+            mdm_engine::naming::stem_destination(&folder, &name, in_use)
+        };
         let id = self.push_item(
             add.page,
             dest,
@@ -4647,6 +4685,7 @@ impl App {
                 selector: add.selector,
                 subs: add.subs,
                 parts: Vec::new(),
+                named: add.named,
             });
             // The quality menu's look-up goes with this new download only, started now and while
             // fresh: one queued for later, or added on a duplicate question answered late,
@@ -4773,6 +4812,7 @@ impl App {
                     selector: add.selector.clone(),
                     subs: Default::default(),
                     parts: Vec::new(),
+                    named: false,
                 });
             }
             ids.push(id);
@@ -4891,7 +4931,14 @@ impl App {
             }
             Err(e) => {
                 item.status = Status::Error;
-                item.error = Some(e.to_string());
+                item.error = Some(match e {
+                    // Its files would pass the path limits (#1102): said in the interface's
+                    // language, with the video's path.
+                    mdm_tools::proc::ProcError::PathTooLong(_) => {
+                        crate::errors::describe(&mdm_engine::Error::PathTooLong(item.dest.clone()))
+                    }
+                    e => e.to_string(),
+                });
             }
         }
         self.dirty = true;
@@ -5010,6 +5057,44 @@ impl App {
             .iter()
             .filter_map(|i| i.torrent.as_ref().map(|t| t.hash.clone()))
             .collect()
+    }
+
+    /// Torrent settings' switch just turned on (#1091): when Windows still opens magnet links or
+    /// .torrent files with another program (a choice in Default apps, which no program may
+    /// change), say which and open Settings at MDM's Default apps page, where the user picks it.
+    /// An instance off the screens (a test's) never asks this computer: it takes the names in
+    /// MDM_TEST_TORRENT_DEFAULTS (`;` between them), and its log says what would have opened.
+    #[cfg(windows)]
+    fn tell_torrent_defaults(&mut self) {
+        let others = if crate::offscreen() {
+            std::env::var("MDM_TEST_TORRENT_DEFAULTS")
+                .unwrap_or_default()
+                .split(';')
+                .map(str::trim)
+                .filter(|n| !n.is_empty())
+                .map(str::to_owned)
+                .collect()
+        } else {
+            crate::win32::torrent_defaults_elsewhere()
+        };
+        if others.is_empty() {
+            return;
+        }
+        tracing::info!(
+            "torrents: Windows opens magnet links or .torrent files with {}",
+            others.join(", ")
+        );
+        self.notice = Some((
+            crate::i18n::mark("Torrent settings"),
+            crate::i18n::fmt(
+                // i18n: after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+                crate::i18n::t(
+                    "Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.",
+                ),
+                &[("apps", &crate::i18n::isolate(&others.join(", ")))],
+            ),
+        ));
+        crate::launch::open_page(&crate::win32::default_apps_page());
     }
 
     /// The hashes librqbit should keep or restore in its session.
@@ -6791,12 +6876,14 @@ impl App {
             Cmd::RefreshAddress => {
                 // As IDM: the page the link came from opens, so a fresh link can be taken
                 // there; Properties takes the new address and the download resumes from it.
+                // The page the browser started it from, whole, not its Referer, which is often
+                // the site's home page alone (#607); the Referer when that isn't known.
                 if let Some(id) = target {
                     let page = self
                         .items
                         .iter()
                         .find(|i| i.id == id)
-                        .and_then(|i| i.context.referer.clone());
+                        .and_then(|i| i.web_page().map(str::to_owned));
                     if let Some(page) = page {
                         crate::launch::open(page);
                     }
@@ -9601,12 +9688,14 @@ impl App {
                     context,
                     crate::i18n::mark("by Link grabber"),
                 );
-                if let Some(i) = self.items.iter_mut().find(|i| i.id == id) {
+                // The download just added is the list's last: not looked for among them all,
+                // for each link (#1063: 37,000 links took seconds).
+                if let Some(i) = self.items.last_mut().filter(|i| i.id == id) {
                     i.package = Some(tag.clone());
-                }
-                // A name the server didn't give (none looked up) may still change.
-                if size.is_none() {
-                    self.name_guessed(id, true);
+                    // A name the server didn't give (none looked up) may still change.
+                    if size.is_none() {
+                        i.name_from_url = true;
+                    }
                 }
                 self.queues[0].items.push(id);
                 added.push(id);
@@ -9618,6 +9707,7 @@ impl App {
             .then(|| added.first().copied())
             .flatten();
         if let Some(g) = group {
+            let added: std::collections::HashSet<u64> = added.iter().copied().collect();
             for i in self.items.iter_mut().filter(|i| added.contains(&i.id)) {
                 i.group = Some(g);
             }
@@ -10329,8 +10419,40 @@ impl App {
         }
         if !self.torrents_started {
             self.torrents_started = true;
-            // The handlers follow the exe (a portable copy may have moved).
-            if self.settings.torrent_associations {
+            // Torrent settings' switch never decided (a list from before #1058, a new one):
+            // settled once, as the user chose (the installer's task, an earlier tick, or what the
+            // system opens .torrent files with now), and saved for the browser integration. An
+            // instance off the screens (a test's, MDM_OFFSCREEN) never reads this computer's
+            // installer value or associations: off, unless its list ticked it before.
+            if self.settings.torrent_associations.is_none() {
+                let system = !crate::offscreen();
+                #[cfg(windows)]
+                let installer = (system && mdm_ipc::portable_dir().is_none())
+                    .then(crate::win32::install_torrents)
+                    .flatten();
+                #[cfg(not(windows))]
+                let installer: Option<bool> = None;
+                let registered = || {
+                    #[cfg(windows)]
+                    return system && crate::win32::torrent_handler_is_ours();
+                    #[cfg(unix)]
+                    return system && crate::unix::torrent_handler_is_ours();
+                };
+                if self.settings.settle_torrent_handler(installer, registered) {
+                    tracing::info!(
+                        "torrents: Open magnet links and .torrent files with MDM settled {}",
+                        if self.settings.torrent_associations == Some(true) {
+                            "on"
+                        } else {
+                            "off"
+                        }
+                    );
+                    self.dirty = true;
+                }
+            }
+            // The handlers follow the exe (a portable copy may have moved). Never from an
+            // instance off the screens (a test's build would take this computer's associations).
+            if self.settings.torrent_associations == Some(true) && !crate::offscreen() {
                 #[cfg(windows)]
                 crate::win32::set_torrent_handlers(true);
                 #[cfg(unix)]
@@ -10392,12 +10514,22 @@ impl App {
                             share,
                         );
                     }
-                    if assoc != self.settings.torrent_associations {
-                        self.settings.torrent_associations = assoc;
+                    if Some(assoc) != self.settings.torrent_associations {
+                        self.settings.torrent_associations = Some(assoc);
+                        // Not from an instance off the screens (a test's), as at start.
+                        if !crate::offscreen() {
+                            #[cfg(windows)]
+                            crate::win32::set_torrent_handlers(assoc);
+                            #[cfg(unix)]
+                            crate::unix::set_torrent_handlers(assoc);
+                        }
+                        // Windows: a choice recorded in Default apps for another program stays
+                        // first, and only the user can change it (#1091): MDM says so and opens
+                        // its page there. Linux and macOS: the switch made MDM the default.
                         #[cfg(windows)]
-                        crate::win32::set_torrent_handlers(assoc);
-                        #[cfg(unix)]
-                        crate::unix::set_torrent_handlers(assoc);
+                        if assoc {
+                            self.tell_torrent_defaults();
+                        }
                     }
                     self.dirty = true;
                 }
@@ -10964,15 +11096,29 @@ impl App {
         crate::crash::logic_begin();
         crate::crash::step(crate::crash::Step::Commands);
         let mut handled = false;
+        // A command that may open a window (not a question answered at once).
+        let mut opens = false;
         while let Ok(inc) = self.commands.try_recv() {
             handled = true;
             match inc.reply {
                 Some(reply) => {
                     let _ = reply.send(self.answer(&inc.cmd));
                 }
-                None => self.handle_command(inc.cmd, ctx),
+                None => {
+                    opens = true;
+                    self.handle_command(inc.cmd, ctx);
+                }
             }
         }
+        // macOS: hidden from the menu bar icon, the whole app is hidden and draws no window, so
+        // the window the command opens would never appear (the browser's Download video button
+        // did nothing). Unhide the app; the main window stays hidden.
+        #[cfg(target_os = "macos")]
+        if opens && !crate::offscreen() {
+            crate::unix::macos_unhide_app();
+        }
+        #[cfg(not(target_os = "macos"))]
+        let _ = opens;
         if handled {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
@@ -11049,7 +11195,7 @@ impl App {
         // The freeze watchdog times every frame's drawing, as it times its logic (crash.rs).
         crate::crash::frame_begin();
         // A lost graphics device is noticed before this frame paints (renderer.rs).
-        crate::renderer::frame_begin();
+        crate::renderer::frame_begin(ui.ctx());
         // Off-screen test runs: no window of ours may become the foreground one (win32.rs). Linux
         // and macOS need no such pass: their off-screen windows open inactive (main.rs `quiet`)
         // and nothing raises them then (dialogs::raise).
@@ -11415,6 +11561,7 @@ mod same_name_tests {
             selector: "b".into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
         assert_eq!(
@@ -11683,6 +11830,7 @@ mod duplicate_tests {
                 label: "720p".into(),
                 merge: true,
             }),
+            named: false,
         }
     }
 
@@ -11715,6 +11863,7 @@ mod duplicate_tests {
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         assert!(same_video(&item, &page(), SELECTOR));
         assert!(!same_video(
@@ -11836,6 +11985,7 @@ mod duplicate_tests {
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         i
     }
