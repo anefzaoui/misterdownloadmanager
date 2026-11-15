@@ -3812,12 +3812,13 @@ impl OptionsDialog {
                             winui::text_in_window(ui, &p, o.x + 34.0, y, &c.text, LIGHT_TEXT());
                             if let Some(path) = &c.detail {
                                 y += DETAIL_H;
+                                // A path reads left to right in a right-to-left language too.
                                 winui::fit_middle(
                                     ui,
                                     &p,
                                     o.x + 34.0,
                                     y,
-                                    path,
+                                    &crate::i18n::ltr(path),
                                     LIGHT_TEXT(),
                                     o.x + 440.0 - 14.0,
                                     ("test-detail", k),
