@@ -565,6 +565,12 @@ These ship in the next version.
 - ✅ No freeze when a video or a gallery finishes on a slow or busy disk: its files are marked as
   downloaded from the internet by the download itself, before it's done, and a rename on
   completion happens beside the window (for [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
+- ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
+  installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
+  built and tested on its own processor, Update now keeps each copy on its own, and the helpers
+  come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
+  ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
+  [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
 - ✅ The progress window's connections table shows connection numbers 10 and up instead of
   **...**: the number column fits its widest number
   ([#1101](https://github.com/anefzaoui/misterdownloadmanager/issues/1101))
