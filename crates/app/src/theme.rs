@@ -1476,6 +1476,8 @@ mod glyph_tests {
     /// interface, and in scripts MDM's lists don't name, which only the system's own fallback
     /// finds: before, those stayed boxes. egui's fonts alone have none of them (no Segoe UI here,
     /// so even Arabic and Hebrew must come from a fallback).
+    /// (Linux asks fontconfig, whose answer depends on the fonts a distribution installs.)
+    #[cfg(any(windows, target_os = "macos"))]
     const NAMES: [(&str, &str); 10] = [
         (
             "Arabic",
