@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →
+  Exit does, with **Keep running when closing the window** on; it only hid MDM in the notification
+  area
 - ✅ A video with a long title (an X post's text) no longer fails at 0% with **No such file or
   directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
   and a name or folder too long says so

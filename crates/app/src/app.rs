@@ -1044,8 +1044,6 @@ pub struct App {
     deferred_torrent_queue: Vec<u64>,
     /// A finished queue asked to turn the computer off: the countdown, cancellable.
     turn_off: Option<dialogs::TurnOffCountdown>,
-    /// A finished queue asked to exit.
-    exit_requested: bool,
     /// The global speed cap shared by every download (Speed Limiter settings).
     global: std::sync::Arc<mdm_engine::limiter::Limiter>,
     /// Connection caps learned per host, shared by every download.
@@ -1435,9 +1433,21 @@ impl App {
         self
     }
 
-    /// Asked to quit (File → Exit, `/exit`, the Scheduler's "Exit when done").
+    /// Asked to quit (File → Exit, `/exit`, the Scheduler's "Exit when done"): [`App::quit`].
     pub fn wants_exit(&self) -> bool {
-        self.exiting || self.exit_requested
+        self.exiting
+    }
+
+    /// Every way MDM is asked to quit comes here: File → Exit, the tray's Exit, `/exit` (the
+    /// command line, a second launch), Update now, and a queue's or a download's "Exit when done".
+    /// The close that follows quits whatever Options' "Keep running when closing the window" says
+    /// (`tray::on_close`); only closing the window itself follows that setting. The list and the
+    /// settings are saved as the app goes (`Drop`), and the crash monitor is told it's a clean exit
+    /// (main.rs). A headless run stops at its next pass (`wants_exit`).
+    fn quit(&mut self, ctx: &egui::Context) {
+        tracing::info!("quitting");
+        self.exiting = true;
+        ctx.send_viewport_cmd(egui::ViewportCommand::Close);
     }
 
     pub fn new(
@@ -1705,7 +1715,6 @@ impl App {
             renaming_torrents: Vec::new(),
             deferred_torrent_queue,
             turn_off: None,
-            exit_requested: false,
             global: std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None)),
             host_limits: Default::default(),
             quota: Default::default(),
@@ -4055,18 +4064,20 @@ impl App {
         // closing closes, as any window's does: Options' "Keep running when closing the window"
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
         // back, and one that merely minimized could never be closed).
-        if !self.exiting && ctx.input(|i| i.viewport().close_requested()) {
+        // Asked to quit (`quit`: File → Exit, Exit when done…), the close quits whatever the option.
+        if ctx.input(|i| i.viewport().close_requested()) {
             use crate::tray::OnClose;
+            let quitting = self.exiting;
             let keep = self.settings.close_to_tray;
             let tray = self.tray.is_some();
             // The shell's answer, only when it matters (macOS: asked afresh).
-            let icon = if keep && tray {
+            let icon = if keep && tray && !quitting {
                 self.tray_icon_now()
             } else {
                 crate::tray::Icon::Gone
             };
             let taskbar = cfg!(not(target_os = "linux"));
-            match crate::tray::on_close(keep, tray, icon, taskbar) {
+            match crate::tray::on_close(quitting, keep, tray, icon, taskbar) {
                 OnClose::Hide => {
                     tracing::info!("close: hidden to the notification area (tray icon: {icon:?})");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
@@ -6593,7 +6604,9 @@ impl App {
         if let Some(mode) = w.turn_off {
             self.turn_off = Some(dialogs::TurnOffCountdown::new(mode, w.force));
         } else if w.exit {
-            self.exit_requested = true;
+            tracing::info!("when done: exit");
+            let ctx = self.ui_ctx.clone();
+            self.quit(&ctx);
         }
     }
 
@@ -6676,10 +6689,7 @@ impl App {
             .is_some_and(|i| i.moved_away);
         match cmd {
             Cmd::AddUrl => self.add_url = Some(AddUrl::from_clipboard(&self.settings.url_history)),
-            Cmd::Exit => {
-                self.exiting = true;
-                ctx.send_viewport_cmd(egui::ViewportCommand::Close);
-            }
+            Cmd::Exit => self.quit(ctx),
             Cmd::Stop => {
                 for id in many {
                     if self.item(id).is_some_and(|i| i.live.is_some()) {
@@ -10335,9 +10345,6 @@ impl App {
             && !matches!(n.show(ctx), Outcome::Open)
         {
             self.limit_notice = None;
-        }
-        if std::mem::take(&mut self.exit_requested) {
-            ctx.send_viewport_cmd(egui::ViewportCommand::Close);
         }
         if let Some(t) = &mut self.turn_off {
             match t.show(ctx) {
