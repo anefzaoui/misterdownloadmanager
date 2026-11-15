@@ -173,15 +173,14 @@ pub fn update_run_at_startup() {
 const HOST: &str = "misterdownloadmanager-nmhost";
 /// The manifest it writes in each browser's folder.
 const MANIFEST: &str = "com.misterdownloadmanager.host.json";
-/// How long the helper's `--register` has at a start (it writes a few small files).
+/// How long the helper's `--repair` has at a start (it writes a few small files).
 const REGISTER_LIMIT: std::time::Duration = std::time::Duration::from_secs(20);
-/// Why the last registration failed, in the system's words (Test browser integration says it);
-/// None once one succeeded.
-static REGISTER_ERROR: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
 
 /// Browser integration: the host's manifests in every installed browser's folder. There is no
 /// installer step on Linux and macOS, so this runs at each start, on a thread of its own: a
-/// moved app, a browser installed since, or a helper copy that went missing is repaired.
+/// moved app, a browser installed since, or a helper copy that went missing is repaired. A
+/// manifest that works naming another copy of MDM is left alone (the helper's `--repair`, #818):
+/// Set it up takes it.
 ///
 /// From an AppImage, whose programs sit in a mount that is gone once it quits, the host is first
 /// copied to the data folder with the AppImage's path beside it (`app-path`: the host starts
@@ -189,29 +188,18 @@ static REGISTER_ERROR: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(
 pub fn register_browsers() {
     let started = std::thread::Builder::new()
         .name("register-browsers".into())
-        .spawn(|| register_browsers_now(REGISTER_LIMIT));
+        .spawn(|| register_browsers_now(REGISTER_LIMIT, "--repair"));
     if let Err(e) = started {
         tracing::warn!("browser integration: not set up, no thread for it: {e}");
     }
 }
 
-/// `register_browsers`, waiting for it to finish, up to `limit` (Test browser integration's Set
-/// it up, on a thread of its own: extension::set_up). Every failure is logged and kept for Test
-/// browser integration ([`register_error`]).
-pub fn register_browsers_now(limit: std::time::Duration) {
-    let result = host_program().and_then(|host| run_register(&host, limit));
-    match &result {
-        Ok(said) => tracing::info!("browser integration set up: {said}"),
-        Err(e) => tracing::warn!("browser integration not set up: {e}"),
-    }
-    if let Ok(mut last) = REGISTER_ERROR.lock() {
-        *last = result.err();
-    }
-}
-
-/// Why the last registration failed, if it did.
-pub fn register_error() -> Option<String> {
-    REGISTER_ERROR.lock().ok().and_then(|e| e.clone())
+/// `register_browsers` with the helper's `arg` (`--register`: Set it up, which takes the
+/// browsers from any other copy), waiting for it to finish, up to `limit` (on a thread of its
+/// own: extension::set_up). Every failure is logged and kept for Test browser integration.
+pub fn register_browsers_now(limit: std::time::Duration, arg: &str) {
+    let result = host_program().and_then(|host| crate::extension::run_host(&host, arg, limit));
+    crate::extension::registered_as(&result);
 }
 
 /// The helper to register: beside this program, or from an AppImage its copy in the data folder
@@ -283,37 +271,6 @@ fn runs(path: &Path) -> bool {
     std::fs::metadata(path).is_ok_and(|m| m.is_file() && m.permissions().mode() & 0o111 != 0)
 }
 
-/// The helper's `--register`: what it says it did, or why it failed.
-fn run_register(host: &Path, limit: std::time::Duration) -> Result<String, String> {
-    use std::io::Read;
-    let mut child = Command::new(host)
-        .arg("--register")
-        .stdin(Stdio::null())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .map_err(|e| format!("{}: {e}", host.display()))?;
-    let status = crate::launch::wait_within(&mut child, limit);
-    // A few lines at most: they fit the pipes, so the helper never waits on them.
-    let mut said = String::new();
-    if let Some(mut out) = child.stdout.take() {
-        let _ = out.read_to_string(&mut said);
-    }
-    if let Some(mut err) = child.stderr.take() {
-        said.push('\n');
-        let _ = err.read_to_string(&mut said);
-    }
-    let said = said.split_whitespace().collect::<Vec<_>>().join(" ");
-    match status {
-        Some(s) if s.success() => Ok(said),
-        Some(s) => Err(format!("{} --register: {s}: {said}", host.display())),
-        None => Err(format!(
-            "{} --register: no answer in {limit:?}",
-            host.display()
-        )),
-    }
-}
-
 /// Where browser integration stands (Options → General → Test browser integration): the
 /// manifests in the folders the browsers here read (mdm_ipc::browsers), for this user, or for
 /// everyone when no browser is there for this user, and the helper each names. A browser that
@@ -359,15 +316,10 @@ fn registration_in(
     // that runs. Everyone's folders: one that works is enough.
     let (mut ready, mut missing, mut broken) = (0, 0, None);
     for (dir, _) in dirs {
-        let manifest = dir.join(MANIFEST);
-        if !manifest.is_file() {
-            missing += 1;
-            continue;
-        }
-        match mdm_ipc::browsers::manifest_program(&manifest) {
-            Some(p) if runs(&p) => ready += 1,
-            Some(p) => broken = broken.or(Some(p)),
-            None => missing += 1,
+        match mdm_ipc::browsers::Holder::of(&dir.join(MANIFEST)) {
+            mdm_ipc::browsers::Holder::Alive(_) => ready += 1,
+            mdm_ipc::browsers::Holder::ProgramGone(p) => broken = broken.or(Some(p)),
+            mdm_ipc::browsers::Holder::ManifestGone(_) => missing += 1,
         }
     }
     match broken {
@@ -668,6 +620,22 @@ pub fn set_torrent_handlers(on: bool) {
         "x-scheme-handler/magnet",
         "application/x-bittorrent",
     ]));
+}
+
+/// `win32::torrent_handler_is_ours`: is MDM what the desktop opens .torrent files with? Linux:
+/// xdg-mime's default app for them is the packages' desktop entry; macOS: Launch Services'
+/// default for the type is this app (`open_events::is_default`). Asked once, to settle Torrent
+/// settings' switch (#1058).
+pub fn torrent_handler_is_ours() -> bool {
+    #[cfg(target_os = "macos")]
+    return open_events::is_default();
+    #[cfg(not(target_os = "macos"))]
+    Command::new("xdg-mime")
+        .args(["query", "default", "application/x-bittorrent"])
+        .stdin(Stdio::null())
+        .stderr(Stdio::null())
+        .output()
+        .is_ok_and(|o| String::from_utf8_lossy(&o.stdout).trim() == "misterdownloadmanager.desktop")
 }
 
 /// `win32::assistive_technology_listening`: Linux's AT-SPI adapter answers a screen reader with
@@ -2193,6 +2161,25 @@ pub mod open_events {
             role: u32,
             bundle_id: *const c_void,
         ) -> i32;
+        fn LSCopyDefaultRoleHandlerForContentType(
+            content_type: *const c_void,
+            role: u32,
+        ) -> *mut c_void;
+    }
+
+    /// Is this app Launch Services' default for .torrent files (`unix::torrent_handler_is_ours`)?
+    pub fn is_default() -> bool {
+        let torrent = NSString::from_str(TORRENT_TYPE);
+        // kLSRolesAll, as `make_default` sets it.
+        const ALL_ROLES: u32 = 0xFFFF_FFFF;
+        // SAFETY: NSString is toll-free bridged to CFString. A Copy function's result is ours to
+        // release, which Retained does; null (no default) is None.
+        let handler = unsafe {
+            Retained::from_raw(
+                LSCopyDefaultRoleHandlerForContentType(cf(&torrent), ALL_ROLES).cast::<NSString>(),
+            )
+        };
+        handler.is_some_and(|h| h.to_string().eq_ignore_ascii_case(BUNDLE_ID))
     }
 
     /// MDM the default app for magnet links and .torrent files (Torrent settings' switch). A
@@ -2631,6 +2618,33 @@ pub fn macos_is_active_and_visible() -> bool {
             }
         }
         false
+    }
+}
+
+/// macOS: unhides the application if [`macos_hide_window`] hid it, without activating it or
+/// ordering any window back to the front. While `NSApp` is hidden, macOS lets none of its windows
+/// draw, so eframe runs only the app's logic: a window a command opens (the browser's Download
+/// video, Download File Info) is never created, and the browser's click seems to do nothing.
+/// The main window stays ordered out (hidden to the menu bar) as it was.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_unhide_app() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    // SAFETY: called on the main UI thread; reads `isHidden` of, and sends
+    // `unhideWithoutActivation` to, `NSApplication.sharedApplication`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return;
+        }
+        let hidden: Bool = msg_send![app, isHidden];
+        if hidden.as_bool() {
+            let _: () = msg_send![app, unhideWithoutActivation];
+        }
     }
 }
 
@@ -4036,11 +4050,14 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
 }
 
 /// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
-/// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
-/// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
-/// session may take it without a password. False when logind refused, or didn't answer within
-/// 25 s. Called on wake::Holder's thread, never the window's: logind can be slow right after a
-/// resume.
+/// system's settings say. Linux: logind's sleep inhibitor, held by its file descriptor
+/// (`systemd-inhibit --list` shows it with its reason); a user in the active session may take it
+/// without a password. It stops the desktop's automatic suspend (GNOME, KDE) and logind's own
+/// idle action, which go through logind's suspend; not the screen's dimming, turning off and
+/// locking, as Windows' power request and `caffeinate -i` don't either. (An `idle` inhibitor
+/// too would keep KDE's screen on for as long as downloads run, #939.) False when logind refused,
+/// or didn't answer within 25 s. Called on wake::Holder's thread, never the window's: logind can
+/// be slow right after a resume.
 #[cfg(target_os = "linux")]
 pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
@@ -4063,7 +4080,7 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
         )?;
         logind.call(
             "Inhibit",
-            &("sleep:idle", "Mister Download Manager", reason, "block"),
+            &("sleep", "Mister Download Manager", reason, "block"),
         )
     };
     match take() {
@@ -4072,7 +4089,15 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
             true
         }
         Err(e) => {
-            tracing::warn!("wake: logind's inhibitor refused ({e})");
+            // Once per refusal of its own: a system without logind (a container, #157) refuses
+            // every time downloads run, asked again once a minute.
+            static LAST: Mutex<String> = Mutex::new(String::new());
+            let why = e.to_string();
+            let mut last = LAST.lock().unwrap_or_else(|p| p.into_inner());
+            if *last != why {
+                tracing::warn!("wake: logind's inhibitor refused ({why})");
+                *last = why;
+            }
             false
         }
     }

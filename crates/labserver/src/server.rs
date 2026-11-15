@@ -16,6 +16,7 @@
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
+//! - `GET /declared` — a page that declares its video and hides another (#1076, `pages`)
 //! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`); `/hls2/*`, `/dash2/*` the same with
 //!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
@@ -414,6 +415,7 @@ impl LabServer {
         let simple = Router::new()
             .route("/page", get(pages::page))
             .route("/leadon", get(pages::leadon))
+            .route("/declared", get(pages::declared))
             .route("/formpage", get(pages::formpage))
             .route("/cookie", get(pages::cookie))
             .route("/assets/{file}", get(pages::asset))
@@ -697,6 +699,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    name's real Content-Type (.pdf application/pdf, .mp3 audio/mpeg, .mp4
                    video/mp4, ...): a browser displays or plays it
     inline=bare    the real Content-Type and no Content-Disposition at all
+    type=MIME      that Content-Type instead (none: no Content-Type at all)
+    Expires= Signature= Key-Pair-Id= Policy=   ignored: a CloudFront signed address's own keys
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
     uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
                    with a link= of its own)
@@ -756,10 +760,17 @@ GET /rss/dir.xml   the .torrent files in --rss-dir, newest first, linked to /rss
 PAGES  for the browser extension's tests (tools/extension/e2e.mjs); styles and scripts are files
 GET /page?<any of>
     link=PATH      <a id=link href=PATH>download</a>; again for more (#link2, #link3...)
+    files=N        N more links (up to 200000) in <ul id=files>, after <p id=blank>, a line without
+                   a link: to /gen/1K files, as a big page gives Link grabber: two in five a split
+                   archive's volumes (setK.part1.rar, setK.part2.rar), the others fileK.zip,
+                   clipK.mp4, docK.pdf
+    pathlen=L      with files: /gen/1K/<folder>/fileK.zip?seed=K instead, each path L characters
+                   long, its folder's name made that long
     video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size
     title=TEXT     the page's title (default "labserver page")
+    referrer=POLICY  its Referrer-Policy (origin: its links' Referer is the site's address only)
     muted_loop=1   the video muted, looping and autoplaying, without controls
     iframe=1       the video inside <iframe id=frame> (a /page of its own)
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)
@@ -785,6 +796,11 @@ GET /formpage?size=1M&name=report.zip&token=abc&with=QUERY   three forms posting
 GET /cookie?set=NAME=VALUE&httponly=NAME=VALUE&clear=NAME   (each repeatable) a small page with
     Set-Cookie: NAME=VALUE; Path=/ (; HttpOnly), or NAME=; Path=/; Max-Age=0
 GET /assets/page.css  /assets/stream.js
+GET /declared?film=PATH&hidden=PATH&name=TEXT&title=TEXT&how=jsonld|og|twitter|none   a page
+    that declares its video (#1076) and plays only another, hidden one: hidden (default
+    /gen/1M/welcome.mp4?seed=2&inline=1) in a <video> inside <div hidden>; film (default
+    /gen/2M/film.mp4?seed=3&inline=1) named name (default "The Film") in its JSON-LD VideoObject
+    (contentUrl), og:video (og:title), twitter:player (twitter:title), or nowhere (none)
 
 STREAMS  3 segments of 4 s per track. HLS: real MPEG-TS, a grey H.264 picture (25 fps) on the
     video tracks, AAC silence on the audio track (ffmpeg remuxes and merges them); DASH: fake bytes
@@ -1716,6 +1732,8 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
             // A page's own keys for a server's program (`script`): they change nothing here.
             "link" | "id" | "file" | "filename" | "token" => {}
+            // A CloudFront signed address's own keys (#1087): they change nothing here.
+            "Expires" | "Signature" | "Key-Pair-Id" | "Policy" => {}
             "type" => out.content_type = name(&k, v)?,
             "magic" => {
                 out.magic =
@@ -1890,6 +1908,13 @@ mod tests {
         assert!(content_disposition(&split_query("inline=bare").unwrap(), Some("a.pdf")).is_none());
         assert!(split_query("inline=maybe").is_err());
         assert!(split_query("cd=a%0Ab").is_err());
+        // A CloudFront signed address's keys (#1087) change nothing; a type is sent as asked.
+        let q = split_query(
+            "inline=bare&type=binary/octet-stream&Expires=1&Signature=a~b&Key-Pair-Id=K",
+        )
+        .unwrap();
+        assert_eq!(q.content_type.as_deref(), Some("binary/octet-stream"));
+        assert_eq!(q.faults, Faults::default());
         assert_eq!(mime_type("A.PDF"), "application/pdf");
         assert_eq!(mime_type("x.mp3"), "audio/mpeg");
         assert_eq!(mime_type("noext"), "application/octet-stream");
