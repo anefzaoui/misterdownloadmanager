@@ -1694,33 +1694,6 @@ pub fn on_xwayland() -> bool {
     window_system().x11_over_wayland
 }
 
-/// Linux: the vendor of the GLX that will draw MDM's OpenGL windows on the X display, before any
-/// of them is made (their swap interval is chosen when the first one is): `glXGetClientString`'s
-/// `GLX_VENDOR` ("NVIDIA Corporation", "Mesa Project and SGI"). libglvnd picks the driver for
-/// the display the same way when eframe makes its context. None without libGL or a display.
-#[cfg(target_os = "linux")]
-#[allow(unsafe_code)]
-pub fn glx_vendor() -> Option<String> {
-    let xlib = x11_dl::xlib::Xlib::open().ok()?;
-    let glx = x11_dl::glx::Glx::open().ok()?;
-    // SAFETY: a display opened here and closed before returning; the vendor string belongs to
-    // the GLX library, and is copied while the display is open.
-    unsafe {
-        let display = (xlib.XOpenDisplay)(std::ptr::null());
-        if display.is_null() {
-            return None;
-        }
-        let vendor = (glx.glXGetClientString)(display, x11_dl::glx::GLX_VENDOR);
-        let vendor = (!vendor.is_null()).then(|| {
-            std::ffi::CStr::from_ptr(vendor)
-                .to_string_lossy()
-                .into_owned()
-        });
-        (xlib.XCloseDisplay)(display);
-        vendor
-    }
-}
-
 /// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
 #[cfg(target_os = "linux")]
 #[allow(unsafe_code)]
