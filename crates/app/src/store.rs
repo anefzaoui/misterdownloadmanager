@@ -11,7 +11,6 @@ use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 use std::time::Duration;
 
-use mdm_engine::state::{ResumeState, state_path};
 use serde::{Deserialize, Serialize};
 
 use crate::list::Layout;
@@ -127,22 +126,10 @@ fn load_from(p: &Path, empty: Loaded) -> Loaded {
                 if i.status == Status::Downloading {
                     i.status = Status::Stopped;
                 }
-                // Live progress isn't written to this file; the engine's resume state is the
-                // record of what is on disk. A video's download is yt-dlp's, which keeps no such
-                // state: not looked for (a playlist's thousands cost a second at start, #69).
-                if i.status != Status::Complete && i.video.is_none() {
-                    // Started under the former codename: rename its files so it resumes.
-                    mdm_engine::state::migrate_legacy(&i.dest);
-                }
-                if i.status != Status::Complete
-                    && i.video.is_none()
-                    && let Ok(st) = ResumeState::load(&state_path(&i.dest))
-                    // A state under this name for another address is another row's (#442).
-                    && st.url == i.url
-                {
-                    i.downloaded = st.downloaded();
-                    i.size = Some(st.size);
-                }
+                // Each row as saved: the downloads' own folders aren't touched here. Their resume
+                // states (the record of what is on disk) are read beside the window once it is
+                // open (resumeread.rs, `App::read_resume_states`): a folder that doesn't answer
+                // held the window for 21 s before its first frame.
             }
             if f.version < 2 {
                 // Before version 2 nothing could set "files at the same time" (no Scheduler),
@@ -408,6 +395,7 @@ impl Saver {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use mdm_engine::state::{ResumeState, state_path};
 
     fn empty() -> Loaded {
         Loaded {
@@ -606,10 +594,11 @@ mod tests {
         assert_eq!(load_from(&p, empty()).settings.auto_types, edited);
     }
 
-    /// #442: two rows of one name, a resume state on the disk: only the row of its address
-    /// takes the progress (the other would take the data for its own and resume it).
+    /// Loading the list reads nothing in the downloads' folders (their resume states are read
+    /// beside the window, `App::read_resume_states`): each row comes as saved, a state on the
+    /// disk notwithstanding.
     #[test]
-    fn a_resume_state_is_read_by_the_row_it_belongs_to() {
+    fn loading_the_list_leaves_the_downloads_folders_alone() {
         let dir = tempfile::tempdir().unwrap();
         let p = dir.path().join("downloads.json");
         let dest = dir.path().join("master.mp4");
@@ -631,7 +620,7 @@ mod tests {
             .write(&state_path(&dest))
             .unwrap();
         let loaded = load_from(&p, empty());
-        assert_eq!(loaded.items[0].size, Some(777));
+        assert_eq!(loaded.items[0].size, Some(100));
         assert_eq!(loaded.items[1].size, Some(100));
     }
 

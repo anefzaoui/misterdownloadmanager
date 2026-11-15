@@ -1213,7 +1213,67 @@ impl Download {
         }))
     }
 
+    /// [`Download::resume`] when there is a resume state at `state_file`, else `req` from the
+    /// start ([`Download::start_with`], `kept` its look's answer), as the download's own task
+    /// finds on the disk: the caller never waits for it. A folder on a network share that doesn't
+    /// answer, or a drive waking up, holds this download only, not the caller (the app's window:
+    /// found with #1170). A state that is there but can't be resumed fails it, as
+    /// [`Download::resume`] would, and the data stays for later: it is never started over.
+    /// Until the disk has answered, it shows `shown` bytes (what the caller shows of it); a start
+    /// from scratch then shows 0, unless its folder isn't there (a drive unplugged: its data may
+    /// still be on it).
+    pub fn resume_or_start(
+        state_file: PathBuf,
+        req: Request,
+        opts: Options,
+        kept: Option<KeptAnswer>,
+        shown: u64,
+    ) -> Download {
+        Download::spawn_showing(req.url.clone(), shown, move |shared, cancel| {
+            let sh = shared.clone();
+            let body = async move {
+                let look = {
+                    let state_file = state_file.clone();
+                    tokio::task::spawn_blocking(move || Found::look(&state_file))
+                };
+                let found = tokio::select! {
+                    _ = cancel.cancelled() => return Err(Error::Cancelled),
+                    found = look => found.unwrap_or_else(|e| {
+                        Found::State(Err(format!("{}: {e}", state_file.display())))
+                    }),
+                };
+                match found {
+                    Found::State(Ok(saved)) => {
+                        run_resume(*saved, state_file, req.headers, opts, sh, cancel).await
+                    }
+                    Found::State(Err(e)) => Err(Error::BadState(e)),
+                    Found::Unavailable(dir) => Err(Error::DestinationUnavailable(dir)),
+                    Found::Nothing { folder } => {
+                        if folder {
+                            sh.view.lock().unwrap().downloaded = 0;
+                        }
+                        if crate::ftp::is_ftp(&req.url) {
+                            run_fresh_ftp(req, opts, sh, cancel).await
+                        } else {
+                            run_fresh(req, opts, sh, cancel, kept).await
+                        }
+                    }
+                }
+            };
+            run(body, shared)
+        })
+    }
+
     fn spawn<F, Fut>(url: Url, f: F) -> Download
+    where
+        F: FnOnce(Arc<Shared>, CancellationToken) -> Fut,
+        Fut: Future<Output = Result<Outcome, Error>> + Send + 'static,
+    {
+        Download::spawn_showing(url, 0, f)
+    }
+
+    /// [`Download::spawn`], its snapshot showing `downloaded` bytes until the run says.
+    fn spawn_showing<F, Fut>(url: Url, downloaded: u64, f: F) -> Download
     where
         F: FnOnce(Arc<Shared>, CancellationToken) -> Fut,
         Fut: Future<Output = Result<Outcome, Error>> + Send + 'static,
@@ -1225,7 +1285,7 @@ impl Download {
                 url,
                 file: None,
                 size: None,
-                downloaded: 0,
+                downloaded,
                 resumable: None,
                 segments: Vec::new(),
                 connections: Vec::new(),
@@ -1277,6 +1337,34 @@ impl Download {
             Err(e) if e.is_cancelled() => Err(Error::Cancelled),
             Err(e) => std::panic::resume_unwind(e.into_panic()),
         }
+    }
+}
+
+/// What [`Download::resume_or_start`] finds on the disk.
+enum Found {
+    /// A resume state, or why the one there doesn't read.
+    State(Result<Box<ResumeState>, String>),
+    /// A state whose folder isn't there (a removed drive or an offline share).
+    Unavailable(PathBuf),
+    /// No state: started from scratch. `folder`: its folder is there.
+    Nothing { folder: bool },
+}
+
+impl Found {
+    /// The look [`Download::resume`] and its caller made, on the thread that may wait.
+    fn look(state_file: &Path) -> Found {
+        let dir = state_file.parent().filter(|d| !d.as_os_str().is_empty());
+        if !state_file.exists() {
+            return Found::Nothing {
+                folder: dir.is_none_or(Path::is_dir),
+            };
+        }
+        if let Some(dir) = dir
+            && !dir.is_dir()
+        {
+            return Found::Unavailable(dir.to_owned());
+        }
+        Found::State(ResumeState::load(state_file).map(Box::new))
     }
 }
 

@@ -3320,6 +3320,26 @@
 	Speed Limiter	محدد السرعة
 #. window title in a dialog box
 	Speed Limiter settings	إعدادات محدد السرعة
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	محدد السرعة: {limit} كحد أقصى لهذا التنزيل
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	محدد السرعة: {limit} لجميع التنزيلات
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	محدد السرعة: {limit} لجميع التنزيلات معا
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	محدد السرعة: {limit} لكل تنزيل
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	محدد السرعة: {one} لكل تنزيل، {all} للجميع
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4681,6 +4701,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (الحد لجميع التنزيلات: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (الحد: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 	{service} asks to slow down; MDM will try again in a minute	تطلب {service} التباطؤ؛ سيعاود MDM المحاولة في دقيقة

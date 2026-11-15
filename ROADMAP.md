@@ -567,6 +567,16 @@ These ship in the next version.
   the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
   selected row as the arrows move it
   ([#1190](https://github.com/anefzaoui/misterdownloadmanager/issues/1190))
+- ✅ macOS: no more **The window stopped responding** report while a file dialog is open: the
+  time its window thread spends in a system Open or Save dialog isn't counted
+  ([#1192](https://github.com/anefzaoui/misterdownloadmanager/issues/1192))
+- ✅ The speed limit shows where the speed does: the progress window's Transfer rate names the
+  limit holding the download back (its own, the Speed Limiter's, or the one for all downloads),
+  the list's Transfer rate says it in its tip, and the status bar and the tray's tip say while the
+  Speed Limiter is on ([#1191](https://github.com/anefzaoui/misterdownloadmanager/issues/1191))
+- ✅ The window opens at once when an unfinished download is on a network share that doesn't
+  answer or a sleeping drive: downloads' progress, and a new video's name, are read beside it
+  (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
 - ✅ macOS: MDM no longer closes when the displays change while it draws with OpenGL (a dock
   and the lid closed): it takes its OpenGL context back when the system left its thread without
   it, and a texture OpenGL still refuses is made on a later frame
@@ -588,6 +598,9 @@ These ship in the next version.
   downloads stop where they are and resume there, no crash report at the next start), and an
   installer closing MDM through the Restart Manager closes it; File → Exit also stops the
   downloads where they are
+- ✅ Linux: logging out or shutting down saves MDM as File → Exit does (its downloads stop where
+  they are and resume there, no crash report at the next start), whether the system asks it to end
+  or its display goes away first
 - ✅ No more **The window stopped responding** report in the first minutes after MDM starts with
   the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
   lasts past the first three minutes)

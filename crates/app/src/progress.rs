@@ -323,6 +323,9 @@ pub struct Progress {
     pub minimize_to_tray: bool,
     /// MDM's main window is shown (set by the app each frame): the glide's frames draw it too.
     pub main_shown: bool,
+    /// The speed limit holding the download back (set by the app each frame, #1191): its
+    /// Transfer rate names it.
+    pub limit: Option<crate::model::Limit>,
     /// Options on completion, used when "Show download complete dialog" is off.
     hang_up: bool,
     exit: bool,
@@ -404,6 +407,7 @@ impl Progress {
             tray: false,
             minimize_to_tray: false,
             main_shown: true,
+            limit: None,
             hang_up: false,
             exit: false,
             turn_off_on: false,
@@ -1470,7 +1474,12 @@ impl Progress {
                 135.0,
                 // Every byte in (#736): nothing comes in while the file is checked or joined.
                 if item.status == Status::Downloading && !item.past_last_byte() {
-                    model::rate(item.rate())
+                    // The limit holding it back beside the speed (#1191).
+                    let rate = model::rate(item.rate());
+                    match self.limit {
+                        Some(limit) => limit.after(&rate),
+                        None => rate,
+                    }
                 } else {
                     String::new()
                 },

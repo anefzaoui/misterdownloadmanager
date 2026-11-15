@@ -116,6 +116,9 @@ x11rb = { version = "0.13.2", default-features = false }
 # Whether a Wayland screen is scaled, for the windows' system MDM chooses (unix.rs x11_fit,
 # #624); already in the tree through winit.
 wayland-client = "0.31.15"
+# The Xlib display winit opened, for Xlib to return from a lost connection (unix.rs
+# on_display_lost); already in the tree through winit.
+raw-window-handle = "0.6"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 # Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.

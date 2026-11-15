@@ -5,7 +5,8 @@
 //! - or freezes: a watchdog thread sees a frame of the window run past [`FREEZE_AFTER`] and asks
 //!   for a dump of every thread while MDM is still stuck (a deadlock, an endless loop). A frame
 //!   is two timed stretches: the app's logic (commands and the clock, which egui runs alone while
-//!   the main window is minimized) and its UI. The waits between frames aren't timed.
+//!   the main window is minimized) and its UI. The waits between frames aren't timed, nor, on
+//!   macOS, the time a system Open or Save dialog is open ([`system_dialog`]).
 //!
 //! The monitor then shows the report window (crashui.rs). Without a monitor (it couldn't start)
 //! MDM runs on, and a panic still leaves a text report.
@@ -13,7 +14,7 @@
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 use std::path::Path;
-use std::sync::atomic::{AtomicBool, AtomicU8, AtomicU64, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU8, AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 
@@ -65,6 +66,18 @@ static GRACED: AtomicU8 = AtomicU8::new(0);
 static PANICKED: AtomicBool = AtomicBool::new(false);
 /// The window thread (the dump's id for it; 0 where it can't be known).
 static UI_THREAD: OnceLock<u32> = OnceLock::new();
+/// System dialogs open now (Open, Save, a folder: [`system_dialog`]).
+static SYSTEM_DIALOGS: AtomicUsize = AtomicUsize::new(0);
+/// When the last system dialog closed (ms since EPOCH, + 1); 0 before any closed.
+static DIALOG_CLOSED: AtomicU64 = AtomicU64::new(0);
+
+/// Whether a system dialog runs on the window thread. macOS's Open and Save panels do: rfd hands
+/// them to the main thread, the window's, whatever thread asks for one, and AppKit runs them
+/// there in a modal loop of their own until they close (#1192: a person choosing a file for 9 s
+/// was reported as a freeze). Windows' dialog (IFileDialog) runs on the thread that asks for it,
+/// and Linux's (the desktop portal, or zenity) is waited for on that thread too: the window thread
+/// goes on drawing, and a frame stuck meanwhile is still a freeze there.
+const DIALOG_ON_WINDOW_THREAD: bool = cfg!(target_os = "macos");
 
 thread_local! {
     /// The windows drawn this frame and last frame (ids), for the log and the report.
@@ -149,6 +162,15 @@ fn hook_panics() {
         tracing::error!("panic: {} at {} ({})", p.message, p.location, p.thread);
         // In the file before the report reads the log's end (the log writes on its own thread).
         mdm_crash::logs::flush(LOG_FOR_A_REPORT);
+        // Linux: winit's calls on an X server that went away (logout) panic on the window's
+        // thread: the session's end, saved as one (MDM ends there), or, the app busy in its
+        // frame, by the app's drop as the panic unwinds; not a crash.
+        #[cfg(target_os = "linux")]
+        if crate::unix::display_lost_panic(&p.thread) {
+            crate::unix::display_lost();
+            default(info);
+            return;
+        }
         if !panic_reported(CLOSING.load(Ordering::Acquire), &p.thread) {
             default(info);
             return;
@@ -180,8 +202,15 @@ fn stretch_end() {
         } else {
             "UI"
         };
+        let (open, closed) = dialogs_now();
+        let dialog =
+            if dialog_from(start - 1, open, closed, DIALOG_ON_WINDOW_THREAD) != Some(start - 1) {
+                ", a system dialog open on the window thread meanwhile"
+            } else {
+                ""
+            };
         tracing::info!(
-            "a slow frame: its {part} took {took} ms (at {})",
+            "a slow frame: its {part} took {took} ms (at {}){dialog}",
             Step::now().label()
         );
     }
@@ -294,6 +323,61 @@ impl Step {
 /// The window thread's frame goes on to `s` (a plain store: free on the window thread).
 pub fn step(s: Step) {
     STEP.store(s as u8, Ordering::Relaxed);
+}
+
+/// Runs `dialog`, which shows a system Open, Save or folder dialog and waits for its answer
+/// (winui::start_pick, on a thread of its own): while it runs, the time the window thread spends
+/// in that dialog isn't a freeze ([`DIALOG_ON_WINDOW_THREAD`]: macOS runs it there). Logged as it
+/// opens and closes, on every system; counted as closed however `dialog` ends, a panic too.
+pub fn system_dialog<T>(dialog: impl FnOnce() -> T) -> T {
+    /// Counts the dialog closed as it goes, unwinding or not.
+    struct Open;
+    impl Drop for Open {
+        fn drop(&mut self) {
+            // The close's time first: a watchdog that sees no dialog open sees when it closed.
+            DIALOG_CLOSED.store(now_ms() + 1, Ordering::Release);
+            SYSTEM_DIALOGS.fetch_sub(1, Ordering::AcqRel);
+            tracing::info!("system dialog closed");
+        }
+    }
+    SYSTEM_DIALOGS.fetch_add(1, Ordering::AcqRel);
+    tracing::info!("a system dialog is open");
+    let _open = Open;
+    dialog()
+}
+
+/// The system dialogs open now, for the tests (which take [`DIALOG_TESTS`] around them).
+#[cfg(test)]
+pub fn dialogs_open() -> usize {
+    SYSTEM_DIALOGS.load(Ordering::Acquire)
+}
+
+/// The tests that count system dialogs take turns (the count is the process's).
+#[cfg(test)]
+pub static DIALOG_TESTS: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+/// Whether a system dialog is open now, and when the last one closed (ms since EPOCH; 0: none).
+fn dialogs_now() -> (bool, u64) {
+    let open = SYSTEM_DIALOGS.load(Ordering::Acquire) > 0;
+    (
+        open,
+        DIALOG_CLOSED.load(Ordering::Acquire).saturating_sub(1),
+    )
+}
+
+/// Where a stretch that started at `start` (ms) is counted from, given the system dialogs. When
+/// they run on the window thread (`on_window_thread`): not while one is `open` (None: the window
+/// thread is in it, and the time is the person's, choosing a file), and from the last one's
+/// close (`closed`, ms) for a stretch that began before it (the dialog's time isn't counted).
+/// Elsewhere a dialog changes nothing: the window thread doesn't run it.
+fn dialog_from(start: u64, open: bool, closed: u64, on_window_thread: bool) -> Option<u64> {
+    if !on_window_thread {
+        Some(start)
+    } else if open {
+        None
+    } else {
+        Some(start.max(closed))
+    }
 }
 
 /// The window starts a frame's logic (top of `App::logic`): commands that came in and the clock.
@@ -484,7 +568,8 @@ fn counted(start: u64, now: u64, computers: Option<Computers>) -> u64 {
 /// is reported once. Time the computer spent asleep isn't counted, nor the computer's time: the
 /// first minute after it woke ([`WAKE_GRACE`]) and the first three of a start with the session
 /// (`at_login`, [`LOGIN_GRACE`]), when a stall is logged, and reported only if it lasts past
-/// them. Nor are the waits between frames (no stretch runs then).
+/// them. Nor are the waits between frames (no stretch runs then), nor the time a system dialog
+/// runs on the window thread ([`dialog_from`]: macOS), which is logged instead.
 fn watchdog(at_login: bool) {
     let tick = Duration::from_millis(500);
     let freeze_after = FREEZE_AFTER.as_millis() as u64;
@@ -494,6 +579,8 @@ fn watchdog(at_login: bool) {
     let mut reported_frame = 0u64;
     // The frame whose stall in the computer's time was logged.
     let mut noted_frame = 0u64;
+    // The frame whose time in a system dialog was logged.
+    let mut noted_dialog = 0u64;
     let ui = UI_THREAD.get().copied().unwrap_or(0);
     // The window thread's use when this tick first saw the current frame: (frame, ms, use).
     let mut seen: Option<(u64, u64, Option<Usage>)> = None;
@@ -521,9 +608,22 @@ fn watchdog(at_login: bool) {
         } else {
             "UI"
         };
+        let (open, closed) = dialogs_now();
+        let Some(from) = dialog_from(start - 1, open, closed, DIALOG_ON_WINDOW_THREAD) else {
+            // A system dialog runs on the window thread: the window waits for the person.
+            let held = now.saturating_sub(start - 1);
+            if noted_dialog != start && held >= freeze_after {
+                noted_dialog = start;
+                tracing::info!(
+                    "the window's {part} has waited {} s for a system dialog (macOS runs it on the window thread): not a freeze",
+                    held / 1000
+                );
+            }
+            continue;
+        };
         // Since the wake (or the start), for the log; past the grace, for the report.
-        let ran = counted(start - 1, now, computers.map(Computers::no_grace));
-        if counted(start - 1, now, computers) < freeze_after {
+        let ran = counted(from, now, computers.map(Computers::no_grace));
+        if counted(from, now, computers) < freeze_after {
             if let Some(c) = computers
                 && ran >= freeze_after
                 && noted_frame != start
@@ -756,6 +856,61 @@ mod watchdog_tests {
             assert_eq!(After::from_u8(a as u8), Some(a));
         }
         assert_eq!(After::from_u8(0), None);
+    }
+
+    /// #1192: on macOS the window thread runs a system Open or Save dialog until the person
+    /// answers it; 9 s spent choosing a file were reported as a freeze. The time a dialog is
+    /// open there isn't counted, nor the part of a stretch before it closed; a stretch still
+    /// stuck past [`FREEZE_AFTER`] after it is a freeze. Elsewhere the dialog runs on a thread
+    /// of its own and changes nothing.
+    #[test]
+    fn a_system_dialog_on_the_window_thread_is_not_a_freeze() {
+        let freeze = FREEZE_AFTER.as_millis() as u64;
+        // #1192's: a stretch at 100 s, the dialog open for 9 s. Not counted while it is open…
+        let (stretch, closed) = (100_000, 109_000);
+        assert_eq!(dialog_from(stretch, true, 0, true), None);
+        assert_eq!(dialog_from(stretch, true, 50_000, true), None);
+        // …nor once it closed: the stretch counts from the close.
+        let from = dialog_from(stretch, false, closed, true).unwrap();
+        assert_eq!(from, closed);
+        assert_eq!(counted(from, closed + 500, None), 500);
+        // Still stuck a full FREEZE_AFTER after the dialog: a freeze.
+        assert!(counted(from, closed + freeze - 1, None) < freeze);
+        assert!(counted(from, closed + freeze, None) >= freeze);
+        // A dialog closed before the stretch began changes nothing.
+        assert_eq!(dialog_from(stretch, false, 90_000, true), Some(stretch));
+        assert_eq!(dialog_from(stretch, false, 0, true), Some(stretch));
+        // Windows and Linux: the window thread doesn't run the dialog; a frame stuck while one
+        // is open is a freeze.
+        assert_eq!(dialog_from(stretch, true, 0, false), Some(stretch));
+        assert_eq!(dialog_from(stretch, false, closed, false), Some(stretch));
+        assert_eq!(DIALOG_ON_WINDOW_THREAD, cfg!(target_os = "macos"));
+    }
+
+    /// A system dialog is counted open while it runs, and closed however it ends: answered,
+    /// or by a panic in the code that shows it.
+    #[test]
+    fn a_system_dialog_is_counted_open_until_it_ends() {
+        let _turn = DIALOG_TESTS.lock().unwrap_or_else(|e| e.into_inner());
+        assert_eq!(dialogs_open(), 0);
+        let before = now_ms();
+        let answer = system_dialog(|| {
+            assert!(dialogs_now().0);
+            assert_eq!(dialogs_open(), 1);
+            Some(42)
+        });
+        assert_eq!(answer, Some(42));
+        assert_eq!(dialogs_open(), 0);
+        let (open, closed) = dialogs_now();
+        assert!(!open && closed >= before);
+        let panicked = std::panic::catch_unwind(|| {
+            system_dialog(|| -> Option<u8> {
+                assert_eq!(dialogs_open(), 1);
+                panic!("a dialog's code panics");
+            })
+        });
+        assert!(panicked.is_err());
+        assert_eq!(dialogs_open(), 0, "closed by the panic too");
     }
 
     /// Every step has its label, and the store reads back as the same step.

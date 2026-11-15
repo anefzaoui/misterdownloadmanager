@@ -1178,6 +1178,70 @@ async fn pause_and_resume_continues_where_it_stopped() {
     );
 }
 
+/// `resume_or_start` looks at the disk on the download's own task: with a state there it goes
+/// on from it (showing what the caller showed until it knows), without one it starts from
+/// scratch, and a state that doesn't read fails it, its data left alone.
+#[tokio::test]
+async fn resume_or_start_finds_its_state_beside_the_caller() {
+    let s = server("rate=1M").await;
+    let (dir, state) = paused(&s, "/gen/8M/r.bin?seed=21").await;
+    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    let before = saved.downloaded();
+    s.set_faults(Faults::default());
+    let req = |dest: Destination| Request {
+        url: s.url("/gen/8M/r.bin?seed=21").parse().unwrap(),
+        headers: Default::default(),
+        dest,
+    };
+    let dl = Download::resume_or_start(
+        state.clone(),
+        req(Destination::File(saved.dest.clone())),
+        fast_opts(),
+        None,
+        before,
+    );
+    assert!(dl.snapshot().downloaded >= before, "shows what it had");
+    let out = dl.wait().await.unwrap();
+    assert_eq!(out.path, saved.dest);
+    let mut want = vec![0; 8 << 20];
+    content::fill(21, 0, &mut want);
+    assert!(std::fs::read(&out.path).unwrap() == want, "resumed whole");
+    assert!(!state.exists());
+
+    // No state: from scratch, into the file asked for.
+    let fresh = dir.path().join("fresh.bin");
+    let out = Download::resume_or_start(
+        mdm_engine::state::state_path(&fresh),
+        req(Destination::File(fresh.clone())),
+        fast_opts(),
+        None,
+        123,
+    )
+    .wait()
+    .await
+    .unwrap();
+    assert_eq!(out.path, fresh);
+    assert!(std::fs::read(&fresh).unwrap() == want, "downloaded whole");
+
+    // A state that doesn't read: failed, its data there as it was.
+    let broken = dir.path().join("broken.bin");
+    let broken_state = mdm_engine::state::state_path(&broken);
+    std::fs::write(&broken_state, b"not a state").unwrap();
+    let err = Download::resume_or_start(
+        broken_state.clone(),
+        req(Destination::File(broken.clone())),
+        fast_opts(),
+        None,
+        5,
+    )
+    .wait()
+    .await
+    .unwrap_err();
+    assert!(matches!(err, mdm_engine::Error::BadState(_)), "{err}");
+    assert_eq!(std::fs::read(&broken_state).unwrap(), b"not a state");
+    assert!(!broken.exists());
+}
+
 #[tokio::test]
 async fn resume_detects_changed_file() {
     let s = server("rate=1M").await;

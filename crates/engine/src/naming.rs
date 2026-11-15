@@ -706,6 +706,18 @@ pub fn typed_stem_destination(dir: &Path, name: &str, in_use: impl Fn(&str) -> b
     stem_place(dir, name, in_use)
 }
 
+/// [`stem_destination`] (`typed`: [`typed_stem_destination`]) before the folder is looked at:
+/// the stem fitted to the path limits, not yet numbered, as [`guess`] is for a file. What a new
+/// video's row shows while its folder is asked beside the window (a sleeping drive or a network
+/// folder can take seconds to answer); it is numbered on then, or as it starts. Never touches the
+/// disk.
+pub fn stem_guess(dir: &Path, name: &str, typed: bool) -> PathBuf {
+    if typed {
+        return dir.join(name);
+    }
+    dir.join(fit_stem(dir, name).unwrap_or_else(|| name.to_owned()))
+}
+
 fn stem_place(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -> PathBuf {
     let (stem, ext) = stem_and_ext(name);
     let there: Vec<String> = std::fs::read_dir(dir)
@@ -960,6 +972,23 @@ mod tests {
             stem_destination(other.path(), "Song.mp3", none),
             other.path().join("Song.mp3")
         );
+    }
+
+    /// A video's name before its folder is looked at: what `stem_destination` gives in an empty
+    /// folder (fitted, not numbered), a typed one as typed; the folder isn't read (it isn't there).
+    #[test]
+    fn a_stem_guess_is_the_name_before_the_folder_answers() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path().join("not there yet");
+        let long = format!("{}.mp4", "t".repeat(400));
+        let none = |_: &str| false;
+        let guessed = stem_guess(&d, &long, false);
+        std::fs::create_dir(&d).unwrap();
+        assert_eq!(guessed, stem_destination(&d, &long, none));
+        assert!(guessed.file_name().unwrap().len() < long.len());
+        assert_eq!(stem_guess(&d, "Talk.mp4", true), d.join("Talk.mp4"));
+        std::fs::write(d.join("Talk.webm"), b"").unwrap();
+        assert_eq!(stem_guess(&d, "Talk.mp4", false), d.join("Talk.mp4"));
     }
 
     /// #1170: a name held in this process (a deleted download's, until its files are gone)
