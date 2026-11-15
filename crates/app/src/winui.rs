@@ -1625,9 +1625,26 @@ pub fn fit(
     right: f32,
     salt: impl std::hash::Hash + std::fmt::Debug,
 ) -> Rect {
-    let (rect, cut) = text_fit(p, x, baseline, s, color, right);
-    if cut {
-        full_on_hover(ui, rect, salt, s);
+    fit_whole(ui, p, x, baseline, s, s, color, right, salt)
+}
+
+/// [`fit`] for a cell that shows one text and tips another: the Link grabber's Status says a
+/// failure in words that fit, while the whole sentence (with the remedy) waits on hover.
+#[allow(clippy::too_many_arguments)]
+pub fn fit_whole(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    shown: &str,
+    full: &str,
+    color: Color32,
+    right: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> Rect {
+    let (rect, cut) = text_fit(p, x, baseline, shown, color, right);
+    if cut || shown != full {
+        full_on_hover(ui, rect, salt, full);
     }
     rect
 }

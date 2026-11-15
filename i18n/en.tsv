@@ -402,6 +402,9 @@
 	Also delete the file from disk	Also delete the file from disk
 #. checkbox in the Options window
 	Also take files the browser would open (PDF, music, video)	Also take files the browser would open (PDF, music, video)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+	Alt+click the link	Alt+click the link
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 	Always dark	Always dark
@@ -621,6 +624,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cameroon	Cameroon
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+	Can't resume	Can't resume
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	Canada
@@ -1040,6 +1046,9 @@
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 	Download in order	Download in order
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+	Download it again	Download it again
 #. button in a dialog box
 	Download Later	Download Later
 #. window title in a dialog box
@@ -2515,7 +2524,9 @@
 #. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 	Open folder	Open folder
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 	Open in browser	Open in browser
 #. checkbox in the Add torrent window
@@ -2784,6 +2795,9 @@
 #. button in rssdlg.rs
 #. RSS feeds window: fetch the selected feed again now
 	Refresh	Refresh
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+	Refresh the address	Refresh the address
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 	Regional	Regional

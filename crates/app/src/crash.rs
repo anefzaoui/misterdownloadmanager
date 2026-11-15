@@ -95,7 +95,6 @@ pub fn start(data: &Path, session: Session, at_login: bool) {
     if let Ok(mut s) = SESSION.lock() {
         *s = Some(session);
     }
-    let reporter = Arc::new(reporter);
     #[cfg(windows)]
     let attached = crate::win32::attach_crash_handler(reporter.clone());
     #[cfg(unix)]
@@ -108,7 +107,7 @@ pub fn start(data: &Path, session: Session, at_login: bool) {
     let _ = std::thread::Builder::new()
         .name("freeze watchdog".into())
         .spawn(move || watchdog(at_login));
-    tracing::info!("crash reports on");
+    tracing::info!("crash reports on, connecting to the monitor");
 }
 
 /// What draws the windows, for the report (renderer.rs, once the window started).

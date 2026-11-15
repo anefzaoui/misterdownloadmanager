@@ -564,6 +564,10 @@ These ship in the next version.
 
 - ✅ No freeze when downloads are deleted with their files: the rows go at once and the files are
   deleted beside the window ([#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
+  a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
+  the system refuses for a while no longer ends the session's crash reports
+  ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
 - ✅ **Stop All** stops the queues too: a running queue no longer starts its next download
   ([#1164](https://github.com/anefzaoui/misterdownloadmanager/issues/1164))
 - ✅ macOS: closing the window leaves MDM running in the Dock, and a click on its icon there brings
@@ -576,6 +580,9 @@ These ship in the next version.
   the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
   lasts past the first three minutes)
   (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
+- ✅ Link grabber's **Status** column: a failure whose sentence ends in advice shows that advice
+  in the column, with the whole sentence on hover, and the column is as wide as its longest answer
+  ([#1110](https://github.com/anefzaoui/misterdownloadmanager/issues/1110))
 - ✅ A malformed stream playlist no longer stops the video downloader: that download fails and
   says why ([#1141](https://github.com/anefzaoui/misterdownloadmanager/issues/1141))
 - ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →
