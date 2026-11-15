@@ -1602,10 +1602,7 @@ mod tests {
             fetch_now(&s.url("/small.m3u8"), HELD).is_some(),
             "under 2 MB"
         );
-        assert!(
-            fetch_now(&s.url("/big.m3u8"), HELD).is_none(),
-            "over 2 MB"
-        );
+        assert!(fetch_now(&s.url("/big.m3u8"), HELD).is_none(), "over 2 MB");
         // Slow requests within the budget: the stream.
         assert!(fetch_now(&s.url("/slow/master.m3u8"), BUDGET).is_some());
         // The budget counts both requests together: the second, held by the server until the

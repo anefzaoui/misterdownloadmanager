@@ -680,6 +680,7 @@ mod tests {
 
     impl System {
         /// The next call the holder's thread makes: its reason, None to let go.
+        #[track_caller]
         fn next(&self) -> Option<String> {
             self.calls.recv_timeout(STUCK).expect("the system is asked")
         }
