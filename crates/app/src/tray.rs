@@ -60,7 +60,9 @@ pub enum OnClose {
     Quit,
 }
 
-/// What closing the main window does: `keep_running` is Options' "Keep running when closing the
+/// What closing the main window does: `quitting` whether MDM was asked to quit (File → Exit, the
+/// tray's Exit, `/exit`, Update now, a queue's or a download's "Exit when done": `App::quit`),
+/// which quits whatever the rest says; `keep_running` is Options' "Keep running when closing the
 /// window", `tray` whether a tray object exists, `icon` what the shell last said of its icon
 /// ([`Tray::icon`]; Linux: there when a tray host runs), `taskbar` whether a window can wait in the
 /// taskbar or the Dock instead (not Linux: #59, a window there that merely minimized could never
@@ -75,8 +77,15 @@ pub enum OnClose {
 /// back (#1125): MDM's icon stays there while it runs, and a click on it shows the window, so
 /// closing hides the window as Mac apps do, whatever the menu bar shows (an icon behind the
 /// notch, or turned off in System Settings, is no way back).
-pub fn on_close(keep_running: bool, tray: bool, icon: Icon, taskbar: bool, dock: bool) -> OnClose {
-    if !keep_running {
+pub fn on_close(
+    quitting: bool,
+    keep_running: bool,
+    tray: bool,
+    icon: Icon,
+    taskbar: bool,
+    dock: bool,
+) -> OnClose {
+    if quitting || !keep_running {
         OnClose::Quit
     } else if dock {
         OnClose::Hide
@@ -703,13 +712,13 @@ mod tests {
     fn closing_hides_unless_the_shell_says_the_icon_is_gone() {
         for icon in [Icon::There, Icon::Unknown] {
             assert_eq!(
-                on_close(true, true, icon, true, false),
+                on_close(false, true, true, icon, true, false),
                 OnClose::Hide,
                 "{icon:?}"
             );
         }
         assert_eq!(
-            on_close(true, true, Icon::Gone, true, false),
+            on_close(false, true, true, Icon::Gone, true, false),
             OnClose::Minimize
         );
     }
@@ -719,17 +728,17 @@ mod tests {
     fn closing_quits_with_the_option_off_no_tray_or_nowhere_to_wait() {
         // No icon and no taskbar to wait in (Linux with no tray host): quit.
         assert_eq!(
-            on_close(true, true, Icon::Gone, false, false),
+            on_close(false, true, true, Icon::Gone, false, false),
             OnClose::Quit
         );
         assert_eq!(
-            on_close(true, true, Icon::There, false, false),
+            on_close(false, true, true, Icon::There, false, false),
             OnClose::Hide
         );
         // The option off, or no tray object at all: closing quits, whatever the shell says.
         for icon in [Icon::There, Icon::Unknown, Icon::Gone] {
-            assert_eq!(on_close(false, true, icon, true, false), OnClose::Quit);
-            assert_eq!(on_close(true, false, icon, true, false), OnClose::Quit);
+            assert_eq!(on_close(false, false, true, icon, true, false), OnClose::Quit);
+            assert_eq!(on_close(false, true, false, icon, true, false), OnClose::Quit);
         }
     }
 
@@ -740,10 +749,37 @@ mod tests {
     fn on_macos_closing_leaves_mdm_in_the_dock() {
         for tray in [true, false] {
             for icon in [Icon::There, Icon::Unknown, Icon::Gone] {
-                assert_eq!(on_close(true, tray, icon, true, true), OnClose::Hide);
-                assert_eq!(on_close(false, tray, icon, true, true), OnClose::Quit);
+                assert_eq!(on_close(false, true, tray, icon, true, true), OnClose::Hide);
+                assert_eq!(on_close(false, false, tray, icon, true, true), OnClose::Quit);
+                // Cmd+Q, MDM → Quit, Exit when done: quits.
+                assert_eq!(on_close(true, true, tray, icon, true, true), OnClose::Quit);
             }
         }
+    }
+
+    /// Asked to quit (File → Exit, the tray's Exit, `/exit`, Update now, "Exit when done"), MDM
+    /// quits whatever "Keep running when closing the window" and the shell say; only a plain close
+    /// of the window follows them (a finished queue set to exit used to hide MDM in the tray).
+    #[test]
+    fn a_quit_request_quits_whatever_the_close_setting_says() {
+        for keep in [true, false] {
+            for tray in [true, false] {
+                for icon in [Icon::There, Icon::Unknown, Icon::Gone] {
+                    for taskbar in [true, false] {
+                        assert_eq!(
+                            on_close(true, keep, tray, icon, taskbar, false),
+                            OnClose::Quit,
+                            "{keep} {tray} {icon:?} {taskbar}"
+                        );
+                    }
+                }
+            }
+        }
+        // The same window closed by hand, with the defaults: hidden in the tray.
+        assert_eq!(
+            on_close(false, true, true, Icon::There, true, false),
+            OnClose::Hide
+        );
     }
 
     #[test]
