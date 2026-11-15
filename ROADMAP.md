@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS: MDM no longer closes when the displays change while it draws with OpenGL (a dock
+  and the lid closed): it takes its OpenGL context back when the system left its thread without
+  it, and a texture OpenGL still refuses is made on a later frame
+  ([#1173](https://github.com/anefzaoui/misterdownloadmanager/issues/1173))
 - ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
   a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
   the system refuses for a while no longer ends the session's crash reports
