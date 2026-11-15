@@ -414,6 +414,8 @@ impl LabServer {
         // Routes answered from memory, logged by `log_simple`.
         let simple = Router::new()
             .route("/page", get(pages::page))
+            .route("/feed", get(pages::feed))
+            .route("/feed/post/{n}", get(pages::feed_post))
             .route("/leadon", get(pages::leadon))
             .route("/declared", get(pages::declared))
             .route("/formpage", get(pages::formpage))
@@ -704,6 +706,10 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
     uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
                    with a link= of its own)
+    movie=MS       the file starts as an MP4 movie of MS ms does (an ftyp, a moov saying its
+                   length and tracks, a mdat's header over the rest), for a reader of its header
+                   (#1092); with tracks=av|v|a (default av: a picture and a sound) and height=PX
+                   (the picture's, default 360). Nothing a player could decode
   faults (also server-wide with --faults; per-URL values override):
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
@@ -795,12 +801,18 @@ GET /formpage?size=1M&name=report.zip&token=abc&with=QUERY   three forms posting
     token=TOKEN and note=hello world; with=QUERY is added to each action (with=once%3D1)
 GET /cookie?set=NAME=VALUE&httponly=NAME=VALUE&clear=NAME   (each repeatable) a small page with
     Set-Cookie: NAME=VALUE; Path=/ (; HttpOnly), or NAME=; Path=/; Max-Age=0
-GET /assets/page.css  /assets/stream.js
+GET /feed   a feed whose page names no video (#1092): three posts whose players play from a
+    MediaSource (blob:), started 3 s apart (/assets/feed.js): #feed1 fetches
+    /gen/2M/feed-a.mp4?movie=21000 in ranges (an MP4 header of 21 s; its post /feed/post/1 has
+    no video), #feed2 the HLS stream (/hls/master.m3u8, 12 s), #feed3 only the start of
+    /gen/3M/feed-b.mp4?movie=33000 (the next video, 33 s); <body data-feed=done> when loaded
+GET /feed/post/N   a post's own page, without its video
 GET /declared?film=PATH&hidden=PATH&name=TEXT&title=TEXT&how=jsonld|og|twitter|none   a page
     that declares its video (#1076) and plays only another, hidden one: hidden (default
     /gen/1M/welcome.mp4?seed=2&inline=1) in a <video> inside <div hidden>; film (default
     /gen/2M/film.mp4?seed=3&inline=1) named name (default "The Film") in its JSON-LD VideoObject
     (contentUrl), og:video (og:title), twitter:player (twitter:title), or nowhere (none)
+GET /assets/page.css  /assets/stream.js  /assets/feed.js
 
 STREAMS  3 segments of 4 s per track. HLS: real MPEG-TS, a grey H.264 picture (25 fps) on the
     video tracks, AAC silence on the audio track (ffmpeg remuxes and merges them); DASH: fake bytes
@@ -1287,7 +1299,10 @@ struct FileQuery {
     /// `type`: the Content-Type sent instead of the name's (`none`: none at all).
     content_type: Option<String>,
     /// `magic`: the file starts as a media type's ([`content::media_head`]).
-    magic: Option<&'static [u8]>,
+    magic: Option<Arc<[u8]>>,
+    /// `movie=MS`, `tracks=av|v|a`, `height=PX` (#1092): it starts as an MP4 movie of that
+    /// length does ([`content::movie_head`], made once the file's size is known).
+    movie: Option<(u32, bool, bool, u32)>,
     faults: Faults,
 }
 
@@ -1575,7 +1590,12 @@ pub(crate) async fn serve(
         shared: shared.clone(),
         entry: Some(entry),
         seed,
-        magic: q.magic,
+        magic: q
+            .movie
+            .map(|(ms, video, audio, height)| {
+                Arc::from(content::movie_head(ms, video, audio, height, size))
+            })
+            .or(q.magic),
         pos: start,
         end,
         rate,
@@ -1713,6 +1733,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
         disposition: Disposition::Attachment,
         content_type: None,
         magic: None,
+        movie: None,
         faults: Faults::default(),
     };
     let name = |k: &str, v: String| {
@@ -1736,8 +1757,28 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             "Expires" | "Signature" | "Key-Pair-Id" | "Policy" => {}
             "type" => out.content_type = name(&k, v)?,
             "magic" => {
-                out.magic =
-                    Some(content::media_head(&v).ok_or_else(|| format!("invalid magic `{v}`\n"))?)
+                out.magic = Some(Arc::from(
+                    content::media_head(&v).ok_or_else(|| format!("invalid magic `{v}`\n"))?,
+                ))
+            }
+            // #1092: an MP4 movie's header (its length in ms, its tracks, its picture's height).
+            "movie" | "tracks" | "height" => {
+                let (mut ms, mut video, mut audio, mut height) =
+                    out.movie.unwrap_or((0, true, true, 360));
+                let bad = || format!("invalid {k} `{v}`\n");
+                match k.as_str() {
+                    "movie" => ms = v.parse().map_err(|_| bad())?,
+                    "height" => height = v.parse().map_err(|_| bad())?,
+                    _ => {
+                        (video, audio) = match v.as_str() {
+                            "av" => (true, true),
+                            "v" => (true, false),
+                            "a" => (false, true),
+                            _ => return Err(bad()),
+                        }
+                    }
+                }
+                out.movie = Some((ms, video, audio, height));
             }
             "cd" => out.cd = name(&k, v)?,
             "cdstar" => out.cdstar = name(&k, v)?,
@@ -1764,7 +1805,7 @@ struct Transfer {
     entry: Option<LogEntry>,
     seed: u64,
     /// The file's first bytes, over the generated ones (`magic`).
-    magic: Option<&'static [u8]>,
+    magic: Option<Arc<[u8]>>,
     pos: u64,
     end: u64,
     rate: Option<u64>,
@@ -1832,7 +1873,12 @@ impl Transfer {
                 tokio::time::sleep_until(turn.into()).await;
             }
             let mut buf = vec![0u8; n as usize];
-            content::fill_with_head(t.seed, t.pos, &mut buf, t.magic.unwrap_or_default());
+            content::fill_with_head(
+                t.seed,
+                t.pos,
+                &mut buf,
+                t.magic.as_deref().unwrap_or_default(),
+            );
             t.pos += n;
             t.sent += n;
             if let Some(slot) = &t.slot {
