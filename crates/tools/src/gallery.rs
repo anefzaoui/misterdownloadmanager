@@ -494,7 +494,9 @@ fn listed(line: &str, folder: &Path) -> Option<(url::Url, PathBuf)> {
 impl GalleryJob {
     /// Download `url`'s files into `folder`, the gallery's own.
     /// `engine`: MDM's engine, which downloads the files gallery-dl lists (#769); without it, or
-    /// with a gallery-dl too old to list them, gallery-dl downloads them itself.
+    /// with a gallery-dl too old to list them, gallery-dl downloads them itself. `saved` is shown
+    /// each file saved, on the job's own thread before the job says it is done (#1103): the
+    /// app's mark that they came from the internet, never written on the window's thread.
     pub fn start(
         tool: &Installed,
         url: &str,
@@ -502,6 +504,7 @@ impl GalleryJob {
         ask: &Ask,
         browser: &FromBrowser,
         engine: Option<crate::streams::Engine>,
+        saved: Option<mdm_engine::FileHook>,
     ) -> Result<GalleryJob, ProcError> {
         let mut ours: Vec<String> = vec![
             // The files right in `folder` (the gallery's own), not in subfolders of the site's.
@@ -604,7 +607,7 @@ impl GalleryJob {
                 }
             };
             read(stdout, &sh);
-            finish(&sh, &ch, folder);
+            finish(&sh, &ch, folder, saved.as_ref());
         });
         Ok(GalleryJob {
             shared,
@@ -756,8 +759,14 @@ fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
     }
 }
 
-/// gallery-dl's end: what it saved and what it couldn't, said in the download's log.
-fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBuf) {
+/// gallery-dl's end: what it saved and what it couldn't, said in the download's log; each saved
+/// file shown to `saved` first.
+fn finish(
+    shared: &Mutex<Shared>,
+    child: &Mutex<Option<Spawned>>,
+    folder: PathBuf,
+    saved: Option<&mdm_engine::FileHook>,
+) {
     // Polled with the lock free in between, so `stop` never waits on it.
     let (code, failure) = loop {
         let mut slot = child.lock().unwrap();
@@ -777,6 +786,14 @@ fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBu
         std::thread::sleep(Duration::from_millis(100));
     };
     child.lock().unwrap().take();
+    // Before Done, with the progress unlocked: a disk slow to take the mark keeps this thread
+    // waiting, never a window reading the progress (#1103).
+    if let Some(hook) = saved {
+        let files = shared.lock().unwrap().files.clone();
+        for file in files.iter().filter(|f| f.is_file()) {
+            (hook.0)(file);
+        }
+    }
     let mut sh = shared.lock().unwrap();
     let (saved, there, engine) = (sh.saved, sh.there, sh.by_engine);
     sh.progress.speed = 0.0;

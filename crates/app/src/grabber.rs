@@ -1389,7 +1389,8 @@ mod tests {
             g.add(again, "list.txt".into(), |_| false);
             g
         };
-        // Each link compared once: 8 times the links cost about 8 times as long (not 64).
+        // Each link compared once: a list 16 times as long costs about as much as 16 short
+        // lists (a square: 16 times as much), on any machine.
         mdm_labserver::growth::assert_linear(1_000, &lists, &add);
         let g = add(lists(20_000));
         assert_eq!(g.links.len(), 20_000);
