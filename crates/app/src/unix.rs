@@ -2035,11 +2035,17 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
 /// down the command channel, as a .torrent or magnet link on Windows' or Linux's command line
 /// goes (`mdm_ipc::parse_args`): Add torrent opens for it. The app's Info.plist
 /// (tools/installer/build-macos.sh) tells macOS that MDM opens them.
+///
+/// The same goes for MDM opened again while it runs (#1125): a click on its icon in the Dock,
+/// or MDM.app opened from Finder, Launchpad or Spotlight. macOS starts no second copy for that:
+/// it sends the running one a reopen event, which brings the main window back as a second start
+/// does on Windows and Linux. So a window closed into the Dock always has its way back.
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub mod open_events {
     use std::ffi::c_void;
     use std::sync::Arc;
+    use std::sync::atomic::{AtomicBool, Ordering};
     use std::sync::mpsc::Sender;
 
     use objc2::rc::Retained;
@@ -2056,6 +2062,11 @@ pub mod open_events {
     const INTERNET_EVENT_CLASS: u32 = u32::from_be_bytes(*b"GURL");
     const GET_URL: u32 = u32::from_be_bytes(*b"GURL");
     const DIRECT_OBJECT: u32 = u32::from_be_bytes(*b"----");
+    /// kAEReopenApplication: the app opened again while it runs (its icon in the Dock clicked).
+    const REOPEN: u32 = u32::from_be_bytes(*b"rapp");
+
+    /// Whether MDM receives the reopen event (its handler is installed as the app starts).
+    static REOPENS: AtomicBool = AtomicBool::new(false);
 
     pub struct Ivars {
         tx: Sender<mdm_ipc::Incoming>,
@@ -2087,7 +2098,13 @@ pub mod open_events {
                     let _: () = msg_send![&*manager, setEventHandler: self,
                         andSelector: sel!(getURL:withReplyEvent:),
                         forEventClass: INTERNET_EVENT_CLASS, andEventID: GET_URL];
+                    // In AppKit's place: its own handler brings back a minimized window, not
+                    // one closed into the Dock (ordered out).
+                    let _: () = msg_send![&*manager, setEventHandler: self,
+                        andSelector: sel!(reopen:withReplyEvent:),
+                        forEventClass: CORE_EVENT_CLASS, andEventID: REOPEN];
                 }
+                REOPENS.store(true, Ordering::Release);
             }
 
             #[unsafe(method(openDocuments:withReplyEvent:))]
@@ -2107,8 +2124,27 @@ pub mod open_events {
                     self.hand(link);
                 }
             }
+
+            /// Opened again (its icon in the Dock clicked): a plain second start, which brings
+            /// the main window back in front, hidden or minimized.
+            #[unsafe(method(reopen:withReplyEvent:))]
+            fn reopen(&self, _event: &NSAppleEventDescriptor, _reply: &NSAppleEventDescriptor) {
+                tracing::info!("opened again from the system (the Dock): the window comes back");
+                let _ = self.ivars().tx.send(mdm_ipc::Incoming {
+                    cmd: mdm_ipc::Command::default(),
+                    reply: None,
+                });
+                (self.ivars().wake)();
+            }
         }
     );
+
+    /// Whether a click on MDM's icon in the Dock brings a hidden main window back: the reopen
+    /// event's handler is in place. Closing can then leave the window in the Dock, as Mac apps
+    /// do, whether the menu bar shows MDM's icon or not.
+    pub fn dock_reopens() -> bool {
+        REOPENS.load(Ordering::Acquire)
+    }
 
     impl OpenEvents {
         /// A .torrent's path or a magnet link to the app, as its command line would.

@@ -566,6 +566,10 @@ These ship in the next version.
   a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
   the system refuses for a while no longer ends the session's crash reports
   ([#476](https://github.com/anefzaoui/misterdownloadmanager/issues/476))
+- ✅ **Stop All** stops the queues too: a running queue no longer starts its next download
+  ([#1164](https://github.com/anefzaoui/misterdownloadmanager/issues/1164))
+- ✅ macOS: closing the window leaves MDM running in the Dock, and a click on its icon there brings
+  the window back, menu bar icon or not; Cmd+Q quits
 - ✅ Windows: shutting down, restarting or signing out saves MDM as File → Exit does (its
   downloads stop where they are and resume there, no crash report at the next start), and an
   installer closing MDM through the Restart Manager closes it; File → Exit also stops the

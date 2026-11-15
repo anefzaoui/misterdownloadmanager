@@ -552,7 +552,8 @@ fn app() -> eframe::Result {
         // elsewhere (unchecked there): on Linux the session's end (logind's SIGTERM, the display
         // going away) ends MDM unsaved, the list as last saved and each download from its last
         // save; on macOS AppKit's terminate at logout reaches eframe as winit's exit, which drops
-        // the app (`Drop` saves as an Exit does), but the crash monitor isn't told it was clean.
+        // the app (`Drop` saves as an Exit does, and tells the crash monitor the exit was clean:
+        // #1125).
         #[cfg(windows)]
         {
             let app = std::rc::Rc::downgrade(&app);
