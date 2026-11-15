@@ -562,6 +562,21 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
+  the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
+  busy" (a file written while another test started a program was still open there for writing
+  when it ran); a program of their own writes them, and a test that gets another result says which
+- ✅ A video with a long title (an X post's text) no longer fails at 0% with **No such file or
+  directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
+  and a name or folder too long says so
+  ([#1102](https://github.com/anefzaoui/misterdownloadmanager/issues/1102))
+- ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
+- ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
+  installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
+  built and tested on its own processor, Update now keeps each copy on its own, and the helpers
+  come in each processor's build (no ffmpeg for 32-bit Windows: Helpers says so)
+  ([#977](https://github.com/anefzaoui/misterdownloadmanager/discussions/977),
+  [#1010](https://github.com/anefzaoui/misterdownloadmanager/discussions/1010))
 - ✅ The progress window's connections table shows connection numbers 10 and up instead of
   **...**: the number column fits its widest number
   ([#1101](https://github.com/anefzaoui/misterdownloadmanager/issues/1101))
@@ -626,6 +641,9 @@ These ship in the next version.
   entry, the browser's helper, autostart): Wayland's own windows on a scaled screen where nothing
   tells X11 programs the scale (Hyprland, labwc, sway), XWayland elsewhere; **View → Window
   system** to choose ([#624](https://github.com/anefzaoui/misterdownloadmanager/issues/624))
+- ✅ A PDF a page shows in a frame, an embed or an object goes to MDM like one opened from a link,
+  in Chromium browsers and Firefox; a page's own PDF viewer keeps the file it reads
+  (part of [#1087](https://github.com/anefzaoui/misterdownloadmanager/issues/1087))
 - ✅ The sites in **Don't start downloading automatically from the following sites** take their
   subdomains and the files their pages link to on another server (a CDN), as the Download panels'
   list does
@@ -1098,6 +1116,11 @@ These ship in the next version.
 - ✅ Linux: downloads to an NTFS drive (`ntfs3`) start at once instead of filling the file with
   zeros first, which held the download at 0% and slowed the whole computer
 - ✅ Linux on Wayland (XWayland) with NVIDIA's driver: typing and clicking no longer lag by 1 to 2
+  seconds; MDM spaces its frames itself instead of waiting for the screen's refresh
+- ✅ Linux on X11 and XWayland with Mesa's drivers (Intel, AMD, llvmpipe): one window at most waits
+  for the screen's refresh, none under XWayland, as `vblank_mode=0` did for the lag when moving the
+  main window and clicking in the download dialog (for
+  [#347](https://github.com/anefzaoui/misterdownloadmanager/issues/347), waiting for the reporter)
   seconds; MDM spaces its frames itself instead of waiting for the screen's refresh (other drivers
   keep the refresh)
 - ✅ The computer stays awake while anything downloads, not only during a queue that woke it, and

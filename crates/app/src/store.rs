@@ -506,6 +506,7 @@ mod tests {
                     selector: "bv*[height<=1080]+ba/b[height<=1080]".into(),
                     subs: Default::default(),
                     parts: Vec::new(),
+                    named: false,
                 });
                 i
             })
