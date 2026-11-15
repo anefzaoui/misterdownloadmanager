@@ -220,6 +220,20 @@ pub fn set_chapters(on: bool) {
     CHAPTERS.store(on, std::sync::atomic::Ordering::Relaxed);
 }
 
+/// Download video's Split into chapters: on unless the app says otherwise ([`set_split_chapters`]).
+static SPLIT_CHAPTERS: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Whether the videos started from now on are split into chapters (the app's setting, shared as it
+/// changes; the command line keeps the default, off).
+pub fn set_split_chapters(on: bool) {
+    SPLIT_CHAPTERS.store(on, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// Whether split into chapters is currently turned on.
+pub fn split_chapters() -> bool {
+    SPLIT_CHAPTERS.load(std::sync::atomic::Ordering::Relaxed)
+}
+
 /// The chapters a video's page lists, put into the file (#827): `--embed-chapters` on yt-dlp's
 /// last run, the one that merges and fixes the file up (after MDM's engine too). Only with ffmpeg,
 /// which writes them, and for a video or the sound as the site has it, not a conversion to MP3,
@@ -227,6 +241,22 @@ pub fn set_chapters(on: bool) {
 fn chapter_args(chapters: bool, ffmpeg: bool, converted: bool) -> Vec<String> {
     if chapters && ffmpeg && !converted {
         vec!["--embed-chapters".into()]
+    } else {
+        Vec::new()
+    }
+}
+
+/// Split video into multiple files based on internal chapters: `--split-chapters` on yt-dlp's run,
+/// with ffmpeg, without re-encoding (stream copy via ffmpeg `-c copy`), naming each chapter
+/// as `<filename> - <chapter name>.<ext>`.
+fn split_chapter_args(split: bool, ffmpeg: bool, folder: &Path, stem: &str) -> Vec<String> {
+    if split && ffmpeg {
+        let template = folder.join(format!("{} - %(section_title)s.%(ext)s", template_text(stem)));
+        vec![
+            "--split-chapters".into(),
+            "-o".into(),
+            format!("chapter:{}", template.to_string_lossy()),
+        ]
     } else {
         Vec::new()
     }
@@ -554,8 +584,21 @@ pub fn own_files(dir: &Path, stem: &str, outputs: bool) -> Vec<PathBuf> {
         .filter(|e| e.file_type().is_ok_and(|t| t.is_file()))
         .filter(|e| {
             let name = e.file_name().to_string_lossy().to_lowercase();
-            name.strip_prefix(&prefix)
+            if name
+                .strip_prefix(&prefix)
                 .is_some_and(|rest| yt_dlp_leftover(rest, outputs))
+            {
+                return true;
+            }
+            if outputs {
+                let chapter_prefix = format!("{} - ", stem.to_lowercase());
+                if let Some(rest) = name.strip_prefix(&chapter_prefix) {
+                    if let Some((_, ext)) = rest.rsplit_once('.') {
+                        return MEDIA.contains(&ext);
+                    }
+                }
+            }
+            false
         })
         .map(|e| e.path())
         .collect()
@@ -1994,6 +2037,12 @@ impl VideoJob {
             ffmpeg.is_some(),
             converted,
         ));
+        ours.extend(split_chapter_args(
+            SPLIT_CHAPTERS.load(std::sync::atomic::Ordering::Relaxed),
+            ffmpeg.is_some(),
+            &folder,
+            stem,
+        ));
         let (theirs, cookies) = browser.args(url)?;
         retry_base.extend(theirs.iter().cloned());
         ours.extend(theirs.iter().cloned());
@@ -2188,6 +2237,7 @@ mod tests {
             "Clip.pt-BR.vtt",
             "Clip.fr.srt",
             "Clip.fi.vtt",
+            "Clip - Chapter 1.mp4",
         ];
         let others = [
             "Clip.final.mp4",
@@ -2860,6 +2910,20 @@ mod tests {
         assert!(chapter_args(false, true, false).is_empty());
         assert!(chapter_args(true, false, false).is_empty());
         assert!(chapter_args(true, true, true).is_empty());
+    }
+
+    /// Split into chapters: `--split-chapters` and `-o chapter:...` with ffmpeg;
+    /// nothing when split is off or without ffmpeg.
+    #[test]
+    fn split_chapter_arguments() {
+        let folder = Path::new("/downloads");
+        let args = split_chapter_args(true, true, folder, "Clip");
+        assert_eq!(args[0], "--split-chapters");
+        assert_eq!(args[1], "-o");
+        let expected_template = folder.join("Clip - %(section_title)s.%(ext)s");
+        assert_eq!(args[2], format!("chapter:{}", expected_template.to_string_lossy()));
+        assert!(split_chapter_args(false, true, folder, "Clip").is_empty());
+        assert!(split_chapter_args(true, false, folder, "Clip").is_empty());
     }
 
     /// yt-dlp's warnings for subtitles it couldn't get (#68): each language once, a site's

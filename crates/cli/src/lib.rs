@@ -124,6 +124,9 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
+        /// Split the video into multiple files based on its chapters (needs ffmpeg).
+        #[arg(long)]
+        split_chapters: bool,
         /// Connections per stream (1 to 128), as `get`'s: MDM's engine downloads the streams
         /// yt-dlp finds (#769), one in pieces (HLS, DASH) this many pieces at once.
         #[arg(short, long, default_value_t = Options::default().max_connections,
@@ -961,9 +964,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             subs,
             auto_subs,
             embed_subs,
+            split_chapters,
             connections,
             adapter,
         } => {
+            mdm_tools::video::set_split_chapters(split_chapters);
             let route =
                 adapter.map(|a| mdm_engine::net::route_for(&a, &mdm_engine::net::adapters()));
             if let Some(r) = &route {

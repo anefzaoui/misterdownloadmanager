@@ -4715,6 +4715,7 @@ impl App {
         }
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
+        .with_split_chapters(self.settings.video_split_chapters)
         .with_music_folder(music)
     }
 
@@ -10747,6 +10748,11 @@ impl App {
                     // now start with it.
                     if self.settings.video_chapters != v.chapters() {
                         self.settings.video_chapters = v.chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
+                    if self.settings.video_split_chapters != v.split_chapters() {
+                        self.settings.video_split_chapters = v.split_chapters();
                         crate::settings::share_video_settings(&self.settings);
                         self.dirty = true;
                     }
