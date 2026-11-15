@@ -565,6 +565,13 @@ These ship in the next version.
 - ✅ The window opens at once when an unfinished download is on a network share that doesn't
   answer or a sleeping drive: downloads' progress, and a new video's name, are read beside it
   (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ macOS: MDM no longer closes when the displays change while it draws with OpenGL (a dock
+  and the lid closed): it takes its OpenGL context back when the system left its thread without
+  it, and a texture OpenGL still refuses is made on a later frame
+  ([#1173](https://github.com/anefzaoui/misterdownloadmanager/issues/1173))
+- ✅ **Offer to download links copied to the clipboard** no longer opens Download File Info again
+  for a link still on the clipboard after a moment another program held it
+  ([#1157](https://github.com/anefzaoui/misterdownloadmanager/issues/1157))
 - ✅ No freeze when downloads are deleted with their files: the rows go at once and the files are
   deleted beside the window ([#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
 - ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
@@ -1073,6 +1080,10 @@ These ship in the next version.
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
 - ✅ The progress window's bar glides instead of moving in steps
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
+- ✅ The download speed shown is steady: an average of the last few seconds whatever the frame
+  rate, its figure (and the time left) changing twice a second, together in the list, the progress
+  window, the status bar and the tray's tip
+  ([#1176](https://github.com/anefzaoui/misterdownloadmanager/issues/1176))
 - ✅ A stream's qualities (HLS) show a size in the Download video window, estimated from their
   bitrate and the video's length
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))

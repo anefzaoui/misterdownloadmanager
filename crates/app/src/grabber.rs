@@ -1724,9 +1724,11 @@ mod tests {
         post.push_str("Mirror of the first: https://media.example.org/s1/ep01.mp4.\n");
         post.push_str("Or the torrent: magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Season%201\n");
         let text = post.clone();
-        let reader: &'static crate::clipboard::Reader = Box::leak(Box::new(
-            crate::clipboard::Reader::new(move || Some(text.clone()), || {}),
-        ));
+        let reader: &'static crate::clipboard::Reader =
+            Box::leak(Box::new(crate::clipboard::Reader::new(
+                move || crate::clipboard::Read::Text(text.clone()),
+                || {},
+            )));
         let mut asked = crate::clipboard::Prefill::ask_of(reader);
         let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
         let got = loop {
