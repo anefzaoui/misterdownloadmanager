@@ -1064,6 +1064,10 @@ These ship in the next version.
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
 - ✅ The progress window's bar glides instead of moving in steps
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
+- ✅ The download speed shown is steady: an average of the last few seconds whatever the frame
+  rate, its figure (and the time left) changing twice a second, together in the list, the progress
+  window, the status bar and the tray's tip
+  ([#1176](https://github.com/anefzaoui/misterdownloadmanager/issues/1176))
 - ✅ A stream's qualities (HLS) show a size in the Download video window, estimated from their
   bitrate and the video's length
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))

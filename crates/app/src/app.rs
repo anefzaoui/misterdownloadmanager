@@ -1364,9 +1364,11 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
             },
             String::new(),
         ),
+        // As the column shows it (at the speed shown, #1176); without a speed, by what is left.
         4 => (
-            it.size.map_or(f64::MAX, |s| {
-                (s.saturating_sub(it.downloaded)) as f64 / it.rate().max(1.0)
+            it.seconds_left().unwrap_or_else(|| {
+                it.size
+                    .map_or(f64::MAX, |s| s.saturating_sub(it.downloaded) as f64)
             }),
             String::new(),
         ),
@@ -3734,9 +3736,7 @@ impl App {
         if dt <= 0.0 {
             return speed;
         }
-        let new = taken.saturating_sub(before) as f64;
-        let k = 1.0 - (-dt / 2.0).exp();
-        let mut speed = speed + (new / dt - speed) * k;
+        let mut speed = model::average(speed, taken.saturating_sub(before), dt, model::SPLIT_TAU);
         // None running: 0 at once, so the torrents take the whole cap back in one step.
         if !self
             .items
@@ -3771,10 +3771,7 @@ impl App {
         self.torrent_fetched = seen;
         let dt = now.duration_since(self.torrent_speed.1).as_secs_f64();
         self.torrent_speed.1 = now;
-        if dt > 0.0 {
-            let k = 1.0 - (-dt / 2.0).exp();
-            self.torrent_speed.0 += (new as f64 / dt - self.torrent_speed.0) * k;
-        }
+        self.torrent_speed.0 = model::average(self.torrent_speed.0, new, dt, model::SPLIT_TAU);
         if self.torrent_fetched.is_empty() {
             self.torrent_speed.0 = 0.0;
         }
@@ -7277,6 +7274,8 @@ impl App {
         }
         if any_live {
             ctx.request_repaint_after(Duration::from_millis(250));
+            // The speeds shown change on their own clock (#1176): a frame as it ticks.
+            ctx.request_repaint_after(model::until_shown(now));
             // The list's progress figures, every 30 s while something runs: after a crash the
             // rows show about where each download was (torrents keep their own resume data,
             // files their state file; this is only what the list shows).

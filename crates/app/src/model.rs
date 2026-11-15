@@ -865,8 +865,7 @@ pub struct VideoSpec {
 /// A running download and its speed measurement.
 pub struct Live {
     pub dl: Job,
-    pub rate: f64,
-    sample: (Instant, u64),
+    pub speed: Speed,
     /// The engine's last event already copied into the item's log.
     seen: u64,
     /// A video's first stream address of this run is in `Item::file_url` (#795).
@@ -879,9 +878,143 @@ impl Live {
             dl,
             seen: 0,
             addressed: false,
-            rate: 0.0,
-            sample: (Instant::now(), downloaded),
+            speed: Speed::new(Instant::now(), downloaded),
         }
+    }
+}
+
+/// How long the speed shown takes to settle on a new pace (seconds): its average follows the
+/// bytes with this time constant (#1176), about two thirds of the way in 3 s.
+pub const SPEED_TAU: f64 = 3.0;
+/// The same for the global limiter's split between files and torrents (app.rs).
+pub const SPLIT_TAU: f64 = 2.0;
+/// How often the speed shown changes (seconds), with its time left: every download's on the
+/// same clock, so the list's rows and the total beside them change together (#1176).
+pub const SHOWN_EVERY: f64 = 0.5;
+/// No byte for this long (seconds): the speed is 0, not what is left of the average.
+const STILL: f64 = 5.0;
+
+/// `avg` (bytes a second) after `bytes` came in `dt` seconds: an exponential average whose
+/// weight is the time that passed (1 − e^(−dt/τ), `tau` seconds), so it is the same whatever
+/// the frame rate that reads the bytes.
+pub fn average(avg: f64, bytes: u64, dt: f64, tau: f64) -> f64 {
+    if dt <= 0.0 {
+        return avg;
+    }
+    let k = 1.0 - (-dt / tau).exp();
+    avg + (bytes as f64 / dt - avg) * k
+}
+
+/// The clock the shown speeds change on ([`SHOWN_EVERY`]).
+fn shown_epoch() -> Instant {
+    static EPOCH: std::sync::OnceLock<Instant> = std::sync::OnceLock::new();
+    *EPOCH.get_or_init(Instant::now)
+}
+
+/// The tick of the shown speeds' clock that `now` is in.
+fn shown_tick(now: Instant) -> u64 {
+    (now.saturating_duration_since(shown_epoch()).as_secs_f64() / SHOWN_EVERY) as u64
+}
+
+/// How long from `now` to the next change of the shown speeds, a few milliseconds past it so the
+/// frame lands in the new tick.
+pub fn until_shown(now: Instant) -> std::time::Duration {
+    let t = now.saturating_duration_since(shown_epoch()).as_secs_f64();
+    let next = ((t / SHOWN_EVERY).floor() + 1.0) * SHOWN_EVERY;
+    std::time::Duration::from_secs_f64(next - t + 0.005)
+}
+
+/// A download's speed (#1176): an average of the bytes over time ([`average`]), whatever the
+/// frames that read them, and the figure shown from it, which changes on a steady clock
+/// ([`SHOWN_EVERY`]) so its digits can be read. The time left goes with the figure shown.
+#[derive(Clone, Debug)]
+pub struct Speed {
+    /// The average (bytes a second) and how much of it is measured (0 to 1): until the
+    /// average has had a few seconds, it is the bytes over the time measured, not pulled
+    /// towards the 0 it began at.
+    avg: f64,
+    weight: f64,
+    /// The bytes last read and when.
+    last: (Instant, u64),
+    /// When a byte last came.
+    moved: Instant,
+    /// The figures shown: the speed, the bytes done when it was read, and its tick.
+    shown: f64,
+    shown_done: u64,
+    tick: Option<u64>,
+}
+
+impl Speed {
+    pub fn new(now: Instant, done: u64) -> Self {
+        Speed {
+            avg: 0.0,
+            weight: 0.0,
+            last: (now, done),
+            moved: now,
+            shown: 0.0,
+            shown_done: done,
+            tick: None,
+        }
+    }
+
+    /// The average now (bytes a second).
+    pub fn average(&self) -> f64 {
+        if self.weight > 0.0 {
+            self.avg / self.weight
+        } else {
+            0.0
+        }
+    }
+
+    /// The bytes done read at `now`.
+    pub fn read(&mut self, now: Instant, done: u64) {
+        let (at, before) = self.last;
+        let dt = now.saturating_duration_since(at).as_secs_f64();
+        if done < before {
+            // Fewer bytes than read before: bytes a dropped connection had counted, a video's
+            // next stream, a file started over. The average goes on from here (it says how
+            // fast the bytes come); a fresh one over a moment would jump.
+            self.last = (now, done);
+        } else if self.weight == 0.0 && done == before {
+            // Nothing yet: the wait for the first byte isn't averaged in.
+            self.last = (now, done);
+            self.moved = now;
+        } else if dt > 0.0 {
+            let k = 1.0 - (-dt / SPEED_TAU).exp();
+            self.avg = average(self.avg, done - before, dt, SPEED_TAU);
+            self.weight += (1.0 - self.weight) * k;
+            self.last = (now, done);
+            if done > before {
+                self.moved = now;
+            } else if now.saturating_duration_since(self.moved).as_secs_f64() >= STILL {
+                self.avg = 0.0;
+            }
+        }
+        let tick = shown_tick(now);
+        if self.tick != Some(tick) {
+            self.tick = Some(tick);
+            self.shown = self.average();
+            self.shown_done = self.last.1;
+        }
+    }
+
+    /// Every byte is in (#736): no speed any more, at once; measured afresh from `done`.
+    pub fn clear(&mut self, now: Instant, done: u64) {
+        *self = Speed {
+            tick: self.tick,
+            ..Speed::new(now, done)
+        };
+    }
+
+    /// The speed shown (bytes a second).
+    pub fn shown(&self) -> f64 {
+        self.shown
+    }
+
+    /// The time left (seconds) to `size` at the speed shown, from the bytes done when it was
+    /// read; None without a speed.
+    pub fn seconds_left(&self, size: u64) -> Option<f64> {
+        (self.shown > 1.0).then(|| size.saturating_sub(self.shown_done) as f64 / self.shown)
     }
 }
 
@@ -1070,20 +1203,12 @@ impl Item {
                 }
             }
         }
-        let dt = live.sample.0.elapsed().as_secs_f64();
         if self.torrent.is_none() && every_byte_in(&s) {
             // Every byte in (#736): nothing comes in while the last of it is written out, the
             // file checked, joined or named; the rate the download ended on isn't one any more.
-            live.rate = 0.0;
-            live.sample = (Instant::now(), s.downloaded);
-        } else if dt >= 0.5 {
-            let inst = s.downloaded.saturating_sub(live.sample.1) as f64 / dt;
-            live.rate = if live.rate == 0.0 {
-                inst
-            } else {
-                0.6 * live.rate + 0.4 * inst
-            };
-            live.sample = (Instant::now(), s.downloaded);
+            live.speed.clear(Instant::now(), s.downloaded);
+        } else {
+            live.speed.read(Instant::now(), s.downloaded);
         }
         let seen = live.seen;
         for e in s.events.iter().filter(|e| e.seq > seen) {
@@ -1255,8 +1380,19 @@ impl Item {
             ) || (self.status == Status::Complete && self.gallery.is_some()))
     }
 
+    /// The speed shown (bytes a second): the list's Transfer rate, the progress window's, the
+    /// total in the status strip and the tray's tip all show this one ([`Speed`]).
     pub fn rate(&self) -> f64 {
-        self.live.as_ref().map_or(0.0, |l| l.rate)
+        self.live.as_ref().map_or(0.0, |l| l.speed.shown())
+    }
+
+    /// The time left (seconds) at the speed shown, while it downloads with a known size.
+    pub fn seconds_left(&self) -> Option<f64> {
+        if self.status != Status::Downloading || self.past_last_byte() {
+            return None;
+        }
+        let size = self.size?;
+        self.live.as_ref()?.speed.seconds_left(size)
     }
 
     /// How much has come, 0 to 1, or None without a size to take a share of (a live stream,
@@ -1403,12 +1539,7 @@ impl Item {
     }
 
     pub fn time_left(&self) -> String {
-        match (self.status, self.size) {
-            (Status::Downloading, Some(t)) if self.rate() > 1.0 && !self.past_last_byte() => {
-                time((t.saturating_sub(self.downloaded)) as f64 / self.rate())
-            }
-            _ => String::new(),
-        }
+        self.seconds_left().map_or(String::new(), time)
     }
 }
 
@@ -2108,5 +2239,180 @@ mod helper_connection_tests {
         p.engine = None;
         p.state = mdm_tools::video::State::Done("Clip.mp4".into());
         assert!(tool_snapshot(p, &page).connections.is_empty());
+    }
+}
+
+/// The speed's average and the figure shown (#1176).
+#[cfg(test)]
+mod speed_tests {
+    use super::{SHOWN_EVERY, STILL, Speed, shown_epoch, shown_tick, until_shown};
+    use std::time::{Duration, Instant};
+
+    const MB: f64 = 1_048_576.0;
+
+    fn at(t: f64) -> Instant {
+        shown_epoch() + Duration::from_secs_f64(t)
+    }
+
+    /// Reads `bytes(t)` at each moment of `times`: the average after each, and the figure shown.
+    fn run(times: &[f64], bytes: impl Fn(f64) -> u64) -> (Speed, Vec<(f64, f64, f64)>) {
+        let mut s = Speed::new(at(0.0), 0);
+        let mut seen = Vec::new();
+        for &t in times {
+            s.read(at(t), bytes(t));
+            seen.push((t, s.average(), s.shown()));
+        }
+        (s, seen)
+    }
+
+    /// 1 MB/s for 5 s, then 3 MB/s.
+    fn step(t: f64) -> u64 {
+        if t < 5.0 {
+            (t * MB) as u64
+        } else {
+            (5.0 * MB + (t - 5.0) * 3.0 * MB) as u64
+        }
+    }
+
+    fn every(gap: f64, until: f64) -> Vec<f64> {
+        (1..)
+            .map(|n| n as f64 * gap)
+            .take_while(|t| *t <= until + 1e-9)
+            .collect()
+    }
+
+    /// Frames 25 a second, four a second, twice a second, or uneven: the same bytes make the
+    /// same average (the old fixed weight settled in 0.5 s at one and in 6 s at another).
+    #[test]
+    fn the_same_bytes_make_the_same_average_whatever_the_frames() {
+        let uneven: Vec<f64> = (1..)
+            .scan(0.0, |t, n: u32| {
+                *t += [0.25, 0.31, 0.19, 0.27, 0.42, 0.04][n as usize % 6];
+                Some(*t)
+            })
+            .take_while(|t| *t <= 10.0)
+            .chain([10.0])
+            .collect();
+        let gaps = [
+            every(0.04, 10.0),
+            every(0.25, 10.0),
+            every(0.5, 10.0),
+            uneven,
+        ];
+        for check in [6.5, 10.0] {
+            let averages: Vec<f64> = gaps
+                .iter()
+                .map(|times| {
+                    let upto: Vec<f64> = times.iter().copied().filter(|t| *t <= check).collect();
+                    run(&upto, step).0.average()
+                })
+                .collect();
+            let (lo, hi) = averages
+                .iter()
+                .fold((f64::MAX, 0.0f64), |(lo, hi), a| (lo.min(*a), hi.max(*a)));
+            assert!(hi / lo < 1.04, "at {check} s: {averages:?}");
+        }
+    }
+
+    /// It settles on a new pace: about two thirds of the way in three seconds, all of it in 15.
+    #[test]
+    fn it_settles_on_a_new_pace() {
+        let (s, seen) = run(&every(0.25, 20.0), step);
+        assert!(
+            (s.average() / (3.0 * MB) - 1.0).abs() < 0.01,
+            "{}",
+            s.average()
+        );
+        let after_3 = seen.iter().find(|(t, ..)| *t >= 8.0).unwrap().1 / MB;
+        assert!((2.1..2.5).contains(&after_3), "{after_3}");
+    }
+
+    /// From the first figure on, the average is the speed, not a climb from 0; the wait for the
+    /// first byte isn't counted in it.
+    #[test]
+    fn it_starts_at_the_speed() {
+        let (s, _) = run(&every(0.25, 0.5), |t| (t * MB) as u64);
+        assert!((s.average() / MB - 1.0).abs() < 1e-6, "{}", s.average());
+        let (s, _) = run(&every(0.25, 2.5), |t| ((t - 2.0).max(0.0) * MB) as u64);
+        assert!((s.average() / MB - 1.0).abs() < 0.15, "{}", s.average());
+    }
+
+    /// A steady download whose bytes come in bursts (64 KB at a time, read at uneven frames)
+    /// shows a steady figure: within 3 % of its speed once it has had three seconds.
+    #[test]
+    fn steady_bytes_show_a_steady_figure() {
+        let chunk = 64 * 1024;
+        let bursts = |t: f64| ((t * 2.0 * MB) as u64 / chunk) * chunk;
+        let times: Vec<f64> = (1..)
+            .scan(0.0, |t, n: u32| {
+                *t += [0.25, 0.21, 0.3, 0.04, 0.33][n as usize % 5];
+                Some(*t)
+            })
+            .take_while(|t| *t <= 20.0)
+            .collect();
+        let (_, seen) = run(&times, bursts);
+        for (t, _, shown) in seen.iter().filter(|(t, ..)| *t >= 3.0) {
+            assert!((shown / (2.0 * MB) - 1.0).abs() < 0.03, "{shown} at {t}");
+        }
+    }
+
+    /// The figure shown changes on the clock's ticks, twice a second, however often it is read;
+    /// the average moves under it meanwhile.
+    #[test]
+    fn the_figure_shown_changes_twice_a_second() {
+        // A speed that wobbles about 1 MB/s.
+        let wobble = |t: f64| ((t + 0.5 * (1.0 - t.cos())) * MB) as u64;
+        let (_, seen) = run(&every(0.04, 5.0), wobble);
+        let changes: Vec<_> = seen.windows(2).filter(|w| w[0].2 != w[1].2).collect();
+        // One each tick after the first.
+        let ticks = (5.0 / SHOWN_EVERY) as usize;
+        assert!((ticks - 1..=ticks).contains(&changes.len()), "{changes:?}");
+        for w in &changes {
+            assert_ne!(shown_tick(at(w[0].0)), shown_tick(at(w[1].0)), "{w:?}");
+        }
+        // Between ticks the figure stays as it is.
+        let within: Vec<_> = seen
+            .iter()
+            .filter(|(t, ..)| (2.1..2.45).contains(t))
+            .collect();
+        assert!(within.iter().all(|x| x.2 == within[0].2));
+        assert!(within.first().unwrap().1 != within.last().unwrap().1);
+        // The next frame is asked for as the clock ticks.
+        let wait = until_shown(at(2.3)).as_secs_f64();
+        assert!((0.2..0.21).contains(&wait), "{wait}");
+        assert_eq!(
+            shown_tick(at(2.3) + until_shown(at(2.3))),
+            shown_tick(at(2.6))
+        );
+    }
+
+    /// The time left goes with the figure shown: from the bytes done when it was read.
+    #[test]
+    fn the_time_left_goes_with_the_figure_shown() {
+        let (s, _) = run(&every(0.04, 4.02), |t| (t * MB) as u64);
+        let left = s.seconds_left((10.0 * MB) as u64).unwrap();
+        assert!((left - 6.0).abs() < 0.05, "{left}");
+        assert_eq!(Speed::new(at(0.0), 0).seconds_left(100), None);
+    }
+
+    /// Nothing for a while: 0, not what is left of the average. Every byte in (#736): 0 at once.
+    /// Fewer bytes than before (a connection's dropped, a file started over): the average goes
+    /// on, no jump.
+    #[test]
+    fn a_stall_an_end_and_a_start_over() {
+        let mut times = every(0.25, 3.0);
+        times.extend(every(0.25, STILL + 1.0).into_iter().map(|t| t + 3.0));
+        let (s, _) = run(&times, |t| (t.min(3.0) * MB) as u64);
+        assert_eq!((s.average(), s.shown()), (0.0, 0.0));
+
+        let (mut s, _) = run(&every(0.25, 3.0), |t| (t * MB) as u64);
+        s.clear(at(3.1), (3.1 * MB) as u64);
+        assert_eq!((s.average(), s.shown()), (0.0, 0.0));
+
+        let (mut s, _) = run(&every(0.25, 3.0), |t| (t * MB) as u64);
+        s.read(at(3.25), 1000);
+        assert!((s.average() / MB - 1.0).abs() < 1e-6, "{}", s.average());
+        s.read(at(3.5), 1000 + MB as u64 / 4);
+        assert!((s.average() / MB - 1.0).abs() < 1e-6, "{}", s.average());
     }
 }
