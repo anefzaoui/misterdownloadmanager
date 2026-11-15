@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A crash while checking for updates on some computers; a check that goes wrong says why
+  ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
 - ✅ An excluded site is the same site written with the root's dot (`example.com.`), in the app
   and the extension
 - ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
