@@ -53,6 +53,8 @@ pub enum Unlisted {
     Protected(String),
     /// Not a media playlist with pieces (a master playlist, an empty one).
     NoPieces,
+    /// A key's IV that isn't `0x` and up to 32 hex digits: its pieces can't be decrypted.
+    BadIv,
 }
 
 /// An attribute list (`METHOD=AES-128,URI="k.bin",IV=0x01`): names and values, quotes taken off.
@@ -80,10 +82,13 @@ fn attributes(s: &str) -> HashMap<String, String> {
     out
 }
 
-/// An IV as the playlist writes it (`0x` and up to 32 hex digits), right-aligned in 16 bytes.
+/// An IV as the playlist writes it (`0x` and up to 32 hex digits), right-aligned in 16 bytes;
+/// anything else is none.
 fn iv_of(s: &str) -> Option<[u8; 16]> {
     let hex = s.strip_prefix("0x").or_else(|| s.strip_prefix("0X"))?;
-    if hex.is_empty() || hex.len() > 32 {
+    // ASCII hex digits only, so the padding below (counted in characters) and the slices
+    // (in bytes) agree: a multi-byte character would have a slice end inside it.
+    if hex.is_empty() || hex.len() > 32 || !hex.bytes().all(|b| b.is_ascii_hexdigit()) {
         return None;
     }
     let padded = format!("{hex:0>32}");
@@ -158,7 +163,12 @@ pub fn hls(
                         .get("URI")
                         .and_then(|u| join(u))
                         .ok_or(Unlisted::NoPieces)?;
-                    let iv = a.get("IV").and_then(|iv| iv_of(iv));
+                    // An IV given but unreadable fails the stream, as hlsnative fails it,
+                    // rather than decrypting with another.
+                    let iv = match a.get("IV") {
+                        Some(iv) => Some(iv_of(iv).ok_or(Unlisted::BadIv)?),
+                        None => None,
+                    };
                     key = Some((with_query(uri, extra_key_query), iv));
                 }
                 other => return Err(Unlisted::Protected(other.unwrap_or("?").to_owned())),
@@ -1031,6 +1041,41 @@ mod tests {
         assert_eq!(decrypt(&sealed[..15], &key, &iv), None);
         assert_eq!(iv_of("0x1"), Some(sequence_iv(1)));
         assert_eq!(iv_of("12"), None);
+    }
+
+    /// A key's IV comes from the remote playlist: anything but `0x` and up to 32 ASCII hex digits
+    /// is refused (a multi-byte character among them panicked the reader), and the stream fails
+    /// with it rather than decrypting with another IV.
+    #[test]
+    fn a_malformed_iv_fails_the_stream_without_a_panic() {
+        // Not ASCII: a multi-byte character, alone, after a digit, at the end of 31.
+        assert_eq!(iv_of("0x\u{20ac}"), None);
+        assert_eq!(iv_of("0x1\u{e9}"), None);
+        assert_eq!(iv_of(&format!("0x{}\u{e9}", "0".repeat(30))), None);
+        // Too long, empty, not hex.
+        assert_eq!(iv_of(&format!("0x{}", "1".repeat(33))), None);
+        assert_eq!(iv_of("0x"), None);
+        assert_eq!(iv_of("0xg1"), None);
+        assert_eq!(iv_of("0x+1"), None);
+        // An odd number of digits is padded on the left; 32 digits, either prefix, are whole.
+        assert_eq!(iv_of("0x123"), Some(sequence_iv(0x123)));
+        let mut full = [0u8; 16];
+        full[7] = 1;
+        full[15] = 0xab;
+        assert_eq!(iv_of("0X000000000000000100000000000000aB"), Some(full));
+
+        let playlist = |iv: &str| {
+            format!(
+                "#EXTM3U\n#EXT-X-KEY:METHOD=AES-128,URI=\"k\",IV={iv}\n\
+                 #EXTINF:4.0,\ns.ts\n#EXT-X-ENDLIST\n"
+            )
+        };
+        let bad = |iv: &str| hls(&playlist(iv), &base(), None, None);
+        assert_eq!(bad("0x\u{20ac}"), Err(Unlisted::BadIv));
+        assert_eq!(bad(&format!("0x{}", "f".repeat(40))), Err(Unlisted::BadIv));
+        assert_eq!(bad("0x12z"), Err(Unlisted::BadIv));
+        let p = hls(&playlist("0x0A"), &base(), None, None).unwrap();
+        assert_eq!(p[0].key.as_ref().unwrap().iv, sequence_iv(10));
     }
 
     /// A gallery's files (#769), each its own: a server that takes one connection at a time

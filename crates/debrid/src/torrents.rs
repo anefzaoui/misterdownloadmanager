@@ -412,14 +412,22 @@ impl RemoteTorrent {
                 None if f.path.trim().is_empty() => PathBuf::new(),
                 None => return Err(Fault::Service(ServiceFault::UnsafeName(f.path.clone()))),
             };
+            // Done in an earlier run: there, whole (no resume state beside it), and of the
+            // service's size when the service gives one. Another file of that name (another
+            // site's download, an earlier attempt whose state is gone) stays as it is: this one
+            // downloads beside it, under the engine's next numbered name.
             if !dest.as_os_str().is_empty()
                 && dest.is_file()
                 && !mdm_engine::state::state_path(&dest).exists()
+                && (f.size == 0 || std::fs::metadata(&dest).is_ok_and(|m| m.len() == f.size))
             {
-                // Done in an earlier run.
                 let mut sh = self.shared.lock().unwrap();
                 sh.done += f.size;
-                sh.saved_files.push(dest);
+                sh.saved_files.push(dest.clone());
+                // One file: the download is that file, as when it comes down below.
+                if files.len() == 1 {
+                    sh.folder = Some(dest);
+                }
                 continue;
             }
             let opts = mdm_engine::Options {
