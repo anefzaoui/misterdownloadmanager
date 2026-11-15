@@ -679,7 +679,12 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
             None,
             Some(match &p.merge_failed {
                 Some(kept) => merge_failure(&e, kept),
-                None => e,
+                // A path yt-dlp couldn't make, too long for the system (#1102): said as such,
+                // not as Python's "No such file or directory".
+                None => match mdm_tools::video::too_long(&e) {
+                    Some(path) => crate::errors::describe(&mdm_engine::Error::PathTooLong(path)),
+                    None => e,
+                },
             }),
         ),
         V::Stopped => (State::Cancelled, None, None),
@@ -840,6 +845,11 @@ pub struct VideoSpec {
     /// whatever yt-dlp named them (`Talk.faud-English.mp4`).
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub parts: Vec<PathBuf>,
+    /// The user typed its file name (#1102): kept as typed, never shortened to fit the path
+    /// limits; one too long for its folder says so when it starts. A name MDM gave (the page's
+    /// title) is shortened instead.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub named: bool,
 }
 
 /// A running download and its speed measurement.
@@ -1625,6 +1635,7 @@ mod file_address_tests {
             selector: "best".into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         i
     }
@@ -1760,6 +1771,7 @@ mod tests {
             selector: "18".into(),
             subs: Default::default(),
             parts: Vec::new(),
+            named: false,
         });
         it
     }

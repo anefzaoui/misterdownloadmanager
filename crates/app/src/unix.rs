@@ -1694,33 +1694,6 @@ pub fn on_xwayland() -> bool {
     window_system().x11_over_wayland
 }
 
-/// Linux: the vendor of the GLX that will draw MDM's OpenGL windows on the X display, before any
-/// of them is made (their swap interval is chosen when the first one is): `glXGetClientString`'s
-/// `GLX_VENDOR` ("NVIDIA Corporation", "Mesa Project and SGI"). libglvnd picks the driver for
-/// the display the same way when eframe makes its context. None without libGL or a display.
-#[cfg(target_os = "linux")]
-#[allow(unsafe_code)]
-pub fn glx_vendor() -> Option<String> {
-    let xlib = x11_dl::xlib::Xlib::open().ok()?;
-    let glx = x11_dl::glx::Glx::open().ok()?;
-    // SAFETY: a display opened here and closed before returning; the vendor string belongs to
-    // the GLX library, and is copied while the display is open.
-    unsafe {
-        let display = (xlib.XOpenDisplay)(std::ptr::null());
-        if display.is_null() {
-            return None;
-        }
-        let vendor = (glx.glXGetClientString)(display, x11_dl::glx::GLX_VENDOR);
-        let vendor = (!vendor.is_null()).then(|| {
-            std::ffi::CStr::from_ptr(vendor)
-                .to_string_lossy()
-                .into_owned()
-        });
-        (xlib.XCloseDisplay)(display);
-        vendor
-    }
-}
-
 /// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
 #[cfg(target_os = "linux")]
 #[allow(unsafe_code)]
@@ -2645,6 +2618,33 @@ pub fn macos_is_active_and_visible() -> bool {
             }
         }
         false
+    }
+}
+
+/// macOS: unhides the application if [`macos_hide_window`] hid it, without activating it or
+/// ordering any window back to the front. While `NSApp` is hidden, macOS lets none of its windows
+/// draw, so eframe runs only the app's logic: a window a command opens (the browser's Download
+/// video, Download File Info) is never created, and the browser's click seems to do nothing.
+/// The main window stays ordered out (hidden to the menu bar) as it was.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_unhide_app() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    // SAFETY: called on the main UI thread; reads `isHidden` of, and sends
+    // `unhideWithoutActivation` to, `NSApplication.sharedApplication`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return;
+        }
+        let hidden: Bool = msg_send![app, isHidden];
+        if hidden.as_bool() {
+            let _: () = msg_send![app, unhideWithoutActivation];
+        }
     }
 }
 
