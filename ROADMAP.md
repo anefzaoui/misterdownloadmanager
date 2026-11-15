@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A malformed stream playlist no longer stops the video downloader: that download fails and
+  says why ([#1141](https://github.com/anefzaoui/misterdownloadmanager/issues/1141))
 - ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
   the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
   busy" (a file written while another test started a program was still open there for writing
