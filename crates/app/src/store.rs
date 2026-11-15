@@ -227,17 +227,8 @@ fn keep_generations(p: &Path) {
     }
 }
 
-pub fn save(
-    next_id: u64,
-    items: &[Item],
-    columns: &Layout,
-    settings: &Settings,
-    queues: &[Queue],
-) -> std::io::Result<()> {
-    let Some(p) = path() else { return Ok(()) };
-    save_to(&p, next_id, items, columns, settings, queues)
-}
-
+/// The list written here and now (tests; the app hands it to its [`Saver`]).
+#[cfg(test)]
 fn save_to(
     p: &Path,
     next_id: u64,
@@ -390,13 +381,27 @@ impl Saver {
             .take()
     }
 
-    /// Wait until nothing is waiting or being written (MDM closing).
-    pub fn flush(&self) {
+    /// Wait until nothing is waiting or being written (MDM closing), or until `deadline` (the
+    /// session ending, which can't wait for a disk that holds its writes). True when all of it
+    /// was written.
+    pub fn flush_until(&self, deadline: Option<std::time::Instant>) -> bool {
         let (lock, cv) = &*self.shared;
         let mut s = lock.lock().unwrap_or_else(|e| e.into_inner());
         while s.waiting.is_some() || s.writing {
-            s = cv.wait(s).unwrap_or_else(|e| e.into_inner());
+            s = match deadline {
+                None => cv.wait(s).unwrap_or_else(|e| e.into_inner()),
+                Some(d) => {
+                    let left = d.saturating_duration_since(std::time::Instant::now());
+                    if left.is_zero() {
+                        return false;
+                    }
+                    cv.wait_timeout(s, left)
+                        .unwrap_or_else(|e| e.into_inner())
+                        .0
+                }
+            };
         }
+        true
     }
 }
 
@@ -424,7 +429,7 @@ mod tests {
             let json = encode(&p, id, &[], &layout, &Settings::default(), &[]).unwrap();
             saver.queue(p.clone(), json);
         }
-        saver.flush();
+        assert!(saver.flush_until(None));
         assert_eq!(saver.outcome(), Some(Ok(())));
         assert_eq!(load_from(&p, empty()).next_id, 5);
     }
@@ -456,9 +461,13 @@ mod tests {
             !p.exists() && saver.outcome().is_none(),
             "the disk holds it"
         );
+        // The session's end waits for it only until its deadline.
+        let waited = std::time::Instant::now();
+        assert!(!saver.flush_until(Some(waited + Duration::from_millis(100))));
+        assert!(waited.elapsed() < Duration::from_secs(5));
         *HELD.0.lock().unwrap() = false;
         HELD.1.notify_all();
-        saver.flush();
+        assert!(saver.flush_until(Some(std::time::Instant::now() + Duration::from_secs(30))));
         assert_eq!(saver.outcome(), Some(Ok(())));
         assert_eq!(std::fs::read(&p).unwrap(), b"9");
     }

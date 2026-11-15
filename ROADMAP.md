@@ -564,6 +564,14 @@ These ship in the next version.
 
 - ✅ macOS: closing the window leaves MDM running in the Dock, and a click on its icon there brings
   the window back, menu bar icon or not; Cmd+Q quits
+- ✅ Windows: shutting down, restarting or signing out saves MDM as File → Exit does (its
+  downloads stop where they are and resume there, no crash report at the next start), and an
+  installer closing MDM through the Restart Manager closes it; File → Exit also stops the
+  downloads where they are
+- ✅ No more **The window stopped responding** report in the first minutes after MDM starts with
+  the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
+  lasts past the first three minutes)
+  (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
 - ✅ A malformed stream playlist no longer stops the video downloader: that download fails and
   says why ([#1141](https://github.com/anefzaoui/misterdownloadmanager/issues/1141))
 - ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →
@@ -642,6 +650,9 @@ These ship in the next version.
 - ✅ **Download File Info**: **...** beside **Save As** opens the system's Save dialog (the
   folder and the file name, the download's type listed), and the name typed there is the one
   saved ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
+- ✅ **Download File Info**: **Yes** to the Save dialog's "Replace?" replaces that file under its
+  own name once the download is complete (it stays as it was until then); it was saved as
+  `name (1)` ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
 - ✅ The browser's **Download all links** on a page with thousands of long links: the list goes to
   MDM in parts the browser lets through, and opens in Link grabber whole, as one list; past 1 MB of
   links nothing arrived

@@ -865,6 +865,19 @@ pub fn unique_path(dir: &Path, name: &str) -> PathBuf {
         .expect("unbounded search finds a free name")
 }
 
+/// `dir/name` for a download that replaces the file there as it completes (the user chose to,
+/// `Options::replace_existing`): a file at that name doesn't count as taken. Another download's
+/// does (its part file, or that name reserved in this process), and a folder there: then the next
+/// free numbered name, as [`unique_path`] gives it.
+pub fn replacing_path(dir: &Path, name: &str) -> PathBuf {
+    let first = dir.join(name);
+    if first.is_dir() || part_path(&first).exists() || is_reserved(&first) {
+        unique_path(dir, name)
+    } else {
+        first
+    }
+}
+
 /// Destinations of downloads running in this process: one destination, one download.
 fn active() -> &'static Mutex<HashSet<PathBuf>> {
     static ACTIVE: OnceLock<Mutex<HashSet<PathBuf>>> = OnceLock::new();
@@ -1488,6 +1501,37 @@ mod tests {
         assert_eq!(unique_path(d.path(), "a.zip"), d.path().join("a (2).zip"));
         std::fs::write(d.path().join("README"), b"").unwrap();
         assert_eq!(unique_path(d.path(), "README"), d.path().join("README (1)"));
+    }
+
+    /// #1088: a file the user chose to replace keeps its name for the download; another
+    /// download's part file, a name reserved by one running, or a folder doesn't.
+    #[test]
+    fn a_file_chosen_to_be_replaced_keeps_its_name() {
+        let d = tempfile::tempdir().unwrap();
+        let file = d.path().join("taken.7z");
+        assert_eq!(replacing_path(d.path(), "taken.7z"), file);
+        std::fs::write(&file, b"old").unwrap();
+        assert_eq!(replacing_path(d.path(), "taken.7z"), file);
+        // Never the file itself: it stays until the download completes.
+        assert_eq!(std::fs::read(&file).unwrap(), b"old");
+        // Another download's part file.
+        std::fs::write(part_path(&file), b"").unwrap();
+        assert_eq!(
+            replacing_path(d.path(), "taken.7z"),
+            d.path().join("taken (1).7z")
+        );
+        std::fs::remove_file(part_path(&file)).unwrap();
+        // A download running in this process.
+        let held = reserve(&file).unwrap();
+        assert_eq!(
+            replacing_path(d.path(), "taken.7z"),
+            d.path().join("taken (1).7z")
+        );
+        drop(held);
+        assert_eq!(replacing_path(d.path(), "taken.7z"), file);
+        // A folder of that name.
+        std::fs::create_dir(d.path().join("box")).unwrap();
+        assert_eq!(replacing_path(d.path(), "box"), d.path().join("box (1)"));
     }
 
     /// Windows with long paths off, as #1102's report: 259 UTF-16 units a path, 255 a name.

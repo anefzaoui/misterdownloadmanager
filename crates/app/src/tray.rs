@@ -737,8 +737,14 @@ mod tests {
         );
         // The option off, or no tray object at all: closing quits, whatever the shell says.
         for icon in [Icon::There, Icon::Unknown, Icon::Gone] {
-            assert_eq!(on_close(false, false, true, icon, true, false), OnClose::Quit);
-            assert_eq!(on_close(false, true, false, icon, true, false), OnClose::Quit);
+            assert_eq!(
+                on_close(false, false, true, icon, true, false),
+                OnClose::Quit
+            );
+            assert_eq!(
+                on_close(false, true, false, icon, true, false),
+                OnClose::Quit
+            );
         }
     }
 
@@ -750,7 +756,10 @@ mod tests {
         for tray in [true, false] {
             for icon in [Icon::There, Icon::Unknown, Icon::Gone] {
                 assert_eq!(on_close(false, true, tray, icon, true, true), OnClose::Hide);
-                assert_eq!(on_close(false, false, tray, icon, true, true), OnClose::Quit);
+                assert_eq!(
+                    on_close(false, false, tray, icon, true, true),
+                    OnClose::Quit
+                );
                 // Cmd+Q, MDM → Quit, Exit when done: quits.
                 assert_eq!(on_close(true, true, tray, icon, true, true), OnClose::Quit);
             }

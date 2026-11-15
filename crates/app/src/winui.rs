@@ -5080,6 +5080,16 @@ pub fn saved_name(was: &str, picked: &std::path::Path) -> std::path::PathBuf {
     picked.with_file_name(name)
 }
 
+/// Whether the system Save dialog's answer `picked`, made `saved` by [`saved_name`], replaces a
+/// file (#1088): a file is there, so the dialog asked "Replace?" about it and was answered Yes
+/// (Windows', the portal's and GTK's dialogs, zenity and macOS' panel all ask before they answer
+/// with a file that is there). Not when `saved_name` changed the name: the dialog asked nothing
+/// about that one, and a file there is kept (the download is numbered). Never a folder. On the
+/// dialog's thread: it looks at the disk.
+pub fn replaces_picked(picked: &std::path::Path, saved: &std::path::Path) -> bool {
+    picked == saved && picked.is_file()
+}
+
 /// A system file or folder dialog's answer, from its thread.
 type PickSlot = std::sync::Arc<std::sync::Mutex<Option<Option<std::path::PathBuf>>>>;
 
@@ -6699,6 +6709,30 @@ mod tests {
         assert_eq!(saved("name. . "), dir.join("name.7z"));
         // A download without an extension adds none.
         assert_eq!(saved_name("README", &dir.join("notes")), dir.join("notes"));
+    }
+
+    /// #1088: the Save dialog's answer replaces a file only when it is the file the dialog asked
+    /// "Replace?" about: one that is there, under the name the dialog answered with.
+    #[test]
+    fn the_save_dialog_replaces_only_the_file_it_asked_about() {
+        let d = tempfile::tempdir().unwrap();
+        let was = "MPC-BE.1.9.3.x86.7z";
+        let answer = |name: &str| {
+            let picked = d.path().join(name);
+            replaces_picked(&picked, &saved_name(was, &picked))
+        };
+        std::fs::write(d.path().join("taken.7z"), b"old").unwrap();
+        std::fs::write(d.path().join("taken"), b"old").unwrap();
+        std::fs::create_dir(d.path().join("box.7z")).unwrap();
+        // There, the name as answered: asked about, and answered Yes.
+        assert!(answer("taken.7z"));
+        // Not there: nothing to replace.
+        assert!(!answer("new.7z"));
+        // `taken` (no extension) is there, but the download is saved as `taken.7z`: the dialog
+        // asked about `taken`, not about that one.
+        assert!(!answer("taken"));
+        // A folder is never replaced.
+        assert!(!answer("box.7z"));
     }
 
     /// `r` already gives the screen rect (mirrored in RTL); `rect` around it mirrors it back,
