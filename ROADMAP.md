@@ -568,6 +568,10 @@ These ship in the next version.
   by the order things happen in, not by the runner's speed: a fake system that answers when the
   test says, a program that ends when the test lets it, a count of the work done instead of a
   fixed time
+- ✅ The Download video button over a video in a feed, or on a site yt-dlp can't read (Douyin):
+  when MDM finds nothing on the page, it offers what the tab played for that video, told apart
+  from the feed's next one by its length, and says so when it can't tell
+  ([#1092](https://github.com/anefzaoui/misterdownloadmanager/issues/1092))
 - ✅ No freeze when a video or a gallery finishes on a slow or busy disk: its files are marked as
   downloaded from the internet by the download itself, before it's done, and a rename on
   completion happens beside the window (for [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
@@ -585,6 +589,11 @@ These ship in the next version.
   a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
   long a run), take each side's fastest of several runs, and fail at three times as long (a square
   costs 16 times): steady under load, and they catch more of the squares they guard against
+- ✅ Tests: a MediaFire download resumed after its address expired is checked request by
+  request (nothing it had on disk is asked again, but for the few bytes each part re-reads to
+  check the file), not by a total of what the server sent, which grew on a busy runner when a
+  part was split while its bytes were on the way
+  ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
 - ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
 - ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
   installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is
