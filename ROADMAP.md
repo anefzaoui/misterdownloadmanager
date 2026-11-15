@@ -625,6 +625,9 @@ These ship in the next version.
 - ✅ **Download File Info**: **...** beside **Save As** opens the system's Save dialog (the
   folder and the file name, the download's type listed), and the name typed there is the one
   saved ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
+- ✅ **Download File Info**: **Yes** to the Save dialog's "Replace?" replaces that file under its
+  own name once the download is complete (it stays as it was until then); it was saved as
+  `name (1)` ([#1088](https://github.com/anefzaoui/misterdownloadmanager/issues/1088))
 - ✅ The browser's **Download all links** on a page with thousands of long links: the list goes to
   MDM in parts the browser lets through, and opens in Link grabber whole, as one list; past 1 MB of
   links nothing arrived

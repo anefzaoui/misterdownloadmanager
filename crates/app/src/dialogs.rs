@@ -972,6 +972,12 @@ impl SaveAsPlace {
         Some(found.folder)
     }
 
+    /// The last question's answer isn't taken any more (a name chosen in the Save dialog stays
+    /// as chosen): the next [`Self::folder`] asks afresh about Save As as it is then.
+    pub fn forget(&mut self) {
+        self.asking = None;
+    }
+
     /// Whether Save As's folder is there, as looked at for the text it shows (None: not known
     /// yet). A path typed in Save As is asked about here, as it is (its folder only).
     pub fn folder(&mut self, save_as: &mut String) -> Option<bool> {
@@ -1057,6 +1063,12 @@ pub struct FileInfo {
     /// Save As's name numbered in its folder, and whether the folder is there, looked at off the
     /// window's thread (#743).
     place: SaveAsPlace,
+    /// The file the system Save dialog asked "Replace?" about, answered Yes (#1088): the
+    /// download replaces it as it completes, while Save As still names it ([`Self::replaces`]).
+    replace: Option<PathBuf>,
+    /// Set on the Save dialog's thread with its answer: whether it replaces a file
+    /// (`winui::replaces_picked`).
+    picked_replaces: Arc<std::sync::atomic::AtomicBool>,
 }
 
 pub enum Start {
@@ -1145,6 +1157,8 @@ impl FileInfo {
             route,
             through,
             direct,
+            replace: None,
+            picked_replaces: Default::default(),
         }
     }
 
@@ -1235,12 +1249,23 @@ impl FileInfo {
     }
 
     /// The system Save dialog's answer (`winui::saved_name`): Save As takes its folder and the
-    /// name typed there as a name typed in Save As is taken (#1088): not numbered, and a name
-    /// taken by the time the download starts is numbered then (`Item::number_at_start`), so
-    /// nothing is overwritten.
-    fn set_saved(&mut self, path: &Path) {
+    /// name typed there as a name typed in Save As is taken (#1088): not numbered. With
+    /// `replace` (the dialog asked "Replace?" about that file and was answered Yes) the download
+    /// replaces it as it completes, never before. Otherwise a name taken by the time the
+    /// download starts is numbered then (`Item::number_at_start`), so nothing is overwritten.
+    fn set_saved(&mut self, path: &Path, replace: bool) {
         self.save_as = display_path(path);
         self.edited = true;
+        // A look at the disk still under way for the name shown before would number this one
+        // if it is the same name (the user just chose it as it is).
+        self.place.forget();
+        self.replace = replace.then(|| self.dest());
+    }
+
+    /// The file the download replaces as it completes (`Item::replace_file`): the one the Save
+    /// dialog was told to replace, while Save As still names it.
+    pub fn replaces(&self) -> Option<PathBuf> {
+        self.replace.clone().filter(|p| *p == self.dest())
     }
 
     /// "Remember this path for … category": the category and the folder to keep for it.
@@ -1486,13 +1511,23 @@ impl FileInfo {
                         .map(|n| n.to_string_lossy().into_owned())
                         .unwrap_or_default();
                     let title = crate::i18n::t("Save As").to_owned();
+                    let replaces = self.picked_replaces.clone();
                     winui::start_pick(ui.ctx(), "file-info-save-as", move || {
                         let picked = winui::save_dialog(&title, &dir, &name).save_file()?;
-                        Some(winui::saved_name(&name, &picked))
+                        let saved = winui::saved_name(&name, &picked);
+                        // On the dialog's thread: it looks at the disk.
+                        replaces.store(
+                            winui::replaces_picked(&picked, &saved),
+                            std::sync::atomic::Ordering::Relaxed,
+                        );
+                        Some(saved)
                     });
                 }
                 if let Some(path) = winui::picked(ui.ctx(), "file-info-save-as") {
-                    self.set_saved(&path);
+                    let replace = self
+                        .picked_replaces
+                        .load(std::sync::atomic::Ordering::Relaxed);
+                    self.set_saved(&path, replace);
                 }
 
                 let caption = crate::i18n::fmt(
@@ -4555,6 +4590,82 @@ mod tests {
             mdm_engine::naming::destination(d.path(), "testName.7z"),
             d.path().join("testName (1).7z")
         );
+    }
+
+    /// Download File Info for a file `name` the browser named (no look-up), downloads in
+    /// `downloads`; the runtime it was given, kept alive with it.
+    fn file_info(downloads: &Path, name: &str) -> (FileInfo, tokio::runtime::Runtime) {
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap();
+        let fi = FileInfo::new(
+            NewUrl {
+                url: Url::parse(&format!("http://127.0.0.1:9/{name}")).unwrap(),
+                login: None,
+            },
+            mdm_ipc::Command {
+                name: Some(name.to_owned()),
+                ..Default::default()
+            },
+            crate::app::RequestParts {
+                headers: Default::default(),
+                opts: Default::default(),
+            },
+            Default::default(),
+            downloads.to_owned(),
+            Vec::new(),
+            rt.handle(),
+            &egui::Context::default(),
+        );
+        (fi, rt)
+    }
+
+    /// #1088: a file the Save dialog asked "Replace?" about, answered Yes, is the one the
+    /// download replaces (`Item::replace_file`), under that exact name, while Save As names it.
+    /// A name the dialog asked nothing about (a file there or not) replaces nothing.
+    #[test]
+    fn a_file_the_save_dialog_was_told_to_replace_is_replaced() {
+        let d = tempfile::tempdir().unwrap();
+        let taken = d.path().join("taken.7z");
+        std::fs::write(&taken, b"the old file").unwrap();
+        let (mut fi, _rt) = file_info(d.path(), "MPC-BE.1.9.3.x86.7z");
+        assert_eq!(fi.replaces(), None);
+        fi.set_saved(&taken, true);
+        assert_eq!(fi.dest(), taken);
+        assert_eq!(fi.replaces(), Some(taken.clone()));
+        // Save As changed since: the new name replaces nothing; the chosen one again does.
+        fi.save_as = display_path(&d.path().join("other.7z"));
+        assert_eq!(fi.replaces(), None);
+        fi.save_as = display_path(&taken);
+        assert_eq!(fi.replaces(), Some(taken.clone()));
+        // Another answer of the dialog that asked nothing.
+        fi.set_saved(&taken, false);
+        assert_eq!(fi.replaces(), None);
+    }
+
+    /// #1088: the name chosen in the Save dialog is the one Download File Info had guessed, and
+    /// the disk's numbered answer for that guess comes after: Save As keeps the name as chosen
+    /// (it used to become `taken (1).7z`, and the download with it).
+    #[test]
+    fn a_late_answer_never_numbers_the_name_chosen_in_the_save_dialog() {
+        let d = tempfile::tempdir().unwrap();
+        let (mut fi, _rt) = file_info(d.path(), "taken.7z");
+        let (look, release) = slow_look(&["taken.7z"]);
+        fi.place = SaveAsPlace::with(look, None);
+        fi.save_as = fi.place.name_in(d.path(), "taken.7z");
+        let taken = d.path().join("taken.7z");
+        assert_eq!(fi.dest(), taken, "the guess, not numbered yet");
+        fi.set_saved(&taken, true);
+        drop(release);
+        let mut there = None;
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        while there.is_none() && std::time::Instant::now() < until {
+            there = fi.folder_found();
+            std::thread::sleep(std::time::Duration::from_millis(2));
+        }
+        assert_eq!(there, Some(true));
+        assert_eq!(fi.dest(), taken);
+        assert_eq!(fi.replaces(), Some(taken));
     }
 
     /// #743: Start in a dialog whose folder is on a disk slow to answer holds up no frame: the

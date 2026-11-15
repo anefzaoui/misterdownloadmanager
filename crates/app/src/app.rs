@@ -2069,6 +2069,9 @@ impl App {
         self.name_guessed(id, fi.name_guessed());
         self.set_direct(id, fi.direct);
         self.number_at_start(id);
+        if let Some(item) = self.item(id) {
+            item.replace_file = fi.replaces();
+        }
         self.selection.set(id);
         if matches!(start, Start::Now) {
             // Later: the answer is closed (its download starts some other time).
@@ -2128,10 +2131,15 @@ impl App {
         }
         let dest = fi.dest();
         let now = matches!(start, Start::Now);
+        // A file chosen to be replaced (#1088) is replaced only by a download started with Start
+        // or Later: one started behind the dialog (never told to replace anything) starts over
+        // under its name, so that a Cancel still leaves the file there as it was.
+        let replace = fi.replaces();
         let Some(item) = self.item(id) else { return };
         item.category = fi.category;
         item.description = fi.description.clone();
-        let moved = item.dest != dest;
+        let moved = item.dest != dest || replace.is_some();
+        item.replace_file = replace;
         self.selection.set(id);
         if moved {
             // Another name or folder than the one it started at: the data so far goes and it
@@ -3278,6 +3286,9 @@ impl App {
             self.claim_place(id);
         }
         let Some(item) = self.item(id) else { return };
+        // The file at its place, chosen to be replaced (#1088): replaced as it completes, on a
+        // first start and on a resume alike. A place moved since doesn't replace anything.
+        opts.replace_existing = item.replaces();
         let _guard = rt.enter();
         // Resume whenever there is something to resume. If that fails, say why and keep the
         // data: starting over would overwrite it, and that is only ever the user's choice.
