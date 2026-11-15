@@ -175,49 +175,85 @@ fn replaced_files(items: &[Item], id: u64, yt_dlp: bool) -> Option<Vec<PathBuf>>
 /// folder may own: one named after its name or stem and a dot, letter case aside. Nothing for a
 /// download that isn't a video.
 fn video_leftovers(items: &[Item], id: u64, outputs: bool) -> Vec<PathBuf> {
-    let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
-    let Some(item) = items.iter().find(|i| i.id == id && i.video.is_some()) else {
-        return Vec::new();
-    };
-    let (Some(dir), Some(stem)) = (item.dest.parent(), item.dest.file_stem()) else {
-        return Vec::new();
-    };
-    let folder = low(dir);
-    let others: Vec<&Item> = items.iter().filter(|i| i.id != id).collect();
-    let named: Vec<String> = others
-        .iter()
-        .filter(|o| o.dest.parent().is_some_and(|p| low(p) == folder))
-        .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
-        .flatten()
-        .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
-        .collect();
-    // The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
-    // no other leftover is named), while still beside its file.
-    let kept = item.video.iter().flat_map(|v| &v.parts).filter(|p| {
-        p.parent().is_some_and(|p| low(p) == folder)
-            && p.file_name().is_some_and(|n| {
-                n.to_string_lossy()
-                    .to_lowercase()
-                    .starts_with(&format!("{}.", stem.to_string_lossy().to_lowercase()))
+    LeftoverSearch::of(items, id, outputs).map_or_else(Vec::new, LeftoverSearch::find)
+}
+
+/// [`video_leftovers`] in two steps: what to look for, from the list (no disk), then the look in
+/// the folder, which can be made beside the window (a deleted video's, #1170).
+struct LeftoverSearch {
+    dir: PathBuf,
+    stem: String,
+    outputs: bool,
+    /// Lowercase `name.` and `stem.` of the other downloads in that folder: their files.
+    named: Vec<String>,
+    /// Lowercase: the other downloads' own places in that folder.
+    others: Vec<String>,
+    /// The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
+    /// no other leftover is named), in its folder and named after its stem.
+    kept: Vec<PathBuf>,
+}
+
+impl LeftoverSearch {
+    fn of(items: &[Item], id: u64, outputs: bool) -> Option<LeftoverSearch> {
+        let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+        let item = items.iter().find(|i| i.id == id && i.video.is_some())?;
+        let (dir, stem) = (item.dest.parent()?, item.dest.file_stem()?);
+        let folder = low(dir);
+        let stem = stem.to_string_lossy().into_owned();
+        // The other downloads in that folder (one elsewhere has no file there).
+        let others: Vec<&Item> = items
+            .iter()
+            .filter(|i| i.id != id && i.dest.parent().is_some_and(|p| low(p) == folder))
+            .collect();
+        let named = others
+            .iter()
+            .flat_map(|o| [o.dest.file_name(), o.dest.file_stem()])
+            .flatten()
+            .map(|n| format!("{}.", n.to_string_lossy().to_lowercase()))
+            .collect();
+        let prefix = format!("{}.", stem.to_lowercase());
+        let kept = item
+            .video
+            .iter()
+            .flat_map(|v| &v.parts)
+            .filter(|p| {
+                p.parent().is_some_and(|p| low(p) == folder)
+                    && p.file_name()
+                        .is_some_and(|n| n.to_string_lossy().to_lowercase().starts_with(&prefix))
             })
-    });
-    let mut found = mdm_tools::video::own_files(dir, &stem.to_string_lossy(), outputs);
-    for p in kept {
-        if p.is_file() && !found.iter().any(|f| low(f) == low(p)) {
-            found.push(p.clone());
-        }
-    }
-    found
-        .into_iter()
-        .filter(|f| {
-            let name = f
-                .file_name()
-                .map(|n| n.to_string_lossy().to_lowercase())
-                .unwrap_or_default();
-            !named.iter().any(|n| name.starts_with(n))
-                && !others.iter().any(|o| low(&o.dest) == low(f))
+            .cloned()
+            .collect();
+        Some(LeftoverSearch {
+            dir: dir.to_owned(),
+            stem,
+            outputs,
+            named,
+            others: others.iter().map(|o| low(&o.dest)).collect(),
+            kept,
         })
-        .collect()
+    }
+
+    /// The look in the folder (the disk).
+    fn find(self) -> Vec<PathBuf> {
+        let low = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+        let mut found = mdm_tools::video::own_files(&self.dir, &self.stem, self.outputs);
+        for p in self.kept {
+            if p.is_file() && !found.iter().any(|f| low(f) == low(&p)) {
+                found.push(p);
+            }
+        }
+        found
+            .into_iter()
+            .filter(|f| {
+                let name = f
+                    .file_name()
+                    .map(|n| n.to_string_lossy().to_lowercase())
+                    .unwrap_or_default();
+                !self.named.iter().any(|n| name.starts_with(n))
+                    && !self.others.iter().any(|o| *o == low(f))
+            })
+            .collect()
+    }
 }
 
 /// The quality menu's answer for its choice after the duplicate check: a new download started or
@@ -950,6 +986,8 @@ pub struct App {
     assistive_checked: Option<Instant>,
     /// Archives extracted when their download completes (#37).
     extracts: crate::extractq::Extracts,
+    /// Deleted downloads' files, deleted beside the window (#1170).
+    deleter: crate::deleter::Deleter,
     /// Add category / Properties from the Categories tree.
     category_dlg: Option<crate::categories::CategoryDialog>,
     /// The category dialog was opened by Download File Info's "+" (its result is picked there).
@@ -1660,6 +1698,11 @@ impl App {
             link_parts: Default::default(),
             assistive_checked: None,
             extracts: Default::default(),
+            deleter: {
+                // A file that couldn't go is said in the notice: drawn when it is told.
+                let ctx = ctx.clone();
+                crate::deleter::Deleter::new(move || ctx.request_repaint())
+            },
             queue_pick: None,
             drop_target: None,
             drops: Default::default(),
@@ -2778,6 +2821,7 @@ impl App {
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
+            "delete-completed" => self.run(Cmd::DeleteCompleted, None, ctx),
             "progress" => {
                 if let Some(id) = last
                     && !self.progress.iter().any(|p| p.id == id)
@@ -3559,15 +3603,18 @@ impl App {
         self.remove_downloads(&[id], false);
     }
 
-    /// Take downloads off the list (not while they run; see [`Self::remove_download`]). When
+    /// Take downloads off the list (not while they run; see [`Self::take_off_list`]). When
     /// the selection goes with them, the row that comes after them is selected, as in Explorer,
-    /// so Delete can be pressed again.
+    /// so Delete can be pressed again. With `files`, their files go too, together, beside the
+    /// window (#1170).
     fn remove_downloads(&mut self, ids: &[u64], files: bool) {
         let before = self.shown_ids();
         self.extracts.forget(ids);
-        for id in ids {
-            self.remove_download(*id, files);
-        }
+        let doomed = ids
+            .iter()
+            .filter_map(|id| self.take_off_list(*id, files))
+            .collect();
+        self.deleter.delete(doomed);
         let after = self.shown_ids();
         self.selection.after_removal(&before, &after);
     }
@@ -3596,51 +3643,43 @@ impl App {
         });
     }
 
-    /// Take a download off the list (not while it runs); with `files`, its file goes from disk
-    /// too: a finished file, or the data so far (a torrent's files when its session runs).
-    fn remove_download(&mut self, id: u64, files: bool) {
-        if self.item(id).is_some_and(|i| i.live.is_none()) {
-            self.release_link(id);
-            if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
-                self.torrent_host.forget(&self.rt, &spec.hash, files);
-            } else if files
-                && let Some(i) = self.items.iter().find(|i| i.id == id)
-                // A gallery's folder stays (it may hold other files; #58).
-                && i.gallery.is_none()
-            {
-                // The file itself: one that can't go (open in a player) is said, not skipped
-                // silently; the row still leaves the list.
-                if i.status == Status::Complete
-                    && let Err(e) = std::fs::remove_file(&i.dest)
-                    && e.kind() != std::io::ErrorKind::NotFound
-                {
-                    dialogs::tell(
-                        crate::i18n::mark("Delete"),
-                        crate::i18n::fmt(
-                            crate::i18n::t("{file} could not be deleted from the disk: {error}"),
-                            &[
-                                ("file", &crate::i18n::isolate(&i.file_name)),
-                                ("error", &e.to_string()),
-                            ],
-                        ),
-                    );
-                }
-                let _ = std::fs::remove_file(mdm_engine::naming::part_path(&i.dest));
-                let _ = std::fs::remove_file(state_path(&i.dest));
-                // A video's streams and their parts, kept for Resume (an unfinished run, a
-                // failed merge): they go with it.
-                for f in video_leftovers(&self.items, id, false) {
-                    let _ = std::fs::remove_file(f);
-                }
-            }
-            self.items.retain(|i| i.id != id);
-            for q in &mut self.queues {
-                q.items.retain(|i| *i != id);
-            }
-            self.progress.retain(|p| p.id != id);
-            self.selection.forget(id);
-            self.dirty = true;
+    /// Take a download off the list (not while it runs); with `files`, what of it goes from the
+    /// disk: a finished file, or the data so far (a torrent's files when its session runs, which
+    /// the session deletes). No disk here: the files are handed back, for [`crate::deleter`],
+    /// their place held from now on.
+    fn take_off_list(&mut self, id: u64, files: bool) -> Option<crate::deleter::Doomed> {
+        if !self.item(id).is_some_and(|i| i.live.is_none()) {
+            return None;
         }
+        self.release_link(id);
+        let mut doomed = None;
+        if let Some(spec) = self.item(id).and_then(|i| i.torrent.clone()) {
+            self.torrent_host.forget(&self.rt, &spec.hash, files);
+        } else if files
+            && let Some(i) = self.items.iter().find(|i| i.id == id)
+            // A gallery's folder stays (it may hold other files; #58).
+            && i.gallery.is_none()
+        {
+            // Its state and part file; a video's streams and their parts, kept for Resume (an
+            // unfinished run, a failed merge), looked for in its turn; its finished file, which
+            // is said if it can't go (open in a player); the row leaves the list all the same.
+            let later = LeftoverSearch::of(&self.items, id, false)
+                .map(|s| Box::new(move || s.find()) as crate::deleter::Later);
+            doomed = Some(crate::deleter::Doomed::new(
+                i.file_name.clone(),
+                i.dest.clone(),
+                i.status == Status::Complete,
+                later,
+            ));
+        }
+        self.items.retain(|i| i.id != id);
+        for q in &mut self.queues {
+            q.items.retain(|i| *i != id);
+        }
+        self.progress.retain(|p| p.id != id);
+        self.selection.forget(id);
+        self.dirty = true;
+        doomed
     }
 
     /// Delete / Remove / Delete All Completed: asks first (unless "Don't show this dialog
@@ -6325,6 +6364,8 @@ impl App {
             });
         }
         let mut answer = ipc::api::ActAnswer::default();
+        // The deleted ones' files, together beside the window (#1170).
+        let mut doomed = Vec::new();
         for &id in ids {
             let Some(item) = self.item(id) else {
                 answer.skipped.push(ipc::api::Skipped {
@@ -6350,7 +6391,7 @@ impl App {
                 }
                 _ if running => Some("running: pause it first"),
                 _ => {
-                    self.remove_download(id, action == "delete");
+                    doomed.extend(self.take_off_list(id, action == "delete"));
                     None
                 }
             };
@@ -6362,6 +6403,7 @@ impl App {
                 None => answer.done.push(id),
             }
         }
+        self.deleter.delete(doomed);
         Ok(answer)
     }
 
@@ -11484,6 +11526,11 @@ impl App {
                  their last save",
                 began.elapsed().as_millis()
             ),
+        }
+        // The files of downloads deleted just before (#1170), a little while: a disk that holds
+        // them doesn't hold the end (they stay then).
+        if !self.deleter.finish(left(Duration::from_secs(3))) {
+            tracing::warn!("delete: some deleted downloads' files were still being deleted");
         }
         // The feeds as last handed to their saver.
         if !self.rss_saver.flush_until(deadline) {

@@ -692,7 +692,8 @@ fn fitted(dir: &Path, name: &str) -> String {
 /// finds as its own (a video: yt-dlp reuses a file of the stem already there, and after an
 /// MP3's conversion deletes it, #32). The stem is first shortened so that the helper's files fit
 /// the path limits ([`fit_stem`], #1102), then numbered on until no file in `dir` starts with it
-/// and a dot, letter case aside, and `in_use` (the other downloads' stems in `dir`) says no.
+/// and a dot, letter case aside, no name held in this process ([`reserve`]) does either, and
+/// `in_use` (the other downloads' stems in `dir`) says no.
 pub fn stem_destination(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -> PathBuf {
     let name = fit_stem(dir, name).unwrap_or_else(|| name.to_owned());
     stem_place(dir, &name, in_use)
@@ -721,6 +722,7 @@ fn stem_place(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -> PathBuf 
             .iter()
             .any(|n| n.starts_with(&prefix) || *n == s.to_lowercase())
             && !is_reserved(&p)
+            && !stem_reserved(dir, s)
             && !in_use(s)
     };
     std::iter::once(stem.to_owned())
@@ -771,6 +773,7 @@ impl Stems {
             .find(|s| {
                 !self.taken.contains(&s.to_lowercase())
                     && !is_reserved(&self.dir.join(format!("{s}{ext}")))
+                    && !stem_reserved(&self.dir, s)
             })
             .expect("unbounded search finds a free name");
         self.taken.insert(s.to_lowercase());
@@ -888,6 +891,21 @@ fn is_reserved(p: &Path) -> bool {
     active().lock().unwrap().contains(p)
 }
 
+/// Whether a name held in this process ([`reserve`]) in `dir` is `stem` or starts with it and a
+/// dot, letter case aside: a stem a video must leave alone, as it leaves one a file there has
+/// (a file whose deletion is under way holds its name until it is gone, #1170).
+fn stem_reserved(dir: &Path, stem: &str) -> bool {
+    let stem = stem.to_lowercase();
+    let prefix = format!("{stem}.");
+    active().lock().unwrap().iter().any(|p| {
+        p.parent() == Some(dir)
+            && p.file_name().is_some_and(|n| {
+                let n = n.to_string_lossy().to_lowercase();
+                n == stem || n.starts_with(&prefix)
+            })
+    })
+}
+
 /// Holds a destination for one download; released when dropped.
 #[derive(Debug)]
 pub struct Reservation(PathBuf);
@@ -942,6 +960,29 @@ mod tests {
             stem_destination(other.path(), "Song.mp3", none),
             other.path().join("Song.mp3")
         );
+    }
+
+    /// #1170: a name held in this process (a deleted download's, until its files are gone)
+    /// takes its stem for every extension, as a file there would; only in its own folder.
+    #[test]
+    fn a_held_name_takes_its_stem() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let none = |_: &str| false;
+        let held = reserve(&d.join("Talk.MP4")).unwrap();
+        assert_eq!(
+            stem_destination(d, "talk.webm", none),
+            d.join("talk (1).webm")
+        );
+        let mut stems = Stems::new(d, []);
+        assert_eq!(stems.pick("Talk.mkv"), d.join("Talk (1).mkv"));
+        let elsewhere = tempfile::tempdir().unwrap();
+        assert_eq!(
+            stem_destination(elsewhere.path(), "Talk.webm", none),
+            elsewhere.path().join("Talk.webm")
+        );
+        drop(held);
+        assert_eq!(stem_destination(d, "Talk.webm", none), d.join("Talk.webm"));
     }
 
     /// #69: a playlist's names, the folder read once: the same rule as `stem_destination`, each
