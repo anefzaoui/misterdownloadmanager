@@ -12378,7 +12378,7 @@ mod trim_tests {
 
 #[cfg(test)]
 mod end_tests {
-    use super::{EXIT_STOP_WAIT, SESSION_END_LIST, saves_by};
+    use super::{EXIT_STOP_WAIT, saves_by};
     use std::time::{Duration, Instant};
 
     /// An Exit waits 10 s for the downloads' last saves; the session's end (4 s on Windows and
@@ -12396,7 +12396,7 @@ mod end_tests {
                 saves_by(began, Some(deadline)),
                 began + Duration::from_millis(2800)
             );
-            assert_eq!(deadline - saves_by(began, Some(deadline)), SESSION_END_LIST);
+            assert_eq!(\n                deadline - saves_by(began, Some(deadline)),\n                super::SESSION_END_LIST\n            );
         }
         let soon = began + Duration::from_millis(500);
         assert!(saves_by(began, Some(soon)) <= soon);

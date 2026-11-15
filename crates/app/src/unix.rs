@@ -142,9 +142,9 @@ const END_GRACE: std::time::Duration = std::time::Duration::from_secs(10);
 /// a `kill`), SIGHUP and SIGINT from the terminal it was started from. Each is run as Windows'
 /// session end is: `wake` brings the window's next frame, which saves as an Exit saves and ends
 /// MDM (main.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
-/// stays ignored. A second signal ends MDM at once, and so does a window that hasn't ended within
-/// [`END_GRACE`]: then each download resumes from its last save, as before. Heard on `rt`, a
-/// signal handler itself only wakes it (tokio's).
+/// stays ignored. Ctrl+C once more ends MDM at once, and so does a window that hasn't ended
+/// within [`END_GRACE`]: then each download resumes from its last save, as before. Heard on
+/// `rt`, a signal handler itself only wakes it (tokio's).
 #[cfg(target_os = "linux")]
 pub fn on_session_end(rt: &tokio::runtime::Handle, wake: std::sync::Arc<dyn Fn() + Send + Sync>) {
     hear_signals(rt, wake, Some(END_GRACE));
@@ -185,11 +185,23 @@ fn hear_signals(
 #[cfg(target_os = "linux")]
 fn end_asked(why: SessionEnd, wake: &dyn Fn(), grace: Option<std::time::Duration>) {
     if !ask_end(why) {
-        tracing::warn!("asked again to end ({why:?}): MDM ends now");
-        end_now();
+        if again_ends_now(why) {
+            tracing::warn!("asked again to end ({why:?}): MDM ends now");
+            end_now();
+        }
+        tracing::info!("asked again to end ({why:?}): the end is under way");
+        return;
     }
     tracing::info!("asked to end ({why:?}): the window saves and ends");
     wait_for_the_window(wake, grace);
+}
+
+/// Whether `why`, once the end is under way, cuts it short: Ctrl+C once more does. Nothing else:
+/// systemd sends a session's programs SIGHUP right after its SIGTERM at shutdown (logind's
+/// session scopes, SendSIGHUP), which must not undo the end it asked for.
+#[cfg(target_os = "linux")]
+fn again_ends_now(why: SessionEnd) -> bool {
+    why == SessionEnd::Interrupted
 }
 
 /// The end is asked of the window's thread: `wake` brings its next frame, which runs it; one
@@ -3802,7 +3814,7 @@ fn write_program(path: &Path, content: &[u8]) {
 
 #[cfg(all(test, target_os = "linux"))]
 mod session_end_tests {
-    use super::{SessionEnd, ask_end, hear_signals, ignored, session_ending};
+    use super::{SessionEnd, again_ends_now, ask_end, hear_signals, ignored, session_ending};
     use std::time::Duration;
 
     #[test]
@@ -3817,9 +3829,19 @@ mod session_end_tests {
         assert_eq!(SessionEnd::DisplayLost.signal(), None);
     }
 
+    /// Once the end is under way, only Ctrl+C again cuts it short: systemd's SIGHUP right after
+    /// its SIGTERM at shutdown (seen in the lab's VM) must not.
+    #[test]
+    fn only_ctrl_c_again_cuts_the_end_short() {
+        assert!(again_ends_now(SessionEnd::Interrupted));
+        assert!(!again_ends_now(SessionEnd::HungUp));
+        assert!(!again_ends_now(SessionEnd::Terminated));
+        assert!(!again_ends_now(SessionEnd::DisplayLost));
+    }
+
     /// A real SIGHUP to this process (tokio's handler in place, so it doesn't end it): the end is
     /// asked for, the window woken, and `session_ending` gives it to the window's next frame. A
-    /// second ask is refused (a second signal ends MDM at once, not tried here). The only test
+    /// second ask is refused (Ctrl+C again would end the process: not tried here). The only test
     /// that touches the end's flag (it's the process's).
     #[test]
     #[allow(unsafe_code)]
