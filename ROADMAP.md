@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: shutting down, restarting or signing out saves MDM as File → Exit does (its
+  downloads stop where they are and resume there, no crash report at the next start), and an
+  installer closing MDM through the Restart Manager closes it; File → Exit also stops the
+  downloads where they are
 - ✅ A malformed stream playlist no longer stops the video downloader: that download fails and
   says why ([#1141](https://github.com/anefzaoui/misterdownloadmanager/issues/1141))
 - ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →

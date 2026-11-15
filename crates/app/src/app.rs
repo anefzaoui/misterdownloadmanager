@@ -1419,9 +1419,10 @@ impl App {
     /// Every way MDM is asked to quit comes here: File → Exit, the tray's Exit, `/exit` (the
     /// command line, a second launch), Update now, and a queue's or a download's "Exit when done".
     /// The close that follows quits whatever Options' "Keep running when closing the window" says
-    /// (`tray::on_close`); only closing the window itself follows that setting. The list and the
-    /// settings are saved as the app goes (`Drop`), and the crash monitor is told it's a clean exit
-    /// (main.rs). A headless run stops at its next pass (`wants_exit`).
+    /// (`tray::on_close`); only closing the window itself follows that setting. As the app goes
+    /// (`Drop`: `finish`) the downloads stop where they are and the list and the settings are
+    /// saved, and the crash monitor is told it's a clean exit (main.rs). A headless run stops at
+    /// its next pass (`wants_exit`). The session's end does the same at once (`end_session`).
     fn quit(&mut self, ctx: &egui::Context) {
         tracing::info!("quitting");
         self.exiting = true;
@@ -11312,10 +11313,57 @@ impl App {
 }
 
 impl Drop for App {
+    /// Exit, a closed window that quits, a headless run's end: [`App::finish`].
     fn drop(&mut self) {
+        self.finish(None);
+    }
+}
+
+/// How long the session's end may take ([`App::end_session`]): Windows lists a program that
+/// takes 5 s over it as one that keeps the computer from shutting down.
+const SESSION_END: Duration = Duration::from_millis(4000);
+
+/// What of [`SESSION_END`] is kept for writing the list, after the downloads' last saves.
+const SESSION_END_LIST: Duration = Duration::from_millis(1200);
+
+/// How long an Exit waits for the running downloads' last saves (its window is gone by then).
+const EXIT_STOP_WAIT: Duration = Duration::from_secs(10);
+
+impl App {
+    /// The session is ending (Windows: shut down, restart, sign out, or an installer closing
+    /// MDM through the Restart Manager; `win32::on_session_end`): what an Exit does at its end,
+    /// now, within [`SESSION_END`], on the window's thread between two frames. Nobody is there to
+    /// answer a question: nothing is asked. The process ends right after (main.rs).
+    pub fn end_session(&mut self) {
+        tracing::info!("the session is ending: stopping the downloads and saving the list");
+        self.exiting = true;
+        self.finish(Some(Instant::now() + SESSION_END));
+    }
+
+    /// The tray icon goes, as at an Exit: when only MDM is closed (the Restart Manager) and the
+    /// session goes on, it would stay in the notification area until the pointer passed over it.
+    /// Last, once all is saved: the shell may be slow to answer (#747).
+    pub fn take_down_tray(&mut self) {
+        self.tray = None;
+    }
+
+    /// Every end's last work, once (`Drop`, or [`App::end_session`] before the process ends):
+    /// the downloads that run stop and save where they are, so they resume there at the next
+    /// start; a rename on completion under way finishes; the feeds, the list and the settings
+    /// are written. `deadline`: the session's end, which can't wait for a disk that holds its
+    /// writes; an Exit waits for the list however long it takes.
+    fn finish(&mut self, deadline: Option<Instant>) {
+        let began = Instant::now();
+        // The longest first: the downloads save while the rest is done.
+        let stopping = self.stop_for_the_end();
+        let left = |cap: Duration| {
+            deadline.map_or(cap, |d| {
+                d.saturating_duration_since(Instant::now()).min(cap)
+            })
+        };
         // Let any rename on completion under way finish and update `item.dest` before saving.
         for (id, rx) in std::mem::take(&mut self.renaming) {
-            if let Ok((r, sharing_error)) = rx.recv_timeout(Duration::from_secs(2)) {
+            if let Ok((r, sharing_error)) = rx.recv_timeout(left(Duration::from_secs(2))) {
                 self.apply_finished_rename(id, r, sharing_error, false);
             }
         }
@@ -11324,18 +11372,81 @@ impl Drop for App {
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();
+        let saves_by = deadline.map_or(began + EXIT_STOP_WAIT, |d| {
+            d.checked_sub(SESSION_END_LIST).unwrap_or(d)
+        });
+        let unsaved = self.wait_stopped(&stopping, saves_by);
+        match (stopping.len(), unsaved) {
+            (0, _) => {}
+            (n, 0) => tracing::info!(
+                "{n} download(s) stopped, each saved where it was ({} ms)",
+                began.elapsed().as_millis()
+            ),
+            (n, u) => tracing::warn!(
+                "{n} download(s) stopped, {u} still saving after {} ms: those resume from \
+                 their last save",
+                began.elapsed().as_millis()
+            ),
+        }
         // The feeds as last handed to their saver.
-        self.rss_saver.flush();
-        // What the saver has in hand first, then the last state, written here and now.
-        self.saver.flush();
-        let _ = store::save(
+        if !self.rss_saver.flush_until(deadline) {
+            tracing::warn!("rss: the feeds weren't written in time");
+        }
+        // The last state, after what the saver has in hand.
+        if let Err(e) = self.saver.save(
             self.next_id,
             &self.items,
             &self.list.layout(),
             &self.settings,
             &self.queues,
-        );
+        ) {
+            tracing::warn!("the list wasn't saved: {e}");
+        } else if !self.saver.flush_until(deadline) {
+            tracing::warn!("the list wasn't written in time (the disk held it)");
+        } else if deadline.is_some() {
+            tracing::info!("the list is saved ({} ms)", began.elapsed().as_millis());
+        }
     }
+
+    /// The end ([`App::finish`]): the file downloads that run are stopped as Stop stops them,
+    /// which flushes what they received and saves their resume state; their ids. Torrents keep
+    /// their own resume data as they go, and a video's or a gallery's helpers end with MDM.
+    fn stop_for_the_end(&self) -> Vec<u64> {
+        self.items
+            .iter()
+            .filter_map(|i| match i.live.as_ref().map(|l| &l.dl) {
+                Some(model::Job::File(d)) => {
+                    d.cancel();
+                    Some(i.id)
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
+    /// Wait until the downloads `ids` have ended (their last state saved) or `until`; how many
+    /// still run then.
+    fn wait_stopped(&self, ids: &[u64], until: Instant) -> usize {
+        loop {
+            let running = self
+                .items
+                .iter()
+                .filter(|i| ids.contains(&i.id))
+                .filter_map(|i| i.live.as_ref())
+                .filter(|l| !ended(&l.dl.snapshot().state))
+                .count();
+            if running == 0 || Instant::now() >= until {
+                return running;
+            }
+            std::thread::sleep(Duration::from_millis(10));
+        }
+    }
+}
+
+/// A download's run is over, its last state saved: done, failed or stopped.
+fn ended(state: &mdm_engine::download::State) -> bool {
+    use mdm_engine::download::State;
+    matches!(state, State::Done | State::Failed | State::Cancelled)
 }
 
 /// The event log's line when a seeding limit stops a torrent's sharing.

@@ -538,10 +538,74 @@ fn app() -> eframe::Result {
         let _ = window.set(cc.egui_ctx.clone());
         clipboard::wake(&cc.egui_ctx);
         renderer::test_slow_start();
-        app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
+        let app = std::rc::Rc::new(std::cell::RefCell::new(app::App::new(
+            &cc.egui_ctx,
+            handle,
+            commands,
+            sink,
+            loaded,
+            start,
+        )));
+        // Windows' end of the session (shut down, restart, sign out, an installer's Restart
+        // Manager): saved as an Exit saves, before Windows is answered, and MDM ends. Not yet
+        // elsewhere (unchecked there): on Linux the session's end (logind's SIGTERM, the display
+        // going away) ends MDM unsaved, the list as last saved and each download from its last
+        // save; on macOS AppKit's terminate at logout reaches eframe as winit's exit, which drops
+        // the app (`Drop` saves as an Exit does), but the crash monitor isn't told it was clean.
+        #[cfg(windows)]
+        {
+            let app = std::rc::Rc::downgrade(&app);
+            win32::on_session_end(move |why| end_session(&app, why));
+        }
+        Shared(app)
     });
     crash::clean_exit();
     result
+}
+
+/// The app as eframe runs it, shared with the window's own messages: the session's end saves
+/// through it between two frames (`end_session`).
+struct Shared(std::rc::Rc<std::cell::RefCell<app::App>>);
+
+impl eframe::App for Shared {
+    fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        eframe::App::logic(&mut *self.0.borrow_mut(), ctx, frame);
+    }
+
+    fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
+        eframe::App::ui(&mut *self.0.borrow_mut(), ui, frame);
+    }
+}
+
+/// The session ends (win32::on_session_end): the app's end as an Exit's (`App::end_session`),
+/// the crash monitor told it's a clean one, and the process ends, as Windows would end it once
+/// answered (the Restart Manager waits for it to). Within the 5 s Windows gives before it says
+/// MDM keeps the computer from shutting down.
+#[cfg(windows)]
+fn end_session(app: &std::rc::Weak<std::cell::RefCell<app::App>>, why: win32::SessionEnd) {
+    let app = app.upgrade();
+    let mut app = match app.as_deref().map(std::cell::RefCell::try_borrow_mut) {
+        Some(Ok(mut app)) => {
+            app.end_session();
+            Some(app)
+        }
+        // In the middle of a frame (a window of the system's open in it): the list and the
+        // downloads as last saved.
+        Some(Err(_)) => {
+            tracing::warn!("the session ends during a frame: nothing more is saved");
+            None
+        }
+        None => None,
+    };
+    tracing::info!("ending with the session ({why:?})");
+    crash::clean_exit();
+    if why == win32::SessionEnd::Closed
+        && let Some(app) = app.as_mut()
+    {
+        app.take_down_tray();
+    }
+    mdm_crash::logs::flush(LOG_AT_THE_END);
+    std::process::exit(0);
 }
 
 #[cfg(test)]
