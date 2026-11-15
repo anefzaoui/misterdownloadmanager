@@ -15,12 +15,31 @@ use windows_sys::Win32::System::Threading::GetCurrentProcessId;
 use windows_sys::Win32::UI::Shell::{
     DefSubclassProc, SHFILEINFOW, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW, SetWindowSubclass,
 };
+#[cfg(target_pointer_width = "64")]
+use windows_sys::Win32::UI::WindowsAndMessaging::SetWindowLongPtrW;
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
     GetWindowThreadProcessId, ICONINFO, InternalGetWindowText, SWP_FRAMECHANGED, SWP_NOACTIVATE,
-    SWP_NOMOVE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WM_NCCALCSIZE, WM_NCHITTEST,
-    WS_EX_DLGMODALFRAME, WS_THICKFRAME,
+    SWP_NOMOVE, SWP_NOZORDER, SetWindowPos, WM_NCCALCSIZE, WM_NCHITTEST, WS_EX_DLGMODALFRAME,
+    WS_THICKFRAME,
 };
+
+/// 32-bit Windows: `SetWindowLongPtrW` is `SetWindowLongW` there, whose value is 32 bits (all a
+/// pointer is on it); taking a pointer-sized value as the 64-bit one does, the calls below are the
+/// same on both.
+#[cfg(target_pointer_width = "32")]
+#[allow(non_snake_case)]
+unsafe fn SetWindowLongPtrW(
+    hwnd: HWND,
+    index: windows_sys::Win32::UI::WindowsAndMessaging::WINDOW_LONG_PTR_INDEX,
+    value: isize,
+) -> isize {
+    // SAFETY: the caller's call, as the 64-bit function's.
+    unsafe {
+        windows_sys::Win32::UI::WindowsAndMessaging::SetWindowLongW(hwnd, index, value as i32)
+            as isize
+    }
+}
 
 struct Find {
     pid: u32,
@@ -433,11 +452,13 @@ pub fn forget_caption(hwnd: isize) {
             s.remove(&hwnd);
         }
     });
-    ANIMATING.with(|s| {
-        if let Ok(mut s) = s.try_borrow_mut() {
-            s.remove(&hwnd);
-        }
-    });
+    for set in [&ANIMATING, &FADING] {
+        set.with(|s| {
+            if let Ok(mut s) = s.try_borrow_mut() {
+                s.remove(&hwnd);
+            }
+        });
+    }
 }
 
 /// Was "Hide to the notification area" chosen in window `hwnd`'s system menu (once)?
@@ -726,6 +747,7 @@ unsafe fn caption_back(hwnd: HWND) {
     // SAFETY: (the caller's) our own window; DWM attributes read from locals during the calls.
     unsafe {
         RemoveWindowSubclass(hwnd, Some(caption_less_proc), DRAWN_SUBCLASS);
+        dwm_frame_off(hwnd, false);
         let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32;
         SetWindowLongPtrW(hwnd, GWL_STYLE, ((style & !WS_POPUP) | WS_CAPTION) as isize);
         let corner = DWMWCP_DEFAULT;
@@ -757,17 +779,21 @@ unsafe fn caption_back(hwnd: HWND) {
             m.remove(&(hwnd as isize));
         }
     });
-    ANIMATING.with(|s| {
-        if let Ok(mut s) = s.try_borrow_mut() {
-            s.remove(&(hwnd as isize));
-        }
-    });
+    for set in [&ANIMATING, &FADING] {
+        set.with(|s| {
+            if let Ok(mut s) = s.try_borrow_mut() {
+                s.remove(&(hwnd as isize));
+            }
+        });
+    }
 }
 
 thread_local! {
     /// The windows framed by [`caption_less`] that have the caption style for the length of a
     /// minimize, maximize or restore ([`animation_caption`]), by HWND.
     static ANIMATING: std::cell::RefCell<std::collections::HashSet<isize>> = Default::default();
+    /// Those of them that have it for the moment they are hidden ([`fade_caption`]).
+    static FADING: std::cell::RefCell<std::collections::HashSet<isize>> = Default::default();
 }
 
 fn animating(hwnd: HWND) -> bool {
@@ -814,6 +840,9 @@ unsafe fn animation_caption(hwnd: HWND, kind: Drawn, on: bool) {
     });
     // SAFETY: (the caller's) our own window, on its thread.
     unsafe {
+        if on {
+            dwm_frame_off(hwnd, true);
+        }
         let style = drawn_style(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, kind);
         let style = if on { style | WS_CAPTION } else { style };
         SetWindowLongPtrW(hwnd, GWL_STYLE, style as isize);
@@ -836,6 +865,93 @@ unsafe fn animation_caption(hwnd: HWND, kind: Drawn, on: bool) {
             r.right - r.left,
             r.bottom - r.top,
             SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOACTIVATE | place,
+        );
+        if !on {
+            dwm_frame_off(hwnd, false);
+        }
+    }
+}
+
+/// A set of windows by HWND, kept by the window thread ([`ANIMATING`], [`FADING`]).
+type WindowSet = std::thread::LocalKey<std::cell::RefCell<std::collections::HashSet<isize>>>;
+
+fn fading(hwnd: HWND) -> bool {
+    FADING.with(|s| s.try_borrow().is_ok_and(|s| s.contains(&(hwnd as isize))))
+}
+
+/// The caption style on (`on`) or off a window framed by [`caption_less`] for the moment it is
+/// hidden (the main window or a progress window into the tray): Windows fades a window out only
+/// when it has a caption style as it goes (#874). Unlike [`animation_caption`], the style alone
+/// changes: nothing is measured again, so the window's frame and picture stay as they are. Not
+/// while it has the caption of a minimize, nor taken off one minimized meanwhile (its restore
+/// takes it off). (Shown again, a window appears at once, with Classic too: Windows fades in
+/// none of MDM's windows.)
+///
+/// # Safety
+/// `hwnd` is a window of this thread framed by [`caption_less`] as `kind`.
+unsafe fn fade_caption(hwnd: HWND, kind: Drawn, on: bool) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{IsIconic, WS_CAPTION};
+    if on == fading(hwnd) || (on && animating(hwnd)) {
+        return;
+    }
+    // First: the subclass's WM_STYLECHANGING keeps the caption style only while it is listed.
+    let list = |set: &'static WindowSet| {
+        set.with(|s| {
+            if let Ok(mut s) = s.try_borrow_mut() {
+                if on {
+                    s.insert(hwnd as isize);
+                } else {
+                    s.remove(&(hwnd as isize));
+                }
+            }
+        })
+    };
+    list(&FADING);
+    // SAFETY: (the caller's) our own window, on its thread.
+    unsafe {
+        if !on && IsIconic(hwnd) != 0 {
+            return;
+        }
+        list(&ANIMATING);
+        if on {
+            dwm_frame_off(hwnd, true);
+        }
+        let style = drawn_style(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, kind);
+        let style = if on { style | WS_CAPTION } else { style };
+        SetWindowLongPtrW(hwnd, GWL_STYLE, style as isize);
+        if !on {
+            dwm_frame_off(hwnd, false);
+        }
+    }
+}
+
+/// DWM's own frame off (`caption`) or back on a window framed by [`caption_less`] for as long as it
+/// has the caption style of an animation or a fade, on Windows 10: there DWM draws the caption
+/// style's title bar over the window's for those frames, a white (or accent-coloured) band above
+/// MDM's own title bar (#874). With DWM's frame off, a thin edge shows instead; the window is the
+/// same before and after. Windows 11 draws no such band.
+///
+/// # Safety
+/// `hwnd` is a window of this thread.
+unsafe fn dwm_frame_off(hwnd: HWND, caption: bool) {
+    use windows_sys::Win32::Graphics::Dwm::{
+        DWMNCRP_DISABLED, DWMNCRP_USEWINDOWSTYLE, DWMWA_NCRENDERING_POLICY, DwmSetWindowAttribute,
+    };
+    if windows_11() {
+        return;
+    }
+    let policy = if caption {
+        DWMNCRP_DISABLED
+    } else {
+        DWMNCRP_USEWINDOWSTYLE
+    };
+    // SAFETY: (the caller's) our own window; the policy is read from a local during the call.
+    unsafe {
+        DwmSetWindowAttribute(
+            hwnd,
+            DWMWA_NCRENDERING_POLICY as u32,
+            &policy as *const _ as *const c_void,
+            size_of::<i32>() as u32,
         );
     }
 }
@@ -985,10 +1101,10 @@ unsafe extern "system" fn caption_less_proc(
     };
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         DefWindowProcW, HTMAXBUTTON, IsIconic, IsZoomed, NCCALCSIZE_PARAMS, PostMessageW, SC_CLOSE,
-        SC_MAXIMIZE, SC_MINIMIZE, SC_RESTORE, STYLESTRUCT, SendMessageW, WM_GETMINMAXINFO,
-        WM_NCACTIVATE, WM_NCLBUTTONDBLCLK, WM_NCLBUTTONDOWN, WM_NCLBUTTONUP, WM_NCMOUSELEAVE,
-        WM_NCMOUSEMOVE, WM_NCRBUTTONUP, WM_STYLECHANGING, WM_SYSCOMMAND, WM_WINDOWPOSCHANGED,
-        WS_CAPTION, WS_MINIMIZE,
+        SC_MAXIMIZE, SC_MINIMIZE, SC_RESTORE, STYLESTRUCT, SWP_HIDEWINDOW, SendMessageW, WINDOWPOS,
+        WM_GETMINMAXINFO, WM_NCACTIVATE, WM_NCLBUTTONDBLCLK, WM_NCLBUTTONDOWN, WM_NCLBUTTONUP,
+        WM_NCMOUSELEAVE, WM_NCMOUSEMOVE, WM_NCRBUTTONUP, WM_STYLECHANGING, WM_SYSCOMMAND,
+        WM_WINDOWPOSCHANGED, WM_WINDOWPOSCHANGING, WS_CAPTION, WS_MINIMIZE,
     };
     const HT_MAX: LRESULT = HTMAXBUTTON as LRESULT;
     let kind = Drawn::of(data);
@@ -1062,6 +1178,22 @@ unsafe extern "system" fn caption_less_proc(
                     animation_caption(hwnd, kind, false);
                 }
                 return res;
+            }
+        }
+        // Hidden (into the tray): the caption style for that moment, so it fades out as a window
+        // with a title bar does (#874), taken back once it is hidden.
+        WM_WINDOWPOSCHANGING | WM_WINDOWPOSCHANGED if lparam != 0 => {
+            // SAFETY: for both, lParam points to the WINDOWPOS of the change (Win32 contract),
+            // read here.
+            let flags = unsafe { (*(lparam as *const WINDOWPOS)).flags };
+            if flags & SWP_HIDEWINDOW != 0 {
+                // SAFETY: our own window, framed by caption_less as `kind`, on its thread.
+                unsafe { fade_caption(hwnd, kind, msg == WM_WINDOWPOSCHANGING) };
+            }
+            if msg == WM_WINDOWPOSCHANGED && animating(hwnd) {
+                // As below.
+                // SAFETY: a message posted to our own window.
+                unsafe { PostMessageW(hwnd, settled_message(), 0, 0) };
             }
         }
         // Back from the taskbar some other way (winit restoring it, a program's ShowWindow):
@@ -1520,6 +1652,48 @@ mod caption_less_tests {
                 assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st);
                 assert!(!animating(hwnd));
                 assert_eq!(framed(hwnd), [l, t, l + r, t + b]);
+                // Hidden (#874: into the tray, so Windows fades it out): the caption style from
+                // the change's start, kept if winit sets its styles meanwhile, the frame
+                // untouched, gone once it is hidden. Shown, or moved, nothing changes. (The
+                // messages of the change, sent as the system sends them: the test window itself
+                // never shows.)
+                use windows_sys::Win32::UI::WindowsAndMessaging::{
+                    SWP_HIDEWINDOW, SWP_SHOWWINDOW, WINDOWPOS, WM_WINDOWPOSCHANGED,
+                    WM_WINDOWPOSCHANGING,
+                };
+                for change in [SWP_HIDEWINDOW, SWP_SHOWWINDOW, 0] {
+                    let mut pos: WINDOWPOS = zeroed();
+                    pos.hwnd = hwnd;
+                    pos.flags = change | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE;
+                    let lp = &mut pos as *mut WINDOWPOS as LPARAM;
+                    SendMessageW(hwnd, WM_WINDOWPOSCHANGING, 0, lp);
+                    let during = if change == SWP_HIDEWINDOW {
+                        st | WS_CAPTION
+                    } else {
+                        st
+                    };
+                    assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, during);
+                    SetWindowLongPtrW(hwnd, GWL_STYLE, st as isize);
+                    assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, during);
+                    assert_eq!(framed(hwnd), [l, t, l + r, t + b]);
+                    SendMessageW(hwnd, WM_WINDOWPOSCHANGED, 0, lp);
+                    assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st);
+                    assert!(!animating(hwnd) && !fading(hwnd));
+                    assert_eq!(framed(hwnd), [l, t, l + r, t + b]);
+                }
+                // Hidden while it sits minimized with the caption of its animation: it keeps
+                // it (it goes once the window is back, as above).
+                animation_caption(hwnd, kind, true);
+                let mut pos: WINDOWPOS = zeroed();
+                pos.hwnd = hwnd;
+                pos.flags = SWP_HIDEWINDOW | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER;
+                let lp = &mut pos as *mut WINDOWPOS as LPARAM;
+                SendMessageW(hwnd, WM_WINDOWPOSCHANGING, 0, lp);
+                SendMessageW(hwnd, WM_WINDOWPOSCHANGED, 0, lp);
+                assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st | WS_CAPTION);
+                assert!(animating(hwnd));
+                animation_caption(hwnd, kind, false);
+                assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st);
                 DestroyWindow(hwnd);
             }
         }
@@ -2025,11 +2199,14 @@ pub fn tray_icon_tip(hwnd: isize, id: u32, tip: &str) -> bool {
         // SAFETY: a plain C struct; all zero is its empty value.
         ..unsafe { zeroed() }
     };
-    // The last unit stays the NUL that ends it.
-    let room = nid.szTip.len() - 1;
-    for (slot, unit) in nid.szTip.iter_mut().zip(tip.encode_utf16().take(room)) {
+    // The last unit stays the NUL that ends it. Filled in a copy: on 32-bit Windows the struct
+    // is packed, and its fields can't be borrowed in place.
+    let mut text = nid.szTip;
+    let room = text.len() - 1;
+    for (slot, unit) in text.iter_mut().zip(tip.encode_utf16().take(room)) {
         *slot = unit;
     }
+    nid.szTip = text;
     // SAFETY: nid lives for the call; the shell only reads it.
     unsafe { Shell_NotifyIconW(NIM_MODIFY, &nid) != 0 }
 }
@@ -3820,6 +3997,49 @@ pub fn take_install_language() -> Option<String> {
     Some(install_language_code(&value))
 }
 
+/// What the installer's task "Open .torrent files and magnet links with Mister Download
+/// Manager" was (tools/installer/mdm.iss writes `1` or `0` on every install): None when no
+/// installer wrote it. Only read: the app settles Torrent settings' switch from it once
+/// (`Settings::settle_torrent_handler`, #1058), and an upgrade's value is never asked again.
+pub fn install_torrents() -> Option<bool> {
+    reg_string(r"Software\MisterDownloadManager", "InstallTorrents").map(|v| v.trim() == "1")
+}
+
+/// Is this program what Windows opens .torrent files with by their class (the user's or
+/// everyone's, as HKEY_CLASSES_ROOT merges them): the installer's task, or Torrent settings'
+/// switch? A copy elsewhere (another install, a portable one) isn't this one.
+pub fn torrent_handler_is_ours() -> bool {
+    use windows_sys::Win32::System::Registry::HKEY_CLASSES_ROOT;
+    let Ok(exe) = std::env::current_exe() else {
+        return false;
+    };
+    let Some(class) = reg_string_in(HKEY_CLASSES_ROOT, ".torrent", "") else {
+        return false;
+    };
+    let command = format!(r"{}\shell\open\command", class.trim());
+    reg_string_in(HKEY_CLASSES_ROOT, &command, "")
+        .is_some_and(|c| runs_program(&c, &exe.display().to_string()))
+}
+
+/// Does an open command (`"C:\…\misterdownloadmanager.exe" "%1"`) start `exe`? Windows' paths
+/// are case-insensitive.
+fn runs_program(command: &str, exe: &str) -> bool {
+    !exe.is_empty() && command.to_lowercase().contains(&exe.to_lowercase())
+}
+
+#[cfg(test)]
+mod torrent_handler_tests {
+    #[test]
+    fn an_open_command_names_its_program() {
+        let exe = r"C:\Program Files\Mister Download Manager\misterdownloadmanager.exe";
+        let ours = r#""c:\program files\mister download manager\MisterDownloadManager.exe" "%1""#;
+        assert!(super::runs_program(ours, exe));
+        let other = r#""C:\Program Files\qBittorrent\qbittorrent.exe" "%1""#;
+        assert!(!super::runs_program(other, exe));
+        assert!(!super::runs_program(ours, ""));
+    }
+}
+
 /// An Inno language name (`lang_pt_br`, tools/installer/languages.py) as a languages.tsv code.
 fn install_language_code(inno: &str) -> String {
     inno.strip_prefix("lang_").unwrap_or(inno).replace('_', "-")
@@ -4036,6 +4256,17 @@ fn reg_string_in(
     Some(String::from_utf16_lossy(&buf[..len]))
 }
 
+/// Whether Windows lets programs that ask for it use paths past `MAX_PATH` (Group Policy's
+/// "Enable Win32 long paths", `LongPathsEnabled`; off on a new install): yt-dlp and ffmpeg ask,
+/// so a video's files may then pass 259 characters (#1102). Read only.
+pub fn long_paths_enabled() -> bool {
+    reg_dword_in(
+        windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE,
+        r"SYSTEM\CurrentControlSet\Control\FileSystem",
+        "LongPathsEnabled",
+    ) == Some(1)
+}
+
 fn reg_dword(key: &str, name: &str) -> Option<u32> {
     reg_dword_in(
         windows_sys::Win32::System::Registry::HKEY_CURRENT_USER,
@@ -4106,17 +4337,32 @@ pub fn play_sound(file: &str) {
     }
 }
 
-/// Options → General → "Launch … on startup": our entry under HKCU\…\Run (set or removed).
+/// The name MDM is listed under in Windows' Default apps: its value in RegisteredApplications,
+/// the same as its Capabilities' ApplicationName (Microsoft: "ApplicationName must always match
+/// the name that is registered under RegisteredApplications"). tools/installer/mdm.iss writes
+/// the same.
+pub const REGISTERED_NAME: &str = "Mister Download Manager";
+/// MDM's Capabilities (Default apps' list of what it can open), under HKCU or HKLM.
+const CAPABILITIES: &str = r"Software\MisterDownloadManager\Capabilities";
+/// The ProgIDs MDM's Capabilities name: Default apps wants an application-specific one for each
+/// file type and protocol, never the generic `magnet` class.
+const TORRENT_PROGID: &str = "MisterDownloadManager.Torrent";
+const MAGNET_PROGID: &str = "MisterDownloadManager.Magnet";
+
 /// Make MDM (on) or stop it being (off) what Windows opens magnet links and .torrent files
-/// with, for the current user (HKCU\Software\Classes; no admin). Off removes only what points
-/// at us. Windows keeps a choice the user made in "Open with" above this (it can't be set by
-/// programs), so another app chosen there stays in charge until the user picks MDM.
+/// with, for the current user (HKCU; no admin). Off removes only what points at us.
+///
+/// On writes the classes (`magnet`, `.torrent`), which Windows follows while no one has chosen
+/// in Default apps, and registers MDM with Default apps (#1091: Capabilities and
+/// RegisteredApplications, so MDM is listed for MAGNET and .torrent). A choice recorded there
+/// (UserChoice, hash-protected) stays first: no program can set it, only the user, in Settings →
+/// Default apps (`torrent_defaults_elsewhere` tells, `default_apps_page` opens it). An all-users
+/// install that registered this program (the installer's HKLM) isn't registered twice.
 pub fn set_torrent_handlers(on: bool) {
     use windows_sys::Win32::System::Registry::{
         HKEY_CURRENT_USER, REG_SZ, RRF_RT_REG_SZ, RegDeleteKeyValueW, RegDeleteTreeW, RegGetValueW,
         RegSetKeyValueW,
     };
-    const PROGID: &str = "MisterDownloadManager.Torrent";
     let w = |s: &str| -> Vec<u16> { s.encode_utf16().chain(Some(0)).collect() };
     let set = |key: &str, name: Option<&str>, value: &str| {
         let (key, value) = (w(key), w(value));
@@ -4167,11 +4413,43 @@ pub fn set_torrent_handlers(on: bool) {
             None,
             &open,
         );
-        let prog = format!("Software\\Classes\\{PROGID}");
+        let prog = format!("Software\\Classes\\{TORRENT_PROGID}");
         set(&prog, None, "Torrent file");
         set(&format!("{prog}\\DefaultIcon"), None, &icon);
         set(&format!("{prog}\\shell\\open\\command"), None, &open);
-        set("Software\\Classes\\.torrent", None, PROGID);
+        set("Software\\Classes\\.torrent", None, TORRENT_PROGID);
+        // Default apps (#1091): MDM listed for MAGNET and .torrent, unless everyone's
+        // registration (an all-users install of this program) already lists it.
+        if !registered_for_everyone(&exe) {
+            let magnet = format!("Software\\Classes\\{MAGNET_PROGID}");
+            set(&magnet, None, "URL:Magnet link");
+            set(&magnet, Some("URL Protocol"), "");
+            set(&format!("{magnet}\\DefaultIcon"), None, &icon);
+            set(&format!("{magnet}\\shell\\open\\command"), None, &open);
+            set(CAPABILITIES, Some("ApplicationName"), REGISTERED_NAME);
+            set(
+                CAPABILITIES,
+                Some("ApplicationDescription"),
+                // i18n: Windows' Settings → Default apps: what Mister Download Manager is
+                crate::i18n::t("Downloads files, videos and torrents"),
+            );
+            set(CAPABILITIES, Some("ApplicationIcon"), &icon);
+            set(
+                &format!("{CAPABILITIES}\\FileAssociations"),
+                Some(".torrent"),
+                TORRENT_PROGID,
+            );
+            set(
+                &format!("{CAPABILITIES}\\UrlAssociations"),
+                Some("magnet"),
+                MAGNET_PROGID,
+            );
+            set(
+                "Software\\RegisteredApplications",
+                Some(REGISTERED_NAME),
+                CAPABILITIES,
+            );
+        }
     } else {
         let ours = get("Software\\Classes\\magnet\\shell\\open\\command", None)
             .is_some_and(|c| c.contains(&exe));
@@ -4183,11 +4461,23 @@ pub fn set_torrent_handlers(on: bool) {
         if ours {
             tree("Software\\Classes\\magnet");
         }
-        tree(&format!("Software\\Classes\\{PROGID}"));
-        if get("Software\\Classes\\.torrent", None).as_deref() == Some(PROGID) {
-            let (k, n) = (w("Software\\Classes\\.torrent"), w(""));
-            // SAFETY: NUL-terminated key; an empty name is the default value.
+        tree(&format!("Software\\Classes\\{TORRENT_PROGID}"));
+        let value = |key: &str, name: &str| {
+            let (k, n) = (w(key), w(name));
+            // SAFETY: NUL-terminated key and value names (empty: the default value).
             unsafe { RegDeleteKeyValueW(HKEY_CURRENT_USER, k.as_ptr(), n.as_ptr()) };
+        };
+        if get("Software\\Classes\\.torrent", None).as_deref() == Some(TORRENT_PROGID) {
+            value("Software\\Classes\\.torrent", "");
+        }
+        // Off Default apps' list too (#1091): what this user's registration wrote. A choice made
+        // there for MDM then finds no program, and Windows asks again, as for an app removed.
+        tree(&format!("Software\\Classes\\{MAGNET_PROGID}"));
+        tree(CAPABILITIES);
+        if get("Software\\RegisteredApplications", Some(REGISTERED_NAME)).as_deref()
+            == Some(CAPABILITIES)
+        {
+            value("Software\\RegisteredApplications", REGISTERED_NAME);
         }
     }
     // Tell Explorer the associations changed.
@@ -4199,6 +4489,263 @@ pub fn set_torrent_handlers(on: bool) {
             std::ptr::null(),
             std::ptr::null(),
         );
+    }
+}
+
+/// Does everyone's registration (an all-users install, tools/installer/mdm.iss's HKLM) list this
+/// program with Default apps? Its magnet ProgID's command starts `exe`.
+fn registered_for_everyone(exe: &str) -> bool {
+    use windows_sys::Win32::System::Registry::HKEY_LOCAL_MACHINE;
+    reg_string_in(
+        HKEY_LOCAL_MACHINE,
+        r"Software\RegisteredApplications",
+        REGISTERED_NAME,
+    )
+    .is_some_and(|c| c.eq_ignore_ascii_case(CAPABILITIES))
+        && reg_string_in(
+            HKEY_LOCAL_MACHINE,
+            &format!(r"Software\Classes\{MAGNET_PROGID}\shell\open\command"),
+            "",
+        )
+        .is_some_and(|c| runs_program(&c, exe))
+}
+
+/// Settings → Default apps at MDM's own page (#1091), where the user picks it for MAGNET and
+/// .torrent: `registeredAppMachine` names an all-users registration, `registeredAppUser` this
+/// user's (Microsoft's "Launch the Default Apps settings page"; Windows 11 since its 2023-04
+/// update, earlier ones open Default apps itself).
+pub fn default_apps_page() -> String {
+    let Ok(exe) = std::env::current_exe() else {
+        return "ms-settings:defaultapps".into();
+    };
+    default_apps_uri(registered_for_everyone(&exe.display().to_string()))
+}
+
+fn default_apps_uri(everyone: bool) -> String {
+    let who = if everyone {
+        "registeredAppMachine"
+    } else {
+        "registeredAppUser"
+    };
+    // The name, URI-escaped: its only character to escape is the space.
+    let name = REGISTERED_NAME.replace(' ', "%20");
+    format!("ms-settings:defaultapps?{who}={name}")
+}
+
+/// What Windows opens magnet links and .torrent files with when that isn't this program (#1091):
+/// the other programs' names (as Windows shows them, else their file), none when MDM opens both.
+/// Asked as Windows decides (AssocQueryString: the user's choice in Default apps first, then the
+/// classes), after Torrent settings' switch was turned on.
+pub fn torrent_defaults_elsewhere() -> Vec<String> {
+    use windows_sys::Win32::UI::Shell::{
+        ASSOCF_IS_PROTOCOL, ASSOCF_NONE, ASSOCSTR_EXECUTABLE, ASSOCSTR_FRIENDLYAPPNAME,
+        AssocQueryStringW,
+    };
+    let Ok(exe) = std::env::current_exe() else {
+        return Vec::new();
+    };
+    let ask = |what: &str, flags, string| -> Option<String> {
+        let what: Vec<u16> = what.encode_utf16().chain(Some(0)).collect();
+        let open: Vec<u16> = "open".encode_utf16().chain(Some(0)).collect();
+        let mut out = vec![0u16; 1024];
+        let mut len = out.len() as u32;
+        // SAFETY: the strings end in NUL and outlive the call; `len` is `out`'s size in
+        // characters, and the call writes at most that many.
+        let hr = unsafe {
+            AssocQueryStringW(
+                flags,
+                string,
+                what.as_ptr(),
+                open.as_ptr(),
+                out.as_mut_ptr(),
+                &mut len,
+            )
+        };
+        (hr == 0).then(|| {
+            let end = out.iter().position(|&c| c == 0).unwrap_or(out.len());
+            String::from_utf16_lossy(&out[..end])
+        })
+    };
+    let handlers =
+        [("magnet", ASSOCF_IS_PROTOCOL), (".torrent", ASSOCF_NONE)].map(|(what, flags)| Handler {
+            program: ask(what, flags, ASSOCSTR_EXECUTABLE),
+            name: ask(what, flags, ASSOCSTR_FRIENDLYAPPNAME),
+        });
+    others(&handlers, &exe.display().to_string())
+}
+
+/// The program Windows opens one kind (magnet links, .torrent files) with: its file and its name.
+struct Handler {
+    program: Option<String>,
+    name: Option<String>,
+}
+
+/// The names of the handlers that aren't `exe`, each once. One Windows doesn't name (none
+/// chosen, nothing found) isn't another program's.
+fn others(handlers: &[Handler], exe: &str) -> Vec<String> {
+    let mut names: Vec<String> = Vec::new();
+    for h in handlers {
+        let Some(program) = h.program.as_deref().filter(|p| !p.trim().is_empty()) else {
+            continue;
+        };
+        if program.eq_ignore_ascii_case(exe) || runs_program(program, exe) {
+            continue;
+        }
+        let name = h
+            .name
+            .clone()
+            .filter(|n| !n.trim().is_empty())
+            .unwrap_or_else(|| {
+                program
+                    .rsplit(['\\', '/'])
+                    .next()
+                    .unwrap_or(program)
+                    .to_owned()
+            });
+        if !names.iter().any(|n| n.eq_ignore_ascii_case(&name)) {
+            names.push(name);
+        }
+    }
+    names
+}
+
+#[cfg(test)]
+mod default_apps_tests {
+    use super::{Handler, default_apps_uri, others};
+
+    const MDM: &str = r"C:\Program Files\Mister Download Manager\misterdownloadmanager.exe";
+    const FDM: &str = r"C:\Program Files\Softdeluxe\Free Download Manager\fdm.exe";
+
+    fn h(program: Option<&str>, name: Option<&str>) -> Handler {
+        Handler {
+            program: program.map(str::to_owned),
+            name: name.map(str::to_owned),
+        }
+    }
+
+    /// #1091: Settings opens at MDM's page, by the hive its registration is in.
+    #[test]
+    fn the_settings_page_names_the_registration() {
+        assert_eq!(
+            default_apps_uri(false),
+            "ms-settings:defaultapps?registeredAppUser=Mister%20Download%20Manager"
+        );
+        assert_eq!(
+            default_apps_uri(true),
+            "ms-settings:defaultapps?registeredAppMachine=Mister%20Download%20Manager"
+        );
+    }
+
+    /// #1091: another program chosen in Default apps for magnet links or .torrent files is named,
+    /// once; MDM itself (any case) and nothing found are not.
+    #[test]
+    fn another_default_is_named_once() {
+        let fdm = || h(Some(FDM), Some("Free Download Manager"));
+        let ours = || h(Some(&MDM.to_uppercase()), Some("Mister Download Manager"));
+        assert_eq!(others(&[fdm(), fdm()], MDM), ["Free Download Manager"]);
+        assert_eq!(others(&[fdm(), ours()], MDM), ["Free Download Manager"]);
+        assert!(others(&[ours(), ours()], MDM).is_empty());
+        assert!(others(&[h(None, None), h(Some(" "), None)], MDM).is_empty());
+        // No name from Windows: the program's file.
+        let qb = h(Some(r"C:\Program Files\qBittorrent\qbittorrent.exe"), None);
+        assert_eq!(
+            others(&[fdm(), qb], MDM),
+            ["Free Download Manager", "qbittorrent.exe"]
+        );
+    }
+
+    /// #1091, run by hand only, as it redirects this process's HKEY_CURRENT_USER, which other
+    /// tests read: `cargo test -p mdm-app --bin misterdownloadmanager scratch_hive -- --ignored
+    /// --test-threads=1`. `set_torrent_handlers` writes into a scratch key standing for HKCU
+    /// (RegOverridePredefKey), never the account's own associations: on, the classes and MDM's
+    /// Default apps registration as Microsoft documents it; off, all of it gone.
+    #[test]
+    #[ignore]
+    fn registers_with_default_apps_in_a_scratch_hive() {
+        use super::{
+            CAPABILITIES, MAGNET_PROGID, REGISTERED_NAME, TORRENT_PROGID, reg_string,
+            registered_for_everyone, set_torrent_handlers,
+        };
+        use windows_sys::Win32::System::Registry::{
+            HKEY, HKEY_CURRENT_USER, KEY_ALL_ACCESS, REG_OPTION_NON_VOLATILE, RegCloseKey,
+            RegCreateKeyExW, RegDeleteKeyW, RegDeleteTreeW, RegOverridePredefKey,
+        };
+        let scratch: Vec<u16> = r"Software\MisterDownloadManagerTest1091"
+            .encode_utf16()
+            .chain(Some(0))
+            .collect();
+        let mut key: HKEY = std::ptr::null_mut();
+        // SAFETY: a NUL-terminated name; `key` receives the opened handle.
+        let created = unsafe {
+            RegCreateKeyExW(
+                HKEY_CURRENT_USER,
+                scratch.as_ptr(),
+                0,
+                std::ptr::null(),
+                REG_OPTION_NON_VOLATILE,
+                KEY_ALL_ACCESS,
+                std::ptr::null(),
+                &mut key,
+                std::ptr::null_mut(),
+            )
+        };
+        assert_eq!(created, 0, "scratch key");
+        // SAFETY: `key` is open; from here HKEY_CURRENT_USER is the scratch key in this process.
+        let overridden = unsafe { RegOverridePredefKey(HKEY_CURRENT_USER, key) };
+        assert_eq!(overridden, 0, "not redirected: nothing written");
+        let exe = std::env::current_exe().unwrap().display().to_string();
+        let everyone = registered_for_everyone(&exe);
+        let read = || {
+            [
+                (r"Software\Classes\magnet\shell\open\command", ""),
+                (r"Software\Classes\.torrent", ""),
+                (
+                    r"Software\Classes\MisterDownloadManager.Magnet",
+                    "URL Protocol",
+                ),
+                (
+                    r"Software\Classes\MisterDownloadManager.Magnet\shell\open\command",
+                    "",
+                ),
+                (CAPABILITIES, "ApplicationName"),
+                (CAPABILITIES, "ApplicationDescription"),
+                (
+                    r"Software\MisterDownloadManager\Capabilities\UrlAssociations",
+                    "magnet",
+                ),
+                (
+                    r"Software\MisterDownloadManager\Capabilities\FileAssociations",
+                    ".torrent",
+                ),
+                (r"Software\RegisteredApplications", REGISTERED_NAME),
+            ]
+            .map(|(k, n)| reg_string(k, n))
+        };
+        set_torrent_handlers(true);
+        let on = read();
+        set_torrent_handlers(false);
+        let off = read();
+        // SAFETY: back to the real HKEY_CURRENT_USER, then the scratch key is removed.
+        unsafe {
+            RegOverridePredefKey(HKEY_CURRENT_USER, std::ptr::null_mut());
+            RegCloseKey(key);
+            RegDeleteTreeW(HKEY_CURRENT_USER, scratch.as_ptr());
+            RegDeleteKeyW(HKEY_CURRENT_USER, scratch.as_ptr());
+        }
+        println!("on: {on:#?}\noff: {off:#?}");
+        let open = format!("\"{exe}\" \"%1\"");
+        assert_eq!(on[0].as_deref(), Some(open.as_str()));
+        assert_eq!(on[1].as_deref(), Some(TORRENT_PROGID));
+        if !everyone {
+            assert_eq!(on[2].as_deref(), Some(""));
+            assert_eq!(on[3].as_deref(), Some(open.as_str()));
+            assert_eq!(on[4].as_deref(), Some(REGISTERED_NAME));
+            assert!(on[5].as_deref().is_some_and(|d| !d.is_empty()));
+            assert_eq!(on[6].as_deref(), Some(MAGNET_PROGID));
+            assert_eq!(on[7].as_deref(), Some(TORRENT_PROGID));
+            assert_eq!(on[8].as_deref(), Some(CAPABILITIES));
+        }
+        assert!(off.iter().all(Option::is_none), "{off:#?}");
     }
 }
 
@@ -4550,8 +5097,10 @@ pub fn type_name(file_name: &str) -> Option<String> {
             size_of::<SHFILEINFOW>() as u32,
             SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES,
         );
-        let len = info.szTypeName.iter().position(|c| *c == 0).unwrap_or(0);
-        (ok != 0 && len > 0).then(|| String::from_utf16_lossy(&info.szTypeName[..len]))
+        // A copy: on 32-bit Windows the struct is packed, and its fields can't be borrowed.
+        let type_name = info.szTypeName;
+        let len = type_name.iter().position(|c| *c == 0).unwrap_or(0);
+        (ok != 0 && len > 0).then(|| String::from_utf16_lossy(&type_name[..len]))
     }
 }
 
@@ -5358,6 +5907,266 @@ pub fn clipboard_sequence() -> u32 {
     unsafe { windows_sys::Win32::System::DataExchange::GetClipboardSequenceNumber() }
 }
 
+/// Tests only: a clipboard apart from the person's at this computer (#1103).
+///
+/// Windows keeps one clipboard per window station; the person's is on the interactive one,
+/// `WinSta0`. [`in_private_clipboard`] runs a test again in a process of its own that moves to
+/// another window station (and a desktop on it) before it touches the clipboard: there the test
+/// reads and writes with the real clipboard functions, arboard's and MDM's own, and the person's
+/// clipboard is neither read nor written. Without a name, Windows makes (or opens) the window
+/// station of the logon session, `Service-0x0-…$`, which shows nothing and whose clipboard no
+/// program of the person's uses; the tests that use it run one at a time.
+///
+/// [`in_private_clipboard`]: private_clipboard::in_private_clipboard
+#[cfg(test)]
+pub mod private_clipboard {
+    use std::ffi::c_void;
+
+    /// Set in the process [`in_private_clipboard`] starts: the test runs there, and only there.
+    const CHILD: &str = "MDM_TEST_PRIVATE_CLIPBOARD";
+
+    #[link(name = "user32")]
+    unsafe extern "system" {
+        fn CreateWindowStationW(
+            name: *const u16,
+            flags: u32,
+            access: u32,
+            sa: *const c_void,
+        ) -> *mut c_void;
+        fn SetProcessWindowStation(winsta: *mut c_void) -> i32;
+        fn GetProcessWindowStation() -> *mut c_void;
+        fn GetUserObjectInformationW(
+            object: *mut c_void,
+            index: i32,
+            info: *mut c_void,
+            len: u32,
+            needed: *mut u32,
+        ) -> i32;
+        fn CreateDesktopW(
+            name: *const u16,
+            device: *const u16,
+            devmode: *const c_void,
+            flags: u32,
+            access: u32,
+            sa: *const c_void,
+        ) -> *mut c_void;
+        fn SetThreadDesktop(desktop: *mut c_void) -> i32;
+        fn GetThreadDesktop(thread: u32) -> *mut c_void;
+        fn OpenClipboard(owner: *mut c_void) -> i32;
+        fn CloseClipboard() -> i32;
+    }
+    #[link(name = "kernel32")]
+    unsafe extern "system" {
+        fn GetCurrentThreadId() -> u32;
+        fn GetProcessHeap() -> *mut c_void;
+        fn HeapValidate(heap: *mut c_void, flags: u32, block: *const c_void) -> i32;
+    }
+
+    const WINSTA_ALL_ACCESS: u32 = 0x37F;
+    const GENERIC_ALL: u32 = 0x1000_0000;
+    const UOI_NAME: i32 = 2;
+
+    fn wide(s: &str) -> Vec<u16> {
+        s.encode_utf16().chain(Some(0)).collect()
+    }
+
+    /// A window station's name (empty: unknown).
+    fn station_name(winsta: *mut c_void) -> String {
+        let mut buf = [0u16; 256];
+        let mut needed = 0;
+        // SAFETY: the buffer and its size in bytes; the name comes back NUL-terminated.
+        let ok = unsafe {
+            GetUserObjectInformationW(
+                winsta,
+                UOI_NAME,
+                buf.as_mut_ptr().cast(),
+                size_of_val(&buf) as u32,
+                &mut needed,
+            )
+        };
+        if ok == 0 {
+            return String::new();
+        }
+        let len = buf.iter().position(|&c| c == 0).unwrap_or(buf.len());
+        String::from_utf16_lossy(&buf[..len])
+    }
+
+    /// The test's window station and desktop (their handles, as numbers: every thread joins).
+    pub struct PrivateClipboard {
+        winsta: usize,
+        desktop: usize,
+    }
+
+    impl PrivateClipboard {
+        /// Move this process to a window station other than the one it started on (the
+        /// person's), and this thread to a desktop on it. Panics, before anything uses the
+        /// clipboard, unless both moved.
+        fn enter() -> Self {
+            assert!(
+                std::env::var_os(CHILD).is_some(),
+                "only in the process in_private_clipboard starts"
+            );
+            // SAFETY: takes nothing; the process's handle, not closed.
+            let started_on = station_name(unsafe { GetProcessWindowStation() });
+            // SAFETY: no name, no security attributes; the handle is checked.
+            let winsta = unsafe {
+                CreateWindowStationW(std::ptr::null(), 0, WINSTA_ALL_ACCESS, std::ptr::null())
+            };
+            assert!(
+                !winsta.is_null(),
+                "no window station: {}",
+                std::io::Error::last_os_error()
+            );
+            let name = station_name(winsta);
+            assert!(
+                !name.is_empty() && name != started_on && !name.eq_ignore_ascii_case("WinSta0"),
+                "window station {name:?}, started on {started_on:?}"
+            );
+            // SAFETY: the handle just made.
+            let moved = unsafe { SetProcessWindowStation(winsta) };
+            assert!(
+                moved != 0,
+                "process not moved: {}",
+                std::io::Error::last_os_error()
+            );
+            let desk = wide(&format!("mdm-test-{}", std::process::id()));
+            // SAFETY: a NUL-terminated name, no device, mode or security attributes; it is made
+            // on the process's window station, the test's.
+            let desktop = unsafe {
+                CreateDesktopW(
+                    desk.as_ptr(),
+                    std::ptr::null(),
+                    std::ptr::null(),
+                    0,
+                    GENERIC_ALL,
+                    std::ptr::null(),
+                )
+            };
+            assert!(
+                !desktop.is_null(),
+                "no desktop: {}",
+                std::io::Error::last_os_error()
+            );
+            let clip = PrivateClipboard {
+                winsta: winsta as usize,
+                desktop: desktop as usize,
+            };
+            clip.join();
+            clip
+        }
+
+        /// Put the calling thread on the test's desktop: each thread that uses the clipboard,
+        /// first. Panics unless the thread and its process are on the test's window station.
+        pub fn join(&self) {
+            // SAFETY: the desktop made in `enter`, open for the process's life; the handles
+            // compared are only read.
+            unsafe {
+                let set = SetThreadDesktop(self.desktop as *mut c_void);
+                assert!(
+                    set != 0,
+                    "thread not moved: {}",
+                    std::io::Error::last_os_error()
+                );
+                assert_eq!(
+                    GetThreadDesktop(GetCurrentThreadId()) as usize,
+                    self.desktop
+                );
+                assert_eq!(GetProcessWindowStation() as usize, self.winsta);
+            }
+        }
+    }
+
+    /// Run `body` in a clipboard of its own: the test (`test`, its path in the crate as `cargo
+    /// test` names it) runs again in a process of its own, which moves to a new window station
+    /// first ([`PrivateClipboard`]), and passes when `body` passed there.
+    pub fn in_private_clipboard(test: &str, body: impl FnOnce(&PrivateClipboard)) {
+        if std::env::var_os(CHILD).is_some() {
+            body(&PrivateClipboard::enter());
+            return;
+        }
+        // One at a time: they share the logon session's window station, and its clipboard.
+        static ONE: std::sync::Mutex<()> = std::sync::Mutex::new(());
+        let _one = ONE
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        let exe = std::env::current_exe().expect("the test program");
+        let out = std::process::Command::new(exe)
+            .args([test, "--exact", "--nocapture", "--test-threads=1"])
+            .env(CHILD, "1")
+            .output()
+            .expect("the test's own process");
+        let said = format!(
+            "{}{}",
+            String::from_utf8_lossy(&out.stdout),
+            String::from_utf8_lossy(&out.stderr)
+        );
+        assert!(out.status.success(), "{test}: {:?}\n{said}", out.status);
+        assert!(said.contains("1 passed"), "{test} didn't run:\n{said}");
+    }
+
+    /// `OpenClipboard` without a window, as arboard opens it; whether it opened.
+    pub fn open_without_window() -> bool {
+        // SAFETY: no window; the caller closes it ([`close`]).
+        unsafe { OpenClipboard(std::ptr::null_mut()) != 0 }
+    }
+
+    /// `CloseClipboard`, after [`open_without_window`].
+    pub fn close() -> bool {
+        // SAFETY: takes nothing.
+        unsafe { CloseClipboard() != 0 }
+    }
+
+    /// Whether the process's heap (Rust's allocations and the clipboard's memory alike) checks
+    /// out whole, every block of it.
+    pub fn process_heap_is_whole() -> bool {
+        // SAFETY: the process's own heap, checked whole (no block given).
+        unsafe { HeapValidate(GetProcessHeap(), 0, std::ptr::null()) != 0 }
+    }
+
+    /// egui's clipboard, as a window's text boxes paste and copy with it (arboard, under
+    /// egui_winit's `lock_system_clipboard`).
+    pub fn egui_clipboard() -> egui_winit::clipboard::Clipboard {
+        // SAFETY: no display handle to keep alive: on Windows egui's clipboard is arboard's.
+        unsafe { egui_winit::clipboard::Clipboard::new(None) }
+    }
+
+    mod tests {
+        use super::*;
+
+        /// #629, #1103: why MDM's reads and writes of the clipboard, egui's copy and paste
+        /// among them, take one lock (main.rs `clipboard_lock`). Opened without a window, as
+        /// arboard opens it, the clipboard lets a second thread of the process in while the
+        /// first still has it open, and the second's close closes it under the first: a read
+        /// still under way then works on data the clipboard has let go of, and the heap is
+        /// corrupted (STATUS_HEAP_CORRUPTION, on the "clipboard read" thread).
+        #[test]
+        fn two_threads_open_the_clipboard_at_once_without_a_window() {
+            in_private_clipboard(
+                "win32::private_clipboard::tests::two_threads_open_the_clipboard_at_once_without_a_window",
+                |clip| {
+                    let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
+                    while !open_without_window() {
+                        assert!(std::time::Instant::now() < until, "never opened");
+                        std::thread::sleep(std::time::Duration::from_millis(10));
+                    }
+                    let (opened, closed) = std::thread::scope(|s| {
+                        s.spawn(|| {
+                            clip.join();
+                            let opened = open_without_window();
+                            (opened, opened && close())
+                        })
+                        .join()
+                        .unwrap()
+                    });
+                    assert!(opened, "Windows kept the second thread out");
+                    assert!(closed, "the second closes it");
+                    assert!(!close(), "the first's was still open");
+                },
+            );
+        }
+    }
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 pub fn end_process(pid: u32) -> bool {
     use windows_sys::Win32::Foundation::CloseHandle;
@@ -5473,7 +6282,11 @@ pub fn browsers() -> Vec<(String, std::path::PathBuf)> {
 
 /// Open `url` in the browser whose program is `program` (from `browsers`).
 pub fn open_in(program: &std::path::Path, url: &str) {
-    let _ = std::process::Command::new(program).arg(url).spawn();
+    let program = program.to_owned();
+    let url = url.to_owned();
+    crate::launch::spawn("open browser", move || {
+        let _ = std::process::Command::new(program).arg(url).spawn();
+    });
 }
 
 /// Windows' Group Policy "Do not preserve zone information in file attachments" (#813), as
@@ -5563,34 +6376,88 @@ pub fn rename_no_replace(from: &std::path::Path, to: &std::path::Path) -> std::i
     }
 }
 
-/// Where browser integration stands: a browser looking for the native host (Chrome's key,
-/// which Chromium browsers read; Firefox's) finds a manifest that exists, for this user or for
-/// everyone, naming a helper program that is there (Options → General → Test browser
-/// integration).
+/// What each browser's registry entries for the native host lead to: the user's (HKCU) and the
+/// computer's (HKLM), for every key the browsers read (`mdm_ipc::browsers::WINDOWS_HOST_KEYS`).
+fn host_holders() -> Vec<(
+    Option<mdm_ipc::browsers::Holder>,
+    Option<mdm_ipc::browsers::Holder>,
+)> {
+    use mdm_ipc::browsers::{HOST_NAME, Holder, WINDOWS_HOST_KEYS, registered_manifest};
+    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
+    WINDOWS_HOST_KEYS
+        .iter()
+        .map(|(key, _)| {
+            let entry = format!(r"{key}\{HOST_NAME}");
+            let holder = |root| {
+                reg_string_in(root, &entry, "").map(|v| Holder::of(&registered_manifest(&v)))
+            };
+            (holder(HKEY_CURRENT_USER), holder(HKEY_LOCAL_MACHINE))
+        })
+        .collect()
+}
+
+/// Where browser integration stands: what a browser looking for the native host finds, for
+/// every key the browsers read: the user's entry (HKCU), or without one the computer's (HKLM),
+/// as the browsers read them (Chromium's launch_context_win.cc). One naming a manifest that is
+/// gone (a copy run from inside a zip, #818) or a helper program that isn't there is the
+/// problem, whatever the others say (Options → General → Test browser integration).
 pub fn host_registration() -> crate::extension::Registration {
     use crate::extension::Registration;
-    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
-    let mut broken = None;
-    for key in [
-        r"Software\Google\Chrome\NativeMessagingHosts\com.misterdownloadmanager.host",
-        r"Software\Mozilla\NativeMessagingHosts\com.misterdownloadmanager.host",
-    ] {
-        for root in [HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE] {
-            let Some(manifest) = reg_string_in(root, key, "") else {
-                continue;
-            };
-            let manifest = std::path::PathBuf::from(manifest.trim().trim_matches('"'));
-            if !manifest.is_file() {
-                continue;
-            }
-            match mdm_ipc::browsers::manifest_program(&manifest) {
-                Some(p) if p.is_file() => return Registration::Ready,
-                Some(p) => broken = broken.or(Some(p)),
-                None => {}
-            }
+    use mdm_ipc::browsers::Holder;
+    let mut ready = false;
+    let mut dead = None;
+    for (user, machine) in host_holders() {
+        match user.or(machine) {
+            Some(Holder::Alive(_)) => ready = true,
+            Some(gone) => dead = dead.or(Some(gone)),
+            None => {}
         }
     }
-    broken.map_or(Registration::Missing, Registration::HelperMissing)
+    match dead {
+        Some(Holder::ManifestGone(manifest)) => Registration::Gone(manifest),
+        Some(Holder::ProgramGone(program)) => Registration::HelperMissing(program),
+        _ if ready => Registration::Ready,
+        _ => Registration::Missing,
+    }
+}
+
+/// At each start, on a thread of its own (#818): when a browser's registration leads nowhere
+/// (`mdm_ipc::browsers::windows_repair`: its manifest or helper gone, such as a copy run from
+/// inside a zip whose temporary folder was deleted), the native host's `--repair` points it at
+/// this copy, for this user. Nothing runs while every one works or there is none: one that works
+/// naming another copy is that copy's, and none is the setup's box unticked.
+pub fn repair_browsers() {
+    use mdm_ipc::browsers::{Repair, windows_repair};
+    let started = std::thread::Builder::new()
+        .name("repair-browsers".into())
+        .spawn(|| {
+            let needed = host_holders().iter().any(|(user, machine)| {
+                windows_repair(user.as_ref(), machine.as_ref()) != Repair::Keep
+            });
+            if !needed {
+                return;
+            }
+            let result = std::env::current_exe()
+                .map_err(|e| e.to_string())
+                .and_then(|exe| {
+                    crate::extension::run_host(
+                        &exe.with_file_name("misterdownloadmanager-nmhost.exe"),
+                        "--repair",
+                        crate::extension::SET_UP_LIMIT,
+                    )
+                });
+            crate::extension::registered_as(&result);
+        });
+    if let Err(e) = started {
+        tracing::warn!("browser integration: not repaired, no thread for it: {e}");
+    }
+}
+
+/// `cmd` runs without a console window of its own (the native host is a console program).
+pub fn no_console(cmd: &mut std::process::Command) {
+    use std::os::windows::process::CommandExt;
+    // CREATE_NO_WINDOW
+    cmd.creation_flags(0x0800_0000);
 }
 
 /// Options → Sites Logins' passwords, encrypted for this Windows account (DPAPI) before the list
@@ -5897,10 +6764,12 @@ pub fn open_power_options() {
         return;
     }
     use std::os::windows::process::CommandExt;
-    let _ = std::process::Command::new("control.exe")
-        .arg("powercfg.cpl,,3")
-        .creation_flags(0x0800_0000)
-        .spawn();
+    crate::launch::spawn("power options", move || {
+        let _ = std::process::Command::new("control.exe")
+            .arg("powercfg.cpl,,3")
+            .creation_flags(0x0800_0000)
+            .spawn();
+    });
 }
 
 /// A change to the wake timer, and where its result goes.
@@ -6084,8 +6953,9 @@ pub fn text_rasterizer(
 }
 
 /// Does [`text_rasterizer`] draw this character? One code point that needs no shaping: Latin,
-/// Greek and Cyrillic letters, digits and punctuation. Scripts whose letters change shape (Arabic,
-/// Indic, ...) and the invisible marks are left to egui and its shaper; so are the brackets of a
+/// Greek and Cyrillic letters, digits and punctuation, and the CJK characters whose face comes
+/// from the interface language's script font. Scripts whose letters change shape (Arabic, Indic,
+/// ...) and the invisible marks are left to egui and its shaper; so are the brackets of a
 /// right-to-left line, which the shaper mirrors.
 fn classic_char(c: char, rtl: bool) -> bool {
     if rtl
@@ -6106,7 +6976,7 @@ fn classic_char(c: char, rtl: bool) -> bool {
         | '\u{2010}'..='\u{2027}' // dashes, quotes, bullets, ellipsis
         | '\u{2030}'..='\u{205E}' // per mille, primes, guillemets
         | '\u{20A0}'..='\u{20BF}' // currency
-    )
+    ) || crate::theme::cjk_script(c).is_some()
 }
 
 /// The font file of a family `theme.rs` sets up (Segoe UI leads the two built-in ones).
@@ -6130,7 +7000,8 @@ mod classic_text {
     use egui::epaint::text::{GlyphBitmap, GlyphRasterizerRequest, RasterizedGlyph};
     use egui::epaint::{Color32, ColorImage};
     use windows::Win32::Graphics::DirectWrite::{
-        DWRITE_FACTORY_TYPE_SHARED, DWRITE_FONT_FACE_TYPE_TRUETYPE, DWRITE_FONT_METRICS,
+        DWRITE_FACTORY_TYPE_SHARED, DWRITE_FONT_FACE_TYPE_TRUETYPE,
+        DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION, DWRITE_FONT_METRICS,
         DWRITE_FONT_SIMULATIONS_NONE, DWRITE_GLYPH_METRICS, DWRITE_GLYPH_OFFSET, DWRITE_GLYPH_RUN,
         DWRITE_GRID_FIT_MODE_ENABLED, DWRITE_MEASURING_MODE_GDI_CLASSIC,
         DWRITE_MEASURING_MODE_NATURAL, DWRITE_RENDERING_MODE_GDI_CLASSIC,
@@ -6182,7 +7053,12 @@ mod classic_text {
                             .ok()?;
                         factory
                             .CreateFontFace(
-                                DWRITE_FONT_FACE_TYPE_TRUETYPE,
+                                // A .ttc holds a collection: face 0 is its regular face.
+                                if file.to_ascii_lowercase().ends_with(".ttc") {
+                                    DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION
+                                } else {
+                                    DWRITE_FONT_FACE_TYPE_TRUETYPE
+                                },
                                 &[Some(font)],
                                 0,
                                 DWRITE_FONT_SIMULATIONS_NONE,
@@ -6191,6 +7067,41 @@ mod classic_text {
                     }
                 })
                 .clone()
+        }
+
+        /// The face and glyph id for `ch`: the family's own face for the scripts it draws, or the
+        /// interface language's CJK face for Chinese, Japanese and Korean text. None when no face
+        /// has a glyph for it: egui and its shaper draw it instead.
+        fn lookup(
+            &mut self,
+            family: &egui::FontFamily,
+            ch: char,
+        ) -> Option<(IDWriteFontFace, u16, DWRITE_FONT_METRICS)> {
+            let files: Vec<&'static str> = if crate::theme::cjk_script(ch).is_some() {
+                crate::theme::cjk_font_files(ch)
+            } else {
+                super::classic_font_file(family).into_iter().collect()
+            };
+            for file in files {
+                let Some(face) = self.face(file) else {
+                    continue;
+                };
+                let mut id = 0u16;
+                // SAFETY: the pointer is to one element, the count given.
+                if unsafe { face.GetGlyphIndices(&(ch as u32), 1, &mut id) }.is_err() {
+                    continue;
+                }
+                if id == 0 {
+                    continue;
+                }
+                let mut font = DWRITE_FONT_METRICS::default();
+                // SAFETY: the pointer is to one element.
+                unsafe {
+                    face.GetMetrics(&mut font);
+                }
+                return Some((face, id, font));
+            }
+            None
         }
 
         pub fn glyph(
@@ -6207,22 +7118,16 @@ mod classic_text {
             if req.font_size_px.is_nan() || req.font_size_px < 1.0 {
                 return None;
             }
-            let face = self.face(super::classic_font_file(req.family)?)?;
+            let (face, id, font) = self.lookup(req.family, ch)?;
             // GDI's sizes are whole pixels; the natural look keeps the size it is asked for.
             let em = if smooth {
                 req.font_size_px
             } else {
                 req.font_size_px.round()
             };
-            let mut id = 0u16;
             let mut metrics = DWRITE_GLYPH_METRICS::default();
-            let mut font = DWRITE_FONT_METRICS::default();
             // SAFETY: each pointer is to one element, the count given.
             unsafe {
-                face.GetGlyphIndices(&(ch as u32), 1, &mut id).ok()?;
-                if id == 0 {
-                    return None;
-                }
                 if smooth {
                     face.GetDesignGlyphMetrics(&id, 1, &mut metrics, false)
                         .ok()?;
@@ -6239,7 +7144,6 @@ mod classic_text {
                     )
                     .ok()?;
                 }
-                face.GetMetrics(&mut font);
             }
             let advance = metrics.advanceWidth as f32 * em / f32::from(font.designUnitsPerEm);
             // Smooth: the font's own width, as egui lays a line out by it (and places each letter
@@ -6590,6 +7494,119 @@ mod classic_text_tests {
         }
     }
 
+    /// #837: Chinese, Japanese and Korean characters are drawn by the same rasterizer as the
+    /// Latin beside them, at whole-pixel widths in the classic look. Fractional interface sizes
+    /// (110 %, 115 %…) round to a whole em instead of blurring the CJK fallback.
+    #[test]
+    fn cjk_letters_are_drawn_with_whole_pixel_advances() {
+        let mut g = glyphs();
+        let dir = std::env::var_os("WINDIR")
+            .map(|w| std::path::PathBuf::from(w).join("Fonts"))
+            .unwrap();
+        for ch in ['中', '文', '語', 'か', '한', '，', '。'] {
+            // A computer without that script's font (a CI image with no CJK fonts) draws it
+            // through egui's provider, if at all: nothing to check here.
+            if !crate::theme::cjk_font_files(ch)
+                .iter()
+                .any(|f| dir.join(f).exists())
+            {
+                eprintln!("no font for {ch}, not checked");
+                continue;
+            }
+            for size in [11.0, 12.0, 13.2] {
+                let text = ch.to_string();
+                let glyph = g
+                    .glyph(&req(&text, &FontFamily::Proportional, size), false, false)
+                    .unwrap_or_else(|| panic!("{ch} at {size} not drawn"));
+                assert_eq!(glyph.advance_px.fract(), 0.0, "{ch} at {size}");
+                assert!(glyph.advance_px >= 1.0, "{ch} at {size}");
+                assert!(glyph.bitmap.image.size[0] > 0, "{ch} at {size}: no bitmap");
+            }
+        }
+    }
+
+    /// #837: a mark that a shaper must place with its base, and every multi-codepoint cluster,
+    /// stay with egui.
+    #[test]
+    fn cjk_marks_and_clusters_stay_with_egui() {
+        let mut g = glyphs();
+        let f = FontFamily::Proportional;
+        for not in [
+            "\u{302A}",         // combining left tone mark
+            "\u{3099}",         // combining voiced sound mark
+            "\u{304B}\u{3099}", // か + voiced mark
+            "\u{4E2D}\u{302A}", // 中 + tone mark
+        ] {
+            assert!(
+                g.glyph(&req(not, &f, 12.0), false, false).is_none(),
+                "{not:?}"
+            );
+        }
+    }
+
+    /// #837: the boundaries of the ranges the rasterizer takes, and the ones a shaper must keep
+    /// (conjoining Jamo, combining marks, halfwidth sound marks).
+    #[test]
+    fn cjk_script_boundaries() {
+        use crate::theme::cjk_script;
+        for not in [
+            '\u{1100}',
+            '\u{11FF}',
+            '\u{A960}',
+            '\u{A97F}',
+            '\u{D7B0}',
+            '\u{D7FF}',
+            '\u{302A}',
+            '\u{302F}',
+            '\u{3099}',
+            '\u{309A}',
+            '\u{FF9E}',
+            '\u{FF9F}',
+            '\u{2000}',
+            '\u{1FFFF}',
+            '\u{40000}',
+        ] {
+            assert_eq!(cjk_script(not), None, "U+{:04X}", not as u32);
+        }
+        for c in ['\u{3040}', '\u{30FF}', '\u{FF9D}'] {
+            assert_eq!(cjk_script(c), Some("japanese"), "U+{:04X}", c as u32);
+        }
+        for c in ['\u{3130}', '\u{318F}', '\u{AC00}', '\u{D7A3}'] {
+            assert_eq!(cjk_script(c), Some("hangul"), "U+{:04X}", c as u32);
+        }
+        for c in ['\u{4E00}', '\u{9FFF}', '\u{20000}', '\u{3FFFF}'] {
+            assert_eq!(cjk_script(c), Some("han"), "U+{:04X}", c as u32);
+        }
+    }
+
+    /// #837: the interface language's own face leads its Han text; kana and Hangul keep their
+    /// script's face whatever the interface language. A language parameter, so no global race.
+    #[test]
+    fn cjk_faces_follow_the_interface_language() {
+        use crate::theme::cjk_font_files_for;
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "zh-hans")[0], "msyh.ttc");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "zh-hant")[0], "msjh.ttc");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "ja")[0], "YuGothM.ttc");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "ko")[0], "malgun.ttf");
+        assert_eq!(cjk_font_files_for('\u{4E2D}', "en")[0], "msyh.ttc");
+        assert_eq!(cjk_font_files_for('\u{304B}', "ko")[0], "YuGothM.ttc");
+        assert_eq!(cjk_font_files_for('\u{D55C}', "zh-hans")[0], "malgun.ttf");
+    }
+
+    /// #837: a supplementary Han character no face has returns to egui instead of drawing tofu.
+    #[test]
+    fn an_unassigned_supplementary_han_falls_back_to_egui() {
+        let mut g = glyphs();
+        assert!(
+            g.glyph(
+                &req("\u{3FFFF}", &FontFamily::Proportional, 12.0),
+                false,
+                false
+            )
+            .is_none()
+        );
+    }
+
     /// The smooth look keeps the font's own width and draws more levels of grey than the
     /// classic one, whose letters are fitted to whole pixels.
     #[test]
@@ -6647,5 +7664,94 @@ mod classic_text_tests {
         // A family it isn't told about stays with egui.
         let other = FontFamily::Name("other".into());
         assert!(g.glyph(&req("a", &other, 12.0), false, false).is_none());
+    }
+}
+
+/// Global shortcut registration via Win32 `RegisterHotKey` on a dedicated message-queue thread (#558).
+pub struct GlobalHotKeyOs {
+    thread_id: std::sync::Arc<std::sync::atomic::AtomicU32>,
+    stop: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    handle: Option<std::thread::JoinHandle<()>>,
+}
+
+impl GlobalHotKeyOs {
+    pub fn register(
+        shortcut: crate::hotkey::Shortcut,
+        fired: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        taken: std::sync::Arc<std::sync::atomic::AtomicBool>,
+        ctx: egui::Context,
+    ) -> Option<Self> {
+        use std::sync::Arc;
+        use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+        use windows_sys::Win32::System::Threading::GetCurrentThreadId;
+        use windows_sys::Win32::UI::Input::KeyboardAndMouse::{RegisterHotKey, UnregisterHotKey};
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            GetMessageW, MSG, PM_NOREMOVE, PeekMessageW, WM_HOTKEY,
+        };
+
+        let thread_id = Arc::new(AtomicU32::new(0));
+        let stop = Arc::new(AtomicBool::new(false));
+        let tid_clone = thread_id.clone();
+        let stop_clone = stop.clone();
+        let vk = shortcut.key.win32_vk();
+        let mods = shortcut.win32_modifiers();
+        let handle = std::thread::Builder::new()
+            .name("mdm-global-hotkey".into())
+            .spawn(move || {
+                // SAFETY: creates the thread's message queue (`PeekMessageW` with `PM_NOREMOVE`)
+                // before publishing `thread_id`, so `PostThreadMessageW(WM_QUIT)` from `Drop`
+                // never targets a thread without a queue; clears `thread_id` if `RegisterHotKey`
+                // fails or when the message loop ends.
+                unsafe {
+                    let mut msg: MSG = zeroed();
+                    PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_NOREMOVE);
+                    tid_clone.store(GetCurrentThreadId(), Ordering::SeqCst);
+                    if stop_clone.load(Ordering::SeqCst) {
+                        tid_clone.store(0, Ordering::SeqCst);
+                        return;
+                    }
+                    if RegisterHotKey(std::ptr::null_mut(), 1, mods, vk) == 0 {
+                        tid_clone.store(0, Ordering::SeqCst);
+                        taken.store(true, Ordering::SeqCst);
+                        ctx.request_ui_pass(egui::ViewportId::ROOT);
+                        ctx.request_repaint();
+                        return;
+                    }
+                    while GetMessageW(&mut msg, std::ptr::null_mut(), 0, 0) > 0 {
+                        if msg.message == WM_HOTKEY {
+                            fired.store(true, Ordering::SeqCst);
+                            ctx.request_ui_pass(egui::ViewportId::ROOT);
+                            ctx.request_repaint();
+                        }
+                    }
+                    let _ = UnregisterHotKey(std::ptr::null_mut(), 1);
+                    tid_clone.store(0, Ordering::SeqCst);
+                }
+            })
+            .ok()?;
+        Some(Self {
+            thread_id,
+            stop,
+            handle: Some(handle),
+        })
+    }
+}
+
+impl Drop for GlobalHotKeyOs {
+    fn drop(&mut self) {
+        use std::sync::atomic::Ordering;
+        use windows_sys::Win32::UI::WindowsAndMessaging::{PostThreadMessageW, WM_QUIT};
+
+        self.stop.store(true, Ordering::SeqCst);
+        let tid = self.thread_id.swap(0, Ordering::SeqCst);
+        if tid != 0 {
+            // SAFETY: posts `WM_QUIT` to our own hotkey listener thread whose message queue exists.
+            unsafe {
+                let _ = PostThreadMessageW(tid, WM_QUIT, 0, 0);
+            }
+        }
+        if let Some(h) = self.handle.take() {
+            let _ = h.join();
+        }
     }
 }

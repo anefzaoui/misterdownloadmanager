@@ -2,22 +2,87 @@
 //! monitor writes the minidump, reads it with the example's own debug info, and the report names
 //! the function where it happened.
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::time::{Duration, Instant};
 
+/// crashy's program name.
+const CRASHY: &str = if cfg!(windows) {
+    "crashy.exe"
+} else {
+    "crashy"
+};
+
+/// examples/crashy, which `cargo test -p mdm-crash` builds with the tests, from `test`, this
+/// test's program. Cargo copies it to the profile's folder (target/debug/examples), which holds
+/// the test's program too: in deps/ up to Cargo 1.99, in build/mdm-crash/<hash>/out/ from Cargo
+/// 1.100 (#934). With a build folder of its own (Cargo's `build-dir`) that copy is in the target
+/// folder only; crashy's own program is then beside the test's, in
+/// build/mdm-crash/<another hash>/out/ (the newest, if there are several).
+fn find_crashy(test: &Path) -> Option<PathBuf> {
+    let copied = test
+        .ancestors()
+        .map(|dir| dir.join("examples").join(CRASHY))
+        .find(|p| p.is_file());
+    copied.or_else(|| {
+        let built = test.parent()?.parent()?.parent()?;
+        std::fs::read_dir(built)
+            .ok()?
+            .flatten()
+            .map(|d| d.path().join("out").join(CRASHY))
+            .filter_map(|p| Some((p.metadata().ok()?.modified().ok()?, p)))
+            .max()
+            .map(|(_, p)| p)
+    })
+}
+
 fn crashy() -> PathBuf {
-    // target/<profile>/deps/e2e-… → target/<profile>/examples/crashy
-    let mut p = std::env::current_exe().unwrap();
-    p.pop();
-    p.pop();
-    p.push("examples");
-    p.push(if cfg!(windows) {
-        "crashy.exe"
-    } else {
-        "crashy"
-    });
-    p
+    let test = std::env::current_exe().unwrap();
+    find_crashy(&test).unwrap_or_else(|| {
+        panic!(
+            "examples/crashy is built with the tests (cargo test -p mdm-crash); none found from {}",
+            test.display()
+        )
+    })
+}
+
+/// #934: crashy is found where each Cargo puts it, whichever Cargo runs this.
+#[test]
+fn crashy_is_found_in_each_layout() {
+    let root = tempfile::tempdir().unwrap();
+    let file = |rel: &str| {
+        let p = root.path().join(rel);
+        std::fs::create_dir_all(p.parent().unwrap()).unwrap();
+        std::fs::write(&p, b"").unwrap();
+        p
+    };
+    let crashy = |dir: &str| root.path().join(dir).join(CRASHY);
+    // Cargo 1.99 and before.
+    let test = file("old/debug/deps/e2e-1a2b");
+    file(&format!("old/debug/examples/{CRASHY}"));
+    assert_eq!(find_crashy(&test), Some(crashy("old/debug/examples")));
+    // Cargo 1.100: the copy in examples/ first.
+    let test = file("new/debug/build/mdm-crash/1a2b/out/e2e-1a2b");
+    file(&format!("new/debug/build/mdm-crash/3c4d/out/{CRASHY}"));
+    file(&format!("new/debug/examples/{CRASHY}"));
+    assert_eq!(find_crashy(&test), Some(crashy("new/debug/examples")));
+    // A build folder of its own: the newest beside the test.
+    let test = file("build/debug/build/mdm-crash/1a2b/out/e2e-1a2b");
+    let old = file(&format!("build/debug/build/mdm-crash/5e6f/out/{CRASHY}"));
+    let earlier = std::time::SystemTime::now() - Duration::from_secs(3600);
+    std::fs::File::options()
+        .write(true)
+        .open(&old)
+        .unwrap()
+        .set_modified(earlier)
+        .unwrap();
+    file(&format!("build/debug/build/mdm-crash/3c4d/out/{CRASHY}"));
+    assert_eq!(
+        find_crashy(&test),
+        Some(crashy("build/debug/build/mdm-crash/3c4d/out"))
+    );
+    // None at all: said, not a wrong path.
+    assert_eq!(find_crashy(&file("none/debug/deps/e2e-1a2b")), None);
 }
 
 /// Run crashy in `mode` and wait (up to 90 s: reading the dump's symbols takes a while in a
@@ -59,13 +124,28 @@ fn report(mode: &str) -> String {
     }
 }
 
+/// The report names the functions from the program's own debug info where that is read: x86-64
+/// and ARM64 (analyze.rs). A 32-bit program's report has their addresses until the release's
+/// symbols are fetched; it is still written, with its signature.
+const NAMED: bool = cfg!(any(target_arch = "x86_64", target_arch = "aarch64"));
+
+/// The signature `want` where functions are named, else one of the same kind.
+fn signed(r: &str, want: &str) -> bool {
+    if NAMED {
+        r.contains(want)
+    } else {
+        // "Signature: freeze …": the kind, wherever the addresses lead.
+        r.contains(want.split(" in ").next().unwrap_or(want))
+    }
+}
+
 #[test]
 fn a_freeze_reports_the_frozen_function() {
     let r = report("freeze");
     assert!(r.contains("The window stopped responding"), "{r}");
-    assert!(r.contains("crashy_frozen_here"), "{r}");
+    assert!(!NAMED || r.contains("crashy_frozen_here"), "{r}");
     assert!(
-        r.contains("Signature: freeze in crashy::crashy_frozen_here"),
+        signed(&r, "Signature: freeze in crashy::crashy_frozen_here"),
         "{r}"
     );
 }
@@ -75,7 +155,7 @@ fn a_panic_reports_its_message_and_function() {
     let r = report("panic");
     assert!(r.contains("crashy: a test panic"), "{r}");
     assert!(
-        r.contains("Signature: panic in crashy::crashy_panics_here"),
+        signed(&r, "Signature: panic in crashy::crashy_panics_here"),
         "{r}"
     );
 }
@@ -85,7 +165,7 @@ fn a_native_crash_reports_where_it_crashed() {
     let r = report("crash");
     assert!(r.contains("Description: MDM crashed"), "{r}");
     assert!(
-        r.contains("Signature: crash in crashy::crashy_crashes_here"),
+        signed(&r, "Signature: crash in crashy::crashy_crashes_here"),
         "{r}"
     );
 }

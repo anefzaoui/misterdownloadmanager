@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Auch die {n} Datei von der Festplatte löschen|Auch die {n} Dateien von der Festplatte löschen
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Eine unbekannte Website möchte {n} Link an den Link-Grabber senden.|Eine unbekannte Website möchte {n} Links an den Link-Grabber senden.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -133,6 +138,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} Tracker: {peers}|{n} Tracker: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} möchte {n} Link an den Link-Grabber senden.|{site} möchte {n} Links an den Link-Grabber senden.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -204,6 +214,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z- und RAR-Archive werden mit 7-Zip ({path}) entpackt.
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	7z- und RAR-Archive werden mit HatchZip ({path}) entpackt.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -280,6 +294,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	ca. {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	Click'n'Load von Webseiten annehmen (Port 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -435,6 +453,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	Afghanistan
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	Nach einigen falschen Passwörtern sperrt der Dienst diese Verbindung für einige Minuten.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -464,11 +486,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	Alle vom Uploader
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	Zulassen
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	Mehr als {n} Verbindungen zulassen
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Lassen Sie nur Seiten zu, die Sie nutzen. Nichts wird nachgeschlagen oder heruntergeladen, bevor Sie es im Link-Grabber hinzufügen.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	wird bereits heruntergeladen: {path}
@@ -691,6 +721,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	Bhutan
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	Blockieren
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -961,6 +995,20 @@
 #. verb: clears this filter
 #, machine
 	Clear	Löschen
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
+	Click'n'Load	Click'n'Load
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load kann nicht starten: Ein anderes Programm (JDownloader?) verwendet Port {port}. Schließen Sie es und schalten Sie Click'n'Load in den Optionen aus und wieder ein.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load kann nicht starten: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -1357,6 +1405,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	Download-Bedienfelder
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	Download-Fortschrittsdialog
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -1651,6 +1703,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	Archive nach Abschluss des Downloads extrahieren
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	Mit HatchZip vor Ort entpacken (hatchzip.dev, nicht installiert)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	Mit HatchZip vor Ort entpacken: nur die Dateien brauchen Platz
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -2040,6 +2100,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Modem nach Abschluss auflegen
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip hat es vor Ort entpackt: Das Archiv wurde entfernt, während seine Dateien herauskamen
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2264,6 +2328,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	sie benötigt ein Kennwort
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	Es wurde mittendrin angehalten. Die bisher entpackten Dateien liegen in {folder}, der Rest ist noch im Archiv: „Extrahieren“ setzt fort
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2285,6 +2353,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	Italien
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	die Dateien wurden entpackt, aber das Verschieben brach ab ({error}). Die verschobenen liegen in {to}, die übrigen noch in {left}; nichts wurde gelöscht
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2752,6 +2825,10 @@
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager ist auf einen internen Fehler gestoßen
 #. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake (Windows' power requests, Linux's inhibitors)
+#, machine
+	Mister Download Manager is downloading	Mister Download Manager lädt herunter
+#. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -3143,6 +3220,10 @@
 #. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	Noch nicht installiert
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	Nicht nachgeschlagen
 #. button in helpers.rs
 #, machine
 	Not now	Nicht jetzt
@@ -3344,6 +3425,10 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Optionen nach Abschluss
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	Oder den API-Schlüssel einer Anwendung einfügen:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -4021,6 +4106,9 @@
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Dialogfeld „Download abgeschlossen“ anzeigen
+#. checkbox in the Options window
+#, machine
+	Show download progress dialog when a download starts	Download-Fortschrittsdialog anzeigen, wenn ein Download startet
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4053,6 +4141,10 @@
 #, machine
 	Sierra Leone	Sierra Leone
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	Anmelden
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Im Browser anmelden
@@ -4068,6 +4160,10 @@
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	Anmeldeinformationen und Passwörter werden im Windows-Anmeldeinformations-Manager gespeichert.
+#. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	Angemeldet ({state})
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4477,6 +4573,10 @@
 #, machine
 	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	Der Browser-Proxy (eine VPN- oder Proxy-Erweiterung) fordert eine Anmeldung an, die nur diese Erweiterung besitzt: Verwenden Sie die eigene VPN-App oder wählen Sie den Netzwerkadapter in „Optionen → Proxy / Socks“ aus.
 #. text in extension.rs
+#. a check of Test browser integration: the browsers are pointed at a copy of MDM that was deleted (often one started from inside a zip); that copy's folder shows on the line under it
+#, machine
+	The browsers are set up for a copy that is gone:	Die Browser sind für eine Kopie eingerichtet, die nicht mehr vorhanden ist:
+#. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Die Browser können Mister Download Manager finden
@@ -4578,6 +4678,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	Das Laufwerk oder die Netzwerkfreigabe ist nicht mehr verfügbar.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	Die ausgelassenen Einträge liegen noch in {folder}
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	Die Erweiterung ist bereits in dieser App enthalten. Apple hat dieses Build nicht notariell beglaubigt, daher sind diese Schritte nötig, damit Safari sie zulässt.
@@ -4715,6 +4819,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	Der Server hat einen unerwarteten Teil der Datei gesendet ({detail}).
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	der Dienst sagt nicht, ob es Premium ist
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4739,6 +4847,38 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Die Bot-Überprüfung der Website (Cloudflare) hat yt-dlp abgelehnt. Wenn die Seite in Ihrem Browser geöffnet wird, wählen Sie diesen Browser unter „Optionen → Website-Anmeldungen → Cookies für Videoseiten“ aus und rufen Sie die Seite erneut auf, oder verwenden Sie die Schaltfläche „Video herunterladen“ über dem Video.
+#. text in errors.rs
+#. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+#, machine
+	the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)	Das Sicherheitszertifikat der Website ist abgelaufen, daher kann MDM nicht sicher sein, dass es die echte Website ist (Ihr Browser warnt ebenfalls davor).
+#. text in errors.rs
+#. why a download failed: the site's security certificate was made for other site names than the one in the address
+#, machine
+	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	Das Sicherheitszertifikat der Website ist für einen anderen Domainnamen ausgestellt, daher kann MDM nicht sicher sein, dass es sich um die tatsächliche Website handelt (Ihr Browser warnt ebenfalls davor).
+#. text in errors.rs
+#. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+#, machine
+	the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)	Das Sicherheitszertifikat der Website ist nicht vertrauenswürdig (es ist selbstsigniert oder von einem unbekannten Aussteller), daher kann MDM nicht sicher sein, dass es die echte Website ist (Ihr Browser warnt ebenfalls davor).
+#. text in errors.rs
+#. why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+#, machine
+	the site's security certificate isn't valid yet: check this computer's date and time	Das Sicherheitszertifikat der Website ist noch nicht gültig: Überprüfen Sie Datum und Uhrzeit dieses Computers.
+#. text in errors.rs
+#. why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+#, machine
+	the site's security certificate was refused, so MDM can't be sure it's the real site	Das Sicherheitszertifikat der Website wurde abgelehnt, daher kann MDM nicht sicher sein, dass es die echte Website ist.
+#. text in errors.rs
+#. why a download failed: the issuer of the site's security certificate took it back
+#, machine
+	the site's security certificate was revoked by its issuer, so MDM won't trust it	Das Sicherheitszertifikat der Website wurde vom Aussteller widerrufen, daher wird MDM ihm nicht vertrauen.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Das Zertifikat der Website wird weder von yt-dlp noch von diesem Computer als vertrauenswürdig eingestuft: Möglicherweise blockiert der Webfilter eines Antivirenprogramms oder ein Proxy, der HTTPS-Verbindungen liest, die Verbindung. Deaktivieren Sie die HTTPS-Überprüfung oder fügen Sie das Zertifikat des Programms zu den Zertifikaten des Computers hinzu, und rufen Sie die Seite dann erneut auf.
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	Das Sicherheitszertifikat der Website ist nicht für Websites ausgestellt, daher kann MDM nicht sicher sein, dass es sich um die echte Website handelt
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4796,6 +4936,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	Es gibt bereits eine Warteschlange mit diesem Namen
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	laut HatchZip ist nicht genug freier Platz für seine Dateien; nichts wurde verändert
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Diese Einstellungen sind nicht verfügbar, wenn „Dialog „Download abgeschlossen“ anzeigen“ aktiviert ist
@@ -4835,6 +4979,10 @@
 #. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
 #, machine
 	This computer only (127.0.0.1)	Nur dieser Computer (127.0.0.1)
+#. text in extension.rs
+#. a check of Test browser integration: MDM was started from inside a zip (or from the temporary folder), which is deleted after it quits, so it can't be connected to the browsers
+#, machine
+	This copy runs from a temporary folder that will be deleted	Diese Kopie wird aus einem temporären Ordner ausgeführt, der gelöscht wird
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -5301,6 +5449,10 @@
 #. column title: the user name
 #, machine
 	User	Benutzer
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	Benutzername:
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	Benutzernamen und Passwörter für Server/Websites
@@ -5452,6 +5604,9 @@
 #. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
 #, machine
 	When	Wann
+#. text in the Options window
+#, machine
+	When it is off, downloads go on in the main window's list. Double-click one there to see its progress.	Wenn diese Option deaktiviert ist, werden Downloads in der Liste des Hauptfensters fortgesetzt. Doppelklicken Sie dort auf einen Download, um dessen Fortschritt anzuzeigen.
 #. text in the Batch download window
 #, machine
 	Wildcard size	Platzhaltergröße
@@ -6132,6 +6287,10 @@ extension	Help	Hilfe
 #, machine
 extension	Hide on this video	Auf diesem Video ausblenden
 #. text in the browser extension
+#. Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden
+#, machine
+extension	Hide the download button in full screen	Download-Schaltfläche im Vollbildmodus ausblenden
+#. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
 extension	Hold Alt while clicking a link to let the browser download it.	Halten Sie Alt gedrückt, während Sie auf einen Link klicken, damit der Browser ihn herunterlädt.
@@ -6147,6 +6306,10 @@ extension	It didn't work. Try again.	Es hat nicht funktioniert. Versuchen Sie es
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 #, machine
 extension	It shows no code now: click Pair a device there first.	Es wird jetzt kein Code angezeigt: Klicken Sie dort zuerst auf „Gerät koppeln“.
+#. text in the browser extension
+#. why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it
+#, machine
+extension	It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.	Es ist ein Torrent, und „Magnet-Links und .torrent-Dateien mit Mister Download Manager öffnen“ ist in den Torrent-Einstellungen deaktiviert.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -6377,6 +6540,10 @@ extension	This page's player streams its video in pieces, so there's no file to 
 #, machine
 extension	Turn on	Aktivieren
 #. text in the browser extension
+#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#, machine
+extension	Undo	Rückgängig
+#. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Aktualisieren Sie Mister Download Manager, um alle Funktionen dieser Erweiterung nutzen zu können
@@ -6392,6 +6559,10 @@ extension	Video	Video
 #. pairing failed: codes tried too fast
 #, machine
 extension	Wait a moment, then try again.	Warten Sie einen Moment, dann versuchen Sie es erneut.
+#. text in the browser extension
+#. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
+#, machine
+extension	While the page is in full screen, its videos show no Download video button	Wenn die Seite im Vollbildmodus ist, wird für Videos keine Download-Schaltfläche angezeigt.
 #. text in the browser extension
 #. pairing failed: the code was wrong
 #, machine
@@ -6509,10 +6680,10 @@ menu	&About Mister Download Manager	Ü&ber Mister Download Manager
 #, machine
 menu	&Add new download	Neue&n Download hinzufügen
 #. menu command in the main window
+#. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Add new download...	&Neuen Download hinzufügen...
+menu	&Automatic	Automa&tisch
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6618,11 +6789,6 @@ menu	&Stop All	Alle &stoppen
 #, machine
 menu	&Stop Download	Download &stoppen
 #. menu command in the main window
-#. View menu: submenu choosing how the text is drawn (smooth or classic)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	&Text	&Text
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Tray icon	&Taskleistensymbol
@@ -6639,6 +6805,21 @@ menu	&Undo	&Rückgängig
 #, machine
 menu	&Video downloads	&Video-Downloads
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	&Wayland
+#. menu command in the main window
+#. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Window system	&Fenstersystem
+#. menu command in the main window
+#. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&X11 (XWayland)	&X11 (XWayland)
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Add &batch download	&Batch-Download hinzufügen
@@ -6647,6 +6828,11 @@ menu	Add &batch download	&Batch-Download hinzufügen
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Add &magnet link...	&Magnet-Link hinzufügen...
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add &new download...	&Neuen Download hinzufügen...
 #. menu command in the main window
 #. View → Theme: picks a theme file or a Base16 or pywal colour scheme, copies it into the themes folder and uses it
 #, machine
@@ -6862,6 +7048,14 @@ menu	Hide drop target	Ablageziel ausblenden
 #, machine
 menu	High contrast	Hoher Kontrast
 #. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are Wayland's now
+#, machine
+menu	In use: Wayland	In Verwendung: Wayland
+#. menu command in the main window
+#. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
+#, machine
+menu	In use: X11 (XWayland)	In Verwendung: X11 (XWayland)
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
 menu	It couldn't start: the log says why	Es konnte nicht gestartet werden: Im Protokoll steht der Grund
@@ -7053,6 +7247,11 @@ menu	Stop Download	Download stoppen
 #, machine
 menu	Support &MDM	MDM &unterstützen
 #. menu command in the main window
+#. View menu: submenu choosing how the text is drawn (smooth or classic)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Te&xt	&Text
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Tell a &friend	Einem &Freund erzählen
@@ -7189,3 +7388,7 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
+	Shortcut to show or hide window:	Tastenkürzel zum Ein-/Ausblenden:
+	Press keys...	Tasten drücken...
+	This shortcut is already in use	Dieses Tastenkürzel wird bereits verwendet
+	Windows and macOS	Windows und macOS

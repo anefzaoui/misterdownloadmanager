@@ -13,8 +13,9 @@ How Mister Download Manager's pieces fit together.
 | `crates/remote` | `mdm-remote` | The remote control (#141): the HTTPS server a paired phone or computer on the local network uses (its page, pairing codes, device tokens, the self-signed certificate); every request becomes an automation API command the app answers |
 | `crates/nmhost` | `mdm-nmhost` | The browser's native messaging host: takes captured downloads from the extension and hands them to the app |
 | `crates/ipc` | `mdm-ipc` | The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host |
-| `crates/debrid` | `mdm-debrid` | Debrid accounts (#44): the services' official APIs (Real-Debrid, AllDebrid, Premiumize, TorBox) turn a file host's link into a direct one the engine downloads |
-| `crates/extract` | `mdm-extract` | Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program |
+| `crates/debrid` | `mdm-debrid` | Debrid accounts (#44): the services' official APIs (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid) turn a file host's link into a direct one the engine downloads |
+| `crates/cnl` | `mdm-cnl` | Click'n'Load 2 (#37): the listener on 127.0.0.1:9666 that reads a link site's posts into packages for Link grabber, with limits on what it takes |
+| `crates/extract` | `mdm-extract` | Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked |
 | `crates/geo` | `mdm-geo` | Where a download's server is (#140): an IP-to-country range table built from DB-IP's Lite data (`tools/geo/build.py`), looked up on this computer only, and the countries' flags |
 | `crates/tools` | `mdm-tools` | Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (`relay.rs`); each runs in a folder it can write, also its TEMP (`workdir.rs`) |
 | `crates/crash` | `mdm-crash` | Crash and freeze reports: the monitor process, out-of-process minidumps, symbolicated stacks, the report's text and the release logs ([crash-reports.md](crash-reports.md)) |
@@ -49,10 +50,12 @@ place; the file's date can follow the server's.
 
 A download's first request (`get`) follows redirects and the pages that lead on to a file by
 themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module
-in `sites/` (Google Drive: `sites/gdrive.rs`): it turns the link into the file's address, reads
-the site's own pages (a confirmation form, an error page) and names its refusals
-(`Error::Refused`), with pure functions tested without a network. The lab server plays such a
-site on its real host names for the end-to-end tests (`labserver/src/drive.rs`).
+in `sites/` (Google Drive: `sites/gdrive.rs`; MediaFire: `sites/mediafire.rs`): it turns the link
+into the file's address, reads the site's own pages (a confirmation form, a download button, an
+error page), names its refusals (`Error::Refused`) and, where the file's addresses expire, the
+page that gives a fresh one (`sites::origin`, asked again when a connection meets an expired
+address), with pure functions tested without a network. The lab server plays such a site on its
+real host names for the end-to-end tests (`labserver/src/drive.rs`, `labserver/src/mediafire.rs`).
 
 FTP and FTPS (`ftp.rs`) go through the same planner, workers and state: a segment is `REST` +
 `RETR` on a control session instead of a ranged `GET`, `SIZE` and `MDTM` stand in for the
@@ -66,11 +69,16 @@ toolbar, key and IPC commands into actions. Each dialog is its own module and re
 `Outcome` (open, closed, done with a value). Windows-only calls are confined to `win32.rs` and
 their Linux and macOS counterparts to `unix.rs` (starting with the session, the browsers' host,
 sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system:
-Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). On Windows, Latin,
-Greek and Cyrillic text is drawn by DirectWrite (`win32.rs`, through egui's glyph rasterizer hook):
+Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). The interface language's
+script fonts load at start; text in another script gets its font the first time it shows: from MDM's
+lists of the system's fonts for each script, then, on Windows and macOS, from the system's own fallback
+(DirectWrite's, CoreText's, through fontique: `egui_system_font_provider`) for what the lists don't
+name; Linux asks fontconfig for any letter. On Windows, Latin,
+Greek, Cyrillic and single-codepoint CJK text is drawn by DirectWrite (`win32.rs`, through egui's glyph rasterizer hook):
 View → Text → Smooth in its natural mode, anti-aliased at the size asked for and placed at quarter
 pixels with the font's own advances; Classic (the default) in GDI-classic mode, so each letter's
-hinted shape and whole-pixel width come together. Other scripts are shaped and drawn by egui.
+hinted shape and whole-pixel width come together. CJK uses the interface language's system face;
+combining marks, multi-codepoint clusters and missing glyphs stay with egui, as do other scripts.
 
 ### Themes
 
@@ -150,6 +158,13 @@ page ──► extension ──native messaging──► mdm-nmhost ──ipc─
 The extension asks the host which file types to take, checks each download against them, and
 cancels the browser's download only after the app has accepted it; otherwise the browser keeps
 it, and the extension says why.
+
+A message to the host is at most 1 MB (`mdm_ipc::MAX_MESSAGE`; the host refuses more, and the
+browser lets a host answer no more than that either). A page's links past it go in parts, each
+measured as the widest browser writes it (`wireSize` in `background.js`) and carrying the page's
+referrer and cookies and its place (`mdm_ipc::LinksPart`); the host hands each over as it comes,
+and the app keeps them (`linkparts.rs`) until the last is in, then opens Link grabber with the
+whole list.
 
 The host serves only MDM's own extension. Its IDs are in one place, `mdm_ipc::extension`
 (`crates/ipc/src/extension.rs`): the unpacked copy's (`UNPACKED_ID`, from the manifest's public

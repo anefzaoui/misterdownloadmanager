@@ -3,7 +3,7 @@
 //! event log. Every engine error is named here, so a new one can't reach the list untranslated.
 //! Data inside a message (status codes, paths, sizes) goes in as isolates (crate::i18n::fmt).
 
-use mdm_engine::{Error, NetKind, Refusal};
+use mdm_engine::{CertProblem, Error, NetKind, Refusal};
 
 use crate::i18n::{fmt, ltr, t};
 
@@ -61,10 +61,7 @@ pub fn describe(e: &Error) -> String {
             &[("path", &ltr(&path.display().to_string()))],
         ),
         Error::DriveGone => t("the drive or network share is no longer available").to_owned(),
-        Error::PathTooLong(path) => fmt(
-            t("the path is too long for Windows: {path}"),
-            &[("path", &ltr(&path.display().to_string()))],
-        ),
+        Error::PathTooLong(path) => path_too_long(path),
         // i18n: why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
         Error::GotWebPage => t(
             "the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM",
@@ -91,6 +88,7 @@ pub fn describe(e: &Error) -> String {
             // i18n: a download's error on a computer (a minimal Linux) without the certificates that secure connections check servers with; "ca-certificates" is the package's name, left as is
             t("this computer has no certificates to check the server with: install the ca-certificates package, then try again").to_owned()
         }
+        Error::Certificate(problem) => certificate(*problem).to_owned(),
         Error::Net { kind, cause } => {
             let what = match kind {
                 NetKind::Connect => t("cannot connect to the server"),
@@ -109,6 +107,77 @@ pub fn describe(e: &Error) -> String {
                 )
             }
         }
+    }
+}
+
+/// Why a download's path is too long (#1102), with the limit that is passed here: Windows'
+/// 259 characters a path while its long paths are off, else a name's 255 (characters on Windows,
+/// bytes on Linux and macOS). The files saved beside it while it downloads count: a part file, a
+/// video's streams and yt-dlp's own.
+fn path_too_long(path: &std::path::Path) -> String {
+    let limits = mdm_engine::naming::Limits::here();
+    let path = ltr(&path.display().to_string());
+    if cfg!(windows) && !mdm_engine::naming::long_paths() {
+        return fmt(
+            // i18n: why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
+            t(
+                "the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})",
+            ),
+            &[("limit", &ltr(&limits.path.to_string())), ("path", &path)],
+        );
+    }
+    let limit = ltr(&limits.name.to_string());
+    if limits.bytes {
+        fmt(
+            // i18n: why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+            t(
+                "the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})",
+            ),
+            &[("limit", &limit), ("path", &path)],
+        )
+    } else {
+        fmt(
+            // i18n: why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+            t(
+                "the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})",
+            ),
+            &[("limit", &limit), ("path", &path)],
+        )
+    }
+}
+
+/// Why the server's certificate was refused (#762), in words a user can act on: a browser
+/// warns about the same, and MDM has no way around it.
+fn certificate(problem: CertProblem) -> &'static str {
+    match problem {
+        // i18n: why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
+        CertProblem::Expired => t(
+            "the site's security certificate has expired, so MDM can't be sure it's the real site (your browser warns about it too)",
+        ),
+        // i18n: why a download failed: the site's security certificate's validity hasn't begun; usually this computer's date or time is wrong
+        CertProblem::NotYetValid => t(
+            "the site's security certificate isn't valid yet: check this computer's date and time",
+        ),
+        // i18n: why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
+        CertProblem::Untrusted => t(
+            "the site's security certificate isn't trusted (it's self-signed or from an unknown issuer), so MDM can't be sure it's the real site (your browser warns about it too)",
+        ),
+        // i18n: why a download failed: the site's security certificate was made for other site names than the one in the address
+        CertProblem::WrongName => t(
+            "the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)",
+        ),
+        CertProblem::Revoked => {
+            // i18n: why a download failed: the issuer of the site's security certificate took it back
+            t("the site's security certificate was revoked by its issuer, so MDM won't trust it")
+        }
+        // i18n: why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+        CertProblem::NotForWebsites => t(
+            "the site's security certificate isn't made for websites, so MDM can't be sure it's the real site",
+        ),
+        // i18n: why a download failed: the site's security certificate was refused for another reason (a bad signature, a broken certificate)
+        CertProblem::Other => t(
+            "the site's security certificate was refused, so MDM can't be sure it's the real site",
+        ),
     }
 }
 
@@ -499,6 +568,44 @@ mod tests {
             os_text("Access is denied. (os error 5)"),
             "Access is denied"
         );
+    }
+
+    /// #1102: a path too long says so, with this system's limit and the path.
+    #[test]
+    fn a_path_too_long_says_the_limit() {
+        let path = std::path::PathBuf::from(format!("{}.mp4", "v".repeat(250)));
+        let said = describe(&Error::PathTooLong(path));
+        let limit = if cfg!(windows) { "259" } else { "255" };
+        assert!(said.contains(limit), "{said}");
+        assert!(said.contains(&"v".repeat(250)), "{said}");
+    }
+
+    /// #762: a refused certificate says it is the certificate, and what is wrong with it.
+    #[test]
+    fn a_refused_certificate_is_named() {
+        use mdm_engine::CertProblem as P;
+        let all = [
+            P::Expired,
+            P::NotYetValid,
+            P::Untrusted,
+            P::WrongName,
+            P::Revoked,
+            P::NotForWebsites,
+            P::Other,
+        ];
+        let said: Vec<String> = all
+            .iter()
+            .map(|p| describe(&Error::Certificate(*p)))
+            .collect();
+        for (p, s) in all.iter().zip(&said) {
+            assert!(s.contains("certificate"), "{p:?}: {s}");
+        }
+        assert!(said[0].contains("expired"));
+        assert!(said[2].contains("self-signed"));
+        assert!(said[3].contains("another site name"));
+        assert!(said[5].contains("isn't made for websites"));
+        let distinct: std::collections::HashSet<_> = said.iter().collect();
+        assert_eq!(distinct.len(), all.len());
     }
 
     /// #816: a helper that couldn't be downloaded names the server and why, and says what to do.

@@ -592,6 +592,17 @@ pub fn show(
             winui::text_width_font(&p, font.clone(), s)
         });
     }
+    // A CJK interface's 12 px headers get a little more room in columns the user hasn't resized
+    // (#837: Korean "Time left" was ellipsized at its Latin-era default width). Applied before
+    // the widths are summed, and only to a width still at its default, so a resize stays.
+    let shown_now = st.shown();
+    widen_cjk_headers(
+        &mut st.widths,
+        &shown_now,
+        crate::i18n::cjk(),
+        st.sort,
+        |c| winui::text_width_font(&p, font.clone(), crate::i18n::tc("column", TITLES[c])),
+    );
 
     // Scroll bars (notes/ui-spec/scrollbars.md), decided like Win32: each one shows when the
     // content overflows the room the other one leaves.
@@ -1291,6 +1302,42 @@ fn fit_width(p: &egui::Painter, font: &egui::FontId, col: usize, rows: &[Row]) -
     }
 }
 
+/// Widen the default-width columns of a CJK interface so each header title fits beside its
+/// filter funnel and, when sorted, the sort arrow (#837). Only a column still at its
+/// [`DEFAULT_WIDTHS`] value is touched: a width the user dragged (or a saved layout with another
+/// width) is theirs, even if that leaves the title ellipsized. After the first widening the width
+/// is no longer the default, so later frames leave it alone and the user can shrink it again.
+fn widen_cjk_headers(
+    widths: &mut [f32; COLS],
+    shown: &[usize],
+    cjk: bool,
+    sort: Option<(usize, bool)>,
+    mut title_width: impl FnMut(usize) -> f32,
+) {
+    if !cjk {
+        return;
+    }
+    for &c in shown {
+        // The queue icon and the source chip have their own fixed widths.
+        if c == 1 || c == SOURCE || (widths[c] - DEFAULT_WIDTHS[c]).abs() >= 0.5 {
+            continue;
+        }
+        // The title's pen is 6 px in and it ends 4 px before the column's inclusive right edge,
+        // one px left of the separator (11 px together); the funnel reserves 14 px (as the
+        // header painter does for a roomy column), the sort arrow another 14.
+        let arrow_room = 14.0
+            + if sort.is_some_and(|(col, _)| col == c) {
+                14.0
+            } else {
+                0.0
+            };
+        let need = (title_width(c) + 11.0 + arrow_room).ceil();
+        if need > widths[c] {
+            widths[c] = need;
+        }
+    }
+}
+
 fn cell_text(col: usize, s: &str) -> String {
     match col {
         0 | 7 => crate::i18n::isolate(s),
@@ -1615,6 +1662,49 @@ mod tests {
                 s
             })
             .collect()
+    }
+
+    #[test]
+    fn cjk_headers_only_widen_untouched_default_columns() {
+        // Korean "Time left" needs 70 px of text at 12 px: 70 + 11 + the funnel's 14.
+        let time_left = |c: usize| if c == 4 { 70.0 } else { 10.0 };
+        let mut widths = DEFAULT_WIDTHS;
+        widen_cjk_headers(&mut widths, &[0, 4], true, None, time_left);
+        assert_eq!(widths[4], 95.0);
+        assert_eq!(
+            widths[0], DEFAULT_WIDTHS[0],
+            "a fitting header keeps its width"
+        );
+
+        // The user dragged the column elsewhere: nothing is forced back.
+        widths[4] = 120.0;
+        widen_cjk_headers(&mut widths, &[4], true, None, time_left);
+        assert_eq!(widths[4], 120.0);
+        widths[4] = 60.0;
+        widen_cjk_headers(&mut widths, &[4], true, None, time_left);
+        assert_eq!(widths[4], 60.0, "a narrowed column is the user's");
+
+        // English keeps every default width.
+        let mut english = DEFAULT_WIDTHS;
+        widen_cjk_headers(
+            &mut english,
+            &(0..COLS).collect::<Vec<_>>(),
+            false,
+            None,
+            |_| 200.0,
+        );
+        assert_eq!(english, DEFAULT_WIDTHS);
+
+        // A sorted column also needs its arrow's 14 px.
+        let mut sorted = DEFAULT_WIDTHS;
+        widen_cjk_headers(&mut sorted, &[4], true, Some((4, true)), time_left);
+        assert_eq!(sorted[4], 109.0);
+
+        // The queue icon and the source chip have fixed widths.
+        let mut fixed = DEFAULT_WIDTHS;
+        widen_cjk_headers(&mut fixed, &[1, SOURCE], true, None, |_| 200.0);
+        assert_eq!(fixed[1], DEFAULT_WIDTHS[1]);
+        assert_eq!(fixed[SOURCE], DEFAULT_WIDTHS[SOURCE]);
     }
 
     #[test]

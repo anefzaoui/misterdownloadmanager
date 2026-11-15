@@ -92,7 +92,10 @@ pub const GPU: Option<Api> = if !cfg!(gpu) {
 
 /// What draws when the user chose nothing (the settings' `renderer: None`): Direct3D on Windows
 /// (#89), OpenGL elsewhere (#206: Vulkan and Metal are choices until real cards have tried them).
-pub const DEFAULT: Api = if cfg!(windows) {
+/// 32-bit Windows draws with OpenGL too: there wgpu's Direct3D 12 can't make egui's pipeline
+/// ("The parameter is incorrect", tried on an NVIDIA card), and the windows MDM opened after
+/// falling back stayed blank.
+pub const DEFAULT: Api = if cfg!(all(windows, not(target_arch = "x86"))) {
     Api::Direct3D
 } else {
     Api::OpenGl
@@ -818,11 +821,174 @@ pub fn test_slow_start() {
 
 /// The start of every main-window pass: the system's API's device checked (see `gpu::poll`).
 /// The pass itself is MDM's own work, not the API's (see [`FirstFrameClock`]).
-pub fn frame_begin() {
+pub fn frame_begin(ctx: &egui::Context) {
+    pace(ctx);
     own_work_begin();
     #[cfg(gpu)]
     gpu::poll();
     stall_test();
+}
+
+/// wgpu presents without waiting for the refresh, and MDM paces its frames (see [`Swaps`]).
+static PACED: AtomicBool = AtomicBool::new(false);
+
+/// OpenGL's windows swap as [`swap_waits`] says, through [`SwapHooks`] (see [`Swaps`]).
+static GL_HOOKED: AtomicBool = AtomicBool::new(false);
+
+/// wgpu presents without waiting for the refresh once MDM paces the frames: its surface takes
+/// the present mode from the app's frame, which the first pass has (none while the app is made).
+pub fn present_unpaced(frame: &mut eframe::Frame) {
+    #[cfg(gpu)]
+    if PACED.load(Ordering::Relaxed)
+        && let Some(mut config) = frame.wgpu_surface_config()
+        && config.present_mode != eframe::wgpu::PresentMode::AutoNoVsync
+    {
+        config.present_mode = eframe::wgpu::PresentMode::AutoNoVsync;
+        frame.set_wgpu_surface_config(config);
+    }
+    #[cfg(not(gpu))]
+    let _ = frame;
+}
+
+/// The shortest time between two frames when MDM paces them: 60 a second, as the screen would.
+const FRAME_PACE: std::time::Duration = std::time::Duration::from_micros(16_667);
+
+/// Which of MDM's windows wait for the screen's refresh when they swap (vsync).
+///
+/// Every window of MDM (the main window, its dialogs, progress windows, menus) draws in one pass
+/// of the main window, each ending with its own swap. Linux on X11 and XWayland, with Mesa
+/// (Intel, AMD, llvmpipe, VMware) as with NVIDIA: with vsync on every window, each swap could
+/// wait for a refresh of its own, so a pass with a dialog and a menu open could take three
+/// refreshes, and a swap to a window the compositor wasn't showing (minimized, covered, behind a
+/// dialog) waited for the compositor's slow timer instead, about a second under XWayland. Under
+/// XWayland with NVIDIA a key typed showed 1 to 2 seconds later (#1025); with Mesa the main
+/// window lagged as it was moved and the download dialog didn't answer clicks, and Mesa's
+/// `vblank_mode=0` (no window waits) made it rare (#347).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Swaps {
+    /// The graphics API's own choice: Windows, macOS, and Wayland (where winit paces the frames
+    /// by the compositor's frame callbacks and eframe never waits in a swap).
+    Own,
+    /// X11 (Xorg): only the main window waits, while it is shown (it doesn't tear, and a pass
+    /// waits one refresh at most); every other window swaps at once. MDM paces the frames
+    /// itself while the main window doesn't wait ([`pace`]).
+    MainOnly,
+    /// XWayland: no window waits, since the compositor may not be showing any one of them (MDM
+    /// can't tell a covered window there), and MDM paces the frames itself. The compositor draws
+    /// every window there, so they don't tear.
+    NoneWait,
+}
+
+/// How MDM's windows swap on this system (see [`Swaps`]).
+fn swaps() -> Swaps {
+    // Linux: X11 and XWayland. Wayland, Windows and macOS keep the graphics API's own choice.
+    #[cfg(target_os = "linux")]
+    if !crate::unix::on_wayland() {
+        return if crate::unix::on_xwayland() {
+            Swaps::NoneWait
+        } else {
+            Swaps::MainOnly
+        };
+    }
+    Swaps::Own
+}
+
+/// Whether a window's next swap waits for the screen's refresh (OpenGL: eframe asks before each
+/// swap, [`SwapHooks`]). `main`: the main window; `shown`: neither minimized nor covered, as far
+/// as the system says; `vsync`: what eframe gave every window.
+fn swap_waits(swaps: Swaps, main: bool, shown: bool, vsync: bool) -> bool {
+    match swaps {
+        Swaps::Own => vsync,
+        Swaps::MainOnly => vsync && main && shown,
+        Swaps::NoneWait => false,
+    }
+}
+
+/// A window is shown unless the system says it's minimized or covered.
+fn shown(info: &egui::ViewportInfo) -> bool {
+    info.visible() != Some(false)
+}
+
+/// OpenGL: each window's swap interval, chosen before each of its swaps ([`swap_waits`]).
+struct SwapHooks(Swaps);
+
+impl eframe::ViewportHooks for SwapHooks {
+    fn swap_waits_for_vsync(
+        &self,
+        viewport: egui::ViewportId,
+        info: &egui::ViewportInfo,
+        vsync: bool,
+    ) -> bool {
+        swap_waits(
+            self.0,
+            viewport == egui::ViewportId::ROOT,
+            shown(info),
+            vsync,
+        )
+    }
+}
+
+/// Once the app is made and its driver is known: whether MDM paces the frames, and the log says
+/// so. OpenGL's windows swap through [`SwapHooks`] (installed by [`configure`]); wgpu's present
+/// mode is one for every window, so none waits on X11 and XWayland, from the first pass
+/// ([`present_unpaced`]).
+fn pacing_known(cc: &eframe::CreationContext<'_>) {
+    let swaps = swaps();
+    if swaps == Swaps::Own {
+        return;
+    }
+    #[cfg(target_os = "linux")]
+    let gl_vendor = cc.gl.as_deref().map(crate::unix::gl_vendor);
+    #[cfg(not(target_os = "linux"))]
+    let gl_vendor: Option<String> = None;
+    #[cfg(gpu)]
+    let gpu_vendor = cc
+        .wgpu_render_state
+        .as_ref()
+        .map(|rs| gpu::vendor_name(&rs.adapter.get_info()));
+    #[cfg(not(gpu))]
+    let gpu_vendor: Option<String> = None;
+    let vendor = gl_vendor.or(gpu_vendor).unwrap_or_default();
+    let gl = cc.gl.is_some();
+    PACED.store(!gl, Ordering::Relaxed);
+    let at_most = (1.0 / FRAME_PACE.as_secs_f64()).round();
+    let system = if swaps == Swaps::NoneWait {
+        "XWayland"
+    } else {
+        "X11"
+    };
+    if gl && swaps == Swaps::MainOnly {
+        tracing::info!(
+            "frame pacing ({vendor}, {system}): only the main window waits for the screen's refresh, while it's shown; while it isn't, MDM spaces the frames itself, {at_most} a second at most"
+        );
+    } else {
+        tracing::info!(
+            "frame pacing ({vendor}, {system}): frames don't wait for the screen's refresh; MDM spaces them itself, {at_most} a second at most"
+        );
+    }
+}
+
+/// While MDM paces the frames: the next waits until [`FRAME_PACE`] has passed since the last
+/// began (a pass only runs when there is something to draw: an idle window waits as before).
+/// With OpenGL, that is while the main window's swap doesn't wait for the refresh.
+fn pace(ctx: &egui::Context) {
+    use std::cell::Cell;
+    use std::time::Instant;
+    thread_local! {
+        static LAST: Cell<Option<Instant>> = const { Cell::new(None) };
+    }
+    let paced = PACED.load(Ordering::Relaxed)
+        || GL_HOOKED.load(Ordering::Relaxed)
+            && !swap_waits(swaps(), true, ctx.input(|i| shown(i.viewport())), true);
+    if !paced {
+        return;
+    }
+    LAST.with(|last| {
+        if let Some(wait) = last.get().and_then(|t| FRAME_PACE.checked_sub(t.elapsed())) {
+            std::thread::sleep(wait);
+        }
+        last.set(Some(Instant::now()));
+    });
 }
 
 /// The first frame was drawn (presented).
@@ -1029,6 +1195,7 @@ pub fn run<A: eframe::App + 'static>(
             Box::new(move |cc| {
                 let make = make.borrow_mut().take().ok_or("the app was already made")?;
                 started(cc, attempt, why_not, gl_checked);
+                pacing_known(cc);
                 // Making the app is MDM's own work, not the API's: off the first frame's clock.
                 own_work_begin();
                 let app = make(cc);
@@ -1079,6 +1246,13 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
         // Not built here (plan() never asks for it).
         #[cfg(not(gpu))]
         Attempt::Gpu(_) => opts.renderer = eframe::Renderer::Glow,
+    }
+    PACED.store(false, Ordering::Relaxed);
+    let swaps = swaps();
+    let hooked = attempt == Attempt::OpenGl && swaps != Swaps::Own;
+    GL_HOOKED.store(hooked, Ordering::Relaxed);
+    if hooked {
+        opts.viewport_hooks = Some(std::sync::Arc::new(SwapHooks(swaps)));
     }
 }
 
@@ -1373,6 +1547,18 @@ mod gpu {
         }
     }
 
+    /// The adapter's vendor and driver as words ("NVIDIA", "radv", "Intel open-source Mesa
+    /// driver"), for the log ([`super::pacing_known`]): NVIDIA's PCI vendor id said by name too.
+    pub fn vendor_name(info: &wgpu::AdapterInfo) -> String {
+        const NVIDIA: u32 = 0x10de;
+        let said = format!("{} {}", info.driver, info.driver_info);
+        if info.vendor == NVIDIA && !said.to_ascii_lowercase().contains("nvidia") {
+            format!("NVIDIA {said}")
+        } else {
+            said
+        }
+    }
+
     pub fn describe(info: &wgpu::AdapterInfo) -> String {
         let mut s = format!("{} on {}", api(), info.name);
         let driver = [&info.driver, &info.driver_info]
@@ -1435,6 +1621,56 @@ fn choose(
 mod tests {
     use super::*;
 
+    /// X11: only the main window waits for the refresh, and only while it's shown; XWayland:
+    /// none (#347, #1025); elsewhere every window keeps what eframe gave it.
+    #[test]
+    fn one_window_at_most_waits_for_the_refresh() {
+        for (main, shown, waits) in [
+            (true, true, true),
+            (true, false, false),
+            (false, true, false),
+            (false, false, false),
+        ] {
+            assert_eq!(swap_waits(Swaps::MainOnly, main, shown, true), waits);
+            assert!(!swap_waits(Swaps::MainOnly, main, shown, false));
+            assert!(!swap_waits(Swaps::NoneWait, main, shown, true));
+            assert!(swap_waits(Swaps::Own, main, shown, true));
+            assert!(!swap_waits(Swaps::Own, main, shown, false));
+        }
+    }
+
+    /// A window is shown unless the system says it's minimized or covered.
+    #[test]
+    fn a_window_is_shown_unless_minimized_or_covered() {
+        let info = |minimized, occluded| egui::ViewportInfo {
+            minimized,
+            occluded,
+            ..Default::default()
+        };
+        assert!(shown(&info(None, None)));
+        assert!(shown(&info(Some(false), None)));
+        assert!(shown(&info(Some(false), Some(false))));
+        assert!(!shown(&info(Some(true), None)));
+        assert!(!shown(&info(None, Some(true))));
+        assert!(!shown(&info(Some(false), Some(true))));
+    }
+
+    /// The hooks eframe asks: the main window is the root viewport.
+    #[test]
+    fn the_hooks_ask_for_the_main_window_by_its_viewport() {
+        use eframe::ViewportHooks as _;
+        let hooks = SwapHooks(Swaps::MainOnly);
+        let info = egui::ViewportInfo::default();
+        assert!(hooks.swap_waits_for_vsync(egui::ViewportId::ROOT, &info, true));
+        let dialog = egui::ViewportId::from_hash_of("dialog");
+        assert!(!hooks.swap_waits_for_vsync(dialog, &info, true));
+        let minimized = egui::ViewportInfo {
+            minimized: Some(true),
+            ..Default::default()
+        };
+        assert!(!hooks.swap_waits_for_vsync(egui::ViewportId::ROOT, &minimized, true));
+    }
+
     #[test]
     fn the_setting_or_an_override_then_the_other_way() {
         let gpu = Attempt::Gpu(Adapters::Hardware);
@@ -1461,9 +1697,10 @@ mod tests {
         let p = plan(Some(api), None, k(true, false, false));
         assert_eq!(p.attempts, [Attempt::OpenGl, any]);
         assert_eq!(p.watched(), WATCH_GL);
-        // Nothing chosen: Direct3D on Windows (#89), OpenGL on Linux and macOS (#206).
+        // Nothing chosen: Direct3D on Windows (#89), OpenGL on Linux, macOS (#206) and 32-bit
+        // Windows.
         let p = plan(None, None, NONE);
-        if cfg!(windows) {
+        if DEFAULT == Api::Direct3D {
             assert_eq!(p.attempts, [gpu, Attempt::OpenGl, soft]);
             assert!(p.watched());
             assert_eq!(
@@ -1472,7 +1709,8 @@ mod tests {
             );
         } else {
             assert_eq!(p.attempts, [Attempt::OpenGl, any]);
-            assert!(!p.watched());
+            // Watched on Windows (32-bit), as OpenGL chosen is.
+            assert_eq!(p.watched(), WATCH_GL);
         }
         // The card's start is watched, and OpenGL's where its failure would send the next start
         // to the software renderer (Windows).
@@ -1554,7 +1792,11 @@ mod tests {
             Attempt::OpenGl,
             Attempt::Gpu(Adapters::Any),
         );
-        for setting in [None, Some(Api::Direct3D)] {
+        // Nothing chosen means Direct3D where it is the default (not on 32-bit Windows).
+        for setting in [Some(Api::Direct3D)]
+            .into_iter()
+            .chain((DEFAULT == Api::Direct3D).then_some(None))
+        {
             // A card with Direct3D 12: as before; OpenGL's start after it is watched too.
             let p = plan(setting, None, NONE);
             assert_eq!(p.attempts, [d3d, gl, warp]);
@@ -1678,7 +1920,11 @@ mod tests {
         let any = Attempt::Gpu(Adapters::Any);
         let warp = Attempt::Gpu(Adapters::Software);
         let gl = Attempt::OpenGl;
-        for setting in [None, Some(Api::Direct3D)] {
+        // Nothing chosen means Direct3D where it is the default (not on 32-bit Windows).
+        for setting in [Some(Api::Direct3D)]
+            .into_iter()
+            .chain((DEFAULT == Api::Direct3D).then_some(None))
+        {
             assert_eq!(plan(setting, None, NONE).attempts, [d3d, gl, warp]);
             assert_eq!(
                 plan(setting, None, k(true, false, false)).attempts,
@@ -1691,7 +1937,9 @@ mod tests {
             [d3d, gl]
         );
         assert_eq!(plan(None, Some("warp"), NONE).attempts, [warp, gl]);
-        assert_eq!(plan(None, Some("vulkan"), NONE).attempts[0], d3d);
+        // Another system's API asked for: the default (OpenGL on 32-bit Windows).
+        let default = if DEFAULT == Api::Direct3D { d3d } else { gl };
+        assert_eq!(plan(None, Some("vulkan"), NONE).attempts[0], default);
         // Its files keep their names.
         if let Some(f) = file(FAILED) {
             assert!(f.ends_with("direct3d-failed.txt"));

@@ -33,6 +33,11 @@ for `https://`. A Linux system without them (a minimal install without the `ca-c
 package) still downloads over plain HTTP and FTP; each secure download then fails at once, saying
 to install that package.
 
+An `https://` site whose certificate is refused (expired, self-signed or from an issuer the system doesn't
+trust, made for another site name) isn't downloaded from: Download File Info, the progress window
+and the list say which of these it is, as a browser warns about the same site. MDM has no way
+around it.
+
 **Logging in.** Write the login in the address (`ftp://user:password@server/folder/file.iso`),
 tick **Use authorization**, or save it in **Options → Sites Logins**. Without one, MDM logs in as
 `anonymous`. The path is relative to the folder the login starts in; to start from the server's
@@ -92,7 +97,7 @@ MDM asks the server for the file's name and size, and shows them in **Download F
 
 - **URL** — the address.
 - **Category** — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. **+** beside it makes a new category.
-- **Save As** — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with **...**.
+- **Save As** — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose the folder and the file name in the system's Save dialog with **...** (a name typed there without an extension keeps the download's).
 - **Remember this path for "…" category** — tick it to make the folder you typed the category's folder from now on.
 - **Description** — a note of your own. It shows in the list's **Description** column and Find can search it.
 - **Server** — where the server is: its country's flag and name, and how long a round trip to it takes. See [Where the server is](connections-and-speed.md#where-the-server-is). It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.
