@@ -21,8 +21,12 @@
 // (Content-Disposition), torrents (a tracker's .torrent stays with the browser
 // while Torrent settings leave torrents alone, #1058), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), sites (a listed
-// site's page linking to a file on another host leaves it to the browser, #1049), opened (a PDF or MP3 the browser would show or play), openedNames
-// (such a video under its server's name, inline or an attachment, #948), spot (the video button
+// site's page linking to a file on another host leaves it to the browser, #1049), manylinks
+// (Download all links on a page of 20,000 long links, in parts, to one Link grabber list), opened
+// (a PDF or MP3 the browser would show or play), openedNames
+// (such a video under its server's name, inline or an attachment, #948), pdfs (a PDF a page shows: at a signed address, typed
+// binary/octet-stream, behind a redirect, in a frame, an embed, an object; one the page's script fetches stays the page's;
+// #1087), spot (the video button
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
 // Instagram's, Reddit's, TikTok's, Vimeo's, Dailymotion's addresses, #689), preview (the video button kept over a hover-to-play
@@ -1568,6 +1572,23 @@ const PANEL_KEPT_MS = 5000 + 1500;
 // Options → General → Download panels, changed as its OK does: the settings saved in
 // downloads.json, which the host reads at each question. Changed with the app stopped, so its own
 // next save doesn't put them back.
+// The extension holding Options' excluded sites with localhost in them or not (it asks them
+// again as its popup opens; else only a minute after it last did, at a download): Chromium's rule
+// for the files the browser would open follows them.
+async function localhostListed(t, listed) {
+  const popup = await t.session.tab(`${t.session.base}popup.html`);
+  try {
+    await until(`the extension's excluded sites ${listed ? "with" : "without"} localhost`, 10000, () =>
+      popup
+        .evaluate(`(globalThis.browser ?? chrome).storage.local.get({ rules: null }).then((v) => Boolean(v.rules) && (v.rules.excludedSites || "").split(/\\s+/).includes("localhost") === ${listed})`)
+        .catch(() => false),
+    );
+    await sleep(300);
+  } finally {
+    await popup.close();
+  }
+}
+
 async function panelSettings(change) {
   await stopApp();
   const file = path.join(data, "downloads.json");
@@ -2320,6 +2341,83 @@ const CASES = {
     return "a file on 127.0.0.1 linked from a listed site's page (localhost): the browser's, MDM untouched";
   },
 
+  // Download all links on a page of 20,000 links with long paths (E2E_MANY_LINKS: another
+  // number), about 5 MB of them, past the 1 MB a message to the host may be: sent in parts, they
+  // open in Link grabber as one list, every link once, and nothing opens the help page. Firefox's
+  // right-click menu is opened and its item chosen; Chromium's can't be opened headless, so its
+  // handler is called as the menu calls it.
+  async manylinks(t) {
+    const n = Number(process.env.E2E_MANY_LINKS || 20000);
+    const page = `${LAB}/page?files=${n}&pathlen=200&title=many`;
+    await t.session.navigate(page);
+    const log = path.join(data, "logs", "mdm.log");
+    const from = fs.existsSync(log) ? fs.statSync(log).size : 0;
+    const label = "Download all links with Mister Download Manager";
+    const help = "https://misterdownloadmanager.com/help/browser-help.html";
+    // The tabs open now (the help page's, when the extension explains a failure).
+    const tabs = () =>
+      t.kind === "chromium"
+        ? t.session.inExtension(`chrome.tabs.query({}).then((ts) => ts.map((x) => x.pendingUrl || x.url || ""))`)
+        : t.session.inBrowser(`[...gBrowser.tabs].map((x) => x.linkedBrowser.currentURI.spec || "")`);
+    const started = Date.now();
+    let clicked;
+    if (t.kind === "chromium") {
+      clicked = await t.session.inExtension(`(async () => {
+        const tab = (await chrome.tabs.query({})).find((x) => x.url === ${JSON.stringify(page)});
+        if (!tab) return "no tab";
+        await menuClicked({ menuItemId: "mdm-all", pageUrl: tab.url, frameId: 0 }, tab);
+        const { status } = await chrome.storage.local.get("status");
+        return "called; status " + JSON.stringify(status && status.why) + ", badge " + JSON.stringify(await chrome.action.getBadgeText({}));
+      })()`);
+    } else {
+      const at = await t.session.evaluate(`(() => { const b = document.getElementById("blank").getBoundingClientRect(); return [b.left + 4, b.top + b.height / 2]; })()`);
+      clicked = await t.session.menu(at[0], at[1], label);
+      if (!String(clicked).startsWith("chosen")) throw new Error(`the menu: ${clicked}`);
+    }
+    // E2E_OLD_APP (a released app and its host, which know no parts): each part reaches Link
+    // grabber as a list of its own, and nothing says why (no line in its log): it opens, and no
+    // help page does.
+    if (process.env.E2E_OLD_APP) {
+      if (!WIN) throw new Skip(NO_UIA);
+      const pid = ourApps()[0];
+      const shown = await until("Link grabber", 120000, async () => (await tabs()).some((u) => u.startsWith(help)) ? ["help"] : appWindows(pid).includes("Link grabber") && appWindows(pid));
+      if (shown[0] === "help") throw new Error(`the help page opened: ${(await tabs()).join(", ")} (${clicked})`);
+      await sleep(3000);
+      if ((await tabs()).some((u) => u.startsWith(help))) throw new Error(`the help page opened: ${(await tabs()).join(", ")}`);
+      await stopApp();
+      return `an older app: Link grabber opened (${shown.join(", ")}), no help page in ${((Date.now() - started) / 1000).toFixed(1)} s (${clicked})`;
+    }
+    // The app's line once the list is whole (crates/app/src/linkparts.rs), or the help page.
+    const said = () => (fs.existsSync(log) ? fs.readFileSync(log, "utf8").slice(from) : "");
+    const whole = new RegExp(`a page's (\\d+) links came in (\\d+) parts`);
+    let got = null;
+    try {
+      got = await until("the page's links in MDM", 90000, async () => whole.exec(said()) || ((await tabs()).some((u) => u.startsWith(help)) && "help"));
+    } catch (e) {
+      e.message += ` (${clicked}; tabs: ${(await tabs()).join(", ")})`;
+      throw e;
+    }
+    const open = await tabs();
+    if (got === "help") throw new Error(`the help page opened instead: ${open.filter((u) => u.startsWith(help)).join(", ")} (${clicked})`);
+    const [, links, parts] = got.map(Number);
+    if (links !== n) throw new Error(`${links} links reached MDM, not ${n} (${parts} parts)`);
+    if (parts < 2) throw new Error(`in ${parts} part: the test's list should need more`);
+    const ms = Date.now() - started;
+    let windows = "";
+    if (WIN) {
+      const pid = ourApps()[0];
+      const shown = await until("Link grabber", 20000, () => appWindows(pid).includes("Link grabber") && appWindows(pid));
+      windows = `, windows: ${shown.join(", ")}`;
+      appWindows(pid, "Link grabber");
+    }
+    await sleep(1000);
+    const after = await tabs();
+    if (after.some((u) => u.startsWith(help))) throw new Error(`the help page opened too: ${after.join(", ")}`);
+    // Link grabber looks its links up: stopped with the app (the next case starts another).
+    await stopApp();
+    return `${links} links in ${parts} parts to Link grabber in ${(ms / 1000).toFixed(1)} s${windows}; no help page (${clicked})`;
+  },
+
   // Files the browser would show or play, made downloads, MDM's (Chromium 128+, Firefox): typed
   // into the address bar, the tab stays on its page. A PDF sent with "Content-Disposition:
   // inline; filename=..." (as many servers do), one sent without it, an MP3 sent inline.
@@ -2355,6 +2453,103 @@ const CASES = {
     }
     if (failed.length) throw new Error(`${failed.join(" | ")}${done.length ? ` (taken: ${done.join(", ")})` : ""}`);
     return `taken, the tab stayed: ${[...done, ...left].join(", ")}`;
+  },
+
+  // #1087: a PDF a page shows, as course sites deliver theirs from a CDN: a signed address (a
+  // query string), sent as S3's binary/octet-stream, behind a redirect to another host, in a
+  // frame (of the page's host and of another), an <embed> and an <object>: MDM's, the page
+  // stays. A PDF the page's script fetches and shows itself (its own viewer) stays the page's:
+  // taken, the page would get nothing. A listed site's frame stays the browser's (#1049).
+  async pdfs(t) {
+    if (t.kind === "chromium" && t.session.major < 128) throw new Skip(`${t.name} ${t.session.major}: needs 128 (header conditions)`);
+    // Not the excluded sites a case before listed (the extension asks them only now and then).
+    await localhostListed(t, false);
+    // The page on localhost; the files on 127.0.0.1 (another host, as a CDN is; IDM, when it
+    // runs, leaves 127.0.0.1 alone).
+    const other = `http://localhost:${PORT}`;
+    const pdf = (f, more = "") => `${LAB}/gen/256K/${f}?inline=bare${more}`;
+    const framed = (tag) => (f) => ({ html: tag.replace("SRC", pdf(f)) });
+    const shapes = [
+      ["signed", (f) => ({ nav: pdf(f, "&Expires=1893456000&Signature=abc~def__&Key-Pair-Id=K2JCJMDEHXQW5F") })],
+      ["binary", (f) => ({ nav: pdf(f, "&type=binary/octet-stream") })],
+      ["redirect", (f) => ({ nav: `${other}/redirect?to=${encodeURIComponent(pdf(f))}` })],
+      ["iframe", framed('<iframe src="SRC" width=600 height=400></iframe>')],
+      ["xframe", (f) => ({ page: `${other}/page?link=none`, ...framed('<iframe src="SRC" width=600 height=400></iframe>')(f) })],
+      ["embed", framed('<embed src="SRC" type=application/pdf width=600 height=400>')],
+      ["object", framed('<object data="SRC" type=application/pdf width=600 height=400></object>')],
+    ];
+    const done = [];
+    const failed = [];
+    const clean = () => {
+      for (const f of fs.readdirSync(t.dl)) fs.rmSync(path.join(t.dl, f), { force: true, recursive: true });
+    };
+    for (const [label, make] of shapes) {
+      const file = `e2e-${label}-${t.name}.pdf`;
+      const s = make(file);
+      const page = s.page || `${LAB}/page?link=none`;
+      try {
+        await t.session.navigate(page);
+        if (s.nav) await t.session.navigate(s.nav, { download: true });
+        if (s.html) await t.session.evaluate(`(document.body.insertAdjacentHTML("beforeend", ${JSON.stringify(s.html)}), 1)`);
+        // The usual wait: a busy computer's Chromium has been seen to start such a download 10 s late.
+        await arrived(file, 256 << 10, "Documents");
+        const at = await t.session.evaluate("location.href");
+        if (at !== page) throw new Error(`the tab shows ${at}, not the page it was on`);
+        await keptNothing(t.dl);
+        done.push(label);
+      } catch (e) {
+        const log = (await requests(`/gen/256K/${file}`)).map(brief).join("; ");
+        failed.push(`${label}: ${e.message} [requests: ${log || "none"}; the browser's folder: ${fs.readdirSync(t.dl).join(", ") || "empty"}]`);
+        clean();
+      }
+    }
+    const left = [];
+    // The page's own viewer: it fetches the file and shows what it read (a blob).
+    {
+      const file = `e2e-fetched-${t.name}.pdf`;
+      try {
+        await t.session.navigate(`${LAB}/page?link=none`);
+        const got = await t.session.evaluate(
+          `fetch(${JSON.stringify(pdf(file))}).then((r) => r.blob()).then((b) => { const f = document.createElement("iframe"); f.src = URL.createObjectURL(b); document.body.append(f); return b.size; })`,
+        );
+        if (got !== 256 << 10) throw new Error(`the page read ${got} bytes`);
+        await sleep(3000);
+        const item = (await mdmList()).find((d) => d.file === file);
+        if (item) throw new Error(`MDM took it: ${item.status} ${item.path}`);
+        const all = await requests(`/gen/256K/${file}`);
+        if (all.length !== 1) throw new Error(`${all.length} requests (only the page's expected): ${all.map(brief).join("; ")}`);
+        await keptNothing(t.dl);
+        left.push("one the page fetched: the page's");
+      } catch (e) {
+        failed.push(`fetched: ${e.message}`);
+        clean();
+      }
+    }
+    // A listed site's frame (#1049): the browser shows it, MDM untouched.
+    {
+      const file = `e2e-listed-${t.name}.pdf`;
+      const saved = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^﻿/, ""));
+      const was = saved.settings.excluded_sites;
+      await panelSettings({ excluded_sites: "localhost" });
+      try {
+        await localhostListed(t, true);
+        await t.session.navigate(`${other}/page?link=none`);
+        await t.session.evaluate(`(document.body.insertAdjacentHTML("beforeend", ${JSON.stringify(`<iframe src="${pdf(file)}" width=600 height=400></iframe>`)}), 1)`);
+        await sleep(4000);
+        const item = (await mdmList()).find((d) => d.file === file);
+        if (item) throw new Error(`MDM took it: ${item.status} ${item.path}`);
+        await keptNothing(t.dl);
+        left.push("a listed site's frame: shown by the browser");
+      } catch (e) {
+        failed.push(`listed: ${e.message} [requests: ${(await requests(`/gen/256K/${file}`)).map(brief).join("; ") || "none"}]`);
+        clean();
+      } finally {
+        await panelSettings({ excluded_sites: was });
+        await localhostListed(t, false);
+      }
+    }
+    if (failed.length) throw new Error(`${failed.join(" | ")}${done.length ? ` (taken: ${done.join(", ")})` : ""}`);
+    return `taken, the page stayed: ${done.join(", ")}; ${left.join("; ")}`;
   },
 
   // #948: such a file under the server's own name, not its address's (`main.mp4`, `main.mkv`): one

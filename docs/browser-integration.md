@@ -102,7 +102,9 @@ Files MDM downloads from the browser are marked as coming from the internet, as 
 
 ## Files the browser would open
 
-A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in **Options → File types** (not on the excluded sites). To turn this off, untick **Also take files the browser would open** in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.
+A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in **Options → File types** (not on the excluded sites). That's one you open from a link or the address bar, and one a page shows in a frame, as many course and document sites show their PDFs. To turn this off, untick **Also take files the browser would open** in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.
+
+A page with a PDF viewer of its own (its own page numbers, zoom and buttons, while the address bar keeps the page's address) reads the file itself and draws it. MDM leaves that file to the page: if MDM took it, the page would get nothing and say the document failed to load. To download such a file, open its address in a tab of its own, or use the page's own download button if it has one.
 
 ## The toolbar button
 
@@ -175,7 +177,7 @@ browser closes.
 
 Right-click a link, a video, a sound or a picture and choose **Download with Mister Download Manager**. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the **Download video** window with the stream its player loaded (HLS or DASH), as the [button over videos](#the-download-button-over-videos) sends it, with your cookies for the stream's server and what the browser sent with the stream (its referrer and origin, else the page as the referrer).
 
-Select part of a page and right-click it for **Download selected links with Mister Download Manager**, or right-click the page for **Download all links with Mister Download Manager**: the links open in **[Link grabber](link-grabber.md)**, sorted into packages, where you tick the ones you want.
+Select part of a page and right-click it for **Download selected links with Mister Download Manager**, or right-click the page for **Download all links with Mister Download Manager**: the links open in **[Link grabber](link-grabber.md)**, sorted into packages, where you tick the ones you want. A page with tens of thousands of links works too: the extension sends a long list in parts, and Link grabber shows it once they are all in.
 
 If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.
 

@@ -699,6 +699,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    name's real Content-Type (.pdf application/pdf, .mp3 audio/mpeg, .mp4
                    video/mp4, ...): a browser displays or plays it
     inline=bare    the real Content-Type and no Content-Disposition at all
+    type=MIME      that Content-Type instead (none: no Content-Type at all)
+    Expires= Signature= Key-Pair-Id= Policy=   ignored: a CloudFront signed address's own keys
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
     uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
                    with a link= of its own)
@@ -758,6 +760,12 @@ GET /rss/dir.xml   the .torrent files in --rss-dir, newest first, linked to /rss
 PAGES  for the browser extension's tests (tools/extension/e2e.mjs); styles and scripts are files
 GET /page?<any of>
     link=PATH      <a id=link href=PATH>download</a>; again for more (#link2, #link3...)
+    files=N        N more links (up to 200000) in <ul id=files>, after <p id=blank>, a line without
+                   a link: to /gen/1K files, as a big page gives Link grabber: two in five a split
+                   archive's volumes (setK.part1.rar, setK.part2.rar), the others fileK.zip,
+                   clipK.mp4, docK.pdf
+    pathlen=L      with files: /gen/1K/<folder>/fileK.zip?seed=K instead, each path L characters
+                   long, its folder's name made that long
     video=PATH|1   <video id=video controls> 640x360 (1: /gen/1M/clip.mp4?inline=1, also shown
                    when nothing else is asked for, or with muted_loop, iframe or shadow)
     w=PX h=PX      the videos' size
@@ -767,9 +775,6 @@ GET /page?<any of>
     iframe=1       the video inside <iframe id=frame> (a /page of its own)
     shadow=1       the video inside the open shadow root of <div id=host> (declarative)
     several=N      N more videos #video1..N, each with its own <source> /gen/1M/clipK.mp4?seed=K
-    files=N        N links (at most 50000) to /gen/1K files, as a big page gives Link grabber:
-                   two in five a split archive's volumes (setK.part1.rar, setK.part2.rar), the
-                   others fileK.zip, clipK.mp4, docK.pdf
     audio=PATH|1   <audio id=audio controls> (1: /gen/512K/sound.mp3?inline=1)
     hls=1, dash=1, drm=1   a <video> and /assets/stream.js for each (#player, then #player2,
                    #player3), which fetches /hls/master.m3u8, /dash/manifest.mpd or
@@ -1727,6 +1732,8 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
             // A page's own keys for a server's program (`script`): they change nothing here.
             "link" | "id" | "file" | "filename" | "token" => {}
+            // A CloudFront signed address's own keys (#1087): they change nothing here.
+            "Expires" | "Signature" | "Key-Pair-Id" | "Policy" => {}
             "type" => out.content_type = name(&k, v)?,
             "magic" => {
                 out.magic =
@@ -1901,6 +1908,13 @@ mod tests {
         assert!(content_disposition(&split_query("inline=bare").unwrap(), Some("a.pdf")).is_none());
         assert!(split_query("inline=maybe").is_err());
         assert!(split_query("cd=a%0Ab").is_err());
+        // A CloudFront signed address's keys (#1087) change nothing; a type is sent as asked.
+        let q = split_query(
+            "inline=bare&type=binary/octet-stream&Expires=1&Signature=a~b&Key-Pair-Id=K",
+        )
+        .unwrap();
+        assert_eq!(q.content_type.as_deref(), Some("binary/octet-stream"));
+        assert_eq!(q.faults, Faults::default());
         assert_eq!(mime_type("A.PDF"), "application/pdf");
         assert_eq!(mime_type("x.mp3"), "audio/mpeg");
         assert_eq!(mime_type("noext"), "application/octet-stream");
