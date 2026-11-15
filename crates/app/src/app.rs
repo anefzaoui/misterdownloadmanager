@@ -11320,7 +11320,9 @@ impl Drop for App {
 }
 
 /// How long the session's end may take ([`App::end_session`]): Windows lists a program that
-/// takes 5 s over it as one that keeps the computer from shutting down.
+/// takes 5 s over it as one that keeps the computer from shutting down. Windows only so far
+/// (main.rs says what Linux and macOS do).
+#[cfg(windows)]
 const SESSION_END: Duration = Duration::from_millis(4000);
 
 /// What of [`SESSION_END`] is kept for writing the list, after the downloads' last saves.
@@ -11334,6 +11336,7 @@ impl App {
     /// MDM through the Restart Manager; `win32::on_session_end`): what an Exit does at its end,
     /// now, within [`SESSION_END`], on the window's thread between two frames. Nobody is there to
     /// answer a question: nothing is asked. The process ends right after (main.rs).
+    #[cfg(windows)]
     pub fn end_session(&mut self) {
         tracing::info!("the session is ending: stopping the downloads and saving the list");
         self.exiting = true;
@@ -11343,6 +11346,7 @@ impl App {
     /// The tray icon goes, as at an Exit: when only MDM is closed (the Restart Manager) and the
     /// session goes on, it would stay in the notification area until the pointer passed over it.
     /// Last, once all is saved: the shell may be slow to answer (#747).
+    #[cfg(windows)]
     pub fn take_down_tray(&mut self) {
         self.tray = None;
     }
