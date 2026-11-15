@@ -604,6 +604,10 @@ These ship in the next version.
 - ✅ A gallery of tens of thousands of files already in its folder no longer seems to hang: its
   files are listed in time linear in their number
   ([#1142](https://github.com/anefzaoui/misterdownloadmanager/issues/1142))
+- ✅ The notification-area icon is sharp beside the others: it is the hand-made picture of the
+  size the taskbar draws it at (16 px at 100 %, 24 at 150 %, 32 at 200 %), drawn again when the
+  display's scale changes, instead of the 256 px one Windows shrank
+  ([#1161](https://github.com/anefzaoui/misterdownloadmanager/issues/1161))
 - ✅ Tests: the checks that a long list is read in linear time, which still failed now and then on
   a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
   long a run), take each side's fastest of several runs, and fail at three times as long (a square
