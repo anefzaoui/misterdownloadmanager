@@ -570,6 +570,19 @@ pub struct Item {
     pub(crate) written_files: Option<Vec<PathBuf>>,
 }
 
+/// Adds `more` to a download's `written_files`, each path once, in order. A gallery lists up to
+/// 100 000 files: each told from those listed at once, not searched for among them (time
+/// squared, on the window's thread).
+fn add_written(list: &mut Vec<PathBuf>, more: Vec<PathBuf>) {
+    let mut listed: std::collections::HashSet<PathBuf> = list.iter().cloned().collect();
+    for p in more {
+        if !listed.contains(&p) {
+            listed.insert(p.clone());
+            list.push(p);
+        }
+    }
+}
+
 /// Files saved by `yt-dlp` or `gallery-dl` waiting for Mark-of-the-Web after deferred rename.
 #[derive(Clone, Debug)]
 pub(crate) struct PendingMark {
@@ -1140,12 +1153,7 @@ impl Item {
                     }) = &self.live
                 {
                     let known = job.known_files();
-                    let list = self.written_files.get_or_insert_with(Vec::new);
-                    for p in known {
-                        if !list.contains(&p) {
-                            list.push(p);
-                        }
-                    }
+                    add_written(self.written_files.get_or_insert_with(Vec::new), known);
                     if matches!(url.scheme(), "http" | "https") {
                         self.pending_mark = Some(PendingMark {
                             main_file: None,
@@ -1165,12 +1173,7 @@ impl Item {
                         self.preexisting_folder = true;
                     }
                     let saved = r.saved_files();
-                    let list = self.written_files.get_or_insert_with(Vec::new);
-                    for p in saved {
-                        if !list.contains(&p) {
-                            list.push(p);
-                        }
-                    }
+                    add_written(self.written_files.get_or_insert_with(Vec::new), saved);
                 }
                 for n in &notices {
                     self.note(n.clone());
@@ -1760,6 +1763,27 @@ mod size_tests {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A finished gallery's files join its written files in time linear in them, each once.
+    #[test]
+    fn written_files_join_in_linear_time() {
+        let paths = |from: usize, n: usize| -> Vec<PathBuf> {
+            (from..from + n)
+                .map(|i| PathBuf::from(format!("/gallery/image-{i:09}.jpg")))
+                .collect()
+        };
+        mdm_labserver::growth::assert_linear(
+            2_000,
+            |n| (paths(0, n / 2), paths(n / 4, n)),
+            |(mut list, more)| {
+                add_written(&mut list, more);
+                list.len()
+            },
+        );
+        let mut list = paths(0, 3);
+        add_written(&mut list, paths(2, 3));
+        assert_eq!(list, paths(0, 5));
+    }
 
     fn video_item(size: Option<u64>, downloaded: u64, status: Status) -> Item {
         let url = Url::parse("https://example.org/a.mp4").unwrap();

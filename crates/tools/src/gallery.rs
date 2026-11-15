@@ -16,6 +16,7 @@
 //! headers of its own, a sign-in). A gallery-dl too old to list them (before 1.32) downloads them all
 //! itself, as before.
 
+use std::collections::HashSet;
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
@@ -287,10 +288,24 @@ struct Shared {
     there: u64,
     /// The files saved this run (at most `KEEP_PATHS`).
     files: Vec<PathBuf>,
-    /// Every file gallery-dl reported for this gallery (`Saved` + `There`, at most `KEEP_PATHS`).
+    /// Every file gallery-dl reported for this gallery (`Saved` + `There`, at most `KEEP_PATHS`),
+    /// each once, in the order reported.
     known: Vec<PathBuf>,
+    /// `known`'s paths, to tell one already listed at once: a gallery's lines number up to
+    /// `KEEP_PATHS`, so searching `known` for each would take time squared, with the lock held.
+    known_set: HashSet<PathBuf>,
     /// The files MDM's engine saved this run (#769), counted among gallery-dl's `There`.
     by_engine: u64,
+}
+
+impl Shared {
+    /// Lists `p` among `known`, once.
+    fn know(&mut self, p: PathBuf) {
+        if self.known.len() < KEEP_PATHS && !self.known_set.contains(&p) {
+            self.known_set.insert(p.clone());
+            self.known.push(p);
+        }
+    }
 }
 
 /// MDM's engine for a gallery's files (#769).
@@ -740,15 +755,11 @@ fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
                 if sh.files.len() < KEEP_PATHS {
                     sh.files.push(p.clone());
                 }
-                if sh.known.len() < KEEP_PATHS {
-                    sh.known.push(p);
-                }
+                sh.know(p);
             }
             Line::There(p) => {
                 sh.there += 1;
-                if sh.known.len() < KEEP_PATHS && !sh.known.contains(&p) {
-                    sh.known.push(p);
-                }
+                sh.know(p);
             }
         }
         let secs = started.elapsed().as_secs_f64().max(0.5);
@@ -808,6 +819,50 @@ fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBu
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A gallery whose files are all there already (every file MDM's engine saved comes back so,
+    /// #769) is read in time linear in its files: each line's path is told from those listed at
+    /// once, not searched for among them, with the lock `progress` waits on held.
+    #[test]
+    fn a_gallery_already_there_is_read_in_linear_time() {
+        let lines = |n: usize| {
+            let mut text = String::new();
+            for i in 0..n {
+                text.push_str(&format!(
+                    "# /gallery/image-{i:09}.jpg
+"
+                ));
+            }
+            text.into_bytes()
+        };
+        mdm_labserver::growth::assert_linear(2_000, lines, |text| {
+            let shared = Mutex::new(Shared::default());
+            read(&text[..], &shared);
+            let sh = shared.into_inner().unwrap();
+            assert_eq!(sh.there as usize, sh.known.len());
+            sh.known.len()
+        });
+        // Each path listed once, in the order reported, a file saved as well as there included.
+        let shared = Mutex::new(Shared::default());
+        let saved = std::env::temp_dir().join("mdm-gallery-known-once.jpg");
+        let text = format!(
+            "# /g/a.jpg
+# /g/b.jpg
+# /g/a.jpg
+{}
+{}
+",
+            saved.display(),
+            saved.display()
+        );
+        read(text.as_bytes(), &shared);
+        let sh = shared.into_inner().unwrap();
+        assert_eq!((sh.there, sh.saved), (3, 2));
+        assert_eq!(
+            sh.known,
+            [PathBuf::from("/g/a.jpg"), PathBuf::from("/g/b.jpg"), saved]
+        );
+    }
 
     const SUMS: &[u8] = include_bytes!("../tests/fixtures/gallery-dl-SHA256SUMS");
     const SIG: &[u8] = include_bytes!("../tests/fixtures/gallery-dl-SHA256SUMS.sig");
