@@ -628,8 +628,10 @@ mod tests {
     /// #629, #1103 on Windows' real clipboard, a private one (win32.rs `private_clipboard`: the
     /// person's is neither read nor written): MDM's reads (the clipboard monitor's, Add URL's) and
     /// writes, and egui's paste and copy in a text box, all at once from their threads for two
-    /// seconds. Every read finds a whole text that was copied, and the heap stays whole: without
-    /// the one lock they share, the process ended with STATUS_HEAP_CORRUPTION. Windows only:
+    /// seconds, and on until the reads have found a text and Copy… has written one a hundred
+    /// times each (a busy machine does less in two seconds). Every read finds a whole text that
+    /// was copied, and the heap stays whole: without the one lock they share, the process ended
+    /// with STATUS_HEAP_CORRUPTION. Windows only:
     /// Linux and macOS have no window stations, and arboard keeps their clipboard on its own
     /// thread there.
     #[cfg(windows)]
@@ -650,16 +652,39 @@ mod tests {
                     "x".to_owned(),
                 ];
                 assert!(super::set_clipboard(&texts[0]));
-                let until = std::time::Instant::now() + std::time::Duration::from_secs(2);
-                let (reads, found) = (AtomicU32::new(0), AtomicU32::new(0));
+                // At least this long, all at once, and until each kind has done enough.
+                const MIN: std::time::Duration = std::time::Duration::from_secs(2);
+                const ENOUGH: u32 = 100;
+                // A deadlock breaker, never the time the check is about.
+                const STUCK: std::time::Duration = std::time::Duration::from_secs(120);
+                let (reads, found, writes) =
+                    (AtomicU32::new(0), AtomicU32::new(0), AtomicU32::new(0));
+                let all = std::sync::Barrier::new(6);
+                let start = std::sync::OnceLock::new();
+                let done = || {
+                    let start: &std::time::Instant = start.get_or_init(std::time::Instant::now);
+                    let elapsed = start.elapsed();
+                    assert!(
+                        elapsed < STUCK,
+                        "{} reads found a text, {} writes, in {elapsed:?}",
+                        found.load(Ordering::Relaxed),
+                        writes.load(Ordering::Relaxed)
+                    );
+                    elapsed >= MIN
+                        && found.load(Ordering::Relaxed) > ENOUGH
+                        && writes.load(Ordering::Relaxed) > ENOUGH
+                };
                 std::thread::scope(|s| {
                     for who in 0..6 {
-                        let (texts, reads, found) = (&texts, &reads, &found);
+                        let (texts, reads, found, writes) = (&texts, &reads, &found, &writes);
+                        let (all, done) = (&all, &done);
                         s.spawn(move || {
                             clip.join();
                             let mut egui = egui_clipboard();
                             let mut i = who;
-                            while std::time::Instant::now() < until {
+                            // Every thread on the clipboard before any starts.
+                            all.wait();
+                            while !done() {
                                 i += 1;
                                 let text = &texts[i % texts.len()];
                                 let got = match who {
@@ -671,7 +696,18 @@ mod tests {
                                     2 | 3 => egui.get(),
                                     // Copy… in a menu.
                                     4 => {
-                                        assert!(super::set_clipboard(text));
+                                        // A write gives up only once it has waited its time
+                                        // for the others (#418): never for anything else.
+                                        let t = std::time::Instant::now();
+                                        if super::set_clipboard(text) {
+                                            writes.fetch_add(1, Ordering::Relaxed);
+                                        } else {
+                                            assert!(
+                                                t.elapsed() >= super::CLIPBOARD_WAIT,
+                                                "a write failed after {:?}",
+                                                t.elapsed()
+                                            );
+                                        }
                                         continue;
                                     }
                                     // A text box's copy.
@@ -691,8 +727,9 @@ mod tests {
                 });
                 assert!(process_heap_is_whole(), "the heap is corrupted");
                 let (reads, found) = (reads.into_inner(), found.into_inner());
-                println!("{reads} reads, {found} found a text");
-                assert!(found > 100, "{found} of {reads} reads found a text");
+                let writes = writes.into_inner();
+                println!("{reads} reads, {found} found a text, {writes} writes");
+                assert!(found > ENOUGH, "{found} of {reads} reads found a text");
             },
         );
     }

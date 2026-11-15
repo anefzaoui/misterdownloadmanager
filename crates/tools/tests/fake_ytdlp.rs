@@ -39,6 +39,7 @@ fn main() -> ExitCode {
         preloaded_checks(&me);
         engine_checks(&me);
         long_name_checks(&me);
+        saved_checks(&me);
         live_checks(&me);
         println!("fake_ytdlp: ok");
         return ExitCode::SUCCESS;
@@ -605,6 +606,69 @@ fn download_as(
     (p, files, out)
 }
 
+/// #1103: the saved video is shown to `saved` (the app's mark that it came from the internet) on
+/// the job's own thread before the job says it is done, and a disk slow to take the mark keeps
+/// only that thread waiting: the progress, which the window reads every frame, answers at once.
+fn saved_checks(me: &Path) {
+    use std::sync::{Arc, Mutex};
+    let tools = tempfile::tempdir().unwrap();
+    let out = tempfile::tempdir().unwrap();
+    std::fs::write(out.path().join("mode.txt"), "").unwrap();
+    let exe = fake_in(me, tools.path());
+    // Each file shown, and when the hook returned; it takes 2 s, as a busy disk did (#1103: 8 s).
+    let shown: Arc<Mutex<Vec<(PathBuf, Instant)>>> = Arc::default();
+    let hook = {
+        let shown = shown.clone();
+        mdm_engine::FileHook::new(move |p: &Path| {
+            std::thread::sleep(Duration::from_secs(2));
+            shown.lock().unwrap().push((p.to_owned(), Instant::now()));
+        })
+    };
+    let job = VideoJob::start_with(
+        &exe,
+        "https://video.example/talk",
+        "b",
+        out.path(),
+        "Talk",
+        None,
+        None,
+        None,
+        &Default::default(),
+        &Subs::default(),
+        None,
+        None,
+        Some(hook),
+    )
+    .expect("started");
+    let end = Instant::now() + Duration::from_secs(120);
+    let mut slowest = Duration::ZERO;
+    let (p, done_at) = loop {
+        let asked = Instant::now();
+        let p = job.progress();
+        slowest = slowest.max(asked.elapsed());
+        if p.state != State::Running {
+            break (p, Instant::now());
+        }
+        assert!(Instant::now() < end, "still running: {p:?}");
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    let State::Done(file) = &p.state else {
+        panic!("not done: {:?}", p.state)
+    };
+    let shown = shown.lock().unwrap().clone();
+    assert_eq!(shown.len(), 1, "{shown:?}");
+    assert_eq!(&shown[0].0, file, "the saved file is the one marked");
+    assert!(
+        shown[0].1 <= done_at,
+        "marked before it was said to be done"
+    );
+    assert!(
+        slowest < Duration::from_millis(500),
+        "the progress waited {slowest:?} for the mark"
+    );
+    println!("saved_checks: marked before done; the slowest look at the progress took {slowest:?}");
+}
+
 fn log_of(p: &mdm_tools::video::Progress) -> Vec<String> {
     p.events.iter().map(|(_, t)| t.clone()).collect()
 }
@@ -800,6 +864,7 @@ fn preloaded_checks(me: &Path) {
             &Default::default(),
             &Subs::default(),
             preloaded,
+            None,
             None,
         )
         .expect("started");
