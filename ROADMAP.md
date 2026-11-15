@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A crash while checking for updates on some computers; a check that goes wrong says why
+  ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
 - ✅ An RSS feed's failed first fetch leaves its backlog a backlog, and an empty search feed still
   gets its episode as news
 - ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
