@@ -562,6 +562,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ No more **The window stopped responding** report in the first minutes after MDM starts with
+  the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
+  lasts past the first three minutes)
+  (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
 - ✅ A malformed stream playlist no longer stops the video downloader: that download fails and
   says why ([#1141](https://github.com/anefzaoui/misterdownloadmanager/issues/1141))
 - ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →
@@ -585,6 +589,18 @@ These ship in the next version.
   completion happens beside the window (for [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
 - ✅ A crash while checking for updates on some computers; a check that goes wrong says why
   ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
+- ✅ Torrents: trackers at addresses that can't be on the internet are skipped
+- ✅ Declared videos: script text inside a script is not read as a declaration
+- ✅ Reading a page's text stops at the right closing tag
+- ✅ Torrents with a file and a folder of the same name are refused cleanly
+- ✅ Archive volumes with unusual letters in their names no longer close MDM
+- ✅ A damaged progress file no longer miscounts a download's size
+- ✅ An RSS feed's failed first fetch leaves its backlog a backlog, and an empty search feed still
+  gets its episode as news
+- ✅ An excluded site is the same site written with the root's dot (`example.com.`), in the app
+  and the extension
+- ✅ Proxy auto-config follows the address a script was given, and an https address's path stays
+  out of the script
 - ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
   the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
   busy" (a file written while another test started a program was still open there for writing
@@ -593,6 +609,9 @@ These ship in the next version.
   directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
   and a name or folder too long says so
   ([#1102](https://github.com/anefzaoui/misterdownloadmanager/issues/1102))
+- ✅ A gallery of tens of thousands of files already in its folder no longer seems to hang: its
+  files are listed in time linear in their number
+  ([#1142](https://github.com/anefzaoui/misterdownloadmanager/issues/1142))
 - ✅ Tests: the checks that a long list is read in linear time, which still failed now and then on
   a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
   long a run), take each side's fastest of several runs, and fail at three times as long (a square
@@ -839,6 +858,11 @@ These ship in the next version.
   with Direct3D on Windows' own software renderer (WARP) instead, from then on, and **View → Draw
   with** says why; the reporter confirmed WARP draws it right
   ([#835](https://github.com/anefzaoui/misterdownloadmanager/issues/835))
+- ✅ System helper detection on Windows and Unix: yt-dlp, ffmpeg, gallery-dl and JS runtimes
+  (deno, node, quickjs, bun) are discovered across package managers (WinGet, Scoop, Chocolatey,
+  Homebrew, Flatpak, Nix), pip environments and standard directories; a bgutil Proof-of-Origin
+  Token (POT) provider the person already runs is detected (a server on 127.0.0.1:4416, a
+  `bgutil-pot` binary, an installed yt-dlp plugin), never downloaded or started by MDM
 - ✅ A helper (yt-dlp, ffmpeg, gallery-dl) that can't be downloaded says which server and why
   (not found, refused, no answer, a secure connection an antivirus or a proxy reads, GitHub's
   limit on requests, cut short) and what to do; its release list goes through the proxy set in
@@ -926,6 +950,9 @@ These ship in the next version.
   buttons again ([#620](https://github.com/anefzaoui/misterdownloadmanager/issues/620),
   [#772](https://github.com/anefzaoui/misterdownloadmanager/issues/772)): the progress window and
   the style themes' dialogs are framed as on Windows 11, without a hidden title bar
+- ✅ Windows: download progress on each download window's taskbar button, alongside the main
+  window's existing combined progress
+  ([#678](https://github.com/anefzaoui/misterdownloadmanager/issues/678))
 - ✅ Fast downloads to a hard disk keep going past the first gigabytes: no more freezes of 7 to
   10 s once the system's cache is full, and no connection replaced as "much slower" for waiting on
   the disk; a disk slower than the network slows the download down evenly

@@ -595,6 +595,12 @@ const ok = (what) => {
   assert.ok(await keep({ id: 65, url: "https://dl.mirror.org/f.zip", filename: "f.zip" }), "*.mirror.*");
   assert.ok(await keep({ id: 66, url: "https://mirror.net/g.zip", filename: "g.zip" }), "*.mirror.* takes the domain");
   assert.ok(await keep({ id: 67, url: "https://cdn.files.test/h.zip", referrer: "https://www.kept.test/", filename: "h.zip" }), "*kept*");
+  // `example.test.` is `example.test` (the root's dot), for the file and for its page.
+  assert.ok(await keep({ id: 68, url: "https://www.example.test./i.zip", filename: "i.zip" }), "the root's dot");
+  assert.ok(
+    await keep({ id: 69, url: "https://cdn.files.test/j.zip", referrer: "https://www.example.test./get", filename: "j.zip" }),
+    "a page with the root's dot",
+  );
   assert.equal(natives(calls).length, 3);
   ok("#1049: excluded sites take their subdomains and the files their pages link to");
 }

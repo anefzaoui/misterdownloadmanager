@@ -35,6 +35,15 @@ const SLOW_FRAME: Duration = Duration::from_millis(500);
 /// logged, and reported only if it is still stuck [`FREEZE_AFTER`] past this.
 const WAKE_GRACE: Duration = Duration::from_secs(60);
 
+/// The first three minutes of a start with the session are the computer's too: everything else
+/// the login starts (the system's own services, the other programs in the notification area,
+/// their updates) wants the disk and the processor at the same time. A window started with
+/// Windows didn't answer for 8 s a minute after its start, its thread ran 0.0 s of those 8, and
+/// the snapshot found it back waiting for messages (#1126): the computer wasn't running MDM. A
+/// frame stalled then is logged, and reported only if it is still stuck [`FREEZE_AFTER`] past
+/// this (counted from MDM's start).
+const LOGIN_GRACE: Duration = Duration::from_secs(180);
+
 static REPORTER: OnceLock<Arc<Reporter>> = OnceLock::new();
 /// The session as sent, to send again when it learns more (what draws).
 static SESSION: std::sync::Mutex<Option<Session>> = std::sync::Mutex::new(None);
@@ -49,8 +58,9 @@ const UI: u8 = 1;
 static STEP: AtomicU8 = AtomicU8::new(Step::Start as u8);
 /// A freeze was reported and the window hasn't answered since.
 static FROZEN: AtomicBool = AtomicBool::new(false);
-/// A stall just after a wake was logged (not reported) and the window hasn't answered since.
-static WAKING: AtomicBool = AtomicBool::new(false);
+/// A stall in the computer's time was logged (not reported) and the window hasn't answered
+/// since: the [`After`] it followed (as u8), 0 when none.
+static GRACED: AtomicU8 = AtomicU8::new(0);
 /// A panic was reported: later ones (a burst on worker threads) are logged, not dumped again.
 static PANICKED: AtomicBool = AtomicBool::new(false);
 /// The window thread (the dump's id for it; 0 where it can't be known).
@@ -67,8 +77,9 @@ fn now_ms() -> u64 {
 }
 
 /// Start the monitor and catch crashes, panics and freezes. Called on the window thread, after
-/// this process became MDM's instance.
-pub fn start(data: &Path, session: Session) {
+/// this process became MDM's instance; `at_login` when the session started it (the startup
+/// entry, #226): its first minutes are the computer's ([`LOGIN_GRACE`]).
+pub fn start(data: &Path, session: Session, at_login: bool) {
     let _ = EPOCH.set(Instant::now());
     #[cfg(windows)]
     let _ = UI_THREAD.set(crate::win32::thread_id());
@@ -96,7 +107,7 @@ pub fn start(data: &Path, session: Session) {
     hook_panics();
     let _ = std::thread::Builder::new()
         .name("freeze watchdog".into())
-        .spawn(watchdog);
+        .spawn(move || watchdog(at_login));
     tracing::info!("crash reports on");
 }
 
@@ -175,14 +186,14 @@ fn stretch_end() {
             Step::now().label()
         );
     }
-    let waking = WAKING.swap(false, Ordering::AcqRel);
+    let graced = After::from_u8(GRACED.swap(0, Ordering::AcqRel));
     if FROZEN.swap(false, Ordering::AcqRel) {
         tracing::warn!("the window answers again");
         if let Some(r) = REPORTER.get() {
             r.recovered();
         }
-    } else if waking {
-        tracing::warn!("the window answers again (the computer had just woken)");
+    } else if let Some(after) = graced {
+        tracing::warn!("the window answers again ({})", after.had_just());
     }
 }
 
@@ -382,27 +393,104 @@ fn slept(monotonic_gap: u64, wall_gap: u64) -> bool {
     monotonic_gap > 3_000 || wall_gap > 3_000
 }
 
+/// What made the time that follows the computer's: a wake ([`WAKE_GRACE`]) or a start with the
+/// session ([`LOGIN_GRACE`]).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u8)]
+enum After {
+    Wake = 1,
+    Login = 2,
+}
+
+impl After {
+    fn from_u8(v: u8) -> Option<After> {
+        match v {
+            1 => Some(After::Wake),
+            2 => Some(After::Login),
+            _ => None,
+        }
+    }
+
+    /// What a logged stall is counted since.
+    fn since(self) -> &'static str {
+        match self {
+            After::Wake => "since the computer woke",
+            After::Login => "since MDM started with the session",
+        }
+    }
+
+    /// What its grace is counted from, for the log.
+    fn mark(self) -> &'static str {
+        match self {
+            After::Wake => "the wake",
+            After::Login => "MDM's start",
+        }
+    }
+
+    /// Why the window didn't answer, once it does.
+    fn had_just(self) -> &'static str {
+        match self {
+            After::Wake => "the computer had just woken",
+            After::Login => "MDM had just started with the session",
+        }
+    }
+}
+
+/// The computer's time: from `from` (ms since MDM's start), `grace` ms in which a stall is the
+/// computer's rather than MDM's, after a wake or a start with the session ([`After`]).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct Computers {
+    from: u64,
+    grace: u64,
+    after: After,
+}
+
+impl Computers {
+    /// The computer woke at `at` (ms): the time asleep isn't counted, nor [`WAKE_GRACE`] after.
+    fn wake(at: u64) -> Computers {
+        Computers {
+            from: at,
+            grace: WAKE_GRACE.as_millis() as u64,
+            after: After::Wake,
+        }
+    }
+
+    /// MDM started with the session: its first [`LOGIN_GRACE`] aren't counted.
+    fn login() -> Computers {
+        Computers {
+            from: 0,
+            grace: LOGIN_GRACE.as_millis() as u64,
+            after: After::Login,
+        }
+    }
+
+    /// The same moment without its grace: what the log counts.
+    fn no_grace(self) -> Computers {
+        Computers { grace: 0, ..self }
+    }
+}
+
 /// How long the stretch that started at `start` (ms) counts as running at `now`: from `start`,
-/// or from the wake at `woke` when it began before it (the time asleep isn't counted), and not
-/// the `grace` after a wake.
-fn counted(start: u64, now: u64, woke: Option<u64>, grace: u64) -> u64 {
-    let from = woke.map_or(start, |w| start.max(w + grace));
+/// or from the start of the computer's time `computers` when it began before it (the time asleep
+/// isn't counted), and not its grace.
+fn counted(start: u64, now: u64, computers: Option<Computers>) -> u64 {
+    let from = computers.map_or(start, |c| start.max(c.from + c.grace));
     now.saturating_sub(from)
 }
 
 /// Watch the window's frames: a stretch of one (its logic or its UI) running past FREEZE_AFTER
-/// is reported once. Time the computer spent asleep isn't counted, nor the first minute after it
-/// woke ([`WAKE_GRACE`]: a stall then is logged, and reported only if it lasts past it), nor the
-/// waits between frames (no stretch runs then).
-fn watchdog() {
+/// is reported once. Time the computer spent asleep isn't counted, nor the computer's time: the
+/// first minute after it woke ([`WAKE_GRACE`]) and the first three of a start with the session
+/// (`at_login`, [`LOGIN_GRACE`]), when a stall is logged, and reported only if it lasts past
+/// them. Nor are the waits between frames (no stretch runs then).
+fn watchdog(at_login: bool) {
     let tick = Duration::from_millis(500);
     let freeze_after = FREEZE_AFTER.as_millis() as u64;
-    let grace = WAKE_GRACE.as_millis() as u64;
     let (mut last, mut last_wall) = (now_ms(), wall_ms());
-    // When the computer last woke (ms), if it slept since MDM started.
-    let mut woke: Option<u64> = None;
+    // The computer's time: MDM's start with the session, then the last wake.
+    let mut computers = at_login.then(Computers::login);
     let mut reported_frame = 0u64;
-    // The frame whose stall just after a wake was logged.
+    // The frame whose stall in the computer's time was logged.
     let mut noted_frame = 0u64;
     let ui = UI_THREAD.get().copied().unwrap_or(0);
     // The window thread's use when this tick first saw the current frame: (frame, ms, use).
@@ -415,7 +503,7 @@ fn watchdog() {
                 "the computer woke (the freeze watchdog's tick took {} s)",
                 { wall.saturating_sub(last_wall).max(now.saturating_sub(last)) / 1000 }
             );
-            woke = Some(now);
+            computers = Some(Computers::wake(now));
             seen = None;
         }
         (last, last_wall) = (now, wall);
@@ -431,17 +519,22 @@ fn watchdog() {
         } else {
             "UI"
         };
-        // Since the wake, for the log; past the grace, for the report.
-        let ran = counted(start - 1, now, woke, 0);
-        if counted(start - 1, now, woke, grace) < freeze_after {
-            if ran >= freeze_after && noted_frame != start {
+        // Since the wake (or the start), for the log; past the grace, for the report.
+        let ran = counted(start - 1, now, computers.map(Computers::no_grace));
+        if counted(start - 1, now, computers) < freeze_after {
+            if let Some(c) = computers
+                && ran >= freeze_after
+                && noted_frame != start
+            {
                 noted_frame = start;
-                WAKING.store(true, Ordering::Release);
+                GRACED.store(c.after as u8, Ordering::Release);
                 tracing::warn!(
-                    "the window hasn't answered for {} s, since the computer woke (in its {part}, at {}): reported if it still doesn't {} s after the wake",
+                    "the window hasn't answered for {} s, {} (in its {part}, at {}): reported if it still doesn't {} s after {}",
                     ran / 1000,
+                    c.after.since(),
                     Step::now().label(),
-                    (grace + freeze_after) / 1000
+                    (c.grace + freeze_after) / 1000,
+                    c.after.mark()
                 );
             }
             continue;
@@ -602,18 +695,65 @@ mod watchdog_tests {
             WAKE_GRACE.as_millis() as u64,
         );
         // No wake: a frame counts from its start.
-        assert_eq!(counted(1_000, 10_000, None, grace), 9_000);
+        assert_eq!(counted(1_000, 10_000, None), 9_000);
         // A frame that began before the sleep, or just after it: not counted in the grace…
         let woke = 5_000_000;
-        assert_eq!(counted(1_000, woke + 23_000, Some(woke), grace), 0);
-        assert!(counted(woke + 100, woke + 23_000, Some(woke), grace) < freeze);
+        let wake = Some(Computers::wake(woke));
+        assert_eq!(counted(1_000, woke + 23_000, wake), 0);
+        assert!(counted(woke + 100, woke + 23_000, wake) < freeze);
         // …but its time since the wake is logged.
-        assert_eq!(counted(1_000, woke + 23_000, Some(woke), 0), 23_000);
+        let logged = wake.map(Computers::no_grace);
+        assert_eq!(counted(1_000, woke + 23_000, logged), 23_000);
         // Still stuck past the grace: a freeze.
-        assert!(counted(1_000, woke + grace + freeze, Some(woke), grace) >= freeze);
+        assert!(counted(1_000, woke + grace + freeze, wake) >= freeze);
         // A frame that begins after the grace counts from its own start.
         let late = woke + grace + 5_000;
-        assert_eq!(counted(late, late + freeze, Some(woke), grace), freeze);
+        assert_eq!(counted(late, late + freeze, wake), freeze);
+    }
+
+    /// #1126: started with Windows, the window didn't answer for 8 s a minute after MDM's start,
+    /// its thread idle all along (what else the login started had the computer). Not a freeze of
+    /// MDM's during the first three minutes of a start with the session; still one past them, at
+    /// any other time, and in a start by hand.
+    #[test]
+    fn the_first_minutes_of_a_start_with_the_session_are_the_computers() {
+        let (freeze, grace) = (
+            FREEZE_AFTER.as_millis() as u64,
+            LOGIN_GRACE.as_millis() as u64,
+        );
+        let login = Some(Computers::login());
+        // #1126's: 71 s after the start, stuck for 8 s. Logged, not reported.
+        let (stall, now) = (71_000, 79_000);
+        assert_eq!(counted(stall, now, login), 0);
+        assert_eq!(counted(stall, now, login.map(Computers::no_grace)), freeze);
+        // The same stall in a start by hand: a freeze.
+        assert_eq!(counted(stall, now, None), freeze);
+        // Still stuck past the grace: a freeze, not before.
+        assert!(counted(stall, grace + freeze - 1, login) < freeze);
+        assert!(counted(stall, grace + freeze, login) >= freeze);
+        // A frame that begins after the grace counts from its own start.
+        let late = grace + 5_000;
+        assert_eq!(counted(late, late + freeze, login), freeze);
+        // A wake later on has its own minute, from the wake.
+        let woke = 5_000_000;
+        let wake = Some(Computers::wake(woke));
+        assert_eq!(counted(woke + 100, woke + 23_000, wake), 0);
+        let past = woke + WAKE_GRACE.as_millis() as u64 + freeze;
+        assert_eq!(counted(1_000, past, wake), freeze);
+    }
+
+    /// What the log says of a stall in the computer's time, and the store reads back.
+    #[test]
+    fn the_log_says_whose_time_it_was() {
+        assert_eq!(
+            Computers::login().after.since(),
+            "since MDM started with the session"
+        );
+        assert_eq!(Computers::wake(1).after.since(), "since the computer woke");
+        for a in [After::Wake, After::Login] {
+            assert_eq!(After::from_u8(a as u8), Some(a));
+        }
+        assert_eq!(After::from_u8(0), None);
     }
 
     /// Every step has its label, and the store reads back as the same step.
