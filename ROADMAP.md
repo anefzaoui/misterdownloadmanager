@@ -565,10 +565,41 @@ These ship in the next version.
 - ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →
   Exit does, with **Keep running when closing the window** on; it only hid MDM in the notification
   area
+- ✅ Windows and macOS: names in any script a font on the computer has show their letters, whatever
+  the interface language: the system's own font for the scripts MDM lists none for
+  ([#1125](https://github.com/anefzaoui/misterdownloadmanager/issues/1125))
+- ✅ Tests: the ones that failed now and then on a busy runner (keeping the computer awake, a
+  program or a call to the system that hangs, a stream's time for both its requests, a helper's
+  children ending with it, the clipboard used from many threads at once) check what they guard
+  by the order things happen in, not by the runner's speed: a fake system that answers when the
+  test says, a program that ends when the test lets it, a count of the work done instead of a
+  fixed time
+- ✅ The Download video button over a video in a feed, or on a site yt-dlp can't read (Douyin):
+  when MDM finds nothing on the page, it offers what the tab played for that video, told apart
+  from the feed's next one by its length, and says so when it can't tell
+  ([#1092](https://github.com/anefzaoui/misterdownloadmanager/issues/1092))
+- ✅ No freeze when a video or a gallery finishes on a slow or busy disk: its files are marked as
+  downloaded from the internet by the download itself, before it's done, and a rename on
+  completion happens beside the window (for [#1103](https://github.com/anefzaoui/misterdownloadmanager/issues/1103))
+- ✅ A crash while checking for updates on some computers; a check that goes wrong says why
+  ([#1123](https://github.com/anefzaoui/misterdownloadmanager/issues/1123))
+- ✅ Tests: the programs tests write and then run (the extraction tests' stand-in for HatchZip,
+  the Linux file manager's and the browser helper's) no longer fail now and then with "Text file
+  busy" (a file written while another test started a program was still open there for writing
+  when it ran); a program of their own writes them, and a test that gets another result says which
 - ✅ A video with a long title (an X post's text) no longer fails at 0% with **No such file or
   directory** on Windows: its name is shortened so its download's files fit Windows' path limit,
   and a name or folder too long says so
   ([#1102](https://github.com/anefzaoui/misterdownloadmanager/issues/1102))
+- ✅ Tests: the checks that a long list is read in linear time, which still failed now and then on
+  a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
+  long a run), take each side's fastest of several runs, and fail at three times as long (a square
+  costs 16 times): steady under load, and they catch more of the squares they guard against
+- ✅ Tests: a MediaFire download resumed after its address expired is checked request by
+  request (nothing it had on disk is asked again, but for the few bytes each part re-reads to
+  check the file), not by a total of what the server sent, which grew on a busy runner when a
+  part was split while its bytes were on the way
+  ([#952](https://github.com/anefzaoui/misterdownloadmanager/issues/952))
 - ✅ macOS: a browser hand-off while MDM is hidden from the menu bar opens its window
 - ✅ Downloads for Windows on ARM, 32-bit Windows and Linux on ARM, beside the x64 ones: the
   installer, the portable zip and the plain zip; the AppImage, .deb, .rpm and .tar.gz. Each is

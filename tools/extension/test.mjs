@@ -226,11 +226,27 @@ function fakeApi({
 let served = {};
 const fetched = [];
 async function fakeFetch(url, opts) {
-  fetched.push([String(url), opts && opts.credentials]);
+  const range = /^bytes=(\d+)-(\d+)$/.exec((opts && opts.headers && opts.headers.Range) || "");
+  fetched.push([String(url), opts && opts.credentials, ...(range ? [range[0]] : [])]);
   const r = served[url];
   if (!r) throw new TypeError("Failed to fetch");
   // Its body as a stream too, 1 KB a chunk: `r.read` counts what was pulled (#171 reads 4 KB).
-  const bytes = new TextEncoder().encode(r.body);
+  // `r.bytes`: a file's (#1092), whose ranges are served as a server does (206); `r.noRange`:
+  // a server that ignores them (the whole file, 200).
+  if (r.bytes && range && !r.noRange) {
+    const part = r.bytes.slice(Number(range[1]), Number(range[2]) + 1);
+    r.ranges = [...(r.ranges || []), range[0]];
+    let sent = 0;
+    const body = new ReadableStream({
+      pull(c) {
+        if (sent >= part.length) return c.close();
+        c.enqueue(part.slice(sent, sent + 1024));
+        sent += 1024;
+      },
+    });
+    return { ok: true, status: 206, headers: { get: () => null }, body };
+  }
+  const bytes = r.bytes || new TextEncoder().encode(r.body);
   r.read = 0;
   const body = new ReadableStream({
     pull(c) {
@@ -264,7 +280,7 @@ function load(api, firefox, extra = {}) {
   else ctx.chrome = api;
   Object.assign(ctx, extra);
   vm.runInNewContext(code, ctx);
-  // Its globals (the functions it declares), for the tests of its parts.
+  // Its globals (the functions it declares), for the tests of its parts (#1092: called as they are).
   return ctx;
 }
 
@@ -2061,6 +2077,7 @@ function samplePage(html) {
     /^https?:\/\/www\.tiktok\.com\/@[\w.-]+\/video\/(\d+)/,
     /^https?:\/\/vimeo\.com\/(\d+)(?:\/[\da-f]{10})?$/,
     /^https?:\/\/www\.dailymotion\.com\/video\/([^/?_&#]+)/,
+    /^https?:\/\/(?:www\.)?douyin\.com\/video\/([0-9]+)/,
   ];
   const dir = new URL("feeds/", import.meta.url);
   let checked = 0;
@@ -2604,7 +2621,9 @@ function videoButton({ stored = {} } = {}) {
       const render = () => {};
       const fillMenu = () => {};
       const within = (p) => p;
-      ${["pollDelay", "followLookup", "replyState", "lookOf", "startLook", "restWait"].map(fn).join("\n")}
+      // #1092: what the tab played, never asked for here.
+      const playedLook = async () => null;
+      ${["pollDelay", "followLookup", "replyState", "playedWanted", "lookOf", "startLook", "restWait"].map(fn).join("\n")}
       return { REST_MS, looks, usable, lookOf, startLook, restWait };`,
     );
     const asked = [];
@@ -3870,6 +3889,272 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   await t.settle();
   assert.ok(!e.defaultPrevented && a.clicks === 0);
   ok("Safari: page.js holds a click on a listed file type, never Alt or other types; #332: Alt said at the press, Firefox follows the link");
+}
+
+// #1092: what the tab played, offered when the page's look-up finds nothing (a feed, a post
+// yt-dlp can't read, a site it doesn't know). A file's header (MP4) says its length and its
+// tracks; the video under the button is the one whose length is its own, never a feed's next
+// video, a picture or a sound alone, nor a guess between several.
+const MP4 = (() => {
+  const cat = (...parts) => {
+    const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
+    let at = 0;
+    for (const p of parts) {
+      out.set(p, at);
+      at += p.length;
+    }
+    return out;
+  };
+  const u32 = (n) => new Uint8Array([(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]);
+  const text = (s) => new TextEncoder().encode(s);
+  const box = (type, ...parts) => {
+    const body = cat(...parts);
+    return cat(u32(8 + body.length), text(type), body);
+  };
+  const zeros = (n) => new Uint8Array(n);
+  // A movie of `seconds` (timescale 1000; 0: unknown, as a fragmented file's mvhd may say), its
+  // tracks ("vide" with a picture `height`, "soun"), `pad` bytes of sample tables in each track
+  // (a long file's header), the movie after its data when `atEnd`, a fragmented one's length in
+  // its mehd (`fragments`).
+  return ({ seconds, tracks = ["soun", "vide"], height = 720, pad = 100, atEnd = false, fragments = 0, data = 2000 }) => {
+    const mvhd = box("mvhd", zeros(4), zeros(8), u32(1000), u32(Math.round(seconds * 1000)), zeros(80));
+    const trak = (kind) =>
+      box(
+        "trak",
+        box("tkhd", zeros(4), zeros(72), u32(kind === "vide" ? (height * 2) << 15 : 0), u32(kind === "vide" ? height << 16 : 0)),
+        box("mdia", box("mdhd", zeros(24)), box("hdlr", zeros(8), text(kind), zeros(13)), box("minf", zeros(pad))),
+      );
+    const mvex = fragments ? [box("mvex", box("mehd", zeros(4), u32(fragments * 1000)))] : [];
+    const moov = box("moov", mvhd, ...tracks.map(trak), ...mvex);
+    const ftyp = box("ftyp", text("isomiso2avc1mp41"));
+    const mdat = box("mdat", zeros(data));
+    return atEnd ? cat(ftyp, mdat, moov) : cat(ftyp, moov, mdat);
+  };
+})();
+{
+  const ctx = load(fakeApi({ firefox: false }).api, false);
+  // The header, read from bytes in memory as the background reads a file's (a few small reads).
+  const head = async (bytes) => {
+    const reads = [];
+    const info = await ctx.mp4Head(async (start, len) => {
+      reads.push(start);
+      return start < bytes.length ? bytes.slice(start, start + len) : null;
+    });
+    return { info: info && JSON.parse(JSON.stringify(info)), reads };
+  };
+  let h = await head(MP4({ seconds: 10.007 }));
+  assert.deepEqual(h.info, { duration: 10.007, video: true, audio: true, height: 720 });
+  assert.equal(h.reads.length, 1, "a short file's header in one read");
+  // A long file: its first track's tables are large, the second track is read where it starts.
+  h = await head(MP4({ seconds: 1501.8, height: 1080, pad: 300_000 }));
+  assert.deepEqual(h.info, { duration: 1501.8, video: true, audio: true, height: 1080 });
+  assert.ok(h.reads.length >= 2 && h.reads.length <= 6, `${h.reads.length} reads`);
+  // The movie after its data (not made for the web): found past it.
+  h = await head(MP4({ seconds: 33, atEnd: true, data: 5_000_000 }));
+  assert.deepEqual([h.info.duration, h.info.video, h.info.audio], [33, true, true]);
+  // One of a video's tracks alone (Douyin's long videos: a picture and a sound, apart).
+  assert.deepEqual((await head(MP4({ seconds: 796.5, tracks: ["vide"] }))).info, { duration: 796.5, video: true, audio: false, height: 720 });
+  assert.deepEqual((await head(MP4({ seconds: 796.5, tracks: ["soun"] }))).info, { duration: 796.5, video: false, audio: true, height: 0 });
+  // A fragmented file: its length in the mehd.
+  assert.equal((await head(MP4({ seconds: 0, fragments: 42 }))).info.duration, 42);
+  // Tracks past the reads it may make: not known (never a picture alone by mistake).
+  h = await head(MP4({ seconds: 60, tracks: ["soun", "soun", "soun", "soun", "soun", "soun", "vide"], pad: 50_000 }));
+  assert.deepEqual([h.info.duration, h.info.video, h.info.audio], [60, null, null]);
+  // Not an MP4: a WebM, a page, nothing.
+  assert.equal((await head(new Uint8Array([0x1a, 0x45, 0xdf, 0xa3, 0x9f, 0x42, 0x86, 0x81, 1, 0x42, 0xf7, 0x81]))).info, null);
+  assert.equal((await head(new TextEncoder().encode("<!doctype html><title>x</title>"))).info, null);
+  assert.equal((await head(new Uint8Array(0))).info, null);
+  ok("#1092: an MP4's header read for its length, its tracks and its picture's height, in a few small reads");
+
+  // The choice (playedChoice), each candidate as playedCandidates makes it.
+  const file = (url, duration, more = {}) => ({
+    url,
+    kind: "video",
+    stream: false,
+    at: 0,
+    size: 2e6,
+    duration,
+    live: false,
+    tracks: { video: true, audio: true },
+    height: 720,
+    drm: false,
+    ...more,
+  });
+  const stream = (url, duration, more = {}) => ({ ...file(url, duration), kind: "hls", stream: true, size: 0, tracks: null, ...more });
+  const choose = (cands, v) => {
+    const r = JSON.parse(JSON.stringify(ctx.playedChoice(cands, { duration: 0, live: false, height: 720, audio: false, began: 0, nextBegan: 0, alone: false, ...v })));
+    return r.pick ? r.pick.url : r.several ? `several ${r.several}` : "none";
+  };
+  // Douyin's feed: the video playing (10 s), the next one preloaded (5.6 s), the page's own clip.
+  const feed = [file("https://v.test/clip-a/", 10.007), file("https://v.test/clip-b/", 5.617), file("https://s.test/bg.mp4", 2.6, { size: 199164 })];
+  assert.equal(choose(feed, { duration: 10.167 }), "https://v.test/clip-a/", "its length (the player says a little more)");
+  assert.equal(choose(feed, { duration: 5.757 }), "https://v.test/clip-b/");
+  assert.equal(choose(feed, { duration: 31 }), "none", "nothing of its length");
+  // A picture and a sound apart: neither is the video.
+  const split = [
+    file("https://v.test/a/media-video-hvc1/", 796.5, { tracks: { video: true, audio: false } }),
+    file("https://v.test/a/media-audio-und-mp4a/", 796.5, { tracks: { video: false, audio: true }, height: 0 }),
+  ];
+  assert.equal(choose(split, { duration: 796.5 }), "none");
+  assert.equal(choose([...split, ...feed], { duration: 10 }), "https://v.test/clip-a/");
+  // Two of its length: the one with the player's picture height, else said, never guessed.
+  const two = [file("https://v.test/hd.mp4", 30, { height: 1080 }), file("https://v.test/sd.mp4", 30, { height: 480 })];
+  assert.equal(choose(two, { duration: 30, height: 480 }), "https://v.test/sd.mp4");
+  assert.equal(choose(two, { duration: 30, height: 720 }), "several 2");
+  // A stream of its length is the video, its files beside it its pieces; a protected one never.
+  assert.equal(choose([stream("https://v.test/m.m3u8", 12), file("https://v.test/init.mp4", 12)], { duration: 12 }), "https://v.test/m.m3u8");
+  assert.equal(choose([stream("https://v.test/m.m3u8", 12, { drm: true })], { duration: 12 }), "none");
+  // A live video: a live stream; never a file.
+  const live = stream("https://v.test/live.m3u8", 0, { live: true });
+  assert.equal(choose([live, file("https://v.test/x.mp4", 30)], { live: true }), "https://v.test/live.m3u8");
+  assert.equal(choose([live], { duration: 30 }), "none");
+  // A sound player: a sound.
+  const m4a = file("https://v.test/x.m4a", 30, { kind: "audio", tracks: { video: false, audio: true } });
+  assert.equal(choose([file("https://v.test/x.mp4", 30), m4a], { duration: 30, audio: true }), "https://v.test/x.m4a");
+  // Lengths not known (a WebM, a manifest the extension can't read): the frame's only video's,
+  // or what came while this video loaded before the next one began to; else said.
+  const webm = (url, at) => file(url, 0, { at, tracks: null });
+  assert.equal(choose([webm("https://v.test/a.webm", 5000)], { duration: 30, alone: true }), "https://v.test/a.webm");
+  const loaded = [webm("https://v.test/a.webm", 5000), webm("https://v.test/b.webm", 9000)];
+  assert.equal(choose(loaded, { duration: 30, began: 4000, nextBegan: 8000 }), "https://v.test/a.webm");
+  assert.equal(choose(loaded, { duration: 30, began: 8000 }), "https://v.test/b.webm");
+  assert.equal(choose(loaded, { duration: 30 }), "several 2", "when it began isn't known");
+  assert.equal(choose(loaded, { duration: 30, began: 1000, nextBegan: 2000 }), "several 2");
+  // A known length beats an unknown one.
+  assert.equal(choose([...loaded, file("https://v.test/c.mp4", 30)], { duration: 30, alone: true }), "https://v.test/c.mp4");
+  ok("#1092: what the tab played is offered for the video of its length, never the next one, a track alone or a guess");
+}
+
+// #1092, from the button's question to the app: a feed's player fetched files in ranges (kept
+// apart, never in the media list), the button asks what the tab played for its video, the file of
+// its length goes to the app as the video's own (its page as Referer, its title, its type); a
+// stream goes to the look-up instead of the feed. An address the tab didn't load is never taken.
+{
+  const A = "https://v3.douyinvod.test/video/tos/cn/a/?mime_type=video_mp4&sig=1";
+  const B = "https://v3.douyinvod.test/video/tos/cn/b/?mime_type=video_mp4&sig=2";
+  const V = "https://v3.douyinvod.test/video/tos/cn/c/media-video-hvc1/?sig=3";
+  const S = "https://v3.douyinvod.test/video/tos/cn/c/media-audio-und-mp4a/?sig=4";
+  const M = "https://cdn.test/f/master.m3u8";
+  const M720 = "https://cdn.test/f/720p/index.m3u8";
+  served = {
+    [A]: { bytes: MP4({ seconds: 10.007, data: 300_000 }) },
+    [B]: { bytes: MP4({ seconds: 5.617, data: 200_000 }) },
+    [V]: { bytes: MP4({ seconds: 796.5, tracks: ["vide"] }) },
+    [S]: { bytes: MP4({ seconds: 796.5, tracks: ["soun"] }) },
+    [M]: { body: "#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=1280000,RESOLUTION=1280x720\n720p/index.m3u8\n" },
+    [M720]: { body: "#EXTM3U\n#EXT-X-TARGETDURATION:4\n#EXTINF:4.0,\na.ts\n#EXTINF:4.0,\nb.ts\n#EXTINF:4.0,\nc.ts\n#EXT-X-ENDLIST\n" },
+  };
+  const page = "https://www.douyin.test/?recommend=1";
+  const tabs = { 4: { id: 4, url: page, title: "抖音-记录美好生活", incognito: false } };
+  const { api, calls, listeners } = fakeApi({
+    firefox: false,
+    tabs,
+    rules: { videoLookup: true },
+    lookup: () => ({ ok: true, lookup: { state: "pending", token: "t9" } }),
+  });
+  load(api, false);
+  listeners.tabUpdated(4, { url: page });
+  await settle();
+  const ranged = (url, total) => res(url, "xmlhttprequest", H("video/mp4", { "Content-Range": `bytes 0-1023/${total}` }), { statusCode: 206, tabId: 4 });
+  for (const d of [
+    ranged(A, 2304964),
+    ranged(B, 1981590),
+    ranged(V, 76408983),
+    ranged(S, 19271821),
+    // Too small to be a video's file; a piece named by its address.
+    ranged("https://v3.douyinvod.test/tiny.mp4", 40000),
+    res("https://v3.douyinvod.test/x.mp4?range=0-99", "xmlhttprequest", H("video/mp4", { "Content-Range": "bytes 0-99/900000" }), { statusCode: 206, tabId: 4 }),
+  ]) {
+    listeners.responseStarted(d);
+  }
+  await settle();
+  assert.deepEqual((await popupAsk(listeners, { type: "media", tab: 4 })).media, [], "never in the media list");
+  const message = (m, frameId = 0) =>
+    new Promise((r) => listeners.message(m, { id: "ours", url: page, frameId, tab: tabs[4] }, (x) => r(JSON.parse(JSON.stringify(x)))));
+  fetched.length = 0;
+  const answer = await message({ type: "video-played", duration: 10.167, height: 720, began: 0, nextBegan: 0, alone: false });
+  assert.deepEqual(answer, { played: { url: A, stream: false, ext: "mp4", size: 2304964, height: 720, duration: 10.007 } });
+  assert.ok(
+    fetched.every(([, c, r]) => c === "include" && /^bytes=\d+-\d+$/.test(r)),
+    "each header read in ranges, with the site's cookies",
+  );
+  assert.ok(fetched.length <= 8, `${fetched.length} reads`);
+  assert.deepEqual(served[A].ranges, ["bytes=0-4095"]);
+  // Asked again: each header read once.
+  const reads = fetched.length;
+  assert.deepEqual(await message({ type: "video-played", duration: 5.7, height: 720 }), {
+    played: { url: B, stream: false, ext: "mp4", size: 1981590, height: 720, duration: 5.617 },
+  });
+  assert.equal(fetched.length, reads);
+  // The feed moving to another address of the site (Douyin's /jingxuan to /?recommend=1, after its
+  // player fetched the first video): its files stay; another site's page: they go.
+  listeners.tabUpdated(4, { url: "https://www.douyin.test/jingxuan?from=feed" });
+  await settle();
+  assert.equal((await message({ type: "video-played", duration: 10.167, height: 720 })).played.url, A);
+  listeners.tabUpdated(4, { url: page });
+  await settle();
+  // The long video, a picture and a sound apart: nothing (its post, if any, is the way).
+  assert.deepEqual(await message({ type: "video-played", duration: 796.5, height: 1080 }), {});
+  // Another frame played none of these.
+  assert.deepEqual(await message({ type: "video-played", duration: 10.167, height: 720 }, 3), {});
+  // The click: the file as the video's own, the feed as its page and Referer, the page's title,
+  // the type the server said.
+  assert.equal((await message({ type: "video", url: null, src: A, played: A, direct: true, title: "抖音-记录美好生活" })).ok, true);
+  const sent = natives(calls).filter((x) => x.video).at(-1);
+  assert.deepEqual([sent.url, sent.src, sent.direct, sent.mime, sent.title, sent.referrer], [page, A, true, "video/mp4", "抖音-记录美好生活", ""]);
+  // A post's (Douyin's /video/<id>, #707 names it): the same file, with its title.
+  const post = "https://www.douyin.test/video/7677883232318323279";
+  await message({ type: "video", url: post, src: A, played: A, direct: true, title: "抖音" });
+  const fromPost = natives(calls).filter((x) => x.video).at(-1);
+  assert.deepEqual([fromPost.src, fromPost.direct, fromPost.title], [A, true, "抖音"]);
+  // A stream the frame played: its master stands for its variants and goes to the look-up.
+  listeners.responseStarted(res(M, "xmlhttprequest", H("application/vnd.apple.mpegurl"), { tabId: 4, frameId: 2 }));
+  listeners.responseStarted(res(M720, "xmlhttprequest", H("application/vnd.apple.mpegurl"), { tabId: 4, frameId: 2 }));
+  await settle();
+  assert.deepEqual(await message({ type: "video-played", duration: 12, height: 720 }, 2), {
+    played: { url: M, stream: true, ext: "", size: 0, height: 720, duration: 12 },
+  });
+  const looked = await message({ type: "video-lookup", url: null, src: "", played: M, title: "Feed" }, 2);
+  assert.deepEqual(looked, { lookup: { state: "pending", token: "t9" }, show: M });
+  // Named after the tab, as a frame's player is (#1075), not after its frame's own title.
+  assert.deepEqual(natives(calls).filter((x) => x.videoLookup).at(-1).videoLookup, { page, src: M, title: "抖音-记录美好生活" });
+  // Without it (or with an address the tab didn't load, or another frame's): the feed, as before.
+  for (const [played, frame] of [
+    [undefined, 2],
+    ["https://evil.test/x.m3u8", 2],
+    [M, 0],
+  ]) {
+    assert.deepEqual(await message({ type: "video-lookup", url: null, src: "", played, title: "Feed" }, frame), { ok: false, why: "feed" }, String(played));
+  }
+  listeners.tabUpdated(4, { url: "https://elsewhere.test/" });
+  await settle();
+  assert.deepEqual(await message({ type: "video-played", duration: 10.167, height: 720 }), {}, "another site: its files gone");
+  ok("#1092: a feed's file of the video's length goes as its own (kept while the tab stays on its site), its stream to the look-up; ranged files never listed");
+}
+
+// #1092: Douyin names its posts (a slide's data-e2e-vid, ?modal_id=), and the button asks what the
+// tab played only after a look-up found nothing.
+{
+  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const start = source.indexOf("  function playedWanted(");
+  const playedWanted = new Function(`${source.slice(start, source.indexOf("\n  }\n", start) + 4)}\nreturn playedWanted;`)();
+  for (const s of [{ state: "feed" }, { state: "failed", reason: "error" }, { state: "failed", reason: "no-ytdlp" }, { state: "ready", choices: [] }, { state: "failed", reason: "no-choices" }]) {
+    assert.equal(playedWanted(s), true, JSON.stringify(s));
+  }
+  for (const s of [{ state: "ready", choices: [{ label: "720p" }] }, { state: "list" }, { state: "busy" }, { state: "off" }, { state: "late" }, { state: "unnamed" }, { state: "use-window" }, { state: "gone" }, null]) {
+    assert.equal(playedWanted(s), false, JSON.stringify(s));
+  }
+  // Douyin's own pages, and one opened over a profile's (videoPage).
+  const named = (href) =>
+    videoPageOn(new URL(href), { querySelector: () => null, querySelectorAll: () => [] })({ parentElement: null, getAttribute: () => null, querySelectorAll: () => [] });
+  assert.equal(named("https://www.douyin.com/video/7692732464107719962"), "https://www.douyin.com/video/7692732464107719962");
+  assert.equal(
+    named("https://www.douyin.com/user/self?modal_id=7704568510928004170&showSubTab=video&showTab=favorite_collection"),
+    "https://www.douyin.com/video/7704568510928004170",
+  );
+  assert.equal(named("https://www.douyin.com/?recommend=1"), null);
+  assert.equal(named("https://www.douyin.com/jingxuan?modal_id=12"), null);
+  ok("#1092: Douyin's posts named; what the tab played asked only after a look-up found nothing");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

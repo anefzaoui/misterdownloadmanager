@@ -4,6 +4,10 @@
 use mdm_engine::{Destination, Download, Options, Request};
 use mdm_labserver::{Config, Faults, LabServer, LogEntry, content};
 
+#[path = "support/resume.rs"]
+mod resume;
+use resume::on_disk;
+
 /// How long a test waits for the lab server's log to take in every request (`settled`).
 const SETTLE: std::time::Duration = std::time::Duration::from_secs(20);
 
@@ -833,24 +837,6 @@ async fn paused(s: &LabServer, path: &str) -> (tempfile::TempDir, std::path::Pat
         .await
         .expect("the stopped download's requests end");
     (dir, mdm_engine::state::state_path(&file))
-}
-
-/// Bytes of `range` (a `Range` header, `bytes=a-b`; none: the whole file) that the saved
-/// segments say were already on disk: outside every segment's part still to fetch.
-fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
-    let (from, to) = match range.and_then(|r| r.strip_prefix("bytes=")?.split_once('-')) {
-        Some((a, b)) => (
-            a.parse::<u64>().unwrap(),
-            b.parse::<u64>().map_or(saved.size, |b| b + 1),
-        ),
-        None => (0, saved.size),
-    };
-    let to_fetch: u64 = saved
-        .segments
-        .iter()
-        .map(|g| to.min(g.end).saturating_sub(from.max(g.cursor)))
-        .sum();
-    (to - from) - to_fetch
 }
 
 /// Watch `dl` to its end: the file its view last named, and the path it reports. The view is what
