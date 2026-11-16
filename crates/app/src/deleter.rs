@@ -199,10 +199,18 @@ pub fn failures_text(failures: &[Failure]) -> Option<String> {
     Some(text)
 }
 
+/// What the deleter's thread is handed, in order.
+enum Work {
+    Delete(Vec<Doomed>),
+    /// A download's own file at a place rewritten ([`Deleter::rewrite`]); the downloads that
+    /// start in its folder wait meanwhile.
+    Rewrite(Box<dyn FnOnce() + Send>, naming::Clearing),
+}
+
 /// The thread that deletes, and the batches it has yet to finish.
 pub struct Deleter {
     /// None when no thread could be made: then each batch goes on the caller's.
-    tx: Option<mpsc::Sender<Vec<Doomed>>>,
+    tx: Option<mpsc::Sender<Work>>,
     remove: Arc<Remove>,
     report: Arc<dyn Fn(Vec<Failure>) + Send + Sync>,
     pending: Arc<(Mutex<usize>, Condvar)>,
@@ -231,13 +239,31 @@ impl Deleter {
         let remove: Arc<Remove> = Arc::new(remove);
         let report: Arc<dyn Fn(Vec<Failure>) + Send + Sync> = Arc::new(report);
         let pending: Arc<(Mutex<usize>, Condvar)> = Arc::default();
-        let (tx, rx) = mpsc::channel::<Vec<Doomed>>();
+        let (tx, rx) = mpsc::channel::<Work>();
         let spawned = std::thread::Builder::new()
             .name("delete files".into())
             .spawn({
                 let (remove, report, pending) = (remove.clone(), report.clone(), pending.clone());
                 move || {
-                    for batch in rx {
+                    for work in rx {
+                        let batch = match work {
+                            Work::Delete(batch) => batch,
+                            Work::Rewrite(job, clearing) => {
+                                let began = Instant::now();
+                                job();
+                                drop(clearing);
+                                if began.elapsed() >= Duration::from_secs(1) {
+                                    tracing::info!(
+                                        "rewrite: a download's own file took {} ms, beside the window",
+                                        began.elapsed().as_millis()
+                                    );
+                                }
+                                let (n, done) = &*pending;
+                                *n.lock().unwrap() -= 1;
+                                done.notify_all();
+                                continue;
+                            }
+                        };
                         let (many, began) = (batch.len(), Instant::now());
                         let failures = delete_batch(batch, &*remove);
                         // What a disk held, for a report's log.
@@ -279,15 +305,37 @@ impl Deleter {
         }
         *self.pending.0.lock().unwrap() += 1;
         let batch = match &self.tx {
-            Some(tx) => match tx.send(batch) {
+            Some(tx) => match tx.send(Work::Delete(batch)) {
                 Ok(()) => return,
-                Err(mpsc::SendError(batch)) => batch,
+                Err(mpsc::SendError(Work::Delete(batch))) => batch,
+                Err(_) => unreachable!("sent a delete"),
             },
             None => batch,
         };
         let failures = delete_batch(batch, &*self.remove);
         if !failures.is_empty() {
             (self.report)(failures);
+        }
+        *self.pending.0.lock().unwrap() -= 1;
+    }
+
+    /// Rewrite a download's own file at `place` (its resume state: File Properties' new address,
+    /// #1170's follow-ups) with `job`, after the deletes before, beside the caller; returns at
+    /// once. The downloads that start in its folder meanwhile, the one of `place` among them,
+    /// wait until it is done ([`naming::clear`]), so none reads it half-way or before.
+    pub fn rewrite(&self, place: &Path, job: impl FnOnce() + Send + 'static) {
+        *self.pending.0.lock().unwrap() += 1;
+        let work = Work::Rewrite(Box::new(job), naming::clear(place));
+        let work = match &self.tx {
+            Some(tx) => match tx.send(work) {
+                Ok(()) => return,
+                Err(mpsc::SendError(work)) => work,
+            },
+            None => work,
+        };
+        if let Work::Rewrite(job, clearing) = work {
+            job();
+            drop(clearing);
         }
         *self.pending.0.lock().unwrap() -= 1;
     }
@@ -472,6 +520,47 @@ mod tests {
         assert!(deleter.finish(Duration::from_secs(10)));
         assert!(!file.exists());
         assert_eq!(naming::unique_path(d, "slow.bin"), d.join("slow.bin"));
+    }
+
+    /// A rewrite waits for the deletes before it, beside the caller, and the downloads starting
+    /// in its folder wait for it.
+    #[test]
+    fn a_rewrite_goes_in_turn_and_holds_its_folders_starts() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let (gone, state) = (d.join("gone.bin"), d.join("kept.bin.mdm.json"));
+        std::fs::write(&gone, b"x").unwrap();
+        std::fs::write(&state, b"old").unwrap();
+        let gate = Arc::new(Mutex::new(()));
+        let held = gate.lock().unwrap();
+        let (deleter, _, _) = recorded({
+            let gate = gate.clone();
+            move |p| {
+                drop(gate.lock().unwrap());
+                std::fs::remove_file(p)
+            }
+        });
+        let began = Instant::now();
+        deleter.delete(vec![doomed(&gone, true)]);
+        let at = state.clone();
+        deleter.rewrite(&d.join("kept.bin"), move || {
+            std::fs::write(&at, b"new").unwrap();
+        });
+        assert!(
+            began.elapsed() < Duration::from_millis(500),
+            "the caller never waits"
+        );
+        std::thread::sleep(Duration::from_millis(200));
+        assert_eq!(
+            std::fs::read(&state).unwrap(),
+            b"old",
+            "after the delete before it"
+        );
+        assert!(naming::being_cleared(d), "its folder's starts wait");
+        drop(held);
+        assert!(deleter.finish(Duration::from_secs(10)));
+        assert_eq!(std::fs::read(&state).unwrap(), b"new");
+        assert!(!gone.exists() && !naming::being_cleared(d));
     }
 
     /// A place another download holds (for longer than its own run takes to let go) is that

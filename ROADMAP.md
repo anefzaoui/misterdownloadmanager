@@ -607,6 +607,10 @@ These ship in the next version.
   duplicate overwritten, a restart under the same name): the old files go beside the window and
   the new start waits for them on its own; a finished duplicate's file is looked at beside it too
   (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ More disk work beside the window: a start under a name another download has, a playlist's
+  names, batch, Link grabber, browser and paired-device adds' names, File Properties' new address,
+  and a rename on completion's check
+  (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
 - ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
   a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
   the system refuses for a while no longer ends the session's crash reports

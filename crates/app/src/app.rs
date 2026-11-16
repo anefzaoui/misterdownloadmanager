@@ -814,13 +814,18 @@ fn place_to_take(item: &Item, items: &[Item]) -> Option<PathBuf> {
 /// stems of the other downloads there whose names are settled, as Download video named it at
 /// once before (#32, #1102); any other takes a free place when another row holds its own
 /// (`place_to_take`). None: it stays.
+///
+/// A file download's start asks the same when another row has its name (`claim_place`): it
+/// takes a free place when that row holds its own.
 fn video_place(item: &Item, items: &[Item]) -> Option<PathBuf> {
     // Its folder, made here too (yt-dlp runs in it): beside the window as well; looked at once
     // the old files being deleted there for a new start are gone (a duplicate overwritten: the
     // new copy takes its name, `naming::clear`).
     if let Some(dir) = item.dest.parent().filter(|d| !d.as_os_str().is_empty()) {
         mdm_engine::naming::wait_cleared(dir);
-        let _ = std::fs::create_dir_all(dir);
+        if item.video.is_some() {
+            let _ = std::fs::create_dir_all(dir);
+        }
     }
     if !item.number_at_start {
         return place_to_take(item, items);
@@ -842,6 +847,41 @@ fn video_place(item: &Item, items: &[Item]) -> Option<PathBuf> {
     } else {
         mdm_engine::naming::stem_destination(dir, &item.file_name, in_use)
     })
+}
+
+/// What a rename on completion looks at on the disk before it starts, beside the window: whether
+/// it may (`deferred_rename_disabled_reason_with`: a folder's other files, a shared folder), whether
+/// it is a folder, and a torrent's free new name, reserved. All of it read the disk on the
+/// window's thread, a finished torrent's folder in the first frames among them (one still sharing
+/// at exit).
+struct RenameCheck {
+    disabled: Option<&'static str>,
+    is_dir: bool,
+    target: Option<(PathBuf, Option<mdm_engine::naming::Reservation>)>,
+}
+
+impl RenameCheck {
+    /// For `item` (a copy, [`Item::place_copy`], with copies of the other rows) renamed to
+    /// `desired`; on the disk, so beside the window.
+    fn of(
+        item: &Item,
+        desired: &str,
+        downloads: &std::path::Path,
+        settings: &Settings,
+        rss: &crate::rss::Store,
+        items: &[Item],
+    ) -> RenameCheck {
+        let is_dir = crate::deferred_rename::is_folder_target(item);
+        let disabled = deferred_rename_disabled_reason_with(item, downloads, settings, rss, items);
+        let target = (disabled.is_none() && item.torrent.is_some())
+            .then(|| crate::deferred_rename::reserve_target_path(&item.dest, desired, is_dir))
+            .flatten();
+        RenameCheck {
+            disabled,
+            is_dir,
+            target,
+        }
+    }
 }
 
 /// The status strip's height, under the list and the Categories pane.
@@ -1196,6 +1236,9 @@ pub struct App {
     /// Finished downloads whose deferred rename is persisted on `Item::rename_on_complete` and
     /// waiting for `torrent_host` (or startup recovery) to run it.
     deferred_torrent_queue: Vec<u64>,
+    /// Renames on completion being checked beside the window first ([`RenameCheck`]): the
+    /// name asked for, and the answer to come.
+    rename_checks: Vec<(u64, String, std::sync::mpsc::Receiver<RenameCheck>)>,
     /// A finished queue asked to turn the computer off: the countdown, cancellable.
     turn_off: Option<dialogs::TurnOffCountdown>,
     /// The global speed cap shared by every download (Speed Limiter settings).
@@ -1863,6 +1906,7 @@ impl App {
             save_failed: None,
             moving: Vec::new(),
             renaming: Vec::new(),
+            rename_checks: Vec::new(),
             deferred_torrent_queue,
             turn_off: None,
             global: std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None)),
@@ -2972,6 +3016,23 @@ impl App {
                 }
             }
             "delete-completed" => self.run(Cmd::DeleteCompleted, None, ctx),
+            // File Properties' Refresh download address on the first download, OK pressed:
+            // `properties-address:<address>` (checks of a slow disk: the window never waits for
+            // its resume state to be rewritten).
+            "properties-address" => {
+                if let (Some(item), Ok(url)) = (self.items.first(), url::Url::parse(tab)) {
+                    let c = crate::properties::Changes {
+                        id: item.id,
+                        description: item.description.clone(),
+                        referer: item.referer.clone(),
+                        login: item.login.clone(),
+                        address: Some(url),
+                        move_to: None,
+                        direct: None,
+                    };
+                    self.apply_properties(c);
+                }
+            }
             "progress" => {
                 if let Some(id) = last
                     && !self.progress.iter().any(|p| p.id == id)
@@ -3405,19 +3466,34 @@ impl App {
     }
 
     /// Before a download starts: into a free place of its own if its own is another row's
-    /// (`place_to_take`). The name stays the address's guess if it was one.
-    fn claim_place(&mut self, id: u64) {
-        let target = self
-            .items
-            .iter()
-            .find(|i| i.id == id)
-            .and_then(|i| place_to_take(i, &self.items));
-        if let (Some(target), Some(item)) = (target, self.item(id)) {
-            let guessed = item.name_from_url;
-            take_place(item, target);
-            item.name_from_url = guessed;
-            self.dirty = true;
+    /// (`place_to_take`, #442). Only when another row has its name: then whether that one holds
+    /// it (its finished file, its state) and which name is free are looked at beside the window
+    /// (`start_place`, as a video's are), and the start goes on when the answer comes
+    /// (`apply_video_places`); false meanwhile. A row with data of its own never moves.
+    fn claim_place(&mut self, id: u64, show: bool) -> bool {
+        // Its place just came, for this start.
+        if self.video_places.take_placed(id) {
+            return true;
         }
+        let Some(item) = self.items.iter().find(|i| i.id == id) else {
+            return true;
+        };
+        let lower = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+        let own =
+            item.downloaded > 0 || matches!(&item.state_here, Some((at, true)) if *at == item.dest);
+        let shared = !own
+            && self
+                .items
+                .iter()
+                .any(|o| o.id != id && lower(&o.dest) == lower(&item.dest));
+        if !shared {
+            return true;
+        }
+        if !self.video_places.waiting(id) {
+            self.ask_video_place(id);
+        }
+        self.video_places.wait(id, show);
+        false
     }
 
     /// At start: the unfinished downloads' resume states read with `load` beside the window, one
@@ -3511,7 +3587,12 @@ impl App {
             }
             let target = a.place.unwrap_or_else(|| item.dest.clone());
             let named_now = item.number_at_start;
-            if item.dest != a.asked || self.stem_taken(a.id, &target, named_now) {
+            let taken = if item.video.is_some() {
+                self.stem_taken(a.id, &target, named_now)
+            } else {
+                self.place_taken(a.id, &target)
+            };
+            if item.dest != a.asked || taken {
                 self.ask_video_place(a.id);
                 if let Some(show) = a.start {
                     self.video_places.wait(a.id, show);
@@ -3535,6 +3616,15 @@ impl App {
                 self.video_places.take_placed(a.id);
             }
         }
+    }
+
+    /// Whether another row that runs is at `target` now, in the list (no disk): a file's place
+    /// looked at beside the window, taken meanwhile.
+    fn place_taken(&self, id: u64, target: &std::path::Path) -> bool {
+        let lower = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+        self.items
+            .iter()
+            .any(|o| o.id != id && o.live.is_some() && lower(&o.dest) == lower(target))
     }
 
     /// Whether another row in `target`'s folder has its stem now, in the list (no disk): one
@@ -3598,6 +3688,13 @@ impl App {
             self.start_remote(id, show);
             return;
         }
+        // A new download from Download File Info has nothing of its own on the disk yet: nothing
+        // to resume, and no place to claim from another row (the engine takes the next free
+        // name as it starts). Its start never waits for the disk on the window's thread (#743).
+        let fresh = self.item(id).is_some_and(|i| i.number_at_start);
+        if !fresh && !self.claim_place(id, show) {
+            return;
+        }
         let Some((url, login, context, own_limit, checksum, direct)) = self.item(id).map(|i| {
             (
                 i.url.clone(),
@@ -3629,13 +3726,6 @@ impl App {
         // The file's own remembered limit, else the Speed Limiter's.
         opts.speed_limit = own_limit.or(self.settings.speed_limit());
         opts.checksum = checksum;
-        // A new download from Download File Info has nothing of its own on the disk yet: nothing
-        // to resume, and no place to claim from another row (the engine takes the next free
-        // name as it starts). Its start never waits for the disk on the window's thread (#743).
-        let fresh = self.item(id).is_some_and(|i| i.number_at_start);
-        if !fresh {
-            self.claim_place(id);
-        }
         let Some(item) = self.item(id) else { return };
         // The file at its place, chosen to be replaced (#1088): replaced as it completes, on a
         // first start and on a resume alike. A place moved since doesn't replace anything.
@@ -4593,23 +4683,21 @@ impl App {
         }
     }
 
-    /// File Properties → OK.
+    /// File Properties → OK. Its resume state follows a new address or route beside the window
+    /// ([`crate::deleter::Deleter::rewrite`]): its next start waits for it on its own task.
     fn apply_properties(&mut self, c: crate::properties::Changes) {
         let Some(item) = self.item(c.id) else { return };
         item.description = c.description;
         item.login = c.login;
         item.set_referer(c.referer);
+        let state = mdm_engine::state::state_path(&item.dest);
+        let rerouted = c.direct.is_some();
         // "Through …" changed (#44): the next start goes the new way. The service's link is
         // dropped from the resume state: directly, it continues from the host's own address;
         // through the account, from a new link the service gives. The size and validators
         // still have to match.
         if let Some(direct) = c.direct {
             item.direct = direct;
-            let state = mdm_engine::state::state_path(&item.dest);
-            if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
-                saved.final_url = saved.url.clone();
-                let _ = saved.write(&state);
-            }
             item.note(if direct {
                 // i18n: event log: File Properties: the download no longer goes through the debrid account
                 crate::i18n::t("Set to download directly, not through the debrid account")
@@ -4619,15 +4707,10 @@ impl App {
                 crate::i18n::t("Set to download through the debrid account").to_owned()
             });
         }
+        let readdressed = c.address.clone();
         if let Some(url) = c.address {
             // Refresh download address: the resume state follows, so the download continues
             // from the new address (its size and validators still have to match).
-            let state = mdm_engine::state::state_path(&item.dest);
-            if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
-                saved.url = url.clone();
-                saved.final_url = url.clone();
-                let _ = saved.write(&state);
-            }
             // Where the browser's download of the old address ended isn't this one's (#630).
             item.context.final_url = None;
             // Its state names the new address now: what was read at start (or is still to come)
@@ -4648,6 +4731,21 @@ impl App {
             .move_to
             .filter(|dir| item.dest.parent() != Some(dir.as_path()))
             .map(|dir| mdm_engine::naming::destination(&dir, &item.file_name));
+        if rerouted || readdressed.is_some() {
+            let place = item.dest.clone();
+            self.deleter.rewrite(&place, move || {
+                if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
+                    if rerouted {
+                        saved.final_url = saved.url.clone();
+                    }
+                    if let Some(url) = readdressed {
+                        saved.final_url = url.clone();
+                        saved.url = url;
+                    }
+                    let _ = saved.write(&state);
+                }
+            });
+        }
         self.dirty = true;
         if let Some(target) = move_to {
             self.start_move(c.id, target);
@@ -4786,24 +4884,58 @@ impl App {
         self.start_deferred_rename(id, desired)
     }
 
+    /// The rename's check first, beside the window ([`RenameCheck`]); it goes on when the answer
+    /// comes (`poll_deferred_torrent_renames`). True: under way (its archive is extracted once
+    /// it is renamed).
     fn start_deferred_rename(&mut self, id: u64, desired: String) -> bool {
-        let Some((from, is_dir, torrent_spec, disabled)) =
-            self.items.iter().find(|i| i.id == id).map(|item| {
-                let from = item.dest.clone();
-                let is_dir = crate::deferred_rename::is_folder_target(item);
-                let torrent_spec = item.torrent.clone();
-                let disabled = deferred_rename_disabled_reason_with(
-                    item,
-                    &self.downloads,
-                    &self.settings,
-                    &self.rss,
-                    &self.items,
+        if self.rename_checks.iter().any(|(r, ..)| *r == id) {
+            return true;
+        }
+        let Some(item) = self.items.iter().find(|i| i.id == id) else {
+            return false;
+        };
+        let (item, items) = (
+            item.place_copy(),
+            self.items.iter().map(Item::place_copy).collect::<Vec<_>>(),
+        );
+        let (downloads, settings, rss) = (
+            self.downloads.clone(),
+            self.settings.clone(),
+            self.rss.clone(),
+        );
+        let (tx, rx) = std::sync::mpsc::channel();
+        let (asked, repaint) = (desired.clone(), self.ui_ctx.clone());
+        crate::launch::spawn("rename check", move || {
+            let began = Instant::now();
+            let check = RenameCheck::of(&item, &asked, &downloads, &settings, &rss, &items);
+            if began.elapsed() >= Duration::from_secs(1) {
+                tracing::info!(
+                    "rename on completion: its check took {} ms, beside the window",
+                    began.elapsed().as_millis()
                 );
-                (from, is_dir, torrent_spec, disabled)
-            })
+            }
+            let _ = tx.send(check);
+            repaint.request_repaint();
+        });
+        self.rename_checks.push((id, desired, rx));
+        true
+    }
+
+    /// [`Self::start_deferred_rename`] once its check has come: false when it isn't renamed.
+    fn rename_checked(&mut self, id: u64, desired: String, check: RenameCheck) -> bool {
+        let Some((from, torrent_spec)) = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map(|item| (item.dest.clone(), item.torrent.clone()))
         else {
             return false;
         };
+        let RenameCheck {
+            disabled,
+            is_dir,
+            target,
+        } = check;
         if let Some(reason_key) = disabled {
             if let Some(item) = self.item(id) {
                 item.rename_on_complete = None;
@@ -4829,9 +4961,7 @@ impl App {
             self.dirty = true;
             return true;
         };
-        let Some((initial_to, hold)) =
-            crate::deferred_rename::reserve_target_path(&from, &desired, is_dir)
-        else {
+        let Some((initial_to, hold)) = target else {
             if let Some(item) = self.item(id) {
                 item.rename_on_complete = None;
             }
@@ -4948,6 +5078,28 @@ impl App {
                         self.extracts.finished(id, &self.items, &self.settings);
                     }
                 }
+            }
+        }
+
+        // Checks that came: their renames go on (or are said not to), else their archives go.
+        let mut checked = Vec::new();
+        self.rename_checks
+            .retain(|(id, desired, rx)| match rx.try_recv() {
+                Ok(check) => {
+                    checked.push((*id, desired.clone(), Some(check)));
+                    false
+                }
+                Err(std::sync::mpsc::TryRecvError::Empty) => true,
+                // No thread to check on: its rename stays for the next start.
+                Err(_) => {
+                    checked.push((*id, desired.clone(), None));
+                    false
+                }
+            });
+        for (id, desired, check) in checked {
+            let renaming = check.is_some_and(|c| self.rename_checked(id, desired, c));
+            if !renaming {
+                self.extracts.finished(id, &self.items, &self.settings);
             }
         }
 
@@ -5130,18 +5282,23 @@ impl App {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         };
         // Its category's folder, made when it isn't there yet (the window asks first; the
-        // choice was made in the browser).
-        if let Some(dir) = add.dest.parent() {
-            let _ = std::fs::create_dir_all(dir);
+        // choice was made in the browser): beside the window, as its start makes it too.
+        if let Some(dir) = add.dest.parent().map(std::path::Path::to_path_buf) {
+            crate::launch::spawn("video folder", move || {
+                let _ = std::fs::create_dir_all(dir);
+            });
         }
         // Already in the list in this quality: Options' "If a duplicate download link is added".
         let step = self.add_video_checked(add, true);
         VideoLookupAnswer::of(menu_answer(step, start_now))
     }
 
-    /// A playlist's videos (#69), one download each, into its folder: names picked with the
-    /// folder read once (naming::Stems), added at once and saved once, then queued (Download
-    /// Now starts the main queue, so its "N at the same time" applies).
+    /// A playlist's videos (#69), one download each, into its folder: names picked apart from
+    /// one another and from the other downloads there (naming::Stems), added at once and saved
+    /// once, then queued (Download Now starts the main queue, so its "N at the same time"
+    /// applies). The folder isn't read here, on the window's thread (a sleeping drive or a
+    /// network folder held it): each video is numbered on past its files as it starts, beside
+    /// the window (`video_place`), as Download video's are.
     fn add_playlist(&mut self, add: crate::playlistdlg::PlaylistAdd) {
         let started = Instant::now();
         let folder = add.folder;
@@ -5152,7 +5309,7 @@ impl App {
             .filter_map(|i| i.dest.file_stem())
             .map(|s| s.to_string_lossy().into_owned())
             .collect::<Vec<_>>();
-        let mut stems = mdm_engine::naming::Stems::new(&folder, in_use);
+        let mut stems = mdm_engine::naming::Stems::listed(&folder, in_use);
         self.items.reserve(add.entries.len());
         let mut ids = Vec::with_capacity(add.entries.len());
         for (page, title) in add.entries {
@@ -5177,6 +5334,7 @@ impl App {
                     parts: Vec::new(),
                     named: false,
                 });
+                item.number_at_start = true;
             }
             ids.push(id);
         }
@@ -6237,7 +6395,8 @@ impl App {
             let name = mdm_engine::naming::file_name(None, &url);
             let category = Category::of(&name);
             let dir = self.settings.category_dir(category, &self.downloads);
-            let dest = mdm_engine::naming::destination(&dir, &name);
+            // Numbered on as it starts if the name is taken then (#743): no disk here.
+            let dest = mdm_engine::naming::guess(&dir, &name);
             let id = self.push_item(
                 url,
                 dest,
@@ -6249,6 +6408,7 @@ impl App {
                 crate::i18n::mark("by batch download"),
             );
             self.name_guessed(id, true);
+            self.number_at_start(id);
             ids.push(id);
         }
         self.group(&ids);
@@ -6511,7 +6671,8 @@ impl App {
         let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
         let category = category.unwrap_or_else(|| Category::of(&name));
         let dir = self.settings.category_dir(category, &self.downloads);
-        let dest = mdm_engine::naming::destination(&dir, &name);
+        // Numbered on as it starts if the name is taken then (#743): no disk here.
+        let dest = mdm_engine::naming::guess(&dir, &name);
         cmd.remote = false;
         let id = self.push_item(
             url,
@@ -6525,6 +6686,7 @@ impl App {
             crate::i18n::mark("from a paired device"),
         );
         self.name_guessed(id, true);
+        self.number_at_start(id);
         match queue {
             Some(q) => self.queues[q].items.push(id),
             None => self.start(id, false),
@@ -7530,6 +7692,7 @@ impl App {
         self.poll_deferred_torrent_renames();
         if !self.moving.is_empty()
             || !self.renaming.is_empty()
+            || !self.rename_checks.is_empty()
             || !self.deferred_torrent_queue.is_empty()
         {
             ctx.request_repaint_after(Duration::from_millis(200));
@@ -10216,7 +10379,9 @@ impl App {
                 } else {
                     pk.folder.clone()
                 };
-                let dest = mdm_engine::naming::destination(&dir, &name);
+                // Numbered on as it starts if the name is taken then (#743): no disk here, for
+                // each of thousands of links.
+                let dest = mdm_engine::naming::guess(&dir, &name);
                 let context = ipc::Command {
                     referer: d.referer,
                     cookies: d.cookies,
@@ -10238,6 +10403,7 @@ impl App {
                 // for each link (#1063: 37,000 links took seconds).
                 if let Some(i) = self.items.last_mut().filter(|i| i.id == id) {
                     i.package = Some(tag.clone());
+                    i.number_at_start = true;
                     // A name the server didn't give (none looked up) may still change.
                     if size.is_none() {
                         i.name_from_url = true;
@@ -11901,7 +12067,8 @@ impl App {
             let name = mdm_engine::naming::sanitize(&name);
             let category = Category::of(&name);
             let dir = self.settings.category_dir(category, &self.downloads);
-            let dest = mdm_engine::naming::destination(&dir, &name);
+            // Numbered on as it starts if the name is taken then (#743): no disk here.
+            let dest = mdm_engine::naming::guess(&dir, &name);
             let size = context.size;
             let id = self.push_item(
                 url,
@@ -11914,6 +12081,7 @@ impl App {
                 crate::i18n::mark("from the browser"),
             );
             self.name_guessed(id, guessed);
+            self.number_at_start(id);
             self.queues[0].items.push(id);
         }
         // The channel's receiver goes with it: later commands are answered "gone".
@@ -14018,6 +14186,128 @@ mod start_disk_tests {
         );
         assert!(app.deleter.finish(Duration::from_secs(10)));
         assert!(!a.exists());
+    }
+
+    /// A download whose name another row has (#442) doesn't look at the disk on the window's
+    /// thread as it starts: whether that row holds the place (its finished file here) and which
+    /// name is free are looked at beside the window; the start waits meanwhile (its queue counts
+    /// it running), then goes on under the free name. One with no other row of its name, or
+    /// with data of its own, starts at once.
+    #[test]
+    fn a_shared_name_is_looked_at_beside_the_window() {
+        let dir = tempfile::tempdir().unwrap();
+        let a = dir.path().join("a.bin");
+        std::fs::write(&a, b"row 1's finished file").unwrap();
+        let mut app = app_with(vec![
+            row(1, a.clone(), Status::Complete),
+            row(2, a.clone(), Status::Queued),
+            row(3, dir.path().join("b.bin"), Status::Queued),
+        ]);
+        let gate = Arc::new(Mutex::new(()));
+        let held = gate.lock().unwrap();
+        app.video_places = crate::videoplace::VideoPlaces::new({
+            let gate = gate.clone();
+            Arc::new(move |item: &Item, items: &[Item]| {
+                drop(gate.lock().unwrap());
+                video_place(item, items)
+            })
+        });
+        let at = Instant::now();
+        app.start(2, false);
+        app.start(3, false);
+        assert!(at.elapsed() < AT_ONCE, "the window doesn't wait");
+        assert!(app.video_places.waiting(2) && get(&app, 2).live.is_none());
+        assert_eq!(app.member_of(get(&app, 2), Instant::now()), Member::Running);
+        assert!(
+            get(&app, 3).live.is_some(),
+            "no other row of its name: started"
+        );
+        // The answer starts it (held here by the download limit: its start went on).
+        app.settings.limits_on = true;
+        app.quota.blocked = true;
+        drop(held);
+        until(&mut app, App::apply_video_places, |app| {
+            !app.video_places.waiting(2)
+        });
+        assert_eq!(get(&app, 2).dest, dir.path().join("a (1).bin"));
+        assert!(app.quota.held.contains(&2), "its start went on");
+        app.stop(3);
+    }
+
+    /// A playlist's videos are named without reading their folder on the window's thread: apart
+    /// from one another and from the other downloads there at once, and numbered on past the
+    /// folder's files as each starts (beside the window).
+    #[test]
+    fn a_playlists_names_leave_the_folder_to_their_starts() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(dir.path().join("Talk.mp4"), b"someone's").unwrap();
+        let mut app = app_with(Vec::new());
+        app.add_playlist(crate::playlistdlg::PlaylistAdd {
+            entries: vec![
+                (address("watch?v=1"), "Talk".into()),
+                (address("watch?v=2"), "Talk".into()),
+            ],
+            selector: "b".into(),
+            ext: "mp4",
+            folder: dir.path().to_owned(),
+            category: Category::Video,
+            start_now: false,
+            context: Default::default(),
+        });
+        let names: Vec<&str> = app.items.iter().map(|i| i.file_name.as_str()).collect();
+        assert_eq!(names, ["Talk.mp4", "Talk (1).mp4"]);
+        assert!(app.items.iter().all(|i| i.number_at_start));
+        let copies: Vec<Item> = app.items.iter().map(Item::place_copy).collect();
+        assert_eq!(
+            video_place(&copies[0], &copies),
+            Some(dir.path().join("Talk (1).mp4")),
+            "numbered past the folder's file as it starts"
+        );
+    }
+
+    /// File Properties' new address rewrites the resume state beside the window, after the
+    /// deletes before it: the call returns at once, and the row's start waits for it.
+    #[test]
+    fn a_new_address_is_written_beside_the_window() {
+        let dir = tempfile::tempdir().unwrap();
+        let (a, gone) = (dir.path().join("a.bin"), dir.path().join("gone.bin"));
+        state_of(address("a.bin"), &a, 40)
+            .write(&state_path(&a))
+            .unwrap();
+        std::fs::write(&gone, b"x").unwrap();
+        let mut app = app_with(vec![
+            row(1, a.clone(), Status::Stopped),
+            row(2, gone.clone(), Status::Complete),
+        ]);
+        let (held, _) = slow_deletes(&mut app, dir.path());
+        app.remove_downloads(&[2], true);
+        let new = address("moved/a.bin");
+        let at = Instant::now();
+        app.apply_properties(crate::properties::Changes {
+            id: 1,
+            description: String::new(),
+            referer: None,
+            login: None,
+            address: Some(new.clone()),
+            move_to: None,
+            direct: None,
+        });
+        assert!(at.elapsed() < AT_ONCE, "the window doesn't wait");
+        assert_eq!(get(&app, 1).url, new);
+        assert!(
+            mdm_engine::naming::being_cleared(dir.path()),
+            "its start would wait"
+        );
+        let saved = || ResumeState::load(&state_path(&a)).unwrap();
+        assert_eq!(
+            saved().url,
+            address("a.bin"),
+            "not yet: after the delete before it"
+        );
+        drop(held);
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+        assert_eq!((saved().url, saved().final_url), (new.clone(), new));
+        assert!(!gone.exists());
     }
 
     /// Overwriting a duplicate deletes its files beside the window: the call returns at once,

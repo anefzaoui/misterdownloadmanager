@@ -758,20 +758,27 @@ pub struct Stems {
 impl Stems {
     /// `in_use`: the stems of the other downloads into `dir`.
     pub fn new(dir: &Path, in_use: impl IntoIterator<Item = String>) -> Stems {
-        let mut taken = HashSet::new();
+        let mut stems = Stems::listed(dir, in_use);
         if let Ok(rd) = std::fs::read_dir(dir) {
             for e in rd.filter_map(Result::ok) {
                 let name = e.file_name().to_string_lossy().to_lowercase();
                 for (i, _) in name.match_indices('.') {
-                    taken.insert(name[..i].to_owned());
+                    stems.taken.insert(name[..i].to_owned());
                 }
-                taken.insert(name);
+                stems.taken.insert(name);
             }
         }
-        taken.extend(in_use.into_iter().map(|s| s.to_lowercase()));
+        stems
+    }
+
+    /// [`Stems::new`] without reading the folder (never touches the disk): the stems differ from
+    /// one another and from `in_use`, and each is numbered on past the folder's files later, as
+    /// its download starts ([`stem_destination`], beside a window that mustn't wait for a
+    /// sleeping drive or a network folder).
+    pub fn listed(dir: &Path, in_use: impl IntoIterator<Item = String>) -> Stems {
         Stems {
             dir: dir.to_owned(),
-            taken,
+            taken: in_use.into_iter().map(|s| s.to_lowercase()).collect(),
         }
     }
 
