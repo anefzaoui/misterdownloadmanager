@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The Download video button over a YouTube preview: it stays as the pointer reaches it, and a
+  click that opens the Download video window sends the preview's video, not the one watched last
+  ([#1271](https://github.com/anefzaoui/misterdownloadmanager/issues/1271))
 - ✅ Linux: a crash is reported on computers whose processor doesn't offer XSAVE (an older
   processor, a virtual machine), where the crash handler faulted a second time and no report came
   ([#1239](https://github.com/anefzaoui/misterdownloadmanager/issues/1239))

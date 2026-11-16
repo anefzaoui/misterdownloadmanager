@@ -1937,6 +1937,29 @@ const videoPageOn = (() => {
   ok("in-place navigation and YouTube's player: the video playing now, or nothing");
 }
 
+// #1271: the player the background asks on YouTube (playingAt, run in the page) is the one at the
+// point video.js sends. YouTube's main player under its home page has no box (the window's
+// corner, 0,0) and still names the video watched last; a hover preview it stopped has none either
+// (hidden in a container of no size). Neither is at any point, the corner included: the preview
+// playing there is, and with nothing there the address video.js named (the card's link) goes.
+{
+  const source = code.slice(code.indexOf("function playingAt("), code.indexOf("const isYouTube"));
+  const page = (...videos) => new Function("document", `${source}
+return playingAt;`)({ querySelectorAll: () => videos });
+  const video = (id, left, top, width, height) => ({
+    getBoundingClientRect: () => ({ left, top, right: left + width, bottom: top + height, width, height }),
+    closest: () => ({ getVideoData: () => ({ video_id: id }) }),
+  });
+  const main = video("watchedLast", 0, 0, 0, 0);
+  const stopped = page(main, video("thePreview1", 0, 0, 0, 0));
+  assert.equal(stopped(0, 0), "", "the corner: no player there");
+  assert.equal(stopped(660, 239), "", "where the stopped preview was");
+  const playing = page(main, video("thePreview1", 476, 135, 369, 208));
+  assert.equal(playing(660, 239), "thePreview1", "the preview playing there");
+  assert.equal(playing(0, 0), "");
+  ok("#1271: YouTube's player at a point: one with no box is at none");
+}
+
 // A small DOM for the sample pages (tools/extension/feeds): elements with their attributes, open
 // shadow roots (<template shadowrootmode>), `a.href`, and querySelector(All) with the simple
 // selectors video.js uses (a tag, #id, [attr], [attr="v"], [attr*="v"], [attr^="v"], lists).
@@ -2595,6 +2618,21 @@ function videoButton({ stored = {} } = {}) {
   assert.equal(pointerTarget(next, null, false), next);
   assert.equal(pointerTarget(null, mine, false), null);
   assert.ok(fn("look").includes("pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen)"), "look: kept on its video while its menu is open");
+  // #1271: where the background asks the page's player what the click's video is (the window's
+  // message): its middle while it has a box on the screen; a hover preview the page stopped as
+  // the pointer went to the button (taken out, or hidden in a container of no size) is at the
+  // point the click was taken at, never the window's corner (YouTube's main player there names
+  // the video watched last).
+  const middle = make(["middle"], "middle");
+  const shown = (left, top, width, height, isConnected = true) => ({ isConnected, getBoundingClientRect: () => ({ left, top, width, height }) });
+  const was = { x: 660, y: 239 };
+  assert.deepEqual(middle(shown(100, 50, 640, 360), was), { x: 420, y: 230 }, "a video on the screen: its middle now");
+  assert.deepEqual(middle(shown(0, 0, 0, 0), was), was, "a stopped preview, hidden");
+  assert.deepEqual(middle(shown(476, 135, 369, 0), was), was, "no height");
+  assert.deepEqual(middle(shown(476, 135, 369, 208, false), was), was, "taken out of the page");
+  assert.equal(middle(shown(0, 0, 0, 0), undefined), undefined, "nowhere known: no point");
+  assert.ok(fn("useWindow").includes("at: middle(j.video, j.asked.at)"), "useWindow: the point the click was taken at, for a video gone");
+  assert.ok(/const d = held \? held\.d : describe\(/.test(fn("download")), "download: a held video's own (#503), its point with it");
   // What a page can never make it do: the menu's rows and keys take only the user's own clicks
   // and keys; rows are text (markup only for the fixed parts); a pick sends the token and the
   // row's number alone; nothing is asked on a timer of its own, nor before a click.
