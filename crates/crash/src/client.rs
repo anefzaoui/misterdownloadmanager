@@ -51,6 +51,30 @@ struct Kept {
     clean: bool,
 }
 
+/// How the tries to connect have gone so far, carried from the window thread's first try to
+/// the connector thread's.
+struct Tries {
+    started: Instant,
+    /// The wait before the next try, doubling up to [`RETRY_MAX`].
+    wait: Duration,
+    last_refusal: Option<std::io::ErrorKind>,
+    same_refusals: u32,
+    /// The last try's error, for the log when the time is up.
+    error: String,
+}
+
+impl Tries {
+    fn new() -> Tries {
+        Tries {
+            started: Instant::now(),
+            wait: RETRY,
+            last_refusal: None,
+            same_refusals: 0,
+            error: String::new(),
+        }
+    }
+}
+
 impl Reporter {
     /// Start `exe --crash-monitor <socket> --data <dir> --parent <pid>` and connect to it: the
     /// window thread tries for a moment, then a thread of its own takes the try over. None when
@@ -77,45 +101,55 @@ impl Reporter {
             kept: Mutex::new(Kept::default()),
             off: AtomicBool::new(false),
         });
-        let deadline = Instant::now() + CONNECT_FOR;
-        Reporter::connect_until(
-            Arc::clone(&reporter),
-            socket.clone(),
-            Instant::now() + FIRST_TRY,
-        );
-        if !reporter.connected() && !reporter.off() {
-            Self::connect_in_background(&reporter, socket, deadline);
-        }
+        Self::connect(&reporter, socket);
         Some(reporter)
+    }
+
+    /// Connect to the monitor: on the caller's thread for [`FIRST_TRY`], then, if it hasn't
+    /// answered yet, from a thread of its own until [`CONNECT_FOR`] is up. The first try's end
+    /// only hands the try over: a monitor that listens past it (a slow start) is still reached.
+    fn connect(reporter: &Arc<Self>, socket: PathBuf) {
+        let mut tries = Tries::new();
+        let deadline = tries.started + CONNECT_FOR;
+        if reporter.connect_until(&socket, tries.started + FIRST_TRY, &mut tries) {
+            Self::connect_in_background(reporter, socket, deadline, tries);
+        }
     }
 
     /// Connect to the monitor from a thread of its own. It listens a moment after it starts,
     /// and a slow start (or a socket the system refuses for a while: a Windows Server was seen
     /// refusing MDM's for five seconds with os error 10022, #476) must neither hold the window
     /// back nor take the monitor away: it may answer later, and what was sent meanwhile goes
-    /// over then.
-    fn connect_in_background(reporter: &Arc<Self>, socket: PathBuf, deadline: Instant) {
-        let reporter = Arc::clone(reporter);
+    /// over then. Past `deadline` it is given up.
+    fn connect_in_background(
+        reporter: &Arc<Self>,
+        socket: PathBuf,
+        deadline: Instant,
+        mut tries: Tries,
+    ) {
+        let connector = Arc::clone(reporter);
         let spawned = std::thread::Builder::new()
             .name("monitor connector".into())
-            .spawn(move || reporter.connect_until(socket, deadline));
+            .spawn(move || {
+                if connector.connect_until(&socket, deadline, &mut tries) {
+                    connector.give_up(&format!("crash monitor didn't answer: {}", tries.error));
+                }
+            });
         if let Err(e) = spawned {
-            tracing::warn!("crash monitor: no thread to connect with ({e})");
+            reporter.give_up(&format!("no thread to connect with ({e})"));
         }
     }
 
-    /// Try to connect until it answers, the app quits, the monitor goes on its own, the system
-    /// refuses the same way once too often, or the time is up.
-    fn connect_until(self: Arc<Self>, socket: PathBuf, deadline: Instant) {
-        let started = Instant::now();
-        let mut wait = RETRY;
-        let mut last_refusal: Option<std::io::ErrorKind> = None;
-        let mut same_refusals = 0u32;
+    /// Try to connect until it answers, the app quits, the monitor goes on its own, or the
+    /// system refuses the same way once too often: false then. True when `deadline` came first,
+    /// the monitor still not answering: the caller hands the try over or gives up. Never waits
+    /// past `deadline`.
+    fn connect_until(&self, socket: &Path, deadline: Instant, tries: &mut Tries) -> bool {
         loop {
             if self.off() || self.is_clean() {
-                return;
+                return false;
             }
-            match minidumper::Client::with_name(minidumper::SocketName::Path(&socket)) {
+            match minidumper::Client::with_name(minidumper::SocketName::Path(socket)) {
                 Ok(client) => {
                     // What was sent before the connection goes again, under the kept lock and
                     // before the client is published: a `session` or `state` arriving while this
@@ -125,7 +159,7 @@ impl Reporter {
                     if kept.clean {
                         // The app quit as we connected: a connection now would look to the
                         // monitor like a fresh app that is about to die.
-                        return;
+                        return false;
                     }
                     if let Some(s) = &kept.session {
                         Self::send_json(&client, kind::SESSION, s);
@@ -138,34 +172,38 @@ impl Reporter {
                     tracing::info!(
                         "crash monitor {} listening, {} ms after start",
                         self.monitor_pid().unwrap_or_default(),
-                        started.elapsed().as_millis()
+                        tries.started.elapsed().as_millis()
                     );
-                    return;
+                    return false;
                 }
-                Err(e) if Instant::now() < deadline => {
+                Err(e) => {
                     // A monitor that couldn't open its socket has already said why in its own
                     // log and gone: don't try for a process that is already gone.
                     if self.monitor_exited() {
                         self.give_up("crash monitor exited before it listened");
-                        return;
+                        return false;
                     }
                     // The same refusal over and over is the system's answer about this socket:
                     // trying the whole minute would only end the same way. The socket simply
                     // not being there yet (the monitor starting) is not a refusal, and doesn't
                     // count: that is what the minute is for.
                     let refusal = refusal_of(&e);
-                    same_refusals = refusals_after(same_refusals, &last_refusal, &refusal);
-                    last_refusal = refusal;
-                    if same_refusals >= SAME_REFUSALS {
+                    tries.same_refusals =
+                        refusals_after(tries.same_refusals, &tries.last_refusal, &refusal);
+                    tries.last_refusal = refusal;
+                    tries.error = e.to_string();
+                    if tries.same_refusals >= SAME_REFUSALS {
                         self.give_up(&format!("crash monitor keeps being refused: {e}"));
-                        return;
+                        return false;
                     }
-                    std::thread::sleep(wait);
-                    wait = (wait * 2).min(RETRY_MAX);
-                }
-                Err(e) => {
-                    self.give_up(&format!("crash monitor didn't answer: {e}"));
-                    return;
+                    let left = deadline.saturating_duration_since(Instant::now());
+                    if left.is_zero() {
+                        return true;
+                    }
+                    // Up to the deadline, not past it: the window thread is held no longer
+                    // than its first try, and the last try is made at the deadline.
+                    std::thread::sleep(tries.wait.min(left));
+                    tries.wait = (tries.wait * 2).min(RETRY_MAX);
                 }
             }
         }
@@ -454,7 +492,12 @@ mod tests {
         };
         reporter.state(&state);
         assert!(!reporter.connected());
-        Reporter::connect_in_background(&reporter, socket.clone(), Instant::now() + CONNECT_FOR);
+        Reporter::connect_in_background(
+            &reporter,
+            socket.clone(),
+            Instant::now() + CONNECT_FOR,
+            Tries::new(),
+        );
         // The monitor comes up late, past the first refusals the connector has already met.
         std::thread::sleep(Duration::from_millis(200));
         let mut server =
@@ -517,22 +560,103 @@ mod tests {
             off: AtomicBool::new(false),
         });
         let started = Instant::now();
-        Reporter::connect_until(
-            Arc::clone(&reporter),
+        Reporter::connect_in_background(
+            &reporter,
             socket,
             started + Duration::from_millis(300),
+            Tries::new(),
         );
+        while !reporter.off() && started.elapsed() < Duration::from_secs(5) {
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        assert!(reporter.off(), "the give-up is not remembered");
         assert!(
             started.elapsed() < Duration::from_secs(2),
             "waited {:?} past the deadline",
             started.elapsed()
         );
         assert!(!reporter.connected());
-        assert!(reporter.off(), "the give-up is not remembered");
         assert!(
             reporter.monitor_pid().is_none(),
             "the monitor was not ended"
         );
+    }
+
+    /// A monitor that listens only after the window thread's first try is still connected to,
+    /// from the connector thread: the first try's end hands the try over, it gives nothing up.
+    /// (It did give up, and ended the monitor: a monitor slower than half a second to start, a
+    /// cold start or a busy computer, left the whole session without crash reports.)
+    #[test]
+    fn a_monitor_slower_than_the_first_try_is_still_connected_to() {
+        let dir = tempfile::tempdir().unwrap();
+        let socket = dir.path().join("slow.sock");
+        // The monitor's process, alive and not listening yet.
+        let child = std::process::Command::new(slow_program())
+            .args(slow_program_args())
+            .spawn()
+            .expect("the stand-in monitor starts");
+        let reporter = Arc::new(Reporter {
+            client: OnceLock::new(),
+            monitor: Mutex::new(Some(child)),
+            kept: Mutex::new(Kept::default()),
+            off: AtomicBool::new(false),
+        });
+        let started = Instant::now();
+        Reporter::connect(&reporter, socket.clone());
+        // The window thread is held for its first try only, then goes on.
+        let held = started.elapsed();
+        assert!(
+            held >= FIRST_TRY && held < FIRST_TRY + Duration::from_millis(1500),
+            "the window thread was held {held:?}"
+        );
+        assert!(!reporter.connected());
+        assert!(!reporter.off(), "the first try's end gave the monitor up");
+        assert!(
+            reporter.monitor_pid().is_some(),
+            "the slow monitor was ended"
+        );
+        // The monitor listens a second after the first try ended.
+        std::thread::sleep(Duration::from_secs(1));
+        let mut server =
+            minidumper::Server::with_name(minidumper::SocketName::Path(&socket)).unwrap();
+        let shutdown = Arc::new(AtomicBool::new(false));
+        {
+            let shutdown = Arc::clone(&shutdown);
+            std::thread::spawn(move || {
+                let _ = server.run(Box::new(Ignore), &shutdown, None);
+            });
+        }
+        let limit = Instant::now() + Duration::from_secs(10);
+        while !reporter.connected() && Instant::now() < limit {
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        assert!(
+            reporter.connected(),
+            "the slow monitor was never connected to"
+        );
+        assert!(!reporter.off());
+        shutdown.store(true, AtomicOrdering::Relaxed);
+        if let Some(mut child) = reporter.lock_monitor().take() {
+            let _ = child.kill();
+            let _ = child.wait();
+        }
+    }
+
+    /// A monitor's side that only answers (pings, connections).
+    struct Ignore;
+    impl minidumper::ServerHandler for Ignore {
+        fn create_minidump_file(
+            &self,
+        ) -> Result<(std::fs::File, std::path::PathBuf), std::io::Error> {
+            Err(std::io::Error::other("no dumps are asked for here"))
+        }
+        fn on_minidump_created(
+            &self,
+            _: Result<minidumper::MinidumpBinary, minidumper::Error>,
+        ) -> minidumper::LoopAction {
+            minidumper::LoopAction::Continue
+        }
+        fn on_message(&self, _: u32, _: Vec<u8>) {}
     }
 
     /// A clean exit ends a monitor that never connected, and nothing is sent after it: a
@@ -595,11 +719,12 @@ mod tests {
             "the never-connected monitor was left behind"
         );
         // The connector that was on its way stops without connecting or sending.
-        Reporter::connect_until(
-            Arc::clone(&reporter),
-            socket,
+        let timed_out = reporter.connect_until(
+            &socket,
             Instant::now() + Duration::from_secs(1),
+            &mut Tries::new(),
         );
+        assert!(!timed_out, "the connector kept trying after a clean exit");
         assert!(!reporter.connected(), "connected after a clean exit");
         assert!(
             seen.lock().unwrap().is_empty(),

@@ -567,6 +567,9 @@ These ship in the next version.
   the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
   selected row as the arrows move it
   ([#1190](https://github.com/anefzaoui/misterdownloadmanager/issues/1190))
+- ✅ A crash monitor slower than half a second to start is still connected to from beside the
+  window, instead of the session going without crash reports; the end-to-end tests no longer
+  fail on a slow CI runner
 - ✅ The crash reports' end-to-end tests wait for the crash monitor before crashing, so a slow
   CI runner no longer fails them
 - ✅ The Linux lab scripts (tools/lab) keep the lab VM account's password in private files, never on
