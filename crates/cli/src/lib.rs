@@ -228,6 +228,24 @@ enum Cmd {
         #[arg(required = true)]
         ids: Vec<u64>,
     },
+    /// Start a download queue in the running app (automation API). Starts the main queue by default.
+    StartQueue {
+        /// The queue to start (by name); starts the main queue if omitted.
+        #[arg(short, long)]
+        queue: Option<String>,
+        /// The queue to start (by name), if not given with `--queue`.
+        #[arg(value_name = "QUEUE", conflicts_with = "queue")]
+        name: Option<String>,
+    },
+    /// Stop a download queue in the running app (automation API). Stops the main queue by default.
+    StopQueue {
+        /// The queue to stop (by name); stops the main queue if omitted.
+        #[arg(short, long)]
+        queue: Option<String>,
+        /// The queue to stop (by name), if not given with `--queue`.
+        #[arg(value_name = "QUEUE", conflicts_with = "queue")]
+        name: Option<String>,
+    },
     /// Show a new code that pairs a phone or a browser with the running app's remote control
     /// (#141, #157): its address, the code and a QR code to scan.
     Pair,
@@ -1135,6 +1153,16 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
         Cmd::Start { ids } => act("start", ids),
         Cmd::Remove { ids } => act("remove", ids),
         Cmd::Delete { ids } => act("delete", ids),
+        Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
+            action: Some("start_queue".into()),
+            queue: queue.or(name),
+            ..Default::default()
+        }),
+        Cmd::StopQueue { queue, name } => ask(mdm_ipc::Command {
+            action: Some("stop_queue".into()),
+            queue: queue.or(name),
+            ..Default::default()
+        }),
         Cmd::Pair => pair(),
         Cmd::Api { state } => ask(mdm_ipc::Command {
             api: Some(state == "on"),
@@ -1672,10 +1700,73 @@ mod tests {
             "https://example.test/a.zip"
         ])));
         assert!(downloads(&args(&["resume", "a.zip.mdm.json"])));
+        assert!(!downloads(&args(&["start-queue"])));
+        assert!(!downloads(&args(&["stop-queue"])));
         assert!(!downloads(&args(&["api", "on"])));
         assert!(!downloads(&args(&["status"])));
         assert!(!downloads(&args(&["--help"])));
         assert!(!downloads(&args(&[])));
+    }
+
+    #[test]
+    fn queue_commands_parse() {
+        let cli = Cli::try_parse_from([NAME, "start-queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StartQueue {
+                queue: None,
+                name: None
+            }
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "start-queue", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StartQueue {
+                queue: None,
+                name: Some(ref n),
+            } if n == "Night queue"
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "start-queue", "-q", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StartQueue {
+                queue: Some(ref q),
+                name: None,
+            } if q == "Night queue"
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "stop-queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StopQueue {
+                queue: None,
+                name: None
+            }
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "stop-queue", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StopQueue {
+                queue: None,
+                name: Some(ref n),
+            } if n == "Night queue"
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "stop-queue", "--queue", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StopQueue {
+                queue: Some(ref q),
+                name: None,
+            } if q == "Night queue"
+        ));
+
+        // Both positional and option conflict.
+        assert!(Cli::try_parse_from([NAME, "start-queue", "-q", "A", "B"]).is_err());
+        assert!(Cli::try_parse_from([NAME, "stop-queue", "--queue", "A", "B"]).is_err());
     }
 
     /// A service that takes `hoster.test` only, or (`broken`) can't say which hosts it takes.
