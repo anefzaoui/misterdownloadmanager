@@ -8555,7 +8555,8 @@ impl App {
         let date = |secs: u64| {
             chrono::DateTime::from_timestamp(secs.min(i64::MAX as u64) as i64, 0)
                 .map(|d| {
-                    let local = d.with_timezone(&chrono::Local).date_naive();
+                    // The kept offset (clock.rs, #536): chrono's own asks the system each time.
+                    let local = crate::clock::local(d).date_naive();
                     crate::i18n::ltr(&crate::regional::short_date(local))
                 })
                 .unwrap_or_default()
