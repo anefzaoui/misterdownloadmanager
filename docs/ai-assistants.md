@@ -21,6 +21,7 @@ The assistant starts the server itself; you only tell the assistant where it is,
 | `resume_downloads` | Starts or resumes stopped, queued or failed downloads. |
 | `remove_downloads` | Removes downloads from the list and keeps their files, or deletes the files too when asked. A running download must be paused first. |
 | `start_queue` | Starts the main download queue. |
+| `stop_queue` | Stops the main download queue. |
 
 The assistant can't change MDM's options, see your browser, or turn the automation API on by itself.
 

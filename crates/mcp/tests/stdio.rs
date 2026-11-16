@@ -143,7 +143,8 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
             "pause_downloads",
             "remove_downloads",
             "resume_downloads",
-            "start_queue"
+            "start_queue",
+            "stop_queue"
         ]
     );
 
@@ -170,6 +171,8 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
     assert!(!err);
     let (_, err) = mcp.call("start_queue", json!({}));
     assert!(!err);
+    let (_, err) = mcp.call("stop_queue", json!({}));
+    assert!(!err);
 
     // What reached the app: the fields its channel reads (mdm_ipc::Command), with the token.
     let seen = seen.lock().unwrap();
@@ -189,6 +192,7 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
             .any(|r| r["action"] == "pause" && r["ids"] == json!([2]))
     );
     assert!(seen.iter().any(|r| r["start_queue"] == true));
+    assert!(seen.iter().any(|r| r["action"] == "stop_queue"));
     assert!(seen.iter().all(|r| r["token"] == "secret"));
 }
 

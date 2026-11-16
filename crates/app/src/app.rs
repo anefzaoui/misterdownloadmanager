@@ -4294,6 +4294,9 @@ impl App {
             return;
         }
         ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
+        // X11: out of the window list too, when it was minimized (#1255).
+        #[cfg(target_os = "linux")]
+        crate::unix::withdraw_main_window();
         self.hidden = true;
         self.start_trimming();
     }
@@ -4677,6 +4680,9 @@ impl App {
         if minimize && !self.hidden {
             tracing::info!("minimized to the notification area");
             ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
+            // X11: a minimized window stays in the window list unless withdrawn (#1255).
+            #[cfg(target_os = "linux")]
+            crate::unix::withdraw_main_window();
             self.hidden = true;
             self.start_trimming();
         }
@@ -6564,10 +6570,10 @@ impl App {
             });
         }
         if let Some(action @ ("start_queue" | "stop_queue")) = cmd.action.as_deref() {
-            let at = cmd
-                .queue
-                .as_deref()
-                .and_then(|n| self.queues.iter().position(|q| q.name == n));
+            let at = match cmd.queue.as_deref() {
+                Some(n) => self.queues.iter().position(|q| q.name == n),
+                None => (!self.queues.is_empty()).then_some(0),
+            };
             let Some(q) = at else {
                 return line(&ErrorAnswer {
                     error: "no such queue".into(),

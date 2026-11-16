@@ -30,7 +30,8 @@
 // clear of the page's controls, #421), feeds (a video in a feed sends its post, its own file, or
 // nothing and says so, never the feed: sample pages served at LinkedIn's, Facebook's, X's,
 // Instagram's, Reddit's, TikTok's, Vimeo's, Dailymotion's addresses, #689), preview (the video button kept over a hover-to-play
-// preview the page stopped as the pointer went to it, #503), steady (the video button keeping one place over
+// preview the page stopped as the pointer went to it, #503), ytpreview (the same over YouTube's own
+// preview, a click sending the preview's video, not the one its main player watched last, #1271), steady (the video button keeping one place over
 // a preview that grows and shows its own buttons while hovered, #560), player (one place over a
 // player whose settings button comes and goes as the pointer moves, #899), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
@@ -2741,6 +2742,61 @@ const CASES = {
     if (address !== `${LAB}/gen/1M/clip.mp4`) throw new Error(`the video window got ${address}`);
     await t.session.mouse(5, 5);
     return `${Math.abs(first.l - b.l) > 2 || Math.abs(first.t - b.t) > 2 ? "moved" : "stayed"} off the preview's sound button, at ${Math.round(b.l - v.l)},${Math.round(b.t - v.t)}; then still for ${seen.length} looks (8 steps there, 2.5 s on it while the preview shrank and hid its button), sent ${address.replace(LAB, "")}`;
+  },
+
+  // #1271: YouTube's own hover preview, as its home page has it. The preview plays in a player
+  // of its own (.html5-video-player) inside the card's link, and stops as the pointer leaves the
+  // thumbnail for the button: YouTube hides it in a container of no size. Its main player sits
+  // under the page with no box (at the window's corner), still holding the video watched last.
+  // A sample page served at www.youtube.com (nothing from YouTube itself), both players
+  // answering as YouTube's do (getVideoData). The button stays while the pointer is on it, and a
+  // click sends the preview's video, never the one watched last.
+  async ytpreview(t) {
+    const PREVIEW = "mdmPreview1";
+    const WATCHED = "mdmWatched1";
+    const html = `<!doctype html><meta charset="utf-8"><title>YouTube</title>
+<style>body{margin:0;font:14px sans-serif}#player{display:none}.card{position:absolute;left:120px;top:100px;width:480px}
+.thumb{display:block;position:relative;width:480px;height:270px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#3b6ea5,#a7c7e7)}
+.preview{position:absolute;inset:0}.preview.off{display:none}video{display:block;width:100%;height:100%;background:#0b1e33}</style>
+<div id="player"><div id="movie_player" class="html5-video-player"><video></video></div></div>
+<div class="card"><a class="thumb" href="/watch?v=${PREVIEW}"><div class="preview off"><div id="inline-preview-player" class="html5-video-player"><video muted></video></div></div></a>
+<p><a href="/watch?v=${PREVIEW}">A test clip</a></p></div>
+<script>
+document.getElementById("movie_player").getVideoData = () => ({ video_id: "${WATCHED}" });
+document.getElementById("inline-preview-player").getVideoData = () => ({ video_id: "${PREVIEW}" });
+const thumb = document.querySelector(".thumb");
+const preview = document.querySelector(".preview");
+thumb.addEventListener("mouseenter", () => { preview.classList.remove("off"); document.body.dataset.preview = "playing"; });
+thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); document.body.dataset.preview = "stopped"; });
+</script>`;
+    await t.session.serve(["www.youtube.com"], (url) =>
+      new URL(url).pathname === "/" ? { status: 200, type: "text/html; charset=utf-8", body: html } : { status: 404, type: "text/plain", body: "not a sample page" },
+    );
+    await t.session.navigate("https://www.youtube.com/");
+    const thumb = await rect(t.session, ".thumb");
+    const b = await hover(t.session, thumb);
+    if (!b) throw new Error("no button over the preview");
+    // Onto the button: YouTube stops its preview.
+    await t.session.mouse(b.l + 14, (b.t + b.b) / 2);
+    await until("the page's preview stopped", 3000, () => t.session.evaluate(`document.body.dataset.preview === "stopped"`));
+    await sleep(2000);
+    // E2E_YTPREVIEW_SHOT: a folder for a PR's pictures: the page with the preview stopped and the
+    // pointer on the button, and the Download video window the click opened.
+    const shots = process.env.E2E_YTPREVIEW_SHOT || "";
+    if (shots) fs.mkdirSync(shots, { recursive: true });
+    if (shots && t.session.screenshot) await t.session.screenshot(path.join(shots, `${t.name}-page.png`));
+    const kept = await rect(t.session, "mdm-video-button");
+    if (!kept) throw new Error("the button went with the preview");
+    // Where it was: at the thumbnail's top right, its end against the edge (its grip, shown
+    // under the pointer, widens it to the left).
+    near(kept.r, b.r, "kept, right edge");
+    near(kept.t, b.t, "kept, top");
+    const address = await clickButton(t.session, kept, shots && path.join(shots, `${t.name}-window.png`));
+    if (address === `https://www.youtube.com/watch?v=${WATCHED}`) throw new Error("the video window got the video watched last, not the preview's");
+    if (address !== `https://www.youtube.com/watch?v=${PREVIEW}`) throw new Error(`the video window got ${address}`);
+    await t.session.mouse(5, 5);
+    await until("the button gone after the pointer left", 3000, async () => !(await rect(t.session, "mdm-video-button")));
+    return `kept over the stopped preview, sent watch?v=${PREVIEW} (not the main player's ${WATCHED}), gone after`;
   },
 
   // #899: a site's player shows its own settings button at the top right while the pointer moves

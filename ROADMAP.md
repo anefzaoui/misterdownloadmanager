@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The Download video button over a YouTube preview: it stays as the pointer reaches it, and a
+  click that opens the Download video window sends the preview's video, not the one watched last
+  ([#1271](https://github.com/anefzaoui/misterdownloadmanager/issues/1271))
 - ✅ Linux: a crash is reported on computers whose processor doesn't offer XSAVE (an older
   processor, a virtual machine), where the crash handler faulted a second time and no report came
   ([#1239](https://github.com/anefzaoui/misterdownloadmanager/issues/1239))
@@ -572,6 +575,8 @@ These ship in the next version.
   the way the rest of the window does, never waiting for Windows
 - ✅ Every release file gets a signed build provenance record (`gh attestation verify`), and the
   repository an OpenSSF Scorecard (thanks to [@joyahmed](https://github.com/joyahmed))
+- ✅ The Linux AppImage is packaged by the same appimagetool and runtime on every rebuild: each
+  at a fixed release, checked by its sha256 (thanks to [@joyahmed](https://github.com/joyahmed))
 - ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
   other applications (including when raised or opened while MDM is behind another program or hidden
   in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
@@ -592,6 +597,12 @@ These ship in the next version.
   a tab or window title takes none (thanks to [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Bangla: a web page is a **পেজ**, never a পৃষ্ঠা (a book's page) — "এই পেজে", "পেজটি",
   "পেজের ঠিকানা" — and a checksum a **চেকসাম** (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: the control verbs stay distinct — stop is **থামান** (its state "থেমে গেছে"), a pause
+  "বিরতি দিন", a resume "পুনরায় শুরু করুন", remove "বাদ দিন" — and a queue is a **সারি**, never
+  "কিউ" (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: termbase alignment — export is **এক্সপোর্ট**, import is **ইম্পোর্ট**, help is
+  **সহায়তা**, category is **শ্রেণি**, options is **বিকল্প** and redownload is **আবার ডাউনলোড**
+  (thanks to [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Bangla: spelled the Bangla Academy way — a link is a **লিংক**, a category a **শ্রেণি**,
   "already" is **ইতোমধ্যে** and a plural takes **-গুলো**, as the style guide settles them
   (thanks to [@Seyamalam](https://github.com/Seyamalam))
@@ -1329,6 +1340,13 @@ These ship in the next version.
   ([#1237](https://github.com/anefzaoui/misterdownloadmanager/issues/1237))
 - ✅ Torrents: peers at addresses that can't be on the internet are left alone, whoever names
   them (a tracker, the DHT, another peer), as trackers there already were
+- ✅ AI assistants (MCP) can stop the main download queue too (`stop_queue`), and the automation
+  API's queue actions take the main download queue when no queue is named (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
+  list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
+- ✅ A failed download says why in MDM's log too, with the site's name and no tokens
+  ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
 
 ## Being worked on
 

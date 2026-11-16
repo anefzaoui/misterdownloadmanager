@@ -1819,8 +1819,14 @@ button:focus-visible { outline: none; }
 
   // ---- acting ---------------------------------------------------------------------------------
   // The middle of the video: where the background asks the page's own player what it plays.
-  function middle(v) {
+  // A video with no box on the screen any more (a hover preview the page stopped as the pointer
+  // went to the button, #1271: taken out, or hidden in a container of no size) is at no point:
+  // its middle would be the window's corner, where YouTube keeps its main player, whose answer
+  // is the video watched last, not the preview's. The point it was at when the click was taken
+  // (`was`) instead.
+  function middle(v, was) {
     const box = v.getBoundingClientRect();
+    if (!v.isConnected || !(box.width > 0 && box.height > 0)) return was;
     return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
   }
 
@@ -1917,7 +1923,7 @@ button:focus-visible { outline: none; }
   async function useWindow(j, { direct = false, words = "" } = {}) {
     if (!firstWindow(j)) return;
     // Where the video is now, for the background to ask the page's player there.
-    const r = await send({ type: "video", ...j.asked, ...(direct ? { direct: true } : {}), ...(j.video.isConnected ? { at: middle(j.video) } : {}) });
+    const r = await send({ type: "video", ...j.asked, ...(direct ? { direct: true } : {}), at: middle(j.video, j.asked.at) });
     if (r.gone) return;
     if (r.ok) {
       lastShow = r.show || "";

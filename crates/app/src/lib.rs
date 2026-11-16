@@ -624,6 +624,8 @@ fn app() -> eframe::Result {
     let result = renderer::run(APP_ID, &plan, options, move |cc| {
         #[cfg(windows)]
         win32::set_main_window(cc);
+        #[cfg(target_os = "linux")]
+        unix::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
         clipboard::wake(&cc.egui_ctx);

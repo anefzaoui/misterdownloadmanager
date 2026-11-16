@@ -2769,6 +2769,9 @@ function playingAt(x, y) {
   let best = null;
   for (const v of document.querySelectorAll("video")) {
     const r = v.getBoundingClientRect();
+    // One with no box (YouTube's main player under its home page, a stopped preview) is at no
+    // point: its box is the window's corner (#1271).
+    if (!(r.width > 0 && r.height > 0)) continue;
     if (x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
     if (!best || r.width * r.height < best.area) best = { v, area: r.width * r.height };
   }

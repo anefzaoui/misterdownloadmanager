@@ -2059,6 +2059,68 @@ pub fn on_xwayland() -> bool {
     window_system().x11_over_wayland
 }
 
+/// Linux, X11 and XWayland: the main window's X11 id, for [`withdraw_main_window`]; 0 until it is
+/// known, and on Wayland.
+#[cfg(target_os = "linux")]
+static MAIN_X11_WINDOW: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// Linux: the main window, as eframe made it (`win32::set_main_window`'s counterpart).
+#[cfg(target_os = "linux")]
+pub fn set_main_window(cc: &eframe::CreationContext<'_>) {
+    use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+    let id = match cc.window_handle().map(|h| h.as_raw()) {
+        Ok(RawWindowHandle::Xlib(h)) => u32::try_from(h.window).unwrap_or(0),
+        Ok(RawWindowHandle::Xcb(h)) => h.window.get(),
+        _ => 0,
+    };
+    MAIN_X11_WINDOW.store(id, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// Linux, X11 and XWayland: the main window out of the taskbar and the window list, hidden in the
+/// notification area (#1255). winit hides a window by unmapping it, which takes a shown window
+/// out of the window manager's hands, but does nothing to a minimized one: the window manager
+/// already unmapped it, and keeps it, minimized, in its list (XFCE's window buttons showed it
+/// beside the tray icon). ICCCM (4.1.4) asks for both to withdraw a window: the unmap, and a
+/// synthetic UnmapNotify sent to the root window, which Xlib's XWithdrawWindow does and winit
+/// doesn't. Both here, on a connection of MDM's own, in that order; winit's own unmap after them
+/// finds the window unmapped already, and showing it maps it again, as a new window.
+#[cfg(target_os = "linux")]
+pub fn withdraw_main_window() {
+    let window = MAIN_X11_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    if window == 0 || on_wayland() {
+        return;
+    }
+    if let Err(e) = withdraw(window) {
+        tracing::warn!("the window couldn't be taken out of the window list: {e}");
+    }
+}
+
+/// ICCCM's withdrawal of X11 window `window` ([`withdraw_main_window`]).
+#[cfg(target_os = "linux")]
+fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{ConnectionExt, EventMask, UNMAP_NOTIFY_EVENT, UnmapNotifyEvent};
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = conn.setup().roots.get(screen).ok_or("no such screen")?.root;
+    conn.unmap_window(window)?;
+    let unmapped = UnmapNotifyEvent {
+        response_type: UNMAP_NOTIFY_EVENT,
+        sequence: 0,
+        event: root,
+        window,
+        from_configure: false,
+    };
+    conn.send_event(
+        false,
+        root,
+        EventMask::SUBSTRUCTURE_REDIRECT | EventMask::SUBSTRUCTURE_NOTIFY,
+        unmapped,
+    )?;
+    // A round trip: both requests reached the server before the connection closes.
+    conn.get_input_focus()?.reply()?;
+    Ok(())
+}
+
 /// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
 #[cfg(target_os = "linux")]
 #[allow(unsafe_code)]
