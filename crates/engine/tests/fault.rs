@@ -8,7 +8,7 @@ use std::time::Duration;
 use mdm_engine::fault::{Fault, of_http};
 use mdm_engine::{Dns, DnsChoice, Options, Proxy, http_client};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::TcpListener;
+use tokio::net::{TcpListener, TcpSocket};
 
 #[path = "support/fake_dns.rs"]
 mod support;
@@ -40,10 +40,15 @@ async fn serve(answer: Option<&'static [u8]>) -> u16 {
     port
 }
 
-/// A port nothing listens on.
-async fn closed_port() -> u16 {
-    let l = TcpListener::bind("127.0.0.1:0").await.unwrap();
-    l.local_addr().unwrap().port()
+/// A port that refuses every connection, and the socket that keeps it so: bound, never
+/// listening, held until the test ends. A port bound and let go at once is free for anything to
+/// take before the request comes (another program's server, or the request's own connection,
+/// whose source port the system may pick), and the answer is then that one's.
+fn closed_port() -> (TcpSocket, u16) {
+    let held = TcpSocket::new_v4().unwrap();
+    held.bind("127.0.0.1:0".parse().unwrap()).unwrap();
+    let port = held.local_addr().unwrap().port();
+    (held, port)
 }
 
 /// Windows answers a connection to a port nothing listens on after about 2 s of trying.
@@ -73,7 +78,7 @@ async fn fault_of(url: &str, opts: &Options) -> Fault {
 
 #[tokio::test]
 async fn refused() {
-    let port = closed_port().await;
+    let (_held, port) = closed_port();
     let got = fault_of(&format!("http://127.0.0.1:{port}/"), &opts()).await;
     assert_eq!(got, Fault::Refused);
 }
@@ -170,7 +175,7 @@ async fn a_dns_that_never_answers_is_no_such_host() {
 /// connecting to it, without looking up the server's name (which doesn't exist).
 #[tokio::test]
 async fn through_the_proxy_set_in_options() {
-    let port = closed_port().await;
+    let (_held, port) = closed_port();
     let opts = Options {
         proxy: Proxy::Manual {
             url: format!("http://127.0.0.1:{port}"),

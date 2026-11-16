@@ -353,24 +353,33 @@ mod tests {
         let _ = std::fs::remove_dir_all(dir);
     }
 
+    /// Whether `cmd` fell back, once its run was over: the fallback holds the sender, so a run
+    /// that ends without it drops the sender (`Disconnected`), however long it took. A fixed
+    /// wait said "no fallback" for a run still under way on a busy machine.
+    fn falls_back(cmd: Command) -> bool {
+        use std::sync::mpsc::{RecvTimeoutError, channel};
+        let (tx, rx) = channel();
+        run_detached_with_fallback(cmd, STUCK, move || {
+            let _ = tx.send(());
+        });
+        match rx.recv_timeout(STUCK) {
+            Ok(()) => true,
+            Err(RecvTimeoutError::Disconnected) => false,
+            Err(RecvTimeoutError::Timeout) => panic!("the run never ended"),
+        }
+    }
+
     #[test]
     fn a_program_that_succeeds_has_no_fallback_and_one_that_fails_has_one() {
         let dir = temp("exit");
-        for (body, falls_back) in [("exit 0", false), ("exit 3", true)] {
+        for (body, expected) in [("exit 0", false), ("exit 3", true)] {
             let prog = script(&dir, "prog", body);
-            let (tx, rx) = std::sync::mpsc::channel();
-            run_detached_with_fallback(sh(&prog), Duration::from_secs(5), move || {
-                let _ = tx.send(());
-            });
-            let got = rx.recv_timeout(Duration::from_secs(3)).is_ok();
-            assert_eq!(got, falls_back, "{body}");
+            assert_eq!(falls_back(sh(&prog)), expected, "{body}");
         }
-        let missing = dir.join("no-such-program");
-        let (tx, rx) = std::sync::mpsc::channel();
-        run_detached_with_fallback(Command::new(missing), Duration::from_secs(5), move || {
-            let _ = tx.send(());
-        });
-        assert!(rx.recv_timeout(Duration::from_secs(3)).is_ok(), "missing");
+        assert!(
+            falls_back(Command::new(dir.join("no-such-program"))),
+            "missing"
+        );
         let _ = std::fs::remove_dir_all(dir);
     }
 
