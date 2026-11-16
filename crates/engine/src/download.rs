@@ -329,6 +329,16 @@ pub enum Destination {
     Free(PathBuf),
 }
 
+impl Destination {
+    /// The folder the download is saved in.
+    pub fn folder(&self) -> &Path {
+        match self {
+            Destination::Dir(dir) => dir,
+            Destination::File(p) | Destination::Free(p) => p.parent().unwrap_or(Path::new("")),
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct Request {
     pub url: Url,
@@ -1180,6 +1190,7 @@ impl Download {
         Download::spawn(req.url.clone(), move |shared, cancel| {
             let sh = shared.clone();
             let body = async move {
+                after_clearing(req.dest.folder(), &cancel).await?;
                 if crate::ftp::is_ftp(&req.url) {
                     run_fresh_ftp(req, opts, sh, cancel).await
                 } else {
@@ -1232,6 +1243,7 @@ impl Download {
         Download::spawn_showing(req.url.clone(), shown, move |shared, cancel| {
             let sh = shared.clone();
             let body = async move {
+                after_clearing(req.dest.folder(), &cancel).await?;
                 let look = {
                     let state_file = state_file.clone();
                     tokio::task::spawn_blocking(move || Found::look(&state_file))
@@ -1944,6 +1956,22 @@ async fn run(
     result
 }
 
+/// Before a download looks at its folder: the deletes of old files there that it must come
+/// after ([`naming::clear`]: a Redownload's, a duplicate overwritten, a restart under the same
+/// name) have finished, on a thread that may wait (the disk can take seconds), unless the
+/// download is cancelled meanwhile. Nothing being deleted there: at once.
+async fn after_clearing(dir: &Path, cancel: &CancellationToken) -> Result<(), Error> {
+    if !naming::being_cleared(dir) {
+        return Ok(());
+    }
+    let dir = dir.to_owned();
+    let wait = tokio::task::spawn_blocking(move || naming::wait_cleared(&dir));
+    tokio::select! {
+        _ = cancel.cancelled() => Err(Error::Cancelled),
+        _ = wait => Ok(()),
+    }
+}
+
 async fn run_fresh(
     req: Request,
     opts: Options,
@@ -2277,12 +2305,7 @@ async fn open_destination(
     name: impl FnOnce() -> String,
 ) -> Result<(PathBuf, naming::Reservation, File), Error> {
     // The folder must exist: we create it, but a removed drive or offline share can't be.
-    let folder = match dest {
-        Destination::File(p) | Destination::Free(p) => {
-            p.parent().unwrap_or(Path::new("")).to_owned()
-        }
-        Destination::Dir(dir) => dir.clone(),
-    };
+    let folder = dest.folder().to_owned();
     std::fs::create_dir_all(&folder).map_err(|_| Error::DestinationUnavailable(folder.clone()))?;
     if let Destination::File(p) | Destination::Free(p) = dest
         && !naming::path_fits(p)

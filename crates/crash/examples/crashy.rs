@@ -1,7 +1,8 @@
 //! The end-to-end test's program (tests/e2e.rs): `crashy <freeze|panic|crash> <data dir>` starts
 //! its monitor (itself with `--crash-monitor`), attaches the crash handler as MDM does, and then
 //! freezes its main thread, panics, or crashes. The monitor writes the dump and the report
-//! (`<data>/crashes/*.txt`) and exits when this process is gone.
+//! (`<data>/crashes/*.txt`) and exits when this process is gone. With `CRASHY_MONITOR_LATE_MS` set,
+//! the monitor listens that much later.
 //!
 //! Test code: it may use `unsafe` (the crash handler, a null write, the thread id), MDM's own code
 //! keeps that in win32.rs / unix.rs.
@@ -17,6 +18,19 @@ use mdm_crash::monitor::{self, Event};
 use mdm_crash::protocol::{Freeze, Panic, Session};
 
 fn main() {
+    // What the connection and the monitor say goes to stderr, which the test leaves to the
+    // terminal: a run that fails shows how far it got ("listening, 84 ms after start", "crash
+    // reports are off for this session (…)"). MDM_LOG chooses more.
+    // (Reading the dump, minidump's crates warn of what a report can do without.)
+    let filter = std::env::var("MDM_LOG").unwrap_or_else(|_| {
+        "warn,minidump=off,minidump_processor=off,minidump_unwind=off,mdm_crash=info".into()
+    });
+    let _ = tracing_subscriber::fmt()
+        .with_writer(std::io::stderr)
+        .with_ansi(false)
+        .with_thread_names(true)
+        .with_env_filter(tracing_subscriber::EnvFilter::new(filter))
+        .try_init();
     let args: Vec<String> = std::env::args().collect();
     if let Some(m) = mdm_crash::MonitorArgs::parse(&args) {
         run_monitor(m);
@@ -46,6 +60,9 @@ fn main() {
     let until = std::time::Instant::now() + Duration::from_secs(60);
     while !reporter.connected() && std::time::Instant::now() < until {
         std::thread::sleep(Duration::from_millis(50));
+    }
+    if !reporter.connected() {
+        eprintln!("crashy: never connected to its monitor; {mode} goes unreported");
     }
 
     match mode.as_str() {
@@ -133,15 +150,44 @@ fn os_thread_id() -> u32 {
     0
 }
 
+/// `CRASHY_MONITOR_LATE_MS`: the monitor waits this long before it listens, as one slow to start
+/// does (a cold disk, a virus scan of a new program, a busy CI runner).
+const MONITOR_LATE: &str = "CRASHY_MONITOR_LATE_MS";
+
 fn run_monitor(m: mdm_crash::MonitorArgs) {
+    if let Some(ms) = std::env::var(MONITOR_LATE)
+        .ok()
+        .and_then(|v| v.parse().ok())
+    {
+        std::thread::sleep(Duration::from_millis(ms));
+    }
     let (tx, rx) = std::sync::mpsc::channel();
     let (socket, data) = (m.socket.clone(), m.data.clone());
-    let failed = tx.clone();
+    let (failed, gone) = (tx.clone(), tx.clone());
     std::thread::spawn(move || {
         if let Err(e) = monitor::serve(&socket, &data, tx) {
             let _ = failed.send(Event::ServeFailed(e));
         }
     });
+    // Leave once crashy is gone, as MDM's monitor does: on macOS the connection a dump was
+    // written for isn't seen to close (minidumper drops it without a word), and crashy's
+    // monitors stayed behind the tests.
+    #[cfg(unix)]
+    {
+        let parent = m.parent as libc::pid_t;
+        std::thread::spawn(move || {
+            // SAFETY: kill with signal 0 only asks whether the process is there.
+            while unsafe { libc::kill(parent, 0) } == 0 {
+                std::thread::sleep(Duration::from_millis(500));
+            }
+            let _ = gone.send(Event::Gone {
+                clean: true,
+                notes: Default::default(),
+            });
+        });
+    }
+    #[cfg(not(unix))]
+    drop(gone);
     while let Ok(e) = rx.recv() {
         match e {
             Event::Dump { path, kind, notes } => {

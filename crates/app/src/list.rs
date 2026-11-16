@@ -877,6 +877,13 @@ pub fn show(
         ui.ctx()
             .accesskit_node_builder(resp.id, |n| n.set_active_descendant(row.accesskit_id()));
     }
+    // A screen reader can move the focus to the list (and its rows, below): it takes the keys
+    // (#1190). Named for UI Automation's scripts too.
+    ui.ctx()
+        .accesskit_node_builder(resp.id, |n| n.set_author_id("downloads"));
+    if winui::focus_target(ui.ctx(), resp.id) {
+        st.focused = true;
+    }
     let bp = p.with_clip_rect(screen(body));
     // Fully visible rows; the list scrolls by whole rows until the last one is fully shown.
     let page_rows = (body.height() / row_h()).floor().max(1.0);
@@ -897,6 +904,22 @@ pub fn show(
     let reach = winui::reachable_rows(rows.len(), (st.scroll / row_h()).round() as usize, page);
     if a11y && let Some(idx) = winui::row_asked_for(ui, reach.clone(), row_id) {
         st.scroll_to = Some(idx);
+    }
+    // A row a screen reader selects (UI Automation's Select, AccessKit's click) or moves the
+    // focus to: selected alone, as a click selects it; the focus also gives the list the keys
+    // (#1190).
+    if a11y {
+        use egui::accesskit::Action;
+        let focused = winui::row_asked(ui, reach.clone(), row_id, &[Action::Focus]);
+        if let Some(idx) =
+            focused.or_else(|| winui::row_asked(ui, reach.clone(), row_id, &[Action::Click]))
+        {
+            out.pick = Some(Pick::Only(idx));
+            ui.ctx().request_repaint();
+        }
+        if focused.is_some() {
+            st.focused = true;
+        }
     }
     if let Some(row) = st.scroll_to.take() {
         let top = row as f32 * row_h();
@@ -951,6 +974,10 @@ pub fn show(
             n.set_position_in_set(idx);
             n.set_size_of_set(rows.len());
             n.add_action(egui::accesskit::Action::ScrollIntoView);
+            // Selected by a screen reader's Select (a click), and a place for its focus
+            // (#1190: no row could take it): both handled above.
+            n.add_action(egui::accesskit::Action::Click);
+            n.add_action(egui::accesskit::Action::Focus);
             n.set_bounds(egui::accesskit::Rect {
                 x0: (bounds.left() * ppp) as f64,
                 y0: (bounds.top() * ppp) as f64,
@@ -1095,6 +1122,16 @@ pub fn show(
         }
     }
     expose_out_of_view(reach.start.max(first + visible)..reach.end);
+    // While the list has the keys (no menu open, no text box focused), its focused row is what a
+    // screen reader says has the focus, and follows as the keys move it; the list itself while
+    // it has no rows (#1190: the reader never went into the list).
+    if st.focused && !st.menu_open && ui.ctx().memory(|m| m.focused().is_none()) {
+        let shown = |f: &usize| reach.contains(f) || (first..first + visible).contains(f);
+        let item = focus
+            .filter(|f| *f < rows.len() && shown(f))
+            .map_or(resp.id, row_id);
+        winui::keys_with(ui.ctx(), item);
+    }
     if let Some(full) = cut_under_pointer {
         // At the pointer: the list is one widget, and a tip placed by it showed under its
         // bottom edge, far from the row.
@@ -1993,5 +2030,145 @@ mod tests {
         );
         assert_eq!(st.widths[SOURCE], 62.0, "the saved widths stay");
         assert_eq!(st.widths[ADDED], 145.0);
+    }
+
+    /// #1190: the download list and its rows take a screen reader's focus (a row's focus selects
+    /// it and gives the list the keys, its Select selects it), the keys move the selection, and
+    /// while the list has the keys its focused row is what the reader says has the focus.
+    #[test]
+    fn the_download_list_takes_and_tells_the_focus() {
+        use crate::chrome::{IconKey, ShellIcons};
+        use egui::accesskit::{Action, ActionRequest, NodeId, Role, TreeId, TreeUpdate};
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        winui::install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+        ctx.enable_accesskit();
+        let rows: Vec<Row> = (0..3)
+            .map(|i| Row {
+                status_group: "Complete",
+                icon: IconKey::Silk("page_white"),
+                queued: false,
+                cells: std::array::from_fn(|c| match c {
+                    0 => format!("file-{i}.zip"),
+                    2 => "1.00 MB".to_owned(),
+                    STATUS => "Complete".to_owned(),
+                    _ => String::new(),
+                }),
+                status_whole: None,
+                rate_tip: None,
+            })
+            .collect();
+        let mut icons = ShellIcons;
+        let mut pass = |st: &mut ListState, focus: Option<usize>, events: Vec<egui::Event>| {
+            let mut selected = vec![false; rows.len()];
+            if let Some(f) = focus {
+                selected[f] = true;
+            }
+            let input = egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(900.0, 400.0))),
+                events,
+                ..Default::default()
+            };
+            let mut r = ListResponse::default();
+            let mut out = ctx.run_ui(input, |ui| {
+                let outer = Rect::from_min_size(pos2(10.0, 10.0), egui::vec2(860.0, 300.0));
+                r = show(ui, outer, st, &rows, &selected, focus, &mut icons, &|_| {
+                    String::new()
+                });
+                crate::chrome::tell_screen_readers(ui.ctx());
+            });
+            out.textures_delta.clear();
+            let update: TreeUpdate = out
+                .platform_output
+                .accesskit_update
+                .expect("AccessKit is on");
+            (r, update)
+        };
+        let said = |u: &TreeUpdate| {
+            let by_id: std::collections::HashMap<_, _> =
+                u.nodes.iter().map(|(id, n)| (*id, n)).collect();
+            let focus = by_id[&u.focus];
+            let node = focus.active_descendant().map_or(focus, |d| by_id[&d]);
+            (node.role(), node.label().unwrap_or_default().to_owned())
+        };
+        let ask = |target: NodeId, action| {
+            egui::Event::AccessKitActionRequest(ActionRequest {
+                action,
+                target_tree: TreeId::ROOT,
+                target_node: target,
+                data: None,
+            })
+        };
+        let key = |key| egui::Event::Key {
+            key,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        };
+        let row_id = |i: usize| egui::Id::unique(("download-row", i)).accesskit_id();
+        let mut st = ListState::default();
+        // The list has the keys from the start: its focused row is said.
+        let (_, u) = pass(&mut st, Some(1), vec![]);
+        assert_eq!(
+            said(&u),
+            (
+                Role::ListBoxOption,
+                "file-1.zip, Complete, 1.00 MB".to_owned()
+            )
+        );
+        let focusable = |role| {
+            u.nodes
+                .iter()
+                .filter(|(_, n)| n.role() == role)
+                .map(|(_, n)| n.supports_action(Action::Focus) && n.supports_action(Action::Click))
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(focusable(Role::ListBoxOption), [true, true, true]);
+        assert!(
+            u.nodes
+                .iter()
+                .any(|(_, n)| n.role() == Role::ListBox && n.supports_action(Action::Focus))
+        );
+        // The keys move the selection (Down, Home, End).
+        assert_eq!(
+            pass(&mut st, Some(1), vec![key(egui::Key::ArrowDown)])
+                .0
+                .pick,
+            Some(Pick::Only(2))
+        );
+        assert_eq!(
+            pass(&mut st, Some(1), vec![key(egui::Key::Home)]).0.pick,
+            Some(Pick::Only(0))
+        );
+        assert_eq!(
+            pass(&mut st, Some(0), vec![key(egui::Key::End)]).0.pick,
+            Some(Pick::Only(2))
+        );
+        // Enter opens the focused row.
+        assert_eq!(
+            pass(&mut st, Some(2), vec![key(egui::Key::Enter)]).0.enter,
+            Some(2)
+        );
+        // The keys elsewhere (the tree, the toolbar): the list says nothing, and its keys do
+        // nothing.
+        st.set_keys(false);
+        let (r, u) = pass(&mut st, Some(1), vec![key(egui::Key::ArrowDown)]);
+        assert_eq!(r.pick, None);
+        assert_ne!(said(&u).0, Role::ListBoxOption);
+        // A screen reader's focus on a row: selected, and the list has the keys again.
+        let (r, _) = pass(&mut st, Some(1), vec![ask(row_id(2), Action::Focus)]);
+        assert_eq!(r.pick, Some(Pick::Only(2)));
+        assert!(st.has_keys());
+        // Its Select (a click) selects without taking the keys.
+        st.set_keys(false);
+        let (r, _) = pass(&mut st, Some(2), vec![ask(row_id(0), Action::Click)]);
+        assert_eq!(r.pick, Some(Pick::Only(0)));
+        assert!(!st.has_keys());
+        // Its focus on the list: the list takes the keys.
+        let list = egui::Id::unique("download-list").accesskit_id();
+        pass(&mut st, Some(0), vec![ask(list, Action::Focus)]);
+        assert!(st.has_keys());
     }
 }

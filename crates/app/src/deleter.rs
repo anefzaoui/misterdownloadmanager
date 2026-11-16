@@ -35,8 +35,14 @@ pub struct Doomed {
     /// What else it left there, looked for in its turn.
     later: Option<Later>,
     /// `place`, held from the moment its row left the list. None: another download in this
-    /// process held it then (one of this row's that has just stopped and is letting go).
+    /// process held it then (one of this row's that has just stopped and is letting go), or it
+    /// is being cleared for a download to start there (`clearing`).
     hold: Option<Reservation>,
+    /// Its files go so that a download starts at `place` afresh ([`Doomed::clearing`]): the
+    /// downloads starting in its folder wait for them meanwhile.
+    clearing: Option<naming::Clearing>,
+    /// Files never deleted with it: other downloads' places (letter case aside).
+    spare: Vec<PathBuf>,
 }
 
 impl Doomed {
@@ -49,7 +55,62 @@ impl Doomed {
             finished,
             later,
             hold,
+            clearing: None,
+            spare: Vec::new(),
         }
+    }
+
+    /// A download's files deleted for a download that starts at `place` afresh, under the same
+    /// name (a Redownload, a duplicate overwritten, a restart under the same name). Its name
+    /// isn't held, so that the next download takes it; instead the downloads that start in its
+    /// folder, and the looks that number a name there, wait until these files are gone
+    /// ([`naming::clear`]): none starts writing at `place` before then, nor finds the old state.
+    pub fn clearing(name: String, place: PathBuf, finished: bool, later: Option<Later>) -> Doomed {
+        let clearing = Some(naming::clear(&place));
+        Doomed {
+            name,
+            place,
+            finished,
+            later,
+            hold: None,
+            clearing,
+            spare: Vec::new(),
+        }
+    }
+
+    /// These files stay, whatever else goes: other downloads' places.
+    pub fn sparing(mut self, spare: Vec<PathBuf>) -> Doomed {
+        self.spare = spare;
+        self
+    }
+
+    /// What goes, in order: its resume state and part file, what it left beside them, then its
+    /// finished file (last: its name stays taken on the disk as long as anything of it is
+    /// there), never a spared one. Its leftovers are looked for here, so this is in its turn.
+    fn files(&mut self) -> (Vec<PathBuf>, Option<PathBuf>) {
+        let low = |p: &Path| p.to_string_lossy().to_lowercase();
+        let spare: Vec<String> = self.spare.iter().map(|p| low(p)).collect();
+        let kept = |f: &PathBuf| !spare.contains(&low(f));
+        let mut working = vec![
+            mdm_engine::state::state_path(&self.place),
+            naming::part_path(&self.place),
+        ];
+        for f in self.later.take().map(|l| l()).unwrap_or_default() {
+            if !working.contains(&f) && !(self.finished && f == self.place) {
+                working.push(f);
+            }
+        }
+        working.retain(kept);
+        let finished = Some(self.place.clone()).filter(|f| self.finished && kept(f));
+        (working, finished)
+    }
+
+    /// [`Doomed::files`], all of them in order (tests).
+    #[cfg(test)]
+    pub fn all_files(mut self) -> Vec<PathBuf> {
+        let (mut all, finished) = self.files();
+        all.extend(finished);
+        all
     }
 }
 
@@ -68,8 +129,8 @@ const LET_GO: Duration = Duration::from_secs(2);
 /// finished file, last, so its name stays taken on the disk as long as anything of it is there.
 /// A file already gone is no failure, and only the finished file's are told: the rest is the
 /// download's own working data.
-fn delete_one(d: Doomed, remove: &dyn Fn(&Path) -> io::Result<()>) -> Option<Failure> {
-    let hold = d.hold.or_else(|| {
+fn delete_one(mut d: Doomed, remove: &dyn Fn(&Path) -> io::Result<()>) -> Option<Failure> {
+    let hold = d.hold.take().or_else(|| {
         let until = Instant::now() + LET_GO;
         loop {
             if let Some(h) = naming::reserve(&d.place) {
@@ -81,33 +142,29 @@ fn delete_one(d: Doomed, remove: &dyn Fn(&Path) -> io::Result<()>) -> Option<Fai
             std::thread::sleep(Duration::from_millis(50));
         }
     });
-    let Some(_hold) = hold else {
+    let Some(hold) = hold else {
         tracing::warn!(
             "delete: another download is saving as {} now; the deleted one's files stay",
             d.place.display()
         );
         return None;
     };
-    let working = [
-        mdm_engine::state::state_path(&d.place),
-        naming::part_path(&d.place),
-    ];
-    for f in working
-        .into_iter()
-        .chain(d.later.map(|l| l()).unwrap_or_default())
-    {
+    let (working, finished) = d.files();
+    for f in working {
         let _ = remove(&f);
     }
-    if !d.finished {
-        return None;
-    }
-    match remove(&d.place) {
+    let failed = finished.and_then(|f| match remove(&f) {
         Err(e) if e.kind() != io::ErrorKind::NotFound => Some(Failure {
-            name: d.name,
+            name: std::mem::take(&mut d.name),
             error: e.to_string(),
         }),
         _ => None,
-    }
+    });
+    // Its place let go first, then the downloads waiting in its folder go on: the one that
+    // starts there finds its name free.
+    drop(hold);
+    drop(d.clearing.take());
+    failed
 }
 
 /// A batch, in order; the finished files that couldn't go.
@@ -142,10 +199,18 @@ pub fn failures_text(failures: &[Failure]) -> Option<String> {
     Some(text)
 }
 
+/// What the deleter's thread is handed, in order.
+enum Work {
+    Delete(Vec<Doomed>),
+    /// A download's own file at a place rewritten ([`Deleter::rewrite`]); the downloads that
+    /// start in its folder wait meanwhile.
+    Rewrite(Box<dyn FnOnce() + Send>, naming::Clearing),
+}
+
 /// The thread that deletes, and the batches it has yet to finish.
 pub struct Deleter {
     /// None when no thread could be made: then each batch goes on the caller's.
-    tx: Option<mpsc::Sender<Vec<Doomed>>>,
+    tx: Option<mpsc::Sender<Work>>,
     remove: Arc<Remove>,
     report: Arc<dyn Fn(Vec<Failure>) + Send + Sync>,
     pending: Arc<(Mutex<usize>, Condvar)>,
@@ -167,20 +232,38 @@ impl Deleter {
     }
 
     /// [`Deleter::new`] with its own way to delete a file and to say what failed (tests).
-    fn with(
+    pub(crate) fn with(
         remove: impl Fn(&Path) -> io::Result<()> + Send + Sync + 'static,
         report: impl Fn(Vec<Failure>) + Send + Sync + 'static,
     ) -> Deleter {
         let remove: Arc<Remove> = Arc::new(remove);
         let report: Arc<dyn Fn(Vec<Failure>) + Send + Sync> = Arc::new(report);
         let pending: Arc<(Mutex<usize>, Condvar)> = Arc::default();
-        let (tx, rx) = mpsc::channel::<Vec<Doomed>>();
+        let (tx, rx) = mpsc::channel::<Work>();
         let spawned = std::thread::Builder::new()
             .name("delete files".into())
             .spawn({
                 let (remove, report, pending) = (remove.clone(), report.clone(), pending.clone());
                 move || {
-                    for batch in rx {
+                    for work in rx {
+                        let batch = match work {
+                            Work::Delete(batch) => batch,
+                            Work::Rewrite(job, clearing) => {
+                                let began = Instant::now();
+                                job();
+                                drop(clearing);
+                                if began.elapsed() >= Duration::from_secs(1) {
+                                    tracing::info!(
+                                        "rewrite: a download's own file took {} ms, beside the window",
+                                        began.elapsed().as_millis()
+                                    );
+                                }
+                                let (n, done) = &*pending;
+                                *n.lock().unwrap() -= 1;
+                                done.notify_all();
+                                continue;
+                            }
+                        };
                         let (many, began) = (batch.len(), Instant::now());
                         let failures = delete_batch(batch, &*remove);
                         // What a disk held, for a report's log.
@@ -222,15 +305,37 @@ impl Deleter {
         }
         *self.pending.0.lock().unwrap() += 1;
         let batch = match &self.tx {
-            Some(tx) => match tx.send(batch) {
+            Some(tx) => match tx.send(Work::Delete(batch)) {
                 Ok(()) => return,
-                Err(mpsc::SendError(batch)) => batch,
+                Err(mpsc::SendError(Work::Delete(batch))) => batch,
+                Err(_) => unreachable!("sent a delete"),
             },
             None => batch,
         };
         let failures = delete_batch(batch, &*self.remove);
         if !failures.is_empty() {
             (self.report)(failures);
+        }
+        *self.pending.0.lock().unwrap() -= 1;
+    }
+
+    /// Rewrite a download's own file at `place` (its resume state: File Properties' new address,
+    /// #1170's follow-ups) with `job`, after the deletes before, beside the caller; returns at
+    /// once. The downloads that start in its folder meanwhile, the one of `place` among them,
+    /// wait until it is done ([`naming::clear`]), so none reads it half-way or before.
+    pub fn rewrite(&self, place: &Path, job: impl FnOnce() + Send + 'static) {
+        *self.pending.0.lock().unwrap() += 1;
+        let work = Work::Rewrite(Box::new(job), naming::clear(place));
+        let work = match &self.tx {
+            Some(tx) => match tx.send(work) {
+                Ok(()) => return,
+                Err(mpsc::SendError(work)) => work,
+            },
+            None => work,
+        };
+        if let Work::Rewrite(job, clearing) = work {
+            job();
+            drop(clearing);
         }
         *self.pending.0.lock().unwrap() -= 1;
     }
@@ -415,6 +520,47 @@ mod tests {
         assert!(deleter.finish(Duration::from_secs(10)));
         assert!(!file.exists());
         assert_eq!(naming::unique_path(d, "slow.bin"), d.join("slow.bin"));
+    }
+
+    /// A rewrite waits for the deletes before it, beside the caller, and the downloads starting
+    /// in its folder wait for it.
+    #[test]
+    fn a_rewrite_goes_in_turn_and_holds_its_folders_starts() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let (gone, state) = (d.join("gone.bin"), d.join("kept.bin.mdm.json"));
+        std::fs::write(&gone, b"x").unwrap();
+        std::fs::write(&state, b"old").unwrap();
+        let gate = Arc::new(Mutex::new(()));
+        let held = gate.lock().unwrap();
+        let (deleter, _, _) = recorded({
+            let gate = gate.clone();
+            move |p| {
+                drop(gate.lock().unwrap());
+                std::fs::remove_file(p)
+            }
+        });
+        let began = Instant::now();
+        deleter.delete(vec![doomed(&gone, true)]);
+        let at = state.clone();
+        deleter.rewrite(&d.join("kept.bin"), move || {
+            std::fs::write(&at, b"new").unwrap();
+        });
+        assert!(
+            began.elapsed() < Duration::from_millis(500),
+            "the caller never waits"
+        );
+        std::thread::sleep(Duration::from_millis(200));
+        assert_eq!(
+            std::fs::read(&state).unwrap(),
+            b"old",
+            "after the delete before it"
+        );
+        assert!(naming::being_cleared(d), "its folder's starts wait");
+        drop(held);
+        assert!(deleter.finish(Duration::from_secs(10)));
+        assert_eq!(std::fs::read(&state).unwrap(), b"new");
+        assert!(!gone.exists() && !naming::being_cleared(d));
     }
 
     /// A place another download holds (for longer than its own run takes to let go) is that

@@ -562,10 +562,25 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Screen readers in the main window: Tab goes round the toolbar, the Categories tree and the
+  download list, and the screen reader says and follows the download, category or toolbar button
+  the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
+  selected row as the arrows move it
+  ([#1190](https://github.com/anefzaoui/misterdownloadmanager/issues/1190))
+- ✅ A crash monitor slower than half a second to start is still connected to from beside the
+  window, instead of the session going without crash reports; the end-to-end tests no longer
+  fail on a slow CI runner
 - ✅ The crash reports' end-to-end tests wait for the crash monitor before crashing, so a slow
   CI runner no longer fails them
 - ✅ The Linux lab scripts (tools/lab) keep the lab VM account's password in private files, never on
   a command line, on the host or in the VM
+- ✅ Bangla: a plural is **-গুলো**, never "-গুলি" — "নামগুলো", "সাইটগুলো", "ফাইলগুলো" — and
+  a tab or window title takes none (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: a web page is a **পেজ**, never a পৃষ্ঠা (a book's page) — "এই পেজে", "পেজটি",
+  "পেজের ঠিকানা" — and a checksum a **চেকসাম** (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: spelled the Bangla Academy way — a link is a **লিংক**, a category a **শ্রেণি**,
+  "already" is **ইতোমধ্যে** and a plural takes **-গুলো**, as the style guide settles them
+  (thanks to [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Bangla: a menu or button's shortcut is its letter in brackets — "ফাইল(&F)", "থামান(&T)" —
   not "&" on a Bangla letter no key can press (thanks to
   [@Seyamalam](https://github.com/Seyamalam))
@@ -607,6 +622,13 @@ These ship in the next version.
   deleted beside the window ([#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
 - ✅ No freeze when a torrent is deleted on a slow disk: its kept `.torrent` and renamed file's
   record go beside the window, in order with adding the same torrent again
+- ✅ No freeze when a download starts over at its own place on a slow disk (Redownload, a
+  duplicate overwritten, a restart under the same name): the old files go beside the window and
+  the new start waits for them on its own; a finished duplicate's file is looked at beside it too
+  (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ More disk work beside the window: a start under a name another download has, a playlist's
+  names, batch, Link grabber, browser and paired-device adds' names, File Properties' new address,
+  and a rename on completion's check
   (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
 - ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
   a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
@@ -1277,6 +1299,9 @@ These ship in the next version.
   ([#955](https://github.com/anefzaoui/misterdownloadmanager/issues/955))
 - ✅ Linux: MDM pins to the taskbar and the dock: its desktop entry names its windows' class, and
   every window of MDM carries it ([#940](https://github.com/anefzaoui/misterdownloadmanager/issues/940))
+- ✅ A menu's underlined letter runs its item without typing that letter into the text box under
+  the menu, the arrows move in the menu only, and Alt with a dialog's letter types nothing either;
+  letters of other scripts (Arabic, Russian) choose their menu item
 
 ## Being worked on
 

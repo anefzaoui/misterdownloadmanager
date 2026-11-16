@@ -881,7 +881,10 @@ pub(crate) struct Found {
 pub(crate) type Look = Arc<dyn Fn(&PlaceAsk) -> Found + Send + Sync>;
 
 /// The engine's naming rules on the disk as it is now; on a thread of its own (it may wait).
+/// Once the old files being deleted in that folder for a new start are gone (a duplicate
+/// overwritten: its new copy takes its name, `naming::clear`).
 fn look(ask: &PlaceAsk) -> Found {
+    mdm_engine::naming::wait_cleared(&ask.dir);
     Found {
         dest: if ask.number {
             mdm_engine::naming::destination(&ask.dir, &ask.name)
