@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ **Options → General → Download panels → Edit... → Button size**: **Full**, as before, or
+  **Compact**, the round Download video button (the logo, the arrow and ✕) over every video
+  ([#1278](https://github.com/anefzaoui/misterdownloadmanager/issues/1278))
 - ✅ The Download video button over a YouTube preview: it stays as the pointer reaches it, and a
   click that opens the Download video window sends the preview's video, not the one watched last
   ([#1271](https://github.com/anefzaoui/misterdownloadmanager/issues/1271))
