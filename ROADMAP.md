@@ -562,6 +562,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Every release file gets a signed build provenance record (`gh attestation verify`), and the
+  repository an OpenSSF Scorecard (thanks to [@joyahmed](https://github.com/joyahmed))
 - ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
   other applications (including when raised or opened while MDM is behind another program or hidden
   in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
