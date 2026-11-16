@@ -929,6 +929,35 @@ fn trim_memory() {
     crate::unix::trim_heap();
 }
 
+/// The parts of the main window that take the keys in turn with Tab and Shift+Tab (#1190): the
+/// toolbar, the Categories tree while it shows, the download list. The menu bar is F10's and
+/// Alt's, as in every Windows program; the status strip is read, not stopped at (a screen reader
+/// reads it with its status bar key).
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+enum Pane {
+    Toolbar,
+    Tree,
+    List,
+}
+
+/// Where Tab (Shift+Tab: `back`) takes the keys from `from` (`None`: nothing had them, after a
+/// click on the toolbar or the strip), round; the tree left out while it is hidden.
+fn tab_to(from: Option<Pane>, tree_shown: bool, back: bool) -> Pane {
+    let order: &[Pane] = if tree_shown {
+        &[Pane::Toolbar, Pane::Tree, Pane::List]
+    } else {
+        &[Pane::Toolbar, Pane::List]
+    };
+    let n = order.len();
+    let at = from.and_then(|p| order.iter().position(|q| *q == p));
+    order[match (at, back) {
+        (None, false) => 0,
+        (None, true) => n - 1,
+        (Some(i), false) => (i + 1) % n,
+        (Some(i), true) => (i + n - 1) % n,
+    }]
+}
+
 /// Tree rows carry what they select and which branch they toggle.
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Branch {
@@ -953,8 +982,12 @@ pub struct App {
     move_rename_for: Option<u64>,
     /// The downloads Move/Rename's folder dialog is for, several selected (#333).
     move_many_for: Vec<u64>,
-    /// The Categories tree has the keys (else the list; Tab moves between them).
+    /// The Categories tree has the keys (else the list or the toolbar; Tab moves between them).
     tree_keys: bool,
+    /// The toolbar has the keys (Tab reaches it, #1190), at button `toolbar_at` (kept when Tab
+    /// leaves it, as Windows' toolbars keep theirs).
+    toolbar_keys: bool,
+    toolbar_at: usize,
     /// The app's context, to reach its windows from anywhere (bring one to the front).
     ui_ctx: egui::Context,
     /// The language screen readers were last told.
@@ -1729,6 +1762,8 @@ impl App {
             a11y_lang: "",
             ui_ctx: ctx.clone(),
             tree_keys: false,
+            toolbar_keys: false,
+            toolbar_at: 0,
             move_rename_for: None,
             move_many_for: Vec::new(),
             list_view: view,
@@ -1999,6 +2034,26 @@ impl App {
             left += "   ";
             left += &crate::i18n::tn(selected, "{n} selected", "{n} selected");
         }
+        let right = self.strip_right(p, w);
+        // For screen readers, a status bar of what it says (#1190), read with the reader's status
+        // bar key (NVDA+End); not a Tab stop, as Windows' status bars aren't. Made first, under
+        // the parts that show a cut text whole on hover.
+        let strip = ui.interact(
+            egui::Rect::from_min_max(pos2(o.x, top), pos2(o.x + w, o.y + h)),
+            egui::Id::unique("status-strip"),
+            egui::Sense::hover(),
+        );
+        let said = match &right {
+            Some(r) => format!("{left}, {r}"),
+            None => left.clone(),
+        };
+        winui::expose(
+            &strip,
+            egui::Role::Status,
+            &said.replace("   ", ", "),
+            true,
+            None,
+        );
         winui::fit(
             ui,
             p,
@@ -2009,7 +2064,14 @@ impl App {
             o.x + w / 2.0,
             "strip-left",
         );
-        // A list file Import is reading (#805), before what runs.
+        if let Some(right) = right {
+            winui::text_right(p, o.x + w - 10.0, baseline, &right, winui::MUTED());
+        }
+    }
+
+    /// The status strip's right side, in its half of `w` (`p` measures): a list file Import is
+    /// reading (#805), the Speed Limiter while on (#1191), what runs.
+    fn strip_right(&self, p: &egui::Painter, w: f32) -> Option<String> {
         let reading = self.importing.pending().next().map(|path| {
             let file = path
                 .file_name()
@@ -2029,12 +2091,9 @@ impl App {
             (!parts.is_empty()).then(|| parts.join("   "))
         };
         let activity = self.activity();
-        let right = match join([reading.clone(), self.limiter_hint(), activity.clone()]) {
+        match join([reading.clone(), self.limiter_hint(), activity.clone()]) {
             Some(all) if winui::text_width(p, &all) <= w / 2.0 - 18.0 => Some(all),
             _ => join([reading, None, activity]),
-        };
-        if let Some(right) = right {
-            winui::text_right(p, o.x + w - 10.0, baseline, &right, winui::MUTED());
         }
     }
 
@@ -8842,6 +8901,23 @@ impl App {
         rows
     }
 
+    /// Gives `pane` the main window's keys, and takes them from the other two (#1190).
+    fn give_keys(&mut self, pane: Pane) {
+        self.toolbar_keys = pane == Pane::Toolbar;
+        self.tree_keys = pane == Pane::Tree;
+        self.list.set_keys(pane == Pane::List);
+    }
+
+    /// [`Self::open_popup`] for a menu asked for in the window: opened by the keys (Shift+F10,
+    /// the Menu key, a toolbar button's Down) or a screen reader (no mouse button let go), its
+    /// first item is lit, as Windows lights it, and a screen reader says it at once (#1190).
+    fn open_popup_asked(&mut self, kind: Popup, at: Pos2, ctx: &egui::Context) {
+        self.open_popup(kind, at);
+        if !ctx.input(|i| i.pointer.any_released()) {
+            chrome::start_keyboard(ctx, &format!("popup-{}", self.popup_serial));
+        }
+    }
+
     fn open_popup(&mut self, kind: Popup, at: Pos2) {
         self.popup_serial += 1;
         self.popup = Some((kind, at, self.popup_serial));
@@ -9064,6 +9140,37 @@ impl App {
             }
         }
 
+        // The keys go round the toolbar, the Categories tree and the download list with Tab and
+        // Shift+Tab (`tab_to`), while no menu is open and no text box has them (#1190: the
+        // toolbar couldn't be reached at all). A press anywhere takes them from the toolbar (the
+        // list and the tree take them by a click).
+        let free = self.popup.is_none()
+            && self.open_menu.is_none()
+            && ctx.memory(|m| m.focused().is_none());
+        if ctx.input(|i| i.pointer.any_pressed()) {
+            self.toolbar_keys = false;
+        }
+        if free {
+            let (tab, back) = ctx.input_mut(|i| {
+                let back = i.modifiers.shift;
+                // Shift+Tab too (a key without Shift in the pattern matches it either way).
+                (i.consume_key(egui::Modifiers::NONE, egui::Key::Tab), back)
+            });
+            if tab {
+                let from = if self.toolbar_keys {
+                    Some(Pane::Toolbar)
+                } else if self.tree_keys && self.show_categories {
+                    Some(Pane::Tree)
+                } else if self.list.has_keys() {
+                    Some(Pane::List)
+                } else {
+                    None
+                };
+                self.give_keys(tab_to(from, self.show_categories, back));
+                crate::chrome::show_cues(&ctx);
+            }
+        }
+
         // Toolbar — full labels (IDM truncates "Delete Co...", "Start Qu...": user decision).
         let picked = self.chosen(None);
         let running = picked.iter().any(|i| i.live.is_some());
@@ -9106,12 +9213,20 @@ impl App {
             ),
         ];
         let tb: Vec<(Icon, &str, bool)> = buttons.iter().map(|(i, l, e, _)| (*i, *l, *e)).collect();
-        match chrome::toolbar(ui, o, w, &tb) {
+        let tb_keys = (self.toolbar_keys && free).then_some(self.toolbar_at);
+        match chrome::toolbar(ui, o, w, &tb, tb_keys) {
             Some(ToolbarEvent::Click(k)) => chosen = Some((buttons[k].3, None)),
-            Some(ToolbarEvent::Drop(k, at)) => match buttons[k].0 {
-                Icon::AddTorrent => self.open_popup(Popup::TorrentDrop, at),
-                icon => self.open_popup(Popup::QueueDrop(matches!(icon, Icon::StartQueue)), at),
-            },
+            Some(ToolbarEvent::Drop(k, at)) => {
+                let kind = match buttons[k].0 {
+                    Icon::AddTorrent => Popup::TorrentDrop,
+                    icon => Popup::QueueDrop(matches!(icon, Icon::StartQueue)),
+                };
+                self.open_popup_asked(kind, at, &ctx);
+            }
+            Some(ToolbarEvent::Keys(k)) => {
+                self.give_keys(Pane::Toolbar);
+                self.toolbar_at = k;
+            }
             None => {}
         }
 
@@ -9148,21 +9263,10 @@ impl App {
             if sr.drag_stopped() {
                 self.dirty = true;
             }
-            // The tree's keys while it has them (Tab moves between it and the list): Up / Down
-            // through the nodes, Left / Right close and open a branch, Home / End.
-            let free = self.popup.is_none()
-                && self.open_menu.is_none()
-                && ctx.memory(|m| m.focused().is_none());
-            if free
-                && ctx.input_mut(|i| {
-                    i.consume_key(egui::Modifiers::NONE, egui::Key::Tab)
-                        || i.consume_key(egui::Modifiers::SHIFT, egui::Key::Tab)
-                })
-            {
-                self.tree_keys = !self.tree_keys;
-                self.list.set_keys(!self.tree_keys);
-                crate::chrome::show_cues(&ctx);
-            }
+            // The tree's keys while it has them (Tab reaches it, above): Up / Down through the
+            // nodes, Left / Right close and open a branch, Home / End. Not while a menu the
+            // toolbar's keys just opened is.
+            let free = free && self.popup.is_none();
             let mut tree_event = None;
             if free && self.tree_keys {
                 let at = rows
@@ -9209,10 +9313,18 @@ impl App {
             .or(tree_event)
             {
                 // A click in the tree gives it the keys.
-                self.tree_keys = true;
-                self.list.set_keys(false);
+                self.give_keys(Pane::Tree);
                 match ev {
-                    TreeEvent::Close => self.show_categories = false,
+                    // The pane gone, its keys go to the list.
+                    TreeEvent::Close => {
+                        self.show_categories = false;
+                        self.give_keys(Pane::List);
+                    }
+                    TreeEvent::Keys(k) => {
+                        if let Some(v) = k.and_then(|k| rows[k].1) {
+                            self.view = v;
+                        }
+                    }
                     TreeEvent::Select(k) => match rows[k].1 {
                         Some(v) => self.view = v,
                         None => self.toggle(rows[k].2),
@@ -9223,7 +9335,7 @@ impl App {
                         // the queue menu, all greyed.
                         let node = rows[k].1;
                         if node.is_some() || rows[k].2 == Branch::Queues {
-                            self.open_popup(Popup::Node(node), at);
+                            self.open_popup_asked(Popup::Node(node), at, &ctx);
                         }
                     }
                 }
@@ -9267,6 +9379,7 @@ impl App {
         );
         if self.list.has_keys() {
             self.tree_keys = false;
+            self.toolbar_keys = false;
         }
         if let Some(pick) = r.pick {
             self.selection.apply(pick, &ids);
@@ -9329,7 +9442,7 @@ impl App {
         }
         self.status_strip(ui, o, w, h, ids.len());
         if let Some((i, pos)) = r.context {
-            self.open_popup(Popup::Item(i.map(|i| ids[i])), pos);
+            self.open_popup_asked(Popup::Item(i.map(|i| ids[i])), pos, &ctx);
         }
         let layout = self.list.layout();
         if self.last_layout.as_ref() != Some(&layout) {
@@ -13457,6 +13570,42 @@ mod stop_all_tests {
         let queues = [queue("Main download queue", false, &[1], false)];
         let (stop, by_hand) = stop_all_plan(&queues, [], []);
         assert!(stop.is_empty() && by_hand.is_empty());
+    }
+}
+
+#[cfg(test)]
+mod pane_tests {
+    use super::{Pane, tab_to};
+
+    /// #1190: Tab goes round the toolbar, the Categories tree and the download list (Shift+Tab
+    /// the other way), the tree left out while it is hidden; from nothing (a click on the
+    /// toolbar), Tab starts at the toolbar and Shift+Tab at the list.
+    #[test]
+    fn tab_goes_round_the_toolbar_the_tree_and_the_list() {
+        use Pane::*;
+        let round = |from, shown, back| {
+            let mut at = from;
+            let mut seen = Vec::new();
+            for _ in 0..4 {
+                let to = tab_to(at, shown, back);
+                seen.push(to);
+                at = Some(to);
+            }
+            seen
+        };
+        assert_eq!(
+            round(Some(List), true, false),
+            [Toolbar, Tree, List, Toolbar]
+        );
+        assert_eq!(round(Some(List), true, true), [Tree, Toolbar, List, Tree]);
+        assert_eq!(
+            round(Some(List), false, false),
+            [Toolbar, List, Toolbar, List]
+        );
+        // The tree had the keys as it was hidden: on to the toolbar.
+        assert_eq!(tab_to(Some(Tree), false, false), Toolbar);
+        assert_eq!(tab_to(None, true, false), Toolbar);
+        assert_eq!(tab_to(None, true, true), List);
     }
 }
 

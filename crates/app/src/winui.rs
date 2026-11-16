@@ -1284,21 +1284,35 @@ pub fn reachable_rows(n: usize, first: usize, page: usize) -> std::ops::Range<us
 /// How many rows of a list a screen reader reaches at most ([`reachable_rows`]).
 pub const A11Y_ROWS: usize = 300;
 
-/// The row of `rows` (widget ids `id_of(i)`) a screen reader asked to scroll into view, or to
-/// select (AccessKit's click), this frame.
+/// The row of `rows` (widget ids `id_of(i)`) a screen reader asked to scroll into view, to
+/// select (AccessKit's click) or to move the focus to, this frame.
 pub fn row_asked_for(
     ui: &Ui,
     rows: std::ops::Range<usize>,
     id_of: impl Fn(usize) -> egui::Id,
 ) -> Option<usize> {
     use egui::accesskit::Action;
+    row_asked(
+        ui,
+        rows,
+        id_of,
+        &[Action::ScrollIntoView, Action::Click, Action::Focus],
+    )
+}
+
+/// The row of `rows` (widget ids `id_of(i)`) a screen reader asked for one of `actions` this
+/// frame.
+pub fn row_asked(
+    ui: &Ui,
+    rows: std::ops::Range<usize>,
+    id_of: impl Fn(usize) -> egui::Id,
+    actions: &[egui::accesskit::Action],
+) -> Option<usize> {
     let targets: Vec<egui::accesskit::NodeId> = ui.input(|i| {
         i.events
             .iter()
             .filter_map(|e| match e {
-                egui::Event::AccessKitActionRequest(r)
-                    if matches!(r.action, Action::ScrollIntoView | Action::Click) =>
-                {
+                egui::Event::AccessKitActionRequest(r) if actions.contains(&r.action) => {
                     Some(r.target_node)
                 }
                 _ => None,
@@ -1310,6 +1324,46 @@ pub fn row_asked_for(
     }
     rows.into_iter()
         .find(|i| targets.contains(&id_of(*i).accesskit_id()))
+}
+
+/// Makes `id`'s node one a screen reader can move the focus to (UI Automation's
+/// IsKeyboardFocusable, AT-SPI's focusable) in a part of a window that keeps its keys itself
+/// rather than through egui's focus (the main window's toolbar, Categories tree and download
+/// list: egui's focus would take Tab and the arrows from them), and says whether one asked to
+/// move it there this pass (UI Automation's SetFocus): the caller then gives that part the
+/// keys (#1190).
+pub fn focus_target(ctx: &egui::Context, id: egui::Id) -> bool {
+    use egui::accesskit::Action;
+    ctx.accesskit_node_builder(id, |n| n.add_action(Action::Focus));
+    ctx.input(|i| i.has_accesskit_action_request(id, Action::Focus))
+}
+
+fn keys_with_key(ctx: &egui::Context) -> egui::Id {
+    egui::Id::unique(("keys-with", ctx.viewport_id()))
+}
+
+/// In such a part, the item that has the keys this pass (the download list's focused row, the
+/// tree's selected node, the toolbar's button): what a screen reader is to say has the focus,
+/// and follow as the keys move it. At the end of the pass,
+/// [`crate::chrome::tell_screen_readers`] makes it the active descendant of what has the
+/// accessibility focus (the window's own node: egui's focus is elsewhere), unless a menu opened
+/// from the keyboard is shown (#1190).
+pub fn keys_with(ctx: &egui::Context, item: egui::Id) {
+    // The key first: asking the context inside its data lock deadlocks.
+    let (key, pass) = (keys_with_key(ctx), ctx.cumulative_pass_nr());
+    ctx.data_mut(|d| d.insert_temp(key, (item, pass)));
+}
+
+/// The item [`keys_with`] named this pass, taken.
+pub fn take_keys_with(ctx: &egui::Context) -> Option<egui::Id> {
+    let (key, pass) = (keys_with_key(ctx), ctx.cumulative_pass_nr());
+    ctx.data_mut(|d| {
+        let item = d.get_temp::<(egui::Id, u64)>(key);
+        d.remove::<(egui::Id, u64)>(key);
+        item
+    })
+    .filter(|(_, at)| *at == pass)
+    .map(|(item, _)| item)
 }
 
 /// The one list of whole rows in a box (a dialog's list, a tree drawn as rows): its frame,
@@ -1440,6 +1494,16 @@ pub fn row_list(
     // Rows out of view lie above or below it, clipped: nothing of them shows or takes a click.
     rows_ui.set_clip_rect(rect(area).intersect(ui.clip_rect()));
     let shown = st.first..n.min(st.first + page);
+    // While the list has the keys, its selected row is what a screen reader says has the focus,
+    // and follows as the keys move it (#1190: it said only "list").
+    if focused
+        && let Some(s) = st.selected
+        && reach.contains(&s)
+    {
+        let row = id.with(s).accesskit_id();
+        ui.ctx()
+            .accesskit_node_builder(resp.id, |node| node.set_active_descendant(row));
+    }
     for i in reach {
         let in_view = shown.contains(&i);
         let top = inner.top() + 1.0 + row_h * (i as f32 - st.first as f32);
@@ -1464,7 +1528,10 @@ pub fn row_list(
         if let Some(f) = fill {
             clip.rect_filled(rect(row), 0.0, f);
         }
-        if r.clicked() || r.secondary_clicked() || r.double_clicked() {
+        // A screen reader moving the focus to a row (#1190) selects it, as a click does, and
+        // gives the list the keys.
+        let focus_asked = focus_target(ui.ctx(), r.id);
+        if r.clicked() || r.secondary_clicked() || r.double_clicked() || focus_asked {
             resp.request_focus();
             if st.selected != Some(i) {
                 st.selected = Some(i);
@@ -7248,6 +7315,10 @@ mod tests {
     struct Drawn {
         rows: Vec<(egui::accesskit::NodeId, String, usize, usize)>,
         list_children: usize,
+        /// Rows a screen reader can move its focus to (#1190).
+        focusable_rows: usize,
+        /// The list's active descendant: the row a screen reader says has the focus.
+        active: Option<egui::accesskit::NodeId>,
         st: RowList,
         events: RowEvents,
         took: std::time::Duration,
@@ -7294,15 +7365,24 @@ mod tests {
                 .sum()
         }
         let mut list_children = 0;
+        let mut active = None;
+        let mut focusable_rows = 0;
         for (id, node) in &update.nodes {
             match node.role() {
-                egui::accesskit::Role::ListBoxOption => rows.push((
-                    *id,
-                    node.label().unwrap_or_default().to_owned(),
-                    node.position_in_set().unwrap_or(0),
-                    node.size_of_set().unwrap_or(0),
-                )),
-                egui::accesskit::Role::ListBox => list_children = options(&by_id, node),
+                egui::accesskit::Role::ListBoxOption => {
+                    focusable_rows +=
+                        usize::from(node.supports_action(egui::accesskit::Action::Focus));
+                    rows.push((
+                        *id,
+                        node.label().unwrap_or_default().to_owned(),
+                        node.position_in_set().unwrap_or(0),
+                        node.size_of_set().unwrap_or(0),
+                    ))
+                }
+                egui::accesskit::Role::ListBox => {
+                    list_children = options(&by_id, node);
+                    active = node.active_descendant();
+                }
                 _ => {}
             }
         }
@@ -7310,6 +7390,8 @@ mod tests {
         Drawn {
             rows,
             list_children,
+            focusable_rows,
+            active,
             st,
             events: ev,
             took,
@@ -7354,6 +7436,37 @@ mod tests {
         assert_eq!((d.st.selected, d.events.picked), (Some(2), Some(2)));
         let d = draw_list(&ctx, 40, d.st, vec![]);
         assert!((d.st.first..d.st.first + 5).contains(&2), "{:?}", d.st);
+    }
+
+    /// #1190: a list's rows take a screen reader's focus (the row selected, the list given the
+    /// keys), and while the list has them its selected row is its active descendant: what the
+    /// reader says has the focus, followed as the keys move it.
+    #[test]
+    fn a_row_takes_the_focus_and_the_reader_follows_the_selection() {
+        use egui::accesskit::Action;
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        let d = draw_list(&ctx, 10, RowList::default(), vec![]);
+        let d = draw_list(&ctx, 10, d.st, vec![]);
+        assert_eq!(d.focusable_rows, 10);
+        assert_eq!(d.active, None, "not focused: nothing followed");
+        let row3 = d.rows[3].0;
+        let d = draw_list(&ctx, 10, d.st, vec![ask(row3, Action::Focus)]);
+        assert_eq!((d.st.selected, d.events.picked), (Some(3), Some(3)));
+        let d = draw_list(&ctx, 10, d.st, vec![]);
+        assert!(d.events.focused, "the list has the keys");
+        assert_eq!(d.active, Some(row3));
+        let down = egui::Event::Key {
+            key: egui::Key::ArrowDown,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        };
+        let d = draw_list(&ctx, 10, d.st, vec![down]);
+        assert_eq!(d.st.selected, Some(4));
+        let d = draw_list(&ctx, 10, d.st, vec![]);
+        assert_eq!(d.active, Some(d.rows[4].0));
     }
 
     /// #111: a list of thousands (a playlist, #69) exposes a bounded window of rows around the

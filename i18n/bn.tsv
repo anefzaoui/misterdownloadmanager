@@ -77,8 +77,7 @@
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (একটি লিঙ্ক, অথবা ফোল্ডারের বাইরে নিয়ে যাওয়া একটি নাম)|{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (লিঙ্ক, অথবা ফোল্ডারের বাইরে নিয়ে যাওয়া নাম)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (একটি লিংক, অথবা ফোল্ডারের বাইরে নিয়ে যাওয়া একটি নাম)|{n}টি এন্ট্রি বাদ দেওয়া হয়েছে (লিংক, অথবা ফোল্ডারের বাইরে নিয়ে যাওয়া নাম)
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
@@ -202,8 +201,7 @@
 	<< Hide details	<< বিস্তারিত লুকান
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
-#, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	একটি ডিব্রিড পরিষেবা আপনার নিজস্ব অর্থপ্রদত্ত অ্যাকাউন্ট ব্যবহার করে একটি ফাইল হোস্টের লিঙ্ক ডাউনলোড করে এবং MDM-কে একটি সরাসরি লিঙ্ক দেয়। শুধুমাত্র আপনার নিজস্ব অ্যাকাউন্ট ব্যবহার করুন: একটি অ্যাকাউন্ট বা এর লিঙ্কগুলি শেয়ার করলে পরিষেবার শর্তাবলী লঙ্ঘন হয় এবং এটি স্থগিত হতে পারে। ব্রাউজার দ্বারা ইতিমধ্যে শুরু করা ডাউনলোডগুলি যেমন আছে তেমনই থাকবে।
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	একটি ডিব্রিড পরিষেবা আপনার নিজস্ব অর্থপ্রদত্ত অ্যাকাউন্ট ব্যবহার করে একটি ফাইল হোস্টের লিংক ডাউনলোড করে এবং MDM-কে একটি সরাসরি লিংক দেয়। শুধুমাত্র আপনার নিজস্ব অ্যাকাউন্ট ব্যবহার করুন: একটি অ্যাকাউন্ট বা এর লিংকগুলো শেয়ার করলে পরিষেবার শর্তাবলী লঙ্ঘন হয় এবং এটি স্থগিত হতে পারে। ব্রাউজার দ্বারা ইতোমধ্যে শুরু করা ডাউনলোডগুলো যেমন আছে তেমনই থাকবে।
 #. text in a download's progress window
 #. reason shown on the Rename box when the entered name ends with a period
 	A file name cannot end with a dot	ফাইলের নাম বিন্দু দিয়ে শেষ হতে পারে না
@@ -215,8 +213,7 @@
 #. message or event log entry in the main window
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	A magnet link's files could not be looked up: {error}	একটি ম্যাগনেট লিঙ্কের ফাইলগুলি দেখা যায়নি: {error}
+	A magnet link's files could not be looked up: {error}	একটি ম্যাগনেট লিংকের ফাইলগুলো দেখা যায়নি: {error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -391,8 +388,7 @@
 	Address changed to {host}	ঠিকানা {host}-এ পরিবর্তিত হয়েছে
 #. text in remote.rs
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	ঠিকানা বা ম্যাগনেট লিঙ্ক
+	Address or magnet link	ঠিকানা বা ম্যাগনেট লিংক
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -452,16 +448,13 @@
 #, machine
 	Allow more than {n} connections	{n}টির বেশি সংযোগের অনুমতি দিন
 #. text in errors.rs
-#, machine
-	already being downloaded: {path}	ইতিমধ্যে ডাউনলোড হচ্ছে: {path}
+	already being downloaded: {path}	ইতোমধ্যে ডাউনলোড হচ্ছে: {path}
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
-#, machine
-	Already in the list	ইতিমধ্যেই তালিকায় আছে
+	Already in the list	ইতোমধ্যেই তালিকায় আছে
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
-#, machine
-	Already reported as issue #{number}: {title}	ইতিমধ্যে সমস্যা #{number}: {title} হিসাবে রিপোর্ট করা হয়েছে
+	Already reported as issue #{number}: {title}	ইতোমধ্যে সমস্যা #{number}: {title} হিসাবে রিপোর্ট করা হয়েছে
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
@@ -469,8 +462,7 @@
 #. text in a dialog box
 	Also delete the file from disk	ডিস্ক থেকে ফাইলটিও মুছুন
 #. checkbox in the Options window
-#, machine
-	Also take files the browser would open (PDF, music, video)	ব্রাউজার যে ফাইলগুলি খুলবে সেগুলিও নিন (PDF, সঙ্গীত, ভিডিও)
+	Also take files the browser would open (PDF, music, video)	ব্রাউজার যে ফাইলগুলো খুলবে সেগুলোও নিন (PDF, সংগীত, ভিডিও)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -542,8 +534,7 @@
 	Archives	আর্কাইভ
 #. text in the Options window
 #. Options page title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives and Link grabber	আর্কাইভ এবং লিঙ্ক গ্র্যাবার
+	Archives and Link grabber	আর্কাইভ এবং লিংক গ্র্যাবার
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	আপনি কি সত্যিই Mister Download Manager-এর ডাউনলোড তালিকা থেকে “{name}” মুছে ফেলতে চান?
@@ -704,7 +695,7 @@
 	Brazil	ব্রাজিল
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	শিপিংয়ের সময় {names} যেমন ছিল, সেভাবে ফিরিয়ে আনবেন: তাদের নাম, ফাইলের প্রকার এবং ফোল্ডার? আপনার নিজস্ব বিভাগ, সাধারণ এবং টরেন্ট যেমন আছে তেমনই থাকবে। ইতিমধ্যেই সাধারণে স্থানান্তরিত ডাউনলোডগুলি সেখানেই থাকবে।
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	শিপিংয়ের সময় {names} যেমন ছিল, সেভাবে ফিরিয়ে আনবেন: তাদের নাম, ফাইলের ধরন এবং ফোল্ডার? আপনার নিজস্ব শ্রেণি, সাধারণ এবং টরেন্ট যেমন আছে তেমনই থাকবে। ইতোমধ্যেই সাধারণে স্থানান্তরিত ডাউনলোডগুলো সেখানেই থাকবে।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -747,8 +738,7 @@
 #, machine
 	by batch download	ব্যাচ ডাউনলোড দ্বারা
 #. message or event log entry in the main window
-#, machine
-	by Link grabber	লিঙ্ক গ্র্যাবার দ্বারা
+	by Link grabber	লিংক গ্র্যাবার দ্বারা
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -795,15 +785,12 @@
 	Catch downloads from your browser	আপনার ব্রাউজার থেকে ডাউনলোডগুলি ধরুন
 #. text in the main window (menus, toolbar, Categories pane)
 #. title of the side pane that lists the categories
-#, machine
-	Categories	শ্রেণীসমূহ
+	Categories	শ্রেণি
 #. page title in the Options window
-#, machine
-	Categories, file types, folders	শ্রেণীসমূহ, ফাইলের প্রকার, ফোল্ডার
+	Categories, file types, folders	শ্রেণি, ফাইলের ধরন, ফোল্ডার
 #. text in a dialog box; text in the Options window; text in remote.rs
 #. remote control page (on a phone): label of the category choice for a new download
-#, machine
-	Category	শ্রেণী
+	Category	শ্রেণি
 #. text in categories.rs
 #. title of the folder picker of the category dialog
 	Category folder	শ্রেণির ফোল্ডার
@@ -835,8 +822,7 @@
 	Change	পরিবর্তন করুন
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
-#, machine
-	Change folder for "{category}" category on last selected	শেষ নির্বাচিত "{category}" শ্রেণীর জন্য ফোল্ডার পরিবর্তন করুন
+	Change folder for "{category}" category on last selected	শেষ নির্বাচিত "{category}" শ্রেণির জন্য ফোল্ডার পরিবর্তন করুন
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -1331,11 +1317,9 @@
 	Download status	ডাউনলোডের অবস্থা
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
-#, machine
-	Download supported file-host links through these accounts	এই অ্যাকাউন্টগুলির মাধ্যমে সমর্থিত ফাইল-হোস্ট লিঙ্কগুলি ডাউনলোড করুন
+	Download supported file-host links through these accounts	এই অ্যাকাউন্টগুলোর মাধ্যমে সমর্থিত ফাইল-হোস্ট লিংকগুলো ডাউনলোড করুন
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
-	Download the links in the clipboard (Add batch download from clipboard)	ক্লিপবোর্ডের লিঙ্কগুলি ডাউনলোড করুন (ক্লিপবোর্ড থেকে ব্যাচ ডাউনলোড যোগ করুন)
+	Download the links in the clipboard (Add batch download from clipboard)	ক্লিপবোর্ডের লিংকগুলো ডাউনলোড করুন (ক্লিপবোর্ড থেকে ব্যাচ ডাউনলোড যোগ করুন)
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 	Download through {service}	{service}-এর মাধ্যমে ডাউনলোড করুন
@@ -1420,8 +1404,7 @@
 #, machine
 	Drag .torrent files or lists of addresses here	.torrent ফাইল বা ঠিকানার তালিকা এখানে টেনে আনুন
 #. text in droptarget.rs
-#, machine
-	Drag links here to download them	ডাউনলোড করতে এখানে লিঙ্কগুলি টেনে আনুন
+	Drag links here to download them	ডাউনলোড করতে এখানে লিংকগুলো টেনে আনুন
 #. text in a dialog box
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 	Drag the file into a folder or an app	ফাইলটি টেনে কোনো ফোল্ডার বা অ্যাপে নিয়ে যান
@@ -1433,8 +1416,7 @@
 	Dragged out of Download complete and moved to {folder}	ডাউনলোড সম্পূর্ণ তালিকা থেকে টেনে বের করে {folder}-এ সরানো হয়েছে
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
-#, machine
-	Dropped links	ছেড়ে দেওয়া লিঙ্ক
+	Dropped links	ছেড়ে দেওয়া লিংক
 #. window title in a dialog box
 	Duplicate download link	ডুপ্লিকেট ডাউনলোড লিংক
 #. text in the Options window
@@ -1492,8 +1474,7 @@
 #, machine
 	End and restart MDM	MDM বন্ধ করুন এবং পুনরায় চালু করুন
 #. text in the Add torrent window
-#, machine
-	Enter a magnet link or choose a .torrent file	একটি ম্যাগনেট লিঙ্ক লিখুন অথবা একটি .torrent ফাইল বেছে নিন
+	Enter a magnet link or choose a .torrent file	একটি ম্যাগনেট লিংক লিখুন অথবা একটি .torrent ফাইল বেছে নিন
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	নতুন সারির জন্য একটি নাম লিখুন যা হবে
@@ -1805,8 +1786,7 @@
 	France	ফ্রান্স
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
-#, machine
-	free account: links need premium	ফ্রি অ্যাকাউন্ট: লিঙ্কগুলির জন্য প্রিমিয়াম প্রয়োজন
+	free account: links need premium	ফ্রি অ্যাকাউন্ট: লিংকগুলোর জন্য প্রিমিয়াম প্রয়োজন
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1831,8 +1811,7 @@
 #, machine
 	from a gallery (gallery-dl)	একটি গ্যালারি থেকে (gallery-dl)
 #. message or event log entry in the main window
-#, machine
-	from a magnet link	একটি ম্যাগনেট লিঙ্ক থেকে
+	from a magnet link	একটি ম্যাগনেট লিংক থেকে
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	একটি পৃষ্ঠা থেকে (yt-dlp)
@@ -2024,8 +2003,7 @@
 #, machine
 	Hide web pages	ওয়েব পেজ লুকান
 #. text in the Options window
-#, machine
-	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager-এর পরিবর্তে ব্রাউজারকে ডাউনলোড করতে দিতে একটি লিঙ্কে ক্লিক করার সময় Alt ধরে রাখুন।
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager-এর পরিবর্তে ব্রাউজারকে ডাউনলোড করতে দিতে একটি লিংকে ক্লিক করার সময় Alt ধরে রাখুন।
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	হোম পেজ
@@ -2072,8 +2050,7 @@
 #, machine
 	Iceland	আইসল্যান্ড
 #. text in the Options window
-#, machine
-	If a duplicate download link is added:	যদি একটি সদৃশ ডাউনলোড লিঙ্ক যোগ করা হয়:
+	If a duplicate download link is added:	যদি একটি সদৃশ ডাউনলোড লিংক যোগ করা হয়:
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	যদি বিদ্যমান ফাইল সম্পূর্ণ হয়, তাহলে ডাউনলোড সম্পূর্ণ ডায়ালগ দেখান; অন্যথায় এটি পুনরায় শুরু করুন।
@@ -2398,17 +2375,14 @@
 	Limit uploading for all torrents to	সমস্ত টরেন্টের জন্য আপলোড সীমিত করুন
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
-#, machine
-	Link grabber	লিঙ্ক গ্র্যাবার
+	Link grabber	লিংক গ্র্যাবার
 #. text in the Link grabber window
 #. what a screen reader calls Link grabber's list
-#, machine
-	Links	লিঙ্ক
+	Links	লিংক
 #. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
-#, machine
-	Links from the browser	ব্রাউজার থেকে লিঙ্ক
+	Links from the browser	ব্রাউজার থেকে লিংক
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
@@ -2455,8 +2429,7 @@
 	Login	লগইন
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
-#, machine
-	Look links up when they arrive (name, size, online)	লিঙ্ক আসার পর সেগুলোর তথ্য খুঁজুন (নাম, আকার, অনলাইন)
+	Look links up when they arrive (name, size, online)	লিংক আসার পর সেগুলোর তথ্য খুঁজুন (নাম, আকার, অনলাইন)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	খুঁজুন
@@ -2499,8 +2472,7 @@
 	Madagascar	মাদাগাস্কার
 #. text in the Link grabber window
 #. Link grabber, a link's status: a magnet link (a torrent, its files looked up once it is added)
-#, machine
-	Magnet link	ম্যাগনেট লিঙ্ক
+	Magnet link	ম্যাগনেট লিংক
 #. message or event log entry in the main window
 #, machine
 	Main download queue	প্রধান ডাউনলোড সারি
@@ -2937,8 +2909,7 @@
 #, machine
 	No day is ticked: the queue will not start	কোনো দিন টিক করা হয়নি: সারি শুরু হবে না
 #. message or event log entry in the main window
-#, machine
-	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ক্লিপবোর্ডে কোনো ডাউনলোড লিঙ্ক পাওয়া যায়নি। http, https, ftp বা ম্যাগনেট লিঙ্ক সহ একটি টেক্সট কপি করুন এবং আবার চেষ্টা করুন।
+	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ক্লিপবোর্ডে কোনো ডাউনলোড লিংক পাওয়া যায়নি। http, https, ftp বা ম্যাগনেট লিংক সহ একটি টেক্সট কপি করুন এবং আবার চেষ্টা করুন।
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3091,8 +3062,7 @@
 #, machine
 	Note: These settings don't relate to queue processing	দ্রষ্টব্য: এই সেটিংস সারি প্রক্রিয়াকরণের সাথে সম্পর্কিত নয়
 #. message or event log entry in the main window
-#, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item}-এ ডাউনলোড করার মতো কিছু নেই: লিঙ্ক, একটি .torrent ফাইল, অথবা ঠিকানার একটি তালিকা (.txt, .ef2) ড্রপ করুন।
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item}-এ ডাউনলোড করার মতো কিছু নেই: লিংক, একটি .torrent ফাইল, অথবা ঠিকানার একটি তালিকা (.txt, .ef2) ড্রপ করুন।
 #. text in the Scheduler window
 #, machine
 	November	নভেম্বর
@@ -3120,8 +3090,7 @@
 #, machine
 	Off: nothing on the network can reach MDM.	বন্ধ: নেটওয়ার্কে কিছুই MDM-এ পৌঁছাতে পারে না।
 #. text in the Options window
-#, machine
-	Offer to download links copied to the clipboard	ক্লিপবোর্ডে কপি করা লিঙ্কগুলি ডাউনলোড করার অফার করুন
+	Offer to download links copied to the clipboard	ক্লিপবোর্ডে কপি করা লিংকগুলো ডাউনলোড করার অফার করুন
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
@@ -3218,8 +3187,7 @@
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 	Open in browser	ব্রাউজারে খুলুন
 #. checkbox in the Add torrent window
-#, machine
-	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager দিয়ে ম্যাগনেট লিঙ্ক এবং .torrent ফাইল খুলুন
+	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager দিয়ে ম্যাগনেট লিংক এবং .torrent ফাইল খুলুন
 #. text in the tray icon's menu
 	Open Mister Download Manager	Mister Download Manager খুলুন
 #. text in extension.rs
@@ -3330,12 +3298,10 @@
 #, machine
 	Password:	পাসওয়ার্ড:
 #. text in the Add torrent window
-#, machine
-	Paste a magnet link or choose a .torrent file, then Look up.	একটি ম্যাগনেট লিঙ্ক পেস্ট করুন অথবা একটি .torrent ফাইল বেছে নিন, তারপর খুঁজুন।
+	Paste a magnet link or choose a .torrent file, then Look up.	একটি ম্যাগনেট লিংক পেস্ট করুন অথবা একটি .torrent ফাইল বেছে নিন, তারপর খুঁজুন।
 #. text in the Link grabber window
 #. Link grabber, while it is empty
-#, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	এখানে লিঙ্ক পেস্ট করুন (Ctrl+V), অথবা ব্রাউজার থেকে একটি পৃষ্ঠার লিঙ্ক পাঠান।
+	Paste links here (Ctrl+V), or send a page's links from the browser.	এখানে লিংক পেস্ট করুন (Ctrl+V), অথবা ব্রাউজার থেকে একটি পেজের লিংক পাঠান।
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
@@ -3735,13 +3701,11 @@
 	Saved in	এতে সংরক্ষিত
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
-#, machine
-	Schedule	সময়সূচী
+	Schedule	সময়সূচি
 #. window title in the Scheduler window; text in the tray icon's menu
 #. noun: the tool that starts and stops queues on time
 #. noun: opens the Scheduler (the tool that starts queues on time)
-#, machine
-	Scheduler	সময়সূচী
+	Scheduler	শিডিউলার
 #. text in langpick.rs
 	Search:	অনুসন্ধান:
 #. text in the Batch download window
@@ -3796,8 +3760,7 @@
 	Send this to a friend:	এটি একজন বন্ধুকে পাঠান:
 #. text in the Options window
 #. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
-#, machine
-	Send torrents and magnet links to the first account instead of to peers	পিয়ারদের কাছে না পাঠিয়ে প্রথম অ্যাকাউন্টের পরিষেবাতে টরেন্ট এবং ম্যাগনেট লিঙ্ক পাঠান
+	Send torrents and magnet links to the first account instead of to peers	পিয়ারদের কাছে না পাঠিয়ে প্রথম অ্যাকাউন্টের পরিষেবাতে টরেন্ট এবং ম্যাগনেট লিংক পাঠান
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3977,8 +3940,7 @@
 #, machine
 	Sint Maarten	সিন্ট মার্টেন
 #. checkbox in the Find window
-#, machine
-	Site name/Download link/Parent web page/Referer	সাইটের নাম/ডাউনলোড লিঙ্ক/মূল ওয়েব পেজ/রেফারার
+	Site name/Download link/Parent web page/Referer	সাইটের নাম/ডাউনলোড লিংক/মূল ওয়েব পেজ/রেফারার
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4292,8 +4254,7 @@
 	Tanzania	তানজানিয়া
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	টাস্ক → লিঙ্ক গ্র্যাবার, অথবা ব্রাউজারের "সমস্ত লিঙ্ক ডাউনলোড করুন": একটি বিভক্ত\nআর্কাইভের ভলিউমগুলো একটি প্যাকেজ, আর পৃষ্ঠার অন্যান্য লিঙ্কগুলো আরেকটি।
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	টাস্ক → লিংক গ্র্যাবার, অথবা ব্রাউজারের "সব লিংক ডাউনলোড করুন": একটি বিভক্ত\nআর্কাইভের ভলিউমগুলো একটি প্যাকেজ, আর পেজের অন্যান্য লিংকগুলো আরেকটি।
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	একজন বন্ধুকে বলুন
@@ -4369,8 +4330,7 @@
 #, machine
 	The changes apply when you click OK.	আপনি ঠিক আছে ক্লিক করলে পরিবর্তনগুলি প্রয়োগ হবে।
 #. message or event log entry in the main window
-#, machine
-	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	ক্লিপবোর্ডে কোনো টেক্সট নেই। কিছু লিঙ্ক, অথবা লিঙ্ক সহ একটি টেক্সট কপি করুন এবং আবার চেষ্টা করুন।
+	The clipboard holds no text. Copy some links, or a text with links in it, and try again.	ক্লিপবোর্ডে কোনো টেক্সট নেই। কিছু লিংক, অথবা লিংক সহ একটি টেক্সট কপি করুন এবং আবার চেষ্টা করুন।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4435,15 +4395,13 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 	The download limit ({mb} MBytes every {hours} hours) has been reached.	ডাউনলোড সীমা ({hours} ঘণ্টায় {mb} মেগাবাইট) পূরণ হয়েছে।
 #. text in errors.rs
-#, machine
-	the download link has expired (refresh the download address)	ডাউনলোড লিঙ্কটির মেয়াদ শেষ হয়ে গেছে (ডাউনলোড ঠিকানা রিফ্রেশ করুন)
+	the download link has expired (refresh the download address)	ডাউনলোড লিংকটির মেয়াদ শেষ হয়ে গেছে (ডাউনলোড ঠিকানা রিফ্রেশ করুন)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	ডাউনলোড তালিকা সংরক্ষণ করা যায়নি: {error}। MDM চলাকালীন পরিবর্তনগুলি রাখা হয়।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	আপনি ইতিমধ্যে যে ডাউনলোড ম্যানেজারটি জানেন, সেটি দ্রুত করার জন্য পুনর্গঠিত হয়েছে। GNU GPL, সংস্করণ 3 বা তার পরে বিনামূল্যে এবং ওপেন সোর্স। ভিডিওগুলি yt-dlp দ্বারা পাওয়া যায়; টরেন্টগুলি librqbit-এ চলে।
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	আপনি ইতোমধ্যে যে ডাউনলোড ম্যানেজারটি জানেন, সেটি দ্রুত করার জন্য পুনর্গঠিত হয়েছে। GNU GPL, সংস্করণ 3 বা তার পরে বিনামূল্যে এবং ওপেন সোর্স। ভিডিওগুলো yt-dlp দ্বারা পাওয়া যায়; টরেন্টগুলো librqbit-এ চলে।
 #. text in a dialog box
 	The download queue is done.	ডাউনলোড সারি সম্পূর্ণ হয়েছে।
 #. text in errors.rs
@@ -4590,8 +4548,7 @@
 	the server sent an unexpected part of the file ({detail})	সার্ভার ফাইলটির একটি অপ্রত্যাশিত অংশ পাঠিয়েছে ({detail})
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
-#, machine
-	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	সাইটটি ফাইলের পরিবর্তে একটি ওয়েব পৃষ্ঠা পাঠিয়েছে (একটি অপেক্ষার পৃষ্ঠা, একটি ক্যাপচা বা একটি সাইন-ইন): আপনার ব্রাউজারে লিঙ্কটি খুলুন, সেখানে শেষ করুন এবং ডাউনলোডটি MDM-এ ফিরে আসবে
+	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	সাইটটি ফাইলের পরিবর্তে একটি ওয়েব পেজ পাঠিয়েছে (একটি অপেক্ষার পেজ, একটি ক্যাপচা বা একটি সাইন-ইন): আপনার ব্রাউজারে লিংকটি খুলুন, সেখানে শেষ করুন এবং ডাউনলোডটি MDM-এ ফিরে আসবে
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
@@ -4698,8 +4655,7 @@
 	There is already a category with this name	এই নামে একটি শ্রেণি ইতোমধ্যে আছে
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
-#, machine
-	There is already a queue with this name	এই নামে ইতিমধ্যেই একটি সারি আছে
+	There is already a queue with this name	এই নামে ইতোমধ্যেই একটি সারি আছে
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	“ডাউনলোড সম্পূর্ণ হলে ডায়ালগ দেখান” চালু থাকলে এই সেটিংস ব্যবহার করা যায় না
 #. text in helpers.rs
@@ -4776,8 +4732,7 @@
 #, machine
 	this is a Google Drive folder, not a file	এটি একটি Google Drive ফোল্ডার, ফাইল নয়
 #. text in errors.rs
-#, machine
-	this is not a magnet link or a .torrent file	এটি একটি ম্যাগনেট লিঙ্ক বা একটি .টরেন্ট ফাইল নয়
+	this is not a magnet link or a .torrent file	এটি একটি ম্যাগনেট লিংক বা একটি .টরেন্ট ফাইল নয়
 #. text in remote.rs
 #. remote control page (on a phone): the file chosen isn't a .torrent file
 #, machine
@@ -4792,8 +4747,7 @@
 	This list has no videos	এই তালিকায় কোনো ভিডিও নেই
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
-#, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	এই ম্যাগনেট লিঙ্কে কোনো ট্র্যাকার নেই এবং DHT বন্ধ আছে, তাই কোনো পিয়ার খুঁজে পাওয়া যাচ্ছে না।
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	এই ম্যাগনেট লিংকে কোনো ট্র্যাকার নেই এবং DHT বন্ধ আছে, তাই কোনো পিয়ার খুঁজে পাওয়া যাচ্ছে না।
 #. text in a download's progress window
 #. reason shown on the Rename box when the entered name is a reserved device name on Windows (CON, NUL, COM1…)
 	This name is reserved by Windows	এই নামটি Windows নিজের জন্য রেখেছে
@@ -4817,8 +4771,7 @@
 	this program isn't {name}	এটি {name} প্রোগ্রাম নয়
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
-#, machine
-	this site lets only browsers through; Alt+click the link	এই সাইটটি শুধুমাত্র ব্রাউজারগুলিকে অনুমতি দেয়; লিঙ্কটিতে Alt+ক্লিক করুন
+	this site lets only browsers through; Alt+click the link	এই সাইটটি শুধুমাত্র ব্রাউজারগুলোকে অনুমতি দেয়; লিংকটিতে Alt+ক্লিক করুন
 #. text in a download's progress window
 	This system has no dial-up connections to hang up	এই সিস্টেমে বন্ধ করার মতো কোনো ডায়াল-আপ সংযোগ নেই
 #. text in errors.rs
@@ -4826,8 +4779,7 @@
 #, machine
 	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	এই টরেন্টে এমন একটি ফাইলের নাম রয়েছে যা লেখা নিরাপদ নয়, তাই এটি যোগ করা হয়নি: {name}
 #. text in the Add torrent window
-#, machine
-	This torrent is already in the download list	এই টরেন্টটি ইতিমধ্যেই ডাউনলোড তালিকায় আছে
+	This torrent is already in the download list	এই টরেন্টটি ইতোমধ্যেই ডাউনলোড তালিকায় আছে
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	এই টরেন্টটি তালিকায় নেই
@@ -4842,8 +4794,7 @@
 #. text in errors.rs
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
-#, machine
-	this {site} link is a web page, not the file: open it in your browser and download from there	এই {site} লিঙ্কটি একটি ওয়েব পৃষ্ঠা, ফাইল নয়: এটি আপনার ব্রাউজারে খুলুন এবং সেখান থেকে ডাউনলোড করুন
+	this {site} link is a web page, not the file: open it in your browser and download from there	এই {site} লিংকটি একটি ওয়েব পেজ, ফাইল নয়: এটি আপনার ব্রাউজারে খুলুন এবং সেখান থেকে ডাউনলোড করুন
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5730,8 +5681,7 @@
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} প্রথমে এই কম্পিউটারটিকে অনুমতি দিতে বলছে: তাদের ইমেল দেখুন
 #. text in errors.rs
-#, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} এই টরেন্টটি পেতে পারছে না: কেউ এটি শেয়ার করছে না, অথবা এর লিঙ্ক পড়া যাচ্ছে না
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} এই টরেন্টটি পেতে পারছে না: কেউ এটি শেয়ার করছে না, অথবা এর লিংক পড়া যাচ্ছে না
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} এই ফাইল হোস্টের সাথে এই মুহূর্তে যোগাযোগ করতে পারছে না; MDM পরে আবার চেষ্টা করবে
@@ -5804,12 +5754,10 @@
 	{title}: added by {rule}	{title}: {rule} দ্বারা যোগ করা হয়েছে
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article is a torrent the list already has
-#, machine
-	{title}: already in the list	{title}: ইতিমধ্যেই তালিকায় আছে
+	{title}: already in the list	{title}: ইতোমধ্যেই তালিকায় আছে
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
-#, machine
-	{title}: not added: files of its names are already in {folder}	{title}: যোগ করা হয়নি: এর নামের ফাইলগুলি ইতিমধ্যেই {folder}-এ আছে
+	{title}: not added: files of its names are already in {folder}	{title}: যোগ করা হয়নি: এর নামের ফাইলগুলো ইতোমধ্যেই {folder}-এ আছে
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5928,16 +5876,14 @@ extension	Could not look it up	খোঁজা যায়নি
 extension	Download	ডাউনলোড করুন
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
-#, machine
-extension	Download all links with Mister Download Manager	Mister Download Manager দিয়ে সমস্ত লিঙ্ক ডাউনলোড করুন
+extension	Download all links with Mister Download Manager	Mister Download Manager দিয়ে সব লিংক ডাউনলোড করুন
 #. text in the browser extension
 #. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
 #, machine
 extension	Download best	সেরাটি ডাউনলোড করুন
 #. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
-#, machine
-extension	Download selected links with Mister Download Manager	Mister Download Manager দিয়ে নির্বাচিত লিঙ্কগুলি ডাউনলোড করুন
+extension	Download selected links with Mister Download Manager	Mister Download Manager দিয়ে নির্বাচিত লিংকগুলো ডাউনলোড করুন
 #. text in the browser extension
 #. first line of the tooltip of the download button over a video while the app is still finding its qualities
 #, machine
@@ -5993,8 +5939,7 @@ extension	Hide on this video	শুধু এই ভিডিওতে লুক
 extension	Hide the download button in full screen	পূর্ণ স্ক্রিনে ডাউনলোড বাটন লুকান
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
-#, machine
-extension	Hold Alt while clicking a link to let the browser download it.	ব্রাউজারকে ডাউনলোড করতে দিতে একটি লিঙ্কে ক্লিক করার সময় Alt ধরে রাখুন।
+extension	Hold Alt while clicking a link to let the browser download it.	ব্রাউজারকে ডাউনলোড করতে দিতে একটি লিংকে ক্লিক করার সময় Alt ধরে রাখুন।
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
