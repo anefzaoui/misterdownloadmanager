@@ -25,17 +25,19 @@ const API_OFF: &str = "Mister Download Manager's automation API is off. Ask the 
                        again.";
 
 const INSTRUCTIONS: &str = "Controls Mister Download Manager, the download manager running on \
-    this computer. list_downloads shows its downloads with their ids (and optional status, \
+    this computer. list_downloads shows its downloads with their ids (and optional id, status, \
     category, queue, or search filtering); pause_downloads, resume_downloads and \
     remove_downloads act on those ids; add_download adds an address (http, https, ftp, ftps \
     or a magnet link); start_queue starts a download queue (the main queue by default, or \
     by name); stop_queue stops a download queue (the main queue by default, or by name). \
     Listing and acting on downloads, stopping a queue, and starting a named queue need \
     the app's automation API, which the user turns on with `misterdownloadmanager-cli api on`. \
-    Sizes and speeds are in bytes and bytes per second.";
+    Sizes, free space and speeds are in bytes and bytes per second.";
 
 #[derive(Deserialize, JsonSchema, Default)]
 pub struct ListArgs {
+    /// Only the download with this id.
+    pub id: Option<u64>,
     /// Only downloads with this status: Queued, Downloading, Stopped, Complete or Error.
     pub status: Option<String>,
     /// Only downloads whose file name or address contains this text (any case).
@@ -133,7 +135,8 @@ impl Server {
                        path, status (Queued, Downloading, Stopped, Complete or Error), category, \
                        size and downloaded (bytes; size null while unknown), speed (bytes per \
                        second), when it was added and, for a failed one, why (error); with the \
-                       total speed, available queues and categories, and how many match.",
+                       total speed, free disk space (bytes, null when unknown), available \
+                       queues and categories, and how many match.",
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn list_downloads(
@@ -423,6 +426,7 @@ fn filter_list(answer: &str, args: &ListArgs) -> Result<String, String> {
     let mut downloads: Vec<DownloadInfo> = list
         .downloads
         .into_iter()
+        .filter(|d| args.id.is_none_or(|id| d.id == id))
         .filter(|d| status.is_none_or(|s| d.status == s))
         .filter(|d| {
             search.as_ref().is_none_or(|q| {
@@ -443,6 +447,7 @@ fn filter_list(answer: &str, args: &ListArgs) -> Result<String, String> {
         "downloads": downloads,
         "matching": matching,
         "speed": list.speed,
+        "free": list.free,
     });
     if !list.queues.is_empty() {
         obj["queues"] = serde_json::to_value(&list.queues).unwrap_or_default();
@@ -462,7 +467,7 @@ mod tests {
         {"id":1,"file":"ubuntu.iso","url":"https://releases.ubuntu.com/ubuntu.iso","status":"Complete","path":"/downloads/f","size":100,"downloaded":50,"speed":0,"added":null,"category":"Programs"},
         {"id":2,"file":"7z.exe","url":"https://www.7-zip.org/a/7z.exe","status":"Downloading","path":"/downloads/f","size":100,"downloaded":50,"speed":0,"added":null,"category":"Compressed"},
         {"id":3,"file":"report.pdf","url":"https://example.com/report.pdf","status":"Stopped","path":"/downloads/f","size":100,"downloaded":50,"speed":0,"added":null,"category":"Documents"}
-    ],"speed":1234,"queues":[{"name":"Main","running":true,"ids":[1,2]},{"name":"Night","running":false,"ids":[3]}],"categories":[{"key":"Programs","name":"Programs"},{"key":"Compressed","name":"Compressed"},{"key":"Documents","name":"Documents"}]}"#;
+    ],"speed":1234,"free":50000000000,"queues":[{"name":"Main","running":true,"ids":[1,2]},{"name":"Night","running":false,"ids":[3]}],"categories":[{"key":"Programs","name":"Programs"},{"key":"Compressed","name":"Compressed"},{"key":"Documents","name":"Documents"}]}"#;
 
     fn ids(answer: &str) -> Vec<u64> {
         let v: Value = serde_json::from_str(answer).unwrap();
@@ -478,7 +483,16 @@ mod tests {
     fn lists_newest_first_filtered_and_cut() {
         let all = filter_list(LIST, &ListArgs::default()).unwrap();
         assert_eq!(ids(&all), [3, 2, 1]);
-        assert!(all.contains(r#""matching":3"#) && all.contains(r#""speed":1234"#));
+        assert!(
+            all.contains(r#""matching":3"#)
+                && all.contains(r#""speed":1234"#)
+                && all.contains(r#""free":50000000000"#)
+        );
+        let args = ListArgs {
+            id: Some(2),
+            ..Default::default()
+        };
+        assert_eq!(ids(&filter_list(LIST, &args).unwrap()), [2]);
         let args = ListArgs {
             status: Some("downloading".into()),
             ..Default::default()
