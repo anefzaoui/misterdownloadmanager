@@ -2734,7 +2734,8 @@ async function injectOpenTabs() {
 // answer is older: video.js ASK_MS), so a change in Options reaches the pages already open
 // (#532: it was kept a minute, and by the page for good). A failure to reach it isn't kept.
 // `top`: the tab's address, when the frame asking is another page's (a player embedded from
-// another site): the button stays off there too when the tab's site is listed.
+// another site): the button stays off there too when the tab's site is listed. With it, its size
+// (#1278: Options → Download panels → Button size): `compact`, the round button over every video.
 const PANEL_KEEP_MS = 5000;
 const panelCache = new Map();
 async function panelOn(page, top) {
@@ -2743,12 +2744,13 @@ async function panelOn(page, top) {
   const tabSite = top ? new URL(top).hostname : "";
   const key = tabSite && tabSite !== site ? `${site} ${tabSite}` : site;
   forget(panelCache, PANEL_KEEP_MS);
-  if (panelCache.get(site)?.hidden) return false;
+  if (panelCache.get(site)?.hidden) return { on: false, compact: false };
   const kept = panelCache.get(key);
-  if (kept) return kept.on;
+  if (kept) return { on: kept.on, compact: kept.compact };
   const reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
-  if (reply.ok || !reply.why) panelCache.set(key, { on: Boolean(reply.ok), at: Date.now() });
-  return Boolean(reply.ok);
+  const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact) };
+  if (reply.ok || !reply.why) panelCache.set(key, { ...answer, at: Date.now() });
+  return answer;
 }
 
 // The page the message came from, as the browser knows it (never what the page says). The top
@@ -2967,7 +2969,7 @@ async function pageMessage(m, sender) {
   const tab = sender.tab || {};
   if (m.type === "panel") {
     const top = tab.url && /^https?:/i.test(tab.url) ? tab.url : "";
-    return { on: page ? await panelOn(page, top) : false };
+    return page ? await panelOn(page, top) : { on: false, compact: false };
   }
   if (m.type === "link" && typeof m.url === "string") {
     const name = typeof m.name === "string" ? m.name.split(/[\\/]/).pop().slice(0, 255) : "";

@@ -49,8 +49,8 @@
 // real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
 // clicked, dragged, kept; "never on the site" in the last browser; the button's clicks go through
 // its menu's "Open in…" to the Download video window, as in csp, hls, streams, sniffed and
-// inplace), panelOptions (the button follows Options in an open tab: off, on, the site listed;
-// #532), videoFocus (mouse idle/fullscreen and keyboard focus, #480), fullscreen (one
+// inplace), panelOptions (the button follows Options in an open tab: off, on, its size, the site
+// listed; #532, #1278), videoFocus (mouse idle/fullscreen and keyboard focus, #480), fullscreen (one
 // button over a video in full screen, the page's or the player's, and after the extension was
 // updated while it showed, #336), reconnect (a tab opened while
 // the host couldn't start gets the button once it can, no reload; then MDM started by a click, and
@@ -1605,8 +1605,16 @@ async function panelSettings(change) {
   await startApp();
 }
 
+// Whether the button's pill is its round form (`compact`: the logo, the arrow, the ✕), and its width.
+const PILL_COMPACT = `function () {
+  const p = this.querySelector ? this.querySelector(".pill") : null;
+  return p ? JSON.stringify({ compact: p.classList.contains("compact"), w: p.getBoundingClientRect().width }) : null;
+}`;
+
 // #532: the button follows Options in a tab already open (no reload: YouTube never reloads),
-// switched off, on again, and off on the site; and after a reload.
+// switched off, on again, and off on the site; and after a reload. #1278: Button size Compact
+// makes it the round button over a large video in the open tab, Full puts its words back.
+// E2E_SHOTS (Chromium): <lang>-<scheme>-button-full.png and -button-compact.png, the video with it.
 async function videoButtonFollowsOptions(session) {
   const page = `${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`;
   await session.navigate(page);
@@ -1630,13 +1638,46 @@ async function videoButtonFollowsOptions(session) {
     await away();
     if (!(await hover(session, v))) throw new Error("switched on again: no button in the open tab");
     done.push("on again: back in the open tab");
+    // #1278: Button size. Full: its words over this 640 px video; Compact: the round button.
+    const shots = process.env.E2E_SHOTS && session.shot ? path.resolve(process.env.E2E_SHOTS) : "";
+    const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+    const size = async (want) => {
+      // Over the video until the button's form is the one wanted (the page asks the app again
+      // when its answer is older than 5 s).
+      return until(`the button ${want ? "compact" : "full"}`, 15000, async () => {
+        await hover(session, v);
+        const p = await session.pill(PILL_COMPACT);
+        return p && p.compact === want ? p : null;
+      });
+    };
+    const shoot = async (name) => {
+      if (!shots) return;
+      await sleep(400);
+      await session.shot(path.join(shots, `${tag}-button-${name}.png`), { l: v.l - 16, t: v.t - 16, r: v.r + 16, b: Math.min(v.b, v.t + 140) + 16 });
+    };
+    const full = await size(false);
+    await shoot("full");
+    await panelSettings({ video_panel_compact: true });
+    await away();
+    const small = await size(true);
+    if (!(small.w < full.w)) throw new Error(`Compact: the round button (${small.w} px) is no smaller than the full one (${full.w} px)`);
+    await shoot("compact");
+    done.push(`Compact: the round button in the open tab (${Math.round(small.w)} px, Full ${Math.round(full.w)} px)`);
+    await session.mouse(5, 5);
+    await session.navigate(page);
+    await size(true);
+    done.push("and after a reload");
+    await panelSettings({ video_panel_compact: false });
+    await away();
+    await size(false);
+    done.push("Full again: its words back in the open tab");
     await panelSettings({ video_panel_sites: "127.0.0.1" });
     await away();
     if (await hover(session, v)) throw new Error("the site listed in Options: the button still shows in the open tab");
     done.push("the site listed: gone in the open tab");
   } finally {
     await session.mouse(5, 5);
-    await panelSettings({ video_panel: true, video_panel_sites: "" });
+    await panelSettings({ video_panel: true, video_panel_sites: "", video_panel_compact: false });
   }
   return done.join("; ");
 }
