@@ -3,7 +3,7 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Mutex, OnceLock};
+use std::sync::{Condvar, Mutex, OnceLock};
 
 use percent_encoding::percent_decode_str;
 use unicode_segmentation::UnicodeSegmentation;
@@ -937,6 +937,78 @@ pub fn reserve(dest: &Path) -> Option<Reservation> {
         .then(|| Reservation(dest.to_owned()))
 }
 
+/// Folders where a place's old files are being deleted so that a download starts there afresh
+/// (the app's Redownload, a duplicate overwritten, a restart under the same name): how many
+/// such deletes each has under way, by [`clearing_key`].
+fn clearings() -> &'static (Mutex<std::collections::HashMap<String, usize>>, Condvar) {
+    static CLEARING: OnceLock<(Mutex<std::collections::HashMap<String, usize>>, Condvar)> =
+        OnceLock::new();
+    CLEARING.get_or_init(Default::default)
+}
+
+/// A folder as [`clearings`] knows it: letter case aside (Windows' and macOS' folders; on Linux
+/// two folders that differ only in case wait for each other, which costs only a wait).
+fn clearing_key(dir: &Path) -> String {
+    dir.components()
+        .collect::<PathBuf>()
+        .to_string_lossy()
+        .to_lowercase()
+}
+
+/// A place whose old files are being deleted ([`clear`]): until it is dropped, a download that
+/// starts in its folder waits ([`wait_cleared`]) before it looks at the disk, so it finds none
+/// of them, and takes the name they leave.
+#[derive(Debug)]
+pub struct Clearing(String);
+
+impl Drop for Clearing {
+    fn drop(&mut self) {
+        let (map, done) = clearings();
+        let mut map = map.lock().unwrap();
+        if let Some(n) = map.get_mut(&self.0) {
+            *n -= 1;
+            if *n == 0 {
+                map.remove(&self.0);
+            }
+        }
+        done.notify_all();
+    }
+}
+
+/// `place`'s old files are about to be deleted beside the caller, and a download is to start
+/// there afresh: the downloads that start in its folder meanwhile (the engine's, and the looks
+/// that number a new name there) wait until the returned guard is dropped, after the delete.
+/// Unlike [`reserve`], the name stays free for the download that comes after: nothing is
+/// numbered past it.
+pub fn clear(place: &Path) -> Clearing {
+    let key = clearing_key(place.parent().unwrap_or(Path::new("")));
+    *clearings()
+        .0
+        .lock()
+        .unwrap()
+        .entry(key.clone())
+        .or_default() += 1;
+    Clearing(key)
+}
+
+/// Whether old files are being deleted in `dir` ([`clear`]). Never waits.
+pub fn being_cleared(dir: &Path) -> bool {
+    clearings()
+        .0
+        .lock()
+        .unwrap()
+        .contains_key(&clearing_key(dir))
+}
+
+/// Wait until no old files are being deleted in `dir` ([`clear`]): before looking at a name
+/// there. On a thread that may wait (never a window's): a delete can take as long as its disk.
+pub fn wait_cleared(dir: &Path) {
+    let key = clearing_key(dir);
+    let (map, done) = clearings();
+    let map = map.lock().unwrap();
+    let _unused = done.wait_while(map, |m| m.contains_key(&key)).unwrap();
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -989,6 +1061,34 @@ mod tests {
         assert_eq!(stem_guess(&d, "Talk.mp4", true), d.join("Talk.mp4"));
         std::fs::write(d.join("Talk.webm"), b"").unwrap();
         assert_eq!(stem_guess(&d, "Talk.mp4", false), d.join("Talk.mp4"));
+    }
+
+    /// A place being cleared holds up the looks in its folder (letter case aside) until every
+    /// delete there is done, and only there; its name stays free (nothing is numbered past it).
+    #[test]
+    fn a_folder_being_cleared_is_waited_for() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path().join("Clear");
+        let one = clear(&d.join("a.bin"));
+        let two = clear(&d.join("b.bin"));
+        let upper = PathBuf::from(d.to_string_lossy().to_uppercase());
+        assert!(being_cleared(&d) && being_cleared(&upper));
+        assert!(!being_cleared(dir.path()));
+        assert!(!is_reserved(&d.join("a.bin")));
+        let (tx, rx) = std::sync::mpsc::channel();
+        let waiting = d.clone();
+        std::thread::spawn(move || {
+            wait_cleared(&waiting);
+            let _ = tx.send(());
+        });
+        let wait = std::time::Duration::from_millis(200);
+        assert!(rx.recv_timeout(wait).is_err(), "waits");
+        drop(one);
+        assert!(rx.recv_timeout(wait).is_err(), "for every delete there");
+        drop(two);
+        rx.recv_timeout(std::time::Duration::from_secs(10)).unwrap();
+        assert!(!being_cleared(&d));
+        wait_cleared(&d);
     }
 
     /// #1170: a name held in this process (a deleted download's, until its files are gone)

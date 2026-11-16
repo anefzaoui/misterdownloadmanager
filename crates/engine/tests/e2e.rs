@@ -1242,6 +1242,63 @@ async fn resume_or_start_finds_its_state_beside_the_caller() {
     assert!(!broken.exists());
 }
 
+/// A download that starts while its place's old files are being deleted (`naming::clear`: a
+/// Redownload, a duplicate overwritten) waits for the delete before it looks at the disk: it
+/// neither resumes from the old state nor numbers its name past the old file, and it takes the
+/// name they leave. Cancelled meanwhile, it stops without waiting.
+#[tokio::test]
+async fn a_start_waits_for_its_places_old_files() {
+    let s = server("").await;
+    let dir = tempfile::tempdir().unwrap();
+    let dest = dir.path().join("again.bin");
+    // The old download's state (another address: resuming it would fail) and finished file.
+    std::fs::write(mdm_engine::state::state_path(&dest), b"the old state").unwrap();
+    std::fs::write(&dest, b"the old file").unwrap();
+    let req = |dest: Destination| Request {
+        url: s.url("/gen/1M?seed=3").parse().unwrap(),
+        headers: Default::default(),
+        dest,
+    };
+    let clearing = mdm_engine::naming::clear(&dest);
+    let resumed = Download::resume_or_start(
+        mdm_engine::state::state_path(&dest),
+        req(Destination::File(dest.clone())),
+        fast_opts(),
+        None,
+        0,
+    );
+    let free = dir.path().join("free.bin");
+    std::fs::write(&free, b"old").unwrap();
+    let freed = mdm_engine::naming::clear(&free);
+    let numbered = Download::start(req(Destination::Free(free.clone())), fast_opts());
+    let cancelled = Download::start(
+        req(Destination::Free(dir.path().join("c.bin"))),
+        fast_opts(),
+    );
+    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+    assert!(!mdm_engine::naming::part_path(&dest).exists(), "waits");
+    assert_eq!(std::fs::read(&free).unwrap(), b"old");
+    cancelled.cancel();
+    let err = tokio::time::timeout(std::time::Duration::from_secs(5), cancelled.wait())
+        .await
+        .expect("a cancel doesn't wait for the delete")
+        .unwrap_err();
+    assert!(matches!(err, mdm_engine::Error::Cancelled), "{err}");
+    // The delete, beside the downloads.
+    std::fs::remove_file(mdm_engine::state::state_path(&dest)).unwrap();
+    std::fs::remove_file(&dest).unwrap();
+    std::fs::remove_file(&free).unwrap();
+    drop((clearing, freed));
+    let mut want = vec![0; 1 << 20];
+    content::fill(3, 0, &mut want);
+    let out = resumed.wait().await.unwrap();
+    assert_eq!(out.path, dest, "from scratch, under its name");
+    assert!(std::fs::read(&dest).unwrap() == want);
+    let out = numbered.wait().await.unwrap();
+    assert_eq!(out.path, free, "the name the old file left");
+    assert!(!mdm_engine::naming::being_cleared(dir.path()));
+}
+
 #[tokio::test]
 async fn resume_detects_changed_file() {
     let s = server("rate=1M").await;
