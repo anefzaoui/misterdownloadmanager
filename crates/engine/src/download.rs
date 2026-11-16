@@ -5097,11 +5097,18 @@ fn note_link(shared: &Shared) {
 /// together every few seconds, a dip in the speed each time (#896, found by mhmdeve). Where each
 /// connection has a speed of its own (a server that caps each one), the share is above it and
 /// the bar stays that speed.
+///
+/// The link carried at least what one connection brought (`one`), so it is never measured at
+/// less: the windows in which a connection stood still for the disk don't count (`note_link`),
+/// and when the disk set the pace through every window of a download's fast part, the first
+/// window that counted was its end's, where only the crawling connections were left. The link
+/// then read a few KB/s, the bar their own pace, and a crawling connection held a last piece
+/// too small to split for a minute instead of reconnecting (seen on busy test machines).
 fn shed_bar(one: u64, link: u64, receiving: usize) -> u64 {
     if link == 0 {
         return one;
     }
-    one.min(link / receiving.max(1) as u64)
+    one.min(link.max(one) / receiving.max(1) as u64)
 }
 
 /// The speed a response of `received` bytes in `elapsed` (all of its time, the disk's waits
@@ -5478,6 +5485,14 @@ mod tests {
         assert_eq!(shed_bar(2 * mb, 16 * mb, 2), 2 * mb);
         // Nothing measured together yet: the one connection's best.
         assert_eq!(shed_bar(first, 0, 8), first);
+        // Only the end measured together, three connections crawling at 1 KiB/s once the others
+        // were done (the disk set the pace before): the line still carried what the first one
+        // brought, and the crawling ones are still slow against it.
+        let crawl = 1 << 10;
+        assert_eq!(shed_bar(first, 3 * crawl, 1), first);
+        assert_eq!(shed_bar(first, 3 * crawl, 3), first / 3);
+        let end = shed_bar(first, 3 * crawl, 1);
+        assert!(too_slow(crawl, three, end, 62 << 10, None), "a last piece");
     }
 
     #[test]

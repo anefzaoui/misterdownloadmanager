@@ -549,6 +549,9 @@ impl Native {
                 ..
             } = e
             {
+                // The window is asked for: a stall from now on is felt (crash.rs, #1126). Seen
+                // during one where the icon's events come on a thread of their own (Linux).
+                crate::crash::asked();
                 let _ = icon_tx.send(TrayCmd::Toggle);
                 icon_ctx.request_repaint();
             }
@@ -569,6 +572,7 @@ impl Native {
                         .map(|(_, d)| TrayCmd::ShowDownload(*d))
                 });
             if let Some(cmd) = cmd {
+                crate::crash::asked();
                 let _ = menu_tx.send(cmd);
                 menu_ctx.request_repaint();
             }

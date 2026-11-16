@@ -46,6 +46,25 @@ const WAKE_GRACE: Duration = Duration::from_secs(60);
 /// A first frame late then is taken for the busy login's, once (renderer.rs, #1205).
 pub(crate) const LOGIN_GRACE: Duration = Duration::from_secs(180);
 
+/// A stall while every window of MDM's is hidden (in the notification area, nothing of MDM's on
+/// screen) and its thread barely runs ([`IDLE_SHARE`]) is the computer's for this long, counted
+/// from the stall's start. Windows that started with the session or were closed to the
+/// notification area hours before stopped answering for 8 s in one of the hidden window's small
+/// ticks, their thread running 0 ms of the 8 with a few dozen page faults in the whole process,
+/// back 0.2 to 57 s later with no sleep in between (#1126): the computer kept MDM waiting (most
+/// likely its memory, given back while hidden (#72), read back from a busy or sleeping disk),
+/// and nobody could see the window stuck. Logged, and reported only if it is still stuck
+/// [`FREEZE_AFTER`] past this, or [`FREEZE_AFTER`] after a window was asked for ([`asked`]).
+const HIDDEN_GRACE: Duration = Duration::from_secs(60);
+
+/// The window thread barely ran during a stall when it ran less than 1/IDLE_SHARE of it (5 %):
+/// it waited on the computer (a disk, the memory it reads back). A thread that runs more is busy
+/// with MDM's own work, and its stall is a freeze, hidden or not.
+const IDLE_SHARE: u64 = 20;
+
+/// A window asked for this long (ms) before a stall began is still waited for in it ([`asked`]).
+const ASKED_BEFORE: u64 = 2_000;
+
 static REPORTER: OnceLock<Arc<Reporter>> = OnceLock::new();
 /// The session as sent, to send again when it learns more (what draws).
 static SESSION: std::sync::Mutex<Option<Session>> = std::sync::Mutex::new(None);
@@ -65,6 +84,12 @@ static FROZEN: AtomicBool = AtomicBool::new(false);
 static GRACED: AtomicU8 = AtomicU8::new(0);
 /// A panic was reported: later ones (a burst on worker threads) are logged, not dumped again.
 static PANICKED: AtomicBool = AtomicBool::new(false);
+/// Every window of MDM's is hidden: the main window in the notification area, no other open
+/// ([`hidden`]).
+static HIDDEN: AtomicBool = AtomicBool::new(false);
+/// When a window was last asked for from outside the window thread (ms since EPOCH, + 1); 0
+/// before any ([`asked`]).
+static ASKED: AtomicU64 = AtomicU64::new(0);
 /// The window thread (the dump's id for it; 0 where it can't be known).
 static UI_THREAD: OnceLock<u32> = OnceLock::new();
 /// System dialogs open now (Open, Save, a folder: [`system_dialog`]).
@@ -326,6 +351,22 @@ pub fn step(s: Step) {
     STEP.store(s as u8, Ordering::Relaxed);
 }
 
+/// Whether every window of MDM's is hidden now (the main window in the notification area and no
+/// other window open): set by the window thread at each frame's logic and as the window comes
+/// back. A stall then is felt by nobody, and while the window thread barely runs it is the
+/// computer's ([`HIDDEN_GRACE`]).
+pub fn hidden(all: bool) {
+    HIDDEN.store(all, Ordering::Release);
+}
+
+/// Someone asked for a window, or for an answer, from outside the window thread: a command came
+/// in (a second launch, the browser, the automation API), the shortcut to show the window was
+/// pressed, the tray icon was clicked. A hidden window's stall is no longer left to the computer
+/// once someone waits for it ([`HIDDEN_GRACE`]).
+pub fn asked() {
+    ASKED.store(now_ms() + 1, Ordering::Release);
+}
+
 /// Runs `dialog`, which shows a system Open, Save or folder dialog and waits for its answer
 /// (winui::start_pick, on a thread of its own): while it runs, the time the window thread spends
 /// in that dialog isn't a freeze ([`DIALOG_ON_WINDOW_THREAD`]: macOS runs it there). Logged as it
@@ -480,13 +521,15 @@ fn slept(monotonic_gap: u64, wall_gap: u64) -> bool {
     monotonic_gap > 3_000 || wall_gap > 3_000
 }
 
-/// What made the time that follows the computer's: a wake ([`WAKE_GRACE`]) or a start with the
-/// session ([`LOGIN_GRACE`]).
+/// What made the time that follows the computer's: a wake ([`WAKE_GRACE`]), a start with the
+/// session ([`LOGIN_GRACE`]), or a stall with every window hidden ([`HIDDEN_GRACE`]).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
 enum After {
     Wake = 1,
     Login = 2,
+    /// Every window hidden, the window thread waiting ([`HIDDEN_GRACE`]).
+    Hidden = 3,
 }
 
 impl After {
@@ -494,6 +537,7 @@ impl After {
         match v {
             1 => Some(After::Wake),
             2 => Some(After::Login),
+            3 => Some(After::Hidden),
             _ => None,
         }
     }
@@ -503,6 +547,7 @@ impl After {
         match self {
             After::Wake => "since the computer woke",
             After::Login => "since MDM started with the session",
+            After::Hidden => "with every window of MDM's hidden and its thread waiting",
         }
     }
 
@@ -511,6 +556,7 @@ impl After {
         match self {
             After::Wake => "the wake",
             After::Login => "MDM's start",
+            After::Hidden => "the stall's start",
         }
     }
 
@@ -519,6 +565,7 @@ impl After {
         match self {
             After::Wake => "the computer had just woken",
             After::Login => "MDM had just started with the session",
+            After::Hidden => "every window was hidden, and the computer kept its thread waiting",
         }
     }
 }
@@ -551,6 +598,29 @@ impl Computers {
         }
     }
 
+    /// A stall that started at `start` (ms) with every window hidden and the window thread
+    /// barely running: its first [`HIDDEN_GRACE`] aren't counted, but for a window asked for
+    /// (`asked`, ms; 0: never) meanwhile, or just before it began ([`ASKED_BEFORE`]): from then
+    /// on someone waits, and the stall counts from the ask.
+    fn hidden(start: u64, asked: u64) -> Computers {
+        let full = HIDDEN_GRACE.as_millis() as u64;
+        let grace = if asked != 0 && asked + ASKED_BEFORE >= start {
+            asked.saturating_sub(start).min(full)
+        } else {
+            full
+        };
+        Computers {
+            from: start,
+            grace,
+            after: After::Hidden,
+        }
+    }
+
+    /// When its grace ends (ms).
+    fn ends(self) -> u64 {
+        self.from + self.grace
+    }
+
     /// The same moment without its grace: what the log counts.
     fn no_grace(self) -> Computers {
         Computers { grace: 0, ..self }
@@ -565,12 +635,36 @@ fn counted(start: u64, now: u64, computers: Option<Computers>) -> u64 {
     now.saturating_sub(from)
 }
 
+/// Whether the window thread barely ran in a stall: `cpu` ms of `wall` ms ([`IDLE_SHARE`]).
+fn idle(cpu: u64, wall: u64) -> bool {
+    cpu.saturating_mul(IDLE_SHARE) < wall
+}
+
+/// The computer's time for a stretch that started at `start` (ms): the wake's or the start's
+/// (`computers`) and, when every window is hidden and the window thread barely ran in it
+/// (`hidden_idle`), the stall's own ([`Computers::hidden`], cut short by a window `asked` for),
+/// whichever ends later.
+fn computers_for(
+    start: u64,
+    computers: Option<Computers>,
+    hidden_idle: bool,
+    asked: u64,
+) -> Option<Computers> {
+    let hidden = hidden_idle.then(|| Computers::hidden(start, asked));
+    match (computers, hidden) {
+        (Some(c), Some(h)) => Some(if h.ends() > c.ends() { h } else { c }),
+        (c, h) => c.or(h),
+    }
+}
+
 /// Watch the window's frames: a stretch of one (its logic or its UI) running past FREEZE_AFTER
 /// is reported once. Time the computer spent asleep isn't counted, nor the computer's time: the
-/// first minute after it woke ([`WAKE_GRACE`]) and the first three of a start with the session
-/// (`at_login`, [`LOGIN_GRACE`]), when a stall is logged, and reported only if it lasts past
-/// them. Nor are the waits between frames (no stretch runs then), nor the time a system dialog
-/// runs on the window thread ([`dialog_from`]: macOS), which is logged instead.
+/// first minute after it woke ([`WAKE_GRACE`]), the first three of a start with the session
+/// (`at_login`, [`LOGIN_GRACE`]) and the first minute of a stall nobody could see, every window
+/// hidden and the window thread waiting ([`HIDDEN_GRACE`]), when a stall is logged, and reported
+/// only if it lasts past them. Nor are the waits between frames (no stretch runs then), nor the
+/// time a system dialog runs on the window thread ([`dialog_from`]: macOS), which is logged
+/// instead.
 fn watchdog(at_login: bool) {
     let tick = Duration::from_millis(500);
     let freeze_after = FREEZE_AFTER.as_millis() as u64;
@@ -622,10 +716,39 @@ fn watchdog(at_login: bool) {
             }
             continue;
         };
-        // Since the wake (or the start), for the log; past the grace, for the report.
-        let ran = counted(from, now, computers.map(Computers::no_grace));
-        if counted(from, now, computers) < freeze_after {
-            if let Some(c) = computers
+        // The window thread's use since this tick first saw the stretch, once it is long (a
+        // normal frame is over long before: the thread isn't asked about each one).
+        let long = now.saturating_sub(from) >= freeze_after;
+        let busy = seen.filter(|_| long).and_then(|(_, at, before)| {
+            let (before, after) = (before?, usage(ui)?);
+            Some(Busy {
+                wall_ms: now.saturating_sub(at),
+                cpu_ms: after.cpu_ms.saturating_sub(before.cpu_ms),
+                faults: before
+                    .faults
+                    .zip(after.faults)
+                    .map(|(b, a)| a.saturating_sub(b)),
+            })
+        });
+        let told = |b: Busy| {
+            tracing::warn!(
+                "the window thread ran {} of {} ms meanwhile ({} page faults)",
+                b.cpu_ms,
+                b.wall_ms,
+                b.faults.map_or("unknown".to_owned(), |n| n.to_string())
+            );
+        };
+        // Every window hidden and the window thread barely running: nobody sees the stall, and
+        // the computer has the thread (#1126). Unknown use (macOS) isn't taken for idle.
+        let hidden_idle =
+            HIDDEN.load(Ordering::Acquire) && busy.is_some_and(|b| idle(b.cpu_ms, b.wall_ms));
+        let asked = ASKED.load(Ordering::Acquire).saturating_sub(1);
+        let theirs = computers_for(from, computers, hidden_idle, asked);
+        // Since the wake (or the start, or the stall's start), for the log; past the grace, for
+        // the report.
+        let ran = counted(from, now, theirs.map(Computers::no_grace));
+        if counted(from, now, theirs) < freeze_after {
+            if let Some(c) = theirs
                 && ran >= freeze_after
                 && noted_frame != start
             {
@@ -639,6 +762,9 @@ fn watchdog(at_login: bool) {
                     (c.grace + freeze_after) / 1000,
                     c.after.mark()
                 );
+                if let Some(b) = busy {
+                    told(b);
+                }
             }
             continue;
         }
@@ -649,24 +775,8 @@ fn watchdog(at_login: bool) {
             "the window stopped responding ({} s into a frame, in its {part}, at {step})",
             ran / 1000,
         );
-        let busy = seen.and_then(|(_, at, before)| {
-            let (before, after) = (before?, usage(ui)?);
-            Some(Busy {
-                wall_ms: now.saturating_sub(at),
-                cpu_ms: after.cpu_ms.saturating_sub(before.cpu_ms),
-                faults: before
-                    .faults
-                    .zip(after.faults)
-                    .map(|(b, a)| a.saturating_sub(b)),
-            })
-        });
         if let Some(b) = busy {
-            tracing::warn!(
-                "the window thread ran {} of {} ms meanwhile ({} page faults)",
-                b.cpu_ms,
-                b.wall_ms,
-                b.faults.map_or("unknown".to_owned(), |n| n.to_string())
-            );
+            told(b);
         }
         mdm_crash::logs::flush(LOG_FOR_A_REPORT);
         if let Some(r) = REPORTER.get() {
@@ -736,11 +846,16 @@ pub fn session(language: &str, dark: bool) -> Session {
 /// MDM_CRASH_TEST=1 lets `/show crash-test:<what>` crash MDM on purpose (the crash reports'
 /// own end-to-end check): panic, crash (an access violation / SIGSEGV), freeze (a deadlock on
 /// the window thread), spin (the window thread busy for 12 s, then it answers again), abort.
+/// With the window hidden in the notification area first ([`testing`], app.rs), a few seconds
+/// later, in a tick of the hidden window ([`armed`], #1126): hidden-stall[:s] (the window thread
+/// waits, running nothing, 12 s or `s`), hidden-spin[:s] (it runs).
 pub fn test(what: &str) {
-    if std::env::var_os("MDM_CRASH_TEST").is_none_or(|v| v != "1") {
+    if !testing() {
         return;
     }
     tracing::warn!("crash test: {what}");
+    let (what, secs) = what.split_once(':').unwrap_or((what, ""));
+    let secs = secs.parse().unwrap_or(12);
     match what {
         "panic" => panic!("crash test: a panic on purpose"),
         "crash" => {
@@ -750,16 +865,52 @@ pub fn test(what: &str) {
             crate::unix::crash_now();
         }
         "freeze" => crash_test_freeze(),
-        "spin" => crash_test_spin(),
+        "spin" => crash_test_spin(12),
         "abort" => std::process::abort(),
+        "hidden-stall" | "hidden-spin" => {
+            ARMED_SPIN.store(what == "hidden-spin", Ordering::Relaxed);
+            ARMED_SECS.store(secs, Ordering::Relaxed);
+            ARMED_AT.store(now_ms() + 1 + ARMED_AFTER, Ordering::Release);
+        }
         _ => {}
     }
 }
 
-/// The window thread runs for 12 s without a break, as an endless loop would.
+/// Whether the crash tests are on (MDM_CRASH_TEST=1).
+pub fn testing() -> bool {
+    std::env::var_os("MDM_CRASH_TEST").is_some_and(|v| v == "1")
+}
+
+/// A test stall armed for a later tick ([`test`]): when (ms since EPOCH, + 1; 0: none), how
+/// long (s), and whether the thread runs meanwhile.
+static ARMED_AT: AtomicU64 = AtomicU64::new(0);
+static ARMED_SECS: AtomicU64 = AtomicU64::new(0);
+static ARMED_SPIN: AtomicBool = AtomicBool::new(false);
+/// How long after it is asked for an armed stall comes: past the frame that hid the window.
+const ARMED_AFTER: u64 = 3_000;
+
+/// The window thread's armed test stall, once its time came (top of every frame's logic; a
+/// plain load otherwise).
+pub fn armed() {
+    let at = ARMED_AT.load(Ordering::Acquire);
+    if at == 0 || now_ms() + 1 < at {
+        return;
+    }
+    ARMED_AT.store(0, Ordering::Release);
+    let secs = ARMED_SECS.load(Ordering::Relaxed);
+    if ARMED_SPIN.load(Ordering::Relaxed) {
+        tracing::warn!("crash test: the window thread runs for {secs} s");
+        crash_test_spin(secs);
+    } else {
+        tracing::warn!("crash test: the window thread waits {secs} s, running nothing");
+        std::thread::sleep(Duration::from_secs(secs));
+    }
+}
+
+/// The window thread runs for `secs` without a break, as an endless loop would.
 #[inline(never)]
-fn crash_test_spin() {
-    let until = Instant::now() + Duration::from_secs(12);
+fn crash_test_spin(secs: u64) {
+    let until = Instant::now() + Duration::from_secs(secs);
     let mut n = 0u64;
     while Instant::now() < until {
         n = std::hint::black_box(n.wrapping_add(1));
@@ -845,6 +996,55 @@ mod watchdog_tests {
         assert_eq!(counted(1_000, past, wake), freeze);
     }
 
+    /// #1126: waiting hidden in the notification area for hours, the window didn't answer for
+    /// 8 s in one of its ticks, its thread running 0 ms of the 8, and answered 0.2 to 57 s later.
+    /// Not a freeze while every window is hidden and the thread barely runs, for a minute; still
+    /// one past it, at once when the thread runs (an endless loop), and from the moment a window
+    /// is asked for.
+    #[test]
+    fn a_stall_nobody_can_see_is_the_computers_for_a_minute() {
+        let (freeze, grace) = (
+            FREEZE_AFTER.as_millis() as u64,
+            HIDDEN_GRACE.as_millis() as u64,
+        );
+        // The reports': 0 of 8006 ms run, every window hidden. Logged, not reported.
+        assert!(idle(0, 8_006));
+        let stall = 4_000_000;
+        let hidden = computers_for(stall, None, idle(0, 8_006), 0);
+        assert_eq!(hidden.map(|c| c.after), Some(After::Hidden));
+        assert_eq!(counted(stall, stall + 8_006, hidden), 0);
+        assert_eq!(
+            counted(stall, stall + 8_006, hidden.map(Computers::no_grace)),
+            8_006
+        );
+        // 57 s on (the longest report's) still not; still stuck a minute past FREEZE_AFTER, yes.
+        assert!(counted(stall, stall + 57_000, hidden) < freeze);
+        assert!(counted(stall, stall + grace + freeze - 1, hidden) < freeze);
+        assert!(counted(stall, stall + grace + freeze, hidden) >= freeze);
+        // A window on screen, or the thread running: a freeze, as before.
+        assert_eq!(computers_for(stall, None, false, 0), None);
+        assert!(!idle(8_006, 8_006));
+        assert!(!idle(500, 8_006), "6 % is MDM's own work");
+        assert!(idle(300, 8_006), "under 5 % is waiting");
+        // A window asked for 20 s into the stall (the tray, a second launch, the browser):
+        // counted from the ask.
+        let asked = stall + 20_000;
+        let waited = computers_for(stall, None, true, asked);
+        assert!(counted(stall, asked + freeze - 1, waited) < freeze);
+        assert_eq!(counted(stall, asked + freeze, waited), freeze);
+        // Asked just before it began: waited for from its start.
+        let just = computers_for(stall, None, true, stall - 1_000);
+        assert_eq!(counted(stall, stall + freeze, just), freeze);
+        // An ask long before it changes nothing.
+        assert_eq!(computers_for(stall, None, true, stall - 60_000), hidden);
+        // Within a start with the session, or after a wake, whichever grace lasts longer.
+        let login = Some(Computers::login());
+        assert_eq!(computers_for(71_000, login, true, 0), login);
+        let late = computers_for(170_000, login, true, 0);
+        assert_eq!(late.map(|c| c.after), Some(After::Hidden));
+        assert_eq!(computers_for(71_000, login, false, 0), login);
+    }
+
     /// What the log says of a stall in the computer's time, and the store reads back.
     #[test]
     fn the_log_says_whose_time_it_was() {
@@ -853,7 +1053,11 @@ mod watchdog_tests {
             "since MDM started with the session"
         );
         assert_eq!(Computers::wake(1).after.since(), "since the computer woke");
-        for a in [After::Wake, After::Login] {
+        assert_eq!(
+            Computers::hidden(1, 0).after.since(),
+            "with every window of MDM's hidden and its thread waiting"
+        );
+        for a in [After::Wake, After::Login, After::Hidden] {
             assert_eq!(After::from_u8(a as u8), Some(a));
         }
         assert_eq!(After::from_u8(0), None);

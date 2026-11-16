@@ -562,6 +562,14 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux: a crash is reported on computers whose processor doesn't offer XSAVE (an older
+  processor, a virtual machine), where the crash handler faulted a second time and no report came
+  ([#1239](https://github.com/anefzaoui/misterdownloadmanager/issues/1239))
+- ✅ A crawling connection at a download's end is replaced again after the disk set the pace, instead
+  of holding a last piece for a minute; the shared-line slow-connection test no longer fails on a busy
+  CI runner
+- ✅ **View → Draw with**'s note on when a graphics system is tried again reads the time zone
+  the way the rest of the window does, never waiting for Windows
 - ✅ Every release file gets a signed build provenance record (`gh attestation verify`), and the
   repository an OpenSSF Scorecard (thanks to [@joyahmed](https://github.com/joyahmed))
 - ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
@@ -655,6 +663,10 @@ These ship in the next version.
   the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
   lasts past the first three minutes)
   (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
+- ✅ No more **The window stopped responding** report while MDM waits in the notification area
+  with no window on screen and its thread waits on the computer: logged, and reported only if it
+  lasts past a minute, if MDM's thread is busy, or if MDM is asked for something meanwhile and
+  doesn't answer (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
 - ✅ Link grabber's **Status** column: a failure whose sentence ends in advice shows that advice
   in the column, with the whole sentence on hover, and the column is as wide as its longest answer
   ([#1110](https://github.com/anefzaoui/misterdownloadmanager/issues/1110))
@@ -758,7 +770,7 @@ These ship in the next version.
   that video from Add URL, Download video and the command line, not the first player written in
   its HTML (a hidden welcome video)
   ([#1076](https://github.com/anefzaoui/misterdownloadmanager/issues/1076))
-- ✅ The browser extension's popup has **Hide the download button in full screen**, off as installed: a page in full screen shows no **Download video** button, for watching without it in the way ([#670](https://github.com/anefzaoui/misterdownloadmanager/issues/670))
+- ✅ The browser extension's popup has **Hide the download button in full screen**, off as installed: entering full screen hides the **Download video** button at once, as the player's own controls, and the pointer's next move brings it back; on, a page in full screen shows no button at all, for watching without it in the way ([#670](https://github.com/anefzaoui/misterdownloadmanager/issues/670))
 - ✅ Windows: MDM listed in Settings → Default apps for MAGNET and .torrent, and Torrent
   settings' switch says when another app chosen there still opens them, and opens that page
   ([#1091](https://github.com/anefzaoui/misterdownloadmanager/issues/1091))
@@ -1308,6 +1320,10 @@ These ship in the next version.
 - ✅ A menu's underlined letter runs its item without typing that letter into the text box under
   the menu, the arrows move in the menu only, and Alt with a dialog's letter types nothing either;
   letters of other scripts (Arabic, Russian) choose their menu item
+- ✅ The command line's `video-get` takes the best quality as the Download video window does (a
+  Bilibili video, whose pictures and sounds come apart, failed), `--quality` takes a height or the
+  nearest below it, and an error with no format to download lists the ones the page offers
+  ([#1240](https://github.com/anefzaoui/misterdownloadmanager/issues/1240))
 - ✅ Create new queue (the Categories tree's menu, Add to queue) shows its name box in front of the
   Scheduler, and proposes a name no queue has
   ([#1237](https://github.com/anefzaoui/misterdownloadmanager/issues/1237))

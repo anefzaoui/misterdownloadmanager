@@ -177,6 +177,18 @@ fn a_native_crash_reports_where_it_crashed() {
     );
 }
 
+/// A crash on another thread than the main one is reported too: each thread has an alternate
+/// signal stack of its own (#1239).
+#[test]
+fn a_native_crash_on_a_thread_reports_where_it_crashed() {
+    let r = report("thread-crash");
+    assert!(r.contains("Description: MDM crashed"), "{r}");
+    assert!(
+        signed(&r, "Signature: crash in crashy::crashy_crashes_here"),
+        "{r}"
+    );
+}
+
 /// A monitor that listens only after the window thread's first try (half a second) is still
 /// connected to, from beside the window, and the panic is reported. (The first try's end gave
 /// the monitor up, and the session went without crash reports.)

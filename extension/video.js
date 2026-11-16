@@ -2359,7 +2359,9 @@ button:focus-visible { outline: none; }
   });
   document.addEventListener("fullscreenchange", () => {
     if (!video) return;
-    if (hideFullscreen && document.fullscreenElement) hide(true);
+    // Entering full screen: out of the way at once, as the player's own controls are; the
+    // pointer's next move brings it back. Leaving it: shown again, as before.
+    if (document.fullscreenElement) hide(true);
     else show(video);
   });
   addEventListener("blur", () => hide());
