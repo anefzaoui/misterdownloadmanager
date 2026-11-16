@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The automation API's add may carry the checksum the finished file must have (the command
+  line's `--checksum` form), kept with the download for **Verify checksum** and the finish
+  check; one the app can't read is refused (`bad-request`) instead of dropped
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
   interface language followed the system in tests too

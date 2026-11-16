@@ -65,6 +65,9 @@ pub struct AddArgs {
     pub category: Option<String>,
     /// A queue by name: where the download waits (with `later`; default: main queue).
     pub queue: Option<String>,
+    /// The checksum the finished file must have, as the command line's `--checksum` takes it
+    /// (`sha256:…`, a bare hex value, …); the app refuses one it can't read.
+    pub checksum: Option<String>,
     /// true: only add it to the download queue, without starting it now.
     #[serde(default)]
     pub later: bool,
@@ -178,6 +181,7 @@ impl Server {
             name: args.file_name.filter(|n| !n.trim().is_empty()),
             category: category.clone(),
             queue: queue.clone(),
+            checksum: args.checksum.filter(|c| !c.trim().is_empty()),
             later: args.later,
             silent: true,
             ..Default::default()

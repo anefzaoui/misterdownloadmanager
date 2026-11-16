@@ -1489,6 +1489,22 @@ fn drive_file_behind_player(cmd: &ipc::Command) -> Option<String> {
         .map(str::to_owned)
 }
 
+/// An add's expected checksum (the command line's `--checksum`): none when the add carries none;
+/// `bad-request` and what to say when it can't be read, so the add fails instead of the checksum
+/// being dropped. The one place that reads it.
+fn add_checksum(
+    cmd: &ipc::Command,
+) -> Result<Option<mdm_engine::verify::Hash>, (&'static str, &'static str)> {
+    match cmd.checksum.as_deref() {
+        None => Ok(None),
+        Some(text) => mdm_engine::verify::Hash::parse(text).map(Some).ok_or((
+            "bad-request",
+            "not a readable checksum (hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally \
+             named \"sha256:…\")",
+        )),
+    }
+}
+
 /// What the browser's quality menu leaves to the Download video window (the button's click, as
 /// before it): everything in a run without a window, a Google Drive file's player (#34: the
 /// file itself, as uploaded, which the click's command downloads), and an address not on the
@@ -2598,6 +2614,10 @@ impl App {
         item.size = size;
         item.description = description;
         item.login = login;
+        // The add's expected checksum (the command line's `--checksum`), read by the same single
+        // reader every add's is: Verify checksum… shows it, and the finished file is checked
+        // against it. An unreadable one failed the request before the add ([`answer_add`]).
+        item.checksum = add_checksum(&context).ok().flatten();
         // The browser had started it: the host is already sending the file (#44).
         item.direct = crate::debrid::browser_started(&context);
         item.referer = context.referer.clone().filter(|r| !r.is_empty());
@@ -6536,7 +6556,7 @@ impl App {
     ///
     /// A paired device's command (the remote control, #141) is answered while Options → Remote
     /// is on, whatever the automation API's switch: it may list, add and act, nothing else.
-    fn answer(&mut self, cmd: &ipc::Command) -> String {
+    fn answer(&mut self, cmd: &ipc::Command, ctx: &egui::Context) -> String {
         use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
         // The browser's quality menu (its native host asks): whatever the automation API's
         // switch, and never for a paired device.
@@ -6558,11 +6578,22 @@ impl App {
             if cmd.url.is_some() || cmd.torrent_file.is_some() {
                 return self.remote_add(cmd.clone());
             }
-        } else if let Some(on) = cmd.api {
+        }
+        if !cmd.remote
+            && let Some(on) = cmd.api
+        {
             self.settings.automation_api = on;
             self.dirty = true;
             return line(&ApiAnswer { api: on });
-        } else if !self.settings.automation_api {
+        }
+        // An add carrying the checksum its finished file must have (the command line's
+        // `--checksum`): read before the automation API's switch, as an add itself is — the
+        // command line's `/d` adds with the switch off. One that can't be read is answered
+        // (`bad-request`) instead of being dropped; a readable one goes on with the add.
+        if !cmd.remote && cmd.url.is_some() && cmd.checksum.is_some() {
+            return self.answer_add(cmd, ctx);
+        }
+        if !cmd.remote && cmd.api.is_none() && !self.settings.automation_api {
             return line(&ErrorAnswer {
                 error: "the automation API is off (misterdownloadmanager-cli api on)".into(),
                 code: Some(ipc::api::API_OFF.into()),
@@ -6713,6 +6744,22 @@ impl App {
         free
     }
 
+    /// An add carrying the checksum its finished file must have (the command line's
+    /// `--checksum`): [`add_checksum`] reads it before anything is added, so one the app can't
+    /// read fails the request (`bad-request`) instead of being dropped; a readable one goes on
+    /// with the add, kept on the download ([`Item::checksum`]).
+    fn answer_add(&mut self, cmd: &ipc::Command, ctx: &egui::Context) -> String {
+        use ipc::api::{AddAnswer, ErrorAnswer, line};
+        if let Err((code, error)) = add_checksum(cmd) {
+            return line(&ErrorAnswer {
+                error: error.into(),
+                code: Some(code.into()),
+            });
+        }
+        self.handle_command(cmd.clone(), ctx);
+        line(&AddAnswer::default())
+    }
+
     /// A download a paired device sent (#141): an address added as a silent command line's is,
     /// or a magnet link or .torrent file as Add torrent's Download Now with every file, in the
     /// category and queue it chose (by file type, and started now, when it chose none). No
@@ -6725,6 +6772,9 @@ impl App {
                 code: Some(code.into()),
             })
         };
+        if let Err((code, error)) = add_checksum(&cmd) {
+            return fail(code, error);
+        }
         let category = match cmd.category.as_deref() {
             None => None,
             Some(key) => match Category::all().into_iter().find(|c| c.key() == key) {
@@ -12009,7 +12059,7 @@ impl App {
             handled = true;
             match inc.reply {
                 Some(reply) => {
-                    let _ = reply.send(self.answer(&inc.cmd));
+                    let _ = reply.send(self.answer(&inc.cmd, ctx));
                 }
                 None => {
                     opens = true;
@@ -13239,6 +13289,104 @@ mod duplicate_tests {
             ]
         );
         assert!(replaced_files(&[], 1, true).is_none());
+    }
+}
+
+#[cfg(test)]
+mod add_checksum_tests {
+    use super::*;
+
+    fn app() -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap(),
+        ));
+        let loaded = store::Loaded {
+            next_id: 1,
+            items: Vec::new(),
+            columns: None,
+            settings: Settings::default(),
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    fn add(checksum: &str) -> ipc::Command {
+        ipc::Command {
+            url: Some("http://127.0.0.1:9/a.bin".into()),
+            checksum: Some(checksum.into()),
+            silent: true,
+            later: true,
+            ..Default::default()
+        }
+    }
+
+    /// An add carries the checksum the command line's `--checksum` gives it, and adds don't need
+    /// the automation API's switch: the command line's `/d` adds with it off. Readable or not,
+    /// the checksum is read in the add's own path, before that switch's answer.
+    #[test]
+    fn a_checksum_add_works_with_the_api_off() {
+        // Readable: added, with the checksum kept, the API off all the same.
+        let sha256 = "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
+        let mut first = app();
+        assert!(
+            !first.settings.automation_api,
+            "the switch is off to begin with"
+        );
+        let answer = first.answer(&add(sha256), &egui::Context::default());
+        assert!(
+            !answer.contains("the automation API is off"),
+            "the add went through: {answer}"
+        );
+        assert_eq!(first.items.len(), 1);
+        assert_eq!(
+            first.items[0].checksum,
+            mdm_engine::verify::Hash::parse(sha256)
+        );
+        // Unreadable: refused as `bad-request`, not as the API being off.
+        let mut again = app();
+        let answer = again.answer(&add("not a checksum"), &egui::Context::default());
+        let error: ipc::api::ErrorAnswer = serde_json::from_str(&answer).unwrap();
+        assert_eq!(error.code.as_deref(), Some("bad-request"));
+        assert!(again.items.is_empty());
+    }
+
+    /// Unreadable, the add fails in the API's error shape (`bad-request`) and nothing is listed.
+    #[test]
+    fn an_add_with_a_bad_checksum_is_refused() {
+        let mut app = app();
+        app.settings.automation_api = true;
+        let answer = app.answer(&add("not a checksum"), &egui::Context::default());
+        let error: ipc::api::ErrorAnswer = serde_json::from_str(&answer).unwrap();
+        assert_eq!(error.code.as_deref(), Some("bad-request"));
+        assert!(error.error.contains("not a readable checksum"), "{answer}");
+        assert!(app.items.is_empty(), "the bad add made no download");
+    }
+
+    /// Readable (the SHA-256 of "test"), the add goes through and the download keeps it for
+    /// Verify checksum… and its end.
+    #[test]
+    fn a_good_checksum_is_kept_with_the_download() {
+        let mut app = app();
+        app.settings.automation_api = true;
+        let sha256 = "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
+        let answer = app.answer(&add(sha256), &egui::Context::default());
+        let added: ipc::api::AddAnswer = serde_json::from_str(&answer).unwrap();
+        assert!(!added.pending);
+        assert_eq!(app.items.len(), 1);
+        assert_eq!(
+            app.items[0].checksum,
+            mdm_engine::verify::Hash::parse(sha256)
+        );
     }
 }
 
