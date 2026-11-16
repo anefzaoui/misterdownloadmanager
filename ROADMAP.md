@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ **Alt** and a button's underlined letter press the button (the **Scheduler**'s **Apply**,
+  **Close** and the others pressed nothing), letters of other scripts too, and **Alt** in such a
+  window underlines the letters in every look, as in the main window
 - ✅ With **Start immediately** on, picking the folder the early download already saves to in
   **Save As** keeps its name: the download's own `.mdm.part` and `.mdm.json` no longer count as
   taken, so it isn't offered as `song (1).mp3` and doesn't start over
