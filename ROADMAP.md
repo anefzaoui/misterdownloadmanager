@@ -1272,6 +1272,9 @@ These ship in the next version.
   ([#955](https://github.com/anefzaoui/misterdownloadmanager/issues/955))
 - ✅ Linux: MDM pins to the taskbar and the dock: its desktop entry names its windows' class, and
   every window of MDM carries it ([#940](https://github.com/anefzaoui/misterdownloadmanager/issues/940))
+- ✅ A menu's underlined letter runs its item without typing that letter into the text box under
+  the menu, the arrows move in the menu only, and Alt with a dialog's letter types nothing either;
+  letters of other scripts (Arabic, Russian) choose their menu item
 
 ## Being worked on
 

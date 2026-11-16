@@ -2317,7 +2317,7 @@ fn edit_text_with(
         // The caret in the box's own ink: egui's default (a pale blue in its dark style) was
         // all but invisible on a light box.
         ui.visuals_mut().text_cursor.stroke.color = color;
-        ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
+        without_alt_text(ui, |ui| ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner)
     });
     keep_selection_on_right_click(&resp, frame_right, before);
     pass_focus_on(ui, &resp, enabled);
@@ -2334,6 +2334,46 @@ fn edit_text_with(
         edit_menu(&resp, value, password, false);
     }
     resp
+}
+
+/// Draws a text box with `add`, without the text typed with Alt held: Alt+letter is an access
+/// key (a dialog's button, the menu bar), never typing, as in Windows' and Linux's boxes.
+/// egui-winit sends Alt+S as the key and the text "s": the button took the key, the focused box
+/// typed the "s". The text stays in the input for the access keys read after the box
+/// ([`mnemonic_pressed`] takes a letter of another script by it).
+fn without_alt_text<R>(ui: &mut Ui, add: impl FnOnce(&mut Ui) -> R) -> R {
+    // Not on macOS: Option (its Alt) is how its keyboards type letters (Option+S is "ß",
+    // Option+E an accent), which a box there takes as Mac boxes do.
+    let held: Vec<egui::Event> = if cfg!(target_os = "macos") {
+        Vec::new()
+    } else {
+        ui.input_mut(|i| {
+            // A text comes right after the key that typed it, which says what was held.
+            let mut with_alt = false;
+            let mut held = Vec::new();
+            for e in std::mem::take(&mut i.events) {
+                match e {
+                    egui::Event::Key {
+                        pressed: true,
+                        modifiers,
+                        ..
+                    } => {
+                        // Ctrl+Alt is AltGr on Windows, which types (@, €...).
+                        with_alt = modifiers.alt && !modifiers.ctrl && !modifiers.command;
+                        i.events.push(e);
+                    }
+                    egui::Event::Text(_) if with_alt => held.push(e),
+                    e => i.events.push(e),
+                }
+            }
+            held
+        })
+    };
+    let out = add(ui);
+    if !held.is_empty() {
+        ui.input_mut(|i| i.events.extend(held));
+    }
+    out
 }
 
 /// A text box's right-click menu, each item enabled or not.
@@ -3764,7 +3804,7 @@ pub fn multiline_light(
                 .desired_width(inner.width())
                 .desired_rows(3);
             let before = selection_now(ui.ctx(), text_id);
-            let resp = ui.add(te);
+            let resp = without_alt_text(ui, |ui| ui.add(te));
             keep_selection_on_right_click(&resp, false, before);
             edit_menu(&resp, value, false, true);
             // Enter here is a new line, not the dialog's OK.
@@ -7574,6 +7614,9 @@ mod tests {
         t: f64,
         /// A multi-line box ([`multiline_light`]) instead.
         lines: bool,
+        /// A dialog's access letter after the box (a button's "&Start"): Alt+it presses it; how
+        /// many times it has.
+        access: Option<(char, u32)>,
     }
 
     impl TextBoxRun {
@@ -7596,6 +7639,7 @@ mod tests {
                 id: None,
                 t: 0.0,
                 lines,
+                access: None,
             };
             run.pass(Vec::new());
             run
@@ -7610,12 +7654,18 @@ mod tests {
                 ..Default::default()
             };
             let (rc, value, id, lines) = (self.rc, &mut self.value, &mut self.id, self.lines);
+            let access = &mut self.access;
             let mut out = self.ctx.run_ui(raw, |ui| {
                 *id = Some(if lines {
                     multiline_light(ui, rc, value, "t1084", true).id
                 } else {
                     edit(ui, rc, value, true, false).id
                 });
+                if let Some((letter, presses)) = access
+                    && mnemonic_pressed(ui, *letter)
+                {
+                    *presses += 1;
+                }
             });
             out.textures_delta.clear();
             out.platform_output
@@ -7683,6 +7733,23 @@ mod tests {
             copied
         }
 
+        /// A key as the system sends a typed one: the key, then the text it types (egui-winit
+        /// sends both for a letter), with `modifiers` held.
+        fn typed(&mut self, key: egui::Key, text: &str, modifiers: egui::Modifiers) {
+            let mut events = vec![egui::Event::Key {
+                key,
+                physical_key: Some(key),
+                pressed: true,
+                repeat: false,
+                modifiers,
+            }];
+            if !text.is_empty() {
+                events.push(egui::Event::Text(text.to_owned()));
+            }
+            self.pass(events);
+            self.pass(Vec::new());
+        }
+
         /// The selection, in characters (lo, hi).
         fn selection(&self) -> (usize, usize) {
             let r = egui::TextEdit::load_state(&self.ctx, self.id.expect("drawn"))
@@ -7737,6 +7804,116 @@ example.org"; // values typed in, not texts to translate
         b.click(at, Secondary);
         assert_eq!(b.selection(), (0, text.chars().count()));
         assert_eq!(b.choose(egui::Key::C), [text]);
+    }
+
+    /// An open menu takes the keys whole: its item's letter, pressed as the system sends it (the
+    /// key, then the text it types), runs the item and types nothing in the box under the menu,
+    /// as in Windows' boxes (the "p" of Paste was typed in the box too). The arrows move in the
+    /// menu, not the box's caret.
+    #[test]
+    fn a_menu_letter_runs_its_item_and_types_nothing() {
+        use egui::PointerButton::{Primary, Secondary};
+        let text = "https://example.com/files/archive.zip"; // a value typed in, not a text to translate
+        let n = text.chars().count();
+        let mut b = TextBoxRun::new(text);
+        let rc = b.rc;
+        let at = pos2(rc.left() + 60.0, baseline_in(rc.top(), rc.height()) - 4.0);
+        b.click(at, Primary);
+        // The menu, the arrows, Escape: the box as it was, its caret where it was.
+        b.click(at, Secondary);
+        let caret = b.selection();
+        assert!(caret.0 > 0 && caret.0 < n, "{caret:?}");
+        for key in [
+            egui::Key::ArrowDown,
+            egui::Key::ArrowLeft,
+            egui::Key::Escape,
+        ] {
+            b.typed(key, "", Default::default());
+        }
+        assert_eq!(b.value, text);
+        assert_eq!(b.selection(), caret, "the arrows were the menu's");
+        // The menu, "a" for Select all: all of it selected, no "a" typed.
+        b.click(at, Secondary);
+        b.typed(egui::Key::A, "a", Default::default());
+        assert_eq!(b.value, text, "nothing typed");
+        assert_eq!(b.selection(), (0, n));
+        // Once it is closed, typing types again.
+        b.typed(egui::Key::X, "x", Default::default());
+        assert_eq!(b.value, "x");
+    }
+
+    /// An item's letter in another script (Arabic's "&لصق", Russian's "&Вставить") is the text
+    /// its key types; egui names the key by the Latin letter in its place (egui-winit's
+    /// fallback), which no item has.
+    #[test]
+    fn a_menu_letter_of_another_script_runs_its_item() {
+        use crate::chrome::{MenuEntry, PopupResult};
+        // Labels through names, so tools/i18n/extract.py doesn't take them for texts to translate.
+        let [first, second] = ["\u{644}\u{635}&\u{642}", "&\u{644}\u{635}\u{642}"];
+        let entries: Vec<MenuEntry<u8>> = vec![
+            MenuEntry::Item(first, 0, true, false),
+            MenuEntry::Item(second, 1, true, false),
+        ];
+        let ctx = egui::Context::default();
+        let mut t = 0.0;
+        let mut pass = |events: Vec<egui::Event>| {
+            t += 0.05;
+            let raw = egui::RawInput {
+                time: Some(t),
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(600.0, 400.0))),
+                events,
+                ..Default::default()
+            };
+            let mut chosen = None;
+            let mut out = ctx.run_ui(raw, |ui| {
+                if let PopupResult::Chosen(c) = crate::chrome::popup(
+                    ui.ctx(),
+                    crate::chrome::MenuKind::Context,
+                    "t-script",
+                    pos2(100.0, 100.0),
+                    &entries,
+                    &|_| None,
+                ) {
+                    chosen = Some(c);
+                }
+            });
+            out.textures_delta.clear();
+            chosen
+        };
+        assert_eq!(pass(Vec::new()), None);
+        assert_eq!(pass(Vec::new()), None);
+        // On an Arabic keyboard "ل" (U+0644) is on G's key.
+        let chosen = pass(vec![
+            egui::Event::Key {
+                key: egui::Key::G,
+                physical_key: Some(egui::Key::G),
+                pressed: true,
+                repeat: false,
+                modifiers: Default::default(),
+            },
+            egui::Event::Text("\u{644}".into()),
+        ]);
+        assert_eq!(chosen, Some(1));
+    }
+
+    /// Alt+letter is a dialog's access key, never typing (Windows' and Linux's boxes type nothing
+    /// with Alt held): the focused box keeps its text, the button is pressed once.
+    #[test]
+    fn alt_and_a_letter_presses_the_button_and_types_nothing() {
+        use egui::PointerButton::Primary;
+        let text = "archive.zip"; // a value typed in, not a text to translate
+        let mut b = TextBoxRun::new(text);
+        b.access = Some(('s', 0));
+        let rc = b.rc;
+        b.click(
+            pos2(rc.left() + 30.0, baseline_in(rc.top(), rc.height()) - 4.0),
+            Primary,
+        );
+        b.typed(egui::Key::S, "s", egui::Modifiers::ALT);
+        assert_eq!(b.access, Some(('s', 1)));
+        // macOS: Option+letter types a letter (Option+S is "ß"), which its boxes take.
+        #[cfg(not(target_os = "macos"))]
+        assert_eq!(b.value, text, "nothing typed");
     }
 
     /// #1084: text selected by dragging stays selected under a right-click on it, and Copy copies

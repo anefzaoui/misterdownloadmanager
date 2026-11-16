@@ -688,20 +688,132 @@ fn menu_keys(i: &egui::InputState) -> Vec<egui::Key> {
         .collect()
 }
 
+/// Whether an open menu takes `e`: a key pressed without Ctrl or Command (those are shortcuts),
+/// or the text a key types. egui-winit sends a typed letter as both, its key and its text: the
+/// menu took the key, and the focused text box under it the text ("p" for Paste pasted and
+/// typed "p").
+fn menu_event(e: &egui::Event) -> bool {
+    match e {
+        egui::Event::Key {
+            pressed: true,
+            modifiers,
+            ..
+        } => !modifiers.command && !modifiers.ctrl,
+        egui::Event::Text(_) => true,
+        _ => false,
+    }
+}
+
+/// Set by [`popup`] in each pass of `viewport` (the window it is drawn from) that ends with a
+/// menu open: the next pass's keys are the menu's ([`MenuKeys`]).
+fn menu_open_key(viewport: egui::ViewportId) -> egui::Id {
+    egui::Id::unique(("menu-open", viewport))
+}
+
+/// The keys [`MenuKeys`] took for the open menu of `viewport` in this pass, for [`keyboard`].
+fn menu_input_key(viewport: egui::ViewportId) -> egui::Id {
+    egui::Id::unique(("menu-input", viewport))
+}
+
+/// While a menu is open the keyboard is the menu's, as in Windows: each pass's keys and typed
+/// text are taken from the window's input as it comes in, before any control of the window
+/// sees them, and handed to the menu ([`keyboard`]). The menu is drawn after the controls under
+/// it (a text box's menu after the box): a focused box typed the letter that chose the item,
+/// and its caret moved with the arrows that moved in the menu.
+struct MenuKeys;
+
+impl egui::Plugin for MenuKeys {
+    fn debug_name(&self) -> &'static str {
+        "mdm-menu-keys"
+    }
+
+    fn input_hook(&mut self, ctx: &egui::Context, input: &mut egui::RawInput) {
+        let viewport = input.viewport_id;
+        let open = ctx
+            .data_mut(|d| d.remove_temp::<bool>(menu_open_key(viewport)))
+            .unwrap_or(false);
+        let taken: Vec<egui::Event> = if open {
+            let (menu, rest) = std::mem::take(&mut input.events)
+                .into_iter()
+                .partition(menu_event);
+            input.events = rest;
+            menu
+        } else {
+            Vec::new()
+        };
+        ctx.data_mut(|d| {
+            if taken.is_empty() {
+                d.remove::<Vec<egui::Event>>(menu_input_key(viewport));
+            } else {
+                d.insert_temp(menu_input_key(viewport), taken);
+            }
+        });
+    }
+}
+
+/// Whether a popup of `kind` has the whole keyboard while it is open, as Windows' menus do (the
+/// menu bar's, a right-click menu): not an editable combo's drop list, whose box takes the typing
+/// meanwhile, as in Windows ([`MenuKind::List`]).
+fn takes_keyboard(kind: MenuKind) -> bool {
+    kind != MenuKind::List
+}
+
+/// A key or a typed text, as an open menu reads them.
+enum Press {
+    Key(egui::Key),
+    Text(String),
+}
+
 /// Keys for an open menu (pressed in the main window or in the menu's own windows): Up and Down
 /// move the highlight (Home / End to the first / last), Right opens a submenu or the next menu, Left closes a submenu or opens
 /// the previous menu, Enter or an item's underlined letter runs it, Escape closes a submenu.
+/// `whole`: the menu has the whole keyboard (a menu: [`takes_keyboard`]); else it takes its keys
+/// as the controls drawn before it leave them, the typed text left (an editable combo's list).
 fn keyboard<C: Clone>(
     ctx: &egui::Context,
     entries: &[MenuEntry<C>],
     sub_key: egui::Id,
+    whole: bool,
 ) -> Option<PopupResult<C>> {
     let kb_key = sub_key.with("kb");
-    let mut keys = ctx.input(menu_keys);
+    let mut keys: Vec<Press> = if whole {
+        // Taken from this pass's input as it came in (MenuKeys), then any left in it (the pass
+        // the menu opened in): no control under the menu sees them.
+        let viewport = ctx.viewport_id();
+        let mut events = ctx
+            .data_mut(|d| d.remove_temp::<Vec<egui::Event>>(menu_input_key(viewport)))
+            .unwrap_or_default();
+        events.extend(ctx.input_mut(|i| {
+            let (menu, rest) = std::mem::take(&mut i.events)
+                .into_iter()
+                .partition(menu_event);
+            i.events = rest;
+            menu
+        }));
+        events
+            .into_iter()
+            .filter_map(|e| match e {
+                egui::Event::Key { key, .. } => Some(Press::Key(key)),
+                egui::Event::Text(t) => Some(Press::Text(t)),
+                _ => None,
+            })
+            .collect()
+    } else {
+        let keys = ctx.input(menu_keys);
+        // The keys are the list's: the controls drawn after it don't take them too.
+        ctx.input_mut(|i| {
+            for k in &keys {
+                i.consume_key(egui::Modifiers::NONE, *k);
+            }
+        });
+        keys.into_iter().map(Press::Key).collect()
+    };
     // Pressed in the menu's own windows: popup_level noted them as those windows drew.
     keys.extend(
         ctx.data_mut(|d| d.remove_temp::<Vec<egui::Key>>(sub_key.with("window-keys")))
-            .unwrap_or_default(),
+            .unwrap_or_default()
+            .into_iter()
+            .map(Press::Key),
     );
     let (mut hl0, mut hl1): (Option<usize>, Option<usize>) =
         ctx.data(|d| d.get_temp(kb_key)).unwrap_or_default();
@@ -712,15 +824,12 @@ fn keyboard<C: Clone>(
     if keys.is_empty() {
         return None;
     }
-    // The keys are the menu's: the list underneath doesn't move too.
-    ctx.input_mut(|i| {
-        for k in &keys {
-            i.consume_key(egui::Modifiers::NONE, *k);
-        }
-    });
     let mut open_sub = ctx.data(|d| d.get_temp::<usize>(sub_key));
     let mut out = None;
-    for key in keys {
+    // A letter's key ran an item (or opened a submenu): the text it typed, next, is the same
+    // press, not another.
+    let mut typed_by_key = false;
+    for press in keys {
         let children: Option<&[MenuEntry<C>]> = open_sub.and_then(|i| match entries.get(i) {
             Some(MenuEntry::Sub(_, _, c)) => Some(c.as_slice()),
             _ => None,
@@ -732,6 +841,36 @@ fn keyboard<C: Clone>(
             entries
         };
         let hl = if in_sub { hl1 } else { hl0 };
+        // An item's letter: the key's name, or the text it typed, for a letter of another script
+        // (Arabic's "&لصق", Russian's "&Вставить"): egui names that key by the Latin letter in
+        // its place, which no item has.
+        let letter_target = |letter: &str| {
+            level.iter().position(|e| {
+                entry_label(e).is_some_and(|(l, en)| {
+                    en && access_key(crate::i18n::tc("menu", l)).is_some_and(|k| k == letter)
+                })
+            })
+        };
+        let key = match press {
+            Press::Key(key) => key,
+            Press::Text(t) => {
+                if !std::mem::take(&mut typed_by_key)
+                    && let Some(t) = letter_target(&t.to_lowercase())
+                {
+                    if in_sub {
+                        hl1 = Some(t)
+                    } else {
+                        hl0 = Some(t)
+                    }
+                    out = run_target(level, t, in_sub, &mut open_sub, &mut hl1);
+                    if out.is_some() {
+                        break;
+                    }
+                }
+                continue;
+            }
+        };
+        typed_by_key = false;
         let mut target = None;
         match key {
             egui::Key::ArrowDown | egui::Key::ArrowUp => {
@@ -764,11 +903,8 @@ fn keyboard<C: Clone>(
             other => {
                 let name = other.name().to_lowercase();
                 if name.chars().count() == 1 {
-                    target = level.iter().position(|e| {
-                        entry_label(e).is_some_and(|(l, en)| {
-                            en && access_key(crate::i18n::tc("menu", l)).is_some_and(|k| k == name)
-                        })
-                    });
+                    target = letter_target(&name);
+                    typed_by_key = target.is_some();
                 }
             }
         }
@@ -778,16 +914,7 @@ fn keyboard<C: Clone>(
             } else {
                 hl0 = Some(t)
             }
-            match level.get(t) {
-                Some(MenuEntry::Item(_, c, true, _) | MenuEntry::Radio(_, c, true, _)) => {
-                    out = Some(PopupResult::Chosen(c.clone()));
-                }
-                Some(MenuEntry::Sub(_, true, c)) if !in_sub => {
-                    open_sub = Some(t);
-                    hl1 = step(c, None, 1);
-                }
-                _ => {}
-            }
+            out = run_target(level, t, in_sub, &mut open_sub, &mut hl1);
         }
         if out.is_some() {
             break;
@@ -805,6 +932,28 @@ fn keyboard<C: Clone>(
         }
     });
     out
+}
+
+/// Enter or an item's letter on item `t` of `level`: an item runs, a submenu opens (its first
+/// item highlighted).
+fn run_target<C: Clone>(
+    level: &[MenuEntry<C>],
+    t: usize,
+    in_sub: bool,
+    open_sub: &mut Option<usize>,
+    hl1: &mut Option<usize>,
+) -> Option<PopupResult<C>> {
+    match level.get(t) {
+        Some(MenuEntry::Item(_, c, true, _) | MenuEntry::Radio(_, c, true, _)) => {
+            Some(PopupResult::Chosen(c.clone()))
+        }
+        Some(MenuEntry::Sub(_, true, c)) if !in_sub => {
+            *open_sub = Some(t);
+            *hl1 = step(c, None, 1);
+            None
+        }
+        _ => None,
+    }
 }
 
 /// What a popup menu is: how its window says so to the window system (X11's window types) and,
@@ -856,7 +1005,7 @@ pub fn popup<C: Clone>(
             ctx.memory_mut(|m| m.request_focus(had));
         }
     };
-    if let Some(r) = keyboard(ctx, entries, sub_key) {
+    if let Some(r) = keyboard(ctx, entries, sub_key, takes_keyboard(kind)) {
         ctx.data_mut(|d| {
             d.remove::<usize>(sub_key);
             d.remove::<(Option<usize>, Option<usize>)>(sub_key.with("kb"));
@@ -953,6 +1102,13 @@ pub fn popup<C: Clone>(
         });
         give_back(ctx);
         return PopupResult::Dismissed;
+    }
+    if takes_keyboard(kind) {
+        // Still open: the next pass's keys are the menu's (MenuKeys; added once, a second
+        // plugin of a type is ignored).
+        let viewport = ctx.viewport_id();
+        ctx.data_mut(|d| d.insert_temp(menu_open_key(viewport), true));
+        ctx.add_plugin(MenuKeys);
     }
     PopupResult::Open
 }
