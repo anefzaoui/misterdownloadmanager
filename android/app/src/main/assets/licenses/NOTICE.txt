@@ -1,0 +1,52 @@
+Mister Download Manager for Android
+
+Mister Download Manager is free software under the GNU General Public License, version 3
+(GPL-3.0); its full text follows below. Its source, this app's included:
+https://github.com/anefzaoui/misterdownloadmanager
+
+The app carries these programs and files by others. Each is a separate program MDM runs, or a
+file it shows, under its own licence; where a licence asks for the source, it is at the address
+given.
+
+Python 3.12 (runs yt-dlp and gallery-dl)
+  Python Software Foundation License 2.0, with the licences of the libraries it comes with
+  (OpenSSL: Apache-2.0; libffi, expat: MIT; zlib: zlib; SQLite: public domain).
+  Built for Android by the Termux project and packaged by youtubedl-android 0.18.1 (GPL-3.0).
+  Source: https://github.com/termux/termux-packages (python and its dependencies),
+  https://github.com/JunkFood02/youtubedl-android (tag 0.18.1)
+
+ffmpeg and ffprobe 7.1 (joins a video's picture and sound)
+  GPL-3.0-or-later as built (--enable-gpl --enable-version3, nothing non-free), with the
+  libraries it uses under their own licences (x264, x265, Xvid: GPL-2.0-or-later; libvpx, libaom,
+  dav1d, Opus, Vorbis, Theora, libwebp: BSD; LAME: LGPL-2.0-or-later; GnuTLS: LGPL-2.1-or-later;
+  and others listed by the Termux package).
+  Built for Android by the Termux project and packaged by youtubedl-android 0.18.1.
+  Source: https://github.com/termux/termux-packages (ffmpeg and its dependencies),
+  https://github.com/JunkFood02/youtubedl-android (tag 0.18.1)
+
+QuickJS (runs the JavaScript some video sites need)
+  MIT. Packaged by youtubedl-android 0.18.1.
+  Source: https://github.com/JunkFood02/youtubedl-android (tag 0.18.1), https://bellard.org/quickjs/
+
+7-Zip 26.06 (extracts 7z and RAR archives), by Igor Pavlov
+  GNU LGPL 2.1 or later, with BSD 3-clause and BSD 2-clause parts and, for its RAR code, the
+  unRAR licence restriction; its full licence follows below. Built from its source for Android
+  by this app's build (android/app/build.gradle.kts).
+  Source: https://github.com/ip7z/7zip/releases/tag/26.06 (7z2606-src.tar.xz, SHA-256
+  a4e374c8f864f51df48c2cfd0e1413ec3b2ea030deae852d6a655402ebb61ac4)
+
+Archivo (the app's typeface), by Omnibus-Type
+  Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo).
+  SIL Open Font License 1.1; its full text follows below.
+
+DB-IP IP to Country Lite (which country a download's server is in, looked up on the phone)
+  IP Geolocation by DB-IP (https://db-ip.com). Creative Commons Attribution 4.0 International.
+
+Country flags: the phone's own emoji.
+
+yt-dlp and gallery-dl are not in the app: MDM downloads them from their own releases when you
+first need them, and checks them against their developers' signatures. yt-dlp: The Unlicense
+(public domain), https://github.com/yt-dlp/yt-dlp. gallery-dl: GPL-2.0, https://github.com/mikf/gallery-dl.
+
+The app's Rust and Android libraries, and their licences, are listed in the source: Cargo.lock
+and android/app/build.gradle.kts; ATTRIBUTION.md lists the assets.

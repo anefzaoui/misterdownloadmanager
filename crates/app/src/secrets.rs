@@ -22,10 +22,14 @@
 use std::collections::{HashMap, HashSet};
 use std::sync::{Arc, Condvar, Mutex, OnceLock};
 
-#[cfg(unix)]
+#[cfg(all(unix, not(feature = "android-core")))]
 use crate::unix as os;
 #[cfg(windows)]
 use crate::win32 as os;
+// The Android core's keychain (its host's keystore), also when its end-to-end test runs it on
+// this system (tests/android_core.rs).
+#[cfg(all(unix, feature = "android-core"))]
+use crate::android as os;
 
 /// The keychain's name for MDM's entries (Credential Manager's targets start with it; Secret
 /// Service's `service` attribute; the macOS keychain's service).

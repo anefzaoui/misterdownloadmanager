@@ -1330,6 +1330,11 @@ These ship in a later version, when they're ready.
   XWayland stays the default unless X11's windows would be scaled up (#624); Vulkan as the
   default renderer (below)
 - 🔄 The Safari extension (in 0.5.2): still to check in Safari itself, signed with a Developer ID
+- 🔄 **An Android app** on the same engine (`android/`, `crates/android`): segmented downloads
+  that resume, torrents, videos and playlists with yt-dlp, galleries with gallery-dl, 7z and RAR,
+  queues and the Scheduler, debrid accounts, 86 languages, in a phone's interface; tested on an
+  emulator in CI, to test on phones ([docs/android.md](docs/android.md)). Still to do: Link
+  grabber, RSS, Sites Logins, Click'n'Load, the system's proxy, TalkBack on a phone
 
 ### Bugs being looked into
 

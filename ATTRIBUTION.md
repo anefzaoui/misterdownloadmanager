@@ -37,8 +37,24 @@ The libraries Link grabber's archive extraction is built on (all compatible with
 
 7z and RAR archives are extracted by [7-Zip](https://www.7-zip.org/) (GNU LGPL, with the
 unRAR restriction for its RAR code), run as a separate program when the user has it installed.
-It is neither bundled nor linked: UnRAR's licence doesn't allow its code in a GPL program, and a
-built-in 7z decoder made MDM about 1 MB larger.
+On the desktop it is neither bundled nor linked: UnRAR's licence doesn't allow its code in a GPL
+program, and a built-in 7z decoder made MDM about 1 MB larger. The Android app, where no one can
+install 7-Zip themselves, carries it as a separate program (below), never linked with MDM's code;
+`-Pmdm.sevenZipRar=false` builds it without its RAR code.
+
+## The Android app
+
+What the APK carries by others, each a separate program MDM runs or a file it shows; the app
+lists them, with the licences' full texts, in **Settings → Open-source licences**
+(`android/app/src/main/assets/licenses/NOTICE.txt`).
+
+| Component | Licence | Source |
+|---|---|---|
+| Python 3.12 and its libraries (runs yt-dlp and gallery-dl), from youtubedl-android 0.18.1 | PSF-2.0 (OpenSSL Apache-2.0, libffi MIT, …) | Termux's packages, packaged by [youtubedl-android](https://github.com/JunkFood02/youtubedl-android) 0.18.1 (GPL-3.0) |
+| ffmpeg and ffprobe 7.1, from youtubedl-android 0.18.1 | GPL-3.0-or-later as built (`--enable-gpl --enable-version3`, nothing non-free) | Termux's `ffmpeg` package, packaged by youtubedl-android 0.18.1 |
+| QuickJS, from youtubedl-android 0.18.1 | MIT | youtubedl-android 0.18.1 |
+| 7-Zip 26.06, built from its source with the NDK by `android/app/build.gradle.kts` | LGPL-2.1-or-later, BSD-3-Clause, BSD-2-Clause, unRAR restriction | [ip7z/7zip 26.06](https://github.com/ip7z/7zip/releases/tag/26.06), SHA-256 pinned |
+| Archivo (the app's typeface) | SIL Open Font License 1.1 — `website/vendor/archivo/OFL.txt` | [Omnibus-Type/Archivo](https://github.com/Omnibus-Type/Archivo) |
 
 System resources used at run time and **not** bundled: Windows fonts (Segoe UI, Tahoma,
 Arial) and each system's own file-type icons (the Windows shell's, macOS Finder's, the Linux

@@ -23,6 +23,12 @@
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 @plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}
+#. count in the Android app
+#. {n} = a number (keep the braces as they are)
+@plural	Delete {n} download?|Delete {n} downloads?	Delete {n} download?|Delete {n} downloads?
+#. count in the Android app
+#. {n} = a number (keep the braces as they are)
+@plural	Downloading {n} file|Downloading {n} files	Downloading {n} file|Downloading {n} files
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
@@ -65,6 +71,9 @@
 #. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download finished|{n} downloads finished	{n} download finished|{n} downloads finished
+#. count in the Android app
+#. {n} = a number (keep the braces as they are)
+@plural	{n} download waiting|{n} downloads waiting	{n} download waiting|{n} downloads waiting
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} downloading|{n} downloading
@@ -97,7 +106,7 @@
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 @plural	{n} peer|{n} peers	{n} peer|{n} peers
-#. count in the main window
+#. count in the main window; count in the Android app
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
 #. count in the Options window
@@ -316,6 +325,9 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 	Added by the RSS rule {rule} from {feed}	Added by the RSS rule {rule} from {feed}
+#. text in android_ui.rs
+#. where a download came from (its Properties): added in MDM's Android app
+	added on this phone	added on this phone
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 	Added {source}	Added {source}
@@ -3133,6 +3145,9 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Sign in in the browser
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Sign-ins and passwords are kept encrypted with a key in Android's keystore.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 	Sign-ins and passwords are kept in the macOS keychain.	Sign-ins and passwords are kept in the macOS keychain.
 #. text in the Options window
@@ -4583,6 +4598,9 @@
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 	{service} is not responding; try again later	{service} is not responding; try again later
+#. text in android_ui.rs
+#. Android's Add: the link is on a streaming service that copy-protects its music and videos (DRM); {service} = its name (Spotify, Netflix…)
+	{service} protects its music and videos (DRM): no download manager can save them.	{service} protects its music and videos (DRM): no download manager can save them.
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 	{service} refuses this connection (a VPN or server address?)	{service} refuses this connection (a VPN or server address?)
@@ -4649,6 +4667,631 @@
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 	{what} could not be installed: {error}	{what} could not be installed: {error}
+#. text in the Android app
+#. a text in the Android app
+android	A proxy server	A proxy server
+#. text in the Android app
+#. a text in the Android app
+android	A queue with a start time starts then, even when MDM isn't open (allow alarms for MDM if Android asks).	A queue with a start time starts then, even when MDM isn't open (allow alarms for MDM if Android asks).
+#. text in the Android app
+#. a text in the Android app
+android	About	About
+#. text in the Android app
+#. a text in the Android app
+android	Accept incoming connections	Accept incoming connections
+#. text in the Android app
+#. a text in the Android app
+android	Accounts	Accounts
+#. text in the Android app
+#. a text in the Android app
+android	Add	Add
+#. text in the Android app
+#. a text in the Android app
+android	Add a download	Add a download
+#. text in the Android app
+#. a text in the Android app
+android	Add an account	Add an account
+#. text in the Android app
+#. a text in the Android app
+android	Add downloads	Add downloads
+#. text in the Android app
+#. a text in the Android app
+android	Add new downloads to the queue instead of starting them	Add new downloads to the queue instead of starting them
+#. text in the Android app
+#. a text in the Android app
+android	Add to queue	Add to queue
+#. text in the Android app
+#. a text in the Android app
+android	Add your Real-Debrid, AllDebrid, Premiumize, TorBox or Mega-Debrid account, and links from the file hosts it supports download through it at full speed.	Add your Real-Debrid, AllDebrid, Premiumize, TorBox or Mega-Debrid account, and links from the file hosts it supports download through it at full speed.
+#. text in the Android app
+#. a text in the Android app
+android	Added	Added
+#. text in the Android app
+#. a text in the Android app
+android	Address	Address
+#. text in the Android app
+#. a text in the Android app
+android	All	All
+#. text in the Android app
+#. a text in the Android app
+android	All categories	All categories
+#. text in the Android app
+#. a text in the Android app
+android	Allow access to all files	Allow access to all files
+#. text in the Android app
+#. a text in the Android app
+android	Android limits how long downloads may run in the background each day. Open MDM to continue.	Android limits how long downloads may run in the background each day. Open MDM to continue.
+#. text in the Android app
+#. a text in the Android app
+android	Android's own, Private DNS included	Android's own, Private DNS included
+#. text in the Android app
+#. a text in the Android app
+android	Another folder…	Another folder…
+#. text in the Android app
+#. a text in the Android app
+android	Another service	Another service
+#. text in the Android app
+#. a text in the Android app
+android	Any folder on this phone or a card. MDM asks once for access to all files.	Any folder on this phone or a card. MDM asks once for access to all files.
+#. text in the Android app
+#. a text in the Android app
+android	API token (key)	API token (key)
+#. text in the Android app
+#. a text in the Android app
+android	App	App
+#. text in the Android app
+#. a text in the Android app
+android	Archives	Archives
+#. text in the Android app
+#. a text in the Android app
+android	Auto	Auto
+#. text in the Android app
+#. a text in the Android app
+android	Automatic configuration script	Automatic configuration script
+#. text in the Android app
+#. a text in the Android app
+android	Back	Back
+#. text in the Android app
+#. a text in the Android app
+android	Battery optimization	Battery optimization
+#. text in the Android app
+#. a text in the Android app
+android	By the file's type	By the file's type
+#. text in the Android app
+#. a text in the Android app
+android	Can resume	Can resume
+#. text in the Android app
+#. a text in the Android app
+android	Cancel	Cancel
+#. text in the Android app
+#. a text in the Android app
+android	Category	Category
+#. text in the Android app
+#. a text in the Android app
+android	Check for updates	Check for updates
+#. text in the Android app
+#. a text in the Android app
+android	Checking the account…	Checking the account…
+#. text in the Android app
+#. a text in the Android app
+android	Choose a quality	Choose a quality
+#. text in the Android app
+#. a text in the Android app
+android	Clear	Clear
+#. text in the Android app
+#. a text in the Android app
+android	Clear the selection	Clear the selection
+#. text in the Android app
+#. a text in the Android app
+android	Complete	Complete
+#. text in the Android app
+#. a text in the Android app
+android	Configuration ID (optional)	Configuration ID (optional)
+#. text in the Android app
+#. a text in the Android app
+android	Connecting	Connecting
+#. text in the Android app
+#. a text in the Android app
+android	Connecting…	Connecting…
+#. text in the Android app
+#. a text in the Android app
+android	Connections	Connections
+#. text in the Android app
+#. a text in the Android app
+android	Connections per download	Connections per download
+#. text in the Android app
+#. a text in the Android app
+android	Copy a link, then tap the button below: MDM fills it in.	Copy a link, then tap the button below: MDM fills it in.
+#. text in the Android app
+#. a text in the Android app; {error} = an error message
+#. {error} = an error message (keep the braces as they are)
+android	Couldn't check: {error}	Couldn't check: {error}
+#. text in the Android app
+#. a text in the Android app
+android	Days	Days
+#. text in the Android app
+#. a text in the Android app
+android	Debrid accounts	Debrid accounts
+#. text in the Android app
+#. a text in the Android app
+android	Delete	Delete
+#. text in the Android app
+#. a text in the Android app
+android	Delete archives once extracted	Delete archives once extracted
+#. text in the Android app
+#. a text in the Android app
+android	Delete the files too	Delete the files too
+#. text in the Android app
+#. a text in the Android app
+android	Details	Details
+#. text in the Android app
+#. a text in the Android app
+android	DNS	DNS
+#. text in the Android app
+#. a text in the Android app
+android	DNS over HTTPS	DNS over HTTPS
+#. text in the Android app
+#. a text in the Android app
+android	Done	Done
+#. text in the Android app
+#. a text in the Android app
+android	Download	Download
+#. text in the Android app
+#. a text in the Android app
+android	Download as a file	Download as a file
+#. text in the Android app
+#. a text in the Android app
+android	Download complete	Download complete
+#. text in the Android app
+#. a text in the Android app
+android	Download failed	Download failed
+#. text in the Android app
+#. a text in the Android app
+android	Download in order (to watch while it downloads)	Download in order (to watch while it downloads)
+#. text in the Android app
+#. a text in the Android app
+android	Download on Wi-Fi only (pause on mobile data)	Download on Wi-Fi only (pause on mobile data)
+#. text in the Android app
+#. a text in the Android app
+android	Download with MDM	Download with MDM
+#. text in the Android app
+#. a text in the Android app
+android	Downloaded	Downloaded
+#. text in the Android app
+#. a text in the Android app; {version} = a version number; {percent} = a percentage number
+#. {version} = a version number (keep the braces as they are)
+android	Downloading version {version}… {percent}%	Downloading version {version}… {percent}%
+#. text in the Android app
+#. a text in the Android app
+android	Downloads	Downloads
+#. text in the Android app
+#. a text in the Android app
+android	Downloads at the same time	Downloads at the same time
+#. text in the Android app
+#. a text in the Android app
+android	Downloads in progress	Downloads in progress
+#. text in the Android app
+#. a text in the Android app
+android	Downloads paused	Downloads paused
+#. text in the Android app
+#. a text in the Android app
+android	Downloads stopped by the restart	Downloads stopped by the restart
+#. text in the Android app
+#. a text in the Android app
+android	Error	Error
+#. text in the Android app
+#. a text in the Android app
+android	Event log	Event log
+#. text in the Android app
+#. a text in the Android app
+android	Extract archives when they are downloaded	Extract archives when they are downloaded
+#. text in the Android app
+#. a text in the Android app
+android	Failed	Failed
+#. text in the Android app
+#. a text in the Android app
+android	File hosts' links go through your own account at these services. Sign-ins are kept encrypted with a key in Android's keystore.	File hosts' links go through your own account at these services. Sign-ins are kept encrypted with a key in Android's keystore.
+#. text in the Android app
+#. a text in the Android app
+android	Filter by category	Filter by category
+#. text in the Android app
+#. a text in the Android app
+android	Find peers on this network	Find peers on this network
+#. text in the Android app
+#. a text in the Android app
+android	Find peers through DHT	Find peers through DHT
+#. text in the Android app
+#. a text in the Android app
+android	Finished	Finished
+#. text in the Android app
+#. a text in the Android app
+android	Finished downloads	Finished downloads
+#. text in the Android app
+#. a text in the Android app
+android	Finishing	Finishing
+#. text in the Android app
+#. a text in the Android app
+android	Finishing…	Finishing…
+#. text in the Android app
+#. a text in the Android app
+android	Folder	Folder
+#. text in the Android app
+#. a text in the Android app
+android	Free space	Free space
+#. text in the Android app
+#. a text in the Android app
+android	HTTP or SOCKS, for every download	HTTP or SOCKS, for every download
+#. text in the Android app
+#. a text in the Android app
+android	Image galleries need gallery-dl	Image galleries need gallery-dl
+#. text in the Android app
+#. a text in the Android app
+android	In progress	In progress
+#. text in the Android app
+#. a text in the Android app
+android	In your browser, tap Share on a link or a page and choose Download with MDM.	In your browser, tap Share on a link or a page and choose Download with MDM.
+#. text in the Android app
+#. a text in the Android app
+android	Included with MDM	Included with MDM
+#. text in the Android app
+#. a text in the Android app
+android	Install	Install
+#. text in the Android app
+#. a text in the Android app
+android	Joining the video and the sound…	Joining the video and the sound…
+#. text in the Android app
+#. a text in the Android app
+android	Keep sharing finished torrents	Keep sharing finished torrents
+#. text in the Android app
+#. a text in the Android app
+android	Language	Language
+#. text in the Android app
+#. a text in the Android app
+android	Let MDM run unrestricted so long downloads aren't stopped	Let MDM run unrestricted so long downloads aren't stopped
+#. text in the Android app
+#. a text in the Android app
+android	Limit (KB/s)	Limit (KB/s)
+#. text in the Android app
+#. a text in the Android app
+android	Limit the download speed	Limit the download speed
+#. text in the Android app
+#. a text in the Android app
+android	Links (one per line)	Links (one per line)
+#. text in the Android app
+#. a text in the Android app; {n} = a number
+#. {n} = a number (keep the braces as they are)
+android	Listing its videos… {n} so far	Listing its videos… {n} so far
+#. text in the Android app
+#. a text in the Android app; {v1} = a value
+android	Looking up the video on {v1}…	Looking up the video on {v1}…
+#. text in the Android app
+#. a text in the Android app
+android	Magnet links and .torrent files open in MDM by themselves.	Magnet links and .torrent files open in MDM by themselves.
+#. text in the Android app
+#. a text in the Android app
+android	MDM closed unexpectedly	MDM closed unexpectedly
+#. text in the Android app
+#. a text in the Android app; {error} = an error message
+#. {error} = an error message (keep the braces as they are)
+android	MDM couldn't start: {error}	MDM couldn't start: {error}
+#. text in the Android app
+#. a text in the Android app
+android	MDM downloads a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl. Install it now? It is about 1 MB, from gallery-dl's releases, checked against its developer's signature. Cancel downloads the page as a file instead.	MDM downloads a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl. Install it now? It is about 1 MB, from gallery-dl's releases, checked against its developer's signature. Cancel downloads the page as a file instead.
+#. text in the Android app
+#. a text in the Android app
+android	MDM looks a video page's qualities up with yt-dlp. Install it now? It is about 3 MB, downloaded from yt-dlp's releases on GitHub and checked against its developers' signature.	MDM looks a video page's qualities up with yt-dlp. Install it now? It is about 3 MB, downloaded from yt-dlp's releases on GitHub and checked against its developers' signature.
+#. text in the Android app
+#. a text in the Android app
+android	Merging	Merging
+#. text in the Android app
+#. a text in the Android app
+android	Mister Download Manager is running	Mister Download Manager is running
+#. text in the Android app
+#. a text in the Android app
+android	Name	Name
+#. text in the Android app
+#. a text in the Android app
+android	Network	Network
+#. text in the Android app
+#. a text in the Android app
+android	New queue	New queue
+#. text in the Android app
+#. a text in the Android app
+android	New versions come from this app's GitHub releases	New versions come from this app's GitHub releases
+#. text in the Android app
+#. a text in the Android app
+android	No	No
+#. text in the Android app
+#. a text in the Android app
+android	No account yet	No account yet
+#. text in the Android app
+#. a text in the Android app
+android	No app on this phone opens this type of file.	No app on this phone opens this type of file.
+#. text in the Android app
+#. a text in the Android app
+android	No downloads match.	No downloads match.
+#. text in the Android app
+#. a text in the Android app
+android	No links found. Share or paste an address that starts with http, https, ftp or magnet.	No links found. Share or paste an address that starts with http, https, ftp or magnet.
+#. text in the Android app
+#. a text in the Android app
+android	No proxy	No proxy
+#. text in the Android app
+#. a text in the Android app
+android	Not available	Not available
+#. text in the Android app
+#. a text in the Android app
+android	Not installed — tap to install it	Not installed — tap to install it
+#. text in the Android app
+#. a text in the Android app
+android	Not set	Not set
+#. text in the Android app
+#. a text in the Android app
+android	Nothing downloading yet	Nothing downloading yet
+#. text in the Android app
+#. a text in the Android app
+android	Open	Open
+#. text in the Android app
+#. a text in the Android app
+android	Open the page	Open the page
+#. text in the Android app
+#. a text in the Android app
+android	Open the page, sign in there and type this code. Tap the code to copy it.	Open the page, sign in there and type this code. Tap the code to copy it.
+#. text in the Android app
+#. a text in the Android app
+android	Open the port on the router (UPnP)	Open the port on the router (UPnP)
+#. text in the Android app
+#. a text in the Android app
+android	Open-source licences	Open-source licences
+#. text in the Android app
+#. a text in the Android app
+android	Parts	Parts
+#. text in the Android app
+#. a text in the Android app
+android	Password (optional)	Password (optional)
+#. text in the Android app
+#. a text in the Android app
+android	Paste	Paste
+#. text in the Android app
+#. a text in the Android app
+android	Paste one or more links: files, video pages, magnet links.	Paste one or more links: files, video pages, magnet links.
+#. text in the Android app
+#. a text in the Android app
+android	Pause	Pause
+#. text in the Android app
+#. a text in the Android app
+android	Pause all	Pause all
+#. text in the Android app
+#. a text in the Android app
+android	Paused	Paused
+#. text in the Android app
+#. a text in the Android app
+android	Playlist	Playlist
+#. text in the Android app
+#. a text in the Android app
+android	Port	Port
+#. text in the Android app
+#. a text in the Android app
+android	Proxy	Proxy
+#. text in the Android app
+#. a text in the Android app
+android	Quality for every video	Quality for every video
+#. text in the Android app
+#. a text in the Android app
+android	Queued	Queued
+#. text in the Android app
+#. a text in the Android app
+android	Queues	Queues
+#. text in the Android app
+#. a text in the Android app
+android	Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid	Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid
+#. text in the Android app
+#. a text in the Android app
+android	Remove from the list	Remove from the list
+#. text in the Android app
+#. a text in the Android app
+android	Resume	Resume
+#. text in the Android app
+#. a text in the Android app
+android	Running	Running
+#. text in the Android app
+#. a text in the Android app
+android	Saved to	Saved to
+#. text in the Android app
+#. a text in the Android app
+android	Script address (PAC)	Script address (PAC)
+#. text in the Android app
+#. a text in the Android app
+android	SD card	SD card
+#. text in the Android app
+#. a text in the Android app
+android	SD card (MDM's own folder; removed with the app)	SD card (MDM's own folder; removed with the app)
+#. text in the Android app
+#. a text in the Android app
+android	Search	Search
+#. text in the Android app
+#. a text in the Android app
+android	Search the downloads	Search the downloads
+#. text in the Android app
+#. a text in the Android app
+android	Select all	Select all
+#. text in the Android app
+#. a text in the Android app
+android	Select none	Select none
+#. text in the Android app
+#. a text in the Android app
+android	Send MDM a link and it downloads it over several connections at once, resuming where it stopped if the connection drops.	Send MDM a link and it downloads it over several connections at once, resuming where it stopped if the connection drops.
+#. text in the Android app
+#. a text in the Android app
+android	Server	Server
+#. text in the Android app
+#. a text in the Android app
+android	Settings	Settings
+#. text in the Android app
+#. a text in the Android app
+android	Share	Share
+#. text in the Android app
+#. a text in the Android app
+android	Sign in	Sign in
+#. text in the Android app
+#. a text in the Android app
+android	Size	Size
+#. text in the Android app
+#. a text in the Android app
+android	Sound only	Sound only
+#. text in the Android app
+#. a text in the Android app
+android	Speed	Speed
+#. text in the Android app
+#. a text in the Android app
+android	Speed limiter	Speed limiter
+#. text in the Android app
+#. a text in the Android app
+android	Start	Start
+#. text in the Android app
+#. a text in the Android app
+android	Start at	Start at
+#. text in the Android app
+#. a text in the Android app
+android	Start now	Start now
+#. text in the Android app
+#. a text in the Android app
+android	Start when MDM starts	Start when MDM starts
+#. text in the Android app
+#. a text in the Android app
+android	Starting…	Starting…
+#. text in the Android app
+#. a text in the Android app
+android	Stop	Stop
+#. text in the Android app
+#. a text in the Android app
+android	Stop at	Stop at
+#. text in the Android app
+#. a text in the Android app
+android	Stopped	Stopped
+#. text in the Android app
+#. a text in the Android app
+android	Tap to go on where they stopped.	Tap to go on where they stopped.
+#. text in the Android app
+#. a text in the Android app
+android	Tap to share the crash report, so it can be fixed.	Tap to share the crash report, so it can be fixed.
+#. text in the Android app
+#. a text in the Android app
+android	The file isn't there anymore.	The file isn't there anymore.
+#. text in the Android app
+#. a text in the Android app
+android	The first look-up takes longest: yt-dlp starts, then reads the site's page and its player.	The first look-up takes longest: yt-dlp starts, then reads the site's page and its player.
+#. text in the Android app
+#. a text in the Android app
+android	The programs and files by others the app carries, and their licences	The programs and files by others the app carries, and their licences
+#. text in the Android app
+#. a text in the Android app
+android	The system's	The system's
+#. text in the Android app
+#. a text in the Android app
+android	The system's language	The system's language
+#. text in the Android app
+#. a text in the Android app
+android	The torrent file couldn't be read.	The torrent file couldn't be read.
+#. text in the Android app
+#. a text in the Android app
+android	The video's qualities couldn't be looked up	The video's qualities couldn't be looked up
+#. text in the Android app
+#. a text in the Android app
+android	This download isn't in the list anymore.	This download isn't in the list anymore.
+#. text in the Android app
+#. a text in the Android app
+android	This folder can't be used: choose one on the phone's storage or a card.	This folder can't be used: choose one on the phone's storage or a card.
+#. text in the Android app
+#. a text in the Android app
+android	This is the newest version.	This is the newest version.
+#. text in the Android app
+#. a text in the Android app
+android	This page is a list of videos (a playlist or a channel), and it couldn't be listed.	This page is a list of videos (a playlist or a channel), and it couldn't be listed.
+#. text in the Android app
+#. a text in the Android app
+android	This phone (Download folder)	This phone (Download folder)
+#. text in the Android app
+#. a text in the Android app
+android	This torrent is in the list already.	This torrent is in the list already.
+#. text in the Android app
+#. a text in the Android app
+android	Time left	Time left
+#. text in the Android app
+#. a text in the Android app
+android	To save downloads in a folder you choose, Android asks you to let MDM manage all files. MDM only writes in the folder you choose.	To save downloads in a folder you choose, Android asks you to let MDM manage all files. MDM only writes in the folder you choose.
+#. text in the Android app
+#. a text in the Android app
+android	Torrents	Torrents
+#. text in the Android app
+#. a text in the Android app
+android	Try again	Try again
+#. text in the Android app
+#. a text in the Android app
+android	User name (optional)	User name (optional)
+#. text in the Android app
+#. a text in the Android app
+android	Verifying	Verifying
+#. text in the Android app
+#. a text in the Android app
+android	Verifying…	Verifying…
+#. text in the Android app
+#. a text in the Android app; {version} = a version number
+#. {version} = a version number (keep the braces as they are)
+android	Version {version} is available.	Version {version} is available.
+#. text in the Android app
+#. a text in the Android app; {version} = a version number
+#. {version} = a version number (keep the braces as they are)
+android	Version {version} — tap to check for an update	Version {version} — tap to check for an update
+#. text in the Android app
+#. a text in the Android app
+android	Video	Video
+#. text in the Android app
+#. a text in the Android app
+android	Video downloads	Video downloads
+#. text in the Android app
+#. a text in the Android app
+android	Video downloads need yt-dlp	Video downloads need yt-dlp
+#. text in the Android app
+#. a text in the Android app
+android	Waiting	Waiting
+#. text in the Android app
+#. a text in the Android app; {time} = a time left such as "4:05"
+#. {time} = a time of day (keep the braces as they are)
+android	Waiting for you to allow MDM there · {time} left	Waiting for you to allow MDM there · {time} left
+#. text in the Android app
+#. a text in the Android app
+android	Web page	Web page
+#. text in the Android app
+#. a text in the Android app
+android	Where	Where
+#. text in the Android app
+#. a text in the Android app
+android	Where do I find it?	Where do I find it?
+#. text in the Android app
+#. a text in the Android app
+android	Working…	Working…
+#. text in the Android app
+#. a text in the Android app
+android	Yes	Yes
+#. text in the Android app
+#. a text in the Android app
+android	You sign in on the service's own page: MDM shows a code to type there, and never sees your password.	You sign in on the service's own page: MDM shows a code to type there, and never sees your password.
+#. text in the Android app
+#. a text in the Android app; {n} = a number; {total} = a number; {size} = a file size such as "4.2 MB"
+#. {n} = a number; {size} = a file size such as "4.2 MB" (keep the braces as they are)
+android	{n} of {total} files, {size}	{n} of {total} files, {size}
+#. text in the Android app
+#. a text in the Android app; {n} = a number; {total} = a number
+#. {n} = a number (keep the braces as they are)
+android	{n} of {total} videos	{n} of {total} videos
+#. text in the Android app
+#. a text in the Android app; {time} = a time left such as "4:05"
+#. {time} = a time of day (keep the braces as they are)
+android	{time} left	{time} left
+#. text in the Android app
+#. a text in the Android app; {v1} = a value
+android	{v1} s	{v1} s
 #. column title in the download list in the download list
 #. past participle: when the download was added
 column	Added	Added

@@ -1,0 +1,194 @@
+# The Android app (android/, crates/android): the core's end-to-end test on Linux, the APKs for
+# three processors, the instrumented tests on an emulator, and on an `android-v*` tag a release
+# with the signed APKs. docs/android-architecture.md explains how the app is built.
+name: android
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["android-v*"]
+    paths:
+      - "android/**"
+      - "crates/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "i18n/*.tsv"
+      - ".github/workflows/android.yml"
+  pull_request:
+    paths:
+      - "android/**"
+      - "crates/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - ".github/workflows/android.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+env:
+  NDK_VERSION: "28.2.13676358"
+  CARGO_TERM_COLOR: always
+  # No line tables in CI's builds: smaller intermediate files on the runner's disk (the APKs
+  # strip them anyway).
+  CARGO_PROFILE_RELEASE_DEBUG: "false"
+
+jobs:
+  core:
+    name: Android core (Linux, end to end)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+        with:
+          key: android-core
+      - name: Linux packages the workspace builds against
+        timeout-minutes: 10
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libxkbcommon-dev libwayland-dev libgl1-mesa-dev \
+            libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev cmake libclang-dev
+      - name: The Android core's end-to-end test
+        run: cargo test -p mdm-app --features android-core --test android_core
+
+  apk:
+    name: APKs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Free disk space (the Rust build needs it)
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /usr/share/swift /usr/local/share/boost \
+            /usr/local/lib/node_modules /opt/hostedtoolcache/CodeQL /usr/local/share/powershell
+          df -h /
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+        with:
+          key: android-apk
+      - name: Rust targets and cargo-ndk
+        run: |
+          rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+          cargo install cargo-ndk --locked
+      - name: NDK
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;$NDK_VERSION" "platforms;android-36" "build-tools;36.1.0"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/$NDK_VERSION" >> "$GITHUB_ENV"
+      - name: Signing key (tags only, when the repository has one)
+        if: startsWith(github.ref, 'refs/tags/android-v')
+        env:
+          KEYSTORE_BASE64: ${{ secrets.MDM_ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/mdm.keystore"
+            echo "MDM_KEYSTORE=$RUNNER_TEMP/mdm.keystore" >> "$GITHUB_ENV"
+          fi
+      - name: Build the APKs (arm64, 32-bit ARM, x86-64)
+        working-directory: android
+        env:
+          MDM_KEYSTORE_PASSWORD: ${{ secrets.MDM_ANDROID_KEYSTORE_PASSWORD }}
+          MDM_KEY_ALIAS: ${{ secrets.MDM_ANDROID_KEY_ALIAS }}
+          MDM_KEY_PASSWORD: ${{ secrets.MDM_ANDROID_KEY_PASSWORD }}
+        run: |
+          # One processor at a time, the Rust build's intermediate files removed after each:
+          # three at once fill the runner's disk.
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            ./gradlew cargoBuild -Pmdm.abis=$abi
+            rm -rf ../target/*-linux-android*/release/deps ../target/*-linux-android*/release/build
+          done
+          # Check for updates looks at anefzaoui/misterdownloadmanager's releases (the app's
+          # default), whichever repository built it; -Pmdm.updateRepo=owner/repo changes it.
+          ./gradlew assembleRelease -Pmdm.abis=arm64-v8a,armeabi-v7a,x86_64 -Pmdm.skipCargo=true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: apks
+          path: android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+  emulator:
+    name: Instrumented tests (emulator)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Free disk space (the Rust build and the emulator's image need it)
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /usr/share/swift /usr/local/share/boost \
+            /usr/local/lib/node_modules /opt/hostedtoolcache/CodeQL /usr/local/share/powershell
+          df -h /
+      - name: KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+        with:
+          key: android-emulator
+      - name: Rust target, cargo-ndk and the NDK
+        run: |
+          rustup target add x86_64-linux-android
+          cargo install cargo-ndk --locked
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;$NDK_VERSION"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/$NDK_VERSION" >> "$GITHUB_ENV"
+      - name: Build the app and its tests for x86-64
+        working-directory: android
+        run: ./gradlew assembleDebug assembleDebugAndroidTest -Pmdm.abis=x86_64
+      - name: Make room for the emulator (the Rust build's intermediate files)
+        run: rm -rf target/x86_64-linux-android/release/deps target/x86_64-linux-android/release/build && df -h /
+      - name: Run them on Android 14
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          working-directory: android
+          script: ./gradlew connectedDebugAndroidTest -Pmdm.abis=x86_64 -Pmdm.skipCargo=true
+      - name: The tests' report and the device's log
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: android-test-report
+          path: |
+            android/app/build/reports/androidTests/
+            android/app/build/outputs/androidTest-results/
+
+  release:
+    name: Release
+    if: startsWith(github.ref, 'refs/tags/android-v')
+    needs: [core, apk, emulator]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the release and its files
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: apks
+          path: apks
+      - name: Checksums
+        run: cd apks && sha256sum *.apk > SHA256SUMS.txt
+      - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        with:
+          prerelease: true
+          files: |
+            apks/*.apk
+            apks/SHA256SUMS.txt

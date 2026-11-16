@@ -93,6 +93,15 @@ fn system_says(ctx: &egui::Context) -> System {
             high_contrast: None,
             more_contrast: false,
         }
+    } // Android: the interface follows the system's own colours (Material You); none here.
+    #[cfg(target_os = "android")]
+    {
+        let _ = ctx;
+        System {
+            accent: None,
+            high_contrast: None,
+            more_contrast: false,
+        }
     }
 }
 

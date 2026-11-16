@@ -1,0 +1,26 @@
+[package]
+name = "mdm-android"
+description = "Mister Download Manager for Android: the JNI library (libmdm.so) the Android app (android/) loads"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lib]
+name = "mdm"
+crate-type = ["cdylib", "rlib"]
+
+# Built for Android only; on other systems the crate is empty.
+[target.'cfg(target_os = "android")'.dependencies]
+mdm-app = { path = "../app" }
+jni = { version = "0.22.4", default-features = false }
+rustls-platform-verifier.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+android_logger = "0.15"
+log = "0.4"
+
+[lints]
+workspace = true

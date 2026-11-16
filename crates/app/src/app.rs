@@ -1311,6 +1311,9 @@ pub struct App {
     /// Run without a window (`--headless`, #157): nothing is shown or asked; what arrives is
     /// added as the remote control adds it.
     headless: bool,
+    /// Run by the Android interface (android.rs): headless, but someone is there to answer (the
+    /// interface asks for video qualities, a torrent's files).
+    android: bool,
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
@@ -1624,6 +1627,11 @@ fn category_icon(c: Category) -> IconKey {
     };
     IconKey::Themed(need, silk)
 }
+
+// The Android interface's requests and snapshots (android.rs runs the app there).
+#[cfg(any(target_os = "android", feature = "android-core"))]
+#[path = "android_ui.rs"]
+mod android_ui;
 
 impl App {
     /// For a run without a window (#157): downloads go to `downloads` when given (a server's
@@ -1965,6 +1973,7 @@ impl App {
             at_login_checked: None,
             exiting: false,
             headless: false,
+            android: false,
             confirm_delete: None,
             confirm_queue_delete: None,
             confirm_redownload: None,
@@ -5303,7 +5312,7 @@ impl App {
     /// into the main queue instead, with no queue panel either).
     fn quality_menu(&mut self, cmd: &ipc::Command) -> ipc::api::VideoLookupAnswer {
         use ipc::api::{VideoLookupAnswer, lookup};
-        if menu_needs_window(cmd, self.headless) {
+        if menu_needs_window(cmd, self.headless && !self.android) {
             return VideoLookupAnswer::of(lookup::USE_WINDOW);
         }
         let now = Instant::now();
@@ -6691,7 +6700,15 @@ impl App {
     /// or a magnet link or .torrent file as Add torrent's Download Now with every file, in the
     /// category and queue it chose (by file type, and started now, when it chose none). No
     /// window opens. Answered with its id, or `pending` while a torrent's files are looked up.
-    fn remote_add(&mut self, mut cmd: ipc::Command) -> String {
+    fn remote_add(&mut self, cmd: ipc::Command) -> String {
+        // i18n: where a download came from (its Properties): a phone or computer paired in Options → Remote
+        self.add_without_window(cmd, crate::i18n::mark("from a paired device"))
+    }
+
+    /// An address, magnet link or .torrent file added with no window ([`App::remote_add`], the
+    /// Android interface's Add): as a silent command line's, Add torrent's Download Now with
+    /// every file. `source` is where it came from, for its Properties.
+    fn add_without_window(&mut self, mut cmd: ipc::Command, source: &str) -> String {
         use ipc::api::{AddAnswer, ErrorAnswer, line};
         let fail = |code: &str, error: &str| {
             line(&ErrorAnswer {
@@ -6762,17 +6779,7 @@ impl App {
         // Numbered on as it starts if the name is taken then (#743): no disk here.
         let dest = mdm_engine::naming::guess(&dir, &name);
         cmd.remote = false;
-        let id = self.push_item(
-            url,
-            dest,
-            category,
-            String::new(),
-            None,
-            None,
-            cmd,
-            // i18n: where a download came from (its Properties): a phone or computer paired in Options → Remote
-            crate::i18n::mark("from a paired device"),
-        );
+        let id = self.push_item(url, dest, category, String::new(), None, None, cmd, source);
         self.name_guessed(id, true);
         self.number_at_start(id);
         match queue {
@@ -11940,6 +11947,7 @@ fn alt_alone_released(events: &[egui::Event], down: &mut bool, alone: &mut bool)
     released
 }
 
+#[cfg(not(target_os = "android"))]
 impl eframe::App for App {
     /// What comes in from outside (a second launch, the browser's native host, the automation
     /// API) is handled here, which runs at every frame: `ui` doesn't run while the main window
@@ -12069,6 +12077,7 @@ impl App {
         crate::crash::logic_end();
     }
 
+    #[cfg(not(target_os = "android"))]
     fn paint_frame(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         // The freeze watchdog times every frame's drawing, as it times its logic (crash.rs).
         crate::crash::frame_begin();
