@@ -30,7 +30,7 @@ pub fn allowed(tracker: &str, proxied: bool) -> bool {
 }
 
 /// An address on the internet (not this computer, the local network or a reserved range).
-fn public(ip: IpAddr) -> bool {
+pub(crate) fn public(ip: IpAddr) -> bool {
     match ip {
         IpAddr::V4(a) => {
             let o = a.octets();

@@ -562,6 +562,14 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ **View → Draw with**'s note on when a graphics system is tried again reads the time zone
+  the way the rest of the window does, never waiting for Windows
+- ✅ Every release file gets a signed build provenance record (`gh attestation verify`), and the
+  repository an OpenSSF Scorecard (thanks to [@joyahmed](https://github.com/joyahmed))
+- ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
+  other applications (including when raised or opened while MDM is behind another program or hidden
+  in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
+  Download complete notices
 - ✅ Screen readers in the main window: Tab goes round the toolbar, the Categories tree and the
   download list, and the screen reader says and follows the download, category or toolbar button
   the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
@@ -1306,6 +1314,11 @@ These ship in the next version.
   Bilibili video, whose pictures and sounds come apart, failed), `--quality` takes a height or the
   nearest below it, and an error with no format to download lists the ones the page offers
   ([#1240](https://github.com/anefzaoui/misterdownloadmanager/issues/1240))
+- ✅ Create new queue (the Categories tree's menu, Add to queue) shows its name box in front of the
+  Scheduler, and proposes a name no queue has
+  ([#1237](https://github.com/anefzaoui/misterdownloadmanager/issues/1237))
+- ✅ Torrents: peers at addresses that can't be on the internet are left alone, whoever names
+  them (a tracker, the DHT, another peer), as trackers there already were
 
 ## Being worked on
 
