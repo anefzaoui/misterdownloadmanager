@@ -35,6 +35,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from wrap import split_args  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "android"))
+import texts as android_texts  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "crates" / "app" / "src"
 OUT = ROOT / "i18n" / "en.tsv"
@@ -129,6 +132,7 @@ PLACES = {
     "videodlg.rs": "the Download video window",
     "winui.rs": "standard windows",
     "extension": "the browser extension",
+    "android": "the Android app",
 }
 # What the placeholders hold; any other is named in a `// i18n:` note.
 PLACEHOLDERS = {
@@ -421,6 +425,12 @@ def collect():
         # Chrome's $name$ placeholders are {name} in the catalogs, as everywhere else.
         text = re.sub(r"\$(\w+)\$", r"{\1}", m["message"])
         out.add(("extension", text), "text", "extension", [m["description"]])
+    # The Android app's texts (android/.../values/strings.xml): rows of context "android", which
+    # tools/android/strings.py turns into its values-<language>/strings.xml.
+    for key, android, text in android_texts.strings():
+        out.add(("android", text), "text", "android", [android_texts.note(key, android)])
+    for key, one, other in android_texts.plurals():
+        out.add((one, other), "count", "android", (), out.plurals)
     out.add(("{n} byte", "{n} bytes"), "count", "model.rs", (), out.plurals)
     return out.rows, out.plurals
 

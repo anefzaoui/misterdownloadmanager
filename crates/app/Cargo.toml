@@ -8,6 +8,10 @@ license.workspace = true
 authors.workspace = true
 publish.workspace = true
 
+[lib]
+name = "mdm_app"
+path = "src/lib.rs"
+
 [[bin]]
 name = "misterdownloadmanager"
 path = "src/main.rs"
@@ -23,16 +27,16 @@ browser-connection = ["mdm-engine/browser-connection"]
 # opens), and MDM_TEST_UPDATE_HOLD (seconds the update waits before it's put in place, to see and
 # close the window meanwhile). tools/lab/update runs them.
 test-update = ["mdm-tools/test-update"]
+# The Android core (src/android.rs) on this system too, for its end-to-end tests
+# (tests/android_core.rs): `cargo test -p mdm-app --features android-core --test android_core`.
+android-core = []
 
 [dependencies]
-arboard.workspace = true
 base64.workspace = true
 chrono.workspace = true
 craft-atomic.workspace = true
 dirs.workspace = true
-eframe.workspace = true
 egui.workspace = true
-egui-winit.workspace = true
 egui_extras.workspace = true
 skrifa.workspace = true
 image.workspace = true
@@ -55,7 +59,6 @@ toml.workspace = true
 tokio.workspace = true
 url.workspace = true
 percent-encoding.workspace = true
-rfd = "0.17.2"
 # Options → Remote → Pair a device's QR code of the address (#141; Nayuki's, no dependencies).
 qrcodegen = "1.8.0"
 # Line breaks between characters keep a letter and its marks together (Thai, Khmer, Indic).
@@ -74,6 +77,15 @@ brotli-decompressor = "6.2.0"
 # in the tree (resvg's SVG, the engine's dependencies).
 roxmltree = "0.20.0"
 regex = "1.13.1"
+# rfd on desktops; on Android a stand-in whose dialogs never open (crates/filedialog).
+rfd = { package = "mdm-filedialog", path = "../filedialog" }
+
+# The desktop window and its system services (clipboard, file dialogs): not on Android, whose app
+# draws its own interface (android/) and runs this crate's core headless (android.rs).
+[target.'cfg(not(target_os = "android"))'.dependencies]
+arboard.workspace = true
+eframe.workspace = true
+egui-winit.workspace = true
 
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
@@ -91,7 +103,7 @@ raw-window-handle = "0.6"
 windows = { version = "0.62", default-features = false, features = ["Win32_Graphics_DirectWrite", "Win32_Graphics_Dxgi"] }
 
 # The notification-area icon and its menu (tray.rs).
-[target.'cfg(not(target_os = "linux"))'.dependencies]
+[target.'cfg(not(any(target_os = "linux", target_os = "android")))'.dependencies]
 tray-icon = "0.26.1"
 # Windows and macOS: the system's font for a script MDM's font lists don't name (theme.rs,
 # #1125). Linux asks fontconfig for any script already (`fc-match :charset=`).

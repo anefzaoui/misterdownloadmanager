@@ -125,6 +125,14 @@ winget install AhmedNefzaoui.MisterDownloadManager
 winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
 
+### On Android (in testing)
+
+An Android app runs the same engine (segmented downloads that resume, torrents, videos with
+yt-dlp, queues and the Scheduler) with an interface made for a phone: share a link with it, or
+open a magnet link or a .torrent file with it. Its APKs are on the releases tagged
+`android-v…`; [docs/android.md](docs/android.md) explains it, and
+[ROADMAP.md](ROADMAP.md) says what is done.
+
 ### On Linux
 
 MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, KDE Plasma, Xfce

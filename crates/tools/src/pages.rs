@@ -56,6 +56,36 @@ pub fn is_video_page(url: &Url) -> bool {
     }
 }
 
+/// The name of the streaming service whose music or films `url` is on, when that service
+/// protects them with DRM (Spotify, Apple Music, Netflix…): no download manager, yt-dlp included,
+/// can save them, so MDM says so instead of downloading the page or asking yt-dlp in vain.
+/// A service's free podcasts or trailers are not told apart: its whole site is named.
+pub fn drm_service(url: &Url) -> Option<&'static str> {
+    if !matches!(url.scheme(), "http" | "https") {
+        return None;
+    }
+    let host = url.host_str()?.to_ascii_lowercase();
+    let host = host.strip_prefix("www.").unwrap_or(&host);
+    let on = |domain: &str| host == domain || host.ends_with(&format!(".{domain}"));
+    [
+        ("spotify.com", "Spotify"),
+        ("spotify.link", "Spotify"),
+        ("music.apple.com", "Apple Music"),
+        ("tv.apple.com", "Apple TV"),
+        ("tidal.com", "TIDAL"),
+        ("deezer.com", "Deezer"),
+        ("music.amazon.com", "Amazon Music"),
+        ("primevideo.com", "Prime Video"),
+        ("netflix.com", "Netflix"),
+        ("disneyplus.com", "Disney+"),
+        ("max.com", "Max"),
+        ("hulu.com", "Hulu"),
+    ]
+    .into_iter()
+    .find(|(domain, _)| on(domain))
+    .map(|(_, name)| name)
+}
+
 /// The address to give yt-dlp for a video page: Dailymotion's embedded player
 /// (`geo.dailymotion.com/player/<player>.html?video=<id>`, what a site embedding it shows) becomes
 /// the video's own page, which is the one that always lists its formats (#359). Any other address
@@ -170,6 +200,28 @@ mod tests {
         ));
         assert!(!gallery("https://www.youtube.com/watch?v=Tg6byXUo8RU"));
         assert!(!gallery("ftp://commons.wikimedia.org/wiki/Category:Birds"));
+    }
+
+    #[test]
+    fn drm_services_are_named() {
+        let u = |s: &str| Url::parse(s).unwrap();
+        let cases = [
+            (
+                "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC",
+                Some("Spotify"),
+            ),
+            ("https://spotify.link/abc", Some("Spotify")),
+            ("https://music.apple.com/us/album/x/1", Some("Apple Music")),
+            ("https://www.netflix.com/watch/1", Some("Netflix")),
+            ("https://www.deezer.com/en/track/1", Some("Deezer")),
+            ("https://www.youtube.com/watch?v=abc", None),
+            ("https://notspotify.com/track/1", None),
+            ("https://apple.com/music", None),
+            ("ftp://open.spotify.com/x", None),
+        ];
+        for (url, name) in cases {
+            assert_eq!(drm_service(&u(url)), name, "{url}");
+        }
     }
 
     #[test]

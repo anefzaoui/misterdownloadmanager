@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Gradle's dependency verification for the prebuilt native code the APK takes from others:
+     rustls-platform-verifier's Android component, from its project's own Maven repository on
+     GitHub (the SHA-1 it publishes beside each file, and the file's SHA-256), and the helper
+     programs (Python, ffmpeg, QuickJS) from youtubedl-android's AARs on Maven Central (the SHA-256
+     Maven Central publishes). Everything else is trusted as Gradle trusts it without this file.
+     A new version of one of them needs its entry here. -->
+<verification-metadata xmlns="https://schema.gradle.org/dependency-verification"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="https://schema.gradle.org/dependency-verification https://schema.gradle.org/dependency-verification/dependency-verification-1.3.xsd">
+   <configuration>
+      <verify-metadata>true</verify-metadata>
+      <verify-signatures>false</verify-signatures>
+      <trusted-artifacts>
+         <trust group="^(?!(org[.]rustls|io[.]github[.]junkfood02[.]youtubedl-android)$).*$" regex="true"/>
+      </trusted-artifacts>
+   </configuration>
+   <components>
+      <component group="org.rustls" name="rustls-platform-verifier" version="0.2.0">
+         <artifact name="rustls-platform-verifier-0.2.0.aar">
+            <sha1 value="28b6b316c2749a7c94b4d19061f12c64759a0e27" origin="Published by rustls-platform-verifier"/>
+            <sha256 value="aa021794230fbc2f0be355999e2cf67398dd563de066a2e17001ffbd0b69101b" origin="Of the published file"/>
+         </artifact>
+         <artifact name="rustls-platform-verifier-0.2.0.pom">
+            <sha1 value="dddf73207ac799537f9a47153ef0b953141dd140" origin="Published by rustls-platform-verifier"/>
+            <sha256 value="78dcb69a1a20e91e72017de9a67104bba1874a7ecc8e6dcdfb2fe1a85de6b362" origin="Of the published file"/>
+         </artifact>
+      </component>
+      <component group="io.github.junkfood02.youtubedl-android" name="ffmpeg" version="0.18.1">
+         <artifact name="ffmpeg-0.18.1.aar">
+            <sha256 value="0a87ffa6cf912b0fe76c1a99b9107f543ee2f247935fae2c71f0822eb7bc5f49" origin="Published by Maven Central"/>
+         </artifact>
+         <artifact name="ffmpeg-0.18.1.module">
+            <sha256 value="89d9c9577d0a922396cb1c6dad51d004ed8f67b8981f4b5cdf457ec4c8b8a6f7" origin="Published by Maven Central"/>
+         </artifact>
+         <artifact name="ffmpeg-0.18.1.pom">
+            <sha256 value="5f4f089a20eb3240cfccfb0082235e1bd44c8109f26cdd8da10247709bfa5071" origin="Published by Maven Central"/>
+         </artifact>
+      </component>
+      <component group="io.github.junkfood02.youtubedl-android" name="library" version="0.18.1">
+         <artifact name="library-0.18.1.aar">
+            <sha256 value="579b5fb480892b1abc2b218c2089699d52759cc8d7ba256bf876453f0365faef" origin="Published by Maven Central"/>
+         </artifact>
+         <artifact name="library-0.18.1.module">
+            <sha256 value="3e8ad9aa05cd197bc7ad038c235055b11b2dad74cbb1b4ecc99fbc82a0ff0c9f" origin="Published by Maven Central"/>
+         </artifact>
+         <artifact name="library-0.18.1.pom">
+            <sha256 value="98f5eb540b7ec22ddd73373a7e87149d0c490e0790cfeeb0343285a643d64690" origin="Published by Maven Central"/>
+         </artifact>
+      </component>
+   </components>
+</verification-metadata>

@@ -206,6 +206,54 @@ fn tooltip(seen: &Seen) -> String {
     lines.join("\n")
 }
 
+/// The server line in words, for an interface that draws its own (Android): the place, its
+/// country's code (for its flag), the round trip with how far it is, and what the desktop's
+/// tooltip says (the address, a CDN or a proxy, and the location data's credit). None while
+/// the location table loads.
+#[cfg(any(target_os = "android", feature = "android-core"))]
+pub fn summary(seen: &Seen) -> Option<Summary> {
+    let (place, mark) = place(seen)?;
+    let country = match mark {
+        Some(Mark::Flag(c)) => Some(c.code().to_owned()),
+        _ => None,
+    };
+    let reach_of = seen.rtt_ms.map(reach);
+    Some(Summary {
+        place,
+        country,
+        time: seen.rtt_ms.zip(reach_of).map(|(ms, r)| time_words(ms, r)),
+        reach: reach_of.map(|r| match r {
+            Reach::Near => "near",
+            Reach::Medium => "medium",
+            Reach::Far => "far",
+        }),
+        about: tooltip(seen),
+    })
+}
+
+/// [`summary`]'s answer.
+#[cfg(any(target_os = "android", feature = "android-core"))]
+#[derive(Clone, Debug, Serialize)]
+pub struct Summary {
+    pub place: String,
+    /// ISO 3166 code, when the place is a country.
+    pub country: Option<String>,
+    /// "about 23 ms (near)".
+    pub time: Option<String>,
+    /// `near`, `medium` or `far`.
+    pub reach: Option<&'static str>,
+    pub about: String,
+}
+
+fn time_words(ms: u32, r: Reach) -> String {
+    crate::i18n::fmt(
+        // i18n: a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
+        crate::i18n::t("about {ms} ms ({reach})"),
+        // Under a millisecond (this computer, the local network) says "about 1 ms".
+        &[("ms", &ms.max(1).to_string()), ("reach", reach_word(r))],
+    )
+}
+
 /// The line, its start at English `x` and its baseline at `baseline`, never past English
 /// `right`; "..." while nothing is known yet. `id` tells this line from others.
 pub fn line(ui: &Ui, x: f32, baseline: f32, right: f32, seen: Option<&Seen>, id: &str) {
@@ -265,15 +313,7 @@ pub fn line(ui: &Ui, x: f32, baseline: f32, right: f32, seen: Option<&Seen>, id:
     }
     let time = seen.rtt_ms.map(|ms| {
         let r = reach(ms);
-        (
-            crate::i18n::fmt(
-                // i18n: a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
-                crate::i18n::t("about {ms} ms ({reach})"),
-                // Under a millisecond (this computer, the local network) says "about 1 ms".
-                &[("ms", &ms.max(1).to_string()), ("reach", reach_word(r))],
-            ),
-            reach_colour(r),
-        )
+        (time_words(ms, r), reach_colour(r))
     });
     // The time keeps its room; the place is cut first.
     let time_w = time

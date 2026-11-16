@@ -830,9 +830,10 @@ const UTF8: [&str; 2] = ["--encoding", "utf-8"];
 /// `C:\Windows\System32` when Windows starts it with the session (#1216). On Windows yt-dlp
 /// makes the small file it tries a format with (a YouTube video put online in the last two
 /// days, a stream marked as protected) in its working folder: its `get_output_path('temp')` is
-/// `.` there when MDM gives no `-P temp:`. [`spawn`] gives the same to any other program.
+/// `.` there when MDM gives no `-P temp:`. [`spawn`] gives the same to any other program. On Android
+/// the program is run as [`program`] runs it (yt-dlp through the bundled Python).
 fn helper_command(exe: &Path) -> Command {
-    let mut cmd = Command::new(exe);
+    let mut cmd = program(exe);
     cmd.env("PYTHONIOENCODING", "utf-8");
     crate::workdir::apply(&mut cmd, crate::workdir::folders());
     cmd
@@ -1056,6 +1057,11 @@ fn with_usable_path(cmd: &mut Command) {
 /// be run, cached for the session). Kept once found; while there is none it is looked for again
 /// at each run, so one installed meanwhile counts at the next look-up (#852).
 fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
+    // Android: the APK's QuickJS (android.rs).
+    #[cfg(target_os = "android")]
+    if let Some(args) = crate::android::js_runtime_args() {
+        return Some(args);
+    }
     static FOUND: Mutex<Option<Vec<String>>> = Mutex::new(None);
     let mut found = FOUND
         .lock()
@@ -1085,6 +1091,15 @@ fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
         };
     }
     found.clone()
+}
+
+/// The command that runs a helper `exe`: itself, or on Android the APK's Python with it when it
+/// is a Python program (yt-dlp's zipapp), with the environment the helpers need there.
+pub fn program(exe: &Path) -> Command {
+    #[cfg(target_os = "android")]
+    return crate::android::command(exe);
+    #[cfg(not(target_os = "android"))]
+    Command::new(exe)
 }
 
 /// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it.

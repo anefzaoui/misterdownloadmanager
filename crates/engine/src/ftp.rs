@@ -480,19 +480,50 @@ pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, r
         return Ok(crate::tls::no_roots_config());
     }
     let provider = crate::tls::provider();
-    let verifier = if extra.is_empty() {
-        Verifier::new(provider.clone())
+    let verifier: Arc<dyn rustls::client::danger::ServerCertVerifier> = if extra.is_empty() {
+        Arc::new(Verifier::new(provider.clone())?)
     } else {
-        Verifier::new_with_extra_roots(
-            extra.iter().map(|c| CertificateDer::from(c.clone())),
-            provider.clone(),
-        )
-    }?;
+        with_extra_roots(extra, provider.clone())?
+    };
     Ok(rustls::ClientConfig::builder_with_provider(provider)
         .with_safe_default_protocol_versions()?
         .dangerous()
-        .with_custom_certificate_verifier(Arc::new(verifier))
+        .with_custom_certificate_verifier(verifier)
         .with_no_client_auth())
+}
+
+/// The system's verifier with `extra` certificates also trusted.
+#[cfg(not(target_os = "android"))]
+fn with_extra_roots(
+    extra: &[Vec<u8>],
+    provider: Arc<rustls::crypto::CryptoProvider>,
+) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {
+    Ok(Arc::new(
+        rustls_platform_verifier::Verifier::new_with_extra_roots(
+            extra.iter().map(|c| CertificateDer::from(c.clone())),
+            provider,
+        )?,
+    ))
+}
+
+/// Android's platform verifier asks the system's trust store through Java and takes no extra
+/// roots: `extra` is trusted with Mozilla's roots instead (only the tests give any).
+#[cfg(target_os = "android")]
+fn with_extra_roots(
+    extra: &[Vec<u8>],
+    provider: Arc<rustls::crypto::CryptoProvider>,
+) -> Result<Arc<dyn rustls::client::danger::ServerCertVerifier>, rustls::Error> {
+    let mut roots = rustls::RootCertStore::empty();
+    for c in webpki_root_certs::TLS_SERVER_ROOT_CERTS {
+        let _ = roots.add(c.clone());
+    }
+    for c in extra {
+        roots.add(CertificateDer::from(c.clone()))?;
+    }
+    rustls::client::WebPkiServerVerifier::builder_with_provider(Arc::new(roots), provider)
+        .build()
+        .map(|v| v as Arc<dyn rustls::client::danger::ServerCertVerifier>)
+        .map_err(|e| rustls::Error::General(e.to_string()))
 }
 
 /// The login an `Authorization: Basic` header carries.

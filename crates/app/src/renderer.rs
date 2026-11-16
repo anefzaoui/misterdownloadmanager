@@ -1300,6 +1300,7 @@ fn stall_test() {
 
 /// The version OpenGL says it is; `MDM_TEST_GL_VERSION=2.1` in off-screen test copies, as an old
 /// card's driver says.
+#[cfg(not(target_os = "android"))]
 fn gl_version(gl: &eframe::glow::Context) -> GlVersion {
     use eframe::glow::HasContext as _;
     let v = gl.version();
@@ -1335,6 +1336,7 @@ fn gl_version(gl: &eframe::glow::Context) -> GlVersion {
 /// remembered and MDM starts again without it (as after a start that drew nothing: the next
 /// start's plan passes over it). Known already, OpenGL draws as the last way, the others having
 /// failed, and goes on: the windows always open. `checked`: the plan's `gl_checked`.
+#[cfg(not(target_os = "android"))]
 fn check_gl(gl: &eframe::glow::Context, checked: bool, driver: &str) {
     let Some(why) = gl_unfit(gl_version(gl), cfg!(windows)) else {
         return;
@@ -1390,6 +1392,7 @@ static GL_HOOKED: AtomicBool = AtomicBool::new(false);
 
 /// wgpu presents without waiting for the refresh once MDM paces the frames: its surface takes
 /// the present mode from the app's frame, which the first pass has (none while the app is made).
+#[cfg(not(target_os = "android"))]
 pub fn present_unpaced(frame: &mut eframe::Frame) {
     #[cfg(gpu)]
     if PACED.load(Ordering::Relaxed)
@@ -1465,6 +1468,7 @@ fn shown(info: &egui::ViewportInfo) -> bool {
 /// OpenGL: each window's swap interval, chosen before each of its swaps ([`swap_waits`]).
 struct SwapHooks(Swaps);
 
+#[cfg(not(target_os = "android"))]
 impl eframe::ViewportHooks for SwapHooks {
     fn swap_waits_for_vsync(
         &self,
@@ -1485,6 +1489,7 @@ impl eframe::ViewportHooks for SwapHooks {
 /// so. OpenGL's windows swap through [`SwapHooks`] (installed by [`configure`]); wgpu's present
 /// mode is one for every window, so none waits on X11 and XWayland, from the first pass
 /// ([`present_unpaced`]).
+#[cfg(not(target_os = "android"))]
 fn pacing_known(cc: &eframe::CreationContext<'_>) {
     let swaps = swaps();
     if swaps == Swaps::Own {
@@ -1677,6 +1682,7 @@ pub fn active() -> Option<Api> {
 /// Why a start with the system's API failed, from eframe's error: no adapter or surface for it
 /// (no driver, `VK_ICD_FILENAMES` pointing at nothing, only a software renderer when a card was
 /// wanted), or something else.
+#[cfg(not(target_os = "android"))]
 fn why_failed(e: &eframe::Error) -> Why {
     #[cfg(gpu)]
     {
@@ -1706,6 +1712,7 @@ pub fn software() -> bool {
 /// Run eframe's window with each way of the plan until one starts. `options` makes the window's
 /// options (each try needs its own); `creator` makes the app, once (a try that fails before
 /// that leaves it for the next). Returns the last try's result.
+#[cfg(not(target_os = "android"))]
 pub fn run<A: eframe::App + 'static>(
     name: &str,
     plan: &Plan,
@@ -1786,6 +1793,7 @@ pub fn run<A: eframe::App + 'static>(
 }
 
 /// The window's options for one way of drawing.
+#[cfg(not(target_os = "android"))]
 fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
     match attempt {
         Attempt::OpenGl => {
@@ -1819,6 +1827,7 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
 /// The app is being made: what draws is known.
 /// `why`: why this way (the plan's reason, or why the way before it didn't start).
 /// `gl_checked`: the plan's (an OpenGL that can't draw MDM starts MDM again without it).
+#[cfg(not(target_os = "android"))]
 fn started(cc: &eframe::CreationContext<'_>, attempt: Attempt, why: String, gl_checked: bool) {
     #[cfg(gpu)]
     let gpu = cc.wgpu_render_state.as_ref().map(|rs| {

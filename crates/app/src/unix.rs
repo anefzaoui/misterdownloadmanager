@@ -3014,6 +3014,7 @@ pub fn process_alive(pid: u32) -> bool {
 /// The OpenGL driver in its own words, for the log and the crash reports (#280): its renderer
 /// (the graphics card) and version (Mesa's carries its own: "4.6 (Core Profile) Mesa 24.0.5").
 /// Windows: win32.rs.
+#[cfg(not(target_os = "android"))]
 #[allow(unsafe_code)]
 pub fn gl_driver(gl: &eframe::glow::Context) -> String {
     use eframe::glow::{self, HasContext as _};
@@ -4522,6 +4523,13 @@ mod startup_tests {
 // keyring leaves the secrets in the owner-only settings. macOS: the login keychain's generic
 // passwords (SecItemAdd / SecItemCopyMatching, through security-framework).
 
+// Android: the interface's keystore, alarms and wake locks (android.rs).
+#[cfg(target_os = "android")]
+pub use crate::android::{
+    default_browser, file_icon, keep_awake, keychain_delete, keychain_list, keychain_probe,
+    keychain_read, keychain_write, wake_at,
+};
+
 #[cfg(target_os = "linux")]
 pub use secret_service::{
     delete as keychain_delete, list as keychain_list, probe as keychain_probe,
@@ -4847,6 +4855,11 @@ pub fn wake_support() -> crate::wake::Support {
     #[cfg(target_os = "macos")]
     {
         crate::wake::Support::MacAdmin
+    }
+    // Android: an exact alarm starts the app (android.rs `wake_at`).
+    #[cfg(target_os = "android")]
+    {
+        crate::wake::Support::Ready
     }
 }
 
