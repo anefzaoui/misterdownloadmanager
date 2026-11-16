@@ -2787,7 +2787,9 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     if (shots && t.session.screenshot) await t.session.screenshot(path.join(shots, `${t.name}-page.png`));
     const kept = await rect(t.session, "mdm-video-button");
     if (!kept) throw new Error("the button went with the preview");
-    near(kept.l, b.l, "kept, left edge");
+    // Where it was: at the thumbnail's top right, its end against the edge (its grip, shown
+    // under the pointer, widens it to the left).
+    near(kept.r, b.r, "kept, right edge");
     near(kept.t, b.t, "kept, top");
     const address = await clickButton(t.session, kept, shots && path.join(shots, `${t.name}-window.png`));
     if (address === `https://www.youtube.com/watch?v=${WATCHED}`) throw new Error("the video window got the video watched last, not the preview's");
