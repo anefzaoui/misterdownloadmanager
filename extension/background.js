@@ -55,6 +55,13 @@ function hostProblem(error) {
   return "host-failed";
 }
 
+// `message` as it goes to the host: with the browser and the extension's version.
+async function stamped(message) {
+  const app = await APP_NAME;
+  const brands = app ? [...BRANDS, app] : BRANDS;
+  return { ...message, userAgent: navigator.userAgent, brands, v: VERSION };
+}
+
 // Every message says which browser and extension version it comes from (the app keeps each
 // browser's status, and the rules depend on the browser). Never throws: failures come back as
 // `{ok: false, why}`.
@@ -64,9 +71,7 @@ async function native(message, ms = HOST_WAIT) {
     const target = await remoteTarget();
     if (target) return remoteSend(target, message);
   }
-  const app = await APP_NAME;
-  const brands = app ? [...BRANDS, app] : BRANDS;
-  const sent = { ...message, userAgent: navigator.userAgent, brands, v: VERSION };
+  const sent = await stamped(message);
   try {
     const reply = (await withTimeout(ext.runtime.sendNativeMessage(HOST, sent), ms)) || {};
     if (reply.version) {
@@ -222,8 +227,10 @@ async function showStatus() {
 
 // ---- the rules: Options in the app, kept here between the browser's stops ------------------
 
-// {types, capture, captureOff, excludedSites, excludedAddresses, opened, minKb, at}; null until
-// first asked. `captureOff`: why `capture` is false (a host before #208 doesn't say).
+// {types, capture, captureOff, excludedSites, excludedAddresses, opened, minKb, torrents, at};
+// null until first asked. `captureOff`: why `capture` is false (a host before #208 doesn't say).
+// `torrents`: false while the app's Torrent settings leave .torrent files to the browser (#1058;
+// a host before it doesn't say, and takes them as listed).
 let rules = null;
 
 async function storedRules() {
@@ -251,6 +258,7 @@ async function askRules() {
       excludedAddresses: Array.isArray(reply.excludedAddresses) ? reply.excludedAddresses : [],
       opened: reply.opened !== false,
       minKb: Number(reply.minKb) || 0,
+      torrents: reply.torrents !== false,
       at: Date.now(),
     };
     await ext.storage.local.set({ rules });
@@ -260,7 +268,7 @@ async function askRules() {
   // No MDM on this computer, another one chosen: the app's default file types (the browser
   // keeps the files it would open).
   if (await remoteTarget()) {
-    rules = { types: DEFAULT_TYPES, capture: true, excludedSites: "", excludedAddresses: [], opened: false, minKb: 0, at: Date.now() };
+    rules = { types: DEFAULT_TYPES, capture: true, excludedSites: "", excludedAddresses: [], opened: false, minKb: 0, torrents: true, at: Date.now() };
     // Kept as the app's are: Safari's page.js holds links by the stored copy.
     await ext.storage.local.set({ rules });
     return rules;
@@ -286,6 +294,20 @@ function typePatterns(list) {
     .map((t) => new RegExp("^" + t.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$", "i"));
 }
 
+// A .torrent, as the app tells one (mdm_ipc::capture::is_torrent): its name or an address's
+// path ends in .torrent, or its type is application/x-bittorrent.
+function isTorrent(name, urls, mime) {
+  const ends = (s) => /\.torrent$/i.test(s || "");
+  const path = (u) => {
+    try {
+      return new URL(u).pathname;
+    } catch {
+      return "";
+    }
+  };
+  return ends(name) || urls.some((u) => ends(path(u))) || /^\s*application\/x-bittorrent\s*(;|$)/i.test(mime || "");
+}
+
 function extensionOf(name) {
   const base = name.split(/[\\/]/).pop() || "";
   const dot = base.lastIndexOf(".");
@@ -306,10 +328,12 @@ function addressMatches(pattern, url) {
 }
 
 // A site pattern against `host`, as the app reads one (mdm_ipc::capture::panel_site_matches):
-// `*` matches anything (#759), and `*.example.com` the domain too.
+// `*` matches anything (#759), and `*.example.com` the domain too; `example.com.` (the root's
+// dot) is `example.com`.
 function siteMatches(host, pattern) {
-  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0];
+  const p = pattern.trim().toLowerCase().replace(/^[^/]*:\/\//, "").split("/")[0].replace(/\.+$/, "");
   if (!p) return false;
+  host = String(host).toLowerCase().replace(/\.+$/, "");
   return (p.startsWith("*.") && wildcard(p.slice(2), host)) || wildcard(p, host);
 }
 
@@ -427,10 +451,21 @@ function formBody(details) {
   return { body: null };
 }
 
+// The loads a browser shows a file in: a tab, a frame, an <embed> or <object> (#1087: a PDF a
+// page shows in one is taken as one the tab goes to is).
+const PAGE_LOADS = ["main_frame", "sub_frame", "object"];
+
+// The page each page load was started from, by address (two minutes, #607): Firefox names it
+// (`originUrl`: the page whose link, form or script asked for it); Chromium gives the tab it loads
+// in, whose address stays the page's while the answer turns out to be a download (`pageOf`).
+const startedFrom = new Map();
+
 if (ext.webRequest) {
-  const navigations = { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] };
+  const navigations = { urls: ["<all_urls>"], types: PAGE_LOADS };
   ext.webRequest.onBeforeRequest.addListener(
     (d) => {
+      forget(startedFrom, 120000);
+      if (!startedFrom.has(d.url)) startedFrom.set(d.url, { page: d.originUrl || d.documentUrl || "", tabId: d.tabId, at: Date.now() });
       if (d.method !== "POST") return;
       forget(posts, 120000);
       posts.set(d.url, { ...formBody(d), at: Date.now(), id: d.requestId });
@@ -482,7 +517,7 @@ if (ext.webRequest && ext.webRequest.onBeforeRedirect) {
       const first = (redirected.get(d.url) || {}).from || d.url;
       redirected.set(d.redirectUrl, { from: first, at: Date.now() });
     },
-    { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
+    { urls: ["<all_urls>"], types: PAGE_LOADS },
   );
 }
 
@@ -557,8 +592,10 @@ function fromPage(ref, page) {
 // yt-dlp reads the manifest (qualities, separate audio). Segments and byte ranges are pieces of a
 // stream, never listed. Bounded: MEDIA_MAX per tab, MEDIA_TABS tabs; forgotten when the tab goes
 // to another page or closes.
-const media = new Map(); // tab id -> {page, items: [{url, kind, frameId, mime, size, info}], frames}
+const media = new Map(); // tab id -> {page, items: [{url, kind, frameId, mime, size, at, info}], ranged, maybe, frames}
 const MEDIA_MAX = 60;
+// Whole files a player fetched in ranges (#1092), kept per tab apart from the list.
+const RANGED_MAX = 40;
 const MEDIA_TABS = 50;
 const URL_MAX = 8192;
 // A player's own fetch of a whole file is listed from this size (smaller ones are pieces).
@@ -615,12 +652,18 @@ function mediaKind(d) {
   const range = headerOf(d, "content-range");
   const total = /\/\s*(\d+)\s*$/.exec(range);
   const size = total ? Number(total[1]) : d.statusCode === 206 ? 0 : Number(headerOf(d, "content-length")) || 0;
+  const audio = mime.startsWith("audio/") || (!mime.startsWith("video/") && AUDIO_EXT.test(ext));
   // A <video>'s or <audio>'s own file comes in ranges; a player's fetch of a range, or of a
   // small file, is a piece of a stream.
-  if (d.type !== "media" && (d.statusCode === 206 || range || /[?&](range|bytestart|byterange)=/i.test(d.url) || size < FETCHED_MIN)) {
+  const sliced = /[?&](range|bytestart|byterange)=/i.test(d.url);
+  if (d.type !== "media" && (d.statusCode === 206 || range || sliced || size < FETCHED_MIN)) {
+    // #1092: a whole file (its total in Content-Range) a player fetches in ranges for its
+    // MediaSource, as Douyin's does: kept apart (`ranged`), never listed, since it may be one of
+    // a video's tracks alone. The button offers it when its page can't be looked up and the
+    // file's own header says it is the video under it (`playedChoice`).
+    if (total && size >= SOUND_MIN && !sliced) return { kind: audio ? "audio" : "video", mime, size, ranged: true };
     return null;
   }
-  const audio = mime.startsWith("audio/") || (!mime.startsWith("video/") && AUDIO_EXT.test(ext));
   return { kind: audio ? "audio" : "video", mime, size };
 }
 
@@ -635,7 +678,8 @@ function folderOf(url) {
 
 function noteMedia(d, found, sent) {
   const tab = media.get(d.tabId) || { page: null, items: [] };
-  const old = tab.items.find((it) => it.url === d.url);
+  const list = found.ranged ? (tab.ranged = tab.ranged || []) : tab.items;
+  const old = list.find((it) => it.url === d.url);
   if (old) {
     if (found.size && !old.size) old.size = found.size;
     if (sent) old.sent = sent;
@@ -644,7 +688,24 @@ function noteMedia(d, found, sent) {
   // A file in a stream's own folder is one of its pieces (a DASH init segment, a fragment).
   const inStream = (it) => isStream(it) && folderOf(it.url) && d.url.startsWith(folderOf(it.url));
   if (!isStream(found) && tab.items.some(inStream)) return;
-  tab.items.push({ url: d.url, kind: found.kind, frameId: d.frameId || 0, mime: found.mime, size: found.size, ...(sent ? { sent } : {}) });
+  // `at`: when the tab first got it (#1092: what a feed's player loaded while a video played).
+  const item = { url: d.url, kind: found.kind, frameId: d.frameId || 0, mime: found.mime, size: found.size, at: Date.now(), ...(sent ? { sent } : {}) };
+  if (found.ranged) {
+    // The newest RANGED_MAX, apart from the list (a feed's player fetches many).
+    if (tab.items.some((it) => it.url === d.url)) return;
+    list.push(item);
+    if (list.length > RANGED_MAX) list.splice(0, list.length - RANGED_MAX);
+    if (!media.has(d.tabId)) {
+      media.set(d.tabId, tab);
+      for (const id of media.keys()) {
+        if (media.size <= MEDIA_TABS) break;
+        media.delete(id);
+      }
+    }
+    keepMedia();
+    return;
+  }
+  tab.items.push(item);
   // Over the cap: the oldest go, but each frame's first stream stays (the button sends it).
   while (tab.items.length > MEDIA_MAX) {
     const firsts = new Set();
@@ -813,7 +874,12 @@ ext.tabs.onUpdated.addListener((id, change) => {
     const page = change.url.split("#")[0];
     const tab = media.get(id);
     if (tab && tab.page === page) return;
-    media.set(id, { page, items: [] });
+    // #1092: the files a player fetched in ranges stay while the tab stays on the site: a feed
+    // moves to another address as it shows its first video (Douyin's goes from /jingxuan to
+    // /?recommend=1), after its player fetched it. Offered only for a video of their length.
+    const site = (u) => (/^https?:\/\/[^/]+/i.exec(u || "") || [""])[0].toLowerCase();
+    const ranged = tab && tab.ranged && (!tab.page || site(tab.page) === site(page)) ? tab.ranged : null;
+    media.set(id, { page, items: [], ...(ranged ? { ranged } : {}) });
     keepMedia();
   });
 });
@@ -838,7 +904,14 @@ const mediaBack = session
           const now = media.get(id);
           const fresh = ((now && now.items) || []).filter((s) => !kept.items.some((o) => o.url === s.url));
           const maybe = [...(kept.maybe || []), ...((now && now.maybe) || [])].filter((m, i, all) => all.findIndex((o) => o.url === m.url) === i);
-          media.set(id, { ...kept, page: (now && now.page) || kept.page, items: [...kept.items, ...fresh].slice(-MEDIA_MAX), maybe: maybe.slice(-MAYBE_MAX) });
+          const ranged = [...(kept.ranged || []), ...((now && now.ranged) || [])].filter((m, i, all) => all.findIndex((o) => o.url === m.url) === i);
+          media.set(id, {
+            ...kept,
+            page: (now && now.page) || kept.page,
+            items: [...kept.items, ...fresh].slice(-MEDIA_MAX),
+            maybe: maybe.slice(-MAYBE_MAX),
+            ranged: ranged.slice(-RANGED_MAX),
+          });
         }
       })
       .catch(() => {})
@@ -1009,7 +1082,7 @@ async function mediaList(tabId) {
   const { mediaTitleName } = await ext.storage.local.get({ mediaTitleName: false });
   let title = "";
   try {
-    title = (await ext.tabs.get(tabId)).title || "";
+    title = tabTitle(await ext.tabs.get(tabId));
   } catch {
     // The tab is gone: names without its title.
   }
@@ -1043,6 +1116,310 @@ async function mediaList(tabId) {
     });
   }
   return out;
+}
+
+// ---- what the tab played, for the video under the button (#1092) -------------------------------
+// When the page can't be looked up (a feed, a post yt-dlp can't read, a site it doesn't know), the
+// button offers what the tab played for that video: a file or a stream of its frame whose length
+// is the video's. A file's length and tracks come from its own header, read as the player read it.
+
+// `len` bytes of `url` from `start` (fewer at its end), with the site's cookies as `probe` asks;
+// null when refused, too slow, or (a server ignoring Range) not at the start.
+async function bytesAt(url, start, len) {
+  let reader = null;
+  try {
+    const r = await withTimeout(fetch(url, { credentials: "include", headers: { Range: `bytes=${start}-${start + len - 1}` } }), 5000);
+    if (!r.ok || (r.status !== 206 && start > 0) || !r.body || !r.body.getReader) return null;
+    reader = r.body.getReader();
+    const parts = [];
+    let got = 0;
+    while (got < len) {
+      const { done, value } = await withTimeout(reader.read(), 5000);
+      if (done) break;
+      parts.push(value);
+      got += value.length;
+    }
+    const out = new Uint8Array(Math.min(got, len));
+    let at = 0;
+    for (const p of parts) {
+      out.set(p.subarray(0, Math.min(p.length, out.length - at)), at);
+      at += p.length;
+      if (at >= out.length) break;
+    }
+    return out;
+  } catch {
+    return null;
+  } finally {
+    // The rest is never read.
+    if (reader) reader.cancel().catch(() => {});
+  }
+}
+
+// An MP4's (ISO BMFF) header, from a few small reads at most (`read(start, len)`: bytes or null):
+// {duration (s; 0 unknown), video, audio (its tracks: null when not all were read), height}, or
+// null when it isn't one. The movie's length is its mvhd's, or a fragmented file's mehd's; each
+// track's kind its hdlr's (vide, soun), the picture's height its tkhd's.
+const MP4_CHUNK = 4096;
+const MP4_READS = 6;
+async function mp4Head(read) {
+  let buf = new Uint8Array(0);
+  let base = 0;
+  let reads = 0;
+  // `n` bytes at `pos`, read when they aren't there yet.
+  const at = async (pos, n) => {
+    if (pos < base || pos + n > base + buf.length) {
+      if (reads >= MP4_READS) return null;
+      reads += 1;
+      const got = await read(pos, Math.max(n, MP4_CHUNK));
+      if (!got) return null;
+      buf = got;
+      base = pos;
+    }
+    const s = buf.subarray(pos - base, pos - base + n);
+    return s.length === n ? s : null;
+  };
+  const u32 = (b, i) => ((b[i] << 24) >>> 0) + (b[i + 1] << 16) + (b[i + 2] << 8) + b[i + 3];
+  const u64 = (b, i) => u32(b, i) * 2 ** 32 + u32(b, i + 4);
+  // The box at `pos`: {pos, size, type, hdr}; null past the reads or for one that can't be.
+  const box = async (pos, end) => {
+    const h = (await at(pos, 16)) || (await at(pos, 8));
+    if (!h) return null;
+    const type = String.fromCharCode(h[4], h[5], h[6], h[7]);
+    let size = u32(h, 0);
+    let hdr = 8;
+    if (size === 1 && h.length >= 16) {
+      size = u64(h, 8);
+      hdr = 16;
+    } else if (size === 0) {
+      size = end - pos;
+    }
+    return size >= hdr && /^[\w ©-]{4}$/.test(type) ? { pos, size, type, hdr } : null;
+  };
+  const kids = async function* (parent) {
+    const end = parent.pos + parent.size;
+    for (let p = parent.pos + parent.hdr, i = 0; p + 8 <= end && i < 64; i += 1) {
+      const b = await box(p, end);
+      if (!b) return;
+      yield b;
+      p += b.size;
+    }
+  };
+  // The file: an ftyp (or a movie, or free space) first, then its boxes up to the movie.
+  let moov = null;
+  for (let p = 0, i = 0; i < 8; i += 1) {
+    const b = await box(p, Infinity);
+    if (!b || (i === 0 && !/^(ftyp|moov|free|skip|wide)$/.test(b.type)) || !Number.isFinite(b.size)) return null;
+    if (b.type === "moov") {
+      moov = b;
+      break;
+    }
+    p += b.size;
+  }
+  if (!moov) return null;
+  const info = { duration: 0, video: null, audio: null, height: 0 };
+  let timescale = 0;
+  let fragments = 0;
+  const kinds = [];
+  let whole = true;
+  let traks = 0;
+  // Where the movie's boxes read so far end: short of its end, some tracks weren't seen.
+  let reached = moov.pos + moov.hdr;
+  for await (const b of kids(moov)) {
+    reached = b.pos + b.size;
+    if (b.type === "mvhd") {
+      const h = await at(b.pos + b.hdr, 32);
+      if (!h) continue;
+      const v1 = h[0] === 1;
+      timescale = u32(h, v1 ? 20 : 12);
+      const d = v1 ? u64(h, 24) : u32(h, 16);
+      // All ones: unknown (a fragmented file's).
+      if (timescale && d && d !== 0xffffffff) info.duration = d / timescale;
+    } else if (b.type === "mvex") {
+      for await (const e of kids(b)) {
+        if (e.type !== "mehd") continue;
+        const h = await at(e.pos + e.hdr, 12);
+        if (h) fragments = h[0] === 1 ? u64(h, 4) : u32(h, 4);
+      }
+    } else if (b.type === "trak") {
+      traks += 1;
+      let kind = "";
+      let height = 0;
+      for await (const t of kids(b)) {
+        if (t.type === "tkhd") {
+          const h = await at(t.pos + t.hdr, 96);
+          if (h) height = h[0] === 1 ? u32(h, 92) / 65536 : u32(h, 80) / 65536;
+        } else if (t.type === "mdia") {
+          for await (const m of kids(t)) {
+            if (m.type !== "hdlr") continue;
+            const h = await at(m.pos + m.hdr, 12);
+            if (h) kind = String.fromCharCode(h[8], h[9], h[10], h[11]);
+            break;
+          }
+          break;
+        }
+      }
+      if (!kind) whole = false;
+      kinds.push(kind);
+      if (kind === "vide" && height > info.height) info.height = Math.round(height);
+    }
+  }
+  if (!info.duration && fragments && timescale) info.duration = fragments / timescale;
+  // Every track read: what the file holds; else not known.
+  if (whole && traks && reached >= moov.pos + moov.size) {
+    info.video = kinds.includes("vide");
+    info.audio = kinds.includes("soun");
+  }
+  return info;
+}
+
+// A file that may be an MP4, by its type or its address: its header is read.
+const MP4_TYPE = /^(video|audio)\/(mp4|x-m4v|x-m4a|quicktime|3gpp|3gpp2)$/;
+const MP4_EXT = /\.(mp4|m4v|m4a|mov|3gp|3g2)$/i;
+const mp4Like = (it) => MP4_TYPE.test(it.mime || "") || MP4_EXT.test(pathOf(it.url)) || (it.ranged && /octet-stream|^$/.test(it.mime || ""));
+
+// The files of a frame read at most at once, the newest first.
+const PLAYED_FILES = 16;
+
+// What a frame played, as candidates for `playedChoice`: its streams (a master playlist with the
+// length of its variants the tab loaded, never those variants again) and its files (listed and
+// ranged), each with what is known of it.
+function playedCandidates(tab, frameId) {
+  const mine = (it) => it.frameId === frameId;
+  const streams = tab.items.filter((it) => mine(it) && isStream(it));
+  const out = [];
+  for (const it of streams) {
+    const info = it.info && !it.info.failed ? it.info : null;
+    const p = pathOf(it.url);
+    // A variant (or a sound's playlist) of a master here: the master stands for it.
+    if (streams.some((s) => s !== it && s.info && !s.info.failed && s.info.children.includes(p))) continue;
+    let duration = info ? info.duration : 0;
+    let live = Boolean(info && info.live);
+    if (info && info.children.length) {
+      const parts = streams.filter((s) => s.info && !s.info.failed && info.children.includes(pathOf(s.url)));
+      duration = Math.max(0, ...parts.map((s) => s.info.duration));
+      live = parts.length > 0 && parts.every((s) => s.info.live);
+    }
+    out.push({
+      url: it.url,
+      kind: it.kind,
+      stream: true,
+      at: it.at || 0,
+      size: 0,
+      duration: live ? 0 : duration,
+      live,
+      tracks: null,
+      height: info && info.heights.length ? Math.max(...info.heights) : 0,
+      drm: Boolean(info && info.drm),
+    });
+  }
+  for (const it of [...tab.items.filter((x) => mine(x) && !isStream(x)), ...(tab.ranged || []).filter(mine)].slice(-PLAYED_FILES)) {
+    const head = it.head && !it.head.failed ? it.head : null;
+    out.push({
+      url: it.url,
+      kind: it.kind,
+      stream: false,
+      at: it.at || 0,
+      size: it.size || 0,
+      duration: head ? head.duration : 0,
+      live: false,
+      tracks: head && head.video !== null ? { video: head.video, audio: head.audio } : null,
+      height: head ? head.height : 0,
+      drm: false,
+    });
+  }
+  return out;
+}
+
+// Which of `cands` (playedCandidates) is the video `v` the button is over ({duration, live,
+// height, audio (a sound player), began, nextBegan, alone}): {pick} for one, {several: n} when more
+// than one fits and none is clearly it (said, never guessed), {} for none. Never a protected
+// stream, a picture or a sound alone (one of a video's tracks), nor anything whose length isn't
+// the video's. One whose length isn't known fits only where the frame plays nothing else, or when
+// it came while this video loaded, before the next one began to (a feed's player loads the next
+// video while this one plays).
+function playedChoice(cands, v) {
+  const kindFits = (c) => {
+    if (c.drm) return false;
+    if (v.audio) return c.kind === "audio" || Boolean(c.tracks && !c.tracks.video && c.tracks.audio);
+    return c.kind !== "audio" && !(c.tracks && !(c.tracks.video && c.tracks.audio));
+  };
+  // "yes", "no", or "" (not known).
+  const lengthFits = (c) => {
+    if (v.live || c.live) return v.live && c.live ? "yes" : v.live && !c.duration ? "" : "no";
+    if (!(c.duration > 0) || !(v.duration > 0)) return "";
+    return Math.abs(c.duration - v.duration) <= Math.max(1, v.duration * 0.03) ? "yes" : "no";
+  };
+  // The one of `list`: a stream before files (a fitting stream is the video; its files beside it
+  // are its pieces), else the one with the player's picture height.
+  const one = (list) => {
+    const streams = list.filter((c) => c.stream);
+    const pool = streams.length ? streams : list;
+    if (pool.length === 1) return pool[0];
+    const tall = pool.filter((c) => c.height && c.height === v.height);
+    return tall.length === 1 ? tall[0] : null;
+  };
+  const ok = cands.filter(kindFits);
+  const sure = ok.filter((c) => lengthFits(c) === "yes");
+  if (sure.length) {
+    const c = one(sure);
+    return c ? { pick: c } : { several: sure.length };
+  }
+  const unsure = ok.filter((c) => lengthFits(c) === "");
+  const loading = unsure.filter((c) => v.alone || (v.began > 0 && c.at >= v.began - 2000 && (!v.nextBegan || c.at < v.nextBegan)));
+  if (loading.length) {
+    const c = one(loading);
+    return c ? { pick: c } : { several: loading.length };
+  }
+  return unsure.length ? { several: unsure.length } : {};
+}
+
+// The button's question when the page's look-up found nothing (video.js playedLook): what the
+// tab played for the video under it, from that video's frame. {played: {url, stream, ext, size,
+// height, duration}}, {several: n}, or {}.
+async function videoPlayed(m, sender) {
+  const tabId = sender.tab && sender.tab.id;
+  if (!Number.isInteger(tabId)) return {};
+  await mediaBack;
+  const frameId = sender.frameId || 0;
+  // The frame's possible manifests read first (#171), as for a stream it plays.
+  await sniffTab(tabId, new Set([frameId]));
+  const tab = media.get(tabId);
+  if (!tab) return {};
+  const mine = (it) => it.frameId === frameId;
+  const files = [...tab.items.filter((x) => mine(x) && !isStream(x)), ...(tab.ranged || []).filter(mine)].slice(-PLAYED_FILES);
+  await Promise.all([
+    ...tab.items.filter((it) => mine(it) && isStream(it) && !it.info).map(async (it) => (it.info = await probe(it))),
+    ...files
+      .filter((it) => !it.head)
+      .map(async (it) => (it.head = (mp4Like(it) && (await mp4Head((start, len) => bytesAt(it.url, start, len)))) || { failed: true })),
+  ]);
+  if (media.get(tabId) !== tab) return {};
+  keepMedia();
+  const num = (x) => (Number.isFinite(Number(x)) && Number(x) > 0 ? Number(x) : 0);
+  const v = {
+    duration: num(m.duration),
+    live: m.live === true,
+    height: num(m.height),
+    audio: m.audio === true,
+    began: num(m.began),
+    nextBegan: num(m.nextBegan),
+    alone: m.alone === true,
+  };
+  const r = playedChoice(playedCandidates(tab, frameId), v);
+  if (r.several) return { several: r.several };
+  if (!r.pick) return {};
+  const c = r.pick;
+  const it = [...tab.items, ...(tab.ranged || [])].find((x) => x.url === c.url) || {};
+  const ext = c.stream ? "" : splitExtension(mediaName(c.url, it.mime, "", false).name)[1].toLowerCase();
+  return { played: { url: c.url, stream: c.stream, ext, size: c.size, height: c.height, duration: c.duration } };
+}
+
+// One of the tab's media named by the page as what it played (`video-played`'s answer), of
+// `frameId` when given: the tab's own record of it, or null (never an address it didn't load).
+function playedItem(tabId, url, frameId) {
+  const tab = typeof url === "string" && media.get(tabId);
+  const it = tab && [...tab.items, ...(tab.ranged || [])].find((x) => x.url === url);
+  return it && (frameId === undefined || it.frameId === frameId) ? it : null;
 }
 
 // ---- a page's media file's name (#345, #493, #695, #800): as the app's engine names it
@@ -1129,6 +1506,42 @@ function cleanTitle(title) {
     .replace(/[\x00-\x1f\x7f-\x9f<>:"/\\|?*]/g, " ");
   return [...spaced.split(/\s+/).filter(Boolean).join(" ")].slice(0, 150).join("").replace(/[. ]+$/, "");
 }
+// A site's own name in its address: the part before its domain's ending (www.shortverse.com:
+// "shortverse"; news.bbc.co.uk: "bbc", a country's second level left out). None for an IP
+// address.
+function siteNameOf(url) {
+  const host = siteOf(url).toLowerCase();
+  if (!host || host.includes(":") || /^[\d.]+$/.test(host)) return "";
+  const labels = host.split(".").filter(Boolean);
+  let at = labels.length - 2;
+  if (at > 0 && labels[labels.length - 1].length === 2 && /^(co|com|org|net|gov|edu|ac|or|ne|go)$/.test(labels[at])) at -= 1;
+  return labels[Math.max(at, 0)] || "";
+}
+// A tab's title without its site's name: "Before The - Short Film | Shortverse" on
+// shortverse.com is "Before The - Short Film". The title names what the app knows by no name of
+// its own: a video yt-dlp knows only by its address (a stream's `playlist`, #345), a page's file
+// whose address names nothing (#800). The site's name goes where it ends the title after a
+// separator (| - – — · • » : ::), when its letters and digits are the address's own name's
+// (siteNameOf) or its first word's are ("BBC News" on bbc.co.uk); where it starts the title, only
+// when it is that name. The title stays whole when nothing else would be left.
+const TITLE_SEPARATOR = /\s+(?:[|\-–—·•»]|::?)\s+/g;
+function withoutSiteName(title, url) {
+  const whole = String(title || "").trim();
+  const letters = (s) => s.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+  const site = letters(siteNameOf(url));
+  if (!site) return whole;
+  let rest = whole;
+  const ends = [...rest.matchAll(TITLE_SEPARATOR)].pop();
+  if (ends) {
+    const tail = rest.slice(ends.index + ends[0].length);
+    if (letters(tail) === site || letters(tail.split(/\s+/)[0]) === site) rest = rest.slice(0, ends.index).trim();
+  }
+  const starts = [...rest.matchAll(TITLE_SEPARATOR)][0];
+  if (starts && letters(rest.slice(0, starts.index)) === site) rest = rest.slice(starts.index + starts[0].length).trim();
+  return rest || whole;
+}
+// The tab's title as it names what the tab shows: without its site's name (withoutSiteName).
+const tabTitle = (tab) => withoutSiteName((tab && tab.title) || "", tab && tab.url).slice(0, 300);
 // The address's own name (naming.rs' address_name): a script's `file=` or `filename=` value naming
 // a file of a known type (#695), else its last part.
 function addressFileName(url) {
@@ -1194,19 +1607,19 @@ async function mediaDownload(tabId, url) {
       explicit: true,
       url: page,
       src: it.url,
-      title: String(tab.title || "").slice(0, 300),
+      title: tabTitle(tab),
       referrer: tab.url && tab.url !== page ? tab.url : "",
       ...(await streamContext(tabId, it.url, ctx)),
       ...(ctx.incognito ? { private: true } : {}),
     });
   }
   const { mediaTitleName } = await ext.storage.local.get({ mediaTitleName: false });
-  const named = mediaName(it.url, it.mime, tab.title, mediaTitleName);
+  const title = tabTitle(tab);
+  const named = mediaName(it.url, it.mime, title, mediaTitleName);
   // The name the list shows; none when the address names the file as the app would (a server's
   // Content-Disposition may still name it). The title goes too: a file whose address names nothing
   // and whose type only the server or its bytes say is named by it in the app (#800).
-  const title = String(tab.title || "").slice(0, 300);
-  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, filename: named.own ? "" : named.name, ...(title ? { title } : {}), ...ctx });
+  return handOff({ url: it.url, referrer: page, page: tab.url || page, size: it.size, mime: it.mime, explicit: true, filename: named.own ? "" : named.name, ...(title ? { title } : {}), ...ctx });
 }
 
 // ---- the hand-off ------------------------------------------------------------------------
@@ -1256,7 +1669,7 @@ async function videoCookies(url, ctx) {
 async function streamContext(tabId, url, ctx) {
   const c = await videoCookies(url, ctx);
   const tab = media.get(tabId);
-  const it = tab && [...tab.items, ...(tab.maybe || [])].find((x) => x.url === url);
+  const it = tab && [...tab.items, ...(tab.ranged || []), ...(tab.maybe || [])].find((x) => x.url === url);
   const sent = (it && it.sent) || {};
   const web = (v) => typeof v === "string" && /^https?:\/\/\S+$/i.test(v) && v.length <= URL_MAX;
   const fetchedWith = {
@@ -1535,15 +1948,43 @@ async function browserProxy(url, incognito) {
   return {};
 }
 
+// The web page a download was started from, whole (#607): the Referer the browser sends with it
+// is often the site's address only (the page's referrer policy), and the app's "Refresh download
+// address" opens this page, where a fresh link can be taken. Firefox names the page a load came
+// from (`startedFrom`); else the tab it was started in (for a link opened in a tab of its own,
+// the tab that opened it), else the active tab of the window last used, from the same kind of
+// window (private or not). "" when none is a web page other than the file itself.
+async function pageOf(item, urls) {
+  const web = (u) => typeof u === "string" && /^https?:\/\//i.test(u) && u.length <= URL_MAX && !urls.includes(u);
+  forget(startedFrom, 120000);
+  const seen = urls.map((u) => startedFrom.get(u)).find(Boolean);
+  if (seen && web(seen.page)) return seen.page;
+  const tabId = item.tabId >= 0 ? item.tabId : seen && seen.tabId >= 0 ? seen.tabId : -1;
+  const same = (tab) => tab && Boolean(tab.incognito) === Boolean(item.incognito);
+  try {
+    let tab = tabId >= 0 ? await ext.tabs.get(tabId) : (await ext.tabs.query({ active: true, lastFocusedWindow: true }))[0];
+    if (same(tab) && !web(tab.url) && tab.openerTabId >= 0) tab = await ext.tabs.get(tab.openerTabId);
+    if (same(tab) && web(tab.url)) return tab.url;
+  } catch {
+    // The tab is gone: no page.
+  }
+  return "";
+}
+
 // `explicit`: the user asked for this one (the right-click item), so Options' automatic-capture
 // rules (file types, excluded sites) don't apply; the host checks them for everything else.
+// `page`: the web page it was started from (`pageOf`).
 async function handOff(d) {
   const message = {
     url: d.url,
     finalUrl: d.finalUrl && d.finalUrl !== d.url ? d.finalUrl : "",
     referrer: d.referrer || "",
+    ...(d.page && /^https?:\/\//i.test(d.page) && d.page.length <= URL_MAX ? { pageUrl: d.page } : {}),
     cookies: await cookieHeader(d.url, d),
     filename: d.filename || "",
+    // The browser's name is only its address's guess (#948, `addressNamed`): the host checks
+    // Options' file types by it, and MDM names the file from the server's own answer.
+    ...(d.nameGuessed ? { nameGuessed: true } : {}),
     ...(d.size > 0 ? { size: d.size } : {}),
     ...(d.mime ? { mime: d.mime } : {}),
     ...(d.post ? { post: d.post.body, postType: d.post.type || "" } : {}),
@@ -1597,6 +2038,8 @@ async function candidate(item, url, clicked = false) {
   if (by) return left(by);
   const type = extensionOf(name);
   if (!type || !typePatterns(r.types).some((p) => p.test(type))) return left("file-type");
+  // The app's Torrent settings leave torrents to the browser (its own torrent client, #1058).
+  if (r.torrents === false && isTorrent(name, [first, url], item.mime)) return left("torrents");
   // Smaller than Options' minimum (when the browser knows the size already).
   const size = item.totalBytes > 0 ? item.totalBytes : item.fileSize;
   if (r.minKb > 0 && size > 0 && size < r.minKb * 1024) return left("small");
@@ -1609,14 +2052,17 @@ function leftAlone(c, item, url) {
   if (c && c.left) noteLeft(c.left, c.name, firstUrl(item) || url, item.incognito, false).catch(() => {});
 }
 
-// Offer the download to the app under `name`; true if it took it.
-async function offer(item, url, name) {
+// Offer the download to the app under `name`; true if it took it. `nameGuessed`: `name` is only
+// its address's (`addressNamed`).
+async function offer(item, url, name, nameGuessed = false) {
   const first = firstUrl(item);
   const reply = await handOff({
     url: first,
     finalUrl: url,
     referrer: item.referrer,
+    page: item.page || (await pageOf(item, [first, url, item.url].filter(Boolean))),
     filename: name,
+    nameGuessed,
     size: item.totalBytes > 0 ? item.totalBytes : item.fileSize,
     mime: item.mime,
     post: postOf(first),
@@ -1657,7 +2103,7 @@ async function link(url, referrer, incognito, name) {
   const type = extensionOf(name || url.split(/[?#]/)[0]).toUpperCase();
   if (r && r.opened === false && OPENED[type]) return { taken: false };
   const filename = name || addressName(url);
-  const item = { url, referrer, incognito, ...(filename ? { filename } : {}) };
+  const item = { url, referrer, page: referrer, incognito, ...(filename ? { filename } : {}) };
   const c = await candidate(item, url, true).catch(() => null);
   if (!c || c.left) {
     leftAlone(c, item, url);
@@ -1722,6 +2168,22 @@ function noName(suggest) {
   suggest({ filename: "..", conflictAction: "uniquify" });
 }
 
+// Chromium: whether the browser's `name` for a download is only its address's (#948). The session
+// rule below makes a file the browser would show or play a download by setting its answer's
+// Content-Disposition to "attachment": an inline answer's own name (`inline; filename="Movie.mkv"`)
+// goes with it, and the browser names the file after its address (`main.mkv`). Such a download (a
+// type the rule takes, named after its address, give or take the extension the type adds) goes to
+// MDM unnamed: MDM reads the server's own name from its answer, as Firefox's way does here
+// (`answerFile`). A name of its own (an attachment's, which the rule leaves alone; a link's
+// `download` name) stays the browser's.
+function addressNamed(item, url, name) {
+  const mime = String(item.mime || "").toLowerCase();
+  if (!mime || !openedTypes.some((m) => mime.startsWith(m))) return false;
+  const stem = (n) => splitExtension(n)[0].toLowerCase();
+  const own = addressName(url);
+  return Boolean(own) && stem(name) === stem(own);
+}
+
 if (SAFARI) {
   // Nothing to listen to: see `link`.
 } else if (!FIREFOX) {
@@ -1733,7 +2195,8 @@ if (SAFARI) {
     const url = item.finalUrl || item.url;
     candidate(item, url)
       .then(async (c) => {
-        const taken = Boolean(c && c.name && !c.left) && (await offer(item, url, c.name));
+        const taken =
+          Boolean(c && c.name && !c.left) && (await offer(item, url, c.name, addressNamed(item, url, c.name)));
         if (taken) return drop(item);
         // The browser goes on first; why is said after.
         noName(suggest);
@@ -1772,9 +2235,12 @@ if (SAFARI) {
 // ---- files the browser would open itself (a PDF, an MP3): made downloads -----------------
 
 // Options → General in the app: also take the listed types the browser shows or plays when a
-// link leads to one. Chromium: a session rule marks such answers as attachments, so they come
-// down the download path above (where the rules and Alt apply). Firefox: taken from the answer
-// as a download is (`headersReceived`), else it opens.
+// link leads to one, or a page shows one in a frame, an <embed> or an <object> (a course's PDF,
+// #1087). Chromium: a session rule marks such answers as attachments, so they come down the
+// download path above (where the rules and Alt apply). Firefox: taken from the answer as a
+// download is (`headersReceived`), else it opens. A file a page's script fetches (its own PDF
+// viewer reading it, then showing what it read) stays the page's: taken, the page would get
+// nothing and say the file failed to load.
 const OPENED = {
   PDF: ["application/pdf"],
   MP3: ["audio/mpeg", "audio/mp3"],
@@ -1806,7 +2272,7 @@ function excludedHosts() {
     const p = raw.trim().replace(/^[a-z]+:\/\//i, "").split("/")[0].replace(/^\*\./, "");
     let host = "";
     try {
-      host = new URL(`http://${p}`).hostname;
+      host = new URL(`http://${p}`).hostname.replace(/\.+$/, "");
     } catch {
       continue;
     }
@@ -1836,8 +2302,11 @@ async function syncOpenedRule() {
       responseHeaders: [{ header: "content-disposition", operation: "set", value: "attachment" }],
     },
     condition: {
-      resourceTypes: ["main_frame"],
+      resourceTypes: PAGE_LOADS,
       responseHeaders: [{ header: "content-type", values: openedTypes.map((m) => `${m}*`) }],
+      // An attachment is a download already, with the server's own name, which "set" would drop
+      // (#948): left as it is.
+      excludedResponseHeaders: [{ header: "content-disposition", values: ["attachment*"] }],
       // Options' excluded sites keep opening in the browser: their files, and those their pages
       // lead to on another host (the page that started the load, #1049).
       ...(hosts.length ? { excludedRequestDomains: hosts, excludedInitiatorDomains: hosts } : {}),
@@ -1989,14 +2458,15 @@ async function headersReceived(d) {
   }
   const taken = await offer(item, d.url, c.name).catch(() => false);
   if (!taken) return {};
-  closeDownloadTab(d.tabId, [first, d.url]).catch(() => {});
+  // A frame's or an <embed>'s file leaves its page where it is.
+  if (d.type === "main_frame") closeDownloadTab(d.tabId, [first, d.url]).catch(() => {});
   return { cancel: true };
 }
 
 if (FIREFOX && ext.webRequest && ext.webRequest.onHeadersReceived) {
   ext.webRequest.onHeadersReceived.addListener(
     (d) => headersReceived(d).catch(() => ({})),
-    { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
+    { urls: ["<all_urls>"], types: PAGE_LOADS },
     ["blocking", "responseHeaders"],
   );
 }
@@ -2040,6 +2510,86 @@ function pageLinks(selectedOnly) {
   return links;
 }
 
+// ---- a page's links, in parts ------------------------------------------------------------
+
+// The most the host takes in one message, as the browser writes it (crates/ipc MAX_MESSAGE). A
+// page's links past it (a folder's listing of 20,000 files) go in parts under it, each with the
+// page's referrer and cookies, and MDM puts them back together into one list for Link grabber.
+const MESSAGE_MAX = 1 << 20;
+// The most parts one list goes in (crates/ipc MAX_LINK_PARTS).
+const PARTS_MAX = 256;
+
+// The most bytes `value` takes as JSON in the message the browser writes to the host: Firefox
+// writes JSON.stringify's text in UTF-8; Chromium also writes < as \u003C, and DEL and the line
+// and paragraph separators (U+2028, U+2029) escaped; Safari's helper (tools/safari) writes / as
+// \/. Counted at the most any of them writes, so a part measured within MESSAGE_MAX is within it
+// in every browser.
+function wireSize(value) {
+  const json = JSON.stringify(value);
+  let n = 0;
+  for (let i = 0; i < json.length; i++) {
+    const c = json.charCodeAt(i);
+    if (c === 0x3c || c === 0x7f) n += 6;
+    else if (c === 0x2f) n += 2;
+    else if (c < 0x80) n += 1;
+    else if (c < 0x800) n += 2;
+    // Each half of a surrogate pair: 4 bytes the pair (JSON.stringify escapes a lone one).
+    else if (c >= 0xd800 && c <= 0xdfff) n += 2;
+    else if (c === 0x2028 || c === 0x2029) n += 6;
+    else n += 3;
+  }
+  return n;
+}
+
+// `links` cut into parts, in order, each of whose messages (`base` with its links) is at most
+// `limit` bytes (wireSize). `left`: the links too long to go even alone, left out.
+function linkParts(base, links, limit = MESSAGE_MAX) {
+  const empty = wireSize({ ...base, links: [] });
+  const parts = [];
+  const left = [];
+  let part = [];
+  let size = empty;
+  for (const link of links) {
+    const own = wireSize(link);
+    if (empty + own > limit) {
+      left.push(link);
+      continue;
+    }
+    // With the comma before it, after the part's first link.
+    if (part.length && size + 1 + own > limit) {
+      parts.push(part);
+      part = [];
+      size = empty;
+    }
+    size += own + (part.length ? 1 : 0);
+    part.push(link);
+  }
+  if (part.length) parts.push(part);
+  return { parts, left };
+}
+
+// A page's links (`message.links`, with its referrer, cookies and window) to the app: in one
+// message when they fit, as before; else in parts, one after the other, each answered before the
+// next goes. An answer that isn't ok stops it (the app drops a list it didn't get whole) and is
+// the answer. `left`: how many links were too long to send at all (#too-large says so).
+async function sendLinks(message) {
+  const sent = await stamped(message);
+  if (wireSize(sent) <= MESSAGE_MAX) return native(message);
+  const batch = globalThis.crypto && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  // Measured with the widest place a part can have.
+  const { parts, left } = linkParts({ ...sent, linksPart: { batch, index: PARTS_MAX, count: PARTS_MAX } }, message.links);
+  if (!parts.length || parts.length > PARTS_MAX) {
+    // The page's cookies alone fill a message, or the list is beyond any page's.
+    await noteStatus("too-large");
+    return { ok: false, why: "too-large", error: `${message.links.length} links in ${parts.length} parts` };
+  }
+  for (const [index, links] of parts.entries()) {
+    const reply = await native({ ...message, links, linksPart: { batch, index, count: parts.length } });
+    if (!reply.ok) return reply;
+  }
+  return { ok: true, parts: parts.length, left: left.length };
+}
+
 // When the user asked and it couldn't be done: the help page's section opens beside (a link
 // MDM refused has none of its own: the connection's).
 const SECTIONS = ["not-installed", "forbidden", "not-running", "host-failed", "too-large", "update-app", "options"];
@@ -2048,14 +2598,16 @@ function explain(why) {
   ext.tabs.create({ url: `${HELP}#${at}` }).catch(() => {});
 }
 
-ext.contextMenus.onClicked.addListener(async (info, tab) => {
+// The right-click menu's items, clicked (named: tools/extension/e2e.mjs calls it in Chromium,
+// whose menus a headless browser can't open).
+async function menuClicked(info, tab) {
   const incognito = Boolean(tab && tab.incognito);
   const storeId = tab && tab.cookieStoreId;
   if (info.menuItemId === "mdm-link") {
     const url = info.linkUrl || info.srcUrl;
     // The tab's title, as the button's click sends it: the app names a video yt-dlp knows only
     // by its address (a stream's `master`, a long hash) after it (#345).
-    const title = String((tab && tab.title) || "").slice(0, 300);
+    const title = tabTitle(tab);
     // A player's own stream (blob:, a MediaSource) or a stream's manifest: the Download video
     // window, which reads streams (a manifest downloaded as a file is only a short list).
     // The manifest's own cookies (its server may not be the page's), as the media list sends.
@@ -2089,7 +2641,7 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
     }
     // ftp links too: browsers no longer download them, MDM does.
     if (!url || !/^(https?|ftps?|ftpes):/i.test(url)) return;
-    const reply = await handOff({ url, referrer: info.pageUrl, incognito, storeId, explicit: true });
+    const reply = await handOff({ url, referrer: info.pageUrl, page: info.pageUrl, incognito, storeId, explicit: true });
     if (!reply.ok) explain(reply.why);
     return;
   }
@@ -2106,10 +2658,12 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
       // A page extensions may not read (the browser's own, a store).
     }
     if (!links.length) return;
-    const reply = await native({ links, referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
-    if (!reply.ok) explain(reply.why);
+    const reply = await sendLinks({ links, referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
+    // Sent, but a link longer than a whole message was left out: the help page says so.
+    if (!reply.ok || reply.left) explain(reply.ok ? "too-large" : reply.why);
   }
-});
+}
+ext.contextMenus.onClicked.addListener(menuClicked);
 
 // ---- install, start, the toolbar popup ------------------------------------------------------
 
@@ -2274,6 +2828,18 @@ async function videoAddress(m, page, sender) {
   return named && siteKey(named) === siteKey(page) ? named : page;
 }
 
+// The title of the page the button's video is on, without its site's name (withoutSiteName): the
+// app names the video by it when yt-dlp knows it only by its address (a stream's `playlist`,
+// #345). A player in a frame of the page (an embed) has a title of its own, its site's ("Before The
+// - Short Film from Justin Barry on Vimeo"): the tab's names its video, as the right-click menu and
+// the toolbar's media list name it; the frame's only when the tab has none.
+function shownTitle(m, page, sender) {
+  const tab = sender.tab || {};
+  const framed = Boolean(sender.frameId) && Boolean(tab.title);
+  const title = framed ? tab.title : typeof m.title === "string" ? m.title : "";
+  return withoutSiteName(title, framed ? tab.url : page).slice(0, 300);
+}
+
 // What the button's click is about, as the browser knows it: the address yt-dlp is given (`own`,
 // the video's page), the video's own file or stream (`src`), the page's title, the tab as
 // referrer, and the cookies of what yt-dlp asks. Null when nothing names the video.
@@ -2291,7 +2857,11 @@ async function videoTarget(m, page, sender) {
   // The video's own file (video.js leaves it out beside a post a big site's reader knows), or a
   // stream it plays, still goes as `src`, with the page for its Referer.
   const file = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : "";
-  const src = file || (post || feed ? "" : await streamFor(sender));
+  // #1092: what the tab played for this video, found when its page couldn't be looked up
+  // (`video-played`): goes as its `src`, a feed's or a post's too, with the page's title (the
+  // only one there is for it).
+  const played = playedItem(tab.id, m.played, sender.frameId || 0);
+  const src = file || (played ? played.url : "") || (post || feed ? "" : await streamFor(sender));
   if (!named && !src) return null;
   const own = named || page;
   return {
@@ -2301,7 +2871,7 @@ async function videoTarget(m, page, sender) {
     post: post ? own : "",
     // The video's own plain file, sent as itself (#703).
     file,
-    title: typeof m.title === "string" && !post && !feed ? m.title.slice(0, 300) : "",
+    title: played || (!post && !feed) ? shownTitle(m, page, sender) : "",
     referrer: tab.url && tab.url !== own ? tab.url : "",
     // The cookies of what yt-dlp is given (the app files them under its host): the stream's
     // own server may not be the page's, and the page's cookies are not for it. With a stream's,
@@ -2421,7 +2991,8 @@ async function pageMessage(m, sender) {
     // The video's own plain file (#703): downloaded as a file, no window; with the type its
     // server said when the tab loaded it, which names a script's answer at once (#800).
     const direct = Boolean(m.direct) && Boolean(v.file) && v.file === v.src;
-    const loaded = direct && ((media.get(tab.id) || {}).items || []).find((it) => it.url === v.src);
+    // A file a player fetched in ranges (#1092) as one it plays itself.
+    const loaded = direct && playedItem(tab.id, v.src);
     const reply = await native({
       video: true,
       url: v.own,
@@ -2438,6 +3009,8 @@ async function pageMessage(m, sender) {
     return { ok: Boolean(reply.ok), why: reply.why, ...(reply.ok && direct ? { show: v.src } : {}) };
   }
   if (m.type === "video-lookup" && page) return videoLookup(m, page, sender);
+  // #1092: what the tab played for the video under the button, its page found nothing.
+  if (m.type === "video-played" && page) return videoPlayed(m, sender);
   // The button's "Show" (#703): MDM's window with that download selected.
   if (m.type === "show-download" && isWeb(m.address)) {
     return { ok: Boolean((await native({ showDownload: m.address })).ok) };
@@ -2493,6 +3066,21 @@ async function popupMessage(m) {
     const reply = await native({ excludeSite: m.host });
     await refreshRules();
     return { ok: Boolean(reply.ok) };
+  }
+  // The popup's Undo (#404): the site taken off the excluded sites again, as it was added.
+  if (m.type === "include-site" && typeof m.host === "string" && m.host) {
+    const reply = await native({ includeSite: m.host });
+    await refreshRules();
+    return { ok: Boolean(reply.ok) };
+  }
+  // Are this site's downloads left to the browser by Options' excluded sites (#404), and is it
+  // listed by its own name (Undo takes that off; a pattern of the user's own stays)?
+  if (m.type === "site-excluded" && typeof m.host === "string" && m.host) {
+    const r = await currentRules();
+    const host = m.host.toLowerCase();
+    const sites = ((r && r.excludedSites) || "").split(/\s+/).filter(Boolean);
+    const undo = sites.some((p) => p.toLowerCase() === host);
+    return { excluded: undo || Boolean(r && siteListed(r, host)), undo };
   }
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };

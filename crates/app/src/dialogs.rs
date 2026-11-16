@@ -5,7 +5,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
-use egui::{Pos2, Ui, ViewportBuilder, ViewportId, vec2};
+use egui::{Pos2, Ui, ViewportId, vec2};
 use mdm_engine::ProbeInfo;
 use url::Url;
 
@@ -230,7 +230,7 @@ pub fn keep_theme(
 /// ended without a closing pass, as Download File Info behind the Create folder question, #440).
 /// False while it is drawn pass after pass, whatever the time between them (a minimized main
 /// window runs its passes seconds apart). `key` is this caller's alone.
-fn window_was_gone(ctx: &egui::Context, key: egui::Id) -> bool {
+pub(crate) fn window_was_gone(ctx: &egui::Context, key: egui::Id) -> bool {
     let pass = ctx.cumulative_pass_nr();
     let last = ctx.data(|d| d.get_temp::<u64>(key));
     ctx.data_mut(|d| d.insert_temp(key, pass));
@@ -381,7 +381,7 @@ fn dialog_window<T>(
         forget_window(ctx, vid, key);
     }
     // Hidden until `keep_theme` has given it its theme (see there).
-    let mut builder = ViewportBuilder::default()
+    let mut builder = crate::window_builder()
         .with_visible(false)
         .with_title(crate::i18n::os_text(title))
         .with_inner_size(shown)
@@ -919,7 +919,10 @@ pub(crate) struct Found {
 pub(crate) type Look = Arc<dyn Fn(&PlaceAsk) -> Found + Send + Sync>;
 
 /// The engine's naming rules on the disk as it is now; on a thread of its own (it may wait).
+/// Once the old files being deleted in that folder for a new start are gone (a duplicate
+/// overwritten: its new copy takes its name, `naming::clear`).
 fn look(ask: &PlaceAsk) -> Found {
+    mdm_engine::naming::wait_cleared(&ask.dir);
     Found {
         dest: if ask.number {
             mdm_engine::naming::destination(&ask.dir, &ask.name)
@@ -1010,6 +1013,12 @@ impl SaveAsPlace {
         Some(found.folder)
     }
 
+    /// The last question's answer isn't taken any more (a name chosen in the Save dialog stays
+    /// as chosen): the next [`Self::folder`] asks afresh about Save As as it is then.
+    pub fn forget(&mut self) {
+        self.asking = None;
+    }
+
     /// Whether Save As's folder is there, as looked at for the text it shows (None: not known
     /// yet). A path typed in Save As is asked about here, as it is (its folder only).
     pub fn folder(&mut self, save_as: &mut String) -> Option<bool> {
@@ -1095,6 +1104,12 @@ pub struct FileInfo {
     /// Save As's name numbered in its folder, and whether the folder is there, looked at off the
     /// window's thread (#743).
     place: SaveAsPlace,
+    /// The file the system Save dialog asked "Replace?" about, answered Yes (#1088): the
+    /// download replaces it as it completes, while Save As still names it ([`Self::replaces`]).
+    replace: Option<PathBuf>,
+    /// Set on the Save dialog's thread with its answer: whether it replaces a file
+    /// (`winui::replaces_picked`).
+    picked_replaces: Arc<std::sync::atomic::AtomicBool>,
 }
 
 pub enum Start {
@@ -1183,6 +1198,8 @@ impl FileInfo {
             route,
             through,
             direct,
+            replace: None,
+            picked_replaces: Default::default(),
         }
     }
 
@@ -1236,6 +1253,7 @@ impl FileInfo {
                 if url.origin() != self.url.origin() {
                     self.context.cookies = None;
                     self.context.referer = None;
+                    self.context.page_url = None;
                     self.request.headers.remove(reqwest::header::COOKIE);
                     self.request.headers.remove(reqwest::header::REFERER);
                 }
@@ -1269,6 +1287,26 @@ impl FileInfo {
         // Fitted to the new folder too (#28): a deeper one leaves a long name less room.
         self.save_as = self.place.name_in(folder, &name);
         self.edited = true;
+    }
+
+    /// The system Save dialog's answer (`winui::saved_name`): Save As takes its folder and the
+    /// name typed there as a name typed in Save As is taken (#1088): not numbered. With
+    /// `replace` (the dialog asked "Replace?" about that file and was answered Yes) the download
+    /// replaces it as it completes, never before. Otherwise a name taken by the time the
+    /// download starts is numbered then (`Item::number_at_start`), so nothing is overwritten.
+    fn set_saved(&mut self, path: &Path, replace: bool) {
+        self.save_as = display_path(path);
+        self.edited = true;
+        // A look at the disk still under way for the name shown before would number this one
+        // if it is the same name (the user just chose it as it is).
+        self.place.forget();
+        self.replace = replace.then(|| self.dest());
+    }
+
+    /// The file the download replaces as it completes (`Item::replace_file`): the one the Save
+    /// dialog was told to replace, while Save As still names it.
+    pub fn replaces(&self) -> Option<PathBuf> {
+        self.replace.clone().filter(|p| *p == self.dest())
     }
 
     /// "Remember this path for … category": the category and the folder to keep for it.
@@ -1505,25 +1543,32 @@ impl FileInfo {
                         self.set_folder(&folder);
                     }
                 }
-                // "...": choose the folder.
+                // "...": the system's Save dialog, its folder and file name (#1088).
                 if winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...").clicked() {
-                    let now = self
-                        .dest()
-                        .parent()
-                        .map(Path::to_path_buf)
+                    let dest = self.dest();
+                    let dir = dest.parent().map(Path::to_path_buf).unwrap_or_default();
+                    let name = dest
+                        .file_name()
+                        .map(|n| n.to_string_lossy().into_owned())
                         .unwrap_or_default();
-                    // i18n: title of the folder picker
-                    let title = crate::i18n::t("Select a folder").to_owned();
-                    winui::start_pick(ui.ctx(), "file-info-folder", move || {
-                        let mut pick = crate::winui::file_dialog(&title);
-                        if now.is_dir() {
-                            pick = pick.set_directory(&now);
-                        }
-                        pick.pick_folder()
+                    let title = crate::i18n::t("Save As").to_owned();
+                    let replaces = self.picked_replaces.clone();
+                    winui::start_pick(ui.ctx(), "file-info-save-as", move || {
+                        let picked = winui::save_dialog(&title, &dir, &name).save_file()?;
+                        let saved = winui::saved_name(&name, &picked);
+                        // On the dialog's thread: it looks at the disk.
+                        replaces.store(
+                            winui::replaces_picked(&picked, &saved),
+                            std::sync::atomic::Ordering::Relaxed,
+                        );
+                        Some(saved)
                     });
                 }
-                if let Some(dir) = winui::picked(ui.ctx(), "file-info-folder") {
-                    self.set_folder(&dir);
+                if let Some(path) = winui::picked(ui.ctx(), "file-info-save-as") {
+                    let replace = self
+                        .picked_replaces
+                        .load(std::sync::atomic::Ordering::Relaxed);
+                    self.set_saved(&path, replace);
                 }
 
                 let caption = crate::i18n::fmt(
@@ -1597,7 +1642,8 @@ impl FileInfo {
                 }
 
                 // Where the server is (#140), as the look saw it: "..." while it looks; blank when
-                // nothing was asked (the browser had the answer) or the look failed.
+                // nothing was asked (the browser had the answer). When the look failed, why, in
+                // words (#762: a refused certificate said so), where the size says "Error".
                 // i18n: label before where a download's server is (its country and round trip)
                 winui::text_right(
                     &p,
@@ -1628,7 +1674,17 @@ impl FileInfo {
                             );
                         }
                     }
-                    Some(Err(_)) => {}
+                    Some(Err(reason)) => {
+                        let (rect, cut) = winui::text_fit(
+                            &p,
+                            o.x + 96.0,
+                            o.y + 193.0 + dy,
+                            reason,
+                            winui::ERROR(),
+                            o.x + 462.0,
+                        );
+                        winui::copyable(ui, rect, "file-info-failed", reason, cut);
+                    }
                 }
 
                 // Held back while the address or the file's name can't be downloaded to (an
@@ -2062,24 +2118,13 @@ impl Complete {
                     if grip.hovered() {
                         ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
                     }
-                    // The file is looked for beside the window, with the drag (#743); where a move
-                    // took it comes back to the app (`dragged_out`), however late.
                     if grip.drag_started() {
-                        let (id, from, wake) = (self.id, self.path.clone(), ui.ctx().clone());
-                        let followed = move |out| {
-                            DRAGGED_OUT
-                                .lock()
-                                .unwrap_or_else(|e| e.into_inner())
-                                .push((id, from, out));
-                            wake.request_repaint();
-                        };
-                        if let Err(e) = crate::win32::drag_file_out(
+                        drag_downloads_out(
+                            ui.ctx(),
                             crate::i18n::t("Download complete"),
-                            &self.path,
-                            followed,
-                        ) {
-                            tracing::warn!("drag out: {e}");
-                        }
+                            vec![(self.id, self.path.clone())],
+                            DraggedFrom::Complete,
+                        );
                     }
                     p.rect_filled(handle, 0.0, winui::FIELD());
                     p.rect_stroke(
@@ -3088,10 +3133,10 @@ fn tell_turn_off_failed(why: String) {
     );
 }
 
-/// What became of a file dragged out of Download complete (#869), when the drop target moved
-/// it (a copy or a link leaves it where it was: nothing to say).
+/// What became of a file dragged out of Download complete (#869) or the list (#1210), when the
+/// drop target moved it (a copy or a link leaves it where it was: nothing to say).
 #[derive(Clone, Debug, PartialEq, Eq)]
-// Made by Windows' drag only (the grip is Windows-only, see Complete::show).
+// Made by Windows' drag only (see drag_downloads_out).
 #[cfg_attr(not(windows), allow(dead_code))]
 pub enum DraggedOut {
     /// Moved there (the shell said where).
@@ -3101,12 +3146,70 @@ pub enum DraggedOut {
     MovedAway,
 }
 
-/// Files dragged out and moved: (download, the path it was dragged from, what became of it).
-static DRAGGED_OUT: Mutex<Vec<(u64, PathBuf, DraggedOut)>> = Mutex::new(Vec::new());
+/// Where downloads' files were dragged out from: the download's note says so.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(not(windows), allow(dead_code))]
+pub enum DraggedFrom {
+    /// Download complete's grip (#869).
+    Complete,
+    /// The main window's list (#1210).
+    List,
+}
+
+/// A download's file dragged out and moved.
+#[cfg_attr(not(windows), allow(dead_code))]
+pub struct Followed {
+    pub id: u64,
+    /// The path it was dragged from (the download follows only while it still points there).
+    pub from: PathBuf,
+    pub out: DraggedOut,
+    pub dragged_from: DraggedFrom,
+}
+
+/// Files dragged out and moved, for the app to update their downloads.
+static DRAGGED_OUT: Mutex<Vec<Followed>> = Mutex::new(Vec::new());
 
 /// What [`DRAGGED_OUT`] was given since the last call (the app updates its downloads).
-pub fn dragged_out() -> Vec<(u64, PathBuf, DraggedOut)> {
+pub fn dragged_out() -> Vec<Followed> {
     std::mem::take(&mut *DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner()))
+}
+
+/// Drag downloads' files (download, its file) out of our window titled `title` (in the
+/// interface language), as Explorer drags files: Download complete's grip and the list's rows
+/// share it. The files are looked for beside the window, with the drag (#743): those not there
+/// are left out. Where a move took each one comes back to the app (`dragged_out`), however late.
+/// Windows only: dragging files out to another program goes through OLE there; Linux and macOS
+/// have no such drag yet (their window library has no drag source), so nothing starts one there.
+#[cfg(windows)]
+pub fn drag_downloads_out(
+    ctx: &egui::Context,
+    title: &str,
+    files: Vec<(u64, PathBuf)>,
+    dragged_from: DraggedFrom,
+) {
+    // One file for downloads that share it, in the order given.
+    let mut paths: Vec<PathBuf> = Vec::new();
+    for (_, f) in &files {
+        if !paths.contains(f) {
+            paths.push(f.clone());
+        }
+    }
+    let wake = ctx.clone();
+    let followed = move |from: PathBuf, out: DraggedOut| {
+        let mut told = DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner());
+        for (id, _) in files.iter().filter(|(_, f)| *f == from) {
+            told.push(Followed {
+                id: *id,
+                from: from.clone(),
+                out: out.clone(),
+                dragged_from,
+            });
+        }
+        wake.request_repaint();
+    };
+    if let Err(e) = crate::win32::drag_files_out(title, paths, followed) {
+        tracing::warn!("drag out: {e}");
+    }
 }
 
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
@@ -3146,6 +3249,9 @@ fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
     {
         crate::win32::open_file_shell(path)
     }
+    // Linux and macOS: no folder to give. Their file managers start a file's program in no
+    // folder of the file's either (macOS's LaunchServices starts every app in `/`; a Linux
+    // desktop's in the launcher's own), and programs there don't write beside themselves.
     #[cfg(not(windows))]
     {
         open::that_detached(path)
@@ -3162,12 +3268,12 @@ pub fn open_download_now(path: &Path, moved_away: bool) -> bool {
 }
 
 /// Why a download's file isn't where MDM saved it, when it was dragged out of Download complete
-/// to a place MDM couldn't learn (#869).
+/// (#869) or the list (#1210) to a place MDM couldn't learn.
 fn moved_away_text(path: &Path) -> String {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
     crate::i18n::fmt(
         crate::i18n::t(
-            "{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.",
+            "{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.",
         ),
         &[("file", &name)],
     )
@@ -4224,7 +4330,7 @@ mod tests {
             Box::leak(Box::new(crate::clipboard::Reader::new(
                 move || {
                     let _ = stuck.lock().unwrap().recv();
-                    Some(
+                    crate::clipboard::Read::Text(
                         " https://late.example/a.zip
 "
                         .to_owned(),
@@ -4551,6 +4657,108 @@ mod tests {
         let mut save_as = place.name_in(&gone, "a.zip");
         assert_eq!(answered(&mut place, &mut save_as), Some(false));
         assert_eq!(save_as, display_path(&gone.join("a.zip")));
+    }
+
+    /// #1088: a name chosen in the Save dialog that a file there already has is taken as a typed
+    /// one: Save As keeps it as chosen (not renumbered under the user), its folder looked at; the
+    /// download numbers it as it starts (`Item::number_at_start`), so nothing is overwritten.
+    #[test]
+    fn a_name_chosen_in_the_save_dialog_is_kept_as_typed() {
+        let d = tempfile::tempdir().unwrap();
+        std::fs::write(d.path().join("testName.7z"), b"x").unwrap();
+        let mut place = SaveAsPlace::new(None);
+        let _guess = place.name_in(d.path(), "MPC-BE.1.9.3.x86.7z");
+        let chosen = crate::winui::saved_name("MPC-BE.1.9.3.x86.7z", &d.path().join("testName"));
+        let mut save_as = display_path(&chosen);
+        let mut there = None;
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        while there.is_none() && std::time::Instant::now() < until {
+            there = place.folder(&mut save_as);
+            std::thread::sleep(std::time::Duration::from_millis(2));
+        }
+        assert_eq!(there, Some(true));
+        assert_eq!(resolve_path(&save_as), d.path().join("testName.7z"));
+        // Where the download goes as it starts: the next free name.
+        assert_eq!(
+            mdm_engine::naming::destination(d.path(), "testName.7z"),
+            d.path().join("testName (1).7z")
+        );
+    }
+
+    /// Download File Info for a file `name` the browser named (no look-up), downloads in
+    /// `downloads`; the runtime it was given, kept alive with it.
+    fn file_info(downloads: &Path, name: &str) -> (FileInfo, tokio::runtime::Runtime) {
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap();
+        let fi = FileInfo::new(
+            NewUrl {
+                url: Url::parse(&format!("http://127.0.0.1:9/{name}")).unwrap(),
+                login: None,
+            },
+            mdm_ipc::Command {
+                name: Some(name.to_owned()),
+                ..Default::default()
+            },
+            crate::app::RequestParts {
+                headers: Default::default(),
+                opts: Default::default(),
+            },
+            Default::default(),
+            downloads.to_owned(),
+            Vec::new(),
+            rt.handle(),
+            &egui::Context::default(),
+        );
+        (fi, rt)
+    }
+
+    /// #1088: a file the Save dialog asked "Replace?" about, answered Yes, is the one the
+    /// download replaces (`Item::replace_file`), under that exact name, while Save As names it.
+    /// A name the dialog asked nothing about (a file there or not) replaces nothing.
+    #[test]
+    fn a_file_the_save_dialog_was_told_to_replace_is_replaced() {
+        let d = tempfile::tempdir().unwrap();
+        let taken = d.path().join("taken.7z");
+        std::fs::write(&taken, b"the old file").unwrap();
+        let (mut fi, _rt) = file_info(d.path(), "MPC-BE.1.9.3.x86.7z");
+        assert_eq!(fi.replaces(), None);
+        fi.set_saved(&taken, true);
+        assert_eq!(fi.dest(), taken);
+        assert_eq!(fi.replaces(), Some(taken.clone()));
+        // Save As changed since: the new name replaces nothing; the chosen one again does.
+        fi.save_as = display_path(&d.path().join("other.7z"));
+        assert_eq!(fi.replaces(), None);
+        fi.save_as = display_path(&taken);
+        assert_eq!(fi.replaces(), Some(taken.clone()));
+        // Another answer of the dialog that asked nothing.
+        fi.set_saved(&taken, false);
+        assert_eq!(fi.replaces(), None);
+    }
+
+    /// #1088: the name chosen in the Save dialog is the one Download File Info had guessed, and
+    /// the disk's numbered answer for that guess comes after: Save As keeps the name as chosen
+    /// (it used to become `taken (1).7z`, and the download with it).
+    #[test]
+    fn a_late_answer_never_numbers_the_name_chosen_in_the_save_dialog() {
+        let d = tempfile::tempdir().unwrap();
+        let (mut fi, _rt) = file_info(d.path(), "taken.7z");
+        let (look, release) = slow_look(&["taken.7z"]);
+        fi.place = SaveAsPlace::with(look, None);
+        fi.save_as = fi.place.name_in(d.path(), "taken.7z");
+        let taken = d.path().join("taken.7z");
+        assert_eq!(fi.dest(), taken, "the guess, not numbered yet");
+        fi.set_saved(&taken, true);
+        drop(release);
+        let mut there = None;
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        while there.is_none() && std::time::Instant::now() < until {
+            there = fi.folder_found();
+            std::thread::sleep(std::time::Duration::from_millis(2));
+        }
+        assert_eq!(there, Some(true));
+        assert_eq!(fi.dest(), taken);
+        assert_eq!(fi.replaces(), Some(taken));
     }
 
     /// #743: Start in a dialog whose folder is on a disk slow to answer holds up no frame: the

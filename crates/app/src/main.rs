@@ -15,6 +15,7 @@ mod crashui;
 mod debrid;
 mod defaultbrowser;
 mod deferred_rename;
+mod deleter;
 mod derive;
 mod dialogs;
 mod droptarget;
@@ -34,6 +35,7 @@ mod i18n;
 mod icons;
 mod langpick;
 mod launch;
+mod linkparts;
 mod list;
 mod lookwatch;
 mod model;
@@ -50,6 +52,7 @@ mod quota;
 mod regional;
 mod remote;
 mod renderer;
+mod resumeread;
 mod rss;
 mod rssdlg;
 mod scale;
@@ -74,6 +77,7 @@ mod unix;
 mod update;
 mod videodlg;
 mod videolookup;
+mod videoplace;
 mod wake;
 mod webmark;
 mod whereis;
@@ -82,6 +86,22 @@ mod win32;
 mod winui;
 #[cfg(any(target_os = "linux", test))]
 mod xdgicons;
+
+/// The application's id: Wayland's app_id and X11's WM_CLASS of every window of ours
+/// ([`window_builder`]). The desktop matches a window to the desktop entry whose
+/// `StartupWMClass=` names it (tools/installer/build-linux.sh, in the AppImage and the packages),
+/// so a window pinned to the taskbar or the dock is the launcher's, whatever name an AppImage
+/// manager gave the entry (#940). Also the entry's own name and the program's.
+pub const APP_ID: &str = "misterdownloadmanager";
+
+/// A new window's builder: every window of ours starts from it, so each carries [`APP_ID`]
+/// (eframe gives the main window its app name, a dialog nothing). Without it a dialog had no
+/// app_id on Wayland and X11's default WM_CLASS, the program's file name (an AppImage's own name),
+/// so the dock showed it apart from the launcher and the main window (#940). Windows and macOS
+/// have no such id: nothing changes there.
+pub fn window_builder() -> egui::ViewportBuilder {
+    egui::ViewportBuilder::default().with_app_id(APP_ID)
+}
 
 /// The main window's title (dialogs find their owner by it).
 pub const MAIN_TITLE: &str = concat!("Mister Download Manager ", env!("CARGO_PKG_VERSION"));
@@ -101,10 +121,9 @@ pub fn app_icon() -> std::sync::Arc<egui::IconData> {
     app_picture()
 }
 
-/// The app icon's picture, the 256 px size, on every system: what MDM draws or hands over as a
-/// picture (the tray's icon, macOS's menu bar item; the crash report window's heading). Not
-/// [`app_icon`], empty on macOS: an empty picture can't be made into the menu bar item, so macOS
-/// had none and closing the window quit (#529).
+/// The app icon's picture, the 256 px size, on every system: what MDM draws as a picture (the
+/// crash report window's heading). Not [`app_icon`], empty on macOS. The tray's icon takes the
+/// hand-made size it is drawn at instead (`tray::picture`, #1161).
 pub fn app_picture() -> std::sync::Arc<egui::IconData> {
     static ICON: std::sync::OnceLock<std::sync::Arc<egui::IconData>> = std::sync::OnceLock::new();
     ICON.get_or_init(|| {
@@ -127,21 +146,47 @@ pub fn offscreen() -> bool {
 /// open from scripts, and the clipboard belongs to the person at the computer (Add URL's
 /// address came from it, and was fetched). It may wait for the clipboard's owner for ever:
 /// never called on the window's thread, only by `clipboard`'s reader (#418, #661).
-pub fn clipboard_text() -> Option<String> {
+pub fn clipboard_text() -> clipboard::Read {
     // Off-screen test copies: MDM_TEST_CLIPBOARD=<file> is what they find in the clipboard
     // (#709's checks of Add batch download from clipboard), read when they ask, as the
-    // clipboard would be; the person's own clipboard is never read.
+    // clipboard would be; the person's own clipboard is never read. No file: an empty
+    // clipboard; a file that can't be read (a check holds it open, #1157's): one that can't be.
     if offscreen()
         && let Some(file) = std::env::var_os("MDM_TEST_CLIPBOARD")
     {
-        return std::fs::read_to_string(file).ok();
+        return match std::fs::read_to_string(file) {
+            Ok(text) => clipboard::Read::Text(text),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => clipboard::Read::NoText,
+            Err(e) => {
+                tracing::debug!("clipboard: not read now ({e})");
+                clipboard::Read::Failed
+            }
+        };
     }
     // Nor in unit tests: the person's clipboard isn't theirs, and tests opening a window that
     // reads it (Download video's) on parallel threads corrupted the heap (Windows' clipboard,
     // opened from two threads at once).
-    read_clipboard(offscreen() || cfg!(test), || {
-        arboard::Clipboard::new().ok()?.get_text().ok()
-    })
+    read_clipboard(offscreen() || cfg!(test), system_clipboard_text)
+}
+
+/// The system clipboard's text, read with arboard (under [`clipboard_lock`], [`read_clipboard`]).
+/// An empty clipboard, or one that holds no text (or none arboard can convert), has no text; any
+/// other error is a read that failed now (another program has the clipboard open, the system
+/// refused) and says nothing of what it holds (#1157). On X11, arboard answers an owner that
+/// doesn't answer in time as having no text: the two can't be told apart there.
+fn system_clipboard_text() -> clipboard::Read {
+    let got = arboard::Clipboard::new().and_then(|mut c| c.get_text());
+    match got {
+        Ok(text) => clipboard::Read::Text(text),
+        Err(arboard::Error::ContentNotAvailable | arboard::Error::ConversionFailure) => {
+            clipboard::Read::NoText
+        }
+        Err(e) => {
+            // At most once a second (the watch's look), and only while it fails.
+            tracing::debug!("clipboard: not read now ({e})");
+            clipboard::Read::Failed
+        }
+    }
 }
 
 /// A number that changes whenever the clipboard does, so the watch for copied links
@@ -181,11 +226,15 @@ fn clipboard_lock() -> Option<egui_winit::clipboard::SystemClipboardLock> {
     lock
 }
 
-fn read_clipboard(off: bool, read: impl FnOnce() -> Option<String>) -> Option<String> {
+/// `read` under [`clipboard_lock`]; `off`: not read at all, no text. A wait for the lock that
+/// ran out is a read that failed: the clipboard wasn't looked at.
+fn read_clipboard(off: bool, read: impl FnOnce() -> clipboard::Read) -> clipboard::Read {
     if off {
-        return None;
+        return clipboard::Read::NoText;
     }
-    let _lock = clipboard_lock()?;
+    let Some(_lock) = clipboard_lock() else {
+        return clipboard::Read::Failed;
+    };
     read()
 }
 
@@ -285,6 +334,10 @@ fn main() -> std::process::ExitCode {
     // PAC's myIpAddress from the routing table, not a UDP socket (a firewall prompt, #35).
     #[cfg(windows)]
     mdm_engine::net::set_source_lookup(win32::source_address);
+    // Whether paths may pass Windows' MAX_PATH (#1102): names are fitted to it while they may
+    // not. Linux and macOS have no such switch, only their own fixed limits (naming::Limits).
+    #[cfg(windows)]
+    mdm_engine::naming::set_long_paths(win32::long_paths_enabled());
     // misterdownloadmanager-cli's commands (crates/cli): its launcher starts this program for
     // them. Nothing of the app's runs: no window, instance, crash monitor or crash log.
     if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {
@@ -375,8 +428,9 @@ fn app() -> eframe::Result {
     };
     #[cfg(windows)]
     win32::mark_running();
-    // Started with the session (#226): in the notification area, not in front.
-    let start = start_mode(cmd.as_ref().is_some_and(|c| c.startup), can_hide());
+    // Started with the session (#226): read before the command goes to the channel; the start's
+    // mode once the window system is known (below).
+    let at_login = cmd.as_ref().is_some_and(|c| c.startup);
     // This launch is MDM: its fonts are looked up while the rest starts (only the instance pays
     // for them, not a launch that hands its command over).
     theme::prepare_fonts();
@@ -399,6 +453,8 @@ fn app() -> eframe::Result {
             ctx.request_repaint();
         }
     });
+    #[cfg(target_os = "linux")]
+    let wake_at_end = wake.clone();
     // macOS: so do the .torrent files and magnet links Finder and the browsers hand over (#698).
     #[cfg(target_os = "macos")]
     unix::open_events::start(tx.clone(), wake.clone());
@@ -435,13 +491,20 @@ fn app() -> eframe::Result {
                 loaded.settings.language.as_deref().unwrap_or("system"),
                 loaded.settings.dark_mode_support,
             ),
+            at_login,
         );
     }
+    // Linux: the session's end (logind's SIGTERM at logout or shutdown) is heard from now on,
+    // and run at the window's next frame (`Shared::logic`).
+    #[cfg(target_os = "linux")]
+    unix::on_session_end(rt.handle(), wake_at_end);
     // Linux: the libraries the window loads when it opens (#265). Without them it can't open
     // (winit stopped at start): MDM says what's missing, in its language, and how to install it.
     #[cfg(target_os = "linux")]
     {
         i18n::set_lang(loaded.settings.language.as_deref());
+        // View → Window system's choice (#624): the same however MDM was started.
+        unix::set_window_system_pick(loaded.settings.window_system);
         let ws = unix::window_system();
         if !ws.missing.is_empty() {
             crash::clean_exit();
@@ -454,6 +517,9 @@ fn app() -> eframe::Result {
             tracing::warn!("{text}");
         }
     }
+    // Started with the session (#226): in the notification area, not in front, where a window
+    // can be hidden (Linux: known once the window system is chosen above, with the saved choice).
+    let start = start_mode(at_login, can_hide());
     // Secrets from before (sealed, or kept as they were) go to the system's keychain now; the
     // list is saved with their references once it holds them (secrets.rs, #44).
     let _ = loaded.settings.for_disk();
@@ -468,7 +534,7 @@ fn app() -> eframe::Result {
         .filter(|[x, y, w, h]| *w >= 600 && *h >= 300 && on_a_screen(x + 40, y + 10));
     let size = saved.map_or([930.0 * z, 470.0 * z], |[_, _, w, h]| [w as f32, h as f32]);
     let mut viewport = quiet(
-        egui::ViewportBuilder::default()
+        window_builder()
             .with_title(MAIN_TITLE)
             .with_inner_size(size)
             .with_min_inner_size([600.0 * z, 300.0 * z])
@@ -489,6 +555,8 @@ fn app() -> eframe::Result {
     }
     // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
     // WARP before OpenGL, #847).
+    // A first frame late in a start with the session is the busy login's first (#1205).
+    renderer::started_with_session(at_login);
     let plan = renderer::plan(
         loaded.settings.renderer,
         renderer::overridden(&args).as_deref(),
@@ -501,22 +569,130 @@ fn app() -> eframe::Result {
         event_loop_builder: unix::event_loop_hook(),
         ..Default::default()
     };
-    let result = renderer::run("misterdownloadmanager", &plan, options, move |cc| {
+    let result = renderer::run(APP_ID, &plan, options, move |cc| {
         #[cfg(windows)]
         win32::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
         clipboard::wake(&cc.egui_ctx);
         renderer::test_slow_start();
-        app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
+        let app = std::rc::Rc::new(std::cell::RefCell::new(app::App::new(
+            &cc.egui_ctx,
+            handle,
+            commands,
+            sink,
+            loaded,
+            start,
+        )));
+        // The session's end saves as an Exit saves, and MDM ends. Windows (shut down, restart,
+        // sign out, an installer's Restart Manager): before Windows is answered. Linux (logout,
+        // shutdown): logind's SIGTERM at the next frame (`Shared::logic`, heard since the start:
+        // `unix::on_session_end`), or the X server going away (GNOME's ends at logout before the
+        // SIGTERM comes) as soon as winit or Xlib finds out (`unix::on_display_lost`); Wayland's
+        // lost connection ends winit's loop, and eframe drops the app, which saves as an Exit
+        // does (unchecked). macOS: AppKit's terminate at logout reaches
+        // eframe as winit's exit, which drops the app (`Drop` saves as an Exit does, and tells
+        // the crash monitor the exit was clean: #1125); signals aren't how macOS ends a session.
+        #[cfg(windows)]
+        {
+            let app = std::rc::Rc::downgrade(&app);
+            win32::on_session_end(move |why| end_session(&app, why));
+        }
+        #[cfg(target_os = "linux")]
+        {
+            let app = std::rc::Rc::downgrade(&app);
+            unix::on_display_lost(cc, move || {
+                match app.upgrade() {
+                    // Busy in its frame: the next one (`Shared::logic`).
+                    Some(app) if app.try_borrow_mut().is_err() => return false,
+                    Some(app) => drop(save_for_session_end(&app, unix::SessionEnd::DisplayLost)),
+                    None => crash::clean_exit(),
+                }
+                mdm_crash::logs::flush(LOG_AT_THE_END);
+                true
+            });
+        }
+        Shared(app)
     });
     crash::clean_exit();
     result
 }
 
+/// The app as eframe runs it, shared with the window's own messages: the session's end saves
+/// through it between two frames (`end_session`).
+struct Shared(std::rc::Rc<std::cell::RefCell<app::App>>);
+
+impl eframe::App for Shared {
+    fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        // Linux: the session ends (logind's SIGTERM, unix::on_session_end; or the display went
+        // away during the last frame, unix::on_display_lost): saved before this frame does
+        // anything, and the process ends, as logind would end it.
+        #[cfg(target_os = "linux")]
+        if let Some(why) = unix::session_ending() {
+            drop(save_for_session_end(&self.0, why));
+            mdm_crash::logs::flush(LOG_AT_THE_END);
+            unix::exit_now(0);
+        }
+        eframe::App::logic(&mut *self.0.borrow_mut(), ctx, frame);
+    }
+
+    fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
+        eframe::App::ui(&mut *self.0.borrow_mut(), ui, frame);
+    }
+}
+
+/// The session ends: the app's end as an Exit's (`App::end_session`), within the time the
+/// system gives (Windows: 5 s before it says MDM keeps the computer from shutting down), and the
+/// crash monitor told it's a clean one. The process ends right after (the caller): the app, when
+/// it could be reached, for what's left before.
+#[cfg(any(windows, target_os = "linux"))]
+fn save_for_session_end(
+    app: &std::cell::RefCell<app::App>,
+    why: impl std::fmt::Debug,
+) -> Option<std::cell::RefMut<'_, app::App>> {
+    let app = match app.try_borrow_mut() {
+        Ok(mut app) => {
+            app.end_session();
+            Some(app)
+        }
+        // In the middle of a frame (a window of the system's open in it): the list and the
+        // downloads as last saved.
+        Err(_) => {
+            tracing::warn!("the session ends during a frame: nothing more is saved");
+            None
+        }
+    };
+    tracing::info!("ending with the session ({why:?})");
+    crash::clean_exit();
+    app
+}
+
+/// Windows' session ends (win32::on_session_end): saved (`save_for_session_end`), and the
+/// process ends, as Windows would end it once answered (the Restart Manager waits for it to).
+#[cfg(windows)]
+fn end_session(app: &std::rc::Weak<std::cell::RefCell<app::App>>, why: win32::SessionEnd) {
+    let app = app.upgrade();
+    let mut saved = match app.as_deref() {
+        Some(app) => save_for_session_end(app, why),
+        None => {
+            tracing::info!("ending with the session ({why:?})");
+            crash::clean_exit();
+            None
+        }
+    };
+    if why == win32::SessionEnd::Closed
+        && let Some(app) = saved.as_mut()
+    {
+        app.take_down_tray();
+    }
+    mdm_crash::logs::flush(LOG_AT_THE_END);
+    std::process::exit(0);
+}
+
 #[cfg(test)]
 mod tests {
     use super::{Start, start_mode};
+    use crate::clipboard::Read;
 
     /// The tests that take the process-wide clipboard lock, one at a time: they run in parallel
     /// in one process, and the reads of one waited out the others' (more than the 500 ms a read
@@ -547,13 +723,13 @@ mod tests {
         let mut asked = false;
         let got = super::read_clipboard(true, || {
             asked = true;
-            Some("https://meet.example/abc".into())
+            Read::Text("https://meet.example/abc".into())
         });
-        assert_eq!(got, None);
+        assert_eq!(got, Read::NoText);
         assert!(!asked, "the clipboard isn't even opened");
         assert_eq!(
-            super::read_clipboard(false, || Some("x".into())),
-            Some("x".into())
+            super::read_clipboard(false, || Read::Text("x".into())),
+            Read::Text("x".into())
         );
         assert_eq!(
             super::write_clipboard(true, "magnet:?xt=urn:btih:ab".into()),
@@ -562,6 +738,34 @@ mod tests {
         assert_eq!(
             super::write_clipboard(false, "magnet:?xt=urn:btih:ab".into()),
             Some("magnet:?xt=urn:btih:ab".into())
+        );
+    }
+
+    /// #1157: a read that waited out the lock (another use of the clipboard in MDM held it) is
+    /// a read that failed, not an empty clipboard: the watch for copied links keeps what it saw.
+    #[test]
+    fn a_read_that_waits_out_the_lock_failed() {
+        let _one = clipboard_test();
+        let (held, holding) = std::sync::mpsc::channel();
+        let (release, released) = std::sync::mpsc::channel::<()>();
+        let holder = std::thread::spawn(move || {
+            let _lock = super::clipboard_lock().expect("the lock is free");
+            held.send(()).unwrap();
+            let _ = released.recv();
+        });
+        holding.recv().unwrap();
+        let mut asked = false;
+        let got = super::read_clipboard(false, || {
+            asked = true;
+            Read::Text("x".into())
+        });
+        assert_eq!(got, Read::Failed);
+        assert!(!asked, "not read without the lock");
+        release.send(()).unwrap();
+        holder.join().unwrap();
+        assert_eq!(
+            super::read_clipboard(false, || Read::Text("x".into())),
+            Read::Text("x".into())
         );
     }
 
@@ -583,7 +787,7 @@ mod tests {
                             most.fetch_max(now, Ordering::SeqCst);
                             std::thread::sleep(std::time::Duration::from_millis(1));
                             inside.fetch_sub(1, Ordering::SeqCst);
-                            None
+                            Read::NoText
                         });
                     }
                 })
@@ -595,28 +799,162 @@ mod tests {
         assert_eq!(most.load(Ordering::SeqCst), 1, "reads at the same moment");
     }
 
-    /// #629 on the real clipboard: several threads read it at once for a few seconds, and the
-    /// process lives. Ignored by default (it reads the clipboard of the person at the computer;
-    /// it never writes it, and what it reads is dropped unseen):
-    /// `cargo test -p mdm-app --bin misterdownloadmanager -- --ignored real_clipboard`.
+    /// #629, #1103 on Windows' real clipboard, a private one (win32.rs `private_clipboard`: the
+    /// person's is neither read nor written): MDM's reads (the clipboard monitor's, Add URL's) and
+    /// writes, and egui's paste and copy in a text box, all at once from their threads for two
+    /// seconds, and on until the reads have found a text and Copy… has written one a hundred
+    /// times each (a busy machine does less in two seconds). Every read finds a whole text that
+    /// was copied, and the heap stays whole: without the one lock they share, the process ended
+    /// with STATUS_HEAP_CORRUPTION. Windows only:
+    /// Linux and macOS have no window stations, and arboard keeps their clipboard on its own
+    /// thread there.
+    #[cfg(windows)]
     #[test]
-    #[ignore = "reads the real clipboard"]
-    fn real_clipboard_reads_from_many_threads_live() {
-        let _one = clipboard_test();
-        let until = std::time::Instant::now() + std::time::Duration::from_secs(3);
-        let threads: Vec<_> = (0..6)
-            .map(|_| {
-                std::thread::spawn(move || {
-                    let mut reads = 0u32;
-                    while std::time::Instant::now() < until {
-                        std::hint::black_box(super::clipboard_text().map(|t| t.len()));
-                        reads += 1;
+    fn clipboard_uses_from_many_threads_at_once_leave_the_heap_whole() {
+        use crate::win32::private_clipboard::{
+            egui_clipboard, in_private_clipboard, process_heap_is_whole,
+        };
+        use std::sync::atomic::{AtomicU32, Ordering};
+        in_private_clipboard(
+            "tests::clipboard_uses_from_many_threads_at_once_leave_the_heap_whole",
+            |clip| {
+                let long = "https://long.example/".to_owned() + &"a/".repeat(5000);
+                let texts = [
+                    "https://first.example/a.zip".to_owned(),
+                    "https://例子.example/下载.zip".to_owned(),
+                    long,
+                    "x".to_owned(),
+                ];
+                assert!(super::set_clipboard(&texts[0]));
+                // At least this long, all at once, and until each kind has done enough.
+                const MIN: std::time::Duration = std::time::Duration::from_secs(2);
+                const ENOUGH: u32 = 100;
+                // A deadlock breaker, never the time the check is about.
+                const STUCK: std::time::Duration = std::time::Duration::from_secs(120);
+                let (reads, found, writes) =
+                    (AtomicU32::new(0), AtomicU32::new(0), AtomicU32::new(0));
+                let all = std::sync::Barrier::new(6);
+                let start = std::sync::OnceLock::new();
+                let done = || {
+                    let start: &std::time::Instant = start.get_or_init(std::time::Instant::now);
+                    let elapsed = start.elapsed();
+                    assert!(
+                        elapsed < STUCK,
+                        "{} reads found a text, {} writes, in {elapsed:?}",
+                        found.load(Ordering::Relaxed),
+                        writes.load(Ordering::Relaxed)
+                    );
+                    elapsed >= MIN
+                        && found.load(Ordering::Relaxed) > ENOUGH
+                        && writes.load(Ordering::Relaxed) > ENOUGH
+                };
+                std::thread::scope(|s| {
+                    for who in 0..6 {
+                        let (texts, reads, found, writes) = (&texts, &reads, &found, &writes);
+                        let (all, done) = (&all, &done);
+                        s.spawn(move || {
+                            clip.join();
+                            let mut egui = egui_clipboard();
+                            let mut i = who;
+                            // Every thread on the clipboard before any starts.
+                            all.wait();
+                            while !done() {
+                                i += 1;
+                                let text = &texts[i % texts.len()];
+                                let got = match who {
+                                    // The clipboard monitor's and Add URL's reads.
+                                    0 | 1 => {
+                                        super::read_clipboard(false, super::system_clipboard_text)
+                                            .text()
+                                    }
+                                    // A text box's paste.
+                                    2 | 3 => egui.get(),
+                                    // Copy… in a menu.
+                                    4 => {
+                                        // A write gives up only once it has waited its time
+                                        // for the others (#418): never for anything else.
+                                        let t = std::time::Instant::now();
+                                        if super::set_clipboard(text) {
+                                            writes.fetch_add(1, Ordering::Relaxed);
+                                        } else {
+                                            assert!(
+                                                t.elapsed() >= super::CLIPBOARD_WAIT,
+                                                "a write failed after {:?}",
+                                                t.elapsed()
+                                            );
+                                        }
+                                        continue;
+                                    }
+                                    // A text box's copy.
+                                    _ => {
+                                        egui.set_text(text.clone());
+                                        continue;
+                                    }
+                                };
+                                reads.fetch_add(1, Ordering::Relaxed);
+                                if let Some(got) = got {
+                                    assert!(texts.contains(&got), "read {} chars", got.len());
+                                    found.fetch_add(1, Ordering::Relaxed);
+                                }
+                            }
+                        });
                     }
-                    reads
-                })
-            })
-            .collect();
-        let reads: u32 = threads.into_iter().map(|t| t.join().unwrap()).sum();
-        assert!(reads > 0);
+                });
+                assert!(process_heap_is_whole(), "the heap is corrupted");
+                let (reads, found) = (reads.into_inner(), found.into_inner());
+                let writes = writes.into_inner();
+                println!("{reads} reads, {found} found a text, {writes} writes");
+                assert!(found > ENOUGH, "{found} of {reads} reads found a text");
+            },
+        );
+    }
+
+    /// Every window carries the application's id (#940): the main window, the dialogs, the
+    /// menus, the crash report. A builder made another way would leave its window apart from the
+    /// launcher in the dock.
+    #[test]
+    fn every_window_has_the_app_id() {
+        assert_eq!(
+            super::window_builder().app_id.as_deref(),
+            Some(super::APP_ID)
+        );
+        // Split, so this test's own line isn't one.
+        let made = ["ViewportBuilder", "::default()"].concat();
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            let Ok(src) = std::fs::read_to_string(&path) else {
+                continue;
+            };
+            let own = path.file_name().is_some_and(|n| n == "main.rs");
+            for (n, line) in src.lines().enumerate() {
+                let code = line.split("//").next().unwrap_or_default();
+                if code.contains(&made) && !(own && code.contains(".with_app_id(APP_ID)")) {
+                    found.push(format!("{}:{}", path.display(), n + 1));
+                }
+            }
+        }
+        assert!(found.is_empty(), "windows without the app id: {found:?}");
+    }
+
+    /// The desktop entry the AppImage and the packages install names the class the windows
+    /// carry (#940): a taskbar or a dock matches them by it.
+    #[test]
+    fn desktop_entry_names_the_window_class() {
+        let script = include_str!("../../../tools/installer/build-linux.sh").replace(
+            "
+", "
+",
+        );
+        let entry = script
+            .split("[Desktop Entry]")
+            .nth(1)
+            .and_then(|e| e.split("\nEOF\n").next())
+            .expect("the desktop entry in build-linux.sh");
+        let class = entry
+            .lines()
+            .find_map(|l| l.strip_prefix("StartupWMClass="));
+        assert_eq!(class, Some(super::APP_ID));
     }
 }

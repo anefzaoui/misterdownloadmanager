@@ -27,10 +27,12 @@ pub mod verify;
 pub use dns::{Dns, DnsChoice, DnsError};
 pub use download::{
     Destination, Download, Error, Event, FileHook, KeptAnswer, NetKind, Options, Outcome,
-    ProbeInfo, Proxy, Request, Snapshot, fetch, hop_client, http_client, page_links, probe,
-    probe_kept, supported,
+    ProbeInfo, Proxy, Request, Snapshot, fetch, hop_client, http_client, page_links, page_videos,
+    probe, probe_kept, supported,
 };
+pub use html::{DeclaredVideo, DeclaredVideos};
 pub use net::{NetError, Route};
 pub use server::Server;
 pub use sites::Refusal;
+pub use tls::CertProblem;
 pub use unlock::{ServiceFault, Unlocked, Unlocker};

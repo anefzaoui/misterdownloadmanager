@@ -41,8 +41,12 @@ enum Sub {
     Panels(bool, String, String),
     /// General → Keys...: (also take the files the browser would open).
     Keys(bool),
-    /// General → Test browser integration...: the checks, as found when it opened.
-    Test(Vec<crate::extension::Check>),
+    /// Downloads → Customize "Download progress" dialog → Edit... (#1041): (show it when a
+    /// download starts).
+    Progress(bool),
+    /// General → Test browser integration...: the checks, read beside the window (#1218) when it
+    /// opened, and again once a Set it up finished.
+    Test(crate::extension::Tester),
     /// File types → "Don't start downloading automatically from the following addresses" →
     /// Edit list...: one address pattern per line.
     Addresses(String),
@@ -56,6 +60,8 @@ enum Sub {
 
 /// Options → Remote's page number (the tabs' numbers).
 const REMOTE_PAGE: usize = 11;
+/// Test browser integration: from a check's line to the path under it (#818).
+const DETAIL_H: f32 = 18.0;
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -218,8 +224,6 @@ pub struct OptionsDialog {
     remote: Option<mdm_remote::Remote>,
     port: String,
     device_rows: winui::RowList,
-    /// Test browser integration → Set it up's runs seen finished (crate::extension).
-    set_up_seen: u64,
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
     cookie_browser: usize,
@@ -283,12 +287,18 @@ impl OptionsDialog {
         self
     }
 
-    /// With General → Test browser integration's window over it, or Accounts → Add's (`/show
-    /// options:test`, `options:account`: screenshots, #192).
+    /// With General → Test browser integration's window over it, Accounts → Add's, or
+    /// Downloads → Customize "Download progress" dialog's (`/show options:test`,
+    /// `options:account`, `options:progress`: screenshots, #192, #1041).
     pub fn with_window(mut self, name: &str) -> Self {
         match name {
-            "test" => self.sub = Some(Sub::Test(crate::extension::checks(&self.s))),
+            "test" => {
+                self.sub = Some(Sub::Test(crate::extension::Tester::new(
+                    self.s.advanced_integration,
+                )))
+            }
             "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
+            "progress" => self.sub = Some(Sub::Progress(self.s.show_progress)),
             _ => {}
         }
         self
@@ -316,7 +326,6 @@ impl OptionsDialog {
             account_rows: Default::default(),
             sound_rows: Default::default(),
             sub: None,
-            set_up_seen: 0,
             cat_edit: None,
             restore_ask: None,
             learned,
@@ -778,7 +787,9 @@ impl OptionsDialog {
         )
         .clicked()
         {
-            self.sub = Some(Sub::Test(crate::extension::checks(&self.s)));
+            self.sub = Some(Sub::Test(crate::extension::Tester::new(
+                self.s.advanced_integration,
+            )));
         }
         winui::etched_h(&p, o.x + 34.0, o.y + 356.0, 357.0);
         // The buttons at the right as wide as their labels in this language (#192), their
@@ -1221,7 +1232,6 @@ impl OptionsDialog {
             58.0,
             398.0,
         );
-        let s = &mut self.s;
         // Edit... as wide as its label in this language (#192), its caption before it.
         let (edit_x, edit_w) =
             winui::buttons_to_right(&p, 392.0, 0.0, &[("Edit...", 73.0)], 160.0)[0];
@@ -1230,17 +1240,22 @@ impl OptionsDialog {
             o.x + edit_x - 13.0,
             o.y + 104.0,
             crate::i18n::t("Customize \"Download progress\" dialog"),
-            LIGHT_DISABLED(),
+            LIGHT_TEXT(),
         );
-        // The progress dialog customisation dialog is not built yet.
-        winui::button_light(
+        // Whether a download's progress window opens when it starts (#1041).
+        if winui::button_light(
             ui,
             r(o, edit_x, 89.0, edit_w, 21.0),
             // i18n: verb: edit the item
             "Edit...",
-            ButtonKind::Disabled,
+            ButtonKind::Normal,
             false,
-        );
+        )
+        .clicked()
+        {
+            self.sub = Some(Sub::Progress(self.s.show_progress));
+        }
+        let s = &mut self.s;
         winui::checkbox_light(
             ui,
             o + vec2(24.0, 120.0),
@@ -3732,8 +3747,37 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Test(mut checks) => {
-                let h = 120.0 + checks.len() as f32 * 22.0;
+            Sub::Progress(mut shown) => {
+                let out = window(
+                    ctx,
+                    "opt-progress",
+                    // i18n: window title: Options → Downloads → Edit... (the progress window's settings)
+                    "Download progress dialog",
+                    [400.0, 150.0],
+                    false,
+                    LIGHT_BG(),
+                    |ui, o| progress_dialog(ui, o, &mut shown),
+                );
+                match out {
+                    Outcome::Open => self.sub = Some(Sub::Progress(shown)),
+                    Outcome::Done(()) => self.s.show_progress = shown,
+                    Outcome::Closed => {}
+                }
+            }
+            Sub::Test(tester) => {
+                // Read beside the window (#1218): the last checks while new ones are read (Set it
+                // up finished), "Checking..." before the first.
+                let found = tester.checks(Some(ctx));
+                let checking = found.is_none();
+                let checks = found.unwrap_or_default();
+                // A check's path takes a line of its own (#818), what to do about it a paragraph
+                // (#1218), as tall as it was last drawn.
+                let details = checks.iter().filter(|c| c.detail.is_some()).count();
+                let rows = checks.len().max(usize::from(checking));
+                let h = 120.0
+                    + rows as f32 * 22.0
+                    + details as f32 * DETAIL_H
+                    + crate::dialogs::grow_extra(ctx, "opt-test-how");
                 let mut set_up = false;
                 let out = window(
                     ctx,
@@ -3745,8 +3789,20 @@ impl OptionsDialog {
                     LIGHT_BG(),
                     |ui, o| {
                         let p = ui.painter().clone();
+                        let mut y = o.y + 22.0;
+                        let mut how_h = 0.0;
+                        if checking {
+                            winui::text_in_window(
+                                ui,
+                                &p,
+                                o.x + 34.0,
+                                y,
+                                // i18n: Test browser integration, while it reads where browser integration stands (a moment, usually)
+                                crate::i18n::t("Checking..."),
+                                LIGHT_TEXT(),
+                            );
+                        }
                         for (k, c) in checks.iter().enumerate() {
-                            let y = o.y + 22.0 + k as f32 * 22.0;
                             let (mark, color) = if c.ok {
                                 ("\u{2714}", winui::SUCCESS())
                             } else {
@@ -3754,7 +3810,37 @@ impl OptionsDialog {
                             };
                             winui::text_in_window(ui, &p, o.x + 14.0, y, mark, color);
                             winui::text_in_window(ui, &p, o.x + 34.0, y, &c.text, LIGHT_TEXT());
+                            if let Some(path) = &c.detail {
+                                y += DETAIL_H;
+                                // A path reads left to right in a right-to-left language too.
+                                winui::fit_middle(
+                                    ui,
+                                    &p,
+                                    o.x + 34.0,
+                                    y,
+                                    &crate::i18n::ltr(path),
+                                    LIGHT_TEXT(),
+                                    o.x + 440.0 - 14.0,
+                                    ("test-detail", k),
+                                );
+                            }
+                            if let Some(how) = &c.how {
+                                let lines = winui::paragraph(
+                                    &p,
+                                    o.x + 34.0,
+                                    y + DETAIL_H,
+                                    how,
+                                    LIGHT_TEXT(),
+                                    o.x + 440.0 - 14.0,
+                                    14.0,
+                                );
+                                let more = DETAIL_H + 14.0 * lines.saturating_sub(1) as f32;
+                                y += more;
+                                how_h += more;
+                            }
+                            y += 22.0;
                         }
+                        crate::dialogs::grow_px(ui.ctx(), "opt-test-how", how_h);
                         let first = checks.iter().find(|c| !c.ok);
                         let y = h - 46.0;
                         // As wide as their labels in this language (#192), short of Close.
@@ -3781,8 +3867,11 @@ impl OptionsDialog {
                             {
                                 crate::help::open_page(&mdm_ipc::extension::help_doc(why));
                             }
+                            // Not from a portable copy, nor one in a temporary folder: neither
+                            // registers (#818).
                             if c.why == Some("not-installed")
                                 && mdm_ipc::portable_dir().is_none()
+                                && !crate::extension::temporary_copy()
                                 && winui::button_light(
                                     ui,
                                     r(o, set_up_at.0, y, set_up_at.1, 25.0),
@@ -3815,11 +3904,8 @@ impl OptionsDialog {
                 if set_up {
                     crate::extension::set_up(ctx);
                 }
-                if crate::extension::set_up_finished(&mut self.set_up_seen) {
-                    checks = crate::extension::checks(&self.s);
-                }
                 if matches!(out, Outcome::Open) {
-                    self.sub = Some(Sub::Test(checks));
+                    self.sub = Some(Sub::Test(tester));
                 }
             }
         }
@@ -4419,6 +4505,31 @@ fn read_sites_file(path: &std::path::Path) -> std::io::Result<String> {
         .take(1 << 20)
         .read_to_end(&mut text)?;
     String::from_utf8(text).map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))
+}
+
+/// Downloads → Customize "Download progress" dialog → Edit... (#1041): whether a download's
+/// progress window opens when it starts, and where to find it when it doesn't.
+fn progress_dialog(ui: &mut Ui, o: Pos2, shown: &mut bool) -> Outcome<()> {
+    let p = ui.painter().clone();
+    winui::checkbox_light(
+        ui,
+        o + vec2(14.0, 16.0),
+        shown,
+        "Show download progress dialog when a download starts",
+        true,
+    );
+    winui::paragraph(
+        &p,
+        o.x + 14.0,
+        o.y + 58.0,
+        crate::i18n::t(
+            "When it is off, downloads go on in the main window's list. Double-click one there to see its progress.",
+        ),
+        LIGHT_TEXT(),
+        o.x + 386.0,
+        14.0,
+    );
+    ok_cancel(ui, o, 232.0, 117.0, true)
 }
 
 fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
@@ -5044,5 +5155,80 @@ mod tests {
         let (back, added) = mdm_ipc::capture::merge_sites("", &text);
         assert_eq!((back.as_str(), added), (sites, 2));
         assert_eq!(mdm_ipc::capture::merge_sites(sites, &text).1, 0);
+    }
+
+    /// One frame of `draw` at the origin, with `events` as its input.
+    fn frame(ctx: &egui::Context, events: Vec<egui::Event>, draw: impl FnMut(&mut Ui)) {
+        let input = egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(430.0, 506.0))),
+            events,
+            ..Default::default()
+        };
+        let mut out = ctx.run_ui(input, draw);
+        out.textures_delta.clear();
+    }
+
+    /// A click at `at`, a frame each: there, pressed, released.
+    fn click(ctx: &egui::Context, at: Pos2, mut draw: impl FnMut(&mut Ui)) {
+        let button = |pressed| egui::Event::PointerButton {
+            pos: at,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers: egui::Modifiers::NONE,
+        };
+        frame(ctx, vec![egui::Event::PointerMoved(at)], &mut draw);
+        frame(ctx, vec![button(true)], &mut draw);
+        frame(ctx, vec![button(false)], &mut draw);
+    }
+
+    fn context() -> egui::Context {
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        winui::install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+        ctx
+    }
+
+    /// #1041: Downloads → Customize "Download progress" dialog → Edit... opens its dialog, with
+    /// the setting as it is (it did nothing: drawn disabled).
+    #[test]
+    fn edit_opens_the_download_progress_dialog() {
+        let ctx = context();
+        let settings = Settings {
+            show_progress: false,
+            ..Settings::default()
+        };
+        let mut dlg = OptionsDialog::new(&settings, std::path::Path::new("."), Vec::new());
+        let mut edit = Rect::NOTHING;
+        frame(&ctx, Vec::new(), |ui| {
+            let (x, w) =
+                winui::buttons_to_right(ui.painter(), 392.0, 0.0, &[("Edit...", 73.0)], 160.0)[0];
+            edit = Rect::from_min_size(pos2(x, 89.0), vec2(w, 21.0));
+            dlg.downloads(ui, Pos2::ZERO);
+        });
+        assert!(dlg.sub.is_none());
+        click(&ctx, edit.center(), |ui| dlg.downloads(ui, Pos2::ZERO));
+        assert!(matches!(dlg.sub, Some(Sub::Progress(false))));
+    }
+
+    /// #1041: its check box turns the progress window off, and OK keeps it.
+    #[test]
+    fn the_download_progress_dialog_turns_the_window_off() {
+        let ctx = context();
+        let mut shown = true;
+        let mut out = Outcome::Open;
+        frame(&ctx, Vec::new(), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut shown)
+        });
+        click(&ctx, pos2(20.0, 22.0), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut shown);
+        });
+        assert!(!shown);
+        assert!(matches!(out, Outcome::Open));
+        click(&ctx, pos2(268.0, 127.0), |ui| {
+            out = progress_dialog(ui, Pos2::ZERO, &mut shown);
+        });
+        assert!(matches!(out, Outcome::Done(())));
+        assert!(!shown);
     }
 }

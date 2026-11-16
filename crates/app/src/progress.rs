@@ -1,7 +1,7 @@
 //! The per-download progress dialog, painted to IDM 6.42's pixels
 //! (notes/ui-spec/progress-dialog.md). Coordinates are client pixels from the spec.
 
-use egui::{Color32, Pos2, Ui, ViewportBuilder, ViewportId, vec2};
+use egui::{Color32, Pos2, Ui, ViewportId, vec2};
 use mdm_engine::Snapshot;
 use mdm_engine::download::ConnStatus;
 
@@ -276,8 +276,18 @@ impl Glide {
     }
 }
 
+/// A stopped, failed or finished transfer must not leave a green indicator behind.
+#[cfg(windows)]
+fn taskbar_fraction(item: &Item) -> Option<f64> {
+    (item.status == Status::Downloading)
+        .then(|| item.fraction())
+        .flatten()
+}
+
 pub struct Progress {
     pub id: u64,
+    #[cfg(windows)]
+    taskbar: crate::win32::TaskbarProgress,
     details: bool,
     tab: Tab,
     /// Tabs taken off the strip with their "Hide tab" button (#326), for this window.
@@ -313,6 +323,9 @@ pub struct Progress {
     pub minimize_to_tray: bool,
     /// MDM's main window is shown (set by the app each frame): the glide's frames draw it too.
     pub main_shown: bool,
+    /// The speed limit holding the download back (set by the app each frame, #1191): its
+    /// Transfer rate names it.
+    pub limit: Option<crate::model::Limit>,
     /// Options on completion, used when "Show download complete dialog" is off.
     hang_up: bool,
     exit: bool,
@@ -372,6 +385,8 @@ impl Progress {
     pub fn new(id: u64, show_complete: bool) -> Self {
         Progress {
             id,
+            #[cfg(windows)]
+            taskbar: crate::win32::TaskbarProgress::new(),
             details: true,
             tab: Tab::Status,
             hidden_tabs: Vec::new(),
@@ -392,6 +407,7 @@ impl Progress {
             tray: false,
             minimize_to_tray: false,
             main_shown: true,
+            limit: None,
             hang_up: false,
             exit: false,
             turn_off_on: false,
@@ -408,6 +424,23 @@ impl Progress {
             rename_guard_stamp: None,
             rename_guard: None,
         }
+    }
+
+    /// Updated by the clock too, while the main window is minimized and draws no UI.
+    #[cfg(windows)]
+    pub fn update_taskbar(&mut self, item: Option<&Item>) {
+        self.taskbar.update(item.and_then(taskbar_fraction));
+    }
+
+    #[cfg(windows)]
+    fn needs_frame(&self, ctx: &egui::Context, key: egui::Id, want: &Framed) -> bool {
+        // Completion can remove a Progress without a closing UI pass. A fresh controller must
+        // bind its new HWND even if egui still holds the preceding window's frame settings.
+        self.taskbar.window().is_none()
+            || ctx
+                .data(|d| d.get_temp::<Framed>(key.with("framed")))
+                .as_ref()
+                != Some(want)
     }
 
     fn status_drop(&self) -> f32 {
@@ -520,12 +553,30 @@ impl Progress {
         let vid = ViewportId::from_hash_of(("progress", self.id));
         let buttons = caption_buttons(self.tray);
         let key = egui::Id::unique(("progress-pos", self.id));
+        #[cfg(windows)]
+        if crate::dialogs::window_was_gone(ctx, key.with("binding-pass")) {
+            // The same lifecycle as keep_theme: a viewport can disappear without a close
+            // action. Forget its HWND before choosing the new window's discovery title.
+            self.taskbar.window_gone();
+            ctx.data_mut(|d| d.remove::<Framed>(key.with("framed")));
+        }
         let title_now = title.clone();
+        // Hidden windows need a unique native title until their HWND is bound: two downloads
+        // can have the same filename and percentage. The displayed title is set before reveal.
+        #[cfg(windows)]
+        let hwnd = self.taskbar.window();
+        #[cfg(not(windows))]
+        let hwnd = None;
+        let native_title = if cfg!(windows) && hwnd.is_none() {
+            format!("mdm-progress-{}", self.id)
+        } else {
+            title
+        };
         // Hidden until dialogs::keep_theme has given it its theme.
-        let mut builder = crate::quiet(ViewportBuilder::default())
+        let mut builder = crate::quiet(crate::window_builder())
             .with_visible(false)
             // The taskbar shows it: without isolates (#919).
-            .with_title(crate::i18n::os_text(&title))
+            .with_title(crate::i18n::os_text(&native_title))
             .with_inner_size(shown)
             // IDM's progress window has 2 px borders and a fixed size. On Windows the sizing
             // frame is asked for and win32::progress_frame trims its borders, disables resizing
@@ -541,7 +592,6 @@ impl Progress {
         // Minimize hides it in the notification area when asked (and a tray can bring it back).
         let minimize_hides = self.tray && self.minimize_to_tray;
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
-        let hwnd = ctx.data(|d| d.get_temp::<isize>(key.with("hwnd")));
         let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
             // Painted in the pass that closes it too (see dialogs::close_requested).
             let close = crate::dialogs::close_requested(ui);
@@ -618,20 +668,27 @@ impl Progress {
                 .any(|(b, _)| *b == CaptionButton::ToTray)
                 .then(|| crate::i18n::t("Hide to the notification area").to_owned());
             let want: Framed = (shown, (scale * 1000.0).round() as u32, hide);
-            if ctx
-                .data(|d| d.get_temp::<Framed>(key.with("framed")))
-                .as_ref()
-                != Some(&want)
-                && let Some(h) =
-                    crate::win32::thin_frame(&title_now, shown, scale, want.2.as_deref())
+            if self.needs_frame(ctx, key, &want)
+                && let Some(h) = hwnd.map_or_else(
+                    || crate::win32::thin_frame(&native_title, shown, scale, want.2.as_deref()),
+                    |h| crate::win32::thin_frame_on(h, shown, scale, want.2.as_deref()),
+                )
             {
                 ctx.data_mut(|d| {
                     d.insert_temp(key.with("framed"), want);
-                    d.insert_temp(key.with("hwnd"), h);
                 });
+                self.taskbar.set_window(h);
+                ctx.send_viewport_cmd_to(
+                    vid,
+                    egui::ViewportCommand::Title(crate::i18n::os_text(&title_now)),
+                );
             }
         }
         let closing = matches!(action, Action::Close | Action::Cancel | Action::Hide);
+        #[cfg(windows)]
+        if closing {
+            self.taskbar.set_window(0);
+        }
         crate::dialogs::keep_theme(
             ctx,
             vid,
@@ -676,7 +733,6 @@ impl Progress {
             }
             ctx.data_mut(|d| {
                 d.remove::<Framed>(key.with("framed"));
-                d.remove::<isize>(key.with("hwnd"));
             });
         }
         action
@@ -1419,7 +1475,12 @@ impl Progress {
                 135.0,
                 // Every byte in (#736): nothing comes in while the file is checked or joined.
                 if item.status == Status::Downloading && !item.past_last_byte() {
-                    model::rate(item.rate())
+                    // The limit holding it back beside the speed (#1191).
+                    let rate = model::rate(item.rate());
+                    match self.limit {
+                        Some(limit) => limit.after(&rate),
+                        None => rate,
+                    }
                 } else {
                     String::new()
                 },
@@ -2098,18 +2159,8 @@ fn table_sized(
     let visible = shown;
     // Per window: each progress window scrolls its own tables.
     let key = egui::Id::unique(("torrent-table", id, ui.ctx().viewport_id()));
-    let max_first = rows.len().saturating_sub(visible);
-    let mut first = ui
-        .ctx()
-        .data(|d| d.get_temp::<usize>(key))
-        .unwrap_or(0)
-        .min(max_first);
     let body = r(o, 19.0, 299.0, 508.0, body_h);
-    if ui.rect_contains_pointer(body) {
-        let step = winui::wheel_steps(ui, key, body_h / visible as f32, visible as f32);
-        first = first.saturating_add_signed(step).min(max_first);
-        ui.ctx().data_mut(|d| d.insert_temp(key, first));
-    }
+    let first = first_row(ui, key, body, rows.len(), visible);
     let clip = p.with_clip_rect(body);
     let right_of = |c: usize| seps.get(c).map_or(o.x + 520.0, |x| o.x + x - 4.0);
     for (k, row) in rows.iter().skip(first).take(visible + 1).enumerate() {
@@ -2146,24 +2197,71 @@ fn table_sized(
             winui::copyable(ui, rect.intersect(body), (id, first + k, c), cell, cut);
         }
     }
-    // The shared scroll bar (it was a thumb drawn alone, that couldn't be dragged).
-    if rows.len() > visible {
-        let mut pos = first as f32;
-        if crate::scrollbar::bar(
-            ui,
-            key.with("bar"),
-            r(o, 511.0, 275.0, 17.0, body_h + 24.0),
-            true,
-            rows.len() as f32,
-            visible as f32,
-            1.0,
-            &mut pos,
-        ) {
-            let first = (pos.round().max(0.0) as usize).min(max_first);
-            ui.ctx().data_mut(|d| d.insert_temp(key, first));
-        }
-    }
+    let track = r(o, 511.0, 275.0, 17.0, body_h + 24.0);
+    rows_bar(ui, key, track, rows.len(), visible, first);
     clicked
+}
+
+/// The first row a table of `rows` rows showing `visible` at once can start at: the last ones
+/// fill its body (#1101: 16 connections in 6 rows scroll to the 11th, 32 to the 27th).
+fn last_first_row(rows: usize, visible: usize) -> usize {
+    rows.saturating_sub(visible)
+}
+
+/// The first row a table (`key`, the window's own) shows: where it was left, moved by the wheel
+/// over its `body`, never past the last rows. The header stays where it is: only the rows below
+/// it scroll.
+fn first_row(ui: &Ui, key: egui::Id, body: egui::Rect, rows: usize, visible: usize) -> usize {
+    let last = last_first_row(rows, visible);
+    let mut first = ui
+        .ctx()
+        .data(|d| d.get_temp::<usize>(key))
+        .unwrap_or(0)
+        .min(last);
+    if ui.rect_contains_pointer(body) {
+        let step = winui::wheel_steps(ui, key, body.height() / visible as f32, visible as f32);
+        first = first.saturating_add_signed(step).min(last);
+        ui.ctx().data_mut(|d| d.insert_temp(key, first));
+    }
+    first
+}
+
+/// A table's scroll bar over `track` (the main list's, `scrollbar::bar`) when its rows don't
+/// all fit: dragged, clicked or its arrows pressed, it moves the table's first row
+/// ([`first_row`]).
+fn rows_bar(
+    ui: &mut Ui,
+    key: egui::Id,
+    track: egui::Rect,
+    rows: usize,
+    visible: usize,
+    first: usize,
+) {
+    if rows <= visible {
+        return;
+    }
+    let mut pos = first as f32;
+    if crate::scrollbar::bar(
+        ui,
+        key.with("bar"),
+        track,
+        true,
+        rows as f32,
+        visible as f32,
+        1.0,
+        &mut pos,
+    ) {
+        let first = (pos.round().max(0.0) as usize).min(last_first_row(rows, visible));
+        ui.ctx().data_mut(|d| d.insert_temp(key, first));
+    }
+}
+
+/// How much wider than IDM's the connections table's number column is drawn (#1101): its
+/// numbers (`widest`, the widest one's width) have 13 px before the column's line, its title
+/// (`title`'s width) 25 px; the columns after it move over by the rest. 0 when both fit (one
+/// and two digits in the classic look).
+fn number_column_extra(widest: f32, title: f32) -> f32 {
+    (widest - 13.0).max(title - 25.0).max(0.0).ceil().min(60.0)
 }
 
 /// How far the check or the merge after the last byte has come (#736), when it is under way
@@ -2276,7 +2374,21 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         o.y + 298.0,
         winui::LIST_HEADER(),
     );
-    for x in [48.0, 148.0, 498.0] {
+    // Listed by connection number, like IDM (the engine reports them in arrival order).
+    let mut conns: Vec<_> = snap
+        .map(|s| s.connections.iter().collect())
+        .unwrap_or_default();
+    conns.sort_by_key(|c| c.id);
+    // i18n: column title: connection number (abbreviation of Number)
+    let number = crate::i18n::t("N.");
+    // The number column is as wide as its widest number and its title (#1101: with 16
+    // connections, 10 to 16 were cut to "..."); the other columns move over.
+    let widest = conns
+        .iter()
+        .map(|c| winui::text_width(p, &(c.id + 1).to_string()))
+        .fold(0.0, f32::max);
+    let dx = number_column_extra(widest, winui::text_width(p, number));
+    for x in [48.0 + dx, 148.0 + dx, 498.0] {
         fill(
             p,
             o.x + x,
@@ -2294,50 +2406,35 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
             winui::full_on_hover(ui, rc, ("connections-head", x as i32), label);
         }
     };
-    // i18n: column title: connection number (abbreviation of Number)
-    let number = crate::i18n::t("N.");
     let x = if winui::text_width(p, number) > 21.0 {
         21.0
     } else {
         25.0
     };
-    head(x, 46.0, number);
+    head(x, 46.0 + dx, number);
     // i18n: column title: bytes this connection received
-    head(55.0, 146.0, crate::i18n::t("Downloaded"));
+    head(55.0 + dx, 146.0 + dx, crate::i18n::t("Downloaded"));
     // i18n: column title: what the connection is doing
-    head(155.0, 496.0, crate::i18n::t("Info"));
-    // Listed by connection number, like IDM (the engine reports them in arrival order).
-    let mut conns: Vec<_> = snap
-        .map(|s| s.connections.iter().collect())
-        .unwrap_or_default();
-    conns.sort_by_key(|c| c.id);
+    head(155.0 + dx, 496.0, crate::i18n::t("Info"));
     let key = egui::Id::unique(("conn-scroll", ui.ctx().viewport_id()));
     let visible = 6usize;
-    let max_first = conns.len().saturating_sub(visible);
-    let mut first = ui
-        .ctx()
-        .data(|d| d.get_temp::<usize>(key))
-        .unwrap_or(0)
-        .min(max_first);
     let body = r(o, 19.0, 299.0, 492.0, 100.0);
-    if ui.rect_contains_pointer(body) {
-        let step = winui::wheel_steps(ui, key, 100.0 / visible as f32, visible as f32);
-        first = first.saturating_add_signed(step).min(max_first);
-        ui.ctx().data_mut(|d| d.insert_temp(key, first));
-    }
+    let first = first_row(ui, key, body, conns.len(), visible);
     let clip = p.with_clip_rect(body);
     for (k, c) in conns.iter().skip(first).take(visible + 1).enumerate() {
         let top = o.y + 299.0 + 17.0 * k as f32;
-        winui::text_right(
+        // Its room starts at the list's edge, not 6 px into it as a window's text does.
+        winui::text_right_within(
             &clip,
-            o.x + 33.0,
+            o.x + 33.0 + dx,
             top + 12.0,
             &(c.id + 1).to_string(),
             winui::TEXT(),
+            o.x + 21.0,
         );
         text(
             &clip,
-            o.x + 56.0,
+            o.x + 56.0 + dx,
             top + 12.0,
             &size3(c.downloaded),
             winui::TEXT(),
@@ -2368,7 +2465,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         // The Info column ends at the scrollbar.
         let (rect, cut) = winui::text_fit(
             &clip,
-            o.x + 155.0,
+            o.x + 155.0 + dx,
             top + 12.0,
             &info,
             winui::TEXT(),
@@ -2378,28 +2475,93 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
             winui::full_on_hover(ui, rect.intersect(body), ("conn", c.id), &info);
         }
     }
-    // The shared scroll bar (a track and thumb were drawn here, the thumb not draggable).
-    if conns.len() > visible {
-        let mut pos = first as f32;
-        if crate::scrollbar::bar(
-            ui,
-            key.with("bar"),
-            r(o, 511.0, 275.0, 17.0, 124.0),
-            true,
-            conns.len() as f32,
-            visible as f32,
-            1.0,
-            &mut pos,
-        ) {
-            let first = (pos.round().max(0.0) as usize).min(max_first);
-            ui.ctx().data_mut(|d| d.insert_temp(key, first));
-        }
-    }
+    // The shared scroll bar, the main list's.
+    rows_bar(
+        ui,
+        key,
+        r(o, 511.0, 275.0, 17.0, 124.0),
+        conns.len(),
+        visible,
+        first,
+    );
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[cfg(windows)]
+    #[test]
+    fn reopening_after_completion_ignores_the_previous_windows_frame_cache() {
+        let ctx = egui::Context::default();
+        let key = egui::Id::unique(("progress-pos", 7_u64));
+        let want: Framed = ([548.0, 472.0], 1000, None);
+        ctx.data_mut(|d| d.insert_temp(key.with("framed"), want.clone()));
+        let reopened = Progress::new(7, false);
+        assert!(
+            reopened.needs_frame(&ctx, key, &want),
+            "an equal cached size is not evidence that this new window has a frame or HWND"
+        );
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn taskbar_follows_only_a_running_download_with_a_known_size() {
+        let mut item = Item::new(
+            7,
+            "https://example.com/a".parse().unwrap(),
+            std::path::PathBuf::from("a"),
+            crate::model::Category::General,
+        );
+        item.size = Some(100);
+        item.downloaded = 25;
+        item.status = Status::Downloading;
+        assert_eq!(taskbar_fraction(&item), Some(0.25));
+        for status in [
+            Status::Queued,
+            Status::Stopped,
+            Status::Error,
+            Status::Complete,
+        ] {
+            item.status = status;
+            assert_eq!(taskbar_fraction(&item), None, "{status:?}");
+        }
+        item.status = Status::Downloading;
+        item.size = None;
+        assert_eq!(taskbar_fraction(&item), None);
+        item.size = Some(0);
+        assert_eq!(taskbar_fraction(&item), None);
+        item.size = Some(100);
+        assert_eq!(taskbar_fraction(&item), Some(0.25), "resumed");
+    }
+
+    /// #1101: 16 or 32 connections in the table's 6 rows scroll as far as their last; fewer
+    /// than fit don't scroll.
+    #[test]
+    fn a_table_scrolls_to_its_last_rows() {
+        assert_eq!(last_first_row(1, 6), 0);
+        assert_eq!(last_first_row(6, 6), 0);
+        assert_eq!(last_first_row(8, 6), 2);
+        assert_eq!(last_first_row(16, 6), 10);
+        assert_eq!(last_first_row(32, 6), 26);
+        assert_eq!(last_first_row(0, 6), 0);
+    }
+
+    /// #1101: the number column keeps IDM's width while its numbers and title fit (one or two
+    /// digits, 6 px each in the classic look), and widens by what a wider one needs.
+    #[test]
+    fn the_number_column_fits_its_widest_number() {
+        assert_eq!(number_column_extra(6.0, 11.0), 0.0, "1 to 9, \"N.\"");
+        assert_eq!(number_column_extra(12.0, 11.0), 0.0, "10 to 99");
+        assert_eq!(number_column_extra(18.0, 11.0), 5.0, "100 to 128");
+        assert_eq!(number_column_extra(14.5, 11.0), 2.0, "wider digits");
+        assert_eq!(number_column_extra(6.0, 31.0), 6.0, "a longer title");
+        assert_eq!(
+            number_column_extra(500.0, 11.0),
+            60.0,
+            "never past the Info column"
+        );
+    }
 
     /// A download of unknown size has no percentage in its title (from #384).
     #[test]
