@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The extension's checks also pass from a Windows checkout with Git for Windows' defaults
+  (`core.autocrlf=true`): the tree keeps LF everywhere except batch files, and the tests read
+  sources, JSON and the catalogs by lines, so the 103 checks pass with either line ending
 - ✅ The Download video button over a YouTube preview: it stays as the pointer reaches it, and a
   click that opens the Download video window sends the preview's video, not the one watched last
   ([#1271](https://github.com/anefzaoui/misterdownloadmanager/issues/1271))
