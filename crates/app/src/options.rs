@@ -3477,7 +3477,7 @@ impl OptionsDialog {
                     "opt-panels",
                     // i18n: window title: the download button the extension shows over videos
                     "Download panels",
-                    [380.0, 218.0],
+                    [380.0, 241.0],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -3538,15 +3538,23 @@ impl OptionsDialog {
                             "panel-sites",
                             on,
                         );
-                        winui::text_in_window(
-                            ui,
+                        // On a row of its own, the list's width: beside Export... and Import... it
+                        // ran under them (English already, German further).
+                        let hint = crate::i18n::t(
+                            // i18n: under Download panels site exclusions list
+                            "(separate by spaces; * matches anything)",
+                        );
+                        let (rect, cut) = winui::text_fit(
                             &p,
                             o.x + 14.0,
                             o.y + 161.0,
-                            // i18n: under Download panels site exclusions list
-                            crate::i18n::t("(separate by spaces; * matches anything)"),
+                            hint,
                             LIGHT_TEXT(),
+                            o.x + 366.0,
                         );
+                        if cut {
+                            winui::full_on_hover(ui, rect, "opt-panels-hint", hint);
+                        }
                         // The list as a file, to keep or carry to a new installation (#424).
                         let [export_at, import_at] = winui::button_row(
                             &p,
@@ -3559,7 +3567,7 @@ impl OptionsDialog {
                         };
                         if winui::button_light(
                             ui,
-                            r(o, export_at.0, 156.0, export_at.1, 21.0),
+                            r(o, export_at.0, 172.0, export_at.1, 21.0),
                             "Export...",
                             ButtonKind::Normal,
                             false,
@@ -3576,7 +3584,7 @@ impl OptionsDialog {
                         }
                         if winui::button_light(
                             ui,
-                            r(o, import_at.0, 156.0, import_at.1, 21.0),
+                            r(o, import_at.0, 172.0, import_at.1, 21.0),
                             "Import...",
                             ButtonKind::Normal,
                             false,
@@ -3628,7 +3636,7 @@ impl OptionsDialog {
                             let (rect, cut) = winui::text_fit(
                                 &p,
                                 o.x + 14.0,
-                                o.y + 191.0,
+                                o.y + 187.0,
                                 &said,
                                 LIGHT_TEXT(),
                                 o.x + 205.0,
@@ -3637,7 +3645,7 @@ impl OptionsDialog {
                                 winui::full_on_hover(ui, rect, "opt-panels-said", &said);
                             }
                         }
-                        ok_cancel(ui, o, 212.0, 185.0, true)
+                        ok_cancel(ui, o, 212.0, 208.0, true)
                     },
                 );
                 match out {

@@ -1358,6 +1358,8 @@ These ship in the next version.
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
 - ✅ A failed download says why in MDM's log too, with the site's name and no tokens
   ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
+- ✅ Download panels: the hint under the sites list has its own row instead of running under
+  Export...
 
 ## Being worked on
 
