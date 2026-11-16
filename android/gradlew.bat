@@ -35,6 +35,13 @@ set APP_HOME=%DIRNAME%
 @rem Resolve any "." and ".." in APP_HOME to make it shorter.
 for %%i in ("%APP_HOME%") do set APP_HOME=%%~fi
 
+@rem MDM keeps no binaries in its tree: the wrapper's jar is fetched from Gradle's own repository
+@rem at this version's tag and checked against the checksum Gradle publishes for it (gradlew says
+@rem more).
+set WRAPPER_JAR=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$j=$env:WRAPPER_JAR; $h='7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172'; if ((Test-Path $j) -and (Get-FileHash -Algorithm SHA256 $j).Hash -eq $h) { exit 0 }; $t=$j+'.part'; [Net.ServicePointManager]::SecurityProtocol='Tls12'; try { Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/gradle/gradle/v8.14.3/gradle/wrapper/gradle-wrapper.jar' -OutFile $t } catch { Write-Host 'ERROR: could not download the Gradle wrapper'; exit 1 }; if ((Get-FileHash -Algorithm SHA256 $t).Hash -ne $h) { Remove-Item $t; Write-Host 'ERROR: the Gradle wrapper does not match Gradle''s published checksum'; exit 1 }; Move-Item -Force $t $j"
+if %ERRORLEVEL% neq 0 goto fail
+
 @rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
 set DEFAULT_JVM_OPTS="-Xmx64m" "-Xms64m"
 

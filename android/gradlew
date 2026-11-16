@@ -102,6 +102,30 @@ die () {
     exit 1
 } >&2
 
+# MDM keeps no binaries in its tree: the wrapper's jar is fetched from Gradle's own repository at
+# this version's tag and checked against the checksum Gradle publishes for it
+# (https://services.gradle.org/distributions/gradle-8.14.3-wrapper.jar.sha256), here and in
+# gradlew.bat. After `gradlew wrapper --gradle-version X`, which writes these scripts and the jar
+# again, put this back with X's tag and checksum, and delete the jar it wrote.
+WRAPPER_JAR=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+WRAPPER_URL=https://raw.githubusercontent.com/gradle/gradle/v8.14.3/gradle/wrapper/gradle-wrapper.jar
+WRAPPER_SHA256=7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172
+wrapper_sha256 () {
+    if command -v sha256sum > /dev/null 2>&1; then sha256sum "$1"; else shasum -a 256 "$1"; fi | cut -d' ' -f1
+}
+if [ ! -f "$WRAPPER_JAR" ] || [ "$( wrapper_sha256 "$WRAPPER_JAR" )" != "$WRAPPER_SHA256" ]; then
+    if command -v curl > /dev/null 2>&1; then
+        curl -fsSL -o "$WRAPPER_JAR.part" "$WRAPPER_URL"
+    else
+        wget -q -O "$WRAPPER_JAR.part" "$WRAPPER_URL"
+    fi || die "ERROR: could not download the Gradle wrapper from $WRAPPER_URL"
+    if [ "$( wrapper_sha256 "$WRAPPER_JAR.part" )" != "$WRAPPER_SHA256" ]; then
+        rm -f "$WRAPPER_JAR.part"
+        die "ERROR: the Gradle wrapper from $WRAPPER_URL does not match Gradle's published checksum"
+    fi
+    mv "$WRAPPER_JAR.part" "$WRAPPER_JAR"
+fi
+
 # OS specific support (must be 'true' or 'false').
 cygwin=false
 msys=false

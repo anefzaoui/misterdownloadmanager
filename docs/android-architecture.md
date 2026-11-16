@@ -177,6 +177,12 @@ cargo test -p mdm-app --features android-core --test android_core   # the core, 
 ./gradlew :app:recordRoborazziDebug -Pmdm.skipCargo=true            # the screenshots
 ```
 
+Nothing prebuilt is kept in the tree: `gradlew` fetches Gradle's wrapper from Gradle's repository
+and checks it against the checksum Gradle publishes; Gradle itself, rustls-platform-verifier's
+Android component and the helpers' AARs are checked against their sources' published checksums
+(`gradle-wrapper.properties`, `gradle/verification-metadata.xml`); 7-Zip is built from its pinned
+source. [android/third_party/README.md](../android/third_party/README.md) lists them.
+
 Build options: `-Pmdm.abis=…`, `-Pmdm.skipCargo=true` (reuse `libmdm.so`),
 `-Pmdm.updateRepo=owner/repo` (where updates are looked for), `-Pmdm.sevenZipRar=false` (7-Zip
 without its RAR code).
