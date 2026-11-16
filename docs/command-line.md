@@ -56,7 +56,7 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `torrent-info SOURCE` | A torrent's name, files (numbered) and size; `SOURCE` is a magnet link or a `.torrent` file. |
 | `torrent-get SOURCE [-o folder] [--files 0,2] [--use-existing]` | Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; `--use-existing` uses them instead (what matches is kept, the rest downloaded). |
 | `torrent-create PATH -o file.torrent` | Make a `.torrent` of a file or folder (peers find it through the DHT). |
-| `status` | The running app's downloads, as JSON, with their ids (the automation API must be on). |
+| `status [--id N] [-s status] [--search text] [-c category] [-q queue] [-l limit]` (or `list`) | The running app's downloads, as JSON, with their ids (the automation API must be on). Optional flags filter by id, status, search string, category or queue, or limit the count. |
 | `pause ID...`, `start ID...` | Pause running downloads, or start (resume) stopped, queued or failed ones, in the running app. |
 | `remove ID...`, `delete ID...` | Take downloads off the running app's list: `remove` keeps their files, `delete` deletes them too. A running download is paused first (`pause`). |
 | `add URL [-o folder] [-f name] [-c category] [-q queue] [-l] [-s]` | Hand a download to the running app. `-o` sets the folder, `-f` the file name, `-c` the category, `-q` the queue, `-l` queues it without starting, and `-s` skips the Download File Info dialog. Prints `{"id": N}` on success. |
