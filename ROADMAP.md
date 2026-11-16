@@ -562,10 +562,18 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux: a crash is reported on computers whose processor doesn't offer XSAVE (an older
+  processor, a virtual machine), where the crash handler faulted a second time and no report came
+  ([#1239](https://github.com/anefzaoui/misterdownloadmanager/issues/1239))
+- ✅ A crawling connection at a download's end is replaced again after the disk set the pace, instead
+  of holding a last piece for a minute; the shared-line slow-connection test no longer fails on a busy
+  CI runner
 - ✅ **View → Draw with**'s note on when a graphics system is tried again reads the time zone
   the way the rest of the window does, never waiting for Windows
 - ✅ Every release file gets a signed build provenance record (`gh attestation verify`), and the
   repository an OpenSSF Scorecard (thanks to [@joyahmed](https://github.com/joyahmed))
+- ✅ The Linux AppImage is packaged by the same appimagetool and runtime on every rebuild: each
+  at a fixed release, checked by its sha256 (thanks to [@joyahmed](https://github.com/joyahmed))
 - ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
   other applications (including when raised or opened while MDM is behind another program or hidden
   in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
@@ -586,6 +594,12 @@ These ship in the next version.
   a tab or window title takes none (thanks to [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Bangla: a web page is a **পেজ**, never a পৃষ্ঠা (a book's page) — "এই পেজে", "পেজটি",
   "পেজের ঠিকানা" — and a checksum a **চেকসাম** (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: the control verbs stay distinct — stop is **থামান** (its state "থেমে গেছে"), a pause
+  "বিরতি দিন", a resume "পুনরায় শুরু করুন", remove "বাদ দিন" — and a queue is a **সারি**, never
+  "কিউ" (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: termbase alignment — export is **এক্সপোর্ট**, import is **ইম্পোর্ট**, help is
+  **সহায়তা**, category is **শ্রেণি**, options is **বিকল্প** and redownload is **আবার ডাউনলোড**
+  (thanks to [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Bangla: spelled the Bangla Academy way — a link is a **লিংক**, a category a **শ্রেণি**,
   "already" is **ইতোমধ্যে** and a plural takes **-গুলো**, as the style guide settles them
   (thanks to [@Seyamalam](https://github.com/Seyamalam))
@@ -657,6 +671,10 @@ These ship in the next version.
   the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
   lasts past the first three minutes)
   (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
+- ✅ No more **The window stopped responding** report while MDM waits in the notification area
+  with no window on screen and its thread waits on the computer: logged, and reported only if it
+  lasts past a minute, if MDM's thread is busy, or if MDM is asked for something meanwhile and
+  doesn't answer (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
 - ✅ Link grabber's **Status** column: a failure whose sentence ends in advice shows that advice
   in the column, with the whole sentence on hover, and the column is as wide as its longest answer
   ([#1110](https://github.com/anefzaoui/misterdownloadmanager/issues/1110))
@@ -760,7 +778,7 @@ These ship in the next version.
   that video from Add URL, Download video and the command line, not the first player written in
   its HTML (a hidden welcome video)
   ([#1076](https://github.com/anefzaoui/misterdownloadmanager/issues/1076))
-- ✅ The browser extension's popup has **Hide the download button in full screen**, off as installed: a page in full screen shows no **Download video** button, for watching without it in the way ([#670](https://github.com/anefzaoui/misterdownloadmanager/issues/670))
+- ✅ The browser extension's popup has **Hide the download button in full screen**, off as installed: entering full screen hides the **Download video** button at once, as the player's own controls, and the pointer's next move brings it back; on, a page in full screen shows no button at all, for watching without it in the way ([#670](https://github.com/anefzaoui/misterdownloadmanager/issues/670))
 - ✅ Windows: MDM listed in Settings → Default apps for MAGNET and .torrent, and Torrent
   settings' switch says when another app chosen there still opens them, and opens that page
   ([#1091](https://github.com/anefzaoui/misterdownloadmanager/issues/1091))
@@ -1322,6 +1340,10 @@ These ship in the next version.
 - ✅ AI assistants (MCP) can stop the main download queue too (`stop_queue`), and the automation
   API's queue actions take the main download queue when no queue is named (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
+  list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
+- ✅ A failed download says why in MDM's log too, with the site's name and no tokens
+  ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
 
 ## Being worked on
 

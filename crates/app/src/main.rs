@@ -449,6 +449,8 @@ fn app() -> eframe::Result {
     let window: std::sync::Arc<std::sync::OnceLock<egui::Context>> = Default::default();
     let wake = window.clone();
     let wake: std::sync::Arc<dyn Fn() + Send + Sync> = std::sync::Arc::new(move || {
+        // A command came in: someone waits for the window's answer, hidden or not (#1126).
+        crash::asked();
         if let Some(ctx) = wake.get() {
             ctx.request_repaint();
         }
@@ -572,6 +574,8 @@ fn app() -> eframe::Result {
     let result = renderer::run(APP_ID, &plan, options, move |cc| {
         #[cfg(windows)]
         win32::set_main_window(cc);
+        #[cfg(target_os = "linux")]
+        unix::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
         clipboard::wake(&cc.egui_ctx);

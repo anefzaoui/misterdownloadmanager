@@ -2059,6 +2059,68 @@ pub fn on_xwayland() -> bool {
     window_system().x11_over_wayland
 }
 
+/// Linux, X11 and XWayland: the main window's X11 id, for [`withdraw_main_window`]; 0 until it is
+/// known, and on Wayland.
+#[cfg(target_os = "linux")]
+static MAIN_X11_WINDOW: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// Linux: the main window, as eframe made it (`win32::set_main_window`'s counterpart).
+#[cfg(target_os = "linux")]
+pub fn set_main_window(cc: &eframe::CreationContext<'_>) {
+    use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+    let id = match cc.window_handle().map(|h| h.as_raw()) {
+        Ok(RawWindowHandle::Xlib(h)) => u32::try_from(h.window).unwrap_or(0),
+        Ok(RawWindowHandle::Xcb(h)) => h.window.get(),
+        _ => 0,
+    };
+    MAIN_X11_WINDOW.store(id, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// Linux, X11 and XWayland: the main window out of the taskbar and the window list, hidden in the
+/// notification area (#1255). winit hides a window by unmapping it, which takes a shown window
+/// out of the window manager's hands, but does nothing to a minimized one: the window manager
+/// already unmapped it, and keeps it, minimized, in its list (XFCE's window buttons showed it
+/// beside the tray icon). ICCCM (4.1.4) asks for both to withdraw a window: the unmap, and a
+/// synthetic UnmapNotify sent to the root window, which Xlib's XWithdrawWindow does and winit
+/// doesn't. Both here, on a connection of MDM's own, in that order; winit's own unmap after them
+/// finds the window unmapped already, and showing it maps it again, as a new window.
+#[cfg(target_os = "linux")]
+pub fn withdraw_main_window() {
+    let window = MAIN_X11_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    if window == 0 || on_wayland() {
+        return;
+    }
+    if let Err(e) = withdraw(window) {
+        tracing::warn!("the window couldn't be taken out of the window list: {e}");
+    }
+}
+
+/// ICCCM's withdrawal of X11 window `window` ([`withdraw_main_window`]).
+#[cfg(target_os = "linux")]
+fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{ConnectionExt, EventMask, UNMAP_NOTIFY_EVENT, UnmapNotifyEvent};
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = conn.setup().roots.get(screen).ok_or("no such screen")?.root;
+    conn.unmap_window(window)?;
+    let unmapped = UnmapNotifyEvent {
+        response_type: UNMAP_NOTIFY_EVENT,
+        sequence: 0,
+        event: root,
+        window,
+        from_configure: false,
+    };
+    conn.send_event(
+        false,
+        root,
+        EventMask::SUBSTRUCTURE_REDIRECT | EventMask::SUBSTRUCTURE_NOTIFY,
+        unmapped,
+    )?;
+    // A round trip: both requests reached the server before the connection closes.
+    conn.get_input_focus()?.reply()?;
+    Ok(())
+}
+
 /// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
 #[cfg(target_os = "linux")]
 #[allow(unsafe_code)]
@@ -2697,7 +2759,14 @@ pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter
     match CrashHandler::attach(event) {
         Ok(h) => {
             #[cfg(target_os = "linux")]
-            h.set_ptracer(monitor);
+            {
+                h.set_ptracer(monitor);
+                // Its handler reads a signal's context inside the frame, even where the kernel's
+                // frame is smaller than the copy it makes (no XSAVE, #1239).
+                if !in_frame::keep_handler_in_frame() {
+                    tracing::warn!("crash handler: its signals couldn't be routed in frame");
+                }
+            }
             CRASH_HANDLER.set(h).is_ok()
         }
         Err(e) => {
@@ -2706,6 +2775,125 @@ pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter
         }
     }
 }
+
+// ---- The handler in front of crash-handler's (#1239). examples/crashy.rs in crates/crash keeps
+// a copy of this module, from this line to the end mark, that crates/crash/tests/in_frame.rs
+// checks is the same.
+/// crash-handler's signal handler, kept inside the signal's frame where the kernel's is smaller
+/// than the context it copies (no XSAVE: mdm_crash::frame says how). Linux only: crash-handler
+/// takes Mach exceptions on macOS, with no signal frame.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub mod in_frame {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    /// The signals crash-handler catches (its `EXCEPTION_SIGNALS`).
+    pub const SIGNALS: [libc::c_int; 6] = [
+        libc::SIGABRT,
+        libc::SIGBUS,
+        libc::SIGFPE,
+        libc::SIGILL,
+        libc::SIGSEGV,
+        libc::SIGTRAP,
+    ];
+
+    type Handler = unsafe extern "C" fn(libc::c_int, *mut libc::siginfo_t, *mut libc::c_void);
+
+    /// crash-handler's own handler, which [`in_frame`] calls; 0 until [`keep_handler_in_frame`]
+    /// found it.
+    static THEIRS: AtomicUsize = AtomicUsize::new(0);
+
+    /// Put [`in_frame`] in front of crash-handler's handler; call it right after
+    /// `CrashHandler::attach`. True when the signals go through it.
+    pub fn keep_handler_in_frame() -> bool {
+        let mut routed = false;
+        for sig in SIGNALS {
+            let Some(mut sa) = action(sig) else {
+                continue;
+            };
+            if is_ours(&sa) {
+                routed = true;
+                continue;
+            }
+            // crash-handler installs one handler, with SA_SIGINFO, for all six: the first one
+            // found is it (SIGABRT's, just attached); a signal left to another isn't touched.
+            if sa.sa_flags & libc::SA_SIGINFO == 0 {
+                continue;
+            }
+            let theirs = match THEIRS.compare_exchange(
+                0,
+                sa.sa_sigaction,
+                Ordering::AcqRel,
+                Ordering::Acquire,
+            ) {
+                Ok(_) => sa.sa_sigaction,
+                Err(found) => found,
+            };
+            if sa.sa_sigaction != theirs {
+                continue;
+            }
+            // The same mask and flags (SA_ONSTACK, SA_SIGINFO), only the function is ours.
+            sa.sa_sigaction = in_frame as Handler as usize;
+            // SAFETY: `sa` is crash-handler's own action with `in_frame`, an `extern "C"`
+            // handler of the SA_SIGINFO kind, in its place; THEIRS was set above, before a
+            // signal can reach it.
+            if unsafe { libc::sigaction(sig, &sa, std::ptr::null_mut()) } == 0 {
+                routed = true;
+            }
+        }
+        routed
+    }
+
+    /// Signal `sig`'s current action.
+    pub fn action(sig: libc::c_int) -> Option<libc::sigaction> {
+        // SAFETY: a zeroed `sigaction` is a valid value for it (no handler, empty mask).
+        let mut sa: libc::sigaction = unsafe { std::mem::zeroed() };
+        // SAFETY: sigaction only reads the signal's current action into `sa`.
+        (unsafe { libc::sigaction(sig, std::ptr::null(), &mut sa) } == 0).then_some(sa)
+    }
+
+    /// True when action `sa` is [`in_frame`]'s.
+    pub fn is_ours(sa: &libc::sigaction) -> bool {
+        sa.sa_sigaction == in_frame as Handler as usize
+    }
+
+    /// The handler in front of crash-handler's: the kernel's context, or the part of it inside
+    /// the alternate stack.
+    unsafe extern "C" fn in_frame(
+        sig: libc::c_int,
+        info: *mut libc::siginfo_t,
+        uc: *mut libc::c_void,
+    ) {
+        let theirs = THEIRS.load(Ordering::Acquire);
+        // SAFETY: THEIRS holds crash-handler's handler, a function of this type, from before
+        // this handler was installed (keep_handler_in_frame).
+        let theirs = unsafe { std::mem::transmute::<usize, Handler>(theirs) };
+        // SAFETY: a zeroed `stack_t` is a valid value for it (no stack).
+        let mut ss: libc::stack_t = unsafe { std::mem::zeroed() };
+        // SAFETY: sigaltstack (a plain system call, safe in a signal handler) only reads this
+        // thread's alternate stack into `ss`.
+        let on_alt_stack = unsafe { libc::sigaltstack(std::ptr::null(), &mut ss) } == 0
+            && ss.ss_flags & libc::SS_ONSTACK != 0;
+        let stack = on_alt_stack.then(|| ss.ss_sp as usize..ss.ss_sp as usize + ss.ss_size);
+        let len = mdm_crash::frame::context_len();
+        let readable = mdm_crash::frame::readable(uc as usize, len, stack);
+        if readable == len {
+            // SAFETY: crash-handler's handler with the kernel's own arguments, as without this.
+            unsafe { theirs(sig, info, uc) };
+            return;
+        }
+        mdm_crash::frame::with_copy(|copy| {
+            // SAFETY: the first `readable` bytes at `uc` are the kernel's frame, inside the
+            // alternate stack; `copy` is a zeroed context of the type crash-handler reads, `len`
+            // bytes, more than `readable`.
+            unsafe {
+                std::ptr::copy_nonoverlapping(uc.cast::<u8>(), copy.cast::<u8>(), readable);
+                theirs(sig, info, copy);
+            }
+        });
+    }
+}
+// ---- End of the handler in front of crash-handler's.
 
 /// Have the monitor dump this process now (a panic, a freeze): every thread, this one asking.
 /// The process goes on.

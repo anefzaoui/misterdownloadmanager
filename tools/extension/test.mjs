@@ -2158,7 +2158,9 @@ function samplePage(html) {
 function videoButton({ stored = {} } = {}) {
   const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
   const handlers = {};
-  const queued = [];
+  // The frames asked for, by id: one cancelled since (a tick after a hide) does not run.
+  const frames = new Map();
+  let frameId = 0;
   let root = null;
   const node = (name = "") => {
     const style = new Map();
@@ -2277,8 +2279,8 @@ function videoButton({ stored = {} } = {}) {
     document: doc,
     matchMedia: () => ({ matches: false, addEventListener() {} }),
     getComputedStyle: () => ({ visibility: "visible", display: "block", opacity: "1" }),
-    requestAnimationFrame: (f) => (queued.push(f), queued.length),
-    cancelAnimationFrame: () => {},
+    requestAnimationFrame: (f) => (frames.set(++frameId, f), frameId),
+    cancelAnimationFrame: (id) => frames.delete(id),
     addEventListener: (n, f) => ((handlers[n] = handlers[n] || []).push(f)),
     removeEventListener: () => {},
     setTimeout,
@@ -2292,11 +2294,16 @@ function videoButton({ stored = {} } = {}) {
     console: quietConsole,
   });
   // The pointer over the video, up to the button's question being answered: only its look runs
-  // (its tick would ask for another frame).
+  // (its tick would ask for another frame). Each move lands a pixel to the side, as the script
+  // ignores a move at the same spot (#741).
+  let moved = 0;
   const move = async () => {
-    for (const f of handlers.pointermove || []) f({ clientX: 320, clientY: 180 });
-    assert.ok(queued.length, "the look queued");
-    await queued.shift()();
+    moved += 1;
+    for (const f of handlers.pointermove || []) f({ clientX: 320 + (moved % 2), clientY: 180 });
+    assert.ok(frames.size, "the look queued");
+    const [id, look] = [...frames].pop();
+    frames.delete(id);
+    await look();
     await settle();
   };
   return {
@@ -2318,20 +2325,25 @@ function videoButton({ stored = {} } = {}) {
   };
 }
 {
-  // Off, as installed: the button shows in full screen, placed there or entering it afterwards.
+  // Off, as installed: the button shows in full screen once the pointer moves, and entering full
+  // screen leaves it out of the way until then.
   const b = videoButton();
   b.setFullscreen(true);
   await b.move();
   assert.equal(b.display(), "block", "off: the button shows in full screen");
   b.setFullscreen(false);
   await b.fullscreenchange();
+  await b.move();
+  assert.equal(b.display(), "block", "off, not fullscreen: the button shows");
   b.setFullscreen(true);
   await b.fullscreenchange();
-  assert.equal(b.display(), "block", "off: entering full screen keeps it");
-  ok("#670: with the option off, the button shows in full screen");
+  assert.equal(b.display(), "none", "off: entering full screen hides it");
+  await b.move();
+  assert.equal(b.display(), "block", "off: the pointer's next move brings it back");
+  ok("#670: with the option off, the button shows in full screen once the pointer moves");
 }
 {
-  // On: it never shows while the page is in full screen — entering it hides a placed button,
+  // On: it never shows while the page is in full screen: entering it hides a placed button,
   // leaving it shows the button again.
   const b = videoButton({ stored: { hideVideoFullscreen: true } });
   await b.move();

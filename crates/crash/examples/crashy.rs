@@ -1,6 +1,7 @@
-//! The end-to-end test's program (tests/e2e.rs): `crashy <freeze|panic|crash> <data dir>` starts
-//! its monitor (itself with `--crash-monitor`), attaches the crash handler as MDM does, and then
-//! freezes its main thread, panics, or crashes. The monitor writes the dump and the report
+//! The end-to-end test's program (tests/e2e.rs): `crashy <freeze|panic|crash|thread-crash> <data
+//! dir>` starts its monitor (itself with `--crash-monitor`), attaches the crash handler as MDM
+//! does, and then freezes its main thread, panics, or crashes (on a thread of its own with
+//! `thread-crash`). The monitor writes the dump and the report
 //! (`<data>/crashes/*.txt`) and exits when this process is gone. With `CRASHY_MONITOR_LATE_MS` set,
 //! the monitor listens that much later.
 //!
@@ -53,7 +54,19 @@ fn main() {
         .unwrap(),
     );
     #[cfg(target_os = "linux")]
-    handler.set_ptracer(reporter.monitor_pid());
+    {
+        handler.set_ptracer(reporter.monitor_pid());
+        assert!(in_frame::keep_handler_in_frame());
+        // All six go through it, with crash-handler's alternate stack and SA_SIGINFO.
+        for sig in in_frame::SIGNALS {
+            let sa = in_frame::action(sig).unwrap();
+            assert!(in_frame::is_ours(&sa), "signal {sig}");
+            assert_ne!(sa.sa_flags & libc::SA_ONSTACK, 0);
+            assert_ne!(sa.sa_flags & libc::SA_SIGINFO, 0);
+        }
+        // A second call changes nothing.
+        assert!(in_frame::keep_handler_in_frame());
+    }
     // The monitor answers on a thread of its own once the first half second has passed (#1073):
     // a crash before then has no one to dump it, as in the app. The tests are about the reports,
     // so they wait for the connection first (a slow CI runner can take seconds to start it).
@@ -106,6 +119,14 @@ fn main() {
                 simulate(&h);
             }));
             crashy_panics_here();
+        }
+        "thread-crash" => {
+            // A thread's alternate signal stack is crash-handler's own, mapped as it starts.
+            let _ = std::thread::Builder::new()
+                .name("crasher".into())
+                .spawn(crashy_crashes_here)
+                .unwrap()
+                .join();
         }
         _ => crashy_crashes_here(),
     }
@@ -204,3 +225,125 @@ fn run_monitor(m: mdm_crash::MonitorArgs) {
         }
     }
 }
+
+// MDM's handler in front of crash-handler's, as the app has it (crates/app/src/unix.rs), so the
+// crashes here go through it as MDM's do. A copy, not shared: the app keeps `unsafe` in its
+// unix.rs (CLAUDE.md, rule 3); tests/in_frame.rs checks the two are the same.
+// ---- The handler in front of crash-handler's (#1239). examples/crashy.rs in crates/crash keeps
+// a copy of this module, from this line to the end mark, that crates/crash/tests/in_frame.rs
+// checks is the same.
+/// crash-handler's signal handler, kept inside the signal's frame where the kernel's is smaller
+/// than the context it copies (no XSAVE: mdm_crash::frame says how). Linux only: crash-handler
+/// takes Mach exceptions on macOS, with no signal frame.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub mod in_frame {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    /// The signals crash-handler catches (its `EXCEPTION_SIGNALS`).
+    pub const SIGNALS: [libc::c_int; 6] = [
+        libc::SIGABRT,
+        libc::SIGBUS,
+        libc::SIGFPE,
+        libc::SIGILL,
+        libc::SIGSEGV,
+        libc::SIGTRAP,
+    ];
+
+    type Handler = unsafe extern "C" fn(libc::c_int, *mut libc::siginfo_t, *mut libc::c_void);
+
+    /// crash-handler's own handler, which [`in_frame`] calls; 0 until [`keep_handler_in_frame`]
+    /// found it.
+    static THEIRS: AtomicUsize = AtomicUsize::new(0);
+
+    /// Put [`in_frame`] in front of crash-handler's handler; call it right after
+    /// `CrashHandler::attach`. True when the signals go through it.
+    pub fn keep_handler_in_frame() -> bool {
+        let mut routed = false;
+        for sig in SIGNALS {
+            let Some(mut sa) = action(sig) else {
+                continue;
+            };
+            if is_ours(&sa) {
+                routed = true;
+                continue;
+            }
+            // crash-handler installs one handler, with SA_SIGINFO, for all six: the first one
+            // found is it (SIGABRT's, just attached); a signal left to another isn't touched.
+            if sa.sa_flags & libc::SA_SIGINFO == 0 {
+                continue;
+            }
+            let theirs = match THEIRS.compare_exchange(
+                0,
+                sa.sa_sigaction,
+                Ordering::AcqRel,
+                Ordering::Acquire,
+            ) {
+                Ok(_) => sa.sa_sigaction,
+                Err(found) => found,
+            };
+            if sa.sa_sigaction != theirs {
+                continue;
+            }
+            // The same mask and flags (SA_ONSTACK, SA_SIGINFO), only the function is ours.
+            sa.sa_sigaction = in_frame as Handler as usize;
+            // SAFETY: `sa` is crash-handler's own action with `in_frame`, an `extern "C"`
+            // handler of the SA_SIGINFO kind, in its place; THEIRS was set above, before a
+            // signal can reach it.
+            if unsafe { libc::sigaction(sig, &sa, std::ptr::null_mut()) } == 0 {
+                routed = true;
+            }
+        }
+        routed
+    }
+
+    /// Signal `sig`'s current action.
+    pub fn action(sig: libc::c_int) -> Option<libc::sigaction> {
+        // SAFETY: a zeroed `sigaction` is a valid value for it (no handler, empty mask).
+        let mut sa: libc::sigaction = unsafe { std::mem::zeroed() };
+        // SAFETY: sigaction only reads the signal's current action into `sa`.
+        (unsafe { libc::sigaction(sig, std::ptr::null(), &mut sa) } == 0).then_some(sa)
+    }
+
+    /// True when action `sa` is [`in_frame`]'s.
+    pub fn is_ours(sa: &libc::sigaction) -> bool {
+        sa.sa_sigaction == in_frame as Handler as usize
+    }
+
+    /// The handler in front of crash-handler's: the kernel's context, or the part of it inside
+    /// the alternate stack.
+    unsafe extern "C" fn in_frame(
+        sig: libc::c_int,
+        info: *mut libc::siginfo_t,
+        uc: *mut libc::c_void,
+    ) {
+        let theirs = THEIRS.load(Ordering::Acquire);
+        // SAFETY: THEIRS holds crash-handler's handler, a function of this type, from before
+        // this handler was installed (keep_handler_in_frame).
+        let theirs = unsafe { std::mem::transmute::<usize, Handler>(theirs) };
+        // SAFETY: a zeroed `stack_t` is a valid value for it (no stack).
+        let mut ss: libc::stack_t = unsafe { std::mem::zeroed() };
+        // SAFETY: sigaltstack (a plain system call, safe in a signal handler) only reads this
+        // thread's alternate stack into `ss`.
+        let on_alt_stack = unsafe { libc::sigaltstack(std::ptr::null(), &mut ss) } == 0
+            && ss.ss_flags & libc::SS_ONSTACK != 0;
+        let stack = on_alt_stack.then(|| ss.ss_sp as usize..ss.ss_sp as usize + ss.ss_size);
+        let len = mdm_crash::frame::context_len();
+        let readable = mdm_crash::frame::readable(uc as usize, len, stack);
+        if readable == len {
+            // SAFETY: crash-handler's handler with the kernel's own arguments, as without this.
+            unsafe { theirs(sig, info, uc) };
+            return;
+        }
+        mdm_crash::frame::with_copy(|copy| {
+            // SAFETY: the first `readable` bytes at `uc` are the kernel's frame, inside the
+            // alternate stack; `copy` is a zeroed context of the type crash-handler reads, `len`
+            // bytes, more than `readable`.
+            unsafe {
+                std::ptr::copy_nonoverlapping(uc.cast::<u8>(), copy.cast::<u8>(), readable);
+                theirs(sig, info, copy);
+            }
+        });
+    }
+}
+// ---- End of the handler in front of crash-handler's.
