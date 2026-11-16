@@ -1474,7 +1474,12 @@ fn attempt(
     // MDM's engine downloads the streams (#769); yt-dlp then finds them in place.
     let mut by_engine = false;
     if let Some(e) = engine {
-        match e.fetch(exe, url, browser, &file, progress, dead, reroute, cookies) {
+        // With the run's selector: the nearest quality once the chosen one wasn't offered
+        // (#94), or the engine would ask for that one again (#1240).
+        let selector = selector_of(ours);
+        match e.fetch(
+            exe, url, browser, selector, &file, progress, dead, reroute, cookies,
+        ) {
             Engined::Ready => by_engine = true,
             Engined::Helper(why) => {
                 note(
@@ -1686,20 +1691,26 @@ impl ByEngine {
     /// Choose the formats on the page looked up into `file` and download their streams with the
     /// engine; a stream's address that dies is asked for again with a new look-up (`url`, as
     /// the browser asked, `browser`; servers moved as this run moved them; with the browser's
-    /// cookies or without them, as `cookies` decided).
+    /// cookies or without them, as `cookies` decided). `selector`: the run's own format
+    /// selector, when the download moved to another (the nearest quality, #94).
     #[allow(clippy::too_many_arguments)]
     fn fetch(
         &self,
         exe: &Path,
         url: &str,
         browser: &[String],
+        selector: Option<&str>,
         file: &Path,
         progress: &Mutex<Progress>,
         dead: &std::collections::BTreeSet<String>,
         reroute: bool,
         cookies: &Cookies,
     ) -> Engined {
-        let choose_args = cookies.args(&self.choose);
+        let args = match selector {
+            Some(s) => with_selector(&self.choose, s),
+            None => self.choose.clone(),
+        };
+        let choose_args = cookies.args(&args);
         let chosen = match choose(exe, &choose_args, file) {
             Ok(c) => c,
             Err(e) => return Engined::Failed(e),

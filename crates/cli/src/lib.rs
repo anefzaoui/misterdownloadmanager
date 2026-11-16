@@ -108,9 +108,15 @@ enum Cmd {
         /// the best single file; "ba" the sound alone as the site has it (not converted);
         /// "mp3:320", "mp3:256", "mp3:192" or "mp3:128" the sound as an MP3 at that bitrate,
         /// "mp3:0" at its best variable one; "opus:" as Opus; "flac:" as FLAC (lossless, but it
-        /// can't add quality a lossy source doesn't have). Conversions need ffmpeg.
-        #[arg(short, long, default_value = "b")]
-        format: String,
+        /// can't add quality a lossy source doesn't have). Conversions need ffmpeg. Without it
+        /// (and `--quality`), the best, as the Download video window starts on: the best picture
+        /// with the best sound joined to it (with ffmpeg), else the best file with both.
+        #[arg(short, long, conflicts_with = "quality")]
+        format: Option<String>,
+        /// The video's height ("1080", "720p"): the best of that height, else of the nearest
+        /// below it the page offers (else the nearest above), as `video-info` lists them.
+        #[arg(short, long, value_parser = parse_height)]
+        quality: Option<u32>,
         /// Folder to save into.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
@@ -450,7 +456,10 @@ pub fn main_with(args: Vec<OsString>, accounts: Option<&dyn Accounts>) -> ExitCo
         Err(e) if e.is::<Reported>() => ExitCode::FAILURE,
         Err(e) => {
             if json {
-                emit(json!({ "error": format!("{e:#}") }));
+                match e.downcast_ref::<NoFormat>() {
+                    Some(n) => emit(n.json()),
+                    None => emit(json!({ "error": format!("{e:#}") })),
+                }
             } else {
                 eprintln!("Error: {e:?}");
             }
@@ -635,21 +644,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             // language's and English).
             let subs = mdm_tools::resolve::sub_choices(&v, "en");
             if json {
-                let choices: Vec<_> = choices
-                    .iter()
-                    .map(|c| {
-                        json!({
-                            "label": c.label,
-                            "format": c.selector,
-                            "size": c.size,
-                            "approx": c.approx,
-                            "height": c.height,
-                            "fps": c.fps,
-                            "codec": c.codec,
-                            "range": c.range,
-                        })
-                    })
-                    .collect();
+                let choices: Vec<_> = choices.iter().map(choice_json).collect();
                 let subs: Vec<_> = subs
                     .iter()
                     .map(|s| json!({ "code": s.code, "name": s.name, "automatic": s.automatic }))
@@ -670,13 +665,8 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 eprintln!("{}", declared_note(d));
             }
             println!("{}", v.title);
-            for c in choices {
-                // The streams' own bytes, or "~" before an estimate (#801).
-                let about = if c.approx { "~" } else { "" };
-                let size = c
-                    .size
-                    .map_or(String::new(), |s| format!("  {about}{} MB", s / 1_000_000));
-                println!("  {}{size}    -f \"{}\"", c.label, c.selector);
+            for c in &choices {
+                println!("{}", choice_line(c));
             }
             if !subs.is_empty() {
                 println!("subtitles:");
@@ -957,6 +947,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
         Cmd::VideoGet {
             url,
             format,
+            quality,
             output,
             subs,
             auto_subs,
@@ -999,6 +990,14 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 Some(d) => (d.address.clone(), d.browser(&Default::default())),
                 None => (url.clone(), Default::default()),
             };
+            let ffmpeg = mdm_tools::ffmpeg::installed(&dir).map(|f| f.exe);
+            // The qualities Download video lists for it (#1240), and the one it starts on, or
+            // the height asked's nearest.
+            let choices = mdm_tools::resolve::choices(&v, ffmpeg.is_some());
+            let format = match format {
+                Some(f) => f,
+                None => pick_quality(&v, &choices, quality, ffmpeg.is_some(), json)?,
+            };
             // A stem no file in the folder has, whatever the extension: yt-dlp takes any
             // `<stem>.*` there as its own (#32). The extension only sizes the name.
             let ext = mdm_tools::resolve::audio_conversion(&format).map_or("mp4", |a| a.format);
@@ -1008,7 +1007,6 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 .file_stem()
                 .map(|s| s.to_string_lossy().into_owned())
                 .unwrap_or_else(|| "video".into());
-            let ffmpeg = mdm_tools::ffmpeg::installed(&dir).map(|f| f.exe);
             let job = mdm_tools::video::VideoJob::start(
                 &tool.exe,
                 &address,
@@ -1023,9 +1021,20 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 &subs,
                 Some(video_engine(connections, route)),
             )?;
+            // The download's log as it comes (a quality not served falling back to the
+            // nearest, #94; a server given up), as the window's log has it.
+            let mut said = 0;
             loop {
                 tokio::time::sleep(std::time::Duration::from_millis(500)).await;
                 let p = job.progress();
+                for (_, text) in p.events.iter().skip(said) {
+                    if json {
+                        emit(json!({ "event": "note", "text": text }));
+                    } else {
+                        eprintln!("\n{text}");
+                    }
+                }
+                said = p.events.len();
                 if json {
                     emit(json!({
                         "event": "progress",
@@ -1040,6 +1049,15 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                         p.total.map_or("?".into(), |t| t.to_string()),
                         p.speed / 1024.0
                     );
+                }
+                // The error below the progress line, not at its end.
+                if !json
+                    && matches!(
+                        p.state,
+                        mdm_tools::video::State::Failed(_) | mdm_tools::video::State::Stopped
+                    )
+                {
+                    eprintln!();
                 }
                 match p.state {
                     mdm_tools::video::State::Running => {}
@@ -1097,6 +1115,14 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                     {
                         anyhow::bail!(mdm_tools::proc::ProcError::PathTooLong(path))
                     }
+                    // No format the page offers matched (#1240): with the ones it does.
+                    mdm_tools::video::State::Failed(e)
+                        if mdm_tools::servers::format_unavailable(&e) =>
+                    {
+                        anyhow::bail!(NoFormat::new(without_list_advice(&e), &v, &choices))
+                    }
+                    // yt-dlp's words, not `Failed("…")`.
+                    mdm_tools::video::State::Failed(e) => anyhow::bail!(e),
                     other => anyhow::bail!("{other:?}"),
                 }
             }
@@ -1195,6 +1221,179 @@ fn look_up_page(
 fn declared_note(d: &mdm_tools::declared::Declared) -> String {
     format!("the page declares its video: {}", d.address)
 }
+
+/// `video-get --quality`: a height, as "1080" or "1080p".
+fn parse_height(s: &str) -> Result<u32, String> {
+    let s = s.trim();
+    let digits = s.strip_suffix(['p', 'P']).unwrap_or(s);
+    match digits.parse::<u32>() {
+        Ok(h) if h > 0 => Ok(h),
+        _ => Err(format!("{s:?} is not a height (such as 1080 or 720p)")),
+    }
+}
+
+/// A quality as `video-info --json` lists it, and `video-get --json`'s error (#1240).
+fn choice_json(c: &mdm_tools::resolve::Choice) -> serde_json::Value {
+    json!({
+        "label": c.label,
+        "format": c.selector,
+        "size": c.size,
+        "approx": c.approx,
+        "height": c.height,
+        "fps": c.fps,
+        "codec": c.codec,
+        "range": c.range,
+    })
+}
+
+/// A quality's line as `video-info` prints it, and `video-get`'s error (#1240): its label, size
+/// (the streams' own bytes, or "~" before an estimate, #801) and what `-f` takes for it.
+fn choice_line(c: &mdm_tools::resolve::Choice) -> String {
+    let about = if c.approx { "~" } else { "" };
+    let size = c
+        .size
+        .map_or(String::new(), |s| format!("  {about}{} MB", s / 1_000_000));
+    format!("  {}{size}    -f \"{}\"", c.label, c.selector)
+}
+
+/// `video-get` without `-f` (#1240): the quality Download video starts on, or the one of the
+/// height asked, else its nearest ([`mdm_tools::resolve::pick`]), said on stderr (a `quality`
+/// event with `--json`). Its selector; or, with nothing to download, what the page offers.
+fn pick_quality(
+    v: &mdm_tools::resolve::Video,
+    choices: &[mdm_tools::resolve::Choice],
+    height: Option<u32>,
+    merge: bool,
+    json: bool,
+) -> anyhow::Result<String> {
+    use mdm_tools::resolve::{is_audio, needs_merging, pick};
+    let apart = needs_merging(v) && !merge;
+    let picked = pick(choices, height)
+        // The sound alone for a video only when the page has no picture at all.
+        .filter(|p| !(height.is_none() && apart && is_audio(p.choice)));
+    let Some(p) = picked else {
+        let why = match height {
+            _ if apart => "its pictures come apart from their sound, and joining them needs \
+                           ffmpeg (install-ffmpeg); -f ba downloads the sound alone"
+                .to_owned(),
+            Some(h) => format!("no video of a known height on that page to take {h}p from"),
+            None => "no video this can download on that page".to_owned(),
+        };
+        anyhow::bail!(NoFormat::new(why, v, choices));
+    };
+    let c = p.choice;
+    if json {
+        emit(json!({
+            "event": "quality",
+            "label": c.label,
+            "format": c.selector,
+            "height": c.height,
+            "asked": height,
+            "nearest": p.instead_of.is_some(),
+        }));
+    } else if let Some(asked) = p.instead_of {
+        eprintln!(
+            "{asked}p isn't offered: downloading the nearest, {}",
+            c.label
+        );
+    } else {
+        eprintln!("downloading {}", c.label);
+    }
+    Ok(c.selector.clone())
+}
+
+/// yt-dlp's message without its advice for its own command line ("Use --list-formats for a list
+/// of available formats"): `video-get` lists them itself (#1240).
+fn without_list_advice(message: &str) -> String {
+    match message.find(" Use --list-formats") {
+        Some(i) => message[..i].to_owned(),
+        None => message.to_owned(),
+    }
+}
+
+/// `video-get` found nothing to download (#1240): why, with what the page offers instead, as
+/// `video-info` lists it (its conversions left out), else yt-dlp's own formats. `--json` gives
+/// them as `choices` and `formats` beside the `error`.
+#[derive(Debug)]
+struct NoFormat {
+    why: String,
+    choices: Vec<mdm_tools::resolve::Choice>,
+    formats: Vec<mdm_tools::resolve::Format>,
+}
+
+impl NoFormat {
+    fn new(
+        why: String,
+        v: &mdm_tools::resolve::Video,
+        choices: &[mdm_tools::resolve::Choice],
+    ) -> Self {
+        let choices = choices
+            .iter()
+            .filter(|c| mdm_tools::resolve::audio_conversion(&c.selector).is_none())
+            .cloned()
+            .collect();
+        NoFormat {
+            why,
+            choices,
+            formats: v.formats.clone(),
+        }
+    }
+
+    /// yt-dlp's format, briefly: its ID, type, height and what it carries.
+    fn format_line(f: &mdm_tools::resolve::Format) -> String {
+        let height = f.height.map_or(String::new(), |h| format!(" {h}p"));
+        let has = match (f.video, f.audio) {
+            (true, true) => "picture and sound",
+            (true, false) => "picture only",
+            (false, true) => "sound only",
+            (false, false) => "neither",
+        };
+        format!("  {} {}{height}, {has}", f.id, f.ext)
+    }
+
+    fn json(&self) -> serde_json::Value {
+        let formats: Vec<_> = self
+            .formats
+            .iter()
+            .map(|f| {
+                json!({
+                    "id": f.id,
+                    "ext": f.ext,
+                    "height": f.height,
+                    "video": f.video,
+                    "audio": f.audio,
+                })
+            })
+            .collect();
+        json!({
+            "error": self.why,
+            "choices": self.choices.iter().map(choice_json).collect::<Vec<_>>(),
+            "formats": formats,
+        })
+    }
+}
+
+impl std::fmt::Display for NoFormat {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        f.write_str(&self.why)?;
+        if !self.choices.is_empty() {
+            f.write_str("\nthe page offers (-f, or --quality with a height):")?;
+            for c in &self.choices {
+                write!(f, "\n{}", choice_line(c))?;
+            }
+        } else if !self.formats.is_empty() {
+            f.write_str("\nthe page's formats (yt-dlp's IDs, for -f):")?;
+            for x in &self.formats {
+                write!(f, "\n{}", Self::format_line(x))?;
+            }
+        } else {
+            f.write_str("\nthe page lists no format")?;
+        }
+        Ok(())
+    }
+}
+
+impl std::error::Error for NoFormat {}
 
 /// A download's options: the app's defaults (the default browser's User-Agent, #668, and MDM's
 /// former one once if a site refuses it, #372).
@@ -1386,6 +1585,76 @@ fn torrent_source(s: &str) -> anyhow::Result<mdm_torrent::Source> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1240: `video-get --quality` takes a height as people write it.
+    #[test]
+    fn a_quality_is_a_height() {
+        assert_eq!(parse_height("1080"), Ok(1080));
+        assert_eq!(parse_height("720p"), Ok(720));
+        assert_eq!(parse_height(" 4320P "), Ok(4320));
+        assert!(parse_height("0").is_err());
+        assert!(parse_height("best").is_err());
+        assert!(parse_height("-1").is_err());
+        let cli = Cli::try_parse_from([NAME, "video-get", "https://v.example/1", "-q", "720p"]);
+        assert!(matches!(
+            cli.map(|c| c.cmd),
+            Ok(Cmd::VideoGet {
+                quality: Some(720),
+                format: None,
+                ..
+            })
+        ));
+        // One or the other.
+        assert!(Cli::try_parse_from([NAME, "video-get", "u", "-q", "720", "-f", "b"]).is_err());
+    }
+
+    /// #1240: a page like Bilibili's (pictures and sounds apart): with ffmpeg, the best picture
+    /// joined to the best sound; without, no video to give, said with what the page offers.
+    #[test]
+    fn video_get_picks_as_the_window_does() {
+        let v = mdm_tools::resolve::parse(
+            br#"{"title": "A video", "formats": [
+            {"format_id": "30216", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "filesize": 1200000},
+            {"format_id": "100022", "ext": "mp4", "height": 288, "vcodec": "av01.0.00M.08", "acodec": "none", "filesize": 4890000},
+            {"format_id": "30016", "ext": "mp4", "height": 288, "vcodec": "avc1.64001E", "acodec": "none", "filesize": 5380000}]}"#,
+        )
+        .unwrap();
+        let merged = mdm_tools::resolve::choices(&v, true);
+        assert_eq!(
+            pick_quality(&v, &merged, None, true, true).unwrap(),
+            "100022+30216/bv*[height=288]+ba/b[height=288]"
+        );
+        assert_eq!(
+            pick_quality(&v, &merged, Some(4320), true, true).unwrap(),
+            "100022+30216/bv*[height=288]+ba/b[height=288]"
+        );
+        let apart = mdm_tools::resolve::choices(&v, false);
+        let e = pick_quality(&v, &apart, None, false, true).unwrap_err();
+        let n = e.downcast_ref::<NoFormat>().expect("the formats said");
+        assert!(n.why.contains("needs ffmpeg"), "{}", n.why);
+        let text = n.to_string();
+        assert!(text.contains("-f \"30216/ba\""), "{text}");
+        let json = n.json();
+        assert_eq!(json["choices"][0]["format"], "30216/ba");
+        assert_eq!(json["formats"].as_array().unwrap().len(), 3);
+        assert_eq!(json["formats"][1]["id"], "100022");
+        assert_eq!(json["formats"][1]["audio"], false);
+        // Nothing at all on the page: yt-dlp's own formats, or that there are none.
+        let empty = mdm_tools::resolve::parse(br#"{"title": "T", "formats": []}"#).unwrap();
+        let e = pick_quality(&empty, &[], None, true, true).unwrap_err();
+        assert!(e.to_string().ends_with("the page lists no format"), "{e}");
+    }
+
+    #[test]
+    fn yt_dlps_advice_is_left_out() {
+        assert_eq!(
+            without_list_advice(
+                "yt-dlp failed: [BiliBili] BV1_p1: Requested format is not available. Use --list-formats for a list of available formats"
+            ),
+            "yt-dlp failed: [BiliBili] BV1_p1: Requested format is not available."
+        );
+        assert_eq!(without_list_advice("other"), "other");
+    }
 
     /// #668: only the commands that download a link wait for the default browser's User-Agent.
     #[test]
