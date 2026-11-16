@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
+  Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
+  interface language followed the system in tests too
 - ✅ With **Start immediately** on, picking the folder the early download already saves to in
   **Save As** keeps its name: the download's own `.mdm.part` and `.mdm.json` no longer count as
   taken, so it isn't offered as `song (1).mp3` and doesn't start over
