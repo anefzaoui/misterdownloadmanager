@@ -5664,6 +5664,37 @@ mod tests {
     }
 
     #[test]
+    fn an_archive_org_links_cookies_go_to_archive_storage_nodes() {
+        let mut h = HeaderMap::new();
+        h.insert(
+            header::COOKIE,
+            HeaderValue::from_static("logged-in-user=user; logged-in-sig=sig"),
+        );
+        let u = |s: &str| Url::parse(s).unwrap();
+        let link = u("https://archive.org/download/sample-item/sample.pdf");
+        for to in [
+            "https://ia600100.us.archive.org/24/items/sample-item/sample.pdf",
+            "https://ia800102.us.archive.org/items/sample-item/sample.pdf",
+            "https://dn720303.ca.archive.org/0/items/sample-item/sample.pdf",
+        ] {
+            assert!(
+                scoped_headers(&h, &link, &u(to)).contains_key(header::COOKIE),
+                "{to}"
+            );
+        }
+        for to in [
+            "https://attacker.example/sample.pdf",
+            "https://notarchive.org/download",
+            "http://ia600100.us.archive.org/sample.pdf",
+        ] {
+            assert!(
+                !scoped_headers(&h, &link, &u(to)).contains_key(header::COOKIE),
+                "{to}"
+            );
+        }
+    }
+
+    #[test]
     fn drive_gets_a_browsers_agent_and_only_drive() {
         let u = |s: &str| Url::parse(s).unwrap();
         let browser = Some(sites::gdrive::USER_AGENT);
