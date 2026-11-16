@@ -311,7 +311,7 @@ private fun ServerField(server: Server) {
         Spacer(Modifier.height(2.dp))
         val flag = server.country?.let(::flagOf)
         val line = listOfNotNull(flag?.let { "$it ${server.place}" } ?: server.place, server.time)
-        Text(line.joinToString(" · "), style = MaterialTheme.typography.bodyMedium)
+        DotLine(line, MaterialTheme.typography.bodyMedium, MaterialTheme.colorScheme.onSurface)
         if (server.about.isNotBlank()) {
             Spacer(Modifier.height(2.dp))
             SelectionContainer {

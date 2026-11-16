@@ -57,6 +57,23 @@ class Shots {
     /** Right to left (Arabic, Persian, Hebrew…): the core says the language's direction. */
     @Test fun listRtl() = shot("list-rtl", content = frame(Tab.Downloads, Samples.snapshot.copy(rtl = true)))
 
+    /** A long language (German) and right to left (Arabic), as the phone's language. */
+    @Test
+    @Config(qualifiers = "de-w411dp-h891dp-xxhdpi")
+    fun listDe() = shot("list-de", content = frame(Tab.Downloads))
+
+    @Test
+    @Config(qualifiers = "de-w411dp-h891dp-xxhdpi")
+    fun settingsDe() = shot("settings-de", dark = true, content = frame(Tab.Settings))
+
+    @Test
+    @Config(qualifiers = "ar-ldrtl-w411dp-h891dp-xxhdpi")
+    fun listAr() = shot("list-ar", dark = true, content = frame(Tab.Downloads, Samples.snapshot.copy(rtl = true)))
+
+    @Test
+    @Config(qualifiers = "ar-ldrtl-w411dp-h891dp-xxhdpi")
+    fun settingsAr() = shot("settings-ar", content = frame(Tab.Settings, Samples.snapshot.copy(rtl = true)))
+
     /** The largest common font size: nothing clipped. */
     @Test fun listLargeFont() {
         org.robolectric.RuntimeEnvironment.setFontScale(1.3f)

@@ -528,24 +528,28 @@ private fun RowMeta(d: Download) {
             d.status == "Queued" -> Tag(stringResource(R.string.tag_queued))
             !d.running -> Tag(stringResource(R.string.tag_paused))
         }
-        val text = when {
-            d.failed -> d.error ?: stringResource(R.string.status_error)
-            d.complete -> listOfNotNull(d.size?.let(Format::size), d.added).joinToString(" · ")
+        val parts = when {
+            d.failed -> null
+            d.complete -> listOfNotNull(d.size?.let(Format::size), d.added)
             d.running -> listOfNotNull(
                 d.size?.let { Format.of(Format.size(d.downloaded), Format.size(it)) } ?: Format.size(d.downloaded),
                 Format.speed(d.speed).takeIf { d.speed > 0 },
                 d.eta?.let { stringResource(R.string.eta_left, Format.eta(it)) },
-            ).joinToString(" · ")
-            else -> d.size?.let { if (d.downloaded > 0) Format.of(Format.size(d.downloaded), Format.size(it)) else Format.size(it) } ?: ""
+            )
+            else -> listOf(d.size?.let { if (d.downloaded > 0) Format.of(Format.size(d.downloaded), Format.size(it)) else Format.size(it) } ?: "")
         }
-        Text(
-            text,
-            style = small,
-            color = if (d.failed) c.error else c.onSurfaceVariant,
-            maxLines = if (d.failed) 2 else 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f),
-        )
+        if (parts == null) {
+            Text(
+                d.error ?: stringResource(R.string.status_error),
+                style = small,
+                color = c.error,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
+            )
+        } else {
+            DotLine(parts, small, c.onSurfaceVariant, Modifier.weight(1f))
+        }
         if (!d.complete && !d.failed && d.fraction != null) {
             Text(
                 Format.percent(d.fraction),
@@ -556,20 +560,28 @@ private fun RowMeta(d: Download) {
     }
 }
 
+/**
+ * `parts` side by side with a dot between, each its own text: in a right-to-left language the row
+ * places them right to left, and each number keeps its unit on its side. One text of them all
+ * ("120 MB / 661 MB · 13.9 MB/s · 2:54 left", each part an isolate) had Android's text layout put
+ * the middle part's Arabic-Indic digits after its unit ("MB/s ١٣٫٩").
+ */
 @Composable
-fun statusLine(d: Download): String {
-    val size = d.size?.let(Format::size)
-    return when {
-        d.complete -> listOfNotNull(size, stringResource(R.string.status_complete)).joinToString(" · ")
-        d.failed -> d.error ?: stringResource(R.string.status_error)
-        d.running -> listOfNotNull(
-            d.stage?.takeIf { it != "Downloading" }?.let { stageText(it) },
-            size?.let { Format.of(Format.size(d.downloaded), it) } ?: Format.size(d.downloaded),
-            Format.speed(d.speed),
-            d.eta?.let(Format::eta),
-        ).joinToString(" · ")
-        d.status == "Queued" -> listOfNotNull(size, stringResource(R.string.status_queued)).joinToString(" · ")
-        else -> listOfNotNull(size?.let { Format.of(Format.size(d.downloaded), it) }, stringResource(R.string.status_stopped)).joinToString(" · ")
+fun DotLine(parts: List<String>, style: androidx.compose.ui.text.TextStyle, color: androidx.compose.ui.graphics.Color, modifier: Modifier = Modifier) {
+    Row(modifier, verticalAlignment = Alignment.CenterVertically) {
+        parts.forEachIndexed { i, part ->
+            if (i > 0) Text(" · ", style = style, color = color, maxLines = 1)
+            val last = i == parts.lastIndex
+            Text(
+                part,
+                style = style,
+                color = color,
+                maxLines = 1,
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis,
+                modifier = if (last) Modifier.weight(1f, fill = false) else Modifier,
+            )
+        }
     }
 }
 
