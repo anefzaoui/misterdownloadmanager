@@ -611,9 +611,8 @@ pub fn gallery_dl(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
-    let mut cmd = Command::new(&tool.exe);
+    let mut cmd = helper_command(&tool.exe);
     let route = through_adapter(&mut cmd, Helper::GalleryDl, Some(url))?;
-    cmd.env("PYTHONIOENCODING", "utf-8");
     for a in ours {
         cmd.arg(safe(a)?);
     }
@@ -824,9 +823,18 @@ fn cookie_file(text: &str) -> std::io::Result<CookieFile> {
 /// Python's.
 const UTF8: [&str; 2] = ["--encoding", "utf-8"];
 
-fn ytdlp_command(exe: &Path) -> Command {
+/// yt-dlp's or gallery-dl's program, built as it will run: output in UTF-8 ([`UTF8`]), and in
+/// the helpers' folder with it as TEMP, TMP and TMPDIR ([`crate::workdir`]), never MDM's own
+/// working folder, which is whatever started MDM gave it: the install folder from the Start
+/// menu or the browser (#834: Chrome starts its host in the host's folder), and
+/// `C:\Windows\System32` when Windows starts it with the session (#1216). On Windows yt-dlp
+/// makes the small file it tries a format with (a YouTube video put online in the last two
+/// days, a stream marked as protected) in its working folder: its `get_output_path('temp')` is
+/// `.` there when MDM gives no `-P temp:`. [`spawn`] gives the same to any other program.
+fn helper_command(exe: &Path) -> Command {
     let mut cmd = Command::new(exe);
     cmd.env("PYTHONIOENCODING", "utf-8");
+    crate::workdir::apply(&mut cmd, crate::workdir::folders());
     cmd
 }
 
@@ -1094,7 +1102,7 @@ pub fn ytdlp(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
-    let mut cmd = ytdlp_command(exe);
+    let mut cmd = helper_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp, Some(url))?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
@@ -1115,7 +1123,7 @@ pub fn ytdlp_info(
     ours: &[String],
     info: &Path,
 ) -> Result<Command, ProcError> {
-    let mut cmd = ytdlp_command(exe);
+    let mut cmd = helper_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp, None)?;
     layers(&mut cmd, user, ours)?;
     cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
@@ -2336,6 +2344,38 @@ foreach ($d in $env:PATH.Split(';')) {
         );
         for temp in &lines[1..] {
             assert_eq!(Path::new(temp), dir, "{out}");
+        }
+    }
+
+    /// #1216: yt-dlp's and gallery-dl's commands are built to start in the helpers' folder, with
+    /// it as TEMP, TMP and TMPDIR, whatever folder MDM itself was started in
+    /// (`C:\Windows\System32` when Windows starts it with the session): yt-dlp made the file
+    /// it tries a format with there, and Windows refused it.
+    #[test]
+    fn the_helpers_commands_start_in_the_helpers_folder() {
+        let dir = crate::workdir::folders()
+            .dir
+            .clone()
+            .expect("a temporary folder that can be written");
+        let exe = Path::new("yt-dlp");
+        let tool = crate::Installed {
+            version: "1.32.0".into(),
+            exe: "gallery-dl".into(),
+        };
+        let built = [
+            ytdlp(exe, &[], &["-J".into()], "https://x.test/v").unwrap(),
+            ytdlp_info(exe, &[], &[], Path::new("/info.json")).unwrap(),
+            gallery_dl(&tool, &[], "https://x.test/g").unwrap(),
+        ];
+        for cmd in &built {
+            let program = cmd.get_program().to_string_lossy();
+            assert_eq!(cmd.get_current_dir(), Some(dir.as_path()), "{program}");
+            for var in crate::workdir::TEMP_VARS {
+                let value = cmd.get_envs().find(|(k, _)| *k == var).and_then(|(_, v)| v);
+                assert_eq!(value, Some(dir.as_os_str()), "{program} {var}");
+            }
+            // And nothing it inherits is taken away: the rest of MDM's environment goes too.
+            assert!(cmd.get_envs().all(|(_, v)| v.is_some()), "{program}");
         }
     }
 

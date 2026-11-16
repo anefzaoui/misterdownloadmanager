@@ -329,6 +329,16 @@ pub enum Destination {
     Free(PathBuf),
 }
 
+impl Destination {
+    /// The folder the download is saved in.
+    pub fn folder(&self) -> &Path {
+        match self {
+            Destination::Dir(dir) => dir,
+            Destination::File(p) | Destination::Free(p) => p.parent().unwrap_or(Path::new("")),
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct Request {
     pub url: Url,
@@ -1180,6 +1190,7 @@ impl Download {
         Download::spawn(req.url.clone(), move |shared, cancel| {
             let sh = shared.clone();
             let body = async move {
+                after_clearing(req.dest.folder(), &cancel).await?;
                 if crate::ftp::is_ftp(&req.url) {
                     run_fresh_ftp(req, opts, sh, cancel).await
                 } else {
@@ -1213,7 +1224,68 @@ impl Download {
         }))
     }
 
+    /// [`Download::resume`] when there is a resume state at `state_file`, else `req` from the
+    /// start ([`Download::start_with`], `kept` its look's answer), as the download's own task
+    /// finds on the disk: the caller never waits for it. A folder on a network share that doesn't
+    /// answer, or a drive waking up, holds this download only, not the caller (the app's window:
+    /// found with #1170). A state that is there but can't be resumed fails it, as
+    /// [`Download::resume`] would, and the data stays for later: it is never started over.
+    /// Until the disk has answered, it shows `shown` bytes (what the caller shows of it); a start
+    /// from scratch then shows 0, unless its folder isn't there (a drive unplugged: its data may
+    /// still be on it).
+    pub fn resume_or_start(
+        state_file: PathBuf,
+        req: Request,
+        opts: Options,
+        kept: Option<KeptAnswer>,
+        shown: u64,
+    ) -> Download {
+        Download::spawn_showing(req.url.clone(), shown, move |shared, cancel| {
+            let sh = shared.clone();
+            let body = async move {
+                after_clearing(req.dest.folder(), &cancel).await?;
+                let look = {
+                    let state_file = state_file.clone();
+                    tokio::task::spawn_blocking(move || Found::look(&state_file))
+                };
+                let found = tokio::select! {
+                    _ = cancel.cancelled() => return Err(Error::Cancelled),
+                    found = look => found.unwrap_or_else(|e| {
+                        Found::State(Err(format!("{}: {e}", state_file.display())))
+                    }),
+                };
+                match found {
+                    Found::State(Ok(saved)) => {
+                        run_resume(*saved, state_file, req.headers, opts, sh, cancel).await
+                    }
+                    Found::State(Err(e)) => Err(Error::BadState(e)),
+                    Found::Unavailable(dir) => Err(Error::DestinationUnavailable(dir)),
+                    Found::Nothing { folder } => {
+                        if folder {
+                            sh.view.lock().unwrap().downloaded = 0;
+                        }
+                        if crate::ftp::is_ftp(&req.url) {
+                            run_fresh_ftp(req, opts, sh, cancel).await
+                        } else {
+                            run_fresh(req, opts, sh, cancel, kept).await
+                        }
+                    }
+                }
+            };
+            run(body, shared)
+        })
+    }
+
     fn spawn<F, Fut>(url: Url, f: F) -> Download
+    where
+        F: FnOnce(Arc<Shared>, CancellationToken) -> Fut,
+        Fut: Future<Output = Result<Outcome, Error>> + Send + 'static,
+    {
+        Download::spawn_showing(url, 0, f)
+    }
+
+    /// [`Download::spawn`], its snapshot showing `downloaded` bytes until the run says.
+    fn spawn_showing<F, Fut>(url: Url, downloaded: u64, f: F) -> Download
     where
         F: FnOnce(Arc<Shared>, CancellationToken) -> Fut,
         Fut: Future<Output = Result<Outcome, Error>> + Send + 'static,
@@ -1225,7 +1297,7 @@ impl Download {
                 url,
                 file: None,
                 size: None,
-                downloaded: 0,
+                downloaded,
                 resumable: None,
                 segments: Vec::new(),
                 connections: Vec::new(),
@@ -1277,6 +1349,34 @@ impl Download {
             Err(e) if e.is_cancelled() => Err(Error::Cancelled),
             Err(e) => std::panic::resume_unwind(e.into_panic()),
         }
+    }
+}
+
+/// What [`Download::resume_or_start`] finds on the disk.
+enum Found {
+    /// A resume state, or why the one there doesn't read.
+    State(Result<Box<ResumeState>, String>),
+    /// A state whose folder isn't there (a removed drive or an offline share).
+    Unavailable(PathBuf),
+    /// No state: started from scratch. `folder`: its folder is there.
+    Nothing { folder: bool },
+}
+
+impl Found {
+    /// The look [`Download::resume`] and its caller made, on the thread that may wait.
+    fn look(state_file: &Path) -> Found {
+        let dir = state_file.parent().filter(|d| !d.as_os_str().is_empty());
+        if !state_file.exists() {
+            return Found::Nothing {
+                folder: dir.is_none_or(Path::is_dir),
+            };
+        }
+        if let Some(dir) = dir
+            && !dir.is_dir()
+        {
+            return Found::Unavailable(dir.to_owned());
+        }
+        Found::State(ResumeState::load(state_file).map(Box::new))
     }
 }
 
@@ -1856,6 +1956,22 @@ async fn run(
     result
 }
 
+/// Before a download looks at its folder: the deletes of old files there that it must come
+/// after ([`naming::clear`]: a Redownload's, a duplicate overwritten, a restart under the same
+/// name) have finished, on a thread that may wait (the disk can take seconds), unless the
+/// download is cancelled meanwhile. Nothing being deleted there: at once.
+async fn after_clearing(dir: &Path, cancel: &CancellationToken) -> Result<(), Error> {
+    if !naming::being_cleared(dir) {
+        return Ok(());
+    }
+    let dir = dir.to_owned();
+    let wait = tokio::task::spawn_blocking(move || naming::wait_cleared(&dir));
+    tokio::select! {
+        _ = cancel.cancelled() => Err(Error::Cancelled),
+        _ = wait => Ok(()),
+    }
+}
+
 async fn run_fresh(
     req: Request,
     opts: Options,
@@ -2189,12 +2305,7 @@ async fn open_destination(
     name: impl FnOnce() -> String,
 ) -> Result<(PathBuf, naming::Reservation, File), Error> {
     // The folder must exist: we create it, but a removed drive or offline share can't be.
-    let folder = match dest {
-        Destination::File(p) | Destination::Free(p) => {
-            p.parent().unwrap_or(Path::new("")).to_owned()
-        }
-        Destination::Dir(dir) => dir.clone(),
-    };
+    let folder = dest.folder().to_owned();
     std::fs::create_dir_all(&folder).map_err(|_| Error::DestinationUnavailable(folder.clone()))?;
     if let Destination::File(p) | Destination::Free(p) = dest
         && !naming::path_fits(p)

@@ -562,6 +562,78 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
+  other applications (including when raised or opened while MDM is behind another program or hidden
+  in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
+  Download complete notices
+- ✅ Screen readers in the main window: Tab goes round the toolbar, the Categories tree and the
+  download list, and the screen reader says and follows the download, category or toolbar button
+  the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
+  selected row as the arrows move it
+  ([#1190](https://github.com/anefzaoui/misterdownloadmanager/issues/1190))
+- ✅ A crash monitor slower than half a second to start is still connected to from beside the
+  window, instead of the session going without crash reports; the end-to-end tests no longer
+  fail on a slow CI runner
+- ✅ The crash reports' end-to-end tests wait for the crash monitor before crashing, so a slow
+  CI runner no longer fails them
+- ✅ The Linux lab scripts (tools/lab) keep the lab VM account's password in private files, never on
+  a command line, on the host or in the VM
+- ✅ Bangla: a plural is **-গুলো**, never "-গুলি" — "নামগুলো", "সাইটগুলো", "ফাইলগুলো" — and
+  a tab or window title takes none (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: a web page is a **পেজ**, never a পৃষ্ঠা (a book's page) — "এই পেজে", "পেজটি",
+  "পেজের ঠিকানা" — and a checksum a **চেকসাম** (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: spelled the Bangla Academy way — a link is a **লিংক**, a category a **শ্রেণি**,
+  "already" is **ইতোমধ্যে** and a plural takes **-গুলো**, as the style guide settles them
+  (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Bangla: a menu or button's shortcut is its letter in brackets — "ফাইল(&F)", "থামান(&T)" —
+  not "&" on a Bangla letter no key can press (thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
+- ✅ The browser extension's window and Test browser integration read the browsers' folders
+  beside the window, so a slow folder can't freeze it; macOS: a browser's folder macOS keeps MDM
+  out of is said, with the setting that allows it
+  ([#1218](https://github.com/anefzaoui/misterdownloadmanager/issues/1218))
+- ✅ Malay: a queue is a **baris gilir**, the clipboard a **papan klip** and a checksum a
+  **jumlah semak**, as the reviewed termbase settles them — not "giliran", "papan keratan" or
+  "jumlah hasil tambah" (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Windows: finished downloads drag out of the list onto a folder or a program, one or several,
+  moved or copied as from Explorer; a moved file is followed, as from Download complete
+  ([#1210](https://github.com/anefzaoui/misterdownloadmanager/issues/1210))
+- ✅ French: a torrent's **tracker** is a "tracker", as French download managers call it, not a
+  "traqueur" (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ A way of drawing that failed once is tried again: after a graphics driver update, or a
+  while that depends on why it failed (twice as long each time it fails again), and at the next
+  start for a window slow just after signing in; View → Draw with says since when and until when
+  ([#1205](https://github.com/anefzaoui/misterdownloadmanager/issues/1205))
+- ✅ The guide's links to **Click'n'Load** and **Proxy / Socks** land on their sections (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ macOS: no more **The window stopped responding** report while a file dialog is open: the
+  time its window thread spends in a system Open or Save dialog isn't counted
+  ([#1192](https://github.com/anefzaoui/misterdownloadmanager/issues/1192))
+- ✅ The speed limit shows where the speed does: the progress window's Transfer rate names the
+  limit holding the download back (its own, the Speed Limiter's, or the one for all downloads),
+  the list's Transfer rate says it in its tip, and the status bar and the tray's tip say while the
+  Speed Limiter is on ([#1191](https://github.com/anefzaoui/misterdownloadmanager/issues/1191))
+- ✅ The window opens at once when an unfinished download is on a network share that doesn't
+  answer or a sleeping drive: downloads' progress, and a new video's name, are read beside it
+  (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ macOS: MDM no longer closes when the displays change while it draws with OpenGL (a dock
+  and the lid closed): it takes its OpenGL context back when the system left its thread without
+  it, and a texture OpenGL still refuses is made on a later frame
+  ([#1173](https://github.com/anefzaoui/misterdownloadmanager/issues/1173))
+- ✅ **Offer to download links copied to the clipboard** no longer opens Download File Info again
+  for a link still on the clipboard after a moment another program held it
+  ([#1157](https://github.com/anefzaoui/misterdownloadmanager/issues/1157))
+- ✅ No freeze when downloads are deleted with their files: the rows go at once and the files are
+  deleted beside the window ([#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ No freeze when a torrent is deleted on a slow disk: its kept `.torrent` and renamed file's
+  record go beside the window, in order with adding the same torrent again
+- ✅ No freeze when a download starts over at its own place on a slow disk (Redownload, a
+  duplicate overwritten, a restart under the same name): the old files go beside the window and
+  the new start waits for them on its own; a finished duplicate's file is looked at beside it too
+  (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ More disk work beside the window: a start under a name another download has, a playlist's
+  names, batch, Link grabber, browser and paired-device adds' names, File Properties' new address,
+  and a rename on completion's check
+  (found with [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
 - ✅ The window no longer waits for its crash monitor at start: the connection is made beside it,
   a monitor slow to listen is connected to late, with what was sent meanwhile told again, and one
   the system refuses for a while no longer ends the session's crash reports
@@ -574,10 +646,16 @@ These ship in the next version.
   downloads stop where they are and resume there, no crash report at the next start), and an
   installer closing MDM through the Restart Manager closes it; File → Exit also stops the
   downloads where they are
+- ✅ Linux: logging out or shutting down saves MDM as File → Exit does (its downloads stop where
+  they are and resume there, no crash report at the next start), whether the system asks it to end
+  or its display goes away first
 - ✅ No more **The window stopped responding** report in the first minutes after MDM starts with
   the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
   lasts past the first three minutes)
   (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
+- ✅ Link grabber's **Status** column: a failure whose sentence ends in advice shows that advice
+  in the column, with the whole sentence on hover, and the column is as wide as its longest answer
+  ([#1110](https://github.com/anefzaoui/misterdownloadmanager/issues/1110))
 - ✅ A malformed stream playlist no longer stops the video downloader: that download fails and
   says why ([#1141](https://github.com/anefzaoui/misterdownloadmanager/issues/1141))
 - ✅ A queue (or a download) set to **Exit Mister Download Manager when done** quits MDM, as File →
@@ -624,6 +702,10 @@ These ship in the next version.
 - ✅ A gallery of tens of thousands of files already in its folder no longer seems to hang: its
   files are listed in time linear in their number
   ([#1142](https://github.com/anefzaoui/misterdownloadmanager/issues/1142))
+- ✅ The notification-area icon is sharp beside the others: it is the hand-made picture of the
+  size the taskbar draws it at (16 px at 100 %, 24 at 150 %, 32 at 200 %), drawn again when the
+  display's scale changes, instead of the 256 px one Windows shrank
+  ([#1161](https://github.com/anefzaoui/misterdownloadmanager/issues/1161))
 - ✅ Tests: the checks that a long list is read in linear time, which still failed now and then on
   a busy macOS runner, time one input 16 times as long against 16 short ones (as many items, as
   long a run), take each side's fastest of several runs, and fail at three times as long (a square
@@ -905,8 +987,11 @@ These ship in the next version.
   without it until the bus answers, and gets it then, however late
   ([#828](https://github.com/anefzaoui/misterdownloadmanager/issues/828))
 - ✅ Looking up a new video (put online in the last two days) no longer fails with "Permission
-  denied" in MDM's install folder: the helpers run in your temporary folder, or MDM's own if
-  that one can't be written ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834))
+  denied" in MDM's install folder, or in `System32` when MDM started with Windows: the helpers
+  run in your temporary folder, or MDM's own if that one can't be written; on Windows a file
+  opened from MDM starts in its own folder
+  ([#834](https://github.com/anefzaoui/misterdownloadmanager/issues/834),
+  [#1216](https://github.com/anefzaoui/misterdownloadmanager/issues/1216))
 - ✅ A video a site sends through a program's address (`stream.php?file=…`,
   `remote_control.php`) is named by what it is: the page's title (or the address's `file=` name)
   and its real type, `Lecture.mp4`, not `stream.php`; the browser's media list shows that name
@@ -1061,6 +1146,10 @@ These ship in the next version.
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
 - ✅ The progress window's bar glides instead of moving in steps
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
+- ✅ The download speed shown is steady: an average of the last few seconds whatever the frame
+  rate, its figure (and the time left) changing twice a second, together in the list, the progress
+  window, the status bar and the tray's tip
+  ([#1176](https://github.com/anefzaoui/misterdownloadmanager/issues/1176))
 - ✅ A stream's qualities (HLS) show a size in the Download video window, estimated from their
   bitrate and the video's length
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
@@ -1214,6 +1303,11 @@ These ship in the next version.
   ([#955](https://github.com/anefzaoui/misterdownloadmanager/issues/955))
 - ✅ Linux: MDM pins to the taskbar and the dock: its desktop entry names its windows' class, and
   every window of MDM carries it ([#940](https://github.com/anefzaoui/misterdownloadmanager/issues/940))
+- ✅ A menu's underlined letter runs its item without typing that letter into the text box under
+  the menu, the arrows move in the menu only, and Alt with a dialog's letter types nothing either;
+  letters of other scripts (Arabic, Russian) choose their menu item
+- ✅ Torrents: peers at addresses that can't be on the internet are left alone, whoever names
+  them (a tracker, the DHT, another peer), as trackers there already were
 
 ## Being worked on
 

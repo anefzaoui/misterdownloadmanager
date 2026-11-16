@@ -545,6 +545,16 @@ impl RemoteTorrent {
         }
     }
 
+    /// The speed limit of the file downloading now (None: none, or no file yet).
+    pub fn speed_limit(&self) -> Option<u64> {
+        self.shared
+            .lock()
+            .unwrap()
+            .current
+            .as_ref()
+            .and_then(Download::speed_limit)
+    }
+
     /// As one download: the service's work first (no bytes yet), then its files' bytes in all.
     pub fn snapshot(&self) -> Snapshot {
         let sh = self.shared.lock().unwrap();

@@ -121,6 +121,7 @@ pub fn keep_theme(
     title: &str,
     dark: bool,
     open: bool,
+    activate: bool,
 ) {
     let theme_key = key.with("theme");
     let shown_key = key.with("shown");
@@ -159,8 +160,10 @@ pub fn keep_theme(
     }
     // Shown (in an earlier frame), once: in front of the other programs' windows, where Windows
     // didn't give it the foreground (#208: Download File Info behind the browser that asked for
-    // it). Not in off-screen test runs, whose windows stay out of the way. Elsewhere the window
-    // manager places a new window and decides on its focus; an app has no say there.
+    // it), or on macOS where `makeKeyAndOrderFront:` alone never activates the app behind the
+    // browser or another program. Not in off-screen test runs, whose windows stay out of the way,
+    // and never for passive notices (Download complete). Elsewhere the window manager places a
+    // new window and decides on its focus; an app has no say there.
     // Looked for in a few frames at most (its title may change meanwhile: a progress window's).
     #[cfg(windows)]
     {
@@ -182,7 +185,30 @@ pub fn keep_theme(
             ctx.data_mut(|d| d.insert_temp(front_key, tries));
         }
     }
-    #[cfg(not(windows))]
+    #[cfg(target_os = "macos")]
+    {
+        const TRIES: u32 = 30;
+        let tries = ctx.data(|d| d.get_temp::<u32>(front_key).unwrap_or(0));
+        if activate && shown && !crate::offscreen() && tries < TRIES {
+            let tries = match crate::unix::macos_bring_window_forward(title) {
+                Some(lifted) => {
+                    if lifted {
+                        tracing::info!("window {title:?} shown behind another program's: lifted");
+                    }
+                    ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Focus);
+                    TRIES
+                }
+                None => {
+                    ctx.request_repaint();
+                    tries + 1
+                }
+            };
+            ctx.data_mut(|d| d.insert_temp(front_key, tries));
+        }
+    }
+    #[cfg(not(target_os = "macos"))]
+    let _ = activate;
+    #[cfg(not(any(windows, target_os = "macos")))]
     let _ = front_key;
     // Belt and braces, once per window and theme (until the window is found): asked every frame,
     // the window's thread waited on DWM, or on a busy window of this process while looking for
@@ -194,7 +220,9 @@ pub fn keep_theme(
         ctx.data_mut(|d| d.insert_temp(caption_key, dark));
     }
     #[cfg(not(windows))]
-    let _ = (title, caption_key);
+    let _ = caption_key;
+    #[cfg(not(any(windows, target_os = "macos")))]
+    let _ = title;
 }
 
 /// Whether the window `key` is drawn again after a pass that didn't draw it: egui destroys a
@@ -311,6 +339,13 @@ enum Kind {
     Notice {
         on_top: bool,
     },
+}
+
+/// Interactive dialogs (`Plain` and `Question`) activate MDM and come forward when shown on
+/// macOS; passive `Notice` windows (`Download complete`) stay non-activating so typing in another
+/// program is never interrupted.
+fn dialog_activates_on_open(kind: Kind) -> bool {
+    !matches!(kind, Kind::Notice { .. })
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -442,6 +477,7 @@ fn dialog_window<T>(
             }
         }
     }
+    let activate = dialog_activates_on_open(kind);
     keep_theme(
         ctx,
         ViewportId::from_hash_of(id),
@@ -450,12 +486,14 @@ fn dialog_window<T>(
         // Every dialog follows the mode (the light dialogs too), its caption the theme's surface.
         crate::theme::dark_surface(),
         matches!(out, Outcome::Open),
+        activate,
     );
     // A question takes the focus once it is shown (not while hidden for its theme), and so does
-    // Download File Info outside Windows (#484): asked for from the browser, it opened behind
-    // it. Windows lifts it in keep_theme instead.
+    // Download File Info on Linux (#484): asked for from the browser, it opened behind it.
+    // Windows and macOS lift and focus in `keep_theme` once visible.
     let focused = key.with("focus-sent");
-    let takes_focus = modal || (cfg!(not(windows)) && id == "file-info");
+    let takes_focus =
+        modal || (cfg!(all(not(windows), not(target_os = "macos"))) && id == "file-info");
     if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
@@ -881,7 +919,10 @@ pub(crate) struct Found {
 pub(crate) type Look = Arc<dyn Fn(&PlaceAsk) -> Found + Send + Sync>;
 
 /// The engine's naming rules on the disk as it is now; on a thread of its own (it may wait).
+/// Once the old files being deleted in that folder for a new start are gone (a duplicate
+/// overwritten: its new copy takes its name, `naming::clear`).
 fn look(ask: &PlaceAsk) -> Found {
+    mdm_engine::naming::wait_cleared(&ask.dir);
     Found {
         dest: if ask.number {
             mdm_engine::naming::destination(&ask.dir, &ask.name)
@@ -2077,24 +2118,13 @@ impl Complete {
                     if grip.hovered() {
                         ui.ctx().set_cursor_icon(egui::CursorIcon::Grab);
                     }
-                    // The file is looked for beside the window, with the drag (#743); where a move
-                    // took it comes back to the app (`dragged_out`), however late.
                     if grip.drag_started() {
-                        let (id, from, wake) = (self.id, self.path.clone(), ui.ctx().clone());
-                        let followed = move |out| {
-                            DRAGGED_OUT
-                                .lock()
-                                .unwrap_or_else(|e| e.into_inner())
-                                .push((id, from, out));
-                            wake.request_repaint();
-                        };
-                        if let Err(e) = crate::win32::drag_file_out(
+                        drag_downloads_out(
+                            ui.ctx(),
                             crate::i18n::t("Download complete"),
-                            &self.path,
-                            followed,
-                        ) {
-                            tracing::warn!("drag out: {e}");
-                        }
+                            vec![(self.id, self.path.clone())],
+                            DraggedFrom::Complete,
+                        );
                     }
                     p.rect_filled(handle, 0.0, winui::FIELD());
                     p.rect_stroke(
@@ -3064,6 +3094,8 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
     // Off-screen test runs never take the focus (main.rs `offscreen`), as the other paths here.
     if !crate::offscreen() {
+        #[cfg(target_os = "macos")]
+        crate::unix::macos_activate_app();
         ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
     }
 }
@@ -3101,10 +3133,10 @@ fn tell_turn_off_failed(why: String) {
     );
 }
 
-/// What became of a file dragged out of Download complete (#869), when the drop target moved
-/// it (a copy or a link leaves it where it was: nothing to say).
+/// What became of a file dragged out of Download complete (#869) or the list (#1210), when the
+/// drop target moved it (a copy or a link leaves it where it was: nothing to say).
 #[derive(Clone, Debug, PartialEq, Eq)]
-// Made by Windows' drag only (the grip is Windows-only, see Complete::show).
+// Made by Windows' drag only (see drag_downloads_out).
 #[cfg_attr(not(windows), allow(dead_code))]
 pub enum DraggedOut {
     /// Moved there (the shell said where).
@@ -3114,12 +3146,70 @@ pub enum DraggedOut {
     MovedAway,
 }
 
-/// Files dragged out and moved: (download, the path it was dragged from, what became of it).
-static DRAGGED_OUT: Mutex<Vec<(u64, PathBuf, DraggedOut)>> = Mutex::new(Vec::new());
+/// Where downloads' files were dragged out from: the download's note says so.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(not(windows), allow(dead_code))]
+pub enum DraggedFrom {
+    /// Download complete's grip (#869).
+    Complete,
+    /// The main window's list (#1210).
+    List,
+}
+
+/// A download's file dragged out and moved.
+#[cfg_attr(not(windows), allow(dead_code))]
+pub struct Followed {
+    pub id: u64,
+    /// The path it was dragged from (the download follows only while it still points there).
+    pub from: PathBuf,
+    pub out: DraggedOut,
+    pub dragged_from: DraggedFrom,
+}
+
+/// Files dragged out and moved, for the app to update their downloads.
+static DRAGGED_OUT: Mutex<Vec<Followed>> = Mutex::new(Vec::new());
 
 /// What [`DRAGGED_OUT`] was given since the last call (the app updates its downloads).
-pub fn dragged_out() -> Vec<(u64, PathBuf, DraggedOut)> {
+pub fn dragged_out() -> Vec<Followed> {
     std::mem::take(&mut *DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner()))
+}
+
+/// Drag downloads' files (download, its file) out of our window titled `title` (in the
+/// interface language), as Explorer drags files: Download complete's grip and the list's rows
+/// share it. The files are looked for beside the window, with the drag (#743): those not there
+/// are left out. Where a move took each one comes back to the app (`dragged_out`), however late.
+/// Windows only: dragging files out to another program goes through OLE there; Linux and macOS
+/// have no such drag yet (their window library has no drag source), so nothing starts one there.
+#[cfg(windows)]
+pub fn drag_downloads_out(
+    ctx: &egui::Context,
+    title: &str,
+    files: Vec<(u64, PathBuf)>,
+    dragged_from: DraggedFrom,
+) {
+    // One file for downloads that share it, in the order given.
+    let mut paths: Vec<PathBuf> = Vec::new();
+    for (_, f) in &files {
+        if !paths.contains(f) {
+            paths.push(f.clone());
+        }
+    }
+    let wake = ctx.clone();
+    let followed = move |from: PathBuf, out: DraggedOut| {
+        let mut told = DRAGGED_OUT.lock().unwrap_or_else(|e| e.into_inner());
+        for (id, _) in files.iter().filter(|(_, f)| *f == from) {
+            told.push(Followed {
+                id: *id,
+                from: from.clone(),
+                out: out.clone(),
+                dragged_from,
+            });
+        }
+        wake.request_repaint();
+    };
+    if let Err(e) = crate::win32::drag_files_out(title, paths, followed) {
+        tracing::warn!("drag out: {e}");
+    }
 }
 
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
@@ -3159,6 +3249,9 @@ fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
     {
         crate::win32::open_file_shell(path)
     }
+    // Linux and macOS: no folder to give. Their file managers start a file's program in no
+    // folder of the file's either (macOS's LaunchServices starts every app in `/`; a Linux
+    // desktop's in the launcher's own), and programs there don't write beside themselves.
     #[cfg(not(windows))]
     {
         open::that_detached(path)
@@ -3175,12 +3268,12 @@ pub fn open_download_now(path: &Path, moved_away: bool) -> bool {
 }
 
 /// Why a download's file isn't where MDM saved it, when it was dragged out of Download complete
-/// to a place MDM couldn't learn (#869).
+/// (#869) or the list (#1210) to a place MDM couldn't learn.
 fn moved_away_text(path: &Path) -> String {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
     crate::i18n::fmt(
         crate::i18n::t(
-            "{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.",
+            "{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.",
         ),
         &[("file", &name)],
     )
@@ -4237,7 +4330,7 @@ mod tests {
             Box::leak(Box::new(crate::clipboard::Reader::new(
                 move || {
                     let _ = stuck.lock().unwrap().recv();
-                    Some(
+                    crate::clipboard::Read::Text(
                         " https://late.example/a.zip
 "
                         .to_owned(),
@@ -4716,5 +4809,13 @@ mod tests {
             next = ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, |_| true);
         }
         assert!(matches!(next, Outcome::Done(9)));
+    }
+
+    #[test]
+    fn passive_notices_never_activate_on_open() {
+        assert!(dialog_activates_on_open(Kind::Plain));
+        assert!(dialog_activates_on_open(Kind::Question));
+        assert!(!dialog_activates_on_open(Kind::Notice { on_top: true }));
+        assert!(!dialog_activates_on_open(Kind::Notice { on_top: false }));
     }
 }
