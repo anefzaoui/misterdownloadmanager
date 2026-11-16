@@ -565,6 +565,9 @@ These ship in the next version.
 - ✅ **Options → General → Download panels → Edit... → Button size**: **Full**, as before, or
   **Compact**, the round Download video button (the logo, the arrow and ✕) over every video
   ([#1278](https://github.com/anefzaoui/misterdownloadmanager/issues/1278))
+- ✅ The extension's checks also pass from a Windows checkout with Git for Windows' defaults
+  (`core.autocrlf=true`): the tree keeps LF everywhere except batch files, and the tests read
+  sources, JSON and the catalogs by lines, so the 103 checks pass with either line ending
 - ✅ The Download video button over a YouTube preview: it stays as the pointer reaches it, and a
   click that opens the Download video window sends the preview's video, not the one watched last
   ([#1271](https://github.com/anefzaoui/misterdownloadmanager/issues/1271))
@@ -1347,6 +1350,9 @@ These ship in the next version.
   them (a tracker, the DHT, another peer), as trackers there already were
 - ✅ AI assistants (MCP) can stop the main download queue too (`stop_queue`), and the automation
   API's queue actions take the main download queue when no queue is named (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line starts and stops a queue of the running app: `start-queue` and
+  `stop-queue`, the main download queue unless one is named (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))

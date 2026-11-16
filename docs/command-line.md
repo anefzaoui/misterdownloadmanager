@@ -59,6 +59,7 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `status` | The running app's downloads, as JSON, with their ids (the automation API must be on). |
 | `pause ID...`, `start ID...` | Pause running downloads, or start (resume) stopped, queued or failed ones, in the running app. |
 | `remove ID...`, `delete ID...` | Take downloads off the running app's list: `remove` keeps their files, `delete` deletes them too. A running download is paused first (`pause`). |
+| `start-queue [name] [-q name]`, `stop-queue [name] [-q name]` | Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted. |
 | `api on`, `api off` | Turn the running app's automation API on or off. |
 
 `misterdownloadmanager-cli help <command>` shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:
@@ -82,7 +83,7 @@ With `--json` (before or after the command), every command prints JSON instead o
 | `torrent-info` | `{"name", "info_hash", "size", "files": [{"index", "size", "path"}]}`. |
 | `torrent-create` | `{"info_hash", "path"}`. |
 | `install-ytdlp`, `install-ffmpeg` | `{"tool", "version", "path"}`. |
-| `status`, `pause`, `start`, `remove`, `delete`, `api` | The app's answer, which is JSON already (see below). |
+| `status`, `pause`, `start`, `remove`, `delete`, `start-queue`, `stop-queue`, `api` | The app's answer, which is JSON already (see below). |
 
 Sizes are in bytes (`null` while unknown), speeds in bytes per second. A failure prints `{"error": "…"}` and exits with code 1; when `video-get` finds no format of the page to download, the error comes with `"choices"` (as `video-info`'s) and `"formats"` (yt-dlp's own: `{"id", "ext", "height", "video", "audio"}`). For example:
 
