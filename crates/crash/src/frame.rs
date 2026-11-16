@@ -51,9 +51,13 @@ mod tests {
 
     /// The frame of #1239 (a virtual machine without XSAVE): crash-handler's 16 KiB stack, the
     /// context 960 bytes under its top; 968 bytes copied would cross into the guard page above.
+    /// That crash's stack was `0x7fff_f7fb_4000..0x7fff_f7fb_8000`; the top here is one a 32-bit
+    /// `usize` can hold, with the context the same distance under it, so the clamp is checked on
+    /// every platform.
     #[test]
     fn a_context_is_read_up_to_the_top_of_the_alternate_stack() {
-        let stack = 0x7fff_f7fb_4000..0x7fff_f7fb_8000;
+        let top: usize = 0x7ffb_8000;
+        let stack = top - 0x4000..top;
         assert_eq!(readable(stack.end - 960, 968, Some(stack.clone())), 960);
         // With XSAVE the processor's state is larger: the frame starts lower, all of it is read.
         assert_eq!(readable(stack.end - 2_000, 968, Some(stack.clone())), 968);

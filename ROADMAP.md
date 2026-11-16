@@ -562,6 +562,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The crash crate's tests build on 32-bit Windows again: the alternate-stack test uses a
+  top a 32-bit `usize` can hold, with that crash's own address kept in its comment, so CI's
+  `windows-x86` job is green again
 - ✅ The extension's checks also pass from a Windows checkout with Git for Windows' defaults
   (`core.autocrlf=true`): the tree keeps LF everywhere except batch files, and the tests read
   sources, JSON and the catalogs by lines, so the 103 checks pass with either line ending
