@@ -227,19 +227,20 @@ debug = "line-tables-only"
 # #143), and every HTTP client of a session built through MDM's TLS setup (`configure_http_client`:
 # a system without CA certificates), and a DHT that stops asking a bootstrap node that never
 # answers once another one has, and loads its saved IPv6 nodes (#650), and a piece whose hash
-# check a pause cuts short queued again instead of lost (#706), until upstream has them
+# check a pause cuts short queued again instead of lost (#706), and the peers that others name
+# asked of MDM before they are used (`peer_filter`), until upstream has them
 # (ikatson/rqbit); every crate of that repository from the same commit.
-librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
-librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "694291b61fcfd6a77fef7762541b0ef25773ae31" }
+librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
 ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "268d8e55dae56a536b672bdb75987021931dfcb2" }
 emath = { git = "https://github.com/anefzaoui/egui.git", rev = "268d8e55dae56a536b672bdb75987021931dfcb2" }
 epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "268d8e55dae56a536b672bdb75987021931dfcb2" }
