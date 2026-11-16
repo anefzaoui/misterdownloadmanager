@@ -27,7 +27,8 @@ const API_OFF: &str = "Mister Download Manager's automation API is off. Ask the 
 const INSTRUCTIONS: &str = "Controls Mister Download Manager, the download manager running on \
     this computer. list_downloads shows its downloads with their ids; pause_downloads, \
     resume_downloads and remove_downloads act on those ids; add_download adds an address \
-    (http, https, ftp, ftps or a magnet link); start_queue starts the main download queue. \
+    (http, https, ftp, ftps or a magnet link); start_queue starts the main download queue; \
+    stop_queue stops the main download queue. \
     Listing and acting on downloads needs the app's automation API, which the user turns on \
     with `misterdownloadmanager-cli api on`. Sizes and speeds are in bytes and bytes per second.";
 
@@ -234,6 +235,23 @@ impl Server {
         })
         .await?;
         Ok("Started the main download queue.".into())
+    }
+
+    #[tool(
+        description = "Stops Mister Download Manager's main download queue.",
+        annotations(
+            read_only_hint = false,
+            destructive_hint = false,
+            idempotent_hint = true
+        )
+    )]
+    async fn stop_queue(&self) -> Result<String, String> {
+        self.call(Command {
+            action: Some("stop_queue".into()),
+            ..Default::default()
+        })
+        .await?;
+        Ok("Stopped the main download queue.".into())
     }
 }
 
