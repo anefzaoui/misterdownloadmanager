@@ -228,7 +228,7 @@ enum Cmd {
         #[arg(required = true)]
         ids: Vec<u64>,
     },
-    /// Add a download to the running app (automation API).
+    /// Add a download to the running app.
     Add {
         /// The address to download (http, https, ftp, ftps, or a magnet link).
         url: String,
@@ -374,6 +374,33 @@ fn ask(cmd: mdm_ipc::Command) -> anyhow::Result<()> {
         return Err(Reported.into());
     }
     Ok(())
+}
+
+fn add_command(
+    url: String,
+    output: Option<PathBuf>,
+    name: Option<String>,
+    category: Option<String>,
+    queue: Option<String>,
+    later: bool,
+    silent: bool,
+) -> mdm_ipc::Command {
+    let dir = output.map(|p| {
+        std::path::absolute(&p)
+            .unwrap_or(p)
+            .to_string_lossy()
+            .to_string()
+    });
+    mdm_ipc::Command {
+        url: Some(url),
+        dir,
+        name,
+        category,
+        queue,
+        later,
+        silent,
+        ..Default::default()
+    }
 }
 
 /// `pair`: a new pairing code from the running app, printed for a person.
@@ -1184,16 +1211,9 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             queue,
             later,
             silent,
-        } => ask(mdm_ipc::Command {
-            url: Some(url),
-            dir: output.map(|p| p.to_string_lossy().to_string()),
-            name,
-            category,
-            queue,
-            later,
-            silent,
-            ..Default::default()
-        }),
+        } => ask(add_command(
+            url, output, name, category, queue, later, silent,
+        )),
         Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
             action: Some("start_queue".into()),
             queue: queue.or(name),
@@ -1859,6 +1879,25 @@ mod tests {
                 && c == "Torrents"
                 && q == "Night"
         ));
+    }
+
+    #[test]
+    fn add_command_makes_relative_output_folder_absolute() {
+        let rel = PathBuf::from("downloads");
+        let expected = std::path::absolute(&rel)
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+        let cmd = add_command(
+            "https://example.test/a.zip".into(),
+            Some(rel),
+            None,
+            None,
+            None,
+            false,
+            false,
+        );
+        assert_eq!(cmd.dir.as_deref(), Some(expected.as_str()));
     }
 
     /// A service that takes `hoster.test` only, or (`broken`) can't say which hosts it takes.
