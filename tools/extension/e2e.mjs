@@ -1646,7 +1646,7 @@ async function videoButtonFollowsOptions(session) {
       // when its answer is older than 5 s).
       return until(`the button ${want ? "compact" : "full"}`, 15000, async () => {
         await hover(session, v);
-        const p = JSON.parse((await session.pill(PILL_COMPACT)) || "null");
+        const p = await session.pill(PILL_COMPACT);
         return p && p.compact === want ? p : null;
       });
     };
