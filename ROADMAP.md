@@ -1313,6 +1313,8 @@ These ship in the next version.
   ([#1237](https://github.com/anefzaoui/misterdownloadmanager/issues/1237))
 - ✅ Torrents: peers at addresses that can't be on the internet are left alone, whoever names
   them (a tracker, the DHT, another peer), as trackers there already were
+- ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
+  list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
 
 ## Being worked on
 

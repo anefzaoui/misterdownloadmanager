@@ -2079,8 +2079,8 @@ pub fn set_main_window(cc: &eframe::CreationContext<'_>) {
 /// Linux, X11 and XWayland: the main window out of the taskbar and the window list, hidden in the
 /// notification area (#1255). winit hides a window by unmapping it, which takes a shown window
 /// out of the window manager's hands, but does nothing to a minimized one: the window manager
-/// already unmapped it, and keeps it, minimized, in its list (XFCE's window buttons, KDE's task
-/// manager, the dock). ICCCM (4.1.4) asks for both to withdraw a window: the unmap, and a
+/// already unmapped it, and keeps it, minimized, in its list (XFCE's window buttons showed it
+/// beside the tray icon). ICCCM (4.1.4) asks for both to withdraw a window: the unmap, and a
 /// synthetic UnmapNotify sent to the root window, which Xlib's XWithdrawWindow does and winit
 /// doesn't. Both here, on a connection of MDM's own, in that order; winit's own unmap after them
 /// finds the window unmapped already, and showing it maps it again, as a new window.
