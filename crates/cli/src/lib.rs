@@ -228,6 +228,29 @@ enum Cmd {
         #[arg(required = true)]
         ids: Vec<u64>,
     },
+    /// Add a download to the running app (automation API).
+    Add {
+        /// The address to download (http, https, ftp, ftps, or a magnet link).
+        url: String,
+        /// Folder to save into.
+        #[arg(short, long)]
+        output: Option<PathBuf>,
+        /// File name to save as.
+        #[arg(short = 'f', long = "name")]
+        name: Option<String>,
+        /// A category for the download (e.g. "Compressed", "Documents", "Music", "Programs", "Video").
+        #[arg(short = 'c', long = "category")]
+        category: Option<String>,
+        /// The queue to add to (by name; adds to the main queue with `--later` if omitted).
+        #[arg(short = 'q', long = "queue")]
+        queue: Option<String>,
+        /// Add to the queue without starting it now.
+        #[arg(short = 'l', long = "later")]
+        later: bool,
+        /// Silent: do not show the Download File Info dialog in the app.
+        #[arg(short = 's', long = "silent")]
+        silent: bool,
+    },
     /// Start a download queue in the running app (automation API). Starts the main queue by default.
     StartQueue {
         /// The queue to start (by name); starts the main queue if omitted.
@@ -1153,6 +1176,24 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
         Cmd::Start { ids } => act("start", ids),
         Cmd::Remove { ids } => act("remove", ids),
         Cmd::Delete { ids } => act("delete", ids),
+        Cmd::Add {
+            url,
+            output,
+            name,
+            category,
+            queue,
+            later,
+            silent,
+        } => ask(mdm_ipc::Command {
+            url: Some(url),
+            dir: output.map(|p| p.to_string_lossy().to_string()),
+            name,
+            category,
+            queue,
+            later,
+            silent,
+            ..Default::default()
+        }),
         Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
             action: Some("start_queue".into()),
             queue: queue.or(name),
@@ -1702,6 +1743,7 @@ mod tests {
         assert!(downloads(&args(&["resume", "a.zip.mdm.json"])));
         assert!(!downloads(&args(&["start-queue"])));
         assert!(!downloads(&args(&["stop-queue"])));
+        assert!(!downloads(&args(&["add", "https://example.test/a.zip"])));
         assert!(!downloads(&args(&["api", "on"])));
         assert!(!downloads(&args(&["status"])));
         assert!(!downloads(&args(&["--help"])));
@@ -1767,6 +1809,56 @@ mod tests {
         // Both positional and option conflict.
         assert!(Cli::try_parse_from([NAME, "start-queue", "-q", "A", "B"]).is_err());
         assert!(Cli::try_parse_from([NAME, "stop-queue", "--queue", "A", "B"]).is_err());
+    }
+
+    #[test]
+    fn add_command_parses() {
+        let cli = Cli::try_parse_from([NAME, "add", "https://example.test/a.zip"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                output: None,
+                name: None,
+                category: None,
+                queue: None,
+                later: false,
+                silent: false,
+            } if url == "https://example.test/a.zip"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "magnet:?xt=urn:btih:abc",
+            "-o",
+            "D:\\Downloads",
+            "-f",
+            "my_torrent",
+            "-c",
+            "Torrents",
+            "-q",
+            "Night",
+            "-l",
+            "-s",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                output: Some(ref o),
+                name: Some(ref n),
+                category: Some(ref c),
+                queue: Some(ref q),
+                later: true,
+                silent: true,
+            } if url == "magnet:?xt=urn:btih:abc"
+                && o == &PathBuf::from("D:\\Downloads")
+                && n == "my_torrent"
+                && c == "Torrents"
+                && q == "Night"
+        ));
     }
 
     /// A service that takes `hoster.test` only, or (`broken`) can't say which hosts it takes.
