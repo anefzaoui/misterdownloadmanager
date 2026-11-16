@@ -655,6 +655,10 @@ These ship in the next version.
   the computer: as after a wake, a stall then is the computer's (logged, and reported only if it
   lasts past the first three minutes)
   (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
+- ✅ No more **The window stopped responding** report while MDM waits in the notification area
+  with no window on screen and its thread waits on the computer: logged, and reported only if it
+  lasts past a minute, if MDM's thread is busy, or if MDM is asked for something meanwhile and
+  doesn't answer (for [#1126](https://github.com/anefzaoui/misterdownloadmanager/issues/1126))
 - ✅ Link grabber's **Status** column: a failure whose sentence ends in advice shows that advice
   in the column, with the whole sentence on hover, and the column is as wide as its longest answer
   ([#1110](https://github.com/anefzaoui/misterdownloadmanager/issues/1110))
