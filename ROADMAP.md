@@ -1374,6 +1374,9 @@ These ship in the next version.
   ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
 - ✅ Download panels: the hint under the sites list has its own row instead of running under
   Export...
+- ✅ Internet Archive: a download that needs your account keeps the browser's sign-in on its way to
+  archive.org's storage servers (thanks to [@arifrhm](https://github.com/arifrhm))
+  ([#1298](https://github.com/anefzaoui/misterdownloadmanager/issues/1298))
 
 ## Being worked on
 
