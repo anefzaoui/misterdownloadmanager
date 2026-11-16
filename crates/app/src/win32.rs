@@ -8770,6 +8770,8 @@ impl GlobalHotKeyOs {
                     }
                     while GetMessageW(&mut msg, std::ptr::null_mut(), 0, 0) > 0 {
                         if msg.message == WM_HOTKEY {
+                            // The window is asked for: a stall now is felt (crash.rs, #1126).
+                            crate::crash::asked();
                             fired.store(true, Ordering::SeqCst);
                             ctx.request_ui_pass(egui::ViewportId::ROOT);
                             ctx.request_repaint();
