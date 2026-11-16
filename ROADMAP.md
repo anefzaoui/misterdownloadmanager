@@ -1319,6 +1319,9 @@ These ship in the next version.
   ([#1237](https://github.com/anefzaoui/misterdownloadmanager/issues/1237))
 - ✅ Torrents: peers at addresses that can't be on the internet are left alone, whoever names
   them (a tracker, the DHT, another peer), as trackers there already were
+- ✅ AI assistants (MCP) can stop the main download queue too (`stop_queue`), and the automation
+  API's queue actions take the main download queue when no queue is named (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 
 ## Being worked on
 
