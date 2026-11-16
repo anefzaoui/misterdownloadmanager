@@ -204,7 +204,16 @@ fn fake_ytdlp() -> ExitCode {
             std::fs::read_to_string(after("--load-info-json").expect("a page")).expect("the page");
         let info: serde_json::Value = serde_json::from_str(&info).expect("json");
         let template = after("-o").expect("-o").replace("%%", "%");
-        let chosen = choice(&info, &after("-f").unwrap_or_default(), &template);
+        let selector = after("-f").unwrap_or_default();
+        // #94, #1240: the chosen height isn't offered, for the engine's choice too.
+        let dir = Path::new(&template).parent().expect("a folder");
+        if mode(dir) == "unavailable" && selector.contains("[height=") {
+            eprintln!(
+                "ERROR: [youtube] talk: Requested format is not available. Use --list-formats for a list of available formats"
+            );
+            return ExitCode::FAILURE;
+        }
+        let chosen = choice(&info, &selector, &template);
         println!("MDMJ {chosen}");
         return ExitCode::SUCCESS;
     }
@@ -1240,6 +1249,43 @@ fn engine_checks(me: &Path) {
             .filter_map(Result::ok)
             .all(|e| !e.file_name().to_string_lossy().contains(".mdm.")),
         "no part file or state left"
+    );
+
+    // #1240: the chosen height isn't offered (a reroute left it out): the engine downloads the
+    // nearest below too, not the one asked for again.
+    let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
+    std::fs::write(
+        tools.path().join("page.json"),
+        page("/gen/3M/v.mp4?seed=1", "/gen/1M/a.m4a?seed=2", "https"),
+    )
+    .unwrap();
+    std::fs::write(out.path().join("mode.txt"), "unavailable").unwrap();
+    let job = VideoJob::start(
+        &fake_in(me, tools.path()),
+        "https://video.example/talk",
+        "bv*[height=1080]+ba/b[height=1080]",
+        out.path(),
+        "Talk",
+        None,
+        None,
+        None,
+        &Default::default(),
+        &Subs::default(),
+        Some(engine(2)),
+    )
+    .expect("started");
+    let (p, _) = wait(&job);
+    let log = log_of(&p);
+    assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
+    assert!(p.helper.is_none(), "the engine downloaded it: {log:?}");
+    assert!(
+        log.iter()
+            .any(|t| t.starts_with("The chosen quality isn't offered")),
+        "{log:?}"
+    );
+    assert!(
+        std::fs::read(out.path().join("Talk.mp4")).unwrap() == expected(),
+        "the streams merged"
     );
 
     // Stopped half-way, then started again: it goes on from the bytes already there.

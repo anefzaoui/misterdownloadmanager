@@ -270,7 +270,8 @@ impl VideoDialog {
         }
         let merge = self.tools.get_or_insert_with(tools).2.is_some();
         let choices = mdm_tools::resolve::choices(&v, merge);
-        self.chosen = 0;
+        // The best, as `video-get` takes it by default (#1240).
+        self.chosen = mdm_tools::resolve::pick(&choices, None).map_or(0, |p| p.index);
         self.rows = Default::default();
         self.error = choices
             .is_empty()

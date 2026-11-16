@@ -539,7 +539,10 @@ async fn connections_sharing_a_link_are_not_shed() {
 #[tokio::test]
 async fn a_slow_connection_on_a_shared_link_is_still_replaced() {
     // The same shared line, every third request crawling at 1 KB/s: a crawling connection is
-    // still far under its share of the line, and reconnects instead of holding the end.
+    // still far under its share of the line, and reconnects instead of holding the end. Also on
+    // a busy machine, where the disk set the pace while the line was full: the line was then
+    // measured at the end only, at the crawling connections' own pace, and none was shed: a
+    // crawling one held the last piece for a minute in 13 runs of 90 under load.
     let s = server("link_rate=16M&slow_every=3&slow_rate=1K").await;
     let opts = Options {
         min_split: 64 << 10,
@@ -553,7 +556,13 @@ async fn a_slow_connection_on_a_shared_link_is_still_replaced() {
         .map(|e| (e.t_end_ms - e.t_start_ms, e.bytes_sent, e.body_len))
         .collect();
     assert!(!slow.is_empty(), "the fault was there");
-    assert!(shed > 0, "no slow connection was shed");
+    // Shed once it read the network for 2 s (`SHED_GRACE`), unless the other connections took
+    // every crawling piece over before that: once the whole download took 1.2 s, its crawling
+    // requests taken over before their first byte.
+    assert!(
+        shed > 0 || slow.iter().all(|(ms, ..)| *ms < 2_000),
+        "no slow connection was shed (ms, sent, asked): {slow:?}"
+    );
     assert!(
         slow.iter().all(|(ms, ..)| *ms < 20_000),
         "a slow request held its piece (ms, sent, asked): {slow:?}"

@@ -565,6 +565,17 @@ These ship in the next version.
 - ✅ Linux: a crash is reported on computers whose processor doesn't offer XSAVE (an older
   processor, a virtual machine), where the crash handler faulted a second time and no report came
   ([#1239](https://github.com/anefzaoui/misterdownloadmanager/issues/1239))
+- ✅ A crawling connection at a download's end is replaced again after the disk set the pace, instead
+  of holding a last piece for a minute; the shared-line slow-connection test no longer fails on a busy
+  CI runner
+- ✅ **View → Draw with**'s note on when a graphics system is tried again reads the time zone
+  the way the rest of the window does, never waiting for Windows
+- ✅ Every release file gets a signed build provenance record (`gh attestation verify`), and the
+  repository an OpenSSF Scorecard (thanks to [@joyahmed](https://github.com/joyahmed))
+- ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
+  other applications (including when raised or opened while MDM is behind another program or hidden
+  in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
+  Download complete notices
 - ✅ Screen readers in the main window: Tab goes round the toolbar, the Categories tree and the
   download list, and the screen reader says and follows the download, category or toolbar button
   the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
@@ -623,6 +634,8 @@ These ship in the next version.
   ([#1157](https://github.com/anefzaoui/misterdownloadmanager/issues/1157))
 - ✅ No freeze when downloads are deleted with their files: the rows go at once and the files are
   deleted beside the window ([#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
+- ✅ No freeze when a torrent is deleted on a slow disk: its kept `.torrent` and renamed file's
+  record go beside the window, in order with adding the same torrent again
 - ✅ No freeze when a download starts over at its own place on a slow disk (Redownload, a
   duplicate overwritten, a restart under the same name): the old files go beside the window and
   the new start waits for them on its own; a finished duplicate's file is looked at beside it too
@@ -1303,6 +1316,15 @@ These ship in the next version.
 - ✅ A menu's underlined letter runs its item without typing that letter into the text box under
   the menu, the arrows move in the menu only, and Alt with a dialog's letter types nothing either;
   letters of other scripts (Arabic, Russian) choose their menu item
+- ✅ The command line's `video-get` takes the best quality as the Download video window does (a
+  Bilibili video, whose pictures and sounds come apart, failed), `--quality` takes a height or the
+  nearest below it, and an error with no format to download lists the ones the page offers
+  ([#1240](https://github.com/anefzaoui/misterdownloadmanager/issues/1240))
+- ✅ Create new queue (the Categories tree's menu, Add to queue) shows its name box in front of the
+  Scheduler, and proposes a name no queue has
+  ([#1237](https://github.com/anefzaoui/misterdownloadmanager/issues/1237))
+- ✅ Torrents: peers at addresses that can't be on the internet are left alone, whoever names
+  them (a tracker, the DHT, another peer), as trackers there already were
 
 ## Being worked on
 

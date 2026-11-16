@@ -5896,7 +5896,18 @@ impl App {
     /// download added, if one was (not when the debrid account takes it).
     fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) -> Option<u64> {
         let meta = &add.meta;
-        crate::torrent_rename::on_add_torrent(meta);
+        // MDM's own files for it (the record of its new name, the .torrent kept): written after
+        // the changes under way beside the window (a Delete's, perhaps of this very torrent:
+        // `torrents::KeptFiles`), else now as before.
+        let after = crate::torrents::kept_files().changing();
+        if after {
+            let m = meta.clone();
+            crate::torrents::kept_files().change(&meta.info_hash, move || {
+                crate::torrent_rename::on_add_torrent(&m)
+            });
+        } else {
+            crate::torrent_rename::on_add_torrent(meta);
+        }
         if self.torrent_account().is_some()
             && let Some(magnet) =
                 mdm_torrent::magnet_link(&meta.torrent).and_then(|m| url::Url::parse(&m).ok())
@@ -5911,7 +5922,25 @@ impl App {
             );
             return None;
         }
-        if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
+        if after {
+            let (hash, bytes, wake) = (
+                meta.info_hash.clone(),
+                meta.torrent.clone(),
+                self.ui_ctx.clone(),
+            );
+            crate::torrents::kept_files().change(&meta.info_hash, move || {
+                if let Err(e) = crate::torrents::save_torrent(&hash, &bytes) {
+                    crate::dialogs::tell(
+                        crate::i18n::mark("Add torrent"),
+                        crate::i18n::fmt(
+                            crate::i18n::t("The torrent could not be saved: {error}"),
+                            &[("error", &e.to_string())],
+                        ),
+                    );
+                    wake.request_repaint();
+                }
+            });
+        } else if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
             self.notice = Some((
                 crate::i18n::mark("Add torrent"),
                 crate::i18n::fmt(
@@ -8526,7 +8555,8 @@ impl App {
         let date = |secs: u64| {
             chrono::DateTime::from_timestamp(secs.min(i64::MAX as u64) as i64, 0)
                 .map(|d| {
-                    let local = d.with_timezone(&chrono::Local).date_naive();
+                    // The kept offset (clock.rs, #536): chrono's own asks the system each time.
+                    let local = crate::clock::local(d).date_naive();
                     crate::i18n::ltr(&crate::regional::short_date(local))
                 })
                 .unwrap_or_default()
