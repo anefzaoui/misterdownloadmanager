@@ -1381,6 +1381,9 @@ These ship in the next version.
   ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
 - ✅ Download panels: the hint under the sites list has its own row instead of running under
   Export...
+- ✅ Linux: pausing or cancelling a video (or a gallery) ends all of yt-dlp's processes, so it
+  stops downloading; MDM's exit and the command line's Ctrl+C end them too
+  ([#1301](https://github.com/anefzaoui/misterdownloadmanager/issues/1301))
 
 ## Being worked on
 
