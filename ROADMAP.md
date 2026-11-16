@@ -1348,6 +1348,8 @@ These ship in the next version.
 - ✅ The command line starts and stops a queue of the running app: `start-queue` and
   `stop-queue`, the main download queue unless one is named (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ AI assistants (MCP) can choose a download queue and a category when adding downloads, and start or stop a queue by name (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
 - ✅ A failed download says why in MDM's log too, with the site's name and no tokens

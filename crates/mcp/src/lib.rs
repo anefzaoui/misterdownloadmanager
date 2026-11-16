@@ -30,8 +30,9 @@ const INSTRUCTIONS: &str = "Controls Mister Download Manager, the download manag
     (http, https, ftp, ftps or a magnet link); start_queue starts a download queue (the main \
     queue by default, or by name); stop_queue stops a download queue (the main queue by \
     default, or by name). \
-    Listing and acting on downloads needs the app's automation API, which the user turns on \
-    with `misterdownloadmanager-cli api on`. Sizes and speeds are in bytes and bytes per second.";
+    Listing and acting on downloads, stopping a queue, and starting a named queue need \
+    the app's automation API, which the user turns on with `misterdownloadmanager-cli api on`. \
+    Sizes and speeds are in bytes and bytes per second.";
 
 #[derive(Deserialize, JsonSchema, Default)]
 pub struct ListArgs {
@@ -254,16 +255,25 @@ impl Server {
     )]
     async fn start_queue(&self, Parameters(args): Parameters<QueueArgs>) -> Result<String, String> {
         let queue = args.queue.filter(|q| !q.trim().is_empty());
-        self.call(Command {
-            action: Some("start_queue".into()),
-            queue: queue.clone(),
-            ..Default::default()
-        })
-        .await?;
-        Ok(match queue {
-            Some(q) => format!("Started download queue \"{q}\"."),
-            None => "Started the main download queue.".into(),
-        })
+        match queue {
+            Some(ref q) => {
+                self.call(Command {
+                    action: Some("start_queue".into()),
+                    queue: Some(q.clone()),
+                    ..Default::default()
+                })
+                .await?;
+                Ok(format!("Started download queue \"{q}\"."))
+            }
+            None => {
+                self.call(Command {
+                    start_queue: true,
+                    ..Default::default()
+                })
+                .await?;
+                Ok("Started the main download queue.".into())
+            }
+        }
     }
 
     #[tool(

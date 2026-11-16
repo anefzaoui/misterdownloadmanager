@@ -211,10 +211,7 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
         seen.iter()
             .any(|r| r["action"] == "pause" && r["ids"] == json!([2]))
     );
-    assert!(
-        seen.iter()
-            .any(|r| r["action"] == "start_queue" && r["queue"].is_null())
-    );
+    assert!(seen.iter().any(|r| r["start_queue"] == true));
     assert!(
         seen.iter()
             .any(|r| r["action"] == "stop_queue" && r["queue"].is_null())
