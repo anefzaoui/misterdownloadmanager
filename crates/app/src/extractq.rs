@@ -5,6 +5,12 @@
 //! staging folder, so a failure leaves only the archive); each extracted file is marked as
 //! downloaded from the archive's site, as the archive is. Afterwards the archive goes to the
 //! Recycle Bin (the Trash) only when its package or Options says so.
+//!
+//! Every archive is tried without a password first. Only one that turns out to need one is
+//! tried with its package's password, then with each of Options → Archives → Archive passwords
+//! in turn, and only then is its password asked. A password that opened it moves to the top of
+//! that list, as does one typed with "Remember it" (unticked at first). 7-Zip gets each one on
+//! its standard input, never on its command line (mdm-extract).
 
 use std::collections::{HashSet, VecDeque};
 use std::path::{Path, PathBuf};
@@ -12,6 +18,8 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 
 use mdm_extract::{Error, Report, volume_key};
+
+use egui::vec2;
 
 use crate::dialogs::{Outcome, window};
 use crate::model::{Item, Status};
@@ -27,7 +35,24 @@ struct Job {
     archive: PathBuf,
     /// Every volume's file (what goes to the Recycle Bin afterwards).
     files: Vec<PathBuf>,
+    /// The password being tried: none at first, so an archive that needs none never meets one.
     password: Option<String>,
+    /// The passwords still to try, in order, once it turns out to need one: the package's
+    /// (typed in Link grabber or sent with the links), then Options'.
+    vault: Vec<String>,
+    /// The package's password, if it has one.
+    package: Option<String>,
+    /// The package's password is one of Options' archive passwords already.
+    package_saved: bool,
+    /// The password being tried came from `vault`.
+    from_vault: bool,
+    /// The log said "Trying the saved archive passwords...".
+    noted: bool,
+    /// Keep the password in Options' list once it opens the archive: one that is in the list
+    /// already (it moves to the top), or one typed in the password window with "Remember it"
+    /// ticked. Never a package's own that isn't in the list: nobody chose to save it (a web
+    /// page may have sent it).
+    keep: bool,
     delete: bool,
     /// Options → Archives: in place with HatchZip, when it is installed.
     in_place: bool,
@@ -63,6 +88,9 @@ pub struct Extracts {
     /// extracted by itself; each time Extract is chosen).
     pub needs_7zip: Option<ToolDialog>,
     told_7zip: bool,
+    /// Passwords to put first in Options' archive passwords, in the order they opened an
+    /// archive (none typed without "Remember it"). The app takes them (`take_vault`).
+    to_vault: Vec<String>,
 }
 
 /// Is this file name an archive's (or one volume of one)? By name only: the first bytes decide
@@ -148,11 +176,27 @@ impl Extracts {
             return;
         }
         let pkg = item.package.as_ref();
+        let package = pkg
+            .and_then(|p| p.password.clone())
+            .filter(|p| !p.is_empty());
+        let saved = settings.archive_password_list();
+        let package_saved = package.as_ref().is_some_and(|p| saved.contains(p));
+        let vault = package
+            .iter()
+            .cloned()
+            .chain(saved.into_iter().filter(|p| Some(p) != package.as_ref()))
+            .collect();
         self.queue.push_back(Job {
             ids: set.iter().map(|(_, i)| i.id).collect(),
             files: set.iter().map(|(_, i)| i.dest.clone()).collect(),
             archive,
-            password: pkg.and_then(|p| p.password.clone()),
+            password: None,
+            vault,
+            package,
+            package_saved,
+            from_vault: false,
+            noted: false,
+            keep: false,
             delete: pkg.map_or(settings.extract_delete, |p| p.delete_after),
             in_place: settings.extract_in_place,
             by_hand,
@@ -234,13 +278,34 @@ impl Extracts {
         };
         let report = match result {
             Ok(r) => r,
+            Err(Error::NeedsPassword | Error::WrongPassword) if !job.vault.is_empty() => {
+                // It needs a password: the package's, then each of Options' archive passwords,
+                // before asking; the log says so once, at the first saved one.
+                let saved = Some(&job.vault[0]) != job.package.as_ref();
+                if saved && !job.noted {
+                    // i18n: in a download's log: an encrypted archive is being tried with the passwords saved in Options → Archives
+                    note(
+                        items,
+                        crate::i18n::t("Trying the saved archive passwords...").to_owned(),
+                    );
+                }
+                let mut job = job;
+                job.noted |= saved;
+                job.password = Some(job.vault.remove(0));
+                job.from_vault = true;
+                job.keep = saved || job.package_saved;
+                self.queue.push_front(job);
+                return;
+            }
             Err(e @ (Error::NeedsPassword | Error::WrongPassword)) => {
                 self.seen.remove(&job.archive);
                 note(items, failed(&name, &e));
                 // Asked once at a time; a second archive waiting for its password is told in its
-                // log, to try again with Extract.
+                // log, to try again with Extract. None of the saved ones fit: "it needs a
+                // password", the last one tried never shown.
                 if self.ask.is_none() {
-                    self.ask = Some(PasswordDialog::new(job, matches!(e, Error::WrongPassword)));
+                    let wrong = matches!(e, Error::WrongPassword) && !job.from_vault;
+                    self.ask = Some(PasswordDialog::new(job, wrong));
                 }
                 return;
             }
@@ -254,6 +319,11 @@ impl Extracts {
                 return;
             }
         };
+        if job.keep
+            && let Some(pw) = &job.password
+        {
+            self.to_vault.push(pw.clone());
+        }
         let folder = crate::i18n::ltr(&report.folder.display().to_string());
         note(
             items,
@@ -331,16 +401,25 @@ impl Extracts {
         }
     }
 
-    /// The password window's answer: extract again with it, or leave the archive.
-    pub fn answer(&mut self, password: Option<String>) {
+    /// The password window's answer: extract again with it (kept in Options' list when asked
+    /// to, once it fits), or leave the archive.
+    pub fn answer(&mut self, answer: Option<(String, bool)>) {
         let Some(ask) = self.ask.take() else { return };
-        if let Some(pw) = password {
+        if let Some((pw, remember)) = answer {
             let mut job = ask.job;
             job.password = Some(pw);
+            job.vault.clear();
+            job.from_vault = false;
+            job.keep = remember;
             if self.seen.insert(job.archive.clone()) {
                 self.queue.push_front(job);
             }
         }
+    }
+
+    /// The passwords for the top of Options' archive passwords, each once.
+    pub fn take_vault(&mut self) -> Vec<String> {
+        std::mem::take(&mut self.to_vault)
     }
 }
 
@@ -571,10 +650,17 @@ impl ToolDialog {
                     &p,
                     o.x + 11.0,
                     o.y + 56.0,
-                    // i18n: in the "7-Zip needed" window, under why
-                    crate::i18n::t(
-                        "Install 7-Zip (free), then right-click the download and choose Extract.",
-                    ),
+                    if cfg!(target_os = "linux") {
+                        // i18n: in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+                        crate::i18n::t(
+                            "Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.",
+                        )
+                    } else {
+                        // i18n: in the "7-Zip needed" window, under why
+                        crate::i18n::t(
+                            "Install 7-Zip (free), then right-click the download and choose Extract.",
+                        )
+                    },
                     winui::MUTED(),
                     o.x + 389.0,
                     14.0,
@@ -608,6 +694,8 @@ pub struct PasswordDialog {
     job: Job,
     wrong: bool,
     password: String,
+    /// "Remember it in Options → Archives": unticked until the user ticks it.
+    remember: bool,
     focused: bool,
 }
 
@@ -622,12 +710,15 @@ impl PasswordDialog {
             job,
             wrong,
             password,
+            // Unticked: a password is kept only when the user chooses to.
+            remember: false,
             focused: false,
         }
     }
 
-    /// `Done(Some(password))`: extract with it; `Done(None)` or Closed: leave the archive.
-    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Option<String>> {
+    /// `Done(Some((password, remember)))`: extract with it; `Done(None)` or Closed: leave the
+    /// archive.
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<Option<(String, bool)>> {
         let name = self
             .job
             .archive
@@ -638,7 +729,7 @@ impl PasswordDialog {
             ctx,
             "archive-password",
             "Archive password",
-            [380.0, 112.0],
+            [380.0, 136.0],
             false,
             LIGHT_BG(),
             |ui, o| {
@@ -684,6 +775,14 @@ impl PasswordDialog {
                     edit.request_focus();
                     self.focused = true;
                 }
+                winui::checkbox_light(
+                    ui,
+                    o + vec2(11.0, 62.0),
+                    &mut self.remember,
+                    // i18n: in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+                    "Remember it for other archives",
+                    true,
+                );
                 let has = !self.password.is_empty();
                 // As wide as their labels in this language (#192).
                 let [ok_at, skip_at] = winui::buttons_to_right(
@@ -697,7 +796,7 @@ impl PasswordDialog {
                 };
                 let ok = winui::button_light(
                     ui,
-                    r(o, ok_at.0, 80.0, ok_at.1, 21.0),
+                    r(o, ok_at.0, 104.0, ok_at.1, 21.0),
                     // i18n: button: extract the archive with the password typed
                     "Extract",
                     if has {
@@ -710,7 +809,7 @@ impl PasswordDialog {
                 .clicked();
                 let skip = winui::button_light(
                     ui,
-                    r(o, skip_at.0, 80.0, skip_at.1, 21.0),
+                    r(o, skip_at.0, 104.0, skip_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
@@ -719,7 +818,7 @@ impl PasswordDialog {
                 if skip || winui::escape_pressed(ui) {
                     Outcome::Done(None)
                 } else if (ok || winui::enter_pressed(ui)) && has {
-                    Outcome::Done(Some(std::mem::take(&mut self.password)))
+                    Outcome::Done(Some((std::mem::take(&mut self.password), self.remember)))
                 } else {
                     Outcome::Open
                 }
@@ -808,6 +907,123 @@ mod tests {
             volume_key("g.7z.001").map(|v| v.kind),
             Some(VolumeKind::Split)
         );
+    }
+
+    #[test]
+    fn saved_passwords_are_tried_before_asking_and_the_one_that_fits_goes_first() {
+        let settings = Settings {
+            archive_passwords: "one\ntwo\npkg".into(),
+            ..Default::default()
+        };
+        let mut items = vec![item(1, "a.7z", Status::Complete, Some(5))];
+        items[0].package.as_mut().unwrap().password = Some("pkg".into());
+        let mut q = Extracts::default();
+        q.finished(1, &items, &settings);
+        // Without a password first; then the package's, then the list's, without it twice.
+        let job = q.queue.pop_front().unwrap();
+        assert_eq!(job.password, None);
+        assert_eq!(job.vault, vec!["pkg", "one", "two"]);
+        q.finish(job, Err(Error::NeedsPassword), None, &mut items);
+        let job = q.queue.pop_front().unwrap();
+        assert_eq!(job.password.as_deref(), Some("pkg"));
+        let tries = |items: &[Item]| {
+            items[0]
+                .log
+                .iter()
+                .filter(|(_, t)| t.contains("saved archive passwords"))
+                .count()
+        };
+        assert_eq!(tries(&items), 0, "the package's isn't a saved one");
+        let wrong = || Err(Error::WrongPassword);
+        q.finish(job, wrong(), None, &mut items);
+        let job = q.queue.pop_front().unwrap();
+        assert_eq!(
+            (job.password.as_deref(), job.from_vault),
+            (Some("one"), true)
+        );
+        assert!(q.ask.is_none(), "not asked while saved ones are left");
+        q.finish(job, wrong(), None, &mut items);
+        let job = q.queue.pop_front().unwrap();
+        assert_eq!(job.password.as_deref(), Some("two"));
+        // The log says it once.
+        assert_eq!(tries(&items), 1);
+        // "two" fits: it goes first in Options' list.
+        q.finish(job.clone(), Ok(Report::default()), None, &mut items);
+        assert_eq!(q.take_vault(), vec!["two"]);
+        let mut s = settings.clone();
+        s.remember_archive_password("two");
+        assert_eq!(s.archive_password_list(), vec!["two", "one", "pkg"]);
+
+        // None fits: asked, the last one tried not shown in the box, "Remember it" unticked.
+        let mut job = job;
+        job.vault.clear();
+        q.finish(job, wrong(), None, &mut items);
+        let ask = q.ask.as_ref().unwrap();
+        assert!(ask.password.is_empty() && !ask.wrong && !ask.remember);
+        // Typed, with "Remember it": tried, and kept for the list once it fits.
+        q.answer(Some(("typed".into(), true)));
+        assert!(
+            q.take_vault().is_empty(),
+            "not before it opened the archive"
+        );
+        let job = q.queue.pop_front().unwrap();
+        assert_eq!(job.password.as_deref(), Some("typed"));
+        assert!(job.vault.is_empty());
+        q.finish(job.clone(), Ok(Report::default()), None, &mut items);
+        assert_eq!(q.take_vault(), vec!["typed"]);
+        // Without "Remember it": used once, never kept.
+        let mut job = job;
+        q.finish(job.clone(), wrong(), None, &mut items);
+        q.answer(Some(("once".into(), false)));
+        job = q.queue.pop_front().unwrap();
+        q.finish(job, Ok(Report::default()), None, &mut items);
+        assert!(q.take_vault().is_empty());
+    }
+
+    #[test]
+    fn a_package_password_is_never_saved_by_itself() {
+        // Sent with the links by a page, or typed in Link grabber: used, not kept, unless it is
+        // one of Options' archive passwords already (then it moves to the top).
+        let mut items = vec![
+            item(1, "a.rar", Status::Complete, Some(5)),
+            item(2, "b.rar", Status::Complete, Some(6)),
+            item(3, "c.rar", Status::Complete, Some(7)),
+        ];
+        for (i, pw) in [(0, "from-the-site"), (1, "other-site"), (2, "unused")] {
+            items[i].package.as_mut().unwrap().password = Some(pw.into());
+        }
+        let mut q = Extracts::default();
+        let s = Settings {
+            archive_passwords: "first\nother-site".into(),
+            ..Default::default()
+        };
+        // a and b need theirs, and both open in the same pass. a's isn't in the list: not
+        // kept. b's is: it goes to the top.
+        q.finished(1, &items, &s);
+        q.finished(2, &items, &s);
+        let (a, b) = (q.queue.pop_front().unwrap(), q.queue.pop_front().unwrap());
+        q.finish(a, Err(Error::NeedsPassword), None, &mut items);
+        let a = q.queue.pop_front().unwrap();
+        q.finish(b, Err(Error::NeedsPassword), None, &mut items);
+        let b = q.queue.pop_front().unwrap();
+        q.finish(a, Ok(Report::default()), None, &mut items);
+        q.finish(b, Ok(Report::default()), None, &mut items);
+        assert_eq!(q.take_vault(), vec!["other-site"]);
+        // c opens without a password: its package's is never tried, nor kept.
+        q.finished(3, &items, &s);
+        let job = q.queue.pop_front().unwrap();
+        assert_eq!(job.password, None);
+        q.finish(job, Ok(Report::default()), None, &mut items);
+        assert!(q.take_vault().is_empty());
+        // One that doesn't fit isn't kept.
+        let mut items = vec![item(4, "d.rar", Status::Complete, Some(8))];
+        items[0].package.as_mut().unwrap().password = Some("wrong".into());
+        q.finished(4, &items, &s);
+        let job = q.queue.pop_front().unwrap();
+        q.finish(job, Err(Error::NeedsPassword), None, &mut items);
+        let job = q.queue.pop_front().unwrap();
+        q.finish(job, Err(Error::WrongPassword), None, &mut items);
+        assert!(q.take_vault().is_empty());
     }
 
     #[test]
