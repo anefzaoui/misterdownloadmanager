@@ -52,3 +52,6 @@ workspace = true
 
 [target."cfg(windows)".dependencies]
 win32job = "2.0.3"
+
+[target."cfg(unix)".dependencies]
+libc = "0.2"

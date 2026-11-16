@@ -878,9 +878,19 @@ pub struct Spawned {
 }
 
 impl Spawned {
-    /// End the helper and everything it started (Windows: its job; elsewhere yt-dlp runs as one
-    /// process, its ffmpeg ending with it).
+    /// End the helper and everything it started: on Windows through its job (#61); on Unix
+    /// by signaling its process group (#1301); elsewhere the launcher alone.
+    #[allow(unsafe_code)]
     pub fn kill(&mut self) {
+        #[cfg(unix)]
+        {
+            if let Ok(pid) = i32::try_from(self.child.id())
+                && pid > 0
+            {
+                // Signaling a negative PID sends SIGKILL to all processes in that process group.
+                let _ = unsafe { libc::kill(-pid, libc::SIGKILL) };
+            }
+        }
         let _ = self.child.kill();
         #[cfg(windows)]
         drop(self.job.take());
@@ -959,6 +969,11 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         use std::os::windows::process::CommandExt;
         const CREATE_NO_WINDOW: u32 = 0x0800_0000;
         cmd.creation_flags(CREATE_NO_WINDOW);
+    }
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        cmd.process_group(0);
     }
     let mut child = cmd
         .spawn()
@@ -1708,6 +1723,36 @@ foreach ($d in $env:PATH.Split(';')) {
         std::thread::sleep(Duration::from_millis(1500));
         let after_kill = size();
         std::thread::sleep(Duration::from_secs(3));
+        assert_eq!(size(), after_kill, "the child ended with the helper");
+    }
+
+    /// #1301: on Unix too, killing a helper ends what it started (yt_dlp_linux is a launcher
+    /// whose child downloads). Here a shell script starts a background child loop: once killed,
+    /// the marker file stops growing.
+    #[cfg(unix)]
+    #[test]
+    fn killing_a_helper_ends_its_children() {
+        let dir = tempfile::tempdir().unwrap();
+        let marker = dir.path().join("marker.txt");
+        let script = dir.path().join("runner.sh");
+        std::fs::write(
+            &script,
+            format!(
+                "#!/bin/sh\n(while true; do echo x >> \"{}\"; sleep 0.1; done) &\nsleep 60\n",
+                marker.display()
+            ),
+        )
+        .unwrap();
+        let mut cmd = Command::new("sh");
+        cmd.arg(&script);
+        let mut s = spawn(cmd, "sh").unwrap();
+        let size = || std::fs::metadata(&marker).map_or(0, |m| m.len());
+        std::thread::sleep(Duration::from_millis(500));
+        assert!(size() > 0, "the child runs");
+        s.kill();
+        std::thread::sleep(Duration::from_millis(300));
+        let after_kill = size();
+        std::thread::sleep(Duration::from_millis(500));
         assert_eq!(size(), after_kill, "the child ended with the helper");
     }
 }

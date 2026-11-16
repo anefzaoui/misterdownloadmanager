@@ -556,6 +556,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux: pausing, stopping or canceling a download that runs yt-dlp ends its downstream processes too ([#1301](https://github.com/anefzaoui/misterdownloadmanager/issues/1301))
 - ✅ Fewer Download complete windows: downloads added together (a playlist, a batch, Link
   grabber's links) show one summary once all are done, with how many finished and which failed,
   Open folder and Show in list; a single download keeps its window
