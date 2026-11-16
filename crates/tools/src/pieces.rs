@@ -11,6 +11,12 @@
 //! A piece refused (401, 403, 404, 410: its signed address expired) has the list asked of yt-dlp
 //! again (`relink`), and the pieces go on from the new one.
 //!
+//! A piece refused as a program's (the site's bot check, Cloudflare's and others', or a 412:
+//! `browserlike::refuses_programs`, #1289) is asked again the way a browser connects, as the
+//! engine asks a download's file (#668), and every piece after it goes that way from the start
+//! (so do the keys). A stream whose playlist only came that way starts so. When that is refused
+//! too, the stream fails with the site's refusal: a new list wouldn't get past it.
+//!
 //! The same connections bring a gallery's files in (gallery-dl's list, #769): each piece is then a
 //! file of its own ([`Target::Files`]), saved where gallery-dl would save it, and one that can't
 //! be had is left for gallery-dl rather than failing the others.
@@ -21,6 +27,7 @@ use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
+use mdm_engine::browserlike::{self, Connection};
 use mdm_engine::download::{ConnStatus, ConnView, SegmentView};
 use mdm_engine::limiter::Limiter;
 use reqwest::header::{HeaderMap, HeaderValue, RANGE};
@@ -403,12 +410,20 @@ enum PieceError {
     Again(String),
     /// 429 or 503: the server wants fewer requests (for this long, when it says).
     Busy(String, Option<Duration>),
+    /// The site's bot check refused it on the browser-like connection too (#1289): neither a
+    /// new list nor another try gets past it.
+    Refused(String),
     Stopped,
 }
 
 /// What every connection shares.
 struct Run {
     client: reqwest::Client,
+    /// The browser-like connection, once a piece needed it (or the playlist did): every request
+    /// goes on it from then on (#1289).
+    browser: Mutex<Option<Connection>>,
+    /// The engine's options, the browser-like connection's (its proxy, DNS, adapter).
+    opts: mdm_engine::Options,
     headers: HeaderMap,
     pieces: Mutex<Vec<Piece>>,
     /// Bumped when the list is asked again: a piece of an older list asks again with the new.
@@ -435,7 +450,8 @@ struct Run {
 /// Download `pieces` (a piece already whole is kept), `connections` at once, with `headers`,
 /// under `limiter` (the download's own limit) and the engine's `opts` (its client, the limit for
 /// all downloads, retries); then join them in order into the `target` file, or leave each in its
-/// own (a gallery's: a file already there isn't counted as downloaded now).
+/// own (a gallery's: a file already there isn't counted as downloaded now). With `browser`, the
+/// browser-like connection the playlist needed, every piece goes on it from the start.
 #[allow(clippy::too_many_arguments)]
 pub async fn download(
     pieces: Vec<Piece>,
@@ -446,6 +462,7 @@ pub async fn download(
     cancel: CancellationToken,
     shared: Arc<Shared>,
     relist: Relist,
+    browser: Option<Connection>,
 ) -> Ended {
     let (path, files) = match target {
         Target::Join(p) => (Some(p), None),
@@ -516,8 +533,13 @@ pub async fn download(
             speed: 0,
         })
         .collect();
+    if browser.is_some() {
+        shared.note("The pieces go on the way a browser connects, as the playlist did".into());
+    }
     let run = Arc::new(Run {
         client,
+        browser: Mutex::new(browser),
+        opts: opts.clone(),
         headers,
         pieces: Mutex::new(pieces),
         generation: AtomicU64::new(0),
@@ -555,7 +577,12 @@ pub async fn download(
     }
     match failure {
         Some(PieceError::Stopped) => return Ended::Stopped,
-        Some(PieceError::Dead(e) | PieceError::Again(e) | PieceError::Busy(e, _)) => {
+        Some(
+            PieceError::Dead(e)
+            | PieceError::Again(e)
+            | PieceError::Busy(e, _)
+            | PieceError::Refused(e),
+        ) => {
             return Ended::Failed(e);
         }
         None if run.cancel.is_cancelled() => return Ended::Stopped,
@@ -621,7 +648,7 @@ async fn connection(run: Arc<Run>, c: usize) -> Result<(), PieceError> {
                 Ok(()) => break,
                 Err(PieceError::Stopped) => return Err(PieceError::Stopped),
                 // A gallery's file that can't be had is left for gallery-dl.
-                Err(PieceError::Dead(e)) if run.files.is_some() => {
+                Err(PieceError::Dead(e) | PieceError::Refused(e)) if run.files.is_some() => {
                     run.shared
                         .note(format!("File {}: {e}; left for gallery-dl", i + 1));
                     break;
@@ -676,6 +703,9 @@ async fn connection(run: Arc<Run>, c: usize) -> Result<(), PieceError> {
                     run.shared
                         .note(format!("File {}: {e}; left for gallery-dl", i + 1));
                     break;
+                }
+                Err(PieceError::Refused(e)) => {
+                    return Err(PieceError::Refused(format!("piece {}: {e}", i + 1)));
                 }
                 Err(PieceError::Dead(e)) => {
                     run.shared.note(format!("Piece {}: {e}", i + 1));
@@ -761,27 +791,29 @@ async fn key_of(run: &Run, uri: &Url) -> Result<[u8; 16], PieceError> {
     if let Some(k) = keys.get(uri) {
         return Ok(*k);
     }
-    let resp = run
-        .client
-        .get(uri.clone())
-        .headers(run.headers.clone())
-        .send()
-        .await
-        .map_err(|e| PieceError::Again(format!("the key: {e}")))?;
+    let mut resp = ask(run, uri, None, "the key").await?;
     let status = resp.status();
-    if !status.is_success() {
+    if !(200..300).contains(&status) {
         return Err(dead_or_again(
-            status.as_u16(),
+            status,
             "the key",
-            retry_after(&resp),
+            retry_after(resp.headers()),
         ));
     }
-    let body = resp
-        .bytes()
-        .await
-        .map_err(|e| PieceError::Again(format!("the key: {e}")))?;
+    let mut body = Vec::new();
+    loop {
+        let chunk = tokio::select! {
+            _ = run.cancel.cancelled() => return Err(PieceError::Stopped),
+            c = resp.chunk() => c,
+        };
+        match chunk {
+            Ok(Some(c)) => body.extend_from_slice(&c),
+            Ok(None) => break,
+            Err(e) => return Err(PieceError::Again(format!("the key: {e}"))),
+        }
+    }
     let key: [u8; 16] = body
-        .as_ref()
+        .as_slice()
         .try_into()
         .map_err(|_| PieceError::Dead(format!("the key is {} bytes, not 16", body.len())))?;
     keys.insert(uri.clone(), key);
@@ -798,8 +830,8 @@ fn dead_or_again(status: u16, what: &str, retry_after: Option<Duration>) -> Piec
 }
 
 /// `Retry-After` in seconds (a date isn't read: the backoff stands then).
-fn retry_after(resp: &reqwest::Response) -> Option<Duration> {
-    resp.headers()
+fn retry_after(headers: &HeaderMap) -> Option<Duration> {
+    headers
         .get(reqwest::header::RETRY_AFTER)?
         .to_str()
         .ok()?
@@ -809,24 +841,133 @@ fn retry_after(resp: &reqwest::Response) -> Option<Duration> {
         .map(Duration::from_secs)
 }
 
+/// An answer on MDM's own connection or on the browser-like one (#1289).
+enum Answer {
+    Http(reqwest::Response),
+    Browser(browserlike::Answer),
+}
+
+impl Answer {
+    fn status(&self) -> u16 {
+        match self {
+            Answer::Http(r) => r.status().as_u16(),
+            Answer::Browser(a) => a.status.as_u16(),
+        }
+    }
+
+    fn headers(&self) -> &HeaderMap {
+        match self {
+            Answer::Http(r) => r.headers(),
+            Answer::Browser(a) => &a.headers,
+        }
+    }
+
+    fn content_length(&self) -> Option<u64> {
+        match self {
+            Answer::Http(r) => r.content_length(),
+            Answer::Browser(a) => a.content_length(),
+        }
+    }
+
+    async fn chunk(&mut self) -> Result<Option<bytes::Bytes>, String> {
+        match self {
+            Answer::Http(r) => r.chunk().await.map_err(|e| e.to_string()),
+            Answer::Browser(a) => a.chunk().await.map_err(|e| e.to_string()),
+        }
+    }
+}
+
+impl Run {
+    fn browser(&self) -> Option<Connection> {
+        self.browser.lock().unwrap().clone()
+    }
+
+    /// The browser-like connection, made the first time a piece (at `url`) needs it, when this
+    /// build has one; the pieces after it go on it from the start. None: it can't be made (the
+    /// reason noted), and the refusal stands.
+    fn browser_for(&self, url: &Url, what: &str, status: u16) -> Option<Connection> {
+        if !browserlike::AVAILABLE {
+            return None;
+        }
+        let mut b = self.browser.lock().unwrap();
+        if let Some(c) = &*b {
+            return Some(c.clone());
+        }
+        let host = url.host_str().unwrap_or("?");
+        match Connection::new(&self.opts, url, &self.headers) {
+            Ok(c) => {
+                self.shared.note(format!(
+                    "{host} refused {what} as a program's ({status}); the pieces go on the way a browser connects"
+                ));
+                *b = Some(c.clone());
+                Some(c)
+            }
+            Err(e) => {
+                self.shared
+                    .note(format!("{host}, asked the way a browser connects: {e}"));
+                None
+            }
+        }
+    }
+}
+
+/// `url` (its part `range`) asked on the connection the pieces go on: MDM's own, or the
+/// browser-like one once a piece needed it. A refusal as a program's (`refuses_programs`) is
+/// asked again the way a browser connects (#1289). The answer as it came, whatever its status;
+/// a refusal of the browser-like connection too is `PieceError::Refused`.
+async fn ask(
+    run: &Run,
+    url: &Url,
+    range: Option<(u64, u64)>,
+    what: &str,
+) -> Result<Answer, PieceError> {
+    let mut headers = run.headers.clone();
+    if let Some((start, len)) = range {
+        let r = format!("bytes={start}-{}", start + len.max(1) - 1);
+        headers.insert(RANGE, HeaderValue::from_str(&r).expect("ascii"));
+    }
+    let browser = match run.browser() {
+        Some(b) => b,
+        None => {
+            let req = run.client.get(url.clone()).headers(headers.clone());
+            let sent = tokio::select! {
+                _ = run.cancel.cancelled() => return Err(PieceError::Stopped),
+                r = req.send() => r,
+            };
+            let resp = sent.map_err(|e| PieceError::Again(e.to_string()))?;
+            if !browserlike::refuses_programs(resp.status(), resp.headers()) {
+                return Ok(Answer::Http(resp));
+            }
+            match run.browser_for(url, what, resp.status().as_u16()) {
+                Some(b) => b,
+                None => return Ok(Answer::Http(resp)),
+            }
+        }
+    };
+    let answer = match browser.get(url.clone(), headers, &run.cancel).await {
+        Ok(a) => a,
+        Err(mdm_engine::Error::Cancelled) => return Err(PieceError::Stopped),
+        Err(e) => return Err(PieceError::Again(format!("{what}: {e}"))),
+    };
+    if browserlike::refuses_programs(answer.status, &answer.headers) {
+        return Err(PieceError::Refused(format!(
+            "{what}: the site's bot check refused it ({}), the way a browser connects too",
+            answer.status.as_u16()
+        )));
+    }
+    Ok(Answer::Browser(answer))
+}
+
 /// Piece `i` on connection `c`: downloaded under the limits, decrypted, saved whole.
 async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(), PieceError> {
-    let mut req = run
-        .client
-        .get(piece.url.clone())
-        .headers(run.headers.clone());
-    if let Some((start, len)) = piece.range {
-        let r = format!("bytes={start}-{}", start + len.max(1) - 1);
-        req = req.header(RANGE, HeaderValue::from_str(&r).expect("ascii"));
-    }
-    let sent = tokio::select! {
-        _ = run.cancel.cancelled() => return Err(PieceError::Stopped),
-        r = req.send() => r,
-    };
-    let mut resp = sent.map_err(|e| PieceError::Again(e.to_string()))?;
-    let status = resp.status().as_u16();
+    let mut resp = ask(run, &piece.url, piece.range, run.one()).await?;
+    let status = resp.status();
     if !(200..300).contains(&status) {
-        return Err(dead_or_again(status, run.one(), retry_after(&resp)));
+        return Err(dead_or_again(
+            status,
+            run.one(),
+            retry_after(resp.headers()),
+        ));
     }
     let len = resp.content_length();
     let mut body = Vec::with_capacity(len.unwrap_or(0) as usize);
@@ -1118,6 +1259,7 @@ mod tests {
             CancellationToken::new(),
             shared.clone(),
             Arc::new(|| Err("listed once".into())),
+            None,
         ));
         assert!(matches!(ended, Ended::Done(_)), "{ended:?}");
         for (i, p) in paths.iter().enumerate() {
@@ -1130,5 +1272,137 @@ mod tests {
             notes.iter().any(|n| n.contains("closed, the others go on")),
             "{notes:?}"
         );
+    }
+
+    /// An HLS playlist's pieces from the lab server, each 96 KiB with the seed 100 + its index
+    /// and `faults` of its own, and what they join into.
+    fn lab_playlist(lab: &mdm_labserver::LabServer, n: u64, faults: &str) -> (Vec<Piece>, Vec<u8>) {
+        let mut text = "#EXTM3U\n#EXT-X-TARGETDURATION:4\n".to_owned();
+        let mut whole = Vec::new();
+        for i in 0..n {
+            text.push_str(&format!(
+                "#EXTINF:4.0,\n/gen/96K/s{i}.ts?seed={}&{faults}\n",
+                100 + i
+            ));
+            let mut piece = vec![0; 96 * 1024];
+            mdm_labserver::content::fill(100 + i, 0, &mut piece);
+            whole.extend_from_slice(&piece);
+        }
+        text.push_str("#EXT-X-ENDLIST\n");
+        let base = Url::parse(&lab.url("/hls/v/index.m3u8")).unwrap();
+        (hls(&text, &base, None, None).unwrap(), whole)
+    }
+
+    /// The pieces of `list` joined into a file in `dir` with up to `connections` at once; how it
+    /// ended, its notes, and how often the list was asked for again (each time `relisted`).
+    fn pieces_of(
+        list: Vec<Piece>,
+        dir: &Path,
+        connections: u32,
+        relisted: Option<Vec<Piece>>,
+    ) -> (Ended, Vec<String>, usize) {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let asked = Arc::new(AtomicUsize::new(0));
+        let relist: Relist = {
+            let asked = asked.clone();
+            Arc::new(move || {
+                asked.fetch_add(1, Ordering::SeqCst);
+                relisted.clone().ok_or_else(|| "listed once".to_owned())
+            })
+        };
+        let shared = Arc::new(Shared::default());
+        let opts = mdm_engine::Options {
+            max_connections: connections,
+            retry_delay: Duration::from_millis(50),
+            ..Default::default()
+        };
+        let ended = rt.block_on(download(
+            list,
+            Target::Join(dir.join("v.ts")),
+            HeaderMap::new(),
+            opts,
+            Arc::new(Limiter::new(None)),
+            CancellationToken::new(),
+            shared.clone(),
+            relist,
+            None,
+        ));
+        (ended, shared.take_notes(), asked.load(Ordering::SeqCst))
+    }
+
+    /// #1289: a stream whose pieces sit behind a bot check that lets only browsers through (the
+    /// lab's `browser_only`, Cloudflare's 403 with `cf-mitigated: challenge`): the first pieces
+    /// refused are asked again the way a browser connects, and every piece after them goes that
+    /// way from the start, several at once; the list isn't asked for again.
+    ///
+    /// Run where the engine has the connection (`cargo test` of the workspace, whose app asks
+    /// for it, or with `-p mdm-engine` beside `-p mdm-tools`); skipped without it.
+    #[test]
+    fn pieces_behind_a_bot_check_come_the_way_a_browser_connects() {
+        if !browserlike::AVAILABLE {
+            eprintln!("skipped: this build of the engine has no browser-like connection");
+            return;
+        }
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let lab = rt
+            .block_on(mdm_labserver::LabServer::start(Default::default()))
+            .unwrap();
+        let (list, whole) = lab_playlist(&lab, 8, "browser_only=1&rate=1M");
+        let dir = tempfile::tempdir().unwrap();
+        let (ended, notes, relisted) = pieces_of(list, dir.path(), 3, None);
+        assert!(matches!(ended, Ended::Done(_)), "{ended:?} {notes:?}");
+        assert!(std::fs::read(dir.path().join("v.ts")).unwrap() == whole);
+        assert_eq!(relisted, 0, "{notes:?}");
+        assert!(
+            notes
+                .iter()
+                .any(|n| n.contains("the pieces go on the way a browser connects")),
+            "{notes:?}"
+        );
+        rt.block_on(lab.settled());
+        let log = lab.log();
+        let refused = log
+            .iter()
+            .filter(|e| e.outcome == "fault:browser_only")
+            .count();
+        // Only the pieces asked before the first one got through, at most one per connection.
+        assert!((1..=3).contains(&refused), "{log:?}");
+        let through: Vec<_> = log.iter().filter(|e| e.status == 200).collect();
+        assert_eq!(through.len(), 8, "{log:?}");
+        assert!(
+            through.iter().all(|e| e.sec_fetch_mode.is_some()),
+            "{log:?}"
+        );
+        // Several at once, each on a connection of its own.
+        let at_once = through
+            .iter()
+            .map(|a| {
+                through
+                    .iter()
+                    .filter(|b| b.t_start_ms <= a.t_start_ms && a.t_start_ms < b.t_end_ms)
+                    .count()
+            })
+            .max()
+            .unwrap();
+        assert!(at_once >= 2, "{log:?}");
+    }
+
+    /// A piece refused without a bot check (a plain 403: its signed address expired) still has
+    /// the list asked for again, and nothing goes the way a browser connects.
+    #[test]
+    fn an_expired_piece_is_listed_again() {
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let lab = rt
+            .block_on(mdm_labserver::LabServer::start(Default::default()))
+            .unwrap();
+        let (expired, _) = lab_playlist(&lab, 4, "refuse=403");
+        let (fresh, whole) = lab_playlist(&lab, 4, "rate=4M");
+        let dir = tempfile::tempdir().unwrap();
+        let (ended, notes, relisted) = pieces_of(expired, dir.path(), 2, Some(fresh));
+        assert!(matches!(ended, Ended::Done(_)), "{ended:?} {notes:?}");
+        assert!(std::fs::read(dir.path().join("v.ts")).unwrap() == whole);
+        assert_eq!(relisted, 1, "{notes:?}");
+        rt.block_on(lab.settled());
+        assert!(lab.log().iter().all(|e| e.sec_fetch_mode.is_none()));
     }
 }

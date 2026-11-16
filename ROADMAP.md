@@ -1161,6 +1161,10 @@ These ship in the next version.
 - ✅ Sites that let only browsers through (Cloudflare's bot check, FileHippo's 412): MDM tries once
   more connecting the way a browser does, with the cookies it has for that site (part of
   [#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
+- ✅ Downloads through the browser-like connection use all their connections, each asking for its
+  part, and fall back to one when a site refuses parts there; a stream's pieces behind a bot check
+  are asked that way too ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668),
+  [#1289](https://github.com/anefzaoui/misterdownloadmanager/issues/1289))
 - ✅ Downloads from FileHippo no longer fail at once with 412 Precondition Failed: a link the site
   refuses goes on from where the browser's own download of it had reached, then through the
   browser-like connection above
