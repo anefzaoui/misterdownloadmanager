@@ -33,6 +33,9 @@ function fakeApi({
   host = true,
   finished,
   panelOn,
+  // Options → Download panels → Button size (#1278): Compact (a function: the app's answer now);
+  // undefined: an older host, which doesn't say.
+  panelCompact,
   access = true,
   rules = {},
   rulesReply,
@@ -148,7 +151,11 @@ function fakeApi({
         }
         calls.push(["native", name, m]);
         // The video button: "may it show" follows `panelOn` (a function: the app's answer now).
-        if (m.panel) return { ok: typeof panelOn === "function" ? panelOn(m) : panelOn !== false };
+        if (m.panel) {
+          const on = typeof panelOn === "function" ? panelOn(m) : panelOn !== false;
+          const compact = typeof panelCompact === "function" ? panelCompact(m) : panelCompact;
+          return { ok: on, ...(on && compact !== undefined ? { compact } : {}) };
+        }
         // A notice of a download left alone (#208): an older host, which knows none, takes it
         // for an address it can't download (`noticeReply`).
         if (m.declined) return noticeReply || { ok: true };
@@ -907,8 +914,8 @@ const ok = (what) => {
       );
       if (!async_) resolve(undefined);
     });
-  assert.deepEqual(await ask({ type: "panel" }), { on: true });
-  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/2"), { on: true });
+  assert.deepEqual(await ask({ type: "panel" }), { on: true, compact: false });
+  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/2"), { on: true, compact: false });
   assert.equal(natives(calls).filter((m) => m.panel).length, 1, "asked once for the site");
   assert.equal((await ask({ type: "video", page: "https://evil.test/" })).ok, true);
   const video = natives(calls).find((m) => m.video);
@@ -919,8 +926,8 @@ const ok = (what) => {
   assert.deepEqual(video.cookieJar, [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, expirationDate: 1893456000.5 }]);
   assert.deepEqual(await ask({ type: "hide-site", host: "elsewhere.test" }), { ok: true });
   assert.ok(natives(calls).some((m) => m.hideSite === "tube.test"));
-  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/3"), { on: false }, "off at once");
-  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test:8443/embed/4"), { on: false }, "whatever the port");
+  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/3"), { on: false, compact: false }, "off at once");
+  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test:8443/embed/4"), { on: false, compact: false }, "whatever the port");
   assert.deepEqual(await ask({ type: "video" }, "javascript:alert(1)"), { ok: false });
   // The video's own address, when the content script names one of its site's: a watch page opened
   // from a mix or a playlist is the list in the address bar, but the video the button is on is one
@@ -1015,26 +1022,58 @@ const ok = (what) => {
   const top = { id: "ours", url: "https://tube.test/watch", frameId: 0, tab: { url: "https://tube.test/watch" } };
   const ask = (sender) =>
     new Promise((r) => listeners.message({ type: "panel" }, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
-  assert.deepEqual(await ask(embed), { on: true });
+  assert.deepEqual(await ask(embed), { on: true, compact: false });
   const asked = () => natives(calls).filter((m) => m.panel);
   assert.equal(asked()[0].referrer, "https://blog.test/post", "the tab's address with an embedded player's question");
-  assert.deepEqual(await ask(top), { on: true });
+  assert.deepEqual(await ask(top), { on: true, compact: false });
   assert.equal(asked()[1].referrer, undefined, "none for the tab's own page");
   appSays = false;
   clock.t += 1000;
-  assert.deepEqual(await ask(top), { on: true }, "kept a moment (the page's frames ask together)");
+  assert.deepEqual(await ask(top), { on: true, compact: false }, "kept a moment (the page's frames ask together)");
   assert.equal(asked().length, 2);
   clock.t += 5000;
-  assert.deepEqual(await ask(top), { on: false }, "switched off in Options: the next question has it");
-  assert.deepEqual(await ask(embed), { on: false });
+  assert.deepEqual(await ask(top), { on: false, compact: false }, "switched off in Options: the next question has it");
+  assert.deepEqual(await ask(embed), { on: false, compact: false });
   appSays = true;
   clock.t += 6000;
-  assert.deepEqual(await ask(embed), { on: true }, "and on again");
+  assert.deepEqual(await ask(embed), { on: true, compact: false }, "and on again");
   // "Never on this site" from the embed: off at once, in its tab and in any other.
   await new Promise((r) => listeners.message({ type: "hide-site" }, embed, r));
-  assert.deepEqual(await ask(embed), { on: false });
-  assert.deepEqual(await ask({ ...embed, tab: { url: "https://news.test/" } }), { on: false }, "whatever the tab");
+  assert.deepEqual(await ask(embed), { on: false, compact: false });
+  assert.deepEqual(await ask({ ...embed, tab: { url: "https://news.test/" } }), { on: false, compact: false }, "whatever the tab");
   ok("#532: the video button follows Options within seconds; an embed asks with its tab's address");
+}
+// #1278: Options → Download panels → Button size comes with the answer, and follows a change in
+// Options as "may it show" does (kept a few seconds); an older host that doesn't say: Full.
+{
+  const clock = { t: Date.now() };
+  class FakeDate extends Date {
+    static now() {
+      return clock.t;
+    }
+  }
+  let compact = true;
+  let on = true;
+  const { api, listeners } = fakeApi({ firefox: false, panelOn: () => on, panelCompact: () => compact });
+  load(api, false, { Date: FakeDate });
+  const page = { id: "ours", url: "https://tube.test/watch", frameId: 0, tab: { url: "https://tube.test/watch" } };
+  const ask = () =>
+    new Promise((r) => listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await ask(), { on: true, compact: true });
+  compact = false;
+  clock.t += 1000;
+  assert.deepEqual(await ask(), { on: true, compact: true }, "kept a moment");
+  clock.t += 5000;
+  assert.deepEqual(await ask(), { on: true, compact: false }, "Full again in Options: the next question has it");
+  compact = true;
+  on = false;
+  clock.t += 6000;
+  assert.deepEqual(await ask(), { on: false, compact: false }, "off: never compact");
+  const older = fakeApi({ firefox: false, panelOn: () => true });
+  load(older.api, false);
+  const said = await new Promise((r) => older.listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(said, { on: true, compact: false }, "an older host: Full");
+  ok("#1278: the video button's size comes from Options with its answer, and follows a change");
 }
 {
   const { api, listeners } = fakeApi({ firefox: true, panelOn: false });
@@ -1042,7 +1081,7 @@ const ok = (what) => {
   const on = await new Promise((r) =>
     listeners.message({ type: "panel" }, { id: "ours", url: "https://x.test/", tab: {} }, (v) => r(JSON.parse(JSON.stringify(v)))),
   );
-  assert.deepEqual(on, { on: false }, "where the app says no");
+  assert.deepEqual(on, { on: false, compact: false }, "where the app says no");
   ok("video button messages");
 }
 
@@ -2780,8 +2819,8 @@ function videoButton({ stored = {} } = {}) {
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
   }
   {
-    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords"],
-      "{ choiceSize, qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords }");
+    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords", "compactFor"],
+      "{ choiceSize, qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords, compactFor }");
     const tt = (k, ...a) => (a.length ? `${k}(${a.join(",")})` : k);
     const hd = { label: "1080p 60fps MP4", ext: "mp4", size: 412000000, audio: false, height: 1080, fps: 60 };
     const k4 = { label: "2160p MP4", ext: "mp4", height: 2160 };
@@ -2837,6 +2876,22 @@ function videoButton({ stored = {} } = {}) {
     assert.equal(w.fitsWords(640, 240, 14), true);
     assert.equal(w.fitsWords(359, 100, 14), false, "under 360 px: the round button only");
     assert.equal(w.fitsWords(400, 380, 14), false, "a long language that wouldn't fit");
+    // #1278: Options → Download panels → Button size. Full (the default): the words where they
+    // fit, the round button on a small video or for a long language; Compact: round on every video.
+    const english = 240;
+    const german = 380; // the same button's width with longer words
+    assert.equal(w.compactFor(false, 1280, english, 14), false, "Full on a large video: the words");
+    assert.equal(w.compactFor(false, 1280, german, 14), false, "Full, a long language on a large video: the words");
+    assert.equal(w.compactFor(false, 320, english, 14), true, "Full on a small video: round");
+    assert.equal(w.compactFor(false, 400, german, 14), true, "Full, a long language that wouldn't fit: round");
+    for (const [width, full] of [[1920, english], [1280, german], [640, english], [400, german], [200, english]]) {
+      assert.equal(w.compactFor(true, width, full, 14), true, `Compact: round at ${width} px whatever the language`);
+    }
+    assert.equal(w.compactFor(undefined, 1280, english, 14), false, "not said (an older app): Full");
+    // The answer to `panel` sets it, and position() decides from it.
+    const ask = fn("ask");
+    assert.ok(ask.includes("compactAlways = Boolean(r && r.compact);"), "ask: the size comes with the app's answer");
+    assert.ok(fn("position").includes('pill.classList.toggle("compact", compactFor(compactAlways, vr.width, fullWidth, INSET));'), "position: compact from the setting and the video's width");
   }
   ok("video.js: the qualities' menu follows a lookup one question at a time for a minute; rows as text, the user's own clicks and keys; its words, #703's early look-up, #741's moves");
 }

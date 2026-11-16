@@ -565,6 +565,9 @@ These ship in the next version.
 - ✅ The crash crate's tests build on 32-bit Windows again: the alternate-stack test uses a
   top a 32-bit `usize` can hold, with that crash's own address kept in its comment, so CI's
   `windows-x86` job is green again
+- ✅ **Options → General → Download panels → Edit... → Button size**: **Full**, as before, or
+  **Compact**, the round Download video button (the logo, the arrow and ✕) over every video
+  ([#1278](https://github.com/anefzaoui/misterdownloadmanager/issues/1278))
 - ✅ The extension's checks also pass from a Windows checkout with Git for Windows' defaults
   (`core.autocrlf=true`): the tree keeps LF everywhere except batch files, and the tests read
   sources, JSON and the catalogs by lines, so the 103 checks pass with either line ending
