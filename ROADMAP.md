@@ -1383,7 +1383,8 @@ These ship in the next version.
   Export...
 - ✅ Linux: pausing or cancelling a video (or a gallery) ends all of yt-dlp's processes, so it
   stops downloading; MDM's exit and the command line's Ctrl+C end them too
-  ([#1301](https://github.com/anefzaoui/misterdownloadmanager/issues/1301))
+  ([#1301](https://github.com/anefzaoui/misterdownloadmanager/issues/1301); thanks to
+  [@arifrhm](https://github.com/arifrhm), who found the same cause)
 
 ## Being worked on
 
