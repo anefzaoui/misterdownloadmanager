@@ -566,6 +566,8 @@ These ship in the next version.
   the way the rest of the window does, never waiting for Windows
 - ✅ Every release file gets a signed build provenance record (`gh attestation verify`), and the
   repository an OpenSSF Scorecard (thanks to [@joyahmed](https://github.com/joyahmed))
+- ✅ The Linux AppImage is packaged by the same appimagetool and runtime on every rebuild: each
+  at a fixed release, checked by its sha256 (thanks to [@joyahmed](https://github.com/joyahmed))
 - ✅ macOS: dialogs and download progress windows activate MDM and open in front of browsers and
   other applications (including when raised or opened while MDM is behind another program or hidden
   in the menu bar), without pulling up minimized or tray-hidden windows or stealing focus for
