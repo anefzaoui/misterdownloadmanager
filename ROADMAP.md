@@ -562,6 +562,15 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The crash crate's tests build on 32-bit Windows again: the alternate-stack test uses a
+  top a 32-bit `usize` can hold, with that crash's own address kept in its comment, so CI's
+  `windows-x86` job is green again
+- ✅ **Options → General → Download panels → Edit... → Button size**: **Full**, as before, or
+  **Compact**, the round Download video button (the logo, the arrow and ✕) over every video
+  ([#1278](https://github.com/anefzaoui/misterdownloadmanager/issues/1278))
+- ✅ The extension's checks also pass from a Windows checkout with Git for Windows' defaults
+  (`core.autocrlf=true`): the tree keeps LF everywhere except batch files, and the tests read
+  sources, JSON and the catalogs by lines, so the 103 checks pass with either line ending
 - ✅ The Download video button over a YouTube preview: it stays as the pointer reaches it, and a
   click that opens the Download video window sends the preview's video, not the one watched last
   ([#1271](https://github.com/anefzaoui/misterdownloadmanager/issues/1271))
@@ -600,6 +609,8 @@ These ship in the next version.
 - ✅ Bangla: the control verbs stay distinct — stop is **থামান** (its state "থেমে গেছে"), a pause
   "বিরতি দিন", a resume "পুনরায় শুরু করুন", remove "বাদ দিন" — and a queue is a **সারি**, never
   "কিউ" (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Arabic: the browser is the **مستعرض**, never المتصفح — "ملحق المستعرض", "الربط المتقدم
+  بالمستعرض" (thanks to [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Bangla: termbase alignment — export is **এক্সপোর্ট**, import is **ইম্পোর্ট**, help is
   **সহায়তা**, category is **শ্রেণি**, options is **বিকল্প** and redownload is **আবার ডাউনলোড**
   (thanks to [@abdul-karim-mia](https://github.com/abdul-karim-mia))
@@ -1150,6 +1161,10 @@ These ship in the next version.
 - ✅ Sites that let only browsers through (Cloudflare's bot check, FileHippo's 412): MDM tries once
   more connecting the way a browser does, with the cookies it has for that site (part of
   [#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668))
+- ✅ Downloads through the browser-like connection use all their connections, each asking for its
+  part, and fall back to one when a site refuses parts there; a stream's pieces behind a bot check
+  are asked that way too ([#668](https://github.com/anefzaoui/misterdownloadmanager/issues/668),
+  [#1289](https://github.com/anefzaoui/misterdownloadmanager/issues/1289))
 - ✅ Downloads from FileHippo no longer fail at once with 412 Precondition Failed: a link the site
   refuses goes on from where the browser's own download of it had reached, then through the
   browser-like connection above
@@ -1343,10 +1358,18 @@ These ship in the next version.
 - ✅ AI assistants (MCP) can stop the main download queue too (`stop_queue`), and the automation
   API's queue actions take the main download queue when no queue is named (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line starts and stops a queue of the running app: `start-queue` and
+  `stop-queue`, the main download queue unless one is named (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line adds downloads to the running app: `add <url>`, with folder, file name, category, queue and silent flags (thanks to
+- ✅ AI assistants (MCP) can choose a download queue and a category when adding downloads, and start or stop a queue by name (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
 - ✅ A failed download says why in MDM's log too, with the site's name and no tokens
   ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
+- ✅ Download panels: the hint under the sites list has its own row instead of running under
+  Export...
 
 ## Being worked on
 

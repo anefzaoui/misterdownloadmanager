@@ -631,6 +631,10 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 	Busy, try later	مشغول، حاول لاحقا
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	حجم الزر:
 #. message or event log entry in the main window
 	by batch download	عن طريق التنزيل الجماعي
 #. message or event log entry in the main window
@@ -828,6 +832,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	جزر القمر
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	مدمج
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1546,6 +1554,10 @@
 	From:	من:
 #. checkbox in the Options window
 	ftp	FTP
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	كامل
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Gabon	الغابون
@@ -4904,8 +4916,7 @@ extension	Audio	صوت
 extension	best	الأفضل
 #. text in the browser extension
 #. the name this browser gets in the other MDM's list of paired devices
-#, machine
-extension	Browser extension	ملحق المتصفح
+extension	Browser extension	ملحق المستعرض
 #. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
@@ -5096,8 +5107,7 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 extension	No video to download here	لا يوجد فيديو للتنزيل هنا
 #. text in the browser extension
 #. pairing failed: the other MDM didn't answer
-#, machine
-extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	لم يتم الوصول إليه. افتح عنوانه مرة واحدة في هذا المتصفح واقبل شهادته، ثم حاول مرة أخرى.
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	لم يتم الوصول إليه. افتح عنوانه مرة واحدة في هذا المستعرض واقبل شهادته، ثم حاول مرة أخرى.
 #. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
@@ -5197,8 +5207,7 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 extension	The last download was left to the browser.	تم ترك آخر تنزيل للمتصفح.
 #. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
-#, machine
-extension	This browser isn't ticked in Options → General.	لم يتم تحديد هذا المتصفح في خيارات ← عام.
+extension	This browser isn't ticked in Options → General.	لم يتم تحديد هذا المستعرض في خيارات ← عام.
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine
@@ -5223,8 +5232,7 @@ extension	Undo	تراجع
 extension	Update Mister Download Manager to use everything this extension offers	قم بتحديث Mister Download Manager لاستخدام كل ما يوفره هذا الملحق
 #. text in the browser extension
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
-#, machine
-extension	Use advanced browser integration is off in Options → General.	استخدام تكامل المتصفح المتقدم معطل في خيارات ← عام.
+extension	Use advanced browser integration is off in Options → General.	استخدام الربط المتقدم بالمستعرض معطل في خيارات ← عام.
 #. text in the browser extension
 #. tab above the list of qualities in the menu under the download button over a video: the choices that include picture (video with sound); short, one word
 #, machine

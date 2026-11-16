@@ -228,6 +228,47 @@ enum Cmd {
         #[arg(required = true)]
         ids: Vec<u64>,
     },
+    /// Add a download to the running app.
+    Add {
+        /// The address to download (http, https, ftp, ftps, or a magnet link).
+        url: String,
+        /// Folder to save into.
+        #[arg(short, long)]
+        output: Option<PathBuf>,
+        /// File name to save as.
+        #[arg(short = 'f', long = "name")]
+        name: Option<String>,
+        /// A category for the download (e.g. "Compressed", "Documents", "Music", "Programs", "Video").
+        #[arg(short = 'c', long = "category")]
+        category: Option<String>,
+        /// The queue to add to (by name; adds to the main queue with `--later` if omitted).
+        #[arg(short = 'q', long = "queue")]
+        queue: Option<String>,
+        /// Add to the queue without starting it now.
+        #[arg(short = 'l', long = "later")]
+        later: bool,
+        /// Silent: do not show the Download File Info dialog in the app.
+        #[arg(short = 's', long = "silent")]
+        silent: bool,
+    },
+    /// Start a download queue in the running app (automation API). Starts the main queue by default.
+    StartQueue {
+        /// The queue to start (by name); starts the main queue if omitted.
+        #[arg(short, long)]
+        queue: Option<String>,
+        /// The queue to start (by name), if not given with `--queue`.
+        #[arg(value_name = "QUEUE", conflicts_with = "queue")]
+        name: Option<String>,
+    },
+    /// Stop a download queue in the running app (automation API). Stops the main queue by default.
+    StopQueue {
+        /// The queue to stop (by name); stops the main queue if omitted.
+        #[arg(short, long)]
+        queue: Option<String>,
+        /// The queue to stop (by name), if not given with `--queue`.
+        #[arg(value_name = "QUEUE", conflicts_with = "queue")]
+        name: Option<String>,
+    },
     /// Show a new code that pairs a phone or a browser with the running app's remote control
     /// (#141, #157): its address, the code and a QR code to scan.
     Pair,
@@ -333,6 +374,33 @@ fn ask(cmd: mdm_ipc::Command) -> anyhow::Result<()> {
         return Err(Reported.into());
     }
     Ok(())
+}
+
+fn add_command(
+    url: String,
+    output: Option<PathBuf>,
+    name: Option<String>,
+    category: Option<String>,
+    queue: Option<String>,
+    later: bool,
+    silent: bool,
+) -> mdm_ipc::Command {
+    let dir = output.map(|p| {
+        std::path::absolute(&p)
+            .unwrap_or(p)
+            .to_string_lossy()
+            .to_string()
+    });
+    mdm_ipc::Command {
+        url: Some(url),
+        dir,
+        name,
+        category,
+        queue,
+        later,
+        silent,
+        ..Default::default()
+    }
 }
 
 /// `pair`: a new pairing code from the running app, printed for a person.
@@ -1135,6 +1203,27 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
         Cmd::Start { ids } => act("start", ids),
         Cmd::Remove { ids } => act("remove", ids),
         Cmd::Delete { ids } => act("delete", ids),
+        Cmd::Add {
+            url,
+            output,
+            name,
+            category,
+            queue,
+            later,
+            silent,
+        } => ask(add_command(
+            url, output, name, category, queue, later, silent,
+        )),
+        Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
+            action: Some("start_queue".into()),
+            queue: queue.or(name),
+            ..Default::default()
+        }),
+        Cmd::StopQueue { queue, name } => ask(mdm_ipc::Command {
+            action: Some("stop_queue".into()),
+            queue: queue.or(name),
+            ..Default::default()
+        }),
         Cmd::Pair => pair(),
         Cmd::Api { state } => ask(mdm_ipc::Command {
             api: Some(state == "on"),
@@ -1672,10 +1761,143 @@ mod tests {
             "https://example.test/a.zip"
         ])));
         assert!(downloads(&args(&["resume", "a.zip.mdm.json"])));
+        assert!(!downloads(&args(&["start-queue"])));
+        assert!(!downloads(&args(&["stop-queue"])));
+        assert!(!downloads(&args(&["add", "https://example.test/a.zip"])));
         assert!(!downloads(&args(&["api", "on"])));
         assert!(!downloads(&args(&["status"])));
         assert!(!downloads(&args(&["--help"])));
         assert!(!downloads(&args(&[])));
+    }
+
+    #[test]
+    fn queue_commands_parse() {
+        let cli = Cli::try_parse_from([NAME, "start-queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StartQueue {
+                queue: None,
+                name: None
+            }
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "start-queue", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StartQueue {
+                queue: None,
+                name: Some(ref n),
+            } if n == "Night queue"
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "start-queue", "-q", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StartQueue {
+                queue: Some(ref q),
+                name: None,
+            } if q == "Night queue"
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "stop-queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StopQueue {
+                queue: None,
+                name: None
+            }
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "stop-queue", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StopQueue {
+                queue: None,
+                name: Some(ref n),
+            } if n == "Night queue"
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "stop-queue", "--queue", "Night queue"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::StopQueue {
+                queue: Some(ref q),
+                name: None,
+            } if q == "Night queue"
+        ));
+
+        // Both positional and option conflict.
+        assert!(Cli::try_parse_from([NAME, "start-queue", "-q", "A", "B"]).is_err());
+        assert!(Cli::try_parse_from([NAME, "stop-queue", "--queue", "A", "B"]).is_err());
+    }
+
+    #[test]
+    fn add_command_parses() {
+        let cli = Cli::try_parse_from([NAME, "add", "https://example.test/a.zip"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                output: None,
+                name: None,
+                category: None,
+                queue: None,
+                later: false,
+                silent: false,
+            } if url == "https://example.test/a.zip"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "magnet:?xt=urn:btih:abc",
+            "-o",
+            "D:\\Downloads",
+            "-f",
+            "my_torrent",
+            "-c",
+            "Torrents",
+            "-q",
+            "Night",
+            "-l",
+            "-s",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                output: Some(ref o),
+                name: Some(ref n),
+                category: Some(ref c),
+                queue: Some(ref q),
+                later: true,
+                silent: true,
+            } if url == "magnet:?xt=urn:btih:abc"
+                && o == &PathBuf::from("D:\\Downloads")
+                && n == "my_torrent"
+                && c == "Torrents"
+                && q == "Night"
+        ));
+    }
+
+    #[test]
+    fn add_command_makes_relative_output_folder_absolute() {
+        let rel = PathBuf::from("downloads");
+        let expected = std::path::absolute(&rel)
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+        let cmd = add_command(
+            "https://example.test/a.zip".into(),
+            Some(rel),
+            None,
+            None,
+            None,
+            false,
+            false,
+        );
+        assert_eq!(cmd.dir.as_deref(), Some(expected.as_str()));
     }
 
     /// A service that takes `hoster.test` only, or (`broken`) can't say which hosts it takes.

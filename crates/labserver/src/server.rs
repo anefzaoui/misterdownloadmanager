@@ -194,6 +194,10 @@ pub struct Config {
     /// Serve HTTPS instead of HTTP, as `localhost`, with a certificate from a test CA made at
     /// start (`LabServer::ca_der`): `browser_only` then looks at the TLS handshake too (#668).
     pub tls: bool,
+    /// Over HTTPS: offer HTTP/2 as well (ALPN `h2`, then `http/1.1`), as most sites do: a client
+    /// that speaks it (a browser's, the browser-like connection's) then carries its requests at
+    /// the same time on one connection unless it opens others (#668).
+    pub http2: bool,
     /// Over HTTPS: the certificate the server shows (a faulty one for the certificate errors'
     /// tests). A connection's fault, before any request: it can't be a URL's.
     pub cert: Cert,
@@ -235,6 +239,7 @@ impl Default for Config {
             files: None,
             rss_dir: None,
             tls: false,
+            http2: false,
             cert: Cert::TestCa,
         }
     }
@@ -388,6 +393,7 @@ impl LabServer {
     pub async fn start(cfg: Config) -> io::Result<Self> {
         let listener = TcpListener::bind(cfg.bind).await?;
         let addr = listener.local_addr()?;
+        let http2 = cfg.http2;
         let shared = Arc::new(Shared {
             faults: RwLock::new(cfg.faults),
             faults_changed: Notify::new(),
@@ -578,7 +584,10 @@ impl LabServer {
                     eprintln!("labserver: {e}");
                 }
             }),
-            Some((config, _)) => {
+            Some((mut config, _)) => {
+                if http2 {
+                    config.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
+                }
                 tokio::spawn(serve_tls(listener, app, Arc::new(config), shared.clone()))
             }
         };
@@ -736,6 +745,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    request carries a browser's Sec-Fetch-Mode header and, over HTTPS (--tls),
                    came on a TLS handshake with GREASE, as Chrome's has (#668)
     refuse_programs=STATUS  the same check answering STATUS, empty (FileHippo's 412, #630)
+    refuse_ranges=STATUS    every request with a Range answered with STATUS (the whole file
+                   still served): with browser_only=1, a site that lets the browser-like
+                   connection download a file only whole (#668)
     once=1         a one-time link: the first request for this path and query is served, every
                    later one (HEAD and ranges too) gets 410 Gone; vary seed= for a fresh link
   "every Nth" counts file requests (/gen and /form) only.
@@ -1308,7 +1320,7 @@ struct FileQuery {
 
 /// The lab server over HTTPS (`Config::tls`): each connection's ClientHello is read first, and
 /// whether it is a browser's noted for `browser_only` (`LogEntry::browser_tls`), then its
-/// requests are served as over HTTP (HTTP/1.1).
+/// requests are served as over HTTP (HTTP/1.1; HTTP/2 too with `Config::http2`).
 async fn serve_tls(
     listener: TcpListener,
     app: Router,
@@ -1443,6 +1455,14 @@ pub(crate) async fn serve(
         .filter(|s| s.is_client_error() || s.is_server_error())
     {
         shared.record(entry, status.as_u16(), "fault:refuse");
+        return status.into_response();
+    }
+    if let Some(status) = f
+        .refuse_ranges
+        .and_then(|c| StatusCode::from_u16(c).ok())
+        .filter(|s| entry.range.is_some() && (s.is_client_error() || s.is_server_error()))
+    {
+        shared.record(entry, status.as_u16(), "fault:refuse_ranges");
         return status.into_response();
     }
     if let Some(ms) = f.latency_ms {

@@ -1622,8 +1622,12 @@ impl Body {
                 }
             }
             Body::Ftp(t) => t.done(at_end).await,
-            // Its connection isn't pooled for another request: there is only the one.
-            Body::Browser(_) => {}
+            // As an HTTP answer's: its connection goes back to be asked again (`browserlike`).
+            Body::Browser(mut b) => {
+                if !at_end {
+                    let _ = b.chunk().await;
+                }
+            }
             Body::Prefixed(_, rest) => Box::pin(rest.done(at_end)).await,
         }
     }
@@ -1706,15 +1710,17 @@ impl Ctx {
         true
     }
 
-    fn learn_ranges(&self, yes: bool) {
+    /// Whether ranges work, learned from the first answer that tells; true when this one did.
+    fn learn_ranges(&self, yes: bool) -> bool {
         let v = if yes { RANGES_YES } else { RANGES_NO };
-        if self
+        let learned = self
             .ranges
             .compare_exchange(RANGES_UNKNOWN, v, Ordering::SeqCst, Ordering::SeqCst)
-            .is_ok()
-        {
+            .is_ok();
+        if learned {
             self.shared.view.lock().unwrap().resumable = Some(yes);
         }
+        learned
     }
 }
 
@@ -2098,10 +2104,9 @@ async fn run_fresh(
     // Whichever connection it came through, the browser-like one too (#954); the look's answer,
     // kept, was told as it came.
     shared.seen.get_or_init(Default::default).answered(&head);
-    // One connection, as a browser downloads: the site let this one through.
-    if browser.is_some() {
-        opts.max_connections = 1;
-    }
+    // The browser-like connection (#668) downloads on as many connections as any download: the
+    // first part asked of it tells whether the site takes ranges on it (`wait_for_ranges`,
+    // `request`), else it goes on with this one connection, as a browser downloads.
     // The service's own cap on connections to its link (Real-Debrid's "chunks").
     if let Some(cap) = unlocked
         .as_ref()
@@ -2149,7 +2154,10 @@ async fn run_fresh(
     // server has answered a range (206): `Accept-Ranges` alone isn't proof, and a form may do
     // something each time it is posted (an export, an order).
     let post = post_for(&opts, as_get.contains(&final_url), &mut headers);
-    let wait_for_ranges = post.is_some() && ranges != RANGES_YES;
+    // So is a download on the browser-like connection (#668): one connection asks for a part
+    // first, and the others follow its 206; a site that takes the whole file on it but refuses
+    // its ranges (or ignores them) leaves it on one connection (`request`).
+    let wait_for_ranges = (post.is_some() || browser.is_some()) && ranges != RANGES_YES;
     let h = &head.headers;
     // The expected hash: the user's, else what a full (200) answer announces for its content.
     let checksum = opts.checksum.clone().or_else(|| {
@@ -2539,7 +2547,8 @@ async fn run_resume(
     let seen = shared.seen.get_or_init(Default::default).clone();
     let client = client(&opts, &saved.url, &as_get, &seen)?;
     // Only the browser-like connection got past the site's bot check (#668): it goes on with
-    // it, on one connection, at the address it had (MDM's own connection would be refused).
+    // it, at the address it had (MDM's own connection would be refused); its first connection
+    // asks for its part before the others follow (`wait_for_ranges`).
     let browser = match saved.browser_like && crate::browserlike::AVAILABLE {
         true => Some(Arc::new(crate::browserlike::Browser::new(
             &opts,
@@ -2549,7 +2558,6 @@ async fn run_resume(
         false => None,
     };
     if browser.is_some() {
-        opts.max_connections = 1;
         shared.event("Going on the way a browser connects, as the site's bot check asked");
     }
     // Through a service account (#44), the service is asked for today's link even when the
@@ -2651,8 +2659,9 @@ async fn run_resume(
             v
         }),
         // A POST's ranges may never have been tried (it came on one connection): one
-        // connection asks first, the others follow its 206.
-        wait_for_ranges: post.is_some() && ftp.is_none(),
+        // connection asks first, the others follow its 206. So does the browser-like
+        // connection's (#668), which may have come on one connection too.
+        wait_for_ranges: (post.is_some() || browser.is_some()) && ftp.is_none(),
         target: Mutex::new(Target {
             url,
             headers,
@@ -3184,7 +3193,7 @@ async fn browser_first(
     };
     let (head, body, headers, took) = asked;
     shared.event(format!(
-        "{host}: the browser-like connection got through; downloading on it, one connection"
+        "{host}: the browser-like connection got through; downloading on it"
     ));
     Ok((b, head, body, headers, took))
 }
@@ -3632,6 +3641,7 @@ where
 async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
     let mut set = JoinSet::new();
     let mut next_id: WorkerId = 0;
+    let probing = first.is_some();
     if let Some(body) = first {
         // The probe's body is byte 0 onward: reserve that segment for connection 0 before any
         // other connection can split or take it.
@@ -3656,9 +3666,17 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
     let by_size = u32::try_from(size.div_ceil(INITIAL_PIECE)).unwrap_or(u32::MAX);
     let max = max.min(by_size.max(1)).max(1);
     // A POST the server hasn't shown to take ranges: one connection, until a 206 says the
-    // others may follow (a second POST may do the form's work twice).
+    // others may follow (a second POST may do the form's work twice). The browser-like
+    // connection's (#668): while the first answer streams the whole file, a second connection
+    // asks for a part of it, and the others follow its 206 (a site that refuses it leaves the
+    // download on the first: `request`).
     let mut held = ctx.wait_for_ranges;
-    while next_id < if held { 1 } else { max } {
+    let scouts = if probing && ctx.browser.is_some() {
+        2
+    } else {
+        1
+    };
+    while next_id < if held { scouts.min(max) } else { max } {
         set.spawn(worker(ctx.clone(), next_id, None));
         next_id += 1;
     }
@@ -3671,6 +3689,11 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
             },
             () = ctx.range_answered.notified(), if held => {
                 held = false;
+                if ctx.browser.is_some() && next_id < max {
+                    ctx.shared.event(format!(
+                        "{host} takes ranges on the browser-like connection: {max} connections"
+                    ));
+                }
                 while next_id < max {
                     set.spawn(worker(ctx.clone(), next_id, None));
                     next_id += 1;
@@ -4003,6 +4026,16 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
     if let Some(seen) = ctx.shared.seen.get() {
         seen.connection_answered(&head);
     }
+    // #668: the browser-like connection got the file, but the first part asked of it is refused
+    // (403, the bot check's among them, or 412) or comes whole (its Range ignored, below): the
+    // download goes on with the connection it has, as a browser downloads, the others unopened.
+    if ctx.browser.is_some()
+        && ctx.ranges.load(Ordering::SeqCst) == RANGES_UNKNOWN
+        && matches!(head.status.as_u16(), 403 | 412)
+    {
+        browser_ranges_refused(ctx, &head, &format!("refused ({})", head.status));
+        return Err(Error::NoRanges);
+    }
     if head.status.is_success() && !ctx.web_page_ok && is_web_page(&head.headers) {
         return Err(Error::GotWebPage);
     }
@@ -4028,6 +4061,10 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
             }
             return Err(Error::FileChanged);
         }
+        StatusCode::OK if ctx.browser.is_some() => {
+            browser_ranges_refused(ctx, &head, "answered with the whole file");
+            return Err(Error::NoRanges);
+        }
         StatusCode::OK => {
             ctx.learn_ranges(false);
             return Err(Error::NoRanges);
@@ -4045,6 +4082,17 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
         )));
     }
     Ok(body)
+}
+
+/// The site takes no ranges on the browser-like connection (#668, `request`): learned once, and
+/// told why in the event log.
+fn browser_ranges_refused(ctx: &Ctx, head: &Head, why: &str) {
+    if ctx.learn_ranges(false) {
+        ctx.shared.event(format!(
+            "{}: a part of the file asked on the browser-like connection was {why}; going on with one connection",
+            head.url.host_str().unwrap_or("?")
+        ));
+    }
 }
 
 /// A full answer that still describes the file being downloaded: the same length and, when the
