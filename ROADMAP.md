@@ -567,6 +567,8 @@ These ship in the next version.
   the keys are on; the toolbar is a toolbar of named buttons; the lists in MDM's windows say their
   selected row as the arrows move it
   ([#1190](https://github.com/anefzaoui/misterdownloadmanager/issues/1190))
+- ✅ The crash reports' end-to-end tests wait for the crash monitor before crashing, so a slow
+  CI runner no longer fails them
 - ✅ The Linux lab scripts (tools/lab) keep the lab VM account's password in private files, never on
   a command line, on the host or in the VM
 - ✅ Bangla: a menu or button's shortcut is its letter in brackets — "ফাইল(&F)", "থামান(&T)" —
