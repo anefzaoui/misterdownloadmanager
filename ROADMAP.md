@@ -1334,6 +1334,8 @@ These ship in the next version.
   them (a tracker, the DHT, another peer), as trackers there already were
 - ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
+- ✅ A failed download says why in MDM's log too, with the site's name and no tokens
+  ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
 
 ## Being worked on
 

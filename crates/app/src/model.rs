@@ -684,6 +684,36 @@ fn merge_failure(error: &str, kept: &[PathBuf]) -> String {
     )
 }
 
+/// `text` with every web address in it cut before its query and fragment (`?…`, `#…`): what a
+/// log may keep of a download's failure (#1262), since a log is attached to reports and an
+/// address's query often carries a token.
+fn without_queries(text: &str) -> String {
+    let mut out = String::with_capacity(text.len());
+    let mut rest = text;
+    while let Some(at) = ["https://", "http://"]
+        .iter()
+        .filter_map(|p| rest.find(p))
+        .min()
+    {
+        out.push_str(&rest[..at]);
+        let addr = &rest[at..];
+        let end = addr
+            .find(|c: char| c.is_whitespace() || matches!(c, ')' | '"' | '\'' | '>' | ']'))
+            .unwrap_or(addr.len());
+        let (url, after) = addr.split_at(end);
+        match url.find(['?', '#']) {
+            Some(q) => {
+                out.push_str(&url[..q]);
+                out.push_str("?…");
+            }
+            None => out.push_str(url),
+        }
+        rest = after;
+    }
+    out.push_str(rest);
+    out
+}
+
 /// A helper's progress (yt-dlp's, gallery-dl's) as the engine's view: one segment when its size
 /// is known, one connection (theirs: neither opens more), its notes as events. A video whose
 /// streams MDM's engine downloads (#769) shows the engine's own: the streams' segments one after
@@ -1255,9 +1285,34 @@ impl Item {
         };
         match ended {
             Some(status) => {
+                let failed_now = status == Status::Error && self.status != Status::Error;
+                // The reason in English, for the log: the engine's failure, else the helper's.
+                let reason = failed_now.then(|| {
+                    s.failure
+                        .as_ref()
+                        .map(ToString::to_string)
+                        .or_else(|| s.error.clone())
+                        .map_or_else(|| "no reason given".to_owned(), |r| without_queries(&r))
+                });
                 self.status = status;
                 // In the interface language; the engine's English when it gave no failure.
                 self.error = s.failure.as_ref().map(crate::errors::describe).or(s.error);
+                // Why it failed, in the log too, once (#1262: 0.5.2's log said nothing of a
+                // video yt-dlp couldn't download, only the progress window did). The site's
+                // name, not its address: a log is attached to reports, and addresses carry
+                // tokens.
+                if let Some(reason) = reason {
+                    tracing::warn!(
+                        "download {} failed ({}{}): {reason}",
+                        self.id,
+                        if self.video.is_some() {
+                            "a video, "
+                        } else {
+                            ""
+                        },
+                        self.url.host_str().unwrap_or("no host"),
+                    );
+                }
                 // A video's streams kept after its merge failed: its own, for Delete.
                 if let Some(Live {
                     dl: Job::Video { job, .. },
@@ -2016,6 +2071,25 @@ mod size_tests {
 
 #[cfg(test)]
 mod tests {
+    /// #1262: a failure's reason goes to the log without the queries of the addresses in it.
+    #[test]
+    fn a_failure_is_logged_without_tokens() {
+        assert_eq!(
+            super::without_queries(
+                "error sending request for url (https://cdn.example/v/1.m3u8?vid=9&dt=abc): 414"
+            ),
+            "error sending request for url (https://cdn.example/v/1.m3u8?…): 414"
+        );
+        assert_eq!(
+            super::without_queries("http://a.example/x#frag and https://b.example/y"),
+            "http://a.example/x?… and https://b.example/y"
+        );
+        assert_eq!(
+            super::without_queries("HTTP Error 414: URI Too Long"),
+            "HTTP Error 414: URI Too Long"
+        );
+    }
+
     use super::*;
 
     /// #1088: a download replaces the file chosen in the Save dialog only while its place is that
