@@ -69,6 +69,13 @@ pub struct Command {
     pub post_type: Option<String>,
     /// From a private (incognito) window: the download is never written to the saved list.
     pub private: bool,
+    /// Set by the native messaging host alone, on the download the browser itself handed over
+    /// (its own download, cancelled in the browser): not by the command line, the automation API
+    /// or MCP, whatever cookies or Referer they carry. The one a waiting download's fresh
+    /// address is taken from. Not in the published schema; older senders leave it off (false).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    #[schemars(skip)]
+    pub browser_handoff: bool,
     /// From the browser (#42): the proxy it uses for this address ("http://host:port",
     /// "https://…", "socks5h://…", "socks4://…"), set by a VPN or proxy extension or its
     /// settings; or its proxy auto-config script's text. The app downloads through the same
@@ -1112,5 +1119,27 @@ mod tests {
     fn tokens_are_random() {
         assert_ne!(random_token(), random_token());
         assert_eq!(random_token().len(), 64);
+    }
+}
+
+#[cfg(test)]
+mod handoff_tests {
+    use super::*;
+
+    /// The browser hand-off mark is off by default (older senders, the command line, MCP), only
+    /// written when set, and a command carrying cookies is not marked by them.
+    #[test]
+    fn the_browser_hand_off_is_explicit() {
+        let old: Command =
+            serde_json::from_str(r#"{"url":"https://x/a","cookies":"a=1"}"#).unwrap();
+        assert!(!old.browser_handoff);
+        let json = serde_json::to_string(&old).unwrap();
+        assert!(!json.contains("browser_handoff"), "{json}");
+        let marked = Command {
+            browser_handoff: true,
+            ..Default::default()
+        };
+        let back: Command = serde_json::from_str(&serde_json::to_string(&marked).unwrap()).unwrap();
+        assert!(back.browser_handoff);
     }
 }
