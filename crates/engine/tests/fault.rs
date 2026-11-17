@@ -159,8 +159,10 @@ async fn no_such_host() {
 #[tokio::test]
 async fn a_dns_that_never_answers_is_no_such_host() {
     let dns = silent_dns().await;
+    // The lookup has nine tenths of it, the rest is the margin between the two: 1 s left a
+    // busy runner 0.1 s, and now and then the DNS wasn't even asked in its 0.9 s.
     let opts = Options {
-        connect_timeout: Duration::from_secs(1),
+        connect_timeout: Duration::from_secs(5),
         ..opts()
     };
     let got = fault_of("http://no-such-host.test/", &asking(dns.addr, opts)).await;
