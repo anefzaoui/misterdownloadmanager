@@ -1326,6 +1326,84 @@ async fn resume_detects_changed_file() {
     assert!(matches!(err, mdm_engine::Error::FileChanged), "{err}");
 }
 
+/// A different mirror's same-size answer under other validators must not replace the
+/// validators of the bytes already on disk when its Last-Modified differs.
+#[tokio::test]
+async fn resume_rejects_a_changed_mirror_of_the_same_size() {
+    let s = server("").await;
+    let dir = tempfile::tempdir().unwrap();
+    let dest = dir.path().join("firmware.bin");
+    // The new mirror serves different bytes, with its own ETag and Last-Modified.
+    let target: url::Url = format!(
+        "http://mirror.test:{}/gen/256K/firmware.bin?seed=12&node=1",
+        s.addr().port(),
+    )
+    .parse()
+    .unwrap();
+    let validators = mdm_engine::state::Validators::from_response(
+        Some("\"old-version\""),
+        Some("Wed, 21 Oct 2015 07:28:00 GMT"),
+        Some("Wed, 21 Oct 2015 08:00:00 GMT"),
+        Some("original.test"),
+    );
+    let mut saved = mdm_engine::state::ResumeState::new(
+        target.clone(),
+        target,
+        dest.clone(),
+        256 << 10,
+        validators.clone(),
+    );
+    saved.segments = vec![mdm_engine::planner::SavedSegment {
+        start: 0,
+        cursor: 64 << 10,
+        end: saved.size,
+    }];
+    let mut bytes = vec![0; saved.size as usize];
+    content::fill(11, 0, &mut bytes[..64 << 10]);
+    let part = mdm_engine::naming::part_path(&dest);
+    std::fs::write(&part, &bytes).unwrap();
+    let state = mdm_engine::state::state_path(&dest);
+    std::fs::write(&state, serde_json::to_vec(&saved).unwrap()).unwrap();
+    s.clear_log();
+    let opts = Options {
+        hosts: vec![("mirror.test".into(), vec!["127.0.0.1".parse().unwrap()])],
+        max_connections: 1,
+        // Check the metadata decision itself, independently of the byte overlap check.
+        verify_overlap: 0,
+        ..fast_opts()
+    };
+    let err = tokio::time::timeout(
+        std::time::Duration::from_secs(10),
+        Download::resume(state.clone(), Default::default(), opts)
+            .unwrap()
+            .wait(),
+    )
+    .await
+    .expect("the changed mirror is refused promptly")
+    .unwrap_err();
+    assert!(matches!(err, mdm_engine::Error::FileChanged), "{err}");
+    assert!(!dest.exists(), "no mixed file is published");
+    assert!(
+        std::fs::read(&part).unwrap() == bytes,
+        "no new bytes written"
+    );
+    assert_eq!(
+        mdm_engine::state::ResumeState::load(&state)
+            .unwrap()
+            .validators,
+        validators,
+        "the original validators are kept"
+    );
+    tokio::time::timeout(SETTLE, s.settled()).await.unwrap();
+    let log = s.log();
+    assert!(log.iter().any(|e| e.range.is_some() && e.status == 200));
+    assert!(
+        log.iter()
+            .all(|e| e.if_range == saved.validators.last_modified),
+        "only the saved date can be sent to another host"
+    );
+}
+
 /// Pause, then drop the saved validator (a server without ETag/Last-Modified): the resume can
 /// only notice a changed file through the overlap check.
 async fn paused_without_validator(

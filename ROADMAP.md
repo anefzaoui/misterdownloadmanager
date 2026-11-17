@@ -564,6 +564,14 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The window never waits for the disk to log: lines go to the log's own thread through a
+  queue that drops (and counts) what a stuck disk can't take, and a crash or freeze report
+  carries the last lines from memory when the file doesn't have them yet
+  ([#1354](https://github.com/anefzaoui/misterdownloadmanager/issues/1354))
+- ✅ Check for updates and the yt-dlp and ffmpeg downloads work when GitHub's API refuses a shared
+  internet address for its hourly limit: the release is read from github.com's own release pages
+  instead, and checked as before (signed checksum lists, checksums)
+  ([#1337](https://github.com/anefzaoui/misterdownloadmanager/issues/1337))
 - ✅ Windows: dialogs open on the main window's monitor when the monitors have different display
   scales (a 125 % laptop and a 100 % monitor), where they opened out of sight; a window on no
   screen is brought onto one ([#1311](https://github.com/anefzaoui/misterdownloadmanager/issues/1311))
@@ -1457,11 +1465,13 @@ These ship in the next version.
   on it ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607))
 - ✅ A download whose link expired goes on: Rapidgator's file page (the tab the download came
   from) is asked with the browser's sign-in for a fresh link, at most once per expiry and never
-  again at once for a link it then refused; a download stopped with an expired or refused link, or
-  after **Refresh download address**, takes the browser's next download of the same file as its
-  new address and goes on, instead of a second row starting over; a fresh link on another of the
-  host's servers, whose copy has its own ETag and date, goes on there instead of failing at 100%
-  with "the file changed on the server"
+  again at once for a link it then refused; a Rapidgator download stopped with an expired or
+  refused link, or any download after **Refresh download address**, takes the browser's own next
+  hand-off of the same file (same site, same name, same size when known; never a private
+  window's, nor an explicit, command-line or script add) as its new address and goes on, instead
+  of a second row starting over; a fresh link on another of Rapidgator's own servers, whose copy
+  has its own ETag and date, goes on there instead of failing at 100% with "the file changed on
+  the server" (any other site's same-size copy still stops)
 - ✅ Linux (XWayland on Hyprland): a click in MDM's window gives it the keyboard again where
   Hyprland had left it with another X11 program's window, or with none after the window came back
   from the notification area; a box in File Properties took the caret but no typing or Ctrl+V

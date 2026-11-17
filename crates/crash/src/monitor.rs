@@ -113,9 +113,11 @@ impl minidumper::ServerHandler for Handler {
                 });
             }
         }
-        // A frozen app lives on (it may recover); a crashed one disconnects by itself.
+        // A frozen app lives on (it may recover); a crashed one disconnects by itself. The lines
+        // it sent were this dump's: a later report reads the file again.
         if let Ok(mut n) = self.notes.lock() {
             n.panic = None;
+            n.log.clear();
         }
         minidumper::LoopAction::Continue
     }
@@ -125,6 +127,12 @@ impl minidumper::ServerHandler for Handler {
         let recovered = kind == crate::protocol::kind::RECOVERED;
         if let Ok(mut n) = self.notes.lock() {
             n.take(kind, &buffer);
+            if kind == crate::protocol::kind::LOG {
+                tracing::info!(
+                    "crash monitor: the app sent its last {} log lines",
+                    n.log.len()
+                );
+            }
         }
         if recovered {
             self.send(Event::Recovered);

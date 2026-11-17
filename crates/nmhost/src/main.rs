@@ -965,6 +965,9 @@ fn to_command(m: Message) -> mdm_ipc::Command {
         post_type: m.post.as_ref().and(some(m.post_type)),
         post: m.post,
         private: m.private,
+        // The browser's own download handed over, not the user's explicit "Download with MDM"
+        // (right-click menu, toolbar list): that is an add of its own.
+        browser_handoff: !m.explicit,
         proxy: m.proxy.as_deref().and_then(browser_proxy),
         proxy_pac: m
             .proxy_pac
@@ -2796,6 +2799,11 @@ mod tests {
         )
         .unwrap();
         let c = to_command(m);
+        // The download the browser hands over carries its provenance; an explicit add doesn't.
+        assert!(c.browser_handoff);
+        let explicit: Message =
+            serde_json::from_str(r#"{"url":"https://x/a.zip","explicit":true}"#).unwrap();
+        assert!(!to_command(explicit).browser_handoff);
         assert_eq!(c.url.as_deref(), Some("https://x/a.zip"));
         assert_eq!(c.referer.as_deref(), Some("https://x/"));
         assert_eq!(c.cookies.as_deref(), Some("a=1"));

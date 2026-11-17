@@ -159,9 +159,13 @@ fn script_link(page: &str) -> Option<Url> {
     let text = page.replace("\\/", "/");
     let mut rest = text.as_str();
     while let Some(i) = rest.find("://") {
+        // The scheme starts after the last character that isn't an ASCII letter (which may be
+        // several bytes long: «, a no-break space, a dash).
         let start = rest[..i]
-            .rfind(|c: char| !c.is_ascii_alphabetic())
-            .map_or(0, |s| s + 1);
+            .char_indices()
+            .rev()
+            .find(|(_, c)| !c.is_ascii_alphabetic())
+            .map_or(0, |(s, c)| s + c.len_utf8());
         let tail = &rest[i..];
         let end = tail
             .find(|c: char| {
@@ -296,6 +300,31 @@ mod tests {
             );
             assert_eq!(read_page(&at, &page), PageSays::Next(url(LINK)), "{script}");
         }
+    }
+
+    /// Punctuation right before the scheme is more than one byte long: the link still reads
+    /// whole, and the page never panics on a slice inside the character.
+    #[test]
+    fn a_link_after_multibyte_punctuation_is_read() {
+        let at = url(PAGE);
+        for before in ["«", "\u{a0}", "—", "“", "日本語", "é", "🦀"] {
+            let page =
+                format!("<html><body><script>var s = '{before}{LINK}';</script></body></html>");
+            assert_eq!(read_page(&at, &page), PageSays::Next(url(LINK)), "{before}");
+        }
+        // A link at the end of the text, escaped slashes, and a multibyte end delimiter.
+        assert_eq!(
+            script_link("«https://s1.rapidgator.net/download/x"),
+            Some(url("https://s1.rapidgator.net/download/x"))
+        );
+        for text in [
+            format!("«{LINK}"),
+            format!("🦀{}\u{2003}after", LINK.replace('/', "\\/")),
+            format!("—:// «ftp://s1.rapidgator.net/download/x\u{a0}é{LINK}"),
+        ] {
+            assert_eq!(script_link(&text), Some(url(LINK)), "{text}");
+        }
+        assert_eq!(script_link("—://"), None);
     }
 
     /// A page without the link (signed out, a free account's waiting page), another site's

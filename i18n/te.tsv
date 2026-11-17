@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	డిస్క్ నుండి {n} ఫైల్‌ను కూడా తొలగించండి|డిస్క్ నుండి {n} ఫైల్‌లను కూడా తొలగించండి
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	తెలియని సైట్ లింక్ గ్రాబర్‌కు {n} లింక్‌ను పంపాలనుకుంటుంది.|తెలియని సైట్ లింక్ గ్రాబర్‌కు {n} లింక్‌లను పంపాలనుకుంటుంది.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -106,11 +111,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ఫైల్‌కు ఇప్పటికే ఉన్న ఫైల్ పేరు ఉండటంతో దానికి నంబర్ జోడించబడింది|{n} ఫైల్‌లకు ఇప్పటికే ఉన్న ఫైల్ పేర్లు ఉండటంతో వాటికి నంబర్‌లు జోడించబడ్డాయి
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	మరో {n} ఫైల్‌ను కూడా తొలగించలేకపోయాము.|మరో {n} ఫైల్‌లను కూడా తొలగించలేకపోయాము.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	{n} పీర్|{n} పీర్‌లు
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} సేవ్ చేయబడ్డాయి|{n} సేవ్ చేయబడ్డాయి
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -133,6 +148,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ట్రాకర్: {peers}|{n} ట్రాకర్‌లు: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} లింక్ గ్రాబర్‌కు {n} లింక్‌ను పంపాలనుకుంటుంది.|{site} లింక్ గ్రాబర్‌కు {n} లింక్‌లను పంపాలనుకుంటుంది.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -151,7 +171,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Apply	వ&ర్తింపజేయి
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -174,6 +194,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Start now	&ఇప్పుడే ప్రారంభించు
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(ఖాళీలతో వేరు చేయండి; * ఏదైనా సరిపోలుతుంది)
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(పేర్లను ఖాళీలతో వేరు చేయండి)
@@ -204,6 +228,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z మరియు RAR ఆర్కైవ్‌లను 7-Zip ({path}) సంగ్రహిస్తుంది.
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	7z మరియు RAR ఆర్కైవ్‌లు HatchZip ({path}) ద్వారా సంగ్రహించబడతాయి.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -280,6 +308,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	సుమారు {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	వెబ్ పేజీల నుండి Click'n'Loadను అంగీకరించండి (పోర్ట్ 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -435,6 +467,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	ఆఫ్ఘనిస్తాన్
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	కొన్ని తప్పు పాస్‌వర్డ్‌ల తర్వాత సేవ ఈ కనెక్షన్‌ను కొన్ని నిమిషాల పాటు బ్లాక్ చేస్తుంది.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -454,7 +490,7 @@
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	అన్ని డౌన్‌లోడ్‌లు
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 #, machine
 	All files	అన్ని ఫైల్‌లు
 #. text in helpers.rs
@@ -464,11 +500,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	అప్‌లోడ్ చేసిన వారివి అన్నీ
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	అనుమతించండి
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	{n} కంటే ఎక్కువ కనెక్షన్‌లను అనుమతించు
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	మీరు ఉపయోగించే సైట్‌లను మాత్రమే అనుమతించండి. మీరు లింక్ గ్రాబర్‌లో జోడించే వరకు ఏదీ వెతకబడదు లేదా డౌన్‌లోడ్ చేయబడదు.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ఇప్పటికే డౌన్‌లోడ్ అవుతోంది: {path}
@@ -490,6 +534,10 @@
 #. checkbox in the Options window
 #, machine
 	Also take files the browser would open (PDF, music, video)	బ్రౌజర్ తెరిచే ఫైల్‌లను కూడా డౌన్‌లోడ్ చేయండి (PDF, సంగీతం, వీడియో)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	లింక్‌ను Alt+క్లిక్ చేయండి
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -554,6 +602,19 @@
 #. what a screen reader calls Link grabber's password box
 #, machine
 	Archive password	ఆర్కైవ్ పాస్‌వర్డ్
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	ఆర్కైవ్ పాస్‌వర్డ్‌లు
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	ఆర్కైవ్ పాస్‌వర్డ్‌లు
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	ఆర్కైవ్ పాస్‌వర్డ్‌లు...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -691,6 +752,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	భూటాన్
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	బ్లాక్ చేయండి
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -763,6 +828,10 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	బిజీగా ఉంది, తర్వాత ప్రయత్నించండి
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	బటన్ పరిమాణం:
 #. message or event log entry in the main window
 #, machine
 	by batch download	బ్యాచ్ డౌన్‌లోడ్ ద్వారా
@@ -781,6 +850,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cameroon	కామెరూన్
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	పునఃప్రారంభించబడదు
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -923,7 +996,9 @@
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	తనిఖీ చేస్తోంది {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	తనిఖీ చేస్తోంది...
@@ -957,10 +1032,24 @@
 #. a country's name (where a download's server is)
 #, machine
 	Christmas Island	క్రిస్మస్ దీవి
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 #, machine
 	Clear	క్లియర్ చేయి
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
+	Click'n'Load	క్లిక్'న్'లోడ్
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load ప్రారంభించబడదు: మరొక ప్రోగ్రామ్ (JDownloader?) పోర్ట్ {port}ని ఉపయోగిస్తోంది. దాన్ని మూసివేయండి, ఆపై ఎంపికలలో Click'n'Loadని ఆఫ్ చేసి మళ్లీ ఆన్ చేయండి.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load ప్రారంభం కాలేదు: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -1004,6 +1093,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	కొమొరోస్
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	కాంపాక్ట్
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1052,6 +1145,9 @@
 #. text in the Options window
 #, machine
 	Connections:	కనెక్షన్‌లు:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	సహకరించినవారు
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1179,7 +1275,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	డిఫాల్ట్ గరిష్ఠ కనెక్షన్‌ల సంఖ్య
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1335,6 +1431,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	క్రమంగా డౌన్‌లోడ్ చేయి
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	దాన్ని మళ్లీ డౌన్‌లోడ్ చేయండి
 #. button in a dialog box
 #, machine
 	Download Later	తర్వాత డౌన్‌లోడ్ చేయండి
@@ -1449,6 +1549,10 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	డౌన్‌లోడ్‌లు పూర్తయ్యాయి
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	ఫైల్‌లు, వీడియోలు మరియు టొరెంట్‌లను డౌన్‌లోడ్ చేస్తుంది
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1478,6 +1582,14 @@
 #. message or event log entry in the main window
 #, machine
 	Dragged out of Download complete and moved to {folder}	డౌన్‌లోడ్ పూర్తయింది జాబితా నుండి బయటకు లాగి, {folder}కి తరలించబడింది.
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	జాబితా నుండి బయటకు లాగి MDM తెలుసుకోలేని ప్రదేశానికి తరలించబడింది
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	జాబితా నుండి బయటకు లాగి {folder}కి తరలించబడింది
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1655,6 +1767,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	డౌన్‌లోడ్ పూర్తయినప్పుడు ఆర్కైవ్‌లను సంగ్రహించండి
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	HatchZipతో స్థానంలో సంగ్రహించండి (hatchzip.dev, ఇన్‌స్టాల్ చేయబడలేదు)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	HatchZipతో స్థానంలో సంగ్రహించండి: ఫైల్‌లకు మాత్రమే స్థలం అవసరం
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1925,6 +2045,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	పూర్తి
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2044,6 +2168,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	పూర్తయినప్పుడు మోడెమ్‌ను డిస్‌కనెక్ట్ చేయి
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip దాన్ని ఉన్న చోటే సంగ్రహించింది: ఫైల్‌లు బయటకు వచ్చినకొద్దీ ఆర్కైవ్ తీసివేయబడింది
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2167,6 +2295,15 @@
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
 	in the locked keyring	లాక్ చేయబడిన కీరింగ్‌లో
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	టూల్‌బార్‌లో: బటన్ మెనును తెరవండి
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	టూల్‌బార్‌లో: బటన్‌ను నొక్కండి
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	టూల్‌బార్‌లో: మునుపటి / తదుపరి బటన్
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2207,6 +2344,10 @@
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
 	Install what's missing from your distribution's packages.	మీ డిస్ట్రిబ్యూషన్ ప్యాకేజీల ద్వారా లేనిదాన్ని ఇన్‌స్టాల్ చేయండి.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	మీ సిస్టమ్ యొక్క 7జిప్ (లేదా p7జిప్) ప్యాకేజీని ఇన్‌స్టాల్ చేయండి, ఆపై డౌన్‌లోడ్‌పై కుడి-క్లిక్ చేసి, సంగ్రహించు ఎంచుకోండి.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2268,6 +2409,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	దానికి పాస్‌వర్డ్ అవసరం
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	ఇది మధ్యలో ఆగిపోయింది. ఇప్పటివరకు సంగ్రహించిన ఫైల్‌లు {folder}లో ఉన్నాయి, మిగిలినవి ఇంకా ఆర్కైవ్‌లోనే ఉన్నాయి: సంగ్రహణ కొనసాగించండి
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2289,6 +2434,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	ఇటలీ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	దాని ఫైల్‌లు బయటకు వచ్చాయి, కానీ వాటిని తరలించడం ఆగిపోయింది ({error}). తరలించినవి {to}లో ఉన్నాయి, మిగిలినవి ఇంకా {left}లో ఉన్నాయి; ఏదీ తొలగించబడలేదు
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2561,6 +2711,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	ఈ విధంగా గుర్తించబడిన ఫైల్‌లను macOS తనిఖీ చేస్తుంది: ప్రోగ్రామ్ మొదటిసారి తెరవడానికి ముందు Gatekeeper. టిక్ చేయకపోతే, ఏ డౌన్‌లోడ్‌కూ గుర్తు పెట్టబడదు.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS Mister Download Managerని బ్రౌజర్ ఫోల్డర్ నుండి దూరంగా ఉంచుతుంది.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS Mister Download Managerని {browser} ఫోల్డర్ నుండి దూరంగా ఉంచుతుంది.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2688,6 +2846,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM సమాధానం ఇవ్వడం లేదు. మళ్లీ ప్రయత్నిస్తోంది...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	MDM ఈ సిస్టమ్ కోసం కాపీని కలిగి లేదు: దాన్ని ఇన్‌స్టాల్ చేయండి, లేదా మరొక ప్రోగ్రామ్‌ను ఉపయోగించండి
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2751,7 +2913,7 @@
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	Mister Download Manager క్రాష్ నివేదిక
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager అంతర్గత లోపాన్ని ఎదుర్కొంది
@@ -2836,7 +2998,7 @@
 	Move a page up / down	పేజీని పైకి/కిందకి తరలించు
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	వర్గాల మధ్య మరియు డౌన్‌లోడ్ జాబితా మధ్య తరలించు
+	Move between the toolbar, the categories and the download list	టూల్‌బార్, వర్గాలు మరియు డౌన్‌లోడ్ జాబితా మధ్య తరలించండి
 #. text in the Scheduler window
 #, machine
 	Move down	కిందికి తరలించు
@@ -3090,7 +3252,7 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file}లో వెబ్ చిరునామాలు కనుగొనబడలేదు.
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
 	None	ఏవీ లేవు
@@ -3148,10 +3310,14 @@
 #, machine
 	Not in a queue	క్యూలో లేదు
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	ఇంకా ఇన్‌స్టాల్ చేయబడలేదు
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	చూడబడలేదు
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	ఇప్పుడొద్దు
 #. text in helpers.rs
@@ -3203,6 +3369,10 @@
 #. Options → Remote → Status: the remote control is off
 #, machine
 	Off: nothing on the network can reach MDM.	ఆఫ్: నెట్‌వర్క్‌లో ఏదీ MDMని చేరుకోదు.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	ఆఫ్: అది చూసిన ఫీడ్‌లు తీసివేయబడ్డాయి.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	క్లిప్‌బోర్డ్‌కు కాపీ చేసిన లింక్‌లను డౌన్‌లోడ్ చేయడానికి ఆఫర్ చేయండి
@@ -3253,6 +3423,10 @@
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	ప్రతి లైన్‌కు ఒక చిరునామా; * ఏదైనా టెక్స్ట్ కోసం: example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	ప్రతి లైన్‌కు ఒక పాస్‌వర్డ్ చొప్పున ఇవ్వండి. MDM అడిగే ముందు, ఎన్‌క్రిప్ట్ చేయబడిన ఆర్కైవ్‌పై ఈ క్రమంలో ప్రయత్నించబడతాయి. సరిపోయినది జాబితాలో పైకి వెళ్తుంది.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ఒకసారి డౌన్‌లోడ్ చేయడం
@@ -3299,7 +3473,9 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ఫోల్డర్‌ను తెరవండి
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 #, machine
 	Open in browser	బ్రౌజర్‌లో తెరవండి
@@ -3352,6 +3528,10 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	పూర్తయిన తర్వాత ఎంపికలు
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	లేదా అప్లికేషన్ యొక్క API కీని అతికించండి:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -3417,6 +3597,7 @@
 	Password	పాస్‌వర్డ్
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 #, machine
 	Password:	పాస్‌వర్డ్:
 #. text in the Add torrent window
@@ -3518,6 +3699,11 @@
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	ప్రీమియం, ఇంకా {days} రోజులు మిగిలి ఉన్నాయి
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Press keys...	కీలను నొక్కండి...
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3651,6 +3837,10 @@
 #. RSS feeds window: fetch the selected feed again now
 #, machine
 	Refresh	తాజాకరించు
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	చిరునామాను రిఫ్రెష్ చేయండి
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
@@ -3659,6 +3849,10 @@
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
 	Regular expressions	సాధారణ వ్యక్తీకరణలు
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	ఇతర ఆర్కైవ్‌ల కోసం గుర్తుంచుకోండి
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	ఈ ఫైల్ కోసం స్పీడ్ లిమిటర్ సెట్టింగ్‌లను గుర్తుంచుకోండి
@@ -3692,8 +3886,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	జాబితా నుండి {name}ని తీసివేయాలా?
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 #, machine
 	Rename	పేరు మార్చు
 #. text in the Batch download window
@@ -3857,10 +4052,6 @@
 #. text in the Batch download window
 #, machine
 	Second file:	రెండవ ఫైల్:
-#. text in a dialog box
-#. title of the folder picker
-#, machine
-	Select a folder	ఒక ఫోల్డర్‌ను ఎంచుకోండి
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4003,6 +4194,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Sharing stopped: {error}	షేరింగ్ నిలిపివేయబడింది: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
+	Shortcut to show or hide window:	విండోను చూపించడానికి లేదా దాచడానికి షార్ట్‌కట్:
 #. text in the download list
 #, machine
 	Show	చూపించు
@@ -4064,6 +4259,10 @@
 #, machine
 	Sierra Leone	సియెర్రా లియోన్
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	సైన్ ఇన్ చేయండి
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	బ్రౌజర్‌లో సైన్ ఇన్ చేయండి
@@ -4080,6 +4279,10 @@
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు Windows క్రెడెన్షియల్ మేనేజర్‌లో ఉంచబడతాయి.
 #. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	సైన్ ఇన్ చేయబడింది ({state})
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	{user} ({state})గా సైన్ ఇన్ చేయబడింది
@@ -4087,6 +4290,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	సైన్ అవుట్ చేయబడింది: మళ్ళీ సైన్ ఇన్ చేయండి
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	{date} నుండి
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	{date} నుండి: డ్రైవర్ అప్‌డేట్ తర్వాత MDM మళ్ళీ ప్రయత్నిస్తుంది
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	{date} నుండి: MDM దాని తదుపరి ప్రారంభంలో మళ్ళీ ప్రయత్నిస్తుంది
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	{date} నుండి: MDM {retry} న మళ్ళీ ప్రయత్నిస్తుంది
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	{date} నుండి: MDM {retry} న మళ్ళీ ప్రయత్నిస్తుంది, లేదా డ్రైవర్ అప్‌డేట్ తర్వాత
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4209,6 +4432,26 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	స్పీడ్ లిమిటర్ సెట్టింగ్‌లు
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	స్పీడ్ లిమిటర్: ఈ డౌన్‌లోడ్ కోసం గరిష్టంగా {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	స్పీడ్ లిమిటర్: అన్ని డౌన్‌లోడ్‌ల కోసం {limit}
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	స్పీడ్ లిమిటర్: అన్ని డౌన్‌లోడ్‌ల కోసం కలిపి {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	స్పీడ్ లిమిటర్: ఒక్కో డౌన్‌లోడ్‌కు {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	స్పీడ్ లిమిటర్: ఒక్కో డౌన్‌లోడ్‌కు {one}, అన్నింటికీ కలిపి {all}
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4480,6 +4723,11 @@
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ఉత్తమ నాణ్యతలు, MP3, Opus మరియు FLACకి ffmpeg (సుమారు 80 MB) అవసరం.
 #. text in the Download video window
+#. in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+#. the trailing ... means it is still going on: keep it
+#, machine
+	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	ఉత్తమ నాణ్యతలు, MP3, Opus మరియు FLACకి ffmpeg అవసరం, దీనికి MDM వద్ద 32-బిట్ Windows కోసం కాపీ లేదు: Helpers...తో మీ స్వంతంగా ఎంచుకోండి...
+#. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ఉత్తమ నాణ్యతలు, MP3, Opus మరియు FLAC కోసం ffmpeg అవసరం: మీ సిస్టమ్ ప్యాకేజీ మేనేజర్‌తో (లేదా Homebrewతో) దీన్ని ఇన్‌స్టాల్ చేయండి.
@@ -4593,6 +4841,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	డ్రైవ్ లేదా నెట్‌వర్క్ షేర్ ఇకపై అందుబాటులో లేదు
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	వదిలివేయబడిన ఎంట్రీలు ఇప్పటికీ {folder} లో ఉన్నాయి
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	ఎక్స్‌టెన్షన్ ఇప్పటికే ఈ యాప్‌లో ఉంది. ఈ బిల్డ్‌ను Apple నోటరైజ్ చేయలేదు, కాబట్టి దీన్ని అనుమతించడానికి Safariకు ఈ దశలు అవసరం.
@@ -4618,6 +4870,14 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file matches ({algorithm})	ఫైల్ సరిపోలుతుంది ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	ఫైల్ పేరు చాలా పొడవుగా ఉంది: డౌన్‌లోడ్ అవుతున్నప్పుడు సేవ్ చేయబడిన ఫైల్‌లతో కలిపి గరిష్టంగా {limit} బైట్‌లు. చిన్న పేరును ఎంచుకోండి ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	ఫైల్ పేరు చాలా పొడవుగా ఉంది: డౌన్‌లోడ్ అవుతున్నప్పుడు సేవ్ చేయబడిన ఫైల్‌లతో కలిపి గరిష్టంగా {limit} అక్షరాలు. చిన్న పేరును ఎంచుకోండి ({path})
 #. text in a dialog box
 #, machine
 	The file saved as	ఫైల్ ఇలా సేవ్ చేయబడింది
@@ -4675,8 +4935,9 @@
 #, machine
 	the password is wrong	పాస్‌వర్డ్ తప్పు
 #. text in errors.rs
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: {path}	Windows కోసం మార్గం చాలా పొడవుగా ఉంది: {path}
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows కోసం మార్గం చాలా పొడవుగా ఉంది: డౌన్‌లోడ్ అవుతున్నప్పుడు సేవ్ చేయబడిన ఫైల్‌లతో కలిపి గరిష్టంగా {limit} అక్షరాలు. చిన్న ఫైల్ పేరు లేదా ఫోల్డర్‌ను ఎంచుకోండి ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -4730,6 +4991,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	సర్వర్ ఫైల్ యొక్క ఊహించని భాగాన్ని పంపింది ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	అది ప్రీమియం ఖాతానా కాదా అని సేవ చెప్పడం లేదు
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4754,6 +5019,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	సైట్ యొక్క బాట్ తనిఖీ (Cloudflare) yt-dlp ని తిరస్కరించింది. పేజీ మీ బ్రౌజర్‌లో తెరిస్తే, ఎంపికలు → సైట్‌ల లాగిన్‌లు → వీడియో సైట్‌ల కోసం కుకీలలో ఆ బ్రౌజర్‌ను ఎంచుకోండి మరియు పేజీని మళ్లీ చూడండి, లేదా వీడియోపై డౌన్‌లోడ్ వీడియో బటన్‌ను ఉపయోగించండి.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	సైట్ యొక్క సర్టిఫికేట్ yt-dlp ద్వారా లేదా ఈ కంప్యూటర్ ద్వారా విశ్వసించబడలేదు: యాంటీవైరస్ యొక్క వెబ్ ఫిల్టర్ లేదా HTTPS చదివే ప్రాక్సీ అడ్డుగా ఉండవచ్చు. దాని HTTPS స్కానింగ్‌ను ఆఫ్ చేయండి లేదా దాని సర్టిఫికేట్‌ను కంప్యూటర్‌కు జోడించండి, ఆపై పేజీని మళ్లీ చూడండి.
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -4762,6 +5031,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	సైట్ భద్రతా ధృవీకరణ పత్రం చిరునామాలోని సైట్ పేరుకు కాకుండా వేరే సైట్ పేరు కోసం ఉంది, కాబట్టి MDM ఇది నిజమైన సైట్ అని నిర్ధారించుకోలేదు (మీ బ్రౌజర్ కూడా దీని గురించి హెచ్చరిస్తుంది)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	సైట్ యొక్క భద్రతా ధృవీకరణ పత్రం వెబ్‌సైట్‌ల కోసం జారీ చేయబడలేదు, కాబట్టి MDM అది నిజమైన సైటో కాదో నిర్ధారించలేదు
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -4778,14 +5051,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	సైట్ భద్రతా ధృవీకరణ పత్రాన్ని దాని జారీదారు రద్దు చేశారు, కాబట్టి MDM దాన్ని విశ్వసించదు
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	సైట్ యొక్క సర్టిఫికేట్ yt-dlp ద్వారా లేదా ఈ కంప్యూటర్ ద్వారా విశ్వసించబడలేదు: యాంటీవైరస్ యొక్క వెబ్ ఫిల్టర్ లేదా HTTPS చదివే ప్రాక్సీ అడ్డుగా ఉండవచ్చు. దాని HTTPS స్కానింగ్‌ను ఆఫ్ చేయండి లేదా దాని సర్టిఫికేట్‌ను కంప్యూటర్‌కు జోడించండి, ఆపై పేజీని మళ్లీ చూడండి.
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	సైట్ యొక్క భద్రతా ధృవీకరణ పత్రం వెబ్‌సైట్‌ల కోసం జారీ చేయబడలేదు, కాబట్టి MDM అది నిజమైన సైటో కాదో నిర్ధారించలేదు
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4843,6 +5108,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	ఈ పేరుతో ఇప్పటికే ఒక క్యూ ఉంది
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	దాని ఫైల్‌లకు తగినంత ఖాళీ స్థలం లేదు, HatchZip చెబుతోంది; ఏమీ మార్చబడలేదు
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	“డౌన్‌లోడ్ పూర్తయినప్పుడు డైలాగ్‌ను చూపించు” ఎంపిక ఆన్‌లో ఉన్నప్పుడు ఈ సెట్టింగ్‌లు అందుబాటులో ఉండవు
@@ -4963,6 +5232,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ఈ ప్రోగ్రామ్ {name} కాదు
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
+	This shortcut is already in use	ఈ షార్ట్‌కట్ ఇప్పటికే ఉపయోగంలో ఉంది
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #, machine
@@ -5062,7 +5335,7 @@
 #. title of the separate window listing a torrent's files
 #, machine
 	Torrent files	టోరెంట్ ఫైల్‌లు
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Torrent settings	టోరెంట్ సెట్టింగ్‌లు
 #. text in torrent downloads
@@ -5110,6 +5383,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	తర్వాత మళ్లీ ప్రయత్నించండి, లేదా {name}ని మీరే డౌన్‌లోడ్ చేసి, {helpers} → {other}లో ఎంచుకోండి.
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	సేవ్ చేయబడిన ఆర్కైవ్ పాస్‌వర్డ్‌లను ప్రయత్నిస్తోంది...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5352,6 +5629,10 @@
 #. column title: the user name
 #, machine
 	User	వినియోగదారు
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	వినియోగదారు పేరు:
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	సర్వర్‌లు/సైట్‌ల కోసం వినియోగదారు పేర్లు మరియు పాస్‌వర్డ్‌లు
@@ -5514,6 +5795,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows ప్లగ్ ఇన్ చేసినప్పుడు మాత్రమే వేక్ టైమర్‌లను అనుమతిస్తుంది
 #. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+#, machine
+	Windows and macOS	Windows మరియు macOS
+#. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 #, machine
 	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	ఈ విధంగా గుర్తించబడిన ఫైల్‌లను Windows తనిఖీ చేస్తుంది: ప్రోగ్రామ్ మొదటిసారి అమలయ్యే ముందు SmartScreen, డాక్యుమెంట్ తెరవడానికి ముందు Office యొక్క Protected View. టిక్ చేయకపోతే లేదా Windows విధానం “ఫైల్ జోడింపులలో జోన్ సమాచారాన్ని భద్రపరచవద్దు” అమల్లో ఉంటే, ఏ డౌన్‌లోడ్‌కూ గుర్తు పెట్టబడదు.
@@ -5525,6 +5810,10 @@
 #. why the computer could not be put to sleep (fills {error})
 #, machine
 	Windows refused	Windows తిరస్కరించింది
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows ఇప్పటికీ magnet లింక్‌లు లేదా .torrent ఫైల్‌లను {apps} తో తెరుస్తుంది, Windows యొక్క డిఫాల్ట్ యాప్‌లలో ఎంచుకోబడింది, అక్కడ మీరు మాత్రమే మార్చగలరు. సెట్టింగ్‌లు ఇప్పుడు అక్కడ తెరుచుకుంటాయి: MAGNET మరియు .torrent కోసం Mister Download Manager ను ఎంచుకోండి.
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows భాష
@@ -5624,7 +5913,7 @@
 #, machine
 	Your own program: {path} ({version})	మీ స్వంత ప్రోగ్రామ్: {path} ({version})
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	మీ సిస్టమ్ యొక్క: {path}
 #. text in the Download video window
@@ -5751,7 +6040,8 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ఫైల్
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	{file}ను డిస్క్ నుండి తొలగించడం సాధ్యం కాలేదు: {error}
@@ -5772,7 +6062,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} చిరునామాల జాబితాగా ఉండటానికి చాలా పెద్దది ({size}). దిగుమతి {limit} వరకు టెక్స్ట్ ఫైల్‌లు, వెబ్ పేజీలు మరియు .ef2 ఎగుమతులను చదువుతుంది.
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file}ను డౌన్‌లోడ్ పూర్తయింది జాబితా నుండి బయటకు లాగి వేరే చోటికి తరలించారు, కానీ MDM అది ఎక్కడ ఉందో గుర్తించలేకపోయింది. మీరు దాన్ని వదిలిన చోట వెతకండి.
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file}ను MDM నుంచి బయటకు లాగి వేరే చోటికి తరలించారు, కానీ MDM దాని స్థానం ఎక్కడో గుర్తించలేకపోయింది. మీరు దాన్ని వదిలిన చోట వెతకండి.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5904,6 +6194,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (అన్ని డౌన్‌లోడ్‌లకు పరిమితి: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (పరిమితి: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6517,11 +6817,19 @@ key	Delete	Delete
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Down / Alt+Down	క్రిందికి / Alt+క్రిందికి
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Drag on blank space	ఖాళీ స్థలంలోకి లాగండి
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	ఎంటర్ / స్పేస్
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6534,6 +6842,10 @@ key	F3	F3
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	ఎడమ / కుడి
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6561,7 +6873,7 @@ key	Shift+Up / Shift+Down	Shift+పైకి / Shift+క్రిందికి
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Tab	Tab
+key	Tab / Shift+Tab	ట్యాబ్ / షిఫ్ట్+ట్యాబ్
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7167,7 +7479,7 @@ menu	To &IDM export file...	IDM ఎగుమతి ఫైల్‌కు(&I)...
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	To &text file...	టెక్స్ట్ ఫైల్‌కు(&t)...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	టూల్‌బార్
