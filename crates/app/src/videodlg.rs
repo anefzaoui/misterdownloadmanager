@@ -2013,6 +2013,12 @@ mod tests {
             file_name(title, &mp4),
             "Renegade Immortal Episodio 167 Sub Español.mp4"
         );
+        // A page's plain `<video>` in the frame: yt-dlp's HTML5 reader, the page's title too.
+        let html5 = mdm_tools::resolve::parse(answer("HTML5MediaEmbed").as_bytes()).unwrap();
+        assert_eq!(
+            page_title(&context, &html5, frame),
+            Some("Renegade Immortal Episodio 167 Sub Español")
+        );
         // Nothing from the browser: yt-dlp's title stays.
         assert_eq!(
             page_title(&mdm_ipc::Command::default(), &generic, frame),
