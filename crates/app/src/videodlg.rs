@@ -1358,10 +1358,12 @@ pub(crate) fn js_runtime_note() -> &'static str {
 }
 
 /// The title of the page the browser played video `v` on (`mdm_ipc::Command::video_title`,
-/// trimmed), when yt-dlp knows `v` only by the address it looked up, `page`: it has no page
-/// reader for the site, and on some servers that part is a long hash (#345). None otherwise:
-/// yt-dlp's title stays. The Download video window and the browser's quality menu both name a
-/// video by it.
+/// trimmed), when yt-dlp knows `v` only by the address it looked up, `page` (on some servers
+/// that part is a long hash, #345), or only by the page's own title (`Video::page_titled`: it has
+/// no reader for the site, and a player embedded in another site's page has its own: "Watch
+/// file.mp4 - VOE", where the tab names the episode, #1351). None otherwise: the title a site's
+/// reader knows the video by stays (a YouTube video in an article's frame keeps its own). The
+/// Download video window and the browser's quality menu both name a video by it.
 ///
 /// A page that shows one file is often titled with the file's name (Dropbox's, a server's own
 /// listing: `Episode 31.mp4`): its video or sound extension is left out, as the choice's type
@@ -1375,7 +1377,10 @@ pub(crate) fn page_title<'a>(
         .video_title
         .as_deref()
         .map(|t| without_media_extension(t.trim()))
-        .filter(|t| !t.is_empty() && mdm_tools::resolve::named_after_address(&v.title, page))
+        .filter(|t| {
+            !t.is_empty()
+                && (v.page_titled || mdm_tools::resolve::named_after_address(&v.title, page))
+        })
 }
 
 /// `title` without a video or sound file's extension at its end (`Episode 31.mp4` → `Episode
@@ -1978,6 +1983,53 @@ mod tests {
         );
     }
 
+    /// #1351: a player embedded in a frame of another site's page (VOE's on an episode's page),
+    /// which yt-dlp has no reader for: its generic reader names the video by the frame's own
+    /// title, and the tab's names it instead. A site's reader's title (YouTube's, in an
+    /// article's frame) stays.
+    #[test]
+    fn an_embedded_player_yt_dlp_reads_generically_is_named_by_the_tabs_title() {
+        let frame = "https://player.test/e/dzA1YmtiODgyWDhCQi9NMW85K1Nq";
+        let answer = |key: &str| {
+            format!(
+                r#"{{"title": "Watch file.mp4 - VOE | Content Delivery Network (CDN) & Video Cloud",
+                    "extractor_key": "{key}",
+                    "formats": [{{"format_id": "0", "ext": "mp4", "url": "https://cdn.test/v.mp4"}}]}}"#
+            )
+        };
+        let context = mdm_ipc::Command {
+            video_title: Some("Renegade Immortal Episodio 167 Sub Español".into()),
+            ..Default::default()
+        };
+        let generic = mdm_tools::resolve::parse(answer("Generic").as_bytes()).unwrap();
+        assert!(generic.page_titled);
+        let title = page_title(&context, &generic, frame).unwrap();
+        assert_eq!(title, "Renegade Immortal Episodio 167 Sub Español");
+        let mp4 = Choice {
+            ext: "mp4".into(),
+            ..Default::default()
+        };
+        assert_eq!(
+            file_name(title, &mp4),
+            "Renegade Immortal Episodio 167 Sub Español.mp4"
+        );
+        // A page's plain `<video>` in the frame: yt-dlp's HTML5 reader, the page's title too.
+        let html5 = mdm_tools::resolve::parse(answer("HTML5MediaEmbed").as_bytes()).unwrap();
+        assert_eq!(
+            page_title(&context, &html5, frame),
+            Some("Renegade Immortal Episodio 167 Sub Español")
+        );
+        // Nothing from the browser: yt-dlp's title stays.
+        assert_eq!(
+            page_title(&mdm_ipc::Command::default(), &generic, frame),
+            None
+        );
+        // A site yt-dlp has a reader for: its title stays.
+        let known = mdm_tools::resolve::parse(answer("Youtube").as_bytes()).unwrap();
+        assert!(!known.page_titled);
+        assert_eq!(page_title(&context, &known, frame), None);
+    }
+
     /// #622: a Dropbox page is titled with the file's name, extension and all; the video named
     /// by it got the choice's extension once more (`Episode 31.mp4.mp4`).
     #[test]
@@ -1992,6 +2044,7 @@ mod tests {
             language: None,
             direct: false,
             needs_js_runtime: false,
+            page_titled: false,
         };
         let mp4 = Choice {
             ext: "mp4".into(),

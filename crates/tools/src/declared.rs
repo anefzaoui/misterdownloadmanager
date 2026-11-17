@@ -147,6 +147,7 @@ fn settle(
         Ok((Looked::Video(mut v), out)) => {
             if let Some(name) = &declared.name {
                 v.title = name.clone();
+                v.page_titled = true;
             }
             Ok((Looked::Video(v), out, Some(declared)))
         }
