@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A stream's own address — an HLS playlist (`.m3u8`) or DASH's (`.mpd`) — opens the video
+  window like a page's: pasting a playlist downloads the video and merges it into one playable
+  file, instead of saving the playlist itself
 - ✅ The window never waits for the disk to log: lines go to the log's own thread through a
   queue that drops (and counts) what a stuck disk can't take, and a crash or freeze report
   carries the last lines from memory when the file doesn't have them yet
@@ -1477,6 +1480,9 @@ These ship in the next version.
   from the notification area; a box in File Properties took the caret but no typing or Ctrl+V
 - ✅ Telegram Web's downloads stay with the browser, which makes them in the page
   ([#1345](https://github.com/anefzaoui/misterdownloadmanager/issues/1345))
+- ✅ A video in another site's player embedded in a page is named by the page's title, not the
+  player's own ("Watch file.mp4 - VOE")
+  ([#1351](https://github.com/anefzaoui/misterdownloadmanager/issues/1351))
 - ✅ Torrents start again after a crash or a power cut left their saved list empty: the list is
   kept aside and a new one begins, the download list's torrents are added again from MDM's own
   copies and find their pieces on disk; MDM's own rewrite of the list reaches the disk before it
