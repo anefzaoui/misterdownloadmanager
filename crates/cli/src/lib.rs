@@ -519,32 +519,11 @@ pub fn main_with(args: Vec<OsString>, accounts: Option<&dyn Accounts>) -> ExitCo
     let cli = Cli::parse_from(std::iter::once(OsString::from(NAME)).chain(args));
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
     let json = cli.json;
-    let helpers = runs_helpers(&cli.cmd);
-    let ran = rt.block_on(async {
-        if !helpers {
-            return Ok(run(cli.cmd, json, accounts).await);
-        }
-        tokio::select! {
-            r = run(cli.cmd, json, accounts) => Ok(r),
-            signal = stopped() => Err(signal),
-        }
-    });
-    let result = match ran {
-        Ok(result) => result,
-        // Stopped by a signal (#1301): yt-dlp or gallery-dl and all they started end with it,
-        // what they downloaded so far left as a pause leaves it.
-        Err(signal) => {
-            mdm_tools::proc::end_all();
-            rt.shutdown_background();
-            if json {
-                emit(json!({ "event": "stopped" }));
-            } else {
-                eprintln!("\nstopped");
-            }
-            return ExitCode::from(128 + signal);
-        }
-    };
-    match result {
+    #[cfg(unix)]
+    if runs_helpers(&cli.cmd) {
+        end_helpers_when_stopped(&rt, json);
+    }
+    match rt.block_on(run(cli.cmd, json, accounts)) {
         Ok(()) => ExitCode::SUCCESS,
         Err(e) if e.is::<Reported>() => ExitCode::FAILURE,
         Err(e) => {
@@ -563,7 +542,9 @@ pub fn main_with(args: Vec<OsString>, accounts: Option<&dyn Accounts>) -> ExitCo
 
 /// Whether `cmd` runs yt-dlp or gallery-dl (a look-up, a download, an install's version check).
 /// On Linux and macOS each runs in a process group of its own (#1301), which the terminal's
-/// Ctrl+C doesn't reach: such a command ends them itself when stopped ([`stopped`]).
+/// Ctrl+C doesn't reach: such a command ends them itself when stopped
+/// ([`end_helpers_when_stopped`]). Windows: their job objects end them with this process.
+#[cfg(unix)]
 fn runs_helpers(cmd: &Cmd) -> bool {
     matches!(
         cmd,
@@ -578,25 +559,35 @@ fn runs_helpers(cmd: &Cmd) -> bool {
     )
 }
 
-/// Linux, macOS: the command is asked to stop (Ctrl+C, SIGTERM, its terminal closed); the
-/// signal's number. Windows: never, the helpers' job objects end them with this process.
-async fn stopped() -> u8 {
-    #[cfg(unix)]
-    {
-        use tokio::signal::unix::{SignalKind, signal};
-        if let (Ok(mut int), Ok(mut term), Ok(mut hup)) = (
-            signal(SignalKind::interrupt()),
-            signal(SignalKind::terminate()),
-            signal(SignalKind::hangup()),
-        ) {
-            return tokio::select! {
-                _ = int.recv() => 2,
-                _ = term.recv() => 15,
-                _ = hup.recv() => 1,
-            };
+/// Linux, macOS: once the command is asked to stop (Ctrl+C, SIGTERM, its terminal closed), the
+/// helpers it runs end with all they started, what they downloaded left as a pause leaves it,
+/// and the command ends (128 + the signal's number). Heard from the start, on the runtime's
+/// other threads: a look-up runs on the command's own thread until yt-dlp answers.
+#[cfg(unix)]
+fn end_helpers_when_stopped(rt: &tokio::runtime::Runtime, json: bool) {
+    use tokio::signal::unix::{SignalKind, signal};
+    let _in = rt.enter();
+    let (Ok(mut int), Ok(mut term), Ok(mut hup)) = (
+        signal(SignalKind::interrupt()),
+        signal(SignalKind::terminate()),
+        signal(SignalKind::hangup()),
+    ) else {
+        return;
+    };
+    rt.spawn(async move {
+        let number: i32 = tokio::select! {
+            _ = int.recv() => 2,
+            _ = term.recv() => 15,
+            _ = hup.recv() => 1,
+        };
+        mdm_tools::proc::end_all();
+        if json {
+            emit(json!({ "event": "stopped" }));
+        } else {
+            eprintln!("\nstopped");
         }
-    }
-    std::future::pending().await
+        std::process::exit(128 + number);
+    });
 }
 
 async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::Result<()> {
