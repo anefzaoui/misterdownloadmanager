@@ -579,6 +579,9 @@ These ship in the next version.
 - ✅ AI assistants (MCP) can provide a referring page (referer) when adding downloads, preserving
   the Referer header for protected CDNs and expired link renewal (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ AI assistants (MCP) can provide a custom User-Agent header when adding downloads, enabling
+  downloads from sites and CDNs that require specific browser signatures (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The automation API's add may carry the checksum the finished file must have (the command
   line's `--checksum` form), kept with the download for **Verify checksum** and the finish
   check; one the app can't read is refused (`bad-request`) instead of dropped
