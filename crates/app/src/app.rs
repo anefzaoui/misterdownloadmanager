@@ -12566,7 +12566,18 @@ impl App {
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();
-        let unsaved = self.wait_stopped(&stopping, saves_by(began, deadline));
+        let until = saves_by(began, deadline);
+        let unsaved = self.wait_stopped(&stopping, until);
+        // Those paused a moment before, still writing to a slow disk (#1328): their rows say
+        // they are stopped already.
+        let settling = mdm_engine::naming::wait_all_settled(until);
+        if settling > 0 {
+            tracing::warn!(
+                "{settling} paused download(s) still saving after {} ms: those resume from their \
+                 last save",
+                began.elapsed().as_millis()
+            );
+        }
         match (stopping.len(), unsaved) {
             (0, _) => {}
             (n, 0) => tracing::info!(

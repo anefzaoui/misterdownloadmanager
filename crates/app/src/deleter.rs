@@ -130,6 +130,9 @@ const LET_GO: Duration = Duration::from_secs(2);
 /// A file already gone is no failure, and only the finished file's are told: the rest is the
 /// download's own working data.
 fn delete_one(mut d: Doomed, remove: &dyn Fn(&Path) -> io::Result<()>) -> Option<Failure> {
+    // Paused a moment before and still writing to a slow disk (#1328): its last write and its
+    // resume state come first, so neither comes back after the delete.
+    naming::wait_settled(&d.place);
     let hold = d.hold.take().or_else(|| {
         let until = Instant::now() + LET_GO;
         loop {
@@ -325,6 +328,13 @@ impl Deleter {
     /// wait until it is done ([`naming::clear`]), so none reads it half-way or before.
     pub fn rewrite(&self, place: &Path, job: impl FnOnce() + Send + 'static) {
         *self.pending.0.lock().unwrap() += 1;
+        // After the last save of a download paused a moment before (#1328), which would write
+        // over it.
+        let at = place.to_owned();
+        let job = move || {
+            naming::wait_settled(&at);
+            job();
+        };
         let work = Work::Rewrite(Box::new(job), naming::clear(place));
         let work = match &self.tx {
             Some(tx) => match tx.send(work) {
