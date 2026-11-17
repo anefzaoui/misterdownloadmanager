@@ -4351,8 +4351,7 @@ fn other_server_copy(ctx: &Ctx, resp: &Head) -> bool {
         header_str(&resp.headers, header::DATE),
         host,
     );
-    let moved = v.etag_host.is_some() && v.etag_host.as_deref() != host;
-    let same = moved && resp.len == Some(ctx.size) && theirs.etag.is_some() && theirs != *v;
+    let same = is_other_server_copy(&v, &theirs, &resp.url, resp.len == Some(ctx.size));
     if same {
         ctx.shared.event(format!(
             "{} has its own copy of the file (same size): going on with its version",
@@ -4361,6 +4360,22 @@ fn other_server_copy(ctx: &Ctx, resp: &Head) -> bool {
         *v = theirs;
     }
     same
+}
+
+/// The decision of `other_server_copy`: `theirs` (the answer's validators, from `at`) is another
+/// server's copy of the file when the download's validators came from another host, the length
+/// is the file's, the answer has an ETag of its own, and both hosts are one file host's own
+/// (`sites::expiring` for the answer, `sites::same_party` between the two). Any other site's
+/// same-length answer under other validators is a file that changed on the server.
+fn is_other_server_copy(ours: &Validators, theirs: &Validators, at: &Url, same_len: bool) -> bool {
+    let host = at.host_str();
+    let Some(old) = ours.etag_host.as_deref().filter(|old| Some(*old) != host) else {
+        return false;
+    };
+    let mut was = at.clone();
+    let party =
+        sites::expiring(at) && was.set_host(Some(old)).is_ok() && sites::same_party(&was, at);
+    party && same_len && theirs.etag.is_some() && theirs != ours
 }
 
 fn header_str(h: &HeaderMap, name: header::HeaderName) -> Option<&str> {
@@ -5992,5 +6007,78 @@ mod tests {
             HeaderValue::from_static("items 0-1/2"),
         );
         assert!(parse_content_range(&h).is_err());
+    }
+    fn copy_validators(etag: &str, host: &str, modified: &str) -> Validators {
+        Validators::from_response(
+            Some(etag),
+            Some(modified),
+            Some("Wed, 21 Oct 2015 08:00:00 GMT"),
+            Some(host),
+        )
+    }
+
+    #[test]
+    fn other_server_copy_accepts_rapidgator_node_rotation() {
+        let ours = copy_validators(
+            "\"a\"",
+            "s1.rapidgator.net",
+            "Wed, 21 Oct 2015 07:28:00 GMT",
+        );
+        let theirs = copy_validators(
+            "\"b\"",
+            "s2.rapidgator.net",
+            "Wed, 21 Oct 2015 07:28:12 GMT",
+        );
+        let at = Url::parse("https://s2.rapidgator.net/download/token").unwrap();
+        assert_ne!(ours.last_modified, theirs.last_modified);
+        assert!(is_other_server_copy(&ours, &theirs, &at, true));
+        assert!(!is_other_server_copy(&ours, &theirs, &at, false));
+        assert!(!is_other_server_copy(&theirs, &theirs, &at, true));
+        assert!(!is_other_server_copy(
+            &Validators::default(),
+            &theirs,
+            &at,
+            true
+        ));
+        for etag in [None, Some("W/\"b\""), Some("malformed")] {
+            let theirs = Validators::from_response(etag, None, None, at.host_str());
+            assert!(!is_other_server_copy(&ours, &theirs, &at, true));
+        }
+    }
+
+    #[test]
+    fn other_server_copy_rejects_generic_mirrors_and_unrelated_hosts() {
+        for (old, target) in [
+            ("dl1.example.com", "https://dl2.example.com/firmware.bin"),
+            (
+                "dl1.example.com",
+                "https://s2.rapidgator.net/download/token",
+            ),
+            ("rg.to", "https://s2.rapidgator.net/download/token"),
+            (
+                "rapidgator.net.example.com",
+                "https://s2.rapidgator.net/download/token",
+            ),
+            (
+                "s1.rapidgator.net",
+                "https://s2.rapidgator.net.example.com/download/token",
+            ),
+            (
+                "s1.rapidgator.net",
+                "https://s2.rapidgator.net/firmware.bin",
+            ),
+        ] {
+            let ours = copy_validators("\"a\"", old, "Wed, 21 Oct 2015 07:28:00 GMT");
+            let at = Url::parse(target).unwrap();
+            let theirs = copy_validators(
+                "\"b\"",
+                at.host_str().unwrap(),
+                "Wed, 21 Oct 2015 07:28:12 GMT",
+            );
+            assert!(
+                !is_other_server_copy(&ours, &theirs, &at, true),
+                "{old} -> {target}"
+            );
+        }
     }
 }
