@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	ഡിസ്കിൽ നിന്ന് {n} ഫയലും ഇല്ലാതാക്കുക|ഡിസ്കിൽ നിന്ന് {n} ഫയലുകളും ഇല്ലാതാക്കുക
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	അജ്ഞാതമായ ഒരു സൈറ്റ് {n} ലിങ്ക് ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.|അജ്ഞാതമായ ഒരു സൈറ്റ് {n} ലിങ്കുകൾ ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -106,11 +111,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ഫയലിന് അവിടെയുള്ള ഫയലിന്റെ അതേ പേരായിരുന്നതിനാൽ നമ്പർ ചേർത്തു|{n} ഫയലുകൾക്ക് അവിടെയുള്ള ഫയലുകളുടെ അതേ പേരായിരുന്നതിനാൽ നമ്പർ ചേർത്തു
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	{n} ഫയൽ കൂടി ഇല്ലാതാക്കാൻ കഴിഞ്ഞില്ല.|{n} ഫയലുകൾ കൂടി ഇല്ലാതാക്കാൻ കഴിഞ്ഞില്ല.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	{n} പിയർ|{n} പിയറുകൾ
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} സംരക്ഷിച്ചു|{n} സംരക്ഷിച്ചു
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -133,6 +148,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ട്രാക്കർ: {peers}|{n} ട്രാക്കറുകൾ: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} {n} ലിങ്ക് ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.|{site} {n} ലിങ്കുകൾ ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -151,7 +171,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Apply	പ്ര&യോഗിക്കുക
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -174,6 +194,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Start now	&ഇപ്പോൾ ആരംഭിക്കുക
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(സ്പേസുകൾ ഉപയോഗിച്ച് വേർതിരിക്കുക; * ഏത് വാചകത്തിനും പകരം വരും)
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(പേരുകൾ സ്പേസുകൾ ഉപയോഗിച്ച് വേർതിരിക്കുക)
@@ -204,6 +228,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z, RAR ആർക്കൈവുകൾ 7-Zip ({path}) ഉപയോഗിച്ച് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു.
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	7z, RAR ആർക്കൈവുകൾ HatchZip ({path}) ഉപയോഗിച്ച് എക്സ്ട്രാക്റ്റ് ചെയ്യുന്നു.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -280,6 +308,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	ഏകദേശം {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	വെബ് പേജുകളിൽ നിന്നുള്ള Click'n'Load അഭ്യർത്ഥനകൾ സ്വീകരിക്കുക (പോർട്ട് 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -435,6 +467,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	അഫ്ഗാനിസ്ഥാൻ
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	കുറച്ച് തെറ്റായ പാസ്‌വേഡുകൾക്ക് ശേഷം സേവനം ഈ കണക്ഷൻ കുറച്ച് മിനിറ്റുകൾക്ക് തടയും.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -454,7 +490,7 @@
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	എല്ലാ ഡൗൺലോഡുകളും
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 #, machine
 	All files	എല്ലാ ഫയലുകളും
 #. text in helpers.rs
@@ -464,11 +500,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	അപ്‌ലോഡ് ചെയ്തയാളുടെ എല്ലാ
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	അനുവദിക്കുക
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	ഒന്നിലധികം {n} കണക്ഷനുകൾ അനുവദിക്കുക
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	നിങ്ങൾ ഉപയോഗിക്കുന്ന സൈറ്റുകൾ മാത്രം അനുവദിക്കുക. ലിങ്ക് ഗ്രാബറിൽ ചേർക്കുന്നതിന് മുമ്പ് ഒന്നും തിരയുകയോ ഡൗൺലോഡ് ചെയ്യുകയോ ചെയ്യുന്നില്ല.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ഇതിനകം ഡൗൺലോഡ് ചെയ്യുന്നു: {path}
@@ -490,6 +534,10 @@
 #. checkbox in the Options window
 #, machine
 	Also take files the browser would open (PDF, music, video)	ബ്രൗസർ തുറക്കുന്ന ഫയലുകളും (PDF, സംഗീതം, വീഡിയോ) എടുക്കുക
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	ലിങ്കിൽ Alt+ക്ലിക്ക് ചെയ്യുക
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -554,6 +602,19 @@
 #. what a screen reader calls Link grabber's password box
 #, machine
 	Archive password	ആർക്കൈവ് പാസ്‌വേഡ്
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	ആർക്കൈവ് പാസ്‌വേഡുകൾ
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	ആർക്കൈവ് പാസ്‌വേഡുകൾ
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	ആർക്കൈവ് പാസ്‌വേഡുകൾ...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -691,6 +752,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	ഭൂട്ടാൻ
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	തടയുക
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -763,6 +828,10 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	തിരക്കിലാണ്, പിന്നീട് ശ്രമിക്കുക
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	ബട്ടൺ വലുപ്പം:
 #. message or event log entry in the main window
 #, machine
 	by batch download	ബാച്ച് ഡൗൺലോഡ് വഴി
@@ -781,6 +850,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cameroon	കാമറൂൺ
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	പുനരാരംഭിക്കാൻ കഴിയില്ല
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -923,7 +996,9 @@
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	പരിശോധിക്കുന്നു {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	പരിശോധിക്കുന്നു...
@@ -957,10 +1032,19 @@
 #. a country's name (where a download's server is)
 #, machine
 	Christmas Island	ക്രിസ്മസ് ദ്വീപ്
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 #, machine
 	Clear	മായ്ക്കുക
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load ആരംഭിക്കാൻ കഴിഞ്ഞില്ല: മറ്റൊരു പ്രോഗ്രാം (JDownloader?) പോർട്ട് {port} ഉപയോഗിക്കുന്നു. അത് അടച്ച്, ഓപ്ഷനുകളിൽ Click'n'Load ഓഫ് ചെയ്ത് വീണ്ടും ഓൺ ചെയ്യുക.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load ആരംഭിക്കാൻ കഴിഞ്ഞില്ല: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -1004,6 +1088,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	കൊമോറോസ്
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	കോംപാക്റ്റ്
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1052,6 +1140,9 @@
 #. text in the Options window
 #, machine
 	Connections:	കണക്ഷനുകൾ:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	സംഭാവന ചെയ്തവർ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1179,7 +1270,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	സ്ഥിരസ്ഥിതി പരമാവധി കണക്ഷൻ നമ്പർ
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1335,6 +1426,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	ക്രമത്തിൽ ഡൗൺലോഡ് ചെയ്യുക
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	ഇത് വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക
 #. button in a dialog box
 #, machine
 	Download Later	പിന്നീട് ഡൗൺലോഡ് ചെയ്യുക
@@ -1449,6 +1544,10 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	ഡൗൺലോഡുകൾ പൂർത്തിയായി
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	ഫയലുകൾ, വീഡിയോകൾ, ടോറന്റുകൾ എന്നിവ ഡൗൺലോഡ് ചെയ്യുന്നു
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1478,6 +1577,14 @@
 #. message or event log entry in the main window
 #, machine
 	Dragged out of Download complete and moved to {folder}	പൂർത്തിയായ ഡൗൺലോഡുകളിൽ നിന്ന് വലിച്ചിഴച്ച് {folder} എന്നതിലേക്ക് മാറ്റി.
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	ലിസ്റ്റിൽ നിന്ന് വലിച്ചിഴച്ച് MDM-ന് പഠിക്കാൻ കഴിയാത്ത ഒരിടത്തേക്ക് മാറ്റി
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	ലിസ്റ്റിൽ നിന്ന് വലിച്ചിഴച്ച് {folder} എന്നതിലേക്ക് മാറ്റി
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1655,6 +1762,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ ആർക്കൈവുകൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	HatchZip ഉപയോഗിച്ച് അതേ സ്ഥലത്ത് എക്സ്ട്രാക്റ്റ് ചെയ്യുക (hatchzip.dev, ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	HatchZip ഉപയോഗിച്ച് അതേ സ്ഥലത്ത് എക്സ്ട്രാക്റ്റ് ചെയ്യുക: ഫയലുകൾക്ക് മാത്രം സ്ഥലം മതി
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1925,6 +2040,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	പൂർണ്ണം
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2044,6 +2163,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	പൂർത്തിയാകുമ്പോൾ മോഡം വിച്ഛേദിക്കുക
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip ഇത് അതേ സ്ഥലത്ത് എക്സ്ട്രാക്റ്റ് ചെയ്തു: ഫയലുകൾ പുറത്തുവന്നപ്പോൾ ആർക്കൈവ് നീക്കം ചെയ്തു
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2167,6 +2290,15 @@
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
 	in the locked keyring	ലോക്ക് ചെയ്ത കീറിംഗിൽ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	ടൂൾബാറിൽ: ഒരു ബട്ടണിന്റെ മെനു തുറക്കുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	ടൂൾബാറിൽ: ബട്ടൺ അമർത്തുക
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	ടൂൾബാറിൽ: മുമ്പത്തെ / അടുത്ത ബട്ടൺ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2207,6 +2339,10 @@
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
 	Install what's missing from your distribution's packages.	നിങ്ങളുടെ ലിനക്സ് വിതരണത്തിലെ പാക്കേജുകളിൽ നിന്ന് ഇല്ലാത്തത് ഇൻസ്റ്റാൾ ചെയ്യുക.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ 7zip (അല്ലെങ്കിൽ p7zip) പാക്കേജ് ഇൻസ്റ്റാൾ ചെയ്യുക, തുടർന്ന് ഡൗൺലോഡിൽ വലത്-ക്ലിക്ക് ചെയ്ത് എക്സ്ട്രാക്റ്റ് തിരഞ്ഞെടുക്കുക.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2268,6 +2404,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	അതിന് പാസ്‌വേഡ് ആവശ്യമാണ്
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	ഇത് പാതിവഴിയിൽ നിന്നുപോയി. ഇതുവരെ എക്സ്ട്രാക്റ്റ് ചെയ്ത ഫയലുകൾ {folder} എന്ന ഫോൾഡറിലാണ്, ബാക്കിയുള്ളവ ഇപ്പോഴും ആർക്കൈവിലാണ്: എക്സ്ട്രാക്റ്റ് തുടരുന്നു
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2289,6 +2429,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	ഇറ്റലി
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	അതിന്റെ ഫയലുകൾ പുറത്തുവന്നു, പക്ഷേ അവ മാറ്റുന്നത് നിന്നുപോയി ({error}). മാറ്റിയവ {to} എന്നതിലാണ്, മറ്റുള്ളവ ഇപ്പോഴും {left} എന്നതിലാണ്; ഒന്നും ഇല്ലാതാക്കിയിട്ടില്ല
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2561,6 +2706,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS ഈ രീതിയിൽ അടയാളപ്പെടുത്തിയ ഫയലുകൾ പരിശോധിക്കുന്നു: ഒരു പ്രോഗ്രാം ആദ്യമായി തുറക്കുന്നതിന് മുമ്പ് Gatekeeper. തിരഞ്ഞെടുത്തിട്ടില്ലെങ്കിൽ, ഡൗൺലോഡ് ചെയ്ത ഫയലുകളൊന്നും അടയാളപ്പെടുത്തില്ല.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	ഒരു ബ്രൗസറിന്റെ ഫോൾഡറിൽ നിന്ന് Mister Download Manager നെ macOS പുറത്തുനിർത്തുന്നു.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	{browser} ന്റെ ഫോൾഡറിൽ നിന്ന് Mister Download Manager നെ macOS പുറത്തുനിർത്തുന്നു.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2688,6 +2841,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM പ്രതികരിക്കുന്നില്ല. വീണ്ടും ശ്രമിക്കുന്നു...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	ഈ സിസ്റ്റത്തിനായി MDM-ന് ഒരു കോപ്പിയില്ല: ഇത് ഇൻസ്റ്റാൾ ചെയ്യുക, അല്ലെങ്കിൽ മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുക
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2751,7 +2908,7 @@
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	Mister Download Manager ക്രാഷ് റിപ്പോർട്ട്
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager-ന് ഒരു ആന്തരിക പിശക് സംഭവിച്ചു
@@ -2836,7 +2993,7 @@
 	Move a page up / down	ഒരു പേജ് മുകളിലേക്ക് / താഴേക്ക് നീക്കുക
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	വിഭാഗങ്ങൾക്കും ഡൗൺലോഡ് ലിസ്റ്റിനും ഇടയിൽ നീങ്ങുക
+	Move between the toolbar, the categories and the download list	ടൂൾബാർ, വിഭാഗങ്ങൾ, ഡൗൺലോഡ് ലിസ്റ്റ് എന്നിവയ്ക്കിടയിൽ നീങ്ങുക
 #. text in the Scheduler window
 #, machine
 	Move down	താഴേക്ക് നീക്കുക
@@ -3090,7 +3247,7 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file} എന്നതിൽ വെബ് വിലാസങ്ങളൊന്നും കണ്ടെത്തിയില്ല.
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
 	None	ഒന്നുമില്ല
@@ -3148,10 +3305,14 @@
 #, machine
 	Not in a queue	ഒരു ക്യൂവിലുമില്ല
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	ഇതുവരെ ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	പരിശോധിച്ചിട്ടില്ല
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	ഇപ്പോൾ വേണ്ട
 #. text in helpers.rs
@@ -3203,6 +3364,10 @@
 #. Options → Remote → Status: the remote control is off
 #, machine
 	Off: nothing on the network can reach MDM.	ഓഫ്: നെറ്റ്‌വർക്കിൽ ഒന്നിനും MDM-നെ സമീപിക്കാൻ കഴിയില്ല.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	ഓഫ്: നിരീക്ഷിച്ചിരുന്ന ഫീഡുകളെല്ലാം നീക്കം ചെയ്തു.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തിയ ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യാൻ വാഗ്ദാനം ചെയ്യുക
@@ -3253,6 +3418,10 @@
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	ഓരോ വരിയിലും ഒരു വിലാസം; * എന്നത് ഏതൊരു ടെക്‌സ്‌റ്റിനെയും സൂചിപ്പിക്കുന്നു: example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	ഓരോ വരിയിലും ഒരു പാസ്‌വേഡ്, MDM ചോദിക്കുന്നതിന് മുമ്പ് എൻക്രിപ്റ്റ് ചെയ്ത ആർക്കൈവിൽ ഈ ക്രമത്തിൽ ശ്രമിക്കും. അനുയോജ്യമായത് മുകളിലേക്ക് നീങ്ങുന്നു.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ഒറ്റത്തവണ ഡൗൺലോഡ്
@@ -3299,7 +3468,9 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ഫോൾഡർ തുറക്കുക
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 #, machine
 	Open in browser	ബ്രൗസറിൽ തുറക്കുക
@@ -3352,6 +3523,10 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	പൂർത്തിയാകുമ്പോഴുള്ള ഓപ്ഷനുകൾ
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	അല്ലെങ്കിൽ ഒരു ആപ്ലിക്കേഷന്റെ API കീ ഒട്ടിക്കുക:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -3417,6 +3592,7 @@
 	Password	പാസ്‌വേഡ്
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 #, machine
 	Password:	പാസ്‌വേഡ്:
 #. text in the Add torrent window
@@ -3518,6 +3694,11 @@
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	പ്രീമിയം, {days} ദിവസം ബാക്കി
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Press keys...	കീകൾ അമർത്തുക...
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3651,6 +3832,10 @@
 #. RSS feeds window: fetch the selected feed again now
 #, machine
 	Refresh	പുതുക്കുക
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	വിലാസം പുതുക്കുക
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
@@ -3659,6 +3844,10 @@
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
 	Regular expressions	സാധാരണ എക്സ്പ്രഷനുകൾ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	മറ്റ് ആർക്കൈവുകൾക്കായി ഇത് ഓർമ്മിക്കുക
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	ഈ ഫയലിനായുള്ള സ്പീഡ് ലിമിറ്റർ ക്രമീകരണങ്ങൾ ഓർമ്മിക്കുക
@@ -3692,8 +3881,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	ലിസ്റ്റിൽ നിന്ന് {name} നീക്കം ചെയ്യണോ?
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 #, machine
 	Rename	പേര് മാറ്റുക
 #. text in the Batch download window
@@ -3857,10 +4047,6 @@
 #. text in the Batch download window
 #, machine
 	Second file:	രണ്ടാമത്തെ ഫയൽ:
-#. text in a dialog box
-#. title of the folder picker
-#, machine
-	Select a folder	ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4003,6 +4189,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Sharing stopped: {error}	പങ്കിടൽ നിർത്തി: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
+	Shortcut to show or hide window:	വിൻഡോ കാണിക്കാനോ മറയ്ക്കാനോ ഉള്ള കുറുക്കുവഴി:
 #. text in the download list
 #, machine
 	Show	കാണിക്കുക
@@ -4064,6 +4254,10 @@
 #, machine
 	Sierra Leone	സിയറ ലിയോൺ
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	സൈൻ ഇൻ ചെയ്യുക
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	ബ്രൗസറിൽ സൈൻ ഇൻ ചെയ്യുക
@@ -4080,6 +4274,10 @@
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും Windows ക്രെഡൻഷ്യൽ മാനേജറിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
 #. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	സൈൻ ഇൻ ചെയ്തു ({state})
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	{user} ആയി സൈൻ ഇൻ ചെയ്തു ({state})
@@ -4087,6 +4285,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	സൈൻ ഔട്ട് ചെയ്തു: വീണ്ടും സൈൻ ഇൻ ചെയ്യുക
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	{date} മുതൽ
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	{date} മുതൽ: ഡ്രൈവർ അപ്‌ഡേറ്റിന് ശേഷം MDM വീണ്ടും ശ്രമിക്കും
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	{date} മുതൽ: അടുത്ത തവണ ആരംഭിക്കുമ്പോൾ MDM വീണ്ടും ശ്രമിക്കും
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	{date} മുതൽ: {retry} ന് MDM വീണ്ടും ശ്രമിക്കും
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	{date} മുതൽ: {retry} ന് MDM വീണ്ടും ശ്രമിക്കും, അല്ലെങ്കിൽ ഒരു ഡ്രൈവർ അപ്‌ഡേറ്റിന് ശേഷം
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4209,6 +4427,26 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	സ്പീഡ് ലിമിറ്റർ ക്രമീകരണങ്ങൾ
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	സ്പീഡ് ലിമിറ്റർ: ഈ ഡൗൺലോഡിന് പരമാവധി {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	സ്പീഡ് ലിമിറ്റർ: എല്ലാ ഡൗൺലോഡുകൾക്കും കൂടി {limit}
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	സ്പീഡ് ലിമിറ്റർ: എല്ലാ ഡൗൺലോഡുകൾക്കും ഒരുമിച്ച് {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	സ്പീഡ് ലിമിറ്റർ: ഓരോ ഡൗൺലോഡിനും {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	സ്പീഡ് ലിമിറ്റർ: ഓരോ ഡൗൺലോഡിനും {one}, എല്ലാത്തിനും {all}
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4480,6 +4718,11 @@
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	മികച്ച ഗുണമേന്മകളായ MP3, Opus, FLAC എന്നിവയ്ക്ക് ffmpeg (ഏകദേശം 80 MB) ആവശ്യമാണ്.
 #. text in the Download video window
+#. in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+#. the trailing ... means it is still going on: keep it
+#, machine
+	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	മികച്ച നിലവാരമുള്ള MP3, Opus, FLAC എന്നിവയ്ക്ക് ffmpeg ആവശ്യമാണ്. 32-ബിറ്റ് Windows-നായി MDM-ൽ അതിന്റെ പകർപ്പില്ല: സഹായികൾ ഉപയോഗിച്ച് നിങ്ങളുടേത് തിരഞ്ഞെടുക്കുക...
+#. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	മികച്ച ഗുണമേന്മകളായ MP3, Opus, FLAC എന്നിവയ്ക്ക് ffmpeg ആവശ്യമാണ്: സിസ്റ്റത്തിന്റെ പാക്കേജ് മാനേജർ (അല്ലെങ്കിൽ Homebrew) ഉപയോഗിച്ച് ഇത് ഇൻസ്റ്റാൾ ചെയ്യുക.
@@ -4593,6 +4836,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	ഡ്രൈവോ നെറ്റ്‌വർക്ക് പങ്കിടലോ ലഭ്യമല്ല
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	ഒഴിവാക്കിയ എൻട്രികൾ ഇപ്പോഴും {folder} എന്നതിലുണ്ട്
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	എക്സ്റ്റൻഷൻ ഇതിനകം ഈ ആപ്പിലുണ്ട്. ഈ ബിൽഡ് Apple നോട്ടറൈസ് ചെയ്തിട്ടില്ലാത്തതിനാൽ, അനുവദിക്കാൻ Safari-ക്ക് ഈ ഘട്ടങ്ങൾ ആവശ്യമാണ്.
@@ -4618,6 +4865,14 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file matches ({algorithm})	ഫയൽ പൊരുത്തപ്പെടുന്നു ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	ഫയലിന്റെ പേര് വളരെ വലുതാണ്: ഡൗൺലോഡ് ചെയ്യുമ്പോൾ സംരക്ഷിക്കുന്ന ഫയലുകൾ ഉൾപ്പെടെ പരമാവധി {limit} ബൈറ്റുകൾ. ഒരു ചെറിയ പേര് തിരഞ്ഞെടുക്കുക ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	ഫയലിന്റെ പേര് വളരെ വലുതാണ്: ഡൗൺലോഡ് ചെയ്യുമ്പോൾ സംരക്ഷിക്കുന്ന ഫയലുകൾ ഉൾപ്പെടെ പരമാവധി {limit} അക്ഷരങ്ങൾ. ഒരു ചെറിയ പേര് തിരഞ്ഞെടുക്കുക ({path})
 #. text in a dialog box
 #, machine
 	The file saved as	ഫയൽ ഇങ്ങനെ സേവ് ചെയ്തു
@@ -4675,8 +4930,9 @@
 #, machine
 	the password is wrong	പാസ്‌വേഡ് തെറ്റാണ്
 #. text in errors.rs
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: {path}	പാത Windows-ന് വളരെ വലുതാണ്: {path}
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows-ന് പാത വളരെ വലുതാണ്: ഡൗൺലോഡ് ചെയ്യുമ്പോൾ സംരക്ഷിക്കുന്ന ഫയലുകൾ ഉൾപ്പെടെ പരമാവധി {limit} അക്ഷരങ്ങൾ. ഒരു ചെറിയ ഫയൽ പേരോ ഫോൾഡറോ തിരഞ്ഞെടുക്കുക ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -4730,6 +4986,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	സെർവർ ഫയലിന്റെ അപ്രതീക്ഷിത ഭാഗം അയച്ചു ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	അക്കൗണ്ട് പ്രീമിയമാണോ എന്ന് സേവനം പറയുന്നില്ല
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4754,6 +5014,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	സൈറ്റിന്റെ ബോട്ട് പരിശോധന (Cloudflare) yt-dlp-യെ നിരസിച്ചു. പേജ് നിങ്ങളുടെ ബ്രൗസറിൽ തുറക്കുകയാണെങ്കിൽ, ഓപ്ഷനുകൾ → സൈറ്റുകൾ ലോഗിനുകൾ → വീഡിയോ സൈറ്റുകൾക്കുള്ള കുക്കികൾ എന്നതിൽ ആ ബ്രൗസർ തിരഞ്ഞെടുത്ത് പേജ് വീണ്ടും തിരയുക, അല്ലെങ്കിൽ വീഡിയോയ്ക്ക് മുകളിലുള്ള ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ ഉപയോഗിക്കുക.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	സൈറ്റിന്റെ സർട്ടിഫിക്കറ്റിനെ yt-dlp-യോ ഈ കമ്പ്യൂട്ടറോ വിശ്വസിക്കുന്നില്ല: ഒരു ആന്റിവൈറസിന്റെ വെബ് ഫിൽട്ടറോ HTTPS വായിക്കുന്ന ഒരു പ്രോക്സിയോ തടസ്സമായേക്കാം. അതിന്റെ HTTPS സ്കാനിംഗ് ഓഫാക്കുക, അല്ലെങ്കിൽ അതിന്റെ സർട്ടിഫിക്കറ്റ് കമ്പ്യൂട്ടറിന്റെ സർട്ടിഫിക്കറ്റുകളിലേക്ക് ചേർക്കുക, തുടർന്ന് പേജ് വീണ്ടും പരിശോധിക്കുക.
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -4762,6 +5026,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് മറ്റൊരു സൈറ്റ് നാമത്തിനുള്ളതാണ്, അതിനാൽ ഇത് യഥാർത്ഥ സൈറ്റാണെന്ന് MDM-ന് ഉറപ്പില്ല (നിങ്ങളുടെ ബ്രൗസറും ഇതിനെക്കുറിച്ച് മുന്നറിയിപ്പ് നൽകുന്നു)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് വെബ്സൈറ്റുകൾക്കായി നിർമ്മിച്ചതല്ല, അതിനാൽ MDM-ന് അത് യഥാർത്ഥ സൈറ്റാണെന്ന് ഉറപ്പില്ല
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -4778,14 +5046,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് അതിന്റെ ഇഷ്യൂവർ റദ്ദാക്കി, അതിനാൽ MDM അതിനെ വിശ്വസിക്കില്ല
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	സൈറ്റിന്റെ സർട്ടിഫിക്കറ്റിനെ yt-dlp-യോ ഈ കമ്പ്യൂട്ടറോ വിശ്വസിക്കുന്നില്ല: ഒരു ആന്റിവൈറസിന്റെ വെബ് ഫിൽട്ടറോ HTTPS വായിക്കുന്ന ഒരു പ്രോക്സിയോ തടസ്സമായേക്കാം. അതിന്റെ HTTPS സ്കാനിംഗ് ഓഫാക്കുക, അല്ലെങ്കിൽ അതിന്റെ സർട്ടിഫിക്കറ്റ് കമ്പ്യൂട്ടറിന്റെ സർട്ടിഫിക്കറ്റുകളിലേക്ക് ചേർക്കുക, തുടർന്ന് പേജ് വീണ്ടും പരിശോധിക്കുക.
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	സൈറ്റിന്റെ സുരക്ഷാ സർട്ടിഫിക്കറ്റ് വെബ്സൈറ്റുകൾക്കായി നിർമ്മിച്ചതല്ല, അതിനാൽ MDM-ന് അത് യഥാർത്ഥ സൈറ്റാണെന്ന് ഉറപ്പില്ല
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4843,6 +5103,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	ഈ പേരിൽ ഒരു ക്യൂ ഇതിനകം ഉണ്ട്
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	അതിന്റെ ഫയലുകൾക്ക് ആവശ്യത്തിന് ഇടമില്ലെന്ന് HatchZip പറയുന്നു; ഒന്നും മാറ്റിയിട്ടില്ല
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ഡൗൺലോഡ് പൂർത്തിയായ ഡയലോഗ് കാണിക്കുക" ഓണാക്കുമ്പോൾ ഈ ക്രമീകരണങ്ങൾ ലഭ്യമല്ല
@@ -4963,6 +5227,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ഈ പ്രോഗ്രാം {name} അല്ല
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
+	This shortcut is already in use	ഈ കുറുക്കുവഴി ഇതിനകം ഉപയോഗത്തിലാണ്
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #, machine
@@ -5062,7 +5330,7 @@
 #. title of the separate window listing a torrent's files
 #, machine
 	Torrent files	ടോറന്റ് ഫയലുകൾ
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Torrent settings	ടോറന്റ് ക്രമീകരണങ്ങൾ
 #. text in torrent downloads
@@ -5110,6 +5378,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	പിന്നീട് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ {name} സ്വയം ഡൗൺലോഡ് ചെയ്ത് {helpers} → {other} എന്നതിൽ തിരഞ്ഞെടുക്കുക.
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	സംരക്ഷിച്ച ആർക്കൈവ് പാസ്‌വേഡുകൾ പരീക്ഷിക്കുന്നു...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5352,6 +5624,10 @@
 #. column title: the user name
 #, machine
 	User	ഉപയോക്താവ്
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	ഉപയോക്തൃനാമം:
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	സെർവറുകൾ/സൈറ്റുകൾക്കായുള്ള ഉപയോക്തൃനാമങ്ങളും പാസ്‌വേഡുകളും
@@ -5525,6 +5801,10 @@
 #. why the computer could not be put to sleep (fills {error})
 #, machine
 	Windows refused	Windows നിരസിച്ചു
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows-ന്റെ ഡിഫോൾട്ട് ആപ്പുകളിൽ നിങ്ങൾ മാത്രം മാറ്റാൻ കഴിയുന്ന {apps} ഉപയോഗിച്ച് Windows ഇപ്പോഴും മാഗ്നറ്റ് ലിങ്കുകളോ .torrent ഫയലുകളോ തുറക്കുന്നു. ക്രമീകരണങ്ങൾ ഇപ്പോൾ അവിടെ തുറക്കുന്നു: MAGNET-നും .torrent-നും Mister Download Manager തിരഞ്ഞെടുക്കുക.
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows-ന്റെ ഭാഷ
@@ -5624,7 +5904,7 @@
 #, machine
 	Your own program: {path} ({version})	നിങ്ങളുടെ സ്വന്തം പ്രോഗ്രാം: {path} ({version})
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	നിങ്ങളുടെ സിസ്റ്റത്തിന്റേത്: {path}
 #. text in the Download video window
@@ -5751,7 +6031,8 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ഫയൽ
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	{file} ഡിസ്കിൽ നിന്ന് ഇല്ലാതാക്കാനായില്ല: {error}
@@ -5772,7 +6053,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ഒരു വിലാസങ്ങളുടെ ലിസ്റ്റ് ആകാൻ കഴിയാത്തത്ര വലുതാണ് ({size}). ടെക്സ്റ്റ് ഫയലുകൾ, വെബ് പേജുകൾ, .ef2 എക്സ്പോർട്ടുകൾ എന്നിവ {limit} വരെ ഇറക്കുമതി ചെയ്യാം.
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} പൂർത്തിയായ ഡൗൺലോഡുകളിൽ നിന്ന് പുറത്തേക്ക് വലിച്ചിഴച്ച് മറ്റൊരിടത്തേക്ക് മാറ്റി, അത് എവിടെയാണെന്ന് MDM-ന് കണ്ടെത്താനായില്ല. നിങ്ങൾ അത് വിട്ട സ്ഥലത്ത് തിരയുക.
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} MDM-ൽ നിന്ന് വലിച്ചിഴച്ച് മറ്റെവിടെയെങ്കിലും മാറ്റി, എവിടെയാണെന്ന് MDM-ന് കണ്ടെത്താനായില്ല. നിങ്ങൾ ഡ്രോപ്പ് ചെയ്ത സ്ഥലത്ത് അത് തിരയുക.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5904,6 +6185,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (എല്ലാ ഡൗൺലോഡുകൾക്കുമുള്ള പരിധി: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (പരിധി: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6517,11 +6808,19 @@ key	Delete	Delete
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Down / Alt+Down	ഡൗൺ / Alt+ഡൗൺ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Drag on blank space	ഒഴിഞ്ഞ സ്ഥലത്ത് വലിച്ചിടുക
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	Enter / Space
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6534,6 +6833,10 @@ key	F3	F3
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	ഇടത് / വലത്
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6561,7 +6864,7 @@ key	Shift+Up / Shift+Down	Shift+മുകളിലേക്ക് / Shift+താ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Tab	Tab
+key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6704,10 +7007,20 @@ menu	&Undo	&പഴയപടിയാക്കുക
 #, machine
 menu	&Video downloads	വീഡിയോ ഡൗൺലോഡുകൾ(&V)
 #. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	വേലാൻ&ഡ്
+#. menu command in the main window
 #. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Window system	&വിൻഡോ സിസ്റ്റം
+#. menu command in the main window
+#. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&X11 (XWayland)	എക്സ്11 (&എക്സ് വേലാൻഡ്)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7162,7 +7475,7 @@ menu	To &IDM export file...	IDM എക്സ്പോർട്ട് ഫയല�
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	To &text file...	ടെക്സ്റ്റ് ഫയലിലേക്ക്(&t)...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	ടൂൾബാർ

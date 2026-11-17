@@ -142,6 +142,8 @@ When there is one, **Update now** downloads it, checks it, puts it in place and 
 
 MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and **Download** opens the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.
 
+MDM asks GitHub's API for the newest version (of MDM, and of yt-dlp and ffmpeg). GitHub answers 60 such questions an hour for each internet address, so on a network many people share (a mobile or home internet provider that puts many customers behind one address, a campus, an office) others can use them up. MDM then reads GitHub's ordinary release pages instead, with the same checks of what it downloads. If GitHub refuses those too, the window says **api.github.com refused the request (403 Forbidden): too many requests from your network for now**: try again in an hour, or from another network.
+
 The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its `.AppImage.zsync` file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.
 
 **Help → About Mister Download Manager** shows the version you have.

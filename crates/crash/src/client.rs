@@ -22,6 +22,9 @@ const CONNECT_FOR: Duration = Duration::from_secs(60);
 /// Between two tries to connect, doubling up to [`RETRY_MAX`].
 const RETRY: Duration = Duration::from_millis(25);
 const RETRY_MAX: Duration = Duration::from_millis(1000);
+/// The most of the log's last lines sent with a panic or a freeze, about the size of a panic's
+/// backtrace (one message over the socket).
+const LOG_BYTES: usize = 24 * 1024;
 /// The same refusal this many times in a row (about twenty seconds with the back-off) is the
 /// system's answer about this socket, not a slow monitor: the try is given up instead of ending
 /// the same way a minute later.
@@ -267,6 +270,7 @@ impl Reporter {
     pub fn panic(&self, p: &Panic) {
         if let Some(client) = self.client.get() {
             Self::send_json(client, kind::PANIC, p);
+            Self::send_log(client);
             // The messages are in before the dump request (on macOS they travel separately).
             let _ = client.ping();
         }
@@ -275,7 +279,27 @@ impl Reporter {
     pub fn freeze(&self, f: &Freeze) {
         if let Some(client) = self.client.get() {
             Self::send_json(client, kind::FREEZE, f);
+            Self::send_log(client);
             let _ = client.ping();
+        }
+    }
+
+    /// The last lines logged, from memory, for the report (the disk may still hold the file's,
+    /// #1354): the newest that fit in [`LOG_BYTES`].
+    fn send_log(client: &minidumper::Client) {
+        let mut lines = crate::logs::recent();
+        let mut bytes = 0;
+        let keep = lines
+            .iter()
+            .rev()
+            .take_while(|l| {
+                bytes += l.len() + 4;
+                bytes <= LOG_BYTES
+            })
+            .count();
+        lines.drain(..lines.len() - keep);
+        if !lines.is_empty() {
+            Self::send_json(client, kind::LOG, &lines);
         }
     }
 
