@@ -403,8 +403,14 @@ fn add_command(
     }
 }
 
-/// `pair`: a new pairing code from the running app, printed for a person.
-fn pair() -> anyhow::Result<()> {
+/// `pair`: a new pairing code from the running app, printed for a person (or raw JSON with `--json`).
+fn pair(json: bool) -> anyhow::Result<()> {
+    if json {
+        return ask(mdm_ipc::Command {
+            pair: true,
+            ..Default::default()
+        });
+    }
     let answer = mdm_ipc::request(&mdm_ipc::Command {
         pair: true,
         ..Default::default()
@@ -1224,7 +1230,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             queue: queue.or(name),
             ..Default::default()
         }),
-        Cmd::Pair => pair(),
+        Cmd::Pair => pair(json),
         Cmd::Api { state } => ask(mdm_ipc::Command {
             api: Some(state == "on"),
             ..Default::default()
@@ -1970,6 +1976,18 @@ mod tests {
         assert_eq!(via(&host, false, None).await, None);
         let broken: &'static Fake = Box::leak(Box::new(Fake { broken: true }));
         assert_eq!(via(&host, false, Some(broken)).await, None);
+    }
+
+    #[test]
+    fn pair_command_parses() {
+        let cli = Cli::try_parse_from(["misterdownloadmanager-cli", "pair"]).unwrap();
+        assert!(matches!(cli.cmd, Cmd::Pair));
+        assert!(!cli.json);
+
+        let cli_json =
+            Cli::try_parse_from(["misterdownloadmanager-cli", "--json", "pair"]).unwrap();
+        assert!(matches!(cli_json.cmd, Cmd::Pair));
+        assert!(cli_json.json);
     }
 
     fn args(a: &[&str]) -> Vec<OsString> {
