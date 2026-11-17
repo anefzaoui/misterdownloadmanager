@@ -2153,7 +2153,7 @@ fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-/// Linux, X11 and XWayland: a window of MDM's was clicked while it hasn't the keyboard (winit
+/// Linux, XWayland only: a window of MDM's was clicked while it hasn't the keyboard (winit
 /// saw it lose the X input focus, or never get it), so the X server's input focus goes to it:
 /// to the window under the pointer, when it is MDM's and the focus is elsewhere. A window manager
 /// gives a clicked window the focus; Hyprland's (0.56) can leave the focus with another X11
@@ -2163,10 +2163,12 @@ fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
 /// again (the focus went with the window, and came back to none). Clicks kept working, keys went
 /// elsewhere: File Properties' boxes took the caret, but no typing and no Ctrl+V. Keys reach
 /// an X11 window only while the compositor gives XWayland the keyboard, so this never takes it
-/// from another program. Native Wayland: the compositor alone decides, nothing to do.
+/// from another program. Native Wayland: the compositor alone decides, nothing to do. Plain
+/// Xorg: the window manager's own focus rules stand (some keep the keyboard on a dialog while
+/// the main window behind it is clicked), nothing to do either.
 #[cfg(target_os = "linux")]
 pub fn take_keyboard_on_click() {
-    if on_wayland() || crate::offscreen() {
+    if !takes_keyboard_on_click(window_system()) || crate::offscreen() {
         return;
     }
     match keyboard_to_window_under_pointer() {
@@ -2176,6 +2178,13 @@ pub fn take_keyboard_on_click() {
         Ok(None) => {}
         Err(e) => tracing::warn!("the clicked window couldn't be given the keyboard: {e}"),
     }
+}
+
+/// Whether [`take_keyboard_on_click`] acts under `ws`: only in XWayland, X11 windows in a
+/// Wayland session (not native Wayland, not plain Xorg).
+#[cfg(target_os = "linux")]
+fn takes_keyboard_on_click(ws: &WindowSystem) -> bool {
+    ws.x11_over_wayland && !ws.wayland
 }
 
 /// [`take_keyboard_on_click`]'s work, on a connection of MDM's own: the X input focus to this
@@ -3886,6 +3895,19 @@ mod tests {
         let b = super::menu_window(crate::window_builder(), MenuKind::Bar);
         assert_eq!(b.override_redirect, Some(true));
         assert_eq!(b.window_type, Some(X11WindowType::DropdownMenu));
+    }
+
+    /// PR #1360: a click gives the keyboard only in XWayland; plain Xorg keeps its window
+    /// manager's focus rules, native Wayland the compositor's.
+    #[test]
+    fn a_click_takes_the_keyboard_in_xwayland_only() {
+        use super::takes_keyboard_on_click as takes;
+        let ws = |wayland, x11| choose_window_system(wayland, x11, Pick::Auto, CARED, |_| true);
+        assert!(takes(&ws(true, true)), "XWayland");
+        assert!(!takes(&ws(false, true)), "plain Xorg");
+        assert!(!takes(&ws(true, false)), "native Wayland, the only system");
+        let wayland = choose_window_system(true, true, Pick::Wayland("test"), CARED, |_| true);
+        assert!(!takes(&wayland), "native Wayland chosen");
     }
 
     const X11_KEYBOARD: &str = "libxkbcommon-x11.so.0";

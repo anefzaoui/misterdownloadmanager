@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	ਡਿਸਕ ਤੋਂ {n} ਫ਼ਾਈਲ ਵੀ ਮਿਟਾਓ|ਡਿਸਕ ਤੋਂ {n} ਫ਼ਾਈਲਾਂ ਵੀ ਮਿਟਾਓ
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	ਇੱਕ ਅਣਜਾਣੀ ਸਾਈਟ ਲਿੰਕ ਗ੍ਰੈਬਰ ਨੂੰ {n} ਲਿੰਕ ਭੇਜਣਾ ਚਾਹੁੰਦੀ ਹੈ।|ਇੱਕ ਅਣਜਾਣੀ ਸਾਈਟ ਲਿੰਕ ਗ੍ਰੈਬਰ ਨੂੰ {n} ਲਿੰਕ ਭੇਜਣਾ ਚਾਹੁੰਦੀ ਹੈ।
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -106,11 +111,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ਫ਼ਾਈਲ ਦਾ ਨਾਂ ਉੱਥੇ ਪਹਿਲਾਂ ਤੋਂ ਮੌਜੂਦ ਫ਼ਾਈਲ ਦੇ ਨਾਂ ਵਰਗਾ ਸੀ, ਇਸ ਲਈ ਉਸ ਨੂੰ ਨੰਬਰ ਦਿੱਤਾ ਗਿਆ|{n} ਫ਼ਾਈਲਾਂ ਦੇ ਨਾਂ ਉੱਥੇ ਪਹਿਲਾਂ ਤੋਂ ਮੌਜੂਦ ਫ਼ਾਈਲਾਂ ਦੇ ਨਾਂ ਵਰਗੇ ਸਨ, ਇਸ ਲਈ ਉਨ੍ਹਾਂ ਨੂੰ ਨੰਬਰ ਦਿੱਤੇ ਗਏ
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	{n} ਹੋਰ ਫ਼ਾਈਲ ਵੀ ਮਿਟਾਈ ਨਹੀਂ ਜਾ ਸਕੀ।|{n} ਹੋਰ ਫ਼ਾਈਲਾਂ ਵੀ ਮਿਟਾਈਆਂ ਨਹੀਂ ਜਾ ਸਕੀਆਂ।
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	{n} ਪੀਅਰ|{n} ਪੀਅਰ
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} ਸੁਰੱਖਿਅਤ|{n} ਸੁਰੱਖਿਅਤ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -133,6 +148,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ਟਰੈਕਰ: {peers}|{n} ਟਰੈਕਰ: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} ਲਿੰਕ ਗ੍ਰੈਬਰ ਨੂੰ {n} ਲਿੰਕ ਭੇਜਣਾ ਚਾਹੁੰਦੀ ਹੈ।|{site} ਲਿੰਕ ਗ੍ਰੈਬਰ ਨੂੰ {n} ਲਿੰਕ ਭੇਜਣਾ ਚਾਹੁੰਦੀ ਹੈ।
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -151,7 +171,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Apply	ਲਾਗੂ ਕ&ਰੋ
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -174,6 +194,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Start now	ਹੁਣੇ ਸ਼ੁਰੂ ਕ&ਰੋ
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(ਸਪੇਸ ਨਾਲ ਵੱਖ ਕਰੋ; * ਕਿਸੇ ਵੀ ਚੀਜ਼ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਹੈ)
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(ਨਾਮਾਂ ਨੂੰ ਸਪੇਸਾਂ ਨਾਲ ਵੱਖ ਕਰੋ)
@@ -204,6 +228,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z ਅਤੇ RAR ਆਰਕਾਈਵ 7-Zip ({path}) ਦੁਆਰਾ ਐਕਸਟਰੈਕਟ ਕੀਤੇ ਜਾਂਦੇ ਹਨ।
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	7z ਅਤੇ RAR ਆਰਕਾਈਵ HatchZip ({path}) ਨਾਲ ਐਕਸਟ੍ਰੈਕਟ ਕੀਤੇ ਜਾਂਦੇ ਹਨ।
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -280,6 +308,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	ਲਗਭਗ {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	ਵੈੱਬ ਪੰਨਿਆਂ ਤੋਂ Click'n'Load ਸਵੀਕਾਰ ਕਰੋ (ਪੋਰਟ 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -435,6 +467,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	ਅਫ਼ਗਾਨਿਸਤਾਨ
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	ਕੁਝ ਗ਼ਲਤ ਪਾਸਵਰਡ ਦਰਜ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸੇਵਾ ਇਸ ਕਨੈਕਸ਼ਨ ਨੂੰ ਕੁਝ ਮਿੰਟਾਂ ਲਈ ਬਲੌਕ ਕਰ ਦਿੰਦੀ ਹੈ।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -454,7 +490,7 @@
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	ਸਾਰੇ ਡਾਊਨਲੋਡ
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 #, machine
 	All files	ਸਾਰੀਆਂ ਫਾਈਲਾਂ
 #. text in helpers.rs
@@ -464,11 +500,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	ਅੱਪਲੋਡਰ ਦੇ ਸਾਰੇ
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	ਇਜਾਜ਼ਤ ਦਿਓ
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	{n} ਤੋਂ ਵੱਧ ਕਨੈਕਸ਼ਨਾਂ ਦੀ ਆਗਿਆ ਦਿਓ
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	ਸਿਰਫ਼ ਉਹਨਾਂ ਸਾਈਟਾਂ ਨੂੰ ਇਜਾਜ਼ਤ ਦਿਓ ਜੋ ਤੁਸੀਂ ਵਰਤਦੇ ਹੋ। ਲਿੰਕ ਗ੍ਰੈਬਰ ਵਿੱਚ ਜੋੜਨ ਤੋਂ ਪਹਿਲਾਂ ਕੁਝ ਵੀ ਲੱਭਿਆ ਜਾਂ ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ਪਹਿਲਾਂ ਹੀ ਡਾਊਨਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ: {path}
@@ -490,6 +534,10 @@
 #. checkbox in the Options window
 #, machine
 	Also take files the browser would open (PDF, music, video)	ਉਹ ਫਾਈਲਾਂ ਵੀ ਲਓ ਜੋ ਬ੍ਰਾਊਜ਼ਰ ਖੋਲ੍ਹੇਗਾ (PDF, ਸੰਗੀਤ, ਵੀਡੀਓ)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	ਲਿੰਕ 'ਤੇ Alt+ਕਲਿੱਕ ਕਰੋ
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -554,6 +602,19 @@
 #. what a screen reader calls Link grabber's password box
 #, machine
 	Archive password	ਆਰਕਾਈਵ ਪਾਸਵਰਡ
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	ਆਰਕਾਈਵ ਪਾਸਵਰਡ
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	ਆਰਕਾਈਵ ਪਾਸਵਰਡ
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	ਆਰਕਾਈਵ ਪਾਸਵਰਡ...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -691,6 +752,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	ਭੂਟਾਨ
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	ਬਲੌਕ ਕਰੋ
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -763,6 +828,10 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	ਵਿਅਸਤ, ਬਾਅਦ ਵਿੱਚ ਕੋਸ਼ਿਸ਼ ਕਰੋ
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	ਬਟਨ ਦਾ ਆਕਾਰ:
 #. message or event log entry in the main window
 #, machine
 	by batch download	ਬੈਚ ਡਾਊਨਲੋਡ ਦੁਆਰਾ
@@ -781,6 +850,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cameroon	ਕੈਮਰੂਨ
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	ਮੁੜ ਸ਼ੁਰੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -923,7 +996,9 @@
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
@@ -957,10 +1032,19 @@
 #. a country's name (where a download's server is)
 #, machine
 	Christmas Island	ਕ੍ਰਿਸਮਸ ਟਾਪੂ
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 #, machine
 	Clear	ਸਾਫ਼ ਕਰੋ
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load ਸ਼ੁਰੂ ਨਹੀਂ ਹੋ ਸਕਿਆ: ਕੋਈ ਹੋਰ ਪ੍ਰੋਗਰਾਮ (JDownloader?) ਪੋਰਟ {port} ਦੀ ਵਰਤੋਂ ਕਰ ਰਿਹਾ ਹੈ। ਇਸਨੂੰ ਬੰਦ ਕਰੋ, ਫਿਰ ਵਿਕਲਪਾਂ ਵਿੱਚ Click'n'Load ਨੂੰ ਬੰਦ ਕਰਕੇ ਦੁਬਾਰਾ ਚਾਲੂ ਕਰੋ।
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load ਸ਼ੁਰੂ ਨਹੀਂ ਹੋ ਸਕਿਆ: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -1004,6 +1088,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	ਕੋਮੋਰੋਸ
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	ਸੰਖੇਪ
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1052,6 +1140,9 @@
 #. text in the Options window
 #, machine
 	Connections:	ਕਨੈਕਸ਼ਨ:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	ਯੋਗਦਾਨੀ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1179,7 +1270,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ਡਿਫੌਲਟ ਅਧਿਕਤਮ ਕਨੈਕਸ਼ਨ ਨੰਬਰ
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1335,6 +1426,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	ਕ੍ਰਮ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰੋ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	ਇਸਨੂੰ ਦੁਬਾਰਾ ਡਾਊਨਲੋਡ ਕਰੋ
 #. button in a dialog box
 #, machine
 	Download Later	ਬਾਅਦ ਵਿੱਚ ਡਾਊਨਲੋਡ ਕਰੋ
@@ -1449,6 +1544,10 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	ਡਾਊਨਲੋਡ ਪੂਰੇ ਹੋਏ
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	ਫ਼ਾਈਲਾਂ, ਵੀਡੀਓ ਅਤੇ ਟੋਰੈਂਟ ਡਾਊਨਲੋਡ ਕਰਦਾ ਹੈ
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1478,6 +1577,14 @@
 #. message or event log entry in the main window
 #, machine
 	Dragged out of Download complete and moved to {folder}	“ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋ ਗਿਆ” ਵਿੱਚੋਂ ਬਾਹਰ ਖਿੱਚ ਕੇ {folder} ਵਿੱਚ ਭੇਜਿਆ ਗਿਆ
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	ਸੂਚੀ ਵਿੱਚੋਂ ਬਾਹਰ ਖਿੱਚਿਆ ਗਿਆ ਅਤੇ ਅਜਿਹੀ ਥਾਂ 'ਤੇ ਭੇਜਿਆ ਗਿਆ ਜਿਸ ਬਾਰੇ MDM ਨੂੰ ਪਤਾ ਨਹੀਂ ਲੱਗ ਸਕਿਆ
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	ਸੂਚੀ ਵਿੱਚੋਂ ਬਾਹਰ ਖਿੱਚਿਆ ਗਿਆ ਅਤੇ {folder} ਵਿੱਚ ਭੇਜਿਆ ਗਿਆ
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1655,6 +1762,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	ਆਰਕਾਈਵਜ਼ ਨੂੰ ਉਹਨਾਂ ਦਾ ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋਣ 'ਤੇ ਐਕਸਟਰੈਕਟ ਕਰੋ
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	HatchZip (hatchzip.dev, ਸਥਾਪਤ ਨਹੀਂ) ਨਾਲ ਥਾਂ 'ਤੇ ਐਕਸਟ੍ਰੈਕਟ ਕਰੋ
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	HatchZip ਨਾਲ ਥਾਂ 'ਤੇ ਐਕਸਟ੍ਰੈਕਟ ਕਰੋ: ਸਿਰਫ਼ ਫ਼ਾਈਲਾਂ ਲਈ ਥਾਂ ਦੀ ਲੋੜ ਹੈ
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1925,6 +2040,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	ਪੂਰਾ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2044,6 +2163,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	ਕੰਮ ਪੂਰਾ ਹੋਣ 'ਤੇ ਮਾਡਮ ਡਿਸਕਨੈਕਟ ਕਰੋ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip ਨੇ ਇਸਨੂੰ ਥਾਂ 'ਤੇ ਐਕਸਟ੍ਰੈਕਟ ਕੀਤਾ: ਫ਼ਾਈਲਾਂ ਕੱਢਦਿਆਂ ਹੀ ਆਰਕਾਈਵ ਹਟਾ ਦਿੱਤਾ ਗਿਆ
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2167,6 +2290,15 @@
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
 	in the locked keyring	ਲਾਕ ਕੀਤੀ ਕੀਰਿੰਗ ਵਿੱਚ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	ਟੂਲਬਾਰ ਵਿੱਚ: ਇੱਕ ਬਟਨ ਦਾ ਮੀਨੂ ਖੋਲ੍ਹੋ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	ਟੂਲਬਾਰ ਵਿੱਚ: ਬਟਨ ਦਬਾਓ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	ਟੂਲਬਾਰ ਵਿੱਚ: ਪਿਛਲਾ / ਅਗਲਾ ਬਟਨ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2207,6 +2339,10 @@
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
 	Install what's missing from your distribution's packages.	ਆਪਣੀ ਡਿਸਟ੍ਰੀਬਿਊਸ਼ਨ ਦੇ ਪੈਕੇਜਾਂ ਤੋਂ ਜੋ ਗੁੰਮ ਹੈ, ਉਸਨੂੰ ਇੰਸਟਾਲ ਕਰੋ।
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	ਆਪਣੇ ਸਿਸਟਮ ਦਾ 7zip (ਜਾਂ p7zip) ਪੈਕੇਜ ਸਥਾਪਤ ਕਰੋ, ਫਿਰ ਡਾਊਨਲੋਡ 'ਤੇ ਸੱਜਾ-ਕਲਿੱਕ ਕਰੋ ਅਤੇ ਐਕਸਟ੍ਰੈਕਟ ਚੁਣੋ।
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2268,6 +2404,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	ਇਸ ਲਈ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	ਇਹ ਅੱਧ ਵਿਚਕਾਰ ਰੁਕ ਗਿਆ। ਹੁਣ ਤੱਕ ਐਕਸਟ੍ਰੈਕਟ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ {folder} ਵਿੱਚ ਹਨ, ਬਾਕੀ ਅਜੇ ਵੀ ਆਰਕਾਈਵ ਵਿੱਚ ਹਨ: ਐਕਸਟ੍ਰੈਕਟ ਜਾਰੀ ਹੈ
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2289,6 +2429,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	ਇਟਲੀ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	ਇਸ ਦੀਆਂ ਫ਼ਾਈਲਾਂ ਬਾਹਰ ਆ ਗਈਆਂ, ਪਰ ਉਹਨਾਂ ਨੂੰ ਲਿਜਾਣਾ ਰੁਕ ਗਿਆ ({error})। ਲਿਜਾਈਆਂ ਗਈਆਂ ਫ਼ਾਈਲਾਂ {to} ਵਿੱਚ ਹਨ, ਬਾਕੀ {left} ਵਿੱਚ ਹਨ; ਕੁਝ ਵੀ ਮਿਟਾਇਆ ਨਹੀਂ ਗਿਆ
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2561,6 +2706,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS ਇਸ ਤਰ੍ਹਾਂ ਮਾਰਕ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ: ਕਿਸੇ ਪ੍ਰੋਗਰਾਮ ਦੇ ਪਹਿਲੀ ਵਾਰ ਖੁੱਲ੍ਹਣ ਤੋਂ ਪਹਿਲਾਂ Gatekeeper। ਜੇ ਇਹ ਚੋਣ ਨਾ ਕੀਤੀ ਹੋਵੇ, ਤਾਂ ਕੋਈ ਡਾਊਨਲੋਡ ਮਾਰਕ ਨਹੀਂ ਹੁੰਦਾ।
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS Mister Download Manager ਨੂੰ ਬ੍ਰਾਊਜ਼ਰ ਦੇ ਫੋਲਡਰ ਤੱਕ ਪਹੁੰਚਣ ਤੋਂ ਰੋਕਦਾ ਹੈ।
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS Mister Download Manager ਨੂੰ {browser} ਦੇ ਫੋਲਡਰ ਤੱਕ ਪਹੁੰਚਣ ਤੋਂ ਰੋਕਦਾ ਹੈ।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2688,6 +2841,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM ਜਵਾਬ ਨਹੀਂ ਦੇ ਰਿਹਾ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰ ਰਿਹਾ ਹੈ...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	MDM ਕੋਲ ਇਸ ਸਿਸਟਮ ਲਈ ਕੋਈ ਕਾਪੀ ਨਹੀਂ ਹੈ: ਇਸਨੂੰ ਸਥਾਪਤ ਕਰੋ, ਜਾਂ ਕੋਈ ਹੋਰ ਪ੍ਰੋਗਰਾਮ ਵਰਤੋ
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2751,7 +2908,7 @@
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	Mister Download Manager ਕ੍ਰੈਸ਼ ਰਿਪੋਰਟ
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager ਵਿੱਚ ਅੰਦਰੂਨੀ ਗਲਤੀ ਆਈ
@@ -2836,7 +2993,7 @@
 	Move a page up / down	ਇੱਕ ਪੰਨਾ ਉੱਪਰ/ਹੇਠਾਂ ਭੇਜੋ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	ਸ਼੍ਰੇਣੀਆਂ ਅਤੇ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿਚਕਾਰ ਜਾਓ
+	Move between the toolbar, the categories and the download list	ਟੂਲਬਾਰ, ਸ਼੍ਰੇਣੀਆਂ ਅਤੇ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿਚਕਾਰ ਜਾਓ
 #. text in the Scheduler window
 #, machine
 	Move down	ਹੇਠਾਂ ਲੈ ਜਾਓ
@@ -3090,7 +3247,7 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file} ਵਿੱਚ ਕੋਈ ਵੈੱਬ ਪਤੇ ਨਹੀਂ ਮਿਲੇ।
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
 	None	ਕੋਈ ਨਹੀਂ
@@ -3148,10 +3305,14 @@
 #, machine
 	Not in a queue	ਕਤਾਰ ਵਿੱਚ ਨਹੀਂ
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	ਅਜੇ ਸਥਾਪਤ ਨਹੀਂ ਕੀਤਾ ਗਿਆ
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	ਖੋਜਿਆ ਨਹੀਂ ਗਿਆ
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	ਹੁਣੇ ਨਹੀਂ
 #. text in helpers.rs
@@ -3203,6 +3364,10 @@
 #. Options → Remote → Status: the remote control is off
 #, machine
 	Off: nothing on the network can reach MDM.	ਬੰਦ: ਨੈੱਟਵਰਕ 'ਤੇ ਕੋਈ ਵੀ MDM ਤੱਕ ਨਹੀਂ ਪਹੁੰਚ ਸਕਦਾ।
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	ਬੰਦ: ਇਸ ਦੁਆਰਾ ਦੇਖੀਆਂ ਗਈਆਂ ਫੀਡਾਂ ਹਟਾ ਦਿੱਤੀਆਂ ਗਈਆਂ ਸਨ।
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਕਾਪੀ ਕੀਤੇ ਲਿੰਕਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਦੀ ਪੇਸ਼ਕਸ਼ ਕਰੋ
@@ -3253,6 +3418,10 @@
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	ਪ੍ਰਤੀ ਲਾਈਨ ਇੱਕ ਪਤਾ; * ਕਿਸੇ ਵੀ ਟੈਕਸਟ ਲਈ ਹੈ: example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	ਹਰੇਕ ਲਾਈਨ 'ਤੇ ਇੱਕ ਪਾਸਵਰਡ, MDM ਦੇ ਪੁੱਛਣ ਤੋਂ ਪਹਿਲਾਂ ਇੱਕ ਐਨਕ੍ਰਿਪਟਡ ਆਰਕਾਈਵ 'ਤੇ ਇਸ ਕ੍ਰਮ ਵਿੱਚ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ। ਜੋ ਮਿਲਦਾ ਹੈ ਉਹ ਸਿਖਰ 'ਤੇ ਚਲਾ ਜਾਂਦਾ ਹੈ।
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ਇੱਕ ਵਾਰੀ ਡਾਊਨਲੋਡ ਕਰਨਾ
@@ -3299,7 +3468,9 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	ਫੋਲਡਰ ਖੋਲ੍ਹੋ
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 #, machine
 	Open in browser	ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਖੋਲ੍ਹੋ
@@ -3352,6 +3523,10 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	ਪੂਰਾ ਹੋਣ 'ਤੇ ਵਿਕਲਪ
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	ਜਾਂ ਕਿਸੇ ਐਪਲੀਕੇਸ਼ਨ ਦੀ API ਕੁੰਜੀ ਪੇਸਟ ਕਰੋ:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -3417,6 +3592,7 @@
 	Password	ਪਾਸਵਰਡ
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 #, machine
 	Password:	ਪਾਸਵਰਡ:
 #. text in the Add torrent window
@@ -3518,6 +3694,11 @@
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	ਪ੍ਰੀਮੀਅਮ, {days} ਦਿਨ ਬਾਕੀ
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Press keys...	ਕੁੰਜੀਆਂ ਦਬਾਓ...
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3651,6 +3832,10 @@
 #. RSS feeds window: fetch the selected feed again now
 #, machine
 	Refresh	ਰਿਫ੍ਰੈਸ਼ ਕਰੋ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	ਪਤਾ ਰਿਫ੍ਰੈਸ਼ ਕਰੋ
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
@@ -3659,6 +3844,10 @@
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
 	Regular expressions	ਨਿਯਮਤ ਸਮੀਕਰਨ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	ਹੋਰ ਆਰਕਾਈਵਜ਼ ਲਈ ਯਾਦ ਰੱਖੋ
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	ਇਸ ਫਾਈਲ ਲਈ ਸਪੀਡ ਲਿਮੀਟਰ ਸੈਟਿੰਗਾਂ ਯਾਦ ਰੱਖੋ
@@ -3692,8 +3881,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	ਸੂਚੀ ਵਿੱਚੋਂ {name} ਹਟਾਓ?
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 #, machine
 	Rename	ਨਾਂ ਬਦਲੋ
 #. text in the Batch download window
@@ -3857,10 +4047,6 @@
 #. text in the Batch download window
 #, machine
 	Second file:	ਦੂਜੀ ਫਾਈਲ:
-#. text in a dialog box
-#. title of the folder picker
-#, machine
-	Select a folder	ਇੱਕ ਫੋਲਡਰ ਚੁਣੋ
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4003,6 +4189,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Sharing stopped: {error}	ਸਾਂਝਾ ਕਰਨਾ ਬੰਦ ਹੋ ਗਿਆ: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
+	Shortcut to show or hide window:	ਵਿੰਡੋ ਦਿਖਾਉਣ ਜਾਂ ਲੁਕਾਉਣ ਲਈ ਸ਼ਾਰਟਕੱਟ:
 #. text in the download list
 #, machine
 	Show	ਦਿਖਾਓ
@@ -4064,6 +4254,10 @@
 #, machine
 	Sierra Leone	ਸਿਏਰਾ ਲਿਓਨ
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	ਸਾਈਨ ਇਨ ਕਰੋ
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਸਾਈਨ ਇਨ ਕਰੋ
@@ -4080,6 +4274,10 @@
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	ਸਾਈਨ-ਇਨ ਅਤੇ ਪਾਸਵਰਡ Windows ਕ੍ਰੇਡੈਂਸ਼ੀਅਲ ਮੈਨੇਜਰ ਵਿੱਚ ਰੱਖੇ ਜਾਂਦੇ ਹਨ।
 #. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	ਸਾਈਨ ਇਨ ਕੀਤਾ ਗਿਆ ({state})
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	{user} ({state}) ਵਜੋਂ ਸਾਈਨ ਇਨ ਕੀਤਾ ਗਿਆ
@@ -4087,6 +4285,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	ਸਾਈਨ ਆਊਟ ਕੀਤਾ ਗਿਆ: ਦੁਬਾਰਾ ਸਾਈਨ ਇਨ ਕਰੋ
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	{date} ਤੋਂ
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	{date} ਤੋਂ: MDM ਡਰਾਈਵਰ ਅੱਪਡੇਟ ਤੋਂ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	{date} ਤੋਂ: MDM ਅਗਲੀ ਵਾਰ ਸ਼ੁਰੂ ਹੋਣ 'ਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	{date} ਤੋਂ: MDM {retry} 'ਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	{date} ਤੋਂ: MDM {retry} 'ਤੇ, ਜਾਂ ਡਰਾਈਵਰ ਅੱਪਡੇਟ ਤੋਂ ਬਾਅਦ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4209,6 +4427,26 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	ਸਪੀਡ ਲਿਮੀਟਰ ਸੈਟਿੰਗਾਂ
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	ਸਪੀਡ ਲਿਮੀਟਰ: ਇਸ ਡਾਊਨਲੋਡ ਲਈ ਵੱਧ ਤੋਂ ਵੱਧ {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	ਸਪੀਡ ਲਿਮੀਟਰ: ਸਾਰੇ ਡਾਊਨਲੋਡਾਂ ਲਈ {limit}
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	ਸਪੀਡ ਲਿਮੀਟਰ: ਸਾਰੇ ਡਾਊਨਲੋਡਾਂ ਲਈ ਇਕੱਠੇ {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	ਸਪੀਡ ਲਿਮੀਟਰ: ਪ੍ਰਤੀ ਡਾਊਨਲੋਡ {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	ਸਪੀਡ ਲਿਮੀਟਰ: ਪ੍ਰਤੀ ਡਾਊਨਲੋਡ {one}, ਸਾਰਿਆਂ ਲਈ {all}
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4480,6 +4718,11 @@
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg (ਲਗਭਗ 80 MB) ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।
 #. text in the Download video window
+#. in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+#. the trailing ... means it is still going on: keep it
+#, machine
+	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	ਸਭ ਤੋਂ ਵਧੀਆ ਕੁਆਲਿਟੀ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ, ਜਿਸ ਦੀ MDM ਕੋਲ 32-ਬਿੱਟ Windows ਲਈ ਕੋਈ ਕਾਪੀ ਨਹੀਂ ਹੈ: Helpers... ਨਾਲ ਆਪਣੀ ਚੋਣ ਕਰੋ...
+#. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ: ਇਸਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਦੇ ਪੈਕੇਜ ਮੈਨੇਜਰ (ਜਾਂ Homebrew) ਨਾਲ ਸਥਾਪਤ ਕਰੋ।
@@ -4593,6 +4836,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	ਡਰਾਈਵ ਜਾਂ ਨੈੱਟਵਰਕ ਸ਼ੇਅਰ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ ਹੈ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	ਛੱਡੀਆਂ ਗਈਆਂ ਐਂਟਰੀਆਂ ਅਜੇ ਵੀ {folder} ਵਿੱਚ ਹਨ
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	ਐਕਸਟੈਨਸ਼ਨ ਪਹਿਲਾਂ ਹੀ ਇਸ ਐਪ ਵਿੱਚ ਮੌਜੂਦ ਹੈ। Apple ਨੇ ਇਸ ਬਿਲਡ ਨੂੰ ਨੋਟਰਾਈਜ਼ ਨਹੀਂ ਕੀਤਾ, ਇਸ ਲਈ Safari ਨੂੰ ਇਸ ਦੀ ਇਜਾਜ਼ਤ ਦੇਣ ਲਈ ਇਹ ਪੜਾਅ ਚਾਹੀਦੇ ਹਨ।
@@ -4618,6 +4865,14 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file matches ({algorithm})	ਫਾਈਲ ਮੇਲ ਖਾਂਦੀ ਹੈ ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	ਫ਼ਾਈਲ ਦਾ ਨਾਮ ਬਹੁਤ ਲੰਬਾ ਹੈ: ਡਾਊਨਲੋਡ ਹੋਣ ਵੇਲੇ ਸੇਵ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਸਮੇਤ ਵੱਧ ਤੋਂ ਵੱਧ {limit} ਬਾਈਟ। ਇੱਕ ਛੋਟਾ ਨਾਮ ਚੁਣੋ ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	ਫ਼ਾਈਲ ਦਾ ਨਾਮ ਬਹੁਤ ਲੰਬਾ ਹੈ: ਡਾਊਨਲੋਡ ਹੋਣ ਵੇਲੇ ਸੇਵ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਸਮੇਤ ਵੱਧ ਤੋਂ ਵੱਧ {limit} ਅੱਖਰ। ਇੱਕ ਛੋਟਾ ਨਾਮ ਚੁਣੋ ({path})
 #. text in a dialog box
 #, machine
 	The file saved as	ਫ਼ਾਈਲ ਇਸ ਨਾਂ ਨਾਲ ਸੇਵ ਕੀਤੀ ਗਈ
@@ -4675,8 +4930,9 @@
 #, machine
 	the password is wrong	ਪਾਸਵਰਡ ਗਲਤ ਹੈ
 #. text in errors.rs
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: {path}	Windows ਲਈ ਪਾਥ ਬਹੁਤ ਲੰਬਾ ਹੈ: {path}
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows ਲਈ ਪਾਥ ਬਹੁਤ ਲੰਬਾ ਹੈ: ਡਾਊਨਲੋਡ ਹੋਣ ਵੇਲੇ ਸੇਵ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਸਮੇਤ ਵੱਧ ਤੋਂ ਵੱਧ {limit} ਅੱਖਰ। ਇੱਕ ਛੋਟਾ ਫ਼ਾਈਲ ਨਾਮ ਜਾਂ ਫੋਲਡਰ ਚੁਣੋ ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -4730,6 +4986,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	ਸਰਵਰ ਨੇ ਫਾਈਲ ਦਾ ਇੱਕ ਅਣਕਿਆਸਿਆ ਹਿੱਸਾ ਭੇਜਿਆ ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	ਸੇਵਾ ਇਹ ਨਹੀਂ ਦੱਸਦੀ ਕਿ ਇਹ ਪ੍ਰੀਮੀਅਮ ਹੈ ਜਾਂ ਨਹੀਂ
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4754,6 +5014,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	ਸਾਈਟ ਦੀ ਬੋਟ ਜਾਂਚ (Cloudflare) ਨੇ yt-dlp ਨੂੰ ਰੱਦ ਕਰ ਦਿੱਤਾ। ਜੇਕਰ ਪੰਨਾ ਤੁਹਾਡੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਖੁੱਲ੍ਹਦਾ ਹੈ, ਤਾਂ ਵਿਕਲਪ → ਸਾਈਟ ਲੌਗਇਨ → ਵੀਡੀਓ ਸਾਈਟਾਂ ਲਈ ਕੂਕੀਜ਼ ਵਿੱਚ ਉਹ ਬ੍ਰਾਊਜ਼ਰ ਚੁਣੋ ਅਤੇ ਪੰਨੇ ਨੂੰ ਦੁਬਾਰਾ ਦੇਖੋ, ਜਾਂ ਵੀਡੀਓ ਉੱਤੇ ਡਾਊਨਲੋਡ ਵੀਡੀਓ ਬਟਨ ਦੀ ਵਰਤੋਂ ਕਰੋ।
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	ਸਾਈਟ ਦਾ ਸਰਟੀਫਿਕੇਟ yt-dlp ਜਾਂ ਇਸ ਕੰਪਿਊਟਰ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਨਹੀਂ ਹੈ: ਇੱਕ ਐਂਟੀਵਾਇਰਸ ਦਾ ਵੈੱਬ ਫਿਲਟਰ ਜਾਂ ਇੱਕ ਪ੍ਰੌਕਸੀ ਜੋ HTTPS ਪੜ੍ਹਦਾ ਹੈ, ਰਸਤੇ ਵਿੱਚ ਹੋ ਸਕਦਾ ਹੈ। ਇਸਦੀ HTTPS ਸਕੈਨਿੰਗ ਬੰਦ ਕਰੋ, ਜਾਂ ਇਸਦਾ ਸਰਟੀਫਿਕੇਟ ਕੰਪਿਊਟਰ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ, ਫਿਰ ਪੰਨੇ ਨੂੰ ਦੁਬਾਰਾ ਲੱਭੋ।
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -4762,6 +5026,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	ਸਾਈਟ ਦਾ ਸੁਰੱਖਿਆ ਸਰਟੀਫਿਕੇਟ ਪਤੇ ਵਿੱਚ ਦਿੱਤੇ ਨਾਮ ਤੋਂ ਇਲਾਵਾ ਹੋਰ ਸਾਈਟ ਨਾਮਾਂ ਲਈ ਹੈ, ਇਸ ਲਈ MDM ਯਕੀਨੀ ਨਹੀਂ ਹੋ ਸਕਦਾ ਕਿ ਇਹ ਅਸਲ ਸਾਈਟ ਹੈ (ਤੁਹਾਡਾ ਬ੍ਰਾਊਜ਼ਰ ਵੀ ਇਸ ਬਾਰੇ ਚੇਤਾਵਨੀ ਦਿੰਦਾ ਹੈ)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	ਸਾਈਟ ਦਾ ਸੁਰੱਖਿਆ ਸਰਟੀਫਿਕੇਟ ਵੈੱਬਸਾਈਟਾਂ ਲਈ ਨਹੀਂ ਬਣਾਇਆ ਗਿਆ ਹੈ, ਇਸ ਲਈ MDM ਇਹ ਯਕੀਨੀ ਨਹੀਂ ਕਰ ਸਕਦਾ ਕਿ ਇਹ ਅਸਲੀ ਸਾਈਟ ਹੈ
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -4778,14 +5046,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	ਸਾਈਟ ਦਾ ਸੁਰੱਖਿਆ ਸਰਟੀਫਿਕੇਟ ਇਸਦੇ ਜਾਰੀਕਰਤਾ ਦੁਆਰਾ ਰੱਦ ਕਰ ਦਿੱਤਾ ਗਿਆ ਸੀ, ਇਸ ਲਈ MDM ਇਸ 'ਤੇ ਭਰੋਸਾ ਨਹੀਂ ਕਰੇਗਾ
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	ਸਾਈਟ ਦਾ ਸਰਟੀਫਿਕੇਟ yt-dlp ਜਾਂ ਇਸ ਕੰਪਿਊਟਰ ਦੁਆਰਾ ਭਰੋਸੇਯੋਗ ਨਹੀਂ ਹੈ: ਇੱਕ ਐਂਟੀਵਾਇਰਸ ਦਾ ਵੈੱਬ ਫਿਲਟਰ ਜਾਂ ਇੱਕ ਪ੍ਰੌਕਸੀ ਜੋ HTTPS ਪੜ੍ਹਦਾ ਹੈ, ਰਸਤੇ ਵਿੱਚ ਹੋ ਸਕਦਾ ਹੈ। ਇਸਦੀ HTTPS ਸਕੈਨਿੰਗ ਬੰਦ ਕਰੋ, ਜਾਂ ਇਸਦਾ ਸਰਟੀਫਿਕੇਟ ਕੰਪਿਊਟਰ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ, ਫਿਰ ਪੰਨੇ ਨੂੰ ਦੁਬਾਰਾ ਲੱਭੋ।
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	ਸਾਈਟ ਦਾ ਸੁਰੱਖਿਆ ਸਰਟੀਫਿਕੇਟ ਵੈੱਬਸਾਈਟਾਂ ਲਈ ਨਹੀਂ ਬਣਾਇਆ ਗਿਆ ਹੈ, ਇਸ ਲਈ MDM ਇਹ ਯਕੀਨੀ ਨਹੀਂ ਕਰ ਸਕਦਾ ਕਿ ਇਹ ਅਸਲੀ ਸਾਈਟ ਹੈ
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4843,6 +5103,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	ਇਸ ਨਾਮ ਨਾਲ ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਕਤਾਰ ਹੈ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	ਇਸ ਦੀਆਂ ਫ਼ਾਈਲਾਂ ਲਈ ਲੋੜੀਂਦੀ ਖਾਲੀ ਥਾਂ ਨਹੀਂ ਹੈ, HatchZip ਕਹਿੰਦਾ ਹੈ; ਕੁਝ ਵੀ ਨਹੀਂ ਬਦਲਿਆ ਗਿਆ
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋਣ ਦਾ ਡਾਇਲਾਗ ਦਿਖਾਓ" ਚਾਲੂ ਹੋਣ 'ਤੇ ਇਹ ਸੈਟਿੰਗਾਂ ਅਣਉਪਲਬਧ ਹਨ
@@ -4963,6 +5227,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ਇਹ ਪ੍ਰੋਗਰਾਮ {name} ਨਹੀਂ ਹੈ
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
+	This shortcut is already in use	ਇਹ ਸ਼ਾਰਟਕੱਟ ਪਹਿਲਾਂ ਹੀ ਵਰਤੋਂ ਵਿੱਚ ਹੈ
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #, machine
@@ -5062,7 +5330,7 @@
 #. title of the separate window listing a torrent's files
 #, machine
 	Torrent files	ਟੋਰੈਂਟ ਫਾਈਲਾਂ
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Torrent settings	ਟੋਰੈਂਟ ਸੈਟਿੰਗਾਂ
 #. text in torrent downloads
@@ -5110,6 +5378,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਜਾਂ {name} ਨੂੰ ਖੁਦ ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਇਸਨੂੰ {helpers} → {other} ਵਿੱਚ ਚੁਣੋ।
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	ਸੇਵ ਕੀਤੇ ਆਰਕਾਈਵ ਪਾਸਵਰਡਾਂ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5352,6 +5624,10 @@
 #. column title: the user name
 #, machine
 	User	ਉਪਭੋਗਤਾ
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	ਯੂਜ਼ਰ ਨਾਮ:
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	ਸਰਵਰਾਂ/ਸਾਈਟਾਂ ਲਈ ਉਪਭੋਗਤਾ ਨਾਮ ਅਤੇ ਪਾਸਵਰਡ
@@ -5514,6 +5790,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows ਵੇਕ ਟਾਈਮਰਾਂ ਦੀ ਇਜਾਜ਼ਤ ਸਿਰਫ਼ ਪਲੱਗ ਇਨ ਹੋਣ 'ਤੇ ਹੀ ਦਿੰਦਾ ਹੈ
 #. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+#, machine
+	Windows and macOS	Windows ਅਤੇ macOS
+#. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 #, machine
 	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows ਇਸ ਤਰ੍ਹਾਂ ਮਾਰਕ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ: ਕਿਸੇ ਪ੍ਰੋਗਰਾਮ ਦੇ ਪਹਿਲੀ ਵਾਰ ਚੱਲਣ ਤੋਂ ਪਹਿਲਾਂ SmartScreen, ਕਿਸੇ ਦਸਤਾਵੇਜ਼ ਦੇ ਖੁੱਲ੍ਹਣ ਤੋਂ ਪਹਿਲਾਂ Office ਦਾ Protected View। ਜੇ ਇਹ ਚੋਣ ਨਾ ਕੀਤੀ ਹੋਵੇ, ਜਾਂ Windows ਦੀ ਨੀਤੀ “ਫ਼ਾਈਲ ਅਟੈਚਮੈਂਟਾਂ ਵਿੱਚ ਜ਼ੋਨ ਜਾਣਕਾਰੀ ਸੁਰੱਖਿਅਤ ਨਾ ਰੱਖੋ” ਲਾਗੂ ਹੋਵੇ, ਤਾਂ ਕੋਈ ਡਾਊਨਲੋਡ ਮਾਰਕ ਨਹੀਂ ਹੁੰਦਾ।
@@ -5525,6 +5805,10 @@
 #. why the computer could not be put to sleep (fills {error})
 #, machine
 	Windows refused	Windows ਨੇ ਇਨਕਾਰ ਕਰ ਦਿੱਤਾ
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows ਅਜੇ ਵੀ magnet ਲਿੰਕ ਜਾਂ .torrent ਫ਼ਾਈਲਾਂ ਨੂੰ {apps} ਨਾਲ ਖੋਲ੍ਹਦਾ ਹੈ, ਜੋ Windows ਦੇ Default apps ਵਿੱਚ ਚੁਣਿਆ ਗਿਆ ਹੈ, ਜਿੱਥੇ ਸਿਰਫ਼ ਤੁਸੀਂ ਇਸਨੂੰ ਬਦਲ ਸਕਦੇ ਹੋ। ਸੈਟਿੰਗਾਂ ਹੁਣ ਉੱਥੇ ਖੁੱਲ੍ਹਦੀਆਂ ਹਨ: MAGNET ਅਤੇ .torrent ਲਈ Mister Download Manager ਚੁਣੋ।
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows ਦੀ ਭਾਸ਼ਾ
@@ -5624,7 +5908,7 @@
 #, machine
 	Your own program: {path} ({version})	ਤੁਹਾਡਾ ਆਪਣਾ ਪ੍ਰੋਗਰਾਮ: {path} ({version})
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	ਤੁਹਾਡੇ ਸਿਸਟਮ ਦਾ: {path}
 #. text in the Download video window
@@ -5751,7 +6035,8 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ਫ਼ਾਈਲ
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	{file} ਨੂੰ ਡਿਸਕ ਤੋਂ ਮਿਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: {error}
@@ -5772,7 +6057,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ਪਤਿਆਂ ਦੀ ਸੂਚੀ ਵਜੋਂ ਵਰਤਣ ਲਈ ਬਹੁਤ ਵੱਡੀ ਹੈ ({size})। ਆਯਾਤ {limit} ਤੱਕ ਦੀਆਂ ਟੈਕਸਟ ਫ਼ਾਈਲਾਂ, ਵੈੱਬ ਪੰਨੇ ਅਤੇ .ef2 ਨਿਰਯਾਤ ਪੜ੍ਹਦਾ ਹੈ।
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} ਨੂੰ “ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋ ਗਿਆ” ਵਿੱਚੋਂ ਬਾਹਰ ਖਿੱਚ ਕੇ ਕਿਤੇ ਹੋਰ ਭੇਜਿਆ ਗਿਆ ਸੀ, ਅਤੇ MDM ਨੂੰ ਪਤਾ ਨਹੀਂ ਲੱਗ ਸਕਿਆ ਕਿ ਕਿੱਥੇ। ਇਸਨੂੰ ਉੱਥੇ ਲੱਭੋ ਜਿੱਥੇ ਤੁਸੀਂ ਇਸਨੂੰ ਛੱਡਿਆ ਸੀ।
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} ਨੂੰ MDM ਤੋਂ ਬਾਹਰ ਖਿੱਚ ਕੇ ਕਿਤੇ ਹੋਰ ਭੇਜਿਆ ਗਿਆ ਸੀ, ਅਤੇ MDM ਇਹ ਨਹੀਂ ਜਾਣ ਸਕਿਆ ਕਿ ਕਿੱਥੇ। ਇਸਨੂੰ ਉੱਥੇ ਲੱਭੋ ਜਿੱਥੇ ਤੁਸੀਂ ਇਸਨੂੰ ਛੱਡਿਆ ਸੀ।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5904,6 +6189,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (ਸਾਰੇ ਡਾਊਨਲੋਡਾਂ ਲਈ ਸੀਮਾ: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (ਸੀਮਾ: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6517,11 +6812,19 @@ key	Delete	Delete
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Down / Alt+Down	ਡਾਊਨ / Alt+ਡਾਊਨ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Drag on blank space	ਖਾਲੀ ਥਾਂ 'ਤੇ ਖਿੱਚੋ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	Enter / Space
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6534,6 +6837,10 @@ key	F3	F3
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	ਖੱਬਾ / ਸੱਜਾ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6561,7 +6868,7 @@ key	Shift+Up / Shift+Down	Shift+ਉੱਪਰ / Shift+ਹੇਠਾਂ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Tab	ਟੈਬ
+key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7167,7 +7474,7 @@ menu	To &IDM export file...	IDM ਨਿਰਯਾਤ ਫਾਈਲ ਵਿੱਚ(&I)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	To &text file...	ਟੈਕਸਟ ਫਾਈਲ ਵਿੱਚ(&t)...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	ਟੂਲਬਾਰ

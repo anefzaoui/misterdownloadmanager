@@ -7,7 +7,8 @@
 //! fails to resume and keeps the data, never mixes two files.
 //!
 //! "The same file": from the same site (the addresses' registrable domains, or the pages the
-//! browser started them from), under the same name or of the same size, and never of another size.
+//! browser started them from), under the same name (the size, when both are known, must agree too), and never in or from a
+//! private window.
 
 use url::{Host, Url};
 
@@ -44,10 +45,20 @@ pub struct Offer<'a> {
     pub name: &'a str,
     pub size: Option<u64>,
     pub page: Option<&'a str>,
+    /// From a private window: never takes a row's place.
+    pub private: bool,
 }
 
-/// How well `item` matches the offer: None when it can't be the same file; else 2 for the same
-/// name and size, 1 for one of them.
+/// The sites whose addresses expire and whose failures wait for a fresh one on their own
+/// (Rapidgator: `rapidgator.net`, `rg.to`; as the engine's `sites::expiring`). Another site's
+/// download waits only when the user chose Refresh download address.
+pub fn expiring_site(url: &Url) -> bool {
+    matches!(site(url).as_deref(), Some("rapidgator.net" | "rg.to"))
+}
+
+/// How well `item` matches the offer: None when it can't be the same file (another name, another
+/// size, a private window's); else 2 for the same name and size, 1 for the same name with a size
+/// not known on one side.
 fn matches(item: &Item, offer: &Offer) -> Option<u8> {
     let waiting = item.waits_for_address
         && item.live.is_none()
@@ -56,6 +67,8 @@ fn matches(item: &Item, offer: &Offer) -> Option<u8> {
         && item.gallery.is_none()
         && item.torrent.is_none()
         && item.remote.is_none()
+        && !item.context.private
+        && !offer.private
         && item.url != *offer.url;
     if !waiting {
         return None;
@@ -72,15 +85,16 @@ fn matches(item: &Item, offer: &Offer) -> Option<u8> {
         _ => false,
     };
     let name = !offer.name.is_empty() && item.file_name.eq_ignore_ascii_case(offer.name);
+    // The name decides; a size alone never does (a multi-part archive's parts have one).
     match (name, size) {
         (true, true) => Some(2),
-        (true, false) | (false, true) => Some(1),
-        (false, false) => None,
+        (true, false) => Some(1),
+        (false, _) => None,
     }
 }
 
 /// The download waiting for a new address that `offer` is for: the best match (same name and
-/// size before one of them), the newest of equals. None: the offer is a download of its own.
+/// size before the name alone), the newest of equals. None: the offer is a download of its own.
 pub fn waiting_for(items: &[Item], offer: &Offer) -> Option<u64> {
     items
         .iter()
@@ -125,6 +139,7 @@ mod tests {
             name,
             size,
             page: Some(PAGE),
+            private: false,
         }
     }
 
@@ -153,7 +168,6 @@ mod tests {
         for (name, size) in [
             ("Lab.Archive.part1.rar", Some(SIZE)),
             ("lab.archive.PART1.rar", None),
-            ("7a1e4b9c-2f3d-4e5a-8b6c-9d0e1f2a3b4c", Some(SIZE)),
         ] {
             assert_eq!(
                 waiting_for(&items, &offer(&new, name, size)),
@@ -178,6 +192,9 @@ mod tests {
             ("Lab.Archive.part1.rar", Some(SIZE - 1)),
             ("Lab.Archive.part2.rar", None),
             ("Lab.Archive.part2.rar", Some(SIZE + 1)),
+            // The same size under another name is another file, not a name's guess either.
+            ("Lab.Archive.part2.rar", Some(SIZE)),
+            ("7a1e4b9c-2f3d-4e5a-8b6c-9d0e1f2a3b4c", Some(SIZE)),
             ("", None),
         ] {
             assert_eq!(
@@ -193,6 +210,7 @@ mod tests {
             name: "Lab.Archive.part1.rar",
             size: Some(SIZE),
             page: Some("https://example.com/"),
+            private: false,
         };
         assert_eq!(waiting_for(&items, &o), None);
         // Its very address: the duplicate check's, not a new address.
@@ -232,5 +250,41 @@ mod tests {
             waiting_for(&items, &offer(&new, "renamed.rar", Some(SIZE))),
             Some(5)
         );
+    }
+
+    /// Multi-part archives: part 2 (the same size) is not part 1's new address.
+    #[test]
+    fn another_part_of_the_same_size_is_not_taken() {
+        let new = url(NEW);
+        assert_eq!(
+            waiting_for(
+                &[waiting(1)],
+                &offer(&new, "Lab.Archive.part2.rar", Some(SIZE))
+            ),
+            None
+        );
+    }
+
+    /// A private window's row neither takes a normal window's download nor is taken.
+    #[test]
+    fn private_rows_and_offers_stay_apart() {
+        let new = url(NEW);
+        let mut private_row = waiting(1);
+        private_row.context.private = true;
+        let normal = offer(&new, "Lab.Archive.part1.rar", Some(SIZE));
+        assert_eq!(waiting_for(&[private_row], &normal), None);
+        let private = Offer {
+            private: true,
+            ..offer(&new, "Lab.Archive.part1.rar", Some(SIZE))
+        };
+        assert_eq!(waiting_for(&[waiting(1)], &private), None);
+    }
+
+    #[test]
+    fn only_expiring_sites_wait_on_their_own() {
+        assert!(expiring_site(&url(OLD)));
+        assert!(expiring_site(&url(PAGE)));
+        assert!(!expiring_site(&url("https://files.example.com/a.rar")));
+        assert!(!expiring_site(&url("https://notrapidgator.net/a")));
     }
 }

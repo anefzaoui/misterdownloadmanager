@@ -111,11 +111,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	已为 {n} 个同名文件重新编号
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	还有 {n} 个文件未能删除。
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	{n} 个节点
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	已保存 {n} 个
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -161,7 +171,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Apply	应用(&A)
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -184,6 +194,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Start now	立即开始(&S)
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(用空格分隔；* 匹配任意内容)
 #. text in the Options window
 #, machine
 	(separate names by spaces)	（用空格分隔名称）
@@ -214,6 +228,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 压缩包由 7-Zip（{path}）解压。
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	7z 和 RAR 压缩包由 HatchZip ({path}) 解压。
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -472,7 +490,7 @@
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	所有下载任务
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 #, machine
 	All files	所有文件
 #. text in helpers.rs
@@ -516,6 +534,10 @@
 #. checkbox in the Options window
 #, machine
 	Also take files the browser would open (PDF, music, video)	同时下载浏览器会打开的文件（PDF、音乐、视频）
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	Alt+单击链接
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -580,6 +602,19 @@
 #. what a screen reader calls Link grabber's password box
 #, machine
 	Archive password	压缩包密码
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	压缩包密码
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	压缩包密码
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	压缩包密码...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -793,6 +828,10 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	繁忙，请稍后重试
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	按钮大小:
 #. message or event log entry in the main window
 #, machine
 	by batch download	通过批量下载
@@ -811,6 +850,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cameroon	喀麦隆
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	无法续传
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -953,7 +996,9 @@
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	正在检查 {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	正在检查...
@@ -1043,6 +1088,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	科摩罗
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	紧凑
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1091,6 +1140,9 @@
 #. text in the Options window
 #, machine
 	Connections:	连接数：
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	贡献者
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1218,7 +1270,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	默认最大连接数
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1374,6 +1426,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	按顺序下载
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	重新下载
 #. button in a dialog box
 #, machine
 	Download Later	稍后下载
@@ -1488,6 +1544,10 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	下载已完成
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	下载文件、视频和种子
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1517,6 +1577,14 @@
 #. message or event log entry in the main window
 #, machine
 	Dragged out of Download complete and moved to {folder}	已从“下载完成”拖出并移动到 {folder}
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	已从列表中拖出并移动到 MDM 无法识别的位置
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	已从列表中拖出并移动到 {folder}
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1694,6 +1762,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	下载完成后解压压缩包
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	用 HatchZip (hatchzip.dev，未安装) 就地解压
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	用 HatchZip 就地解压：只需为文件预留空间
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1964,6 +2040,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	完整
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2083,6 +2163,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	完成后挂断调制解调器
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip 已就地解压：压缩包在文件解压时已移除
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2206,6 +2290,15 @@
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
 	in the locked keyring	在锁定的密钥环中
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	在工具栏中：打开按钮菜单
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	在工具栏中：按下按钮
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	在工具栏中：上一个/下一个按钮
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2246,6 +2339,10 @@
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
 	Install what's missing from your distribution's packages.	从您的发行版软件包中安装缺失的库。
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	安装您系统的 7zip (或 p7zip) 软件包，然后右键单击下载并选择“解压”。
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2307,6 +2404,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	需要密码
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	中途停止。已解压的文件在 {folder} 中，其余仍在压缩包中：继续解压
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2328,6 +2429,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	意大利
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	文件已解压，但移动时停止（{error}）。已移动的文件在 {to} 中，其余仍在 {left} 中；未删除任何内容
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2600,6 +2706,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS 会检查这样标记的文件：Gatekeeper 在程序首次打开前检查。如果未勾选，则不会标记任何下载。
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS 阻止 Mister Download Manager 访问浏览器文件夹。
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS 阻止 Mister Download Manager 访问 {browser} 文件夹。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2727,6 +2841,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM 没有响应。正在重试...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	MDM 没有适用于此系统的副本：请安装，或使用其他程序
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2790,7 +2908,7 @@
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	Mister Download Manager 崩溃报告
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager 遇到内部错误
@@ -2875,7 +2993,7 @@
 	Move a page up / down	向上/向下翻一页
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	在类别和下载列表之间切换
+	Move between the toolbar, the categories and the download list	在工具栏、类别和下载列表之间移动
 #. text in the Scheduler window
 #, machine
 	Move down	下移
@@ -3187,7 +3305,6 @@
 #, machine
 	Not in a queue	不在队列中
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	尚未安装
 #. text in the Link grabber window
@@ -3247,6 +3364,10 @@
 #. Options → Remote → Status: the remote control is off
 #, machine
 	Off: nothing on the network can reach MDM.	关闭：网络上的任何设备都无法访问 MDM。
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	已关闭：监视的源已被移除。
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	对复制到剪贴板的链接提示下载
@@ -3297,6 +3418,10 @@
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	每行一个地址；* 代表任意文本：example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	每行一个密码，在 MDM 询问之前按此顺序尝试解密压缩包。匹配的密码将移至顶部。
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	一次性下载
@@ -3343,7 +3468,9 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	打开文件夹
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 #, machine
 	Open in browser	在浏览器中打开
@@ -3704,6 +3831,10 @@
 #. RSS feeds window: fetch the selected feed again now
 #, machine
 	Refresh	刷新
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	刷新地址
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
@@ -3712,6 +3843,10 @@
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
 	Regular expressions	正则表达式
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	记住此密码以用于其他压缩包
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	记住此文件的限速器设置
@@ -3911,10 +4046,6 @@
 #. text in the Batch download window
 #, machine
 	Second file:	第二个文件：
-#. text in a dialog box
-#. title of the folder picker
-#, machine
-	Select a folder	选择文件夹
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4152,6 +4283,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	已注销：请重新登录
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	自 {date} 起
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	自 {date} 起：MDM 在驱动程序更新后会再次尝试
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	自 {date} 起：MDM 在下次启动时会再次尝试
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	自 {date} 起：MDM 将在 {retry} 再次尝试
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	自 {date} 起：MDM 将在 {retry} 或驱动程序更新后再次尝试
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4274,6 +4425,26 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	限速器设置
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	速度限制器：此下载最多 {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	速度限制器：所有下载 {limit}
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	速度限制器：所有下载总计 {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	速度限制器：每个下载 {limit}
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	速度限制器：每个下载 {one}，所有下载总计 {all}
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4658,6 +4829,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	驱动器或网络共享不再可用
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	未包含的条目仍在 {folder} 中
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	此应用已内置该扩展。此版本未经 Apple 公证，Safari 需按以下步骤操作才能允许运行。
@@ -4683,6 +4858,14 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file matches ({algorithm})	文件校验和匹配（{algorithm}）
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	文件名过长：下载时保存的文件最多 {limit} 字节。请选择较短的名称 ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	文件名过长：下载时保存的文件最多 {limit} 个字符。请选择较短的名称 ({path})
 #. text in a dialog box
 #, machine
 	The file saved as	文件保存为
@@ -4740,8 +4923,9 @@
 #, machine
 	the password is wrong	密码错误
 #. text in errors.rs
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: {path}	路径超出 Windows 长度限制：{path}
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Windows 路径过长：下载时保存的文件最多 {limit} 个字符。请选择较短的文件名或文件夹 ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -4823,6 +5007,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	站点的人机校验（Cloudflare）拒绝了 yt-dlp。若该页面能在浏览器中打开，请在“选项”→“站点登录”→“视频网站的 Cookie”中选择该浏览器后重新解析，或点击视频上方的“下载视频”按钮。
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	yt-dlp 和此计算机均不信任该网站的证书：可能是防病毒软件的网络筛选器或读取 HTTPS 的代理在阻止。请关闭其 HTTPS 扫描，或将其证书添加到计算机中，然后重新查找该页面。
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -4831,6 +5019,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	网站的安全证书适用于其他网站名称，MDM 无法确定这是否是真实网站（您的浏览器也会发出警告）
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	网站的安全证书并非用于网站身份验证，因此 MDM 无法确定该网站是否真实可信
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -4847,14 +5039,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	网站的安全证书已被颁发者撤销，MDM 不会信任该证书
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	yt-dlp 和此计算机均不信任该网站的证书：可能是防病毒软件的网络筛选器或读取 HTTPS 的代理在阻止。请关闭其 HTTPS 扫描，或将其证书添加到计算机中，然后重新查找该页面。
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	网站的安全证书并非用于网站身份验证，因此 MDM 无法确定该网站是否真实可信
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4912,6 +5096,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	已存在同名队列
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	HatchZip 表示没有足够的可用空间来存储其文件；未进行任何更改
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	启用“显示下载完成对话框”后，这些设置不可用
@@ -5134,7 +5322,7 @@
 #. title of the separate window listing a torrent's files
 #, machine
 	Torrent files	种子文件
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Torrent settings	种子设置
 #. text in torrent downloads
@@ -5182,6 +5370,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	请稍后重试，或者自行下载 {name}，然后在“{helpers}”→“{other}”中选择。
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	正在尝试已保存的压缩包密码...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5604,6 +5796,10 @@
 #. why the computer could not be put to sleep (fills {error})
 #, machine
 	Windows refused	Windows 拒绝了此操作
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows 仍使用 {apps} 打开磁力链接或 .torrent 文件，这是在 Windows 默认应用中选择的，只有您才能更改。现在将打开设置：请为 MAGNET 和 .torrent 选择 Mister Download Manager。
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows 语言
@@ -5703,7 +5899,7 @@
 #, machine
 	Your own program: {path} ({version})	您自己的程序：{path}（{version}）
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	系统自带的程序：{path}
 #. text in the Download video window
@@ -5830,7 +6026,8 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} 文件
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	无法从磁盘中删除 {file}：{error}
@@ -5851,7 +6048,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} ({size}) 过大，无法作为地址列表。导入功能可读取大小不超过 {limit} 的文本文件、网页和 .ef2 导出文件。
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} 已从“下载完成”拖出并移动到其他位置，MDM 无法识别具体位置。请在您放置它的位置查找。
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} 已通过拖出 MDM 移动到其他位置，MDM 无法得知具体位置。请在您放置它的位置查找。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5983,6 +6180,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (所有下载限制：{limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (限制：{limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6596,11 +6803,19 @@ key	Delete	Delete
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Down / Alt+Down	向下 / Alt+向下
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Drag on blank space	在空白处拖动
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	Enter / 空格
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6613,6 +6828,10 @@ key	F3	F3
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	向左 / 向右
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6640,7 +6859,7 @@ key	Shift+Up / Shift+Down	Shift+向上 / Shift+向下
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Tab	Tab
+key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7241,7 +7460,7 @@ menu	To &IDM export file...	导出到 IDM 文件(&I)...
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	To &text file...	导出到文本文件(&T)...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	工具栏

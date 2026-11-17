@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	همچنین {n} فایل را از دیسک حذف کنید|همچنین {n} فایل را از دیسک حذف کنید
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	یک سایت ناشناس می‌خواهد {n} پیوند به Link grabber بفرستد.|یک سایت ناشناس می‌خواهد {n} پیوند به Link grabber بفرستد.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -105,11 +110,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	نام {n} فایل از قبل در آنجا وجود داشت و به آن‌ها شماره داده شد|نام {n} فایل از قبل در آنجا وجود داشت و به آن‌ها شماره داده شد
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	{n} فایل دیگر نیز حذف نشد.|{n} فایل دیگر نیز حذف نشدند.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	{n} همتا|{n} همتا
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} ذخیره‌شده|{n} ذخیره‌شده
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -131,6 +146,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ردیاب: {peers}|{n} ردیاب: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} می‌خواهد {n} پیوند به Link grabber بفرستد.|{site} می‌خواهد {n} پیوند به Link grabber بفرستد.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -149,7 +169,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Apply	&اعمال
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -172,6 +192,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Start now	&شروع فوری
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(با فاصله جدا کنید؛ * با هر چیزی مطابقت دارد)
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(نام‌ها را با فاصله جدا کنید)
@@ -202,6 +226,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	آرشیوهای 7z و RAR با 7-Zip ({path}) استخراج می‌شوند.
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	آرشیوهای 7z و RAR را HatchZip ({path}) استخراج می‌کند.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -274,6 +302,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	حدود {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	پذیرش Click'n'Load از صفحات وب (پورت 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -425,6 +457,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	افغانستان
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	پس از چند رمز عبور اشتباه، سرویس این اتصال را برای چند دقیقه مسدود می‌کند.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -444,7 +480,7 @@
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	همه دانلودها
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 #, machine
 	All files	همه فایل‌ها
 #. text in helpers.rs
@@ -454,11 +490,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	همه موارد بارگذاری‌کننده
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	اجازه دادن
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	اجازه دادن به بیش از {n} اتصال
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	فقط به سایت‌هایی که استفاده می‌کنید اجازه دهید. هیچ چیزی قبل از افزودن آن در Link grabber جستجو یا بارگیری نمی‌شود.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	در حال دانلود: {path}
@@ -478,6 +522,10 @@
 	Also delete the file from disk	همچنین فایل را از دیسک حذف کنید
 #. checkbox in the Options window
 	Also take files the browser would open (PDF, music, video)	همچنین دریافت فایل‌هایی را که مرورگر باز می‌کند (PDF، موسیقی، ویدئو) بر عهده بگیر
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	با نگه‌داشتن Alt روی پیوند کلیک کنید
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -540,6 +588,19 @@
 #. what a screen reader calls Link grabber's password box
 #, machine
 	Archive password	گذرواژه بایگانی
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	رمزهای عبور آرشیو
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	رمزهای عبور آرشیو
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	رمزهای عبور آرشیو...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -675,6 +736,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	بوتان
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	مسدود کردن
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -745,6 +810,10 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	سرور مشغول است، بعدا تلاش کنید
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	اندازه دکمه:
 #. message or event log entry in the main window
 #, machine
 	by batch download	با دانلود دسته‌ای
@@ -762,6 +831,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cameroon	کامرون
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	امکان ادامه نیست
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -900,7 +973,9 @@
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	در حال بررسی {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	در حال بررسی...
@@ -934,10 +1009,19 @@
 #. a country's name (where a download's server is)
 #, machine
 	Christmas Island	جزیره کریسمس
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 #, machine
 	Clear	پاک کردن
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load نمی‌تواند شروع شود: برنامه دیگری (JDownloader؟) از پورت {port} استفاده می‌کند. آن را ببندید، سپس Click'n'Load را در تنظیمات خاموش و دوباره روشن کنید.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load نمی‌تواند شروع شود: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -981,6 +1065,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	کومور
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	فشرده
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1029,6 +1117,9 @@
 #. text in the Options window
 #, machine
 	Connections:	اتصالات:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	مشارکت‌کنندگان
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1156,7 +1247,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	حداکثر تعداد اتصال پیش‌فرض
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1312,6 +1403,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	به ترتیب بارگیری شود
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	دوباره بارگیری کنید
 #. button in a dialog box
 #, machine
 	Download Later	بارگیری بعدا
@@ -1426,6 +1521,10 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	بارگیری‌ها کامل شد
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	فایل‌ها، ویدئوها و تورنت‌ها را بارگیری می‌کند
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1455,6 +1554,14 @@
 #. message or event log entry in the main window
 #, machine
 	Dragged out of Download complete and moved to {folder}	از «بارگیری کامل شد» بیرون کشیده شد و به {folder} منتقل شد
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	از لیست خارج شد و به مکانی منتقل شد که MDM نتوانست آن را شناسایی کند
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	از لیست خارج شد و به {folder} منتقل شد
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1632,6 +1739,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	بایگانی‌ها را پس از اتمام دانلود استخراج کن
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	استخراج در محل با HatchZip (hatchzip.dev، نصب نشده)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	استخراج در محل با HatchZip: فقط فایل‌ها به فضا نیاز دارند
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1902,6 +2017,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	کامل
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2021,6 +2140,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	قطع خودکار مودم پس از اتمام
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip آن را در محل استخراج کرد: آرشیو همزمان با خروج فایل‌هایش حذف شد
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2144,6 +2267,15 @@
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
 	in the locked keyring	در جا کلیدی قفل شده
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	در نوار ابزار: باز کردن منوی یک دکمه
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	در نوار ابزار: فشردن دکمه
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	در نوار ابزار: دکمه قبلی / بعدی
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2184,6 +2316,10 @@
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
 	Install what's missing from your distribution's packages.	آنچه را که از بسته‌های توزیع شما گم شده است نصب کنید.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	بسته 7zip (یا p7zip) سیستم خود را نصب کنید، سپس روی بارگیری راست‌کلیک کرده و استخراج را انتخاب کنید.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2245,6 +2381,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	به گذرواژه نیاز دارد
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	در نیمه‌راه متوقف شد. فایل‌هایی که تاکنون استخراج شده‌اند در {folder} هستند؛ بقیه هنوز در آرشیو هستند: با «استخراج» ادامه دهید
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2266,6 +2406,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	ایتالیا
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	فایل‌های آن خارج شدند، اما انتقال آن‌ها متوقف شد ({error}). فایل‌های منتقل شده در {to} هستند، بقیه هنوز در {left}؛ چیزی حذف نشد
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2538,6 +2683,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS فایل‌هایی را که به این شکل علامت‌گذاری شده‌اند بررسی می‌کند: Gatekeeper پیش از نخستین باز شدن یک برنامه. اگر تیک نخورده باشد، هیچ فایلی علامت‌گذاری نمی‌شود.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS اجازه نمی‌دهد Mister Download Manager به پوشه مرورگر دسترسی داشته باشد.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS اجازه نمی‌دهد Mister Download Manager به پوشه {browser} دسترسی داشته باشد.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2665,6 +2818,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM پاسخ نمی‌دهد. دوباره تلاش می‌شود...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	MDM نسخه‌ای برای این سیستم ندارد: آن را نصب کنید، یا از برنامه دیگری استفاده کنید
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2728,7 +2885,7 @@
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	گزارش خرابی Mister Download Manager
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager با خطای داخلی مواجه شد
@@ -2813,7 +2970,7 @@
 	Move a page up / down	حرکت به بالا/پایین صفحه
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	جابه‌جایی بین دسته‌ها و فهرست دانلود
+	Move between the toolbar, the categories and the download list	حرکت بین نوار ابزار، دسته‌ها و فهرست بارگیری
 #. text in the Scheduler window
 #, machine
 	Move down	انتقال به پایین
@@ -3067,7 +3224,7 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	هیچ آدرس وبی در {file} یافت نشد.
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
 	None	هیچ‌کدام
@@ -3125,10 +3282,14 @@
 #, machine
 	Not in a queue	در صف نیست
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	هنوز نصب نشده است
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	بررسی نشد
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	فعلا نه
 #. text in helpers.rs
@@ -3180,6 +3341,10 @@
 #. Options → Remote → Status: the remote control is off
 #, machine
 	Off: nothing on the network can reach MDM.	خاموش: هیچ چیز در شبکه نمی‌تواند به MDM دسترسی پیدا کند.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	غیرفعال: فیدهای تحت نظارت آن حذف شدند.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	پیشنهاد دانلود پیوندهای کپی‌شده در کلیپ‌بورد
@@ -3230,6 +3395,10 @@
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	یک آدرس در هر خط؛ * به معنای هر متنی است: example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	یک گذرواژه در هر خط، به همین ترتیب روی بایگانی رمزگذاری‌شده امتحان می‌شود تا MDM از شما بپرسد. گذرواژه صحیح به بالا منتقل می‌شود.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	دانلود یک‌باره
@@ -3276,7 +3445,9 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	باز کردن پوشه
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 #, machine
 	Open in browser	باز کردن در مرورگر
@@ -3329,6 +3500,10 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	گزینه‌ها پس از تکمیل
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	یا کلید API یک برنامه را جای‌گذاری کنید:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -3394,6 +3569,7 @@
 	Password	گذرواژه
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 #, machine
 	Password:	گذرواژه:
 #. text in the Add torrent window
@@ -3495,6 +3671,11 @@
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	اشتراک ویژه، {days} روز باقی مانده
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Press keys...	کلیدها را فشار دهید...
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3628,6 +3809,10 @@
 #. RSS feeds window: fetch the selected feed again now
 #, machine
 	Refresh	تازه‌سازی
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	نشانی را بازنشانی کنید
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
@@ -3636,6 +3821,10 @@
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
 	Regular expressions	عبارات باقاعده
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	برای بایگانی‌های دیگر به خاطر بسپار
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	تنظیمات محدودکننده سرعت را برای این فایل به خاطر بسپار
@@ -3669,8 +3858,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	{name} از فهرست حذف شود؟
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 #, machine
 	Rename	تغییر نام
 #. text in the Batch download window
@@ -3834,10 +4024,6 @@
 #. text in the Batch download window
 #, machine
 	Second file:	فایل دوم:
-#. text in a dialog box
-#. title of the folder picker
-#, machine
-	Select a folder	انتخاب یک پوشه
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -3980,6 +4166,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Sharing stopped: {error}	اشتراک‌گذاری متوقف شد: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
+	Shortcut to show or hide window:	میان‌بر نمایش یا پنهان کردن پنجره:
 #. text in the download list
 #, machine
 	Show	نمایش
@@ -4041,6 +4231,10 @@
 #, machine
 	Sierra Leone	سیرالئون
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	ورود
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	ورود به سیستم در مرورگر
@@ -4057,6 +4251,10 @@
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	ورودها و گذرواژه‌ها در Windows Credential Manager نگهداری می‌شوند.
 #. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	وارد شدید ({state})
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	با نام {user} ({state}) وارد شده‌اید
@@ -4064,6 +4262,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	خروج از سیستم: دوباره وارد شوید
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	از {date}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	از {date}: MDM پس از به‌روزرسانی درایور دوباره امتحان می‌کند
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	از {date}: MDM در شروع بعدی دوباره امتحان می‌کند
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	از {date}: MDM در {retry} دوباره امتحان می‌کند
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	از {date}: MDM در {retry} یا پس از به‌روزرسانی درایور دوباره امتحان می‌کند
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4186,6 +4404,26 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	تنظیمات محدودکننده سرعت
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	محدودکننده سرعت: حداکثر {limit} برای این بارگیری
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	محدودکننده سرعت: {limit} برای همه بارگیری‌ها
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	محدودکننده سرعت: {limit} برای همه بارگیری‌ها با هم
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	محدودکننده سرعت: {limit} برای هر بارگیری
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	محدودکننده سرعت: {one} برای هر بارگیری، {all} برای همه
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4570,6 +4808,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	درایو یا اشتراک شبکه دیگر در دسترس نیست
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	ورودی‌های حذف‌شده همچنان در {folder} هستند
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	افزونه از قبل در این برنامه وجود دارد. Apple این نسخه را تأیید نکرده است، بنابراین Safari برای اجازه دادن به آن به این مراحل نیاز دارد.
@@ -4595,6 +4837,14 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file matches ({algorithm})	فایل مطابقت دارد ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	نام فایل بیش از حد طولانی است: حداکثر {limit} بایت با فایل‌های ذخیره‌شده در حین بارگیری. نام کوتاه‌تری انتخاب کنید ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	نام فایل بیش از حد طولانی است: حداکثر {limit} کاراکتر با فایل‌های ذخیره‌شده در حین بارگیری. نام کوتاه‌تری انتخاب کنید ({path})
 #. text in a dialog box
 #, machine
 	The file saved as	فایل با نام زیر ذخیره شد
@@ -4652,8 +4902,9 @@
 #, machine
 	the password is wrong	گذرواژه اشتباه است
 #. text in errors.rs
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: {path}	مسیر برای Windows خیلی طولانی است: {path}
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	مسیر برای Windows بیش از حد طولانی است: حداکثر {limit} کاراکتر با فایل‌هایی که هنگام بارگیری ذخیره می‌شوند. نام فایل یا پوشه کوتاه‌تری انتخاب کنید ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -4707,6 +4958,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	سرور بخش غیرمنتظره‌ای از فایل را ارسال کرد ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	سرویس مشخص نمی‌کند که حساب ویژه است یا خیر
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4731,6 +4986,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	بررسی ربات سایت (Cloudflare) yt-dlp را رد کرد. اگر صفحه در مرورگر شما باز می‌شود، آن مرورگر را در گزینه‌ها ← ورود به سایت‌ها ← کوکی‌ها برای سایت‌های ویدئویی انتخاب کنید و دوباره صفحه را جستجو کنید، یا از دکمه بارگیری ویدئو روی ویدئو استفاده کنید.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	گواهی سایت نه توسط yt-dlp و نه توسط این رایانه مورد اعتماد نیست: فیلتر وب یک آنتی‌ویروس یا یک پروکسی که HTTPS را می‌خواند ممکن است مانع باشد. اسکن HTTPS آن را خاموش کنید، یا گواهی آن را به رایانه اضافه کنید، سپس صفحه را دوباره جستجو کنید.
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -4739,6 +4998,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	گواهی امنیتی سایت برای نام سایتی دیگر صادر شده است، بنابراین MDM نمی‌تواند مطمئن باشد که این سایت واقعی است (مرورگر شما نیز درباره آن هشدار می‌دهد)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	گواهی امنیتی سایت برای وب‌سایت‌ها صادر نشده است، بنابراین MDM نمی‌تواند مطمئن باشد که سایت واقعی است
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -4755,14 +5018,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	گواهی امنیتی سایت توسط صادرکننده آن باطل شده است، بنابراین MDM به آن اعتماد نمی‌کند
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	گواهی سایت نه توسط yt-dlp و نه توسط این رایانه مورد اعتماد نیست: فیلتر وب یک آنتی‌ویروس یا یک پروکسی که HTTPS را می‌خواند ممکن است مانع باشد. اسکن HTTPS آن را خاموش کنید، یا گواهی آن را به رایانه اضافه کنید، سپس صفحه را دوباره جستجو کنید.
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	گواهی امنیتی سایت برای وب‌سایت‌ها صادر نشده است، بنابراین MDM نمی‌تواند مطمئن باشد که سایت واقعی است
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4820,6 +5075,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	صفی با این نام از قبل وجود دارد
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	فضای خالی کافی برای فایل‌های آن وجود ندارد، HatchZip می‌گوید؛ چیزی تغییر نکرد
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	وقتی «نمایش گفت‌وگوی پایان بارگیری» روشن باشد، این تنظیمات در دسترس نیستند
@@ -4940,6 +5199,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	این برنامه {name} نیست
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
+	This shortcut is already in use	این میان‌بر قبلا در حال استفاده است
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #, machine
@@ -5039,7 +5302,7 @@
 #. title of the separate window listing a torrent's files
 #, machine
 	Torrent files	فایل‌های تورنت
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Torrent settings	تنظیمات تورنت
 #. text in torrent downloads
@@ -5087,6 +5350,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	بعدا دوباره تلاش کنید، یا {name} را خودتان بارگیری کرده و در {helpers} ← {other} انتخاب کنید.
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	در حال امتحان گذرواژه‌های بایگانی ذخیره‌شده...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5329,6 +5596,10 @@
 #. column title: the user name
 #, machine
 	User	کاربر
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	نام کاربری:
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	نام‌های کاربری و گذرواژه‌ها برای سرورها/سایت‌ها
@@ -5491,6 +5762,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Windows زمان‌سنج‌های بیدارباش را فقط در حالت اتصال به برق مجاز می‌داند
 #. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+#, machine
+	Windows and macOS	Windows و macOS
+#. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 #, machine
 	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows فایل‌های علامت‌گذاری‌شده به این روش را بررسی می‌کند: SmartScreen پیش از اولین اجرای برنامه، Protected View آفیس پیش از باز شدن سند. اگر علامت‌گذاری نشود، یا تحت خط‌مشی Windows «اطلاعات منطقه را در پیوست‌های فایل حفظ نکنید»، هیچ بارگیری‌ای علامت‌گذاری نمی‌شود.
@@ -5601,7 +5876,7 @@
 #, machine
 	Your own program: {path} ({version})	برنامه شما: {path} ({version})
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	سیستم شما: {path}
 #. text in the Download video window
@@ -5728,7 +6003,8 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	فایل {ext}
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	حذف {file} از دیسک امکان‌پذیر نبود: {error}
@@ -5749,7 +6025,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	حجم {file} برای استفاده به‌عنوان فهرست نشانی بیش از حد بزرگ است ({size}). قابلیت وارد کردن، فایل‌های متنی، صفحات وب و فایل‌های خروجی .ef2 را تا حجم {limit} می‌خواند.
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	فایل «{file}» با کشیدن از «بارگیری کامل شد» به جای دیگری منتقل شد و MDM نتوانست مکان آن را پیدا کند. آن را در مکانی که رها کردید جست‌وجو کنید.
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} با کشیدن از MDM به جای دیگری منتقل شد و MDM نتوانست مکان آن را پیدا کند. آن را در جایی که رها کردید جستجو کنید.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5881,6 +6157,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (محدودیت برای همه بارگیری‌ها: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (محدودیت: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6476,11 +6762,19 @@ key	Delete	Delete
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Down / Alt+Down	پایین / Alt+پایین
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Drag on blank space	کشیدن روی فضای خالی
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	Enter / Space
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6493,6 +6787,10 @@ key	F3	F3
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	چپ / راست
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6520,7 +6818,7 @@ key	Shift+Up / Shift+Down	Shift+بالا / Shift+پایین
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Tab	Tab
+key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7126,7 +7424,7 @@ menu	To &IDM export file...	به فایل صادراتی &IDM...
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	To &text file...	به فایل &متنی...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	نوار ابزار

@@ -2265,6 +2265,8 @@ mod tests {
         )
         .unwrap();
         assert_eq!(cmd.cookies.as_deref(), Some("session=secret_token_123"));
+        // A script's add with cookies is not the browser's own hand-off.
+        assert!(!cmd.browser_handoff);
 
         let empty = add_command_with(
             "https://example.test/a.zip".into(),
