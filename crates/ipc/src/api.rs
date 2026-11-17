@@ -45,6 +45,129 @@ pub struct CategoryInfo {
     pub name: String,
 }
 
+/// Criteria to filter downloads in a [`ListAnswer`].
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct ListFilter<'a> {
+    pub id: Option<u64>,
+    pub status: Option<&'a str>,
+    pub search: Option<&'a str>,
+    pub category: Option<&'a str>,
+    pub queue: Option<&'a str>,
+    pub limit: Option<usize>,
+}
+
+/// A filter could not be applied to a [`ListAnswer`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum FilterError {
+    UnknownStatus {
+        status: String,
+        valid: &'static [&'static str],
+    },
+    UnknownQueue {
+        queue: String,
+        available: Vec<String>,
+    },
+}
+
+impl std::fmt::Display for FilterError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::UnknownStatus { status, valid } => {
+                write!(f, "Unknown status {status:?}: use one of {valid:?}.")
+            }
+            Self::UnknownQueue { queue, available } => {
+                write!(
+                    f,
+                    "Unknown queue {queue:?}: the app has queues {available:?}."
+                )
+            }
+        }
+    }
+}
+
+impl std::error::Error for FilterError {}
+
+impl ListAnswer {
+    /// Return a copy of this answer with its downloads filtered by the given criteria,
+    /// sorted newest-first (descending id).
+    pub fn filtered(&self, filter: &ListFilter) -> Result<ListAnswer, FilterError> {
+        let status = match filter.status.map(str::trim).filter(|s| !s.is_empty()) {
+            None => None,
+            Some(s) => Some(
+                STATUSES
+                    .into_iter()
+                    .find(|k| k.eq_ignore_ascii_case(s))
+                    .ok_or_else(|| FilterError::UnknownStatus {
+                        status: s.to_string(),
+                        valid: &STATUSES,
+                    })?,
+            ),
+        };
+
+        let search = filter
+            .search
+            .map(|s| s.trim().to_lowercase())
+            .filter(|s| !s.is_empty());
+        let category = filter.category.map(str::trim).filter(|s| !s.is_empty());
+        let queue = filter.queue.map(str::trim).filter(|s| !s.is_empty());
+
+        let queue_ids: Option<Vec<u64>> = match queue {
+            Some(q) => {
+                let found = self
+                    .queues
+                    .iter()
+                    .find(|qi| qi.name.eq_ignore_ascii_case(q));
+                match found {
+                    Some(qi) => Some(qi.ids.clone()),
+                    None => {
+                        return Err(FilterError::UnknownQueue {
+                            queue: q.to_string(),
+                            available: self.queues.iter().map(|qi| qi.name.clone()).collect(),
+                        });
+                    }
+                }
+            }
+            None => None,
+        };
+
+        let mut downloads: Vec<DownloadInfo> = self
+            .downloads
+            .iter()
+            .filter(|d| filter.id.is_none_or(|id| d.id == id))
+            .filter(|d| status.is_none_or(|s| d.status.eq_ignore_ascii_case(s)))
+            .filter(|d| {
+                search.as_ref().is_none_or(|q| {
+                    d.file.to_lowercase().contains(q) || d.url.to_lowercase().contains(q)
+                })
+            })
+            .filter(|d| {
+                category.as_ref().is_none_or(|c| {
+                    d.category.eq_ignore_ascii_case(c)
+                        || self.categories.iter().any(|ci| {
+                            ci.key.eq_ignore_ascii_case(&d.category)
+                                && ci.name.eq_ignore_ascii_case(c)
+                        })
+                })
+            })
+            .filter(|d| queue_ids.as_ref().is_none_or(|ids| ids.contains(&d.id)))
+            .cloned()
+            .collect();
+
+        downloads.sort_by_key(|d| std::cmp::Reverse(d.id));
+        if let Some(limit) = filter.limit {
+            downloads.truncate(limit);
+        }
+
+        Ok(ListAnswer {
+            downloads,
+            speed: self.speed,
+            queues: self.queues.clone(),
+            categories: self.categories.clone(),
+            free: self.free,
+        })
+    }
+}
+
 /// An address added (`url`): the download's id, or `pending` while a torrent's files are looked
 /// up (it joins the list once they are known).
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
@@ -423,5 +546,132 @@ mod tests {
             serde_json::from_str(r#"{"error":"the automation API is off"}"#).unwrap();
         assert!(other.state.is_empty());
         assert!(serde_json::from_str::<VideoLookupAnswer>("ok").is_err());
+    }
+
+    #[test]
+    fn list_filtering_works() {
+        let list = ListAnswer {
+            downloads: vec![
+                DownloadInfo {
+                    id: 1,
+                    file: "test1.zip".into(),
+                    url: "https://example.com/test1.zip".into(),
+                    status: "Downloading".into(),
+                    category: "Compressed".into(),
+                    ..Default::default()
+                },
+                DownloadInfo {
+                    id: 2,
+                    file: "song.mp3".into(),
+                    url: "https://example.com/song.mp3".into(),
+                    status: "Complete".into(),
+                    category: "Music".into(),
+                    ..Default::default()
+                },
+                DownloadInfo {
+                    id: 3,
+                    file: "video.mp4".into(),
+                    url: "https://example.com/video.mp4".into(),
+                    status: "Downloading".into(),
+                    category: "Video".into(),
+                    ..Default::default()
+                },
+            ],
+            queues: vec![QueueInfo {
+                name: "Main download queue".into(),
+                running: true,
+                ids: vec![1, 3],
+            }],
+            categories: vec![
+                CategoryInfo {
+                    key: "Compressed".into(),
+                    name: "Compressed".into(),
+                },
+                CategoryInfo {
+                    key: "Music".into(),
+                    name: "Music".into(),
+                },
+            ],
+            speed: 1234,
+            free: Some(50000000000),
+        };
+
+        // Filter by id
+        let by_id = list
+            .filtered(&ListFilter {
+                id: Some(2),
+                ..Default::default()
+            })
+            .unwrap();
+        assert_eq!(by_id.downloads.len(), 1);
+        assert_eq!(by_id.downloads[0].id, 2);
+
+        // Filter by status (case-insensitive)
+        let by_status = list
+            .filtered(&ListFilter {
+                status: Some("downloading"),
+                ..Default::default()
+            })
+            .unwrap();
+        assert_eq!(by_status.downloads.len(), 2);
+        assert_eq!(by_status.downloads[0].id, 3);
+        assert_eq!(by_status.downloads[1].id, 1);
+
+        // Filter by search
+        let by_search = list
+            .filtered(&ListFilter {
+                search: Some("SONG"),
+                ..Default::default()
+            })
+            .unwrap();
+        assert_eq!(by_search.downloads.len(), 1);
+        assert_eq!(by_search.downloads[0].id, 2);
+
+        // Filter by category key or name
+        let by_cat = list
+            .filtered(&ListFilter {
+                category: Some("music"),
+                ..Default::default()
+            })
+            .unwrap();
+        assert_eq!(by_cat.downloads.len(), 1);
+        assert_eq!(by_cat.downloads[0].id, 2);
+
+        // Filter by queue
+        let by_queue = list
+            .filtered(&ListFilter {
+                queue: Some("main download queue"),
+                ..Default::default()
+            })
+            .unwrap();
+        assert_eq!(by_queue.downloads.len(), 2);
+        assert_eq!(by_queue.downloads[0].id, 3);
+        assert_eq!(by_queue.downloads[1].id, 1);
+
+        // Limit
+        let limited = list
+            .filtered(&ListFilter {
+                limit: Some(1),
+                ..Default::default()
+            })
+            .unwrap();
+        assert_eq!(limited.downloads.len(), 1);
+        assert_eq!(limited.downloads[0].id, 3);
+
+        // Errors
+        assert!(matches!(
+            list.filtered(&ListFilter {
+                queue: Some("missing"),
+                ..Default::default()
+            }),
+            Err(FilterError::UnknownQueue { .. })
+        ));
+        assert!(matches!(
+            list.filtered(&ListFilter {
+                status: Some("paused"),
+                ..Default::default()
+            }),
+            Err(FilterError::UnknownStatus { .. })
+        ));
     }
 }
