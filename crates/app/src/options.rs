@@ -2270,6 +2270,25 @@ impl OptionsDialog {
             }
         }
         self.video_cookies(ui, o);
+        self.mark_watched(ui, o);
+    }
+
+    /// Sites Logins → Mark YouTube videos I download as watched (#1363): once a YouTube video is
+    /// downloaded, yt-dlp marks it watched in the history of the account its cookies sign in to
+    /// (the extension's, or the browser's of Cookies for video sites). Off.
+    fn mark_watched(&mut self, ui: &mut Ui, o: Pos2) {
+        winui::checkbox_light(
+            ui,
+            o + vec2(22.0, 436.0),
+            &mut self.s.ytdlp_mark_watched,
+            // i18n: Options → Sites Logins: checkbox under Cookies for video sites: a YouTube video downloaded with MDM is marked as watched in the person's YouTube history
+            "Mark YouTube videos I download as watched",
+            true,
+        )
+        .on_hover_text(crate::i18n::t(
+            // i18n: Options → Sites Logins → Mark YouTube videos I download as watched: its tooltip
+            "Once a YouTube video is downloaded, it is added to the watch history of the account you are signed in to. Needs YouTube's cookies: the browser's extension passes them, or choose a browser under Cookies for video sites. Never for a private window.",
+        ));
     }
 
     /// Sites Logins → Cookies for video sites (#229): Off, or the browser whose cookies yt-dlp

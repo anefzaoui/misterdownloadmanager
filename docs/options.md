@@ -118,6 +118,8 @@ The passwords (these, the proxy's and the debrid accounts') are kept in the syst
 - **Off** (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.
 - **From browser** — yt-dlp reads the chosen browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera, Vivaldi, Chromium, Whale; Safari on macOS) for every video it looks up or downloads, pasted addresses included. When the extension passed the page's own cookies, those are used instead. **Profile (optional)**: a profile's name or folder (**...** chooses one); empty, the one used last. Chrome, Edge and Brave lock their cookies on Windows: Firefox works. See [Sites that want you signed in](video.md#sites-that-want-you-signed-in).
 
+**Mark YouTube videos I download as watched** — off by default. Ticked, a YouTube video you download with MDM is added to the watch history of the account you are signed in to, as if you had watched it there. It happens once the video is saved, once per download: a download that failed or was stopped isn't marked, nor is a video you only looked up in the Download video window or the menu over a video. yt-dlp does the marking (its `--mark-watched`) with the cookies the video was downloaded with: the page's own, which the browser extension passes when you use the button over a video, or the browser's chosen above under **Cookies for video sites**. Without either, nothing is marked and the download's log says why. A download from a private window is never marked.
+
 ## Accounts
 
 ![Options on its Accounts page: debrid service accounts](images/help/options-accounts.webp)

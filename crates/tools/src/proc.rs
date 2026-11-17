@@ -650,6 +650,8 @@ pub struct FromBrowser {
     pub user_agent: Option<String>,
     pub cookies: Option<String>,
     pub jar: Vec<mdm_ipc::BrowserCookie>,
+    /// From a private (incognito) window: its video is never marked watched on YouTube (#1363).
+    pub private: bool,
 }
 
 /// A private cookie file in the Netscape format yt-dlp's `--cookies` reads, removed when

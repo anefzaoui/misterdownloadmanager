@@ -567,6 +567,10 @@ These ship in the next version.
 - ✅ A stream's own address — an HLS playlist (`.m3u8`) or DASH's (`.mpd`) — opens the video
   window like a page's: pasting a playlist downloads the video and merges it into one playable
   file, instead of saving the playlist itself
+- ✅ Options → Sites Logins → Mark YouTube videos I download as watched (off by default): a
+  YouTube video downloaded with MDM goes into the signed-in account's watch history once saved,
+  with the browser's cookies, never from a private window
+  ([#1363](https://github.com/anefzaoui/misterdownloadmanager/issues/1363))
 - ✅ The window never waits for the disk to log: lines go to the log's own thread through a
   queue that drops (and counts) what a stuck disk can't take, and a crash or freeze report
   carries the last lines from memory when the file doesn't have them yet

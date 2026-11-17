@@ -352,6 +352,10 @@ pub struct Settings {
     /// Download video from a page → Embed chapters (#827): a video's chapters go into its file
     /// (with ffmpeg). On; a settings file from before has none: on.
     pub video_chapters: bool,
+    /// Options → Sites Logins → Mark YouTube videos I download as watched (#1363): once a
+    /// YouTube video is downloaded, yt-dlp marks it watched in the history of the account its
+    /// cookies sign in to. Off; a settings file from before has none: off.
+    pub ytdlp_mark_watched: bool,
     /// Options → Sites Logins → Cookies for video sites (#229): the browser whose cookies
     /// yt-dlp reads on this computer when the extension passed none (yt-dlp's name: `firefox`,
     /// `chrome`...; empty: off, the default), and its profile (a name or a folder; empty: the
@@ -536,6 +540,7 @@ impl Default for Settings {
             drop_target_pos: None,
             video_subs: Default::default(),
             video_chapters: true,
+            ytdlp_mark_watched: false,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
             extract_auto: false,
@@ -1152,6 +1157,8 @@ impl Settings {
 pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
     mdm_tools::video::set_chapters(s.video_chapters);
+    // Mark YouTube videos I download as watched (#1363), for the videos started from now on.
+    mdm_tools::video::set_mark_watched(s.ytdlp_mark_watched);
 }
 
 /// The network adapter MDM's connections go through now (#35).
@@ -1438,6 +1445,17 @@ mod tests {
             s.site_login(&url("http://dl.corp.net/y")),
             Some(("b".into(), "2".into()))
         );
+    }
+
+    /// #1363: Mark YouTube videos I download as watched is off until ticked, and a settings
+    /// file from before (without it) reads as off.
+    #[test]
+    fn youtube_videos_are_not_marked_watched_until_chosen() {
+        assert!(!Settings::default().ytdlp_mark_watched);
+        let old: Settings = serde_json::from_str(r#"{"video_chapters": true}"#).unwrap();
+        assert!(!old.ytdlp_mark_watched);
+        let on: Settings = serde_json::from_str(r#"{"ytdlp_mark_watched": true}"#).unwrap();
+        assert!(on.ytdlp_mark_watched);
     }
 
     #[test]

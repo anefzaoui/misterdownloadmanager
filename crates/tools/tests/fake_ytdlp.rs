@@ -130,7 +130,9 @@ fn fake_ytdlp() -> ExitCode {
     // `J` a look-up, `O` a choice of formats, `D` a download.
     {
         use std::io::Write;
-        let kind = if has("-J") {
+        let kind = if has("--mark-watched") {
+            "M"
+        } else if has("-J") {
             "J"
         } else if after("-O").is_some_and(|o| o.starts_with("MDMJ")) {
             "O"
@@ -145,6 +147,16 @@ fn fake_ytdlp() -> ExitCode {
         {
             let _ = writeln!(f, "{kind} {cookies}");
         }
+    }
+    // #1363: the run that marks a video watched, in yt-dlp's words (it looks the video up).
+    if has("--mark-watched") {
+        let id = args
+            .last()
+            .and_then(|u| u.rsplit('=').next())
+            .unwrap_or("talk");
+        println!("[youtube] {id}: Marking watched");
+        println!("[youtube] {id}: Marking fully watched");
+        return ExitCode::SUCCESS;
     }
     // #686: YouTube's bot check refusing a signed-in look-up, and a channel members' video,
     // refused with the cookies and without them; in yt-dlp's real words.
@@ -1375,6 +1387,7 @@ fn engine_checks(me: &Path) {
         "{log:?}"
     );
     signed_in_checks(me, &lab, &engine);
+    mark_watched_checks(me, &lab, &engine);
     pieces_checks(me, &rt, &lab, &engine, &expected_audio());
     println!("fake_ytdlp: the engine's checks ok");
 }
@@ -1917,6 +1930,157 @@ fn signed_in_checks(
     let runs = std::fs::read_to_string(tools.path().join("cookies.log")).unwrap();
     assert_eq!(runs.lines().collect::<Vec<_>>(), ["J with"], "tried once");
     println!("fake_ytdlp: #686 checks ok");
+}
+
+/// #1363: Mark YouTube videos I download as watched. A YouTube video downloaded with the
+/// browser's cookies gets one run of yt-dlp with `--mark-watched`, after every other run, once
+/// it is saved; its look-up, choice and download never have it, nor does a look-up alone (the
+/// quality menu's, the Download video window's). Nothing for the option off, a private window,
+/// another site, or a download that failed; without cookies, the log says why.
+fn mark_watched_checks(
+    me: &Path,
+    lab: &mdm_labserver::LabServer,
+    engine: &dyn Fn(u32) -> mdm_tools::streams::Engine,
+) {
+    use mdm_tools::proc::FromBrowser;
+    let page = |video: &str| {
+        format!(
+            r#"{{"id": "jNQXAC9IVRw", "title": "Talk", "ext": "mp4", "availability": "public",
+            "formats": [{{"format_id": "18", "ext": "mp4", "protocol": "https", "filesize": {},
+              "vcodec": "avc1", "acodec": "mp4a", "url": "{}"}}]}}"#,
+            1 << 20,
+            lab.url(video)
+        )
+    };
+    let signed_in = FromBrowser {
+        cookies: Some("SAPISID=made-up; LOGIN_INFO=made-up".into()),
+        ..Default::default()
+    };
+    let private = FromBrowser {
+        private: true,
+        ..signed_in.clone()
+    };
+    let youtube = "https://www.youtube.com/watch?v=jNQXAC9IVRw";
+    // The option, the video's address, the browser's context and the stream's address: the end
+    // state, the log and each run (`J with`, `M with`…).
+    // `marks`: a marking run is expected, whose line the log gets after Done.
+    let run = |on: bool, url: &str, browser: &FromBrowser, stream: &str, marks: bool| {
+        mdm_tools::video::set_mark_watched(on);
+        let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
+        std::fs::write(tools.path().join("page.json"), page(stream)).unwrap();
+        let exe = fake_in(me, tools.path());
+        let job = VideoJob::start(
+            &exe,
+            url,
+            "18",
+            out.path(),
+            "Talk",
+            None,
+            None,
+            None,
+            browser,
+            &Subs::default(),
+            Some(engine(2)),
+        )
+        .expect("started");
+        // The option changed after the start: the download keeps what it started with.
+        mdm_tools::video::set_mark_watched(!on);
+        let end = Instant::now() + Duration::from_secs(120);
+        let marked = |log: &[String]| log.iter().any(|t| t.contains("arked watched on YouTube"));
+        let p = loop {
+            let p = job.progress();
+            // Done, then (when expected) the marking run's line.
+            if p.state != State::Running && (!marks || marked(&log_of(&p))) {
+                break p;
+            }
+            assert!(Instant::now() < end, "still running: {:?}", log_of(&p));
+            std::thread::sleep(Duration::from_millis(50));
+        };
+        // Time for a marking run that shouldn't come.
+        std::thread::sleep(Duration::from_millis(500));
+        let runs: Vec<String> = std::fs::read_to_string(tools.path().join("cookies.log"))
+            .unwrap_or_default()
+            .lines()
+            .map(str::to_owned)
+            .collect();
+        mdm_tools::video::set_mark_watched(false);
+        let log = log_of(&job.progress());
+        (p.state, log, runs)
+    };
+    let marks = |runs: &[String]| runs.iter().filter(|r| r.starts_with('M')).count();
+    let fine = "/gen/1M/v.mp4?seed=5";
+
+    // On, a YouTube video with the browser's cookies: one marking run, the last, after the
+    // download; said in the log.
+    let (state, log, runs) = run(true, youtube, &signed_in, fine, true);
+    println!("fake_ytdlp: #1363 on: {state:?} {runs:?} {log:?}");
+    assert!(matches!(state, State::Done(_)), "{state:?}: {log:?}");
+    assert_eq!(marks(&runs), 1, "{runs:?}");
+    assert_eq!(runs.last().map(String::as_str), Some("M with"), "{runs:?}");
+    assert!(runs.iter().any(|r| r == "D with"), "{runs:?}");
+    assert_eq!(
+        log.last().map(String::as_str),
+        Some("Marked watched on YouTube (Options → Sites Logins)"),
+        "{log:?}"
+    );
+
+    // Off: no marking run, nothing said.
+    let (state, log, runs) = run(false, youtube, &signed_in, fine, false);
+    assert!(matches!(state, State::Done(_)), "{state:?}");
+    assert_eq!(marks(&runs), 0, "{runs:?}");
+    assert!(!log.iter().any(|t| t.contains("watched")), "{log:?}");
+
+    // On, without cookies: none, and the log says why.
+    let (state, log, runs) = run(true, youtube, &FromBrowser::default(), fine, false);
+    println!("fake_ytdlp: #1363 without cookies: {state:?} {runs:?} {log:?}");
+    assert!(matches!(state, State::Done(_)), "{state:?}");
+    assert_eq!(marks(&runs), 0, "{runs:?}");
+    assert!(
+        log.iter()
+            .any(|t| t.starts_with("Not marked watched on YouTube: yt-dlp has no cookies")),
+        "{log:?}"
+    );
+
+    // On, from a private window: none, nothing said.
+    let (state, log, runs) = run(true, youtube, &private, fine, false);
+    assert!(matches!(state, State::Done(_)), "{state:?}");
+    assert_eq!(marks(&runs), 0, "{runs:?}");
+    assert!(!log.iter().any(|t| t.contains("watched")), "{log:?}");
+
+    // On, another site: none.
+    let (state, _, runs) = run(true, "https://video.example/talk", &signed_in, fine, false);
+    assert!(matches!(state, State::Done(_)), "{state:?}");
+    assert_eq!(marks(&runs), 0, "{runs:?}");
+
+    // On, a download that failed (its stream refused): not marked.
+    let (state, _, runs) = run(
+        true,
+        youtube,
+        &signed_in,
+        "/gen/1M/v.mp4?seed=5&refuse=403",
+        false,
+    );
+    assert!(matches!(state, State::Failed(_)), "{state:?}");
+    assert_eq!(marks(&runs), 0, "{runs:?}");
+
+    // On, a look-up alone (the quality menu's, the Download video window's): not marked.
+    mdm_tools::video::set_mark_watched(true);
+    let tools = tempfile::tempdir().unwrap();
+    std::fs::write(tools.path().join("page.json"), page(fine)).unwrap();
+    let exe = fake_in(me, tools.path());
+    let looked = mdm_tools::resolve::look_up(&exe, youtube, &signed_in);
+    mdm_tools::video::set_mark_watched(false);
+    assert!(matches!(
+        looked.unwrap(),
+        mdm_tools::resolve::Looked::Video(_)
+    ));
+    let runs = std::fs::read_to_string(tools.path().join("cookies.log")).unwrap();
+    assert_eq!(
+        runs.lines().collect::<Vec<_>>(),
+        ["J with"],
+        "a look-up only"
+    );
+    println!("fake_ytdlp: #1363 checks ok");
 }
 
 /// #686, live, only with `MDM_LIVE_YTDLP=<yt-dlp>` (and `MDM_LIVE_PAGE=<a public YouTube video>`,

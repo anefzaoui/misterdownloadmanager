@@ -1424,6 +1424,7 @@ mod tests {
                 domain: "127.0.0.1".into(),
                 ..Default::default()
             }],
+            ..Default::default()
         }
     }
 

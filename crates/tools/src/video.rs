@@ -220,6 +220,99 @@ pub fn set_chapters(on: bool) {
     CHAPTERS.store(on, std::sync::atomic::Ordering::Relaxed);
 }
 
+/// Options → Sites Logins → Mark YouTube videos I download as watched (#1363): off unless the app
+/// says otherwise ([`set_mark_watched`]).
+static MARK_WATCHED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Whether the YouTube videos started from now on are marked watched in the history of the
+/// account their cookies sign in to, once downloaded (the app's setting, shared as it changes).
+pub fn set_mark_watched(on: bool) {
+    MARK_WATCHED.store(on, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// What a download does about marking its video watched on YouTube (#1363).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Mark {
+    /// Nothing, and nothing said: the option is off, the video isn't YouTube's, or it came from
+    /// a private window (whose downloads leave no trace).
+    No,
+    /// Once the video is saved, a run of yt-dlp of its own marks it ([`mark_watched`]).
+    Once,
+    /// The option is on for a YouTube video, but yt-dlp has no cookies to say whose history it
+    /// is (yt-dlp marks nothing then): said in the download's log.
+    NoCookies,
+}
+
+/// [`Mark`] for a download of `url` with the option `on`, from a `private` window or not, with
+/// yt-dlp given `cookies` (the extension's, or the browser's of Options) or not.
+fn mark_for(on: bool, url: &str, private: bool, cookies: bool) -> Mark {
+    if !on || private || !crate::youtube::is_youtube(url) {
+        Mark::No
+    } else if cookies {
+        Mark::Once
+    } else {
+        Mark::NoCookies
+    }
+}
+
+/// yt-dlp's arguments for the run that marks a video watched (#1363), the browser's (`browser`:
+/// its Referer, User-Agent and cookies, as the download's runs have them) after them.
+///
+/// yt-dlp marks a video while it looks it up (YoutubeIE's `_real_extract` calls `mark_watched`,
+/// which does nothing without `--mark-watched` and cookies), never while it downloads, and the
+/// download's own runs don't look it up as they finish (`--load-info-json`). So a run of its own:
+/// the look-up alone (`--simulate`), one video even from a playlist's address (`--no-playlist`),
+/// and no failure when the formats are short (`--ignore-no-formats-error`: the mark is made
+/// before formats are chosen). Never in a look-up: the quality menu's and the Download video
+/// window's look the video up without downloading it.
+fn mark_args(browser: &[String]) -> Vec<String> {
+    let mut args: Vec<String> = [
+        "--simulate",
+        "--no-playlist",
+        "--ignore-no-formats-error",
+        "--mark-watched",
+    ]
+    .map(String::from)
+    .to_vec();
+    args.extend(browser.iter().cloned());
+    args
+}
+
+/// How long the marking run may take: a look-up's time.
+const MARK_WAIT: Duration = Duration::from_secs(90);
+
+/// What yt-dlp's marking run said, for the log: marked (its `Marking fully watched` line on
+/// stdout, `out`, and no `Unable to mark` among its `warnings`), or why not.
+fn marked_said(out: &str, warnings: &[String]) -> Result<(), String> {
+    if let Some(w) = warnings.iter().find(|w| w.contains("Unable to mark")) {
+        return Err(w.trim().to_owned());
+    }
+    if out.lines().any(|l| l.contains("Marking fully watched")) {
+        Ok(())
+    } else {
+        Err("yt-dlp didn't say it marked it".to_owned())
+    }
+}
+
+/// Mark the video at `url` watched on YouTube (#1363), once it is saved: a run of yt-dlp of its
+/// own ([`mark_args`]), with the download's `browser` arguments (the cookie file among them, kept
+/// until the job's thread ends) and Options' browser cookies when there are none. Said in the
+/// download's log and MDM's (without the address: a log is attached to reports).
+fn mark_watched(exe: &Path, url: &str, browser: &[String], progress: &Mutex<Progress>) {
+    let run = proc::ytdlp(exe, &[], &mark_args(browser), url)
+        .and_then(|cmd| proc::output_warned(cmd, "yt-dlp", MARK_WAIT));
+    let said = match run {
+        Ok((out, warnings)) => marked_said(&String::from_utf8_lossy(&out), &warnings),
+        Err(e) => Err(e.to_string()),
+    };
+    let text = match said {
+        Ok(()) => "Marked watched on YouTube (Options → Sites Logins)".to_owned(),
+        Err(why) => format!("Not marked watched on YouTube: {why}"),
+    };
+    tracing::info!("{text} (#1363)");
+    note(progress, text);
+}
+
 /// The chapters a video's page lists, put into the file (#827): `--embed-chapters` on yt-dlp's
 /// last run, the one that merges and fixes the file up (after MDM's engine too). Only with ffmpeg,
 /// which writes them, and for a video or the sound as the site has it, not a conversion to MP3,
@@ -2051,7 +2144,7 @@ impl VideoJob {
         }
         // Whose cookies yt-dlp has, for the log (#229): the browser's name only, never a
         // cookie or the profile (a folder may name the person).
-        let events = match proc::browser_cookies() {
+        let mut events = match proc::browser_cookies() {
             Some(b) if cookies.is_none() => vec![(
                 std::time::SystemTime::now(),
                 format!(
@@ -2061,6 +2154,18 @@ impl VideoJob {
             )],
             _ => Vec::new(),
         };
+        // Marked watched on YouTube once saved (#1363), as the option was when it started.
+        let mark = mark_for(
+            MARK_WATCHED.load(std::sync::atomic::Ordering::Relaxed),
+            url,
+            browser.private,
+            proc::has_cookies(&theirs),
+        );
+        if mark == Mark::NoCookies {
+            let why = "Not marked watched on YouTube: yt-dlp has no cookies of the browser to sign in with (Options → Sites Logins → Cookies for video sites)";
+            tracing::info!("{why} (#1363)");
+            events.push((std::time::SystemTime::now(), why.to_owned()));
+        }
         let progress = Arc::new(Mutex::new(Progress {
             state: State::Running,
             downloaded: 0,
@@ -2103,7 +2208,13 @@ impl VideoJob {
                         preloaded,
                         by_engine.as_ref(),
                         saved.as_ref(),
-                    )
+                    );
+                    // Only once it is saved (#1363): never for a download stopped or failed,
+                    // and once whatever number of runs it took.
+                    let done = matches!(progress.lock().unwrap().state, State::Done(_));
+                    if done && mark == Mark::Once {
+                        mark_watched(&exe, &url, &theirs, &progress);
+                    }
                 });
                 if std::panic::catch_unwind(run).is_err() {
                     // Given up: nothing may go on downloading unseen (#79).
@@ -2861,6 +2972,121 @@ mod tests {
             s(subtitle_args(&subs(&["de", "fr"], false, true), false)),
             "--write-subs --sub-langs de,fr --sub-format srt/vtt/best --ignore-errors"
         );
+    }
+
+    /// Mark YouTube videos I download as watched (#1363): only with the option on, for a YouTube
+    /// video, outside a private window, and with cookies; said in the log when they're missing.
+    #[test]
+    fn only_youtube_videos_with_cookies_are_marked() {
+        let yt = "https://www.youtube.com/watch?v=jNQXAC9IVRw";
+        assert_eq!(mark_for(true, yt, false, true), Mark::Once);
+        assert_eq!(
+            mark_for(true, "https://youtu.be/jNQXAC9IVRw", false, true),
+            Mark::Once
+        );
+        assert_eq!(mark_for(true, yt, false, false), Mark::NoCookies);
+        assert_eq!(mark_for(false, yt, false, true), Mark::No, "off");
+        assert_eq!(mark_for(false, yt, false, false), Mark::No, "off: unsaid");
+        assert_eq!(mark_for(true, yt, true, true), Mark::No, "a private window");
+        assert_eq!(mark_for(true, yt, true, false), Mark::No, "unsaid there");
+        assert_eq!(
+            mark_for(true, "https://vimeo.com/76979871", false, true),
+            Mark::No,
+            "another site"
+        );
+    }
+
+    /// The marking run looks the video up alone (one, not its playlist), with `--mark-watched`
+    /// and the browser's arguments after; no other run of a download has it.
+    #[test]
+    fn the_marking_run_alone_has_mark_watched() {
+        let browser = ["--cookies".to_owned(), "/tmp/c.txt".to_owned()];
+        assert_eq!(
+            mark_args(&browser),
+            [
+                "--simulate",
+                "--no-playlist",
+                "--ignore-no-formats-error",
+                "--mark-watched",
+                "--cookies",
+                "/tmp/c.txt"
+            ]
+        );
+        let subs = Subs {
+            langs: vec!["en".into()],
+            automatic: true,
+            embed: true,
+        };
+        for args in [
+            subtitle_args(&subs, true),
+            chapter_args(true, true, false),
+            limit_args(Some(1)),
+        ] {
+            assert!(!args.iter().any(|a| a.contains("mark-watched")), "{args:?}");
+        }
+    }
+
+    /// #1363, live, only with `MDM_LIVE_YTDLP=<yt-dlp>` and `MDM_LIVE_MARK_PAGE=<an address>`
+    /// (a local page: it marks nothing, it shows that the yt-dlp given takes the marking run's
+    /// arguments, a cookie file among them, and what the log then says):
+    ///
+    ///   MDM_LIVE_YTDLP=…\yt-dlp.exe MDM_LIVE_MARK_PAGE=http://127.0.0.1:8099/gen/1M/a.mp4 cargo test -p mdm-tools live_marking_run -- --nocapture
+    #[test]
+    fn live_marking_run() {
+        let (Some(exe), Ok(page)) = (
+            std::env::var_os("MDM_LIVE_YTDLP"),
+            std::env::var("MDM_LIVE_MARK_PAGE"),
+        ) else {
+            return;
+        };
+        let browser = proc::FromBrowser {
+            cookies: Some("SAPISID=made-up".into()),
+            ..Default::default()
+        };
+        let (theirs, _file) = browser.args(&page).unwrap();
+        let cmd = proc::ytdlp(Path::new(&exe), &[], &mark_args(&theirs), &page).unwrap();
+        println!(
+            "live: {}",
+            cmd.get_args()
+                .map(|a| a.to_string_lossy().into_owned())
+                .collect::<Vec<_>>()
+                .join(" ")
+        );
+        let (out, warnings) =
+            proc::output_warned(cmd, "yt-dlp", MARK_WAIT).expect("yt-dlp took the arguments");
+        println!("live: stdout: {}", String::from_utf8_lossy(&out).trim());
+        println!("live: warnings: {warnings:?}");
+        let progress = Mutex::new(Progress {
+            state: State::Running,
+            downloaded: 0,
+            total: None,
+            speed: 0.0,
+            events: Vec::new(),
+            side_files: Vec::new(),
+            sub_problems: Vec::new(),
+            engine: None,
+            helper: None,
+            merging: None,
+            merge_failed: None,
+        });
+        mark_watched(Path::new(&exe), &page, &theirs, &progress);
+        let log = progress.lock().unwrap().events.clone();
+        println!("live: the download's log: {:?}", log.last().map(|e| &e.1));
+    }
+
+    /// What the log says of the marking run: yt-dlp's own words for both requests made.
+    #[test]
+    fn what_the_marking_run_said() {
+        let out = "[youtube] Extracting URL: https://www.youtube.com/watch?v=jNQXAC9IVRw\n\
+                   [youtube] jNQXAC9IVRw: Marking watched\n\
+                   [youtube] jNQXAC9IVRw: Marking fully watched\n";
+        assert_eq!(marked_said(out, &[]), Ok(()));
+        let refused = ["[youtube] jNQXAC9IVRw: Unable to mark watched".to_owned()];
+        assert_eq!(
+            marked_said("", &refused),
+            Err("[youtube] jNQXAC9IVRw: Unable to mark watched".into())
+        );
+        assert!(marked_said("[generic] x: Extracting information\n", &[]).is_err());
     }
 
     /// Embed chapters (#827): `--embed-chapters` for a video or the sound as the site has it,

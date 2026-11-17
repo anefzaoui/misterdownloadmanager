@@ -42,6 +42,7 @@ impl Declared {
             user_agent: from.user_agent.clone(),
             cookies: None,
             jar: from.jar.clone(),
+            private: from.private,
         }
     }
 }
@@ -425,6 +426,7 @@ mod tests {
             user_agent: Some("UA".into()),
             cookies: Some("session=1".into()),
             jar: Vec::new(),
+            private: false,
         };
         let asked = d.browser(&browser);
         assert_eq!(asked.referer.as_deref(), Some(page.as_str()));
