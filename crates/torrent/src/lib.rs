@@ -159,18 +159,86 @@ pub fn files_from_bytes(torrent: &[u8]) -> Result<Vec<FileEntry>, TorrentError> 
     Ok(entries)
 }
 
+/// Replace `path` with `bytes` through `tmp`, which is flushed to the disk before it takes
+/// `path`'s place (#1357): a crash or a power cut then leaves the old file or the new one, never
+/// an empty one (a rename can reach the disk before the data it names). Only off the window's
+/// thread: a sync can wait on everything else the disk has to write.
+fn replace_file(path: &Path, tmp: &Path, bytes: &[u8]) -> std::io::Result<()> {
+    use std::io::Write;
+    let written = std::fs::File::create(tmp).and_then(|mut f| {
+        f.write_all(bytes)?;
+        f.sync_all()
+    });
+    if let Err(e) = written {
+        let _ = std::fs::remove_file(tmp);
+        return Err(e);
+    }
+    std::fs::rename(tmp, path)
+}
+
+/// librqbit's list of the torrents it saved, in the session folder (its JSON store).
+const SESSION_FILE: &str = "session.json";
+
+/// Whether librqbit can read its saved list: JSON with a `torrents` object (#1357). An empty
+/// file (a write cut short by a crash or a power cut) or anything else stops the session from
+/// starting, every time.
+fn session_list_error(raw: &[u8]) -> Option<String> {
+    match serde_json::from_slice::<serde_json::Value>(raw) {
+        Err(e) => Some(e.to_string()),
+        Ok(doc) if !doc.get("torrents").is_some_and(|t| t.is_object()) => {
+            Some("no list of torrents in it".into())
+        }
+        Ok(_) => None,
+    }
+}
+
+/// Move a saved list librqbit can't read aside (#1357), kept beside it as
+/// `session.json.broken-<seconds since 1970>`, so the session starts with a new one. The list's
+/// torrents aren't lost: the app adds each again from its own .torrent when it starts, and its
+/// pieces already on disk are found again (their piece map, `<hash>.bitv`, stays where it is).
+fn set_aside_broken(db: &Path, len: usize, why: &str) {
+    let secs = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |d| d.as_secs());
+    let mut aside = db.with_file_name(format!("{SESSION_FILE}.broken-{secs}"));
+    let mut n = 1;
+    while aside.exists() {
+        aside = db.with_file_name(format!("{SESSION_FILE}.broken-{secs}-{n}"));
+        n += 1;
+    }
+    match std::fs::rename(db, &aside) {
+        Ok(()) => tracing::warn!(
+            "torrents: the saved torrent list {} could not be read ({len} bytes: {why}); kept as \
+             {}, and the session starts with a new one. The download list's torrents are added \
+             again from MDM's own .torrent copies when they start",
+            db.display(),
+            aside.display()
+        ),
+        Err(e) => tracing::warn!(
+            "torrents: the saved torrent list {} could not be read ({len} bytes: {why}), nor moved \
+             aside ({e})",
+            db.display()
+        ),
+    }
+}
+
 /// Before librqbit restores its saved torrents (`session.json` and a `<hash>.torrent` for each,
 /// in `dir`), take out the ones the name check refuses, and those saved without their .torrent
 /// (whose names it can't check): the app adds those again itself, through `add` and its own
 /// copy. The rest keep only the trackers MDM may contact (`trackers`, `proxied`), in the list and
-/// in their .torrent. Rewritten through a temporary file; a list that can't be read is left to
-/// librqbit.
+/// in their .torrent. Rewritten through a temporary file (`replace_file`). A list librqbit
+/// couldn't read is set aside (`set_aside_broken`, #1357); one that can't be opened is left to
+/// librqbit, whose error says why.
 fn prepare_saved(dir: &Path, proxied: bool) {
-    let db = dir.join("session.json");
-    let Ok(text) = std::fs::read_to_string(&db) else {
+    let db = dir.join(SESSION_FILE);
+    let Ok(raw) = std::fs::read(&db) else {
         return;
     };
-    let Ok(mut doc) = serde_json::from_str::<serde_json::Value>(&text) else {
+    if let Some(why) = session_list_error(&raw) {
+        set_aside_broken(&db, raw.len(), &why);
+        return;
+    }
+    let Ok(mut doc) = serde_json::from_slice::<serde_json::Value>(&raw) else {
         return;
     };
     let Some(saved) = doc.get_mut("torrents").and_then(|t| t.as_object_mut()) else {
@@ -193,7 +261,8 @@ fn prepare_saved(dir: &Path, proxied: bool) {
             return false;
         };
         if let Some(filtered) = trackers::filter_torrent(&bytes, proxied).filter(|f| *f != bytes) {
-            let _ = std::fs::write(&file, filtered);
+            let tmp = dir.join(format!("{hash}.torrent.mdm-tmp"));
+            let _ = replace_file(&file, &tmp, &filtered);
         }
         if let Some(list) = entry.get_mut("trackers").and_then(|t| t.as_array_mut()) {
             let before = list.len();
@@ -208,14 +277,7 @@ fn prepare_saved(dir: &Path, proxied: bool) {
     let Ok(out) = serde_json::to_string(&doc) else {
         return;
     };
-    let tmp = dir.join("session.json.mdm-tmp");
-    if std::fs::write(&tmp, &out).is_ok()
-        && std::fs::read_to_string(&tmp).is_ok_and(|back| back == out)
-    {
-        let _ = std::fs::rename(&tmp, &db);
-    } else {
-        let _ = std::fs::remove_file(&tmp);
-    }
+    let _ = replace_file(&db, &dir.join("session.json.mdm-tmp"), out.as_bytes());
 }
 
 /// The torrent's file names checked for this system (`names`); padding files are never written.
@@ -1831,6 +1893,115 @@ mod tests {
         assert!(!t.has(&lost), "the one without its .torrent is taken out");
         assert!(!dir.join(format!("{bad_hash}.torrent")).exists());
         t.stop().await;
+    }
+
+    /// #1357: a saved list librqbit can't read (empty after a crash or a power cut, or garbage)
+    /// no longer stops every session from starting: it is kept beside, as
+    /// `session.json.broken-<seconds>`, and the session starts with a new one. The torrent,
+    /// added again from its .torrent as the app does, finds its pieces on disk; the new list is
+    /// saved and read back at the next start.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_broken_saved_list_is_set_aside() {
+        async fn finished(t: &Torrents, hash: &str, what: &str) {
+            let deadline = std::time::Instant::now() + Duration::from_secs(30);
+            loop {
+                let s = t.stats(hash).unwrap();
+                if s.phase == Phase::Finished && s.done == s.total {
+                    return;
+                }
+                assert!(std::time::Instant::now() < deadline, "{what}: {s:?}");
+                tokio::time::sleep(Duration::from_millis(50)).await;
+            }
+        }
+        // RUST_LOG=mdm_torrent=warn shows the warning (the PR's log excerpt).
+        let _ = tracing_subscriber::fmt()
+            .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+            .with_test_writer()
+            .try_init();
+        let mut garbage = b"{\"torrents\":{\"0\":{\"info_hash\":\"ab".to_vec();
+        garbage.extend([0u8; 64]);
+        for (what, broken) in [
+            ("empty", Vec::new()),
+            ("garbage", garbage),
+            ("no list", b"{}".to_vec()),
+        ] {
+            let tmp = tempfile::tempdir().unwrap();
+            let state = tmp.path().join("state");
+            let data = tmp.path().join("data").join("set");
+            std::fs::create_dir_all(&data).unwrap();
+            let bytes: Vec<u8> = (0..200_000u32).map(|i| (i % 241) as u8).collect();
+            std::fs::write(data.join("a.bin"), &bytes).unwrap();
+            let torrent = make_torrent(&data).await;
+
+            let t = Torrents::start(offline(&state)).await.unwrap();
+            let hash = t
+                .add(&torrent, &data, None, Vec::new(), false)
+                .await
+                .unwrap();
+            finished(&t, &hash, what).await;
+            t.stop().await;
+            let dir = state.join("session");
+            let db = dir.join(SESSION_FILE);
+            assert!(db.is_file() && dir.join(format!("{hash}.bitv")).is_file());
+
+            std::fs::write(&db, &broken).unwrap();
+            let t = Torrents::start(offline(&state))
+                .await
+                .unwrap_or_else(|e| panic!("{what}: the session starts: {e}"));
+            assert!(!t.has(&hash), "{what}: a new list, without it");
+            let aside: Vec<PathBuf> = std::fs::read_dir(&dir)
+                .unwrap()
+                .map(|e| e.unwrap().path())
+                .filter(|p| {
+                    p.file_name()
+                        .and_then(|n| n.to_str())
+                        .is_some_and(|n| n.starts_with("session.json.broken-"))
+                })
+                .collect();
+            assert_eq!(aside.len(), 1, "{what}: kept beside: {aside:?}");
+            assert_eq!(
+                std::fs::read(&aside[0]).unwrap(),
+                broken,
+                "{what}: as it was"
+            );
+
+            // Added again as the app does: its pieces are found on disk, nothing to fetch.
+            let again = t
+                .add(&torrent, &data, None, Vec::new(), false)
+                .await
+                .unwrap();
+            assert_eq!(again, hash);
+            finished(&t, &hash, what).await;
+            t.stop().await;
+            assert_eq!(std::fs::read(data.join("a.bin")).unwrap(), bytes);
+
+            // The new list works: the next start restores the torrent from it.
+            let t = Torrents::start(offline(&state)).await.unwrap();
+            assert!(t.has(&hash), "{what}: restored from the new list");
+            t.stop().await;
+        }
+    }
+
+    /// A file replaced through `replace_file` has the new bytes, and no temporary file is left.
+    #[test]
+    fn files_are_replaced_whole() {
+        let dir = tempfile::tempdir().unwrap();
+        let (path, tmp) = (dir.path().join("f.json"), dir.path().join("f.json.tmp"));
+        std::fs::write(&path, b"old").unwrap();
+        replace_file(&path, &tmp, b"new").unwrap();
+        assert_eq!(std::fs::read(&path).unwrap(), b"new");
+        assert!(!tmp.exists());
+        assert!(session_list_error(b"{\"torrents\":{}}").is_none());
+        for broken in [
+            &b""[..],
+            b"   ",
+            b"\0\0\0",
+            b"[]",
+            b"{\"torrents\":[]}",
+            b"{\"torr",
+        ] {
+            assert!(session_list_error(broken).is_some(), "{broken:?}");
+        }
     }
 
     /// #40: a kept torrent keeps only the trackers MDM may contact, in session.json and in its
