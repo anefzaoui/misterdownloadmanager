@@ -1748,7 +1748,8 @@ const WAYLAND_LIBS: &[WindowLib] = &[
 pub struct WindowSystem {
     /// Wayland's windows, not X11's (or XWayland's).
     pub wayland: bool,
-    /// X11 is chosen in a Wayland session (XWayland): winit is told so.
+    /// X11's windows in a Wayland session (XWayland): chosen there (winit is told so), or the only
+    /// display MDM was given, whose server is XWayland (`on_xwayland_server`).
     x11_over_wayland: bool,
     /// X11 was MDM's choice, but these are missing: Wayland's windows instead.
     pub x11_missing: Vec<&'static WindowLib>,
@@ -1868,6 +1869,32 @@ fn choose_window_system(
     ws
 }
 
+/// `ws`, an X11 session's, as XWayland's when its X server is XWayland (`xwayland`, asked only
+/// then): a program started without `WAYLAND_DISPLAY` in a Wayland session (Hyprland's apps
+/// started from an environment that lacks it) sees an X11 session only. Its windows are
+/// XWayland's all the same, and are paced as such (renderer.rs `Swaps::NoneWait`): taken for
+/// Xorg's, the main window's swaps waited for the screen's refresh, which XWayland gives a window
+/// the compositor isn't showing (on another workspace, in a special one) only by a timer about a
+/// second long; and every dialog is drawn in the main window's pass, so a click in Download File
+/// Info or Download complete showed its effect one to two seconds later.
+#[cfg(target_os = "linux")]
+fn on_xwayland_server(mut ws: WindowSystem, xwayland: impl FnOnce() -> bool) -> WindowSystem {
+    if !ws.wayland && !ws.x11_over_wayland && ws.missing.is_empty() && !ws.both && xwayland() {
+        ws.x11_over_wayland = true;
+        ws.why = "the session's only one, on XWayland: no Wayland display given";
+    }
+    ws
+}
+
+/// Whether the X server is XWayland: it has the XWAYLAND extension (XWayland 23.1 and later;
+/// an older one is taken for Xorg, as before).
+#[cfg(target_os = "linux")]
+fn xwayland_server() -> Result<bool, Box<dyn std::error::Error>> {
+    use x11rb::protocol::xproto::ConnectionExt;
+    let (conn, _) = x11rb::rust_connection::RustConnection::connect(None)?;
+    Ok(conn.query_extension(b"XWAYLAND")?.reply()?.present)
+}
+
 /// View → Window system's saved choice, given before the first window opens.
 #[cfg(target_os = "linux")]
 static SAVED_PICK: std::sync::OnceLock<Option<crate::settings::WindowSystemPick>> =
@@ -1894,12 +1921,15 @@ pub fn window_system() -> &'static WindowSystem {
             std::env::var_os("MDM_WAYLAND").as_deref(),
             SAVED_PICK.get().copied().flatten(),
         );
-        let ws = choose_window_system(
-            set("WAYLAND_DISPLAY"),
-            set("DISPLAY"),
-            pick,
-            x11_fit,
-            |lib| lib.names.iter().any(|n| loads(n)),
+        let ws = on_xwayland_server(
+            choose_window_system(
+                set("WAYLAND_DISPLAY"),
+                set("DISPLAY"),
+                pick,
+                x11_fit,
+                |lib| lib.names.iter().any(|n| loads(n)),
+            ),
+            || xwayland_server().unwrap_or(false),
         );
         let system = match (ws.wayland, ws.x11_over_wayland) {
             (true, _) => "Wayland",
@@ -3848,7 +3878,7 @@ mod tests {
 
     use super::{
         Pick, WindowLib, X11_LIBS, X11Fit, choose_window_system, desktop_looks_after_x11,
-        install_command, menu_window_type,
+        install_command, menu_window_type, on_xwayland_server,
     };
 
     /// #277: each menu's window says which menu it is, as GTK's and Qt's do.
@@ -3966,6 +3996,30 @@ mod tests {
         assert!(!x11_session.wayland && !x11_session.both && !x11_session.x11_over_wayland);
         let wayland_only = choose_window_system(true, false, Pick::X11("saved"), || panic!(), ok);
         assert!(wayland_only.wayland && !wayland_only.both);
+    }
+
+    /// Started without WAYLAND_DISPLAY in a Wayland session, MDM sees an X11 session only: its
+    /// windows are XWayland's when the X server is (they swap without waiting there, so a dialog
+    /// answers a click at once while the main window is out of sight). The server is asked only
+    /// for an X11-only session MDM can open its windows in.
+    #[test]
+    fn an_x11_only_session_on_xwayland_is_xwaylands() {
+        let ok = |_: &WindowLib| true;
+        let x11_only = || choose_window_system(false, true, Pick::Auto, || panic!(), ok);
+        let on_xwayland = on_xwayland_server(x11_only(), || true);
+        assert!(!on_xwayland.wayland && on_xwayland.x11_over_wayland && !on_xwayland.both);
+        assert!(on_xwayland.why.contains("XWayland"), "{on_xwayland:?}");
+        let xorg = on_xwayland_server(x11_only(), || false);
+        assert_eq!(xorg, x11_only());
+        // A Wayland session's choice stands; the server isn't asked.
+        let asked = || -> bool { panic!("asked") };
+        let wayland = choose_window_system(true, true, Pick::Wayland("saved"), || panic!(), ok);
+        assert_eq!(on_xwayland_server(wayland, asked).why, "saved");
+        let x11 = choose_window_system(true, true, Pick::X11("saved"), || panic!(), ok);
+        assert!(on_xwayland_server(x11, asked).x11_over_wayland);
+        // X11's libraries missing: nothing opens on it, nothing to pace.
+        let missing = choose_window_system(false, true, Pick::Auto, || panic!(), |_| false);
+        assert!(!on_xwayland_server(missing, asked).x11_over_wayland);
     }
 
     /// The desktops that start a settings daemon for XWayland's programs, by
