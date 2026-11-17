@@ -1384,6 +1384,7 @@ These ship in the next version.
 - ✅ AI assistants (MCP) can inspect a download by id and see free disk space in `list_downloads` (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The command line lists and filters downloads: `status` (or `list`) takes `--id`, `--status`, `--category`, `--queue`, `--search` and `--limit` flags (thanks to
+- ✅ The command line prints pairing details as JSON: `pair --json` outputs code, valid minutes and URLs for scripts (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
