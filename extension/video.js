@@ -718,6 +718,16 @@
           }
         }
 
+        // An iframe or embed directly playing the video (e.g. YouTube embed player on Drive).
+        if (node.localName === "iframe" || node.localName === "embed") {
+          const src = (node.getAttribute && node.getAttribute("src")) || "";
+          let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&]id=([\w-]{25,})/.exec(src);
+          if (m && /^[\w-]{25,}$/.test(m[1])) {
+            file(m[1], sure);
+            return { sure, maybe };
+          }
+        }
+
         // 2. Fall back to links or iframes only inside the preview dialog that holds the player
         // (not the folder list), and never to generic data-* attributes.
         const isDialog =
@@ -1520,11 +1530,18 @@ button:focus-visible { outline: none; }
     return s.visibility !== "hidden" && s.display !== "none" && Number(s.opacity) > 0.05;
   }
 
+  function siteVideos() {
+    if (typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname)) {
+      return document.querySelectorAll?.("iframe[src*='youtube.googleapis.com'], iframe[src*='/preview'], iframe#ucc-136, iframe.drive-viewer-video-iframe") || [];
+    }
+    return [];
+  }
+
   // The topmost eligible video under (x, y): players lay their controls over the video, so the
   // video itself rarely gets the pointer's events.
   function videoAt(x, y) {
     let best = null;
-    for (const v of [...videos, ...audios, ...shadowVideos()]) {
+    for (const v of [...videos, ...audios, ...shadowVideos(), ...siteVideos()]) {
       const r = v.getBoundingClientRect();
       if (x < r.left || x > r.right || y < r.top || y > r.bottom || !eligible(v)) continue;
       if (!best || r.width * r.height < best.r.width * best.r.height) best = { v, r };
@@ -2396,6 +2413,28 @@ button:focus-visible { outline: none; }
     video = null;
   }
   globalThis.__mdmVideoButton = { alive: () => Boolean(ext.runtime?.id), teardown };
+  if (typeof window !== "undefined" && window !== window.top) {
+    addEventListener("pointermove", () => {
+      try {
+        window.parent.postMessage({ type: "mdm-frame-pointer" }, "*");
+      } catch {}
+    }, { capture: true, passive: true });
+  }
+  addEventListener("message", (e) => {
+    if (e.data && e.data.type === "mdm-frame-pointer") {
+      lastMove = Date.now();
+      if (!video) {
+        const frame = [...siteVideos()].find(eligible);
+        if (frame) {
+          const r = frame.getBoundingClientRect();
+          pointer = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+          show(frame);
+        }
+      } else if (!pill.classList.contains("shown")) {
+        show(video);
+      }
+    }
+  });
   addEventListener("pointermove", onMove, { capture: true, passive: true });
   addEventListener("pointerdown", (e) => {
     if (menuOpen && !e.composedPath().includes(root)) closeMenu();
