@@ -8,6 +8,7 @@ pub mod drive;
 pub mod faults;
 mod feeds;
 pub mod ftp;
+mod github;
 pub mod growth;
 mod h264;
 pub mod mediafire;

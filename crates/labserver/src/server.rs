@@ -7,6 +7,8 @@
 //!   for a form post that carries `FIELD=VALUE`
 //! - `GET /files/{name}` — a real file from `--files DIR` (Range too; 404 without it): archives
 //!   for the link grabber's tests
+//! - `GET /gh/*` — a fake GitHub (#1337, `github`): its API refusing for its rate limit, its
+//!   release pages, releases from `--files DIR/gh/`
 //! - `GET /stream.php`, `/remote_control.php` — a generated file a server's program sends, typed
 //!   by `type` and named by nothing but a `file=` value (#695, #800)
 //! - `GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]` — a redirect (302 unless `code` says)
@@ -451,6 +453,18 @@ impl LabServer {
             .route("/form/{size}", any(form))
             .route("/form/{size}/{*name}", any(form))
             .route("/files/{*name}", get(files))
+            // A fake GitHub: its API rate limited, its release pages (#1337, `github`).
+            .route("/gh/api/{*rest}", get(crate::github::api))
+            .route(
+                "/gh/web/{owner}/{repo}/releases",
+                get(crate::github::releases),
+            )
+            .route(
+                "/gh/web/{owner}/{repo}/releases/{*rest}",
+                get(crate::github::release),
+            )
+            .route("/gh/assets/{*name}", get(crate::github::asset))
+            .route("/gh/raw/{*name}", get(crate::github::raw))
             // A file a server's program sends (#695, #800).
             .route("/stream.php", get(script))
             .route("/remote_control.php", get(script))
@@ -756,6 +770,11 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
 GET /files/{name}   a real file from --files DIR (Range too; 404 without --files)
+GET /gh/api/*       a fake GitHub API, always refusing: 403, x-ratelimit-remaining: 0 (#1337)
+GET /gh/web/OWNER/REPO/releases/latest   302 to .../releases/tag/TAG (TAG: --files DIR/gh/OWNER/REPO/LATEST)
+GET /gh/web/OWNER/REPO/releases/download/TAG/FILE   302 to /gh/assets/OWNER/REPO/TAG/FILE (--files
+                    DIR/gh/OWNER/REPO/TAG/FILE, with Last-Modified), 404 when not there
+GET /gh/raw/OWNER/REPO/TAG/PATH   --files DIR/gh/OWNER/REPO/TAG/PATH (raw.githubusercontent.com's)
 GET /stream.php, /remote_control.php?id=N|file=NAME&size=1M&type=MIME|none&magic=mp4|webm|mp3&<as /gen>
     a generated file a server's program sends (#695, #800): no Content-Disposition, Content-Type
     video/mp4 (type= another, none for none at all), magic= its first bytes a media type's
@@ -1131,17 +1150,49 @@ async fn files(
     Path(name): Path<String>,
     headers: HeaderMap,
 ) -> Response {
-    let entry = shared.begin(peer, &method, format!("/files/{name}"), None, &headers, &[]);
-    let inside = !name
-        .split(['/', '\\'])
-        .any(|c| c == ".." || c.contains(':'));
-    let data = match shared.files.as_ref().filter(|_| inside) {
-        Some(dir) => tokio::fs::read(dir.join(&name)).await.ok(),
+    let path = shared.file_path(&name);
+    let logged = format!("/files/{name}");
+    serve_file(&shared, peer, &method, &headers, logged, path, false).await
+}
+
+impl Shared {
+    /// `name` (a relative path, `/`-separated) in `Config::files`; None without one, or for a
+    /// name that would leave it.
+    pub(crate) fn file_path(&self, name: &str) -> Option<std::path::PathBuf> {
+        let inside = !name
+            .split(['/', '\\'])
+            .any(|c| c == ".." || c.contains(':'));
+        self.files.as_ref().filter(|_| inside).map(|d| d.join(name))
+    }
+}
+
+/// The file at `path` (None: 404), whole or one range of it, logged as `logged`; with
+/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it).
+pub(crate) async fn serve_file(
+    shared: &Shared,
+    peer: SocketAddr,
+    method: &Method,
+    headers: &HeaderMap,
+    logged: String,
+    path: Option<std::path::PathBuf>,
+    last_modified: bool,
+) -> Response {
+    let entry = shared.begin(peer, method, logged, None, headers, &[]);
+    let data = match &path {
+        Some(path) => tokio::fs::read(path).await.ok(),
         None => None,
     };
     let Some(data) = data else {
         shared.record(entry, 404, "error");
         return (StatusCode::NOT_FOUND, "no such file\n").into_response();
+    };
+    let modified = match (&path, last_modified) {
+        (Some(path), true) => tokio::fs::metadata(path)
+            .await
+            .and_then(|m| m.modified())
+            .ok()
+            .map(httpdate::fmt_http_date),
+        _ => None,
     };
     let size = data.len() as u64;
     let range = entry
@@ -1166,8 +1217,11 @@ async fn files(
             format!("bytes {start}-{}/{size}", end - 1),
         );
     }
+    if let Some(modified) = modified {
+        builder = builder.header(header::LAST_MODIFIED, modified);
+    }
     shared.record(entry, status.as_u16(), "files");
-    if method == Method::HEAD {
+    if *method == Method::HEAD {
         return builder.body(Body::empty()).unwrap();
     }
     builder

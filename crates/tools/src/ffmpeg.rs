@@ -3,18 +3,27 @@
 //! (`ffmpeg-nX.Y-latest-win64-lgpl-shared-X.Y.zip`, `…-winarm64-…` on Windows on ARM; BtbN builds
 //! none for 32-bit Windows), downloaded on first need, checked against the release's `checksums.sha256` and GitHub's own digest of the
 //! asset, its `bin/` unpacked into `tools/ffmpeg/<version>/`, switched to atomically, the previous
-//! version kept.
+//! version kept. When GitHub's API refuses for its rate limit (#1337), BtbN's `latest` release on
+//! github.com's pages instead: its checksum list names the builds, and checks the one taken.
 
 use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
 
+use crate::github::{self, Api};
 use crate::{Error, Installed, make_current, mark_downloaded, newer, sum_for};
 
 /// BtbN's newest releases. Not `releases/latest`: BtbN publishes a dated build each day
 /// (`autobuild-…`) and then remakes its `latest` release with simpler names, and meanwhile
 /// GitHub's "latest" is the dated one, or a release still uploading its files.
 const RELEASES: &str = "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases?per_page=5";
+/// BtbN's repository on GitHub.
+const REPO: &str = "BtbN/FFmpeg-Builds";
+/// The release BtbN remakes with the newest builds under names that stay: the one read from
+/// github.com's pages, which list no releases without the API.
+const LATEST_TAG: &str = "latest";
+/// Each release's checksum list.
+const SUMS: &str = "checksums.sha256";
 
 #[derive(Deserialize)]
 struct Release {
@@ -70,13 +79,72 @@ fn stable_line<'a>(name: &'a str, build: &str) -> Option<&'a str> {
 
 /// The release's LGPL shared build for `build` of the newest stable line.
 fn best_build<'a>(release: &'a Release, build: &str) -> Option<&'a Asset> {
+    let name = best_name(release.assets.iter().map(|a| a.name.as_str()), build)?;
+    release.assets.iter().find(|a| a.name == name)
+}
+
+/// Of the file `names`, the LGPL shared build for `build` of the newest stable line.
+fn best_name<'a>(names: impl Iterator<Item = &'a str>, build: &str) -> Option<&'a str> {
     let parts = |v: &str| -> Vec<u32> { v.split('.').filter_map(|p| p.parse().ok()).collect() };
-    release
-        .assets
-        .iter()
-        .filter_map(|a| stable_line(&a.name, build).map(|l| (parts(l), a)))
+    names
+        .filter_map(|n| stable_line(n, build).map(|l| (parts(l), n)))
         .max_by(|(a, _), (b, _)| a.cmp(b))
-        .map(|(_, a)| a)
+        .map(|(_, n)| n)
+}
+
+/// The build found on github.com's pages ([`from_pages`]).
+struct Paged {
+    name: String,
+    url: String,
+    version: String,
+    /// The release's checksum list.
+    sums: String,
+}
+
+/// BtbN's `latest` release on GitHub's pages at `web`, without its API (#1337): its checksum list
+/// (`releases/download/latest/checksums.sha256`) names its files, the newest stable line's build
+/// for `build` is taken from them, and its version is that line and the list's date (when the
+/// release was made again; `.0` when the server gives none, which never replaces a dated
+/// install).
+async fn from_pages(net: &mdm_engine::Options, web: &str, build: &str) -> Result<Paged, Error> {
+    let sums_url = github::download_url(web, REPO, LATEST_TAG, SUMS);
+    let client = crate::client(net, &sums_url)?;
+    let resp = client.get(&sums_url).send().await?.error_for_status()?;
+    let date = resp
+        .headers()
+        .get(reqwest::header::LAST_MODIFIED)
+        .and_then(|d| d.to_str().ok())
+        .and_then(date_digits)
+        .unwrap_or_else(|| "0".into());
+    let sums = resp.text().await?;
+    let names = sums.lines().filter_map(|l| {
+        let (_, name) = l.trim().split_once(char::is_whitespace)?;
+        Some(name.trim().trim_start_matches('*'))
+    });
+    let name = best_name(names, build)
+        .ok_or_else(|| Error::Missing(format!("LGPL Windows build ({build})")))?
+        .to_owned();
+    let line = stable_line(&name, build).unwrap_or_default();
+    Ok(Paged {
+        url: github::download_url(web, REPO, LATEST_TAG, &name),
+        version: format!("{line}.{date}"),
+        name,
+        sums,
+    })
+}
+
+/// An HTTP date (`Mon, 16 Nov 2026 15:49:35 GMT`) as `20261116`, as the API's dates give it.
+fn date_digits(http: &str) -> Option<String> {
+    const MONTHS: [&str; 12] = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
+    let mut parts = http.split_whitespace().skip(1);
+    let day: u32 = parts.next()?.parse().ok()?;
+    let month = parts.next()?;
+    let month = MONTHS.iter().position(|m| *m == month)? + 1;
+    let year: u32 = parts.next()?.parse().ok()?;
+    ((1..=31).contains(&day) && (1000..=9999).contains(&year))
+        .then(|| format!("{year:04}{month:02}{day:02}"))
 }
 
 /// The ffmpeg to use: the person's own (`chosen`, #51), else MDM's install in `dir`
@@ -113,57 +181,78 @@ pub async fn install_latest(
             "ffmpeg build for this system (install ffmpeg)".into()
         }));
     };
+    // GitHub's API, else (its rate limit) the `latest` release's files on github.com (#1337).
     let client = crate::client(net, RELEASES)?;
-    let body = client
-        .get(RELEASES)
-        .send()
-        .await?
-        .error_for_status()?
-        .bytes()
-        .await?;
-    let mut releases: Vec<Release> =
-        serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
-    // Newest first (RFC 3339 times sort as text); the first with a build and its checksums.
-    releases.sort_by(|a, b| b.published_at.cmp(&a.published_at));
-    let (release, asset) = releases
-        .iter()
-        .find_map(|r| {
-            let has_sums = r.assets.iter().any(|a| a.name == "checksums.sha256");
-            best_build(r, build).filter(|_| has_sums).map(|a| (r, a))
-        })
-        .ok_or_else(|| Error::Missing(format!("LGPL Windows build ({build})")))?;
-    let line = stable_line(&asset.name, build).unwrap_or_default();
-    // `9.0.20261028`: the line, then the build date (the release is rebuilt daily).
-    let date: String = release
-        .published_at
-        .chars()
-        .take(10)
-        .filter(char::is_ascii_digit)
-        .collect();
-    let version = format!("{line}.{date}");
-    if let Some(current) = own(dir)
-        && !newer(&version, &current.version)
-    {
-        return Ok(current);
-    }
-    let sums = release
-        .assets
-        .iter()
-        .find(|a| a.name == "checksums.sha256")
-        .ok_or_else(|| Error::Missing("checksums.sha256".into()))?;
-    let sums = client
-        .get(&sums.browser_download_url)
-        .send()
-        .await?
-        .error_for_status()?
-        .text()
-        .await?;
-    let expected = sum_for(&sums, &asset.name)
-        .ok_or_else(|| Error::Missing(format!("checksum for {}", asset.name)))?;
-    if let Some(d) = asset
-        .digest
-        .as_deref()
-        .and_then(|d| d.strip_prefix("sha256:"))
+    let up_to_date = |version: &str| own(dir).filter(|c| !newer(version, &c.version));
+    let (name, url, version, sums, digest) = match github::api_get(&client, RELEASES).await? {
+        Api::Answer(body) => {
+            let mut releases: Vec<Release> =
+                serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
+            // Newest first (RFC 3339 times sort as text); the first with a build and its
+            // checksums.
+            releases.sort_by(|a, b| b.published_at.cmp(&a.published_at));
+            let (release, asset) = releases
+                .iter()
+                .find_map(|r| {
+                    let has_sums = r.assets.iter().any(|a| a.name == SUMS);
+                    best_build(r, build).filter(|_| has_sums).map(|a| (r, a))
+                })
+                .ok_or_else(|| Error::Missing(format!("LGPL Windows build ({build})")))?;
+            let line = stable_line(&asset.name, build).unwrap_or_default();
+            // `9.0.20261028`: the line, then the build date (the release is rebuilt daily).
+            let date: String = release
+                .published_at
+                .chars()
+                .take(10)
+                .filter(char::is_ascii_digit)
+                .collect();
+            let version = format!("{line}.{date}");
+            if let Some(current) = up_to_date(&version) {
+                return Ok(current);
+            }
+            let sums = release
+                .assets
+                .iter()
+                .find(|a| a.name == SUMS)
+                .ok_or_else(|| Error::Missing(SUMS.into()))?;
+            let sums = client
+                .get(&sums.browser_download_url)
+                .send()
+                .await?
+                .error_for_status()?
+                .text()
+                .await?;
+            (
+                asset.name.clone(),
+                asset.browser_download_url.clone(),
+                version,
+                sums,
+                asset.digest.clone(),
+            )
+        }
+        Api::RateLimited(refusal) => match from_pages(net, github::WEB, build).await {
+            Ok(Paged {
+                name,
+                url,
+                version,
+                sums,
+            }) => {
+                tracing::info!("ffmpeg: {name} ({version}), from github.com's pages");
+                if let Some(current) = up_to_date(&version) {
+                    return Ok(current);
+                }
+                // GitHub's own digest of the file is the API's only: the checksum list checks it.
+                (name, url, version, sums, None)
+            }
+            Err(e) => {
+                tracing::warn!("ffmpeg: github.com's pages: {e}");
+                return Err(refusal);
+            }
+        },
+    };
+    let expected =
+        sum_for(&sums, &name).ok_or_else(|| Error::Missing(format!("checksum for {name}")))?;
+    if let Some(d) = digest.as_deref().and_then(|d| d.strip_prefix("sha256:"))
         && hex::decode(d).ok().as_deref() != Some(&expected[..])
     {
         return Err(Error::BadChecksum);
@@ -174,15 +263,8 @@ pub async fn install_latest(
     std::fs::create_dir_all(&root)?;
     // Named by its checksum: one release's cut-off download resumes, never another's.
     let zip_path = root.join(format!("ffmpeg-{}.zip", hex::encode(&expected[..8])));
-    crate::fetch_verified(
-        &asset.browser_download_url,
-        &zip_path,
-        expected,
-        net,
-        progress,
-    )
-    .await?;
-    let res = unpack(&zip_path, &root, &version, &asset.browser_download_url);
+    crate::fetch_verified(&url, &zip_path, expected, net, progress).await?;
+    let res = unpack(&zip_path, &root, &version, &url);
     let _ = std::fs::remove_file(&zip_path);
     let exe = res?;
     make_current(&root, Installed { version, exe })
@@ -379,5 +461,105 @@ mod tests {
         assert!(folder.join("avcodec-62.dll").is_file());
         assert!(!folder.join("readme.txt").exists());
         assert!(!folder.join("LICENSE.txt").exists());
+    }
+
+    #[test]
+    fn http_dates_become_build_dates() {
+        assert_eq!(
+            date_digits("Mon, 16 Nov 2026 15:49:35 GMT").as_deref(),
+            Some("20261116")
+        );
+        assert_eq!(
+            date_digits("Thu, 01 Jan 2026 00:00:00 GMT").as_deref(),
+            Some("20260101")
+        );
+        for bad in [
+            "",
+            "Mon, 16 November 2026",
+            "Mon, 32 Nov 2026 00:00:00 GMT",
+            "16 Nov",
+        ] {
+            assert_eq!(date_digits(bad), None, "{bad}");
+        }
+    }
+
+    /// #1337: with GitHub's API refusing for its rate limit, BtbN's `latest` release on the
+    /// pages: its checksum list names the builds, the newest stable line's for this processor is
+    /// taken (never another processor's, nor a development build), dated by the list, and it
+    /// downloads and checks against that list.
+    #[tokio::test]
+    async fn the_latest_build_from_the_release_pages() {
+        let build = b"a build of ffmpeg, as far as this test goes";
+        let sum = |data: &[u8]| hex::encode(<sha2::Sha256 as sha2::Digest>::digest(data));
+        let names = [
+            "ffmpeg-master-latest-win64-lgpl-shared.zip",
+            "ffmpeg-n8.1-latest-win64-lgpl-shared-8.1.zip",
+            "ffmpeg-n9.0-latest-win64-lgpl-shared-9.0.zip",
+            "ffmpeg-n9.0-latest-winarm64-lgpl-shared-9.0.zip",
+            "ffmpeg-n9.0-latest-win64-gpl-shared-9.0.zip",
+        ];
+        let list: String = names
+            .iter()
+            .map(|n| {
+                let data: &[u8] = if n.contains("n9.0-latest-win64-lgpl") {
+                    build
+                } else {
+                    b"another"
+                };
+                format!("{}  {n}\n", sum(data))
+            })
+            .collect();
+        let files = tempfile::tempdir().unwrap();
+        let release = files.path().join("gh").join(REPO).join(LATEST_TAG);
+        std::fs::create_dir_all(&release).unwrap();
+        std::fs::write(release.join(SUMS), &list).unwrap();
+        std::fs::write(release.join(names[2]), build).unwrap();
+        // Made again on 2026-11-16 15:49:35 UTC, as the server says.
+        let made = std::time::UNIX_EPOCH + std::time::Duration::from_secs(1_794_844_175);
+        std::fs::File::options()
+            .write(true)
+            .open(release.join(SUMS))
+            .unwrap()
+            .set_modified(made)
+            .unwrap();
+        let lab = mdm_labserver::LabServer::start(mdm_labserver::Config {
+            files: Some(files.path().to_owned()),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+        let net = crate::net(mdm_engine::Proxy::None);
+        let web = lab.url("/gh/web");
+        let found = from_pages(&net, &web, "win64").await.unwrap();
+        assert_eq!(found.name, names[2]);
+        assert_eq!(found.version, "9.0.20261116");
+        assert_eq!(
+            found.url,
+            format!("{web}/{REPO}/releases/download/latest/{}", names[2])
+        );
+        assert_eq!(
+            from_pages(&net, &web, "winarm64").await.unwrap().name,
+            names[3]
+        );
+        // Downloaded through GitHub's redirect and checked against the list.
+        let expected = sum_for(&found.sums, &found.name).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let zip = dir.path().join("ffmpeg.zip");
+        crate::fetch_verified(&found.url, &zip, expected, &net, None)
+            .await
+            .unwrap();
+        assert_eq!(std::fs::read(&zip).unwrap(), build);
+        // A file that isn't the build the list names is refused.
+        std::fs::write(release.join(names[3]), b"not the listed build").unwrap();
+        let arm = from_pages(&net, &web, "winarm64").await.unwrap();
+        let bad = crate::fetch_verified(
+            &arm.url,
+            &dir.path().join("arm.zip"),
+            sum_for(&arm.sums, &arm.name).unwrap(),
+            &net,
+            None,
+        )
+        .await;
+        assert!(matches!(bad, Err(Error::BadChecksum)), "{bad:?}");
     }
 }

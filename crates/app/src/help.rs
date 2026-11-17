@@ -17,6 +17,9 @@ pub const REPO: &str = "https://github.com/anefzaoui/misterdownloadmanager";
 /// extension's popup and the repository's Sponsor button (.github/FUNDING.yml) point there too.
 pub const SPONSORS: &str = "https://github.com/sponsors/anefzaoui";
 const LATEST: &str = "https://api.github.com/repos/anefzaoui/misterdownloadmanager/releases/latest";
+/// The repository on GitHub (`owner/name`): its release pages when GitHub's API refuses for its
+/// rate limit (#1337).
+const REPO_PATH: &str = "anefzaoui/misterdownloadmanager";
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const COMMIT: &str = env!("MDM_COMMIT");
 /// While MDM runs, the automatic check comes again this often (it also checks at every start).
@@ -203,47 +206,170 @@ fn settled(joined: Result<Result<Found, String>, tokio::task::JoinError>) -> Res
     })
 }
 
-async fn latest() -> Result<Found, String> {
-    // MDM_UPDATE_FEED: another address for the latest release (tests of Update now, as
-    // MDM_DATA_DIR is for a separate list).
-    let feed = std::env::var("MDM_UPDATE_FEED").unwrap_or_else(|_| LATEST.to_owned());
-    let net = crate::settings::own_net();
-    // The chosen DNS and network adapter, as downloads have them (#36, #35).
-    let client = mdm_engine::net::client_builder(&net.dns, &net.route, &feed)
-        .map_err(|e| e.to_string())?
-        .user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
-        .timeout(Duration::from_secs(20))
-        .build()
-        .map_err(|e| e.to_string())?;
-    fetch(&client, &feed, VERSION).await
+/// Where the check reads: GitHub's API (`feed`), else, when it refuses for its rate limit
+/// (#1337), github.com's release pages (`web`) and the repository's files at the release's tag
+/// (`raw`).
+struct Sources {
+    feed: String,
+    web: String,
+    raw: String,
 }
 
-/// The latest release at `feed` against the running `current` version.
-async fn fetch(client: &reqwest::Client, feed: &str, current: &str) -> Result<Found, String> {
-    let resp = client
-        .get(feed)
-        .header("Accept", "application/vnd.github+json")
-        .send()
+async fn latest() -> Result<Found, String> {
+    // MDM_UPDATE_FEED: another address for the latest release (tests of Update now, as
+    // MDM_DATA_DIR is for a separate list); MDM_UPDATE_WEB and MDM_UPDATE_RAW: other addresses
+    // for GitHub's pages and files (tests of the way around the API's rate limit: the lab
+    // server's fake GitHub, `/gh/web` and `/gh/raw`).
+    let var = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let sources = Sources {
+        feed: var("MDM_UPDATE_FEED", LATEST),
+        web: var("MDM_UPDATE_WEB", mdm_tools::github::WEB),
+        raw: var("MDM_UPDATE_RAW", mdm_tools::github::RAW),
+    };
+    let net = crate::settings::own_net();
+    // The chosen DNS and network adapter, as downloads have them (#36, #35).
+    let builder = |url: &str| {
+        mdm_engine::net::client_builder(&net.dns, &net.route, url)
+            .map(|b| {
+                b.user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
+                    .timeout(Duration::from_secs(20))
+            })
+            .map_err(|e| e.to_string())
+    };
+    let client = builder(&sources.feed)?.build().map_err(|e| e.to_string())?;
+    // GitHub's pages are read without following their redirects: where `releases/latest` sends
+    // MDM is the answer (mdm_tools::github::latest_tag).
+    let pages = |url: &str| {
+        builder(url)?
+            .redirect(reqwest::redirect::Policy::none())
+            .build()
+            .map_err(|e| e.to_string())
+    };
+    let install = mdm_tools::update::Install::detect();
+    fetch(&client, &pages, &sources, VERSION, install).await
+}
+
+/// The latest release against the running `current` version: from GitHub's API at
+/// `sources.feed` (`client`), else, when it refuses for its rate limit, from its pages with
+/// `pages`' clients (one for each server, following no redirect), the files this copy updates
+/// from (`install`) as the release has them. When the pages fail too, the check fails as GitHub
+/// refusing too many requests from this network.
+async fn fetch(
+    client: &reqwest::Client,
+    pages: &(dyn Fn(&str) -> Result<reqwest::Client, String> + Sync),
+    sources: &Sources,
+    current: &str,
+    install: mdm_tools::update::Install,
+) -> Result<Found, String> {
+    use mdm_tools::github::Api;
+    let body = match mdm_tools::github::api_get(client, &sources.feed).await {
+        Ok(Api::Answer(body)) => body,
+        Ok(Api::RateLimited(refusal)) => {
+            return match from_pages(pages, sources, current, install).await {
+                Ok(found) => Ok(found),
+                Err(e) => {
+                    tracing::warn!("the update check on GitHub's pages failed too: {e}");
+                    // Worded as the helpers' downloads word it: "api.github.com refused the
+                    // request (403 Forbidden): too many requests from your network for now".
+                    Err(crate::errors::tools(&refusal))
+                }
+            };
+        }
+        // No release published yet: nothing newer than this.
+        Err(mdm_tools::Error::Http(e)) if e.status() == Some(reqwest::StatusCode::NOT_FOUND) => {
+            return Ok(Found::Latest);
+        }
+        Err(mdm_tools::Error::Http(e)) => return Err(e.to_string()),
+        Err(e) => return Err(e.to_string()),
+    };
+    parse_release(&String::from_utf8_lossy(&body), current)
+}
+
+/// The latest release from GitHub's pages, without its API (#1337): its tag from where
+/// `releases/latest` redirects, its date and notes from its section of CHANGELOG.md at that tag
+/// (release.yml's source for them; none when it can't be read), and of its files the signed
+/// checksum list and the ones this copy updates from (`install`), those the release has (asked
+/// without downloading them). Update now checks them as it checks the API's.
+async fn from_pages(
+    pages: &(dyn Fn(&str) -> Result<reqwest::Client, String> + Sync),
+    sources: &Sources,
+    current: &str,
+    install: mdm_tools::update::Install,
+) -> Result<Found, String> {
+    use mdm_tools::github;
+    let client = pages(&github::latest_page(&sources.web, REPO_PATH))?;
+    let tag = github::latest_tag(&client, &sources.web, REPO_PATH)
         .await
         .map_err(|e| e.to_string())?;
-    // No release published yet: nothing newer than this.
-    if resp.status() == reqwest::StatusCode::NOT_FOUND {
+    tracing::info!("the latest release is {tag}, from GitHub's pages");
+    let version = version_of(&tag)?;
+    if !newer(version, current) {
         return Ok(Found::Latest);
     }
-    let text = resp
-        .error_for_status()
+    let log = github::file_at(&sources.raw, REPO_PATH, &tag, "CHANGELOG.md");
+    let (date, notes) = match changelog(pages, &log).await {
+        Ok(text) => changelog_section(&text, version).unwrap_or_default(),
+        Err(e) => {
+            tracing::warn!("{log}: {e}");
+            Default::default()
+        }
+    };
+    let mut names = vec!["SHA256SUMS.txt".to_owned(), "SHA256SUMS.txt.sig".to_owned()];
+    names.extend(install.assets(version));
+    let mut assets = Vec::new();
+    for name in names {
+        let url = github::download_url(&sources.web, REPO_PATH, &tag, &name);
+        let there = client.head(&url).send().await.is_ok_and(|r| {
+            let s = r.status();
+            s.is_success() || s.is_redirection()
+        });
+        if there {
+            assets.push((name, url));
+        }
+    }
+    Ok(Found::Newer(Release {
+        version: version.to_owned(),
+        date,
+        notes,
+        page: github::release_page(&sources.web, REPO_PATH, &tag),
+        assets,
+    }))
+}
+
+/// The text at `url` (CHANGELOG.md at a tag).
+async fn changelog(
+    pages: &(dyn Fn(&str) -> Result<reqwest::Client, String> + Sync),
+    url: &str,
+) -> Result<String, String> {
+    pages(url)?
+        .get(url)
+        .send()
+        .await
+        .and_then(reqwest::Response::error_for_status)
         .map_err(|e| e.to_string())?
         .text()
         .await
-        .map_err(|e| e.to_string())?;
-    parse_release(&text, current)
+        .map_err(|e| e.to_string())
 }
 
-/// GitHub's latest-release JSON against the running `current` version.
-fn parse_release(json: &str, current: &str) -> Result<Found, String> {
-    let v: serde_json::Value = serde_json::from_str(json).map_err(|e| e.to_string())?;
-    let tag = v["tag_name"].as_str().unwrap_or("").trim();
-    let version = tag.trim_start_matches(['v', 'V']);
+/// `version`'s date and notes in CHANGELOG.md: its section (`## [X.Y.Z] - YYYY-MM-DD` up to the
+/// next `## `), as release.yml makes a release's notes from it.
+fn changelog_section(text: &str, version: &str) -> Option<(String, String)> {
+    let head = format!("## [{version}]");
+    let mut lines = text.lines();
+    let title = lines.by_ref().find(|l| l.starts_with(&head))?;
+    let date = title[head.len()..]
+        .trim_start_matches([' ', '-', '–'])
+        .chars()
+        .take(10)
+        .collect();
+    let notes: Vec<&str> = lines.take_while(|l| !l.starts_with("## ")).collect();
+    Some((date, notes.join("\n").trim().to_owned()))
+}
+
+/// The version a release's tag names (`v0.5.2` → `0.5.2`), or why there is none.
+fn version_of(tag: &str) -> Result<&str, String> {
+    let version = tag.trim().trim_start_matches(['v', 'V']);
     // A number MDM can't read ("next", "1.x") would compare as 0 and pass for older: no answer
     // is better than a wrong one.
     let numeric = version
@@ -255,6 +381,13 @@ fn parse_release(json: &str, current: &str) -> Result<Found, String> {
         // i18n: why updates could not be checked: the newest release on the site has no number
         return Err(crate::i18n::t("the release has no version").to_owned());
     }
+    Ok(version)
+}
+
+/// GitHub's latest-release JSON against the running `current` version.
+fn parse_release(json: &str, current: &str) -> Result<Found, String> {
+    let v: serde_json::Value = serde_json::from_str(json).map_err(|e| e.to_string())?;
+    let version = version_of(v["tag_name"].as_str().unwrap_or(""))?;
     if !newer(version, current) {
         return Ok(Found::Latest);
     }
@@ -1260,50 +1393,178 @@ mod tests {
         format!("http://{addr}/repos/x/y/releases/latest")
     }
 
+    /// A client as the check's, without the system's proxy; for GitHub's pages, following no
+    /// redirect.
+    fn test_client(redirects: bool) -> reqwest::Client {
+        let policy = if redirects {
+            reqwest::redirect::Policy::default()
+        } else {
+            reqwest::redirect::Policy::none()
+        };
+        reqwest::Client::builder()
+            .no_proxy()
+            .redirect(policy)
+            .timeout(Duration::from_secs(10))
+            .build()
+            .unwrap()
+    }
+
+    fn pages(_: &str) -> Result<reqwest::Client, String> {
+        Ok(test_client(false))
+    }
+
+    /// The API at `feed`; GitHub's pages on a port nothing listens on.
+    fn api_only(feed: &str) -> Sources {
+        let closed = {
+            let l = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+            l.local_addr().unwrap()
+        };
+        Sources {
+            feed: feed.to_owned(),
+            web: format!("http://{closed}/web"),
+            raw: format!("http://{closed}/raw"),
+        }
+    }
+
     #[test]
     fn the_check_reads_the_feed_and_fails_softly() {
+        use mdm_tools::update::Install;
         let rt = tokio::runtime::Builder::new_current_thread()
             .enable_all()
             .build()
             .unwrap();
         rt.block_on(async {
-            let client = reqwest::Client::builder()
-                .no_proxy()
-                .timeout(Duration::from_secs(10))
-                .build()
-                .unwrap();
+            let client = test_client(true);
+            let check = |feed: String| {
+                let client = client.clone();
+                async move {
+                    fetch(&client, &pages, &api_only(&feed), "0.5.2", Install::Source).await
+                }
+            };
             let newer = feed(
                 "200 OK",
                 r#"{"tag_name":"v9.0.0","published_at":"2026-12-01T00:00:00Z"}"#,
             )
             .await;
             assert!(matches!(
-                fetch(&client, &newer, "0.5.2").await,
+                check(newer).await,
                 Ok(Found::Newer(r)) if r.version == "9.0.0" && r.date == "2026-12-01"
             ));
             let none = feed("404 Not Found", r#"{"message":"Not Found"}"#).await;
-            assert_eq!(fetch(&client, &none, "0.5.2").await, Ok(Found::Latest));
+            assert_eq!(check(none).await, Ok(Found::Latest));
             for (status, body) in [
-                // GitHub's rate limit.
+                // GitHub's rate limit, and its pages not answering either.
                 ("403 Forbidden", r#"{"message":"API rate limit exceeded"}"#),
+                ("403 Forbidden", r#"{"message":"Repository access blocked"}"#),
                 ("500 Internal Server Error", ""),
                 ("200 OK", r#"{"tag_name":"v9.0.0","#),
                 ("200 OK", "[]"),
                 ("200 OK", r#"{"tag_name":"latest"}"#),
             ] {
                 let url = feed(status, body).await;
-                assert!(
-                    fetch(&client, &url, "0.5.2").await.is_err(),
-                    "{status} {body}"
-                );
+                assert!(check(url).await.is_err(), "{status} {body}");
             }
             // Nothing listening: a network error.
             let closed = {
                 let l = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
                 l.local_addr().unwrap()
             };
-            let url = format!("http://{closed}/latest");
-            assert!(fetch(&client, &url, "0.5.2").await.is_err());
+            assert!(check(format!("http://{closed}/latest")).await.is_err());
+        });
+    }
+
+    /// #1337: GitHub's API refuses for its rate limit (the lab server's fake GitHub). The check
+    /// finds the latest release on the pages: its version from where `releases/latest`
+    /// redirects, its date and notes from CHANGELOG.md at its tag, and of its files the signed
+    /// list and this copy's, those the release has (for a Linux .tar.gz copy the plain name, not
+    /// the "-experimental" one it hasn't); Update now takes it. When the pages fail too, the
+    /// check says GitHub refused too many requests from this network.
+    #[test]
+    fn a_rate_limited_check_reads_the_release_pages() {
+        use mdm_tools::update::{Arch, Install};
+        let files = tempfile::tempdir().unwrap();
+        let repo = files.path().join("gh").join(REPO_PATH);
+        let release = repo.join("v9.9.9");
+        std::fs::create_dir_all(&release).unwrap();
+        std::fs::write(repo.join("LATEST"), "v9.9.9").unwrap();
+        let linux = Install::TarGz.assets_on(Arch::THIS, "9.9.9");
+        let mut published = vec!["SHA256SUMS.txt", "SHA256SUMS.txt.sig"];
+        published.extend(linux.first().map(String::as_str));
+        for name in &published {
+            std::fs::write(release.join(name), name).unwrap();
+        }
+        std::fs::write(
+            release.join("CHANGELOG.md"),
+            "# Changelog\n\n## [Unreleased]\n\n## [9.9.9] - 2026-12-24\n\n### Fixed\n\n- **Check for updates** works behind a shared address.\n\n## [9.9.8] - 2026-12-01\n\n- Older.\n",
+        )
+        .unwrap();
+        let rt = tokio::runtime::Builder::new_multi_thread()
+            .worker_threads(2)
+            .enable_all()
+            .build()
+            .unwrap();
+        rt.block_on(async {
+            let lab = mdm_labserver::LabServer::start(mdm_labserver::Config {
+                files: Some(files.path().to_owned()),
+                ..Default::default()
+            })
+            .await
+            .unwrap();
+            let client = test_client(true);
+            let sources = Sources {
+                feed: lab.url(&format!("/gh/api/repos/{REPO_PATH}/releases/latest")),
+                web: lab.url("/gh/web"),
+                raw: lab.url("/gh/raw"),
+            };
+            let web = sources.web.clone();
+            let found = fetch(&client, &pages, &sources, "0.5.2", Install::TarGz).await;
+            let Ok(Found::Newer(rel)) = found else {
+                panic!("{found:?}")
+            };
+            assert_eq!(rel.version, "9.9.9");
+            assert_eq!(rel.date, "2026-12-24");
+            assert_eq!(
+                plain_notes(&rel.notes),
+                "Fixed\n\n• Check for updates works behind a shared address."
+            );
+            assert_eq!(rel.page, format!("{web}/{REPO_PATH}/releases/tag/v9.9.9"));
+            let want: Vec<(String, String)> = published
+                .iter()
+                .map(|n| {
+                    (
+                        (*n).to_owned(),
+                        format!("{web}/{REPO_PATH}/releases/download/v9.9.9/{n}"),
+                    )
+                })
+                .collect();
+            assert_eq!(rel.assets, want);
+            assert_eq!(
+                crate::update::asset_for(Install::TarGz, &rel.version, &rel.assets),
+                linux.first().cloned()
+            );
+            // Not newer than this copy: the latest.
+            assert_eq!(
+                fetch(&client, &pages, &sources, "9.9.9", Install::TarGz).await,
+                Ok(Found::Latest)
+            );
+            // No CHANGELOG.md at the tag: no date nor notes, the files all the same.
+            std::fs::remove_file(release.join("CHANGELOG.md")).unwrap();
+            let found = fetch(&client, &pages, &sources, "0.5.2", Install::TarGz).await;
+            assert!(
+                matches!(&found, Ok(Found::Newer(r)) if r.notes.is_empty() && r.assets == want),
+                "{found:?}"
+            );
+            // No release on the pages either: GitHub refused too many requests.
+            std::fs::remove_file(repo.join("LATEST")).unwrap();
+            let err = fetch(&client, &pages, &sources, "0.5.2", Install::TarGz)
+                .await
+                .unwrap_err();
+            assert!(
+                err.contains("127.0.0.1")
+                    && err.contains("403")
+                    && err.contains("too many requests"),
+                "{err}"
+            );
         });
     }
 

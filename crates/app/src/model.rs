@@ -1285,7 +1285,9 @@ impl Item {
             | State::Merging
             | State::Completing => None,
             State::Done => Some(Status::Complete),
-            State::Cancelled => Some(Status::Stopped),
+            // Stopped, its last bytes and state still being written (#1328): stopped for the
+            // list now; a start at its place waits for them in the engine.
+            State::Stopping | State::Cancelled => Some(Status::Stopped),
             State::Failed => Some(Status::Error),
         };
         match ended {

@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Check for updates and the yt-dlp and ffmpeg downloads work when GitHub's API refuses a shared
+  internet address for its hourly limit: the release is read from github.com's own release pages
+  instead, and checked as before (signed checksum lists, checksums)
+  ([#1337](https://github.com/anefzaoui/misterdownloadmanager/issues/1337))
 - ✅ Windows: dialogs open on the main window's monitor when the monitors have different display
   scales (a 125 % laptop and a 100 % monitor), where they opened out of sight; a window on no
   screen is brought onto one ([#1311](https://github.com/anefzaoui/misterdownloadmanager/issues/1311))
@@ -1434,6 +1438,9 @@ These ship in the next version.
   [@RedemptionMHA](https://github.com/RedemptionMHA))
 - ✅ Linux: the notification area's icon has its name (KDE showed none)
   ([#1305](https://github.com/anefzaoui/misterdownloadmanager/issues/1305))
+- ✅ Pause and Resume answer at once on a slow disk: the download stops right away and MDM
+  finishes writing in the background; a resume no longer waits for the disk before its first
+  request ([#1328](https://github.com/anefzaoui/misterdownloadmanager/issues/1328))
 - ✅ Windows: Open folder finds a file manager that names its own default verb for folders
   (One Commander) (thanks to [@haohaaaa](https://github.com/haohaaaa))
   ([#1335](https://github.com/anefzaoui/misterdownloadmanager/issues/1335))
