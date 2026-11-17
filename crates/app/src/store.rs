@@ -254,9 +254,10 @@ fn encode(
     // A private window's downloads live in memory only, as the browser keeps them, unless
     // Options → General → "Keep private-window downloads in the list" is on: then they are
     // saved like any other (their request context, cookies included, is never written: memory
-    // only for every download). Read back, a row is no longer marked private, so turning the
-    // option off later leaves the rows already saved; a private row of this session goes
-    // from the next save.
+    // only for every download). Read back, a row is no longer private in memory but keeps its
+    // saved private-window mark (`Item::private_window`), which keeps it apart from normal
+    // windows' downloads; so turning the option off later leaves the rows already saved, and a
+    // private row of this session goes from the next save.
     let keep_private = settings.keep_private_downloads;
     // The secrets as the disk keeps them: keychain references, or sealed (secrets.rs, #44).
     let settings = &settings.for_disk();
@@ -559,6 +560,7 @@ mod tests {
                     crate::model::Category::Compressed,
                 );
                 i.context.private = private;
+                i.private_window = private;
                 i.context.cookies = Some(format!("sid=secret{id}"));
                 i
             })
@@ -601,6 +603,11 @@ mod tests {
             loaded.items.iter().map(|i| i.id).collect::<Vec<_>>(),
             [1, 2]
         );
+        // The private-window mark is saved, for private rows only; the context is not.
+        assert!(loaded.items[1].private_window && !loaded.items[1].context.private);
+        assert!(!loaded.items[0].private_window);
+        let json_check = std::fs::read_to_string(&p).unwrap();
+        assert_eq!(json_check.matches("\"private_window\"").count(), 1);
         // Their cookies stay in memory, as every download's do.
         let json = std::fs::read_to_string(&p).unwrap();
         assert!(!json.contains("secret"), "{json}");

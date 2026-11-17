@@ -551,6 +551,12 @@ pub struct Item {
     /// overnight is renewed the next day); cleared as it starts again.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub waits_for_address: bool,
+    /// It was made from a private (incognito) window's download. Saved (with Options → General →
+    /// "Keep private-window downloads in the list"), unlike `context.private`, which is memory
+    /// only: read back, the row stays apart from normal windows' downloads (it neither takes
+    /// nor gives a fresh address, `crate::freshlink`) and never starts waiting by itself.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub private_window: bool,
     /// A video's (its `url` is the page): the address its file came from, the first stream of
     /// its last run as yt-dlp gave it to MDM's engine (#795). The windows' "Address".
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1099,6 +1105,11 @@ fn size_after(
 }
 
 impl Item {
+    /// Made from a private window's download, in this session or one before it.
+    pub fn is_private_window(&self) -> bool {
+        self.private_window || self.context.private
+    }
+
     /// Add an app-side event (added, started, stopped …) to the log.
     pub fn note(&mut self, text: impl Into<String>) {
         let now = std::time::SystemTime::now()
@@ -1190,6 +1201,7 @@ impl Item {
             referer: None,
             page: None,
             waits_for_address: false,
+            private_window: false,
             file_url: None,
             live: None,
             torrent_check: None,
@@ -1315,7 +1327,7 @@ impl Item {
                 // fresh one, which the browser's next download of the file gives it.
                 if failed_now
                     && self.video.is_none()
-                    && !self.context.private
+                    && !self.is_private_window()
                     && crate::freshlink::expiring_site(&self.url)
                     && s.failure
                         .as_ref()

@@ -67,7 +67,7 @@ fn matches(item: &Item, offer: &Offer) -> Option<u8> {
         && item.gallery.is_none()
         && item.torrent.is_none()
         && item.remote.is_none()
-        && !item.context.private
+        && !item.is_private_window()
         && !offer.private
         && item.url != *offer.url;
     if !waiting {
@@ -273,6 +273,10 @@ mod tests {
         private_row.context.private = true;
         let normal = offer(&new, "Lab.Archive.part1.rar", Some(SIZE));
         assert_eq!(waiting_for(&[private_row], &normal), None);
+        // Read back from the list after a restart: no longer private in memory, still marked.
+        let mut reloaded = waiting(1);
+        reloaded.private_window = true;
+        assert_eq!(waiting_for(&[reloaded], &normal), None);
         let private = Offer {
             private: true,
             ..offer(&new, "Lab.Archive.part1.rar", Some(SIZE))

@@ -2783,6 +2783,7 @@ impl App {
         item.referer = context.referer.clone().filter(|r| !r.is_empty());
         // The page it was started from (#607), whole: Refresh download address opens it.
         item.page = context.page_url.clone().filter(|p| !p.is_empty());
+        item.private_window = context.private;
         item.context = context;
         self.items.push(item);
         self.dirty = true;
@@ -15715,5 +15716,40 @@ mod fresh_address_tests {
         app.handle_command(private, &ctx);
         assert_eq!(app.items.len(), 2);
         assert_eq!(get(&app, 1).url, old);
+    }
+
+    /// A private row saved with Options → "Keep private-window downloads" and read back after a
+    /// restart (no longer private in memory, but marked) stays apart from a normal window's
+    /// download, and a failed run of it doesn't make it wait by itself.
+    #[test]
+    fn a_private_row_after_a_restart_stays_apart() {
+        let rt = runtime();
+        let port = 9;
+        let dir = tempfile::tempdir().unwrap();
+        let old = url::Url::parse(&format!("http://127.0.0.1:{port}/old/data.bin")).unwrap();
+        let mut item = Item::new(
+            1,
+            old.clone(),
+            dir.path().join("data.bin"),
+            Category::General,
+        );
+        (item.size, item.downloaded, item.status) = (Some(SIZE), SIZE / 2, Status::Error);
+        item.waits_for_address = true;
+        item.private_window = true;
+        // Through the list file: only the mark survives, not the context.
+        let json = serde_json::to_string(&item).unwrap();
+        assert!(!json.contains("cookies"), "{json}");
+        let reloaded: Item = serde_json::from_str(&json).unwrap();
+        assert!(!reloaded.context.private && reloaded.is_private_window());
+        let mut app = app_with(rt, vec![reloaded]);
+        let new = format!("http://127.0.0.1:{port}/new/data.bin");
+        app.handle_command(browser(&new, SIZE, port), &egui::Context::default());
+        assert_eq!(
+            app.items.len(),
+            2,
+            "the normal download is a row of its own"
+        );
+        assert_eq!(get(&app, 1).url, old);
+        assert!(get(&app, 1).private_window);
     }
 }
