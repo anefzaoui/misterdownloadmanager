@@ -3,6 +3,7 @@
 //! site knows stays in its own module, so the engine stays generic and a later site is one more
 //! module here.
 
+pub mod archive;
 pub mod gdrive;
 mod gofile;
 mod mediafire;
@@ -104,10 +105,11 @@ pub(crate) fn refused(asked: &Url, at: &Url, status: u16) -> Option<Refusal> {
     gdrive::refused(asked, at, status)
 }
 
-/// `a` and `b` are one party's hosts (Drive's three): the user's credentials given for one go to
-/// the other, as the browser's own `.google.com` cookies do (see `gdrive::same_party`).
+/// `a` and `b` are one party's hosts (Drive's three, or Internet Archive's frontend and petabox
+/// storage nodes): the user's credentials given for one go to the other, as the browser's own
+/// domain cookies do (see `gdrive::same_party` and `archive::same_party`).
 pub(crate) fn same_party(a: &Url, b: &Url) -> bool {
-    gdrive::same_party(a, b)
+    gdrive::same_party(a, b) || archive::same_party(a, b)
 }
 
 /// The User-Agent a site's hosts want instead of MDM's default (Drive: a browser's, see

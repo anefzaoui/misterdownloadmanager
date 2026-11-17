@@ -371,6 +371,13 @@
             "null"
           ]
         },
+        "checksum": {
+          "description": "The checksum the finished file must have, as the command line takes it (`sha256:…`, a\nbare hex value, …): `mdm_engine::verify::Hash` reads it.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "cookie_jar": {
           "description": "From the browser: the same cookies, each with the domain, path and flags the browser\nkeeps for it, for yt-dlp's cookie file. yt-dlp may ask another host than the page's (a\nYouTube Music page is looked up on www.youtube.com), and a cookie of `.youtube.com` goes\nthere too. An older extension sends `cookies` only.",
           "items": {

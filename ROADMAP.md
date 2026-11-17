@@ -309,6 +309,8 @@ Everything below ships together, in version 0.5.0.
 - ✅ Link grabber: Click'n'Load from link sites, in their packages with their archive passwords;
   off by default, asked once per site, the links not looked up before they are added
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
+- ✅ Archives: saved archive passwords, tried before the password is asked, the one that fits
+  first ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,
   verified like yt-dlp, or your own copy ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))
 - ✅ Torrents: seeding limits (a share ratio, or a time), off by default, and a finished torrent's
@@ -562,12 +564,23 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
-- ✅ Tests: the last ones that failed now and then on a busy runner are steady. A port that
+- ✅ Tests: more of the ones that failed now and then on a busy runner are steady. A port that
   stands for a server or a proxy that refuses is held for the whole test (one let go at once
   could be taken before the request came, and the answer found there read as "can't reach the
-  server"); whether a program fell back is read once its run is over, not after a fixed wait;
-  a stream's time budget times its requests alone. Each was run in loops on a machine kept busy
+  server"); whether a program fell back is read once its run is over, not after a fixed wait; a
+  call that must never wait is offered a long wait it would show taking, not a short one any
+  busy machine takes; a linear-time check always runs its few rounds before it gives up; a
+  stream's time budget times its requests alone. Each was run in loops on a machine kept busy
   on purpose, on Windows and Linux
+- ✅ The automation API's add may carry the checksum the finished file must have (the command
+  line's `--checksum` form), kept with the download for **Verify checksum** and the finish
+  check; one the app can't read is refused (`bad-request`) instead of dropped
+- ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
+  Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
+  interface language followed the system in tests too
+- ✅ **Alt** and a button's underlined letter press the button (the **Scheduler**'s **Apply**,
+  **Close** and the others pressed nothing), letters of other scripts too, and **Alt** in such a
+  window underlines the letters in every look, as in the main window
 - ✅ With **Start immediately** on, picking the folder the early download already saves to in
   **Save As** keeps its name: the download's own `.mdm.part` and `.mdm.json` no longer count as
   taken, so it isn't offered as `song (1).mp3` and doesn't start over
@@ -1374,12 +1387,19 @@ These ship in the next version.
 - ✅ The command line adds downloads to the running app: `add <url>`, with folder, file name, category, queue and silent flags (thanks to
 - ✅ AI assistants (MCP) can choose a download queue and a category when adding downloads, and start or stop a queue by name (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ AI assistants (MCP) can filter downloads by category or queue in `list_downloads`, and see the app's available queues and categories (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ AI assistants (MCP) can inspect a download by id and see free disk space in `list_downloads` (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
 - ✅ A failed download says why in MDM's log too, with the site's name and no tokens
   ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
 - ✅ Download panels: the hint under the sites list has its own row instead of running under
   Export...
+- ✅ Internet Archive: a download that needs your account keeps the browser's sign-in on its way to
+  archive.org's storage servers (thanks to [@arifrhm](https://github.com/arifrhm))
+  ([#1298](https://github.com/anefzaoui/misterdownloadmanager/issues/1298))
 
 ## Being worked on
 
