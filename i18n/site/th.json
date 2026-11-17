@@ -62,6 +62,10 @@
    "source": "Portable mode in detail →",
    "text": "โหมดพกพาโดยละเอียด →"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> พูลรีเควสต์"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "ใช่ MDM จะบันทึกความคืบหน้าระหว่างดาวน์โหลด ดังนั้นเมื่อการเชื่อมต่อขาดหาย โปรแกรมขัดข้อง หรือรีสตาร์ท ก็จะดาวน์โหลดต่อจากจุดที่หยุดไว้ ก่อนดาวน์โหลดต่อ โปรแกรมจะตรวจสอบว่าไฟล์บนเซิร์ฟเวอร์ไม่มีการเปลี่ยนแปลง หากที่อยู่ดาวน์โหลดหมดอายุ <g1>รีเฟรชที่อยู่ดาวน์โหลด</g1> จะช่วยให้ระบุที่อยู่ใหม่และเก็บข้อมูลเดิมไว้ได้ ดู <g2>ดาวน์โหลดต่อจากจุดที่หยุด</g2>"
@@ -205,6 +209,10 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>วิธีใช้ → เกี่ยวกับ Mister Download Manager</g1> แสดงเวอร์ชันที่คุณมี"
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>ผู้ส่ง Pull Request</g1><g2><x3/> คน</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -2230,6 +2238,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "บน macOS เฉพาะผู้ดูแลระบบเท่านั้นที่ตั้งเวลาปลุกได้ ตัวเลือกจึงเป็นสีเทา MDM จะไม่ขอรหัสผ่านผู้ดูแลระบบ ผู้ดูแลระบบสามารถตั้งให้ Mac ปลุกทุกวันก่อนคิวเริ่ม 1 นาที เช่น เวลา 22:59 น. สำหรับคิวที่เริ่มเวลา 23:00 น.:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "ทุกท่านที่ส่ง pull request, เปิด issue หรือแสดงความคิดเห็นบน GitHub ตั้งแต่เวอร์ชัน <x1/>"
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>ย้ายจาก IDM</g1><g2>รายการ IDM ของคุณจะถูกย้ายมาในไฟล์เดียว แต่ละรายการดาวน์โหลดพร้อมที่อยู่, ตัวอ้างอิง และคุกกี้</g2>"
@@ -3893,6 +3905,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "คลิก <g1>ตกลง</g1>"
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>ผู้แจ้งปัญหา</g1><g2><x3/> คน</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5706,6 +5722,10 @@
    "source": "A small file",
    "text": "ไฟล์ขนาดเล็ก"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "ขอขอบคุณ"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "วางที่อยู่ของเพลย์ลิสต์ (<x1/>) หรือหน้าวิดีโอของช่อง (<x2/>) แล้วคลิก <g3>ค้นหา</g3> แทนที่จะแสดงคุณภาพของวิดีโอรายการเดียว หน้าต่างจะแสดงวิดีโอทั้งหมดในเพลย์ลิสต์ พร้อมระยะเวลาของแต่ละวิดีโอ"
@@ -5841,6 +5861,10 @@
   "57d55935c79c75f6": {
    "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
    "text": "ติดตั้งหนึ่งในโปรแกรมเหล่านี้ โปรแกรมใดก็ได้ จากนั้นค้นหาวิดีโออีกครั้ง MDM จะค้นหา Deno, Node.js (รวมถึงที่ติดตั้งด้วย nvm) และ Bun ได้เอง หากยังคงแจ้งข้อความเดิม โฟลเดอร์ของโปรแกรมใหม่ไม่ได้อยู่ใน <x1/> ที่ MDM เริ่มต้น (โปรแกรมติดตั้งของ Windows จะเพิ่มให้สำหรับโปรแกรมที่เริ่มหลังจากนั้น): ให้ปิด MDM (<g2>งาน → ออก</g2>) แล้วเริ่มใหม่"
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "สร้างสรรค์โดยบุคคลที่น่าทึ่งเหล่านี้"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -7642,10 +7666,6 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "วางลิงก์ Google Drive ตามที่ได้จาก <g1>แชร์ → คัดลอกลิงก์</g1>:"
   },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "ไม่สามารถอ่านรายชื่อจาก GitHub ได้เมื่อสร้างหน้านี้ ทุกคนอยู่ใน GitHub ใน <g1>คำขอดึง</g1> และ <g2>ปัญหา</g2> ของโปรเจกต์"
-  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "การรายงานปัญหา"
@@ -8061,6 +8081,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "คุณต้องมีบัญชีแบบชำระเงินของตนเองกับบริการเหล่านี้: MDM ไม่ได้ขายหรือรวมบัญชีไว้ การแชร์บัญชีหรือลิงก์อาจละเมิดข้อกำหนดของบริการและอาจทำให้บัญชีถูกระงับได้"
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>ทุกคนที่ช่วยเหลือ</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -9714,6 +9738,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>เร่งความเร็วและดาวน์โหลดต่อ</g1><g2>ไฟล์ถูกแบ่งออกเป็นสูงสุด 32 การเชื่อมต่อ และแบ่งใหม่จนถึงไบต์สุดท้าย สามารถดาวน์โหลดต่อได้หลังเกิดข้อผิดพลาดใดๆ</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> ผู้ที่ส่งคำขอพูล, รายงานปัญหา หรือเข้าร่วมการสนทนาบน GitHub <g2>พบกับพวกเขาทั้งหมด</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "แถบชื่อเรื่องที่ MDM วาดเมื่อหน้าต่างไม่ทำงาน (โปร่งใส: เหมือนเมื่อทำงาน)"
@@ -10569,6 +10597,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "ส่งการดาวน์โหลดจากเบราว์เซอร์ของคุณ"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> ความคิดเห็น"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -13826,6 +13858,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "ตัวดึงลิงก์และไฟล์เก็บถาวร — วิธีใช้ Mister Download Manager"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>ผู้แสดงความคิดเห็น</g1><g2><x3/> คน</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "ปุ่มก่อนหน้า / ถัดไป (รวมถึงปุ่มที่เป็นสีเทา: โปรแกรมอ่านหน้าจอจะบอกว่าไม่พร้อมใช้งาน)"
@@ -14357,6 +14393,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager และ IDM, เคียงข้างกัน"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> ปัญหา"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -15341,6 +15381,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM สำเนาที่สองจะเฝ้าดูสำเนาแรก เมื่อ MDM ขัดข้อง หน้าต่างรายงานจะแสดง <g1>Mister Download Manager ปิดโดยไม่คาดคิด</g1> เมื่อหน้าต่างไม่ตอบสนองเป็นเวลา 8 วินาที จะแสดง <g2>Mister Download Manager หยุดตอบสนอง</g2> และ <g3>สิ้นสุดและเริ่ม MDM ใหม่</g3> จะปิดสำเนาที่ค้างและเริ่มสำเนาใหม่ หาก MDM กลับมาทำงานเอง หน้าต่างจะแจ้งให้ทราบ"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> พูลรีเควสต์"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -16546,6 +16590,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>หยุดการแชร์หลังจากแชร์เป็นเวลา … นาที</g1> — หรือหยุดเมื่อแชร์ครบเวลาที่กำหนด โดยนับรวมทุกครั้งที่ทำงาน ปิดไว้โดยค่าเริ่มต้น"
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> ความคิดเห็น"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "ชื่ออื่น ๆ นอกเหนือจากที่อยู่ของมันที่หน้าอาจถูกเปิดโดย"
@@ -16633,6 +16681,10 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "มีอะไรใหม่ในเวอร์ชัน 0.5.0 <g1>2026-11-08</g1>"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> ปัญหา"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",

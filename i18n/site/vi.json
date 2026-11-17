@@ -62,6 +62,10 @@
    "source": "Portable mode in detail →",
    "text": "Tìm hiểu chi tiết về chế độ portable →"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> yêu cầu kéo"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Có. MDM ghi lại tiến độ trong quá trình tải xuống, vì vậy sau khi mất kết nối, gặp sự cố hoặc khởi động lại, quá trình tải xuống sẽ tiếp tục từ chỗ đã dừng. Trước khi tiếp tục, MDM kiểm tra xem tệp trên máy chủ có bị thay đổi không. Khi địa chỉ tải xuống hết hạn, <g1>Làm mới địa chỉ tải xuống</g1> cho phép bạn thay bằng địa chỉ mới mà vẫn giữ lại dữ liệu. Xem <g2>Tiếp tục tải xuống bị gián đoạn</g2>."
@@ -206,6 +210,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Trợ giúp → Giới thiệu về Mister Download Manager</g1> hiển thị phiên bản bạn đang dùng."
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>Yêu cầu kéo</g1><g2><x3/> người</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "Mọi thứ Bộ lập lịch có thể làm →"
@@ -293,6 +301,10 @@
   "049652ed195253e0": {
    "source": "MDM is free and always will be. If it saves you time, you can support its creator on GitHub Sponsors.",
    "text": "MDM miễn phí và sẽ luôn như vậy. Nếu chương trình giúp bạn tiết kiệm thời gian, bạn có thể ủng hộ tác giả trên GitHub Sponsors."
+  },
+  "04a7f9ae361a7bb3": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes a quality's selector from <x6/> (<x7/> = the best single file; <x8/> = the sound alone as the site has it, not converted; <x9/>, <x10/>, <x11/> or <x12/> = the sound as an MP3 at that bitrate, <x13/> at its best variable one; <x14/> = as Opus; <x15/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x16/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x17/> saves subtitles beside it: language codes from <x18/> (<x19/>), or <x20/> for every one the uploader gave; <x21/> takes the site's automatic captions instead; <x22/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g23>Embed chapters</g23> does. <x24/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x25/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x26/> does.",
+   "text": "Tải xuống một video. Không có <x1/> hoặc <x2/>, chất lượng tốt nhất, chất lượng mà cửa sổ Tải xuống video bắt đầu: với ffmpeg, hình ảnh tốt nhất cùng với âm thanh tốt nhất được ghép nối (một trang web có hình ảnh và âm thanh tách rời, chẳng hạn như Bilibili, cần ffmpeg cho video), nếu không thì là tệp tốt nhất có cả hai. <x3/> (hoặc <x4/>) lấy chiều cao đó, hoặc chiều cao gần nhất bên dưới mà trang cung cấp (nếu không thì chiều cao gần nhất bên trên), và thông báo. <x5/> lấy bộ chọn chất lượng từ <x6/> (<x7/> = tệp đơn tốt nhất; <x8/> = chỉ âm thanh như trang web có, không chuyển đổi; <x9/>, <x10/>, <x11/> hoặc <x12/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x13/> ở tốc độ bit biến đổi tốt nhất; <x14/> = dưới dạng Opus; <x15/> = dưới dạng FLAC, không mất dữ liệu nhưng không tốt hơn âm thanh của trang web; chuyển đổi cần ffmpeg). <x16/>: trình tải xuống của MDM mang mỗi luồng mà yt-dlp tìm thấy qua số kết nối này (mặc định là 8, từ 1 đến 128), một luồng theo từng phần (HLS, DASH) với số phần này cùng một lúc. <x17/> lưu phụ đề bên cạnh: mã ngôn ngữ từ <x18/> (<x19/>), hoặc <x20/> cho mọi ngôn ngữ mà người tải lên đã cung cấp; <x21/> thay vào đó lấy phụ đề tự động của trang web; <x22/> đặt chúng vào video (cần ffmpeg, MP4 hoặc MKV). Với ffmpeg, các chương của video cũng được đưa vào tệp, như <g23>Nhúng chương</g23> của Tải xuống video. <x24/> gửi các kết nối tải xuống, và của yt-dlp (và ffmpeg), qua một bộ điều hợp mạng, như đối với <x25/>; khi nó không được kết nối, không có gì bắt đầu. Khi không có định dạng nào của trang khớp, lỗi sẽ liệt kê các định dạng mà nó cung cấp, như <x26/>."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -2226,6 +2238,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "Trên macOS, chỉ quản trị viên mới có thể lên lịch đánh thức, vì vậy tùy chọn này bị mờ. MDM không yêu cầu mật khẩu quản trị viên. Một quản trị viên có thể cho phép máy Mac đánh thức mỗi ngày một phút trước khi hàng đợi bắt đầu, ví dụ lúc 10:59 PM cho một hàng đợi bắt đầu lúc 11:00 PM:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "Tất cả những ai đã gửi pull request, mở issue hoặc bình luận trên GitHub kể từ phiên bản <x1/>."
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>Chuyển từ IDM</g1><g2>Danh sách IDM của bạn được chuyển sang trong một tệp, mỗi lượt tải xuống với địa chỉ, referrer và cookie của nó.</g2>"
@@ -3889,6 +3905,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "Nhấp vào <g1>OK</g1>."
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>Vấn đề</g1><g2><x3/> người</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5702,6 +5722,10 @@
    "source": "A small file",
    "text": "Một tệp nhỏ"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "Cảm ơn"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Dán địa chỉ của danh sách phát (<x1/>) hoặc video của một kênh (<x2/>) rồi nhấp <g3>Tra cứu</g3>. Thay vì hiển thị các chất lượng của một video, cửa sổ sẽ liệt kê các video trong danh sách, cùng thời lượng của từng video."
@@ -5837,6 +5861,10 @@
   "57d55935c79c75f6": {
    "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
    "text": "Cài đặt một trong số chúng, cái nào cũng được, sau đó tìm lại video. MDM tự động tìm thấy Deno, Node.js (cũng như bản cài đặt bằng nvm) và Bun. Nếu vẫn có thông báo, thư mục của chương trình mới không nằm trong <x1/> mà MDM đã khởi động (trình cài đặt của Windows thêm nó cho các chương trình khởi động sau đó): thoát MDM (<g2>Tác vụ → Thoát</g2>) và khởi động lại."
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "Được tạo nên nhờ những con người tuyệt vời này"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -7638,10 +7666,6 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Dán nguyên liên kết Google Drive mà bạn nhận được khi chọn <g1>Chia sẻ → Sao chép liên kết</g1>:"
   },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "Không thể đọc danh sách từ GitHub khi trang này được tạo. Trong thời gian chờ đợi, mọi người đều có mặt trên GitHub, trong <g1>yêu cầu kéo</g1> và <g2>vấn đề</g2> của dự án."
-  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Báo cáo sự cố"
@@ -8057,6 +8081,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Bạn cần có tài khoản trả phí của riêng mình với một trong các dịch vụ này: MDM không bán hoặc bao gồm tài khoản. Chia sẻ tài khoản hoặc liên kết của nó vi phạm các điều khoản của dịch vụ và có thể khiến tài khoản bị đình chỉ."
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>Tất cả những người đã giúp đỡ</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -9710,6 +9738,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Tăng tốc và tiếp tục</g1><g2>Một tệp được chia thành tối đa 32 kết nối, chia lại cho đến byte cuối cùng và tiếp tục sau bất kỳ sự cố nào.</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> những người đã gửi yêu cầu kéo, báo cáo sự cố hoặc tham gia thảo luận trên GitHub. <g2>Gặp gỡ tất cả</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Thanh tiêu đề do MDM vẽ, khi cửa sổ không hoạt động (trong suốt: như khi hoạt động)"
@@ -10570,6 +10602,10 @@
    "source": "Send downloads from your browser",
    "text": "Gửi tải xuống từ trình duyệt của bạn"
   },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> bình luận"
+  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "Cảm giác của Windows 7: nút bóng bẩy, thanh tiêu đề trong suốt và thanh tiến trình màu xanh lá cây bóng bẩy."
@@ -10641,6 +10677,10 @@
   "9f049ef9f553fd9d": {
    "source": "MDM splits a file into parts and downloads them side by side, then keeps every connection busy until the last byte. If the line drops or the computer restarts, the download carries on from where it was.",
    "text": "MDM chia một tệp thành nhiều phần và tải xuống song song, sau đó giữ mọi kết nối bận rộn cho đến byte cuối cùng. Nếu đường truyền bị ngắt hoặc máy tính khởi động lại, quá trình tải xuống sẽ tiếp tục từ nơi đã dừng."
+  },
+  "9f0e43c62fed1eb6": {
+   "source": "Hand a download to the running app. <x1/> sets the folder, <x2/> the file name, <x3/> the category, <x4/> the queue, <x5/> sets the required hash, <x6/> the referring page address (Referer header), <x7/> sets the request's User-Agent, <x8/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x9/> reads it from standard input instead), <x10/> queues it without starting, and <x11/> skips the Download File Info dialog. Prints <x12/> on success.",
+   "text": "Chuyển một lượt tải xuống cho ứng dụng đang chạy. <x1/> đặt thư mục, <x2/> tên tệp, <x3/> danh mục, <x4/> hàng đợi, <x5/> đặt băm bắt buộc, <x6/> địa chỉ trang giới thiệu (tiêu đề Referer), <x7/> đặt User-Agent của yêu cầu, <x8/> đặt tiêu đề Cookie (một cookie trên dòng lệnh sẽ nằm trong lịch sử shell; <x9/> đọc nó từ đầu vào chuẩn thay vào đó), <x10/> xếp nó vào hàng đợi mà không bắt đầu, và <x11/> bỏ qua hộp thoại Thông tin tệp tải xuống. In <x12/> khi thành công."
   },
   "9f1b18ba278b131b": {
    "source": "<g1>The app's own command line</g1>, the same switches as IDM's: hand a download to the running app from a script, a batch file or another program.",
@@ -13830,6 +13870,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Trình lấy liên kết và lưu trữ — Trợ giúp Mister Download Manager"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>Bình luận</g1><g2><x3/> người</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "Nút trước / kế tiếp (cả các nút bị làm mờ: trình đọc màn hình sẽ nói chúng không khả dụng)"
@@ -14365,6 +14409,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager và IDM, đặt cạnh nhau."
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> vấn đề"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -15349,6 +15397,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "Một bản sao thứ hai của MDM sẽ theo dõi bản thứ nhất. Khi MDM gặp sự cố, cửa sổ báo cáo sẽ hiển thị <g1>Mister Download Manager đã đóng đột ngột</g1>. Khi cửa sổ của nó không phản hồi trong 8 giây, nó sẽ hiển thị <g2>Mister Download Manager đã ngừng phản hồi</g2>, và <g3>Kết thúc và khởi động lại MDM</g3> sẽ đóng bản sao bị treo và khởi động một bản mới. Nếu MDM tự khởi động lại, cửa sổ sẽ thông báo điều đó."
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> yêu cầu kéo"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -16554,6 +16606,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Dừng chia sẻ sau khi chia sẻ trong … phút</g1> — hoặc sau khi nó đã được chia sẻ trong khoảng thời gian đó, qua tất cả các lần chạy của nó. Mặc định là tắt."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> bình luận"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "các tên ngoài địa chỉ của nó mà trang có thể được mở bằng"
@@ -16641,6 +16697,10 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Có gì mới trong phiên bản 0.5.0 <g1>2026-11-08</g1>"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> vấn đề"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",

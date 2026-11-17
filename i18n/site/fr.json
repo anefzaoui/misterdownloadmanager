@@ -62,6 +62,10 @@
    "source": "Portable mode in detail →",
    "text": "Mode portable en détail →"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> demandes de tirage"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Oui. MDM enregistre sa progression au fur et à mesure. Après une coupure de connexion, un plantage ou un redémarrage, il reprend là où il s’était arrêté. Avant de reprendre, il vérifie que le fichier sur le serveur n’a pas changé. Quand une adresse de téléchargement a expiré, <g1>Actualiser l’adresse de téléchargement</g1> vous permet d’en fournir une nouvelle sans perdre les données. Voir <g2>Reprendre un téléchargement interrompu</g2>."
@@ -206,6 +210,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Aide → À propos de Mister Download Manager</g1> affiche votre version."
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>Demandes de tirage</g1><g2><x3/> personnes</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "Tout ce que le Planificateur peut faire →"
@@ -293,6 +301,10 @@
   "049652ed195253e0": {
    "source": "MDM is free and always will be. If it saves you time, you can support its creator on GitHub Sponsors.",
    "text": "MDM est gratuit et le restera toujours. S’il vous fait gagner du temps, vous pouvez soutenir son créateur sur GitHub Sponsors."
+  },
+  "04a7f9ae361a7bb3": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes a quality's selector from <x6/> (<x7/> = the best single file; <x8/> = the sound alone as the site has it, not converted; <x9/>, <x10/>, <x11/> or <x12/> = the sound as an MP3 at that bitrate, <x13/> at its best variable one; <x14/> = as Opus; <x15/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x16/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x17/> saves subtitles beside it: language codes from <x18/> (<x19/>), or <x20/> for every one the uploader gave; <x21/> takes the site's automatic captions instead; <x22/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g23>Embed chapters</g23> does. <x24/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x25/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x26/> does.",
+   "text": "Télécharger une vidéo. Sans <x1/> ni <x2/>, la meilleure qualité, celle que la fenêtre Télécharger la vidéo affiche par défaut : avec ffmpeg, la meilleure image avec le meilleur son combiné (un site dont les images et les sons sont séparés, comme Bilibili, nécessite ffmpeg pour une vidéo), sinon le meilleur fichier contenant les deux. <x3/> (ou <x4/>) prend cette hauteur, ou la plus proche en dessous que la page propose (sinon la plus proche au-dessus), et l'indique. <x5/> prend un sélecteur de qualité de <x6/> (<x7/> = le meilleur fichier unique ; <x8/> = le son seul tel que le site le propose, non converti ; <x9/>, <x10/>, <x11/> ou <x12/> = le son en MP3 à ce débit binaire, <x13/> à son meilleur débit variable ; <x14/> = en Opus ; <x15/> = en FLAC, sans perte mais pas meilleur que le son du site ; les conversions nécessitent ffmpeg). <x16/> : le téléchargeur de MDM récupère chaque flux trouvé par yt-dlp via ce nombre de connexions (8 par défaut, 1 à 128), un flux en morceaux (HLS, DASH) ce nombre de morceaux à la fois. <x17/> enregistre les sous-titres à côté : codes de langue de <x18/> (<x19/>), ou <x20/> pour tous ceux fournis par l'expéditeur ; <x21/> prend les légendes automatiques du site à la place ; <x22/> les intègre à la vidéo (nécessite ffmpeg, MP4 ou MKV). Avec ffmpeg, les chapitres de la vidéo sont également intégrés au fichier, comme le fait <g23>Intégrer les chapitres</g23> de Télécharger la vidéo. <x24/> envoie les connexions des téléchargements, et celles de yt-dlp (et de ffmpeg), via une seule carte réseau, comme pour <x25/> ; si elle n'est pas connectée, rien ne démarre. Si aucun format de la page ne correspond, l'erreur liste ceux qu'elle propose, comme <x26/> le fait."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -2222,6 +2234,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "Sous macOS, seul un administrateur peut planifier un réveil. L’option est donc grisée. MDM ne demande pas le mot de passe d’un administrateur. Un administrateur peut faire en sorte que le Mac se réveille tous les jours une minute avant le début de la file d’attente, par exemple à 22h59 pour une file d’attente qui commence à 23h00 :"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "À toutes les personnes qui ont envoyé une requête de tirage, ouvert un problème ou commenté sur GitHub depuis la version <x1/>."
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>Migration depuis IDM</g1><g2>Votre liste IDM est importée dans un seul fichier, chaque téléchargement avec son adresse, son référent et ses cookies.</g2>"
@@ -3885,6 +3901,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "Cliquez sur <g1>OK</g1>."
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>Problèmes</g1><g2><x3/> personnes</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5698,6 +5718,10 @@
    "source": "A small file",
    "text": "Un petit fichier"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "Remerciements"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Collez l'adresse d'une liste de lecture (<x1/>) ou des vidéos d'une chaîne (<x2/>), puis cliquez sur <g3>Rechercher</g3>. Au lieu des qualités d'une seule vidéo, la fenêtre affiche les vidéos de la liste, chacune avec sa durée."
@@ -5833,6 +5857,10 @@
   "57d55935c79c75f6": {
    "source": "Install one of them, either works, then look the video up again. MDM finds Deno, Node.js (also one installed with nvm) and Bun by itself. If it still says so, the new program's folder isn't on the <x1/> MDM started with (Windows' installers add it for programs started after them): quit MDM (<g2>Tasks → Exit</g2>) and start it again.",
    "text": "Installez l’un d’eux, n’importe lequel fonctionne, puis recherchez à nouveau la vidéo. MDM trouve Deno, Node.js (également celui installé avec nvm) et Bun par lui-même. Si le message persiste, le dossier du nouveau programme n’est pas dans le <x1/> avec lequel MDM a démarré (les installateurs de Windows l’ajoutent pour les programmes démarrés après eux) : quittez MDM (<g2>Tâches → Quitter</g2>) et redémarrez-le."
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "Rendu possible grâce à ces personnes formidables"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -7634,10 +7662,6 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Collez un lien Google Drive tel quel, celui que <g1>Partager → Copier le lien</g1> donne :"
   },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "La liste n'a pas pu être lue depuis GitHub lors de la création de cette page. Tout le monde est sur GitHub en attendant, dans les <g1>pull requests</g1> et les <g2>issues</g2> du projet."
-  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Signaler des problèmes"
@@ -8053,6 +8077,10 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Vous avez besoin de votre propre compte payant avec l'un de ces services : MDM n'en vend ni n'en inclut. Le partage d'un compte ou de ses liens enfreint les conditions des services et peut entraîner la suspension du compte."
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>Toutes les personnes qui ont contribué</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -9706,6 +9734,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Accélération et reprise</g1><g2>Un fichier divisé en 32 connexions maximum, re-divisé jusqu'au dernier octet, et repris après tout plantage.</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> les personnes qui ont envoyé une pull request, signalé un problème ou participé à une conversation sur GitHub. <g2>Les rencontrer toutes</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Barre de titre dessinée par MDM, lorsque sa fenêtre n'est pas active (transparente : comme lorsqu'elle est active)"
@@ -10566,6 +10598,10 @@
    "source": "Send downloads from your browser",
    "text": "Envoyer les téléchargements depuis votre navigateur"
   },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> commentaire"
+  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "L’ambiance de Windows 7 : boutons brillants, une barre de titre vitreuse et une barre de progression verte brillante."
@@ -10637,6 +10673,10 @@
   "9f049ef9f553fd9d": {
    "source": "MDM splits a file into parts and downloads them side by side, then keeps every connection busy until the last byte. If the line drops or the computer restarts, the download carries on from where it was.",
    "text": "MDM divise un fichier en plusieurs parties et les télécharge en parallèle, puis maintient chaque connexion active jusqu'au dernier octet. Si la connexion est interrompue ou si l'ordinateur redémarre, le téléchargement reprend là où il s'était arrêté."
+  },
+  "9f0e43c62fed1eb6": {
+   "source": "Hand a download to the running app. <x1/> sets the folder, <x2/> the file name, <x3/> the category, <x4/> the queue, <x5/> sets the required hash, <x6/> the referring page address (Referer header), <x7/> sets the request's User-Agent, <x8/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x9/> reads it from standard input instead), <x10/> queues it without starting, and <x11/> skips the Download File Info dialog. Prints <x12/> on success.",
+   "text": "Transférer un téléchargement à l'application en cours d'exécution. <x1/> définit le dossier, <x2/> le nom du fichier, <x3/> la catégorie, <x4/> la file d'attente, <x5/> définit le hachage requis, <x6/> l'adresse de la page de référence (en-tête Referer), <x7/> définit le User-Agent de la requête, <x8/> définit l'en-tête Cookie (un cookie en ligne de commande se retrouve dans l'historique du shell ; <x9/> le lit depuis l'entrée standard à la place), <x10/> le met en file d'attente sans le démarrer, et <x11/> ignore la boîte de dialogue Informations sur le fichier à télécharger. Affiche <x12/> en cas de succès."
   },
   "9f1b18ba278b131b": {
    "source": "<g1>The app's own command line</g1>, the same switches as IDM's: hand a download to the running app from a script, a batch file or another program.",
@@ -13826,6 +13866,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Récupérateur de liens et archives — Aide de Mister Download Manager"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>Commentaires</g1><g2><x3/> personnes</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "Le bouton précédent / suivant (y compris les boutons grisés : un lecteur d’écran indique qu’ils sont indisponibles)"
@@ -14361,6 +14405,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager et IDM, côte à côte."
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> problème"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -15345,6 +15393,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "Une deuxième copie de MDM surveille la première. Lorsque MDM plante, la fenêtre de rapport indique <g1>Mister Download Manager s’est fermé de manière inattendue</g1>. Lorsque sa fenêtre n’a pas répondu pendant 8 secondes, elle indique <g2>Mister Download Manager ne répond plus</g2>, et <g3>Arrêter et redémarrer MDM</g3> ferme la copie bloquée et en démarre une nouvelle. Si MDM redémarre de lui-même, la fenêtre l’indique."
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> demande de tirage"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -16550,6 +16602,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Arrêter le partage après avoir partagé pendant … minutes</g1> — ou une fois qu'il a été partagé pendant cette durée, sur toutes ses exécutions. Désactivé par défaut."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> commentaires"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "noms autres que ses adresses par lesquels la page peut être ouverte"
@@ -16637,6 +16693,10 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Nouveautés de la version 0.5.0 <g1>2026-11-08</g1>"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> problèmes"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
