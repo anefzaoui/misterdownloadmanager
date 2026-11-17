@@ -44,6 +44,14 @@ fn fake_app(dir: &std::path::Path, api_on: bool) -> Arc<Mutex<Vec<Value>>> {
                 .to_string()
             } else if req["action"].is_string() {
                 json!({ "done": req["ids"], "skipped": [] }).to_string()
+            } else if req["pair"] == true {
+                json!({
+                    "code": "12345678",
+                    "minutes": 10,
+                    "urls": ["http://192.168.1.100:8080"],
+                    "qr": "████"
+                })
+                .to_string()
             } else {
                 "ok".to_owned()
             };
@@ -147,6 +155,7 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
         names,
         [
             "add_download",
+            "get_pairing_code",
             "list_downloads",
             "pause_downloads",
             "remove_downloads",
@@ -212,6 +221,19 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
     let (text, err) = mcp.call("stop_queue", json!({ "queue": "Night" }));
     assert!(!err && text.contains(r#"queue "Night""#), "{text}");
 
+    let (text, err) = mcp.call("get_pairing_code", json!({}));
+    assert!(!err, "{text}");
+    let pair: Value = serde_json::from_str(&text).unwrap();
+    assert_eq!(pair["code"], "12345678");
+    assert_eq!(pair["minutes"], 10);
+    assert_eq!(pair["urls"][0], "http://192.168.1.100:8080");
+    assert!(pair["qr"].is_null());
+
+    let (text, err) = mcp.call("get_pairing_code", json!({ "qr": true }));
+    assert!(!err, "{text}");
+    let pair: Value = serde_json::from_str(&text).unwrap();
+    assert_eq!(pair["qr"], "████");
+
     // What reached the app: the fields its channel reads (mdm_ipc::Command), with the token.
     let seen = seen.lock().unwrap();
     let add = seen
@@ -252,6 +274,7 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
         seen.iter()
             .any(|r| r["action"] == "stop_queue" && r["queue"] == "Night")
     );
+    assert!(seen.iter().any(|r| r["pair"] == true));
     assert!(seen.iter().all(|r| r["token"] == "secret"));
 }
 

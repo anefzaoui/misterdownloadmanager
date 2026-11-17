@@ -22,6 +22,7 @@ The assistant starts the server itself; you only tell the assistant where it is,
 | `remove_downloads` | Removes downloads from the list and keeps their files, or deletes the files too when asked. A running download must be paused first. |
 | `start_queue` | Starts a download queue (the main queue by default, or by name). |
 | `stop_queue` | Stops a download queue (the main queue by default, or by name). |
+| `get_pairing_code` | Generates a new code to pair a phone or browser with MDM's remote control (**Options → Remote**): returns the 8-digit code, how many minutes it remains valid, and the web addresses to connect to. Pass `qr: true` to include the terminal QR code. |
 
 The assistant can't change MDM's options, see your browser, or turn the automation API on by itself.
 

@@ -6,7 +6,7 @@
 use std::sync::Arc;
 
 use mdm_ipc::Command;
-use mdm_ipc::api::{API_OFF as API_OFF_CODE, ErrorAnswer, ListAnswer};
+use mdm_ipc::api::{API_OFF as API_OFF_CODE, ErrorAnswer, ListAnswer, PairAnswer};
 use rmcp::handler::server::{router::tool::ToolRouter, wrapper::Parameters};
 use rmcp::{ServerHandler, tool, tool_handler, tool_router};
 use schemars::JsonSchema;
@@ -29,7 +29,8 @@ const INSTRUCTIONS: &str = "Controls Mister Download Manager, the download manag
     category, queue, or search filtering); pause_downloads, resume_downloads and \
     remove_downloads act on those ids; add_download adds an address (http, https, ftp, ftps \
     or a magnet link); start_queue starts a download queue (the main queue by default, or \
-    by name); stop_queue stops a download queue (the main queue by default, or by name). \
+    by name); stop_queue stops a download queue (the main queue by default, or by name); \
+    get_pairing_code generates a code to connect a phone or browser to the remote control. \
     Listing and acting on downloads, stopping a queue, and starting a named queue need \
     the app's automation API, which the user turns on with `misterdownloadmanager-cli api on`. \
     Sizes, free space and speeds are in bytes and bytes per second.";
@@ -92,6 +93,13 @@ pub struct RemoveArgs {
     /// true: delete the downloaded files from the disk too; false (the default): keep them.
     #[serde(default)]
     pub delete_files: bool,
+}
+
+#[derive(Deserialize, JsonSchema, Default)]
+pub struct PairArgs {
+    /// true: include the ASCII QR code text in the response (default: false).
+    #[serde(default)]
+    pub qr: bool,
 }
 
 #[derive(Clone)]
@@ -310,6 +318,40 @@ impl Server {
             None => "Stopped the main download queue.".into(),
         })
     }
+
+    #[tool(
+        description = "Generates a new pairing code to connect a phone or browser to Mister \
+                       Download Manager's remote control (Options → Remote). Returns the \
+                       8-digit pairing code, how many minutes it remains valid, the web \
+                       addresses to connect to, and optionally the terminal QR code.",
+        annotations(
+            read_only_hint = false,
+            destructive_hint = false,
+            idempotent_hint = false
+        )
+    )]
+    async fn get_pairing_code(
+        &self,
+        Parameters(args): Parameters<PairArgs>,
+    ) -> Result<String, String> {
+        let answer = self
+            .call(Command {
+                pair: true,
+                ..Default::default()
+            })
+            .await?;
+        let pair: PairAnswer =
+            serde_json::from_str(&answer).map_err(|e| format!("unreadable answer: {e}"))?;
+        let mut obj = serde_json::json!({
+            "code": pair.code,
+            "minutes": pair.minutes,
+            "urls": pair.urls,
+        });
+        if args.qr {
+            obj["qr"] = serde_json::Value::String(pair.qr);
+        }
+        Ok(obj.to_string())
+    }
 }
 
 #[tool_handler(router = self.tool_router)]
@@ -526,5 +568,16 @@ mod tests {
         assert!(!addable("file:///etc/passwd"));
         assert!(!addable("javascript:alert(1)"));
         assert!(!addable("example.com/a.zip"));
+    }
+
+    #[test]
+    fn parses_pair_answer() {
+        let raw =
+            r#"{"code":"12345678","minutes":10,"urls":["http://192.168.1.1:8080"],"qr":"QRCODE"}"#;
+        let pair: PairAnswer = serde_json::from_str(raw).unwrap();
+        assert_eq!(pair.code, "12345678");
+        assert_eq!(pair.minutes, 10);
+        assert_eq!(pair.urls, ["http://192.168.1.1:8080"]);
+        assert_eq!(pair.qr, "QRCODE");
     }
 }
