@@ -2279,7 +2279,7 @@ impl OptionsDialog {
     fn mark_watched(&mut self, ui: &mut Ui, o: Pos2) {
         winui::checkbox_light(
             ui,
-            o + vec2(22.0, 436.0),
+            o + vec2(22.0, 414.0),
             &mut self.s.ytdlp_mark_watched,
             // i18n: Options → Sites Logins: checkbox under Cookies for video sites: a YouTube video downloaded with MDM is marked as watched in the person's YouTube history
             "Mark YouTube videos I download as watched",
