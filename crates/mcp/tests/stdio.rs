@@ -204,7 +204,7 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
 
     let (text, err) = mcp.call(
         "add_download",
-        json!({ "url": "https://example.com/b.zip", "later": true, "queue": "Night", "category": "Compressed", "referer": "https://example.com/page.html" }),
+        json!({ "url": "https://example.com/b.zip", "later": true, "queue": "Night", "category": "Compressed", "referer": "https://example.com/page.html", "user_agent": "CustomAgent/1.0" }),
     );
     assert!(!err && text.contains(r#"queue "Night""#), "{text}");
     let (text, err) = mcp.call("start_queue", json!({ "queue": "Night" }));
@@ -232,6 +232,7 @@ fn an_assistant_lists_adds_and_acts_through_the_app() {
     assert_eq!(add_night["queue"], "Night");
     assert_eq!(add_night["category"], "Compressed");
     assert_eq!(add_night["referer"], "https://example.com/page.html");
+    assert_eq!(add_night["user_agent"], "CustomAgent/1.0");
     assert!(
         seen.iter()
             .any(|r| r["action"] == "delete" && r["ids"] == json!([1]))

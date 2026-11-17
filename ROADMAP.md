@@ -579,6 +579,9 @@ These ship in the next version.
 - ✅ AI assistants (MCP) can provide a referring page (referer) when adding downloads, preserving
   the Referer header for protected CDNs and expired link renewal (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ AI assistants (MCP) can provide a custom User-Agent header when adding downloads, enabling
+  downloads from sites and CDNs that require specific browser signatures (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The automation API's add may carry the checksum the finished file must have (the command
   line's `--checksum` form), kept with the download for **Verify checksum** and the finish
   check; one the app can't read is refused (`bad-request`) instead of dropped
@@ -1428,6 +1431,11 @@ These ship in the next version.
 - ✅ Windows: Open folder finds a file manager that names its own default verb for folders
   (One Commander) (thanks to [@haohaaaa](https://github.com/haohaaaa))
   ([#1335](https://github.com/anefzaoui/misterdownloadmanager/issues/1335))
+- ✅ About's links include **Contributors**, which opens the website's page that thanks everyone who
+  sent a pull request, opened an issue or joined a conversation (built from GitHub at every build,
+  so it never goes stale): the smaller form of
+  [#1253](https://github.com/anefzaoui/misterdownloadmanager/pull/1253), whose author
+  [@9M2PJU](https://github.com/9M2PJU) handed it over
 
 ## Being worked on
 

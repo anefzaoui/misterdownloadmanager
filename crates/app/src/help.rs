@@ -66,6 +66,14 @@ pub fn page_url(doc: &str, lang: &str) -> String {
     format!("{SITE}{folder}{path}{anchor}")
 }
 
+/// The website's page that thanks everyone who sent a pull request, opened an issue or joined a
+/// conversation (About's **Contributors**), in the language `lang` when the site has it. Not a
+/// guide page: [`page_url`] would map it under `/help/`.
+fn contributors_page(lang: &str) -> String {
+    let folder = site_lang(lang).map(|l| format!("/{l}")).unwrap_or_default();
+    format!("{SITE}{folder}/contributors.html")
+}
+
 /// Open a page of the user guide on the website, in the interface language when the site has
 /// it (`doc` as page_url takes it: `"video.md"`, `"README.md#tutorials"`, `""` the home page).
 /// Never in an off-screen test run (MDM_OFFSCREEN), whose clicks come from scripts, not from a
@@ -786,9 +794,10 @@ impl About {
                     x += w + 18.0;
                     at
                 };
-                let (home, source, credits) = (
+                let (home, source, people, credits) = (
                     place("Home page"),
                     place("Source code"),
+                    place("Contributors"),
                     place("Licenses and credits"),
                 );
                 if winui::link(ui, &p, home.0, home.1, "Home page", "home") {
@@ -796,6 +805,13 @@ impl About {
                 }
                 if winui::link(ui, &p, source.0, source.1, "Source code", "source") {
                     crate::launch::open(REPO);
+                }
+                // Who sent the pull requests, opened the issues and joined the conversations: the
+                // website builds the list from GitHub at every build, so it is never stale.
+                if winui::link(ui, &p, people.0, people.1, "Contributors", "contributors")
+                    && !crate::offscreen()
+                {
+                    crate::launch::open(contributors_page(crate::i18n::code()));
                 }
                 if winui::link(
                     ui,
@@ -1415,6 +1431,30 @@ mod tests {
             .filter_map(|l| l.trim().strip_prefix("(\"")?.split('"').next())
             .collect();
         assert_eq!(codes, SITE_LANGS);
+    }
+
+    #[test]
+    fn the_contributors_page_is_the_websites_in_every_language() {
+        // English is at the root (SITE_LANGS leaves it out); the others get their folder, as
+        // page_url's pages do.
+        assert_eq!(
+            contributors_page("en"),
+            "https://misterdownloadmanager.com/contributors.html"
+        );
+        assert_eq!(
+            contributors_page("de"),
+            "https://misterdownloadmanager.com/de/contributors.html"
+        );
+        // A regional code reads its base language.
+        assert_eq!(
+            contributors_page("es-mx"),
+            "https://misterdownloadmanager.com/es/contributors.html"
+        );
+        // The site has Simplified Chinese only.
+        assert_eq!(
+            contributors_page("zh-hant"),
+            "https://misterdownloadmanager.com/contributors.html"
+        );
     }
 
     /// Every user guide page the program links to (`doc` as page_url takes it): the literal
