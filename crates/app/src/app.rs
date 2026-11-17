@@ -10009,6 +10009,7 @@ impl App {
             self.debrid_route(),
             self.downloads.clone(),
             self.settings.category_dirs.clone(),
+            self.settings.site_dirs.clone(),
             &self.rt,
             ctx,
         );

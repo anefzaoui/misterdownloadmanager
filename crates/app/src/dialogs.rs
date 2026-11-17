@@ -1278,6 +1278,7 @@ impl FileInfo {
         route: crate::debrid::Route,
         downloads: PathBuf,
         dirs: Vec<(String, String)>,
+        sites: Vec<crate::sites::Rule>,
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) -> Self {
@@ -1292,7 +1293,24 @@ impl FileInfo {
             .clone()
             .unwrap_or_else(|| crate::model::browser_guess(&new.url, &context));
         let category = Category::of(&name);
-        let folder = crate::model::category_folder(category, &downloads, &dirs);
+        // A site's own folder wins over the category's when Options → Save to → Sites says so
+        // (#385): the rule is about where, the category about whether. The site is the page the
+        // download was started from (the browser's Referer), the file's host only when no page
+        // is known — a video's own address is `googlevideo.com`, a file host's a CDN link.
+        let page = context
+            .page_url
+            .as_deref()
+            .or(context.referer.as_deref())
+            .and_then(|u| Url::parse(u).ok())
+            .and_then(|u| u.host_str().map(str::to_owned));
+        let folder = crate::sites::folder_for(
+            category,
+            new.url.host_str(),
+            page.as_deref(),
+            &downloads,
+            &dirs,
+            &sites,
+        );
         let mut place = SaveAsPlace::new(Some(ctx));
         let save_as = place.name_in(&folder, &name);
         let (probe, info) = match from_browser {
@@ -4908,6 +4926,7 @@ mod tests {
             },
             Default::default(),
             downloads.to_owned(),
+            Vec::new(),
             Vec::new(),
             rt.handle(),
             &egui::Context::default(),

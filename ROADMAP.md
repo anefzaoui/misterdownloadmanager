@@ -597,6 +597,10 @@ These ship in the next version.
 - ✅ The command line's add accepts `--cookie` (or `--cookies`) to send a Cookie header with the
   download request; `-` reads it from standard input instead of the command line (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ **Save to → Sites** (#385): a category's downloads from one site go to a folder of their
+  own. A rule names the category, the site (`*.example.com` covers the family) and the folder;
+  the most specific rule wins, and a rule beats the category's folder but never the folder a
+  person picked for that one download
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
   interface language followed the system in tests too

@@ -198,6 +198,9 @@ pub struct Settings {
     pub regional: crate::regional::Regional,
     /// Save to: a folder per category (category label → folder); missing = the default.
     pub category_dirs: Vec<(String, String)>,
+    /// Save to → Sites (#385): per category, a site and the folder its downloads from there go
+    /// to — the category's key, the host (or its `*.` form), and the folder.
+    pub site_dirs: Vec<(String, String, String)>,
     pub change_folder_on_last: bool,
     /// The addresses typed into Add URL and the folders downloads were saved to, newest first
     /// (the Address and Save As drop lists, as IDM's UrlHistory.txt).
@@ -467,6 +470,7 @@ impl Default for Settings {
             capture_min_kb: 0,
             regional: crate::regional::Regional::default(),
             category_dirs: Vec::new(),
+            site_dirs: Vec::new(),
             change_folder_on_last: true,
             url_history: Vec::new(),
             folder_history: Vec::new(),
