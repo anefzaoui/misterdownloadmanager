@@ -196,6 +196,12 @@ pub struct Options {
     /// the engine names ([`Destination::Dir`]) whose address names nothing (a script, a bare id,
     /// `videoplayback`) is named by it ([`naming::answer_name`]).
     pub page_title: Option<String>,
+    /// From the browser (#607): the web page the download was started from, whole (its tab's
+    /// address), where the Referer is often the site's address alone. A site whose file
+    /// addresses expire and are given on that page (Rapidgator's file page, `sites::origin`) is
+    /// asked there again for a fresh one when the address stops working. Not in the resume state
+    /// (like the headers): whoever resumes gives it again.
+    pub page: Option<Url>,
     /// The most one request asks for (bytes): every request, the first one too, is a range of
     /// at most this many, the next one following on the same connection. For servers that slow
     /// a long answer down (YouTube's media servers serve 10 MB ranges at full speed and a whole
@@ -286,6 +292,7 @@ impl Default for Options {
             expected_type: None,
             expected_size: None,
             page_title: None,
+            page: None,
             request_cap: None,
             slow_disk: None,
         }
@@ -454,6 +461,15 @@ pub enum NetKind {
 }
 
 impl Error {
+    /// The download stopped because its address no longer gives the file: it expired, or the
+    /// server answers it 401, 403, 404 or 410 (a signed link's end), or with a web page (a file
+    /// host's, #701). A fresh address for the same file (Refresh download address, the browser's
+    /// next download of it) is what helps; the interface waits for one.
+    pub fn wants_new_address(&self) -> bool {
+        matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410))
+            || matches!(self, Error::LinkExpired | Error::GotWebPage)
+    }
+
     /// The address no longer serves this file (or refuses us): retrying won't help.
     fn link_dead(&self) -> bool {
         matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 416))
@@ -1532,6 +1548,15 @@ struct Target {
 /// After asking the original address didn't help, how long until it may be asked again.
 const REFRESH_EVERY: Duration = Duration::from_secs(120);
 
+/// The refreshes of a download's target so far (`Ctx::refresh_target`).
+#[derive(Default)]
+struct Refreshes {
+    /// When asking the origin last failed to help.
+    failed_at: Option<std::time::Instant>,
+    /// When it last gave a new target.
+    switched_at: Option<std::time::Instant>,
+}
+
 /// What every connection needs to fetch a segment.
 struct Ctx {
     /// The download's client: every connection's requests go through its pool.
@@ -1544,8 +1569,12 @@ struct Ctx {
     /// the target on (`origin_of`): asked again when the target expires.
     origin: Option<(Url, HeaderMap)>,
     /// When asking the origin last failed to help (one refresh at a time; after a failure,
-    /// none for `REFRESH_EVERY`).
-    refreshed: tokio::sync::Mutex<Option<std::time::Instant>>,
+    /// none for `REFRESH_EVERY`), and when it last gave a new target.
+    refreshed: tokio::sync::Mutex<Refreshes>,
+    /// The newest target generation a range request was answered on, plus one (0: none yet):
+    /// a target a refresh gave that was refused before answering once isn't refreshed again
+    /// at once (`refresh_target`).
+    answered: std::sync::atomic::AtomicU64,
     size: u64,
     file: Arc<File>,
     opts: Options,
@@ -1671,13 +1700,32 @@ impl Ctx {
         let Some((origin, headers)) = &self.origin else {
             return false;
         };
-        let mut failed_at = self.refreshed.lock().await;
+        let mut refreshes = self.refreshed.lock().await;
         if self.target.lock().unwrap().generation != generation {
             return true; // another connection already switched
         }
         // Signed links may live minutes while the download takes hours: refresh as often as
         // that helps, but after an unhelpful refresh wait before asking again.
-        if failed_at.is_some_and(|t| t.elapsed() < REFRESH_EVERY) {
+        if refreshes
+            .failed_at
+            .is_some_and(|t| t.elapsed() < REFRESH_EVERY)
+        {
+            return false;
+        }
+        // The target the last refresh gave, refused before it answered one range: the site
+        // gives links it then refuses (an account's limit, a link bound elsewhere). Asking its
+        // page again at once would only repeat that, connection after connection: an unhelpful
+        // refresh, waited out as one.
+        if generation > 0
+            && self.answered.load(Ordering::SeqCst) <= generation
+            && refreshes
+                .switched_at
+                .is_some_and(|t| t.elapsed() < REFRESH_EVERY)
+        {
+            self.shared.event(
+                "The fresh address was refused before it gave any of the file; not asking again for now",
+            );
+            refreshes.failed_at = Some(std::time::Instant::now());
             return false;
         }
         let Some((url, mut headers)) = refresh_final_url(
@@ -1693,10 +1741,11 @@ impl Ctx {
         )
         .await
         .filter(|(u, _)| *u != self.target.lock().unwrap().url) else {
-            *failed_at = Some(std::time::Instant::now());
+            refreshes.failed_at = Some(std::time::Instant::now());
             return false;
         };
-        *failed_at = None;
+        refreshes.failed_at = None;
+        refreshes.switched_at = Some(std::time::Instant::now());
         self.shared.event(format!(
             "The address stopped working; the original address now leads to {}",
             url.host_str().unwrap_or("?")
@@ -1726,25 +1775,34 @@ impl Ctx {
 
 /// What a download asks again for today's target when `target` stops working (`Ctx::origin`),
 /// with its headers: `given`, the address the user gave, when it led elsewhere; else the page a
-/// site gives `target` on when its file addresses expire (`sites::origin`: MediaFire's, #952),
-/// credentials kept to their host. None for a browser-like download: asked again through MDM's own
-/// connection, which the site's bot check refuses, it keeps the address it has (#668).
+/// site gives `target` on when its file addresses expire (`sites::origin`: MediaFire's, #952;
+/// Rapidgator's, one of `pages`), credentials kept to their host. None for a browser-like
+/// download: asked again through MDM's own connection, which the site's bot check refuses, it
+/// keeps the address it has (#668).
 fn origin_of(
     given: &Url,
     headers: &HeaderMap,
     target: &Url,
     browser_like: bool,
+    pages: &[Url],
 ) -> Option<(Url, HeaderMap)> {
     if browser_like {
         None
     } else if given != target {
         Some((given.clone(), headers.clone()))
     } else {
-        sites::origin(target).map(|page| {
+        sites::origin(target, pages).map(|page| {
             let headers = scoped_headers(headers, given, &page);
             (page, headers)
         })
     }
+}
+
+/// The web pages a download's file may be given on again (`sites::origin`): the browser's tab
+/// it was started from (`Options::page`), then its Referer.
+fn pages_of(opts: &Options, headers: &HeaderMap) -> Vec<Url> {
+    let referer = header_str(headers, header::REFERER).and_then(|r| Url::parse(r).ok());
+    opts.page.iter().cloned().chain(referer).collect()
 }
 
 /// How long an idle keep-alive socket is kept: shorter than most servers' keep-alive, so a
@@ -2239,8 +2297,15 @@ async fn run_fresh(
                 post: post.clone(),
                 generation: 0,
             }),
-            origin: origin_of(&req.url, &req.headers, &final_url, browser.is_some()),
+            origin: origin_of(
+                &req.url,
+                &req.headers,
+                &final_url,
+                browser.is_some(),
+                &pages_of(&opts, &req.headers),
+            ),
             refreshed: Default::default(),
+            answered: Default::default(),
             size,
             file: file.clone(),
             opts: opts.clone(),
@@ -2476,6 +2541,7 @@ async fn run_fresh_ftp(
             }),
             origin: None,
             refreshed: Default::default(),
+            answered: Default::default(),
             size,
             file: file.clone(),
             opts: opts.clone(),
@@ -2586,7 +2652,13 @@ async fn run_resume(
         Some((url, h)) => (url.clone(), as_get.contains(&url), Some(h)),
         None => (saved.final_url.clone(), saved.final_get, None),
     };
-    let origin = origin_of(&saved.url, &headers, &url, browser.is_some());
+    let origin = origin_of(
+        &saved.url,
+        &headers,
+        &url,
+        browser.is_some(),
+        &pages_of(&opts, &headers),
+    );
     // Credentials stay with the host they were given for (the refresh's own way there scoped
     // them as it went).
     headers = refreshed_headers.unwrap_or_else(|| scoped_headers(&headers, &saved.url, &url));
@@ -2670,6 +2742,7 @@ async fn run_resume(
         }),
         origin,
         refreshed: Default::default(),
+        answered: Default::default(),
         size,
         file: file.clone(),
         opts,
@@ -3860,8 +3933,14 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
                         ctx.shared.conn(id, |c| c.status = ConnStatus::Connecting);
                         continue;
                     }
+                    // A site's signed link (`sites::expiring`) is expired by its dead answer too,
+                    // when no page is known to ask for a fresh one: a fresh address helps.
                     let e = match e {
-                        Error::Status(_) if ctx.origin.is_some() => Error::LinkExpired,
+                        Error::Status(_)
+                            if ctx.origin.is_some() || sites::expiring(&target.url) =>
+                        {
+                            Error::LinkExpired
+                        }
                         e => e,
                     };
                     ctx.shared
@@ -4081,6 +4160,8 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
             to - 1
         )));
     }
+    ctx.answered
+        .fetch_max(target.generation + 1, Ordering::SeqCst);
     Ok(body)
 }
 

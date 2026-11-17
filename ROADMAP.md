@@ -1452,6 +1452,11 @@ These ship in the next version.
   noted as the download's load starts, before the browser closes the tab the button opened or
   the tab moves on; a site's address alone is the download's page only when nothing names a page
   on it ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607))
+- ✅ A download whose link expired goes on: Rapidgator's file page (the tab the download came
+  from) is asked with the browser's sign-in for a fresh link, at most once per expiry and never
+  again at once for a link it then refused; a download stopped with an expired or refused link, or
+  after **Refresh download address**, takes the browser's next download of the same file as its
+  new address and goes on, instead of a second row starting over
 
 ## Being worked on
 

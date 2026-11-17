@@ -700,6 +700,21 @@ fn drag_carries(
         .collect()
 }
 
+/// Download `item` goes on from `url` (Refresh download address, by hand in File Properties or
+/// from the browser's next download of the file): no longer waiting for one, its failure behind
+/// it. Its resume state follows (`App::rewrite_state`).
+fn take_address(item: &mut Item, url: url::Url) {
+    // Its state names the new address now: what was read at start (or is still to come)
+    // doesn't hold.
+    item.state_here = None;
+    item.url = url;
+    item.error = None;
+    item.waits_for_address = false;
+    if item.status == Status::Error {
+        item.status = Status::Stopped;
+    }
+}
+
 /// A download's new place (its name from it). A name the user gave is no longer the address's
 /// guess (`Item::name_from_url`); another folder alone keeps the server's say.
 fn take_place(item: &mut Item, target: PathBuf) {
@@ -3571,6 +3586,11 @@ impl App {
             );
             return;
         }
+        // A fresh address for a download waiting for one (its link expired): that download goes
+        // on from it, rather than a second row starting over.
+        if self.take_fresh_address(&url, &cmd) {
+            return;
+        }
         if !self.duplicate_gate(&url, || Pending::Command(Box::new(cmd.clone()))) {
             return;
         }
@@ -3702,6 +3722,12 @@ impl App {
             // The page a media file was played on (#800): a file whose address names nothing
             // (a script, a bare id) is named by its title when the engine names it.
             page_title: context.video_title.clone(),
+            // The page it was started from (#607): a site whose links expire gives a fresh one
+            // there (Rapidgator's file page, `mdm_engine` `sites::origin`).
+            page: context
+                .page_url
+                .as_deref()
+                .and_then(|p| url::Url::parse(p).ok()),
             ..Options::default()
         };
         RequestParts { headers, opts }
@@ -3972,6 +3998,11 @@ impl App {
         // The file at its place, chosen to be replaced (#1088): replaced as it completes, on a
         // first start and on a resume alike. A place moved since doesn't replace anything.
         opts.replace_existing = item.replaces();
+        // The page it was started from, kept with the list (the browser's request is memory
+        // only): after a restart too, an expired link is renewed there (`Options::page`).
+        if opts.page.is_none() {
+            opts.page = item.page.as_deref().and_then(|p| url::Url::parse(p).ok());
+        }
         // Its run makes or removes its state: what was read at start no longer holds, and the
         // read still to come isn't wanted (the engine reads the state itself, just below). A row
         // stopped part-way whose read hasn't come yet is taken as resuming (its log says so).
@@ -3994,6 +4025,8 @@ impl App {
             headers,
             dest,
         };
+        // Going again: no longer waiting for a new address (a dead one fails it again).
+        item.waits_for_address = false;
         let dl = if fresh {
             item.downloaded = 0;
             Download::start_with(request, opts, kept)
@@ -4940,7 +4973,6 @@ impl App {
         item.description = c.description;
         item.login = c.login;
         item.set_referer(c.referer);
-        let state = mdm_engine::state::state_path(&item.dest);
         let rerouted = c.direct.is_some();
         // "Through …" changed (#44): the next start goes the new way. The service's link is
         // dropped from the resume state: directly, it continues from the host's own address;
@@ -4963,18 +4995,11 @@ impl App {
             // from the new address (its size and validators still have to match).
             // Where the browser's download of the old address ended isn't this one's (#630).
             item.context.final_url = None;
-            // Its state names the new address now: what was read at start (or is still to come)
-            // doesn't hold.
-            item.state_here = None;
             item.note(crate::i18n::fmt(
                 crate::i18n::t("Address changed to {host}"),
                 &[("host", &crate::i18n::ltr(url.host_str().unwrap_or("?")))],
             ));
-            item.url = url;
-            item.error = None;
-            if item.status == Status::Error {
-                item.status = Status::Stopped;
-            }
+            take_address(item, url);
         }
         // Moved into the folder it is already in: nothing to do (it became "a (1).zip").
         let move_to = c
@@ -4982,24 +5007,102 @@ impl App {
             .filter(|dir| item.dest.parent() != Some(dir.as_path()))
             .map(|dir| mdm_engine::naming::destination(&dir, &item.file_name));
         if rerouted || readdressed.is_some() {
-            let place = item.dest.clone();
-            self.deleter.rewrite(&place, move || {
-                if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
-                    if rerouted {
-                        saved.final_url = saved.url.clone();
-                    }
-                    if let Some(url) = readdressed {
-                        saved.final_url = url.clone();
-                        saved.url = url;
-                    }
-                    let _ = saved.write(&state);
-                }
-            });
+            self.rewrite_state(c.id, rerouted, readdressed);
         }
         self.dirty = true;
         if let Some(target) = move_to {
             self.start_move(c.id, target);
         }
+    }
+
+    /// Download `id`'s resume state follows a new route or address, beside the window
+    /// ([`crate::deleter::Deleter::rewrite`]): through the host's own address again (`rerouted`,
+    /// #44: the service's link dropped), from `readdressed` (Refresh download address). The size
+    /// and validators still have to match as it resumes. Its next start waits for it on its own
+    /// task.
+    fn rewrite_state(&mut self, id: u64, rerouted: bool, readdressed: Option<url::Url>) {
+        let Some(place) = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map(|i| i.dest.clone())
+        else {
+            return;
+        };
+        let state = mdm_engine::state::state_path(&place);
+        self.deleter.rewrite(&place, move || {
+            if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
+                if rerouted {
+                    saved.final_url = saved.url.clone();
+                }
+                if let Some(url) = readdressed {
+                    saved.final_url = url.clone();
+                    saved.url = url;
+                }
+                let _ = saved.write(&state);
+            }
+        });
+    }
+
+    /// The browser's download of `url` (`cmd`) is a fresh address for a download waiting for one
+    /// (`Item::waits_for_address`: its signed link expired, or Refresh download address was
+    /// chosen), of the same file from the same site (`freshlink`): that download takes it, with
+    /// the browser's request (its cookies, User-Agent, Referer, page), and goes on from what it
+    /// has, as IDM's does while it waits for a new address, instead of a new row starting over.
+    /// The engine checks the address gives the same file as it resumes. True when it was taken.
+    /// Not for a private window's download (its cookies stay its own), a form's, or a paired
+    /// device's.
+    fn take_fresh_address(&mut self, url: &url::Url, cmd: &ipc::Command) -> bool {
+        let from_browser = !cmd.remote
+            && !cmd.private
+            && cmd.post.is_none()
+            && (cmd.referer.is_some() || cmd.cookies.is_some() || cmd.page_url.is_some());
+        if !from_browser {
+            return false;
+        }
+        let name = cmd
+            .name
+            .clone()
+            .unwrap_or_else(|| crate::model::browser_guess(url, cmd));
+        let name = mdm_engine::naming::sanitize(&name);
+        let page = cmd.page_url.as_deref().filter(|p| !p.is_empty());
+        let offer = crate::freshlink::Offer {
+            url,
+            name: &name,
+            size: cmd.size,
+            page,
+        };
+        let Some(id) = crate::freshlink::waiting_for(&self.items, &offer) else {
+            return false;
+        };
+        let Some(item) = self.item(id) else {
+            return false;
+        };
+        item.note(crate::i18n::fmt(
+            // i18n: event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+            crate::i18n::t("New address from the browser ({host}): going on from it"),
+            &[("host", &crate::i18n::ltr(url.host_str().unwrap_or("?")))],
+        ));
+        // The browser's request for the new address goes with it from now on, as a new
+        // download's does (`push_item`).
+        item.context = cmd.clone();
+        item.set_referer(cmd.referer.clone());
+        if let Some(page) = page {
+            item.page = Some(page.to_owned());
+        }
+        if crate::debrid::browser_started(cmd) {
+            item.direct = true;
+        }
+        take_address(item, url.clone());
+        self.rewrite_state(id, false, Some(url.clone()));
+        if let Some(item) = self.items.iter().find(|i| i.id == id) {
+            for p in self.properties.iter_mut().filter(|p| p.id == id) {
+                p.readdressed(item);
+            }
+        }
+        self.dirty = true;
+        self.start(id, true);
+        true
     }
 
     /// Move a download to `target` (its name too): a finished file moves on a thread of its
@@ -7750,12 +7853,25 @@ impl App {
                 // there; Properties takes the new address and the download resumes from it.
                 // The page the browser started it from, whole, not its Referer, which is often
                 // the site's home page alone (#607); the Referer when that isn't known.
+                // Until it starts again, it waits for a new address: the browser's next download
+                // of the same file gives it one (`take_fresh_address`).
                 if let Some(id) = target {
                     let page = self
                         .items
                         .iter()
                         .find(|i| i.id == id)
                         .and_then(|i| i.web_page().map(str::to_owned));
+                    if let Some(item) = self
+                        .item(id)
+                        .filter(|i| i.live.is_none() && i.status != Status::Complete)
+                    {
+                        if !item.waits_for_address {
+                            // i18n: event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+                            item.note(crate::i18n::t("Waiting for a new address from the browser"));
+                        }
+                        item.waits_for_address = true;
+                        self.dirty = true;
+                    }
                     if let Some(page) = page {
                         crate::launch::open(page);
                     }
@@ -15270,5 +15386,273 @@ mod start_disk_tests {
             Some(&a),
             "the finished file last"
         );
+    }
+}
+
+/// The browser's next download of a file whose download waits for a new address (its link
+/// expired) continues that download, end to end against the lab server (`freshlink`,
+/// `App::take_fresh_address`).
+#[cfg(test)]
+mod fresh_address_tests {
+    use super::*;
+    use mdm_labserver::{Config, Faults, LabServer, content};
+
+    const SIZE: u64 = 2 << 20;
+    const SEED: u64 = 7;
+
+    fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    fn app_with(rt: &tokio::runtime::Runtime, items: Vec<Item>) -> std::mem::ManuallyDrop<App> {
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings: Settings {
+                // No windows: the test looks at the rows.
+                show_progress: false,
+                show_complete: false,
+                ..Settings::default()
+            },
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    fn now_ms() -> u64 {
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_millis() as u64
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    /// The browser's download of `url`: its name, size, Referer, cookies and page, as the
+    /// extension hands them over.
+    fn browser(url: &str, size: u64, port: u16) -> ipc::Command {
+        ipc::Command {
+            url: Some(url.to_owned()),
+            name: Some("data.bin".into()),
+            size: Some(size),
+            referer: Some(format!("http://127.0.0.1:{port}/")),
+            cookies: Some("sid=1".into()),
+            page_url: Some(format!("http://127.0.0.1:{port}/page")),
+            silent: true,
+            later: true,
+            ..Default::default()
+        }
+    }
+
+    /// A row stopped part-way with its link expired, as its last run ended: a signed link (the
+    /// lab's `expires`, 403 after it) whose download got some bytes before it expired, waiting
+    /// for a new address. Its resume state is at `dest`.
+    fn expired_row(
+        rt: &tokio::runtime::Runtime,
+        s: &LabServer,
+        dest: &std::path::Path,
+    ) -> (Item, mdm_engine::state::ResumeState) {
+        let port = s.addr().port();
+        let expires = now_ms() + 1500;
+        let old = url::Url::parse(&format!(
+            "http://127.0.0.1:{port}/gen/{SIZE}/data.bin?seed={SEED}&expires={expires}"
+        ))
+        .unwrap();
+        let faults = s.faults();
+        s.set_faults(Faults {
+            stall_at: Some(1 << 20),
+            ..faults.clone()
+        });
+        let dl = {
+            let _in = rt.enter();
+            Download::start(
+                Request {
+                    url: old.clone(),
+                    headers: HeaderMap::new(),
+                    dest: Destination::File(dest.to_owned()),
+                },
+                Options {
+                    save_interval: Duration::from_millis(100),
+                    ..Options::default()
+                },
+            )
+        };
+        let end = Instant::now() + Duration::from_secs(20);
+        while dl.snapshot().downloaded < 256 << 10 {
+            assert!(Instant::now() < end, "the download never started");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        dl.cancel();
+        assert!(rt.block_on(dl.wait()).is_err());
+        s.set_faults(faults);
+        rt.block_on(async {
+            tokio::time::timeout(Duration::from_secs(10), s.settled())
+                .await
+                .expect("the lab server settles")
+        });
+        while now_ms() <= expires {
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        let saved = mdm_engine::state::ResumeState::load(&state_path(dest)).unwrap();
+        let mut item = Item::new(1, old, dest.to_owned(), Category::General);
+        item.size = Some(SIZE);
+        item.downloaded = saved.downloaded();
+        assert!(item.downloaded > 0 && item.downloaded < SIZE);
+        item.status = Status::Error;
+        item.waits_for_address = true;
+        item.page = Some(format!("http://127.0.0.1:{port}/page"));
+        (item, saved)
+    }
+
+    /// Bytes of `range` (`bytes=a-b`; none: the whole file) that `saved` says were on disk.
+    fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
+        let (from, to) = match range.and_then(|r| r.strip_prefix("bytes=")?.split_once('-')) {
+            Some((a, b)) => (
+                a.parse::<u64>().unwrap(),
+                b.parse::<u64>().map_or(saved.size, |b| b + 1),
+            ),
+            None => (0, saved.size),
+        };
+        let to_fetch: u64 = saved
+            .segments
+            .iter()
+            .map(|g| to.min(g.end).saturating_sub(from.max(g.cursor)))
+            .sum();
+        (to - from) - to_fetch
+    }
+
+    /// The user's case: a download stopped part-way with its link expired; the browser hands
+    /// over a fresh link for the same file (the same name and size). That download takes it and
+    /// goes on from what it has: no second row, and only what was missing is asked of the new
+    /// link.
+    #[test]
+    fn the_browsers_new_link_continues_the_download_whose_link_expired() {
+        let rt = runtime();
+        let s = rt
+            .block_on(LabServer::start(Config {
+                faults: Faults::parse("rate=2M").unwrap(),
+                ..Config::default()
+            }))
+            .unwrap();
+        let port = s.addr().port();
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let (item, saved) = expired_row(rt, &s, &dest);
+        let mut app = app_with(rt, vec![item]);
+        s.clear_log();
+        let new = format!("http://127.0.0.1:{port}/gen/{SIZE}/data.bin?seed={SEED}");
+        let ctx = egui::Context::default();
+        app.handle_command(browser(&new, SIZE, port), &ctx);
+        assert_eq!(app.items.len(), 1, "no second row");
+        let row = get(&app, 1);
+        assert_eq!(row.url.as_str(), new);
+        assert!(!row.waits_for_address);
+        assert!(row.live.is_some(), "it goes on at once");
+        assert_eq!(row.context.cookies.as_deref(), Some("sid=1"));
+        let end = Instant::now() + Duration::from_secs(30);
+        while get(&app, 1).status != Status::Complete {
+            assert!(
+                Instant::now() < end,
+                "it never finished: {:?} {:?}",
+                get(&app, 1).status,
+                get(&app, 1).error
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        let data = std::fs::read(&dest).unwrap();
+        let mut want = vec![0; SIZE as usize];
+        content::fill(SEED, 0, &mut want);
+        assert!(data == want, "content mismatch");
+        // Only the new link was asked, and of what was on disk only each part's few bytes of
+        // check (`verify_overlap`), request by request.
+        let log = rt.block_on(async {
+            tokio::time::timeout(Duration::from_secs(10), s.settled())
+                .await
+                .expect("the lab server settles");
+            s.log()
+        });
+        assert!(!log.is_empty(), "the new link asked");
+        let overlap = Options::default().verify_overlap;
+        for e in &log {
+            assert_eq!(e.query.as_deref(), Some("seed=7"), "only the new link");
+            let again = on_disk(e.range.as_deref(), &saved);
+            assert!(
+                again <= overlap,
+                "asked again for {again} bytes: {:?}",
+                e.range
+            );
+        }
+    }
+
+    /// Another file from the same site (another size), or a download nothing waits for: a new
+    /// row, the waiting one untouched.
+    #[test]
+    fn another_file_is_a_download_of_its_own() {
+        let rt = runtime();
+        let port = 9;
+        let old = url::Url::parse(&format!("http://127.0.0.1:{port}/old/data.bin")).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut item = Item::new(
+            1,
+            old.clone(),
+            dir.path().join("data.bin"),
+            Category::General,
+        );
+        (item.size, item.downloaded, item.status) = (Some(SIZE), SIZE / 2, Status::Error);
+        item.waits_for_address = true;
+        let mut app = app_with(rt, vec![item]);
+        let ctx = egui::Context::default();
+        let other = format!("http://127.0.0.1:{port}/new/data.bin");
+        app.handle_command(browser(&other, SIZE + 1, port), &ctx);
+        assert_eq!(app.items.len(), 2, "a row of its own");
+        let row = get(&app, 1);
+        assert_eq!(row.url, old);
+        assert!(row.waits_for_address);
+        assert_eq!(row.status, Status::Error);
+        // Not waiting: the same file is a new row too (as before).
+        let mut not_waiting = Item::new(
+            1,
+            old.clone(),
+            dir.path().join("data.bin"),
+            Category::General,
+        );
+        (not_waiting.size, not_waiting.status) = (Some(SIZE), Status::Error);
+        let mut app = app_with(rt, vec![not_waiting]);
+        app.handle_command(browser(&other, SIZE, port), &ctx);
+        assert_eq!(app.items.len(), 2);
+        assert_eq!(get(&app, 1).url, old);
+    }
+
+    /// Refresh download address: the download waits for a new address (until it starts
+    /// again), and File Properties opens for it.
+    #[test]
+    fn refresh_download_address_waits_for_one() {
+        let rt = runtime();
+        let dir = tempfile::tempdir().unwrap();
+        let old = url::Url::parse("http://127.0.0.1:9/old/data.bin").unwrap();
+        let mut item = Item::new(1, old, dir.path().join("data.bin"), Category::General);
+        item.status = Status::Stopped;
+        let mut app = app_with(rt, vec![item]);
+        app.run(Cmd::RefreshAddress, Some(1), &egui::Context::default());
+        assert!(get(&app, 1).waits_for_address);
+        assert!(app.properties.iter().any(|p| p.id == 1));
     }
 }
