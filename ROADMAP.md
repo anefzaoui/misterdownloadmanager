@@ -564,6 +564,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Videos in Google Drive shared folders: the Download video button reads the file's ID from
+  the player's stream or preview dialog, and MDM downloads the file directly through its Google
+  Drive segmented engine instead of failing on the folder address
+  ([#758](https://github.com/anefzaoui/misterdownloadmanager/issues/758))
+
 - ✅ The automation API's add may carry the checksum the finished file must have (the command
   line's `--checksum` form), kept with the download for **Verify checksum** and the finish
   check; one the app can't read is refused (`bad-request`) instead of dropped

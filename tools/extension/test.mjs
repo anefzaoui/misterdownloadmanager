@@ -2221,12 +2221,18 @@ function samplePage(html) {
 
 // #758: Google Drive videos played in shared folders or direct file pages.
 {
-  const testDrive = (href, { attrs = {}, links = [], src = "", querySelector = () => null } = {}) => {
+  const testDrive = (href, { parentAttrs = {}, links = [], iframes = [], src = "" } = {}) => {
     const el = {
       localName: "video",
       currentSrc: src,
       parentElement: null,
-      getAttribute: (k) => attrs[k] || null,
+      getAttribute: () => null,
+      querySelectorAll: () => [],
+    };
+    const parent = {
+      localName: "div",
+      parentElement: null,
+      getAttribute: (k) => parentAttrs[k] || null,
       querySelectorAll: (sel) => {
         if (sel === "a[href]") {
           return links.map((h) => ({
@@ -2235,10 +2241,17 @@ function samplePage(html) {
             querySelector: () => null,
           }));
         }
+        if (sel === "iframe, embed") {
+          return iframes.map((s) => ({
+            localName: "iframe",
+            getAttribute: (k) => (k === "src" ? s : null),
+          }));
+        }
         return [];
       },
     };
-    const document = { querySelector, querySelectorAll: () => [el] };
+    el.parentElement = parent;
+    const document = { querySelector: () => null, querySelectorAll: () => [el] };
     return videoPageOn(new URL(href), document)(el);
   };
 
@@ -2248,7 +2261,7 @@ function samplePage(html) {
     "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
   );
 
-  // Video in a shared folder with stream URL carrying driveid.
+  // Video in a shared folder with stream URL carrying driveid: picked first.
   assert.equal(
     testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
       src: "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu",
@@ -2256,20 +2269,43 @@ function samplePage(html) {
     "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
   );
 
-  // Video in a shared folder with preview dialog link.
+  // Video in a shared folder with preview dialog holding one link: falls back to dialog's link.
   assert.equal(
     testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      parentAttrs: { role: "dialog" },
       links: ["https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view"],
     }),
     "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
   );
 
-  // Video in a shared folder with data-video-id.
+  // Video in a shared folder with preview dialog holding one iframe.
   assert.equal(
-    testDrive("https://drive.google.com/drive/u/0/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
-      attrs: { "data-video-id": "1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu" },
+    testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      parentAttrs: { role: "dialog" },
+      iframes: ["https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/preview"],
     }),
-    "https://drive.google.com/u/0/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+    "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+  );
+
+  // Links outside a preview dialog (in the folder list) are ignored.
+  assert.equal(
+    testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      parentAttrs: { role: "grid" },
+      links: ["https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view"],
+    }),
+    null,
+  );
+
+  // More than one candidate in preview dialog returns null (maybe, not sure).
+  assert.equal(
+    testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      parentAttrs: { role: "dialog" },
+      links: [
+        "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+        "https://drive.google.com/file/d/2t63fk_5ZUERu_FPlx2GT64v-wKb1d5ov/view",
+      ],
+    }),
+    null,
   );
 
   // Shared folder without any video file identification returns null (never the folder itself).
@@ -2277,6 +2313,13 @@ function samplePage(html) {
     testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3"),
     null,
   );
+
+  // Test page: a folder list with two files and one playing in the preview dialog.
+  const { page: gdrivePage, videos: gdriveVideos } = samplePage(readText(new URL("google-drive.html", import.meta.url)));
+  for (const v of gdriveVideos) {
+    const expect = v.getAttribute("data-expect");
+    assert.equal(videoPageOn(new URL(gdrivePage), v.ownerDocument)(v), expect === "none" ? null : expect);
+  }
 
   ok("#758: Google Drive videos in shared folders name the file, never the folder");
 }

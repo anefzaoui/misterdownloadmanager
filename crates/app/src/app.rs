@@ -1494,12 +1494,16 @@ fn drive_file_behind_player(cmd: &ipc::Command) -> Option<String> {
             .find(|(k, v)| (k == "driveid" || k == "docid") && gdrive::is_id(v))
             .map(|(_, v)| v.into_owned());
         if let Some(id) = drive_id {
-            let authuser = u
+            let mut file_url =
+                url::Url::parse(&format!("https://drive.google.com/file/d/{id}/view"))
+                    .expect("valid drive view url");
+            if let Some((_, v)) = u
                 .query_pairs()
                 .find(|(k, v)| k == "authuser" && !v.is_empty())
-                .map(|(_, v)| format!("?authuser={v}"))
-                .unwrap_or_default();
-            return Some(format!("https://drive.google.com/file/d/{id}/view{authuser}"));
+            {
+                file_url.query_pairs_mut().append_pair("authuser", &v);
+            }
+            return Some(file_url.into());
         }
     }
     cmd.referer
@@ -12926,17 +12930,24 @@ mod referrer_tests {
         let folder = "https://drive.google.com/drive/folders/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu";
         assert_eq!(drive_file_behind_player(&cmd(folder, None)), None);
         // A video played inside a shared folder: stream carries the file ID (#758).
-        let stream_in_folder =
-            "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu";
+        let stream_in_folder = "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu";
         assert_eq!(
             drive_file_behind_player(&cmd(stream_in_folder, Some(folder))).as_deref(),
             Some(page)
         );
-        let stream_docid =
-            "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&docid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu&authuser=1";
+        let stream_docid = "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&docid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu&authuser=1";
         assert_eq!(
             drive_file_behind_player(&cmd(stream_docid, None)).as_deref(),
-            Some("https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view?authuser=1")
+            Some(
+                "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view?authuser=1"
+            )
+        );
+        let stream_special_authuser = "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu&authuser=user%26name%23test";
+        assert_eq!(
+            drive_file_behind_player(&cmd(stream_special_authuser, None)).as_deref(),
+            Some(
+                "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view?authuser=user%26name%23test"
+            )
         );
     }
 
