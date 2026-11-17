@@ -271,6 +271,9 @@ enum Cmd {
         /// The page's address (Referer header), for links that need one or an expired link's renewal.
         #[arg(short = 'r', long = "referer", alias = "referrer")]
         referer: Option<String>,
+        /// The User-Agent header to send with download requests.
+        #[arg(long = "user-agent", alias = "ua")]
+        user_agent: Option<String>,
         /// Add to the queue without starting it now.
         #[arg(short = 'l', long = "later")]
         later: bool,
@@ -461,6 +464,7 @@ fn add_command(
     queue: Option<String>,
     checksum: Option<String>,
     referer: Option<String>,
+    user_agent: Option<String>,
     later: bool,
     silent: bool,
 ) -> mdm_ipc::Command {
@@ -478,6 +482,7 @@ fn add_command(
         queue,
         checksum,
         referer,
+        user_agent,
         later,
         silent,
         ..Default::default()
@@ -1356,10 +1361,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             queue,
             checksum,
             referer,
+            user_agent,
             later,
             silent,
         } => ask(add_command(
-            url, output, name, category, queue, checksum, referer, later, silent,
+            url, output, name, category, queue, checksum, referer, user_agent, later, silent,
         )),
         Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
             action: Some("start_queue".into()),
@@ -1991,6 +1997,7 @@ mod tests {
                 queue: None,
                 checksum: None,
                 referer: None,
+                user_agent: None,
                 later: false,
                 silent: false,
             } if url == "https://example.test/a.zip"
@@ -2025,6 +2032,7 @@ mod tests {
                 queue: Some(ref q),
                 checksum: Some(ref h),
                 referer: None,
+                user_agent: None,
                 later: true,
                 silent: true,
             } if url == "magnet:?xt=urn:btih:abc"
@@ -2044,10 +2052,11 @@ mod tests {
                 queue,
                 checksum,
                 referer,
+                user_agent,
                 later,
                 silent,
             } => add_command(
-                url, output, name, category, queue, checksum, referer, later, silent,
+                url, output, name, category, queue, checksum, referer, user_agent, later, silent,
             ),
             _ => unreachable!(),
         };
@@ -2086,6 +2095,40 @@ mod tests {
                 ..
             } if url == "https://example.test/file.zip" && r == "https://example.test/page.html"
         ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--user-agent",
+            "CustomAgent/1.0",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                user_agent: Some(ref u),
+                ..
+            } if url == "https://example.test/file.zip" && u == "CustomAgent/1.0"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--ua",
+            "CustomAgent/1.0",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                user_agent: Some(ref u),
+                ..
+            } if url == "https://example.test/file.zip" && u == "CustomAgent/1.0"
+        ));
     }
 
     #[test]
@@ -2103,11 +2146,13 @@ mod tests {
             None,
             None,
             Some("https://example.test/source".into()),
+            None,
             false,
             false,
         );
         assert_eq!(cmd.dir.as_deref(), Some(expected.as_str()));
         assert_eq!(cmd.referer.as_deref(), Some("https://example.test/source"));
+        assert_eq!(cmd.user_agent, None);
     }
 
     #[test]

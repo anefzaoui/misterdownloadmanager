@@ -582,6 +582,9 @@ These ship in the next version.
 - ✅ The command line's add accepts `--referer` (or `--referrer`) to preserve the referring page
   address (Referer header) for protected CDNs and expired link renewal (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line's add accepts `--user-agent` (or `--ua`) to send a custom User-Agent header
+  with the download request (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
   interface language followed the system in tests too
