@@ -12337,6 +12337,9 @@ impl App {
         }
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
+        // Clicked without the keyboard (X11, the main window back from the notification area):
+        // the keyboard comes with the click.
+        dialogs::keyboard_to_click(&ctx);
         // Not in the frame the interface size changed in: the window's rect is measured at the
         // old one then.
         if self.follow_zoom(&ctx) {

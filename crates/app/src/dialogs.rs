@@ -512,6 +512,7 @@ fn dialog_window<T>(
     }
     crate::crash::window(id);
     let out = ctx.show_viewport_immediate(vid, builder, |ui, _| {
+        keyboard_to_click(ui.ctx());
         // Painted in the pass that closes it too (see close_requested).
         let close = close_requested(ui);
         let out = egui::CentralPanel::no_frame()
@@ -3252,6 +3253,20 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
         crate::unix::macos_activate_app();
         ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
     }
+}
+
+/// A click in the window this pass draws (the main window, a dialog, a progress window; never a
+/// menu's, which leaves the keyboard with the window it opened from) while it hasn't the keyboard
+/// gives it the keyboard: on X11 the window manager may have left the X input focus elsewhere
+/// (unix::take_keyboard_on_click). Windows and macOS: the system gives a clicked window the
+/// keyboard itself.
+pub fn keyboard_to_click(ctx: &egui::Context) {
+    #[cfg(target_os = "linux")]
+    if ctx.input(|i| i.pointer.any_pressed() && !i.focused) {
+        crate::unix::take_keyboard_on_click();
+    }
+    #[cfg(not(target_os = "linux"))]
+    let _ = ctx;
 }
 
 /// A dialog's window ([`window`], [`question`]) by its id.

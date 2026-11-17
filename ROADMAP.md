@@ -1447,6 +1447,9 @@ These ship in the next version.
   it has its own taskbar button
 - ✅ The same video picked from the quality menu in a second tab of its page is a duplicate, even
   when its stream's address is signed for each load (it was downloaded again without a word)
+- ✅ Linux (XWayland on Hyprland): a click in MDM's window gives it the keyboard again where
+  Hyprland had left it with another X11 program's window, or with none after the window came back
+  from the notification area; a box in File Properties took the caret but no typing or Ctrl+V
 
 ## Being worked on
 
