@@ -274,6 +274,9 @@ enum Cmd {
         /// The User-Agent header to send with download requests.
         #[arg(long = "user-agent", alias = "ua")]
         user_agent: Option<String>,
+        /// The Cookie header to send with download requests.
+        #[arg(long = "cookie", alias = "cookies")]
+        cookie: Option<String>,
         /// Add to the queue without starting it now.
         #[arg(short = 'l', long = "later")]
         later: bool,
@@ -465,6 +468,7 @@ fn add_command(
     checksum: Option<String>,
     referer: Option<String>,
     user_agent: Option<String>,
+    cookie: Option<String>,
     later: bool,
     silent: bool,
 ) -> mdm_ipc::Command {
@@ -483,6 +487,7 @@ fn add_command(
         checksum,
         referer,
         user_agent,
+        cookies: cookie,
         later,
         silent,
         ..Default::default()
@@ -1362,10 +1367,12 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             checksum,
             referer,
             user_agent,
+            cookie,
             later,
             silent,
         } => ask(add_command(
-            url, output, name, category, queue, checksum, referer, user_agent, later, silent,
+            url, output, name, category, queue, checksum, referer, user_agent, cookie, later,
+            silent,
         )),
         Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
             action: Some("start_queue".into()),
@@ -1998,6 +2005,7 @@ mod tests {
                 checksum: None,
                 referer: None,
                 user_agent: None,
+                cookie: None,
                 later: false,
                 silent: false,
             } if url == "https://example.test/a.zip"
@@ -2033,6 +2041,7 @@ mod tests {
                 checksum: Some(ref h),
                 referer: None,
                 user_agent: None,
+                cookie: None,
                 later: true,
                 silent: true,
             } if url == "magnet:?xt=urn:btih:abc"
@@ -2053,10 +2062,12 @@ mod tests {
                 checksum,
                 referer,
                 user_agent,
+                cookie,
                 later,
                 silent,
             } => add_command(
-                url, output, name, category, queue, checksum, referer, user_agent, later, silent,
+                url, output, name, category, queue, checksum, referer, user_agent, cookie, later,
+                silent,
             ),
             _ => unreachable!(),
         };
@@ -2129,6 +2140,40 @@ mod tests {
                 ..
             } if url == "https://example.test/file.zip" && u == "CustomAgent/1.0"
         ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--cookie",
+            "session=abc123",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                cookie: Some(ref c),
+                ..
+            } if url == "https://example.test/file.zip" && c == "session=abc123"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--cookies",
+            "session=abc123",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                cookie: Some(ref c),
+                ..
+            } if url == "https://example.test/file.zip" && c == "session=abc123"
+        ));
     }
 
     #[test]
@@ -2147,12 +2192,14 @@ mod tests {
             None,
             Some("https://example.test/source".into()),
             None,
+            None,
             false,
             false,
         );
         assert_eq!(cmd.dir.as_deref(), Some(expected.as_str()));
         assert_eq!(cmd.referer.as_deref(), Some("https://example.test/source"));
         assert_eq!(cmd.user_agent, None);
+        assert_eq!(cmd.cookies, None);
     }
 
     #[test]
