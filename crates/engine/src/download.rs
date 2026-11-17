@@ -3651,13 +3651,18 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
     }
     // No more connections than the host is known to allow.
     let host = ctx.target().url.host_str().unwrap_or("").to_owned();
-    let learned = ctx.opts.host_limits.as_ref().and_then(|h| h.cap(&host));
+    let limits = ctx.opts.host_limits.as_ref();
+    let learned_cap = limits.and_then(|h| h.cap(&host));
+    let learned_opt = limits.and_then(|h| h.optimal(&host));
     let wanted = ctx.opts.connections();
-    if let Some(cap) = learned.filter(|c| *c < wanted) {
+    if let Some(cap) = learned_cap.filter(|c| *c < wanted) {
         ctx.shared
             .event(format!("{host} allows {cap} connection(s) (learned)"));
+    } else if let Some(opt) = learned_opt.filter(|c| *c < wanted) {
+        ctx.shared
+            .event(format!("{host} optimal throughput at {opt} connection(s) (learned)"));
     }
-    let max = learned.map_or(wanted, |c| c.min(wanted));
+    let max = limits.map_or(wanted, |h| h.limit_for(&host, wanted));
     // A small file starts with fewer connections (one per INITIAL_PIECE): opened all at once
     // they would cut it into slivers and fetch some twice (benchmark 2026-10-30: 256 KiB took
     // 13-19 requests; IDM, which ramps up in waves, took 4). Later splits still go down to
