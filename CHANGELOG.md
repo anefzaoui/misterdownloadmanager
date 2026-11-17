@@ -7,6 +7,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Options → General → Keep private-window downloads in the list:** downloads from a browser's private (incognito) window are kept in memory only, so closing or restarting MDM lost the unfinished ones. Ticked, they are saved in the list like any other and can be resumed after a restart; their cookies are never saved. Off by default.
 - **Archive passwords** ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)): **Options → Archives → Archive passwords...** keeps the passwords you use again and again. An archive that turns out to be encrypted is tried with its package's password, then with each saved one, before MDM asks; the saved one that fits moves to the top; a package's password (typed in Link grabber, or sent with the links) is used but never saved by itself. The **Archive password** window can remember what you type (**Remember it for other archives**, unticked at first). The list is kept in the system's keychain.
 - Linux: the **7-Zip needed** window says to install the distribution's `7zip` (or `p7zip`) package.
 - **Command-line `add` command:** `misterdownloadmanager-cli add <url>` can now add downloads to the running app, supporting `-o` (output folder), `-f` (file name), `-c` (category), `-q` (queue), `-l` (later / queue only), and `-s` (silent).

@@ -251,14 +251,23 @@ fn encode(
         settings: &'a Settings,
         queues: &'a [Queue],
     }
+    // A private window's downloads live in memory only, as the browser keeps them, unless
+    // Options → General → "Keep private-window downloads in the list" is on: then they are
+    // saved like any other (their request context, cookies included, is never written: memory
+    // only for every download). Read back, a row is no longer marked private, so turning the
+    // option off later leaves the rows already saved; a private row of this session goes
+    // from the next save.
+    let keep_private = settings.keep_private_downloads;
     // The secrets as the disk keeps them: keychain references, or sealed (secrets.rs, #44).
     let settings = &settings.for_disk();
     crate::secrets::prepared(|| {
         serde_json::to_vec_pretty(&ListRef {
             version: VERSION,
             next_id,
-            // A private window's downloads live in memory only, as the browser keeps them.
-            items: items.iter().filter(|i| !i.context.private).collect(),
+            items: items
+                .iter()
+                .filter(|i| keep_private || !i.context.private)
+                .collect(),
             columns,
             settings,
             queues,
@@ -535,6 +544,75 @@ mod tests {
     fn save_n(p: &Path, n: u64) {
         let layout = crate::list::ListState::default().layout();
         save_to(p, n, &[], &layout, &Settings::default(), &[]).unwrap();
+    }
+
+    /// A normal download (1) and a private window's (2), each with the browser's cookies.
+    fn normal_and_private(dir: &Path) -> Vec<Item> {
+        [(1, false), (2, true)]
+            .into_iter()
+            .map(|(id, private)| {
+                let url = url::Url::parse(&format!("https://files.example.com/f{id}.zip")).unwrap();
+                let mut i = Item::new(
+                    id,
+                    url,
+                    dir.join(format!("f{id}.zip")),
+                    crate::model::Category::Compressed,
+                );
+                i.context.private = private;
+                i.context.cookies = Some(format!("sid=secret{id}"));
+                i
+            })
+            .collect()
+    }
+
+    fn saved_ids(p: &Path) -> Vec<u64> {
+        load_from(p, empty()).items.iter().map(|i| i.id).collect()
+    }
+
+    #[test]
+    fn a_private_windows_downloads_are_not_saved_by_default() {
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("downloads.json");
+        let layout = crate::list::ListState::default().layout();
+        let items = normal_and_private(dir.path());
+        let settings = Settings::default();
+        assert!(!settings.keep_private_downloads, "off by default");
+        save_to(&p, 3, &items, &layout, &settings, &[]).unwrap();
+        assert_eq!(saved_ids(&p), [1]);
+        // A list from before the option reads with it off.
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        assert!(!old.keep_private_downloads);
+    }
+
+    #[test]
+    fn with_the_option_on_a_private_windows_downloads_survive_a_restart() {
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("downloads.json");
+        let layout = crate::list::ListState::default().layout();
+        let items = normal_and_private(dir.path());
+        let settings = Settings {
+            keep_private_downloads: true,
+            ..Settings::default()
+        };
+        save_to(&p, 3, &items, &layout, &settings, &[]).unwrap();
+        let loaded = load_from(&p, empty());
+        assert!(loaded.settings.keep_private_downloads, "the option is kept");
+        assert_eq!(
+            loaded.items.iter().map(|i| i.id).collect::<Vec<_>>(),
+            [1, 2]
+        );
+        // Their cookies stay in memory, as every download's do.
+        let json = std::fs::read_to_string(&p).unwrap();
+        assert!(!json.contains("secret"), "{json}");
+        assert!(loaded.items.iter().all(|i| i.context.cookies.is_none()));
+        // Turning the option off later keeps the rows already saved (read back, none is
+        // marked private) ...
+        let off = Settings::default();
+        save_to(&p, 3, &loaded.items, &layout, &off, &[]).unwrap();
+        assert_eq!(saved_ids(&p), [1, 2]);
+        // ... while a private row still in memory goes from the next save.
+        save_to(&p, 3, &items, &layout, &off, &[]).unwrap();
+        assert_eq!(saved_ids(&p), [1]);
     }
 
     /// Pretend `.1.bak` was written `age` ago.

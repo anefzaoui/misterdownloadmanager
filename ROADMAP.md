@@ -1467,6 +1467,8 @@ These ship in the next version.
   from the notification area; a box in File Properties took the caret but no typing or Ctrl+V
 - ✅ Telegram Web's downloads stay with the browser, which makes them in the page
   ([#1345](https://github.com/anefzaoui/misterdownloadmanager/issues/1345))
+- ✅ **Options → General → Keep private-window downloads in the list** (off by default): a private
+  window's downloads are saved like any other and survive MDM closing or restarting
 
 ## Being worked on
 

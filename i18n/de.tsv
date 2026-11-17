@@ -942,6 +942,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Ist diese Option aktiviert, läuft MDM nach dem Schließen des Fensters weiter: Es wird im Infobereich ausgeblendet, falls verfügbar, oder andernfalls in die Taskleiste minimiert, und Downloads werden fortgesetzt. Ist sie deaktiviert, wird MDM beim Schließen beendet.
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	Ist diese Option aktiviert, werden Downloads aus einem privaten Browserfenster in der Liste gespeichert und sind nach einem Neustart von MDM noch da; ist sie deaktiviert, bleiben sie nur im Arbeitsspeicher und sind weg, wenn MDM geschlossen wird. Ihre Cookies werden nie gespeichert
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -2456,6 +2460,10 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KByte/Sek.
+#. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	Downloads aus privaten Fenstern in der Liste behalten
 #. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine

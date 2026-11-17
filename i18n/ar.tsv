@@ -746,6 +746,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	عند تحديد هذا الخيار، يبقى MDM قيد التشغيل عند إغلاق النافذة: يختفي في منطقة الإشعارات (system tray) عند توفرها، أو يصغر إلى شريط المهام بخلاف ذلك، وتستمر التنزيلات؛ عند إلغاء تحديده، يؤدي الإغلاق إلى إنهاء MDM
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	عند تحديد هذا الخيار، تُحفظ التنزيلات القادمة من نافذة خاصة في المتصفح في القائمة وتبقى موجودة عند إعادة تشغيل MDM؛ وعند إلغاء تحديده، تبقى في الذاكرة فقط وتختفي عند إغلاق MDM. لا تُحفظ ملفات تعريف الارتباط الخاصة بها أبدًا
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 	Checked: {have} of {total} there	تم التحقق: {have} من {total} موجود
@@ -1914,6 +1918,10 @@
 	Kazakhstan	كازاخستان
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 	KBytes/sec	كيلوبايت/ثانية
+#. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	الاحتفاظ بتنزيلات النوافذ الخاصة في القائمة
 #. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine

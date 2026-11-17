@@ -486,7 +486,7 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
-        let checks: [(f32, &mut bool, &str); 7] = [
+        let checks: [(f32, &mut bool, &str); 8] = [
             (
                 94.0,
                 &mut s.launch_on_startup,
@@ -514,17 +514,26 @@ impl OptionsDialog {
                 &mut s.confirm_delete,
                 crate::i18n::mark("Confirm before deleting downloads"),
             ),
+            // MDM's: a private window's downloads saved in the list like any other (off: memory
+            // only, gone when MDM closes). The rows below, and the browsers' group, a row lower,
+            // its list a row shorter again (it scrolls).
+            (
+                191.0,
+                &mut s.keep_private_downloads,
+                // i18n: checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+                crate::i18n::mark("Keep private-window downloads in the list"),
+            ),
             // MDM's (#63): Minimize hides the main window and progress windows in the tray too.
             // The browsers' group starts a row lower again, its list a row shorter (it scrolls).
             (
-                191.0,
+                210.0,
                 &mut s.minimize_to_tray,
                 // i18n: checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
                 crate::i18n::mark("Minimize to the notification area"),
             ),
             // MDM's: the × hides the window in the notification area, or quits.
             (
-                210.0,
+                229.0,
                 &mut s.close_to_tray,
                 // i18n: checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
                 crate::i18n::mark("Keep running when closing the window"),
@@ -537,7 +546,7 @@ impl OptionsDialog {
             // Portable: nothing is written to the registry, so no start with Windows. Manifest 2
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
             // shown as IDM has it, greyed (D-021).
-            let enabled = !(portable && i == 0) && i != 2 && (i < 5 || tray);
+            let enabled = !(portable && i == 0) && i != 2 && (i < 6 || tray);
             let check = winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
             // Where a start with the session leaves the window (#226).
             if i == 0 && enabled && check.hovered() {
@@ -550,7 +559,12 @@ impl OptionsDialog {
                         "Started with the computer, it starts minimized: no notification area shows its icon here",
                     )
                 });
-            } else if i == 6 && check.hovered() {
+            } else if i == 5 && check.hovered() {
+                // i18n: tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+                check.on_hover_text(crate::i18n::t(
+                    "Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved",
+                ));
+            } else if i == 7 && check.hovered() {
                 // i18n: tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
                 check.on_hover_text(crate::i18n::t(
                     "Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM",
@@ -582,15 +596,15 @@ impl OptionsDialog {
         let (lbl_rc, lbl_cut) = winui::text_fit(
             &p,
             o.x + 30.0,
-            o.y + 243.0,
+            o.y + 262.0,
             hk_label,
             lbl_ink,
             o.x + box_x - 6.0,
         );
         if lbl_cut {
-            winui::full_on_hover(ui, lbl_rc, ("general-hotkey", 243), hk_label);
+            winui::full_on_hover(ui, lbl_rc, ("general-hotkey", 262), hk_label);
         }
-        let box_rc = r(o, box_x, 229.0, box_w, 21.0);
+        let box_rc = r(o, box_x, 248.0, box_w, 21.0);
         let box_resp = ui.interact(
             box_rc,
             egui::Id::unique("hotkey-recorder"),
@@ -691,7 +705,7 @@ impl OptionsDialog {
             ui,
             &p,
             o.x + box_x + 6.0,
-            o.y + 243.0,
+            o.y + 262.0,
             &hk_text,
             hk_ink,
             o.x + box_x + box_w - 6.0,
@@ -705,7 +719,7 @@ impl OptionsDialog {
             };
         if winui::button_light(
             ui,
-            r(o, clear_x, 229.0, clear_w, 21.0),
+            r(o, clear_x, 248.0, clear_w, 21.0),
             "Clear",
             clear_kind,
             false,
@@ -719,9 +733,9 @@ impl OptionsDialog {
             ui,
             o,
             16.0,
-            256.0,
+            275.0,
             392.0,
-            138.0,
+            119.0,
             "Capture downloads from the following browsers:",
         );
         // Check list: one row per browser in the shared row list (Space ticks the selected
@@ -732,7 +746,7 @@ impl OptionsDialog {
         let ev = winui::row_list(
             ui,
             "browsers",
-            r(o, 30.0, 266.0, 362.0, 56.0),
+            r(o, 30.0, 285.0, 362.0, 37.0),
             browsers.len(),
             17.0,
             &mut self.browser_rows,

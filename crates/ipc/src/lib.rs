@@ -67,7 +67,8 @@ pub struct Command {
     /// Content-Type (`post_type`).
     pub post: Option<String>,
     pub post_type: Option<String>,
-    /// From a private (incognito) window: the download is never written to the saved list.
+    /// From a private (incognito) window: the download is not written to the saved list, unless
+    /// the app's Options → General → "Keep private-window downloads in the list" is on.
     pub private: bool,
     /// From the browser (#42): the proxy it uses for this address ("http://host:port",
     /// "https://…", "socks5h://…", "socks4://…"), set by a VPN or proxy extension or its

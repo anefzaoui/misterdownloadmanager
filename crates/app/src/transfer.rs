@@ -125,7 +125,8 @@ pub struct Imported {
     pub referer: Option<String>,
     pub cookies: Option<String>,
     pub user_agent: Option<String>,
-    /// From a private window's page: kept out of the saved list.
+    /// From a private window's page: kept out of the saved list (unless Options → General →
+    /// "Keep private-window downloads in the list" is on).
     pub private: bool,
     /// The package a site packed it in (Click'n'Load): Link grabber's package.
     pub package: Option<String>,
