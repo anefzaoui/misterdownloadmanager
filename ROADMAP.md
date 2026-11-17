@@ -562,6 +562,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Tests: the last ones that failed now and then on a busy runner are steady. A port that
+  stands for a server or a proxy that refuses is held for the whole test (one let go at once
+  could be taken before the request came, and the answer found there read as "can't reach the
+  server"); whether a program fell back is read once its run is over, not after a fixed wait;
+  a stream's time budget times its requests alone. Each was run in loops on a machine kept busy
+  on purpose, on Windows and Linux
 - ✅ With **Start immediately** on, picking the folder the early download already saves to in
   **Save As** keeps its name: the download's own `.mdm.part` and `.mdm.json` no longer count as
   taken, so it isn't offered as `song (1).mp3` and doesn't start over
