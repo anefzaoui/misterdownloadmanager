@@ -1465,6 +1465,9 @@ These ship in the next version.
 - ✅ Linux (XWayland on Hyprland): a click in MDM's window gives it the keyboard again where
   Hyprland had left it with another X11 program's window, or with none after the window came back
   from the notification area; a box in File Properties took the caret but no typing or Ctrl+V
+- ✅ Linux: started without a Wayland display in a Wayland session (an XWayland-only start),
+  MDM knows its windows are XWayland's; Download File Info and Download complete answered a click
+  a second or two late while the main window was out of sight (on another workspace)
 - ✅ Telegram Web's downloads stay with the browser, which makes them in the page
   ([#1345](https://github.com/anefzaoui/misterdownloadmanager/issues/1345))
 
