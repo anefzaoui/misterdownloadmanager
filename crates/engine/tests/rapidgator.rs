@@ -326,8 +326,20 @@ async fn a_fresh_link_on_another_server_with_its_own_copy_goes_on() {
     check(&out.path, &id, 3 << 20);
     let log = log(&s).await;
     assert!(
-        log.iter()
-            .any(|e| on(e, rapidgator::FILES2) && e.status == 206),
-        "parts came from the other server"
+        log.iter().any(|e| {
+            on(e, rapidgator::FILES2)
+                && e.status == 200
+                && e.range.is_some()
+                && e.if_range.as_deref().is_some_and(|v| !v.starts_with('"'))
+        }),
+        "the other server rejected the original date and answered with its whole copy"
+    );
+    assert!(
+        log.iter().any(|e| {
+            on(e, rapidgator::FILES2)
+                && e.status == 206
+                && e.if_range.as_deref().is_some_and(|v| v.ends_with("-n1\""))
+        }),
+        "parts came from the other server under its own ETag"
     );
 }

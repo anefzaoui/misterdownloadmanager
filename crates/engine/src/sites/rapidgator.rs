@@ -307,17 +307,24 @@ mod tests {
     #[test]
     fn a_link_after_multibyte_punctuation_is_read() {
         let at = url(PAGE);
-        for before in ["«", "\u{a0}", "—", "“", "日本語", "é"] {
-            let page = format!(
-                "<html><body><script>var s = '{before}{LINK}';</script></body></html>"
-            );
+        for before in ["«", "\u{a0}", "—", "“", "日本語", "é", "🦀"] {
+            let page =
+                format!("<html><body><script>var s = '{before}{LINK}';</script></body></html>");
             assert_eq!(read_page(&at, &page), PageSays::Next(url(LINK)), "{before}");
         }
-        // Cut right after the character, and a non-link, must not panic either.
-        assert_eq!(script_link("«https://s1.rapidgator.net/download/x"), None);
+        // A link at the end of the text, escaped slashes, and a multibyte end delimiter.
+        assert_eq!(
+            script_link("«https://s1.rapidgator.net/download/x"),
+            Some(url("https://s1.rapidgator.net/download/x"))
+        );
+        for text in [
+            format!("«{LINK}"),
+            format!("🦀{}\u{2003}after", LINK.replace('/', "\\/")),
+            format!("—:// «ftp://s1.rapidgator.net/download/x\u{a0}é{LINK}"),
+        ] {
+            assert_eq!(script_link(&text), Some(url(LINK)), "{text}");
+        }
         assert_eq!(script_link("—://"), None);
-        let page = format!("«{LINK}");
-        assert_eq!(script_link(&page), Some(url(LINK)));
     }
 
     /// A page without the link (signed out, a free account's waiting page), another site's

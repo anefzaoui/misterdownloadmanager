@@ -4373,7 +4373,8 @@ fn is_other_server_copy(ours: &Validators, theirs: &Validators, at: &Url, same_l
         return false;
     };
     let mut was = at.clone();
-    let party = sites::expiring(at) && was.set_host(Some(old)).is_ok() && sites::same_party(&was, at);
+    let party =
+        sites::expiring(at) && was.set_host(Some(old)).is_ok() && sites::same_party(&was, at);
     party && same_len && theirs.etag.is_some() && theirs != ours
 }
 
@@ -6007,52 +6008,77 @@ mod tests {
         );
         assert!(parse_content_range(&h).is_err());
     }
-}
-
-#[cfg(test)]
-mod other_server_tests {
-    use super::*;
-
-    fn validators(etag: &str, host: &str) -> Validators {
+    fn copy_validators(etag: &str, host: &str, modified: &str) -> Validators {
         Validators::from_response(
             Some(etag),
-            Some("Wed, 21 Oct 2015 07:28:00 GMT"),
-            None,
+            Some(modified),
+            Some("Wed, 21 Oct 2015 08:00:00 GMT"),
             Some(host),
         )
     }
 
-    fn at(s: &str) -> Url {
-        Url::parse(s).unwrap()
+    #[test]
+    fn other_server_copy_accepts_rapidgator_node_rotation() {
+        let ours = copy_validators(
+            "\"a\"",
+            "s1.rapidgator.net",
+            "Wed, 21 Oct 2015 07:28:00 GMT",
+        );
+        let theirs = copy_validators(
+            "\"b\"",
+            "s2.rapidgator.net",
+            "Wed, 21 Oct 2015 07:28:12 GMT",
+        );
+        let at = Url::parse("https://s2.rapidgator.net/download/token").unwrap();
+        assert_ne!(ours.last_modified, theirs.last_modified);
+        assert!(is_other_server_copy(&ours, &theirs, &at, true));
+        assert!(!is_other_server_copy(&ours, &theirs, &at, false));
+        assert!(!is_other_server_copy(&theirs, &theirs, &at, true));
+        assert!(!is_other_server_copy(
+            &Validators::default(),
+            &theirs,
+            &at,
+            true
+        ));
+        for etag in [None, Some("W/\"b\""), Some("malformed")] {
+            let theirs = Validators::from_response(etag, None, None, at.host_str());
+            assert!(!is_other_server_copy(&ours, &theirs, &at, true));
+        }
     }
 
-    /// Rapidgator's own file hosts may each have their own copy under their own ETag; any other
-    /// site's mirror with the same length and other validators is a changed file, which stays
-    /// the "file changed" stop.
     #[test]
-    fn only_a_file_hosts_own_servers_share_a_file_under_other_validators() {
-        let ours = validators("\"a\"", "s1.rapidgator.net");
-        let theirs = validators("\"b\"", "s2.rapidgator.net");
-        let link = at("https://s2.rapidgator.net/download/0f3c9a2e-6b1d-4c8e-9a7f-2d5b8e1c4a60");
-        assert!(is_other_server_copy(&ours, &theirs, &link, true));
-        assert!(!is_other_server_copy(&ours, &theirs, &link, false), "other length");
-        // Another site's mirror (a firmware image, a disk image): changed, whatever its length.
-        let ours = validators("\"a\"", "dl1.example.com");
-        let theirs = validators("\"b\"", "dl2.example.com");
-        let mirror = at("https://dl2.example.com/images/firmware.bin");
-        assert!(!is_other_server_copy(&ours, &theirs, &mirror, true));
-        // Two unrelated expiring hosts (Rapidgator's short domain and its file hosts) are not
-        // one party, nor are two ports.
-        let from_short = validators("\"a\"", "rg.to");
-        let theirs = validators("\"b\"", "s2.rapidgator.net");
-        assert!(!is_other_server_copy(&from_short, &theirs, &link, true));
-        let port = at("https://s2.rapidgator.net:8443/download/0f3c9a2e-6b1d-4c8e-9a7f-2d5b8e1c4a60");
-        let _ = port;
-        // From another party's host to Rapidgator's, or from Rapidgator's to a look-alike.
-        let from_other = validators("\"a\"", "dl1.example.com");
-        assert!(!is_other_server_copy(&from_other, &validators("\"b\"", "s2.rapidgator.net"), &link, true));
-        let from_rg = validators("\"a\"", "s1.rapidgator.net");
-        let fake = at("https://s2.rapidgator.net.example.com/download/0f3c9a2e-6b1d-4c8e-9a7f-2d5b8e1c4a60");
-        assert!(!is_other_server_copy(&from_rg, &validators("\"b\"", "s2.rapidgator.net.example.com"), &fake, true));
+    fn other_server_copy_rejects_generic_mirrors_and_unrelated_hosts() {
+        for (old, target) in [
+            ("dl1.example.com", "https://dl2.example.com/firmware.bin"),
+            (
+                "dl1.example.com",
+                "https://s2.rapidgator.net/download/token",
+            ),
+            ("rg.to", "https://s2.rapidgator.net/download/token"),
+            (
+                "rapidgator.net.example.com",
+                "https://s2.rapidgator.net/download/token",
+            ),
+            (
+                "s1.rapidgator.net",
+                "https://s2.rapidgator.net.example.com/download/token",
+            ),
+            (
+                "s1.rapidgator.net",
+                "https://s2.rapidgator.net/firmware.bin",
+            ),
+        ] {
+            let ours = copy_validators("\"a\"", old, "Wed, 21 Oct 2015 07:28:00 GMT");
+            let at = Url::parse(target).unwrap();
+            let theirs = copy_validators(
+                "\"b\"",
+                at.host_str().unwrap(),
+                "Wed, 21 Oct 2015 07:28:12 GMT",
+            );
+            assert!(
+                !is_other_server_copy(&ours, &theirs, &at, true),
+                "{old} -> {target}"
+            );
+        }
     }
 }
