@@ -68,6 +68,8 @@ pub struct AddArgs {
     /// The checksum the finished file must have, as the command line's `--checksum` takes it
     /// (`sha256:…`, a bare hex value, …); the app refuses one it can't read.
     pub checksum: Option<String>,
+    /// The page's address (Referer header), for links that need one or an expired link's renewal.
+    pub referer: Option<String>,
     /// true: only add it to the download queue, without starting it now.
     #[serde(default)]
     pub later: bool,
@@ -182,6 +184,7 @@ impl Server {
             category: category.clone(),
             queue: queue.clone(),
             checksum: args.checksum.filter(|c| !c.trim().is_empty()),
+            referer: args.referer.filter(|r| !r.trim().is_empty()),
             later: args.later,
             silent: true,
             ..Default::default()

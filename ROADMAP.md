@@ -573,6 +573,9 @@ These ship in the next version.
   that never answers is given a timeout with room to be asked; a stream's time budget times
   its requests alone. Each was run in loops on a machine kept busy on purpose, on Windows and
   Linux
+- ✅ AI assistants (MCP) can provide a referring page (referer) when adding downloads, preserving
+  the Referer header for protected CDNs and expired link renewal (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The automation API's add may carry the checksum the finished file must have (the command
   line's `--checksum` form), kept with the download for **Verify checksum** and the finish
   check; one the app can't read is refused (`bad-request`) instead of dropped
