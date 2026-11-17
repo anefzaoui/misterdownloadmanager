@@ -898,6 +898,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Congo	الكونغو
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	الاتصال عبر uTP أيضا (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 	Connected	متصل
@@ -2174,6 +2178,10 @@
 	Malta	مالطا
 #. text in the Options window
 	Manual proxy/socks configuration	ضبط الوكيل/SOCKS يدوي
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	يستخدم العديد من القرناء uTP فقط. وبدونه، لا يمكن لـ MDM الوصول إليهم.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 	Map the port on the router (UPnP)	تعيين المنفذ على الراوتر (UPnP)
@@ -2449,6 +2457,11 @@
 #. button in the Options window
 #. button: create a new item
 	New	جديد
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	عنوان جديد من المستعرض ({host}): متابعة التنزيل منه
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Caledonia	كاليدونيا الجديدة
@@ -2636,6 +2649,10 @@
 	October	أكتوبر
 #. option (radio button) in the Options window
 	Off	إيقاف
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	غير متاح مع الوكيل: يعمل uTP عبر UDP، وهو ما لا ينقله وكيل SOCKS5
 #. text in the Add torrent window
 	Off: a finished torrent stops, like any download.	إيقاف: يتوقف التورنت المكتمل، مثل أي تنزيل.
 #. text in the Options window
@@ -4432,6 +4449,10 @@
 	User:	المستخدم:
 #. label in the Options window
 	UserName	اسم المستخدم
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	يستخدم uTP المنفذ المخصص للاتصالات الواردة: فعل «قبول الاتصالات الواردة»
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Uzbekistan	أوزبكستان
@@ -4505,6 +4526,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 	Waiting	في الانتظار
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	في انتظار عنوان جديد من المستعرض
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)

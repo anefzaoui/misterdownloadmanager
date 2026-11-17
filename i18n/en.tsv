@@ -850,6 +850,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Congo	Congo
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+	Connect over uTP too (UDP)	Connect over uTP too (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 	Connected	Connected
@@ -2064,6 +2067,9 @@
 	Malta	Malta
 #. text in the Options window
 	Manual proxy/socks configuration	Manual proxy/socks configuration
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+	Many peers take only uTP. Without it, MDM can't reach them.	Many peers take only uTP. Without it, MDM can't reach them.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 	Map the port on the router (UPnP)	Map the port on the router (UPnP)
@@ -2506,6 +2512,9 @@
 	October	October
 #. option (radio button) in the Options window
 	Off	Off
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry
 #. text in the Add torrent window
 	Off: a finished torrent stops, like any download.	Off: a finished torrent stops, like any download.
 #. text in the Options window
@@ -4197,6 +4206,9 @@
 	User:	User:
 #. label in the Options window
 	UserName	UserName
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP uses the port for incoming connections: turn on Accept incoming connections
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Uzbekistan	Uzbekistan

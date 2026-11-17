@@ -318,6 +318,10 @@ pub struct Settings {
     pub torrent_incoming: bool,
     pub torrent_upnp: bool,
     pub torrent_port: u16,
+    /// Torrent settings → "Connect over uTP too" (#1384): BitTorrent over UDP beside TCP, on by
+    /// default (a list saved before it has none: on too). It needs the listening port (librqbit's
+    /// uTP socket is the listener's), and a proxy turns it off (SOCKS5 carries TCP only).
+    pub torrent_utp: bool,
     pub torrent_dht: bool,
     pub torrent_lsd: bool,
     /// Torrents go through Proxy / Socks' SOCKS5 proxy (a manual `socks5://` one only).
@@ -522,6 +526,7 @@ impl Default for Settings {
             torrent_incoming: true,
             torrent_upnp: true,
             torrent_port: 0,
+            torrent_utp: true,
             torrent_dht: true,
             torrent_lsd: true,
             torrent_proxy: false,
@@ -790,6 +795,7 @@ impl Settings {
             listen: self.torrent_incoming,
             upnp: self.torrent_upnp,
             port: (self.torrent_port != 0).then_some(self.torrent_port),
+            utp: self.torrent_utp,
             dht: self.torrent_dht,
             lsd: self.torrent_lsd,
             proxy,

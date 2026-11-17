@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Torrents connect over uTP (BitTorrent over UDP) beside TCP, on by default with a switch in
+  Torrent settings: peers that take only uTP are reached, so torrents find as many peers as in
+  other clients; off with a SOCKS5 proxy, held to a chosen network adapter
+  ([#1384](https://github.com/anefzaoui/misterdownloadmanager/issues/1384))
 - ✅ A stream's own address — an HLS playlist (`.m3u8`) or DASH's (`.mpd`) — opens the video
   window like a page's: pasting a playlist downloads the video and merges it into one playable
   file, instead of saving the playlist itself
