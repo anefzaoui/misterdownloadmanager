@@ -6,7 +6,7 @@
 use std::sync::Arc;
 
 use mdm_ipc::Command;
-use mdm_ipc::api::{API_OFF as API_OFF_CODE, DownloadInfo, ErrorAnswer, ListAnswer, STATUSES};
+use mdm_ipc::api::{API_OFF as API_OFF_CODE, ErrorAnswer, ListAnswer};
 use rmcp::handler::server::{router::tool::ToolRouter, wrapper::Parameters};
 use rmcp::{ServerHandler, tool, tool_handler, tool_router};
 use schemars::JsonSchema;
@@ -380,84 +380,29 @@ fn addable(url: &str) -> bool {
 fn filter_list(answer: &str, args: &ListArgs) -> Result<String, String> {
     let list: ListAnswer =
         serde_json::from_str(answer).map_err(|e| format!("unreadable answer: {e}"))?;
-    let status = match args
-        .status
-        .as_deref()
-        .map(str::trim)
-        .filter(|s| !s.is_empty())
-    {
-        None => None,
-        Some(s) => Some(
-            STATUSES
-                .into_iter()
-                .find(|k| k.eq_ignore_ascii_case(s))
-                .ok_or_else(|| format!("Unknown status {s:?}: use one of {STATUSES:?}."))?,
-        ),
+    let filter = mdm_ipc::api::ListFilter {
+        id: args.id,
+        status: args.status.as_deref(),
+        search: args.search.as_deref(),
+        category: args.category.as_deref(),
+        queue: args.queue.as_deref(),
+        limit: None,
     };
-    let search = args
-        .search
-        .as_deref()
-        .map(|s| s.trim().to_lowercase())
-        .filter(|s| !s.is_empty());
-    let category = args
-        .category
-        .as_deref()
-        .map(str::trim)
-        .filter(|s| !s.is_empty());
-    let queue = args
-        .queue
-        .as_deref()
-        .map(str::trim)
-        .filter(|s| !s.is_empty());
-    let queue_ids: Option<Vec<u64>> = match queue {
-        Some(q) => {
-            let found = list
-                .queues
-                .iter()
-                .find(|qi| qi.name.eq_ignore_ascii_case(q));
-            match found {
-                Some(qi) => Some(qi.ids.clone()),
-                None => {
-                    return Err(format!(
-                        "Unknown queue {q:?}: the app has queues {:?}",
-                        list.queues.iter().map(|qi| &qi.name).collect::<Vec<_>>()
-                    ));
-                }
-            }
-        }
-        None => None,
-    };
-    let mut downloads: Vec<DownloadInfo> = list
-        .downloads
-        .into_iter()
-        .filter(|d| args.id.is_none_or(|id| d.id == id))
-        .filter(|d| status.is_none_or(|s| d.status == s))
-        .filter(|d| {
-            search.as_ref().is_none_or(|q| {
-                d.file.to_lowercase().contains(q) || d.url.to_lowercase().contains(q)
-            })
-        })
-        .filter(|d| {
-            category
-                .as_ref()
-                .is_none_or(|c| d.category.eq_ignore_ascii_case(c))
-        })
-        .filter(|d| queue_ids.as_ref().is_none_or(|ids| ids.contains(&d.id)))
-        .collect();
-    let matching = downloads.len();
-    downloads.sort_by_key(|d| std::cmp::Reverse(d.id));
+    let filtered = list.filtered(&filter).map_err(|e| e.to_string())?;
+    let matching = filtered.downloads.len();
+    let mut downloads = filtered.downloads;
     downloads.truncate(args.limit.unwrap_or(DEFAULT_LIMIT));
     let mut obj = serde_json::json!({
         "downloads": downloads,
         "matching": matching,
-        "speed": list.speed,
-        "free": list.free,
+        "speed": filtered.speed,
+        "free": filtered.free,
     });
-    if !list.queues.is_empty() {
-        obj["queues"] = serde_json::to_value(&list.queues).unwrap_or_default();
+    if !filtered.queues.is_empty() {
+        obj["queues"] = serde_json::to_value(&filtered.queues).unwrap_or_default();
     }
-    if !list.categories.is_empty() {
-        obj["categories"] = serde_json::to_value(&list.categories).unwrap_or_default();
+    if !filtered.categories.is_empty() {
+        obj["categories"] = serde_json::to_value(&filtered.categories).unwrap_or_default();
     }
     Ok(obj.to_string())
 }

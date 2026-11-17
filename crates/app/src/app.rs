@@ -12379,6 +12379,9 @@ impl App {
         let began = Instant::now();
         // The longest first: the downloads save while the rest is done.
         let stopping = self.stop_for_the_end();
+        // yt-dlp, gallery-dl and all they started end, and none starts any more (#1301: on
+        // Linux and macOS nothing else ends them with MDM).
+        mdm_tools::proc::end_all();
         let left = |cap: Duration| {
             deadline.map_or(cap, |d| {
                 d.saturating_duration_since(Instant::now()).min(cap)
@@ -12435,7 +12438,8 @@ impl App {
 
     /// The end ([`App::finish`]): the file downloads that run are stopped as Stop stops them,
     /// which flushes what they received and saves their resume state; their ids. Torrents keep
-    /// their own resume data as they go, and a video's or a gallery's helpers end with MDM.
+    /// their own resume data as they go, and a video's or a gallery's helpers end with MDM
+    /// (`mdm_tools::proc::end_all`).
     fn stop_for_the_end(&self) -> Vec<u64> {
         self.items
             .iter()
