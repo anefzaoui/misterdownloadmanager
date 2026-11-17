@@ -268,6 +268,9 @@ enum Cmd {
         /// optionally named ("sha256:…").
         #[arg(long)]
         checksum: Option<String>,
+        /// The page's address (Referer header), for links that need one or an expired link's renewal.
+        #[arg(short = 'r', long = "referer", alias = "referrer")]
+        referer: Option<String>,
         /// Add to the queue without starting it now.
         #[arg(short = 'l', long = "later")]
         later: bool,
@@ -457,6 +460,7 @@ fn add_command(
     category: Option<String>,
     queue: Option<String>,
     checksum: Option<String>,
+    referer: Option<String>,
     later: bool,
     silent: bool,
 ) -> mdm_ipc::Command {
@@ -473,6 +477,7 @@ fn add_command(
         category,
         queue,
         checksum,
+        referer,
         later,
         silent,
         ..Default::default()
@@ -1350,10 +1355,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             category,
             queue,
             checksum,
+            referer,
             later,
             silent,
         } => ask(add_command(
-            url, output, name, category, queue, checksum, later, silent,
+            url, output, name, category, queue, checksum, referer, later, silent,
         )),
         Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
             action: Some("start_queue".into()),
@@ -1984,6 +1990,7 @@ mod tests {
                 category: None,
                 queue: None,
                 checksum: None,
+                referer: None,
                 later: false,
                 silent: false,
             } if url == "https://example.test/a.zip"
@@ -2017,6 +2024,7 @@ mod tests {
                 category: Some(ref c),
                 queue: Some(ref q),
                 checksum: Some(ref h),
+                referer: None,
                 later: true,
                 silent: true,
             } if url == "magnet:?xt=urn:btih:abc"
@@ -2035,12 +2043,49 @@ mod tests {
                 category,
                 queue,
                 checksum,
+                referer,
                 later,
                 silent,
-            } => add_command(url, output, name, category, queue, checksum, later, silent),
+            } => add_command(
+                url, output, name, category, queue, checksum, referer, later, silent,
+            ),
             _ => unreachable!(),
         };
         assert_eq!(cmd.checksum.as_deref(), Some(sha256));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "-r",
+            "https://example.test/page.html",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                referer: Some(ref r),
+                ..
+            } if url == "https://example.test/file.zip" && r == "https://example.test/page.html"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--referrer",
+            "https://example.test/page.html",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                referer: Some(ref r),
+                ..
+            } if url == "https://example.test/file.zip" && r == "https://example.test/page.html"
+        ));
     }
 
     #[test]
@@ -2057,10 +2102,12 @@ mod tests {
             None,
             None,
             None,
+            Some("https://example.test/source".into()),
             false,
             false,
         );
         assert_eq!(cmd.dir.as_deref(), Some(expected.as_str()));
+        assert_eq!(cmd.referer.as_deref(), Some("https://example.test/source"));
     }
 
     #[test]

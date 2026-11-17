@@ -567,6 +567,9 @@ These ship in the next version.
 - ✅ The automation API's add may carry the checksum the finished file must have (the command
   line's `--checksum` form), kept with the download for **Verify checksum** and the finish
   check; one the app can't read is refused (`bad-request`) instead of dropped
+- ✅ The command line's add accepts `--referer` (or `--referrer`) to preserve the referring page
+  address (Referer header) for protected CDNs and expired link renewal (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
   interface language followed the system in tests too
@@ -1376,7 +1379,7 @@ These ship in the next version.
 - ✅ The command line starts and stops a queue of the running app: `start-queue` and
   `stop-queue`, the main download queue unless one is named (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
-- ✅ The command line adds downloads to the running app: `add <url>`, with folder, file name, category, queue, checksum and silent flags (thanks to
+- ✅ The command line adds downloads to the running app: `add <url>`, with folder, file name, category, queue, checksum, referer and silent flags (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ AI assistants (MCP) can choose a download queue and a category when adding downloads, and start or stop a queue by name (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
