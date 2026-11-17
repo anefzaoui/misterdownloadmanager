@@ -1315,6 +1315,8 @@ impl Item {
                 // fresh one, which the browser's next download of the file gives it.
                 if failed_now
                     && self.video.is_none()
+                    && !self.context.private
+                    && crate::freshlink::expiring_site(&self.url)
                     && s.failure
                         .as_ref()
                         .is_some_and(mdm_engine::Error::wants_new_address)
