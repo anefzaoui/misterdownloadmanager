@@ -705,6 +705,9 @@ fn menu_command(
                     title,
                     store_id: store(&l.store_id),
                 }),
+                // The page it was picked on (#607): a stream's address is often signed for each
+                // load of it, so the app knows the same video picked again by its page.
+                page_url: Some(l.page.clone()).filter(|p| p.len() <= PAGE_MAX),
                 referer,
                 origin,
                 cookies: m.cookies.clone().filter(|c| !c.is_empty()),
@@ -2023,6 +2026,11 @@ mod tests {
             cmd.referer.as_deref(),
             Some("https://videos.test/watch?v=1"),
             "fetched as from its page"
+        );
+        assert_eq!(
+            cmd.page_url.as_deref(),
+            Some("https://videos.test/watch?v=1"),
+            "the page it was picked on goes too: the same video picked again is known by it"
         );
         assert_eq!(cmd.cookies.as_deref(), Some("a=1"));
         assert_eq!(cmd.cookie_jar.len(), 1);

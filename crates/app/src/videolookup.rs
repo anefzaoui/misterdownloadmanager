@@ -411,6 +411,9 @@ pub fn context_of(ask: &mdm_ipc::VideoLookup, cmd: &mdm_ipc::Command) -> mdm_ipc
             .filter(|t| !t.is_empty())
             .map(|t| cut(t, TITLE_MAX)),
         referer: cmd.referer.clone(),
+        // The page it was picked on (#607): the download keeps it, and knows the same video
+        // picked again by it (a stream's address is often signed for each load).
+        page_url: cmd.page_url.clone(),
         origin: cmd.origin.clone(),
         cookies: cmd.cookies.clone(),
         cookie_jar: cmd.cookie_jar.clone(),
@@ -528,6 +531,7 @@ pub fn video_add(
         }),
         // The page's title, shortened to fit (#1102).
         named: false,
+        duration: crate::videodlg::whole_seconds(p.video.duration),
     })
 }
 
@@ -662,6 +666,7 @@ mod tests {
     fn sent(private: bool, cookies: &str) -> Command {
         Command {
             referer: Some(PAGE.into()),
+            page_url: Some(PAGE.into()),
             cookies: Some(cookies.into()),
             user_agent: Some("UA".into()),
             private,
@@ -743,6 +748,11 @@ mod tests {
         assert_eq!(p.address, SRC);
         assert_eq!(p.context.cookies.as_deref(), Some("a=1"));
         assert_eq!(p.context.referer.as_deref(), Some(PAGE));
+        assert_eq!(
+            p.context.page_url.as_deref(),
+            Some(PAGE),
+            "the page it was picked on: the download keeps it, for the duplicate check (#607)"
+        );
         assert_eq!(p.context.user_agent.as_deref(), Some("UA"));
         assert_eq!(p.context.video_title.as_deref(), Some("A talk: in Lisbon"));
         assert!(!p.context.private && !p.context.startup);

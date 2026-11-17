@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: dialogs open on the main window's monitor when the monitors have different display
+  scales (a 125 % laptop and a 100 % monitor), where they opened out of sight; a window on no
+  screen is brought onto one ([#1311](https://github.com/anefzaoui/misterdownloadmanager/issues/1311))
 - ✅ Tests: more of the ones that failed now and then on a busy runner are steady. A port that
   stands for a server or a proxy that refuses is held for the whole test (one let go at once
   could be taken before the request came, and the answer found there read as "can't reach the
@@ -576,11 +579,23 @@ These ship in the next version.
 - ✅ AI assistants (MCP) can provide a referring page (referer) when adding downloads, preserving
   the Referer header for protected CDNs and expired link renewal (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ AI assistants (MCP) can provide a custom User-Agent header when adding downloads, enabling
+  downloads from sites and CDNs that require specific browser signatures (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ AI assistants (MCP) can provide a Cookie header when adding downloads, enabling
+  downloads that require session authentication (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The automation API's add may carry the checksum the finished file must have (the command
   line's `--checksum` form), kept with the download for **Verify checksum** and the finish
   check; one the app can't read is refused (`bad-request`) instead of dropped
 - ✅ The command line's add accepts `--referer` (or `--referrer`) to preserve the referring page
   address (Referer header) for protected CDNs and expired link renewal (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line's add accepts `--user-agent` (or `--ua`) to send a custom User-Agent header
+  with the download request (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line's add accepts `--cookie` (or `--cookies`) to send a Cookie header with the
+  download request; `-` reads it from standard input instead of the command line (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
@@ -1422,6 +1437,19 @@ These ship in the next version.
 - ✅ Pause and Resume answer at once on a slow disk: the download stops right away and MDM
   finishes writing in the background; a resume no longer waits for the disk before its first
   request ([#1328](https://github.com/anefzaoui/misterdownloadmanager/issues/1328))
+- ✅ Windows: Open folder finds a file manager that names its own default verb for folders
+  (One Commander) (thanks to [@haohaaaa](https://github.com/haohaaaa))
+  ([#1335](https://github.com/anefzaoui/misterdownloadmanager/issues/1335))
+- ✅ About's links include **Contributors**, which opens the website's page that thanks everyone who
+  sent a pull request, opened an issue or joined a conversation (built from GitHub at every build,
+  so it never goes stale): the smaller form of
+  [#1253](https://github.com/anefzaoui/misterdownloadmanager/pull/1253), whose author
+  [@9M2PJU](https://github.com/9M2PJU) handed it over
+- ✅ Windows: a dialog that opens while you are in another program (the duplicate download
+  question the browser asks, Download File Info) no longer brings the main window up behind it;
+  it has its own taskbar button
+- ✅ The same video picked from the quality menu in a second tab of its page is a duplicate, even
+  when its stream's address is signed for each load (it was downloaded again without a word)
 
 ## Being worked on
 

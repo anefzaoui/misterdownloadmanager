@@ -46,6 +46,17 @@ pub struct VideoAdd {
     /// The user typed the file name (#1102): kept as typed; else it is the page's title, which
     /// is shortened to fit the path limits.
     pub named: bool,
+    /// The video's length (whole seconds) as looked up, for the duplicate check
+    /// ([`whole_seconds`], `model::VideoSpec::duration`).
+    pub duration: Option<u32>,
+}
+
+/// A looked-up length (`resolve::Video::duration`, seconds) as a video download keeps it: whole
+/// seconds; none under a second, or not a number.
+pub fn whole_seconds(length: Option<f64>) -> Option<u32> {
+    length
+        .filter(|s| s.is_finite() && *s >= 1.0 && *s < f64::from(u32::MAX))
+        .map(|s| s.round() as u32)
 }
 
 /// Which helper is being installed.
@@ -516,6 +527,7 @@ impl VideoDialog {
             remember: (!self.subs.is_empty()).then_some(chosen),
             preloaded: None,
             named,
+            duration: whole_seconds(self.video.as_ref().and_then(|v| v.0.duration)),
         }))
     }
 

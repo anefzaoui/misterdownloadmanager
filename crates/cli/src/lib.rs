@@ -3,7 +3,7 @@
 //! `misterdownloadmanager --cli <arguments>`, and the app's `main` hands those to [`main`].
 
 use std::ffi::OsString;
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 use std::time::{Duration, Instant};
@@ -271,6 +271,13 @@ enum Cmd {
         /// The page's address (Referer header), for links that need one or an expired link's renewal.
         #[arg(short = 'r', long = "referer", alias = "referrer")]
         referer: Option<String>,
+        /// The User-Agent header to send with download requests.
+        #[arg(long = "user-agent", alias = "ua")]
+        user_agent: Option<String>,
+        /// The Cookie header to send with download requests. A cookie on the command line ends
+        /// up in the shell's history; "-" reads it from standard input instead.
+        #[arg(long = "cookie", alias = "cookies")]
+        cookie: Option<String>,
         /// Add to the queue without starting it now.
         #[arg(short = 'l', long = "later")]
         later: bool,
@@ -461,16 +468,60 @@ fn add_command(
     queue: Option<String>,
     checksum: Option<String>,
     referer: Option<String>,
+    user_agent: Option<String>,
+    cookie: Option<String>,
     later: bool,
     silent: bool,
-) -> mdm_ipc::Command {
+) -> anyhow::Result<mdm_ipc::Command> {
+    add_command_with(
+        url,
+        output,
+        name,
+        category,
+        queue,
+        checksum,
+        referer,
+        user_agent,
+        cookie,
+        later,
+        silent,
+        std::io::stdin(),
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn add_command_with(
+    url: String,
+    output: Option<PathBuf>,
+    name: Option<String>,
+    category: Option<String>,
+    queue: Option<String>,
+    checksum: Option<String>,
+    referer: Option<String>,
+    user_agent: Option<String>,
+    cookie: Option<String>,
+    later: bool,
+    silent: bool,
+    mut stdin: impl Read,
+) -> anyhow::Result<mdm_ipc::Command> {
     let dir = output.map(|p| {
         std::path::absolute(&p)
             .unwrap_or(p)
             .to_string_lossy()
             .to_string()
     });
-    mdm_ipc::Command {
+    let cookies = match cookie.as_deref() {
+        Some("-") => {
+            let mut buf = String::new();
+            stdin
+                .read_to_string(&mut buf)
+                .context("reading cookie from standard input")?;
+            let trimmed = buf.trim().to_string();
+            (!trimmed.is_empty()).then_some(trimmed)
+        }
+        _ => cookie,
+    };
+    Ok(mdm_ipc::Command {
         url: Some(url),
         dir,
         name,
@@ -478,10 +529,12 @@ fn add_command(
         queue,
         checksum,
         referer,
+        user_agent,
+        cookies,
         later,
         silent,
         ..Default::default()
-    }
+    })
 }
 
 /// `pair`: a new pairing code from the running app, printed for a person (or raw JSON with `--json`).
@@ -1356,11 +1409,14 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             queue,
             checksum,
             referer,
+            user_agent,
+            cookie,
             later,
             silent,
         } => ask(add_command(
-            url, output, name, category, queue, checksum, referer, later, silent,
-        )),
+            url, output, name, category, queue, checksum, referer, user_agent, cookie, later,
+            silent,
+        )?),
         Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
             action: Some("start_queue".into()),
             queue: queue.or(name),
@@ -1991,6 +2047,8 @@ mod tests {
                 queue: None,
                 checksum: None,
                 referer: None,
+                user_agent: None,
+                cookie: None,
                 later: false,
                 silent: false,
             } if url == "https://example.test/a.zip"
@@ -2025,6 +2083,8 @@ mod tests {
                 queue: Some(ref q),
                 checksum: Some(ref h),
                 referer: None,
+                user_agent: None,
+                cookie: None,
                 later: true,
                 silent: true,
             } if url == "magnet:?xt=urn:btih:abc"
@@ -2044,11 +2104,15 @@ mod tests {
                 queue,
                 checksum,
                 referer,
+                user_agent,
+                cookie,
                 later,
                 silent,
             } => add_command(
-                url, output, name, category, queue, checksum, referer, later, silent,
-            ),
+                url, output, name, category, queue, checksum, referer, user_agent, cookie, later,
+                silent,
+            )
+            .unwrap(),
             _ => unreachable!(),
         };
         assert_eq!(cmd.checksum.as_deref(), Some(sha256));
@@ -2086,6 +2150,74 @@ mod tests {
                 ..
             } if url == "https://example.test/file.zip" && r == "https://example.test/page.html"
         ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--user-agent",
+            "CustomAgent/1.0",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                user_agent: Some(ref u),
+                ..
+            } if url == "https://example.test/file.zip" && u == "CustomAgent/1.0"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--ua",
+            "CustomAgent/1.0",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                user_agent: Some(ref u),
+                ..
+            } if url == "https://example.test/file.zip" && u == "CustomAgent/1.0"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--cookie",
+            "session=abc123",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                cookie: Some(ref c),
+                ..
+            } if url == "https://example.test/file.zip" && c == "session=abc123"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--cookies",
+            "session=abc123",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                cookie: Some(ref c),
+                ..
+            } if url == "https://example.test/file.zip" && c == "session=abc123"
+        ));
     }
 
     #[test]
@@ -2103,11 +2235,53 @@ mod tests {
             None,
             None,
             Some("https://example.test/source".into()),
+            None,
+            None,
             false,
             false,
-        );
+        )
+        .unwrap();
         assert_eq!(cmd.dir.as_deref(), Some(expected.as_str()));
         assert_eq!(cmd.referer.as_deref(), Some("https://example.test/source"));
+        assert_eq!(cmd.user_agent, None);
+        assert_eq!(cmd.cookies, None);
+    }
+
+    #[test]
+    fn add_command_reads_cookie_from_stdin() {
+        let cmd = add_command_with(
+            "https://example.test/a.zip".into(),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some("-".into()),
+            false,
+            false,
+            std::io::Cursor::new("session=secret_token_123\r\n"),
+        )
+        .unwrap();
+        assert_eq!(cmd.cookies.as_deref(), Some("session=secret_token_123"));
+
+        let empty = add_command_with(
+            "https://example.test/a.zip".into(),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some("-".into()),
+            false,
+            false,
+            std::io::Cursor::new("   \r\n"),
+        )
+        .unwrap();
+        assert_eq!(empty.cookies, None);
     }
 
     #[test]

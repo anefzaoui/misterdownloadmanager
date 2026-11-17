@@ -504,6 +504,7 @@ mod tests {
                     subs: Default::default(),
                     parts: Vec::new(),
                     named: false,
+                    duration: None,
                 });
                 i
             })

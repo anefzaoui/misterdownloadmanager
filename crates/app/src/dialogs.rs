@@ -19,15 +19,26 @@ pub enum Outcome<T> {
 }
 
 const MAIN_RECT: &str = "mdm-main-rect";
+const MAIN_RECT_PX: &str = "mdm-main-rect-px";
 
 /// The main window publishes its outer rect each frame so dialogs can centre on it, with the
 /// zoom it is measured at (not in the frame the interface size changes: its rect is still
-/// measured at the old one then, scale::settled).
+/// measured at the old one then, scale::settled); and in screen pixels, which mean the same on
+/// every screen whatever its scale (#1311).
 pub fn publish_main_rect(ctx: &egui::Context) {
     if let Some(rc) = ctx.input(|i| i.viewport().outer_rect) {
         let zoom = ctx.zoom_factor();
-        ctx.data_mut(|d| d.insert_temp(egui::Id::unique(MAIN_RECT), (rc, zoom)));
+        let px = rc * ctx.pixels_per_point();
+        ctx.data_mut(|d| {
+            d.insert_temp(egui::Id::unique(MAIN_RECT), (rc, zoom));
+            d.insert_temp(egui::Id::unique(MAIN_RECT_PX), px);
+        });
     }
+}
+
+/// The main window's outer rect as last published, in screen pixels.
+fn main_rect_px(ctx: &egui::Context) -> Option<egui::Rect> {
+    ctx.data(|d| d.get_temp::<egui::Rect>(egui::Id::unique(MAIN_RECT_PX)))
 }
 
 /// The main window's outer rect as last published, in points at the zoom drawn now (#262: the
@@ -45,12 +56,21 @@ fn main_rect(ctx: &egui::Context) -> Option<egui::Rect> {
 /// area (its title bar first, for one larger than the screen), decided once when the dialog
 /// first shows and kept until `forget_place` — so the user can still move it. Placed again when
 /// the interface size changes (#262): the place is in points, which that changes.
+///
+/// The place in points goes to the new window's builder. On Windows the window is then put
+/// where it belongs in screen pixels (`keep_placed`): winit reads the points at the scale of the
+/// screen a new window opens on (the primary), not the main window's, which put a dialog of a
+/// main window on a screen of another scale out of sight (#1311).
 pub fn place(ctx: &egui::Context, key: egui::Id, client: [f32; 2]) -> Option<Pos2> {
     let zoom = ctx.zoom_factor();
     if let Some((p, z)) = ctx.data(|d| d.get_temp::<(Pos2, f32)>(key))
         && z == zoom
     {
         return Some(p);
+    }
+    // Where the main window is as the dialog opens, for keep_placed.
+    if let Some(px) = main_rect_px(ctx) {
+        ctx.data_mut(|d| d.insert_temp(key.with("main-px"), px));
     }
     let main = main_rect(ctx)?;
     // A fixed-frame dialog's outer size is client + (6, 29) (spec "Conventions").
@@ -65,7 +85,86 @@ pub fn place(ctx: &egui::Context, key: egui::Id, client: [f32; 2]) -> Option<Pos
 }
 
 pub fn forget_place(ctx: &egui::Context, key: egui::Id) {
-    ctx.data_mut(|d| d.remove::<(Pos2, f32)>(key));
+    ctx.data_mut(|d| {
+        d.remove::<(Pos2, f32)>(key);
+        d.remove::<egui::Rect>(key.with("main-px"));
+    });
+}
+
+/// How many passes after it is shown a window is still kept where [`place`] put it: its new
+/// screen's scale, given as it is shown, resizes it (follow_scale), and it is centred again.
+#[cfg(windows)]
+const PLACED_AFTER_SHOWN: u32 = 4;
+
+/// Windows: the window `title` (opened at `key`'s [`place`]) put there in screen pixels, centred
+/// on the main window at its actual size, on the main window's screen, whatever the scales of
+/// the screens (#1311): before it is shown, and in its first passes when a new scale resized it.
+/// The safety net under it: a window on no screen is brought onto the main window's.
+///
+/// Elsewhere the builder's place is kept: macOS has one coordinate space in points for every
+/// screen; a Wayland compositor places windows itself; X11 has mostly one scale for every screen
+/// (Xft.dpi).
+#[cfg(windows)]
+fn keep_placed(ctx: &egui::Context, key: egui::Id, title: &str, shown: bool) {
+    // Off-screen test runs keep their windows off the screens.
+    if crate::offscreen() {
+        return;
+    }
+    let after_key = key.with("placed-after");
+    let size_key = key.with("placed-size");
+    let after = ctx.data(|d| d.get_temp::<u32>(after_key).unwrap_or(0));
+    if after >= PLACED_AFTER_SHOWN {
+        return;
+    }
+    if shown {
+        ctx.data_mut(|d| d.insert_temp(after_key, after + 1));
+        ctx.request_repaint();
+    }
+    let Some(([l, t, r, b], visible)) = crate::win32::window_rect(title) else {
+        return;
+    };
+    let at = egui::Rect::from_min_max(
+        egui::pos2(l as f32, t as f32),
+        egui::pos2(r as f32, b as f32),
+    );
+    let placed = ctx.data(|d| d.get_temp::<egui::Vec2>(size_key));
+    // Not shown yet, the window found by the title is ours only while hidden (a progress window
+    // may share its title with one on the screen). Shown, it is moved again only when a new
+    // scale resized it; not when the user moved it.
+    if (!shown && visible) || (shown && placed.is_some_and(|s| s == at.size())) {
+        return;
+    }
+    let screens: Vec<crate::scale::Screen> = crate::win32::screens()
+        .into_iter()
+        .map(|(s, w)| crate::scale::Screen {
+            rect: egui::Rect::from_min_max(
+                egui::pos2(s[0] as f32, s[1] as f32),
+                egui::pos2(s[2] as f32, s[3] as f32),
+            ),
+            work: egui::Rect::from_min_max(
+                egui::pos2(w[0] as f32, w[1] as f32),
+                egui::pos2(w[2] as f32, w[3] as f32),
+            ),
+        })
+        .collect();
+    let main = ctx.data(|d| d.get_temp::<egui::Rect>(key.with("main-px")));
+    let want = main.map_or(at.min, |m| crate::scale::centred_on(m, at.size(), &screens));
+    let want =
+        crate::scale::onto_screens(egui::Rect::from_min_size(want, at.size()), main, &screens)
+            .unwrap_or(want);
+    ctx.data_mut(|d| d.insert_temp(size_key, at.size()));
+    if (want - at.min).length() < 1.0 {
+        return;
+    }
+    // Far from where the builder's place put it: what the screens were, for a report.
+    if (want - at.min).length() > 64.0 {
+        tracing::info!(
+            "window {title:?} at {:?} put at {want:?} (main window {main:?}, screens {:?})",
+            at.min,
+            screens.iter().map(|s| s.rect).collect::<Vec<_>>()
+        );
+    }
+    crate::win32::move_window(title, want.x as i32, want.y as i32);
 }
 
 /// A fixed-size window's client of `size` points as it can be shown on the screen around the
@@ -135,6 +234,8 @@ pub fn keep_theme(
             d.remove::<bool>(shown_key);
             d.remove::<u32>(front_key);
             d.remove::<bool>(caption_key);
+            d.remove::<u32>(key.with("placed-after"));
+            d.remove::<egui::Vec2>(key.with("placed-size"));
         });
     }
     if !open {
@@ -152,6 +253,9 @@ pub fn keep_theme(
     }
     // The theme went out in an earlier frame: show the window now.
     let shown = ctx.data(|d| d.get_temp::<bool>(shown_key).unwrap_or(false));
+    // Where it belongs on the screens before it is seen (#1311).
+    #[cfg(windows)]
+    keep_placed(ctx, key, title, shown);
     if sent.is_some() && !shown {
         ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
         ctx.data_mut(|d| d.insert_temp(shown_key, true));
@@ -471,8 +575,13 @@ fn dialog_window<T>(
                         d.insert_temp(key.with("hwnd"), h);
                     });
                 }
-            } else if crate::win32::dialog_frame(title, shown, !crate::theme::dark_surface(), scale)
-            {
+            } else if crate::win32::dialog_frame(
+                title,
+                shown,
+                !crate::theme::dark_surface(),
+                scale,
+                owned_by_main(ctx, key, crate::win32::main_in_front),
+            ) {
                 ctx.data_mut(|d| d.insert_temp(framed, want));
             }
         }
@@ -525,7 +634,27 @@ fn forget_window(ctx: &egui::Context, vid: ViewportId, key: egui::Id) {
     ctx.data_mut(|d| {
         d.remove::<[f32; 2]>(key.with("framed"));
         d.remove::<isize>(key.with("hwnd"));
+        d.remove::<bool>(key.with("owned"));
     });
+}
+
+/// Whether this opening of a dialog is owned by the main window (Windows, `win32::dialog_frame`):
+/// when it opens while the user works in the main window (`main_in_front`: it, or a dialog it
+/// owns, in front), as IDM's dialogs are. One that opens over another program (Download File
+/// Info or the duplicate question the browser asked for, a notice) or over a window of ours that
+/// stands on its own (a progress window's question) stands on its own too: activating an owned
+/// window brings its owner forward with it, so the main window came up behind it. Asked once per
+/// opening, while the window is still hidden (before it takes the focus itself); a frame applied
+/// again (a new size, another monitor's scale) keeps the answer.
+#[cfg(windows)]
+fn owned_by_main(ctx: &egui::Context, key: egui::Id, main_in_front: impl FnOnce() -> bool) -> bool {
+    let owned = key.with("owned");
+    if let Some(known) = ctx.data(|d| d.get_temp::<bool>(owned)) {
+        return known;
+    }
+    let answer = main_in_front();
+    ctx.data_mut(|d| d.insert_temp(owned, answer));
+    answer
 }
 
 /// Whether the windows' title bars are ours: a style theme's on Windows (#45). Elsewhere the
@@ -4138,6 +4267,27 @@ fn ensure_folder_with<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// A dialog that opened over the browser stays on its own for as long as it is open, even
+    /// once it is the window in front (its frame applied again at a new size); the next opening
+    /// asks again.
+    #[cfg(windows)]
+    #[test]
+    fn a_dialog_is_owned_or_not_once_per_opening() {
+        let ctx = egui::Context::default();
+        let key = egui::Id::unique("owned-test");
+        assert!(
+            !owned_by_main(&ctx, key, || false),
+            "over the browser: on its own"
+        );
+        assert!(
+            !owned_by_main(&ctx, key, || true),
+            "in front now, still on its own"
+        );
+        forget_window(&ctx, ViewportId::from_hash_of("owned-test"), key);
+        assert!(owned_by_main(&ctx, key, || true), "opened from MDM: owned");
+        assert!(owned_by_main(&ctx, key, || panic!("asked again")));
+    }
 
     /// #440: Download File Info behind the Create folder question ended without a closing pass,
     /// and the next one opened as a new, hidden window that was never told to show: later
