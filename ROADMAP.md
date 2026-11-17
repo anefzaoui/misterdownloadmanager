@@ -1483,7 +1483,8 @@ These ship in the next version.
   replaces the old one ([#1357](https://github.com/anefzaoui/misterdownloadmanager/issues/1357))
 - ✅ **Options → General → Keep private-window downloads in the list** (off by default): a private
   window's downloads are saved like any other and survive MDM closing or restarting, still apart
-  from normal windows' downloads (a saved private-window mark; their cookies never saved)
+  from normal windows' downloads (a saved private-window mark; their cookies never saved); a
+  private window's video never falls back to Cookies for video sites, after a restart either
 
 ## Being worked on
 
