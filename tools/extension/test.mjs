@@ -2219,6 +2219,68 @@ function samplePage(html) {
   ok("video.js: Shorts and live pages name their video");
 }
 
+// #758: Google Drive videos played in shared folders or direct file pages.
+{
+  const testDrive = (href, { attrs = {}, links = [], src = "", querySelector = () => null } = {}) => {
+    const el = {
+      localName: "video",
+      currentSrc: src,
+      parentElement: null,
+      getAttribute: (k) => attrs[k] || null,
+      querySelectorAll: (sel) => {
+        if (sel === "a[href]") {
+          return links.map((h) => ({
+            localName: "a",
+            getAttribute: (k) => (k === "href" ? h : null),
+            querySelector: () => null,
+          }));
+        }
+        return [];
+      },
+    };
+    const document = { querySelector, querySelectorAll: () => [el] };
+    return videoPageOn(new URL(href), document)(el);
+  };
+
+  // Direct file URL returns the file's own page.
+  assert.equal(
+    testDrive("https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view"),
+    "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+  );
+
+  // Video in a shared folder with stream URL carrying driveid.
+  assert.equal(
+    testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      src: "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu",
+    }),
+    "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+  );
+
+  // Video in a shared folder with preview dialog link.
+  assert.equal(
+    testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      links: ["https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view"],
+    }),
+    "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+  );
+
+  // Video in a shared folder with data-video-id.
+  assert.equal(
+    testDrive("https://drive.google.com/drive/u/0/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      attrs: { "data-video-id": "1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu" },
+    }),
+    "https://drive.google.com/u/0/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+  );
+
+  // Shared folder without any video file identification returns null (never the folder itself).
+  assert.equal(
+    testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3"),
+    null,
+  );
+
+  ok("#758: Google Drive videos in shared folders name the file, never the folder");
+}
+
 // #670: video.js's button against a fake DOM — whether it shows over a video while the page is
 // in full screen, with the popup's option off (as installed) or on.
 function videoButton({ stored = {} } = {}) {

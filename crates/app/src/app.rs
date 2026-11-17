@@ -1455,9 +1455,10 @@ pub(crate) fn mark_hook(url: &url::Url, referrer: Option<&str>) -> mdm_engine::F
     })
 }
 
-/// The Google Drive file whose player the browser's video button was clicked over (#34): the
-/// page itself when it is a Drive file's (`video_page`), or, when the button sent the player's
-/// own stream (on Google's hosts), the page it came from (`referer`). None for any other video.
+/// The Google Drive file whose player the browser's video button was clicked over (#34, #758):
+/// the page itself when it is a Drive file's (`video_page`), or, when the button sent the player's
+/// own stream (on Google's hosts), the file identified by `driveid` / `docid` or the page it came from
+/// (`referer`). None for any other video.
 fn drive_file_behind_player(cmd: &ipc::Command) -> Option<String> {
     use mdm_engine::sites::gdrive;
     let drive_file = |s: &str| {
@@ -1483,9 +1484,27 @@ fn drive_file_behind_player(cmd: &ipc::Command) -> Option<String> {
             .any(|d| h.ends_with(d))
         })
     });
+    if googles != Some(true) {
+        return None;
+    }
+    // A player stream carrying the Drive file's ID in query parameters (driveid or docid) (#758).
+    if let Ok(u) = url::Url::parse(page) {
+        let drive_id = u
+            .query_pairs()
+            .find(|(k, v)| (k == "driveid" || k == "docid") && gdrive::is_id(v))
+            .map(|(_, v)| v.into_owned());
+        if let Some(id) = drive_id {
+            let authuser = u
+                .query_pairs()
+                .find(|(k, v)| k == "authuser" && !v.is_empty())
+                .map(|(_, v)| format!("?authuser={v}"))
+                .unwrap_or_default();
+            return Some(format!("https://drive.google.com/file/d/{id}/view{authuser}"));
+        }
+    }
     cmd.referer
         .as_deref()
-        .filter(|r| googles == Some(true) && drive_file(r))
+        .filter(|r| drive_file(r))
         .map(str::to_owned)
 }
 
@@ -12906,6 +12925,19 @@ mod referrer_tests {
         );
         let folder = "https://drive.google.com/drive/folders/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu";
         assert_eq!(drive_file_behind_player(&cmd(folder, None)), None);
+        // A video played inside a shared folder: stream carries the file ID (#758).
+        let stream_in_folder =
+            "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu";
+        assert_eq!(
+            drive_file_behind_player(&cmd(stream_in_folder, Some(folder))).as_deref(),
+            Some(page)
+        );
+        let stream_docid =
+            "https://rr1---sn-4g5ednss.googlevideo.com/videoplayback?expire=123&docid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu&authuser=1";
+        assert_eq!(
+            drive_file_behind_player(&cmd(stream_docid, None)).as_deref(),
+            Some("https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view?authuser=1")
+        );
     }
 
     /// The quality menu leaves a Drive file's player to the window's click (the file itself),

@@ -692,6 +692,61 @@
       own: (u) => /^\/(?:video|note)\/\d{15,22}(?:[/?#]|$)/.test(u.pathname),
       opened: (u) => (/^\d{15,22}$/.test(u.searchParams.get("modal_id") || "") ? `https://www.douyin.com/video/${u.searchParams.get("modal_id")}` : null),
     },
+    {
+      // Google Drive (#758): a video played inside a shared folder (/drive/folders/...) or file
+      // viewer. Preview modals or dialogs carry links to the file (/file/d/<id>/...), embed
+      // iframes, or attributes (data-id, data-video-id, etc.), and the video element's stream
+      // carries driveid or docid.
+      hosts: /^(?:drive|docs)\.google\.com$/,
+      embed: (u) => /^\/(?:u\/\d+\/)?file\/d\/[\w-]{25,}\/preview\b/.test(u.pathname),
+      read(node, url) {
+        const sure = new Map();
+        const maybe = new Map();
+        const file = (id) => {
+          if (!/^[\w-]{25,}$/.test(id || "")) return;
+          const user = /^\/drive\/(u\/\d+)\//.exec(url.pathname) || /^\/(u\/\d+)\//.exec(url.pathname);
+          const prefix = user ? `/${user[1]}` : "";
+          sure.set(id, `https://drive.google.com${prefix}/file/d/${id}/view`);
+        };
+        if (node.localName === "video") {
+          const src = node.currentSrc || (node.getAttribute && node.getAttribute("src")) || "";
+          const m = /[?&](?:driveid|docid)=([\w-]{25,})/.exec(src);
+          if (m) file(m[1]);
+        }
+        for (const { u } of linksIn(node)) {
+          if (!/(^|\.)(?:drive|docs)\.google\.com$/.test(u.hostname)) continue;
+          let m = /^\/(?:u\/\d+\/)?file\/d\/([\w-]{25,})/.exec(u.pathname);
+          if (m) file(m[1]);
+          else if (/^\/(?:u\/\d+\/)?(?:uc|open)$/.test(u.pathname)) {
+            const id = u.searchParams.get("id");
+            if (id) file(id);
+          }
+        }
+        for (const el of node.querySelectorAll ? node.querySelectorAll("iframe, embed") : []) {
+          const src = (el.getAttribute && el.getAttribute("src")) || "";
+          let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&]id=([\w-]{25,})/.exec(src);
+          if (m) file(m[1]);
+        }
+        const checkAttr = (el) => {
+          for (const attr of ["data-video-id", "video-id", "data-target-id", "data-id"]) {
+            const v = el.getAttribute && el.getAttribute(attr);
+            if (v && /^[\w-]{25,}$/.test(v)) {
+              const folderId = /\/folders\/([\w-]{25,})/.exec(url.pathname);
+              if (folderId && v === folderId[1]) continue;
+              file(v);
+            }
+          }
+        };
+        checkAttr(node);
+        for (const el of node.querySelectorAll ? node.querySelectorAll("[data-video-id], [video-id], [data-target-id], [data-id]") : []) {
+          checkAttr(el);
+        }
+        return { sure, maybe };
+      },
+      own: (u) =>
+        /^\/(?:u\/\d+\/)?file\/d\/[\w-]{25,}/.test(u.pathname) ||
+        (/^\/(?:u\/\d+\/)?(?:uc|open)$/.test(u.pathname) && /^[\w-]{25,}$/.test(u.searchParams.get("id") || "")),
+    },
   ];
   // ---- the video's own address: end.
 

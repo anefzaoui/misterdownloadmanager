@@ -2786,6 +2786,10 @@ function playingAt(x, y) {
 }
 
 const isYouTube = (url) => /(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/i.test(siteOf(url));
+const isDrive = (url) => /(^|\.)(?:drive|docs)\.google\.com$/i.test(siteOf(url));
+const isDriveFile = (url) =>
+  /\/file\/d\/[\w-]{25,}/.test(url) ||
+  (/\/(?:uc|open)\b/.test(url) && /[?&]id=[\w-]{25,}/.test(url));
 
 // The watch address of what the player at `at` (the video's middle, in the sender's frame) plays,
 // or "": a page without such a player, one too old for `world`, a page extensions may not read.
@@ -2828,6 +2832,11 @@ async function videoAddress(m, page, sender) {
   if (isYouTube(page)) {
     const playing = await playingVideo(sender, m.at);
     return playing || (isYouTube(named) ? named : "");
+  }
+  if (isDrive(page)) {
+    if (isDriveFile(named)) return named;
+    if (isDriveFile(page)) return page;
+    return "";
   }
   if (m.url === null) return "";
   return named && siteKey(named) === siteKey(page) ? named : page;
