@@ -508,13 +508,17 @@ impl Native {
                 return None;
             }
         };
-        let tray = match TrayIconBuilder::new()
+        let builder = TrayIconBuilder::new()
             .with_menu(Box::new(menu))
             .with_menu_on_left_click(false)
             .with_tooltip(crate::MAIN_TITLE)
-            .with_icon(icon)
-            .build()
-        {
+            .with_icon(icon);
+        // Linux and the BSDs (StatusNotifierItem): the item's title is its name in the shell's
+        // lists, KDE's notification area among them, which showed MDM's icon with no name (#1305).
+        // Not on macOS, where a title is text beside the icon in the menu bar; Windows has none.
+        #[cfg(not(any(windows, target_os = "macos")))]
+        let builder = builder.with_title(crate::MAIN_TITLE);
+        let tray = match builder.build() {
             Ok(tray) => tray,
             Err(e) => {
                 tracing::warn!("tray icon: not made: {e}");
@@ -626,6 +630,10 @@ impl Native {
         return self.watch.tip(tip);
         #[cfg(not(windows))]
         {
+            // Linux and the BSDs: the shell shows the item's title (the app's name) above the
+            // tip's text, so the tip's own first line, the name again, is left out (#1305).
+            #[cfg(not(target_os = "macos"))]
+            let tip = without_name(tip);
             let _ = self.tray.set_tooltip(Some(tip));
             true
         }
@@ -759,9 +767,40 @@ fn picture(px: u32) -> Result<tray_icon::Icon, String> {
     tray_icon::Icon::from_rgba(p.rgba, p.size, p.size).map_err(|e| e.to_string())
 }
 
+/// A tip's text without its first line when that line is the app's name: what a
+/// StatusNotifierItem shows under its title, which is the name already (#1305).
+#[cfg_attr(any(windows, target_os = "macos"), allow(dead_code))]
+fn without_name(tip: &str) -> &str {
+    match tip.strip_prefix(crate::MAIN_TITLE) {
+        Some(rest) if rest.is_empty() || rest.starts_with('\n') => rest.trim_start_matches('\n'),
+        _ => tip,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1305: under a StatusNotifierItem's title (the app's name), the tip leaves the name out:
+    /// what follows it, or nothing while idle; a tip that doesn't start with the name is kept.
+    #[test]
+    fn the_tip_under_the_title_leaves_the_name_out() {
+        let name = crate::MAIN_TITLE;
+        assert_eq!(without_name(name), "");
+        assert_eq!(
+            without_name(&format!("{name}\n2 downloads, 1.5 MB/s")),
+            "2 downloads, 1.5 MB/s"
+        );
+        assert_eq!(
+            without_name(&format!("{name}\n2 downloads\nSpeed Limiter: 512 KB/sec")),
+            "2 downloads\nSpeed Limiter: 512 KB/sec"
+        );
+        assert_eq!(without_name("Something else"), "Something else");
+        assert_eq!(
+            without_name(&format!("{name}s and more")),
+            format!("{name}s and more")
+        );
+    }
 
     /// The close decision (#750, #718, #754, #545): an icon the shell says is there, or no answer
     /// at all, hides the window; only the shell saying the icon is gone leaves it in the taskbar.

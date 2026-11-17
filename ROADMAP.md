@@ -1389,6 +1389,8 @@ These ship in the next version.
 - ✅ Internet Archive: a download that needs your account keeps the browser's sign-in on its way to
   archive.org's storage servers (thanks to [@arifrhm](https://github.com/arifrhm))
   ([#1298](https://github.com/anefzaoui/misterdownloadmanager/issues/1298))
+- ✅ Linux: the notification area's icon has its name (KDE showed none)
+  ([#1305](https://github.com/anefzaoui/misterdownloadmanager/issues/1305))
 
 ## Being worked on
 
