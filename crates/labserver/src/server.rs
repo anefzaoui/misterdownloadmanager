@@ -734,6 +734,7 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     html_after=N   the first N requests for this path and query get the file, every later one
                    the page (as html=1 with html_type and html_cd): a link that leads to a
                    waiting page once the download is resumed; vary seed= for a fresh link
+    node=N         another server's copy of the same file: its own ETag and date
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -1532,8 +1533,15 @@ pub(crate) async fn serve(
         Some("none") => None,
         _ => Some(format!("\"{seed:x}-{size:x}-{generation}\"")),
     };
-    let last_modified =
-        httpdate::fmt_http_date(UNIX_EPOCH + Duration::from_secs(1_790_000_000 + generation * 60));
+    // Another server's copy (`node`): its own ETag and date.
+    let node = f.node.unwrap_or(0);
+    let etag = etag.map(|e| match node {
+        0 => e,
+        n => format!("{}-n{n}\"", e.trim_end_matches('"')),
+    });
+    let last_modified = httpdate::fmt_http_date(
+        UNIX_EPOCH + Duration::from_secs(1_790_000_000 + generation * 60 + node * 12),
+    );
 
     // Decide the byte range to send.
     let if_range_ok = entry

@@ -59,6 +59,9 @@ pub struct Faults {
     /// ETag style: `weak` (W/"…"), `per-request` (a new strong ETag on every answer, same file,
     /// same Last-Modified — CDN nodes), `none`. Default: one strong ETag.
     pub etag: Option<String>,
+    /// The server (of a file host's several) whose copy is served: its own ETag and a
+    /// Last-Modified N × 12 s later, the same bytes (Rapidgator's servers).
+    pub node: Option<u64>,
     /// Delay before sending response headers, ms.
     pub latency_ms: Option<u64>,
     /// Delay before answering a request that asks for a range, ms (on top of `latency_ms`): the
@@ -130,6 +133,7 @@ impl Faults {
             html_after: over.html_after.or(self.html_after),
             etag_change_every: over.etag_change_every.or(self.etag_change_every),
             etag: over.etag.clone().or(self.etag.clone()),
+            node: over.node.or(self.node),
             latency_ms: over.latency_ms.or(self.latency_ms),
             range_latency_ms: over.range_latency_ms.or(self.range_latency_ms),
             range_rate: over.range_rate.or(self.range_rate),

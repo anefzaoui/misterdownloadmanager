@@ -24,8 +24,11 @@ use crate::server::{LogEntry, Shared, serve, unix_ms};
 /// The pages' host, and the file host its links lead to.
 pub const SITE: &str = "rapidgator.net";
 pub const FILES: &str = "s118.rapidgator.net";
+/// Another of its file servers, with its own copy of each file (its own ETag and date): a fresh
+/// link may lead there (`Spec::mirrors`).
+pub const FILES2: &str = "s113.rapidgator.net";
 /// The host names the fake Rapidgator answers on: resolve them to the lab server.
-pub const HOSTS: [&str; 2] = [SITE, FILES];
+pub const HOSTS: [&str; 3] = [SITE, FILES, FILES2];
 /// The name its files are served under.
 pub const FILE_NAME: &str = "Lab.Archive.part1.rar";
 /// The premium account's session, as the browser sends it (a lab name: Rapidgator's own cookies
@@ -42,11 +45,14 @@ struct Spec {
     uses: Option<u64>,
     /// The page redirects to its link.
     direct: bool,
+    /// Its page's fresh links lead to another file server (`FILES2`) than the first link's
+    /// (`FILES`), each with its own copy.
+    mirrors: bool,
 }
 
-/// An id: `lab<SIZE>t<TTL ms>[u<USES>][d]` (`lab4Mt1500`, `lab1Mt600000u1d`): a file of `size`
-/// (`64K`, `4M`) whose page hands out links lasting `ttl_ms`, each answering `uses` requests
-/// (None: any number), the page redirecting to it when `direct`.
+/// An id: `lab<SIZE>t<TTL ms>[u<USES>][m][d]` (`lab4Mt1500`, `lab1Mt600000u1d`): a file of
+/// `size` (`64K`, `4M`) whose page hands out links lasting `ttl_ms`, each answering `uses`
+/// requests (None: any number), the page redirecting to it when `direct`.
 pub fn id(size: &str, ttl_ms: u64, uses: Option<u64>, direct: bool) -> String {
     let mut id = format!("lab{size}t{ttl_ms}");
     if let Some(n) = uses {
@@ -58,9 +64,27 @@ pub fn id(size: &str, ttl_ms: u64, uses: Option<u64>, direct: bool) -> String {
     id
 }
 
+/// [`id`] whose page's fresh links lead to another file server than the first link's, each with
+/// its own copy of the file (its own ETag and Last-Modified), as Rapidgator's may.
+pub fn mirrored_id(size: &str, ttl_ms: u64, uses: Option<u64>, direct: bool) -> String {
+    let mut id = format!("lab{size}t{ttl_ms}");
+    if let Some(n) = uses {
+        id.push_str(&format!("u{n}"));
+    }
+    id.push('m');
+    if direct {
+        id.push('d');
+    }
+    id
+}
+
 fn parse(id: &str) -> Option<Spec> {
     let rest = id.strip_prefix("lab")?;
     let (rest, direct) = match rest.strip_suffix('d') {
+        Some(r) => (r, true),
+        None => (rest, false),
+    };
+    let (rest, mirrors) = match rest.strip_suffix('m') {
         Some(r) => (r, true),
         None => (rest, false),
     };
@@ -75,6 +99,7 @@ fn parse(id: &str) -> Option<Spec> {
         ttl_ms: ttl.parse().ok()?,
         uses,
         direct,
+        mirrors,
     })
 }
 
@@ -128,7 +153,11 @@ pub(crate) async fn handle(
         // else's only the slow way, which the browser takes.
         (SITE, ["file", id, ..]) => match parse(id) {
             Some(spec) if premium => {
-                let link = file_link(port.parse().unwrap_or(80), id, unix_ms() + spec.ttl_ms);
+                let mut link = file_link(port.parse().unwrap_or(80), id, unix_ms() + spec.ttl_ms);
+                // A mirrored file's fresh links lead to its other server.
+                if spec.mirrors {
+                    link = link.replacen(FILES, FILES2, 1);
+                }
                 if spec.direct {
                     redirect(&link, shared, entry)
                 } else {
@@ -139,7 +168,7 @@ pub(crate) async fn handle(
             None => page(StatusCode::NOT_FOUND, NOT_FOUND, shared, entry),
         },
         // The file, while its link lasts (and has uses left); 404 after.
-        (FILES, ["download", token]) => {
+        (FILES | FILES2, ["download", token]) => {
             let mut parts = token.splitn(3, '-');
             let (expires, id) = (
                 parts.next().and_then(|e| e.parse::<u64>().ok()),
@@ -165,6 +194,9 @@ pub(crate) async fn handle(
             }
             // Its faults (`rate=`…) as the lab's other files take them, after its own.
             let mut q = format!("seed={}", seed(id));
+            if host == FILES2 {
+                q.push_str("&node=1");
+            }
             if let Some(more) = query.filter(|q| !q.is_empty()) {
                 q.push('&');
                 q.push_str(&more);
@@ -225,7 +257,8 @@ mod tests {
                 size: "4M".into(),
                 ttl_ms: 1500,
                 uses: None,
-                direct: false
+                direct: false,
+                mirrors: false,
             })
         );
         assert_eq!(
@@ -234,7 +267,8 @@ mod tests {
                 size: "64K".into(),
                 ttl_ms: 600_000,
                 uses: Some(1),
-                direct: true
+                direct: true,
+                mirrors: false,
             })
         );
         assert_eq!(parse("6e2d0c8a3a7b4f1e9d5c2b1a0f9e8d7c"), None);

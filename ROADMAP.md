@@ -1456,7 +1456,9 @@ These ship in the next version.
   from) is asked with the browser's sign-in for a fresh link, at most once per expiry and never
   again at once for a link it then refused; a download stopped with an expired or refused link, or
   after **Refresh download address**, takes the browser's next download of the same file as its
-  new address and goes on, instead of a second row starting over
+  new address and goes on, instead of a second row starting over; a fresh link on another of the
+  host's servers, whose copy has its own ETag and date, goes on there instead of failing at 100%
+  with "the file changed on the server"
 - ✅ Linux (XWayland on Hyprland): a click in MDM's window gives it the keyboard again where
   Hyprland had left it with another X11 program's window, or with none after the window came back
   from the notification area; a box in File Properties took the caret but no typing or Ctrl+V

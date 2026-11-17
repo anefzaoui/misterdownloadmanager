@@ -4127,6 +4127,12 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
         StatusCode::OK if per_node_etag(ctx, if_range.as_ref(), &head) => {
             return Err(Error::RangesUnavailable);
         }
+        // Another server's copy, after the address moved there (a file host's fresh link):
+        // its own ETag and date, the same length. Its validators are taken; the overlap check
+        // still compares the bytes on disk as each connection goes on.
+        StatusCode::OK if other_server_copy(ctx, &head) => {
+            return Err(Error::RangesUnavailable);
+        }
         // A full body for a ranged request once ranges are known to work: If-Range failed (the
         // file changed), unless it is still the same file and this answer just lacks the range.
         StatusCode::OK if ctx.ranges.load(Ordering::SeqCst) == RANGES_YES => {
@@ -4212,6 +4218,31 @@ fn per_node_etag(ctx: &Ctx, sent: Option<&HeaderValue>, resp: &Head) -> bool {
     if same {
         v.etag = None;
         v.etag_host = None;
+    }
+    same
+}
+
+/// A full answer from a server other than the one the download's validators came from (its
+/// address moved: Rapidgator's fresh link may be on another of its servers, whose copy of the
+/// file has its own ETag and date), with the file's length and validators of its own: that
+/// server's are taken for the rest of the download, so its ranges are asked with them.
+fn other_server_copy(ctx: &Ctx, resp: &Head) -> bool {
+    let mut v = ctx.validators.lock().unwrap();
+    let host = resp.url.host_str();
+    let theirs = Validators::from_response(
+        header_str(&resp.headers, header::ETAG),
+        header_str(&resp.headers, header::LAST_MODIFIED),
+        header_str(&resp.headers, header::DATE),
+        host,
+    );
+    let moved = v.etag_host.is_some() && v.etag_host.as_deref() != host;
+    let same = moved && resp.len == Some(ctx.size) && theirs.etag.is_some() && theirs != *v;
+    if same {
+        ctx.shared.event(format!(
+            "{} has its own copy of the file (same size): going on with its version",
+            host.unwrap_or("?")
+        ));
+        *v = theirs;
     }
     same
 }

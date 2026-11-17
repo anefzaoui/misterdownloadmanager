@@ -301,3 +301,33 @@ async fn a_fresh_link_refused_at_once_is_not_renewed_again_and_again() {
         .count();
     assert!(refused <= 6, "{refused} refused requests");
 }
+
+/// The user's second case: the expired link's fresh one leads to another of Rapidgator's servers,
+/// whose copy of the file has its own ETag and Last-Modified (12 s apart), the same bytes. The
+/// parts still missing are asked there with the first server's date, which it doesn't match,
+/// and it answers with the whole file. Before, the download failed at 100% with "the file
+/// changed on the server"; now that server's validators are taken and it goes on to the end.
+#[tokio::test]
+async fn a_fresh_link_on_another_server_with_its_own_copy_goes_on() {
+    let s = server("rate=1M&drop_after=384K").await;
+    let id = rapidgator::mirrored_id("3M", 700, None, false);
+    let dir = tempfile::tempdir().unwrap();
+    let out = Download::start(
+        Request {
+            url: link(&s, &id, now_ms() + 700),
+            headers: browser_headers(&s, true),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts(Some(&page(&s, &id))),
+    )
+    .wait()
+    .await
+    .unwrap();
+    check(&out.path, &id, 3 << 20);
+    let log = log(&s).await;
+    assert!(
+        log.iter()
+            .any(|e| on(e, rapidgator::FILES2) && e.status == 206),
+        "parts came from the other server"
+    );
+}
