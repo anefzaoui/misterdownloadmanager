@@ -1456,6 +1456,8 @@ These ship in the next version.
   when its stream's address is signed for each load (it was downloaded again without a word)
 - ✅ Telegram Web's downloads stay with the browser, which makes them in the page
   ([#1345](https://github.com/anefzaoui/misterdownloadmanager/issues/1345))
+- ✅ The download button over a video in a tab left open for hours no longer says it can't tell which
+  video it is: its player's new load of the same stream counts as the same video
 
 ## Being worked on
 
