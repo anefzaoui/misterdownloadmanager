@@ -90,10 +90,20 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} file memiliki nama yang sudah ada dan diberi nomor
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	{n} file lainnya juga tidak dapat dihapus.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 @plural	{n} peer|{n} peers	{n} peer
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} tersimpan
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} dipilih
@@ -130,7 +140,7 @@
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	&Apply	&Terapkan
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	&Close	&Tutup
@@ -148,6 +158,10 @@
 #. text in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	&Start now	&Mulai sekarang
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(pisahkan dengan spasi; * cocok dengan apa pun)
 #. text in the Options window
 	(separate names by spaces)	(pisahkan nama dengan spasi)
 #. text in rssdlg.rs
@@ -170,6 +184,10 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 	7z and RAR archives are extracted by 7-Zip ({path}).	Arsip 7z dan RAR diekstrak dengan 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	Arsip 7z dan RAR diekstrak oleh HatchZip ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	Arsip 7z dan RAR memerlukan 7-Zip (7-zip.org), yang tidak terinstal.
@@ -364,7 +382,7 @@
 	All	Semua
 #. item in the Categories tree in the main window
 	All Downloads	Semua Unduhan
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 	All files	Semua file
 #. text in helpers.rs
 	All set: on a page with a video, use Tasks → Download video from a page.	Semua siap: di halaman dengan video, gunakan Tugas → Unduh video dari halaman.
@@ -398,6 +416,10 @@
 	Also delete the file from disk	Juga hapus file dari disk
 #. checkbox in the Options window
 	Also take files the browser would open (PDF, music, video)	Juga ambil file yang akan dibuka browser (PDF, musik, video)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	Alt+klik tautan
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 	Always dark	Selalu gelap
@@ -446,6 +468,19 @@
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
 	Archive password	Kata sandi arsip
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	Kata sandi arsip
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	kata sandi arsip
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	Kata sandi arsip...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -605,6 +640,10 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 	Busy, try later	Sibuk, coba lagi nanti
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	Ukuran tombol:
 #. message or event log entry in the main window
 	by batch download	melalui unduhan batch
 #. message or event log entry in the main window
@@ -618,6 +657,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cameroon	Kamerun
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	Tidak dapat melanjutkan
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	Kanada
@@ -724,7 +767,9 @@
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 	Checking {percent}	Memeriksa {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 	Checking...	Memeriksa...
 #. text in countries.rs
@@ -799,6 +844,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	Komoro
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	Ringkas
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -834,6 +883,9 @@
 	Connections and Limits	Koneksi dan Batas
 #. text in the Options window
 	Connections:	Koneksi:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	Kontributor
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cook Islands	Kepulauan Cook
@@ -927,7 +979,7 @@
 	Default download settings	Pengaturan unduhan default
 #. text in the Options window
 	Default max. conn. number	Jumlah koneksi maks. default
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 	Delete	Hapus
@@ -1040,6 +1092,10 @@
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 	Download in order	Unduh berurutan
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	Unduh lagi
 #. button in a dialog box
 	Download Later	Unduh nanti
 #. window title in a dialog box
@@ -1126,6 +1182,10 @@
 #. window title in a dialog box
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 	Downloads complete	Unduhan selesai
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	Mengunduh file, video, dan torrent
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 	Downloads in progress	Unduhan sedang berlangsung
@@ -1147,6 +1207,14 @@
 	Dragged out of Download complete and moved to a place MDM couldn't learn	Diseret keluar dari Unduhan selesai dan dipindahkan ke lokasi yang tidak dapat diketahui MDM.
 #. message or event log entry in the main window
 	Dragged out of Download complete and moved to {folder}	Diseret keluar dari Unduhan selesai dan dipindahkan ke {folder}
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	Diseret keluar dari daftar dan dipindahkan ke tempat yang tidak dapat diketahui MDM
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	Ditarik keluar dari daftar dan dipindahkan ke {folder}
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 	Dropped links	Tautan yang dijatuhkan
@@ -1277,6 +1345,14 @@
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 	Extract archives when their download completes	Ekstrak arsip saat unduhannya selesai
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	Ekstrak di tempat dengan HatchZip (hatchzip.dev, tidak terinstal)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	Ekstrak di tempat dengan HatchZip: hanya file yang memerlukan ruang
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 	Extract when done	Ekstrak setelah selesai
@@ -1474,6 +1550,10 @@
 	From:	Dari:
 #. checkbox in the Options window
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	Penuh
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Gabon	Gabon
@@ -1563,6 +1643,10 @@
 	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	Putuskan koneksi modem setelah selesai
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip mengekstraknya di tempat: arsip dihapus saat file-nya keluar
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	Sudah diunduh
@@ -1653,6 +1737,15 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 	in the locked keyring	di gantungan kunci yang terkunci
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	Di bilah alat: buka menu tombol
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	Di bilah alat: tekan tombol
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	Di bilah alat: tombol sebelumnya / berikutnya
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 	Increase	Tambah
@@ -1683,6 +1776,10 @@
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 	Install what's missing from your distribution's packages.	Instal komponen yang belum tersedia dari paket distribusi Anda.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Instal paket 7zip (atau p7zip) sistem Anda, lalu klik kanan unduhan dan pilih Ekstrak.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Instal yt-dlp
@@ -1729,6 +1826,10 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it needs a password	membutuhkan kata sandi
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	berhenti di tengah jalan. File yang diekstrak sejauh ini ada di {folder}, sisanya masih di arsip: Ekstrak berlanjut
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 	It tells the computers on your network which torrents you have.	Ini memberi tahu komputer di jaringan Anda torrent apa yang Anda miliki.
@@ -1745,6 +1846,11 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Italy	Italia
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	file-file diekstrak, tetapi pemindahannya berhenti ({error}). File yang dipindahkan ada di {to}, sisanya masih di {left}; tidak ada yang dihapus
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	file-nya tidak dapat ditulis: {error}
@@ -1948,6 +2054,14 @@
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS memeriksa file yang ditandai dengan cara ini melalui Gatekeeper sebelum program dibuka untuk pertama kalinya. Jika tidak dicentang, tidak ada unduhan yang ditandai.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS mencegah Mister Download Manager mengakses folder browser.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS menjaga Mister Download Manager keluar dari folder {browser}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Madagascar	Madagaskar
@@ -2041,6 +2155,10 @@
 #. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
 #. the trailing ... means it is still going on: keep it
 	MDM does not answer. Trying again...	MDM tidak menjawab. Mencoba lagi...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	MDM tidak memiliki salinan untuk sistem ini: instal, atau gunakan program lain
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 	MDM shows no code now. Click Pair a device there first.	MDM tidak menampilkan kode sekarang. Klik Pasangkan perangkat di sana terlebih dahulu.
@@ -2088,7 +2206,7 @@
 	Mister Download Manager Configuration	Konfigurasi Mister Download Manager
 #. text in crashui.rs
 	Mister Download Manager crash report	Laporan crash Mister Download Manager
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 	Mister Download Manager hit an internal error	Mister Download Manager mengalami kesalahan internal
 #. text in wake.rs
@@ -2152,7 +2270,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move a page up / down	Pindahkan halaman ke atas/bawah
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-	Move between the categories and the download list	Pindah antara kategori dan daftar unduhan
+#, machine
+	Move between the toolbar, the categories and the download list	Pindah antara bilah alat, kategori, dan daftar unduhan
 #. text in the Scheduler window
 	Move down	Pindahkan ke bawah
 #. text in a dialog box
@@ -2380,7 +2499,6 @@
 #. value in a column's filter list in the download list
 	Not in a queue	Tidak dalam antrean
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 	Not installed yet	Belum terinstal
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
@@ -2423,6 +2541,10 @@
 #. text in the Options window
 #. Options → Remote → Status: the remote control is off
 	Off: nothing on the network can reach MDM.	Nonaktif: tidak ada di jaringan yang dapat menjangkau MDM.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	Nonaktif: feed yang dipantaunya telah dihapus.
 #. text in the Options window
 	Offer to download links copied to the clipboard	Tawarkan untuk mengunduh tautan yang disalin ke papan klip
 #. text in the Link grabber window
@@ -2459,6 +2581,10 @@
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Setelah ditambahkan, jendela ini akan memberi tahu Anda. Chrome mungkin juga akan bertanya sendiri saat dimulai berikutnya.
 #. text in the Options window
 	One address per line; * stands for any text: example.com/private/*	Satu alamat per baris; * berarti teks apa pun: example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	Satu kata sandi per baris, dicoba dalam urutan ini pada arsip terenkripsi sebelum MDM bertanya. Yang cocok akan pindah ke atas.
 #. option (radio button) in the Scheduler window
 	One-time downloading	Pengunduhan satu kali
 #. text in the Link grabber window
@@ -2494,7 +2620,9 @@
 #. title of the message when the folder of a downloaded file can't be shown
 #. button that opens the torrent's containing folder in the file manager
 	Open folder	Buka folder
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 	Open in browser	Buka di browser
 #. checkbox in the Add torrent window
@@ -2765,12 +2893,20 @@
 #. button in rssdlg.rs
 #. RSS feeds window: fetch the selected feed again now
 	Refresh	Segarkan
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	Segarkan alamat
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 	Regional	Regional
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 	Regular expressions	Ekspresi reguler
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	Ingat untuk arsip lain
 #. text in a download's progress window
 	Remember Speed Limiter settings for this file	Ingat pengaturan Pembatas Kecepatan untuk file ini
 #. text in a dialog box
@@ -2920,9 +3056,6 @@
 	Search:	Cari:
 #. text in the Batch download window
 	Second file:	File kedua:
-#. text in a dialog box
-#. title of the folder picker
-	Select a folder	Pilih folder
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 	Select all	Pilih semua
@@ -3101,6 +3234,26 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 	signed out: sign in again	keluar: masuk lagi
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	Sejak {date}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	Sejak {date}: MDM mencobanya lagi setelah pembaruan driver
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	Sejak {date}: MDM mencobanya lagi pada saat mulai berikutnya
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	Sejak {date}: MDM mencobanya lagi pada {retry}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	Sejak {date}: MDM mencobanya lagi pada {retry}, atau setelah pembaruan driver
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Singapore	Singapura
@@ -3191,6 +3344,26 @@
 	Speed Limiter	Pembatas Kecepatan
 #. window title in a dialog box
 	Speed Limiter settings	Pengaturan Pembatas Kecepatan
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	Pembatas Kecepatan: maksimal {limit} untuk unduhan ini
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	Pembatas Kecepatan: {limit} untuk semua unduhan
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	Pembatas Kecepatan: {limit} untuk semua unduhan bersama
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	Pembatas Kecepatan: {limit} per unduhan
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	Pembatas Kecepatan: {one} per unduhan, {all} untuk semua
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 	Split archive volumes keep their names for extraction	Volume arsip terpisah mempertahankan namanya untuk ekstraksi
@@ -3391,6 +3564,11 @@
 #. text in the Download video window
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Kualitas terbaik, MP3, Opus, dan FLAC memerlukan ffmpeg (sekitar 80 MB).
 #. text in the Download video window
+#. in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+#. the trailing ... means it is still going on: keep it
+#, machine
+	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	Kualitas terbaik, MP3, Opus, dan FLAC memerlukan ffmpeg, yang tidak dimiliki MDM untuk Windows 32-bit: pilih sendiri dengan Pembantu...
+#. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Kualitas terbaik, MP3, Opus, dan FLAC memerlukan ffmpeg: instal dengan manajer paket sistem Anda (atau Homebrew).
 #. text in the settings
@@ -3475,6 +3653,10 @@
 	The downloads you add, or drop on this window, show here.	Unduhan yang Anda tambahkan atau seret ke jendela ini akan ditampilkan di sini.
 #. text in errors.rs
 	the drive or network share is no longer available	drive atau folder jaringan tidak lagi tersedia
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	Entri yang ditinggalkan masih ada di {folder}
 #. text in extension.rs
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	Ekstensi sudah ada di aplikasi ini. Apple belum menotarisasi build ini, sehingga Safari memerlukan langkah-langkah berikut untuk mengizinkannya.
 #. text in errors.rs
@@ -3493,6 +3675,14 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	The file matches ({algorithm})	File cocok ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	nama file terlalu panjang: maksimal {limit} byte termasuk file yang disimpan saat mengunduh. Pilih nama yang lebih pendek ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	nama file terlalu panjang: maksimal {limit} karakter termasuk file yang disimpan saat mengunduh. Pilih nama yang lebih pendek ({path})
 #. text in a dialog box
 	The file saved as	File disimpan sebagai
 #. text in the download list (sizes, speeds, status)
@@ -3535,7 +3725,9 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	the password is wrong	kata sandi salah
 #. text in errors.rs
-	the path is too long for Windows: {path}	jalur terlalu panjang untuk Windows: {path}
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
+#, machine
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	jalur terlalu panjang untuk Windows: maksimal {limit} karakter termasuk file yang disimpan saat mengunduh. Pilih nama file atau folder yang lebih pendek ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 	the release has no version	rilis tidak memiliki versi
@@ -3596,6 +3788,10 @@
 #. text in the Download video window
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Pemeriksaan bot situs (Cloudflare) menolak yt-dlp. Jika halaman terbuka di browser Anda, pilih browser tersebut di Opsi → Login Situs → Cookie untuk situs video dan cari halaman itu lagi, atau gunakan tombol Unduh video di atas video.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Sertifikat situs tidak dipercaya, baik oleh yt-dlp maupun oleh komputer ini: filter web antivirus atau proksi yang membaca HTTPS mungkin menghalangi. Matikan pemindaian HTTPS-nya, atau tambahkan sertifikatnya ke komputer, lalu cari halaman lagi.
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -3604,6 +3800,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	sertifikat keamanan situs ditujukan untuk nama situs lain, jadi MDM tidak dapat memastikan bahwa situs tersebut asli (browser Anda juga memperingatkan hal ini)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	sertifikat keamanan situs tidak dibuat untuk situs web, jadi MDM tidak dapat memastikan itu adalah situs yang asli
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -3620,14 +3820,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	sertifikat keamanan situs dicabut oleh penerbitnya, jadi MDM tidak akan mempercayainya
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Sertifikat situs tidak dipercaya, baik oleh yt-dlp maupun oleh komputer ini: filter web antivirus atau proksi yang membaca HTTPS mungkin menghalangi. Matikan pemindaian HTTPS-nya, atau tambahkan sertifikatnya ke komputer, lalu cari halaman lagi.
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	sertifikat keamanan situs tidak dibuat untuk situs web, jadi MDM tidak dapat memastikan itu adalah situs yang asli
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Simbol tidak dapat diambil: beberapa baris laporan menunjukkan alamat alih-alih nama (pengembang masih dapat membacanya).
@@ -3670,6 +3862,10 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	There is already a queue with this name	Sudah ada antrean dengan nama ini
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	ruang kosong tidak cukup untuk file di dalamnya, kata HatchZip; tidak ada yang diubah
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	Pengaturan ini tidak tersedia saat "Tampilkan dialog unduhan selesai" diaktifkan
 #. text in helpers.rs
@@ -3837,7 +4033,7 @@
 #. the kind of file the Open dialog lists
 #. title of the separate window listing a torrent's files
 	Torrent files	File torrent
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 	Torrent settings	Pengaturan torrent
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
@@ -3873,6 +4069,10 @@
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	Coba lagi nanti, atau unduh {name} sendiri dan pilih di {helpers} → {other}.
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	Mencoba kata sandi arsip yang disimpan...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 	Tu	Sel
@@ -4189,6 +4389,10 @@
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 	Windows refused	Windows menolak
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows masih membuka tautan magnet atau file .torrent dengan {apps}, yang dipilih di Aplikasi default Windows, tempat hanya Anda yang dapat mengubahnya. Pengaturan terbuka di sana sekarang: pilih Mister Download Manager untuk MAGNET dan .torrent.
 #. text in langpick.rs
 	Windows' language	Bahasa Windows
 #. text in langpick.rs
@@ -4263,7 +4467,7 @@
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	Program Anda sendiri: {path} ({version})
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	Sistem Anda: {path}
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
@@ -4359,7 +4563,8 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	File {ext}
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 	{file} could not be deleted from the disk: {error}	{file} tidak dapat dihapus dari disk: {error}
 #. text in a dialog box
@@ -4374,7 +4579,8 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} terlalu besar untuk menjadi daftar alamat ({size}). Impor membaca file teks, halaman web, dan ekspor .ef2 hingga {limit}.
 #. text in a dialog box
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} dipindahkan ke tempat lain dengan menyeretnya keluar dari Unduhan selesai, dan MDM tidak dapat mengetahui lokasinya. Cari di tempat Anda menjatuhkannya.
+#, machine
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} dipindahkan ke tempat lain dengan menyeretnya keluar dari MDM, dan MDM tidak dapat mengetahui lokasinya. Cari di tempat Anda menjatuhkannya.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{file}: the file does NOT match its checksum ({algorithm})	{file}: file TIDAK cocok dengan checksum-nya ({algorithm})
@@ -4477,6 +4683,16 @@
 #. text in errors.rs
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (batas untuk semua unduhan: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (batas: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 	{service} asks to slow down; MDM will try again in a minute	{service} meminta untuk memperlambat; MDM akan mencoba lagi dalam satu menit
@@ -4942,10 +5158,18 @@ key	Ctrl+Up / Ctrl+Down	Ctrl+Atas / Ctrl+Bawah
 key	Delete	Hapus
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Down / Alt+Down	Bawah / Alt+Bawah
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Drag on blank space	Seret di ruang kosong
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	Enter / Spasi
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Esc	Esc
@@ -4955,6 +5179,10 @@ key	F3	F3
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	Kiri / Kanan
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Page Up / Page Down	Page Up / Page Down
@@ -4975,7 +5203,8 @@ key	Shift+F10 / Menu	Shift+F10 / Menu
 key	Shift+Up / Shift+Down	Shift+Atas / Shift+Bawah
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-key	Tab	Tab
+#, machine
+key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Type a name	Ketik nama
@@ -5444,7 +5673,7 @@ menu	To &IDM export file...	Ke file ekspor &IDM...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	To &text file...	Ke file &teks...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 menu	Toolbar	Bilah Alat
 #. menu command in the main window

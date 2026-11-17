@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The window never waits for the disk to log: lines go to the log's own thread through a
+  queue that drops (and counts) what a stuck disk can't take, and a crash or freeze report
+  carries the last lines from memory when the file doesn't have them yet
+  ([#1354](https://github.com/anefzaoui/misterdownloadmanager/issues/1354))
 - ✅ Check for updates and the yt-dlp and ffmpeg downloads work when GitHub's API refuses a shared
   internet address for its hourly limit: the release is read from github.com's own release pages
   instead, and checked as before (signed checksum lists, checksums)
