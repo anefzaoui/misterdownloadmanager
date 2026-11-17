@@ -380,6 +380,7 @@ fn ask(cmd: mdm_ipc::Command) -> anyhow::Result<()> {
     Ok(())
 }
 
+#[allow(clippy::too_many_arguments)]
 fn add_command(
     url: String,
     output: Option<PathBuf>,
