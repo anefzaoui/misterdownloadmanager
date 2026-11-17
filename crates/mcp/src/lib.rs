@@ -72,6 +72,10 @@ pub struct AddArgs {
     pub referer: Option<String>,
     /// The User-Agent header to send with download requests.
     pub user_agent: Option<String>,
+    /// A Cookie header to send with download requests (e.g. `session=xyz; uid=123`), for links
+    /// that require authentication.
+    #[serde(default, alias = "cookies")]
+    pub cookie: Option<String>,
     /// true: only add it to the download queue, without starting it now.
     #[serde(default)]
     pub later: bool,
@@ -188,6 +192,7 @@ impl Server {
             checksum: args.checksum.filter(|c| !c.trim().is_empty()),
             referer: args.referer.filter(|r| !r.trim().is_empty()),
             user_agent: args.user_agent.filter(|u| !u.trim().is_empty()),
+            cookies: args.cookie.filter(|c| !c.trim().is_empty()),
             later: args.later,
             silent: true,
             ..Default::default()
