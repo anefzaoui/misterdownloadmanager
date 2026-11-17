@@ -1419,6 +1419,9 @@ These ship in the next version.
   [@RedemptionMHA](https://github.com/RedemptionMHA))
 - ✅ Linux: the notification area's icon has its name (KDE showed none)
   ([#1305](https://github.com/anefzaoui/misterdownloadmanager/issues/1305))
+- ✅ Pause and Resume answer at once on a slow disk: the download stops right away and MDM
+  finishes writing in the background; a resume no longer waits for the disk before its first
+  request ([#1328](https://github.com/anefzaoui/misterdownloadmanager/issues/1328))
 
 ## Being worked on
 

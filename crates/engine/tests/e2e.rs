@@ -2316,6 +2316,161 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
     );
 }
 
+/// How long a pause or a resume may take here (#1328): generous for a busy runner, where a stop
+/// once took 3.4 s (#201), and far from what the disk took before the fix (10 s and more).
+const PROMPT: std::time::Duration = std::time::Duration::from_secs(4);
+
+/// #1328: Pause while the disk is flushing (a disk slower than the network, where a flush and
+/// then the last one took 80 s measured): the connections close and the download says it is
+/// stopped at once; what they received and the resume state are written once the disk lets
+/// them. A resume asked for meanwhile waits for that, and goes on from the state saved last
+/// rather than the one it was handed.
+#[tokio::test]
+async fn pause_is_prompt_while_the_disk_flushes() {
+    use mdm_engine::download::State;
+    const SIZE: u64 = 32 << 20;
+    let s = server("rate=512K").await; // 8 connections, 4 MB/s together
+    let dir = tempfile::tempdir().unwrap();
+    let flush = std::time::Duration::from_secs(10);
+    let disk = mdm_engine::slowdisk::SlowDisk::slow_flush(flush);
+    let opts = Options {
+        save_interval: std::time::Duration::from_millis(100),
+        slow_disk: Some(disk.clone()),
+        ..fast_opts()
+    };
+    let dl = Download::start(
+        Request {
+            url: s.url("/gen/32M/paused.bin?seed=1328").parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts,
+    );
+    // A flush during the transfer holds the disk (and the writes): the first comes once 2 MiB
+    // are in.
+    let deadline = std::time::Instant::now() + SETTLE;
+    while disk.gate.try_read().is_ok() {
+        assert!(std::time::Instant::now() < deadline, "no flush began");
+        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    }
+    let file = dl.snapshot().file.expect("the download has its file");
+    let state = mdm_engine::state::state_path(&file);
+    let asked = std::time::Instant::now();
+    dl.cancel();
+    while !matches!(dl.snapshot().state, State::Stopping | State::Cancelled) {
+        assert!(
+            asked.elapsed() < PROMPT,
+            "still {:?} {:?} after Pause, the disk flushing",
+            dl.snapshot().state,
+            asked.elapsed()
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    }
+    let stopped = asked.elapsed();
+    // The connections are closed: the server sees every request end.
+    tokio::time::timeout(PROMPT.saturating_sub(asked.elapsed()), s.settled())
+        .await
+        .expect("the connections closed at once");
+    let closed = asked.elapsed();
+    assert!(
+        dl.snapshot().state == State::Stopping,
+        "the flush still runs"
+    );
+    assert!(mdm_engine::naming::is_settling(&file));
+    // What came in: all of it is saved once the disk lets it.
+    let received = dl.snapshot().downloaded;
+    // The state as it is now, from before the flush under way: resumed from it, everything
+    // since would come again.
+    let stale = mdm_engine::state::ResumeState::load(&state).unwrap();
+    assert!(
+        stale.downloaded() < received,
+        "{} of {received}",
+        stale.downloaded()
+    );
+    s.clear_log();
+    let resumed = Download::resume(state.clone(), Default::default(), fast_opts()).unwrap();
+    assert!(matches!(dl.wait().await, Err(mdm_engine::Error::Cancelled)));
+    assert!(!mdm_engine::naming::is_settling(&file));
+    eprintln!(
+        "#1328: stopped {stopped:?} after Pause, connections closed {closed:?}, saved {:?}",
+        asked.elapsed()
+    );
+    // The state the stopped download saved last (the resume's own first save, as it starts,
+    // writes the same parts; its next comes seconds later).
+    let last = mdm_engine::state::ResumeState::load(&state).unwrap();
+    assert!(
+        last.downloaded() >= received,
+        "{} of {received} saved",
+        last.downloaded()
+    );
+    let out = resumed.wait().await.expect("the resume completes");
+    assert_eq!((out.path.as_path(), out.size), (file.as_path(), SIZE));
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; data.len()];
+    content::fill(1328, 0, &mut want);
+    assert!(data == want, "content mismatch");
+    // The resume asked again only for each part's check of what was saved (`verify_overlap`):
+    // from the state it was handed, it would have asked for everything since the flush.
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let again: Vec<u64> = s
+        .log()
+        .iter()
+        .map(|e| on_disk(e.range.as_deref(), &last))
+        .collect();
+    assert!(
+        again
+            .iter()
+            .all(|n| *n <= Options::default().verify_overlap),
+        "bytes saved asked again, by request: {again:?}"
+    );
+}
+
+/// #1328: a resume's first part is asked for as soon as the original address has led it to
+/// today's target, never after a flush of the part file: a signed link asked again changes only
+/// the address in the state, which needs no flush, and that write goes beside the connections.
+/// Before, the state was written, the part file flushed with it, before any connection: on a busy
+/// disk that took seconds (here 5 s).
+#[tokio::test]
+async fn a_resume_asks_for_its_first_part_at_once() {
+    let s = server("rate=1M").await;
+    let target = s.url("/gen/8M/r.bin?seed=1329");
+    let (_dir, state) = paused(&s, &format!("{}&ttl_ms=600000", redirect_path(&target))).await;
+    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    s.clear_log();
+    let opts = Options {
+        slow_disk: Some(mdm_engine::slowdisk::SlowDisk::slow_every_flush(
+            std::time::Duration::from_secs(5),
+        )),
+        ..fast_opts()
+    };
+    let asked = std::time::Instant::now();
+    let dl = Download::resume(state, Default::default(), opts).unwrap();
+    while dl.snapshot().downloaded <= saved.downloaded() {
+        assert!(
+            asked.elapsed() < PROMPT,
+            "no byte {:?} after Resume",
+            asked.elapsed()
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    }
+    eprintln!("#1328: first bytes {:?} after Resume", asked.elapsed());
+    dl.cancel();
+    let _ = dl.wait().await;
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    // It went the way a signed link's resume goes: the original address asked again first (a new
+    // link, so a new address to save), then the parts.
+    assert!(
+        s.log()
+            .iter()
+            .any(|e| e.range.as_deref() == Some("bytes=0-0") && e.query.is_some()),
+        "the original address wasn't asked again"
+    );
+}
+
 /// #372: a server that refuses a browser's User-Agent with 403 (seen on a public
 /// PDF) is asked once more with MDM's own, and the download goes on.
 #[tokio::test]
