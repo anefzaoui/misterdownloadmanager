@@ -139,7 +139,7 @@ pub fn browser_cookies() -> Option<BrowserCookies> {
 /// browser sent them a moment ago (`FromBrowser`, written to the file `--cookies` names). Those
 /// win: they are that session's, and reading the whole cookie store of a browser may give
 /// another profile's, an older session's, or nothing at all (Chrome on Windows). The browser's
-/// store is read only when nothing came: a pasted address, a link typed into Add URL, a
+/// store is read only for non-private requests when nothing came: a pasted address, Add URL, a
 /// playlist listed later. yt-dlp would merge the two if given both; it never is.
 fn browser_cookie_args(args: &[String], chosen: Option<&BrowserCookies>) -> Vec<String> {
     let settled = args
@@ -645,6 +645,9 @@ pub fn safe(s: &str) -> Result<&str, ProcError> {
 /// players only.
 #[derive(Clone, Debug, Default)]
 pub struct FromBrowser {
+    /// A private window's request, including a kept row after restart: never read the normal
+    /// browser's cookie store. Cookies explicitly passed with this request remain usable.
+    pub private: bool,
     pub referer: Option<String>,
     pub origin: Option<String>,
     pub user_agent: Option<String>,
@@ -701,7 +704,12 @@ impl FromBrowser {
                 ]);
                 Some(file)
             }
-            _ => None,
+            _ => {
+                if self.private {
+                    args.push(NO_COOKIES.to_owned());
+                }
+                None
+            }
         };
         Ok((args, file))
     }
@@ -1853,6 +1861,53 @@ mod tests {
         cmd.get_args()
             .map(|a| a.to_string_lossy().into_owned())
             .collect()
+    }
+
+    /// Private requests never inherit Options' normal browser store, but may use their own
+    /// cookie header or jar. Check the final command layers with the store explicitly on.
+    #[test]
+    fn private_video_requests_keep_their_own_cookies_only() {
+        let firefox = BrowserCookies::new("firefox", "normal-profile").unwrap();
+        for (private, header, jar) in [
+            (true, None, vec![]),
+            (true, Some("  "), vec![]),
+            (true, Some("sid=private"), vec![]),
+            (true, None, vec![cookie("sid", "videos.test", true)]),
+            (false, None, vec![]),
+        ] {
+            let own = header.is_some_and(|s| !s.trim().is_empty()) || !jar.is_empty();
+            let browser = FromBrowser {
+                private,
+                cookies: header.map(str::to_owned),
+                jar,
+                ..Default::default()
+            };
+            let (args, file) = browser.args("https://videos.test/watch").unwrap();
+            let mut cmd = Command::new("yt-dlp");
+            layers_with(&mut cmd, &[], &args, Some(&firefox)).unwrap();
+            let final_args = args_of(&cmd);
+            assert_eq!(
+                final_args.iter().any(|a| a == "--cookies-from-browser"),
+                !private
+            );
+            assert_eq!(final_args.iter().any(|a| a == "--cookies"), own);
+            assert_eq!(final_args.iter().any(|a| a == NO_COOKIES), private && !own);
+            assert_eq!(with_cookies(&args, Some(&firefox)), own || !private);
+            if private && !own {
+                assert!(!has_cookies(&args), "no pointless cookie-free retry");
+            }
+            assert_eq!(file.is_some(), own);
+            if let Some(file) = file {
+                assert!(std::fs::read_to_string(&file.0).unwrap().contains("sid"));
+            }
+            let retry = without_cookies(&args);
+            let refs: Vec<&str> = retry.iter().map(String::as_str).collect();
+            assert!(
+                !yt(Some(&firefox), &refs)
+                    .iter()
+                    .any(|a| a == "--cookies-from-browser")
+            );
+        }
     }
 
     /// #229: Options → Cookies for video sites. Off: nothing added. On: every run without

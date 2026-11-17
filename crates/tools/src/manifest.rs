@@ -1412,6 +1412,7 @@ mod tests {
 
     fn browser() -> FromBrowser {
         FromBrowser {
+            private: false,
             referer: Some("https://videos.test/watch".into()),
             origin: Some("https://videos.test".into()),
             user_agent: Some("UA/1".into()),

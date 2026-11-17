@@ -2052,7 +2052,7 @@ impl VideoJob {
         // Whose cookies yt-dlp has, for the log (#229): the browser's name only, never a
         // cookie or the profile (a folder may name the person).
         let events = match proc::browser_cookies() {
-            Some(b) if cookies.is_none() => vec![(
+            Some(b) if !browser.private && cookies.is_none() => vec![(
                 std::time::SystemTime::now(),
                 format!(
                     "Cookies read from {} on this computer (Options → Sites Logins)",

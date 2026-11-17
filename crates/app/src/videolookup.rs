@@ -477,15 +477,8 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
         },
         Found::List => VideoLookupAnswer::of(lookup::LIST),
         Found::Failed(e) => {
-            // Whose cookies the look-up had (#229): the extension's, or (none came) those of
-            // the browser Options names.
-            let sent = s
-                .context
-                .cookies
-                .as_deref()
-                .is_some_and(|c| !c.trim().is_empty());
-            let store = (!sent).then(mdm_tools::proc::browser_cookies).flatten();
-            let message = crate::videodlg::lookup_error(e, sent, store.as_ref());
+            let message =
+                crate::videodlg::request_error(e, &crate::videodlg::from_browser(&s.context));
             VideoLookupAnswer::failed(lookup::ERROR, Some(cut(&message, MESSAGE_MAX)))
         }
     }

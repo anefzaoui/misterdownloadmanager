@@ -5794,7 +5794,7 @@ impl App {
             rate,
             ffmpeg.as_ref().map(|f| f.exe.as_path()),
             item.size,
-            &crate::videodlg::from_browser(&item.context),
+            &crate::videodlg::from_item(item),
             &spec.subs,
             preloaded,
             engine,
@@ -5906,7 +5906,7 @@ impl App {
             item.url.as_str(),
             &item.dest,
             &ask,
-            &crate::videodlg::from_browser(&item.context),
+            &crate::videodlg::from_item(item),
             engine,
             Some(mark_hook(&item.url, None)),
         );

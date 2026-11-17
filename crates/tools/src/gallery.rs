@@ -690,7 +690,8 @@ impl Drop for GalleryJob {
 
 /// The browser's context (`FromBrowser::args`, made for yt-dlp) as gallery-dl takes it: its
 /// cookies, and its User-Agent or MDM's (`--user-agent`, or `-o user-agent=…` before 1.24); no
-/// Referer or Origin (`--add-header`), which gallery-dl has no option for.
+/// Referer, Origin (`--add-header`), or yt-dlp's browser-store opt-out, which gallery-dl has no
+/// option for (it never reads Options' video cookie store).
 fn browser_args(theirs: Vec<String>, accepts: Accepts) -> Vec<String> {
     let mut out = Vec::new();
     let mut agent = None;
@@ -700,6 +701,7 @@ fn browser_args(theirs: Vec<String>, accepts: Accepts) -> Vec<String> {
             "--referer" | "--add-header" => {
                 theirs.next();
             }
+            "--no-cookies-from-browser" => {}
             "--user-agent" => agent = theirs.next(),
             "--cookies" => {
                 out.push(a);
@@ -1014,6 +1016,12 @@ mod tests {
             ["--cookies", "/c.txt", "-o", "user-agent=Firefox/150"]
         );
         assert_eq!(browser_args(Vec::new(), new), ["--user-agent", USER_AGENT]);
+        let private = FromBrowser {
+            private: true,
+            ..Default::default()
+        };
+        let (args, _) = private.args("https://x.test/g").unwrap();
+        assert_eq!(browser_args(args, new), ["--user-agent", USER_AGENT]);
         assert_eq!(
             browser_args(Vec::new(), old),
             ["-o".to_owned(), format!("user-agent={USER_AGENT}")]

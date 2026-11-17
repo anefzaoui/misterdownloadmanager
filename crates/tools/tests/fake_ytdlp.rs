@@ -32,6 +32,7 @@ fn main() -> ExitCode {
         return fake_ytdlp();
     }
     if std::env::var_os("MDM_SUBS_RETRY_SECS").is_some() {
+        private_cookie_checks(&me);
         checks(&me);
         job_checks(&me);
         merge_checks(&me);
@@ -126,6 +127,15 @@ fn fake_ytdlp() -> ExitCode {
         .ok()
         .and_then(|e| e.parent().map(Path::to_owned))
         .expect("the fake's folder");
+    if home.join("record-cookie-args").exists() {
+        use std::io::Write;
+        let mut log = std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(home.join("cookie-args.jsonl"))
+            .unwrap();
+        writeln!(log, "{}", serde_json::to_string(&args).unwrap()).unwrap();
+    }
     // #686: every run beside the fake, in order, with the browser's cookies or without them:
     // `J` a look-up, `O` a choice of formats, `D` a download.
     {
@@ -562,6 +572,115 @@ fn fake_in(me: &Path, dir: &Path) -> PathBuf {
     let exe = dir.join(format!("fake-ytdlp{}", std::env::consts::EXE_SUFFIX));
     std::fs::copy(me, &exe).expect("copy the fake");
     exe
+}
+
+/// Options' browser store is on: inspect arguments received by an actual child process for
+/// look-ups and downloads, both private (empty, own header, own jar) and ordinary requests.
+fn private_cookie_checks(me: &Path) {
+    use mdm_tools::proc::{BrowserCookies, FromBrowser, set_browser_cookies};
+    set_browser_cookies(BrowserCookies::new("firefox", "normal-profile"));
+    let private = FromBrowser {
+        private: true,
+        ..Default::default()
+    };
+    let header = FromBrowser {
+        cookies: Some("sid=private".into()),
+        ..private.clone()
+    };
+    let jar = FromBrowser {
+        jar: vec![mdm_ipc::BrowserCookie {
+            name: "sid".into(),
+            value: "private".into(),
+            domain: "video.example".into(),
+            path: "/".into(),
+            ..Default::default()
+        }],
+        ..private.clone()
+    };
+    for browser in [private.clone(), header, jar, FromBrowser::default()] {
+        let tools = tempfile::tempdir().unwrap();
+        let out = tempfile::tempdir().unwrap();
+        let exe = fake_in(me, tools.path());
+        std::fs::write(tools.path().join("record-cookie-args"), "").unwrap();
+        let url = "https://video.example/talk";
+        mdm_tools::resolve::look_up(&exe, url, &browser).unwrap();
+        let job = VideoJob::start(
+            &exe,
+            url,
+            "b",
+            out.path(),
+            "Talk",
+            None,
+            None,
+            None,
+            &browser,
+            &Subs::default(),
+            None,
+        )
+        .unwrap();
+        let until = Instant::now() + Duration::from_secs(30);
+        let progress = loop {
+            let progress = job.progress();
+            if progress.state != State::Running {
+                break progress;
+            }
+            assert!(Instant::now() < until, "still running: {progress:?}");
+            std::thread::sleep(Duration::from_millis(20));
+        };
+        assert!(matches!(progress.state, State::Done(_)), "{progress:?}");
+        let runs: Vec<Vec<String>> =
+            std::fs::read_to_string(tools.path().join("cookie-args.jsonl"))
+                .unwrap()
+                .lines()
+                .map(|s| serde_json::from_str(s).unwrap())
+                .collect();
+        assert!(
+            runs.iter().any(|args| args.iter().any(|a| a == "-J")),
+            "look-up ran"
+        );
+        assert!(
+            runs.iter()
+                .any(|args| args.iter().any(|a| a == "--load-info-json")),
+            "download ran"
+        );
+        let own = browser.cookies.is_some() || !browser.jar.is_empty();
+        for args in runs {
+            assert_eq!(
+                args.iter().any(|a| a == "--cookies-from-browser"),
+                !browser.private,
+                "{args:?}"
+            );
+            assert_eq!(args.iter().any(|a| a == "--cookies"), own, "{args:?}");
+            assert_eq!(
+                args.iter().any(|a| a == "--no-cookies-from-browser"),
+                browser.private && !own,
+                "{args:?}"
+            );
+        }
+        assert_eq!(
+            progress
+                .events
+                .iter()
+                .any(|(_, e)| e.contains("Cookies read from firefox")),
+            !browser.private
+        );
+    }
+    // A private members-only video fails once with the original authentication refusal;
+    // retrying must never borrow the normal profile to make it succeed.
+    let tools = tempfile::tempdir().unwrap();
+    let exe = fake_in(me, tools.path());
+    std::fs::write(tools.path().join("record-cookie-args"), "").unwrap();
+    let error = mdm_tools::resolve::look_up(
+        &exe,
+        "https://www.youtube.com/watch?v=members0000",
+        &private,
+    )
+    .unwrap_err();
+    assert!(error.to_string().contains("members-only"), "{error}");
+    let log = std::fs::read_to_string(tools.path().join("cookie-args.jsonl")).unwrap();
+    assert_eq!(log.lines().count(), 1, "no cookie retry: {log}");
+    assert!(!log.contains("\"--cookies-from-browser\""), "{log}");
+    set_browser_cookies(None);
 }
 
 /// Download with `subs` while the fake behaves as `mode`; the end state, its log and folder.

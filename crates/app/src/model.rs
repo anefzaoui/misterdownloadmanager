@@ -554,7 +554,8 @@ pub struct Item {
     /// It was made from a private (incognito) window's download. Saved (with Options → General →
     /// "Keep private-window downloads in the list"), unlike `context.private`, which is memory
     /// only: read back, the row stays apart from normal windows' downloads (it neither takes
-    /// nor gives a fresh address, `crate::freshlink`) and never starts waiting by itself.
+    /// nor gives a fresh address, `crate::freshlink`), never starts waiting by itself, and a
+    /// video never falls back to the normal browser's cookie store.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub private_window: bool,
     /// A video's (its `url` is the page): the address its file came from, the first stream of
@@ -1337,6 +1338,15 @@ impl Item {
                 }
                 // In the interface language; the engine's English when it gave no failure.
                 self.error = s.failure.as_ref().map(crate::errors::describe).or(s.error);
+                if self.video.is_some()
+                    && self.is_private_window()
+                    && let Some(error) = self
+                        .error
+                        .as_ref()
+                        .and_then(|e| crate::videodlg::private_auth_error(e))
+                {
+                    self.error = Some(error);
+                }
                 // Why it failed, in the log too, once (#1262: 0.5.2's log said nothing of a
                 // video yt-dlp couldn't download, only the progress window did). The site's
                 // name, not its address: a log is attached to reports, and addresses carry

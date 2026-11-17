@@ -404,13 +404,13 @@ impl VideoDialog {
                     }
                 }
                 Err(e) => {
-                    // Whose cookies the look-up had (#229): the extension's, or (none came) the
-                    // browser's Options names, or none.
-                    let sent = self.looking.as_ref().is_some_and(|(_, b)| {
-                        b.cookies.as_deref().is_some_and(|c| !c.trim().is_empty())
-                    });
-                    let store = (!sent).then(mdm_tools::proc::browser_cookies).flatten();
-                    self.error = Some(lookup_error(&e, sent, store.as_ref()));
+                    let browser = self
+                        .looking
+                        .as_ref()
+                        .map(|(_, b)| b)
+                        .cloned()
+                        .unwrap_or_default();
+                    self.error = Some(request_error(&e, &browser));
                 }
             }
         }
@@ -1469,12 +1469,57 @@ pub(crate) fn look_up_kept(
 /// yt-dlp's view of the browser's request context.
 pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
     mdm_tools::proc::FromBrowser {
+        private: c.private,
         referer: c.referer.clone(),
         origin: c.origin.clone(),
         user_agent: c.user_agent.clone(),
         cookies: c.cookies.clone(),
         jar: c.cookie_jar.clone(),
     }
+}
+
+/// A saved row keeps its private origin when its memory-only browser context is gone.
+pub fn from_item(item: &crate::model::Item) -> mdm_tools::proc::FromBrowser {
+    mdm_tools::proc::FromBrowser {
+        private: item.is_private_window(),
+        ..from_browser(&item.context)
+    }
+}
+
+/// Explain an authentication refusal without suggesting the normal profile for a private row.
+pub(crate) fn private_auth_error(e: &str) -> Option<String> {
+    let lower = e.to_ascii_lowercase();
+    [
+        "sign in", "log in", "login", "private video", "members-only", "members only",
+        "authentication", "anti-bot", "not a bot", "confirm your age",
+    ]
+    .iter()
+    .any(|s| lower.contains(s))
+    .then(|| {
+        let hint = crate::i18n::t(
+            // i18n: a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+            "Private-window downloads do not use Cookies for video sites from Options. Sign in in the private window and use its Download video button again.",
+        );
+        format!("{e}\n\n{hint}")
+    })
+}
+
+/// Whose cookies a look-up actually used, for its error message as well as its arguments.
+pub(crate) fn request_error(e: &str, browser: &mdm_tools::proc::FromBrowser) -> String {
+    if browser.private
+        && let Some(message) = private_auth_error(e)
+    {
+        return message;
+    }
+    let sent = !browser.jar.is_empty()
+        || browser
+            .cookies
+            .as_deref()
+            .is_some_and(|c| !c.trim().is_empty());
+    let store = (!browser.private && !sent)
+        .then(mdm_tools::proc::browser_cookies)
+        .flatten();
+    lookup_error(e, sent, store.as_ref())
 }
 
 /// The size the server says for a plain file at `page`, asked as the browser would (its Referer,
@@ -1661,6 +1706,96 @@ pub(crate) fn choice_label(label: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The builder start_video uses must remember a kept row's origin after serde drops its
+    /// request context; in-session private context and ordinary rows keep their own behavior.
+    #[test]
+    fn private_video_cookie_policy_survives_a_restart() {
+        let page: url::Url = "https://videos.test/watch".parse().unwrap();
+        for private in [false, true] {
+            let mut item = crate::model::Item::new(
+                1,
+                page.clone(),
+                PathBuf::from("Clip.mp4"),
+                Category::Video,
+            );
+            item.video = Some(crate::model::VideoSpec {
+                selector: "best".into(),
+                subs: Default::default(),
+                parts: vec![],
+                named: false,
+                duration: None,
+            });
+            item.private_window = private;
+            item.context.private = private;
+            item.context.cookies = Some("sid=private-secret".into());
+            let saved = serde_json::to_string(&item).unwrap();
+            assert!(!saved.contains("private-secret"));
+            let reloaded: crate::model::Item = serde_json::from_str(&saved).unwrap();
+            assert!(!reloaded.context.private);
+            assert!(reloaded.context.cookies.is_none());
+            let browser = from_item(&reloaded);
+            assert_eq!(browser.private, private);
+            let (args, file) = browser.args(page.as_str()).unwrap();
+            assert!(file.is_none());
+            assert_eq!(
+                args.iter().any(|a| a == "--no-cookies-from-browser"),
+                private
+            );
+            if private {
+                let cmd = mdm_tools::proc::ytdlp(
+                    std::path::Path::new("yt-dlp"),
+                    &[],
+                    &args,
+                    page.as_str(),
+                )
+                .unwrap();
+                assert!(!cmd.get_args().any(|a| a == "--cookies-from-browser"));
+                assert!(!mdm_tools::proc::has_cookies(&args));
+            } else {
+                assert!(args.is_empty(), "normal rows still allow Options' fallback");
+            }
+        }
+        let mut item =
+            crate::model::Item::new(2, page.clone(), PathBuf::from("Clip.mp4"), Category::Video);
+        item.context.private = true;
+        assert!(
+            !item.private_window,
+            "also protect a memory-only private context"
+        );
+        assert!(
+            from_item(&item)
+                .args(page.as_str())
+                .unwrap()
+                .0
+                .contains(&"--no-cookies-from-browser".into())
+        );
+        item.context.cookies = Some("sid=private".into());
+        let browser = from_item(&item);
+        let (args, file) = browser.args(page.as_str()).unwrap();
+        assert!(file.is_some());
+        assert!(args.contains(&"--cookies".into()));
+        assert!(!args.contains(&"--no-cookies-from-browser".into()));
+        assert!(
+            from_browser(&item.context).private,
+            "fresh private look-ups too"
+        );
+    }
+
+    #[test]
+    fn a_private_video_authentication_error_explains_its_cookie_policy() {
+        let refusal = "ERROR: Private video. Sign in to watch.";
+        let browser = mdm_tools::proc::FromBrowser {
+            private: true,
+            ..Default::default()
+        };
+        let message = request_error(refusal, &browser);
+        assert!(message.starts_with(refusal), "{message}");
+        assert!(message.contains("Private-window downloads do not use Cookies for video sites"));
+        assert!(message.contains("private window"));
+        assert!(!request_error(refusal, &Default::default()).contains("Private-window downloads"));
+        assert_eq!(private_auth_error("HTTP Error 500"), None);
+    }
 
     /// #359: a Dailymotion player embedded in another site is looked up at the video's own page,
     /// without that site as its Referer (Dailymotion answers 403); any other page keeps it.
