@@ -1457,6 +1457,9 @@ These ship in the next version.
   again at once for a link it then refused; a download stopped with an expired or refused link, or
   after **Refresh download address**, takes the browser's next download of the same file as its
   new address and goes on, instead of a second row starting over
+- ✅ Linux (XWayland on Hyprland): a click in MDM's window gives it the keyboard again where
+  Hyprland had left it with another X11 program's window, or with none after the window came back
+  from the notification area; a box in File Properties took the caret but no typing or Ctrl+V
 
 ## Being worked on
 
