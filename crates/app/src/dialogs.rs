@@ -19,15 +19,26 @@ pub enum Outcome<T> {
 }
 
 const MAIN_RECT: &str = "mdm-main-rect";
+const MAIN_RECT_PX: &str = "mdm-main-rect-px";
 
 /// The main window publishes its outer rect each frame so dialogs can centre on it, with the
 /// zoom it is measured at (not in the frame the interface size changes: its rect is still
-/// measured at the old one then, scale::settled).
+/// measured at the old one then, scale::settled); and in screen pixels, which mean the same on
+/// every screen whatever its scale (#1311).
 pub fn publish_main_rect(ctx: &egui::Context) {
     if let Some(rc) = ctx.input(|i| i.viewport().outer_rect) {
         let zoom = ctx.zoom_factor();
-        ctx.data_mut(|d| d.insert_temp(egui::Id::unique(MAIN_RECT), (rc, zoom)));
+        let px = rc * ctx.pixels_per_point();
+        ctx.data_mut(|d| {
+            d.insert_temp(egui::Id::unique(MAIN_RECT), (rc, zoom));
+            d.insert_temp(egui::Id::unique(MAIN_RECT_PX), px);
+        });
     }
+}
+
+/// The main window's outer rect as last published, in screen pixels.
+fn main_rect_px(ctx: &egui::Context) -> Option<egui::Rect> {
+    ctx.data(|d| d.get_temp::<egui::Rect>(egui::Id::unique(MAIN_RECT_PX)))
 }
 
 /// The main window's outer rect as last published, in points at the zoom drawn now (#262: the
@@ -45,12 +56,21 @@ fn main_rect(ctx: &egui::Context) -> Option<egui::Rect> {
 /// area (its title bar first, for one larger than the screen), decided once when the dialog
 /// first shows and kept until `forget_place` — so the user can still move it. Placed again when
 /// the interface size changes (#262): the place is in points, which that changes.
+///
+/// The place in points goes to the new window's builder. On Windows the window is then put
+/// where it belongs in screen pixels (`keep_placed`): winit reads the points at the scale of the
+/// screen a new window opens on (the primary), not the main window's, which put a dialog of a
+/// main window on a screen of another scale out of sight (#1311).
 pub fn place(ctx: &egui::Context, key: egui::Id, client: [f32; 2]) -> Option<Pos2> {
     let zoom = ctx.zoom_factor();
     if let Some((p, z)) = ctx.data(|d| d.get_temp::<(Pos2, f32)>(key))
         && z == zoom
     {
         return Some(p);
+    }
+    // Where the main window is as the dialog opens, for keep_placed.
+    if let Some(px) = main_rect_px(ctx) {
+        ctx.data_mut(|d| d.insert_temp(key.with("main-px"), px));
     }
     let main = main_rect(ctx)?;
     // A fixed-frame dialog's outer size is client + (6, 29) (spec "Conventions").
@@ -65,7 +85,86 @@ pub fn place(ctx: &egui::Context, key: egui::Id, client: [f32; 2]) -> Option<Pos
 }
 
 pub fn forget_place(ctx: &egui::Context, key: egui::Id) {
-    ctx.data_mut(|d| d.remove::<(Pos2, f32)>(key));
+    ctx.data_mut(|d| {
+        d.remove::<(Pos2, f32)>(key);
+        d.remove::<egui::Rect>(key.with("main-px"));
+    });
+}
+
+/// How many passes after it is shown a window is still kept where [`place`] put it: its new
+/// screen's scale, given as it is shown, resizes it (follow_scale), and it is centred again.
+#[cfg(windows)]
+const PLACED_AFTER_SHOWN: u32 = 4;
+
+/// Windows: the window `title` (opened at `key`'s [`place`]) put there in screen pixels, centred
+/// on the main window at its actual size, on the main window's screen, whatever the scales of
+/// the screens (#1311): before it is shown, and in its first passes when a new scale resized it.
+/// The safety net under it: a window on no screen is brought onto the main window's.
+///
+/// Elsewhere the builder's place is kept: macOS has one coordinate space in points for every
+/// screen; a Wayland compositor places windows itself; X11 has mostly one scale for every screen
+/// (Xft.dpi).
+#[cfg(windows)]
+fn keep_placed(ctx: &egui::Context, key: egui::Id, title: &str, shown: bool) {
+    // Off-screen test runs keep their windows off the screens.
+    if crate::offscreen() {
+        return;
+    }
+    let after_key = key.with("placed-after");
+    let size_key = key.with("placed-size");
+    let after = ctx.data(|d| d.get_temp::<u32>(after_key).unwrap_or(0));
+    if after >= PLACED_AFTER_SHOWN {
+        return;
+    }
+    if shown {
+        ctx.data_mut(|d| d.insert_temp(after_key, after + 1));
+        ctx.request_repaint();
+    }
+    let Some(([l, t, r, b], visible)) = crate::win32::window_rect(title) else {
+        return;
+    };
+    let at = egui::Rect::from_min_max(
+        egui::pos2(l as f32, t as f32),
+        egui::pos2(r as f32, b as f32),
+    );
+    let placed = ctx.data(|d| d.get_temp::<egui::Vec2>(size_key));
+    // Not shown yet, the window found by the title is ours only while hidden (a progress window
+    // may share its title with one on the screen). Shown, it is moved again only when a new
+    // scale resized it; not when the user moved it.
+    if (!shown && visible) || (shown && placed.is_some_and(|s| s == at.size())) {
+        return;
+    }
+    let screens: Vec<crate::scale::Screen> = crate::win32::screens()
+        .into_iter()
+        .map(|(s, w)| crate::scale::Screen {
+            rect: egui::Rect::from_min_max(
+                egui::pos2(s[0] as f32, s[1] as f32),
+                egui::pos2(s[2] as f32, s[3] as f32),
+            ),
+            work: egui::Rect::from_min_max(
+                egui::pos2(w[0] as f32, w[1] as f32),
+                egui::pos2(w[2] as f32, w[3] as f32),
+            ),
+        })
+        .collect();
+    let main = ctx.data(|d| d.get_temp::<egui::Rect>(key.with("main-px")));
+    let want = main.map_or(at.min, |m| crate::scale::centred_on(m, at.size(), &screens));
+    let want =
+        crate::scale::onto_screens(egui::Rect::from_min_size(want, at.size()), main, &screens)
+            .unwrap_or(want);
+    ctx.data_mut(|d| d.insert_temp(size_key, at.size()));
+    if (want - at.min).length() < 1.0 {
+        return;
+    }
+    // Far from where the builder's place put it: what the screens were, for a report.
+    if (want - at.min).length() > 64.0 {
+        tracing::info!(
+            "window {title:?} at {:?} put at {want:?} (main window {main:?}, screens {:?})",
+            at.min,
+            screens.iter().map(|s| s.rect).collect::<Vec<_>>()
+        );
+    }
+    crate::win32::move_window(title, want.x as i32, want.y as i32);
 }
 
 /// A fixed-size window's client of `size` points as it can be shown on the screen around the
@@ -135,6 +234,8 @@ pub fn keep_theme(
             d.remove::<bool>(shown_key);
             d.remove::<u32>(front_key);
             d.remove::<bool>(caption_key);
+            d.remove::<u32>(key.with("placed-after"));
+            d.remove::<egui::Vec2>(key.with("placed-size"));
         });
     }
     if !open {
@@ -152,6 +253,9 @@ pub fn keep_theme(
     }
     // The theme went out in an earlier frame: show the window now.
     let shown = ctx.data(|d| d.get_temp::<bool>(shown_key).unwrap_or(false));
+    // Where it belongs on the screens before it is seen (#1311).
+    #[cfg(windows)]
+    keep_placed(ctx, key, title, shown);
     if sent.is_some() && !shown {
         ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
         ctx.data_mut(|d| d.insert_temp(shown_key, true));

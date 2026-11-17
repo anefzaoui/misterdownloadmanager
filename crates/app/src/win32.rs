@@ -4200,6 +4200,90 @@ pub fn on_a_screen(x: i32, y: i32) -> bool {
     !unsafe { MonitorFromPoint(POINT { x, y }, MONITOR_DEFAULTTONULL) }.is_null()
 }
 
+/// The monitors in screen pixels (each one's rect and work area, [left, top, right, bottom]),
+/// the primary first.
+pub fn screens() -> Vec<([i32; 4], [i32; 4])> {
+    use windows_sys::Win32::Graphics::Gdi::{
+        EnumDisplayMonitors, GetMonitorInfoW, HDC, HMONITOR, MONITORINFO,
+    };
+    const MONITORINFOF_PRIMARY: u32 = 1;
+    type Found = Vec<(bool, [i32; 4], [i32; 4])>;
+    unsafe extern "system" fn cb(
+        mon: HMONITOR,
+        _dc: HDC,
+        _rc: *mut RECT,
+        lparam: LPARAM,
+    ) -> windows_sys::core::BOOL {
+        let rect = |r: RECT| [r.left, r.top, r.right, r.bottom];
+        // SAFETY: lparam is the Vec below, alive for the enumeration; mi is a writable local.
+        unsafe {
+            let found = &mut *(lparam as *mut Found);
+            let mut mi: MONITORINFO = zeroed();
+            mi.cbSize = size_of::<MONITORINFO>() as u32;
+            if GetMonitorInfoW(mon, &mut mi) != 0 {
+                found.push((
+                    mi.dwFlags & MONITORINFOF_PRIMARY != 0,
+                    rect(mi.rcMonitor),
+                    rect(mi.rcWork),
+                ));
+            }
+        }
+        1
+    }
+    let mut found: Found = Vec::new();
+    // SAFETY: the callback only pushes to `found`, which outlives the call.
+    unsafe {
+        EnumDisplayMonitors(
+            std::ptr::null_mut(),
+            std::ptr::null(),
+            Some(cb),
+            &mut found as *mut Found as LPARAM,
+        );
+    }
+    // The primary first (a stable sort keeps the others' order).
+    found.sort_by_key(|(primary, ..)| !primary);
+    found.into_iter().map(|(_, r, w)| (r, w)).collect()
+}
+
+/// Our window titled `title`: its rect in screen pixels ([left, top, right, bottom]) and
+/// whether it is visible. None while it is minimized (its rect is then the taskbar's icon's).
+pub fn window_rect(title: &str) -> Option<([i32; 4], bool)> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{GetWindowRect, IsIconic, IsWindowVisible};
+    let hwnd = find_own_window(title)?;
+    let mut r: RECT = unsafe { zeroed() };
+    // SAFETY: plain queries about our own window; r is a writable local.
+    let (got, visible, minimized) = unsafe {
+        (
+            GetWindowRect(hwnd, &mut r) != 0,
+            IsWindowVisible(hwnd) != 0,
+            IsIconic(hwnd) != 0,
+        )
+    };
+    (got && !minimized).then_some(([r.left, r.top, r.right, r.bottom], visible))
+}
+
+/// Our window titled `title` moved to screen pixel (x, y), nothing else changed (its size, its
+/// place among the windows, the focus). Moved onto a screen of another scale, Windows gives it
+/// that scale (WM_DPICHANGED), which resizes it.
+pub fn move_window(title: &str, x: i32, y: i32) -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{SWP_NOOWNERZORDER, SWP_NOSIZE};
+    let Some(hwnd) = find_own_window(title) else {
+        return false;
+    };
+    // SAFETY: our own window, on its thread.
+    unsafe {
+        SetWindowPos(
+            hwnd,
+            std::ptr::null_mut(),
+            x,
+            y,
+            0,
+            0,
+            SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOOWNERZORDER,
+        ) != 0
+    }
+}
+
 /// Whether an assistive technology (a screen reader, a UI Automation client) is listening to
 /// this desktop's windows now (#131): the windows then keep their accessibility tree ready, so
 /// a window read for the first time answers with its contents at once.

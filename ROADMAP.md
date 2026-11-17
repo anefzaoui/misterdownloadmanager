@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: dialogs open on the main window's monitor when the monitors have different display
+  scales (a 125 % laptop and a 100 % monitor), where they opened out of sight; a window on no
+  screen is brought onto one ([#1311](https://github.com/anefzaoui/misterdownloadmanager/issues/1311))
 - ✅ The automation API's add may carry the checksum the finished file must have (the command
   line's `--checksum` form), kept with the download for **Verify checksum** and the finish
   check; one the app can't read is refused (`bad-request`) instead of dropped
