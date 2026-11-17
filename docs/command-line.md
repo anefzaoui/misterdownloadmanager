@@ -56,11 +56,12 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `torrent-info SOURCE` | A torrent's name, files (numbered) and size; `SOURCE` is a magnet link or a `.torrent` file. |
 | `torrent-get SOURCE [-o folder] [--files 0,2] [--use-existing]` | Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; `--use-existing` uses them instead (what matches is kept, the rest downloaded). |
 | `torrent-create PATH -o file.torrent` | Make a `.torrent` of a file or folder (peers find it through the DHT). |
-| `status` | The running app's downloads, as JSON, with their ids (the automation API must be on). |
+| `status [--id N] [-s status] [--search text] [-c category] [-q queue] [-l limit]` (or `list`) | The running app's downloads, as JSON, with their ids (the automation API must be on). Optional flags filter by id, status, search string, category or queue, or limit the count. |
 | `pause ID...`, `start ID...` | Pause running downloads, or start (resume) stopped, queued or failed ones, in the running app. |
 | `remove ID...`, `delete ID...` | Take downloads off the running app's list: `remove` keeps their files, `delete` deletes them too. A running download is paused first (`pause`). |
-| `add URL [-o folder] [-f name] [-c category] [-q queue] [-l] [-s]` | Hand a download to the running app. `-o` sets the folder, `-f` the file name, `-c` the category, `-q` the queue, `-l` queues it without starting, and `-s` skips the Download File Info dialog. Prints `{"id": N}` on success. |
+| `add URL [-o folder] [-f name] [-c category] [-q queue] [--checksum hash] [-r referer] [-l] [-s]` | Hand a download to the running app. `-o` sets the folder, `-f` the file name, `-c` the category, `-q` the queue, `--checksum` sets the required hash, `-r` the referring page address (Referer header), `-l` queues it without starting, and `-s` skips the Download File Info dialog. Prints `{"id": N}` on success. |
 | `start-queue [name] [-q name]`, `stop-queue [name] [-q name]` | Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted. |
+| `pair` | Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code. |
 | `api on`, `api off` | Turn the running app's automation API on or off. |
 
 `misterdownloadmanager-cli help <command>` shows every option. A command that fails (the app isn't running, it answers with an error, a download breaks) exits with code 1. For example:
@@ -84,7 +85,7 @@ With `--json` (before or after the command), every command prints JSON instead o
 | `torrent-info` | `{"name", "info_hash", "size", "files": [{"index", "size", "path"}]}`. |
 | `torrent-create` | `{"info_hash", "path"}`. |
 | `install-ytdlp`, `install-ffmpeg` | `{"tool", "version", "path"}`. |
-| `status`, `pause`, `start`, `remove`, `delete`, `start-queue`, `stop-queue`, `add`, `api` | The app's answer, which is JSON already (see below). |
+| `status`, `pause`, `start`, `remove`, `delete`, `start-queue`, `stop-queue`, `add`, `pair`, `api` | The app's answer, which is JSON already (see below). |
 
 Sizes are in bytes (`null` while unknown), speeds in bytes per second. A failure prints `{"error": "…"}` and exits with code 1; when `video-get` finds no format of the page to download, the error comes with `"choices"` (as `video-info`'s) and `"formats"` (yt-dlp's own: `{"id", "ext", "height", "video", "audio"}`). For example:
 

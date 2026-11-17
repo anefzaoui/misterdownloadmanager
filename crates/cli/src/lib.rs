@@ -70,7 +70,27 @@ enum Cmd {
         direct: bool,
     },
     /// The running app's downloads, as JSON (automation API; turn it on with `api on`).
-    Status,
+    #[command(alias = "list")]
+    Status {
+        /// Only the download with this id.
+        #[arg(long)]
+        id: Option<u64>,
+        /// Only downloads with this status: Queued, Downloading, Stopped, Complete or Error.
+        #[arg(short = 's', long)]
+        status: Option<String>,
+        /// Only downloads whose file name or address contains this text (any case).
+        #[arg(long)]
+        search: Option<String>,
+        /// A category for the download (e.g. "Compressed", "Documents", "Music", "Programs", "Video").
+        #[arg(short = 'c', long)]
+        category: Option<String>,
+        /// The queue to list (by name; e.g. "Main download queue").
+        #[arg(short = 'q', long)]
+        queue: Option<String>,
+        /// At most this many, newest first.
+        #[arg(short = 'l', long)]
+        limit: Option<usize>,
+    },
     /// Install (or update) yt-dlp for video downloads: its checksum list is verified against
     /// yt-dlp's signing key, the program against that list.
     InstallYtdlp,
@@ -244,6 +264,13 @@ enum Cmd {
         /// The queue to add to (by name; adds to the main queue with `--later` if omitted).
         #[arg(short = 'q', long = "queue")]
         queue: Option<String>,
+        /// The finished file must have this hash: hex MD5 / SHA-1 / SHA-256 / SHA-512 / CRC32,
+        /// optionally named ("sha256:…").
+        #[arg(long)]
+        checksum: Option<String>,
+        /// The page's address (Referer header), for links that need one or an expired link's renewal.
+        #[arg(short = 'r', long = "referer", alias = "referrer")]
+        referer: Option<String>,
         /// Add to the queue without starting it now.
         #[arg(short = 'l', long = "later")]
         later: bool,
@@ -376,12 +403,64 @@ fn ask(cmd: mdm_ipc::Command) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn status_command(
+    id: Option<u64>,
+    status: Option<String>,
+    search: Option<String>,
+    category: Option<String>,
+    queue: Option<String>,
+    limit: Option<usize>,
+) -> anyhow::Result<()> {
+    let answer = mdm_ipc::request(&mdm_ipc::Command {
+        query: Some("list".into()),
+        ..Default::default()
+    })
+    .map_err(|e| anyhow::anyhow!("Mister Download Manager isn't running ({e})"))?;
+
+    if serde_json::from_str::<mdm_ipc::api::ErrorAnswer>(&answer).is_ok() {
+        println!("{answer}");
+        return Err(Reported.into());
+    }
+
+    if id.is_none()
+        && status.is_none()
+        && search.is_none()
+        && category.is_none()
+        && queue.is_none()
+        && limit.is_none()
+    {
+        println!("{answer}");
+        return Ok(());
+    }
+
+    let list: mdm_ipc::api::ListAnswer =
+        serde_json::from_str(&answer).map_err(|e| anyhow::anyhow!("unreadable answer: {e}"))?;
+
+    let filter = mdm_ipc::api::ListFilter {
+        id,
+        status: status.as_deref(),
+        search: search.as_deref(),
+        category: category.as_deref(),
+        queue: queue.as_deref(),
+        limit,
+    };
+
+    let filtered = list.filtered(&filter).map_err(|e| anyhow::anyhow!("{e}"))?;
+
+    let output = serde_json::to_string(&filtered)?;
+    println!("{output}");
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)]
 fn add_command(
     url: String,
     output: Option<PathBuf>,
     name: Option<String>,
     category: Option<String>,
     queue: Option<String>,
+    checksum: Option<String>,
+    referer: Option<String>,
     later: bool,
     silent: bool,
 ) -> mdm_ipc::Command {
@@ -397,14 +476,22 @@ fn add_command(
         name,
         category,
         queue,
+        checksum,
+        referer,
         later,
         silent,
         ..Default::default()
     }
 }
 
-/// `pair`: a new pairing code from the running app, printed for a person.
-fn pair() -> anyhow::Result<()> {
+/// `pair`: a new pairing code from the running app, printed for a person (or raw JSON with `--json`).
+fn pair(json: bool) -> anyhow::Result<()> {
+    if json {
+        return ask(mdm_ipc::Command {
+            pair: true,
+            ..Default::default()
+        });
+    }
     let answer = mdm_ipc::request(&mdm_ipc::Command {
         pair: true,
         ..Default::default()
@@ -519,6 +606,10 @@ pub fn main_with(args: Vec<OsString>, accounts: Option<&dyn Accounts>) -> ExitCo
     let cli = Cli::parse_from(std::iter::once(OsString::from(NAME)).chain(args));
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
     let json = cli.json;
+    #[cfg(unix)]
+    if runs_helpers(&cli.cmd) {
+        end_helpers_when_stopped(&rt, json);
+    }
     match rt.block_on(run(cli.cmd, json, accounts)) {
         Ok(()) => ExitCode::SUCCESS,
         Err(e) if e.is::<Reported>() => ExitCode::FAILURE,
@@ -534,6 +625,56 @@ pub fn main_with(args: Vec<OsString>, accounts: Option<&dyn Accounts>) -> ExitCo
             ExitCode::FAILURE
         }
     }
+}
+
+/// Whether `cmd` runs yt-dlp or gallery-dl (a look-up, a download, an install's version check).
+/// On Linux and macOS each runs in a process group of its own (#1301), which the terminal's
+/// Ctrl+C doesn't reach: such a command ends them itself when stopped
+/// ([`end_helpers_when_stopped`]). Windows: their job objects end them with this process.
+#[cfg(unix)]
+fn runs_helpers(cmd: &Cmd) -> bool {
+    matches!(
+        cmd,
+        Cmd::InstallYtdlp
+            | Cmd::InstallFfmpeg
+            | Cmd::InstallGalleryDl
+            | Cmd::GalleryGet { .. }
+            | Cmd::VideoInfo { .. }
+            | Cmd::PlaylistInfo { .. }
+            | Cmd::PlaylistGet { .. }
+            | Cmd::VideoGet { .. }
+    )
+}
+
+/// Linux, macOS: once the command is asked to stop (Ctrl+C, SIGTERM, its terminal closed), the
+/// helpers it runs end with all they started, what they downloaded left as a pause leaves it,
+/// and the command ends (128 + the signal's number). Heard from the start, on the runtime's
+/// other threads: a look-up runs on the command's own thread until yt-dlp answers.
+#[cfg(unix)]
+fn end_helpers_when_stopped(rt: &tokio::runtime::Runtime, json: bool) {
+    use tokio::signal::unix::{SignalKind, signal};
+    let _in = rt.enter();
+    let (Ok(mut int), Ok(mut term), Ok(mut hup)) = (
+        signal(SignalKind::interrupt()),
+        signal(SignalKind::terminate()),
+        signal(SignalKind::hangup()),
+    ) else {
+        return;
+    };
+    rt.spawn(async move {
+        let number: i32 = tokio::select! {
+            _ = int.recv() => 2,
+            _ = term.recv() => 15,
+            _ = hup.recv() => 1,
+        };
+        mdm_tools::proc::end_all();
+        if json {
+            emit(json!({ "event": "stopped" }));
+        } else {
+            eprintln!("\nstopped");
+        }
+        std::process::exit(128 + number);
+    });
 }
 
 async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::Result<()> {
@@ -1195,10 +1336,14 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 }
             }
         }
-        Cmd::Status => ask(mdm_ipc::Command {
-            query: Some("list".into()),
-            ..Default::default()
-        }),
+        Cmd::Status {
+            id,
+            status,
+            search,
+            category,
+            queue,
+            limit,
+        } => status_command(id, status, search, category, queue, limit),
         Cmd::Pause { ids } => act("pause", ids),
         Cmd::Start { ids } => act("start", ids),
         Cmd::Remove { ids } => act("remove", ids),
@@ -1209,10 +1354,12 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             name,
             category,
             queue,
+            checksum,
+            referer,
             later,
             silent,
         } => ask(add_command(
-            url, output, name, category, queue, later, silent,
+            url, output, name, category, queue, checksum, referer, later, silent,
         )),
         Cmd::StartQueue { queue, name } => ask(mdm_ipc::Command {
             action: Some("start_queue".into()),
@@ -1224,7 +1371,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             queue: queue.or(name),
             ..Default::default()
         }),
-        Cmd::Pair => pair(),
+        Cmd::Pair => pair(json),
         Cmd::Api { state } => ask(mdm_ipc::Command {
             api: Some(state == "on"),
             ..Default::default()
@@ -1842,11 +1989,14 @@ mod tests {
                 name: None,
                 category: None,
                 queue: None,
+                checksum: None,
+                referer: None,
                 later: false,
                 silent: false,
             } if url == "https://example.test/a.zip"
         ));
 
+        let sha256 = "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
         let cli = Cli::try_parse_from([
             NAME,
             "add",
@@ -1859,6 +2009,8 @@ mod tests {
             "Torrents",
             "-q",
             "Night",
+            "--checksum",
+            sha256,
             "-l",
             "-s",
         ])
@@ -1871,6 +2023,8 @@ mod tests {
                 name: Some(ref n),
                 category: Some(ref c),
                 queue: Some(ref q),
+                checksum: Some(ref h),
+                referer: None,
                 later: true,
                 silent: true,
             } if url == "magnet:?xt=urn:btih:abc"
@@ -1878,6 +2032,59 @@ mod tests {
                 && n == "my_torrent"
                 && c == "Torrents"
                 && q == "Night"
+                && h == sha256
+        ));
+
+        let cmd = match cli.cmd {
+            Cmd::Add {
+                url,
+                output,
+                name,
+                category,
+                queue,
+                checksum,
+                referer,
+                later,
+                silent,
+            } => add_command(
+                url, output, name, category, queue, checksum, referer, later, silent,
+            ),
+            _ => unreachable!(),
+        };
+        assert_eq!(cmd.checksum.as_deref(), Some(sha256));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "-r",
+            "https://example.test/page.html",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                referer: Some(ref r),
+                ..
+            } if url == "https://example.test/file.zip" && r == "https://example.test/page.html"
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "add",
+            "https://example.test/file.zip",
+            "--referrer",
+            "https://example.test/page.html",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Add {
+                ref url,
+                referer: Some(ref r),
+                ..
+            } if url == "https://example.test/file.zip" && r == "https://example.test/page.html"
         ));
     }
 
@@ -1894,10 +2101,71 @@ mod tests {
             None,
             None,
             None,
+            None,
+            Some("https://example.test/source".into()),
             false,
             false,
         );
         assert_eq!(cmd.dir.as_deref(), Some(expected.as_str()));
+        assert_eq!(cmd.referer.as_deref(), Some("https://example.test/source"));
+    }
+
+    #[test]
+    fn status_command_parses() {
+        let cli = Cli::try_parse_from([NAME, "status"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Status {
+                id: None,
+                status: None,
+                search: None,
+                category: None,
+                queue: None,
+                limit: None,
+            }
+        ));
+
+        let cli = Cli::try_parse_from([NAME, "list"]).unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Status {
+                id: None,
+                status: None,
+                search: None,
+                category: None,
+                queue: None,
+                limit: None,
+            }
+        ));
+
+        let cli = Cli::try_parse_from([
+            NAME,
+            "status",
+            "--id",
+            "42",
+            "-s",
+            "Downloading",
+            "-c",
+            "Music",
+            "-q",
+            "Main download queue",
+            "--search",
+            "audio",
+            "-l",
+            "5",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Status {
+                id: Some(42),
+                status: Some(ref s),
+                category: Some(ref c),
+                queue: Some(ref q),
+                search: Some(ref search),
+                limit: Some(5),
+            } if s == "Downloading" && c == "Music" && q == "Main download queue" && search == "audio"
+        ));
     }
 
     /// A service that takes `hoster.test` only, or (`broken`) can't say which hosts it takes.
@@ -1970,6 +2238,18 @@ mod tests {
         assert_eq!(via(&host, false, None).await, None);
         let broken: &'static Fake = Box::leak(Box::new(Fake { broken: true }));
         assert_eq!(via(&host, false, Some(broken)).await, None);
+    }
+
+    #[test]
+    fn pair_command_parses() {
+        let cli = Cli::try_parse_from(["misterdownloadmanager-cli", "pair"]).unwrap();
+        assert!(matches!(cli.cmd, Cmd::Pair));
+        assert!(!cli.json);
+
+        let cli_json =
+            Cli::try_parse_from(["misterdownloadmanager-cli", "--json", "pair"]).unwrap();
+        assert!(matches!(cli_json.cmd, Cmd::Pair));
+        assert!(cli_json.json);
     }
 
     fn args(a: &[&str]) -> Vec<OsString> {

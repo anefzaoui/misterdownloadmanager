@@ -1608,10 +1608,17 @@ mod tests {
         // The budget counts both requests together: the second, held by the server until the
         // client hangs up, is given what the first left of it, not a budget of its own. Given
         // its own, the fetch would take at least the first's time and a whole budget more.
+        // Only the fetch is timed: the runtime's threads start before and end after it (a busy
+        // machine took its time for those too).
         let budget = Duration::from_secs(2);
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let opts = crate::net(mdm_engine::Proxy::None);
+        let url = s.url("/held/master.m3u8");
         let at = Instant::now();
-        assert!(fetch_now(&s.url("/held/master.m3u8"), budget).is_none());
+        let got = rt.block_on(fetch_within(&url, &browser(), &opts, budget));
         let took = at.elapsed();
+        drop(rt);
+        assert!(got.is_none());
         assert!(took >= budget, "{took:?}");
         assert!(took < FIRST + budget, "a budget for each request: {took:?}");
     }

@@ -3,7 +3,8 @@
 //! (Codeberg), its `SHA256SUMS` checked against its author's OpenPGP key (pinned in
 //! `keys/gallery-dl.asc`), the program against that list, kept in `tools/gallery-dl/<version>/`
 //! with the previous version, never older; or the person's own copy (`chosen`). It runs in the
-//! same job as yt-dlp does (`proc::spawn`), so Stop and MDM's end take it and all it started.
+//! same kind of job (Windows) or process group (Linux, macOS) as yt-dlp does (`proc::spawn`), so
+//! Stop and MDM's end take it and all it started.
 //!
 //! A download is a folder: gallery-dl prints each file it saves (one path a line, `# path` for
 //! one already there), and skips what is already there when started again, so a gallery started

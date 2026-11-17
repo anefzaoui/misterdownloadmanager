@@ -237,6 +237,8 @@ pub fn exit_now(code: i32) -> ! {
 /// MDM ends at once, the list and the downloads as last saved: the session's end, not a crash.
 #[cfg(target_os = "linux")]
 fn end_now() -> ! {
+    // yt-dlp and gallery-dl end with it (#1301).
+    mdm_tools::proc::end_all();
     crate::crash::clean_exit();
     std::process::exit(1);
 }
