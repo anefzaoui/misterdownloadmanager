@@ -338,7 +338,7 @@ pub fn make(
         time: chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
         notes: notes.clone(),
         analysis: analysis.as_ref(),
-        log_tail: crate::logs::tail(data, 150),
+        log_tail: crate::logs::tail_or_recent(data, crate::logs::RECENT, &notes.log),
         dump: dump
             .and_then(|d| d.file_name())
             .map(|n| n.to_string_lossy().into_owned()),
