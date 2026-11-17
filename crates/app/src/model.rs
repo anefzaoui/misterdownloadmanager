@@ -1423,16 +1423,20 @@ impl Item {
     /// The web page it was obtained from (#795): a video's or a gallery's is its own address
     /// (the page yt-dlp, gallery-dl look up); a file's the page the browser started it from
     /// (#607), else the one it sent as its referer (an older extension's, Import's, File
-    /// Properties'). Refresh download address opens it.
+    /// Properties'). Refresh download address opens it. A site's address alone (a Referer a
+    /// referrer policy cut, `https://host/`) only when none of them names a page on it.
     pub fn web_page(&self) -> Option<&str> {
         if self.video.is_some() || self.gallery.is_some() {
             return Some(self.url.as_str());
         }
-        self.page
-            .as_deref()
-            .or(self.context.referer.as_deref())
-            .or(self.referer.as_deref())
-            .filter(|r| !r.is_empty())
+        let known = [
+            self.page.as_deref(),
+            self.context.referer.as_deref(),
+            self.referer.as_deref(),
+        ];
+        let mut known = known.into_iter().flatten().filter(|r| !r.is_empty());
+        let first = known.clone().next()?;
+        Some(known.find(|r| !site_only(r)).unwrap_or(first))
     }
 
     /// The referer sent with it from now on (the browser's, File Properties'): the request's
@@ -1625,6 +1629,13 @@ impl Item {
     pub fn time_left(&self) -> String {
         self.seconds_left().map_or(String::new(), time)
     }
+}
+
+/// A web address that is a site's only (`https://host/`, no path, query or fragment): what a
+/// referrer policy leaves of the page a download was started from ([`Item::web_page`]).
+fn site_only(address: &str) -> bool {
+    Url::parse(address)
+        .is_ok_and(|u| u.path() == "/" && u.query().is_none() && u.fragment().is_none())
 }
 
 /// Every byte of a download is in (#736): the last of it is written out (its whole size
@@ -2013,6 +2024,17 @@ mod file_address_tests {
         f.set_referer(Some("https://www.example.com/".into()));
         f.page = Some("https://www.example.com/files/a.html".into());
         assert_eq!(f.web_page(), Some("https://www.example.com/files/a.html"));
+        // A site's address alone is the page only when nothing names one on it: a page the
+        // browser gave as only the site's (a tab gone to the home page) gives way to a Referer
+        // that is a whole page; a Referer cut to the site, with no page, is still shown.
+        f.page = Some("https://www.example.com/".into());
+        f.set_referer(Some("https://www.example.com/files/a.html".into()));
+        assert_eq!(f.web_page(), Some("https://www.example.com/files/a.html"));
+        f.page = None;
+        f.set_referer(Some("https://www.example.com/".into()));
+        assert_eq!(f.web_page(), Some("https://www.example.com/"));
+        f.page = Some(String::new());
+        assert_eq!(f.web_page(), Some("https://www.example.com/"));
     }
 
     /// The referer and a video's file address are kept with the list (#795); the browser's

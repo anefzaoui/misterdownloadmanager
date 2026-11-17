@@ -3407,6 +3407,54 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   ]);
   ok("#607 Chromium: the page is the download's tab, its opener, else the active tab");
 }
+// A file host's Download button (a premium Rapidgator file): the file page is on the site's
+// /file/… address, the download comes from another of its servers, the Referer is the site's
+// address only. Chromium: by the time the answer is a download, the tab opened for the button's
+// link is closed by the browser (or the tab has gone on to another page): the page is the one
+// its tab (or its opener) showed as the load started, never the Referer's bare site.
+{
+  const page = "https://rapidgator.test/file/0a1b2c/report.zip.html";
+  const file = "https://s118.rapidgator.test/download/7f3e-uuid/report.zip";
+  const tabs = { 4: { id: 4, url: page }, 5: { id: 5, url: "", openerTabId: 4 }, 6: { id: 6, url: page } };
+  const { api, calls, listeners } = fakeApi({ tabs, activeTab: { id: 9, url: "https://other.test/news", incognito: false } });
+  load(api, false);
+  await settle();
+  // Opened in a tab of its own, which the browser closes as the download starts.
+  listeners.beforeRequest({ requestId: "r1", method: "GET", url: file, tabId: 5, type: "main_frame", initiator: "https://rapidgator.test" });
+  await settle();
+  Object.defineProperty(tabs, 5, { get: () => Promise.reject(new Error("No tab with id: 5")) });
+  listeners.determining({ id: 51, url: file, referrer: "https://rapidgator.test/", filename: "report.zip" }, () => {});
+  await settle();
+  // Through a redirect in the same tab, which has moved on by then (the site's home).
+  const start = "https://rapidgator.test/download/premium/0a1b2c";
+  const file2 = "https://s118.rapidgator.test/download/8a4f-uuid/report2.zip";
+  listeners.beforeRequest({ requestId: "r2", method: "GET", url: start, tabId: 6, type: "main_frame", initiator: "https://rapidgator.test" });
+  listeners.beforeRequest({ requestId: "r2", method: "GET", url: file2, tabId: 6, type: "main_frame", initiator: "https://rapidgator.test" });
+  await settle();
+  tabs[6] = { id: 6, url: "https://rapidgator.test/" };
+  listeners.determining({ id: 52, url: start, finalUrl: file2, referrer: "https://rapidgator.test/", filename: "report2.zip" }, () => {});
+  await settle();
+  const sent = natives(calls).map((m) => [m.finalUrl || m.url, m.referrer, m.pageUrl]);
+  assert.deepEqual(sent, [
+    [file, "https://rapidgator.test/", page],
+    [file2, "https://rapidgator.test/", page],
+  ]);
+  ok("#607 Chromium: a file host's button, its tab closed or moved on: the file page, not the site");
+}
+// Firefox: the same button's load names its page (originUrl), the one in a tab of its own too.
+{
+  const page = "https://rapidgator.test/file/0a1b2c/report.zip.html";
+  const file = "https://s118.rapidgator.test/download/7f3e-uuid/report.zip";
+  const { api, calls, listeners } = fakeApi({ firefox: true, activeTab: { id: 9, url: "https://other.test/news", incognito: false } });
+  load(api, true);
+  await settle();
+  listeners.beforeRequest({ requestId: "f1", method: "GET", url: file, tabId: 5, type: "main_frame", originUrl: page });
+  listeners.beforeSendHeaders({ requestId: "f1", method: "GET", url: file, requestHeaders: [{ name: "Referer", value: "https://rapidgator.test/" }] });
+  await held(listeners, answer(file, { "Content-Type": "application/octet-stream", "Content-Disposition": "attachment; filename=report.zip" }, { requestId: "f1", tabId: 5 }));
+  const m = natives(calls)[0];
+  assert.deepEqual([m.url, m.referrer, m.pageUrl], [file, "https://rapidgator.test/", page]);
+  ok("#607 Firefox: a file host's button on another of its servers: the file page, not the site");
+}
 // #447: Firefox hands a header's value over byte for byte, each byte one character. A name sent as
 // raw UTF-8 is read as UTF-8; bytes that aren't valid UTF-8 (ISO-8859-1) and a real percent sign stay.
 {

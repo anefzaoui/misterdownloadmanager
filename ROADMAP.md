@@ -1447,6 +1447,11 @@ These ship in the next version.
   it has its own taskbar button
 - ✅ The same video picked from the quality menu in a second tab of its page is a duplicate, even
   when its stream's address is signed for each load (it was downloaded again without a word)
+- ✅ **Refresh download address** opens the file page a file host's Download button was on (a
+  premium Rapidgator file), not the site's home page, in Chromium browsers too: the page is
+  noted as the download's load starts, before the browser closes the tab the button opened or
+  the tab moves on; a site's address alone is the download's page only when nothing names a page
+  on it ([#607](https://github.com/anefzaoui/misterdownloadmanager/issues/607))
 
 ## Being worked on
 
