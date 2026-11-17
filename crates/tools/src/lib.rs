@@ -133,16 +133,27 @@ pub fn tools_dir() -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join("tools"))
 }
 
+/// The system the helpers' own builds are chosen for: Rust's name for it
+/// (`std::env::consts::OS`), or `windows7` for Windows 7's build of MDM (docs/windows-7.md),
+/// whose helpers must start on Windows 7, which most of their Windows builds no longer do.
+pub(crate) const OS: &str = if update::WINDOWS_7 {
+    "windows7"
+} else {
+    std::env::consts::OS
+};
+
 /// yt-dlp's file name for this system and processor in its releases; None where it publishes
 /// none (the system's yt-dlp, or one chosen in Helpers, works there).
 pub fn ytdlp_asset() -> Option<&'static str> {
-    ytdlp_asset_for(std::env::consts::OS, std::env::consts::ARCH)
+    ytdlp_asset_for(OS, std::env::consts::ARCH)
 }
 
 /// yt-dlp's file name in its releases for a system and a processor, as Rust names them
 /// (`std::env::consts`). On Windows and macOS, its folder build (why, in `folder`): Windows on
 /// ARM and 32-bit Windows have their own; macOS's is one for both processors. On Linux, the
-/// single program for that processor.
+/// single program for that processor. None on Windows 7 (`windows7`, [`OS`]): yt-dlp's Windows
+/// builds need Windows 8 or later since 2024.11.04 (Python 3.8, the last Python for Windows 7,
+/// was dropped: yt-dlp's Changelog.md), so one chosen in Helpers is used there.
 fn ytdlp_asset_for(os: &str, arch: &str) -> Option<&'static str> {
     match (os, arch) {
         ("windows", "x86_64") => Some("yt-dlp_win.zip"),
@@ -539,10 +550,12 @@ mod tests {
         // No build of yt-dlp's own: the system's, or one chosen in Helpers.
         assert_eq!(ytdlp_asset_for("linux", "riscv64"), None);
         assert_eq!(ytdlp_asset_for("freebsd", "x86_64"), None);
-        assert_eq!(
-            ytdlp_asset(),
-            ytdlp_asset_for(std::env::consts::OS, std::env::consts::ARCH)
-        );
+        // Windows 7's build: none of yt-dlp's Windows builds starts there any more.
+        for arch in ["x86_64", "x86"] {
+            assert_eq!(ytdlp_asset_for("windows7", arch), None);
+        }
+        assert_eq!(ytdlp_asset(), ytdlp_asset_for(OS, std::env::consts::ARCH));
+        assert_eq!(OS == "windows7", update::WINDOWS_7);
     }
 
     #[test]

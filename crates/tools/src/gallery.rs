@@ -46,16 +46,19 @@ pub const USER_AGENT: &str = concat!(
 
 /// gallery-dl's program for this system and processor in its releases: see [`asset_for`].
 pub fn asset() -> Option<&'static str> {
-    asset_for(std::env::consts::OS, std::env::consts::ARCH)
+    asset_for(crate::OS, std::env::consts::ARCH)
 }
 
 /// gallery-dl's program in its releases for a system and a processor, as Rust names them
 /// (`std::env::consts`). It builds for 64-bit and 32-bit Windows and for Linux on x86-64; Windows
 /// on ARM runs the x64 one (Windows 11 runs x64 programs on ARM). None on macOS (no build: Homebrew's
 /// `gallery-dl`, chosen in Helpers, works there) and on Linux on ARM (the same, from the system's
-/// packages or pip).
+/// packages or pip). Windows 7 (`windows7`, [`crate::OS`]): the 32-bit one on either processor,
+/// the only one still built with Python 3.8, the last Python that runs on Windows 7 (its
+/// `executables.yml`; the 64-bit one is built with a newer Python). Not yet tried on Windows 7.
 fn asset_for(os: &str, arch: &str) -> Option<&'static str> {
     match (os, arch) {
+        ("windows7", "x86_64" | "x86") => Some("gallery-dl_x86.exe"),
         ("windows", "x86_64" | "aarch64") => Some("gallery-dl.exe"),
         ("windows", "x86") => Some("gallery-dl_x86.exe"),
         ("linux", "x86_64") => Some("gallery-dl.bin"),
@@ -907,6 +910,8 @@ mod tests {
             ("windows", "x86_64", "gallery-dl.exe"),
             ("windows", "aarch64", "gallery-dl.exe"),
             ("windows", "x86", "gallery-dl_x86.exe"),
+            ("windows7", "x86_64", "gallery-dl_x86.exe"),
+            ("windows7", "x86", "gallery-dl_x86.exe"),
             ("linux", "x86_64", "gallery-dl.bin"),
         ] {
             assert_eq!(asset_for(os, arch), Some(want), "{os} {arch}");
@@ -922,10 +927,7 @@ mod tests {
         ] {
             assert_eq!(asset_for(os, arch), None, "{os} {arch}");
         }
-        assert_eq!(
-            asset(),
-            asset_for(std::env::consts::OS, std::env::consts::ARCH)
-        );
+        assert_eq!(asset(), asset_for(crate::OS, std::env::consts::ARCH));
     }
 
     /// #236: each release gets only the options it accepts, as found by asking every release

@@ -60,9 +60,9 @@ tokio-rustls.workspace = true
 # Sparse part files (src/sparse.rs, D-008 amendment) and the free-space probe (src/disk.rs).
 windows-sys.workspace = true
 
-# 32-bit Windows: QuickJS's bindings don't come with it for that system, so they are made from
-# its C headers as it builds (libclang, as BoringSSL's are).
-[target.'cfg(all(windows, target_arch = "x86"))'.dependencies]
+# 32-bit Windows and Windows 7's builds (docs/windows-7.md): QuickJS's bindings don't come with it
+# for those targets, so they are made from its C headers as it builds (libclang, as BoringSSL's are).
+[target.'cfg(all(windows, any(target_arch = "x86", target_vendor = "win7")))'.dependencies]
 rquickjs = { version = "0.14.0", default-features = false, features = ["std", "bindgen"] }
 
 [target.'cfg(unix)'.dependencies]

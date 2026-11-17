@@ -23,6 +23,7 @@ version after 0.5.2, each comes for two more kinds of PC too, with the processor
 |---|---|
 | `...-setup-arm64.exe`, `...-portable-arm64.zip`, `...-arm64.zip` | **Windows on ARM** (PCs with a Snapdragon or another ARM processor). On Windows 11 the x64 files run there too, translated by Windows, more slowly. The ARM64 setup installed over the x64 one replaces it; your list and settings stay, as they are kept in your profile, not with the program. |
 | `...-setup-x86.exe`, `...-portable-x86.zip`, `...-x86.zip` | **32-bit Windows 10.** Not sure which you have? **Settings → System → About → System type** says it. MDM can't download ffmpeg for you there (none is built for 32-bit Windows that MDM can check): to get the best video qualities, choose an ffmpeg of your own in **Helpers...** ([Video](video.md#yt-dlp-and-ffmpeg)). |
+| `...-setup-win7-x64.exe`, `...-setup-win7-x86.exe` and their zips | **Windows 7 SP1**, 64-bit and 32-bit, from a later release (none in 0.5.2): an experimental build of its own, not yet tried on a real Windows 7 PC. See [Windows 7](windows-7.md) for what it needs and what differs there. |
 
 **Help → Check for updates** updates each copy to the files for its own processor.
 

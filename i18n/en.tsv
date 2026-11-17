@@ -2162,6 +2162,14 @@
 #. text in unix.rs
 #. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
 	Mister Download Manager can't open its window: this system lacks {libraries}.	Mister Download Manager can't open its window: this system lacks {libraries}.
+#. text in main.rs
+#. Windows 10 and 11: a message box when Mister Download Manager can't draw its windows at all: none of the ways it draws them (Direct3D 12, Windows' software renderer for it, OpenGL) started on this computer; {details} = the system's error, in English
+#. \\n starts a new line: break lines where they fit the translation
+	Mister Download Manager can't open its windows: none of the ways it draws them worked on this computer. Install or update your graphics card's driver (from its maker or Windows Update), then start Mister Download Manager again.\n\n{details}	Mister Download Manager can't open its windows: none of the ways it draws them worked on this computer. Install or update your graphics card's driver (from its maker or Windows Update), then start Mister Download Manager again.\n\n{details}
+#. text in main.rs
+#. Windows 7: a message box when Mister Download Manager can't draw its windows at all: Windows 7 has only OpenGL for it, and this computer's graphics driver has no OpenGL 2.1 or later (a PC without its graphics card's driver, a virtual machine, Remote Desktop); {details} = the system's error, in English
+#. \\n starts a new line: break lines where they fit the translation
+	Mister Download Manager can't open its windows: on Windows 7 it needs a graphics driver with OpenGL 2.1 or later, and this computer's has none. Install your graphics card's driver (from its maker or Windows Update), then start Mister Download Manager again.\n\n{details}	Mister Download Manager can't open its windows: on Windows 7 it needs a graphics driver with OpenGL 2.1 or later, and this computer's has none. Install your graphics card's driver (from its maker or Windows Update), then start Mister Download Manager again.\n\n{details}
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 	Mister Download Manager closed unexpectedly	Mister Download Manager closed unexpectedly

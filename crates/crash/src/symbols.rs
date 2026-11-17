@@ -8,10 +8,17 @@ use std::path::{Path, PathBuf};
 use crate::github::REPO;
 
 /// This build's system and processor in the zip's name: one zip per download that has programs
-/// of its own (release.yml, the platform tools/installer/symbols.py is given).
+/// of its own (release.yml, the platform tools/installer/symbols.py is given). Windows 7's build
+/// (Rust's win7 targets, docs/windows-7.md) has programs of its own, so a zip of its own.
 pub fn platform() -> &'static str {
     let arm = cfg!(target_arch = "aarch64");
-    if cfg!(windows) {
+    if cfg!(target_vendor = "win7") {
+        if cfg!(target_arch = "x86") {
+            "windows-win7-x86"
+        } else {
+            "windows-win7-x64"
+        }
+    } else if cfg!(windows) {
         if arm {
             "windows-arm64"
         } else if cfg!(target_arch = "x86") {

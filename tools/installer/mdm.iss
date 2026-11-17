@@ -1,6 +1,6 @@
 ; Mister Download Manager's Windows installer (Inno Setup 6). Built by tools/installer/build.ps1,
 ; which passes /DAppVersion=..., /DArch=... and /DBin=... and, when a certificate is set up,
-; /DSign with /Smdmsign=...
+; /DSign with /Smdmsign=...; /DWin7 for Windows 7's build (build.ps1 -Windows7, docs/windows-7.md).
 ;
 ; Install for the current user (no administrator rights, %LOCALAPPDATA%\Programs) or for
 ; everyone (Program Files); the wizard asks. Tasks: browser integration (native messaging host
@@ -57,14 +57,23 @@ ArchitecturesAllowed=x86os
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 #endif
+; Windows 10 and later; Windows 7 SP1 for Windows 7's build (its programs are built for Windows 7,
+; tools/win7). Inno Setup 6.3 and later run on Windows 7 SP1 with its updates.
+#ifdef Win7
+MinVersion=6.1sp1
+#else
 MinVersion=10.0
+#endif
 WizardStyle=modern
 SetupIconFile={#Root}\crates\app\assets\icons\app\mdm.ico
 UninstallDisplayIcon={app}\{#AppExe}
 UninstallDisplayName={#AppName}
 OutputDir={#Root}\target\dist
 ; x64's keeps the name it had before there were others: MDM's Update now looks for it by name.
-#if Arch == "x64"
+; Windows 7's names "win7" and its processor (crates/tools/src/update.rs Install::assets_of).
+#ifdef Win7
+OutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup-win7-{#Arch}
+#elif Arch == "x64"
 OutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup
 #else
 OutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup-{#Arch}
@@ -106,7 +115,11 @@ lang_en.KeepData=Also delete your download list and settings?%n%nYour downloaded
 ; languages show Setup's own message, that this Windows isn't supported.
 #if Arch == "x86"
 [Messages]
+  #ifdef Win7
+lang_en.WindowsVersionNotSupported=This is the setup for 32-bit Windows 7, and this computer runs 64-bit Windows. Download MisterDownloadManager-{#AppVersion}-setup-win7-x64.exe instead (or MisterDownloadManager-{#AppVersion}-setup.exe on Windows 10 or 11).
+  #else
 lang_en.WindowsVersionNotSupported=This is the setup for 32-bit Windows, and this computer runs 64-bit Windows. Download MisterDownloadManager-{#AppVersion}-setup.exe instead (or MisterDownloadManager-{#AppVersion}-setup-arm64.exe on a Windows on ARM PC).
+  #endif
 #endif
 
 [Tasks]

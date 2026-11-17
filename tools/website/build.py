@@ -157,6 +157,13 @@ FILES = {
     "setup_x86": f"{RELEASE}-setup-x86.exe",
     "portable_x86": f"{RELEASE}-portable-x86.zip",
     "zip_x86": f"{RELEASE}-x86.zip",
+    # Windows 7 SP1's own build (build.ps1 -Windows7, docs/windows-7.md).
+    "setup_win7_x64": f"{RELEASE}-setup-win7-x64.exe",
+    "portable_win7_x64": f"{RELEASE}-portable-win7-x64.zip",
+    "zip_win7_x64": f"{RELEASE}-win7-x64.zip",
+    "setup_win7_x86": f"{RELEASE}-setup-win7-x86.exe",
+    "portable_win7_x86": f"{RELEASE}-portable-win7-x86.zip",
+    "zip_win7_x86": f"{RELEASE}-win7-x86.zip",
     "appimage_arm64": f"{RELEASE}-linux-arm64.AppImage",
     "deb_arm64": f"{RELEASE}-linux-arm64.deb",
     "rpm_arm64": f"{RELEASE}-linux-arm64.rpm",
@@ -1285,6 +1292,12 @@ PROCESSORS = {
         ("32-bit Windows", "windows-x86", [("setup-x86.exe", "setup_x86"),
                                            ("portable-x86.zip", "portable_x86"),
                                            ("x86.zip", "zip_x86")]),
+        ("Windows 7 SP1, 64-bit (experimental)", "windows-7-x64",
+         [("setup-win7-x64.exe", "setup_win7_x64"), ("portable-win7-x64.zip", "portable_win7_x64"),
+          ("win7-x64.zip", "zip_win7_x64")]),
+        ("Windows 7 SP1, 32-bit (experimental)", "windows-7-x86",
+         [("setup-win7-x86.exe", "setup_win7_x86"), ("portable-win7-x86.zip", "portable_win7_x86"),
+          ("win7-x86.zip", "zip_win7_x86")]),
     ],
     "linux": [
         ("ARM64", "linux-arm64", [(".AppImage", "appimage_arm64"), (".deb", "deb_arm64"),
@@ -1334,6 +1347,9 @@ def fill(text: str) -> str:
     for system in PROCESSORS:
         text = text.replace(f"<!--@processors {system}-->", processor_rows(system))
         text = text.replace("{{" + system.upper() + "_CPUS}}", processor_names(system))
+    # What Windows 7 needs (<!--@windows7 ...-->): said once the latest release has its files.
+    text = re.sub(r"<!--@windows7 (.*?)-->", lambda m: m.group(1) if processor_out("setup_win7_x64") else "",
+                  text, flags=re.S)
     if "{{BENCH_REPORT}}" in text:
         text = text.replace("{{BENCH_REPORT}}", bench_report())
     for k in ("stars", "forks", "issues", "watchers"):

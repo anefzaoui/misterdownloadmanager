@@ -10,7 +10,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
-use mdm_tools::update::{Arch, Install, Progress};
+use mdm_tools::update::{Arch, Install, Progress, WINDOWS_7};
 
 /// The switch the updated copy starts with.
 pub const UPDATED: &str = "/updated";
@@ -27,16 +27,28 @@ pub enum Next {
 }
 
 /// The release file this copy updates from, when `assets` (name, address) has it (by either of
-/// its names, [`Install::assets`]: the one for this build's own processor, x64, ARM64 or 32-bit)
-/// and the signature of the release's checksum list.
+/// its names, [`Install::assets`]: the one for this build's own processor, x64, ARM64 or 32-bit,
+/// and Windows 7's own files for its build) and the signature of the release's checksum list.
 pub fn asset_for(install: Install, version: &str, assets: &[(String, String)]) -> Option<String> {
-    asset_on(install, Arch::THIS, version, assets)
+    asset_of(install, Arch::THIS, WINDOWS_7, version, assets)
 }
 
-/// [`asset_for`] for a copy built for `arch`.
+/// [`asset_for`] for a copy built for `arch`, for Windows 10 or later.
+#[cfg(test)]
 fn asset_on(
     install: Install,
     arch: Option<Arch>,
+    version: &str,
+    assets: &[(String, String)],
+) -> Option<String> {
+    asset_of(install, arch, false, version, assets)
+}
+
+/// [`asset_for`] for a copy built for `arch`, Windows 7's build if `windows_7`.
+fn asset_of(
+    install: Install,
+    arch: Option<Arch>,
+    windows_7: bool,
     version: &str,
     assets: &[(String, String)],
 ) -> Option<String> {
@@ -45,7 +57,7 @@ fn asset_on(
         return None;
     }
     install
-        .assets_on(arch, version)
+        .assets_of(arch, windows_7, version)
         .into_iter()
         .find(|n| has(n))
 }
@@ -422,10 +434,80 @@ mod tests {
             .collect();
         assert_eq!(asset_on(Install::Installer, arm, "1.0.0", &x64_only), None);
         assert_eq!(asset_on(Install::AppImage, arm, "1.0.0", &x64_only), None);
-        // This build asks for its own processor's.
+        // This build asks for its own processor's (Windows 7's build: see below).
+        if !WINDOWS_7 {
+            assert_eq!(
+                asset_for(Install::Installer, "1.0.0", &assets),
+                asset_on(Install::Installer, Arch::THIS, "1.0.0", &assets)
+            );
+        }
+        // A release without Windows 7's files: a Windows 7 copy finds nothing to update to (the
+        // release's page is offered), never the files that don't start on Windows 7.
+        for install in [Install::Installer, Install::PortableZip, Install::PlainZip] {
+            for arch in [X64, Some(Arch::X86)] {
+                assert_eq!(asset_of(install, arch, true, "1.0.0", &assets), None);
+            }
+        }
+    }
+
+    /// A release with Windows 7's files too: a Windows 7 copy takes its own, every other copy
+    /// its own as before.
+    #[test]
+    fn windows_7_copies_take_windows_7_files_only() {
+        let names = [
+            "MisterDownloadManager-1.0.0-setup.exe",
+            "MisterDownloadManager-1.0.0-setup-x86.exe",
+            "MisterDownloadManager-1.0.0-setup-win7-x64.exe",
+            "MisterDownloadManager-1.0.0-setup-win7-x86.exe",
+            "MisterDownloadManager-1.0.0-portable.zip",
+            "MisterDownloadManager-1.0.0-portable-x86.zip",
+            "MisterDownloadManager-1.0.0-portable-win7-x64.zip",
+            "MisterDownloadManager-1.0.0-portable-win7-x86.zip",
+            "MisterDownloadManager-1.0.0-x64.zip",
+            "MisterDownloadManager-1.0.0-x86.zip",
+            "MisterDownloadManager-1.0.0-win7-x64.zip",
+            "MisterDownloadManager-1.0.0-win7-x86.zip",
+            "SHA256SUMS.txt",
+            "SHA256SUMS.txt.sig",
+        ];
+        let assets: Vec<(String, String)> = names
+            .iter()
+            .map(|n| (n.to_string(), format!("https://x/{n}")))
+            .collect();
+        let x86 = Some(Arch::X86);
+        for (install, arch, win7, want) in [
+            (Install::Installer, X64, true, "setup-win7-x64.exe"),
+            (Install::Installer, x86, true, "setup-win7-x86.exe"),
+            (Install::PortableZip, X64, true, "portable-win7-x64.zip"),
+            (Install::PortableZip, x86, true, "portable-win7-x86.zip"),
+            (Install::PlainZip, X64, true, "win7-x64.zip"),
+            (Install::PlainZip, x86, true, "win7-x86.zip"),
+            (Install::Installer, X64, false, "setup.exe"),
+            (Install::Installer, x86, false, "setup-x86.exe"),
+            (Install::PortableZip, X64, false, "portable.zip"),
+            (Install::PlainZip, x86, false, "x86.zip"),
+        ] {
+            assert_eq!(
+                asset_of(install, arch, win7, "1.0.0", &assets).as_deref(),
+                Some(format!("MisterDownloadManager-1.0.0-{want}").as_str()),
+                "{install:?} {arch:?} Windows 7: {win7}"
+            );
+        }
+        // No Windows 7 build for ARM64.
+        assert_eq!(
+            asset_of(
+                Install::Installer,
+                Some(Arch::Arm64),
+                true,
+                "1.0.0",
+                &assets
+            ),
+            None
+        );
+        // This build asks for its own kind's files.
         assert_eq!(
             asset_for(Install::Installer, "1.0.0", &assets),
-            asset_on(Install::Installer, Arch::THIS, "1.0.0", &assets)
+            asset_of(Install::Installer, Arch::THIS, WINDOWS_7, "1.0.0", &assets)
         );
     }
 

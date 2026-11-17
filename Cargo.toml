@@ -1,6 +1,8 @@
 [workspace]
 resolver = "3"
 members = ["crates/*"]
+# windows-link's copies for Windows 7's build ([patch.crates-io] below): patches, not members.
+exclude = ["tools/win7/windows-link"]
 
 [workspace.package]
 version = "0.5.2"
@@ -222,6 +224,17 @@ debug = "line-tables-only"
 # mdm/glow-texture-no-panic, #1173).
 # craft-libs can take the same commits to share one egui again.
 [patch.crates-io]
+# Windows 7's build (docs/windows-7.md): windows-link, through which windows-rs (windows-core,
+# windows-result...) names each function's DLL, with one change that acts on Rust's win7 targets
+# only: what it links from Windows 8's combase.dll comes from ole32.dll, which Windows 7 has
+# (tools/win7/windows-link/<version>/src/lib.rs says more). Both versions in the tree, each its own
+# copy. A [patch] can't be limited to one target: these copies are compiled into every build,
+# Windows 10 and 11, Linux and macOS too (where the macro expands as windows-link's own), and
+# Cargo.lock carries no checksum for them. CI checks instead that they are the published crates
+# (their .crate files' SHA-256 as Cargo.lock had it) with that one change and nothing else
+# (tools/win7/check_windows_link.py).
+windows-link = { path = "tools/win7/windows-link/0.2.1" }
+windows-link-01 = { path = "tools/win7/windows-link/0.1.3", package = "windows-link" }
 # librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), and a
 # magnet lookup's progress counted (#92), and every socket bound to one address (`bind_ip`,
 # #143), and every HTTP client of a session built through MDM's TLS setup (`configure_http_client`:

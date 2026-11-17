@@ -23,6 +23,9 @@
 //! first frame late in the first minutes of a start with the session is the busy login's more
 //! likely than the API's: it is tried again at the next start ([`verdict`]).
 //!
+//! Windows 7's build has no wgpu (no Direct3D 12 there): OpenGL only, as on the BSDs; when it
+//! can't start, MDM says so in a message box (main.rs) instead of ending without a word.
+//!
 //! Windows: a card without Direct3D 12 draws with OpenGL, and with Direct3D 12 on Microsoft's
 //! software renderer (WARP) once OpenGL fails here (#847), remembered (`opengl-unfit.txt`, tried
 //! again as above): it can't start, it is too old to draw MDM ([`gl_unfit`], #835), its
@@ -104,8 +107,9 @@ pub const GPU: Option<Api> = if !cfg!(gpu) {
 /// (#89), OpenGL elsewhere (#206: Vulkan and Metal are choices until real cards have tried them).
 /// 32-bit Windows draws with OpenGL too: there wgpu's Direct3D 12 can't make egui's pipeline
 /// ("The parameter is incorrect", tried on an NVIDIA card), and the windows MDM opened after
-/// falling back stayed blank.
-pub const DEFAULT: Api = if cfg!(all(windows, not(target_arch = "x86"))) {
+/// falling back stayed blank. So does Windows 7's build, which has no wgpu (no `gpu`: Windows 7
+/// has no Direct3D 12, docs/windows-7.md).
+pub const DEFAULT: Api = if cfg!(all(windows, not(target_arch = "x86"), gpu)) {
     Api::Direct3D
 } else {
     Api::OpenGl
@@ -1597,6 +1601,9 @@ struct FirstFrameClock {
 }
 
 impl FirstFrameClock {
+    // Started by a watched start with the system's API only: none in a build without wgpu
+    // (Windows 7's, the BSDs'), whose tests still check the clock.
+    #[cfg_attr(not(gpu), allow(dead_code))]
     fn started(now: std::time::Instant) -> Self {
         FirstFrameClock {
             counted: std::time::Duration::ZERO,
@@ -1703,6 +1710,17 @@ pub fn software() -> bool {
     SOFTWARE.load(Ordering::Relaxed)
 }
 
+/// Whether a way of drawing has started in this process (the app was made): false after
+/// [`run`] means none could, every way of the plan failed to start.
+static DREW: AtomicBool = AtomicBool::new(false);
+
+/// Whether a way of drawing started in this process ([`DREW`]). Asked on Windows only (main.rs's
+/// message box when nothing could draw).
+#[cfg_attr(not(windows), allow(dead_code))]
+pub fn drew() -> bool {
+    DREW.load(Ordering::Relaxed)
+}
+
 /// Run eframe's window with each way of the plan until one starts. `options` makes the window's
 /// options (each try needs its own); `creator` makes the app, once (a try that fails before
 /// that leaves it for the next). Returns the last try's result.
@@ -1754,6 +1772,7 @@ pub fn run<A: eframe::App + 'static>(
             opts,
             Box::new(move |cc| {
                 let make = make.borrow_mut().take().ok_or("the app was already made")?;
+                DREW.store(true, Ordering::Relaxed);
                 started(cc, attempt, why_not, gl_checked);
                 pacing_known(cc);
                 // Making the app is MDM's own work, not the API's: off the first frame's clock.
@@ -2357,7 +2376,7 @@ mod tests {
     /// Windows, a card without Direct3D 12 (#847): OpenGL, watched; once it failed there (no
     /// start, too old, no first frame, a freeze inside its driver), Direct3D 12 on WARP, watched;
     /// WARP failing too, OpenGL again, no longer watched.
-    #[cfg(windows)]
+    #[cfg(all(windows, gpu))]
     #[test]
     fn windows_draws_with_warp_once_opengl_failed() {
         let (d3d, warp, gl, any) = (
@@ -2487,7 +2506,7 @@ mod tests {
 
     /// Windows' plans are what they were before Vulkan and Metal (#206): the same attempts for
     /// every setting, failure and override.
-    #[cfg(windows)]
+    #[cfg(all(windows, gpu))]
     #[test]
     fn windows_plans_unchanged() {
         let d3d = Attempt::Gpu(Adapters::Hardware);
@@ -2932,6 +2951,9 @@ mod tests {
     /// The first frame's clock counts the API's time only: MDM's own work (making the app, its
     /// passes) is left out, so a slow start of MDM's isn't taken for Direct3D failing (#280: 10.7
     /// s from OpenGL's context to the first frame on the reporter's computer, at the 10 s limit).
+    // The clock's limit is wgpu's alone (`FIRST_FRAME_WITHIN`): not in a build without it
+    // (Windows 7's, the BSDs').
+    #[cfg(gpu)]
     #[test]
     fn the_first_frame_clock_leaves_out_mdms_own_work() {
         use std::time::{Duration, Instant};

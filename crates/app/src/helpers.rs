@@ -615,8 +615,10 @@ impl Programs {
             let checking = self.checking.as_ref().is_some_and(|(c, _)| *c == h);
             let downloading = self.installing.as_ref().is_some_and(|(i, _)| *i == h);
             // Whether MDM downloads a copy of its own on this system and processor: yt-dlp
-            // almost everywhere, gallery-dl not on macOS nor Linux on ARM, ffmpeg on 64-bit
-            // Windows only (BtbN builds none for 32-bit Windows).
+            // almost everywhere (not in Windows 7's build: its Windows builds no longer start
+            // there), gallery-dl not on macOS nor Linux on ARM, ffmpeg on 64-bit Windows only
+            // (BtbN builds none for 32-bit Windows). Where it doesn't, the row says so and
+            // offers "Use another program" (docs/windows-7.md).
             let has_own = match h {
                 Helper::YtDlp => mdm_tools::ytdlp_asset().is_some(),
                 Helper::GalleryDl => mdm_tools::gallery::asset().is_some(),

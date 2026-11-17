@@ -108,6 +108,7 @@ one:
 | `...-x64.zip` | You want the plain programs without an installer. |
 | `...-setup-arm64.exe`, `...-portable-arm64.zip`, `...-arm64.zip` | The same three for **Windows on ARM** (Snapdragon and other ARM PCs). |
 | `...-setup-x86.exe`, `...-portable-x86.zip`, `...-x86.zip` | The same three for **32-bit Windows 10**. There, choose your own ffmpeg in **Helpers** for the best video qualities: none is built for it that MDM can check. |
+| `...-setup-win7-x64.exe`, `...-setup-win7-x86.exe` and their zips | From a later release (none in 0.5.2): **Windows 7 SP1** (experimental, not yet tried on a real Windows 7 PC): OpenGL only, no browser extension there, your own yt-dlp. See [Windows 7](docs/windows-7.md). |
 | `...-extension-chromium.zip` | You want to add the browser extension by hand (Chrome, Edge, Brave, Opera, Vivaldi). From the stores is easier: [Add to Chrome](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), [Add to Firefox](https://addons.mozilla.org/firefox/addon/mister-download-manager/). |
 
 The ARM64 and 32-bit files come with every release after 0.5.2; **Check for updates** keeps each
@@ -387,7 +388,8 @@ command line), `misterdownloadmanager-mcp.exe` (the MCP server for AI assistants
 `tools\installer\build.ps1` builds the installer and both zips into `target\dist\` (needs
 [Inno Setup 6.3](https://jrsoftware.org/isinfo.php) or later), for x64; `-Arch arm64` or
 `-Arch x86` for Windows on ARM or 32-bit Windows (after `rustup target add
-aarch64-pc-windows-msvc` or `i686-pc-windows-msvc`). `tools/installer/build-linux.sh` builds the
+aarch64-pc-windows-msvc` or `i686-pc-windows-msvc`); `-Windows7` for Windows 7 SP1's build
+(x64 or x86, with a pinned nightly: [Windows 7](docs/windows-7.md#for-developers)). `tools/installer/build-linux.sh` builds the
 Linux files for the machine's own processor (x86-64 or ARM64). A `vX.Y.Z` tag does all of them
 on GitHub Actions and publishes the release.
 

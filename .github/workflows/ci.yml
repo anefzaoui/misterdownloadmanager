@@ -1,5 +1,6 @@
 # Build, lint and test main and every pull request: Windows and Linux, which must pass, and the
-# experimental macOS build (its failures are reported but don't fail the run). The other processors
+# experimental macOS build (its failures are reported but don't fail the run). Windows 7's build
+# (windows-7 below) is built and its imports checked on every pull request too. The other processors
 # MDM is published for (Windows on ARM and Linux on ARM on GitHub's ARM runners; 32-bit Windows on
 # the x64 runner, whose 64-bit Windows runs its tests too) on main and when run by hand only: on
 # every pull request they would add about an hour of runners, and their caches would push x64's
@@ -149,6 +150,94 @@ jobs:
         run: |
           cargo build --release -p mdm-nmhost
           tools/safari/selftest.sh target/release/misterdownloadmanager-nmhost
+
+  # Windows 7 SP1's build (docs/windows-7.md): Rust's win7 targets with the pinned nightly and its
+  # rust-src (tools/win7/toolchain.txt, -Zbuild-std through tools/win7/cargo.ps1). GitHub has no
+  # Windows 7 runner, so what CI proves is the build, and that Windows 7 SP1 has every function its
+  # programs import (tools/win7/imports.py: a new import Windows 7 lacks fails here); the tests run
+  # on the runner's newer Windows. Pull requests: x64, the programs and the import check, without
+  # link-time optimisation (a whole program optimised at once imports no more than its parts).
+  # Main and by hand: x64 and x86, with the tests. Its cache holds cargo's downloads only, saved on
+  # main and by hand: these targets' builds would push x64's cache out of the repository's 10 GB.
+  windows-7:
+    name: windows-7-${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: ${{ fromJSON(github.event_name == 'pull_request' && '["x64"]' || '["x64","x86"]') }}
+    runs-on: windows-latest
+    timeout-minutes: 90
+    env:
+      TARGET: ${{ matrix.arch == 'x86' && 'i686-win7-windows-msvc' || 'x86_64-win7-windows-msvc' }}
+      CARGO_PROFILE_RELEASE_LTO: "off"
+      CARGO_PROFILE_RELEASE_CODEGEN_UNITS: "16"
+      CARGO_PROFILE_RELEASE_DEBUG: "0"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Toolchain (the pinned nightly and its rust-src)
+        shell: pwsh
+        run: |
+          $toolchain = (Get-Content tools/win7/toolchain.txt -TotalCount 1).Trim()
+          rustup toolchain install $toolchain --profile minimal --component rust-src
+          if ($LASTEXITCODE) { throw "rustup failed" }
+
+      - uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-win7-cargo-registry-${{ hashFiles('Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-win7-cargo-registry-
+
+      - name: NASM
+        shell: pwsh
+        run: |
+          choco install nasm --version 2.16.3 --no-progress -y
+          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+
+      - name: Build
+        shell: pwsh
+        run: ./tools/win7/cargo.ps1 -Arch ${{ matrix.arch }} build --release --no-default-features -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
+
+      - name: Windows 7 has every function the programs import
+        shell: pwsh
+        run: |
+          $programs = "misterdownloadmanager", "misterdownloadmanager-nmhost", "misterdownloadmanager-cli", "misterdownloadmanager-mcp" |
+            ForEach-Object { "target/$env:TARGET/release/$_.exe" }
+          python tools/win7/imports.py check @programs
+          if ($LASTEXITCODE) { throw "a program imports a function Windows 7 doesn't have" }
+
+      # The checker itself: its PE reader against every program, as LLVM's reader lists them.
+      - name: The import check's own tests
+        run: python tools/win7/test_imports.py
+
+      - name: Tests
+        if: github.event_name != 'pull_request'
+        shell: pwsh
+        run: ./tools/win7/cargo.ps1 -Arch ${{ matrix.arch }} test --workspace --no-default-features --features mdm-crash/native-symbols
+
+      # One copy for both processors (x86's run saves it if x64's hasn't).
+      - uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        if: github.event_name != 'pull_request'
+        continue-on-error: true
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-win7-cargo-registry-${{ hashFiles('Cargo.lock') }}
+
+  # The windows-link copies patched into every build for Windows 7's (Cargo.toml [patch.crates-io],
+  # tools/win7/windows-link): the published crates, checked against the checksums Cargo.lock had,
+  # with only their Windows 7 change. Cargo.lock carries no checksum for a patched path.
+  vendored:
+    name: vendored windows-link
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: The published crates with only the Windows 7 change
+        run: python3 tools/win7/check_windows_link.py
 
   # A translator's reviewed rows (no "#, machine" line) must survive every pull request: no
   # tool or merge may drop them or hand them back to machine translation.

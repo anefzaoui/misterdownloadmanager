@@ -11,9 +11,11 @@ fn main() {
     let os = std::env::var("CARGO_CFG_TARGET_OS").unwrap_or_default();
     let windows = os == "windows";
     // `cfg(gpu)`: wgpu is built, with this system's own graphics API (renderer.rs, #89, #206):
-    // Direct3D 12 on Windows, Vulkan on Linux, Metal on macOS (Cargo.toml).
+    // Direct3D 12 on Windows, Vulkan on Linux, Metal on macOS (Cargo.toml). Not in Windows 7's
+    // builds (target vendor `win7`): no Direct3D 12 there, OpenGL only (docs/windows-7.md).
     println!("cargo::rustc-check-cfg=cfg(gpu)");
-    if matches!(os.as_str(), "windows" | "linux" | "macos") {
+    let win7 = std::env::var("CARGO_CFG_TARGET_VENDOR").as_deref() == Ok("win7");
+    if matches!(os.as_str(), "windows" | "linux" | "macos") && !win7 {
         println!("cargo::rustc-cfg=gpu");
     }
     if windows && std::env::var("CARGO_CFG_TARGET_ENV").as_deref() == Ok("msvc") {

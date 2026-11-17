@@ -109,24 +109,49 @@ impl Install {
     ];
 
     /// The release files of `version` that replace this kind of copy on this build's processor
-    /// ([`Arch::THIS`]), the one to take first first: see [`Install::assets_on`].
+    /// ([`Arch::THIS`]), and Windows 7's when this is its build ([`WINDOWS_7`]), the one to take
+    /// first first: see [`Install::assets_of`].
     pub fn assets(self, version: &str) -> Vec<String> {
-        self.assets_on(Arch::THIS, version)
+        self.assets_of(Arch::THIS, WINDOWS_7, version)
+    }
+
+    /// [`Install::assets_of`] for a build for Windows 10 or later (or another system).
+    pub fn assets_on(self, arch: Option<Arch>, version: &str) -> Vec<String> {
+        self.assets_of(arch, false, version)
     }
 
     /// The release files of `version` that replace this kind of copy built for `arch` (the names
     /// tools/installer/build.ps1, build-linux.sh and build-macos.sh give them), the one to take
     /// first first. The x64 Windows files keep the names they had before there were others
     /// (`setup.exe`, `portable.zip`, `x64.zip`), so every copy installed before finds its update;
-    /// the others name their processor (`setup-arm64.exe`, `portable-x86.zip`, `arm64.zip`). The
+    /// the others name their processor (`setup-arm64.exe`, `portable-x86.zip`, `arm64.zip`).
+    /// `windows_7`: a copy of Windows 7's build (docs/windows-7.md), which updates only to its own
+    /// files, named `win7` and the processor (`setup-win7-x64.exe`, `portable-win7-x86.zip`,
+    /// `win7-x64.zip`): never to the others, which don't start on Windows 7, and the others never
+    /// to its own (none for ARM64, which Windows 7 never ran on). The
     /// Linux files are named without "-experimental" from the release after 0.2.4
     /// (build-linux.sh), and the macOS ones may lose it too: the plain name is looked for first,
     /// then the `…-experimental` one of the releases before. None for a build from source, or for
     /// a processor MDM publishes nothing for (32-bit Linux or Mac; `None`, see [`Arch::THIS`]).
-    pub fn assets_on(self, arch: Option<Arch>, version: &str) -> Vec<String> {
+    pub fn assets_of(self, arch: Option<Arch>, windows_7: bool, version: &str) -> Vec<String> {
         let Some(arch) = arch else {
             return Vec::new();
         };
+        // Windows 7's own names for Windows' three kinds (the other kinds are other systems',
+        // which a Windows 7 build never is).
+        let windows_kind = matches!(
+            self,
+            Install::Installer | Install::PortableZip | Install::PlainZip
+        );
+        if windows_7 && windows_kind {
+            let tail = match (self, arch) {
+                (_, Arch::Arm64) => return Vec::new(),
+                (Install::Installer, _) => format!("setup-win7-{}.exe", arch.name()),
+                (Install::PortableZip, _) => format!("portable-win7-{}.zip", arch.name()),
+                _ => format!("win7-{}.zip", arch.name()),
+            };
+            return vec![format!("MisterDownloadManager-{version}-{tail}")];
+        }
         let windows = |kind: &str| match arch {
             Arch::X64 => kind.to_owned(),
             other => format!("{kind}-{}", other.name()),
@@ -167,6 +192,11 @@ impl Install {
         }
     }
 }
+
+/// Whether this is Windows 7's build (Rust's `win7` targets, docs/windows-7.md): it draws with
+/// OpenGL only, has no browser-like connection, and updates only to Windows 7's release files
+/// ([`Install::assets_of`]).
+pub const WINDOWS_7: bool = cfg!(target_vendor = "win7");
 
 /// The processor a release file is built for, as the Windows files' names say it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -517,11 +547,6 @@ Connection: close
             );
         }
         assert!(Install::Source.assets_on(x64, "1.0.0").is_empty());
-        // This build asks for its own processor's.
-        assert_eq!(
-            Install::Installer.assets("1.0.0"),
-            Install::Installer.assets_on(Arch::THIS, "1.0.0")
-        );
         let labels: std::collections::HashSet<_> = Install::ALL.iter().map(|i| i.label()).collect();
         assert_eq!(labels.len(), Install::ALL.len());
     }
@@ -573,17 +598,59 @@ Connection: close
         for install in Install::ALL {
             assert!(install.assets_on(None, "1.0.0").is_empty());
         }
-        // Each kind and processor has a name of its own: no copy takes another's file.
+        // Each kind, processor and Windows (7, or 10 and later) has a name of its own: no copy
+        // takes another's file, so a Windows 7 copy never updates to a file that doesn't start
+        // there, nor a Windows 10 copy to Windows 7's.
+        let windows = |i: Install| {
+            matches!(
+                i,
+                Install::Installer | Install::PortableZip | Install::PlainZip
+            )
+        };
         let mut seen = std::collections::HashMap::new();
         for arch in [Arch::X64, Arch::Arm64, Arch::X86] {
             for install in Install::ALL {
-                for name in install.assets_on(Some(arch), "1.0.0") {
-                    if let Some(other) = seen.insert(name.clone(), (install, arch)) {
-                        panic!("{name}: {other:?} and {:?}", (install, arch));
+                // Windows 7's names are for Windows' own three kinds only.
+                let lines: &[bool] = if windows(install) {
+                    &[false, true]
+                } else {
+                    &[false]
+                };
+                for &win7 in lines {
+                    for name in install.assets_of(Some(arch), win7, "1.0.0") {
+                        assert_eq!(name.contains("-win7-"), win7, "{name}");
+                        if let Some(other) = seen.insert(name.clone(), (install, arch, win7)) {
+                            panic!("{name}: {other:?} and {:?}", (install, arch, win7));
+                        }
                     }
                 }
             }
         }
+        // Windows 7's build: Windows' three kinds for x64 and x86, none for ARM64; the other
+        // kinds (other systems', never a Windows 7 build's) as they are.
+        for install in Install::ALL {
+            for arch in [Arch::X64, Arch::X86] {
+                let names = install.assets_of(Some(arch), true, "1.0.0");
+                if windows(install) {
+                    assert_eq!(names.len(), 1, "{install:?} {arch:?}");
+                } else {
+                    assert_eq!(names, install.assets_on(Some(arch), "1.0.0"));
+                }
+            }
+            if windows(install) {
+                assert!(
+                    install
+                        .assets_of(Some(Arch::Arm64), true, "1.0.0")
+                        .is_empty()
+                );
+            }
+            assert!(install.assets_of(None, true, "1.0.0").is_empty());
+        }
+        // This build's own: Windows 7's files if it is Windows 7's.
+        assert_eq!(
+            Install::Installer.assets("1.0.0"),
+            Install::Installer.assets_of(Arch::THIS, WINDOWS_7, "1.0.0")
+        );
     }
 
     /// The Windows names are build.ps1's and mdm.iss's: x64's as before, the others with their
@@ -592,14 +659,33 @@ Connection: close
     fn the_windows_names_are_build_ps1_s() {
         let script = include_str!("../../../tools/installer/build.ps1").replace("\r\n", "\n");
         assert!(script.contains(
-            "\nNew-Zip \"MisterDownloadManager-$version-portable$suffix\" $true\nNew-Zip \"MisterDownloadManager-$version-$Arch\" $false\n"
+            "\nNew-Zip \"MisterDownloadManager-$version-portable$suffix\" $true\nNew-Zip \"MisterDownloadManager-$version-$plain\" $false\n"
         ));
-        assert!(script.contains("$suffix = if ($Arch -eq \"x64\") { \"\" } else { \"-$Arch\" }"));
+        assert!(script.contains(
+            "$suffix = if ($Windows7) { \"-win7-$Arch\" } elseif ($Arch -eq \"x64\") { \"\" } else { \"-$Arch\" }"
+        ));
+        assert!(script.contains("$plain = if ($Windows7) { \"win7-$Arch\" } else { $Arch }"));
         assert!(script.contains("[ValidateSet(\"x64\", \"arm64\", \"x86\")]"));
         let iss = include_str!("../../../tools/installer/mdm.iss").replace("\r\n", "\n");
         assert!(iss.contains(
-            "#if Arch == \"x64\"\nOutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup\n#else\nOutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup-{#Arch}\n#endif"
+            "#ifdef Win7\nOutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup-win7-{#Arch}\n#elif Arch == \"x64\"\nOutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup\n#else\nOutputBaseFilename=MisterDownloadManager-{#AppVersion}-setup-{#Arch}\n#endif"
         ));
+        // Windows 7's build (-Windows7), x64 and x86.
+        for arch in [Arch::X64, Arch::X86] {
+            let a = arch.name();
+            assert_eq!(
+                Install::Installer.assets_of(Some(arch), true, "1.0.0"),
+                [format!("MisterDownloadManager-1.0.0-setup-win7-{a}.exe")]
+            );
+            assert_eq!(
+                Install::PortableZip.assets_of(Some(arch), true, "1.0.0"),
+                [format!("MisterDownloadManager-1.0.0-portable-win7-{a}.zip")]
+            );
+            assert_eq!(
+                Install::PlainZip.assets_of(Some(arch), true, "1.0.0"),
+                [format!("MisterDownloadManager-1.0.0-win7-{a}.zip")]
+            );
+        }
         for arch in [Arch::X64, Arch::Arm64, Arch::X86] {
             let (a, suffix) = match arch {
                 Arch::X64 => ("x64", String::new()),

@@ -42,6 +42,7 @@ These pages explain each part of the program. The tutorials walk through the thi
 - **[Themes](themes.md)** — the built-in looks (Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald), and how to make your own in a text file.
 - **[Languages](languages.md)** — the 86 interface languages, numbers and dates, right-to-left layouts, and how to help translate.
 - **[Portable mode](portable.md)** — run MDM from a folder or a USB stick without installing it.
+- **[Windows 7](windows-7.md)** — the experimental build for Windows 7 SP1: its files, what it needs and what differs there.
 - **[Keyboard shortcuts](keyboard-shortcuts.md)** — every key the main window answers, and screen readers.
 - **[Command line and automation](command-line.md)** — IDM's command-line switches, the `misterdownloadmanager-cli` tool, and the automation API other programs can use.
 - **[AI assistants (MCP)](ai-assistants.md)** — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.

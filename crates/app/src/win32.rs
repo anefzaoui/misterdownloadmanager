@@ -558,7 +558,6 @@ unsafe fn above_others(hwnd: HWND) {
 /// Returns true once applied (call again each frame until it is).
 pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owned: bool) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_USE_IMMERSIVE_DARK_MODE, DwmSetWindowAttribute};
-    use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     let Some(hwnd) = find_own_window(title) else {
         return false;
     };
@@ -592,7 +591,13 @@ pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owne
             right: (client[0] * scale).round() as i32,
             bottom: (client[1] * scale).round() as i32,
         };
-        AdjustWindowRectExForDpi(&mut rc, style, 0, ex, GetDpiForWindow(hwnd));
+        dpi::adjust(
+            dpi::fns(),
+            &mut rc,
+            style,
+            ex,
+            dpi::for_window(dpi::fns(), hwnd),
+        );
         SetWindowPos(
             hwnd,
             std::ptr::null_mut(),
@@ -772,7 +777,6 @@ pub fn thin_frame_on(
     scale: f32,
     hide_item: Option<&str>,
 ) -> Option<isize> {
-    use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         AppendMenuW, DeleteMenu, GetSystemMenu, IsWindow, MF_BYCOMMAND, MF_STRING,
     };
@@ -815,7 +819,13 @@ pub fn thin_frame_on(
             right: (client[0] * scale).round() as i32,
             bottom: (client[1] * scale).round() as i32,
         };
-        AdjustWindowRectExForDpi(&mut rc, style, 0, ex, GetDpiForWindow(hwnd).max(96));
+        dpi::adjust(
+            dpi::fns(),
+            &mut rc,
+            style,
+            ex,
+            dpi::for_window(dpi::fns(), hwnd).max(96),
+        );
         SetWindowPos(
             hwnd,
             std::ptr::null_mut(),
@@ -1187,13 +1197,18 @@ unsafe fn dwm_frame_off(hwnd: HWND, caption: bool) {
 /// # Safety
 /// `hwnd` is a window of this thread.
 unsafe fn drawn_frame_edges(hwnd: HWND, kind: Drawn) -> [i32; 4] {
-    use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     // SAFETY: (the caller's) our own window; the rectangle is a local.
     unsafe {
         let style = drawn_style(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, kind);
         let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
         let mut f: RECT = zeroed();
-        AdjustWindowRectExForDpi(&mut f, style, 0, ex, GetDpiForWindow(hwnd).max(96));
+        dpi::adjust(
+            dpi::fns(),
+            &mut f,
+            style,
+            ex,
+            dpi::for_window(dpi::fns(), hwnd).max(96),
+        );
         [-f.left, -f.top, f.right, f.bottom]
     }
 }
@@ -2458,20 +2473,18 @@ pub fn tray_icon_tip(hwnd: isize, id: u32, tip: &str) -> bool {
 /// display's scale as soon as it changes. With no taskbar (Explorer isn't running), the system
 /// DPI. Never waits: Explorer is sent no message.
 pub fn tray_icon_px() -> (isize, u32) {
-    use windows_sys::Win32::UI::HiDpi::{GetDpiForSystem, GetDpiForWindow};
     use windows_sys::Win32::UI::WindowsAndMessaging::FindWindowW;
     let class: Vec<u16> = "Shell_TrayWnd\0".encode_utf16().collect();
     // SAFETY: a NUL-ended class name and no title: no window is sent a message.
     let taskbar = unsafe { FindWindowW(class.as_ptr(), std::ptr::null()) };
     let mut dpi = 0;
     if !taskbar.is_null() {
-        // SAFETY: reads a window's DPI, as its own awareness of DPI has it (Explorer's: its
-        // display's); 0 for a window gone since.
-        dpi = unsafe { GetDpiForWindow(taskbar) };
+        // A window's DPI, as its own awareness of DPI has it (Explorer's: its display's); 0
+        // for a window gone since. Windows 7 has only the system's.
+        dpi = dpi::for_window(dpi::fns(), taskbar);
     }
     if dpi == 0 {
-        // SAFETY: no arguments; reads the system's DPI.
-        dpi = unsafe { GetDpiForSystem() };
+        dpi = dpi::system(dpi::fns());
     }
     let px = small_icon_px_for_dpi(dpi)
         .unwrap_or_else(|| crate::tray::small_icon_px(dpi))
@@ -2481,11 +2494,215 @@ pub fn tray_icon_px() -> (isize, u32) {
 
 /// Windows' small icon size at `dpi` (`GetSystemMetricsForDpi(SM_CXSMICON)`), if it says.
 pub fn small_icon_px_for_dpi(dpi: u32) -> Option<u32> {
-    use windows_sys::Win32::UI::HiDpi::GetSystemMetricsForDpi;
     use windows_sys::Win32::UI::WindowsAndMessaging::SM_CXSMICON;
-    // SAFETY: a plain query.
-    let px = unsafe { GetSystemMetricsForDpi(SM_CXSMICON, dpi) };
+    let px = dpi::system_metrics_for(dpi::fns(), SM_CXSMICON, dpi);
     u32::try_from(px).ok().filter(|&px| px > 0)
+}
+
+/// A message box with an error's icon and an OK button, for what MDM must say without a window
+/// of its own (no way of drawing one started). Returns when it is closed.
+pub fn message_box(title: &str, text: &str) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{MB_ICONERROR, MB_OK, MessageBoxW};
+    let wide = |s: &str| -> Vec<u16> { s.encode_utf16().chain(std::iter::once(0)).collect() };
+    let (title, text) = (wide(title), wide(text));
+    // SAFETY: NUL-terminated texts that outlive the call; no owner window.
+    unsafe {
+        MessageBoxW(
+            std::ptr::null_mut(),
+            text.as_ptr(),
+            title.as_ptr(),
+            MB_OK | MB_ICONERROR,
+        );
+    }
+}
+
+/// Windows 10's DPI functions (1607 and later), looked up when first needed instead of imported:
+/// a program that imports one doesn't start on Windows 7 or 8 ("The procedure entry point could
+/// not be located", docs/windows-7.md; `tools/win7/imports.py` checks the programs for such
+/// imports). Where Windows lacks them, each answers with the older call for the system's DPI,
+/// the only DPI Windows 7 and 8.0 have for a program (per-monitor DPI came with 8.1, the
+/// per-window functions with 10). `MDM_TEST_NO_DPI_FUNCTIONS=1` (off-screen test copies) takes
+/// the older calls on any Windows, as Windows 7 would.
+pub mod dpi {
+    use std::sync::OnceLock;
+
+    use windows_sys::Win32::Foundation::{HWND, RECT};
+
+    type ForWindow = unsafe extern "system" fn(HWND) -> u32;
+    type ForSystem = unsafe extern "system" fn() -> u32;
+    type AdjustForDpi = unsafe extern "system" fn(*mut RECT, u32, i32, u32, u32) -> i32;
+    type MetricsForDpi = unsafe extern "system" fn(i32, u32) -> i32;
+    type Found = unsafe extern "system" fn() -> isize;
+
+    /// The functions this Windows has (None: it hasn't that one).
+    #[derive(Clone, Copy)]
+    pub struct Fns {
+        for_window: Option<ForWindow>,
+        for_system: Option<ForSystem>,
+        adjust: Option<AdjustForDpi>,
+        metrics: Option<MetricsForDpi>,
+    }
+
+    impl Fns {
+        /// None of them: Windows 7's case.
+        pub const NONE: Fns = Fns {
+            for_window: None,
+            for_system: None,
+            adjust: None,
+            metrics: None,
+        };
+    }
+
+    /// This Windows' functions, looked up once.
+    pub fn fns() -> &'static Fns {
+        static FNS: OnceLock<Fns> = OnceLock::new();
+        FNS.get_or_init(|| {
+            let none = crate::offscreen()
+                && std::env::var_os("MDM_TEST_NO_DPI_FUNCTIONS").is_some_and(|v| v == "1");
+            if none { Fns::NONE } else { look_up() }
+        })
+    }
+
+    fn look_up() -> Fns {
+        use windows_sys::Win32::System::LibraryLoader::{GetModuleHandleW, GetProcAddress};
+        let name: Vec<u16> = "user32.dll\0".encode_utf16().collect();
+        // SAFETY: a NUL-terminated name. user32 stays loaded for the process's life (MDM imports
+        // other functions from it), so the module and the pointers taken from it stay valid.
+        let user32 = unsafe { GetModuleHandleW(name.as_ptr()) };
+        if user32.is_null() {
+            return Fns::NONE;
+        }
+        // SAFETY: NUL-terminated names, looked up in a loaded module.
+        let find = |name: &[u8]| unsafe { GetProcAddress(user32, name.as_ptr()) };
+        // SAFETY (each transmute): the pointer becomes its function's documented signature
+        // (winuser.h), the one windows-sys declares for the import.
+        Fns {
+            for_window: find(b"GetDpiForWindow\0")
+                .map(|f| unsafe { std::mem::transmute::<Found, ForWindow>(f) }),
+            for_system: find(b"GetDpiForSystem\0")
+                .map(|f| unsafe { std::mem::transmute::<Found, ForSystem>(f) }),
+            adjust: find(b"AdjustWindowRectExForDpi\0")
+                .map(|f| unsafe { std::mem::transmute::<Found, AdjustForDpi>(f) }),
+            metrics: find(b"GetSystemMetricsForDpi\0")
+                .map(|f| unsafe { std::mem::transmute::<Found, MetricsForDpi>(f) }),
+        }
+    }
+
+    /// The system's DPI: `GetDpiForSystem`, else the screen's logical pixels per inch.
+    pub fn system(fns: &Fns) -> u32 {
+        use windows_sys::Win32::Graphics::Gdi::{GetDC, GetDeviceCaps, LOGPIXELSX, ReleaseDC};
+        if let Some(f) = fns.for_system {
+            // SAFETY: no arguments.
+            return unsafe { f() };
+        }
+        // SAFETY: the screen's DC, released at once.
+        unsafe {
+            let dc = GetDC(std::ptr::null_mut());
+            if dc.is_null() {
+                return 96;
+            }
+            let dpi = GetDeviceCaps(dc, LOGPIXELSX as i32);
+            ReleaseDC(std::ptr::null_mut(), dc);
+            u32::try_from(dpi).ok().filter(|&d| d > 0).unwrap_or(96)
+        }
+    }
+
+    /// A window's DPI: `GetDpiForWindow` (0 for a window that is gone), else the system's.
+    pub fn for_window(fns: &Fns, hwnd: HWND) -> u32 {
+        match fns.for_window {
+            // SAFETY: any handle is accepted (0 for one that isn't a window).
+            Some(f) => unsafe { f(hwnd) },
+            None => system(fns),
+        }
+    }
+
+    /// `AdjustWindowRectExForDpi`, else `AdjustWindowRectEx` (the system DPI's frame, which is
+    /// every window's on Windows 7); no menu. False if Windows says it failed.
+    pub fn adjust(fns: &Fns, rect: &mut RECT, style: u32, ex: u32, dpi: u32) -> bool {
+        use windows_sys::Win32::UI::WindowsAndMessaging::AdjustWindowRectEx;
+        // SAFETY: `rect` is a valid, writable rectangle for the call.
+        unsafe {
+            match fns.adjust {
+                Some(f) => f(rect, style, 0, ex, dpi) != 0,
+                None => AdjustWindowRectEx(rect, style, 0, ex) != 0,
+            }
+        }
+    }
+
+    /// `GetSystemMetricsForDpi(index, dpi)`, else `GetSystemMetrics(index)` scaled from the
+    /// system's DPI to `dpi` (as it is at the system's DPI, Windows 7's only one).
+    pub fn system_metrics_for(fns: &Fns, index: i32, dpi: u32) -> i32 {
+        use windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics;
+        if let Some(f) = fns.metrics {
+            // SAFETY: a plain query.
+            return unsafe { f(index, dpi) };
+        }
+        // SAFETY: a plain query.
+        let at_system = unsafe { GetSystemMetrics(index) };
+        let system = system(fns).max(1);
+        if dpi == 0 || dpi == system {
+            return at_system;
+        }
+        let scaled =
+            (i64::from(at_system) * i64::from(dpi) + i64::from(system) / 2) / i64::from(system);
+        i32::try_from(scaled).unwrap_or(at_system)
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        /// Windows 7's answers (the older calls) are this Windows' own at the system's DPI, and
+        /// Windows 10's functions are found here (the test machines run Windows 10 or 11).
+        #[test]
+        fn the_older_calls_answer_as_windows_10s_do_at_the_system_dpi() {
+            use windows_sys::Win32::UI::WindowsAndMessaging::{
+                SM_CXSMICON, SM_CYCAPTION, WS_CAPTION, WS_EX_DLGMODALFRAME, WS_SYSMENU,
+            };
+            let new = look_up();
+            assert!(new.for_window.is_some() && new.for_system.is_some());
+            assert!(new.adjust.is_some() && new.metrics.is_some());
+            let old = Fns::NONE;
+            let dpi = system(&new);
+            assert_eq!(system(&old), dpi);
+            // No window: Windows 10 says 0, the older way the system's DPI.
+            assert_eq!(for_window(&new, std::ptr::null_mut()), 0);
+            assert_eq!(for_window(&old, std::ptr::null_mut()), dpi);
+            for index in [SM_CXSMICON, SM_CYCAPTION] {
+                assert_eq!(
+                    system_metrics_for(&old, index, dpi),
+                    system_metrics_for(&new, index, dpi),
+                    "metric {index}"
+                );
+            }
+            let (style, ex) = (WS_CAPTION | WS_SYSMENU, WS_EX_DLGMODALFRAME);
+            let rect = || RECT {
+                left: 0,
+                top: 0,
+                right: 400,
+                bottom: 300,
+            };
+            let (mut a, mut b) = (rect(), rect());
+            assert!(adjust(&new, &mut a, style, ex, dpi));
+            assert!(adjust(&old, &mut b, style, ex, dpi));
+            assert_eq!(
+                (a.left, a.top, a.right, a.bottom),
+                (b.left, b.top, b.right, b.bottom)
+            );
+        }
+
+        /// A metric asked at another DPI is scaled from the system's, rounded.
+        #[test]
+        fn the_older_metrics_scale_to_the_dpi_asked() {
+            use windows_sys::Win32::UI::WindowsAndMessaging::{GetSystemMetrics, SM_CXSMICON};
+            let old = Fns::NONE;
+            let dpi = system(&old);
+            // SAFETY: a plain query.
+            let px = unsafe { GetSystemMetrics(SM_CXSMICON) };
+            assert_eq!(system_metrics_for(&old, SM_CXSMICON, dpi * 2), px * 2);
+            assert_eq!(system_metrics_for(&old, SM_CXSMICON, dpi), px);
+        }
+    }
 }
 
 /// A picture handed to the shell as the notification-area icon ([`tray_icon_picture`]), kept for

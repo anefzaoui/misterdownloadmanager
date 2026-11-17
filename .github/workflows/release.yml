@@ -1,5 +1,6 @@
 # Builds the downloads: Windows (tools/installer/build.ps1: installer, portable zip, plain zip)
-# for x64, ARM64 and 32-bit (x86), the browser extensions (tools/extension/pack.ps1: Chromium zip,
+# for x64, ARM64 and 32-bit (x86), Windows 7 SP1's own build for x64 and x86 (build.ps1 -Windows7,
+# experimental: docs/windows-7.md), the browser extensions (tools/extension/pack.ps1: Chromium zip,
 # Firefox .xpi), Linux for x86-64 and ARM64 (build-linux.sh: AppImage, tar.gz, .deb, .rpm) and,
 # experimental and not yet tested by us, macOS (build-macos.sh: a .dmg for Apple Silicon, one for
 # Intel; named "-experimental"). Each build's programs are tried on the machine that built them
@@ -183,6 +184,95 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ matrix.arch == 'x64' && 'windows' || format('windows-{0}', matrix.arch) }}
+          path: target/dist/*
+
+  windows7:
+    # Windows 7 SP1's build (docs/windows-7.md): Rust's win7 targets with the pinned nightly and
+    # its rust-src (tools/win7/toolchain.txt, -Zbuild-std through tools/win7/cargo.ps1), without
+    # the browser-like connection. build.ps1 -Windows7 checks that Windows 7 has every function
+    # its programs import (tools/win7/imports.py); GitHub has no Windows 7 runner, so the tests and
+    # the smoke test run them on the runner's newer Windows. Files named "win7" and the processor
+    # (setup-win7-x64.exe...), which only Windows 7 copies update to. A failed build leaves its
+    # files out of the release, as another processor's does. Its cache holds cargo's downloads only:
+    # each target's build would push the others' caches out of the repository's 10 GB.
+    name: windows7-${{ matrix.arch }}
+    needs: geo
+    # As the Windows job's.
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            target: x86_64-win7-windows-msvc
+          - arch: x86
+            target: i686-win7-windows-msvc
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: geo-data
+          path: crates/geo/data
+
+      - name: Toolchain (the pinned nightly and its rust-src)
+        shell: pwsh
+        run: |
+          $toolchain = (Get-Content tools/win7/toolchain.txt -TotalCount 1).Trim()
+          rustup toolchain install $toolchain --profile minimal --component rust-src
+          if ($LASTEXITCODE) { throw "rustup failed" }
+
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: release-${{ runner.os }}-win7-cargo-registry-${{ hashFiles('Cargo.lock') }}
+          restore-keys: release-${{ runner.os }}-win7-cargo-registry-
+
+      # AWS-LC (rustls's) is built with NASM, as in the Windows job.
+      - name: NASM
+        shell: pwsh
+        run: |
+          choco install nasm --version 2.16.3 --no-progress -y
+          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+
+      - name: Tests
+        shell: pwsh
+        run: ./tools/win7/cargo.ps1 -Arch ${{ matrix.arch }} test --workspace --no-default-features --features mdm-crash/native-symbols
+
+      - name: Inno Setup
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup --no-progress -y
+          }
+
+      # Builds, checks every import against Windows 7's (tools/win7/imports.py), then packs.
+      - name: Installer and portable zip
+        shell: pwsh
+        run: ./tools/installer/build.ps1 -Arch ${{ matrix.arch }} -Windows7
+
+      - name: Smoke test
+        run: python tools/installer/smoke.py target/${{ matrix.target }}/release ${{ matrix.arch }}
+
+      - name: Symbols
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }} # downloads the build's helpers signed in (fetch_release.py)
+        run: |
+          $v = [regex]::Match((Get-Content Cargo.toml -Raw), '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
+          $exes = "misterdownloadmanager", "misterdownloadmanager-nmhost", "misterdownloadmanager-cli", "misterdownloadmanager-mcp" |
+            ForEach-Object { "target/${{ matrix.target }}/release/$_.exe" }
+          python tools/installer/symbols.py windows-win7-${{ matrix.arch }} $v target/dist @exes
+          if ($LASTEXITCODE) { throw "symbols failed" }
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: windows7-${{ matrix.arch }}
           path: target/dist/*
 
   extension:
@@ -408,7 +498,10 @@ jobs:
     if: >-
       always() && startsWith(github.ref, 'refs/tags/') && needs.windows.result != 'cancelled' &&
       needs.extension.result == 'success'
-    needs: [windows, extension, linux, macos]
+    # Windows 7's build (windows7) as another processor's: publish waits for it to finish (or time
+    # out, 90 minutes), and its failure doesn't stop the release (always() above): its files are in
+    # the release when it built.
+    needs: [windows, windows7, extension, linux, macos]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0

@@ -36,6 +36,8 @@ fn through_a_missing_proxy() -> (Held, mdm_engine::Options) {
     (held, net)
 }
 
+/// Windows 7's build downloads no yt-dlp (its Windows builds no longer start there): below.
+#[cfg(not(target_vendor = "win7"))]
 #[tokio::test]
 async fn ytdlp_names_the_server_and_the_failure() {
     let dir = tempfile::tempdir().unwrap();
@@ -90,4 +92,18 @@ async fn ffmpeg_on_32_bit_windows_says_it_has_none() {
         .expect_err("no build");
     assert!(matches!(e, mdm_tools::Error::Missing(_)), "{e}");
     assert!(!mdm_tools::ffmpeg::available());
+}
+
+/// Windows 7's build: no yt-dlp of MDM's (none of yt-dlp's Windows builds starts there since
+/// 2024.11.04), said at once, without asking a server; one chosen in Helpers is used instead.
+#[cfg(target_vendor = "win7")]
+#[tokio::test]
+async fn ytdlp_on_windows_7_says_it_has_none() {
+    let dir = tempfile::tempdir().unwrap();
+    let (_held, net) = through_a_missing_proxy();
+    let e = mdm_tools::install_latest(dir.path(), &net, None)
+        .await
+        .expect_err("no build");
+    assert!(matches!(e, mdm_tools::Error::Missing(_)), "{e}");
+    assert_eq!(mdm_tools::ytdlp_asset(), None);
 }

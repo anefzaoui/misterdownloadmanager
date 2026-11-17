@@ -42,7 +42,7 @@ struct Asset {
 /// BtbN's name for its Windows builds for this processor (`win64`, `winarm64`); None where it
 /// publishes none (32-bit Windows), and off Windows, where the system's ffmpeg is used.
 pub fn build() -> Option<&'static str> {
-    build_for(std::env::consts::OS, std::env::consts::ARCH)
+    build_for(crate::OS, std::env::consts::ARCH)
 }
 
 /// Whether MDM downloads an ffmpeg of its own on this system ([`build`]). Where it doesn't, the
@@ -51,10 +51,14 @@ pub fn available() -> bool {
     build().is_some()
 }
 
-/// [`build`] for a system and a processor, as Rust names them (`std::env::consts`).
+/// [`build`] for a system and a processor, as Rust names them (`std::env::consts`), `windows7`
+/// for Windows 7's build ([`crate::OS`]): BtbN's x64 build there too ("Windows builds are
+/// targetting Windows 7 and newer, provided UCRT is installed", its README, which also says only
+/// Windows 10 22H2 and later are supported: not yet tried on Windows 7); no 32-bit one, as on
+/// 32-bit Windows 10.
 fn build_for(os: &str, arch: &str) -> Option<&'static str> {
     match (os, arch) {
-        ("windows", "x86_64") => Some("win64"),
+        ("windows" | "windows7", "x86_64") => Some("win64"),
         ("windows", "aarch64") => Some("winarm64"),
         _ => None,
     }
@@ -359,6 +363,8 @@ mod tests {
         assert_eq!(build_for("windows", "x86_64"), Some("win64"));
         assert_eq!(build_for("windows", "aarch64"), Some("winarm64"));
         assert_eq!(build_for("windows", "x86"), None);
+        assert_eq!(build_for("windows7", "x86_64"), Some("win64"));
+        assert_eq!(build_for("windows7", "x86"), None);
         assert_eq!(build_for("linux", "x86_64"), None);
         assert_eq!(build_for("macos", "aarch64"), None);
         assert_eq!(available(), build().is_some());

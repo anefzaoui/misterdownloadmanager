@@ -77,18 +77,22 @@ regex = "1.13.1"
 
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
-# Windows can draw with Direct3D 12 instead of OpenGL (#89, renderer.rs): eframe's wgpu renderer
-# with wgpu's Direct3D 12 backend only (no Vulkan, no GL: OpenGL stays eframe's glow).
-eframe = { workspace = true, features = ["wgpu_no_default_features"] }
-# Cargo.lock keeps gpu-allocator (wgpu-hal's) on wgpu-hal's windows 0.62: its range allows 0.61 too,
-# which win32job uses, and wgpu-hal doesn't build with that one.
-wgpu = { version = "30.0", default-features = false, features = ["dx12", "wgsl"] }
 raw-window-handle = "0.6"
 # Latin, Greek and Cyrillic text drawn by DirectWrite as Windows' classic controls draw it
 # (win32.rs `text_rasterizer`): its COM interfaces, which windows-sys doesn't have. The windows
 # 0.62 wgpu-hal already builds. DXGI: the graphics drivers' versions, read before Direct3D 12 starts
 # (win32.rs `graphics_drivers`, #1205; wgpu-hal builds it too).
 windows = { version = "0.62", default-features = false, features = ["Win32_Graphics_DirectWrite", "Win32_Graphics_Dxgi"] }
+
+# Windows 10 and 11 can draw with Direct3D 12 instead of OpenGL (#89, renderer.rs): eframe's wgpu
+# renderer with wgpu's Direct3D 12 backend only (no Vulkan, no GL: OpenGL stays eframe's glow).
+# Not in Windows 7's builds (docs/windows-7.md): Windows 7 has no Direct3D 12 (nor its software
+# renderer, WARP 12), so they draw with OpenGL only, as the BSDs do (build.rs leaves `gpu` unset).
+[target.'cfg(all(windows, not(target_vendor = "win7")))'.dependencies]
+eframe = { workspace = true, features = ["wgpu_no_default_features"] }
+# Cargo.lock keeps gpu-allocator (wgpu-hal's) on wgpu-hal's windows 0.62: its range allows 0.61 too,
+# which win32job uses, and wgpu-hal doesn't build with that one.
+wgpu = { version = "30.0", default-features = false, features = ["dx12", "wgsl"] }
 
 # The notification-area icon and its menu (tray.rs).
 [target.'cfg(not(target_os = "linux"))'.dependencies]

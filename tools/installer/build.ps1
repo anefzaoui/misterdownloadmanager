@@ -7,23 +7,35 @@
 #   MisterDownloadManager-<version>-x64.zip          the same programs, data in %APPDATA% as installed
 #   ...-setup-arm64.exe, ...-portable-arm64.zip, ...-arm64.zip   Windows on ARM (-Arch arm64)
 #   ...-setup-x86.exe, ...-portable-x86.zip, ...-x86.zip         32-bit Windows (-Arch x86)
+#   ...-setup-win7-x64.exe, ...-portable-win7-x64.zip, ...-win7-x64.zip   Windows 7 SP1 (-Windows7,
+#   ...-setup-win7-x86.exe, ...-portable-win7-x86.zip, ...-win7-x86.zip   docs/windows-7.md)
 #   SHA256SUMS.txt
 # Needs Inno Setup 6.3 or later (ISCC.exe on PATH, in $env:ISCC, or in its default folders), and
 # Rust's target for the processor (rustup target add aarch64-pc-windows-msvc / i686-pc-windows-msvc).
 # The programs are built in target/<Rust's target>/release.
+# -Windows7 builds them for Rust's win7 targets (x86_64-win7-windows-msvc, i686-win7-windows-msvc)
+# with tools/win7/cargo.ps1 (the pinned nightly and its rust-src, -Zbuild-std), without the
+# browser-like connection, and checks that Windows 7 has every function they import
+# (tools/win7/imports.py).
 # Code signing: set $env:MDM_SIGN_COMMAND to a signtool command line with $f for the file, e.g.
 #   signtool sign /fd sha256 /tr http://timestamp.digicert.com /td sha256 /a $f
 # Inno Setup then signs the programs (in place, so the zip carries them signed too), the
 # installer and its uninstaller.
 param([switch]$NoBuild, [string]$SignCommand = $env:MDM_SIGN_COMMAND,
-  [ValidateSet("x64", "arm64", "x86")][string]$Arch = "x64")
+  [ValidateSet("x64", "arm64", "x86")][string]$Arch = "x64", [switch]$Windows7)
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $dist = Join-Path $root "target\dist"
 $target = @{ x64 = "x86_64-pc-windows-msvc"; arm64 = "aarch64-pc-windows-msvc"; x86 = "i686-pc-windows-msvc" }[$Arch]
+if ($Windows7) {
+  if ($Arch -eq "arm64") { throw "Windows 7 never ran on ARM64: -Windows7 builds x64 and x86 only" }
+  $target = @{ x64 = "x86_64-win7-windows-msvc"; x86 = "i686-win7-windows-msvc" }[$Arch]
+}
 $bin = Join-Path $root "target\$target\release"
-# The files' names: x64's as before, the others with their processor.
-$suffix = if ($Arch -eq "x64") { "" } else { "-$Arch" }
+# The files' names: x64's as before, the others with their processor; Windows 7's with "win7" and
+# their processor (crates/tools/src/update.rs Install::assets_of).
+$suffix = if ($Windows7) { "-win7-$Arch" } elseif ($Arch -eq "x64") { "" } else { "-$Arch" }
+$plain = if ($Windows7) { "win7-$Arch" } else { $Arch }
 
 $cargo = Get-Content (Join-Path $root "Cargo.toml") -Raw
 $version = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
@@ -37,11 +49,24 @@ if (-not $NoBuild) {
   $cargoHome = if ($env:CARGO_HOME) { $env:CARGO_HOME } else { Join-Path $env:USERPROFILE ".cargo" }
   $env:CARGO_ENCODED_RUSTFLAGS = "--remap-path-prefix=$cargoHome=cargo" + [char]0x1f + "--remap-path-prefix=$root=mdm" + [char]0x1f + "-Ctarget-feature=+crt-static"
   try {
-    & cargo build --release --target $target -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
+    if ($Windows7) {
+      # Without the browser-like connection: BoringSSL ends the program on Windows 7
+      # (crates/engine/src/browserlike.rs AVAILABLE).
+      & (Join-Path $root "tools\win7\cargo.ps1") -Arch $Arch build --release --no-default-features -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
+    } else {
+      & cargo build --release --target $target -p mdm-app -p mdm-nmhost -p mdm-cli -p mdm-mcp
+    }
     if ($LASTEXITCODE) { throw "cargo build failed" }
   } finally {
     Remove-Item Env:CARGO_ENCODED_RUSTFLAGS
   }
+}
+# Windows 7's programs: every function they import is one Windows 7 SP1 has.
+if ($Windows7) {
+  $programs = "misterdownloadmanager", "misterdownloadmanager-nmhost", "misterdownloadmanager-cli", "misterdownloadmanager-mcp" |
+    ForEach-Object { Join-Path $bin "$_.exe" }
+  & python (Join-Path $root "tools\win7\imports.py") check @programs
+  if ($LASTEXITCODE) { throw "a program imports a function Windows 7 doesn't have" }
 }
 & (Join-Path $root "tools\extension\pack.ps1") | Out-Null
 
@@ -56,6 +81,7 @@ if (-not $iscc) { throw "Inno Setup 6 (ISCC.exe) not found" }
 
 New-Item -ItemType Directory -Force $dist | Out-Null
 $isccArgs = @("/Qp", "/DAppVersion=$version", "/DArch=$Arch", "/DBin=$bin")
+if ($Windows7) { $isccArgs += "/DWin7" }
 if ($SignCommand) { $isccArgs += @("/DSign", "/Smdmsign=$SignCommand") }
 & $iscc @isccArgs (Join-Path $PSScriptRoot "mdm.iss")
 if ($LASTEXITCODE) { throw "ISCC failed" }
@@ -108,7 +134,7 @@ use the profile instead. Browser integration needs the installer.
 }
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 New-Zip "MisterDownloadManager-$version-portable$suffix" $true
-New-Zip "MisterDownloadManager-$version-$Arch" $false
+New-Zip "MisterDownloadManager-$version-$plain" $false
 Remove-Item -LiteralPath (Join-Path $dist "stage") -Recurse -Force
 
 $files = Get-ChildItem $dist -File | Where-Object { $_.Name -like "MisterDownloadManager-$version-*" }

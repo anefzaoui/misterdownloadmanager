@@ -45,8 +45,14 @@ use url::Url;
 
 use crate::download::{Body, Error, Head, Options};
 
-/// Whether this build has the browser-like connection.
-pub const AVAILABLE: bool = cfg!(feature = "browser-connection");
+/// Whether this build has the browser-like connection. Never in Windows 7's builds
+/// (docs/windows-7.md), which are made without it: BoringSSL takes its random numbers from
+/// Windows 8's `ProcessPrng` and ends the program (abort) where there is none, at the first
+/// connection; this keeps such a build safe even with the feature on.
+pub const AVAILABLE: bool = cfg!(all(
+    feature = "browser-connection",
+    not(target_vendor = "win7")
+));
 
 /// Most HTTP redirects a request follows (as `download::MAX_REDIRECTS`, browsers' 20).
 #[cfg_attr(not(feature = "browser-connection"), allow(dead_code))]

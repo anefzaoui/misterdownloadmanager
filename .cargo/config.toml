@@ -12,6 +12,16 @@ rustflags = ["-C", "target-feature=+crt-static"]
 [target.i686-pc-windows-msvc]
 rustflags = ["-C", "target-feature=+crt-static"]
 
+# Windows 7 SP1 (docs/windows-7.md): Rust's win7 targets, built with a pinned nightly and
+# -Zbuild-std by tools/win7/cargo.ps1, which also points the linker at windows-sys 0.48's import
+# library (its build script adds it only for the -pc- targets' names). The same C runtime built in;
+# windows-rs's errors without Windows 8's WinRT error info (cargo.ps1 says why).
+[target.x86_64-win7-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static", "--cfg", "windows_slim_errors"]
+
+[target.i686-win7-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static", "--cfg", "windows_slim_errors"]
+
 [env]
 # Windows on ARM: BoringSSL's build there (windows-arm64.cmake says why).
 CMAKE_TOOLCHAIN_FILE_aarch64_pc_windows_msvc = { value = ".cargo/windows-arm64.cmake", relative = true }

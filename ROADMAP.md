@@ -1505,6 +1505,11 @@ These ship in a later version, when they're ready.
   XWayland stays the default unless X11's windows would be scaled up (#624); Vulkan as the
   default renderer (below)
 - 🔄 The Safari extension (in 0.5.2): still to check in Safari itself, signed with a Developer ID
+- 🔄 Windows 7 SP1, 64-bit and 32-bit (experimental): a build of its own (Rust's Windows 7
+  targets), OpenGL only, its own update files, and a check on every build that Windows 7 has each
+  function the programs use. Still to do: try it on a real Windows 7 PC; the browser extension on
+  Windows 7's last browsers (Chrome 109, Firefox ESR 115); a yt-dlp MDM can check that runs there
+  ([Windows 7](docs/windows-7.md))
 
 ### Bugs being looked into
 
