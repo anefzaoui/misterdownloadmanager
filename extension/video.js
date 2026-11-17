@@ -721,7 +721,7 @@
         // An iframe or embed directly playing the video (e.g. YouTube embed player on Drive).
         if (node.localName === "iframe" || node.localName === "embed") {
           const src = (node.getAttribute && node.getAttribute("src")) || "";
-          let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&]id=([\w-]{25,})/.exec(src);
+          let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&](?:id|driveid|docid)=([\w-]{25,})/.exec(src);
           if (m && /^[\w-]{25,}$/.test(m[1])) {
             file(m[1], sure);
             return { sure, maybe };
@@ -748,7 +748,7 @@
           }
           for (const el of node.querySelectorAll ? node.querySelectorAll("iframe, embed") : []) {
             const src = (el.getAttribute && el.getAttribute("src")) || "";
-            let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&]id=([\w-]{25,})/.exec(src);
+            let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&](?:id|driveid|docid)=([\w-]{25,})/.exec(src);
             if (m && /^[\w-]{25,}$/.test(m[1])) candidates.add(m[1]);
           }
 
@@ -1532,7 +1532,11 @@ button:focus-visible { outline: none; }
 
   function siteVideos() {
     if (typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname)) {
-      return document.querySelectorAll?.("iframe[src*='youtube.googleapis.com'], iframe[src*='/preview'], iframe#ucc-136, iframe.drive-viewer-video-iframe") || [];
+      return (
+        document.querySelectorAll?.(
+          "iframe.drive-viewer-video-iframe, iframe#ucc-136, iframe[src*='youtube.googleapis.com'], iframe[src*='driveid='], iframe[src*='docid=']",
+        ) || []
+      );
     }
     return [];
   }
@@ -2396,32 +2400,28 @@ button:focus-visible { outline: none; }
   });
 
   // ---- wiring -----------------------------------------------------------------------------------
-  // The extension updated or removed under this page: the button and its listeners go (a fresh
-  // copy of this script comes with the new extension).
-  function teardown() {
-    looks.clear();
-    clearTimeout(lookTimer);
-    resting.leave();
-    cancelAnimationFrame(raf);
-    cancelAnimationFrame(scan);
-    removeEventListener("pointermove", onMove, true);
-    removeEventListener("keydown", onTab, true);
-    removeEventListener("loadstart", onLoadStart, true);
-    root.remove();
-    never = true;
-    allowed = false;
-    video = null;
+  const isDriveHost = typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname);
+  const isDriveTop = typeof window !== "undefined" && window === window.top && isDriveHost;
+  const isDriveFrame =
+    typeof window !== "undefined" &&
+    window !== window.top &&
+    typeof location !== "undefined" &&
+    (isDriveHost ||
+      (location.hostname === "youtube.googleapis.com" &&
+        (/[?&](?:driveid|docid)=/.test(location.search) ||
+          /(?:drive|docs)\.google\.com/.test(location.search) ||
+          (typeof document !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(new URL(document.referrer || "http://x").hostname)))));
+
+  let lastFrameMove = 0;
+  function onFrameMove() {
+    const now = Date.now();
+    if (now - lastFrameMove < 80) return;
+    lastFrameMove = now;
+    send({ type: "drive-frame-pointer" });
   }
-  globalThis.__mdmVideoButton = { alive: () => Boolean(ext.runtime?.id), teardown };
-  if (typeof window !== "undefined" && window !== window.top) {
-    addEventListener("pointermove", () => {
-      try {
-        window.parent.postMessage({ type: "mdm-frame-pointer" }, "*");
-      } catch {}
-    }, { capture: true, passive: true });
-  }
-  addEventListener("message", (e) => {
-    if (e.data && e.data.type === "mdm-frame-pointer") {
+
+  function onDriveFramePointer(m) {
+    if (m && m.type === "drive-frame-pointer") {
       lastMove = Date.now();
       if (!video) {
         const frame = [...siteVideos()].find(eligible);
@@ -2434,7 +2434,33 @@ button:focus-visible { outline: none; }
         show(video);
       }
     }
-  });
+  }
+
+  // The extension updated or removed under this page: the button and its listeners go (a fresh
+  // copy of this script comes with the new extension).
+  function teardown() {
+    looks.clear();
+    clearTimeout(lookTimer);
+    resting.leave();
+    cancelAnimationFrame(raf);
+    cancelAnimationFrame(scan);
+    removeEventListener("pointermove", onMove, true);
+    if (isDriveFrame) removeEventListener("pointermove", onFrameMove, true);
+    if (isDriveTop) ext.runtime?.onMessage?.removeListener(onDriveFramePointer);
+    removeEventListener("keydown", onTab, true);
+    removeEventListener("loadstart", onLoadStart, true);
+    root.remove();
+    never = true;
+    allowed = false;
+    video = null;
+  }
+  globalThis.__mdmVideoButton = { alive: () => Boolean(ext.runtime?.id), teardown };
+  if (isDriveFrame) {
+    addEventListener("pointermove", onFrameMove, { capture: true, passive: true });
+  }
+  if (isDriveTop) {
+    ext.runtime?.onMessage?.addListener(onDriveFramePointer);
+  }
   addEventListener("pointermove", onMove, { capture: true, passive: true });
   addEventListener("pointerdown", (e) => {
     if (menuOpen && !e.composedPath().includes(root)) closeMenu();

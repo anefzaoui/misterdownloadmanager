@@ -2976,6 +2976,24 @@ const beside = (tab) => ({
 async function pageMessage(m, sender) {
   const page = senderPage(sender);
   const tab = sender.tab || {};
+  // #758: on Google Drive, pointer movement inside a player's subframe informs the top frame
+  // so the floating button stays visible while hovering over the cross-origin player.
+  if (m.type === "drive-frame-pointer") {
+    const tabId = tab.id;
+    const tabUrl = tab.url || "";
+    const senderUrl = sender.url || "";
+    if (
+      Number.isInteger(tabId) &&
+      Number.isInteger(sender.frameId) &&
+      sender.frameId !== 0 &&
+      isDrive(tabUrl) &&
+      (isDrive(senderUrl) || /(^|\.)youtube\.googleapis\.com$/i.test(siteOf(senderUrl)))
+    ) {
+      ext.tabs.sendMessage(tabId, { type: "drive-frame-pointer" }, { frameId: 0 }).catch(() => {});
+      return { ok: true };
+    }
+    return { ok: false };
+  }
   if (m.type === "panel") {
     const top = tab.url && /^https?:/i.test(tab.url) ? tab.url : "";
     return page ? await panelOn(page, top) : { on: false, compact: false };

@@ -185,6 +185,7 @@ function fakeApi({
       remove: async (id) => calls.push(["closeTab", id]),
       query: async (q) => (q && q.active && activeTab ? [activeTab] : []),
       create: async (t) => calls.push(["openTab", t.url]),
+      sendMessage: async (id, m, opts) => calls.push(["tabMessage", id, m, opts]),
     },
     webRequest: {
       onBeforeRequest: event("beforeRequest"),
@@ -1083,6 +1084,50 @@ const ok = (what) => {
   );
   assert.deepEqual(on, { on: false, compact: false }, "where the app says no");
   ok("video button messages");
+}
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  const ask = (m, sender) => new Promise((r) => listeners.message(m, sender, (x) => r(JSON.parse(JSON.stringify(x)))));
+
+  // Valid pointer move in a Drive child frame -> forwarded to top frame (frameId 0)
+  const driveSubframe = {
+    id: "ours",
+    url: "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/preview",
+    frameId: 2,
+    tab: { id: 7, url: "https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3" },
+  };
+  const res1 = await ask({ type: "drive-frame-pointer" }, driveSubframe);
+  assert.deepEqual(res1, { ok: true });
+  assert.ok(
+    calls.some(
+      ([kind, tabId, msg, opts]) =>
+        kind === "tabMessage" && tabId === 7 && msg.type === "drive-frame-pointer" && opts.frameId === 0,
+    ),
+    "forwarded to frameId 0",
+  );
+
+  // Subframe on another website -> rejected, no tabMessage
+  const otherSubframe = {
+    id: "ours",
+    url: "https://other.test/frame",
+    frameId: 2,
+    tab: { id: 7, url: "https://other.test/watch" },
+  };
+  const res2 = await ask({ type: "drive-frame-pointer" }, otherSubframe);
+  assert.deepEqual(res2, { ok: false });
+
+  // Top-level frame (frameId 0) -> rejected
+  const topFrame = {
+    id: "ours",
+    url: "https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3",
+    frameId: 0,
+    tab: { id: 7, url: "https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3" },
+  };
+  const res3 = await ask({ type: "drive-frame-pointer" }, topFrame);
+  assert.deepEqual(res3, { ok: false });
+
+  ok("#758: background forwards frame pointer exclusively for Drive subframes to frameId 0");
 }
 
 // The button's qualities: an app whose rules say it looks videos up (`videoLookup`, kept with the
@@ -2326,7 +2371,7 @@ function samplePage(html) {
 
 // #670: video.js's button against a fake DOM — whether it shows over a video while the page is
 // in full screen, with the popup's option off (as installed) or on.
-function videoButton({ stored = {} } = {}) {
+function videoButton({ stored = {}, location, iframes, videos } = {}) {
   const source = readText("../../extension/video.js");
   const handlers = {};
   // The frames asked for, by id: one cancelled since (a tick after a hide) does not run.
@@ -2418,9 +2463,21 @@ function videoButton({ stored = {} } = {}) {
   const doc = {
     title: "A video",
     createElement: (tag) => node(tag),
-    getElementsByTagName: (tag) => (tag === "video" ? [video] : []),
+    getElementsByTagName: (tag) => (tag === "video" ? (videos !== undefined ? videos : [video]) : []),
     querySelector: () => null,
-    querySelectorAll: () => [],
+    querySelectorAll: (sel) => {
+      if (iframes && sel.includes("iframe")) {
+        return iframes.filter((el) => {
+          if (sel.includes("drive-viewer-video-iframe") && el.classList.contains("drive-viewer-video-iframe")) return true;
+          if (sel.includes("#ucc-136") && el.id === "ucc-136") return true;
+          if (sel.includes("youtube.googleapis.com") && el.src.includes("youtube.googleapis.com")) return true;
+          if (sel.includes("driveid=") && el.src.includes("driveid=")) return true;
+          if (sel.includes("docid=") && el.src.includes("docid=")) return true;
+          return false;
+        });
+      }
+      return [];
+    },
     documentElement,
     elementsFromPoint: () => [],
     activeElement: null,
@@ -2443,10 +2500,18 @@ function videoButton({ stored = {} } = {}) {
       onChanged: { addListener: (f) => storageListeners.push(f) },
     },
   };
+  const loc = location || { hostname: "vid.test", href: "https://vid.test/watch" };
+  const win = {
+    top: null,
+    location: loc,
+    document: doc,
+  };
+  win.top = win;
   class HTMLAudioElement {}
   vm.runInNewContext(source, {
     browser: api,
-    location: { hostname: "vid.test", href: "https://vid.test/watch" },
+    location: loc,
+    window: win,
     document: doc,
     matchMedia: () => ({ matches: false, addEventListener() {} }),
     getComputedStyle: () => ({ visibility: "visible", display: "block", opacity: "1" }),
@@ -2542,6 +2607,50 @@ function videoButton({ stored = {} } = {}) {
   await b.move();
   assert.equal(b.display(), "block", "turned off in full screen: the button comes back");
   ok("#670: turning the option on and off while in full screen");
+}
+{
+  // #758: on docs.google.com / drive.google.com, non-video preview frames (Docs, Sheets) must not get the button.
+  const docFrame = {
+    localName: "iframe",
+    id: "doc-preview",
+    src: "https://docs.google.com/document/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/preview",
+    classList: { contains: () => false },
+    isConnected: true,
+    muted: false,
+    loop: false,
+    controls: false,
+    duration: 0,
+    getBoundingClientRect: () => ({ left: 0, top: 0, right: 640, bottom: 360, width: 640, height: 360 }),
+  };
+  const bDoc = videoButton({
+    location: { hostname: "docs.google.com", href: "https://docs.google.com/document/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/preview" },
+    videos: [],
+    iframes: [docFrame],
+  });
+  await bDoc.move();
+  assert.notEqual(bDoc.display(), "block", "a non-video preview frame on docs.google.com does not get the button");
+
+  // A Google Drive video player frame gets the button.
+  const videoFrame = {
+    localName: "iframe",
+    id: "ucc-136",
+    src: "https://youtube.googleapis.com/embed/abc?driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu",
+    classList: { contains: (c) => c === "drive-viewer-video-iframe" },
+    isConnected: true,
+    muted: false,
+    loop: false,
+    controls: false,
+    duration: 0,
+    getBoundingClientRect: () => ({ left: 0, top: 0, right: 640, bottom: 360, width: 640, height: 360 }),
+  };
+  const bVideo = videoButton({
+    location: { hostname: "drive.google.com", href: "https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3" },
+    videos: [],
+    iframes: [videoFrame],
+  });
+  await bVideo.move();
+  assert.equal(bVideo.display(), "block", "the video player frame on drive.google.com gets the button");
+  ok("#758: non-video preview frame never gets the button, video player frame does");
 }
 
 // The qualities' menu (video.js; its plain functions run here): the questions' pace and their
