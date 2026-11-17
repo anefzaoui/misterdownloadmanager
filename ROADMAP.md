@@ -1425,6 +1425,9 @@ These ship in the next version.
   [@RedemptionMHA](https://github.com/RedemptionMHA))
 - ✅ Linux: the notification area's icon has its name (KDE showed none)
   ([#1305](https://github.com/anefzaoui/misterdownloadmanager/issues/1305))
+- ✅ Windows: Open folder finds a file manager that names its own default verb for folders
+  (One Commander) (thanks to [@haohaaaa](https://github.com/haohaaaa))
+  ([#1335](https://github.com/anefzaoui/misterdownloadmanager/issues/1335))
 
 ## Being worked on
 

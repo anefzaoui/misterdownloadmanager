@@ -8484,12 +8484,19 @@ mod open_file_tests {
 
 /// The `(Default)` verb under `HKCR\<class>\shell`, when a file manager registers its own verb
 /// name (such as `OpenInOneCommander`) instead of `open`: `AssocQueryStringW` with `verb = None`
-/// looks up `open` rather than `shell`'s `(Default)` value.
+/// looks up `open` rather than `shell`'s `(Default)` value. The value may list several verbs,
+/// comma-separated, in order: the first is the default.
 fn default_shell_verb(class: &str) -> Option<String> {
     use windows_sys::Win32::System::Registry::HKEY_CLASSES_ROOT;
     reg_string_in(HKEY_CLASSES_ROOT, &format!(r"{class}\shell"), "")
-        .map(|s| s.trim().to_owned())
-        .filter(|s| !s.is_empty())
+        .as_deref()
+        .and_then(first_verb)
+}
+
+/// The first verb of a `shell` key's `(Default)` value, which may list several (`a, b`).
+fn first_verb(value: &str) -> Option<String> {
+    let first = value.split(',').next().unwrap_or("").trim();
+    (!first.is_empty()).then(|| first.to_owned())
 }
 
 /// The program Windows runs to open folders, when that isn't Explorer (a file manager such as
@@ -8574,6 +8581,22 @@ mod folder_opener_tests {
             _ => None,
         };
         assert_eq!(other_folder_opener(|_| None, opus).as_deref(), Some(OPUS));
+    }
+
+    /// A `shell` key's `(Default)` may list verbs in order; the first is the default.
+    #[test]
+    fn the_first_listed_verb_is_the_default() {
+        use super::first_verb;
+        assert_eq!(
+            first_verb("OpenInOneCommander").as_deref(),
+            Some("OpenInOneCommander")
+        );
+        assert_eq!(
+            first_verb(" OpenInOneCommander , open").as_deref(),
+            Some("OpenInOneCommander")
+        );
+        assert_eq!(first_verb("  "), None);
+        assert_eq!(first_verb(",open"), None);
     }
 
     /// #1335: a replacement registering a custom `(Default)` verb under `Directory\shell` (such
