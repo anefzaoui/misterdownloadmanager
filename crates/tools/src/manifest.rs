@@ -301,6 +301,7 @@ impl Master {
             language: None,
             direct: false,
             needs_js_runtime: false,
+            page_titled: false,
         })
     }
 }
@@ -934,6 +935,7 @@ mod tests {
                 ours,
                 Video {
                     language: None,
+                    page_titled: false,
                     ..theirs.clone()
                 },
                 "{case}"
@@ -1490,6 +1492,7 @@ mod tests {
             v,
             Video {
                 language: None,
+                page_titled: false,
                 ..theirs
             }
         );
