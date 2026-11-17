@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ħassar ukoll {n} fajl mid-disk|Ħassar ukoll {n} fajls mid-disk|Ħassar ukoll {n} fajls mid-disk|Ħassar ukoll {n} fajls mid-disk|Ħassar ukoll {n} fajls mid-disk
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Sit mhux magħruf irid jibgħat {n} ħolqa lil Link grabber.|Sit mhux magħruf irid jibgħat {n} ħoloq lil Link grabber.|Sit mhux magħruf irid jibgħat {n} ħoloq lil Link grabber.|Sit mhux magħruf irid jibgħat {n} ħoloq lil Link grabber.|Sit mhux magħruf irid jibgħat {n} ħoloq lil Link grabber.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -106,11 +111,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Fajl {n} kellu l-isem ta' fajl li diġà kien hemm u ġie nnumerat|{n} fajls kellhom l-isem ta' fajl li diġà kien hemm u ġew innumerati|{n} fajls kellhom l-isem ta' fajl li diġà kien hemm u ġew innumerati|{n} fajls kellhom l-isem ta' fajl li diġà kien hemm u ġew innumerati|{n} fajls kellhom l-isem ta' fajl li diġà kien hemm u ġew innumerati
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	{n} fajl ieħor ma setax jitħassar lanqas.|{n} fajls oħra ma setgħux jitħassru lanqas.|{n} fajls oħra ma setgħux jitħassru lanqas.|{n} fajls oħra ma setgħux jitħassru lanqas.|{n} fajls oħra ma setgħux jitħassru lanqas.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	{n} peer|{n} peers|{n} peers|{n} peers|{n} peers
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} salvat|{n} salvati|{n} salvati|{n} salvati|{n} salvati
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -133,6 +148,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} tracker: {peers}|{n} trackers: {peers}|{n} trackers: {peers}|{n} trackers: {peers}|{n} trackers: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} irid jibgħat {n} ħolqa lil Link grabber.|{site} irid jibgħat {n} ħoloq lil Link grabber.|{site} irid jibgħat {n} ħoloq lil Link grabber.|{site} irid jibgħat {n} ħoloq lil Link grabber.|{site} irid jibgħat {n} ħoloq lil Link grabber.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -151,7 +171,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Apply	&Applika
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -174,6 +194,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Start now	&Ibda issa
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(separa bi spazji; * jaqbel ma' kollox)
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(separa l-ismijiet bi spazji)
@@ -204,6 +228,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	L-arkivji 7z u RAR jiġu estratti minn 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	L-arkivji 7z u RAR jiġu estratti minn HatchZip ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -280,6 +308,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	madwar {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	Aċċetta Click'n'Load minn paġni web (port 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -435,6 +467,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	Afganistan
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	Wara ftit passwords żbaljati, is-servizz jimblokka din il-konnessjoni għal ftit minuti.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -454,7 +490,7 @@
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Id-Downloads Kollha
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 #, machine
 	All files	Il-fajls kollha
 #. text in helpers.rs
@@ -464,11 +500,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	Kollha tal-uploaders
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	Ħalli
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	Ħalli aktar minn {n} konnessjoni
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Ħalli biss siti li tuża. Xejn ma jiġi mfittex jew imniżżel qabel ma żżidu f'Link grabber.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	diġà qed jitniżżel: {path}
@@ -490,6 +534,10 @@
 #. checkbox in the Options window
 #, machine
 	Also take files the browser would open (PDF, music, video)	Jittieħdu wkoll fajls li l-brawżer jiftaħ (PDF, mużika, vidjo)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	Alt+ikklikkja l-ħolqa
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -554,6 +602,19 @@
 #. what a screen reader calls Link grabber's password box
 #, machine
 	Archive password	Password tal-arkivju
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	Passwords tal-arkivju
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	passwords tal-arkivju
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	Passwords tal-arkivju...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -691,6 +752,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	Bhutan
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	Imblokka
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -763,6 +828,10 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	Okkuppat, erġa' pprova aktar tard
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	Daqs tal-buttuna:
 #. message or event log entry in the main window
 #, machine
 	by batch download	permezz ta' tniżżil f'lott
@@ -781,6 +850,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cameroon	Kamerun
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	Ma jistax jerġa' jibda
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -923,7 +996,9 @@
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	Qed jiċċekkja {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Qed jiċċekkja...
@@ -957,10 +1032,24 @@
 #. a country's name (where a download's server is)
 #, machine
 	Christmas Island	Gżira Christmas
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 #, machine
 	Clear	Neħħi
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
+	Click'n'Load	Click'n'Load
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Click'n'Load ma jistax jibda: programm ieħor (JDownloader?) qed juża l-port {port}. Agħlaq il-programm, imbagħad itfi u erġa' ixgħel Click'n'Load fl-Għażliet.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Click'n'Load ma jistax jibda: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -1004,6 +1093,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Komoros
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	Kompatt
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1052,6 +1145,9 @@
 #. text in the Options window
 #, machine
 	Connections:	Konnessjonijiet:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	Kontributuri
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1179,7 +1275,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Numru massimu default ta’ konnessjonijiet
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1335,6 +1431,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	Niżżel skont l-ordni
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	Niżżel mill-ġdid
 #. button in a dialog box
 #, machine
 	Download Later	Niżżel Aktar Tard
@@ -1449,6 +1549,10 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	Tniżżil lest
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	Iniżżel fajls, vidjows u torrents
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1478,6 +1582,14 @@
 #. message or event log entry in the main window
 #, machine
 	Dragged out of Download complete and moved to {folder}	Ġie mkaxkar 'il barra minn Tniżżil komplut u mċaqlaq għal {folder}
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	Inġibed 'il barra mil-lista u mċaqlaq f'post li MDM ma setax jitgħallem
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	Inġibed 'il barra mil-lista u mċaqlaq fil-folder {folder}
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1655,6 +1767,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	Estratt l-arkivji meta jitlesta t-tniżżil tagħhom
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	Jiġu estratti fil-post b'HatchZip (hatchzip.dev, mhux installat)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	Jiġu estratti fil-post b'HatchZip: il-fajls biss jeħtieġu spazju
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1925,6 +2045,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	Sħiħ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2044,6 +2168,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Aqta' l-modem meta lest
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip estratta fil-post: l-arkivju tneħħa hekk kif ħarġu l-fajls tiegħu
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2167,6 +2295,15 @@
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
 	in the locked keyring	fil-keyring illokkjat
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	Fit-toolbar: iftaħ il-menu ta' buttuna
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	Fit-toolbar: agħfas il-buttuna
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	Fit-toolbar: il-buttuna preċedenti / li jmiss
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2207,6 +2344,10 @@
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
 	Install what's missing from your distribution's packages.	Installa dak li hemm nieqes mill-pakketti tad-distribuzzjoni tiegħek.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Installa l-pakkett 7zip (jew p7zip) tas-sistema tiegħek, imbagħad ikklikkja bil-lemin fuq it-tniżżil u agħżel Estrazzjoni.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2268,6 +2409,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	jeħtieġ password
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	waqaf fin-nofs. Il-fajls estratti s'issa jinsabu f'{folder}, il-bqija għadhom fl-arkivju: l-Estrazzjoni tkompli
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2289,6 +2434,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	Italja
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	il-fajls tiegħu ħarġu, iżda ċ-ċaqliq tagħhom waqaf ({error}). Dawk imċaqalqa jinsabu f'{to}, l-oħrajn għadhom f'{left}; xejn ma tħassar
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2561,6 +2711,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	macOS jiċċekkja l-fajls immarkati b’dan il-mod: Gatekeeper qabel ma programm jinfetaħ għall-ewwel darba. Jekk l-għażla ma tkunx magħżula, ma jiġi mmarkat l-ebda fajl imniżżel.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	macOS ma jħallix lil Mister Download Manager jidħol fil-folder tal-browser.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	macOS ma jħallix lil Mister Download Manager jidħol fil-folder ta' {browser}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2688,6 +2846,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	L-MDM ma jweġibx. Qed jerġa' jipprova...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	MDM m'għandux kopja għal din is-sistema: installaha, jew uża programm ieħor
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2751,7 +2913,7 @@
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	Rapport tal-ħabta ta' Mister Download Manager
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager sab żball intern
@@ -2836,7 +2998,7 @@
 	Move a page up / down	Mexxi paġna 'l fuq / 'l isfel
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	Mexxi bejn il-kategoriji u l-lista tat-tniżżil
+	Move between the toolbar, the categories and the download list	Nimxu bejn it-toolbar, il-kategoriji u l-lista tat-tniżżil
 #. text in the Scheduler window
 #, machine
 	Move down	Mexxi 'l isfel
@@ -3090,7 +3252,7 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Ma nstabu l-ebda indirizzi tal-web f'{file}'.
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
 	None	Xejn
@@ -3148,10 +3310,14 @@
 #, machine
 	Not in a queue	Mhux f'kju
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	Għadu mhux installat
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	Mhux imfittex
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	Mhux issa
 #. text in helpers.rs
@@ -3203,6 +3369,10 @@
 #. Options → Remote → Status: the remote control is off
 #, machine
 	Off: nothing on the network can reach MDM.	Mitfi: xejn fuq in-netwerk ma jista' jilħaq l-MDM.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	Mitfi: il-feeds li kien qed jara tneħħew.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Offri li tniżżel links ikkupjati fil-clipboard
@@ -3253,6 +3423,10 @@
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	Indirizz wieħed għal kull linja; * tirrappreżenta kwalunkwe test: eżempju.com/privat/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	Password waħda għal kull linja, ippruvata f'din l-ordni fuq arkivju kriptat qabel ma jistaqsi MDM. Dik li taqbel titla' fil-quċċata.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Tniżżil ta' darba
@@ -3299,7 +3473,9 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Iftaħ il-folder
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 #, machine
 	Open in browser	Iftaħ fil-browser
@@ -3352,6 +3528,10 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Għażliet mat-tlestija
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	Jew waħħal ċavetta API ta' applikazzjoni:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -3417,6 +3597,7 @@
 	Password	Password
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 #, machine
 	Password:	Password:
 #. text in the Add torrent window
@@ -3518,6 +3699,11 @@
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	premium, fadal {days} jum/jiem
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Press keys...	Agħfas iċ-ċwievet...
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3651,6 +3837,10 @@
 #. RSS feeds window: fetch the selected feed again now
 #, machine
 	Refresh	Aġġorna
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	Aġġorna l-indirizz
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
@@ -3659,6 +3849,10 @@
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
 	Regular expressions	Espressjonijiet regolari
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	Ftakarha għal arkivji oħra
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	Ftakar is-settings tal-Limiter tal-Veloċità għal dan il-fajl
@@ -3692,8 +3886,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	Neħħi {name} mil-lista?
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 #, machine
 	Rename	Semmi mill-ġdid
 #. text in the Batch download window
@@ -3857,10 +4052,6 @@
 #. text in the Batch download window
 #, machine
 	Second file:	It-tieni fajl:
-#. text in a dialog box
-#. title of the folder picker
-#, machine
-	Select a folder	Agħżel fowlder
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4003,6 +4194,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Sharing stopped: {error}	Il-qsim waqaf: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
+	Shortcut to show or hide window:	Shortcut biex turi jew taħbi t-tieqa:
 #. text in the download list
 #, machine
 	Show	Uri
@@ -4064,6 +4259,10 @@
 #, machine
 	Sierra Leone	Sierra Leone
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	Idħol
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Idħol fil-browser
@@ -4080,6 +4279,10 @@
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	Id-dħul u l-passwords jinżammu fil-Windows Credential Manager.
 #. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	Idħolt ({state})
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Imdaħħal bħala {user} ({state})
@@ -4087,6 +4290,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	ma dħaltx: idħol mill-ġdid
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	Sa minn {date}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	Sa minn {date}: MDM jerġa' jipprova wara aġġornament tas-sewwieq
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	Sa minn {date}: MDM jerġa' jipprova mal-bidu li jmiss
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	Sa minn {date}: MDM jerġa' jipprova fi {retry}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	Sa minn {date}: MDM jerġa' jipprova fi {retry}, jew wara aġġornament tas-sewwieq
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4209,6 +4432,26 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Settings tal-Limiter tal-Veloċità
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	Limiter tal-Veloċità: l-aktar {limit} għal dan it-tniżżil
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	Limiter tal-Veloċità: {limit} għat-tniżżil kollu
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	Limiter tal-Veloċità: {limit} għat-tniżżil kollu flimkien
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	Limiter tal-Veloċità: {limit} għal kull tniżżil
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	Limiter tal-Veloċità: {one} għal kull tniżżil, {all} għal kollox
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4480,6 +4723,11 @@
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	L-aqwa kwalitajiet, MP3, Opus u FLAC jeħtieġu ffmpeg (madwar 80 MB).
 #. text in the Download video window
+#. in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+#. the trailing ... means it is still going on: keep it
+#, machine
+	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	L-aqwa kwalitajiet, MP3, Opus u FLAC jeħtieġu ffmpeg, li MDM m'għandux kopja tiegħu għal Windows 32-bit: agħżel tiegħek stess b'Għajnuniet...
+#. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	L-aqwa kwalitajiet, MP3, Opus u FLAC jeħtieġu ffmpeg: installah bil-maniġer tal-pakketti tas-sistema tiegħek (jew Homebrew).
@@ -4593,6 +4841,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	id-drive jew il-qsim tan-netwerk m'għadux disponibbli
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	L-entrati li tħallew barra għadhom f'{folder}'
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	L-estensjoni diġà qiegħda f’din l-app. Apple ma nnotarizzatx dan il-bini, għalhekk Safari jeħtieġ dawn il-passi biex jippermettiha.
@@ -4618,6 +4870,14 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file matches ({algorithm})	Il-fajl jaqbel ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	l-isem tal-fajl huwa twil wisq: l-aktar {limit} bytes bil-fajls salvati waqt li jitniżżel. Agħżel isem iqsar ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	l-isem tal-fajl huwa twil wisq: l-aktar {limit} karattri bil-fajls salvati waqt li jitniżżel. Agħżel isem iqsar ({path})
 #. text in a dialog box
 #, machine
 	The file saved as	Il-fajl salvat bħala
@@ -4675,8 +4935,9 @@
 #, machine
 	the password is wrong	il-password hija ħażina
 #. text in errors.rs
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: {path}	il-path huwa twil wisq għall-Windows: {path}
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	il-path huwa twil wisq għal Windows: l-aktar {limit} karattri bil-fajls salvati waqt li jitniżżel. Agħżel isem ta' fajl jew folder iqsar ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -4730,6 +4991,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	is-server bagħat parti mhux mistennija mill-fajl ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	is-servizz ma jgħidx jekk huwiex premium
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4754,6 +5019,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Il-kontroll tal-bot tas-sit (Cloudflare) irrifjuta lil yt-dlp. Jekk il-paġna tiftaħ fil-browser tiegħek, agħżel dak il-browser f'Għażliet → Logins tas-siti → Cookies għas-siti tal-vidjow u erġa' fittex il-paġna, jew uża l-buttuna Niżżel il-vidjow fuq il-vidjow.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Iċ-ċertifikat tas-sit mhuwiex fdat, la minn yt-dlp u lanqas minn dan il-kompjuter: filtru tal-web ta' antivirus jew proxy li jaqra l-HTTPS jista' jkun qed ifixkel. Itfi l-iskannjar tal-HTTPS tiegħu, jew żid iċ-ċertifikat tiegħu mal-kompjuter, imbagħad erġa' fittex il-paġna.
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -4762,6 +5031,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	iċ-ċertifikat tas-sigurtà tas-sit huwa għal isem ta' sit ieħor, għalhekk MDM ma jistax ikun ċert li huwa s-sit reali (il-browser tiegħek iwissi dwaru wkoll)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	iċ-ċertifikat tas-sigurtà tas-sit mhuwiex maħsub għall-websajts, għalhekk MDM ma jistax ikun ċert li dan huwa s-sit reali
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -4778,14 +5051,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	iċ-ċertifikat tas-sigurtà tas-sit ġie revokat mill-emittent tiegħu, għalhekk MDM mhux se jafdaha
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Iċ-ċertifikat tas-sit mhuwiex fdat, la minn yt-dlp u lanqas minn dan il-kompjuter: filtru tal-web ta' antivirus jew proxy li jaqra l-HTTPS jista' jkun qed ifixkel. Itfi l-iskannjar tal-HTTPS tiegħu, jew żid iċ-ċertifikat tiegħu mal-kompjuter, imbagħad erġa' fittex il-paġna.
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	iċ-ċertifikat tas-sigurtà tas-sit mhuwiex maħsub għall-websajts, għalhekk MDM ma jistax ikun ċert li dan huwa s-sit reali
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4843,6 +5108,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	Diġà hemm kju b'dan l-isem
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	m'hemmx biżżejjed spazju ħieles għall-fajls tiegħu, jgħid HatchZip; xejn ma nbidel
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Dawn is-settings mhumiex disponibbli meta "Uri djalogu ta' tniżżil komplut" huwa mixgħul
@@ -4963,6 +5232,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	dan il-programm mhuwiex {name}
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
+	This shortcut is already in use	Din is-shortcut diġà qed tintuża
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #, machine
@@ -5062,7 +5335,7 @@
 #. title of the separate window listing a torrent's files
 #, machine
 	Torrent files	Fajls torrent
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Torrent settings	Settings tat-torrent
 #. text in torrent downloads
@@ -5110,6 +5383,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	Erġa' pprova aktar tard, jew niżżel {name} int stess u agħżlu f'{helpers} → {other}.
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	Qed nipprova l-passwords tal-arkivju ssejvjati...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5352,6 +5629,10 @@
 #. column title: the user name
 #, machine
 	User	Utent
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	Isem tal-utent:
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	Ismijiet tal-utenti u passwords għal servers/siti
@@ -5514,6 +5795,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Il-Windows tippermetti tajmers tal-qawmien biss meta jkun imqabbad
 #. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+#, machine
+	Windows and macOS	Windows u macOS
+#. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 #, machine
 	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Windows jiċċekkja l-fajls immarkati b’dan il-mod: SmartScreen qabel ma programm jitħaddem għall-ewwel darba, Protected View ta’ Office qabel ma dokument jinfetaħ. Jekk l-għażla ma tkunx magħżula, jew jekk tapplika l-politika ta’ Windows “Tippreservax l-informazzjoni taż-żona fl-annessi tal-fajls”, ma jiġi mmarkat l-ebda fajl imniżżel.
@@ -5525,6 +5810,10 @@
 #. why the computer could not be put to sleep (fills {error})
 #, machine
 	Windows refused	Il-Windows irrifjuta
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows għadu jiftaħ links manjetiċi jew fajls .torrent b'{apps}, magħżula f'Apps Default tal-Windows, fejn int biss tista' tibdilhom. Settings jinfetaħ hemm issa: agħżel Mister Download Manager għal MAGNET u .torrent.
 #. text in langpick.rs
 #, machine
 	Windows' language	Lingwa tal-Windows
@@ -5624,7 +5913,7 @@
 #, machine
 	Your own program: {path} ({version})	Il-programm tiegħek: {path} ({version})
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	Tas-sistema tiegħek: {path}
 #. text in the Download video window
@@ -5751,7 +6040,8 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	Fajl {ext}
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	{file} ma setax jitħassar mid-diska: {error}
@@ -5772,7 +6062,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	{file} huwa kbir wisq biex ikun lista ta' indirizzi ({size}). L-importazzjoni taqra fajls tat-test, paġni tal-web u esportazzjonijiet .ef2 sa {limit}.
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	{file} ġie mċaqlaq x'imkien ieħor billi ġie mkaxkar minn Tniżżil komplut, u MDM ma setax jitgħallem fejn. Fittxu fejn waqqajtu.
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	{file} ġie mċaqlaq x'imkien ieħor billi ġie mkaxkar barra minn MDM, u MDM ma setax isir jaf fejn. Fittxu fejn waqqajtu.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5904,6 +6194,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (limitu għat-tniżżil kollu: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (limitu: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6517,11 +6817,19 @@ key	Delete	Ħassar
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Down / Alt+Down	Down / Alt+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Drag on blank space	Iddreggja fuq spazju vojt
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Enter	Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	Enter / Space
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6534,6 +6842,10 @@ key	F3	F3
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Home / End	Home / End
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	Left / Right
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6561,7 +6873,7 @@ key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Tab	Tab
+key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7172,7 +7484,7 @@ menu	To &IDM export file...	Biex tesporta fajl tal-&IDM...
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	To &text file...	Biex tesporta fajl tat-&test...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	Toolbar
