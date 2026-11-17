@@ -543,6 +543,14 @@ pub struct Item {
     /// often the site's address only. Refresh download address opens it; kept with the list.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub page: Option<String>,
+    /// It waits for a new address, as IDM's downloads do after Refresh download address: its last
+    /// run stopped because its address no longer gives the file (a signed link expired, 403, 404,
+    /// 410: the engine's `Error::wants_new_address`), or the user chose Refresh download address.
+    /// The browser's next download of the same file (`crate::freshlink`) gives it its address and
+    /// it goes on, instead of a new row starting over. Kept with the list (a link that expired
+    /// overnight is renewed the next day); cleared as it starts again.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub waits_for_address: bool,
     /// A video's (its `url` is the page): the address its file came from, the first stream of
     /// its last run as yt-dlp gave it to MDM's engine (#795). The windows' "Address".
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1181,6 +1189,7 @@ impl Item {
             moved_away: false,
             referer: None,
             page: None,
+            waits_for_address: false,
             file_url: None,
             live: None,
             torrent_check: None,
@@ -1300,6 +1309,16 @@ impl Item {
                         .map_or_else(|| "no reason given".to_owned(), |r| without_queries(&r))
                 });
                 self.status = status;
+                // A file's address that no longer gives it (expired, refused): it waits for a
+                // fresh one, which the browser's next download of the file gives it.
+                if failed_now
+                    && self.video.is_none()
+                    && s.failure
+                        .as_ref()
+                        .is_some_and(mdm_engine::Error::wants_new_address)
+                {
+                    self.waits_for_address = true;
+                }
                 // In the interface language; the engine's English when it gave no failure.
                 self.error = s.failure.as_ref().map(crate::errors::describe).or(s.error);
                 // Why it failed, in the log too, once (#1262: 0.5.2's log said nothing of a

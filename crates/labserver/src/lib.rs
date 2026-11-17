@@ -12,6 +12,7 @@ pub mod growth;
 mod h264;
 pub mod mediafire;
 mod pages;
+pub mod rapidgator;
 mod server;
 mod streams;
 

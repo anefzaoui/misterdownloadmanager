@@ -1447,6 +1447,11 @@ These ship in the next version.
   it has its own taskbar button
 - ✅ The same video picked from the quality menu in a second tab of its page is a duplicate, even
   when its stream's address is signed for each load (it was downloaded again without a word)
+- ✅ A download whose link expired goes on: Rapidgator's file page (the tab the download came
+  from) is asked with the browser's sign-in for a fresh link, at most once per expiry and never
+  again at once for a link it then refused; a download stopped with an expired or refused link, or
+  after **Refresh download address**, takes the browser's next download of the same file as its
+  new address and goes on, instead of a second row starting over
 
 ## Being worked on
 
