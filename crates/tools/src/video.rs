@@ -642,7 +642,8 @@ enum Attempt {
 }
 
 /// End yt-dlp and everything it started (#79): whenever the download is given up, nothing may
-/// go on downloading unseen (Windows: its job, the launcher's child and ffmpeg with it).
+/// go on downloading unseen (its job on Windows, its process group on Linux and macOS, #1301:
+/// the launcher's child and ffmpeg with it).
 fn end(child: &Child) {
     let mut slot = child.lock().unwrap_or_else(|e| e.into_inner());
     if let Some(mut s) = slot.take() {

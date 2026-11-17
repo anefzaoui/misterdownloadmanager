@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The automation API's add may carry the checksum the finished file must have (the command
+  line's `--checksum` form), kept with the download for **Verify checksum** and the finish
+  check; one the app can't read is refused (`bad-request`) instead of dropped
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
   interface language followed the system in tests too
@@ -1380,12 +1383,19 @@ These ship in the next version.
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ AI assistants (MCP) can inspect a download by id and see free disk space in `list_downloads` (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line lists and filters downloads: `status` (or `list`) takes `--id`, `--status`, `--category`, `--queue`, `--search` and `--limit` flags (thanks to
+- ✅ The command line prints pairing details as JSON: `pair --json` outputs code, valid minutes and URLs for scripts (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ Linux (X11): Minimize to the notification area takes the window out of the taskbar's window
   list, as closing it does ([#1255](https://github.com/anefzaoui/misterdownloadmanager/issues/1255))
 - ✅ A failed download says why in MDM's log too, with the site's name and no tokens
   ([#1262](https://github.com/anefzaoui/misterdownloadmanager/issues/1262))
 - ✅ Download panels: the hint under the sites list has its own row instead of running under
   Export...
+- ✅ Linux: pausing or cancelling a video (or a gallery) ends all of yt-dlp's processes, so it
+  stops downloading; MDM's exit and the command line's Ctrl+C end them too
+  ([#1301](https://github.com/anefzaoui/misterdownloadmanager/issues/1301); thanks to
+  [@arifrhm](https://github.com/arifrhm), who found the same cause)
 - ✅ Internet Archive: a download that needs your account keeps the browser's sign-in on its way to
   archive.org's storage servers (thanks to [@arifrhm](https://github.com/arifrhm))
   ([#1298](https://github.com/anefzaoui/misterdownloadmanager/issues/1298))
