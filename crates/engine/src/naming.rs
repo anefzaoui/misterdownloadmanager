@@ -1023,6 +1023,75 @@ pub fn wait_cleared(dir: &Path) {
     let _unused = done.wait_while(map, |m| m.contains_key(&key)).unwrap();
 }
 
+/// Places whose download was stopped and is still writing what its connections received and
+/// its resume state (#1328): how many runs settle at each.
+fn settlings() -> &'static (Mutex<std::collections::HashMap<PathBuf, usize>>, Condvar) {
+    static SETTLING: OnceLock<(Mutex<std::collections::HashMap<PathBuf, usize>>, Condvar)> =
+        OnceLock::new();
+    SETTLING.get_or_init(Default::default)
+}
+
+/// A stopped download still putting its last bytes and its resume state on the disk (#1328):
+/// its connections are closed and it says it is stopped at once, but a disk slower than the
+/// network takes as long as it takes. Until this guard is dropped (after the download has let go
+/// of its place and its part file), whatever comes next at that place waits ([`wait_settled`]):
+/// a resume reads the state saved last, a delete or a rewrite of the state comes after it.
+#[derive(Debug)]
+pub struct Settling(PathBuf);
+
+impl Drop for Settling {
+    fn drop(&mut self) {
+        let (map, done) = settlings();
+        let mut map = map.lock().unwrap();
+        if let Some(n) = map.get_mut(&self.0) {
+            *n -= 1;
+            if *n == 0 {
+                map.remove(&self.0);
+            }
+        }
+        done.notify_all();
+    }
+}
+
+/// `dest`'s download has stopped and is settling: see [`Settling`].
+pub fn settling(dest: &Path) -> Settling {
+    *settlings()
+        .0
+        .lock()
+        .unwrap()
+        .entry(dest.to_owned())
+        .or_default() += 1;
+    Settling(dest.to_owned())
+}
+
+/// Whether a stopped download is still settling at `dest` ([`settling`]). Never waits.
+pub fn is_settling(dest: &Path) -> bool {
+    settlings().0.lock().unwrap().contains_key(dest)
+}
+
+/// Wait until no stopped download is settling at `dest`. On a thread that may wait: it takes as
+/// long as the disk.
+pub fn wait_settled(dest: &Path) {
+    let (map, done) = settlings();
+    let map = map.lock().unwrap();
+    let _unused = done.wait_while(map, |m| m.contains_key(dest)).unwrap();
+}
+
+/// Wait until every stopped download has settled, or `until`: how many still settle then (an
+/// exit waits for them, so each resumes from where it stopped).
+pub fn wait_all_settled(until: std::time::Instant) -> usize {
+    let (map, done) = settlings();
+    let mut map = map.lock().unwrap();
+    loop {
+        let left = map.values().sum();
+        let now = std::time::Instant::now();
+        if left == 0 || now >= until {
+            return left;
+        }
+        map = done.wait_timeout(map, until - now).unwrap().0;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
