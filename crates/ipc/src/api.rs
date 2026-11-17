@@ -93,7 +93,6 @@ impl ListAnswer {
     pub fn filtered(&self, filter: &ListFilter) -> Result<ListAnswer, FilterError> {
         let status = match filter
             .status
-            .as_deref()
             .map(str::trim)
             .filter(|s| !s.is_empty())
         {
@@ -111,17 +110,14 @@ impl ListAnswer {
 
         let search = filter
             .search
-            .as_deref()
             .map(|s| s.trim().to_lowercase())
             .filter(|s| !s.is_empty());
         let category = filter
             .category
-            .as_deref()
             .map(str::trim)
             .filter(|s| !s.is_empty());
         let queue = filter
             .queue
-            .as_deref()
             .map(str::trim)
             .filter(|s| !s.is_empty());
 
