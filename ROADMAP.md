@@ -1488,6 +1488,11 @@ These ship in a later version, when they're ready.
 
 ### Bugs being looked into
 
+- 🔍 Linux on native Wayland: while the main window is out of sight (on another workspace), the
+  other windows (Download File Info, Download complete, the dialogs) don't open or don't answer
+  until it is shown again, as the compositor doesn't let a window it isn't showing redraw and
+  every dialog is drawn with the main window; the fix is in MDM's copy of the window library
+  (eframe), to come with it
 - 🔍 A look-up that waits 20 s on a video server the network doesn't answer
   ([#1053](https://github.com/anefzaoui/misterdownloadmanager/issues/1053))
 - 🔍 The main window's own looks at the disk on a drive slow to answer: starting or resuming a
