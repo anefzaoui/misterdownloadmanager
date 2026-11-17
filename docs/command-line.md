@@ -59,7 +59,7 @@ It comes with every download of MDM, next to the app (the installer puts it in M
 | `status` | The running app's downloads, as JSON, with their ids (the automation API must be on). |
 | `pause ID...`, `start ID...` | Pause running downloads, or start (resume) stopped, queued or failed ones, in the running app. |
 | `remove ID...`, `delete ID...` | Take downloads off the running app's list: `remove` keeps their files, `delete` deletes them too. A running download is paused first (`pause`). |
-| `add URL [-o folder] [-f name] [-c category] [-q queue] [-l] [-s]` | Hand a download to the running app. `-o` sets the folder, `-f` the file name, `-c` the category, `-q` the queue, `-l` queues it without starting, and `-s` skips the Download File Info dialog. Prints `{"id": N}` on success. |
+| `add URL [-o folder] [-f name] [-c category] [-q queue] [--checksum hash] [-l] [-s]` | Hand a download to the running app. `-o` sets the folder, `-f` the file name, `-c` the category, `-q` the queue, `--checksum` sets the required hash, `-l` queues it without starting, and `-s` skips the Download File Info dialog. Prints `{"id": N}` on success. |
 | `start-queue [name] [-q name]`, `stop-queue [name] [-q name]` | Start or stop a download queue in the running app (automation API). Starts or stops the main queue if omitted. |
 | `pair` | Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code. |
 | `api on`, `api off` | Turn the running app's automation API on or off. |

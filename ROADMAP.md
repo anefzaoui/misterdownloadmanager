@@ -1376,7 +1376,8 @@ These ship in the next version.
 - ✅ The command line starts and stops a queue of the running app: `start-queue` and
   `stop-queue`, the main download queue unless one is named (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
-- ✅ The command line adds downloads to the running app: `add <url>`, with folder, file name, category, queue and silent flags (thanks to
+- ✅ The command line adds downloads to the running app: `add <url>`, with folder, file name, category, queue, checksum and silent flags (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ AI assistants (MCP) can choose a download queue and a category when adding downloads, and start or stop a queue by name (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ AI assistants (MCP) can filter downloads by category or queue in `list_downloads`, and see the app's available queues and categories (thanks to
