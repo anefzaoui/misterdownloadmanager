@@ -1477,6 +1477,10 @@ These ship in the next version.
   from the notification area; a box in File Properties took the caret but no typing or Ctrl+V
 - ✅ Telegram Web's downloads stay with the browser, which makes them in the page
   ([#1345](https://github.com/anefzaoui/misterdownloadmanager/issues/1345))
+- ✅ Torrents start again after a crash or a power cut left their saved list empty: the list is
+  kept aside and a new one begins, the download list's torrents are added again from MDM's own
+  copies and find their pieces on disk; MDM's own rewrite of the list reaches the disk before it
+  replaces the old one ([#1357](https://github.com/anefzaoui/misterdownloadmanager/issues/1357))
 - ✅ **Options → General → Keep private-window downloads in the list** (off by default): a private
   window's downloads are saved like any other and survive MDM closing or restarting, still apart
   from normal windows' downloads (a saved private-window mark; their cookies never saved)
