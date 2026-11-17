@@ -1498,7 +1498,7 @@ pub(crate) fn private_auth_error(e: &str) -> Option<String> {
     .then(|| {
         let hint = crate::i18n::t(
             // i18n: a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
-            "Private-window downloads do not use Cookies for video sites from Options. Sign in in the private window and use its Download video button again.",
+            "Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.",
         );
         format!("{e}\n\n{hint}")
     })
