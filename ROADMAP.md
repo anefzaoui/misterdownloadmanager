@@ -1447,6 +1447,8 @@ These ship in the next version.
   it has its own taskbar button
 - ✅ The same video picked from the quality menu in a second tab of its page is a duplicate, even
   when its stream's address is signed for each load (it was downloaded again without a word)
+- ✅ Telegram Web's downloads stay with the browser, which makes them in the page
+  ([#1345](https://github.com/anefzaoui/misterdownloadmanager/issues/1345))
 
 ## Being worked on
 

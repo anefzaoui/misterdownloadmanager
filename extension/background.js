@@ -1998,6 +1998,23 @@ async function handOff(d) {
   return native(message);
 }
 
+// Telegram Web (web.telegram.org: its K and A apps) downloads a file through its own service
+// worker, which fetches the file's encrypted pieces over the page's connection to Telegram and
+// hands the browser the result under an address of its own (`/k/d/…`, `/a/progressive/…`).
+// That address is nothing on Telegram's servers: outside the page it only redirects to the app
+// (302), so MDM can't fetch it and the download sat at 0 % (#1345). Every download from there is
+// the browser's.
+function telegramWebStream(...urls) {
+  return urls.some((value) => {
+    if (!value) return false;
+    try {
+      return new URL(value).hostname.toLowerCase() === "web.telegram.org";
+    } catch {
+      return false;
+    }
+  });
+}
+
 // Colab's runtime proxy uses an ephemeral token tied to the browser's partitioned session.
 // Only the actual proxy transfer URL is left to the browser: a normal file linked from a Colab
 // notebook must still be capturable by MDM (#603).
@@ -2029,6 +2046,7 @@ async function candidate(item, url, clicked = false) {
   const first = firstUrl(item);
   if (altClicked(item, url, first, clicked) || postOf(first) === null) return null; // Alt; a form not to post again
   if (colabRuntimeProxy(first, url)) return null;
+  if (telegramWebStream(first, url)) return null;
   const r = await currentRules();
   if (!r) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";

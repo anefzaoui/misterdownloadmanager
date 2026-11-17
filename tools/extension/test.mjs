@@ -3674,6 +3674,33 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.equal(listeners.headersReceived, undefined);
   ok("#208 Chromium: answers aren't held");
 }
+// #1345: Telegram Web's downloads come from its service worker, under addresses that are
+// nothing outside the page (a 302 to the app): the browser keeps them, from the K and A apps.
+for (const [id, url] of [
+  [93, "https://web.telegram.org/k/d/1284042609"],
+  [94, "https://web.telegram.org/a/progressive/document5123456789"],
+]) {
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  let suggested;
+  listeners.determining(
+    {
+      id,
+      url,
+      finalUrl: url,
+      referrer: "https://web.telegram.org/k/",
+      filename: "Episode.mp4",
+      totalBytes: 376_637_440,
+      mime: "video/mp4",
+    },
+    (value) => (suggested = value),
+  );
+  await settle();
+  assert.ok(suggested, `the browser keeps Telegram Web's download (${url})`);
+  assert.equal(natives(calls).length, 0, "nothing offered to MDM");
+}
+ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser");
 // #603: only a tokenized Colab runtime-proxy transfer stays with the browser. A normal
 // download linked from a Colab notebook is still offered to MDM.
 {
