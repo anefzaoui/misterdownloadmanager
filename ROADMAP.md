@@ -592,7 +592,7 @@ These ship in the next version.
   with the download request (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The command line's add accepts `--cookie` (or `--cookies`) to send a Cookie header with the
-  download request (thanks to
+  download request; `-` reads it from standard input instead of the command line (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
