@@ -91,11 +91,7 @@ impl ListAnswer {
     /// Return a copy of this answer with its downloads filtered by the given criteria,
     /// sorted newest-first (descending id).
     pub fn filtered(&self, filter: &ListFilter) -> Result<ListAnswer, FilterError> {
-        let status = match filter
-            .status
-            .map(str::trim)
-            .filter(|s| !s.is_empty())
-        {
+        let status = match filter.status.map(str::trim).filter(|s| !s.is_empty()) {
             None => None,
             Some(s) => Some(
                 STATUSES
@@ -112,14 +108,8 @@ impl ListAnswer {
             .search
             .map(|s| s.trim().to_lowercase())
             .filter(|s| !s.is_empty());
-        let category = filter
-            .category
-            .map(str::trim)
-            .filter(|s| !s.is_empty());
-        let queue = filter
-            .queue
-            .map(str::trim)
-            .filter(|s| !s.is_empty());
+        let category = filter.category.map(str::trim).filter(|s| !s.is_empty());
+        let queue = filter.queue.map(str::trim).filter(|s| !s.is_empty());
 
         let queue_ids: Option<Vec<u64>> = match queue {
             Some(q) => {
