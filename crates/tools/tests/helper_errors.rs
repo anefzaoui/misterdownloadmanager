@@ -4,18 +4,29 @@
 
 use mdm_engine::Proxy;
 use mdm_engine::fault::Fault;
-use tokio::net::TcpSocket;
+use std::net::{TcpListener, TcpStream};
 
-/// Options whose proxy is a port on this computer that refuses every connection, and the socket
-/// that keeps it so: bound, never listening, held until the test ends. A port bound and let go
-/// at once was free for anything to take before the request came: another program's server, or
-/// this test's own connection, whose source port the system may pick (a connection to itself).
-/// Something then answered there, the tunnel failed with words of its own, and the failure was
-/// taken for `Unreachable` (seen once on Windows on ARM).
-fn through_a_missing_proxy() -> (TcpSocket, mdm_engine::Options) {
-    let held = TcpSocket::new_v4().unwrap();
-    held.bind("127.0.0.1:0".parse().unwrap()).unwrap();
-    let port = held.local_addr().unwrap().port();
+/// What keeps the missing proxy's port refusing until the test ends.
+type Held = (TcpListener, TcpStream, TcpStream);
+
+/// Options whose proxy is a port on this computer that refuses every connection, and what keeps
+/// it so until the test ends.
+///
+/// A port bound and let go at once was free for anything to take before the request came:
+/// another program's server, or this test's own connection, whose source port the system may
+/// pick (a connection to itself). Something then answered there, the tunnel failed with words of
+/// its own, and the failure was taken for `Unreachable` (seen once on Windows on ARM). A socket
+/// bound to the port but never listening keeps it, but macOS drops a connection to such a socket
+/// without answering (a timeout), where Linux and Windows refuse it. So the port is the local end
+/// of a connection made here: in use, so nothing can bind it or pick it as a source port, and
+/// connected elsewhere, so a connection to it matches no socket at all and every system refuses
+/// it (a reset).
+fn through_a_missing_proxy() -> (Held, mdm_engine::Options) {
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let near = TcpStream::connect(listener.local_addr().unwrap()).unwrap();
+    let (far, _) = listener.accept().unwrap();
+    let port = near.local_addr().unwrap().port();
+    let held = (listener, near, far);
     let net = mdm_tools::net(Proxy::Manual {
         url: format!("http://127.0.0.1:{port}"),
         login: None,
