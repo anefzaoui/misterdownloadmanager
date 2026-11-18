@@ -3219,7 +3219,7 @@ impl App {
                     v.show_sample_adaptive(tab == "runtime");
                 }
             }
-            // A sample playlist (#69), its quality by its place in the list: `video-playlist:7`.
+            // A sample playlist (#69), its quality by its place in the list: `video-playlist:8`.
             "video-playlist" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
@@ -3704,6 +3704,15 @@ impl App {
             agent_fallback: match (context.user_agent.is_some(), own) {
                 (true, Some(own)) => Some(own.to_owned()),
                 (_, None) => Some(mdm_engine::agent::IE11_USER_AGENT.to_owned()),
+                (false, Some(_)) => None,
+            },
+            // A site whose bot check refuses the browser's User-Agent and the browser-like
+            // connection too (#1422, SourceForge's): asked once more under MDM's own name, or
+            // the one set in Options when a browser handed the download over. Again, one the
+            // user set for every download is the user's choice: no other.
+            own_agent: match (context.user_agent.is_some(), own) {
+                (true, Some(own)) => Some(own.to_owned()),
+                (_, None) => Some(mdm_engine::agent::OWN_USER_AGENT.to_owned()),
                 (false, Some(_)) => None,
             },
             // Where the browser's own download of it ended: asked when the link itself is
@@ -6773,13 +6782,17 @@ impl App {
     }
 
     /// Batch download → OK: every address goes to the main download queue (IDM's default; its
-    /// queue selection panel is not built yet).
+    /// queue selection panel is not built yet), into Save to's folder if one was given, else
+    /// each into its category's folder.
     fn add_batch(&mut self, added: crate::batch::Added) {
         let mut ids = Vec::new();
         for url in added.urls {
             let name = mdm_engine::naming::file_name(None, &url);
             let category = Category::of(&name);
-            let dir = self.settings.category_dir(category, &self.downloads);
+            let dir = match &added.folder {
+                Some(folder) => folder.clone(),
+                None => self.settings.category_dir(category, &self.downloads),
+            };
             // Numbered on as it starts if the name is taken then (#743): no disk here.
             let dest = mdm_engine::naming::guess(&dir, &name);
             let id = self.push_item(
@@ -13877,6 +13890,73 @@ mod duplicate_tests {
             ]
         );
         assert!(replaced_files(&[], 1, true).is_none());
+    }
+}
+
+#[cfg(test)]
+mod add_batch_tests {
+    use super::*;
+
+    fn app() -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap(),
+        ));
+        let loaded = store::Loaded {
+            next_id: 1,
+            items: Vec::new(),
+            columns: None,
+            settings: Settings::default(),
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    fn added(folder: Option<&std::path::Path>) -> crate::batch::Added {
+        crate::batch::Added {
+            urls: [
+                "http://127.0.0.1:9/img01.jpg",
+                "http://127.0.0.1:9/part02.zip",
+            ]
+            .map(|u| url::Url::parse(u).unwrap())
+            .to_vec(),
+            login: None,
+            folder: folder.map(Into::into),
+        }
+    }
+
+    /// #1403: Batch download's OK without a folder puts each file in its category's folder, as
+    /// before; with one (Save to), every file of the batch goes there, named as before.
+    #[test]
+    fn a_batch_goes_to_its_folder_or_each_files_category_folder() {
+        let mut each = app();
+        each.add_batch(added(None));
+        assert_eq!(each.items.len(), 2);
+        for i in &each.items {
+            let dir = each.settings.category_dir(i.category, &each.downloads);
+            assert_eq!(i.dest.parent(), Some(dir.as_path()), "{:?}", i.dest);
+        }
+        assert_ne!(
+            each.items[0].dest.parent(),
+            each.items[1].dest.parent(),
+            "a picture and an archive: two categories' folders"
+        );
+
+        let folder = std::env::temp_dir().join("mdm-batch-1403");
+        let mut one = app();
+        one.add_batch(added(Some(&folder)));
+        let dests: Vec<_> = one.items.iter().map(|i| i.dest.clone()).collect();
+        assert_eq!(dests, [folder.join("img01.jpg"), folder.join("part02.zip")]);
+        assert!(!folder.exists(), "nothing made on the disk by OK");
     }
 }
 

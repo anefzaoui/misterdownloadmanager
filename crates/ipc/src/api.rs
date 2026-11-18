@@ -338,6 +338,11 @@ pub struct VideoChoice {
     /// about ("~532 MB"); otherwise it is the bytes of exactly the streams this downloads (#801).
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub approx: bool,
+    /// The most compatible choice (#1439): an H.264 picture with AAC sound in an MP4, which
+    /// every video editor, TV and phone plays; the menu says so beside its height. False from
+    /// an app older than the field.
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub compatible: bool,
 }
 
 /// [`VideoLookupAnswer::state`]'s values, and [`VideoLookupAnswer::reason`]'s.

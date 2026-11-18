@@ -765,8 +765,7 @@
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	عند تحديد هذا الخيار، يبقى MDM قيد التشغيل عند إغلاق النافذة: يختفي في منطقة الإشعارات (system tray) عند توفرها، أو يصغر إلى شريط المهام بخلاف ذلك، وتستمر التنزيلات؛ عند إلغاء تحديده، يؤدي الإغلاق إلى إنهاء MDM
 #. text in the Options window
 #. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
-#, machine
-	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	عند تحديد هذا الخيار، تُحفظ التنزيلات القادمة من نافذة خاصة في المتصفح في القائمة وتبقى موجودة عند إعادة تشغيل MDM؛ وعند إلغاء تحديده، تبقى في الذاكرة فقط وتختفي عند إغلاق MDM. لا تُحفظ ملفات تعريف الارتباط الخاصة بها أبدًا
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	عند تحديد هذا الخيار، تُحفظ التنزيلات القادمة من نافذة خاصة في المستعرض في القائمة وتبقى موجودة عند إعادة تشغيل MDM؛ وعند إلغاء تحديده، تبقى في الذاكرة فقط وتختفي عند إغلاق MDM. لا تُحفظ ملفات تعريف الارتباط الخاصة بها أبدًا
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 	Checked: {have} of {total} there	تم التحقق: {have} من {total} موجود
@@ -2366,6 +2365,14 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Morocco	المغرب
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is
+#, machine
+	Most compatible (H.264 + AAC)	الأكثر توافقا (H.264 + AAC)
+#. text in the Download video window
+#. a choice in the Download video window: the best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is; {height} is the resolution (1080p)
+#, machine
+	Most compatible (H.264 + AAC) · {height}	الأكثر توافقا (H.264 + AAC) · {height}
 #. button in a download's Properties window
 #. verb: move the file to another folder
 	Move	نقل
@@ -5243,6 +5250,10 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 extension	More options	المزيد من الخيارات
+#. text in the browser extension
+#. in the list under the download button over a video, after a quality's height (1080p): the H.264 video with AAC sound in an MP4, the file that plays in every video editor, TV and phone; short, about 20 characters at most
+#, machine
+extension	Most compatible	الأكثر توافقا
 #. text in the browser extension
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)

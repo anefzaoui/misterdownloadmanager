@@ -1,9 +1,9 @@
 ---
 name: Windows, Mac and Linux
-title: Download manager for Windows, with macOS and Linux builds
-headline: Made for Windows. On a Mac and Linux too.
-line: Stable on Windows 10 and 11, installed or portable; builds for Linux and macOS with every release.
-lede: MDM is built for 64-bit Windows 10 and 11, as an installer, a portable copy or a plain zip. Builds for Linux and macOS come with every release.
+title: Download manager for Windows and Linux, with macOS builds
+headline: Made for Windows and Linux. On a Mac too.
+line: Stable on Windows 10 and 11, installed or portable, and on Linux; macOS builds to try with every release.
+lede: MDM is built for 64-bit Windows 10 and 11, as an installer, a portable copy or a plain zip, and for Linux, checked on four desktops. Experimental builds for macOS come with every release too.
 description: Mister Download Manager runs on Windows 10 and 11, installed or portable, with Linux (AppImage, .deb, .rpm, .tar.gz) and macOS (.dmg) builds.
 group: app
 order: 340
@@ -47,12 +47,12 @@ written to the registry. Two things need the installer instead: starting with Wi
 taking downloads from the browser, since both go through the registry. [Carry MDM on a USB
 stick](guide-usb-stick.md) shows the set-up.
 
-## Mac and Linux: what you get today
+## Mac and Linux: what you get
 
-Today's files marked `-experimental` are for macOS 11 and later, on Apple Silicon or Intel, and
-for Linux on x86-64: an AppImage for most distributions, a `.deb` for Ubuntu, Debian, Mint and
-Pop!_OS, an `.rpm` for Fedora, openSUSE and RHEL, and a `.tar.gz` of the plain programs. Please
-[tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose), good
+For Linux on x86-64 (and ARM64 from the version after 0.5.2): an AppImage for most
+distributions, a `.deb` for Ubuntu, Debian, Mint and Pop!_OS, an `.rpm` for Fedora, openSUSE and
+RHEL, and a `.tar.gz` of the plain programs. For macOS 11 and later, on Apple Silicon or Intel,
+`.dmg` files still marked `-experimental`. Please [tell us how it went](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose), good
 or bad.
 
 There, MDM connects itself to your browsers at each start, has its tray icon, follows the
@@ -64,10 +64,8 @@ where it matters.
 
 ## Linux, checked on four desktops
 
-<!--@coming 0.5-->
-
-Linux won't be experimental any more: every change is now checked on a Linux desktop as well as
-on Windows. GNOME, KDE Plasma, Xfce and Cinnamon were checked window by window: the tray icon and
+Linux isn't experimental any more, since version 0.5.0: every change is checked on a Linux
+desktop as well as on Windows. GNOME, KDE Plasma, Xfce and Cinnamon were checked window by window: the tray icon and
 its menu, **Minimize to the notification area**, Dark Mode support following the desktop, and the
 browsers handing downloads over (Ubuntu's Snap Firefox, Google Chrome and Brave). A Wayland
 session runs MDM through XWayland, so menus open under their titles, on tiling compositors such

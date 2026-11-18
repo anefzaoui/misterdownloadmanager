@@ -2986,6 +2986,14 @@
 #. a country's name (where a download's server is)
 #, machine
 	Morocco	Maghribi
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is
+#, machine
+	Most compatible (H.264 + AAC)	Paling serasi (H.264 + AAC)
+#. text in the Download video window
+#. a choice in the Download video window: the best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is; {height} is the resolution (1080p)
+#, machine
+	Most compatible (H.264 + AAC) · {height}	Paling serasi (H.264 + AAC) · {height}
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -6313,7 +6321,6 @@ column	File Name	Nama Fail
 column	Last Try Date	Tarikh Cubaan Terakhir
 #. column title in the download list in the download list
 #. column title: how many peers a torrent is connected to now (seeders and leechers)
-#, machine
 column	Peers	Rakan
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
@@ -6323,8 +6330,7 @@ column	Q	Q
 column	Queue	Baris Gilir
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
-#, machine
-column	Share ratio	Nisbah kongsi
+column	Share ratio	Nisbah perkongsian
 #. column title in the download list in the download list
 #. noun: the file's size
 column	Size	Saiz
@@ -6340,7 +6346,6 @@ column	Time left	Masa tinggal
 column	Transfer rate	Kadar pemindahan
 #. column title in the download list in the download list
 #. column title: what a torrent sends to peers, bytes per second
-#, machine
 column	Upload speed	Kelajuan muat naik
 #. text in the browser extension
 #. in the menu under the download button over a video: the page is a list of videos (a playlist), whose videos are chosen in the app's window; keep the name Mister Download Manager as it is
@@ -6570,6 +6575,10 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
 extension	More options	Lagi pilihan
+#. text in the browser extension
+#. in the list under the download button over a video, after a quality's height (1080p): the H.264 video with AAC sound in an MP4, the file that plays in every video editor, TV and phone; short, about 20 characters at most
+#, machine
+extension	Most compatible	Paling serasi
 #. text in the browser extension
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -6871,12 +6880,10 @@ menu	&Add new download	&Tambah muat turun baharu
 #. menu command in the main window
 #. View → Window system: MDM chooses the window system itself at each start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	&Automatic	&Automatik
 #. menu command in the main window
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	&Classic	&Klasik
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -6944,13 +6951,11 @@ menu	&Scheduler and queues	&Penjadual dan baris gilir
 #. menu command in a download's progress window
 #. right-click menu of a download window's tab row: bring back the tabs taken off with "Hide tab"
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	&Show hidden tabs	Tunjuk tab ter&sembunyi
+menu	&Show hidden tabs	Tunjuk&kan tab tersembunyi
 #. menu command in the main window
 #. View → Text: letters drawn smooth, as Windows' modern apps draw them, anti-aliased at any size
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-menu	&Smooth	&Lancar
+menu	&Smooth	&Halus
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop All	&Hentikan semua
@@ -6972,17 +6977,14 @@ menu	&Video downloads	Muat turun &video
 #. menu command in the main window
 #. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	&Wayland	&Wayland
 #. menu command in the main window
 #. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	&Window system	Sistem &tetingkap
 #. menu command in the main window
 #. View → Window system: X11's windows, through XWayland in a Wayland session (names of Linux display systems, usually kept as is)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	&X11 (XWayland)	&X11 (XWayland)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7096,14 +7098,12 @@ menu	Delete from queue	Padam daripada baris gilir
 menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; what draws the windows and why: Direct3D 12 through Windows' own software renderer (WARP, keep the name), because this computer's graphics card has no Direct3D 12 driver
-#, machine
 menu	Direct3D 12 (WARP): this graphics card has no Direct3D 12 driver	Direct3D 12 (WARP): kad grafik ini tiada pemacu Direct3D 12
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 menu	Direct3D didn't start here: OpenGL draws	Direct3D tidak dapat dimulakan pada komputer ini: OpenGL digunakan untuk melukis
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D draws the windows through Windows' own software renderer (WARP) instead of a graphics card
-#, machine
 menu	Direct3D draws with Windows' software renderer (WARP)	Direct3D melukis dengan perender perisian Windows (WARP)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7123,7 +7123,6 @@ menu	E&xport	&Eksport
 menu	Edit queue	Edit baris gilir
 #. menu command in the main window
 #. View → Theme: a style theme's name (a white canvas, emerald fills, 6-point corners), a name: keep "Emerald" as written
-#, machine
 menu	Emerald	Emerald
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
@@ -7131,7 +7130,6 @@ menu	Extract	Ekstrak
 #. menu command in the main window
 #. right-click → Torrent submenu: open the selected torrent's file list
 #. the trailing ... means it opens a window: keep it
-#, machine
 menu	Files...	Fail...
 #. menu command in the main window
 menu	Find (Ctrl-F)	Cari (Ctrl-F)
@@ -7161,11 +7159,9 @@ menu	Hide drop target	Sembunyikan sasaran lepas
 menu	High contrast	Kontras tinggi
 #. menu command in the main window
 #. View → Window system: a greyed note; MDM's windows are Wayland's now
-#, machine
 menu	In use: Wayland	Sedang digunakan: Wayland
 #. menu command in the main window
 #. View → Window system: a greyed note; MDM's windows are X11's (through XWayland) now
-#, machine
 menu	In use: X11 (XWayland)	Sedang digunakan: X11 (XWayland)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
@@ -7187,7 +7183,6 @@ menu	Metal	Metal
 menu	Metal didn't start here: OpenGL draws	Metal tidak dapat dimulakan di sini: OpenGL digunakan untuk melukis
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal draws the windows through a software renderer instead of a graphics card
-#, machine
 menu	Metal draws with a software renderer	Metal melukis dengan perender perisian
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
@@ -7226,23 +7221,18 @@ menu	Open with...	Buka dengan...
 menu	OpenGL	OpenGL
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: it couldn't start on this computer
-#, machine
-menu	OpenGL didn't start here	OpenGL tidak bermula di sini
+menu	OpenGL didn't start here	OpenGL tidak dapat dimulakan di sini
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window froze inside the graphics card's driver while OpenGL drew
-#, machine
 menu	OpenGL froze inside the graphics driver here	OpenGL terhenti dalam pemacu grafik di sini
 #. menu command in the main window
 #. View → Draw with: a greyed note; this computer's OpenGL (its graphics driver) is too old, so MDM doesn't draw with it
-#, machine
-menu	OpenGL here is too old to draw MDM	OpenGL di sini terlalu lama untuk melukis MDM
+menu	OpenGL here is too old to draw MDM	OpenGL di sini terlalu usang untuk melukis MDM
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: its window stayed empty for 10 seconds, so MDM started again another way
-#, machine
 menu	OpenGL's first frame didn't show within 10 seconds	Bingkai pertama OpenGL tidak muncul dalam 10 saat
 #. menu command in the main window
 #. View → Draw with: a greyed note; why MDM no longer draws with OpenGL: MDM crashed or was closed while starting with it
-#, machine
 menu	OpenGL's last start ended before its first frame	Permulaan terakhir OpenGL berakhir sebelum bingkai pertamanya
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
@@ -7319,7 +7309,6 @@ menu	Support &MDM	Sokong &MDM
 #. menu command in the main window
 #. View menu: submenu choosing how the text is drawn (smooth or classic)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 menu	Te&xt	&Teks
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -7365,7 +7354,6 @@ menu	Vulkan	Vulkan
 menu	Vulkan didn't start here: OpenGL draws	Vulkan tidak bermula di sini: OpenGL digunakan untuk melukis
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan draws the windows through a software renderer instead of a graphics card
-#, machine
 menu	Vulkan draws with a software renderer	Vulkan melukis dengan perender perisian
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation

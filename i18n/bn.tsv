@@ -1134,7 +1134,6 @@
 	Croatia	ক্রোয়েশিয়া
 #. text in countries.rs
 #. a country's name (where a download's server is)
-#, machine
 	Cuba	কিউবা
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -2808,6 +2807,14 @@
 #. a country's name (where a download's server is)
 #, machine
 	Morocco	মরক্কো
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is
+#, machine
+	Most compatible (H.264 + AAC)	সর্বাধিক সামঞ্জস্যপূর্ণ (H.264 + AAC)
+#. text in the Download video window
+#. a choice in the Download video window: the best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is; {height} is the resolution (1080p)
+#, machine
+	Most compatible (H.264 + AAC) · {height}	সর্বাধিক সামঞ্জস্যপূর্ণ (H.264 + AAC) · {height}
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -6160,6 +6167,10 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #, machine
 extension	More options	আরও বিকল্প
 #. text in the browser extension
+#. in the list under the download button over a video, after a quality's height (1080p): the H.264 video with AAC sound in an MP4, the file that plays in every video editor, TV and phone; short, about 20 characters at most
+#, machine
+extension	Most compatible	সর্বাধিক সামঞ্জস্যপূর্ণ
+#. text in the browser extension
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
@@ -6290,8 +6301,7 @@ extension	This browser isn't ticked in Options → General.	এই ব্রা�
 extension	This computer	এই কম্পিউটার
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
-#, machine
-extension	This download's details were too large to hand over	এই ডাউনলোডের বিবরণ হস্তান্তর করার জন্য খুব বড় ছিল
+extension	This download's details were too large to hand over	এই ডাউনলোডের বিস্তারিত হস্তান্তর করার জন্য খুব বড় ছিল
 #. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	এই পেজের প্লেয়ার ভিডিওটি খণ্ড খণ্ড করে স্ট্রিম করে, তাই তালিকায় দেখানোর মতো কোনো ফাইল নেই। ভিডিওর উপর পয়েন্টার রেখে এর «ভিডিও ডাউনলোড করুন» বোতামটি ব্যবহার করুন।

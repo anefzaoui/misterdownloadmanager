@@ -2310,6 +2310,17 @@ fn edit_text_with(
             state.store(ui.ctx(), edit_id);
         }
     }
+    // A line longer than its box is laid out from its left, whatever the box's alignment (#1403).
+    // egui keeps a one-line box's caret in sight by scrolling its text, measured from the text's
+    // left edge at 0; a line aligned right (a right-to-left interface's boxes, a number) is laid
+    // out left of 0, so it never scrolled: its end stayed out of sight, and End, the arrows, a
+    // click or typing there went on out of view. A line that fits keeps its alignment: there is
+    // nothing to scroll.
+    let align = if align != egui::Align::LEFT && overflows(ui, value, password, inner.width()) {
+        egui::Align::LEFT
+    } else {
+        align
+    };
     let te = egui::TextEdit::singleline(value)
         .id(edit_id)
         .align(egui::Align2([align, egui::Align::TOP]))
@@ -2401,6 +2412,16 @@ fn edit_text_with(
         edit_menu(&resp, value, password, false);
     }
     resp
+}
+
+/// Is a one-line box's text (`password`: its dots, as egui shows them) wider than `width`?
+fn overflows(ui: &Ui, value: &str, password: bool, width: f32) -> bool {
+    let shown = if password {
+        "\u{2022}".repeat(value.graphemes(true).count())
+    } else {
+        value.to_owned()
+    };
+    text_width_font(ui.painter(), tahoma(), &shown) > width
 }
 
 /// Draws a text box with `add`, without the text typed with Alt held: Alt+letter is an access
@@ -5389,6 +5410,61 @@ pub fn picked(ctx: &egui::Context, key: &str) -> Option<std::path::PathBuf> {
     answer
 }
 
+/// A folder's box and its "..." (the system's folder dialog, [`start_pick`] by `key`) at the
+/// box's trailing end: a window's Save to row. `rc`: the box and the button together, on screen.
+/// `empty`: what an empty box means (Batch download's "Each file's category folder"), shown
+/// muted in it while it isn't typed in. The box's response, and whether a folder was chosen with
+/// "..." this frame (it is then in `value`).
+pub fn folder_box(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    key: &str,
+    empty: Option<&str>,
+) -> (Response, bool) {
+    const BUTTON: f32 = 22.0;
+    const GAP: f32 = 6.0;
+    // English places: the box first, "..." after it (on its left in a right-to-left interface).
+    let e = rect(rc);
+    let field = rect(Rect::from_min_max(
+        e.min,
+        pos2(e.right() - BUTTON - GAP, e.bottom()),
+    ));
+    let dots = rect(Rect::from_min_max(pos2(e.right() - BUTTON, e.top()), e.max));
+    let typed = edit_light(ui, field, value, true, false);
+    if let Some(hint) = empty
+        && value.is_empty()
+        && !typed.has_focus()
+    {
+        let p = ui.painter().clone();
+        let ef = rect(field);
+        fit(
+            ui,
+            &p,
+            ef.left() + 5.0,
+            baseline_in(field.top(), field.height()),
+            hint,
+            MUTED(),
+            ef.right() - 4.0,
+            ("folder-box-empty", key),
+        );
+    }
+    if button_light(ui, dots, "...", ButtonKind::Normal, false).clicked() {
+        let from = value.trim().to_owned();
+        start_pick(ui.ctx(), key, move || {
+            rfd::FileDialog::new().set_directory(from).pick_folder()
+        });
+    }
+    let chose = match picked(ui.ctx(), key) {
+        Some(dir) => {
+            *value = dir.display().to_string();
+            true
+        }
+        None => false,
+    };
+    (typed, chose)
+}
+
 /// A press gives a control the keys, as in Windows (egui focuses only text boxes on a click):
 /// the arrows work in a radio group clicked, Ctrl+C in a field clicked. Its ring shows only
 /// once the keyboard is used ([`keyboard_in_use`]).
@@ -7787,6 +7863,10 @@ mod tests {
         /// A dialog's access letter after the box (a button's "&Start"): Alt+it presses it; how
         /// many times it has.
         access: Option<(char, u32)>,
+        /// Drawn on a right-to-left surface (the box's text starts at its right).
+        rtl: bool,
+        /// Where the last pass drew the box's text on screen (its left and right ends).
+        text_span: Option<(f32, f32)>,
     }
 
     impl TextBoxRun {
@@ -7810,6 +7890,8 @@ mod tests {
                 t: 0.0,
                 lines,
                 access: None,
+                rtl: false,
+                text_span: None,
             };
             run.pass(Vec::new());
             run
@@ -7825,7 +7907,9 @@ mod tests {
             };
             let (rc, value, id, lines) = (self.rc, &mut self.value, &mut self.id, self.lines);
             let access = &mut self.access;
+            let rtl = self.rtl;
             let mut out = self.ctx.run_ui(raw, |ui| {
+                let _s = Surface::enter_if(rtl, 0.0, 600.0);
                 *id = Some(if lines {
                     multiline_light(ui, rc, value, "t1084", true).id
                 } else {
@@ -7838,6 +7922,15 @@ mod tests {
                 }
             });
             out.textures_delta.clear();
+            self.text_span = out.shapes.iter().find_map(|c| match &c.shape {
+                egui::Shape::Text(t) if t.galley.text() == self.value && !self.value.is_empty() => {
+                    Some((
+                        t.pos.x + t.galley.rect.left(),
+                        t.pos.x + t.galley.rect.right(),
+                    ))
+                }
+                _ => None,
+            });
             out.platform_output
                 .commands
                 .into_iter()
@@ -7927,6 +8020,69 @@ mod tests {
                 .expect("a caret");
             let (a, b) = (r.primary.index.0, r.secondary.index.0);
             (a.min(b), a.max(b))
+        }
+    }
+
+    /// #1403: a one-line box whose text is longer than the box follows its caret, in a
+    /// left-to-right interface and in a right-to-left one alike (there, its text aligned right,
+    /// it never scrolled: End, typing at the end and a drag past the edge went on out of sight).
+    /// A text that fits keeps to the box's start (the right, in a right-to-left interface).
+    #[test]
+    fn a_long_line_scrolls_to_its_caret_in_both_directions() {
+        use egui::PointerButton::Primary;
+        // A value typed in, not a text to translate.
+        let text = "https://downloads.example.com/archive/2026/november/collections/a-very-long-folder-name/img*.jpg";
+        let n = text.chars().count();
+        for rtl in [false, true] {
+            let mut b = TextBoxRun::new(text);
+            b.rtl = rtl;
+            b.pass(Vec::new());
+            let rc = b.rc;
+            let (left, right) = (rc.left() + 5.0, rc.right() - 5.0);
+            let mid = baseline_in(rc.top(), rc.height()) - 4.0;
+            // Unfocused, it shows its start; it runs past the box's end.
+            let (l, r) = b.text_span.expect("drawn");
+            assert_eq!(l, left, "rtl {rtl}");
+            assert!(r > rc.right(), "rtl {rtl}");
+            b.click(pos2(rc.center().x, mid), Primary);
+            let clicked = b.selection();
+            assert!(clicked.0 > 0 && clicked.0 < n, "rtl {rtl}: {clicked:?}");
+            // End: the caret at the end, the text's end in sight at the box's end.
+            b.typed(egui::Key::End, "", Default::default());
+            assert_eq!(b.selection(), (n, n), "rtl {rtl}");
+            let (l, r) = b.text_span.unwrap();
+            assert!(
+                l < rc.left() && (r - right).abs() < 1.0,
+                "rtl {rtl}: {l} {r}"
+            );
+            // Typed at the end: added there, still in sight.
+            b.typed(egui::Key::X, "X", Default::default());
+            assert!(b.value.ends_with("jpgX"), "rtl {rtl}");
+            assert!((b.text_span.unwrap().1 - right).abs() < 1.0, "rtl {rtl}");
+            // A click at the box's end puts the caret where the text there is: the end.
+            b.click(pos2(right - 1.0, mid), Primary);
+            assert_eq!(b.selection(), (n + 1, n + 1), "rtl {rtl}");
+            // Home: back to the start.
+            b.typed(egui::Key::Home, "", Default::default());
+            assert_eq!(b.selection(), (0, 0), "rtl {rtl}");
+            assert_eq!(b.text_span.unwrap().0, left, "rtl {rtl}");
+            // A drag past the box's end selects on, the text scrolling under it.
+            b.drag(pos2(rc.center().x, mid), pos2(rc.right() + 60.0, mid));
+            let (lo, hi) = b.selection();
+            assert!(lo > 0 && hi > clicked.1, "rtl {rtl}: {lo} {hi}");
+            assert!(b.text_span.unwrap().0 < left, "rtl {rtl}: scrolled");
+        }
+        // A short text keeps to the box's start: the left, or the right in a right-to-left one.
+        for rtl in [false, true] {
+            let mut b = TextBoxRun::new("https://example.com/a*.zip");
+            b.rtl = rtl;
+            b.pass(Vec::new());
+            let (l, r) = b.text_span.unwrap();
+            if rtl {
+                assert!((r - (b.rc.right() - 5.0)).abs() < 1.0, "{l} {r}");
+            } else {
+                assert_eq!(l, b.rc.left() + 5.0);
+            }
         }
     }
 

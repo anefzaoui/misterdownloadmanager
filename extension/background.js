@@ -774,9 +774,20 @@ function noteMaybe(d, found, sent) {
 function manifestKind(text) {
   const t = String(text).replace(/^﻿/, "").trimStart();
   if (t.startsWith("#EXTM3U")) return "hls";
-  // An XML declaration, comments, then the MPD element (with a namespace prefix or not).
-  if (/^(?:<\?xml[^>]*\?>\s*)?(?:<!--[\s\S]*?-->\s*)*<(?:[\w-]+:)?MPD[\s>/]/.test(t)) return "dash";
-  return "";
+  // An XML declaration, comments, then the MPD element (with a namespace prefix or not), read
+  // by a plain scan: each part is skipped once, whatever the text holds.
+  let rest = t;
+  if (rest.startsWith("<?xml")) {
+    const end = rest.indexOf("?>");
+    if (end < 0) return "";
+    rest = rest.slice(end + 2).trimStart();
+  }
+  while (rest.startsWith("<!--")) {
+    const end = rest.indexOf("-->", 4);
+    if (end < 0) return "";
+    rest = rest.slice(end + 3).trimStart();
+  }
+  return /^<(?:[\w-]+:)?MPD[\s>/]/.test(rest) ? "dash" : "";
 }
 
 // The start of a response (SNIFF_BYTES), fetched again with the site's cookies as `probe` does:

@@ -43,6 +43,10 @@ pub struct ResumeState {
     /// browser's User-Agent (#372): a resume asks the same way.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub asked_as_mdm: bool,
+    /// Only MDM's own name (`Options::own_agent`) got past the site's bot check (#1422): a
+    /// resume asks under it too.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub asked_as_own: bool,
     /// A POST download (`Options::post`, its body not stored) whose redirects turned it into
     /// a GET (301, 302, 303): `final_url` is asked with GET.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
@@ -67,6 +71,7 @@ impl ResumeState {
             content_type: None,
             checksum: None,
             asked_as_mdm: false,
+            asked_as_own: false,
             final_get: false,
             browser_like: false,
         }

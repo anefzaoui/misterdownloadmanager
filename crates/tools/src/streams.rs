@@ -602,6 +602,7 @@ pub fn fetch(
             opts.speak_as(ua.clone());
         }
         opts.agent_fallback = None;
+        opts.own_agent = None;
         opts.browser_final = None;
         opts.expected_type = None;
         opts.expected_size = None;
