@@ -527,6 +527,8 @@ enum Cmd {
     ChooseLanguage,
     Open,
     OpenWith,
+    /// Play an unfinished file: its download goes on in order, and its part file opens.
+    Preview,
     OpenFolder,
     Properties,
     /// Show or hide a list column (data slot).
@@ -8180,6 +8182,32 @@ impl App {
                     dialogs::open_download_with(&d, moved_away);
                 }
             }
+            Cmd::Preview => {
+                // A torrent: its files are on the disk under their own names; Download in order
+                // (#39) brings the start (and the ends, a video's index) first.
+                let torrent = target.and_then(|id| {
+                    let i = self.items.iter().find(|i| i.id == id)?;
+                    Some((id, i.dest.clone(), i.torrent.as_ref()?.in_order))
+                });
+                if let Some((id, dest, in_order)) = torrent {
+                    if !in_order {
+                        self.toggle_torrent_order(id, true);
+                    }
+                    dialogs::preview_torrent(&dest);
+                } else if let Some(i) = target.and_then(|id| self.items.iter().find(|i| i.id == id))
+                {
+                    // The engine's own name for the file once it knows it (a server-named one).
+                    let file = i
+                        .live
+                        .as_ref()
+                        .and_then(|l| l.dl.snapshot().file)
+                        .unwrap_or_else(|| i.dest.clone());
+                    if let Some(l) = &i.live {
+                        l.dl.set_sequential();
+                    }
+                    dialogs::preview_download(&file);
+                }
+            }
             Cmd::OpenFolder => {
                 if let Some(d) = dest {
                     dialogs::show_download_in_folder(&d, moved_away);
@@ -9464,10 +9492,13 @@ impl App {
                 && crate::extractq::archive_name(&i.file_name)
         });
         let torrent = it.and_then(|i| i.torrent.as_ref().map(|t| (i, t)));
+        let previewable = it.is_some_and(|i| !done && i.video.is_none() && i.downloaded > 0);
         let mut entries = vec![
             // i18n: verb: opens the downloaded file
             I("Open", Cmd::Open, done, false),
             I("Open with...", Cmd::OpenWith, done, false),
+            // i18n: verb: plays a file that is still downloading (it then downloads in order)
+            I("Preview", Cmd::Preview, previewable, false),
             // A torrent's folder is there while it downloads (#354).
             I(
                 "Open folder",

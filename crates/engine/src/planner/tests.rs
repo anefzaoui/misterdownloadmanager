@@ -22,6 +22,32 @@ fn check_invariants(p: &Planner) {
 }
 
 #[test]
+fn sequential_takes_the_next_chunk_from_the_front() {
+    let mut p = Planner::new(64 * MB, 16 * 1024);
+    p.set_sequential(true);
+    assert_eq!(
+        p.assign(0, None).map(|a| (a.from, a.to)),
+        Some((0, 64 * MB))
+    );
+    assert_eq!(
+        p.assign(1, None).map(|a| (a.from, a.to)),
+        Some((4 * MB, 64 * MB))
+    );
+    assert_eq!(
+        p.assign(2, None).map(|a| (a.from, a.to)),
+        Some((8 * MB, 64 * MB))
+    );
+    check_invariants(&p);
+    // Every connection gets work until the file is done, as without the order.
+    let mut w = 3;
+    while p.assign(w, None).is_some() {
+        check_invariants(&p);
+        w += 1;
+    }
+    assert!(w > 10);
+}
+
+#[test]
 fn first_worker_gets_whole_file_second_splits_in_half() {
     let mut p = Planner::new(100 * MB, MB);
     assert_eq!(

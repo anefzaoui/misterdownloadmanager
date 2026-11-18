@@ -19,6 +19,9 @@ pub type WorkerId = u32;
 /// Split points are rounded down to this boundary when possible.
 const ALIGN: u64 = 4096;
 
+/// In sequential order (Preview), how much a newly free connection takes ahead of the others.
+const SEQ_CHUNK: u64 = 4 << 20;
+
 /// One contiguous part of the file. Positions are byte offsets; ranges are half-open.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Segment {
@@ -81,6 +84,9 @@ pub struct Planner {
     min_split: u64,
     /// How long a connection may wait for its first byte before a free one takes its segment.
     preempt_after: std::time::Duration,
+    /// Download from the start onward (Preview): a split takes the next `SEQ_CHUNK` after the
+    /// first segment that has room, not the upper half of the largest.
+    sequential: bool,
     /// Sorted by `start`, contiguous, covering `[0, size)`.
     segs: Vec<Segment>,
 }
@@ -97,8 +103,14 @@ impl Planner {
             size,
             min_split: min_split.max(1),
             preempt_after: std::time::Duration::ZERO,
+            sequential: false,
             segs,
         }
+    }
+
+    /// Fetch the file from its start onward, so it can be played while it downloads.
+    pub fn set_sequential(&mut self, on: bool) {
+        self.sequential = on;
     }
 
     /// A pending connection is only taken over after waiting this long (about two of the
@@ -135,6 +147,7 @@ impl Planner {
             size,
             min_split: min_split.max(1),
             preempt_after: std::time::Duration::ZERO,
+            sequential: false,
             segs,
         })
     }
@@ -207,6 +220,26 @@ impl Planner {
         {
             let pre = self.segs[i].worker;
             return Some(self.give(i, w, pre));
+        }
+
+        // 3'. Sequential: the next chunk after the first segment with room for two; near the
+        //     end, where none has, the usual rule finishes the file.
+        if self.sequential
+            && let Some(i) = self
+                .segs
+                .iter()
+                .position(|s| s.unclaimed() >= 2 * SEQ_CHUNK.max(self.min_split))
+        {
+            let mid = self.segs[i].reserved + SEQ_CHUNK.max(self.min_split);
+            let end = self.segs[i].end;
+            self.segs[i].end = mid;
+            self.segs.insert(i + 1, fresh(mid, end, Some(w)));
+            return Some(Assignment {
+                from: mid,
+                to: end,
+                written: 0,
+                preempted: None,
+            });
         }
 
         // 3. Split the largest remaining segment in half.

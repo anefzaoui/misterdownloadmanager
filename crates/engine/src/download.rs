@@ -1410,6 +1410,7 @@ impl Download {
             held: Default::default(),
             checked: Default::default(),
             settle: Default::default(),
+            sequential: Default::default(),
         });
         let task = tokio::spawn(f(shared.clone(), cancel.clone()));
         Download {
@@ -1434,6 +1435,15 @@ impl Download {
 
     pub fn speed_limit(&self) -> Option<u64> {
         self.shared.limiter.get()
+    }
+
+    /// Fetch the rest of the file from its start onward (Preview: played while it downloads).
+    /// shortcut: not saved in the resume state, so a resumed download goes back to the usual order.
+    pub fn set_sequential(&self, on: bool) {
+        self.shared.sequential.store(on, Ordering::Relaxed);
+        if let Some(p) = self.shared.planner.lock().unwrap().as_mut() {
+            p.set_sequential(on);
+        }
     }
 
     pub async fn wait(self) -> Result<Outcome, Error> {
@@ -1535,6 +1545,8 @@ struct Shared {
     /// Stopped and still writing (`State::Stopping`): its place waits for it until `run` has
     /// let go of everything (#1328).
     settle: Mutex<Option<naming::Settling>>,
+    /// Fetch from the start onward (Preview), for a planner made after it was asked.
+    sequential: std::sync::atomic::AtomicBool,
 }
 
 impl Shared {
@@ -2448,6 +2460,7 @@ async fn run_fresh(
     let size = if let Some(size) = size {
         let mut planner = Planner::new(size, opts.min_split);
         planner.set_preempt_after(preempt_after);
+        planner.set_sequential(shared.sequential.load(Ordering::Relaxed));
         *shared.planner.lock().unwrap() = Some(planner);
         let mut saved = ResumeState::new(
             req.url.clone(),
@@ -2693,6 +2706,7 @@ async fn run_fresh_ftp(
     let size = if let Some(size) = size {
         let mut planner = Planner::new(size, opts.min_split);
         planner.set_preempt_after(preempt_after);
+        planner.set_sequential(shared.sequential.load(Ordering::Relaxed));
         *shared.planner.lock().unwrap() = Some(planner);
         // No password on disk: whoever resumes gives the login again.
         let url = crate::ftp::without_password(&req.url);
@@ -2897,6 +2911,7 @@ async fn run_resume(
     let mut planner = Planner::resume(saved.size, opts.min_split, &saved.segments)
         .map_err(|_| bad("segments do not cover the file"))?;
     planner.set_preempt_after(PREEMPT_MIN);
+    planner.set_sequential(shared.sequential.load(Ordering::Relaxed));
     *shared.planner.lock().unwrap() = Some(planner);
     {
         let mut v = shared.view.lock().unwrap();
