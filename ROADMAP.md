@@ -567,6 +567,10 @@ These ship in the next version.
 - ✅ A Docker image of the headless server is published with each release, at
   `ghcr.io/anefzaoui/misterdownloadmanager` (x86-64 only for now, thanks to
   [@kngkatak](https://github.com/kngkatak))
+- ✅ File names as browsers read them: a server's percent-encoded `filename="My%20Report.pdf"` is
+  `My Report.pdf`, as in Chrome and Firefox (it stayed encoded), and RFC 2047's encoded words are
+  read too; checked behind one and two redirects, relative ones included
+  ([#1427](https://github.com/anefzaoui/misterdownloadmanager/issues/1427))
 - ✅ Video qualities: **Most compatible (H.264 + AAC)**, the best H.264 picture with AAC sound in an
   MP4 that editors, older TVs and phones open as it is, in the Download video window, the menu over
   a video, a playlist's quality and `video-get -q compatible`; picked, never converted

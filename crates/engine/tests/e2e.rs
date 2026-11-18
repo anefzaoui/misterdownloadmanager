@@ -2951,3 +2951,115 @@ async fn a_scripts_video_is_named_by_what_it_is() {
     assert!(data == want, "the kept answer's first bytes are the file's");
     assert_eq!(out.path.file_name().unwrap(), "Lecture one.mp4");
 }
+
+/// #1427: a link whose first address only redirects (302) to the file, and whose name is only in
+/// the file's own answer: the download and Download File Info's look name it from that answer,
+/// as Chrome and Firefox do, through a relative `Location` and two redirects too. A plain
+/// `filename` percent-encoded (`My%20Report.pdf`) is decoded as both browsers decode it, and so
+/// is one in RFC 2047's encoded words.
+#[tokio::test]
+async fn a_name_only_the_redirected_answer_gives_is_the_files() {
+    let s = server("").await;
+    let enc = |u: &str| url::form_urlencoded::byte_serialize(u.as_bytes()).collect::<String>();
+    // The file, answering with this Content-Disposition, at an address that names nothing.
+    let file = |cd: &str| format!("gen/64K/download?seed=7&cdraw={}", enc(cd));
+    let both = "attachment; filename=\"fallback.bin\"; \
+                filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf";
+    let cases = [
+        // Both names: filename* wins, decoded (RFC 8187).
+        (
+            format!("/redirect?to={}", enc(&s.url(&format!("/{}", file(both))))),
+            "My Report – v2.pdf",
+        ),
+        // Only filename*.
+        (
+            format!(
+                "/redirect?to={}",
+                enc(&s.url(&format!(
+                    "/{}",
+                    file("attachment; filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf")
+                )))
+            ),
+            "My Report – v2.pdf",
+        ),
+        // Only a plain filename, percent-encoded: decoded, as Chrome and Firefox do.
+        (
+            format!(
+                "/redirect?to={}",
+                enc(&s.url(&format!(
+                    "/{}",
+                    file("attachment; filename=\"My%20Report.pdf\"")
+                )))
+            ),
+            "My Report.pdf",
+        ),
+        // The same unquoted.
+        (
+            format!(
+                "/redirect?to={}",
+                enc(&s.url(&format!(
+                    "/{}",
+                    file("attachment; filename=My%20Report%20v3.pdf")
+                )))
+            ),
+            "My Report v3.pdf",
+        ),
+        // A plain filename in RFC 2047's encoded words (both browsers read them).
+        (
+            format!(
+                "/redirect?to={}",
+                enc(&s.url(&format!(
+                    "/{}",
+                    file("attachment; filename=\"=?UTF-8?Q?My_Report_=E2=80=93_v6.pdf?=\"")
+                )))
+            ),
+            "My Report – v6.pdf",
+        ),
+        // A relative Location (`gen/…`, from `/redirect`).
+        (
+            format!("/redirect?to={}", enc(&file(both))),
+            "My Report – v2.pdf",
+        ),
+        // Two redirects.
+        (
+            format!(
+                "/redirect?to={}",
+                enc(&format!(
+                    "/redirect?to={}",
+                    enc(&format!("/{}", file(both)))
+                ))
+            ),
+            "My Report – v2.pdf",
+        ),
+    ];
+    for (path, want) in cases {
+        let url: url::Url = s.url(&path).parse().unwrap();
+        // Download File Info's look.
+        let info = mdm_engine::probe(url.clone(), Default::default(), &fast_opts())
+            .await
+            .unwrap_or_else(|e| panic!("{path}: {e}"));
+        assert_eq!(info.file_name, want, "the look at {path}");
+        assert!(
+            info.final_url.path().starts_with("/gen/"),
+            "{path}: ended at {}",
+            info.final_url
+        );
+        // The download the engine names (Add URL without its dialog, the command line).
+        let dir = tempfile::tempdir().unwrap();
+        let req = Request {
+            url,
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        };
+        let out = Download::start(req, fast_opts())
+            .wait()
+            .await
+            .unwrap_or_else(|e| panic!("{path}: {e}"));
+        assert_eq!(
+            out.path.file_name().unwrap(),
+            want,
+            "the download of {path}"
+        );
+        assert_eq!(out.size, 64 << 10);
+    }
+}
