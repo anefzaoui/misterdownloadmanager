@@ -1518,6 +1518,8 @@ These ship in the next version.
   private window's video never falls back to Cookies for video sites, after a restart either
 - ✅ CodeQL reads the Rust, the extension's JavaScript and the workflows on every pull request,
   every change to main and once a week; its results are in the Security tab
+- ✅ CodeQL's first findings went through one by one; it leaves out the local test server and the
+  test tooling, which never ship, and still reads everything that does
 - ✅ The log's test of a flush writing what was dropped holds on a slow machine too (it failed now
   and then on macOS)
 - ✅ Dependabot proposes updates to the workflows' actions, the Rust crates, the store tools and
