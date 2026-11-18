@@ -4,7 +4,7 @@
 //! its info dictionary.
 #![no_main]
 
-use std::path::Path;
+use std::path::Component;
 
 use libfuzzer_sys::fuzz_target;
 use mdm_torrent::librqbit;
@@ -33,14 +33,17 @@ fuzz_target!(|data: &[u8]| {
     }
 
     if let Ok(files) = mdm_torrent::files_from_bytes(data) {
-        // Every name a torrent may write was checked: each path is a safe relative one (padding
-        // files are never written).
+        // Every name a torrent may write was checked: each path is relative, of plain names
+        // (padding files are never written).
         for f in files.iter().filter(|f| !f.padding) {
-            assert!(
-                mdm_torrent::check_relative_path(Path::new(&f.path)).is_ok(),
-                "{:?}",
-                f.path
-            );
+            assert!(f.path.components().count() > 0, "{:?}", f.path);
+            for c in f.path.components() {
+                let Component::Normal(part) = c else {
+                    panic!("{:?} is not a plain relative path", f.path);
+                };
+                let part = part.to_string_lossy();
+                assert!(!part.contains(['/', '\\', '\0']), "{:?}", f.path);
+            }
         }
     }
     let _ = mdm_torrent::magnet_link(data);

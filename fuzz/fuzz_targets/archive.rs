@@ -87,10 +87,13 @@ fuzz_target!(|data: &[u8]| {
     if dest.exists() {
         let mut all = Vec::new();
         walk(&dest, &mut all);
-        for p in &all {
+        // The staging folder (`dest/.mdm-extract-<pid>-<n>`) is gone; an entry of such a name
+        // deeper down is the archive's own.
+        let staging = format!(".mdm-extract-{}-", std::process::id());
+        for p in all.iter().filter(|p| p.parent() == Some(dest.as_path())) {
             let name = p.file_name().unwrap().to_string_lossy();
             assert!(
-                !name.starts_with(".mdm-extract-"),
+                !name.starts_with(&staging),
                 "the staging folder was left: {p:?}"
             );
         }
