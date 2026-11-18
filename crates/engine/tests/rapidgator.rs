@@ -68,6 +68,14 @@ fn link(s: &LabServer, id: &str, expires: u64) -> Url {
         .unwrap()
 }
 
+/// The browser's link to the file `id`, just handed over: good for `ttl_ms` from the download's
+/// first request, however late that comes on a busy computer (`rapidgator::lasting_link`).
+fn fresh_link(s: &LabServer, id: &str, ttl_ms: u64) -> Url {
+    rapidgator::lasting_link(s.addr().port(), id, ttl_ms)
+        .parse()
+        .unwrap()
+}
+
 fn page(s: &LabServer, id: &str) -> String {
     rapidgator::file_page(s.addr().port(), id)
 }
@@ -114,7 +122,7 @@ async fn a_link_that_expires_mid_download_is_renewed_from_its_page() {
     let dir = tempfile::tempdir().unwrap();
     let out = Download::start(
         Request {
-            url: link(&s, &id, now_ms() + 700),
+            url: fresh_link(&s, &id, 700),
             headers: browser_headers(&s, true),
             dest: Destination::Dir(dir.path().to_owned()),
         },
@@ -244,7 +252,7 @@ async fn without_a_page_or_a_session_the_expired_link_says_so() {
         let tab = page_known.then(|| page(&s, &id));
         let err = Download::start(
             Request {
-                url: link(&s, &id, now_ms() + 300),
+                url: fresh_link(&s, &id, 300),
                 headers: browser_headers(&s, premium),
                 dest: Destination::Dir(dir.path().to_owned()),
             },
@@ -314,7 +322,7 @@ async fn a_fresh_link_on_another_server_with_its_own_copy_goes_on() {
     let dir = tempfile::tempdir().unwrap();
     let out = Download::start(
         Request {
-            url: link(&s, &id, now_ms() + 700),
+            url: fresh_link(&s, &id, 700),
             headers: browser_headers(&s, true),
             dest: Destination::Dir(dir.path().to_owned()),
         },

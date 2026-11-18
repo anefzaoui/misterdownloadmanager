@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ SourceForge downloads from the browser: when a site's bot check refuses the browser's
+  User-Agent and the browser-like connection too, MDM asks once more under its own name, with
+  the same cookies and referrer, and remembers the site for the session, resumes included
+  ([#1422](https://github.com/anefzaoui/misterdownloadmanager/issues/1422))
 - ✅ Add batch download: a long address scrolls to its caret in right-to-left languages (every
   one-line box did not), and a Save to row puts the whole batch in one folder
   ([#1403](https://github.com/anefzaoui/misterdownloadmanager/issues/1403))
@@ -574,6 +578,11 @@ These ship in the next version.
   Torrent settings: peers that take only uTP are reached, so torrents find as many peers as in
   other clients; off with a SOCKS5 proxy, held to a chosen network adapter
   ([#1384](https://github.com/anefzaoui/misterdownloadmanager/issues/1384))
+- ✅ Torrents keep uTP when the port picked for them is taken for UDP by another program: the
+  session listens on a port free for both TCP and UDP, where it went on with TCP alone and never
+  reached the peers that take only uTP. Two tests that failed now and then on Windows runners
+  because of it are steady, and a Rapidgator test whose link expired before a slow runner's first
+  request times the link from that request
 - ✅ A stream's own address — an HLS playlist (`.m3u8`) or DASH's (`.mpd`) — opens the video
   window like a page's: pasting a playlist downloads the video and merges it into one playable
   file, instead of saving the playlist itself
@@ -1530,6 +1539,14 @@ These ship in the next version.
   installer are pinned to exact versions and checked by their hashes; the MCP server's library
   (rmcp) is updated to 3.9.0
 - ✅ Dependency updates leave the font parser to move with the drawing library
+- ✅ Website: Linux is called supported everywhere (no longer "experimental" or "to try"; macOS
+  still is); the download page's **Get it safely** lists the official places to get MDM, how to
+  check a download's checksum and signature, and why Windows or an antivirus may warn; the home
+  page shows the browser stores' and GitHub's figures and what reviewers wrote, quoted exactly;
+  a new [Press and mentions](https://misterdownloadmanager.com/press.html) page lists articles and
+  videos by language, the fair criticism of the benchmark, and where MDM is available (official
+  first, community packages labelled); the benchmark's figures say they come from a test server
+  on the same PC
 
 ## Being worked on
 
