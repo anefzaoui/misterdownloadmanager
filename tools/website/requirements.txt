@@ -1,0 +1,7 @@
+# The website build's Python packages (pages.yml: pip install --require-hashes -r this file), at
+# exact versions with their files' SHA-256 hashes. markdown has no dependencies of its own on
+# Python 3.10 and later. To move a version: `pip download --no-deps markdown==<v>` for the wheel
+# and the sdist (or PyPI's JSON, https://pypi.org/pypi/markdown/<v>/json), `pip hash` each file.
+markdown==3.10 \
+    --hash=sha256:b5b99d6951e2e4948d939255596523444c0e677c669700b1d17aa4a8a464cb7c \
+    --hash=sha256:37062d4f2aa4b2b6b32aefb80faa300f82cc790cb949a35b8caede34f2b68c0e
