@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Video qualities: **Most compatible (H.264 + AAC)**, the best H.264 picture with AAC sound in an
+  MP4 that editors, older TVs and phones open as it is, in the Download video window, the menu over
+  a video, a playlist's quality and `video-get -q compatible`; picked, never converted
+  ([#1439](https://github.com/anefzaoui/misterdownloadmanager/issues/1439))
 - ✅ SourceForge downloads from the browser: when a site's bot check refuses the browser's
   User-Agent and the browser-like connection too, MDM asks once more under its own name, with
   the same cookies and referrer, and remembers the site for the session, resumes included

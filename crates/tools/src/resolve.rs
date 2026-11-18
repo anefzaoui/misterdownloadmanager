@@ -950,12 +950,131 @@ fn videos(v: &Video, can_merge: bool, audio: Option<&Format>) -> Vec<Choice> {
         .collect()
 }
 
-/// The choices, best first: the video lines ([`videos`]), files known only by their type, then
-/// the sound: as the site has it (each type it comes in), and converted to MP3, Opus or FLAC.
+/// The most compatible choice's label starts with this (the app translates it, #1439).
+pub const COMPATIBLE: &str = "Most compatible (H.264 + AAC)";
+
+/// The most compatible choice (#1439): an H.264 picture with AAC sound, in an MP4.
+pub fn is_compatible(c: &Choice) -> bool {
+    c.label.starts_with(COMPATIBLE)
+}
+
+/// An H.264 picture (`avc1.64002A`, `avc3`, `h264`), not Dolby Vision's (`dva1`).
+fn h264(vcodec: Option<&str>) -> bool {
+    picture_rank(vcodec) == 6
+}
+
+/// AAC sound (`mp4a.40.2`, `aac`).
+fn aac(acodec: Option<&str>) -> bool {
+    acodec.is_some_and(|c| {
+        let c = c.trim().to_ascii_lowercase();
+        c.starts_with("mp4a") || c.starts_with("aac")
+    })
+}
+
+/// yt-dlp's `-f` for the most compatible quality (#1439): the best H.264 picture joined to the
+/// best AAC sound when ffmpeg is there (`can_merge`), else the best file carrying both; at most
+/// `height` when given. A playlist's quality for every video, and a video's choice should the
+/// page no longer offer the very formats it was sized from. Never a conversion: a page without
+/// them has no such quality.
+pub fn compatible_selector(can_merge: bool, height: Option<u32>) -> String {
+    let at_most = height.map_or(String::new(), |h| format!("[height<={h}]"));
+    let file = format!("b[vcodec^=avc][acodec^=mp4a]{at_most}");
+    if can_merge {
+        format!("bv[vcodec^=avc]{at_most}+ba[acodec^=mp4a]/{file}")
+    } else {
+        file
+    }
+}
+
+/// Two choices that download the very same formats (`299+140/…`).
+fn same_download(a: &Choice, b: &Choice) -> bool {
+    a.selector.split('/').next() == b.selector.split('/').next()
+}
+
+/// The most compatible quality of video `v` ([`compatible`], #1439), whether its list has a line
+/// of its own or the best line is that very download (`video-get -q compatible`).
+pub fn compatible_choice(v: &Video, can_merge: bool) -> Option<Choice> {
+    compatible(v, can_merge, &sounds(v, can_merge))
+}
+
+/// The most compatible choice (#1439): YouTube's best qualities are AV1 or VP9 with Opus sound,
+/// which Premiere Pro, older TVs and some phones can't read even in an MP4. This is the tallest
+/// H.264 picture the page has (SDR) with its best AAC sound (`sounds`, best first, as yt-dlp's
+/// `ba` takes them; in stereo before surround), merged into an MP4; without ffmpeg, a file of
+/// both that is an MP4 already. Labelled `Most compatible (H.264 + AAC) · 1080p`. None when the
+/// page has no such pair: the streams are picked as they are, never converted.
+fn compatible(v: &Video, can_merge: bool, sounds: &[&Format]) -> Option<Choice> {
+    // The best AAC sound in stereo (or mono), what every player takes; surround (YouTube's 5.1
+    // AAC beside its stereo one) only when there is no other.
+    let aac_sounds = || sounds.iter().copied().filter(|a| aac(a.acodec.as_deref()));
+    let sound = aac_sounds()
+        .find(|a| a.channels.is_none_or(|c| c <= 2.0))
+        .or_else(|| aac_sounds().next());
+    let fits = |f: &&Format| {
+        f.video
+            && f.height.is_some()
+            && f.range.is_none()
+            && h264(f.vcodec.as_deref())
+            && match f.audio {
+                // A file of both: its own sound must be AAC, and without ffmpeg it is saved as
+                // it comes.
+                true => {
+                    aac(f.acodec.as_deref()) && (can_merge || f.ext.eq_ignore_ascii_case("mp4"))
+                }
+                false => can_merge && sound.is_some(),
+            }
+    };
+    // The tallest, then as a video line chooses among its formats: the frame rate, a picture
+    // alone (merged with the AAC sound), one that comes as a file, of an exact size, the bigger.
+    let f = v.formats.iter().filter(fits).max_by(|a, b| {
+        a.height
+            .cmp(&b.height)
+            .then(more(a.fps, b.fps, 0.0))
+            .then(more(a.preference, b.preference, 0.0))
+            .then((!a.audio).cmp(&!b.audio))
+            .then((!a.hls).cmp(&!b.hls))
+            .then((a.size.is_some() && !a.approx).cmp(&(b.size.is_some() && !b.approx)))
+            .then(a.size.unwrap_or(0).cmp(&b.size.unwrap_or(0)))
+            .then(more(a.tbr, b.tbr, 0.0))
+            .then(b.id.cmp(&a.id))
+    })?;
+    let h = f.height?;
+    let sound = sound.filter(|_| !f.audio);
+    let exact = match sound {
+        Some(a) => (plain_id(&f.id) && plain_id(&a.id)).then(|| format!("{}+{}", f.id, a.id)),
+        None => plain_id(&f.id).then(|| f.id.clone()),
+    };
+    let near = compatible_selector(can_merge, Some(h));
+    Some(Choice {
+        label: format!("{COMPATIBLE} · {h}p"),
+        selector: exact
+            .as_ref()
+            .map_or_else(|| near.clone(), |e| format!("{e}/{near}")),
+        ext: "mp4".into(),
+        size: f.size.map(|s| s + sound.and_then(|a| a.size).unwrap_or(0)),
+        approx: f.approx || exact.is_none() || sound.is_some_and(|a| a.approx || a.size.is_none()),
+        height: Some(h),
+        fps: f.fps.map(|x| x.round() as u32).filter(|x| *x > 0),
+        codec: Some("H.264".into()),
+        range: None,
+        kbps: None,
+    })
+}
+
+/// The choices, best first: the video lines ([`videos`]), the most compatible one second
+/// ([`compatible`], #1439), files known only by their type, then the sound: as the site has it
+/// (each type it comes in), and converted to MP3, Opus or FLAC.
 pub fn choices(v: &Video, can_merge: bool) -> Vec<Choice> {
     let sounds = sounds(v, can_merge);
     let best_audio = sounds.first().copied();
     let mut out = videos(v, can_merge, best_audio);
+    // The one that plays everywhere (#1439), right after the best; not twice when the best is
+    // that very download (a site whose every video is H.264 with AAC).
+    if let Some(c) = compatible(v, can_merge, &sounds)
+        && !out.first().is_some_and(|best| same_download(best, &c))
+    {
+        out.insert(1.min(out.len()), c);
+    }
     // Files whose resolution isn't known (generic sites, a stream's variants with a bitrate
     // only): offered by type, and by bitrate when there are several, best first. Audio
     // containers, and streams with no video codec named, aren't videos.
@@ -1093,10 +1212,12 @@ pub fn pick(choices: &[Choice], height: Option<u32>) -> Option<Picked<'_>> {
             instead_of: None,
         });
     };
+    // The most compatible line (#1439) is a codec's choice, not a height's.
     let videos = || {
         choices
             .iter()
             .enumerate()
+            .filter(|(_, c)| !is_compatible(c))
             .filter_map(|(i, c)| Some((i, c, c.height?)))
     };
     // The videos come highest first: the first at or below the height is the nearest below,
@@ -1132,6 +1253,11 @@ mod tests {
     const PORTRAIT: &str = include_str!("../tests/fixtures/youtube-4k60-portrait.json");
     const HDR: &str = include_str!("../tests/fixtures/youtube-4k60-hdr.json");
 
+    /// The choices but the most compatible one (#1439).
+    fn without_compatible(c: Vec<Choice>) -> Vec<Choice> {
+        c.into_iter().filter(|c| !is_compatible(c)).collect()
+    }
+
     /// The page's own pick (`format_id` beside the formats: yt-dlp's `bv*+ba` with ffmpeg).
     fn ytdlp_pick(page: &str) -> String {
         let v: serde_json::Value = serde_json::from_str(page).unwrap();
@@ -1144,7 +1270,8 @@ mod tests {
     #[test]
     fn the_size_shown_is_the_size_that_comes() {
         let v = parse(PORTRAIT.as_bytes()).unwrap();
-        let c = choices(&v, true);
+        // The most compatible line (#1439) has its own test.
+        let c = without_compatible(choices(&v, true));
         assert_eq!(c[0].label, "3840p · AV1 · 60 fps");
         assert!(
             c[0].selector
@@ -1201,7 +1328,7 @@ mod tests {
     #[test]
     fn codec_frame_rate_and_hdr_lines() {
         let v = parse(HDR.as_bytes()).unwrap();
-        let c = choices(&v, true);
+        let c = without_compatible(choices(&v, true));
         let top: Vec<(&str, &str)> = c
             .iter()
             .take(3)
@@ -1828,5 +1955,202 @@ mod tests {
         let c = choices(&v, false);
         assert!(is_audio(pick(&c, None).unwrap().choice));
         assert_eq!(pick(&c, Some(1080)), None);
+    }
+
+    /// `page`'s yt-dlp answer with only the formats `keep` keeps.
+    fn only(page: &str, keep: impl Fn(&serde_json::Value) -> bool) -> Video {
+        let mut v: serde_json::Value = serde_json::from_str(page).unwrap();
+        let formats: Vec<serde_json::Value> = v["formats"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|f| keep(f))
+            .cloned()
+            .collect();
+        v["formats"] = serde_json::Value::Array(formats);
+        parse(&serde_json::to_vec(&v).unwrap()).unwrap()
+    }
+
+    /// The codec yt-dlp names for a format's picture or sound (`""` when it says none).
+    fn codec<'a>(f: &'a serde_json::Value, key: &str) -> &'a str {
+        f[key].as_str().unwrap_or("")
+    }
+
+    /// #1439: YouTube's answers (yt-dlp 2026.08.19): after the best (AV1), the tallest H.264
+    /// picture with the AAC sound, the very formats yt-dlp is asked for, sized from their bytes,
+    /// then, should the page no longer offer them, the nearest H.264 and AAC at or below that
+    /// height. The same in the HDR video: its H.264 is SDR, and its AAC is the sound, not the
+    /// quieter DRC copy.
+    #[test]
+    fn the_most_compatible_is_h264_with_aac() {
+        let v = parse(PORTRAIT.as_bytes()).unwrap();
+        let c = choices(&v, true);
+        assert_eq!(c[0].label, "3840p · AV1 · 60 fps");
+        let m = &c[1];
+        assert!(is_compatible(m));
+        assert_eq!(m.label, "Most compatible (H.264 + AAC) · 1920p");
+        assert_eq!(
+            m.selector,
+            "299+140/bv[vcodec^=avc][height<=1920]+ba[acodec^=mp4a]\
+             /b[vcodec^=avc][acodec^=mp4a][height<=1920]"
+        );
+        assert_eq!(m.size, Some(117_587_291 + 2_934_637));
+        assert!(!m.approx);
+        assert_eq!(
+            (m.height, m.fps, m.codec.as_deref(), m.range.as_deref()),
+            (Some(1920), Some(60), Some("H.264"), None)
+        );
+        assert_eq!(m.ext, "mp4");
+        assert!(!is_audio(m) && holds_subtitles(m));
+        assert_eq!(c.iter().filter(|c| is_compatible(c)).count(), 1);
+        // Its formats are an H.264 picture and AAC sound, as yt-dlp lists them.
+        let raw: serde_json::Value = serde_json::from_str(PORTRAIT).unwrap();
+        let format = |id: &str| {
+            raw["formats"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|f| f["format_id"] == id)
+                .unwrap()
+                .clone()
+        };
+        assert!(codec(&format("299"), "vcodec").starts_with("avc1."));
+        assert_eq!(codec(&format("299"), "acodec"), "none");
+        assert!(codec(&format("140"), "acodec").starts_with("mp4a."));
+
+        let v = parse(HDR.as_bytes()).unwrap();
+        let c = choices(&v, true);
+        assert_eq!(c[0].codec.as_deref(), Some("AV1"));
+        assert_eq!(c[1].label, "Most compatible (H.264 + AAC) · 1080p");
+        assert!(c[1].selector.starts_with("299+140/"), "{}", c[1].selector);
+        assert_eq!(c[1].size, Some(57_607_872 + 1_640_706));
+
+        // Without ffmpeg YouTube has no file of both: no such line.
+        assert!(!choices(&v, false).iter().any(is_compatible));
+    }
+
+    /// #1439: a page without an H.264 picture, or without AAC sound, has no most compatible line:
+    /// nothing is converted.
+    #[test]
+    fn no_h264_with_aac_no_most_compatible() {
+        let h264 = |f: &serde_json::Value| codec(f, "vcodec").starts_with("avc");
+        let aac = |f: &serde_json::Value| codec(f, "acodec").starts_with("mp4a");
+        for page in [PORTRAIT, HDR] {
+            // AV1 and VP9 with Opus only.
+            let v = only(page, |f| !h264(f) && !aac(f));
+            let c = choices(&v, true);
+            assert!(c.iter().any(|c| c.height.is_some()), "videos are listed");
+            assert!(!c.iter().any(is_compatible));
+            // H.264 with Opus only; AAC with AV1 and VP9 only.
+            assert!(
+                !choices(&only(page, |f| !aac(f)), true)
+                    .iter()
+                    .any(is_compatible)
+            );
+            assert!(
+                !choices(&only(page, |f| !h264(f)), true)
+                    .iter()
+                    .any(is_compatible)
+            );
+        }
+        // An HDR H.264 picture isn't one, nor Dolby Vision's on H.264.
+        let json = r#"{"title": "T", "formats": [
+            {"format_id": "a", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "filesize": 10},
+            {"format_id": "h", "ext": "mp4", "height": 1080, "vcodec": "avc1.640028", "acodec": "none", "dynamic_range": "HDR10", "filesize": 100},
+            {"format_id": "d", "ext": "mp4", "height": 1080, "vcodec": "dva1.10.09", "acodec": "none", "filesize": 100}]}"#;
+        assert!(
+            !choices(&parse(json.as_bytes()).unwrap(), true)
+                .iter()
+                .any(is_compatible)
+        );
+    }
+
+    /// #1439: a file of both, H.264 and AAC in an MP4 (a stream's variants, YouTube's 360p), is
+    /// one with or without ffmpeg; one in another container only once ffmpeg makes it an MP4.
+    #[test]
+    fn the_most_compatible_file_of_both() {
+        let json = r#"{"title": "T", "formats": [
+            {"format_id": "hls-720", "ext": "mp4", "height": 720, "vcodec": "avc1.4D401F", "acodec": "mp4a.40.2", "protocol": "m3u8_native", "tbr": 2500},
+            {"format_id": "flv-1080", "ext": "flv", "height": 1080, "vcodec": "avc1.640028", "acodec": "mp4a.40.2", "filesize": 900},
+            {"format_id": "av1-1080", "ext": "mp4", "height": 1080, "vcodec": "av01.0.08M.08", "acodec": "opus", "filesize": 800}]}"#;
+        let v = parse(json.as_bytes()).unwrap();
+        let with = choices(&v, true);
+        let m = with.iter().find(|c| is_compatible(c)).unwrap();
+        assert_eq!(m.label, "Most compatible (H.264 + AAC) · 1080p");
+        assert!(m.selector.starts_with("flv-1080/"), "{}", m.selector);
+        let without = choices(&v, false);
+        let m = without.iter().find(|c| is_compatible(c)).unwrap();
+        assert_eq!(m.label, "Most compatible (H.264 + AAC) · 720p");
+        assert_eq!(
+            m.selector,
+            "hls-720/b[vcodec^=avc][acodec^=mp4a][height<=720]"
+        );
+        assert_eq!(m.ext, "mp4");
+    }
+
+    /// #1439: YouTube's surround AAC (258, 5.1) is the best sound of some videos (Big Buck
+    /// Bunny's, live 2026-11-18); the most compatible takes the stereo one (140), which every
+    /// player takes.
+    #[test]
+    fn the_most_compatible_sound_is_stereo() {
+        let page = r#"{"title": "T", "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "audio_channels": 2, "quality": 3, "filesize": 10},
+            {"format_id": "258", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "audio_channels": 6, "quality": 3, "filesize": 30},
+            {"format_id": "401", "ext": "mp4", "height": 2160, "vcodec": "av01.0.13M.08", "acodec": "none", "filesize": 300},
+            {"format_id": "299", "ext": "mp4", "height": 1080, "vcodec": "avc1.64002a", "acodec": "none", "filesize": 100}]}"#;
+        let c = choices(&parse(page.as_bytes()).unwrap(), true);
+        assert!(c[0].selector.starts_with("401+258/"), "{}", c[0].selector);
+        assert!(c[1].selector.starts_with("299+140/"), "{}", c[1].selector);
+        assert_eq!(c[1].size, Some(110));
+        // Only surround: that one.
+        let surround = page.replace(r#""audio_channels": 2"#, r#""audio_channels": 6"#);
+        let c = choices(&parse(surround.as_bytes()).unwrap(), true);
+        assert!(is_compatible(&c[1]) && c[1].selector.starts_with("299+258/"));
+    }
+
+    /// #1439: a page whose best is H.264 with AAC already has no second line for it; the command
+    /// line's `-q compatible` takes the best then.
+    #[test]
+    fn the_most_compatible_is_not_listed_twice() {
+        let page = r#"{"title": "T", "formats": [
+            {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "filesize": 10},
+            {"format_id": "137", "ext": "mp4", "height": 1080, "vcodec": "avc1.640028", "acodec": "none", "filesize": 100},
+            {"format_id": "136", "ext": "mp4", "height": 720, "vcodec": "avc1.4d401f", "acodec": "none", "filesize": 50}]}"#;
+        let v = parse(page.as_bytes()).unwrap();
+        let c = choices(&v, true);
+        assert!(!c.iter().any(is_compatible));
+        assert!(c[0].selector.starts_with("137+140/"));
+        let m = compatible_choice(&v, true).unwrap();
+        assert!(m.selector.starts_with("137+140/"));
+        assert!(same_download(&c[0], &m));
+        assert_eq!(m.label, "Most compatible (H.264 + AAC) · 1080p");
+    }
+
+    /// #1439: the most compatible line is never a height's pick: `-q 1080` and the window's
+    /// default take the video lines as before.
+    #[test]
+    fn a_height_never_picks_the_most_compatible() {
+        let v = parse(HDR.as_bytes()).unwrap();
+        let c = choices(&v, true);
+        assert_eq!(pick(&c, None).unwrap().index, 0);
+        let p = pick(&c, Some(1080)).unwrap();
+        assert!(!is_compatible(p.choice));
+        assert_eq!(p.choice.height, Some(1080));
+        assert_eq!(p.instead_of, None);
+    }
+
+    /// #1439: the selector for every video of a playlist, and a choice's nearest.
+    #[test]
+    fn the_most_compatible_selector() {
+        assert_eq!(
+            compatible_selector(true, None),
+            "bv[vcodec^=avc]+ba[acodec^=mp4a]/b[vcodec^=avc][acodec^=mp4a]"
+        );
+        assert_eq!(
+            compatible_selector(false, Some(720)),
+            "b[vcodec^=avc][acodec^=mp4a][height<=720]"
+        );
+        // A choice that names no exact height isn't moved to another one (video.rs, #94).
+        assert!(!compatible_selector(true, Some(1080)).contains("[height="));
     }
 }

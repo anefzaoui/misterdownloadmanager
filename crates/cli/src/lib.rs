@@ -145,8 +145,10 @@ enum Cmd {
         format: Option<String>,
         /// The video's height ("1080", "720p"): the best of that height, else of the nearest
         /// below it the page offers (else the nearest above), as `video-info` lists them.
-        #[arg(short, long, value_parser = parse_height)]
-        quality: Option<u32>,
+        /// "compatible": the most compatible, as the Download video window's "Most compatible
+        /// (H.264 + AAC)": the best H.264 picture with AAC sound, in an MP4 (never converted).
+        #[arg(short, long, value_parser = parse_quality)]
+        quality: Option<Quality>,
         /// Folder to save into.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
@@ -1553,7 +1555,28 @@ fn declared_note(d: &mdm_tools::declared::Declared) -> String {
     format!("the page declares its video: {}", d.address)
 }
 
-/// `video-get --quality`: a height, as "1080" or "1080p".
+/// `video-get --quality`: a height, or the most compatible quality (#1439).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Quality {
+    Height(u32),
+    /// The window's "Most compatible (H.264 + AAC)".
+    Compatible,
+}
+
+/// `video-get --quality`: a height, as "1080" or "1080p", or "compatible" (#1439).
+fn parse_quality(s: &str) -> Result<Quality, String> {
+    if s.trim().eq_ignore_ascii_case("compatible") {
+        return Ok(Quality::Compatible);
+    }
+    parse_height(s).map(Quality::Height).map_err(|_| {
+        format!(
+            "{:?} is not a height (such as 1080 or 720p) or \"compatible\"",
+            s.trim()
+        )
+    })
+}
+
+/// A height, as "1080" or "1080p".
 fn parse_height(s: &str) -> Result<u32, String> {
     let s = s.trim();
     let digits = s.strip_suffix(['p', 'P']).unwrap_or(s);
@@ -1588,16 +1611,47 @@ fn choice_line(c: &mdm_tools::resolve::Choice) -> String {
 }
 
 /// `video-get` without `-f` (#1240): the quality Download video starts on, or the one of the
-/// height asked, else its nearest ([`mdm_tools::resolve::pick`]), said on stderr (a `quality`
-/// event with `--json`). Its selector; or, with nothing to download, what the page offers.
+/// height asked, else its nearest ([`mdm_tools::resolve::pick`]), or the most compatible one
+/// (#1439), said on stderr (a `quality` event with `--json`). Its selector; or, with nothing to
+/// download, what the page offers.
 fn pick_quality(
     v: &mdm_tools::resolve::Video,
     choices: &[mdm_tools::resolve::Choice],
-    height: Option<u32>,
+    quality: Option<Quality>,
     merge: bool,
     json: bool,
 ) -> anyhow::Result<String> {
-    use mdm_tools::resolve::{is_audio, needs_merging, pick};
+    use mdm_tools::resolve::{compatible_choice, is_audio, needs_merging, pick};
+    // Its own line in the list, or the best when that is the very download (#1439).
+    if quality == Some(Quality::Compatible) {
+        let Some(c) = compatible_choice(v, merge) else {
+            let why = if needs_merging(v) && !merge {
+                "no H.264 video with AAC sound to give without ffmpeg: its pictures come apart \
+                 from their sound, and joining them needs ffmpeg (install-ffmpeg)"
+            } else {
+                "no H.264 video with AAC sound on that page, the most compatible quality \
+                 (nothing is converted)"
+            };
+            anyhow::bail!(NoFormat::new(why.to_owned(), v, choices));
+        };
+        if json {
+            emit(json!({
+                "event": "quality",
+                "label": c.label,
+                "format": c.selector,
+                "height": c.height,
+                "asked": "compatible",
+                "nearest": false,
+            }));
+        } else {
+            eprintln!("downloading {}", c.label);
+        }
+        return Ok(c.selector);
+    }
+    let height = match quality {
+        Some(Quality::Height(h)) => Some(h),
+        _ => None,
+    };
     let apart = needs_merging(v) && !merge;
     let picked = pick(choices, height)
         // The sound alone for a video only when the page has no picture at all.
@@ -1708,7 +1762,7 @@ impl std::fmt::Display for NoFormat {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         f.write_str(&self.why)?;
         if !self.choices.is_empty() {
-            f.write_str("\nthe page offers (-f, or --quality with a height):")?;
+            f.write_str("\nthe page offers (-f, or --quality with a height or compatible):")?;
             for c in &self.choices {
                 write!(f, "\n{}", choice_line(c))?;
             }
@@ -1962,11 +2016,16 @@ mod tests {
         assert!(matches!(
             cli.map(|c| c.cmd),
             Ok(Cmd::VideoGet {
-                quality: Some(720),
+                quality: Some(Quality::Height(720)),
                 format: None,
                 ..
             })
         ));
+        // #1439: the most compatible, by its name.
+        assert_eq!(parse_quality("compatible"), Ok(Quality::Compatible));
+        assert_eq!(parse_quality(" Compatible "), Ok(Quality::Compatible));
+        assert_eq!(parse_quality("1080p"), Ok(Quality::Height(1080)));
+        assert!(parse_quality("best").unwrap_err().contains("compatible"));
         // One or the other.
         assert!(Cli::try_parse_from([NAME, "video-get", "u", "-q", "720", "-f", "b"]).is_err());
     }
@@ -1988,7 +2047,7 @@ mod tests {
             "100022+30216/bv*[height=288]+ba/b[height=288]"
         );
         assert_eq!(
-            pick_quality(&v, &merged, Some(4320), true, true).unwrap(),
+            pick_quality(&v, &merged, Some(Quality::Height(4320)), true, true).unwrap(),
             "100022+30216/bv*[height=288]+ba/b[height=288]"
         );
         let apart = mdm_tools::resolve::choices(&v, false);
@@ -2006,6 +2065,27 @@ mod tests {
         let empty = mdm_tools::resolve::parse(br#"{"title": "T", "formats": []}"#).unwrap();
         let e = pick_quality(&empty, &[], None, true, true).unwrap_err();
         assert!(e.to_string().ends_with("the page lists no format"), "{e}");
+        // #1439: the most compatible: its H.264 picture (30016) with the AAC sound, not the AV1
+        // one the best is; a page without one says so, with what it offers.
+        let compatible = Some(Quality::Compatible);
+        assert_eq!(
+            pick_quality(&v, &merged, compatible, true, true).unwrap(),
+            "30016+30216/bv[vcodec^=avc][height<=288]+ba[acodec^=mp4a]\
+             /b[vcodec^=avc][acodec^=mp4a][height<=288]"
+        );
+        let e = pick_quality(&v, &apart, compatible, false, true).unwrap_err();
+        assert!(e.to_string().contains("needs ffmpeg"), "{e}");
+        let av1 = mdm_tools::resolve::parse(
+            br#"{"title": "A video", "formats": [
+            {"format_id": "251", "ext": "webm", "vcodec": "none", "acodec": "opus", "filesize": 1200000},
+            {"format_id": "399", "ext": "mp4", "height": 1080, "vcodec": "av01.0.08M.08", "acodec": "none", "filesize": 4890000}]}"#,
+        )
+        .unwrap();
+        let offered = mdm_tools::resolve::choices(&av1, true);
+        let e = pick_quality(&av1, &offered, compatible, true, true).unwrap_err();
+        let n = e.downcast_ref::<NoFormat>().expect("the formats said");
+        assert!(n.why.contains("no H.264 video with AAC sound"), "{}", n.why);
+        assert!(n.to_string().contains("1080p · AV1"), "{n}");
     }
 
     #[test]
