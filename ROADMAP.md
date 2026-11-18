@@ -566,6 +566,10 @@ These ship in the next version.
 
 - ✅ The browser extension remembers paired servers and switches between them and this computer
   with a click without re-pairing (thanks to [@kngkatak](https://github.com/kngkatak))
+- ✅ Download File Info: a name typed in **Save as** that is a file already there asks first
+  (the duplicate question: a numbered name, or overwrite it, replaced only once the download
+  completes), instead of numbering it without a word
+  ([#1447](https://github.com/anefzaoui/misterdownloadmanager/issues/1447))
 - ✅ A Docker image of the headless server is published with each release, at
   `ghcr.io/anefzaoui/misterdownloadmanager` (x86-64 only for now, thanks to
   [@kngkatak](https://github.com/kngkatak))
