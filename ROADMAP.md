@@ -1508,6 +1508,7 @@ These ship in the next version.
   private window's video never falls back to Cookies for video sites, after a restart either
 - ✅ The log's test of a flush writing what was dropped holds on a slow machine too (it failed now
   and then on macOS)
+- ✅ The lab VM scripts clear the temporary files an interrupted run left behind
 
 ## Being worked on
 
