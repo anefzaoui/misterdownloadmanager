@@ -21,6 +21,11 @@ function Open-VmAccount([string] $DefaultUser = 'mdm') {
         }
     }
     if (-not $pass) { throw "no VM account: set MDM_VM_USER and MDM_VM_PASSWORD" }
+    # A run stopped before its `finally` (a killed task, a closed window) left its folder and the
+    # password in it: those older than any run takes are removed first.
+    Get-ChildItem ([IO.Path]::GetTempPath()) -Directory -Filter 'mdm-vm-*' -ErrorAction SilentlyContinue |
+        Where-Object { $_.LastWriteTime -lt (Get-Date).AddHours(-12) } |
+        ForEach-Object { Remove-Item -Recurse -Force $_.FullName -ErrorAction SilentlyContinue }
     # A folder of its own under the user's temp folder (already private to the user), the file
     # named `sudo` so Install-VmSudo can copy it into the VM as it is.
     $dir = Join-Path ([IO.Path]::GetTempPath()) ("mdm-vm-" + [guid]::NewGuid().ToString('N'))

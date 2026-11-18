@@ -24,7 +24,8 @@ pub const LIMIT: f64 = 3.0;
 /// the machine only ever adds time to a run.
 const MIN_ROUNDS: usize = 3;
 
-/// Over the limit, each side runs again, up to this many times or for this long: a busy machine
+/// Over the limit, each side runs again, up to this many times or for this long (but always
+/// [`MIN_ROUNDS`] times): a busy machine
 /// pauses some runs, a square slows all of them. Light work, which a pause slows most, gets the
 /// most runs; work slow enough to fill the time alone (a square at the larger size) fails sooner.
 const MAX_ROUNDS: usize = 20;
@@ -71,7 +72,9 @@ pub fn assert_linear<T, R>(
             if rounds >= MIN_ROUNDS {
                 return;
             }
-        } else if start.elapsed() >= RETRY_FOR {
+        } else if rounds >= MIN_ROUNDS && start.elapsed() >= RETRY_FOR {
+            // Never before MIN_ROUNDS: a single run that one long pause held past RETRY_FOR was
+            // then the only run there was, and the pause was taken for a square.
             break;
         }
     }

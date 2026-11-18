@@ -241,6 +241,10 @@ librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev =
 librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
 librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
 librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "fab046042915709ab160626ebc59cce08de4d779" }
+# librqbit's uTP (#1384) as merged upstream after 0.7.0, until a release has it
+# (ikatson/librqbit-utp#3, #4): on Windows, one packet sent to a closed port (or one oversized
+# datagram) no longer stops uTP for the whole session, and ringbuf 0.5.
+librqbit-utp = { git = "https://github.com/ikatson/librqbit-utp.git", rev = "06e1c53c8df6edb2830d6aab64a6d4bed8479908" }
 ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "268d8e55dae56a536b672bdb75987021931dfcb2" }
 emath = { git = "https://github.com/anefzaoui/egui.git", rev = "268d8e55dae56a536b672bdb75987021931dfcb2" }
 epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "268d8e55dae56a536b672bdb75987021931dfcb2" }

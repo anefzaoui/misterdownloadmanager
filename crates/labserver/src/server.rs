@@ -7,6 +7,8 @@
 //!   for a form post that carries `FIELD=VALUE`
 //! - `GET /files/{name}` — a real file from `--files DIR` (Range too; 404 without it): archives
 //!   for the link grabber's tests
+//! - `GET /gh/*` — a fake GitHub (#1337, `github`): its API refusing for its rate limit, its
+//!   release pages, releases from `--files DIR/gh/`
 //! - `GET /stream.php`, `/remote_control.php` — a generated file a server's program sends, typed
 //!   by `type` and named by nothing but a `file=` value (#695, #800)
 //! - `GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]` — a redirect (302 unless `code` says)
@@ -23,6 +25,8 @@
 //!   pages, Docs exports, the sign-in page
 //! - MediaFire's on its own (`mediafire`): file pages, file hosts whose tickets expire, the
 //!   repair page
+//! - Rapidgator's on its own (`rapidgator`): a premium account's file pages, file hosts whose
+//!   links answer 404 once they expire
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
 //!
 //! Every request is logged except `/`, `/_log` and `/redirect` (the engine's tests read the log
@@ -52,7 +56,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{Faults, every, has_cookie, parse_flag};
-use crate::{debrid, drive, mediafire, pages, streams};
+use crate::{debrid, drive, mediafire, pages, rapidgator, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -451,6 +455,18 @@ impl LabServer {
             .route("/form/{size}", any(form))
             .route("/form/{size}/{*name}", any(form))
             .route("/files/{*name}", get(files))
+            // A fake GitHub: its API rate limited, its release pages (#1337, `github`).
+            .route("/gh/api/{*rest}", get(crate::github::api))
+            .route(
+                "/gh/web/{owner}/{repo}/releases",
+                get(crate::github::releases),
+            )
+            .route(
+                "/gh/web/{owner}/{repo}/releases/{*rest}",
+                get(crate::github::release),
+            )
+            .route("/gh/assets/{*name}", get(crate::github::asset))
+            .route("/gh/raw/{*name}", get(crate::github::raw))
             // A file a server's program sends (#695, #800).
             .route("/stream.php", get(script))
             .route("/remote_control.php", get(script))
@@ -677,8 +693,8 @@ impl Drop for LabServer {
 }
 
 /// Every address the routes don't have, by its Host header: MediaFire's host names go to the fake
-/// MediaFire (`mediafire`), the rest to the fake Google Drive (`drive`, which answers 404 for
-/// any host but Google's).
+/// MediaFire (`mediafire`), Rapidgator's to the fake Rapidgator (`rapidgator`), the rest to the
+/// fake Google Drive (`drive`, which answers 404 for any host but Google's).
 async fn by_host(
     State(shared): State<Arc<Shared>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
@@ -693,6 +709,10 @@ async fn by_host(
     if mediafire::HOSTS.contains(&name) {
         let (name, port) = (name.to_owned(), port.to_owned());
         return mediafire::handle(shared, peer, method, uri, headers, &name, &port).await;
+    }
+    if rapidgator::HOSTS.contains(&name) {
+        let (name, port) = (name.to_owned(), port.to_owned());
+        return rapidgator::handle(shared, peer, method, uri, headers, &name, &port).await;
     }
     drive::handle(State(shared), ConnectInfo(peer), method, uri, headers).await
 }
@@ -728,6 +748,7 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     html_after=N   the first N requests for this path and query get the file, every later one
                    the page (as html=1 with html_type and html_cd): a link that leads to a
                    waiting page once the download is resumed; vary seed= for a fresh link
+    node=N         another server's copy of the same file: its own ETag and date
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -756,6 +777,11 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
 GET /files/{name}   a real file from --files DIR (Range too; 404 without --files)
+GET /gh/api/*       a fake GitHub API, always refusing: 403, x-ratelimit-remaining: 0 (#1337)
+GET /gh/web/OWNER/REPO/releases/latest   302 to .../releases/tag/TAG (TAG: --files DIR/gh/OWNER/REPO/LATEST)
+GET /gh/web/OWNER/REPO/releases/download/TAG/FILE   302 to /gh/assets/OWNER/REPO/TAG/FILE (--files
+                    DIR/gh/OWNER/REPO/TAG/FILE, with Last-Modified), 404 when not there
+GET /gh/raw/OWNER/REPO/TAG/PATH   --files DIR/gh/OWNER/REPO/TAG/PATH (raw.githubusercontent.com's)
 GET /stream.php, /remote_control.php?id=N|file=NAME&size=1M&type=MIME|none&magic=mp4|webm|mp3&<as /gen>
     a generated file a server's program sends (#695, #800): no Content-Disposition, Content-Type
     video/mp4 (type= another, none for none at all), magic= its first bytes a media type's
@@ -873,6 +899,15 @@ MEDIAFIRE  a fake one for the engine's tests, on MediaFire's host names (resolve
                             /download_repair.php?qkey=KEY: a page linking the file's page
   download1589.mediafire.com  /t<expiry unix ms>/KEY/NAME (file params and faults as /gen):
                             the file until then, after it 302 to the repair page
+
+RAPIDGATOR  a fake one for the engine's tests, on Rapidgator's host names (resolve rapidgator.net
+    and s118.rapidgator.net to this server); hand-made pages (src/rapidgator.rs)
+  ids: lab<SIZE>t<TTL ms>[u<USES>][d], e.g. lab4Mt60000, lab1Mt60000u1d
+  rapidgator.net            /file/ID[/NAME.html]: with the cookie lab_session=premium, a page with
+                            a download link lasting TTL ms (answering USES requests), or with d a
+                            302 to it; without, a free account's page (no link)
+  s118.rapidgator.net       /download/<expiry unix ms>-<n>-ID (file params and faults as /gen):
+                            the file until then, 404 Not Found after
 
 HTTPS  --tls serves all of it over HTTPS as localhost, its certificate from a test CA made at start
   (written next to the log, or printed); --tls-cert picks a faulty one (a connection's fault,
@@ -1131,17 +1166,49 @@ async fn files(
     Path(name): Path<String>,
     headers: HeaderMap,
 ) -> Response {
-    let entry = shared.begin(peer, &method, format!("/files/{name}"), None, &headers, &[]);
-    let inside = !name
-        .split(['/', '\\'])
-        .any(|c| c == ".." || c.contains(':'));
-    let data = match shared.files.as_ref().filter(|_| inside) {
-        Some(dir) => tokio::fs::read(dir.join(&name)).await.ok(),
+    let path = shared.file_path(&name);
+    let logged = format!("/files/{name}");
+    serve_file(&shared, peer, &method, &headers, logged, path, false).await
+}
+
+impl Shared {
+    /// `name` (a relative path, `/`-separated) in `Config::files`; None without one, or for a
+    /// name that would leave it.
+    pub(crate) fn file_path(&self, name: &str) -> Option<std::path::PathBuf> {
+        let inside = !name
+            .split(['/', '\\'])
+            .any(|c| c == ".." || c.contains(':'));
+        self.files.as_ref().filter(|_| inside).map(|d| d.join(name))
+    }
+}
+
+/// The file at `path` (None: 404), whole or one range of it, logged as `logged`; with
+/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it).
+pub(crate) async fn serve_file(
+    shared: &Shared,
+    peer: SocketAddr,
+    method: &Method,
+    headers: &HeaderMap,
+    logged: String,
+    path: Option<std::path::PathBuf>,
+    last_modified: bool,
+) -> Response {
+    let entry = shared.begin(peer, method, logged, None, headers, &[]);
+    let data = match &path {
+        Some(path) => tokio::fs::read(path).await.ok(),
         None => None,
     };
     let Some(data) = data else {
         shared.record(entry, 404, "error");
         return (StatusCode::NOT_FOUND, "no such file\n").into_response();
+    };
+    let modified = match (&path, last_modified) {
+        (Some(path), true) => tokio::fs::metadata(path)
+            .await
+            .and_then(|m| m.modified())
+            .ok()
+            .map(httpdate::fmt_http_date),
+        _ => None,
     };
     let size = data.len() as u64;
     let range = entry
@@ -1166,8 +1233,11 @@ async fn files(
             format!("bytes {start}-{}/{size}", end - 1),
         );
     }
+    if let Some(modified) = modified {
+        builder = builder.header(header::LAST_MODIFIED, modified);
+    }
     shared.record(entry, status.as_u16(), "files");
-    if method == Method::HEAD {
+    if *method == Method::HEAD {
         return builder.body(Body::empty()).unwrap();
     }
     builder
@@ -1517,8 +1587,15 @@ pub(crate) async fn serve(
         Some("none") => None,
         _ => Some(format!("\"{seed:x}-{size:x}-{generation}\"")),
     };
-    let last_modified =
-        httpdate::fmt_http_date(UNIX_EPOCH + Duration::from_secs(1_790_000_000 + generation * 60));
+    // Another server's copy (`node`): its own ETag and date.
+    let node = f.node.unwrap_or(0);
+    let etag = etag.map(|e| match node {
+        0 => e,
+        n => format!("{}-n{n}\"", e.trim_end_matches('"')),
+    });
+    let last_modified = httpdate::fmt_http_date(
+        UNIX_EPOCH + Duration::from_secs(1_790_000_000 + generation * 60 + node * 12),
+    );
 
     // Decide the byte range to send.
     let if_range_ok = entry

@@ -168,6 +168,10 @@ pub struct Settings {
     /// closing quits). On by default, for existing lists too, in every copy. Only where a tray
     /// shows MDM's icon.
     pub close_to_tray: bool,
+    /// General: a private (incognito) window's downloads are written to the saved list like any
+    /// other, so they survive MDM closing or restarting (their cookies stay in memory, as every
+    /// download's do). Off by default: they live in memory only, as the browser keeps them.
+    pub keep_private_downloads: bool,
     /// General (#558): global keyboard shortcut to show or hide the main window (e.g. `Cmd+U`,
     /// `Shift+Cmd+M`, `Ctrl+Alt+D`); empty when none is set.
     #[serde(default)]
@@ -314,6 +318,10 @@ pub struct Settings {
     pub torrent_incoming: bool,
     pub torrent_upnp: bool,
     pub torrent_port: u16,
+    /// Torrent settings → "Connect over uTP too" (#1384): BitTorrent over UDP beside TCP, on by
+    /// default (a list saved before it has none: on too). It needs the listening port (librqbit's
+    /// uTP socket is the listener's), and a proxy turns it off (SOCKS5 carries TCP only).
+    pub torrent_utp: bool,
     pub torrent_dht: bool,
     pub torrent_lsd: bool,
     /// Torrents go through Proxy / Socks' SOCKS5 proxy (a manual `socks5://` one only).
@@ -453,6 +461,7 @@ impl Default for Settings {
             clipboard_autostart: true,
             minimize_to_tray: true,
             close_to_tray: true,
+            keep_private_downloads: false,
             show_hide_hotkey: String::new(),
             mv2_extensions: true,
             advanced_integration: true,
@@ -517,6 +526,7 @@ impl Default for Settings {
             torrent_incoming: true,
             torrent_upnp: true,
             torrent_port: 0,
+            torrent_utp: true,
             torrent_dht: true,
             torrent_lsd: true,
             torrent_proxy: false,
@@ -785,6 +795,7 @@ impl Settings {
             listen: self.torrent_incoming,
             upnp: self.torrent_upnp,
             port: (self.torrent_port != 0).then_some(self.torrent_port),
+            utp: self.torrent_utp,
             dht: self.torrent_dht,
             lsd: self.torrent_lsd,
             proxy,

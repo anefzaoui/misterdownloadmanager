@@ -18,8 +18,8 @@ pub use librqbit;
 pub use librqbit::PieceOrder;
 use librqbit::api::{Api, TorrentIdOrHash};
 use librqbit::{
-    AddTorrent, AddTorrentOptions, AddTorrentResponse, ConnectionOptions, ListenerOptions, Session,
-    SessionOptions, SessionPersistenceConfig, TorrentStatsState,
+    AddTorrent, AddTorrentOptions, AddTorrentResponse, ConnectionOptions, ListenerMode,
+    ListenerOptions, Session, SessionOptions, SessionPersistenceConfig, TorrentStatsState,
 };
 
 pub mod blocklist;
@@ -159,18 +159,86 @@ pub fn files_from_bytes(torrent: &[u8]) -> Result<Vec<FileEntry>, TorrentError> 
     Ok(entries)
 }
 
+/// Replace `path` with `bytes` through `tmp`, which is flushed to the disk before it takes
+/// `path`'s place (#1357): a crash or a power cut then leaves the old file or the new one, never
+/// an empty one (a rename can reach the disk before the data it names). Only off the window's
+/// thread: a sync can wait on everything else the disk has to write.
+fn replace_file(path: &Path, tmp: &Path, bytes: &[u8]) -> std::io::Result<()> {
+    use std::io::Write;
+    let written = std::fs::File::create(tmp).and_then(|mut f| {
+        f.write_all(bytes)?;
+        f.sync_all()
+    });
+    if let Err(e) = written {
+        let _ = std::fs::remove_file(tmp);
+        return Err(e);
+    }
+    std::fs::rename(tmp, path)
+}
+
+/// librqbit's list of the torrents it saved, in the session folder (its JSON store).
+const SESSION_FILE: &str = "session.json";
+
+/// Whether librqbit can read its saved list: JSON with a `torrents` object (#1357). An empty
+/// file (a write cut short by a crash or a power cut) or anything else stops the session from
+/// starting, every time.
+fn session_list_error(raw: &[u8]) -> Option<String> {
+    match serde_json::from_slice::<serde_json::Value>(raw) {
+        Err(e) => Some(e.to_string()),
+        Ok(doc) if !doc.get("torrents").is_some_and(|t| t.is_object()) => {
+            Some("no list of torrents in it".into())
+        }
+        Ok(_) => None,
+    }
+}
+
+/// Move a saved list librqbit can't read aside (#1357), kept beside it as
+/// `session.json.broken-<seconds since 1970>`, so the session starts with a new one. The list's
+/// torrents aren't lost: the app adds each again from its own .torrent when it starts, and its
+/// pieces already on disk are found again (their piece map, `<hash>.bitv`, stays where it is).
+fn set_aside_broken(db: &Path, len: usize, why: &str) {
+    let secs = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |d| d.as_secs());
+    let mut aside = db.with_file_name(format!("{SESSION_FILE}.broken-{secs}"));
+    let mut n = 1;
+    while aside.exists() {
+        aside = db.with_file_name(format!("{SESSION_FILE}.broken-{secs}-{n}"));
+        n += 1;
+    }
+    match std::fs::rename(db, &aside) {
+        Ok(()) => tracing::warn!(
+            "torrents: the saved torrent list {} could not be read ({len} bytes: {why}); kept as \
+             {}, and the session starts with a new one. The download list's torrents are added \
+             again from MDM's own .torrent copies when they start",
+            db.display(),
+            aside.display()
+        ),
+        Err(e) => tracing::warn!(
+            "torrents: the saved torrent list {} could not be read ({len} bytes: {why}), nor moved \
+             aside ({e})",
+            db.display()
+        ),
+    }
+}
+
 /// Before librqbit restores its saved torrents (`session.json` and a `<hash>.torrent` for each,
 /// in `dir`), take out the ones the name check refuses, and those saved without their .torrent
 /// (whose names it can't check): the app adds those again itself, through `add` and its own
 /// copy. The rest keep only the trackers MDM may contact (`trackers`, `proxied`), in the list and
-/// in their .torrent. Rewritten through a temporary file; a list that can't be read is left to
-/// librqbit.
+/// in their .torrent. Rewritten through a temporary file (`replace_file`). A list librqbit
+/// couldn't read is set aside (`set_aside_broken`, #1357); one that can't be opened is left to
+/// librqbit, whose error says why.
 fn prepare_saved(dir: &Path, proxied: bool) {
-    let db = dir.join("session.json");
-    let Ok(text) = std::fs::read_to_string(&db) else {
+    let db = dir.join(SESSION_FILE);
+    let Ok(raw) = std::fs::read(&db) else {
         return;
     };
-    let Ok(mut doc) = serde_json::from_str::<serde_json::Value>(&text) else {
+    if let Some(why) = session_list_error(&raw) {
+        set_aside_broken(&db, raw.len(), &why);
+        return;
+    }
+    let Ok(mut doc) = serde_json::from_slice::<serde_json::Value>(&raw) else {
         return;
     };
     let Some(saved) = doc.get_mut("torrents").and_then(|t| t.as_object_mut()) else {
@@ -193,7 +261,8 @@ fn prepare_saved(dir: &Path, proxied: bool) {
             return false;
         };
         if let Some(filtered) = trackers::filter_torrent(&bytes, proxied).filter(|f| *f != bytes) {
-            let _ = std::fs::write(&file, filtered);
+            let tmp = dir.join(format!("{hash}.torrent.mdm-tmp"));
+            let _ = replace_file(&file, &tmp, &filtered);
         }
         if let Some(list) = entry.get_mut("trackers").and_then(|t| t.as_array_mut()) {
             let before = list.len();
@@ -208,14 +277,7 @@ fn prepare_saved(dir: &Path, proxied: bool) {
     let Ok(out) = serde_json::to_string(&doc) else {
         return;
     };
-    let tmp = dir.join("session.json.mdm-tmp");
-    if std::fs::write(&tmp, &out).is_ok()
-        && std::fs::read_to_string(&tmp).is_ok_and(|back| back == out)
-    {
-        let _ = std::fs::rename(&tmp, &db);
-    } else {
-        let _ = std::fs::remove_file(&tmp);
-    }
+    let _ = replace_file(&db, &dir.join("session.json.mdm-tmp"), out.as_bytes());
 }
 
 /// The torrent's file names checked for this system (`names`); padding files are never written.
@@ -392,6 +454,10 @@ pub struct Config {
     /// BitTorrent clients do. Tests and test tools set 127.0.0.1: a listener on every address
     /// makes Windows Firewall ask about each new program (each new test build is one).
     pub listen_ip: Option<std::net::IpAddr>,
+    /// uTP (#1384): BitTorrent over UDP beside TCP, for the many peers that take only uTP.
+    /// librqbit's uTP socket is the listener's, so it is there only while the session listens
+    /// (`listen`, and no proxy: SOCKS5 carries TCP only), for outgoing connections too.
+    pub utp: bool,
     /// The DHT: finding peers without trackers.
     pub dht: bool,
     /// Local peer discovery (LSD): it tells the local network which torrents this computer has.
@@ -445,6 +511,7 @@ impl Config {
             upnp: true,
             port: None,
             listen_ip: None,
+            utp: true,
             dht: true,
             lsd: true,
             proxy: None,
@@ -598,14 +665,17 @@ fn saved_port(state_dir: &Path) -> Option<u16> {
 
 /// Where the session listens, in MDM's log (#650): a listener on every address is one IPv6
 /// socket that takes IPv4 too, which Windows' `netstat -p tcp` (IPv4 only) doesn't list.
-/// `saved_nodes`: the DHT started from the nodes the last session saved (`dht.json`).
-fn log_network(session: &Session, saved_nodes: bool) {
+/// `saved_nodes`: the DHT started from the nodes the last session saved (`dht.json`). `utp`:
+/// asked to listen on uTP too (when its UDP port can't be had, librqbit's error is just before:
+/// TCP only then).
+fn log_network(session: &Session, saved_nodes: bool, utp: bool) {
+    let on = if utp { "TCP and uTP (UDP)" } else { "TCP" };
     match session.listen_addr() {
         Some(a) if a.ip().is_unspecified() && a.is_ipv6() => tracing::info!(
-            "torrents: listening for peers on TCP port {} (every address, IPv4 and IPv6: {a})",
+            "torrents: listening for peers on {on} port {} (every address, IPv4 and IPv6: {a})",
             a.port()
         ),
-        Some(a) => tracing::info!("torrents: listening for peers on TCP {a}"),
+        Some(a) => tracing::info!("torrents: listening for peers on {on} {a}"),
         None => tracing::info!("torrents: not listening for peers (Torrent settings or a proxy)"),
     }
     if let Some(dht) = session.get_dht() {
@@ -619,6 +689,53 @@ fn log_network(session: &Session, saved_nodes: bool) {
             }
         );
     }
+}
+
+/// How the session listens (Torrent settings, #40): None when it doesn't (switched off, or a
+/// proxy: incoming connections would go around it). On `port` (0: any).
+fn listener(cfg: &Config, port: u16) -> Option<ListenerOptions> {
+    if !cfg.listen || cfg.proxy.is_some() {
+        return None;
+    }
+    let v4_only = cfg.bind.as_ref().is_some_and(Bind::v4_only);
+    // Offline (tests): loopback only. A set address: that one (with the port asked for). Bound
+    // to an address: on it.
+    let ip = cfg
+        .listen_ip
+        .or(match &cfg.bind {
+            Some(Bind::Address(ip)) => Some(*ip),
+            _ => None,
+        })
+        .or(cfg
+            .offline
+            .then_some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST)));
+    Some(ListenerOptions {
+        // TCP, and uTP on the same port (#1384): many peers (libtorrent's, µTorrent's) take
+        // only uTP. Its UDP socket is bound as the TCP one is, to the chosen adapter (its
+        // device, or its address: `bind_device_name`, `bind_ip`), and it is the one librqbit
+        // dials uTP peers from, so it leaves through that adapter too.
+        mode: if cfg.utp {
+            ListenerMode::TcpAndUtp
+        } else {
+            ListenerMode::TcpOnly
+        },
+        listen_addr: match ip {
+            Some(ip) => (ip, port).into(),
+            None => {
+                let mut any = ListenerOptions::default().listen_addr;
+                any.set_port(port);
+                any
+            }
+        },
+        // UPnP forwards a port on the router: not through a chosen adapter (#35), and
+        // pointless (and noisy) on loopback.
+        enable_upnp_port_forwarding: cfg.upnp
+            && !cfg.offline
+            && cfg.bind.is_none()
+            && ip.is_none_or(|i| !i.is_loopback()),
+        ipv4_only: cfg.offline || v4_only || ip.is_some_and(|i| i.is_ipv4()),
+        ..Default::default()
+    })
 }
 
 impl Torrents {
@@ -645,35 +762,12 @@ impl Torrents {
                 ..Default::default()
             })
         };
-        // Offline (tests): loopback only. A set address: that one (with the port asked for).
-        // Bound to an address: on it.
-        let ip = cfg.listen_ip.or(bind_ip).or(cfg
-            .offline
-            .then_some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST)));
-        let listening = cfg.listen && !proxied;
+        let listening = listener(&cfg, 0).is_some();
         // No port in Torrent settings: the one the last session listened on, when there was one.
         let saved = if listening && cfg.port.is_none() {
             saved_port(&cfg.state_dir)
         } else {
             None
-        };
-        let listen = |port: u16| ListenerOptions {
-            listen_addr: match ip {
-                Some(ip) => (ip, port).into(),
-                None => {
-                    let mut any = ListenerOptions::default().listen_addr;
-                    any.set_port(port);
-                    any
-                }
-            },
-            // UPnP forwards a port on the router: not through a chosen adapter (#35), and
-            // pointless (and noisy) on loopback.
-            enable_upnp_port_forwarding: cfg.upnp
-                && !cfg.offline
-                && cfg.bind.is_none()
-                && ip.is_none_or(|i| !i.is_loopback()),
-            ipv4_only: cfg.offline || v4_only || ip.is_some_and(|i| i.is_ipv4()),
-            ..Default::default()
         };
         // A list librqbit can't read would stop the session from starting: only a file there.
         let blocklist_url = cfg
@@ -684,7 +778,7 @@ impl Torrents {
             .map(|u| u.to_string());
         let opts = |port: u16| SessionOptions {
             dht: dht(),
-            listen: listening.then(|| listen(port)),
+            listen: listener(&cfg, port),
             connect: cfg.proxy.clone().map(|proxy| ConnectionOptions {
                 proxy_url: Some(proxy),
                 ..Default::default()
@@ -755,7 +849,7 @@ impl Torrents {
         // With its causes: "error starting listeners: error binding: …" says why (an adapter's
         // address gone, #143).
         .map_err(|e| engine(format!("{e:#}")))?;
-        log_network(&session, saved_nodes);
+        log_network(&session, saved_nodes, listening && cfg.utp);
         if let (true, None, Some(addr)) = (listening, cfg.port, session.listen_addr())
             && saved != Some(addr.port())
         {
@@ -1500,8 +1594,8 @@ mod tests {
     }
 
     /// #143: a session bound to an address (Windows' way of holding it to a network adapter)
-    /// sends everything from that address: its listener, outgoing peer connections, the DHT, UDP
-    /// and HTTP trackers. 127.0.0.2 stands for the adapter's address: Windows and Linux route
+    /// sends everything from that address: its listener, outgoing peer connections (TCP and uTP,
+    /// #1384), the DHT, UDP and HTTP trackers. 127.0.0.2 stands for the adapter's address: Windows and Linux route
     /// all of 127.0.0.0/8 to loopback (macOS only 127.0.0.1, so not there).
     #[cfg(not(target_os = "macos"))]
     #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
@@ -1534,6 +1628,8 @@ mod tests {
         )
         .await;
         let other_peer = Recorder::tcp(b"").await;
+        // A peer on UDP only: TCP refused, then uTP's first packet.
+        let utp_peer = Recorder::udp().await;
         let leecher = Torrents::start(Config {
             upnp: false,
             lsd: false,
@@ -1558,7 +1654,7 @@ mod tests {
                 Some(AddTorrentOptions {
                     output_folder: Some(out.to_string_lossy().into_owned()),
                     overwrite: true,
-                    initial_peers: Some(vec![seed_addr, other_peer.addr]),
+                    initial_peers: Some(vec![seed_addr, other_peer.addr, utp_peer.addr]),
                     trackers: Some(vec![
                         format!("udp://{}/announce", udp_tracker.addr),
                         format!("http://{}/announce", http_tracker.addr),
@@ -1572,7 +1668,7 @@ mod tests {
         let deadline = std::time::Instant::now() + Duration::from_secs(30);
         loop {
             let done = leecher.stats(&h2).unwrap().phase == Phase::Finished;
-            let all = [&dht, &udp_tracker, &http_tracker, &other_peer]
+            let all = [&dht, &udp_tracker, &http_tracker, &other_peer, &utp_peer]
                 .iter()
                 .all(|r| !r.seen().is_empty());
             if done && all {
@@ -1580,11 +1676,12 @@ mod tests {
             }
             assert!(
                 std::time::Instant::now() < deadline,
-                "done {done}; dht {:?} udp {:?} http {:?} peer {:?}",
+                "done {done}; dht {:?} udp {:?} http {:?} peer {:?} uTP peer {:?}",
                 dht.seen(),
                 udp_tracker.seen(),
                 http_tracker.seen(),
-                other_peer.seen()
+                other_peer.seen(),
+                utp_peer.seen()
             );
             tokio::time::sleep(Duration::from_millis(100)).await;
         }
@@ -1599,6 +1696,7 @@ mod tests {
             ("the UDP tracker", &udp_tracker),
             ("the HTTP tracker", &http_tracker),
             ("a peer", &other_peer),
+            ("a uTP peer", &utp_peer),
         ] {
             let seen = r.seen();
             assert!(
@@ -1831,6 +1929,115 @@ mod tests {
         assert!(!t.has(&lost), "the one without its .torrent is taken out");
         assert!(!dir.join(format!("{bad_hash}.torrent")).exists());
         t.stop().await;
+    }
+
+    /// #1357: a saved list librqbit can't read (empty after a crash or a power cut, or garbage)
+    /// no longer stops every session from starting: it is kept beside, as
+    /// `session.json.broken-<seconds>`, and the session starts with a new one. The torrent,
+    /// added again from its .torrent as the app does, finds its pieces on disk; the new list is
+    /// saved and read back at the next start.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_broken_saved_list_is_set_aside() {
+        async fn finished(t: &Torrents, hash: &str, what: &str) {
+            let deadline = std::time::Instant::now() + Duration::from_secs(30);
+            loop {
+                let s = t.stats(hash).unwrap();
+                if s.phase == Phase::Finished && s.done == s.total {
+                    return;
+                }
+                assert!(std::time::Instant::now() < deadline, "{what}: {s:?}");
+                tokio::time::sleep(Duration::from_millis(50)).await;
+            }
+        }
+        // RUST_LOG=mdm_torrent=warn shows the warning (the PR's log excerpt).
+        let _ = tracing_subscriber::fmt()
+            .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+            .with_test_writer()
+            .try_init();
+        let mut garbage = b"{\"torrents\":{\"0\":{\"info_hash\":\"ab".to_vec();
+        garbage.extend([0u8; 64]);
+        for (what, broken) in [
+            ("empty", Vec::new()),
+            ("garbage", garbage),
+            ("no list", b"{}".to_vec()),
+        ] {
+            let tmp = tempfile::tempdir().unwrap();
+            let state = tmp.path().join("state");
+            let data = tmp.path().join("data").join("set");
+            std::fs::create_dir_all(&data).unwrap();
+            let bytes: Vec<u8> = (0..200_000u32).map(|i| (i % 241) as u8).collect();
+            std::fs::write(data.join("a.bin"), &bytes).unwrap();
+            let torrent = make_torrent(&data).await;
+
+            let t = Torrents::start(offline(&state)).await.unwrap();
+            let hash = t
+                .add(&torrent, &data, None, Vec::new(), false)
+                .await
+                .unwrap();
+            finished(&t, &hash, what).await;
+            t.stop().await;
+            let dir = state.join("session");
+            let db = dir.join(SESSION_FILE);
+            assert!(db.is_file() && dir.join(format!("{hash}.bitv")).is_file());
+
+            std::fs::write(&db, &broken).unwrap();
+            let t = Torrents::start(offline(&state))
+                .await
+                .unwrap_or_else(|e| panic!("{what}: the session starts: {e}"));
+            assert!(!t.has(&hash), "{what}: a new list, without it");
+            let aside: Vec<PathBuf> = std::fs::read_dir(&dir)
+                .unwrap()
+                .map(|e| e.unwrap().path())
+                .filter(|p| {
+                    p.file_name()
+                        .and_then(|n| n.to_str())
+                        .is_some_and(|n| n.starts_with("session.json.broken-"))
+                })
+                .collect();
+            assert_eq!(aside.len(), 1, "{what}: kept beside: {aside:?}");
+            assert_eq!(
+                std::fs::read(&aside[0]).unwrap(),
+                broken,
+                "{what}: as it was"
+            );
+
+            // Added again as the app does: its pieces are found on disk, nothing to fetch.
+            let again = t
+                .add(&torrent, &data, None, Vec::new(), false)
+                .await
+                .unwrap();
+            assert_eq!(again, hash);
+            finished(&t, &hash, what).await;
+            t.stop().await;
+            assert_eq!(std::fs::read(data.join("a.bin")).unwrap(), bytes);
+
+            // The new list works: the next start restores the torrent from it.
+            let t = Torrents::start(offline(&state)).await.unwrap();
+            assert!(t.has(&hash), "{what}: restored from the new list");
+            t.stop().await;
+        }
+    }
+
+    /// A file replaced through `replace_file` has the new bytes, and no temporary file is left.
+    #[test]
+    fn files_are_replaced_whole() {
+        let dir = tempfile::tempdir().unwrap();
+        let (path, tmp) = (dir.path().join("f.json"), dir.path().join("f.json.tmp"));
+        std::fs::write(&path, b"old").unwrap();
+        replace_file(&path, &tmp, b"new").unwrap();
+        assert_eq!(std::fs::read(&path).unwrap(), b"new");
+        assert!(!tmp.exists());
+        assert!(session_list_error(b"{\"torrents\":{}}").is_none());
+        for broken in [
+            &b""[..],
+            b"   ",
+            b"\0\0\0",
+            b"[]",
+            b"{\"torrents\":[]}",
+            b"{\"torr",
+        ] {
+            assert!(session_list_error(broken).is_some(), "{broken:?}");
+        }
     }
 
     /// #40: a kept torrent keeps only the trackers MDM may contact, in session.json and in its
@@ -2986,6 +3193,207 @@ mod tests {
         assert_eq!(seen[0].path, PathBuf::from("renamed_video.mp4"));
 
         resumed.stop().await;
+        seeder.stop().await;
+    }
+
+    /// #1384: what the session listens on, as Torrent settings say: TCP and uTP by default, on
+    /// the adapter's address or device when one is chosen, nothing with a proxy (SOCKS5 carries
+    /// TCP only, and librqbit's uTP socket is the listener's: no listener, no uTP at all).
+    #[test]
+    fn the_listener_follows_the_settings() {
+        use std::net::IpAddr;
+        let dir = PathBuf::from("state");
+        let utp = |l: &ListenerOptions| matches!(l.mode, ListenerMode::TcpAndUtp);
+
+        let default = listener(&Config::new(dir.clone()), 51413).expect("listens");
+        assert!(utp(&default), "{default:?}");
+        assert!(default.listen_addr.ip().is_unspecified());
+        assert_eq!(default.listen_addr.port(), 51413);
+        assert!(default.enable_upnp_port_forwarding && !default.ipv4_only);
+
+        let off = Config {
+            utp: false,
+            ..Config::new(dir.clone())
+        };
+        let off = listener(&off, 0).unwrap();
+        assert!(matches!(off.mode, ListenerMode::TcpOnly), "{off:?}");
+
+        let proxied = Config {
+            proxy: Some("socks5://127.0.0.1:1080".into()),
+            ..Config::new(dir.clone())
+        };
+        assert!(listener(&proxied, 0).is_none(), "no listener, so no uTP");
+        let not_listening = Config {
+            listen: false,
+            ..Config::new(dir.clone())
+        };
+        assert!(listener(&not_listening, 0).is_none());
+
+        // Windows: on the adapter's address, IPv4 only, no UPnP.
+        let ip: IpAddr = Ipv4Addr::new(10, 8, 0, 2).into();
+        let address = listener(
+            &Config {
+                bind: Some(Bind::Address(ip)),
+                ..Config::new(dir.clone())
+            },
+            0,
+        )
+        .unwrap();
+        assert!(utp(&address));
+        assert_eq!(address.listen_addr.ip(), ip);
+        assert!(address.ipv4_only && !address.enable_upnp_port_forwarding);
+
+        // Linux and macOS: on every address, the device bound by the session
+        // (`bind_device_name`, which librqbit gives the uTP socket too).
+        let device = listener(
+            &Config {
+                bind: Some(Bind::Device {
+                    name: "tun0".into(),
+                    v4_only: true,
+                }),
+                ..Config::new(dir.clone())
+            },
+            0,
+        )
+        .unwrap();
+        assert!(utp(&device));
+        assert!(device.ipv4_only && !device.enable_upnp_port_forwarding);
+
+        // Tests and test tools: loopback.
+        let offline = listener(&offline(&dir), 0).unwrap();
+        assert!(utp(&offline));
+        assert_eq!(offline.listen_addr.ip(), IpAddr::from(Ipv4Addr::LOCALHOST));
+        assert!(!offline.enable_upnp_port_forwarding);
+    }
+
+    /// #1384: a peer that takes only uTP (as many libtorrent and uTorrent peers do) is reached
+    /// and downloaded from, also after a uTP packet went to a closed port first (on Windows the
+    /// "port unreachable" that comes back used to stop uTP for the whole session); with uTP off
+    /// in Torrent settings it isn't reached at all.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_peer_on_utp_only_is_reached() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        let data: Vec<u8> = (0..600_000u32).map(|i| (i % 239) as u8).collect();
+        std::fs::write(src.join("a.bin"), &data).unwrap();
+        let torrent = make_torrent(&src).await;
+        // The seeder: librqbit itself, on uTP only.
+        let seeder = Session::new_with_opts(
+            tmp.path().join("s1"),
+            SessionOptions {
+                dht: None,
+                disable_trackers: true,
+                disable_local_service_discovery: true,
+                ipv4_only: true,
+                listen: Some(ListenerOptions {
+                    mode: ListenerMode::UtpOnly,
+                    listen_addr: (Ipv4Addr::LOCALHOST, 0).into(),
+                    ipv4_only: true,
+                    ..Default::default()
+                }),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+        let seeding = seeder
+            .add_torrent(
+                AddTorrent::from_bytes(torrent.clone()),
+                Some(AddTorrentOptions {
+                    output_folder: Some(src.to_string_lossy().into_owned()),
+                    overwrite: true,
+                    ..Default::default()
+                }),
+            )
+            .await
+            .unwrap()
+            .into_handle()
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while !seeding.stats().finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        let seed_addr = seeder.listen_addr().expect("seeder listens");
+
+        // uTP off: TCP is refused, and nothing else is tried.
+        let tcp_only = Torrents::start(Config {
+            utp: false,
+            ..offline(&tmp.path().join("s2"))
+        })
+        .await
+        .unwrap();
+        let h = tcp_only
+            .add(
+                &torrent,
+                &tmp.path().join("no"),
+                None,
+                vec![seed_addr],
+                false,
+            )
+            .await
+            .unwrap();
+        tokio::time::sleep(Duration::from_secs(4)).await;
+        let s = tcp_only.stats(&h).unwrap();
+        assert!(s.fetched == 0 && s.peers_live == 0, "{s:?}");
+        tcp_only.stop().await;
+
+        // uTP on (the default). First a peer at a closed port: TCP refused, then a uTP packet
+        // that comes back as "port unreachable".
+        let leecher = Torrents::start(offline(&tmp.path().join("s3")))
+            .await
+            .unwrap();
+        let closed = std::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, 0))
+            .unwrap()
+            .local_addr()
+            .unwrap();
+        let other = tmp.path().join("other").join("set");
+        std::fs::create_dir_all(&other).unwrap();
+        std::fs::write(other.join("b.bin"), b"another torrent").unwrap();
+        let other_torrent = make_torrent(&other).await;
+        leecher
+            .add(
+                &other_torrent,
+                &tmp.path().join("o"),
+                None,
+                vec![closed],
+                false,
+            )
+            .await
+            .unwrap();
+        tokio::time::sleep(Duration::from_secs(3)).await;
+
+        let out = tmp.path().join("got");
+        let h = leecher
+            .add(&torrent, &out, None, vec![seed_addr], false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(30);
+        let mut kinds = Vec::new();
+        loop {
+            for p in leecher.peers(&h) {
+                if !kinds.contains(&p.kind) {
+                    kinds.push(p.kind);
+                }
+            }
+            let s = leecher.stats(&h).unwrap();
+            if s.phase == Phase::Finished {
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline, "no transfer: {s:?}");
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        let file = [out.join("a.bin"), out.join("set").join("a.bin")]
+            .into_iter()
+            .find(|p| p.exists())
+            .expect("the file was written");
+        assert_eq!(std::fs::read(file).unwrap(), data);
+        assert!(
+            !kinds.is_empty() && kinds.iter().all(|k| k.as_deref() == Some("utp")),
+            "{kinds:?}"
+        );
+        leecher.stop().await;
         seeder.stop().await;
     }
 }

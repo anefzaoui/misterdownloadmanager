@@ -96,10 +96,155 @@ fn duplicate_step(action: u8, found: Option<(u64, bool)>) -> DupStep {
     }
 }
 
-/// A video already in the list as `page` in quality `selector` (another quality of the same page
-/// is another download, not a duplicate).
-fn same_video(item: &Item, page: &url::Url, selector: &str) -> bool {
-    item.url == *page && item.video.as_ref().is_some_and(|v| v.selector == selector)
+/// How a listed video is the one a choice would download ([`same_video`]).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum SameVideo {
+    /// Its very address: Options' duplicate answer applies as for any download.
+    Address,
+    /// Most likely, its address being another: only ever asked about ([`likely_step`]), never
+    /// overwritten nor dropped by Options' answer, as it may still be another video.
+    Likely,
+}
+
+/// The shortest video known by its length ([`same_video`]): a second either way is much of a
+/// short clip's, and short clips of one length are many.
+const LENGTH_TELLS_FROM: u32 = 10;
+
+/// Whether a video already in the list is the one `address` (what yt-dlp looks up) in quality
+/// `selector` would download (another quality of the same video is another download, not a
+/// duplicate). Its very address; or (`Likely`) the same video picked on the same page (`page`,
+/// the browser's, #607; its `#part` aside) whose stream's address is another: a page's stream is
+/// often looked up by an address signed for each load of it, in its query
+/// (`master.m3u8?hash=…&expires=…`, from another of the site's servers: [`same_stream`]) or in
+/// its path (`/<signature>/<video>/hls.m3u8`), so the same video in two tabs never has the same
+/// address. Signed in its path, the same kind of stream ([`same_shape`]) as long (`duration`,
+/// whole seconds, within a second, of [`LENGTH_TELLS_FROM`] or more) tells it. The page alone is
+/// never enough: a page may play several videos, each its own stream. Videos listed before their
+/// page was kept are known by their address only.
+fn same_video(
+    item: &Item,
+    address: &url::Url,
+    page: Option<&str>,
+    duration: Option<u32>,
+    selector: &str,
+) -> Option<SameVideo> {
+    let video = item.video.as_ref().filter(|v| v.selector == selector)?;
+    if item.url == *address {
+        return Some(SameVideo::Address);
+    }
+    let whole = |p: &str| p.split_once('#').map_or(p, |(p, _)| p).to_owned();
+    if page.is_none_or(|p| item.page.as_deref().map(whole) != Some(whole(p))) {
+        return None;
+    }
+    let as_long = matches!((video.duration, duration),
+        (Some(a), Some(b)) if a.min(b) >= LENGTH_TELLS_FROM && a.abs_diff(b) <= 1);
+    (same_stream(&item.url, address) || (as_long && same_shape(&item.url, address)))
+        .then_some(SameVideo::Likely)
+}
+
+/// The site a stream's server is of: its host but for its first label (`cdn-7.videos.test` is
+/// `videos.test`'s); an address by number as it is.
+fn stream_site(u: &url::Url) -> Option<String> {
+    match u.host()? {
+        url::Host::Domain(d) => {
+            let labels: Vec<&str> = d.split('.').collect();
+            Some(if labels.len() >= 3 {
+                labels[1..].join(".")
+            } else {
+                d.to_owned()
+            })
+        }
+        ip => Some(ip.to_string()),
+    }
+}
+
+/// A stream address's query but for its signature's parameters ([`SIGNATURE_PARAMS`]), in order.
+fn unsigned_query(u: &url::Url) -> Vec<(String, String)> {
+    let mut q: Vec<(String, String)> = u
+        .query_pairs()
+        .filter(|(k, _)| {
+            let k = k.to_ascii_lowercase();
+            !SIGNATURE_PARAMS.contains(&k.as_str())
+                && !k.starts_with("x-amz-")
+                && !k.starts_with("x-goog-")
+        })
+        .map(|(k, v)| (k.into_owned(), v.into_owned()))
+        .collect();
+    q.sort();
+    q
+}
+
+/// Whether `a` and `b` are from the same server family the same way: the same scheme, site
+/// ([`stream_site`]), port and query but for the signature, and paths as many parts long ending
+/// in the same file (`/<signature>/<video>/hls.m3u8`): what a stream signed in its path keeps
+/// from one load to the next.
+fn same_shape(a: &url::Url, b: &url::Url) -> bool {
+    let parts = |u: &url::Url| -> Vec<String> {
+        u.path_segments()
+            .map(|s| s.filter(|p| !p.is_empty()).map(str::to_owned).collect())
+            .unwrap_or_default()
+    };
+    let (pa, pb) = (parts(a), parts(b));
+    a.scheme() == b.scheme()
+        && stream_site(a).is_some()
+        && stream_site(a) == stream_site(b)
+        && a.port_or_known_default() == b.port_or_known_default()
+        && pa.len() == pb.len()
+        && pa.last().is_some()
+        && pa.last() == pb.last()
+        && unsigned_query(a) == unsigned_query(b)
+}
+
+/// The query parameters a video server signs a stream's address with for one load of its page
+/// (until when, from where, its signature): two loads of the same video differ only in these.
+/// Lowercase; `x-amz-` and `x-goog-` parameters too. A short name (`t`, `e`, `s`) is never one
+/// of them: it may well name the video.
+const SIGNATURE_PARAMS: [&str; 22] = [
+    "hash",
+    "expires",
+    "expire",
+    "exp",
+    "ip",
+    "token",
+    "sig",
+    "signature",
+    "st",
+    "md5",
+    "auth",
+    "policy",
+    "key-pair-id",
+    "hdnts",
+    "hdnea",
+    "__token__",
+    "validfrom",
+    "validto",
+    "ttl",
+    "secure",
+    "wmsauthsign",
+    "nva",
+];
+
+/// Whether `a` and `b` are one stream, signed for two loads of its page: the same scheme, the
+/// same site (its server may be another of the site's: `cdn-1.videos.test`, `cdn-7.videos.test`),
+/// the same path, and the same query but for the signature's parameters ([`SIGNATURE_PARAMS`]),
+/// so `master.m3u8?id=1` and `master.m3u8?id=2` stay two videos.
+fn same_stream(a: &url::Url, b: &url::Url) -> bool {
+    a.scheme() == b.scheme()
+        && a.path() == b.path()
+        && stream_site(a).is_some()
+        && stream_site(a) == stream_site(b)
+        && a.port_or_known_default() == b.port_or_known_default()
+        && unsigned_query(a) == unsigned_query(b)
+}
+
+/// [`DupStep`] for a video found only [`SameVideo::Likely`]: asked about, whatever Options says
+/// (it may still be another video: never overwritten nor dropped unasked). One whose finished
+/// file is gone leaves it be: this one is added beside it.
+fn likely_step(found: Option<(u64, bool)>) -> DupStep {
+    match found {
+        Some((dup, false)) => DupStep::Ask(dup),
+        None | Some((_, true)) => DupStep::Add,
+    }
 }
 
 /// Where a video's choice goes after the duplicate check: added now, kept for the user's
@@ -553,6 +698,21 @@ fn drag_carries(
         .filter(|i| i.status == Status::Complete && !i.moved_away)
         .map(|i| (i.id, i.dest.clone()))
         .collect()
+}
+
+/// Download `item` goes on from `url` (Refresh download address, by hand in File Properties or
+/// from the browser's next download of the file): no longer waiting for one, its failure behind
+/// it. Its resume state follows (`App::rewrite_state`).
+fn take_address(item: &mut Item, url: url::Url) {
+    // Its state names the new address now: what was read at start (or is still to come)
+    // doesn't hold.
+    item.state_here = None;
+    item.url = url;
+    item.error = None;
+    item.waits_for_address = false;
+    if item.status == Status::Error {
+        item.status = Status::Stopped;
+    }
 }
 
 /// A download's new place (its name from it). A name the user gave is no longer the address's
@@ -2646,6 +2806,7 @@ impl App {
         item.referer = context.referer.clone().filter(|r| !r.is_empty());
         // The page it was started from (#607), whole: Refresh download address opens it.
         item.page = context.page_url.clone().filter(|p| !p.is_empty());
+        item.private_window = context.private;
         item.context = context;
         self.items.push(item);
         self.dirty = true;
@@ -3449,6 +3610,11 @@ impl App {
             );
             return;
         }
+        // A fresh address for a download waiting for one (its link expired): that download goes
+        // on from it, rather than a second row starting over.
+        if self.take_fresh_address(&url, &cmd) {
+            return;
+        }
         if !self.duplicate_gate(&url, || Pending::Command(Box::new(cmd.clone()))) {
             return;
         }
@@ -3580,6 +3746,12 @@ impl App {
             // The page a media file was played on (#800): a file whose address names nothing
             // (a script, a bare id) is named by its title when the engine names it.
             page_title: context.video_title.clone(),
+            // The page it was started from (#607): a site whose links expire gives a fresh one
+            // there (Rapidgator's file page, `mdm_engine` `sites::origin`).
+            page: context
+                .page_url
+                .as_deref()
+                .and_then(|p| url::Url::parse(p).ok()),
             ..Options::default()
         };
         RequestParts { headers, opts }
@@ -3850,6 +4022,11 @@ impl App {
         // The file at its place, chosen to be replaced (#1088): replaced as it completes, on a
         // first start and on a resume alike. A place moved since doesn't replace anything.
         opts.replace_existing = item.replaces();
+        // The page it was started from, kept with the list (the browser's request is memory
+        // only): after a restart too, an expired link is renewed there (`Options::page`).
+        if opts.page.is_none() {
+            opts.page = item.page.as_deref().and_then(|p| url::Url::parse(p).ok());
+        }
         // Its run makes or removes its state: what was read at start no longer holds, and the
         // read still to come isn't wanted (the engine reads the state itself, just below). A row
         // stopped part-way whose read hasn't come yet is taken as resuming (its log says so).
@@ -3872,6 +4049,8 @@ impl App {
             headers,
             dest,
         };
+        // Going again: no longer waiting for a new address (a dead one fails it again).
+        item.waits_for_address = false;
         let dl = if fresh {
             item.downloaded = 0;
             Download::start_with(request, opts, kept)
@@ -4818,7 +4997,6 @@ impl App {
         item.description = c.description;
         item.login = c.login;
         item.set_referer(c.referer);
-        let state = mdm_engine::state::state_path(&item.dest);
         let rerouted = c.direct.is_some();
         // "Through …" changed (#44): the next start goes the new way. The service's link is
         // dropped from the resume state: directly, it continues from the host's own address;
@@ -4841,18 +5019,11 @@ impl App {
             // from the new address (its size and validators still have to match).
             // Where the browser's download of the old address ended isn't this one's (#630).
             item.context.final_url = None;
-            // Its state names the new address now: what was read at start (or is still to come)
-            // doesn't hold.
-            item.state_here = None;
             item.note(crate::i18n::fmt(
                 crate::i18n::t("Address changed to {host}"),
                 &[("host", &crate::i18n::ltr(url.host_str().unwrap_or("?")))],
             ));
-            item.url = url;
-            item.error = None;
-            if item.status == Status::Error {
-                item.status = Status::Stopped;
-            }
+            take_address(item, url);
         }
         // Moved into the folder it is already in: nothing to do (it became "a (1).zip").
         let move_to = c
@@ -4860,24 +5031,102 @@ impl App {
             .filter(|dir| item.dest.parent() != Some(dir.as_path()))
             .map(|dir| mdm_engine::naming::destination(&dir, &item.file_name));
         if rerouted || readdressed.is_some() {
-            let place = item.dest.clone();
-            self.deleter.rewrite(&place, move || {
-                if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
-                    if rerouted {
-                        saved.final_url = saved.url.clone();
-                    }
-                    if let Some(url) = readdressed {
-                        saved.final_url = url.clone();
-                        saved.url = url;
-                    }
-                    let _ = saved.write(&state);
-                }
-            });
+            self.rewrite_state(c.id, rerouted, readdressed);
         }
         self.dirty = true;
         if let Some(target) = move_to {
             self.start_move(c.id, target);
         }
+    }
+
+    /// Download `id`'s resume state follows a new route or address, beside the window
+    /// ([`crate::deleter::Deleter::rewrite`]): through the host's own address again (`rerouted`,
+    /// #44: the service's link dropped), from `readdressed` (Refresh download address). The size
+    /// and validators still have to match as it resumes. Its next start waits for it on its own
+    /// task.
+    fn rewrite_state(&mut self, id: u64, rerouted: bool, readdressed: Option<url::Url>) {
+        let Some(place) = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map(|i| i.dest.clone())
+        else {
+            return;
+        };
+        let state = mdm_engine::state::state_path(&place);
+        self.deleter.rewrite(&place, move || {
+            if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
+                if rerouted {
+                    saved.final_url = saved.url.clone();
+                }
+                if let Some(url) = readdressed {
+                    saved.final_url = url.clone();
+                    saved.url = url;
+                }
+                let _ = saved.write(&state);
+            }
+        });
+    }
+
+    /// The browser's download of `url` (`cmd`) is a fresh address for a download waiting for one
+    /// (`Item::waits_for_address`: its signed link expired, or Refresh download address was
+    /// chosen), of the same file from the same site (`freshlink`): that download takes it, with
+    /// the browser's request (its cookies, User-Agent, Referer, page), and goes on from what it
+    /// has, as IDM's does while it waits for a new address, instead of a new row starting over.
+    /// The engine checks the address gives the same file as it resumes. True when it was taken.
+    /// Only the browser's own hand-off (`Command::browser_handoff`); not a private window's
+    /// download (nor a private row's: its cookies stay its own), a form's, or a paired device's.
+    fn take_fresh_address(&mut self, url: &url::Url, cmd: &ipc::Command) -> bool {
+        // The browser's own hand-off (the native host's command), not what a command carries: a
+        // script's add (`mdm add --cookie`, MCP `add_download`) is a download of its own.
+        let from_browser = cmd.browser_handoff && !cmd.remote && !cmd.private && cmd.post.is_none();
+        if !from_browser {
+            return false;
+        }
+        let name = cmd
+            .name
+            .clone()
+            .unwrap_or_else(|| crate::model::browser_guess(url, cmd));
+        let name = mdm_engine::naming::sanitize(&name);
+        let page = cmd.page_url.as_deref().filter(|p| !p.is_empty());
+        let offer = crate::freshlink::Offer {
+            url,
+            name: &name,
+            size: cmd.size,
+            page,
+            private: cmd.private,
+        };
+        let Some(id) = crate::freshlink::waiting_for(&self.items, &offer) else {
+            return false;
+        };
+        let Some(item) = self.item(id) else {
+            return false;
+        };
+        item.note(crate::i18n::fmt(
+            // i18n: event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+            crate::i18n::t("New address from the browser ({host}): going on from it"),
+            &[("host", &crate::i18n::ltr(url.host_str().unwrap_or("?")))],
+        ));
+        // The browser's request for the new address goes with it from now on, as a new
+        // download's does (`push_item`).
+        item.context = cmd.clone();
+        item.set_referer(cmd.referer.clone());
+        if let Some(page) = page {
+            item.page = Some(page.to_owned());
+        }
+        if crate::debrid::browser_started(cmd) {
+            item.direct = true;
+        }
+        take_address(item, url.clone());
+        self.rewrite_state(id, false, Some(url.clone()));
+        if let Some(item) = self.items.iter().find(|i| i.id == id) {
+            for p in self.properties.iter_mut().filter(|p| p.id == id) {
+                p.readdressed(item);
+            }
+        }
+        self.dirty = true;
+        self.start(id, true);
+        true
     }
 
     /// Move a download to `target` (its name too): a finished file moves on a thread of its
@@ -5326,6 +5575,7 @@ impl App {
                 subs: add.subs,
                 parts: Vec::new(),
                 named: add.named,
+                duration: add.duration,
             });
             // The quality menu's look-up goes with this new download only, started now and while
             // fresh: one queued for later, or added on a duplicate question answered late,
@@ -5461,6 +5711,7 @@ impl App {
                     subs: Default::default(),
                     parts: Vec::new(),
                     named: false,
+                    duration: None,
                 });
                 item.number_at_start = true;
             }
@@ -5566,7 +5817,7 @@ impl App {
             rate,
             ffmpeg.as_ref().map(|f| f.exe.as_path()),
             item.size,
-            &crate::videodlg::from_browser(&item.context),
+            &crate::videodlg::from_item(item),
             &spec.subs,
             preloaded,
             engine,
@@ -5678,7 +5929,7 @@ impl App {
             item.url.as_str(),
             &item.dest,
             &ask,
-            &crate::videodlg::from_browser(&item.context),
+            &crate::videodlg::from_item(item),
             engine,
             Some(mark_hook(&item.url, None)),
         );
@@ -7626,12 +7877,25 @@ impl App {
                 // there; Properties takes the new address and the download resumes from it.
                 // The page the browser started it from, whole, not its Referer, which is often
                 // the site's home page alone (#607); the Referer when that isn't known.
+                // Until it starts again, it waits for a new address: the browser's next download
+                // of the same file gives it one (`take_fresh_address`).
                 if let Some(id) = target {
                     let page = self
                         .items
                         .iter()
                         .find(|i| i.id == id)
                         .and_then(|i| i.web_page().map(str::to_owned));
+                    if let Some(item) = self
+                        .item(id)
+                        .filter(|i| i.live.is_none() && i.status != Status::Complete)
+                    {
+                        if !item.waits_for_address {
+                            // i18n: event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+                            item.note(crate::i18n::t("Waiting for a new address from the browser"));
+                        }
+                        item.waits_for_address = true;
+                        self.dirty = true;
+                    }
                     if let Some(page) = page {
                         crate::launch::open(page);
                     }
@@ -9896,16 +10160,20 @@ impl App {
     /// Options → Downloads → "If a duplicate download link is added", for a new download that
     /// the first row `same` finds already is: what becomes of it ([`duplicate_step`]). The one
     /// already there is replaced (its files and row go), opened or resumed here; asking is the
-    /// caller's ([`Self::ask_duplicate`]).
-    fn duplicate_of(&mut self, same: impl Fn(&Item) -> bool) -> DupStep {
+    /// caller's ([`Self::ask_duplicate`]). One only `likely` the same (a video, [`SameVideo`]) is
+    /// asked about whatever Options says ([`likely_step`]).
+    fn duplicate_of(&mut self, same: impl Fn(&Item) -> bool, likely: bool) -> DupStep {
         if std::mem::take(&mut self.duplicate_cleared) {
             return DupStep::Add;
         }
-        let found = self
-            .items
-            .iter()
-            .find(|i| same(i))
-            .map(|i| (i.id, i.status, i.dest.clone()));
+        // One only likely the same: the newest first, as an older one may be a finished file
+        // since deleted (left in the list: it may be another video), which would hide it.
+        let found = if likely {
+            self.items.iter().rev().find(|i| same(i))
+        } else {
+            self.items.iter().find(|i| same(i))
+        }
+        .map(|i| (i.id, i.status, i.dest.clone()));
         let found = match found {
             // Whether its finished file is still there: looked at beside the window, never here.
             Some((dup, Status::Complete, dest)) => match &self.gone_known {
@@ -9918,7 +10186,11 @@ impl App {
             Some((dup, ..)) => Some((dup, false)),
             None => None,
         };
-        let step = duplicate_step(self.settings.duplicate_action, found);
+        let step = if likely {
+            likely_step(found)
+        } else {
+            duplicate_step(self.settings.duplicate_action, found)
+        };
         match step {
             // #342: a finished file moved or deleted leaves nothing to duplicate: the old row
             // goes and this is an ordinary new download.
@@ -10017,7 +10289,7 @@ impl App {
     /// goes on now. 0 asks (`pending` waits), 1 adds it with a numbered name, 2 replaces the
     /// download already there, 3 opens that one (finished) or resumes it.
     fn duplicate_gate(&mut self, url: &url::Url, pending: impl FnOnce() -> Pending) -> bool {
-        match self.duplicate_of(|i| i.url == *url) {
+        match self.duplicate_of(|i| i.url == *url, false) {
             DupStep::Add | DupStep::Replace(..) => true,
             DupStep::Existing(_) => false,
             DupStep::Ask(dup) => {
@@ -10046,8 +10318,21 @@ impl App {
             self.settings.video_subs = subs;
             self.dirty = true;
         }
-        let (page, selector) = (add.page.clone(), add.selector.clone());
-        let step = self.duplicate_of(|i| same_video(i, &page, &selector));
+        let (address, selector) = (add.page.clone(), add.selector.clone());
+        let page = add.context.page_url.clone().filter(|p| !p.is_empty());
+        let duration = add.duration;
+        let same = |i: &Item| same_video(i, &address, page.as_deref(), duration, &selector);
+        // Its very address, as any download's (Options' answer); else a video only likely the
+        // same, which is only ever asked about.
+        let step = if self
+            .items
+            .iter()
+            .any(|i| same(i) == Some(SameVideo::Address))
+        {
+            self.duplicate_of(|i| same(i) == Some(SameVideo::Address), false)
+        } else {
+            self.duplicate_of(|i| same(i) == Some(SameVideo::Likely), true)
+        };
         match video_route(step, add, from_menu) {
             VideoRoute::Add(add) => self.add_video(*add, from_menu),
             VideoRoute::Ask(dup, pending) => self.ask_duplicate(dup, pending),
@@ -12192,6 +12477,9 @@ impl App {
         }
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
+        // Clicked without the keyboard (X11, the main window back from the notification area):
+        // the keyboard comes with the click.
+        dialogs::keyboard_to_click(&ctx);
         // Not in the frame the interface size changed in: the window's rect is measured at the
         // old one then.
         if self.follow_zoom(&ctx) {
@@ -12402,6 +12690,9 @@ impl App {
         let began = Instant::now();
         // The longest first: the downloads save while the rest is done.
         let stopping = self.stop_for_the_end();
+        // yt-dlp, gallery-dl and all they started end, and none starts any more (#1301: on
+        // Linux and macOS nothing else ends them with MDM).
+        mdm_tools::proc::end_all();
         let left = |cap: Duration| {
             deadline.map_or(cap, |d| {
                 d.saturating_duration_since(Instant::now()).min(cap)
@@ -12418,7 +12709,18 @@ impl App {
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();
-        let unsaved = self.wait_stopped(&stopping, saves_by(began, deadline));
+        let until = saves_by(began, deadline);
+        let unsaved = self.wait_stopped(&stopping, until);
+        // Those paused a moment before, still writing to a slow disk (#1328): their rows say
+        // they are stopped already.
+        let settling = mdm_engine::naming::wait_all_settled(until);
+        if settling > 0 {
+            tracing::warn!(
+                "{settling} paused download(s) still saving after {} ms: those resume from their \
+                 last save",
+                began.elapsed().as_millis()
+            );
+        }
         match (stopping.len(), unsaved) {
             (0, _) => {}
             (n, 0) => tracing::info!(
@@ -12458,7 +12760,8 @@ impl App {
 
     /// The end ([`App::finish`]): the file downloads that run are stopped as Stop stops them,
     /// which flushes what they received and saves their resume state; their ids. Torrents keep
-    /// their own resume data as they go, and a video's or a gallery's helpers end with MDM.
+    /// their own resume data as they go, and a video's or a gallery's helpers end with MDM
+    /// (`mdm_tools::proc::end_all`).
     fn stop_for_the_end(&self) -> Vec<u64> {
         self.items
             .iter()
@@ -12744,6 +13047,7 @@ mod same_name_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            duration: None,
         });
         let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
         assert_eq!(
@@ -13033,6 +13337,7 @@ mod duplicate_tests {
                 merge: true,
             }),
             named: false,
+            duration: None,
         }
     }
 
@@ -13055,26 +13360,308 @@ mod duplicate_tests {
         assert_eq!(duplicate_step(9, dup), DupStep::Ask(7), "unknown: asked");
     }
 
+    /// [`same_video`] found it, either way.
+    fn is_same(
+        item: &Item,
+        address: &url::Url,
+        page: Option<&str>,
+        duration: Option<u32>,
+        selector: &str,
+    ) -> bool {
+        same_video(item, address, page, duration, selector).is_some()
+    }
+
     /// A video is the same download only on the same page in the same quality; a plain download
     /// of that address is not a video's duplicate.
     #[test]
     fn a_video_is_a_duplicate_in_the_same_quality_only() {
         let mut item = Item::new(1, page(), PathBuf::from("Clip.mp4"), Category::Video);
-        assert!(!same_video(&item, &page(), SELECTOR), "not a video");
+        assert!(
+            !is_same(&item, &page(), None, None, SELECTOR),
+            "not a video"
+        );
         item.video = Some(model::VideoSpec {
             selector: SELECTOR.into(),
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            duration: None,
         });
-        assert!(same_video(&item, &page(), SELECTOR));
-        assert!(!same_video(
+        assert!(is_same(&item, &page(), None, None, SELECTOR));
+        assert!(!is_same(
             &item,
             &page(),
+            None,
+            None,
             "bv*[height=360]+ba/b[height=360]"
         ));
         let other = url::Url::parse("https://videos.test/watch?v=2").unwrap();
-        assert!(!same_video(&item, &other, SELECTOR));
+        assert!(!is_same(&item, &other, None, None, SELECTOR));
+    }
+
+    /// A page's stream signed for each load: the same video picked in another tab of the same
+    /// page is a duplicate by its page and its stream's path, whatever its signature or server;
+    /// another video of that page (another stream), or the same path from another page, is not.
+    #[test]
+    fn a_stream_signed_for_each_load_is_a_duplicate_by_its_page() {
+        const TAB: &str = "https://videos.test/video/123/a-clip";
+        let stream = |s: &str| url::Url::parse(s).unwrap();
+        let first = stream("https://cdn-1.videos.test/hls/123/master.m3u8?hash=a&expires=1");
+        let mut item = Item::new(1, first.clone(), PathBuf::from("Clip.mp4"), Category::Video);
+        item.video = Some(model::VideoSpec {
+            selector: SELECTOR.into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            duration: None,
+        });
+        item.page = Some(TAB.into());
+        let again = stream("https://cdn-7.videos.test/hls/123/master.m3u8?hash=b&expires=2");
+        assert!(
+            is_same(&item, &again, Some(TAB), None, SELECTOR),
+            "another tab"
+        );
+        assert!(
+            !is_same(
+                &item,
+                &again,
+                Some(TAB),
+                None,
+                "bv*[height=360]+ba/b[height=360]"
+            ),
+            "another quality"
+        );
+        let next = stream("https://cdn-1.videos.test/hls/456/master.m3u8?hash=c&expires=3");
+        assert!(
+            !is_same(&item, &next, Some(TAB), None, SELECTOR),
+            "another video of the page"
+        );
+        assert!(
+            !is_same(
+                &item,
+                &again,
+                Some("https://videos.test/video/9"),
+                None,
+                SELECTOR
+            ),
+            "another page"
+        );
+        assert!(
+            !is_same(&item, &again, None, None, SELECTOR),
+            "no page known"
+        );
+        assert!(
+            is_same(
+                &item,
+                &again,
+                Some(&format!("{TAB}#comments")),
+                None,
+                SELECTOR
+            ),
+            "the page's #part aside"
+        );
+        let elsewhere = stream("https://cdn-1.other.test/hls/123/master.m3u8?hash=a&expires=1");
+        assert!(
+            !is_same(&item, &elsewhere, Some(TAB), None, SELECTOR),
+            "another site's server"
+        );
+        // A path every video of the page shares: the query names the video, the signature aside.
+        let generic = |q: &str| stream(&format!("https://cdn-1.videos.test/master.m3u8?{q}"));
+        item.url = generic("id=1&hash=a&expires=1");
+        assert!(
+            is_same(
+                &item,
+                &generic("expires=2&id=1&hash=b"),
+                Some(TAB),
+                None,
+                SELECTOR
+            ),
+            "the same video, signed again"
+        );
+        assert!(
+            !is_same(
+                &item,
+                &generic("id=2&hash=a&expires=1"),
+                Some(TAB),
+                None,
+                SELECTOR
+            ),
+            "another video by the same path"
+        );
+        assert!(
+            !is_same(
+                &item,
+                &generic("hash=a&expires=1"),
+                Some(TAB),
+                None,
+                SELECTOR
+            ),
+            "one names its video, the other doesn't"
+        );
+        item.url = first.clone();
+        item.page = None;
+        assert!(
+            !is_same(&item, &again, Some(TAB), None, SELECTOR),
+            "listed before pages were kept: its address only"
+        );
+        assert!(is_same(&item, &first, Some(TAB), None, SELECTOR));
+    }
+
+    /// A stream signed in its path for each load (`/<signature>/<video>/hls.m3u8`): the same
+    /// video picked in another tab of its page is known by its length, within a second; another
+    /// length, or one not known, is another video.
+    #[test]
+    fn a_stream_signed_in_its_path_is_a_duplicate_by_its_length() {
+        const TAB: &str = "https://videos.test/video.abc/a-clip";
+        let stream = |sig: &str| {
+            url::Url::parse(&format!(
+                "https://hls.cdn.test/{sig}-1700000000/v/ab/cd/hls.m3u8"
+            ))
+            .unwrap()
+        };
+        let mut item = Item::new(
+            1,
+            stream("q1w2e3"),
+            PathBuf::from("Clip.mp4"),
+            Category::Video,
+        );
+        item.video = Some(model::VideoSpec {
+            selector: SELECTOR.into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            duration: Some(754),
+        });
+        item.page = Some(TAB.into());
+        let again = stream("z9y8x7");
+        assert!(
+            is_same(&item, &again, Some(TAB), Some(754), SELECTOR),
+            "another tab"
+        );
+        assert!(
+            is_same(&item, &again, Some(TAB), Some(755), SELECTOR),
+            "a length rounded otherwise"
+        );
+        assert!(
+            !is_same(&item, &again, Some(TAB), Some(756), SELECTOR),
+            "another length: another video of the page"
+        );
+        assert!(
+            !is_same(&item, &again, Some(TAB), None, SELECTOR),
+            "a length not known"
+        );
+        assert!(
+            !is_same(
+                &item,
+                &again,
+                Some("https://videos.test/video.xyz/b"),
+                Some(754),
+                SELECTOR
+            ),
+            "another page"
+        );
+        assert!(
+            !is_same(
+                &item,
+                &again,
+                Some(TAB),
+                Some(754),
+                "bv*[height=360]+ba/b[height=360]"
+            ),
+            "another quality"
+        );
+        assert_eq!(crate::videodlg::whole_seconds(Some(754.4)), Some(754));
+        assert_eq!(
+            crate::videodlg::whole_seconds(Some(0.4)),
+            None,
+            "no length to tell by"
+        );
+        assert_eq!(crate::videodlg::whole_seconds(Some(f64::NAN)), None);
+        assert_eq!(crate::videodlg::whole_seconds(Some(f64::INFINITY)), None);
+        assert_eq!(crate::videodlg::whole_seconds(Some(-5.0)), None);
+        assert_eq!(crate::videodlg::whole_seconds(Some(1.0)), Some(1));
+        assert_eq!(crate::videodlg::whole_seconds(Some(1.5)), Some(2));
+        assert_eq!(
+            crate::videodlg::whole_seconds(Some(4.3e9)),
+            None,
+            "beyond a u32"
+        );
+    }
+
+    /// A length tells a video only among streams of one kind: a feed's videos as long, played
+    /// from other servers or other files, stay apart, and so do short clips; the address itself
+    /// is the only sure match, the rest only likely.
+    #[test]
+    fn a_length_tells_only_streams_of_one_kind() {
+        const FEED: &str = "https://videos.test/feed";
+        let at = |s: &str| url::Url::parse(s).unwrap();
+        let mut item = Item::new(
+            1,
+            at("https://hls.cdn.test/q1w2-1700000000/v/ab/cd/hls.m3u8"),
+            PathBuf::from("Clip.mp4"),
+            Category::Video,
+        );
+        item.video = Some(model::VideoSpec {
+            selector: SELECTOR.into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            duration: Some(30),
+        });
+        item.page = Some(FEED.into());
+        let likely =
+            |item: &Item, u: &str, d: u32| same_video(item, &at(u), Some(FEED), Some(d), SELECTOR);
+        assert_eq!(
+            likely(
+                &item,
+                "https://hls.cdn.test/z9x8-1700000999/v/ab/cd/hls.m3u8",
+                30
+            ),
+            Some(SameVideo::Likely),
+            "signed again in its path"
+        );
+        for (other, why) in [
+            (
+                "https://video.other.test/clips/77.mp4",
+                "another site's file",
+            ),
+            (
+                "https://hls.cdn.test/z9x8-1700000999/v/ab/cd/index.m3u8",
+                "another file",
+            ),
+            (
+                "https://hls.cdn.test/z9x8/v/ab/hls.m3u8",
+                "a path of another length",
+            ),
+            (
+                "https://hls.cdn.test/z9x8-1/v/ab/cd/hls.m3u8?id=2",
+                "a query naming a video",
+            ),
+        ] {
+            assert_eq!(likely(&item, other, 30), None, "{why}");
+        }
+        assert_eq!(
+            same_video(&item, &item.url.clone(), None, None, SELECTOR),
+            Some(SameVideo::Address),
+            "its very address, page or not"
+        );
+        item.video.as_mut().unwrap().duration = Some(8);
+        assert_eq!(
+            likely(
+                &item,
+                "https://hls.cdn.test/z9x8-1700000999/v/ab/cd/hls.m3u8",
+                8
+            ),
+            None,
+            "a short clip: many as long"
+        );
+        assert_eq!(likely_step(Some((7, false))), DupStep::Ask(7));
+        assert_eq!(
+            likely_step(Some((7, true))),
+            DupStep::Add,
+            "its row left be"
+        );
+        assert_eq!(likely_step(None), DupStep::Add);
     }
 
     /// Each Options answer on both video paths (the quality menu, the Download video window):
@@ -13188,6 +13775,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            duration: None,
         });
         i
     }
@@ -14267,6 +14855,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            duration: None,
         });
         let mut app = app_with(vec![
             row(1, dir.path().join("a.bin"), Status::Queued),
@@ -14354,7 +14943,108 @@ mod start_disk_tests {
             remember: None,
             preloaded: None,
             named: false,
+            duration: None,
         }
+    }
+
+    /// A video only likely the same whose first match is a finished file since deleted (left in
+    /// the list, as it may be another video): a later tab still asks about the newer one.
+    #[test]
+    fn a_deleted_finished_video_hides_no_newer_duplicate() {
+        let dir = tempfile::tempdir().unwrap();
+        const PAGE: &str = "https://videos.test/video.abc/a-clip";
+        let pick = |sig: &str| {
+            let mut a = add(dir.path(), "Clip.mp4");
+            a.page = url::Url::parse(&format!("https://hls.cdn.test/{sig}/v/ab/hls.m3u8")).unwrap();
+            a.context.page_url = Some(PAGE.into());
+            a.duration = Some(754);
+            a
+        };
+        let mut gone = row(1, dir.path().join("gone.mp4"), Status::Complete);
+        gone.url = url::Url::parse("https://hls.cdn.test/one/v/ab/hls.m3u8").unwrap();
+        gone.page = Some(PAGE.into());
+        gone.video = Some(model::VideoSpec {
+            selector: pick("x").selector,
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            duration: Some(754),
+        });
+        let mut app = app_with(vec![gone]);
+        app.settings.duplicate_action = 0;
+        assert_eq!(app.add_video_checked(pick("two"), true), DupStep::Look(1));
+        until(
+            &mut app,
+            |app| app.apply_gone_looks(&egui::Context::default()),
+            |app| app.gone_looks.is_empty(),
+        );
+        assert_eq!(app.items.len(), 2, "its file gone: added beside it");
+        let second = app.items[1].id;
+        assert_eq!(
+            app.add_video_checked(pick("three"), true),
+            DupStep::Ask(second),
+            "the newer one asked about"
+        );
+        assert_eq!(app.items.len(), 2);
+        let ids: Vec<u64> = app.items.iter().map(|i| i.id).collect();
+        for id in ids {
+            app.stop(id);
+        }
+    }
+
+    /// The quality menu's choice in two tabs of one page whose stream is signed in its path for
+    /// each load: the second asks about the first (Options: ask), by the page the host sends
+    /// (#607) and the video's length; nothing is added before the answer.
+    #[test]
+    fn the_same_video_from_another_tab_is_asked_about() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut app = app_with(Vec::new());
+        app.settings.duplicate_action = 0;
+        let pick = |sig: &str| {
+            let mut a = add(dir.path(), "Clip.mp4");
+            a.page = url::Url::parse(&format!("https://hls.cdn.test/{sig}/v/ab/hls.m3u8")).unwrap();
+            a.context.page_url = Some("https://videos.test/video.abc/a-clip".into());
+            a.duration = Some(754);
+            a
+        };
+        assert_eq!(app.add_video_checked(pick("one"), true), DupStep::Add);
+        let first = app.items.last().unwrap().id;
+        assert_eq!(
+            get(&app, first).page.as_deref(),
+            Some("https://videos.test/video.abc/a-clip")
+        );
+        assert_eq!(
+            app.add_video_checked(pick("two"), true),
+            DupStep::Ask(first)
+        );
+        assert_eq!(app.items.len(), 1, "nothing added before the answer");
+        let mut other = pick("three");
+        other.duration = Some(30);
+        assert_eq!(
+            app.add_video_checked(other, true),
+            DupStep::Add,
+            "another video of the page"
+        );
+        // Options' overwrite or open-or-resume never acts on a video only likely the same: it may
+        // be another one; asked instead, its files and the new one kept. Its very address still
+        // follows Options.
+        for action in [2, 3] {
+            app.settings.duplicate_action = action;
+            assert_eq!(
+                app.add_video_checked(pick("four"), true),
+                DupStep::Ask(first),
+                "action {action}"
+            );
+            assert!(app.items.iter().any(|i| i.id == first), "action {action}");
+        }
+        app.settings.duplicate_action = 3;
+        let mut same = pick("one");
+        same.duration = None;
+        assert_eq!(
+            app.add_video_checked(same, true),
+            DupStep::Existing(first),
+            "its very address: as Options says"
+        );
     }
 
     /// Download video names its file without reading the folder on the window's thread: the row
@@ -14754,5 +15444,355 @@ mod start_disk_tests {
             Some(&a),
             "the finished file last"
         );
+    }
+}
+
+/// The browser's next download of a file whose download waits for a new address (its link
+/// expired) continues that download, end to end against the lab server (`freshlink`,
+/// `App::take_fresh_address`).
+#[cfg(test)]
+mod fresh_address_tests {
+    use super::*;
+    use mdm_labserver::{Config, Faults, LabServer, content};
+
+    const SIZE: u64 = 2 << 20;
+    const SEED: u64 = 7;
+
+    fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    fn app_with(rt: &tokio::runtime::Runtime, items: Vec<Item>) -> std::mem::ManuallyDrop<App> {
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings: Settings {
+                // No windows: the test looks at the rows.
+                show_progress: false,
+                show_complete: false,
+                ..Settings::default()
+            },
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    fn now_ms() -> u64 {
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_millis() as u64
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    /// The browser's download of `url`: its name, size, Referer, cookies and page, as the
+    /// extension hands them over.
+    fn browser(url: &str, size: u64, port: u16) -> ipc::Command {
+        ipc::Command {
+            url: Some(url.to_owned()),
+            name: Some("data.bin".into()),
+            size: Some(size),
+            referer: Some(format!("http://127.0.0.1:{port}/")),
+            cookies: Some("sid=1".into()),
+            browser_handoff: true,
+            page_url: Some(format!("http://127.0.0.1:{port}/page")),
+            silent: true,
+            later: true,
+            ..Default::default()
+        }
+    }
+
+    /// A row stopped part-way with its link expired, as its last run ended: a signed link (the
+    /// lab's `expires`, 403 after it) whose download got some bytes before it expired, waiting
+    /// for a new address. Its resume state is at `dest`.
+    fn expired_row(
+        rt: &tokio::runtime::Runtime,
+        s: &LabServer,
+        dest: &std::path::Path,
+    ) -> (Item, mdm_engine::state::ResumeState) {
+        let port = s.addr().port();
+        let expires = now_ms() + 1500;
+        let old = url::Url::parse(&format!(
+            "http://127.0.0.1:{port}/gen/{SIZE}/data.bin?seed={SEED}&expires={expires}"
+        ))
+        .unwrap();
+        let faults = s.faults();
+        s.set_faults(Faults {
+            stall_at: Some(1 << 20),
+            ..faults.clone()
+        });
+        let dl = {
+            let _in = rt.enter();
+            Download::start(
+                Request {
+                    url: old.clone(),
+                    headers: HeaderMap::new(),
+                    dest: Destination::File(dest.to_owned()),
+                },
+                Options {
+                    save_interval: Duration::from_millis(100),
+                    ..Options::default()
+                },
+            )
+        };
+        let end = Instant::now() + Duration::from_secs(20);
+        while dl.snapshot().downloaded < 256 << 10 {
+            assert!(Instant::now() < end, "the download never started");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        dl.cancel();
+        assert!(rt.block_on(dl.wait()).is_err());
+        s.set_faults(faults);
+        rt.block_on(async {
+            tokio::time::timeout(Duration::from_secs(10), s.settled())
+                .await
+                .expect("the lab server settles")
+        });
+        while now_ms() <= expires {
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        let saved = mdm_engine::state::ResumeState::load(&state_path(dest)).unwrap();
+        let mut item = Item::new(1, old, dest.to_owned(), Category::General);
+        item.size = Some(SIZE);
+        item.downloaded = saved.downloaded();
+        assert!(item.downloaded > 0 && item.downloaded < SIZE);
+        item.status = Status::Error;
+        item.waits_for_address = true;
+        item.page = Some(format!("http://127.0.0.1:{port}/page"));
+        (item, saved)
+    }
+
+    /// Bytes of `range` (`bytes=a-b`; none: the whole file) that `saved` says were on disk.
+    fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
+        let (from, to) = match range.and_then(|r| r.strip_prefix("bytes=")?.split_once('-')) {
+            Some((a, b)) => (
+                a.parse::<u64>().unwrap(),
+                b.parse::<u64>().map_or(saved.size, |b| b + 1),
+            ),
+            None => (0, saved.size),
+        };
+        let to_fetch: u64 = saved
+            .segments
+            .iter()
+            .map(|g| to.min(g.end).saturating_sub(from.max(g.cursor)))
+            .sum();
+        (to - from) - to_fetch
+    }
+
+    /// The user's case: a download stopped part-way with its link expired; the browser hands
+    /// over a fresh link for the same file (the same name and size). That download takes it and
+    /// goes on from what it has: no second row, and only what was missing is asked of the new
+    /// link.
+    #[test]
+    fn the_browsers_new_link_continues_the_download_whose_link_expired() {
+        let rt = runtime();
+        let s = rt
+            .block_on(LabServer::start(Config {
+                faults: Faults::parse("rate=2M").unwrap(),
+                ..Config::default()
+            }))
+            .unwrap();
+        let port = s.addr().port();
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let (item, saved) = expired_row(rt, &s, &dest);
+        let mut app = app_with(rt, vec![item]);
+        s.clear_log();
+        let new = format!("http://127.0.0.1:{port}/gen/{SIZE}/data.bin?seed={SEED}");
+        let ctx = egui::Context::default();
+        app.handle_command(browser(&new, SIZE, port), &ctx);
+        assert_eq!(app.items.len(), 1, "no second row");
+        let row = get(&app, 1);
+        assert_eq!(row.url.as_str(), new);
+        assert!(!row.waits_for_address);
+        assert!(row.live.is_some(), "it goes on at once");
+        assert_eq!(row.context.cookies.as_deref(), Some("sid=1"));
+        let end = Instant::now() + Duration::from_secs(30);
+        while get(&app, 1).status != Status::Complete {
+            assert!(
+                Instant::now() < end,
+                "it never finished: {:?} {:?}",
+                get(&app, 1).status,
+                get(&app, 1).error
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        let data = std::fs::read(&dest).unwrap();
+        let mut want = vec![0; SIZE as usize];
+        content::fill(SEED, 0, &mut want);
+        assert!(data == want, "content mismatch");
+        // Only the new link was asked, and of what was on disk only each part's few bytes of
+        // check (`verify_overlap`), request by request.
+        let log = rt.block_on(async {
+            tokio::time::timeout(Duration::from_secs(10), s.settled())
+                .await
+                .expect("the lab server settles");
+            s.log()
+        });
+        assert!(!log.is_empty(), "the new link asked");
+        let overlap = Options::default().verify_overlap;
+        for e in &log {
+            assert_eq!(e.query.as_deref(), Some("seed=7"), "only the new link");
+            let again = on_disk(e.range.as_deref(), &saved);
+            assert!(
+                again <= overlap,
+                "asked again for {again} bytes: {:?}",
+                e.range
+            );
+        }
+    }
+
+    /// Another file from the same site (another size), or a download nothing waits for: a new
+    /// row, the waiting one untouched.
+    #[test]
+    fn another_file_is_a_download_of_its_own() {
+        let rt = runtime();
+        let port = 9;
+        let old = url::Url::parse(&format!("http://127.0.0.1:{port}/old/data.bin")).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut item = Item::new(
+            1,
+            old.clone(),
+            dir.path().join("data.bin"),
+            Category::General,
+        );
+        (item.size, item.downloaded, item.status) = (Some(SIZE), SIZE / 2, Status::Error);
+        item.waits_for_address = true;
+        let mut app = app_with(rt, vec![item]);
+        let ctx = egui::Context::default();
+        let other = format!("http://127.0.0.1:{port}/new/data.bin");
+        app.handle_command(browser(&other, SIZE + 1, port), &ctx);
+        assert_eq!(app.items.len(), 2, "a row of its own");
+        let row = get(&app, 1);
+        assert_eq!(row.url, old);
+        assert!(row.waits_for_address);
+        assert_eq!(row.status, Status::Error);
+        // Not waiting: the same file is a new row too (as before).
+        let mut not_waiting = Item::new(
+            1,
+            old.clone(),
+            dir.path().join("data.bin"),
+            Category::General,
+        );
+        (not_waiting.size, not_waiting.status) = (Some(SIZE), Status::Error);
+        let mut app = app_with(rt, vec![not_waiting]);
+        app.handle_command(browser(&other, SIZE, port), &ctx);
+        assert_eq!(app.items.len(), 2);
+        assert_eq!(get(&app, 1).url, old);
+    }
+
+    /// Refresh download address: the download waits for a new address (until it starts
+    /// again), and File Properties opens for it.
+    #[test]
+    fn refresh_download_address_waits_for_one() {
+        let rt = runtime();
+        let dir = tempfile::tempdir().unwrap();
+        let old = url::Url::parse("http://127.0.0.1:9/old/data.bin").unwrap();
+        let mut item = Item::new(1, old, dir.path().join("data.bin"), Category::General);
+        item.status = Status::Stopped;
+        let mut app = app_with(rt, vec![item]);
+        app.run(Cmd::RefreshAddress, Some(1), &egui::Context::default());
+        assert!(get(&app, 1).waits_for_address);
+        assert!(app.properties.iter().any(|p| p.id == 1));
+    }
+
+    /// Only the browser's own hand-off is taken for a waiting row's address: the same download
+    /// from a script (a command line or MCP add with cookies, Referer) is a row of its own, and
+    /// so is a private window's, or a private row's.
+    #[test]
+    fn only_the_browsers_hand_off_gives_a_new_address() {
+        let rt = runtime();
+        let port = 9;
+        let dir = tempfile::tempdir().unwrap();
+        let old = url::Url::parse(&format!("http://127.0.0.1:{port}/old/data.bin")).unwrap();
+        let waiting = |private: bool| {
+            let mut item = Item::new(
+                1,
+                old.clone(),
+                dir.path().join("data.bin"),
+                Category::General,
+            );
+            (item.size, item.downloaded, item.status) = (Some(SIZE), SIZE / 2, Status::Error);
+            item.waits_for_address = true;
+            item.context.private = private;
+            item
+        };
+        let new = format!("http://127.0.0.1:{port}/new/data.bin");
+        let ctx = egui::Context::default();
+        // A script's add: cookies and Referer, no hand-off.
+        let mut app = app_with(rt, vec![waiting(false)]);
+        let mut script = browser(&new, SIZE, port);
+        script.browser_handoff = false;
+        app.handle_command(script, &ctx);
+        assert_eq!(app.items.len(), 2, "a script's add is a row of its own");
+        assert_eq!(get(&app, 1).url, old);
+        assert!(get(&app, 1).waits_for_address);
+        // A private row is not taken by a normal window's download.
+        let mut app = app_with(rt, vec![waiting(true)]);
+        app.handle_command(browser(&new, SIZE, port), &ctx);
+        assert_eq!(app.items.len(), 2);
+        assert_eq!(get(&app, 1).url, old);
+        assert!(!get(&app, 1).live.is_some());
+        // A private window's download doesn't take a normal row.
+        let mut app = app_with(rt, vec![waiting(false)]);
+        let mut private = browser(&new, SIZE, port);
+        private.private = true;
+        app.handle_command(private, &ctx);
+        assert_eq!(app.items.len(), 2);
+        assert_eq!(get(&app, 1).url, old);
+    }
+
+    /// A private row saved with Options → "Keep private-window downloads" and read back after a
+    /// restart (no longer private in memory, but marked) stays apart from a normal window's
+    /// download, and a failed run of it doesn't make it wait by itself.
+    #[test]
+    fn a_private_row_after_a_restart_stays_apart() {
+        let rt = runtime();
+        let port = 9;
+        let dir = tempfile::tempdir().unwrap();
+        let old = url::Url::parse(&format!("http://127.0.0.1:{port}/old/data.bin")).unwrap();
+        let mut item = Item::new(
+            1,
+            old.clone(),
+            dir.path().join("data.bin"),
+            Category::General,
+        );
+        (item.size, item.downloaded, item.status) = (Some(SIZE), SIZE / 2, Status::Error);
+        item.waits_for_address = true;
+        item.private_window = true;
+        // Through the list file: only the mark survives, not the context.
+        let json = serde_json::to_string(&item).unwrap();
+        assert!(!json.contains("cookies"), "{json}");
+        let reloaded: Item = serde_json::from_str(&json).unwrap();
+        assert!(!reloaded.context.private && reloaded.is_private_window());
+        let mut app = app_with(rt, vec![reloaded]);
+        let new = format!("http://127.0.0.1:{port}/new/data.bin");
+        app.handle_command(browser(&new, SIZE, port), &egui::Context::default());
+        assert_eq!(
+            app.items.len(),
+            2,
+            "the normal download is a row of its own"
+        );
+        assert_eq!(get(&app, 1).url, old);
+        assert!(get(&app, 1).private_window);
     }
 }

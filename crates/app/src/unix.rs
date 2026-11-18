@@ -237,6 +237,8 @@ pub fn exit_now(code: i32) -> ! {
 /// MDM ends at once, the list and the downloads as last saved: the session's end, not a crash.
 #[cfg(target_os = "linux")]
 fn end_now() -> ! {
+    // yt-dlp and gallery-dl end with it (#1301).
+    mdm_tools::proc::end_all();
     crate::crash::clean_exit();
     std::process::exit(1);
 }
@@ -1746,7 +1748,8 @@ const WAYLAND_LIBS: &[WindowLib] = &[
 pub struct WindowSystem {
     /// Wayland's windows, not X11's (or XWayland's).
     pub wayland: bool,
-    /// X11 is chosen in a Wayland session (XWayland): winit is told so.
+    /// X11's windows in a Wayland session (XWayland): chosen there (winit is told so), or the only
+    /// display MDM was given, whose server is XWayland (`on_xwayland_server`).
     x11_over_wayland: bool,
     /// X11 was MDM's choice, but these are missing: Wayland's windows instead.
     pub x11_missing: Vec<&'static WindowLib>,
@@ -1866,6 +1869,32 @@ fn choose_window_system(
     ws
 }
 
+/// `ws`, an X11 session's, as XWayland's when its X server is XWayland (`xwayland`, asked only
+/// then): a program started without `WAYLAND_DISPLAY` in a Wayland session (Hyprland's apps
+/// started from an environment that lacks it) sees an X11 session only. Its windows are
+/// XWayland's all the same, and are paced as such (renderer.rs `Swaps::NoneWait`): taken for
+/// Xorg's, the main window's swaps waited for the screen's refresh, which XWayland gives a window
+/// the compositor isn't showing (on another workspace, in a special one) only by a timer about a
+/// second long; and every dialog is drawn in the main window's pass, so a click in Download File
+/// Info or Download complete showed its effect one to two seconds later.
+#[cfg(target_os = "linux")]
+fn on_xwayland_server(mut ws: WindowSystem, xwayland: impl FnOnce() -> bool) -> WindowSystem {
+    if !ws.wayland && !ws.x11_over_wayland && ws.missing.is_empty() && !ws.both && xwayland() {
+        ws.x11_over_wayland = true;
+        ws.why = "the session's only one, on XWayland: no Wayland display given";
+    }
+    ws
+}
+
+/// Whether the X server is XWayland: it has the XWAYLAND extension (XWayland 23.1 and later;
+/// an older one is taken for Xorg, as before).
+#[cfg(target_os = "linux")]
+fn xwayland_server() -> Result<bool, Box<dyn std::error::Error>> {
+    use x11rb::protocol::xproto::ConnectionExt;
+    let (conn, _) = x11rb::rust_connection::RustConnection::connect(None)?;
+    Ok(conn.query_extension(b"XWAYLAND")?.reply()?.present)
+}
+
 /// View → Window system's saved choice, given before the first window opens.
 #[cfg(target_os = "linux")]
 static SAVED_PICK: std::sync::OnceLock<Option<crate::settings::WindowSystemPick>> =
@@ -1892,12 +1921,15 @@ pub fn window_system() -> &'static WindowSystem {
             std::env::var_os("MDM_WAYLAND").as_deref(),
             SAVED_PICK.get().copied().flatten(),
         );
-        let ws = choose_window_system(
-            set("WAYLAND_DISPLAY"),
-            set("DISPLAY"),
-            pick,
-            x11_fit,
-            |lib| lib.names.iter().any(|n| loads(n)),
+        let ws = on_xwayland_server(
+            choose_window_system(
+                set("WAYLAND_DISPLAY"),
+                set("DISPLAY"),
+                pick,
+                x11_fit,
+                |lib| lib.names.iter().any(|n| loads(n)),
+            ),
+            || xwayland_server().unwrap_or(false),
         );
         let system = match (ws.wayland, ws.x11_over_wayland) {
             (true, _) => "Wayland",
@@ -2119,6 +2151,82 @@ fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
     // A round trip: both requests reached the server before the connection closes.
     conn.get_input_focus()?.reply()?;
     Ok(())
+}
+
+/// Linux, XWayland only: a window of MDM's was clicked while it hasn't the keyboard (winit
+/// saw it lose the X input focus, or never get it), so the X server's input focus goes to it:
+/// to the window under the pointer, when it is MDM's and the focus is elsewhere. A window manager
+/// gives a clicked window the focus; Hyprland's (0.56) can leave the focus with another X11
+/// window than the one it shows active, and never sets it again since it takes that one for
+/// focused already: after another X11 program's window took the focus itself (Hyprland's revert
+/// then does nothing), or after MDM's main window was hidden in the notification area and shown
+/// again (the focus went with the window, and came back to none). Clicks kept working, keys went
+/// elsewhere: File Properties' boxes took the caret, but no typing and no Ctrl+V. Keys reach
+/// an X11 window only while the compositor gives XWayland the keyboard, so this never takes it
+/// from another program. Native Wayland: the compositor alone decides, nothing to do. Plain
+/// Xorg: the window manager's own focus rules stand (some keep the keyboard on a dialog while
+/// the main window behind it is clicked), nothing to do either.
+#[cfg(target_os = "linux")]
+pub fn take_keyboard_on_click() {
+    if !takes_keyboard_on_click(window_system()) || crate::offscreen() {
+        return;
+    }
+    match keyboard_to_window_under_pointer() {
+        Ok(Some(window)) => {
+            tracing::info!("a window clicked without the keyboard (X11): given it (0x{window:x})");
+        }
+        Ok(None) => {}
+        Err(e) => tracing::warn!("the clicked window couldn't be given the keyboard: {e}"),
+    }
+}
+
+/// Whether [`take_keyboard_on_click`] acts under `ws`: only in XWayland, X11 windows in a
+/// Wayland session (not native Wayland, not plain Xorg).
+#[cfg(target_os = "linux")]
+fn takes_keyboard_on_click(ws: &WindowSystem) -> bool {
+    ws.x11_over_wayland && !ws.wayland
+}
+
+/// [`take_keyboard_on_click`]'s work, on a connection of MDM's own: the X input focus to this
+/// process's window under the pointer, unless it has it. Some(window) when it was given.
+#[cfg(target_os = "linux")]
+fn keyboard_to_window_under_pointer() -> Result<Option<u32>, Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{AtomEnum, ConnectionExt, InputFocus};
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = conn.setup().roots.get(screen).ok_or("no such screen")?.root;
+    let pid_atom = conn.intern_atom(false, b"_NET_WM_PID")?.reply()?.atom;
+    // Down from the root to the program's window under the pointer: XWayland's root holds it,
+    // an X11 window manager's frame may (reparenting). The first with a process id is the one.
+    let mut window = root;
+    let mut ours = None;
+    for _ in 0..8 {
+        let child = conn.query_pointer(window)?.reply()?.child;
+        if child == x11rb::NONE {
+            break;
+        }
+        window = child;
+        let pid = conn
+            .get_property(false, window, pid_atom, AtomEnum::CARDINAL, 0, 1)?
+            .reply()?
+            .value32()
+            .and_then(|mut v| v.next());
+        if let Some(pid) = pid {
+            ours = (pid == std::process::id()).then_some(window);
+            break;
+        }
+    }
+    let Some(window) = ours else {
+        return Ok(None);
+    };
+    if conn.get_input_focus()?.reply()?.focus == window {
+        return Ok(None);
+    }
+    // The time of now: the click that asks for it has just happened.
+    conn.set_input_focus(InputFocus::PARENT, window, x11rb::CURRENT_TIME)?;
+    // A round trip: the request reached the server before the connection closes.
+    conn.get_input_focus()?.reply()?;
+    Ok(Some(window))
 }
 
 /// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
@@ -3770,7 +3878,7 @@ mod tests {
 
     use super::{
         Pick, WindowLib, X11_LIBS, X11Fit, choose_window_system, desktop_looks_after_x11,
-        install_command, menu_window_type,
+        install_command, menu_window_type, on_xwayland_server,
     };
 
     /// #277: each menu's window says which menu it is, as GTK's and Qt's do.
@@ -3787,6 +3895,19 @@ mod tests {
         let b = super::menu_window(crate::window_builder(), MenuKind::Bar);
         assert_eq!(b.override_redirect, Some(true));
         assert_eq!(b.window_type, Some(X11WindowType::DropdownMenu));
+    }
+
+    /// PR #1360: a click gives the keyboard only in XWayland; plain Xorg keeps its window
+    /// manager's focus rules, native Wayland the compositor's.
+    #[test]
+    fn a_click_takes_the_keyboard_in_xwayland_only() {
+        use super::takes_keyboard_on_click as takes;
+        let ws = |wayland, x11| choose_window_system(wayland, x11, Pick::Auto, CARED, |_| true);
+        assert!(takes(&ws(true, true)), "XWayland");
+        assert!(!takes(&ws(false, true)), "plain Xorg");
+        assert!(!takes(&ws(true, false)), "native Wayland, the only system");
+        let wayland = choose_window_system(true, true, Pick::Wayland("test"), CARED, |_| true);
+        assert!(!takes(&wayland), "native Wayland chosen");
     }
 
     const X11_KEYBOARD: &str = "libxkbcommon-x11.so.0";
@@ -3875,6 +3996,30 @@ mod tests {
         assert!(!x11_session.wayland && !x11_session.both && !x11_session.x11_over_wayland);
         let wayland_only = choose_window_system(true, false, Pick::X11("saved"), || panic!(), ok);
         assert!(wayland_only.wayland && !wayland_only.both);
+    }
+
+    /// Started without WAYLAND_DISPLAY in a Wayland session, MDM sees an X11 session only: its
+    /// windows are XWayland's when the X server is (they swap without waiting there, so a dialog
+    /// answers a click at once while the main window is out of sight). The server is asked only
+    /// for an X11-only session MDM can open its windows in.
+    #[test]
+    fn an_x11_only_session_on_xwayland_is_xwaylands() {
+        let ok = |_: &WindowLib| true;
+        let x11_only = || choose_window_system(false, true, Pick::Auto, || panic!(), ok);
+        let on_xwayland = on_xwayland_server(x11_only(), || true);
+        assert!(!on_xwayland.wayland && on_xwayland.x11_over_wayland && !on_xwayland.both);
+        assert!(on_xwayland.why.contains("XWayland"), "{on_xwayland:?}");
+        let xorg = on_xwayland_server(x11_only(), || false);
+        assert_eq!(xorg, x11_only());
+        // A Wayland session's choice stands; the server isn't asked.
+        let asked = || -> bool { panic!("asked") };
+        let wayland = choose_window_system(true, true, Pick::Wayland("saved"), || panic!(), ok);
+        assert_eq!(on_xwayland_server(wayland, asked).why, "saved");
+        let x11 = choose_window_system(true, true, Pick::X11("saved"), || panic!(), ok);
+        assert!(on_xwayland_server(x11, asked).x11_over_wayland);
+        // X11's libraries missing: nothing opens on it, nothing to pace.
+        let missing = choose_window_system(false, true, Pick::Auto, || panic!(), |_| false);
+        assert!(!on_xwayland_server(missing, asked).x11_over_wayland);
     }
 
     /// The desktops that start a settings daemon for XWayland's programs, by

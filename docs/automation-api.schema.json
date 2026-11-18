@@ -527,7 +527,7 @@
         },
         "private": {
           "default": false,
-          "description": "From a private (incognito) window: the download is never written to the saved list.",
+          "description": "From a private (incognito) window: the download is not written to the saved list, unless\nthe app's Options → General → \"Keep private-window downloads in the list\" is on.",
           "type": "boolean"
         },
         "proxy": {

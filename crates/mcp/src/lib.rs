@@ -68,6 +68,17 @@ pub struct AddArgs {
     /// The checksum the finished file must have, as the command line's `--checksum` takes it
     /// (`sha256:…`, a bare hex value, …); the app refuses one it can't read.
     pub checksum: Option<String>,
+    /// The page's address (Referer header), for links that need one or an expired link's renewal.
+    pub referer: Option<String>,
+    /// The User-Agent header to send with download requests.
+    pub user_agent: Option<String>,
+    /// A Cookie header to send with download requests (e.g. `session=xyz; uid=123`), for links
+    /// that require authentication.
+    #[serde(default, alias = "cookies")]
+    pub cookie: Option<String>,
+    /// true: do not save the download to the app's history or saved list.
+    #[serde(default)]
+    pub private: bool,
     /// true: only add it to the download queue, without starting it now.
     #[serde(default)]
     pub later: bool,
@@ -182,7 +193,11 @@ impl Server {
             category: category.clone(),
             queue: queue.clone(),
             checksum: args.checksum.filter(|c| !c.trim().is_empty()),
+            referer: args.referer.filter(|r| !r.trim().is_empty()),
+            user_agent: args.user_agent.filter(|u| !u.trim().is_empty()),
+            cookies: args.cookie.filter(|c| !c.trim().is_empty()),
             later: args.later,
+            private: args.private,
             silent: true,
             ..Default::default()
         })
