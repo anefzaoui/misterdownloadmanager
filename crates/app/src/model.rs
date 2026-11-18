@@ -602,6 +602,14 @@ pub struct Item {
     /// does ([`Item::holds_place`]). Memory only.
     #[serde(skip)]
     pub(crate) live_copy: bool,
+    /// The downloaded bytes the list shows, and the tick of the progress clock
+    /// ([`SHOWN_PROGRESS_EVERY`]) it was read on: the list's % and downloaded bytes change
+    /// on that steady clock, not on every frame, so a mouse move can't make them race.
+    /// Memory only.
+    #[serde(skip)]
+    shown_downloaded: u64,
+    #[serde(skip)]
+    shown_progress_tick: Option<u64>,
 }
 
 /// Adds `more` to a download's `written_files`, each path once, in order. A gallery lists up to
@@ -953,6 +961,12 @@ pub const SPLIT_TAU: f64 = 2.0;
 /// How often the speed shown changes (seconds), with its time left: every download's on the
 /// same clock, so the list's rows and the total beside them change together (#1176).
 pub const SHOWN_EVERY: f64 = 0.5;
+/// How often the downloaded bytes and % shown in the list change (seconds): every 250 ms,
+/// like the list's redraw, whatever the mouse does. A frame for every mouse movement would
+/// otherwise make them race at 15-60 updates a second, then fall back to 4 when the pointer
+/// stops, and that contrast makes the steady 4 a second look stuck (#1441). The speed stays
+/// on its twice-a-second clock ([`SHOWN_EVERY`]).
+pub const SHOWN_PROGRESS_EVERY: f64 = 0.25;
 /// No byte for this long (seconds): the speed is 0, not what is left of the average.
 const STILL: f64 = 5.0;
 
@@ -984,6 +998,11 @@ pub fn until_shown(now: Instant) -> std::time::Duration {
     let t = now.saturating_duration_since(shown_epoch()).as_secs_f64();
     let next = ((t / SHOWN_EVERY).floor() + 1.0) * SHOWN_EVERY;
     std::time::Duration::from_secs_f64(next - t + 0.005)
+}
+
+/// The tick of the shown progress clock ([`SHOWN_PROGRESS_EVERY`]) that `now` is in.
+fn progress_tick(now: Instant) -> u64 {
+    (now.saturating_duration_since(shown_epoch()).as_secs_f64() / SHOWN_PROGRESS_EVERY) as u64
 }
 
 /// A download's speed (#1176): an average of the bytes over time ([`average`]), whatever the
@@ -1151,6 +1170,8 @@ impl Item {
         c.file_name.clone_from(&self.file_name);
         c.status = self.status;
         c.downloaded = self.downloaded;
+        c.shown_downloaded = self.shown_downloaded();
+        c.shown_progress_tick = self.shown_progress_tick;
         c.video.clone_from(&self.video);
         c.torrent.clone_from(&self.torrent);
         c.gallery.clone_from(&self.gallery);
@@ -1215,6 +1236,8 @@ impl Item {
             written_files: None,
             state_here: None,
             live_copy: false,
+            shown_downloaded: 0,
+            shown_progress_tick: None,
         }
     }
     /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
@@ -1264,6 +1287,13 @@ impl Item {
             self.file_url = Some(s.url.clone());
         }
         self.downloaded = s.downloaded;
+        // The list's % and downloaded bytes change on the steady progress clock, not on
+        // every frame: a frame for every mouse movement must not make them race.
+        let tick = progress_tick(Instant::now());
+        if self.shown_progress_tick != Some(tick) {
+            self.shown_progress_tick = Some(tick);
+            self.shown_downloaded = s.downloaded;
+        }
         self.size = size_after(s.state, s.size, s.downloaded, self.size);
         self.resumable = s.resumable.or(self.resumable);
         if let Some(f) = &s.file {
@@ -1374,8 +1404,13 @@ impl Item {
                 }
                 if status == Status::Complete {
                     self.downloaded = self.size.unwrap_or(self.downloaded);
+                    // The list shows it at once: 100 %, not the last tick's figure.
+                    self.shown_downloaded = self.downloaded;
                     // Replaced (or kept, when it couldn't be): the file there now is its own.
                     self.replace_file = None;
+                } else {
+                    // Ended another way: the list shows where it stopped, at once.
+                    self.shown_downloaded = self.downloaded;
                 }
                 // A video and its subtitles (#68), already marked as downloaded from the web by
                 // its job, before it said it was done (#1103).
@@ -1542,6 +1577,27 @@ impl Item {
         })
     }
 
+    /// The downloaded bytes the list shows: while it runs, the bytes read on the last tick
+    /// of the steady progress clock ([`SHOWN_PROGRESS_EVERY`]), not the bytes as they are
+    /// on this frame — a frame for every mouse movement would otherwise make them race.
+    /// Before the first tick, or not running, the bytes as they are.
+    pub fn shown_downloaded(&self) -> u64 {
+        self.shown_progress_tick
+            .map_or(self.downloaded, |_| self.shown_downloaded)
+    }
+
+    /// The list's %: [`fraction`] from the bytes the list shows ([`shown_downloaded`]), so
+    /// it changes on the same steady clock, whatever the mouse does.
+    pub fn shown_fraction(&self) -> Option<f64> {
+        let total = self.size.filter(|t| *t > 0)?;
+        let f = (self.shown_downloaded() as f64 / total as f64).clamp(0.0, 1.0);
+        Some(if self.video.is_some() && self.status != Status::Complete {
+            f.min(mdm_tools::video::MAX_WHILE_RUNNING)
+        } else {
+            f
+        })
+    }
+
     /// The Status column: `13.38%`, `Complete`, `Error`, or blank.
     /// A torrent at its debrid service (#44), before its files come, or a file-host link whose file
     /// the service fetches first (TorBox): "45% at Real-Debrid" (the percentage first: the list's
@@ -1659,13 +1715,15 @@ impl Item {
             // says what the download is doing.
             // i18n: a download's status (state it is in, not a command): waiting in a queue for its turn
             Status::Queued if self.downloaded == 0 => crate::i18n::t("Waiting").into(),
-            _ => match (self.fraction(), self.status) {
+            _ => match (self.shown_fraction(), self.status) {
                 (Some(f), _) => percent(f),
                 // i18n: a download's status (state it is in, not a command): stopped by the user
                 (_, Status::Stopped) => crate::i18n::t("Stopped").into(),
                 (_, Status::Queued) => crate::i18n::t("Waiting").into(),
                 // No size to take a share of: how much has come (it looked idle).
-                (_, Status::Downloading) if self.downloaded > 0 => size_list(self.downloaded),
+                (_, Status::Downloading) if self.shown_downloaded() > 0 => {
+                    size_list(self.shown_downloaded())
+                }
                 _ => String::new(),
             },
         }
@@ -2331,6 +2389,26 @@ mod tests {
         assert_eq!(file.fraction(), Some(1.0));
     }
 
+    /// The list's % is the shown bytes, not the bytes as they are on this frame: a frame
+    /// for every mouse movement must not make it race (#1441). Before the first tick, it
+    /// is the bytes as they are.
+    #[test]
+    fn the_list_shows_the_shown_bytes_not_the_live_ones() {
+        let mut it = video_item(Some(100), 80, Status::Downloading);
+        it.video = None;
+        assert_eq!(it.fraction(), Some(0.8));
+        assert_eq!(it.shown_fraction(), Some(0.8));
+        assert_eq!(it.status_text(), percent(0.8));
+        it.shown_downloaded = 25;
+        it.shown_progress_tick = Some(0);
+        assert_eq!(it.fraction(), Some(0.8));
+        assert_eq!(it.shown_fraction(), Some(0.25));
+        assert_eq!(it.status_text(), percent(0.25));
+        // No size: the list's downloaded bytes are the shown ones too.
+        it.size = None;
+        assert_eq!(it.status_text(), size_list(25));
+    }
+
     #[test]
     fn a_folder_saved_as_shown_is_under_home() {
         let home = dirs::home_dir().unwrap();
@@ -2525,7 +2603,10 @@ mod helper_connection_tests {
 /// The speed's average and the figure shown (#1176).
 #[cfg(test)]
 mod speed_tests {
-    use super::{SHOWN_EVERY, STILL, Speed, shown_epoch, shown_tick, until_shown};
+    use super::{
+        SHOWN_EVERY, SHOWN_PROGRESS_EVERY, STILL, Speed, progress_tick, shown_epoch, shown_tick,
+        until_shown,
+    };
     use std::time::{Duration, Instant};
 
     const MB: f64 = 1_048_576.0;
@@ -2664,6 +2745,16 @@ mod speed_tests {
             shown_tick(at(2.3) + until_shown(at(2.3))),
             shown_tick(at(2.6))
         );
+    }
+
+    /// The list's progress clock ticks every 250 ms, four times a second, however often
+    /// it is read (#1441).
+    #[test]
+    fn the_list_progress_changes_four_times_a_second() {
+        assert_eq!(SHOWN_PROGRESS_EVERY, 0.25);
+        assert_eq!(progress_tick(at(0.1)), progress_tick(at(0.2)));
+        assert_ne!(progress_tick(at(0.2)), progress_tick(at(0.3)));
+        assert_eq!(progress_tick(at(1.0)), 4);
     }
 
     /// The time left goes with the figure shown: from the bytes done when it was read.

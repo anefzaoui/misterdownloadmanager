@@ -1730,7 +1730,7 @@ fn file_icon(name: &str) -> IconKey {
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
 /// `queued`: the download is in a queue (the Q column's mark).
 fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
-    let frac = it.fraction().unwrap_or(0.0);
+    let frac = it.shown_fraction().unwrap_or(0.0);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
         // As the column shows it: in a queue or not.
