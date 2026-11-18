@@ -145,11 +145,12 @@ For files whose names differ only by a number or a letter, such as `photo001.jpg
 3. Under **Replace asterisk to**, choose **Numbers** or **Letters**, then **From** and **To**.
 4. For numbers, set **Wildcard size** to the number of digits. With 3, the files are `photo001.jpg`, `photo002.jpg` and so on.
 5. If the server needs a login, tick **Use authorization**.
-6. Check **First file**, **Second file** and **Last file**, then click **OK**.
+6. Check **First file**, **Second file** and **Last file**.
+7. Left empty, **Save to** puts each file in its category's folder (**Options → Save to**). To put every file of the batch in one folder, type it there or choose it with **...**. Then click **OK**.
 
 The downloads go to a queue. As with Download Later, MDM asks which queue unless you turn off **Options → Downloads → Show queue selection panel on closing batch download dialogs**.
 
-![Batch download: an address with an asterisk, what replaces it, and the first, second and last file](images/help/batch.webp)
+![Batch download: an address with an asterisk, what replaces it, the first, second and last file, and the folder they go to](images/help/batch.webp)
 *One asterisk in the address, then numbers or letters from–to.*
 
 ## A list of links

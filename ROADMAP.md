@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Add batch download: a long address scrolls to its caret in right-to-left languages (every
+  one-line box did not), and a Save to row puts the whole batch in one folder
+  ([#1403](https://github.com/anefzaoui/misterdownloadmanager/issues/1403))
 - ✅ Malay: 24 menu and column items reviewed by a native speaker (torrent columns, Linux display
   systems, text rendering and graphics notes) (thanks to [@9M2PJU](https://github.com/9M2PJU))
 
