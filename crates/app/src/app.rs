@@ -2058,6 +2058,10 @@ impl App {
             {
                 i.category = Category::General;
             }
+            // Every unfinished download is in a queue: one in none joins the main queue.
+            if i.status != Status::Complete && !queues.iter().any(|q| q.items.contains(&i.id)) {
+                queues[0].items.push(i.id);
+            }
         }
         let mut list = list::ListState::default();
         if let Some(cols) = loaded.columns {
@@ -4021,6 +4025,17 @@ impl App {
         self.stopped_by_hand.remove(&id);
         // Queues never start one whose saving failed (`member_of`): this is the user's start.
         self.saved_by_hand.remove(&id);
+        // Every download is in a queue: one started outside them joins the main queue.
+        if !self.queues.iter().any(|q| q.items.contains(&id))
+            && self
+                .items
+                .iter()
+                .any(|i| i.id == id && i.status != Status::Complete)
+            && let Some(main) = self.queues.first_mut()
+        {
+            main.items.push(id);
+            self.dirty = true;
+        }
         let rt = self.rt.clone();
         let Some(item) = self.item(id) else { return };
         // A finished gallery may start again: it fetches the files not there yet (#58).
@@ -14883,6 +14898,14 @@ mod access_key_tests {
             loaded,
             crate::Start::Shown,
         ))
+    }
+
+    #[test]
+    fn an_unfinished_download_in_no_queue_joins_the_main_queue() {
+        let app = app();
+        // The stopped torrent (3) joins; the finished download (2) stays out of every queue.
+        assert_eq!(app.queues[0].items, vec![1, 3]);
+        assert!(app.queues.iter().all(|q| !q.items.contains(&2)));
     }
 
     /// Every menu MDM builds, in the states that change them: the menu bar, its menus, the
