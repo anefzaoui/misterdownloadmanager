@@ -1549,6 +1549,7 @@ These ship in the next version.
   videos by language, the fair criticism of the benchmark, and where MDM is available (official
   first, community packages labelled); the benchmark's figures say they come from a test server
   on the same PC
+- ✅ CI's Linux libraries step retries a slow package mirror instead of timing out
 
 ## Being worked on
 
