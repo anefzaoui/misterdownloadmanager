@@ -97,6 +97,10 @@
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 @plural	{n} peer|{n} peers	{n} peer|{n} peers
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+@plural	{n} saved|{n} saved	{n} saved|{n} saved
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
@@ -132,7 +136,7 @@
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	&Apply	&Apply
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	&Close	&Close
@@ -453,6 +457,16 @@
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
 	Archive password	Archive password
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+	Archive passwords	Archive passwords
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+	archive passwords	archive passwords
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+	Archive passwords...	Archive passwords...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -707,6 +721,9 @@
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 	Checked: {have} of {total} there	Checked: {have} of {total} there
@@ -833,6 +850,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Congo	Congo
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+	Connect over uTP too (UDP)	Connect over uTP too (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 	Connected	Connected
@@ -848,6 +868,8 @@
 	Connections and Limits	Connections and Limits
 #. text in the Options window
 	Connections:	Connections:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+	Contributors	Contributors
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cook Islands	Cook Islands
@@ -1729,6 +1751,9 @@
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 	Install what's missing from your distribution's packages.	Install what's missing from your distribution's packages.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Install yt-dlp
@@ -1836,6 +1861,9 @@
 	Kazakhstan	Kazakhstan
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 	KBytes/sec	KBytes/sec
+#. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+	Keep private-window downloads in the list	Keep private-window downloads in the list
 #. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 	Keep running when closing the window	Keep running when closing the window
@@ -2039,6 +2067,9 @@
 	Malta	Malta
 #. text in the Options window
 	Manual proxy/socks configuration	Manual proxy/socks configuration
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+	Many peers take only uTP. Without it, MDM can't reach them.	Many peers take only uTP. Without it, MDM can't reach them.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 	Map the port on the router (UPnP)	Map the port on the router (UPnP)
@@ -2296,6 +2327,10 @@
 #. button in the Options window
 #. button: create a new item
 	New	New
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+	New address from the browser ({host}): going on from it	New address from the browser ({host}): going on from it
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Caledonia	New Caledonia
@@ -2477,6 +2512,9 @@
 	October	October
 #. option (radio button) in the Options window
 	Off	Off
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry
 #. text in the Add torrent window
 	Off: a finished torrent stops, like any download.	Off: a finished torrent stops, like any download.
 #. text in the Options window
@@ -2521,6 +2559,9 @@
 	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Once it is added, this window says so. Chrome may also ask by itself at its next start.
 #. text in the Options window
 	One address per line; * stands for any text: example.com/private/*	One address per line; * stands for any text: example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.
 #. option (radio button) in the Scheduler window
 	One-time downloading	One-time downloading
 #. text in the Link grabber window
@@ -2734,6 +2775,9 @@
 #. text in a dialog box
 #. tooltip of the greyed Preview button in Download File Info
 	Preview isn't available yet	Preview isn't available yet
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 	Profile (optional):	Profile (optional):
@@ -2836,6 +2880,9 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 	Regular expressions	Regular expressions
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+	Remember it for other archives	Remember it for other archives
 #. text in a download's progress window
 	Remember Speed Limiter settings for this file	Remember Speed Limiter settings for this file
 #. text in a dialog box
@@ -3966,6 +4013,9 @@
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	Try again later, or download {name} yourself and choose it in {helpers} → {other}.
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+	Trying the saved archive passwords...	Trying the saved archive passwords...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 	Tu	Tu
@@ -4156,6 +4206,9 @@
 	User:	User:
 #. label in the Options window
 	UserName	UserName
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP uses the port for incoming connections: turn on Accept incoming connections
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Uzbekistan	Uzbekistan
@@ -4226,6 +4279,9 @@
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 	Waiting	Waiting
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+	Waiting for a new address from the browser	Waiting for a new address from the browser
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)

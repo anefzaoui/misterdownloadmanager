@@ -481,6 +481,30 @@ pub fn come_forward(title: &str) -> Option<bool> {
     Some(lift)
 }
 
+/// Whether the window in front (the one the keyboard goes to) is the main window or one of the
+/// dialogs it owns: the user is working in the main window. Not another program's window, nor
+/// a window of ours that stands on its own (a progress window, a dialog opened over the browser).
+pub fn main_in_front() -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{GW_OWNER, GetForegroundWindow, GetWindow};
+    let Some(main) = find_own_window(crate::MAIN_TITLE) else {
+        return false;
+    };
+    // SAFETY: plain queries; any handle, or none, is accepted.
+    let mut hwnd = unsafe { GetForegroundWindow() };
+    // A dialog's question is owned by the main window too: a short chain.
+    for _ in 0..4 {
+        if hwnd.is_null() {
+            return false;
+        }
+        if hwnd == main {
+            return true;
+        }
+        // SAFETY: as above.
+        hwnd = unsafe { GetWindow(hwnd, GW_OWNER) };
+    }
+    false
+}
+
 /// Whether our window titled `title` exists and is not on the screen: hidden and not minimized
 /// (a window whose owner is minimized counts: Windows hides it with its owner).
 pub fn window_hidden(title: &str) -> bool {
@@ -529,9 +553,10 @@ unsafe fn above_others(hwnd: HWND) {
 /// Give our window titled `title` IDM's modal-dialog frame (WS_EX_DLGMODALFRAME, no sizing
 /// frame: 3 px borders, 26 px caption) and resize it so the client stays `client` points, at
 /// `scale` pixels per point (the display's scaling times any zoom), with the frame measured for
-/// the window's own DPI. `light` dialogs get a light caption.
+/// the window's own DPI. `light` dialogs get a light caption. `owned`: the main window owns it
+/// (see there).
 /// Returns true once applied (call again each frame until it is).
-pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32) -> bool {
+pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owned: bool) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_USE_IMMERSIVE_DARK_MODE, DwmSetWindowAttribute};
     use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     let Some(hwnd) = find_own_window(title) else {
@@ -546,8 +571,12 @@ pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32) -> b
             &dark as *const i32 as *const c_void,
             size_of::<i32>() as u32,
         );
-        // Owned by the main window, as IDM's dialogs are: no taskbar button, kept above it.
-        if let Some(main) = find_own_window(crate::MAIN_TITLE) {
+        // Owned by the main window, as IDM's dialogs are: no taskbar button, kept above it. Only
+        // when asked for (`owned`): Windows brings an owned window's owner forward with it each
+        // time it is activated (by MDM, or by a click on it), so a dialog over another program
+        // (the browser's duplicate question) brought the main window up from behind it. One on
+        // its own has its own taskbar button.
+        if owned && let Some(main) = find_own_window(crate::MAIN_TITLE) {
             use windows_sys::Win32::UI::WindowsAndMessaging::{GWLP_HWNDPARENT, WS_EX_APPWINDOW};
             SetWindowLongPtrW(hwnd, GWLP_HWNDPARENT, main as isize);
             let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32 & !WS_EX_APPWINDOW;
@@ -4198,6 +4227,90 @@ pub fn on_a_screen(x: i32, y: i32) -> bool {
     use windows_sys::Win32::Graphics::Gdi::{MONITOR_DEFAULTTONULL, MonitorFromPoint};
     // SAFETY: a plain query.
     !unsafe { MonitorFromPoint(POINT { x, y }, MONITOR_DEFAULTTONULL) }.is_null()
+}
+
+/// The monitors in screen pixels (each one's rect and work area, [left, top, right, bottom]),
+/// the primary first.
+pub fn screens() -> Vec<([i32; 4], [i32; 4])> {
+    use windows_sys::Win32::Graphics::Gdi::{
+        EnumDisplayMonitors, GetMonitorInfoW, HDC, HMONITOR, MONITORINFO,
+    };
+    const MONITORINFOF_PRIMARY: u32 = 1;
+    type Found = Vec<(bool, [i32; 4], [i32; 4])>;
+    unsafe extern "system" fn cb(
+        mon: HMONITOR,
+        _dc: HDC,
+        _rc: *mut RECT,
+        lparam: LPARAM,
+    ) -> windows_sys::core::BOOL {
+        let rect = |r: RECT| [r.left, r.top, r.right, r.bottom];
+        // SAFETY: lparam is the Vec below, alive for the enumeration; mi is a writable local.
+        unsafe {
+            let found = &mut *(lparam as *mut Found);
+            let mut mi: MONITORINFO = zeroed();
+            mi.cbSize = size_of::<MONITORINFO>() as u32;
+            if GetMonitorInfoW(mon, &mut mi) != 0 {
+                found.push((
+                    mi.dwFlags & MONITORINFOF_PRIMARY != 0,
+                    rect(mi.rcMonitor),
+                    rect(mi.rcWork),
+                ));
+            }
+        }
+        1
+    }
+    let mut found: Found = Vec::new();
+    // SAFETY: the callback only pushes to `found`, which outlives the call.
+    unsafe {
+        EnumDisplayMonitors(
+            std::ptr::null_mut(),
+            std::ptr::null(),
+            Some(cb),
+            &mut found as *mut Found as LPARAM,
+        );
+    }
+    // The primary first (a stable sort keeps the others' order).
+    found.sort_by_key(|(primary, ..)| !primary);
+    found.into_iter().map(|(_, r, w)| (r, w)).collect()
+}
+
+/// Our window titled `title`: its rect in screen pixels ([left, top, right, bottom]) and
+/// whether it is visible. None while it is minimized (its rect is then the taskbar's icon's).
+pub fn window_rect(title: &str) -> Option<([i32; 4], bool)> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{GetWindowRect, IsIconic, IsWindowVisible};
+    let hwnd = find_own_window(title)?;
+    let mut r: RECT = unsafe { zeroed() };
+    // SAFETY: plain queries about our own window; r is a writable local.
+    let (got, visible, minimized) = unsafe {
+        (
+            GetWindowRect(hwnd, &mut r) != 0,
+            IsWindowVisible(hwnd) != 0,
+            IsIconic(hwnd) != 0,
+        )
+    };
+    (got && !minimized).then_some(([r.left, r.top, r.right, r.bottom], visible))
+}
+
+/// Our window titled `title` moved to screen pixel (x, y), nothing else changed (its size, its
+/// place among the windows, the focus). Moved onto a screen of another scale, Windows gives it
+/// that scale (WM_DPICHANGED), which resizes it.
+pub fn move_window(title: &str, x: i32, y: i32) -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{SWP_NOOWNERZORDER, SWP_NOSIZE};
+    let Some(hwnd) = find_own_window(title) else {
+        return false;
+    };
+    // SAFETY: our own window, on its thread.
+    unsafe {
+        SetWindowPos(
+            hwnd,
+            std::ptr::null_mut(),
+            x,
+            y,
+            0,
+            0,
+            SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOOWNERZORDER,
+        ) != 0
+    }
 }
 
 /// Whether an assistive technology (a screen reader, a UI Automation client) is listening to
@@ -8398,11 +8511,29 @@ mod open_file_tests {
     }
 }
 
+/// The `(Default)` verb under `HKCR\<class>\shell`, when a file manager registers its own verb
+/// name (such as `OpenInOneCommander`) instead of `open`: `AssocQueryStringW` with `verb = None`
+/// looks up `open` rather than `shell`'s `(Default)` value. The value may list several verbs,
+/// comma-separated, in order: the first is the default.
+fn default_shell_verb(class: &str) -> Option<String> {
+    use windows_sys::Win32::System::Registry::HKEY_CLASSES_ROOT;
+    reg_string_in(HKEY_CLASSES_ROOT, &format!(r"{class}\shell"), "")
+        .as_deref()
+        .and_then(first_verb)
+}
+
+/// The first verb of a `shell` key's `(Default)` value, which may list several (`a, b`).
+fn first_verb(value: &str) -> Option<String> {
+    let first = value.split(',').next().unwrap_or("").trim();
+    (!first.is_empty()).then(|| first.to_owned())
+}
+
 /// The program Windows runs to open folders, when that isn't Explorer (a file manager such as
-/// Directory Opus set up to replace it, #446); None for Explorer, or when Windows doesn't say.
+/// Directory Opus or One Commander set up to replace it, #446, #1335); None for Explorer, or
+/// when Windows doesn't say.
 pub fn folder_opener() -> Option<String> {
     use windows_sys::Win32::UI::Shell::{ASSOCF_NONE, ASSOCSTR_EXECUTABLE, AssocQueryStringW};
-    other_folder_opener(|class, verb| {
+    other_folder_opener(default_shell_verb, |class, verb| {
         let wide = |s: &str| s.encode_utf16().chain(Some(0)).collect::<Vec<u16>>();
         let class = wide(class);
         let verb = verb.map(wide);
@@ -8427,20 +8558,28 @@ pub fn folder_opener() -> Option<String> {
     })
 }
 
-/// Who opens a folder, asked of `executable_for(class, verb)` as the shell reads it: a folder is
-/// a `Directory` first (where a replacement registers its verb, as the default or as `open`),
-/// then a `Folder` (where Windows registers Explorer). An installed program's other verbs there
-/// ("Open with Code") are not the default and aren't asked for.
+/// Who opens a folder, asked of `default_verb_for(class)` and `executable_for(class, verb)` as
+/// the shell reads it: a folder is a `Directory` first (where a replacement registers its verb,
+/// as `shell`'s `(Default)` verb, as the default query, or as `open`), then a `Folder` (where
+/// Windows registers Explorer, or another manager sets `Folder\shell`'s `(Default)`). An installed
+/// program's other verbs there ("Open with Code") are not the default and aren't asked for.
 fn other_folder_opener(
+    default_verb_for: impl Fn(&str) -> Option<String>,
     executable_for: impl Fn(&str, Option<&str>) -> Option<String>,
 ) -> Option<String> {
-    let opener = [
-        ("Directory", None),
-        ("Directory", Some("open")),
-        ("Folder", None),
-    ]
-    .into_iter()
-    .find_map(|(class, verb)| executable_for(class, verb))?;
+    let dir_default = default_verb_for("Directory");
+    let folder_default = default_verb_for("Folder");
+    let candidates = [
+        dir_default.as_deref().map(|v| ("Directory", Some(v))),
+        Some(("Directory", None)),
+        Some(("Directory", Some("open"))),
+        folder_default.as_deref().map(|v| ("Folder", Some(v))),
+        Some(("Folder", None)),
+    ];
+    let opener = candidates
+        .into_iter()
+        .flatten()
+        .find_map(|(class, verb)| executable_for(class, verb))?;
     let name = opener.rsplit(['\\', '/']).next().unwrap_or(&opener);
     (!name.is_empty() && !name.eq_ignore_ascii_case("explorer.exe")).then_some(opener)
 }
@@ -8451,13 +8590,15 @@ mod folder_opener_tests {
 
     const EXPLORER: &str = r"C:\Windows\Explorer.exe";
     const OPUS: &str = r"C:\Program Files\GPSoftware\Directory Opus\dopusrt.exe";
+    const ONE_COMMANDER: &str =
+        r"C:\Users\example\scoop\apps\onecommander\current\OneCommander.exe";
 
     /// #446: as Windows is shipped (what `reg query` shows on a clean system), Explorer it is.
     #[test]
     fn explorer_as_shipped_is_no_other_opener() {
         let shipped =
             |c: &str, v: Option<&str>| (c == "Folder" && v.is_none()).then(|| EXPLORER.to_owned());
-        assert_eq!(other_folder_opener(shipped), None);
+        assert_eq!(other_folder_opener(|_| None, shipped), None);
     }
 
     /// A replacement's default verb on `Directory` wins over Explorer on `Folder`.
@@ -8468,7 +8609,62 @@ mod folder_opener_tests {
             ("Folder", None) => Some(EXPLORER.to_owned()),
             _ => None,
         };
-        assert_eq!(other_folder_opener(opus).as_deref(), Some(OPUS));
+        assert_eq!(other_folder_opener(|_| None, opus).as_deref(), Some(OPUS));
+    }
+
+    /// A `shell` key's `(Default)` may list verbs in order; the first is the default.
+    #[test]
+    fn the_first_listed_verb_is_the_default() {
+        use super::first_verb;
+        assert_eq!(
+            first_verb("OpenInOneCommander").as_deref(),
+            Some("OpenInOneCommander")
+        );
+        assert_eq!(
+            first_verb(" OpenInOneCommander , open").as_deref(),
+            Some("OpenInOneCommander")
+        );
+        assert_eq!(first_verb("  "), None);
+        assert_eq!(first_verb(",open"), None);
+    }
+
+    /// #1335: a replacement registering a custom `(Default)` verb under `Directory\shell` (such
+    /// as `OpenInOneCommander`), or `Folder\shell`, where `AssocQueryStringW(..., None)` returns
+    /// no association.
+    #[test]
+    fn a_custom_default_verb_in_registry_is_the_opener() {
+        let dir_verb = |c: &str| (c == "Directory").then(|| "OpenInOneCommander".to_owned());
+        let one_commander = |c: &str, v: Option<&str>| match (c, v) {
+            ("Directory", Some("OpenInOneCommander")) => Some(ONE_COMMANDER.to_owned()),
+            ("Folder", Some("open")) => Some(EXPLORER.to_owned()),
+            _ => None,
+        };
+        assert_eq!(
+            other_folder_opener(dir_verb, one_commander).as_deref(),
+            Some(ONE_COMMANDER)
+        );
+
+        let folder_verb = |c: &str| (c == "Folder").then(|| "openindopus".to_owned());
+        let opus = |c: &str, v: Option<&str>| match (c, v) {
+            ("Folder", Some("openindopus")) => Some(OPUS.to_owned()),
+            _ => None,
+        };
+        assert_eq!(
+            other_folder_opener(folder_verb, opus).as_deref(),
+            Some(OPUS)
+        );
+
+        let custom_explorer = |c: &str, v: Option<&str>| match (c, v) {
+            ("Directory", Some("OpenInExplorer")) => Some(EXPLORER.to_owned()),
+            _ => None,
+        };
+        assert_eq!(
+            other_folder_opener(
+                |c| (c == "Directory").then(|| "OpenInExplorer".to_owned()),
+                custom_explorer
+            ),
+            None
+        );
     }
 
     /// One that replaces `Directory`'s `open` verb, or `Folder`'s own.
@@ -8480,14 +8676,14 @@ mod folder_opener_tests {
             _ => None,
         };
         assert_eq!(
-            other_folder_opener(open).as_deref(),
+            other_folder_opener(|_| None, open).as_deref(),
             Some(r"C:\Apps\files.exe")
         );
         let folder = |c: &str, v: Option<&str>| {
             (c == "Folder" && v.is_none()).then(|| r"C:\Apps\tc.exe".to_owned())
         };
         assert_eq!(
-            other_folder_opener(folder).as_deref(),
+            other_folder_opener(|_| None, folder).as_deref(),
             Some(r"C:\Apps\tc.exe")
         );
     }
@@ -8496,8 +8692,8 @@ mod folder_opener_tests {
     #[test]
     fn explorer_any_case_or_no_answer_is_no_other_opener() {
         let upper = |_: &str, _: Option<&str>| Some(r"C:\WINDOWS\EXPLORER.EXE".to_owned());
-        assert_eq!(other_folder_opener(upper), None);
-        assert_eq!(other_folder_opener(|_, _| None), None);
+        assert_eq!(other_folder_opener(|_| None, upper), None);
+        assert_eq!(other_folder_opener(|_| None, |_, _| None), None);
     }
 }
 

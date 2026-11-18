@@ -26,6 +26,11 @@ pub struct Video {
     /// yt-dlp said it had no JavaScript runtime for the site's qualities (#852,
     /// [`proc::missing_js_runtime`]): YouTube's list is short without one.
     pub needs_js_runtime: bool,
+    /// yt-dlp had no reader for the site (its `extractor_key` is `Generic`, or `HTML5MediaEmbed`
+    /// for a page's plain `<video>`), or the title is the one the page declares (#1076): it is
+    /// the page's own, the frame's for a player embedded in another site's page (#1351), not one
+    /// a site's reader knows the video by.
+    pub page_titled: bool,
 }
 
 impl Video {
@@ -125,6 +130,7 @@ struct RawVideo {
     /// `null` from some extractors (Wikimedia Commons'): not a plain file.
     #[serde(default)]
     direct: Option<bool>,
+    extractor_key: Option<String>,
 }
 
 /// One file of a subtitle language (its formats: srt, vtt, json3…); only the name is read.
@@ -300,6 +306,15 @@ fn retype(f: &mut serde_json::Value) -> bool {
     }
 }
 
+/// yt-dlp's readers that know a video only from the page it is on, so its title is the page's
+/// own: the generic one, and the one for a page's plain `<video>`/`<audio>` (`HTML5MediaEmbed`,
+/// #1351: a player in a frame as often as not).
+fn page_reader(extractor_key: &str) -> bool {
+    ["Generic", "HTML5MediaEmbed"]
+        .iter()
+        .any(|k| extractor_key.eq_ignore_ascii_case(k))
+}
+
 /// Parse `yt-dlp -J` output.
 pub fn parse(json: &[u8]) -> Option<Video> {
     let raw: RawVideo = serde_json::from_slice(json).ok()?;
@@ -351,6 +366,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
         language: raw.language,
         direct: raw.direct == Some(true),
         needs_js_runtime: false,
+        page_titled: raw.extractor_key.as_deref().is_some_and(page_reader),
     })
 }
 
@@ -1342,6 +1358,7 @@ mod tests {
             language: None,
             direct: false,
             needs_js_runtime: false,
+            page_titled: false,
         };
         let labels: Vec<String> = choices(&v, true)
             .into_iter()

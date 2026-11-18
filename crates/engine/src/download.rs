@@ -196,6 +196,12 @@ pub struct Options {
     /// the engine names ([`Destination::Dir`]) whose address names nothing (a script, a bare id,
     /// `videoplayback`) is named by it ([`naming::answer_name`]).
     pub page_title: Option<String>,
+    /// From the browser (#607): the web page the download was started from, whole (its tab's
+    /// address), where the Referer is often the site's address alone. A site whose file
+    /// addresses expire and are given on that page (Rapidgator's file page, `sites::origin`) is
+    /// asked there again for a fresh one when the address stops working. Not in the resume state
+    /// (like the headers): whoever resumes gives it again.
+    pub page: Option<Url>,
     /// The most one request asks for (bytes): every request, the first one too, is a range of
     /// at most this many, the next one following on the same connection. For servers that slow
     /// a long answer down (YouTube's media servers serve 10 MB ranges at full speed and a whole
@@ -286,6 +292,7 @@ impl Default for Options {
             expected_type: None,
             expected_size: None,
             page_title: None,
+            page: None,
             request_cap: None,
             slow_disk: None,
         }
@@ -454,6 +461,15 @@ pub enum NetKind {
 }
 
 impl Error {
+    /// The download stopped because its address no longer gives the file: it expired, or the
+    /// server answers it 401, 403, 404 or 410 (a signed link's end), or with a web page (a file
+    /// host's, #701). A fresh address for the same file (Refresh download address, the browser's
+    /// next download of it) is what helps; the interface waits for one.
+    pub fn wants_new_address(&self) -> bool {
+        matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410))
+            || matches!(self, Error::LinkExpired | Error::GotWebPage)
+    }
+
     /// The address no longer serves this file (or refuses us): retrying won't help.
     fn link_dead(&self) -> bool {
         matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 416))
@@ -769,6 +785,12 @@ pub enum State {
     /// video download, never an engine download's.
     Merging,
     Completing,
+    /// Stopped (paused) by [`Download::cancel`] while downloading: its connections are closed,
+    /// and what they received and the resume state are still being written (#1328). A disk
+    /// slower than the network takes as long as it takes; the download is stopped for whoever
+    /// shows it, and a new run at its place waits for it (`naming::Settling`). `Cancelled`
+    /// follows once everything is saved.
+    Stopping,
     Done,
     Failed,
     Cancelled,
@@ -1191,6 +1213,7 @@ impl Download {
             let sh = shared.clone();
             let body = async move {
                 after_clearing(req.dest.folder(), &cancel).await?;
+                after_settling(&req.dest, &cancel).await?;
                 if crate::ftp::is_ftp(&req.url) {
                     run_fresh_ftp(req, opts, sh, cancel).await
                 } else {
@@ -1244,6 +1267,7 @@ impl Download {
             let sh = shared.clone();
             let body = async move {
                 after_clearing(req.dest.folder(), &cancel).await?;
+                after_settling(&req.dest, &cancel).await?;
                 let look = {
                     let state_file = state_file.clone();
                     tokio::task::spawn_blocking(move || Found::look(&state_file))
@@ -1317,6 +1341,7 @@ impl Download {
             disk_held: Default::default(),
             held: Default::default(),
             checked: Default::default(),
+            settle: Default::default(),
         });
         let task = tokio::spawn(f(shared.clone(), cancel.clone()));
         Download {
@@ -1439,9 +1464,26 @@ struct Shared {
     held: std::sync::atomic::AtomicU64,
     /// While `Verifying`: the bytes of the finished file checked so far (#736).
     checked: Arc<std::sync::atomic::AtomicU64>,
+    /// Stopped and still writing (`State::Stopping`): its place waits for it until `run` has
+    /// let go of everything (#1328).
+    settle: Mutex<Option<naming::Settling>>,
 }
 
 impl Shared {
+    /// Stopped while downloading to `dest` (#1328): the connections are closing, and the download
+    /// says so at once; what they received and the resume state are written after, and the
+    /// place is held for that long (`naming::settling`).
+    fn stopping(&self, dest: &Path) {
+        let mut v = self.view.lock().unwrap();
+        if v.state != State::Downloading {
+            return;
+        }
+        v.state = State::Stopping;
+        drop(v);
+        *self.settle.lock().unwrap() = Some(naming::settling(dest));
+        self.event("Stopped");
+    }
+
     fn snapshot(&self) -> Snapshot {
         let mut s = self.view.lock().unwrap().clone();
         s.server = self.seen.get().and_then(|seen| seen.get());
@@ -1532,6 +1574,15 @@ struct Target {
 /// After asking the original address didn't help, how long until it may be asked again.
 const REFRESH_EVERY: Duration = Duration::from_secs(120);
 
+/// The refreshes of a download's target so far (`Ctx::refresh_target`).
+#[derive(Default)]
+struct Refreshes {
+    /// When asking the origin last failed to help.
+    failed_at: Option<std::time::Instant>,
+    /// When it last gave a new target.
+    switched_at: Option<std::time::Instant>,
+}
+
 /// What every connection needs to fetch a segment.
 struct Ctx {
     /// The download's client: every connection's requests go through its pool.
@@ -1544,13 +1595,20 @@ struct Ctx {
     /// the target on (`origin_of`): asked again when the target expires.
     origin: Option<(Url, HeaderMap)>,
     /// When asking the origin last failed to help (one refresh at a time; after a failure,
-    /// none for `REFRESH_EVERY`).
-    refreshed: tokio::sync::Mutex<Option<std::time::Instant>>,
+    /// none for `REFRESH_EVERY`), and when it last gave a new target.
+    refreshed: tokio::sync::Mutex<Refreshes>,
+    /// The newest target generation a range request was answered on, plus one (0: none yet):
+    /// a target a refresh gave that was refused before answering once isn't refreshed again
+    /// at once (`refresh_target`).
+    answered: std::sync::atomic::AtomicU64,
     size: u64,
     file: Arc<File>,
     opts: Options,
     shared: Arc<Shared>,
+    /// Stops the connections: a stop asked for (`stop`), every byte in, or a fatal error.
     cancel: CancellationToken,
+    /// The download asked to stop ([`Download::cancel`]): `cancel`'s parent.
+    stop: CancellationToken,
     /// `RANGES_*`: learned from the first range answer.
     ranges: AtomicU8,
     /// The first answer advertised ranges (`Accept-Ranges: bytes`, or a 206): a full answer to
@@ -1671,13 +1729,32 @@ impl Ctx {
         let Some((origin, headers)) = &self.origin else {
             return false;
         };
-        let mut failed_at = self.refreshed.lock().await;
+        let mut refreshes = self.refreshed.lock().await;
         if self.target.lock().unwrap().generation != generation {
             return true; // another connection already switched
         }
         // Signed links may live minutes while the download takes hours: refresh as often as
         // that helps, but after an unhelpful refresh wait before asking again.
-        if failed_at.is_some_and(|t| t.elapsed() < REFRESH_EVERY) {
+        if refreshes
+            .failed_at
+            .is_some_and(|t| t.elapsed() < REFRESH_EVERY)
+        {
+            return false;
+        }
+        // The target the last refresh gave, refused before it answered one range: the site
+        // gives links it then refuses (an account's limit, a link bound elsewhere). Asking its
+        // page again at once would only repeat that, connection after connection: an unhelpful
+        // refresh, waited out as one.
+        if generation > 0
+            && self.answered.load(Ordering::SeqCst) <= generation
+            && refreshes
+                .switched_at
+                .is_some_and(|t| t.elapsed() < REFRESH_EVERY)
+        {
+            self.shared.event(
+                "The fresh address was refused before it gave any of the file; not asking again for now",
+            );
+            refreshes.failed_at = Some(std::time::Instant::now());
             return false;
         }
         let Some((url, mut headers)) = refresh_final_url(
@@ -1693,10 +1770,11 @@ impl Ctx {
         )
         .await
         .filter(|(u, _)| *u != self.target.lock().unwrap().url) else {
-            *failed_at = Some(std::time::Instant::now());
+            refreshes.failed_at = Some(std::time::Instant::now());
             return false;
         };
-        *failed_at = None;
+        refreshes.failed_at = None;
+        refreshes.switched_at = Some(std::time::Instant::now());
         self.shared.event(format!(
             "The address stopped working; the original address now leads to {}",
             url.host_str().unwrap_or("?")
@@ -1726,25 +1804,34 @@ impl Ctx {
 
 /// What a download asks again for today's target when `target` stops working (`Ctx::origin`),
 /// with its headers: `given`, the address the user gave, when it led elsewhere; else the page a
-/// site gives `target` on when its file addresses expire (`sites::origin`: MediaFire's, #952),
-/// credentials kept to their host. None for a browser-like download: asked again through MDM's own
-/// connection, which the site's bot check refuses, it keeps the address it has (#668).
+/// site gives `target` on when its file addresses expire (`sites::origin`: MediaFire's, #952;
+/// Rapidgator's, one of `pages`), credentials kept to their host. None for a browser-like
+/// download: asked again through MDM's own connection, which the site's bot check refuses, it
+/// keeps the address it has (#668).
 fn origin_of(
     given: &Url,
     headers: &HeaderMap,
     target: &Url,
     browser_like: bool,
+    pages: &[Url],
 ) -> Option<(Url, HeaderMap)> {
     if browser_like {
         None
     } else if given != target {
         Some((given.clone(), headers.clone()))
     } else {
-        sites::origin(target).map(|page| {
+        sites::origin(target, pages).map(|page| {
             let headers = scoped_headers(headers, given, &page);
             (page, headers)
         })
     }
+}
+
+/// The web pages a download's file may be given on again (`sites::origin`): the browser's tab
+/// it was started from (`Options::page`), then its Referer.
+fn pages_of(opts: &Options, headers: &HeaderMap) -> Vec<Url> {
+    let referer = header_str(headers, header::REFERER).and_then(|r| Url::parse(r).ok());
+    opts.page.iter().cloned().chain(referer).collect()
 }
 
 /// How long an idle keep-alive socket is kept: shorter than most servers' keep-alive, so a
@@ -1938,11 +2025,16 @@ async fn run(
     shared: Arc<Shared>,
 ) -> Result<Outcome, Error> {
     let result = body.await;
-    shared.event(match &result {
-        Ok(o) => format!("Complete: {}", o.path.display()),
-        Err(Error::Cancelled) => "Stopped".to_owned(),
-        Err(e) => format!("Failed: {e}"),
-    });
+    // Said as it stopped (`Shared::stopping`) when it was downloading.
+    let said = shared.view.lock().unwrap().state == State::Stopping;
+    match &result {
+        Ok(o) => shared.event(format!("Complete: {}", o.path.display())),
+        Err(Error::Cancelled) if said => {}
+        Err(Error::Cancelled) => shared.event("Stopped"),
+        Err(e) => shared.event(format!("Failed: {e}")),
+    }
+    // The body has let go of its place and its part file: whatever waits for them goes on.
+    drop(shared.settle.lock().unwrap().take());
     let mut v = shared.view.lock().unwrap();
     v.state = match &result {
         Ok(o) => {
@@ -1960,6 +2052,26 @@ async fn run(
     };
     drop(v);
     result
+}
+
+/// Before a download starts at its place (`Destination::File`): the run stopped there just
+/// before has let go of it, its last bytes and its resume state written (#1328: it said it was
+/// stopped as its connections closed, and a slow disk may still be writing). Waits on a thread
+/// that may wait, unless the download is cancelled meanwhile; at once when nothing settles there.
+/// Whether it waited.
+async fn after_settling(dest: &Destination, cancel: &CancellationToken) -> Result<bool, Error> {
+    let Destination::File(place) = dest else {
+        return Ok(false);
+    };
+    if !naming::is_settling(place) {
+        return Ok(false);
+    }
+    let place = place.clone();
+    let wait = tokio::task::spawn_blocking(move || naming::wait_settled(&place));
+    tokio::select! {
+        _ = cancel.cancelled() => Err(Error::Cancelled),
+        _ = wait => Ok(true),
+    }
 }
 
 /// Before a download looks at its folder: the deletes of old files there that it must come
@@ -2239,8 +2351,15 @@ async fn run_fresh(
                 post: post.clone(),
                 generation: 0,
             }),
-            origin: origin_of(&req.url, &req.headers, &final_url, browser.is_some()),
+            origin: origin_of(
+                &req.url,
+                &req.headers,
+                &final_url,
+                browser.is_some(),
+                &pages_of(&opts, &req.headers),
+            ),
             refreshed: Default::default(),
+            answered: Default::default(),
             size,
             file: file.clone(),
             opts: opts.clone(),
@@ -2248,6 +2367,7 @@ async fn run_fresh(
             // A child token: the supervisor stops its own connections without cancelling the
             // download (which may still fall back to one connection).
             cancel: cancel.child_token(),
+            stop: cancel.clone(),
             ranges: AtomicU8::new(ranges),
             advertised,
             wait_for_ranges,
@@ -2476,11 +2596,13 @@ async fn run_fresh_ftp(
             }),
             origin: None,
             refreshed: Default::default(),
+            answered: Default::default(),
             size,
             file: file.clone(),
             opts: opts.clone(),
             shared: shared.clone(),
             cancel: cancel.child_token(),
+            stop: cancel.clone(),
             ranges: AtomicU8::new(ranges),
             // FTP's REST is asked for, not advertised.
             advertised: true,
@@ -2526,6 +2648,14 @@ async fn run_resume(
     }
     shared.limiter.set(opts.speed_limit);
     let bad = |what: &str| Error::BadState(format!("{}: {what}", state_file.display()));
+    if state_file != state_path(&saved.dest) {
+        return Err(bad("does not belong to the file it names"));
+    }
+    // Stopped a moment ago and still saving (#1328): it goes on from the state saved last.
+    let saved = match after_settling(&Destination::File(saved.dest.clone()), &cancel).await? {
+        true => ResumeState::load(&state_file).map_err(Error::BadState)?,
+        false => saved,
+    };
     if state_file != state_path(&saved.dest) {
         return Err(bad("does not belong to the file it names"));
     }
@@ -2586,7 +2716,13 @@ async fn run_resume(
         Some((url, h)) => (url.clone(), as_get.contains(&url), Some(h)),
         None => (saved.final_url.clone(), saved.final_get, None),
     };
-    let origin = origin_of(&saved.url, &headers, &url, browser.is_some());
+    let origin = origin_of(
+        &saved.url,
+        &headers,
+        &url,
+        browser.is_some(),
+        &pages_of(&opts, &headers),
+    );
     // Credentials stay with the host they were given for (the refresh's own way there scoped
     // them as it went).
     headers = refreshed_headers.unwrap_or_else(|| scoped_headers(&headers, &saved.url, &url));
@@ -2670,11 +2806,13 @@ async fn run_resume(
         }),
         origin,
         refreshed: Default::default(),
+        answered: Default::default(),
         size,
         file: file.clone(),
         opts,
         shared: shared.clone(),
         cancel: cancel.child_token(),
+        stop: cancel.clone(),
         // Ranges worked before: a 200 now is a changed file or a range-less edge.
         ranges: AtomicU8::new(RANGES_YES),
         advertised: true,
@@ -2735,7 +2873,21 @@ async fn refresh_final_url(
         return None;
     }
     let (_, _, total) = parse_content_range(resp.headers()).ok()?;
-    (total == Some(size)).then(|| (resp.url().clone(), headers))
+    let url = resp.url().clone();
+    if total != Some(size) {
+        return None;
+    }
+    // Read to its end (one byte), the connection goes back to the pool, where a connection that
+    // asks for its part after it has gone back takes it rather than opening one more (two round
+    // trips to a far server, #1328).
+    let mut resp = resp;
+    let mut read = 0;
+    while read < PAGE_SNIFF_BYTES
+        && let Ok(Some(chunk)) = cancellable(cancel, async { Ok(resp.chunk().await?) }).await
+    {
+        read += chunk.len();
+    }
+    Some((url, headers))
 }
 
 /// Check the finished part file against `hash` (at most two files at once: it reads them
@@ -2889,14 +3041,16 @@ async fn segmented(
     first: Option<Body>,
 ) -> Result<(), Error> {
     let path = state_path(&saved.dest);
+    let dest = saved.dest.clone();
     let mut synced = Synced {
         at: std::time::Instant::now(),
         bytes: 0,
         took: Duration::ZERO,
         covered: 0,
     };
-    save_state(&ctx, &mut saved, &path, &mut synced, true).await?;
     let interval = ctx.opts.save_interval;
+    // Asked to stop while the connections ran (`Shared::stopping`).
+    let mut told = false;
     let result = {
         // Saves until told to stop or a save fails (resolving to that error). It stops only
         // between saves: a save's blocking write can't be cancelled, so dropping the saver
@@ -2904,6 +3058,11 @@ async fn segmented(
         // stale state file next to a finished or already resumed download (#106).
         let stop = CancellationToken::new();
         let saver = async {
+            // The state as the connections start, beside them: a resume's first request no
+            // longer waits for a write to the disk (#1328).
+            if let Err(e) = save_state(&ctx, &mut saved, &path, &mut synced, true).await {
+                return Some(e);
+            }
             loop {
                 tokio::select! {
                     () = tokio::time::sleep(interval) => {}
@@ -2916,15 +3075,29 @@ async fn segmented(
         };
         let supervisor = supervise(ctx.clone(), first);
         tokio::pin!(saver, supervisor);
-        tokio::select! {
-            r = &mut supervisor => {
-                // The connections stopped: let a save under way finish. Its error, if any, is
-                // the final save's to report (it writes the same file, forced, just below).
-                stop.cancel();
-                let _ = saver.await;
-                r
+        loop {
+            tokio::select! {
+                r = &mut supervisor => {
+                    // The connections stopped: let a save under way finish. Its error, if any,
+                    // is the final save's to report (it writes the same file, forced, below).
+                    stop.cancel();
+                    let _ = saver.as_mut().await;
+                    break r;
+                }
+                e = &mut saver => {
+                    // The connections are stopped and waited for, as every stop does (#201).
+                    ctx.cancel.cancel();
+                    let _ = supervisor.as_mut().await;
+                    break Err(e.expect("the saver only stops when told to"));
+                }
+                // Paused or stopped (#1328): the download says so as its connections close, not
+                // once a disk slower than the network has taken what they received and the
+                // state (a flush under way, then the last one: over a minute, measured).
+                () = ctx.stop.cancelled(), if !told => {
+                    told = true;
+                    ctx.shared.stopping(&dest);
+                }
             }
-            e = &mut saver => Err(e.expect("the saver only stops when told to")),
         }
     };
     match &result {
@@ -2935,6 +3108,11 @@ async fn segmented(
         // Complete: the final state stays until `finish` has renamed the part file, so a
         // crash in between still resumes (to an immediate rename).
         Ok(()) | Err(_) => save_state(&ctx, &mut saved, &path, &mut synced, true).await?,
+    }
+    // Said stopped, it stays stopped, even when its last bytes came in meanwhile: the next start
+    // finds every byte in, checks and names the file (#1328).
+    if told && result.is_ok() {
+        return Err(Error::Cancelled);
     }
     result
 }
@@ -3057,6 +3235,16 @@ async fn save_state(
     s.validators = validators;
     s.final_url = final_url;
     s.final_get = final_get;
+    // A save that claims no byte the last one didn't has nothing to flush: the first state of a
+    // new download, a resume's new address (a signed link asked again) or validators. A flush
+    // waits for all the disk still has to write, and a resume waited for it (#1328).
+    if bytes <= saved.downloaded() {
+        s.segments = segments;
+        *saved = tokio::task::spawn_blocking(move || s.write(&path).map(|()| s))
+            .await
+            .expect("state writer panicked")?;
+        return Ok(());
+    }
     // Tests' slow disk (its extra flush time not for the forced saves at the start and the end).
     let slow = ctx.opts.slow_disk.clone();
     let began = std::time::Instant::now();
@@ -3076,10 +3264,11 @@ async fn save_state(
     Ok(())
 }
 
-/// The flush time the next flush is judged by. A forced save runs while no connection writes
-/// (before they start, after they stop), so it holds no transfer up and says nothing of the
-/// next one: the first one at the start, which also pays for creating the part file, once
-/// delayed the first save of progress past the end of a short download (#518).
+/// The flush time the next flush is judged by. A forced save says nothing of the next one: the
+/// last runs once the connections have stopped, and the first as they start, before they have
+/// written much (it usually claims nothing and flushes nothing); the first one, which also paid
+/// for creating the part file, once delayed the first save of progress past the end of a short
+/// download (#518).
 fn forced_gap(force: bool, took: Duration) -> Duration {
     if force { Duration::ZERO } else { took }
 }
@@ -3860,8 +4049,14 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
                         ctx.shared.conn(id, |c| c.status = ConnStatus::Connecting);
                         continue;
                     }
+                    // A site's signed link (`sites::expiring`) is expired by its dead answer too,
+                    // when no page is known to ask for a fresh one: a fresh address helps.
                     let e = match e {
-                        Error::Status(_) if ctx.origin.is_some() => Error::LinkExpired,
+                        Error::Status(_)
+                            if ctx.origin.is_some() || sites::expiring(&target.url) =>
+                        {
+                            Error::LinkExpired
+                        }
                         e => e,
                     };
                     ctx.shared
@@ -4048,6 +4243,12 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
         StatusCode::OK if per_node_etag(ctx, if_range.as_ref(), &head) => {
             return Err(Error::RangesUnavailable);
         }
+        // Another server's copy, after the address moved there (a file host's fresh link):
+        // its own ETag and date, the same length. Its validators are taken; the overlap check
+        // still compares the bytes on disk as each connection goes on.
+        StatusCode::OK if other_server_copy(ctx, &head) => {
+            return Err(Error::RangesUnavailable);
+        }
         // A full body for a ranged request once ranges are known to work: If-Range failed (the
         // file changed), unless it is still the same file and this answer just lacks the range.
         StatusCode::OK if ctx.ranges.load(Ordering::SeqCst) == RANGES_YES => {
@@ -4081,6 +4282,8 @@ async fn request(ctx: &Ctx, target: &Target, from: u64, to: u64) -> Result<Body,
             to - 1
         )));
     }
+    ctx.answered
+        .fetch_max(target.generation + 1, Ordering::SeqCst);
     Ok(body)
 }
 
@@ -4133,6 +4336,46 @@ fn per_node_etag(ctx: &Ctx, sent: Option<&HeaderValue>, resp: &Head) -> bool {
         v.etag_host = None;
     }
     same
+}
+
+/// A full answer from a server other than the one the download's validators came from (its
+/// address moved: Rapidgator's fresh link may be on another of its servers, whose copy of the
+/// file has its own ETag and date), with the file's length and validators of its own: that
+/// server's are taken for the rest of the download, so its ranges are asked with them.
+fn other_server_copy(ctx: &Ctx, resp: &Head) -> bool {
+    let mut v = ctx.validators.lock().unwrap();
+    let host = resp.url.host_str();
+    let theirs = Validators::from_response(
+        header_str(&resp.headers, header::ETAG),
+        header_str(&resp.headers, header::LAST_MODIFIED),
+        header_str(&resp.headers, header::DATE),
+        host,
+    );
+    let same = is_other_server_copy(&v, &theirs, &resp.url, resp.len == Some(ctx.size));
+    if same {
+        ctx.shared.event(format!(
+            "{} has its own copy of the file (same size): going on with its version",
+            host.unwrap_or("?")
+        ));
+        *v = theirs;
+    }
+    same
+}
+
+/// The decision of `other_server_copy`: `theirs` (the answer's validators, from `at`) is another
+/// server's copy of the file when the download's validators came from another host, the length
+/// is the file's, the answer has an ETag of its own, and both hosts are one file host's own
+/// (`sites::expiring` for the answer, `sites::same_party` between the two). Any other site's
+/// same-length answer under other validators is a file that changed on the server.
+fn is_other_server_copy(ours: &Validators, theirs: &Validators, at: &Url, same_len: bool) -> bool {
+    let host = at.host_str();
+    let Some(old) = ours.etag_host.as_deref().filter(|old| Some(*old) != host) else {
+        return false;
+    };
+    let mut was = at.clone();
+    let party =
+        sites::expiring(at) && was.set_host(Some(old)).is_ok() && sites::same_party(&was, at);
+    party && same_len && theirs.etag.is_some() && theirs != ours
 }
 
 fn header_str(h: &HeaderMap, name: header::HeaderName) -> Option<&str> {
@@ -4667,12 +4910,15 @@ async fn receive(
     let mut checked = std::time::Instant::now();
     loop {
         let next = tokio::select! {
-            _ = ctx.cancel.cancelled() => {
-                // Paused or stopped: keep what arrived (it is claimed, so it is ours to write).
-                out.finish(&mut pace).await?;
-                return Err(Error::Cancelled);
-            }
-            n = body.chunk() => n,
+            _ = ctx.cancel.cancelled() => None,
+            n = body.chunk() => Some(n),
+        };
+        let Some(next) = next else {
+            // Paused or stopped: the connection closes now, whatever the disk still has to do
+            // (#1328), and what arrived is kept (it is claimed, so it is ours to write).
+            drop(body);
+            out.finish(&mut pace).await?;
+            return Err(Error::Cancelled);
         };
         // `complete`: the segment ended where this connection had written (a split shortened it).
         let (ended, err, complete) = match next {
@@ -4704,13 +4950,16 @@ async fn receive(
                         g.acquire(want).await;
                     }
                 };
-                tokio::select! {
-                    _ = ctx.cancel.cancelled() => {
-                        // Not claimed yet: this chunk isn't ours to keep; what is, is written.
-                        out.finish(&mut pace).await?;
-                        return Err(Error::Cancelled);
-                    }
-                    _ = paid => {}
+                let stopped = tokio::select! {
+                    _ = ctx.cancel.cancelled() => true,
+                    _ = paid => false,
+                };
+                if stopped {
+                    // Not claimed yet: this chunk isn't ours to keep; what is, is written, the
+                    // connection closed first.
+                    drop(body);
+                    out.finish(&mut pace).await?;
+                    return Err(Error::Cancelled);
                 }
                 let at = out.next();
                 // An answer that runs to the end of the file (`whole`: the probe's plain GET),
@@ -5664,6 +5913,37 @@ mod tests {
     }
 
     #[test]
+    fn an_archive_org_links_cookies_go_to_archive_storage_nodes() {
+        let mut h = HeaderMap::new();
+        h.insert(
+            header::COOKIE,
+            HeaderValue::from_static("logged-in-user=user; logged-in-sig=sig"),
+        );
+        let u = |s: &str| Url::parse(s).unwrap();
+        let link = u("https://archive.org/download/sample-item/sample.pdf");
+        for to in [
+            "https://ia600100.us.archive.org/24/items/sample-item/sample.pdf",
+            "https://ia800102.us.archive.org/items/sample-item/sample.pdf",
+            "https://dn720303.ca.archive.org/0/items/sample-item/sample.pdf",
+        ] {
+            assert!(
+                scoped_headers(&h, &link, &u(to)).contains_key(header::COOKIE),
+                "{to}"
+            );
+        }
+        for to in [
+            "https://attacker.example/sample.pdf",
+            "https://notarchive.org/download",
+            "http://ia600100.us.archive.org/sample.pdf",
+        ] {
+            assert!(
+                !scoped_headers(&h, &link, &u(to)).contains_key(header::COOKIE),
+                "{to}"
+            );
+        }
+    }
+
+    #[test]
     fn drive_gets_a_browsers_agent_and_only_drive() {
         let u = |s: &str| Url::parse(s).unwrap();
         let browser = Some(sites::gdrive::USER_AGENT);
@@ -5727,5 +6007,78 @@ mod tests {
             HeaderValue::from_static("items 0-1/2"),
         );
         assert!(parse_content_range(&h).is_err());
+    }
+    fn copy_validators(etag: &str, host: &str, modified: &str) -> Validators {
+        Validators::from_response(
+            Some(etag),
+            Some(modified),
+            Some("Wed, 21 Oct 2015 08:00:00 GMT"),
+            Some(host),
+        )
+    }
+
+    #[test]
+    fn other_server_copy_accepts_rapidgator_node_rotation() {
+        let ours = copy_validators(
+            "\"a\"",
+            "s1.rapidgator.net",
+            "Wed, 21 Oct 2015 07:28:00 GMT",
+        );
+        let theirs = copy_validators(
+            "\"b\"",
+            "s2.rapidgator.net",
+            "Wed, 21 Oct 2015 07:28:12 GMT",
+        );
+        let at = Url::parse("https://s2.rapidgator.net/download/token").unwrap();
+        assert_ne!(ours.last_modified, theirs.last_modified);
+        assert!(is_other_server_copy(&ours, &theirs, &at, true));
+        assert!(!is_other_server_copy(&ours, &theirs, &at, false));
+        assert!(!is_other_server_copy(&theirs, &theirs, &at, true));
+        assert!(!is_other_server_copy(
+            &Validators::default(),
+            &theirs,
+            &at,
+            true
+        ));
+        for etag in [None, Some("W/\"b\""), Some("malformed")] {
+            let theirs = Validators::from_response(etag, None, None, at.host_str());
+            assert!(!is_other_server_copy(&ours, &theirs, &at, true));
+        }
+    }
+
+    #[test]
+    fn other_server_copy_rejects_generic_mirrors_and_unrelated_hosts() {
+        for (old, target) in [
+            ("dl1.example.com", "https://dl2.example.com/firmware.bin"),
+            (
+                "dl1.example.com",
+                "https://s2.rapidgator.net/download/token",
+            ),
+            ("rg.to", "https://s2.rapidgator.net/download/token"),
+            (
+                "rapidgator.net.example.com",
+                "https://s2.rapidgator.net/download/token",
+            ),
+            (
+                "s1.rapidgator.net",
+                "https://s2.rapidgator.net.example.com/download/token",
+            ),
+            (
+                "s1.rapidgator.net",
+                "https://s2.rapidgator.net/firmware.bin",
+            ),
+        ] {
+            let ours = copy_validators("\"a\"", old, "Wed, 21 Oct 2015 07:28:00 GMT");
+            let at = Url::parse(target).unwrap();
+            let theirs = copy_validators(
+                "\"b\"",
+                at.host_str().unwrap(),
+                "Wed, 21 Oct 2015 07:28:12 GMT",
+            );
+            assert!(
+                !is_other_server_copy(&ours, &theirs, &at, true),
+                "{old} -> {target}"
+            );
+        }
     }
 }

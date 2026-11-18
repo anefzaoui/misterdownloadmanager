@@ -543,6 +543,21 @@ pub struct Item {
     /// often the site's address only. Refresh download address opens it; kept with the list.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub page: Option<String>,
+    /// It waits for a new address, as IDM's downloads do after Refresh download address: its last
+    /// run stopped because its address no longer gives the file (a signed link expired, 403, 404,
+    /// 410: the engine's `Error::wants_new_address`), or the user chose Refresh download address.
+    /// The browser's next download of the same file (`crate::freshlink`) gives it its address and
+    /// it goes on, instead of a new row starting over. Kept with the list (a link that expired
+    /// overnight is renewed the next day); cleared as it starts again.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub waits_for_address: bool,
+    /// It was made from a private (incognito) window's download. Saved (with Options → General →
+    /// "Keep private-window downloads in the list"), unlike `context.private`, which is memory
+    /// only: read back, the row stays apart from normal windows' downloads (it neither takes
+    /// nor gives a fresh address, `crate::freshlink`), never starts waiting by itself, and a
+    /// video never falls back to the normal browser's cookie store.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub private_window: bool,
     /// A video's (its `url` is the page): the address its file came from, the first stream of
     /// its last run as yt-dlp gave it to MDM's engine (#795). The windows' "Address".
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -902,6 +917,11 @@ pub struct VideoSpec {
     /// title) is shortened instead.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub named: bool,
+    /// The video's length (whole seconds) as its look-up said: the same video picked again on
+    /// its page is known by it when its stream's address is signed in its path for each load
+    /// (`same_video`). None in a list saved before it, for a live stream or a length not said.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub duration: Option<u32>,
 }
 
 /// A running download and its speed measurement.
@@ -1086,6 +1106,11 @@ fn size_after(
 }
 
 impl Item {
+    /// Made from a private window's download, in this session or one before it.
+    pub fn is_private_window(&self) -> bool {
+        self.private_window || self.context.private
+    }
+
     /// Add an app-side event (added, started, stopped …) to the log.
     pub fn note(&mut self, text: impl Into<String>) {
         let now = std::time::SystemTime::now()
@@ -1176,6 +1201,8 @@ impl Item {
             moved_away: false,
             referer: None,
             page: None,
+            waits_for_address: false,
+            private_window: false,
             file_url: None,
             live: None,
             torrent_check: None,
@@ -1280,7 +1307,9 @@ impl Item {
             | State::Merging
             | State::Completing => None,
             State::Done => Some(Status::Complete),
-            State::Cancelled => Some(Status::Stopped),
+            // Stopped, its last bytes and state still being written (#1328): stopped for the
+            // list now; a start at its place waits for them in the engine.
+            State::Stopping | State::Cancelled => Some(Status::Stopped),
             State::Failed => Some(Status::Error),
         };
         match ended {
@@ -1295,8 +1324,29 @@ impl Item {
                         .map_or_else(|| "no reason given".to_owned(), |r| without_queries(&r))
                 });
                 self.status = status;
+                // A file's address that no longer gives it (expired, refused): it waits for a
+                // fresh one, which the browser's next download of the file gives it.
+                if failed_now
+                    && self.video.is_none()
+                    && !self.is_private_window()
+                    && crate::freshlink::expiring_site(&self.url)
+                    && s.failure
+                        .as_ref()
+                        .is_some_and(mdm_engine::Error::wants_new_address)
+                {
+                    self.waits_for_address = true;
+                }
                 // In the interface language; the engine's English when it gave no failure.
                 self.error = s.failure.as_ref().map(crate::errors::describe).or(s.error);
+                if self.video.is_some()
+                    && self.is_private_window()
+                    && let Some(error) = self
+                        .error
+                        .as_ref()
+                        .and_then(|e| crate::videodlg::private_auth_error(e))
+                {
+                    self.error = Some(error);
+                }
                 // Why it failed, in the log too, once (#1262: 0.5.2's log said nothing of a
                 // video yt-dlp couldn't download, only the progress window did). The site's
                 // name, not its address: a log is attached to reports, and addresses carry
@@ -1418,16 +1468,20 @@ impl Item {
     /// The web page it was obtained from (#795): a video's or a gallery's is its own address
     /// (the page yt-dlp, gallery-dl look up); a file's the page the browser started it from
     /// (#607), else the one it sent as its referer (an older extension's, Import's, File
-    /// Properties'). Refresh download address opens it.
+    /// Properties'). Refresh download address opens it. A site's address alone (a Referer a
+    /// referrer policy cut, `https://host/`) only when none of them names a page on it.
     pub fn web_page(&self) -> Option<&str> {
         if self.video.is_some() || self.gallery.is_some() {
             return Some(self.url.as_str());
         }
-        self.page
-            .as_deref()
-            .or(self.context.referer.as_deref())
-            .or(self.referer.as_deref())
-            .filter(|r| !r.is_empty())
+        let known = [
+            self.page.as_deref(),
+            self.context.referer.as_deref(),
+            self.referer.as_deref(),
+        ];
+        let mut known = known.into_iter().flatten().filter(|r| !r.is_empty());
+        let first = known.clone().next()?;
+        Some(known.find(|r| !site_only(r)).unwrap_or(first))
     }
 
     /// The referer sent with it from now on (the browser's, File Properties'): the request's
@@ -1620,6 +1674,13 @@ impl Item {
     pub fn time_left(&self) -> String {
         self.seconds_left().map_or(String::new(), time)
     }
+}
+
+/// A web address that is a site's only (`https://host/`, no path, query or fragment): what a
+/// referrer policy leaves of the page a download was started from ([`Item::web_page`]).
+fn site_only(address: &str) -> bool {
+    Url::parse(address)
+        .is_ok_and(|u| u.path() == "/" && u.query().is_none() && u.fragment().is_none())
 }
 
 /// Every byte of a download is in (#736): the last of it is written out (its whole size
@@ -1948,6 +2009,7 @@ mod file_address_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            duration: None,
         });
         i
     }
@@ -2007,6 +2069,17 @@ mod file_address_tests {
         f.set_referer(Some("https://www.example.com/".into()));
         f.page = Some("https://www.example.com/files/a.html".into());
         assert_eq!(f.web_page(), Some("https://www.example.com/files/a.html"));
+        // A site's address alone is the page only when nothing names one on it: a page the
+        // browser gave as only the site's (a tab gone to the home page) gives way to a Referer
+        // that is a whole page; a Referer cut to the site, with no page, is still shown.
+        f.page = Some("https://www.example.com/".into());
+        f.set_referer(Some("https://www.example.com/files/a.html".into()));
+        assert_eq!(f.web_page(), Some("https://www.example.com/files/a.html"));
+        f.page = None;
+        f.set_referer(Some("https://www.example.com/".into()));
+        assert_eq!(f.web_page(), Some("https://www.example.com/"));
+        f.page = Some(String::new());
+        assert_eq!(f.web_page(), Some("https://www.example.com/"));
     }
 
     /// The referer and a video's file address are kept with the list (#795); the browser's
@@ -2154,6 +2227,7 @@ mod tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            duration: None,
         });
         it
     }

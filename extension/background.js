@@ -456,16 +456,43 @@ function formBody(details) {
 const PAGE_LOADS = ["main_frame", "sub_frame", "object"];
 
 // The page each page load was started from, by address (two minutes, #607): Firefox names it
-// (`originUrl`: the page whose link, form or script asked for it); Chromium gives the tab it loads
-// in, whose address stays the page's while the answer turns out to be a download (`pageOf`).
+// (`originUrl`: the page whose link, form or script asked for it); Chromium gives only the tab it
+// loads in (and `initiator`, the site alone). That tab is looked at as the load starts
+// (`tabPage`), not once its answer has turned out to be a download: by then a link opened in a
+// tab of its own (a file host's Download button) has had that tab closed by the browser, and the
+// page was lost to the Referer, cut to the site's address (a file page on a host's /file/… gave
+// only the host's home, its download coming from another of its servers).
 const startedFrom = new Map();
+
+// The web page tab `tabId` shows, else (a tab just opened for a link, still blank) the one of the
+// tab that opened it; null when neither shows one (`pageOf` checks it isn't the file itself).
+async function tabPage(tabId) {
+  const web = (u) => typeof u === "string" && /^https?:\/\//i.test(u);
+  try {
+    const tab = await ext.tabs.get(tabId);
+    if (web(tab.url)) return { url: tab.url, incognito: Boolean(tab.incognito) };
+    if (tab.openerTabId >= 0) {
+      const opener = await ext.tabs.get(tab.openerTabId);
+      if (web(opener.url)) return { url: opener.url, incognito: Boolean(opener.incognito) };
+    }
+  } catch {
+    // Gone already: `pageOf` looks again.
+  }
+  return null;
+}
 
 if (ext.webRequest) {
   const navigations = { urls: ["<all_urls>"], types: PAGE_LOADS };
   ext.webRequest.onBeforeRequest.addListener(
     (d) => {
       forget(startedFrom, 120000);
-      if (!startedFrom.has(d.url)) startedFrom.set(d.url, { page: d.originUrl || d.documentUrl || "", tabId: d.tabId, at: Date.now() });
+      if (!startedFrom.has(d.url)) {
+        const page = d.originUrl || d.documentUrl || "";
+        const seen = { page, tabId: d.tabId, at: Date.now() };
+        // No page named (Chromium): its tab's, now, before the load can close or leave it.
+        if (!page && d.tabId >= 0) seen.tab = tabPage(d.tabId);
+        startedFrom.set(d.url, seen);
+      }
       if (d.method !== "POST") return;
       forget(posts, 120000);
       posts.set(d.url, { ...formBody(d), at: Date.now(), id: d.requestId });
@@ -1951,7 +1978,8 @@ async function browserProxy(url, incognito) {
 // The web page a download was started from, whole (#607): the Referer the browser sends with it
 // is often the site's address only (the page's referrer policy), and the app's "Refresh download
 // address" opens this page, where a fresh link can be taken. Firefox names the page a load came
-// from (`startedFrom`); else the tab it was started in (for a link opened in a tab of its own,
+// from (`startedFrom`); else the tab it was started in, as its load started (`tabPage`: the tab
+// may be closed or elsewhere by now), or as it is now (for a link opened in a tab of its own,
 // the tab that opened it), else the active tab of the window last used, from the same kind of
 // window (private or not). "" when none is a web page other than the file itself.
 async function pageOf(item, urls) {
@@ -1959,8 +1987,11 @@ async function pageOf(item, urls) {
   forget(startedFrom, 120000);
   const seen = urls.map((u) => startedFrom.get(u)).find(Boolean);
   if (seen && web(seen.page)) return seen.page;
-  const tabId = item.tabId >= 0 ? item.tabId : seen && seen.tabId >= 0 ? seen.tabId : -1;
   const same = (tab) => tab && Boolean(tab.incognito) === Boolean(item.incognito);
+  // The page its tab showed as the load started (`tabPage`).
+  const then = seen && seen.tab ? await seen.tab : null;
+  if (same(then) && web(then.url)) return then.url;
+  const tabId = item.tabId >= 0 ? item.tabId : seen && seen.tabId >= 0 ? seen.tabId : -1;
   try {
     let tab = tabId >= 0 ? await ext.tabs.get(tabId) : (await ext.tabs.query({ active: true, lastFocusedWindow: true }))[0];
     if (same(tab) && !web(tab.url) && tab.openerTabId >= 0) tab = await ext.tabs.get(tab.openerTabId);
@@ -1998,6 +2029,23 @@ async function handOff(d) {
   return native(message);
 }
 
+// Telegram Web (web.telegram.org: its K and A apps) downloads a file through its own service
+// worker, which fetches the file's encrypted pieces over the page's connection to Telegram and
+// hands the browser the result under an address of its own (`/k/d/…`, `/a/progressive/…`).
+// That address is nothing on Telegram's servers: outside the page it only redirects to the app
+// (302), so MDM can't fetch it and the download sat at 0 % (#1345). Every download from there is
+// the browser's.
+function telegramWebStream(...urls) {
+  return urls.some((value) => {
+    if (!value) return false;
+    try {
+      return new URL(value).hostname.toLowerCase() === "web.telegram.org";
+    } catch {
+      return false;
+    }
+  });
+}
+
 // Colab's runtime proxy uses an ephemeral token tied to the browser's partitioned session.
 // Only the actual proxy transfer URL is left to the browser: a normal file linked from a Colab
 // notebook must still be capturable by MDM (#603).
@@ -2029,6 +2077,7 @@ async function candidate(item, url, clicked = false) {
   const first = firstUrl(item);
   if (altClicked(item, url, first, clicked) || postOf(first) === null) return null; // Alt; a form not to post again
   if (colabRuntimeProxy(first, url)) return null;
+  if (telegramWebStream(first, url)) return null;
   const r = await currentRules();
   if (!r) return null;
   const name = (item.filename || "").split(/[\\/]/).pop() || url.split(/[?#]/)[0].split("/").pop() || "";

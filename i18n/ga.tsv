@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Scrios an {n} comhad ón diosca freisin|Scrios an {n} chomhad ón diosca freisin|Scrios an {n} gcomhad ón diosca freisin|Scrios an {n} gcomhad ón diosca freisin|Scrios an {n} gcomhad ón diosca freisin
+#. count in cnl.rs
+#. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Tá {n} nasc á sheoladh chuig Grabálaí Nasc ó shuíomh anaithnid.|Tá {n} nasc á sheoladh chuig Grabálaí Nasc ó shuíomh anaithnid.|Tá {n} nasc á sheoladh chuig Grabálaí Nasc ó shuíomh anaithnid.|Tá {n} nasc á sheoladh chuig Grabálaí Nasc ó shuíomh anaithnid.|Tá {n} nasc á sheoladh chuig Grabálaí Nasc ó shuíomh anaithnid.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -106,11 +111,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Rinneadh {n} comhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} chomhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} gcomhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} gcomhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} gcomhad a raibh ainm comhaid ann cheana a uimhriú
+#. count in the main window's messages (deleting downloads' files)
+#. the message's next line: how many more deleted files stayed on the disk
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	Níorbh fhéidir {n} comhad eile a scriosadh ach an oiread.|Níorbh fhéidir {n} chomhad eile a scriosadh ach an oiread.|Níorbh fhéidir {n} gcomhad eile a scriosadh ach an oiread.|Níorbh fhéidir {n} gcomhad eile a scriosadh ach an oiread.|Níorbh fhéidir {n} gcomhad eile a scriosadh ach an oiread.
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	{n} piara|{n} phiara|{n} piara|{n} piara|{n} piara
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} sábháilte|{n} sábháilte|{n} sábháilte|{n} sábháilte|{n} sábháilte
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -133,6 +148,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}
+#. count in cnl.rs
+#. Click'n'Load window: {site} is a web site's name such as "example.com"
+#. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	Tá {site} ag iarraidh {n} nasc a sheoladh chuig Grabálaí Nasc.|Tá {site} ag iarraidh {n} nasc a sheoladh chuig Grabálaí Nasc.|Tá {site} ag iarraidh {n} nasc a sheoladh chuig Grabálaí Nasc.|Tá {site} ag iarraidh {n} nasc a sheoladh chuig Grabálaí Nasc.|Tá {site} ag iarraidh {n} nasc a sheoladh chuig Grabálaí Nasc.
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -151,7 +171,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Apply	&Cuir i bhfeidhm
-#. text in the Scheduler window
+#. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -174,6 +194,10 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	&Start now	&Tosaigh anois
+#. text in the Options window
+#. under Download panels site exclusions list
+#, machine
+	(separate by spaces; * matches anything)	(scar le spásanna; * meaitseálann sé rud ar bith)
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(scar ainmneacha le spásanna)
@@ -204,6 +228,10 @@
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	Baintear cartlanna 7z agus RAR le 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
+#, machine
+	7z and RAR archives are extracted by HatchZip ({path}).	Déanann HatchZip ({path}) cartlanna 7z agus RAR a bhaint.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -280,6 +308,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	about {size}	thart ar {size}
+#. text in the Options window
+#. Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
+#, machine
+	Accept Click'n'Load from web pages (port 9666)	Glac le Click'n'Load ó leathanaigh ghréasáin (port 9666)
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -435,6 +467,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Afghanistan	An Afganastáin
+#. text in the Options window
+#. Options → Add an account: a note under the user name and password fields (Mega-Debrid bans the address for some minutes after a few wrong passwords)
+#, machine
+	After a few wrong passwords the service blocks this connection for some minutes.	Tar éis cúpla pasfhocal mícheart, cuireann an tseirbhís bac ar an nasc seo ar feadh cúpla nóiméad.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -454,7 +490,7 @@
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Gach Íoslódáil
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in standard windows
 #, machine
 	All files	Gach comhad
 #. text in helpers.rs
@@ -464,11 +500,19 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	Gach ceann ón uaslódálaí
+#. text in cnl.rs
+#. button in the Click'n'Load window: let this site send links (remembered)
+#, machine
+	Allow	Ceadaigh
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Allow more than {n} connections	Ceadaigh níos mó ná {n} nasc
+#. text in cnl.rs
+#. Click'n'Load window, under the question: nothing happens to the links before the user adds them in Link grabber
+#, machine
+	Allow only sites you use. Nothing is looked up or downloaded before you add it in Link grabber.	Ná ceadaigh ach suíomhanna a úsáideann tú. Ní dhéantar aon rud a chuardach ná a íoslódáil sula gcuireann tú leis é i Grabálaí Nasc.
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	á íoslódáil cheana: {path}
@@ -490,6 +534,10 @@
 #. checkbox in the Options window
 #, machine
 	Also take files the browser would open (PDF, music, video)	Tóg comhaid a d’osclódh an brabhsálaí freisin (PDF, ceol, físeán)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
+#, machine
+	Alt+click the link	Alt+cliceáil an nasc
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -554,6 +602,19 @@
 #. what a screen reader calls Link grabber's password box
 #, machine
 	Archive password	Pasfhocal na cartlainne
+#. window title in the Options window
+#. window title: the passwords tried on encrypted archives
+#, machine
+	Archive passwords	Pasfhocail cartlainne
+#. text in the settings
+#. the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+#, machine
+	archive passwords	pasfhocail cartlainne
+#. button in the Options window
+#. Options → Archives: button: edit the list of passwords tried on encrypted archives
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Archive passwords...	Pasfhocail cartlainne...
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -691,6 +752,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Bhutan	An Bhútáin
+#. text in cnl.rs
+#. button in the Click'n'Load window: refuse this site's links (remembered)
+#, machine
+	Block	Cuir bac
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -763,6 +828,10 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
 	Busy, try later	Gnóthach, bain triail as níos déanaí
+#. text in the Options window
+#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#, machine
+	Button size:	Méid an chnaipe:
 #. message or event log entry in the main window
 #, machine
 	by batch download	trí íoslódáil bhaisce
@@ -781,6 +850,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cameroon	Camarún
+#. text in the Link grabber window
+#. Link grabber, a link's status: a server that can't send parts of a file, so the download can't resume; there is nothing to do here. The sentence is the cell's hover tip
+#, machine
+	Can't resume	Ní féidir atosú
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -923,7 +996,9 @@
 #. the list's Status column while a torrent's files or a finished file are checked (against the torrent's hashes or a checksum); {percent} how much is checked, e.g. "42%". One short word: the column is narrow
 #, machine
 	Checking {percent}	Ag seiceáil {percent}
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window; text in extension.rs; text in the Link grabber window; text in the Options window
+#. in the browser extension's window, while it reads whether the browsers can reach MDM (a moment, usually)
+#. Test browser integration, while it reads where browser integration stands (a moment, usually)
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Ag seiceáil...
@@ -957,10 +1032,24 @@
 #. a country's name (where a download's server is)
 #, machine
 	Christmas Island	Oileán na Nollag
-#. button in the download list
+#. button in the download list; button in the Options window
 #. verb: clears this filter
 #, machine
 	Clear	Glan
+#. message or event log entry in the main window; window title in cnl.rs
+#. title of the notice when Click'n'Load couldn't start
+#. window title: a web page used Click'n'Load (a link site's button that sends its links to this program)
+#, machine
+	Click'n'Load	Click'n'Load
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {port} is 9666; JDownloader is another download manager that uses the same port
+#, machine
+	Click'n'Load can't start: another program (JDownloader?) is using port {port}. Close it, then turn Click'n'Load off and on again in Options.	Ní féidir Click'n'Load a thosú: tá clár eile (JDownloader?) ag úsáid port {port}. Dún é, ansin múch Click'n'Load agus cuir ar siúl arís é sna Roghanna.
+#. text in cnl.rs
+#. notice: Click'n'Load couldn't start; {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Click'n'Load can't start: {error}	Ní féidir Click'n'Load a thosú: {error}
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
@@ -1004,6 +1093,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Oileáin Chomóra
+#. option (radio button) in the Options window
+#. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+#, machine
+	Compact	Dlúth
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -1052,6 +1145,9 @@
 #. text in the Options window
 #, machine
 	Connections:	Naisc:
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Contributors	Ranníocóirí
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1179,7 +1275,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Uimhir uas. ceangail réamhshocraithe
-#. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1335,6 +1431,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	Íoslódáil in ord
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	Íoslódáil arís é
 #. button in a dialog box
 #, machine
 	Download Later	Íoslódáil Níos Déanaí
@@ -1449,6 +1549,10 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	Íoslódálacha críochnaithe
+#. text in win32.rs
+#. Windows' Settings → Default apps: what Mister Download Manager is
+#, machine
+	Downloads files, videos and torrents	Íoslódálann sé comhaid, físeáin agus torrents
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1478,6 +1582,14 @@
 #. message or event log entry in the main window
 #, machine
 	Dragged out of Download complete and moved to {folder}	Tarraingíodh amach as “Íoslódáil críochnaithe” é agus bogadh go {folder}
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved somewhere MDM can't tell (a program took it, the Recycle Bin)
+#, machine
+	Dragged out of the list and moved to a place MDM couldn't learn	Tarraingthe amach as an liosta agus bogtha go háit nach bhféadfadh MDM a fhoghlaim
+#. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	Tarraingthe amach as an liosta agus bogtha chuig {folder}
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1655,6 +1767,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	Bain cartlanna nuair a chríochnaíonn a n-íoslódáil
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	Díphacáil san áit chéanna le HatchZip (hatchzip.dev, gan a bheith suiteáilte)
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	Díphacáil san áit chéanna le HatchZip: níl gá ach le spás do na comhaid
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1925,6 +2045,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	Iomlán
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2044,6 +2168,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Croch suas móideim nuair a bhíonn sé déanta
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	Dhíphacáil HatchZip san áit chéanna é: baineadh an chartlann de réir mar a tháinig a comhaid amach
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2167,6 +2295,15 @@
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
 	in the locked keyring	sa chnuas eochracha faoi ghlas
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: open a button's menu	Sa bharra uirlisí: oscail roghchlár an chnaipe
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: press the button	Sa bharra uirlisí: brúigh an cnaipe
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the toolbar: the previous / next button	Sa bharra uirlisí: an cnaipe roimhe seo / an chéad chnaipe eile
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2207,6 +2344,10 @@
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
 	Install what's missing from your distribution's packages.	Suiteáil an pacáiste atá in easnamh ó phacáistí do dháileacháin.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
+#, machine
+	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Suiteáil pacáiste 7zip (nó p7zip) do chórais, ansin deaschliceáil ar an íoslódáil agus roghnaigh Bain.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2268,6 +2409,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	it needs a password	teastaíonn pasfhocal uaidh
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); {folder} holds the files extracted so far
+#, machine
+	it stopped partway. The files extracted so far are in {folder}, the rest is still in the archive: Extract continues	Stop sé sa lár. Tá na comhaid a baineadh go dtí seo i {folder}, tá an chuid eile fós sa chartlann: Leanann Bain
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -2289,6 +2434,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Italy	An Iodáil
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted in place (after "Couldn't extract {name}: "); HatchZip took its files out (the archive is gone), but moving them stopped: {to} holds those moved, {left} the others, {error} the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	its files came out, but moving them stopped ({error}). Those moved are in {to}, the others still in {left}; nothing was deleted	Tháinig a chuid comhad amach, ach stop an t-aistriú ({error}). Tá na cinn a aistríodh i {to}, tá na cinn eile fós i {left}; níor scriosadh aon rud
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2561,6 +2711,14 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on macOS
 #, machine
 	macOS checks the files marked this way: Gatekeeper before a program first opens. Unticked, no download is marked.	Seiceálann macOS na comhaid atá marcáilte ar an mbealach seo: Gatekeeper sula n-osclaítear clár den chéad uair. Mura roghnaítear é, ní mharcáiltear aon íoslódáil.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write a browser's folder (where the browser finds MDM's helper)
+#, machine
+	macOS keeps Mister Download Manager out of a browser's folder.	Coinníonn macOS Mister Download Manager amach as fillteán brabhsálaí.
+#. text in extension.rs
+#. a check of Test browser integration, and the browser extension's window (macOS): macOS refused to let MDM read or write {browser}'s folder (where the browser finds MDM's helper); {browser} is a browser's name
+#, machine
+	macOS keeps Mister Download Manager out of {browser}'s folder.	Coinníonn macOS Mister Download Manager amach as fillteán {browser}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2688,6 +2846,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	Ní fhreagraíonn MDM. Ag iarraidh arís...
+#. text in helpers.rs
+#. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install it, or use another program	Níl cóip ag MDM don chóras seo: suiteáil é, nó úsáid clár eile
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2751,7 +2913,7 @@
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	Tuarascáil tuairteála Mister Download Manager
-#. text in crashui.rs
+#. text in crashui.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Bhuail Mister Download Manager earráid inmheánach
@@ -2836,7 +2998,7 @@
 	Move a page up / down	Bog leathanach suas / síos
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	Bog idir na catagóirí agus an liosta íoslódálacha
+	Move between the toolbar, the categories and the download list	Bog idir an barra uirlisí, na catagóirí agus an liosta íoslódálacha
 #. text in the Scheduler window
 #, machine
 	Move down	Bog síos
@@ -3090,7 +3252,7 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Níor aimsíodh aon seoltaí gréasáin i {file}.
-#. text in the Download video window
+#. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
 	None	Ar bith
@@ -3148,10 +3310,14 @@
 #, machine
 	Not in a queue	Níl sé i scuaine
 #. text in helpers.rs
-#. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	Níl sé suiteáilte fós
-#. button in helpers.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
+#, machine
+	Not looked up	Gan cuardach déanta
+#. text in cnl.rs; button in helpers.rs
+#. button in the Click'n'Load window: refuse these links, ask again next time
 #, machine
 	Not now	Ní anois
 #. text in helpers.rs
@@ -3203,6 +3369,10 @@
 #. Options → Remote → Status: the remote control is off
 #, machine
 	Off: nothing on the network can reach MDM.	Múchta: ní féidir le haon rud ar an líonra MDM a bhaint amach.
+#. text in rssdlg.rs
+#. RSS feeds window, Download rules: under the rule's feeds; the rule was turned off because every feed it watched was removed
+#, machine
+	Off: the feeds it watched were removed.	Múchta: baineadh na fothaí a raibh sé ag faire orthu.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Tairiscint chun naisc a íoslódáil a chóipeáiltear chuig an ngearrthaisce
@@ -3253,6 +3423,10 @@
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	Seoladh amháin in aghaidh na líne; seasann * d’aon téacs: example.com/private/*
+#. text in the Options window
+#. Archive passwords window: how the list is used
+#, machine
+	One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.	Pasfhocal amháin in aghaidh na líne, a ndéantar iarracht orthu san ord seo ar chartlann criptithe sula n-iarrann MDM. Bogann an ceann a oireann go dtí an barr.
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Íoslódáil aonuaire
@@ -3299,7 +3473,9 @@
 #. button that opens the torrent's containing folder in the file manager
 #, machine
 	Open folder	Oscail fillteán
-#. text in a download's progress window
+#. text in the Link grabber window; text in a download's progress window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a site link that is a web page, not the file (and a server that sent a web page instead of it). The sentence is the cell's hover tip
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a server that sent a web page instead of the file. The sentence is the cell's hover tip
 #. button in a download's progress window when the site sent a web page (a waiting page, a captcha) instead of the file: opens the download's link in the web browser
 #, machine
 	Open in browser	Oscail sa bhrabhsálaí
@@ -3352,6 +3528,10 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Roghanna ar chríochnú
+#. text in the Options window
+#. Options → Add an account: label before the field for an API key the user made at the service (Mega-Debrid: My Account → API Key; the other way to sign in)
+#, machine
+	Or paste an application's API key:	Nó greamaigh eochair API feidhmchláir:
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -3417,6 +3597,7 @@
 	Password	Pasfhocal
 #. text in the Link grabber window; text in the Options window
 #. Link grabber: the package's archives' password (a label before its box)
+#. Options → Add an account: label before the field for the password at the debrid service
 #, machine
 	Password:	Pasfhocal:
 #. text in the Add torrent window
@@ -3518,6 +3699,11 @@
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
 	premium, {days} days left	préimh, {days} lá fágtha
+#. text in the Options window
+#. Options → General: shown inside the shortcut recorder box while waiting for the user to press a 2-key or 3-key shortcut (#558)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Press keys...	Brúigh eochracha...
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3651,6 +3837,10 @@
 #. RSS feeds window: fetch the selected feed again now
 #, machine
 	Refresh	Athnuaigh
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a download link that expired. The sentence is the cell's hover tip
+#, machine
+	Refresh the address	Athnuaigh an seoladh
 #. text in the Options window
 #. tab title: how dates and times are written (date order, 12- or 24-hour clock)
 #, machine
@@ -3659,6 +3849,10 @@
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
 	Regular expressions	Slonn rialta
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: check box: keep the password typed in Options → Archives → Archive passwords, to try it on the next encrypted archives
+#, machine
+	Remember it for other archives	Cuimhnigh air le haghaidh cartlann eile
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	Cuimhnigh ar shocruithe Teorannóra Luais don chomhad seo
@@ -3692,8 +3886,9 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Remove {name} from the list?	An mbainfidh tú {name} den liosta?
-#. text in a download's progress window
+#. text in a download's progress window; text in torrent_rename.rs
 #. noun: label before the deferred new file or folder name in the progress window
+#. noun: label before the new file or folder name in Add torrent
 #, machine
 	Rename	Athainmnigh
 #. text in the Batch download window
@@ -3857,10 +4052,6 @@
 #. text in the Batch download window
 #, machine
 	Second file:	Dara comhad:
-#. text in a dialog box
-#. title of the folder picker
-#, machine
-	Select a folder	Roghnaigh fillteán
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4003,6 +4194,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Sharing stopped: {error}	Cuireadh stop leis an roinnt: {error}
+#. text in the Options window
+#. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
+#, machine
+	Shortcut to show or hide window:	Aicearra chun an fhuinneog a thaispeáint nó a cheilt:
 #. text in the download list
 #, machine
 	Show	Taispeáin
@@ -4064,6 +4259,10 @@
 #, machine
 	Sierra Leone	Siarra Leon
 #. button in the Options window
+#. button: sign in to the debrid service with the user name and password typed in
+#, machine
+	Sign in	Sínigh isteach
+#. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	Sínigh isteach sa bhrabhsálaí
@@ -4080,6 +4279,10 @@
 #, machine
 	Sign-ins and passwords are kept in Windows Credential Manager.	Coimeádtar sínithe isteach agus pasfhocail i mBainisteoir Dintiúirí Windows.
 #. text in the Options window
+#. Options → Add an account: signed in, the service gives no account name; {state} premium or not
+#, machine
+	Signed in ({state})	Sínithe isteach ({state})
+#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Sínithe isteach mar {user} ({state})
@@ -4087,6 +4290,26 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	sínithe amach: sínigh isteach arís
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system doesn't draw MDM; {date}: the day that was found
+#, machine
+	Since {date}	Ó {date}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries it again once the graphics driver is updated
+#, machine
+	Since {date}: MDM tries it again after a driver update	Ó {date}: déanann MDM iarracht arís tar éis nuashonrú tiománaí
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; MDM tries that graphics system again when it next starts
+#, machine
+	Since {date}: MDM tries it again at its next start	Ó {date}: déanann MDM iarracht arís ag an gcéad tosú eile
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again
+#, machine
+	Since {date}: MDM tries it again on {retry}	Ó {date}: déanann MDM iarracht arís ar {retry}
+#. message or event log entry in the main window
+#. View → Draw with: a greyed note under why a graphics system ("it": Direct3D, Vulkan, Metal or OpenGL) doesn't draw MDM; {date}: the day that was found; {retry}: the day MDM tries it again, unless the graphics driver is updated before
+#, machine
+	Since {date}: MDM tries it again on {retry}, or after a driver update	Ó {date}: déanann MDM iarracht arís ar {retry}, nó tar éis nuashonrú tiománaí
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4209,6 +4432,26 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Socruithe Teorainneoir Luais
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most this download may take ("512 KB/sec"), set with the Speed Limiter
+#, machine
+	Speed Limiter: at most {limit} for this download	Teorainneoir Luais: {limit} ar a mhéad don íoslódáil seo
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while the Speed Limiter's limit for all downloads together is on: {limit} is the most they may take together ("1024 KB/sec")
+#, machine
+	Speed Limiter: {limit} for all downloads	Teorainneoir Luais: {limit} do gach íoslódáil
+#. text in the download list (sizes, speeds, status)
+#. tip of a download's Transfer rate in the list: {limit} is the most all downloads together may take ("1024 KB/sec"), set in the Speed Limiter's settings
+#, machine
+	Speed Limiter: {limit} for all downloads together	Teorainneoir Luais: {limit} do gach íoslódáil le chéile
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while Downloads → Speed Limiter is turned on: {limit} is the most each download may take ("512 KB/sec")
+#, machine
+	Speed Limiter: {limit} per download	Teorainneoir Luais: {limit} in aghaidh na híoslódála
+#. text in the download list (sizes, speeds, status)
+#. the status bar and the tray icon's tip while both Speed Limiter limits are on: {one} is the most each download may take ("512 KB/sec"), {all} the most all of them together may take ("1024 KB/sec")
+#, machine
+	Speed Limiter: {one} per download, {all} for all	Teorainneoir Luais: {one} in aghaidh na híoslódála, {all} do gach ceann
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box when the file is one part of a split archive (.part1.rar, .7z.001…)
 #, machine
@@ -4480,6 +4723,11 @@
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Teastaíonn ffmpeg (thart ar 80 MB) ó na cáilíochtaí is fearr, MP3, Opus agus FLAC.
 #. text in the Download video window
+#. in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+#. the trailing ... means it is still going on: keep it
+#, machine
+	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	Teastaíonn ffmpeg ó na cáilíochtaí is fearr, MP3, Opus agus FLAC, nach bhfuil cóip de ag MDM do Windows 32-giotán: roghnaigh do cheann féin le Cúntóirí...
+#. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Teastaíonn ffmpeg ó na cáilíochtaí is fearr, MP3, Opus agus FLAC: suiteáil é le bainisteoir pacáiste do chórais (nó Homebrew).
@@ -4593,6 +4841,10 @@
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	níl an tiomántán ná an fillteán comhroinnte líonra ar fáil a thuilleadh
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after HatchZip (a program's name) extracted in place: the entries left out (links, unsafe names) were not deleted, they are still in {folder}
+#, machine
+	The entries left out are still in {folder}	Tá na hiontrálacha a fágadh ar lár fós i {folder}
 #. text in extension.rs
 #, machine
 	The extension is already in this app. Apple hasn't notarized this build, so Safari needs these steps to allow it.	Tá an breiseán san aip seo cheana féin. Níor dheimhnigh Apple an tógáil seo, mar sin tá na céimeanna seo de dhíth ar Safari chun é a cheadú.
@@ -4618,6 +4870,14 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	The file matches ({algorithm})	Meaitseálann an comhad ({algorithm})
+#. text in errors.rs
+#. why a download failed on Linux or macOS (#1102): the file name is longer than the system allows ({limit} bytes, 255; a letter can take several bytes), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} bytes with the files saved while it downloads. Choose a shorter name ({path})	Tá ainm an chomhaid rófhada: {limit} beart ar a mhéad leis na comhaid a sábháladh le linn na híoslódála. Roghnaigh ainm níos giorra ({path})
+#. text in errors.rs
+#. why a download failed (#1102): the file name is longer than Windows allows ({limit} characters, 255), counting the temporary files saved beside the file while it downloads. {path} = the path
+#, machine
+	the file name is too long: at most {limit} characters with the files saved while it downloads. Choose a shorter name ({path})	Tá ainm an chomhaid rófhada: {limit} carachtar ar a mhéad leis na comhaid a sábháladh le linn na híoslódála. Roghnaigh ainm níos giorra ({path})
 #. text in a dialog box
 #, machine
 	The file saved as	An comhad a sábháladh mar
@@ -4675,8 +4935,9 @@
 #, machine
 	the password is wrong	tá an focal faire mícheart
 #. text in errors.rs
+#. why a download failed (#1102): the folder and file name together are longer than Windows allows ({limit} characters, 259), counting the temporary files saved beside the file while it downloads (their names are longer). {path} = the path
 #, machine
-	the path is too long for Windows: {path}	tá an cosán rófhada do Windows: {path}
+	the path is too long for Windows: at most {limit} characters with the files saved while it downloads. Choose a shorter file name or folder ({path})	Tá an cosán rófhada do Windows: {limit} carachtar ar a mhéad leis na comhaid a sábháladh le linn na híoslódála. Roghnaigh ainm comhaid nó fillteán níos giorra ({path})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
@@ -4730,6 +4991,10 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	sheol an freastalaí cuid gan choinne den chomhad ({detail})
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
+#, machine
+	the service doesn't say whether it is premium	ní deir an tseirbhís an cuntas préimhe é
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4754,6 +5019,10 @@
 #. the Download video window: the site's bot check (Cloudflare) turned yt-dlp away and no browser cookies were used
 #, machine
 	The site's bot check (Cloudflare) refused yt-dlp. If the page opens in your browser, choose that browser in Options → Sites Logins → Cookies for video sites and look the page up again, or use the Download video button over the video.	Dhiúltaigh seiceáil róbait an tsuímh (Cloudflare) do yt-dlp. Má osclaíonn an leathanach i do bhrabhsálaí, roghnaigh an brabhsálaí sin sna Roghanna → Logáil isteach suíomhanna → Fianáin do shuíomhanna físeáin agus breathnaigh ar an leathanach arís, nó bain úsáid as an gcnaipe Íoslódáil físeán os cionn an fhíseáin.
+#. text in the Download video window
+#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
+#, machine
+	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Níl deimhniú an tsuímh iontaofa, ag yt-dlp ná ag an ríomhaire seo: d'fhéadfadh scagaire gréasáin frithvíreas nó seachfhreastalaí a léann HTTPS a bheith sa bhealach. Múch a scanadh HTTPS, nó cuir a dheimhniú le deimhnithe an ríomhaire, ansin déan cuardach ar an leathanach arís.
 #. text in errors.rs
 #. why a download failed: the site's security certificate (what proves a secure, HTTPS, site is the one it says) is past its end date. Browsers warn about the same site
 #, machine
@@ -4762,6 +5031,10 @@
 #. why a download failed: the site's security certificate was made for other site names than the one in the address
 #, machine
 	the site's security certificate is for another site name, so MDM can't be sure it's the real site (your browser warns about it too)	tá deimhniú slándála an tsuímh do ainmneacha suímh eile, mar sin ní féidir le MDM a bheith cinnte gurb é an fíorsuíomh é (tugann do bhrabhsálaí rabhadh faoi freisin)
+#. text in errors.rs
+#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
+#, machine
+	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	níl deimhniú slándála an tsuímh déanta do shuíomhanna gréasáin, mar sin ní féidir le MDM a bheith cinnte gur é an fíorsuíomh é
 #. text in errors.rs
 #. why a download failed: the site's security certificate was signed by the site itself or by an issuer this computer doesn't trust. Browsers warn about the same site
 #, machine
@@ -4778,14 +5051,6 @@
 #. why a download failed: the issuer of the site's security certificate took it back
 #, machine
 	the site's security certificate was revoked by its issuer, so MDM won't trust it	chuir a eisitheoir deimhniú slándála an tsuímh ar ceal, mar sin ní bheidh muinín ag MDM as
-#. text in the Download video window
-#. the Download video window: the site's certificate is trusted neither by yt-dlp nor by the computer (asked again with the computer's certificates, #955); usually an antivirus or a proxy that reads secure (HTTPS) connections signs sites with a certificate of its own
-#, machine
-	The site's certificate isn't trusted, by yt-dlp nor by this computer: an antivirus's web filter or a proxy that reads HTTPS may be in the way. Turn its HTTPS scanning off, or add its certificate to the computer's, then look the page up again.	Níl deimhniú an tsuímh iontaofa, ag yt-dlp ná ag an ríomhaire seo: d'fhéadfadh scagaire gréasáin frithvíreas nó seachfhreastalaí a léann HTTPS a bheith sa bhealach. Múch a scanadh HTTPS, nó cuir a dheimhniú le deimhnithe an ríomhaire, ansin déan cuardach ar an leathanach arís.
-#. text in errors.rs
-#. why a download failed: the site's security certificate is made for other uses than a website (its "extended key usage" leaves out web servers)
-#, machine
-	the site's security certificate isn't made for websites, so MDM can't be sure it's the real site	níl deimhniú slándála an tsuímh déanta do shuíomhanna gréasáin, mar sin ní féidir le MDM a bheith cinnte gur é an fíorsuíomh é
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4843,6 +5108,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	Tá scuaine leis an ainm seo cheana féin
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
+#, machine
+	there isn't enough free space for its files, HatchZip says; nothing was changed	níl go leor spáis shaor ann do na comhaid, dar le HatchZip; níor athraíodh aon rud
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Níl na socruithe seo ar fáil nuair atá “Taispeáin dialóg chríochnaithe na n-íoslódálacha” curtha ar siúl
@@ -4963,6 +5232,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ní {name} é an clár seo
+#. text in the Options window
+#. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
+#, machine
+	This shortcut is already in use	Tá an aicearra seo in úsáid cheana féin
 #. text in errors.rs
 #. why a download failed: the site's bot check (Cloudflare) lets browsers through, not programs. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
 #, machine
@@ -5062,7 +5335,7 @@
 #. title of the separate window listing a torrent's files
 #, machine
 	Torrent files	Comhaid torrent
-#. window title in the Add torrent window
+#. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Torrent settings	Socruithe torrent
 #. text in torrent downloads
@@ -5110,6 +5383,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Try again later, or download {name} yourself and choose it in {helpers} → {other}.	Bain triail eile as níos déanaí, nó íoslódáil {name} tú féin agus roghnaigh é in {helpers} → {other}.
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Trying the saved archive passwords...	Ag iarraidh na pasfhocail cartlainne sábháilte...
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -5352,6 +5629,10 @@
 #. column title: the user name
 #, machine
 	User	Úsáideoir
+#. text in the Options window
+#. Options → Add an account: label before the field for the user name at the debrid service
+#, machine
+	User name:	Ainm úsáideora:
 #. page title in the Options window
 #, machine
 	User names and passwords for servers/sites	Ainmneacha úsáideoirí agus pasfhocail do fhreastalaithe/láithreáin
@@ -5514,6 +5795,10 @@
 #, machine
 	Windows allows wake timers only while plugged in	Ní cheadaíonn Windows lasc ama múscailte ach amháin agus é plugáilte isteach
 #. text in the Options window
+#. Options → General → Shortcut to show or hide window: shown in the disabled shortcut box on Linux (#558)
+#, machine
+	Windows and macOS	Windows agus macOS
+#. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Windows
 #, machine
 	Windows checks the files marked this way: SmartScreen before a program first runs, Office's Protected View before a document opens. Unticked, or under Windows' policy "Do not preserve zone information in file attachments", no download is marked.	Seiceálann Windows na comhaid atá marcáilte ar an mbealach seo: SmartScreen sula ritheann clár den chéad uair, Amharc Cosanta Office sula n-osclaítear doiciméad. Mura roghnaítear é, nó má tá beartas Windows “Ná caomhnaigh faisnéis chrios i gceangaltáin comhaid” i bhfeidhm, ní mharcáiltear aon íoslódáil.
@@ -5525,6 +5810,10 @@
 #. why the computer could not be put to sleep (fills {error})
 #, machine
 	Windows refused	Dhiúltaigh Windows
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Osclaíonn Windows na naisc mhaighnéadacha nó na comhaid .torrent fós le {apps}, a roghnaíodh in Aipeanna Réamhshocraithe Windows, áit nach féidir ach leat é a athrú. Osclaíonn Socruithe ansin anois: roghnaigh Mister Download Manager le haghaidh MAGNET agus .torrent.
 #. text in langpick.rs
 #, machine
 	Windows' language	Teanga Windows
@@ -5624,7 +5913,7 @@
 #, machine
 	Your own program: {path} ({version})	Do chlár féin: {path} ({version})
 #. text in helpers.rs
-#. Video helpers (macOS, Linux): {path} = the system's ffmpeg
+#. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	Do chóras féin: {path}
 #. text in the Download video window
@@ -5751,7 +6040,8 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	Comhad {ext}
-#. message or event log entry in the main window
+#. text in the main window's messages (deleting downloads' files)
+#. a message: a deleted download's file stayed on the disk; {file} = its name
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	Níorbh fhéidir {file} a scriosadh ón diosca: {error}
@@ -5772,7 +6062,7 @@
 	{file} is too large to be a list of addresses ({size}). Import reads text files, web pages and .ef2 exports of up to {limit}.	Tá {file} ró-mhór le húsáid mar liosta seoltaí ({size}). Léann an t-allmhairiú comhaid téacs, leathanaigh ghréasáin agus easpórtálacha .ef2 suas le {limit}.
 #. text in a dialog box
 #, machine
-	{file} was moved elsewhere by dragging it out of Download complete, and MDM couldn't learn where. Look for it where you dropped it.	Bogadh {file} go háit eile trína tharraingt amach as “Íoslódáil críochnaithe”, agus níorbh fhéidir le MDM a fháil amach cá háit ar bogadh é. Cuardaigh é san áit ar scaoil tú é.
+	{file} was moved elsewhere by dragging it out of MDM, and MDM couldn't learn where. Look for it where you dropped it.	Bogadh {file} in áit eile trína tharraingt amach as MDM, agus níorbh fhéidir le MDM a fháil amach cá raibh sé. Cuardaigh é san áit ar scaoil tú é.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5904,6 +6194,16 @@
 #. why a helper couldn't be downloaded ({problem}), then what to do about it ({advice}, whole sentences)
 #, machine
 	{problem}. {advice}	{problem}. {advice}
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while the limit for all downloads together applies: {rate} is this download's speed now ("512.000 KB/sec"), {limit} the most all downloads together may take ("1024 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit for all downloads: {limit})	{rate} (teorainn do gach íoslódáil: {limit})
+#. text in the download list (sizes, speeds, status)
+#. the progress window's Transfer rate row while a speed limit applies: {rate} is the download's speed now ("512.000 KB/sec"), {limit} the most this download may take ("512 KB/sec"). The row is narrow: keep it short
+#. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
+#, machine
+	{rate} (limit: {limit})	{rate} (teorainn: {limit})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6517,11 +6817,19 @@ key	Delete	Scrios
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Down / Alt+Down	Síos / Alt+Síos
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Drag on blank space	Tarraing ar spás bán
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Enter	Iontráil
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Enter / Space	Iontráil / Spás
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6534,6 +6842,10 @@ key	F3	F3
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Home / End	Baile / Deireadh
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Left / Right	Clé / Deas
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6561,7 +6873,7 @@ key	Shift+Up / Shift+Down	Shift+Suas / Shift+Síos
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Tab	Tab
+key	Tab / Shift+Tab	Tab / Shift+Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7172,7 +7484,7 @@ menu	To &IDM export file...	Chun comhad easpórtála &IDM...
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	To &text file...	Chun comhad &téacs...
-#. menu command in the main window
+#. menu command in the main window; menu command in the main window (menus, toolbar, Categories pane)
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	Barra uirlisí

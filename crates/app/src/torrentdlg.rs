@@ -1021,6 +1021,7 @@ pub struct Net {
     pub incoming: bool,
     pub upnp: bool,
     pub port: u16,
+    pub utp: bool,
     pub dht: bool,
     pub lsd: bool,
     pub proxy: bool,
@@ -1034,6 +1035,7 @@ impl Net {
             incoming: s.torrent_incoming,
             upnp: s.torrent_upnp,
             port: s.torrent_port,
+            utp: s.torrent_utp,
             dht: s.torrent_dht,
             lsd: s.torrent_lsd,
             proxy: s.torrent_proxy,
@@ -1046,6 +1048,7 @@ impl Net {
         s.torrent_incoming = self.incoming;
         s.torrent_upnp = self.upnp;
         s.torrent_port = self.port;
+        s.torrent_utp = self.utp;
         s.torrent_dht = self.dht;
         s.torrent_lsd = self.lsd;
         s.torrent_proxy = self.proxy;
@@ -1090,7 +1093,7 @@ impl TorrentSettings {
             ctx,
             "torrent-settings",
             "Torrent settings",
-            [470.0, 492.0],
+            [470.0, 516.0],
             false,
             winui::BG(),
             |ui, o| {
@@ -1227,9 +1230,43 @@ impl TorrentSettings {
                     "Map the port on the router (UPnP)",
                     n.incoming,
                 );
+                // uTP rides on the listening port: librqbit's uTP socket is the listener's, so
+                // with incoming connections off there is none, and a SOCKS5 proxy carries TCP
+                // only (with it the session doesn't listen either). Greyed, it shows what the
+                // engine does then (off), and the choice is kept for when it can apply again.
+                let can_utp = n.incoming && !n.proxy;
+                let mut off = false;
+                let utp = winui::checkbox(
+                    ui,
+                    pos2(o.x + 32.0, o.y + 208.0),
+                    if can_utp { &mut n.utp } else { &mut off },
+                    // i18n: Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+                    "Connect over uTP too (UDP)",
+                    can_utp,
+                );
+                if n.proxy {
+                    winui::why_disabled(
+                        utp,
+                        true,
+                        // i18n: why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+                        "Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry",
+                    );
+                } else if !n.incoming {
+                    winui::why_disabled(
+                        utp,
+                        true,
+                        // i18n: why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+                        "uTP uses the port for incoming connections: turn on Accept incoming connections",
+                    );
+                } else {
+                    utp.on_hover_text(crate::i18n::t(
+                        // i18n: Torrent settings: the hover text of "Connect over uTP too (UDP)"
+                        "Many peers take only uTP. Without it, MDM can't reach them.",
+                    ));
+                }
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 208.0),
+                    pos2(o.x + 14.0, o.y + 232.0),
                     &mut n.dht,
                     // i18n: Torrent settings: the DHT, the network peers use to find each other
                     "Find peers through the DHT",
@@ -1237,7 +1274,7 @@ impl TorrentSettings {
                 );
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 232.0),
+                    pos2(o.x + 14.0, o.y + 256.0),
                     &mut n.lsd,
                     // i18n: Torrent settings: local peer discovery
                     "Find peers on the local network",
@@ -1247,7 +1284,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 32.0,
-                    o.y + 260.0,
+                    o.y + 284.0,
                     // i18n: Torrent settings, under "Find peers on the local network"
                     crate::i18n::t(
                         "It tells the computers on your network which torrents you have.",
@@ -1261,7 +1298,7 @@ impl TorrentSettings {
                 let can_proxy = self.socks || n.proxy;
                 let proxy = winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 274.0),
+                    pos2(o.x + 14.0, o.y + 298.0),
                     &mut n.proxy,
                     // i18n: Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
                     "Use the proxy (Options → Proxy / Socks, SOCKS5)",
@@ -1277,7 +1314,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 32.0,
-                    o.y + 302.0,
+                    o.y + 326.0,
                     // i18n: Torrent settings, under "Use the proxy"
                     crate::i18n::t(
                         "With it, incoming connections, the DHT and local peers are off.",
@@ -1288,7 +1325,7 @@ impl TorrentSettings {
                 );
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 316.0),
+                    pos2(o.x + 14.0, o.y + 340.0),
                     &mut n.stop_idle,
                     // i18n: Torrent settings: stop listening when nothing needs the torrent engine
                     "Stop the torrent engine when no torrent is running",
@@ -1296,7 +1333,7 @@ impl TorrentSettings {
                 );
                 winui::checkbox_until(
                     ui,
-                    pos2(o.x + 14.0, o.y + 340.0),
+                    pos2(o.x + 14.0, o.y + 364.0),
                     &mut self.upload_on,
                     // i18n: Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
                     "Limit uploading for all torrents to",
@@ -1305,7 +1342,7 @@ impl TorrentSettings {
                 );
                 winui::edit_right(
                     ui,
-                    r(o, 330.0, 337.0, 60.0, 22.0),
+                    r(o, 330.0, 361.0, 60.0, 22.0),
                     &mut self.upload_kb,
                     self.upload_on,
                 );
@@ -1315,7 +1352,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 396.0,
-                    o.y + 352.0,
+                    o.y + 376.0,
                     crate::i18n::t("KBytes/sec"),
                     if self.upload_on {
                         winui::TEXT()
@@ -1329,7 +1366,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 14.0,
-                    o.y + 378.0,
+                    o.y + 402.0,
                     // i18n: Torrent settings: the address of an IP blocklist (empty: none)
                     crate::i18n::t("Block the addresses in this list (P2P or eMule format):"),
                     winui::TEXT(),
@@ -1338,7 +1375,7 @@ impl TorrentSettings {
                 );
                 winui::edit(
                     ui,
-                    r(o, 14.0, 384.0, 442.0, 22.0),
+                    r(o, 14.0, 408.0, 442.0, 22.0),
                     &mut n.blocklist,
                     true,
                     false,
@@ -1347,7 +1384,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 14.0,
-                    o.y + 424.0,
+                    o.y + 448.0,
                     // i18n: Torrent settings, at the bottom
                     crate::i18n::t(
                         "Fetched again every 7 days. Changes apply when no torrent is running.",
@@ -1358,7 +1395,7 @@ impl TorrentSettings {
                 );
                 let ok = winui::button(
                     ui,
-                    r(o, 298.0, 460.0, 77.0, 21.0),
+                    r(o, 298.0, 484.0, 77.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
@@ -1367,7 +1404,7 @@ impl TorrentSettings {
                 .clicked();
                 let cancel = winui::button(
                     ui,
-                    r(o, 381.0, 460.0, 77.0, 21.0),
+                    r(o, 381.0, 484.0, 77.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,

@@ -168,6 +168,10 @@ pub struct Settings {
     /// closing quits). On by default, for existing lists too, in every copy. Only where a tray
     /// shows MDM's icon.
     pub close_to_tray: bool,
+    /// General: a private (incognito) window's downloads are written to the saved list like any
+    /// other, so they survive MDM closing or restarting (their cookies stay in memory, as every
+    /// download's do). Off by default: they live in memory only, as the browser keeps them.
+    pub keep_private_downloads: bool,
     /// General (#558): global keyboard shortcut to show or hide the main window (e.g. `Cmd+U`,
     /// `Shift+Cmd+M`, `Ctrl+Alt+D`); empty when none is set.
     #[serde(default)]
@@ -238,6 +242,10 @@ pub struct Settings {
     /// Sealed on disk like Sites Logins' passwords (`sealed`); a plain one from before still reads.
     #[serde(with = "sealed")]
     pub proxy_pass: String,
+    /// Options → Archives → Archive passwords (#37): tried in this order on an encrypted archive
+    /// before its password is asked, one a line. Kept in the keychain as the other passwords.
+    #[serde(with = "sealed")]
+    pub archive_passwords: String,
     pub proxy_http: bool,
     pub proxy_https: bool,
     pub proxy_ftp: bool,
@@ -310,6 +318,10 @@ pub struct Settings {
     pub torrent_incoming: bool,
     pub torrent_upnp: bool,
     pub torrent_port: u16,
+    /// Torrent settings → "Connect over uTP too" (#1384): BitTorrent over UDP beside TCP, on by
+    /// default (a list saved before it has none: on too). It needs the listening port (librqbit's
+    /// uTP socket is the listener's), and a proxy turns it off (SOCKS5 carries TCP only).
+    pub torrent_utp: bool,
     pub torrent_dht: bool,
     pub torrent_lsd: bool,
     /// Torrents go through Proxy / Socks' SOCKS5 proxy (a manual `socks5://` one only).
@@ -449,6 +461,7 @@ impl Default for Settings {
             clipboard_autostart: true,
             minimize_to_tray: true,
             close_to_tray: true,
+            keep_private_downloads: false,
             show_hide_hotkey: String::new(),
             mv2_extensions: true,
             advanced_integration: true,
@@ -485,6 +498,7 @@ impl Default for Settings {
             proxy_port: String::new(),
             proxy_user: String::new(),
             proxy_pass: String::new(),
+            archive_passwords: String::new(),
             proxy_http: false,
             proxy_https: false,
             proxy_ftp: false,
@@ -512,6 +526,7 @@ impl Default for Settings {
             torrent_incoming: true,
             torrent_upnp: true,
             torrent_port: 0,
+            torrent_utp: true,
             torrent_dht: true,
             torrent_lsd: true,
             torrent_proxy: false,
@@ -600,6 +615,17 @@ impl Settings {
             },
             &self.proxy_pass,
         );
+        disk.archive_passwords = kept(
+            "archives/passwords".into(),
+            &|| {
+                format!(
+                    "Mister Download Manager: {}",
+                    // i18n: the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+                    crate::i18n::t("archive passwords")
+                )
+            },
+            &self.archive_passwords,
+        );
         for (a, d) in self.debrid_accounts.iter().zip(&mut disk.debrid_accounts) {
             d.secret = kept(
                 format!("debrid/{}", a.id),
@@ -624,6 +650,23 @@ impl Settings {
         disk
     }
 
+    /// Options → Archives' passwords, in the order they are tried.
+    pub fn archive_password_list(&self) -> Vec<String> {
+        password_lines(&self.archive_passwords)
+    }
+
+    /// `password` first in that list (added, or moved up): it opened an archive, or the user
+    /// asked to remember it.
+    pub fn remember_archive_password(&mut self, password: &str) {
+        if password.is_empty() || password.contains(['\n', '\r']) {
+            return;
+        }
+        let mut list = self.archive_password_list();
+        list.retain(|p| p != password);
+        list.insert(0, password.to_owned());
+        self.archive_passwords = list.join("\n");
+    }
+
     /// Options → Archives' folder choice, for mdm-extract.
     pub fn extract_into(&self) -> mdm_extract::Subfolder {
         match self.extract_subfolder {
@@ -632,6 +675,17 @@ impl Settings {
             _ => mdm_extract::Subfolder::Smart,
         }
     }
+}
+
+/// The passwords of a list typed one a line: blank lines out, each once, spaces kept (a password
+/// may have them).
+pub fn password_lines(text: &str) -> Vec<String> {
+    let mut seen = std::collections::HashSet::new();
+    text.lines()
+        .filter(|l| !l.trim().is_empty())
+        .filter(|l| seen.insert(l.to_string()))
+        .map(str::to_owned)
+        .collect()
 }
 
 /// FNV-1a: a stable hash (std's may change between builds), for keychain keys.
@@ -741,6 +795,7 @@ impl Settings {
             listen: self.torrent_incoming,
             upnp: self.torrent_upnp,
             port: (self.torrent_port != 0).then_some(self.torrent_port),
+            utp: self.torrent_utp,
             dht: self.torrent_dht,
             lsd: self.torrent_lsd,
             proxy,
@@ -1558,6 +1613,7 @@ pub(crate) mod sealed {
         fn the_proxy_password_and_debrid_secrets_are_sealed_on_disk() {
             let s = crate::settings::Settings {
                 proxy_pass: "proxy-s3cret".into(),
+                archive_passwords: "zip-s3cret\nother".into(),
                 debrid_accounts: vec![crate::settings::DebridAccount {
                     id: 1,
                     user: "me".into(),
@@ -1568,10 +1624,15 @@ pub(crate) mod sealed {
             };
             let json = serde_json::to_string(&s).unwrap();
             if cfg!(windows) {
-                assert!(!json.contains("proxy-s3cret") && !json.contains("rd-s3cret"));
+                assert!(
+                    !json.contains("proxy-s3cret")
+                        && !json.contains("rd-s3cret")
+                        && !json.contains("zip-s3cret")
+                );
             }
             let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
             assert_eq!(back.proxy_pass, "proxy-s3cret");
+            assert_eq!(back.archive_password_list(), vec!["zip-s3cret", "other"]);
             assert!(back.debrid_accounts[0].account().is_some());
             // Never in a debug dump either.
             assert!(!format!("{:?}", back.debrid_accounts).contains("rd-s3cret"));

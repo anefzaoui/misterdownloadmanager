@@ -1,5 +1,6 @@
-//! Supervised helper processes (yt-dlp, gallery-dl): every child is in one Windows Job Object
-//! that kills it when we exit (even on a crash), runs without a console window, gets its
+//! Supervised helper processes (yt-dlp, gallery-dl): every child is in a Windows Job Object of
+//! its own that kills it when we exit (even on a crash), or on Linux and macOS in a process group
+//! of its own that MDM's end kills ([`end_all`]), runs without a console window, gets its
 //! arguments in fixed layers (the user's extras, ours, then the fixed ones and `--` before the
 //! URL) with CR / LF / NUL refused, keeps only a short stderr tail for messages, and goes through
 //! the chosen network adapter (#35, `crate::relay`).
@@ -138,7 +139,7 @@ pub fn browser_cookies() -> Option<BrowserCookies> {
 /// browser sent them a moment ago (`FromBrowser`, written to the file `--cookies` names). Those
 /// win: they are that session's, and reading the whole cookie store of a browser may give
 /// another profile's, an older session's, or nothing at all (Chrome on Windows). The browser's
-/// store is read only when nothing came: a pasted address, a link typed into Add URL, a
+/// store is read only for non-private requests when nothing came: a pasted address, Add URL, a
 /// playlist listed later. yt-dlp would merge the two if given both; it never is.
 fn browser_cookie_args(args: &[String], chosen: Option<&BrowserCookies>) -> Vec<String> {
     let settled = args
@@ -644,6 +645,9 @@ pub fn safe(s: &str) -> Result<&str, ProcError> {
 /// players only.
 #[derive(Clone, Debug, Default)]
 pub struct FromBrowser {
+    /// A private window's request, including a kept row after restart: never read the normal
+    /// browser's cookie store. Cookies explicitly passed with this request remain usable.
+    pub private: bool,
     pub referer: Option<String>,
     pub origin: Option<String>,
     pub user_agent: Option<String>,
@@ -700,7 +704,12 @@ impl FromBrowser {
                 ]);
                 Some(file)
             }
-            _ => None,
+            _ => {
+                if self.private {
+                    args.push(NO_COOKIES.to_owned());
+                }
+                None
+            }
         };
         Ok((args, file))
     }
@@ -1147,6 +1156,54 @@ fn new_job() -> Option<win32job::Job> {
     win32job::Job::create_with_limit_info(&info).ok()
 }
 
+/// The helpers that run (#1301), and whether MDM is ending ([`end_all`]): after that, no helper
+/// starts.
+struct Running {
+    ended: bool,
+    /// Linux, macOS: each helper's process group (its first process's id, [`spawn`]) with its
+    /// `stderr_done`; dropped with the helper.
+    #[cfg(unix)]
+    groups: Vec<(u32, Arc<AtomicBool>)>,
+}
+
+static RUNNING: Mutex<Running> = Mutex::new(Running {
+    ended: false,
+    #[cfg(unix)]
+    groups: Vec::new(),
+});
+
+/// MDM ends (an Exit, the session's end, a command line's Ctrl+C or SIGTERM): every helper that
+/// runs ends with all it started, and none starts after. Windows' job objects end them with MDM
+/// in any case; on Linux and macOS each helper's process group is killed here, as nothing ends it
+/// when MDM's process goes (#1301).
+pub fn end_all() {
+    let mut running = RUNNING.lock().unwrap_or_else(|e| e.into_inner());
+    running.ended = true;
+    #[cfg(unix)]
+    for (group, stderr_done) in running.groups.drain(..) {
+        // Something still holds the helper's stderr: the group is there, its id not reused.
+        if !stderr_done.load(Ordering::Acquire) {
+            kill_group(group);
+        }
+    }
+}
+
+/// SIGKILL to the process group `group` (#1301): yt-dlp's one-file build on Linux
+/// (`yt_dlp_linux`), and gallery-dl's, are a launcher whose child runs Python and downloads, its
+/// ffmpeg under it; killing the launcher alone left them downloading. A kill at once, as Windows'
+/// job does: what the stopped run left (`.part` files) is continued by the next as it is.
+#[cfg(unix)]
+fn kill_group(group: u32) {
+    if let Some(pid) = i32::try_from(group)
+        .ok()
+        .and_then(rustix::process::Pid::from_raw)
+        // Never "every process MDM may signal" (`kill(-1)`).
+        .filter(|pid| *pid != rustix::process::Pid::INIT)
+    {
+        let _ = rustix::process::kill_process_group(pid, rustix::process::Signal::KILL);
+    }
+}
+
 /// A running helper with its stderr tail.
 pub struct Spawned {
     pub child: Child,
@@ -1162,12 +1219,26 @@ pub struct Spawned {
 }
 
 impl Spawned {
-    /// End the helper and everything it started (Windows: its job; elsewhere yt-dlp runs as one
-    /// process, its ffmpeg ending with it).
+    /// End the helper and everything it started: on Windows its job, on Linux and macOS its
+    /// process group (#1301: `yt_dlp_linux` is a launcher whose child downloads, as `yt-dlp.exe`
+    /// is, #61). A helper dropped ends the same way, as its job closes on Windows.
     pub fn kill(&mut self) {
+        #[cfg(unix)]
+        self.kill_group();
         let _ = self.child.kill();
         #[cfg(windows)]
         drop(self.job.take());
+    }
+
+    /// The helper's process group killed, unless all of it is known to have ended: its first
+    /// process reaped and its stderr closed by every process that held it. Until then the
+    /// group's id (that first process's) can't be another's.
+    #[cfg(unix)]
+    fn kill_group(&mut self) {
+        let closed = self.stderr_done.load(std::sync::atomic::Ordering::Acquire);
+        if !(closed && matches!(self.child.try_wait(), Ok(Some(_)))) {
+            kill_group(self.child.id());
+        }
     }
 
     /// The last stderr lines, for an error message.
@@ -1218,6 +1289,25 @@ impl Spawned {
     }
 }
 
+impl Drop for Spawned {
+    /// Linux, macOS: what still runs of the helper ends, as Windows' job ends it when closed
+    /// (`job`), and [`end_all`] no longer has it to end.
+    fn drop(&mut self) {
+        #[cfg(unix)]
+        {
+            self.kill_group();
+            let _ = self.child.kill();
+            let _ = self.child.try_wait();
+            let id = self.child.id();
+            RUNNING
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .groups
+                .retain(|(group, _)| *group != id);
+        }
+    }
+}
+
 /// A failure's `message` with what yt-dlp said earlier about the browser's cookies, when that
 /// isn't the message itself (#229): Chrome's cookies it couldn't decrypt are only a warning,
 /// and the site's "sign in" that follows is the error; "failed to load cookies" comes after the
@@ -1253,6 +1343,22 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         const CREATE_NO_WINDOW: u32 = 0x0800_0000;
         cmd.creation_flags(CREATE_NO_WINDOW);
     }
+    // A process group of its own, which `kill` and MDM's end kill whole (#1301). Not MDM's: a
+    // Ctrl+C in MDM's terminal no longer reaches it, MDM ends it instead (`end_all`).
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        cmd.process_group(0);
+    }
+    // Under the lock: `end_all` either came first (nothing starts) or finds it to end.
+    #[cfg_attr(not(unix), allow(unused_mut))]
+    let mut running = RUNNING.lock().unwrap_or_else(|e| e.into_inner());
+    if running.ended {
+        return Err(ProcError::Start(
+            name.to_owned(),
+            std::io::Error::other("Mister Download Manager is closing"),
+        ));
+    }
     let mut child = cmd
         .spawn()
         .map_err(|e| ProcError::Start(name.to_owned(), e))?;
@@ -1285,6 +1391,9 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
     } else {
         stderr_done.store(true, std::sync::atomic::Ordering::Release);
     }
+    #[cfg(unix)]
+    running.groups.push((child.id(), stderr_done.clone()));
+    drop(running);
     Ok(Spawned {
         child,
         tail,
@@ -1752,6 +1861,53 @@ mod tests {
         cmd.get_args()
             .map(|a| a.to_string_lossy().into_owned())
             .collect()
+    }
+
+    /// Private requests never inherit Options' normal browser store, but may use their own
+    /// cookie header or jar. Check the final command layers with the store explicitly on.
+    #[test]
+    fn private_video_requests_keep_their_own_cookies_only() {
+        let firefox = BrowserCookies::new("firefox", "normal-profile").unwrap();
+        for (private, header, jar) in [
+            (true, None, vec![]),
+            (true, Some("  "), vec![]),
+            (true, Some("sid=private"), vec![]),
+            (true, None, vec![cookie("sid", "videos.test", true)]),
+            (false, None, vec![]),
+        ] {
+            let own = header.is_some_and(|s| !s.trim().is_empty()) || !jar.is_empty();
+            let browser = FromBrowser {
+                private,
+                cookies: header.map(str::to_owned),
+                jar,
+                ..Default::default()
+            };
+            let (args, file) = browser.args("https://videos.test/watch").unwrap();
+            let mut cmd = Command::new("yt-dlp");
+            layers_with(&mut cmd, &[], &args, Some(&firefox)).unwrap();
+            let final_args = args_of(&cmd);
+            assert_eq!(
+                final_args.iter().any(|a| a == "--cookies-from-browser"),
+                !private
+            );
+            assert_eq!(final_args.iter().any(|a| a == "--cookies"), own);
+            assert_eq!(final_args.iter().any(|a| a == NO_COOKIES), private && !own);
+            assert_eq!(with_cookies(&args, Some(&firefox)), own || !private);
+            if private && !own {
+                assert!(!has_cookies(&args), "no pointless cookie-free retry");
+            }
+            assert_eq!(file.is_some(), own);
+            if let Some(file) = file {
+                assert!(std::fs::read_to_string(&file.0).unwrap().contains("sid"));
+            }
+            let retry = without_cookies(&args);
+            let refs: Vec<&str> = retry.iter().map(String::as_str).collect();
+            assert!(
+                !yt(Some(&firefox), &refs)
+                    .iter()
+                    .any(|a| a == "--cookies-from-browser")
+            );
+        }
     }
 
     /// #229: Options → Cookies for video sites. Off: nothing added. On: every run without
@@ -2432,6 +2588,51 @@ foreach ($d in $env:PATH.Split(';')) {
         }
         let after_kill = size();
         // Nothing left to write it: the same a child's second later.
+        std::thread::sleep(Duration::from_millis(1500));
+        assert_eq!(size(), after_kill, "the child ended with the helper");
+    }
+
+    /// #1301: the same on Linux and macOS, where `yt_dlp_linux` is a launcher whose child
+    /// downloads: a shell script starts a child that writes a line every second for a minute,
+    /// holding the helper's stderr. Killed, the stderr closes long before the child's minute
+    /// (its process group ended with the script), and the file stops growing.
+    #[cfg(unix)]
+    #[test]
+    fn killing_a_helper_ends_its_children() {
+        use std::sync::atomic::Ordering;
+        const STUCK: Duration = Duration::from_secs(30);
+        let dir = tempfile::tempdir().unwrap();
+        let marker = dir.path().join("marker.txt");
+        let child = dir.path().join("child.sh");
+        let parent = dir.path().join("parent.sh");
+        std::fs::write(
+            &child,
+            "i=0\nwhile [ $i -lt 60 ]; do echo x >> \"$1\"; sleep 1; i=$((i+1)); done\n",
+        )
+        .unwrap();
+        // The child in the background (no `exec`): the script stays, as the launcher does.
+        std::fs::write(&parent, "/bin/sh \"$1\" \"$2\" &\nsleep 60\n").unwrap();
+        let mut cmd = Command::new("/bin/sh");
+        cmd.arg(&parent).arg(&child).arg(&marker);
+        let mut s = spawn(cmd, "sh").unwrap();
+        let size = || std::fs::metadata(&marker).map_or(0, |m| m.len());
+        let start = Instant::now();
+        while size() == 0 {
+            assert!(start.elapsed() < STUCK, "the child never ran");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        assert!(
+            !s.stderr_done.load(Ordering::Acquire),
+            "the stderr closed early"
+        );
+        s.kill();
+        let _ = s.child.wait();
+        let start = Instant::now();
+        while !s.stderr_done.load(Ordering::Acquire) {
+            assert!(start.elapsed() < STUCK, "the child outlived the helper");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        let after_kill = size();
         std::thread::sleep(Duration::from_millis(1500));
         assert_eq!(size(), after_kill, "the child ended with the helper");
     }

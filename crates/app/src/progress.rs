@@ -593,6 +593,7 @@ impl Progress {
         let minimize_hides = self.tray && self.minimize_to_tray;
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
         let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
+            crate::dialogs::keyboard_to_click(ui.ctx());
             // Painted in the pass that closes it too (see dialogs::close_requested).
             let close = crate::dialogs::close_requested(ui);
             if !close && minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true))

@@ -353,24 +353,33 @@ mod tests {
         let _ = std::fs::remove_dir_all(dir);
     }
 
+    /// Whether `cmd` fell back, once its run was over: the fallback holds the sender, so a run
+    /// that ends without it drops the sender (`Disconnected`), however long it took. A fixed
+    /// wait said "no fallback" for a run still under way on a busy machine.
+    fn falls_back(cmd: Command) -> bool {
+        use std::sync::mpsc::{RecvTimeoutError, channel};
+        let (tx, rx) = channel();
+        run_detached_with_fallback(cmd, STUCK, move || {
+            let _ = tx.send(());
+        });
+        match rx.recv_timeout(STUCK) {
+            Ok(()) => true,
+            Err(RecvTimeoutError::Disconnected) => false,
+            Err(RecvTimeoutError::Timeout) => panic!("the run never ended"),
+        }
+    }
+
     #[test]
     fn a_program_that_succeeds_has_no_fallback_and_one_that_fails_has_one() {
         let dir = temp("exit");
-        for (body, falls_back) in [("exit 0", false), ("exit 3", true)] {
+        for (body, expected) in [("exit 0", false), ("exit 3", true)] {
             let prog = script(&dir, "prog", body);
-            let (tx, rx) = std::sync::mpsc::channel();
-            run_detached_with_fallback(sh(&prog), Duration::from_secs(5), move || {
-                let _ = tx.send(());
-            });
-            let got = rx.recv_timeout(Duration::from_secs(3)).is_ok();
-            assert_eq!(got, falls_back, "{body}");
+            assert_eq!(falls_back(sh(&prog)), expected, "{body}");
         }
-        let missing = dir.join("no-such-program");
-        let (tx, rx) = std::sync::mpsc::channel();
-        run_detached_with_fallback(Command::new(missing), Duration::from_secs(5), move || {
-            let _ = tx.send(());
-        });
-        assert!(rx.recv_timeout(Duration::from_secs(3)).is_ok(), "missing");
+        assert!(
+            falls_back(Command::new(dir.join("no-such-program"))),
+            "missing"
+        );
         let _ = std::fs::remove_dir_all(dir);
     }
 
@@ -381,10 +390,12 @@ mod tests {
         let out = output_within(&mut sh(&say), Duration::from_secs(5)).unwrap();
         assert!(out.status.success());
         assert_eq!(String::from_utf8_lossy(&out.stdout).trim(), "blue");
-        let hang = script(&dir, "hang", "exec sleep 30");
+        // A program that runs for an hour: given up on (ended) long before. Any bound far under
+        // the hour proves it; 3 s was passed now and then on a busy machine.
+        let hang = script(&dir, "hang", "exec sleep 3600");
         let start = Instant::now();
         assert!(output_within(&mut sh(&hang), Duration::from_millis(300)).is_none());
-        assert!(start.elapsed() < Duration::from_secs(3));
+        assert!(start.elapsed() < STUCK, "{:?}", start.elapsed());
         let _ = std::fs::remove_dir_all(dir);
     }
 }
@@ -475,14 +486,13 @@ mod asked_tests {
         );
         let took = start.elapsed();
         assert!(took >= first_wait && took < STUCK / 2, "{took:?}");
-        // The next frames don't wait at all, and the read isn't asked again.
+        // The next frames don't wait at all, and the read isn't asked again: offered a wait as
+        // long as STUCK, a frame that took it would show (a busy machine takes some time for
+        // any call; a wait as short as the first one was found in that time now and then).
         for _ in 0..20 {
             let start = Instant::now();
-            assert_eq!(
-                asked.get_or_last(&0, FRESH, first_wait, None, read("a")),
-                None
-            );
-            assert!(start.elapsed() < first_wait, "{:?}", start.elapsed());
+            assert_eq!(asked.get_or_last(&0, FRESH, STUCK, None, read("a")), None);
+            assert!(start.elapsed() < STUCK / 2, "{:?}", start.elapsed());
         }
         go.send(()).unwrap();
         let start = Instant::now();
@@ -490,14 +500,15 @@ mod asked_tests {
             assert!(start.elapsed() < STUCK, "never came");
             std::thread::sleep(Duration::from_millis(5));
         }
-        // A new key (Set it up finished): the last answer at once, while its read hangs.
+        // A new key (Set it up finished): the last answer at once, while its read hangs (offered
+        // a wait it must never take, as above).
         for _ in 0..20 {
             let start = Instant::now();
             assert_eq!(
-                asked.get_or_last(&1, FRESH, first_wait, None, read("b")),
+                asked.get_or_last(&1, FRESH, STUCK, None, read("b")),
                 Some("a")
             );
-            assert!(start.elapsed() < first_wait, "{:?}", start.elapsed());
+            assert!(start.elapsed() < STUCK / 2, "{:?}", start.elapsed());
         }
         // Its read started (on its own thread, a moment later), and only it.
         let start = Instant::now();

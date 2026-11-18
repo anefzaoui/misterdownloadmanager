@@ -37,6 +37,7 @@ impl Declared {
     /// not the page's own Cookie header nor a stream's Origin, which are the page's site's.
     pub fn browser(&self, from: &FromBrowser) -> FromBrowser {
         FromBrowser {
+            private: from.private,
             referer: Some(self.page.clone()),
             origin: None,
             user_agent: from.user_agent.clone(),
@@ -147,6 +148,7 @@ fn settle(
         Ok((Looked::Video(mut v), out)) => {
             if let Some(name) = &declared.name {
                 v.title = name.clone();
+                v.page_titled = true;
             }
             Ok((Looked::Video(v), out, Some(declared)))
         }
@@ -419,6 +421,7 @@ mod tests {
         assert_eq!(d.page, page.as_str());
         assert_eq!(d.name.as_deref(), Some("Before The - Short Film"));
         let browser = FromBrowser {
+            private: true,
             referer: Some("https://search.example/".into()),
             origin: Some("https://www.shortverse.com".into()),
             user_agent: Some("UA".into()),
@@ -426,6 +429,14 @@ mod tests {
             jar: Vec::new(),
         };
         let asked = d.browser(&browser);
+        assert!(asked.private);
+        assert!(
+            asked
+                .args(&d.address)
+                .unwrap()
+                .0
+                .contains(&"--no-cookies-from-browser".into())
+        );
         assert_eq!(asked.referer.as_deref(), Some(page.as_str()));
         assert_eq!(asked.user_agent.as_deref(), Some("UA"));
         assert!(asked.cookies.is_none() && asked.origin.is_none());
