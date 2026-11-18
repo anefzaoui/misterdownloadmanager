@@ -574,6 +574,11 @@ These ship in the next version.
   Torrent settings: peers that take only uTP are reached, so torrents find as many peers as in
   other clients; off with a SOCKS5 proxy, held to a chosen network adapter
   ([#1384](https://github.com/anefzaoui/misterdownloadmanager/issues/1384))
+- ✅ Torrents keep uTP when the port picked for them is taken for UDP by another program: the
+  session listens on a port free for both TCP and UDP, where it went on with TCP alone and never
+  reached the peers that take only uTP. Two tests that failed now and then on Windows runners
+  because of it are steady, and a Rapidgator test whose link expired before a slow runner's first
+  request times the link from that request
 - ✅ A stream's own address — an HLS playlist (`.m3u8`) or DASH's (`.mpd`) — opens the video
   window like a page's: pasting a playlist downloads the video and merges it into one playable
   file, instead of saving the playlist itself
