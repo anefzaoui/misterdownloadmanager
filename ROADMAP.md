@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A Docker image of the headless server is published with each release, at
+  `ghcr.io/anefzaoui/misterdownloadmanager` (x86-64 only for now, thanks to
+  [@kngkatak](https://github.com/kngkatak))
 - ✅ Video qualities: **Most compatible (H.264 + AAC)**, the best H.264 picture with AAC sound in an
   MP4 that editors, older TVs and phones open as it is, in the Download video window, the menu over
   a video, a playlist's quality and `video-get -q compatible`; picked, never converted
