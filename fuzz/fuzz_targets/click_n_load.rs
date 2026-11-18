@@ -1,24 +1,21 @@
 //! What a web page posts to Click'n'Load (`mdm_cnl`: any page can post to it): the key in its
 //! `jk` script, its `crypted` links opened with that key, and the links in what they decrypt to.
 //!
-//! The input's first line is `jk`; the rest is `crypted` as posted, and also, encrypted here with
-//! a key the way a link site encrypts its links, the links themselves, so that the fuzzer reaches
-//! the link list's reader.
+//! The input's first line is `jk`; the rest is `crypted` as posted, and also, encrypted here the
+//! way a link site encrypts its links (with a key from the first line's first 16 bytes), the
+//! links themselves, so that the fuzzer reaches the link list's reader.
 #![no_main]
 
 use aes::cipher::{BlockCipherEncrypt, KeyInit};
 use base64::Engine;
 use libfuzzer_sys::fuzz_target;
 
-const KEY_HEX: &str = "31323334353637383930313233343536";
-const KEY: [u8; 16] = *b"1234567890123456";
-
-/// `plain` as a link site posts it: zero-padded, AES-128-CBC with the key as IV too, Base64.
-fn crypted(plain: &[u8]) -> String {
-    let cipher = aes::Aes128::new(&KEY.into());
+/// `plain` as a link site posts it: zero-padded, AES-128-CBC with `key` as IV too, Base64.
+fn crypted(key: [u8; 16], plain: &[u8]) -> String {
+    let cipher = aes::Aes128::new(&key.into());
     let mut padded = plain.to_vec();
     padded.resize(plain.len().div_ceil(16).max(1) * 16, 0);
-    let mut prev = KEY;
+    let mut prev = key;
     let mut out = Vec::with_capacity(padded.len());
     for chunk in padded.chunks(16) {
         let mut block = aes::Block::default();
@@ -38,8 +35,13 @@ fuzz_target!(|data: &[u8]| {
     let _ = mdm_cnl::key_of(jk);
     let _ = mdm_cnl::decrypt(rest, jk);
 
-    let jk = format!("function f(){{ return '{KEY_HEX}'; }}");
-    let links = mdm_cnl::decrypt(&crypted(rest.as_bytes()), &jk).expect("our own post opens");
+    let mut key = [0u8; 16];
+    for (k, b) in key.iter_mut().zip(jk.bytes()) {
+        *k = b;
+    }
+    let hex: String = key.iter().map(|b| format!("{b:02x}")).collect();
+    let jk = format!("function f(){{ return '{hex}'; }}");
+    let links = mdm_cnl::decrypt(&crypted(key, rest.as_bytes()), &jk).expect("our own post opens");
     let mut seen = std::collections::HashSet::new();
     for link in &links {
         // Web links only, each once, none to this computer or its network by name.
