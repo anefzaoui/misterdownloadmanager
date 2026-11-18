@@ -57,7 +57,9 @@ KEEP = sorted(set(tr.KEEP + ["macOS", "Linux", "Rust", "YouTube", "Vimeo", "Tone
                              "Free Download Manager", "AB Download Manager", "Motrix",
                              "Neat Download Manager", "Prism", "JDownloader 2", "JDownloader",
                              "Xtreme Download Manager", "Gopeed", "DOWNitUP", "PyIDM", "aria2",
-                             "Hugging Face"]), key=len, reverse=True)
+                             "Hugging Face",
+                             # The code signing policy's signer.
+                             "SignPath Foundation", "SignPath.io", "SignPath"]), key=len, reverse=True)
 # Kept names a language writes in its own script instead (the maintainer's spelling of his name).
 OWN_SPELLING = {
     "ar": {"Ahmed Nefzaoui": "أحمد نفزاوي"},

@@ -66,6 +66,10 @@
    "source": "On the same PC, downloading from a test server on that PC, MDM fetched a 1 GiB file in 1.0 s against IDM 6.42's 5.5 s, and a 256 KiB file in 0.03 s against 3.1 s: the medians of alternating runs. It is a loopback test: it times the programs, not an internet connection. The <g1>benchmark page</g1> has every run, the method and the raw data.",
    "text": "同じ PC 上のテスト サーバーからダウンロードした際、MDM は 1 GiB のファイルを 1.0 秒で取得しました (IDM 6.42 は 5.5 秒)。また、256 KiB のファイルを 0.03 秒で取得しました (IDM は 3.1 秒)。これらは交互に実行した中央値です。これはループバック テストであり、インターネット接続ではなくプログラムの時間を測定します。<g1>ベンチマーク ページ</g1>には、すべての実行、方法、および生データが記載されています。"
   },
+  "013ffb458262cc02": {
+   "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
+   "text": "コード署名により、Windows はプログラムの発行元を表示し、ビルド後に変更されていないことを確認できます。Mister Download Manager (MDM) のリリースが署名されると、その署名は次の Windows ファイルをカバーします。"
+  },
   "01579d403b821195": {
    "source": "<x1/> pull requests",
    "text": "<x1/> 件のプル リクエスト"
@@ -313,10 +317,6 @@
   "049652ed195253e0": {
    "source": "MDM is free and always will be. If it saves you time, you can support its creator on GitHub Sponsors.",
    "text": "MDM は無料であり、今後もずっと無料です。もしMDMがあなたの時間を節約できたなら、GitHub Sponsorsで開発者をサポートできます。"
-  },
-  "04a7f9ae361a7bb3": {
-   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes a quality's selector from <x6/> (<x7/> = the best single file; <x8/> = the sound alone as the site has it, not converted; <x9/>, <x10/>, <x11/> or <x12/> = the sound as an MP3 at that bitrate, <x13/> at its best variable one; <x14/> = as Opus; <x15/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x16/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x17/> saves subtitles beside it: language codes from <x18/> (<x19/>), or <x20/> for every one the uploader gave; <x21/> takes the site's automatic captions instead; <x22/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g23>Embed chapters</g23> does. <x24/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x25/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x26/> does.",
-   "text": "動画をダウンロードします。<x1/> または <x2/> を指定しない場合、［動画をダウンロード］ウィンドウで最初に表示される最高の品質が選択されます。ffmpeg を使用する場合、最高の画質と最高の音声が結合されます (Bilibili のように画質と音声が分離しているサイトの場合、動画には ffmpeg が必要です)。それ以外の場合は、両方を含む最高のファイルが選択されます。<x3/> (または <x4/>) は、その高さ、またはページが提供するそれ以下の最も近い高さ (それ以外の場合はそれ以上の最も近い高さ) を取得し、その旨を伝えます。<x5/> は、<x6/> から品質のセレクターを取得します (<x7/> = 最高の単一ファイル、<x8/> = サイトにあるままの音声で、変換なし、<x9/>、<x10/>、<x11/>、または <x12/> = そのビットレートの MP3 形式の音声、<x13/> = 最高の可変ビットレート、<x14/> = Opus 形式、<x15/> = FLAC 形式、ロスレスですがサイトの音声より優れているわけではありません。変換には ffmpeg が必要です)。<x16/>: MDM 独自のダウンローダーは、yt-dlp が見つけた各ストリームをこの数の接続 (デフォルトは 8、1 から 128) で取得し、ストリームが断片化されている場合 (HLS、DASH) は一度にこの数の断片を取得します。<x17/> は、その横に字幕を保存します。<x18/> (<x19/>) からの言語コード、またはアップローダーが提供したすべての字幕の場合は <x20/> を指定します。<x21/> は、代わりにサイトの自動キャプションを取得します。<x22/> は、字幕を動画に埋め込みます (ffmpeg、MP4 または MKV が必要です)。ffmpeg を使用すると、動画のチャプターもファイルに埋め込まれます。これは、［動画をダウンロード］の<g23>チャプターを埋め込む</g23>と同じです。<x24/> は、<x25/> のように、ダウンロードの接続と yt-dlp (および ffmpeg) の接続を 1 つのネットワーク アダプター経由で送信します。接続されていない場合、何も開始されません。ページの形式が一致しない場合、エラーは <x26/> と同様に、提供されている形式を一覧表示します。"
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -1190,6 +1190,10 @@
    "source": "<g1>Chrome</g1><g2>Google · <g3>Add to Chrome</g3></g2>",
    "text": "<g1>Chrome</g1><g2>Google · <g3>Chrome に追加</g3></g2>"
   },
+  "116ed22c951d837d": {
+   "source": "Team roles",
+   "text": "チームの役割"
+  },
   "1171655e77148bd2": {
    "source": "Every release, with its notes and files, is on <g1>GitHub Releases</g1>. The source code is at <g2>github.com/anefzaoui/misterdownloadmanager</g2> under the GNU GPL, version 3.",
    "text": "リリースノートとファイルを含むすべてのリリースは<g1>GitHub Releases</g1>にあります。ソースコードはGNU GPLバージョン3の下で<g2>github.com/anefzaoui/misterdownloadmanager</g2>にあります。"
@@ -1930,6 +1934,10 @@
    "source": "Yes: every release has an AppImage, .deb, .rpm and .tar.gz for Linux and a .dmg for Apple Silicon and Intel Macs. Linux is supported, checked on four desktops (GNOME, KDE Plasma, Xfce and Cinnamon); macOS is still experimental. <g1>More</g1>",
    "text": "はい。すべてのリリースには、Linux 用の AppImage、.deb、.rpm、.tar.gz と、Apple Silicon および Intel Mac 用の .dmg があります。Linux はサポートされており、4 つのデスクトップ (GNOME、KDE Plasma、Xfce、Cinnamon) で確認済みです。macOS はまだ実験段階です。<g1>その他</g1>"
   },
+  "1be4beda32ded4a9": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked, and <g6>Most compatible (H.264 + AAC)</g6> beside the resolution of the one that plays everywhere (<g7>Choose the quality</g7>); <g8>All qualities and subtitles...</g8>, which opens the <g9>Download video from a page</g9> window; then <g10>Hide on this video</g10> (<g11>Esc</g11>), <g12>Never on</g12> the site (MDM remembers the site), and <g13>Button settings...</g13>, which opens MDM's Options. The arrow keys move through it, <g14>Enter</g14> picks, <g15>Esc</g15> closes it.",
+   "text": "<g1>メニュー</g1> (横の矢印、またはボタンがキーボードのフォーカスを持っている場合は <g2>↓</g2>): 動画のタイトル、長さ、サイト。<g3>最高画質をダウンロード</g3> が最初に表示され、次に <g4>ビデオ</g4> と <g5>オーディオ</g5> の下に画質ごとに番号付きの行が表示されます。ファイルの種類、フレーム レートまたはビットレート、サイズが表示され、最適なものがマークされ、どこでも再生できる解像度の横に <g6>最も互換性のある形式 (H.264 + AAC)</g6> が表示されます (<g7>画質を選択</g7>)。<g8>すべての画質と字幕...</g8> は <g9>ページからビデオをダウンロード</g9> ウィンドウを開きます。次に <g10>この動画では非表示</g10> (<g11>Esc</g11>)、サイトでは <g12>常に非表示</g12> (MDM はサイトを記憶します)、<g13>ボタンの設定...</g13> は MDM のオプションを開きます。矢印キーで移動し、<g14>Enter</g14> で選択し、<g15>Esc</g15> で閉じます。"
+  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>キーボードフォーカスが失われる問題</g1>を修正しました。ボタンが無効になったり、Escape キーでドロップダウンを閉じたりすると、Tab キーを押したときにウィンドウの先頭に戻っていました。Windows と同様に、次の項目に移動するか、元の位置に戻るようになりました。"
@@ -2366,6 +2374,10 @@
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, uTP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
    "text": "<g1>オプション → プロキシ / SOCKS → ネットワーク アダプター</g1> には、MDM の接続が 1 つのアダプター (通常は VPN のアダプター) に保持されます (<g2>オプション</g2>)。トレント エンジンは、すべてのソケットをそれにバインドします。ピア (TCP、uTP、および SOCKS プロキシ経由)、HTTP および UDP トラッカー、DHT、およびリッスン ポートです。Linux および macOS では、アダプター自体をバインドします。Windows では、アダプターのアドレス (IPv4 アドレスがある場合はそのアドレス) をバインドし、Windows はそのソース アドレスを持つアダプターを介してのみパケットを送信します。UPnP およびローカル ピア検出は、アダプターを介するのではなくローカル ネットワークと通信するため、その場合はオフになります。"
   },
+  "2268a0b1cd6985ad": {
+   "source": "<g1>What you ask for:</g1> the servers you download from, torrent peers and trackers, and the services you turn on yourself, such as a proxy, a DNS or a debrid account.",
+   "text": "<g1>お客様が要求するもの:</g1> ダウンロード元のサーバー、トレントのピアとトラッカー、およびプロキシ、DNS、デブリッド アカウントなど、お客様自身で有効にするサービス。"
+  },
   "228586c26511a211": {
    "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
    "text": "addons.mozilla.orgの<g1>Mister Download Manager</g1>アドオンページを開き、<g2>Firefoxへ追加</g2>をクリックします。ZenとLibreWolfも同じページを使用します。"
@@ -2373,6 +2385,10 @@
   "2293a114810b4b8f": {
    "source": "More control in version 0.5.0",
    "text": "バージョン 0.5.0 での機能強化"
+  },
+  "229512f572cbcf74": {
+   "source": "MDM has no telemetry, no analytics and no ads, and it sends nothing about you to us. It connects to other systems only for these:",
+   "text": "MDM にはテレメトリ、分析、広告は含まれておらず、お客様に関する情報を当社に送信することはありません。MDM は、次の目的でのみ他のシステムに接続します。"
   },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
@@ -2633,6 +2649,10 @@
   "26389260c1c38a82": {
    "source": "Feeds and rules are kept in <x1/> in MDM's data folder. MDM reads at most 5 MB of a feed.",
    "text": "フィードとルールは、MDM のデータフォルダー内の <x1/> に保存されます。MDM はフィードの最大 5 MB を読み取ります。"
+  },
+  "264823238b3f18e6": {
+   "source": "<g1>Helpers you install:</g1> yt-dlp and ffmpeg (and gallery-dl) come from their official releases when you choose to install them, and yt-dlp is kept up to date when you download videos.",
+   "text": "<g1>インストールするヘルパー:</g1> yt-dlp と ffmpeg (および gallery-dl) は、インストールを選択すると公式リリースから提供され、動画をダウンロードすると yt-dlp は最新の状態に保たれます。"
   },
   "2656643a5769e161": {
    "source": "<g1>Real-Debrid, AllDebrid and Premiumize</g1> (<g2>#44</g2>): <g3>Options → Accounts</g3> keeps your debrid service accounts. Real-Debrid signs in by code in the browser, or with your API token; AllDebrid by a PIN in the browser or with an API key, and MDM waits while it prepares a slow link; Premiumize with its API key. A link from a file host your service supports is unlocked through your account, then downloaded with all of MDM's connections, pause and resume, from Add URL, the browser's link menu and batch downloads. When the direct link expires, MDM asks the service for a new one. The direct link is never shown or copied, and the sign-in is kept like your other passwords (the system's keychain, below). Each service is asked well under its request limit. See <g4>Debrid service accounts</g4>. Experimental: built from the services' public API documentation, not yet confirmed with a real paid account.",
@@ -3222,6 +3242,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e27925360e4deec": {
+   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. Some checks (SourceForge's) refuse anything that calls itself a browser without connecting exactly like one, and let a program that says what it is through: when that connection is refused too, MDM asks once more under its own name (<x2/> and its version, or the User-Agent you typed in <g3>Options → Downloads</g3>), with the same cookies and referrer, and remembers the site until MDM closes, so its next downloads, and a paused one when it resumes, go that way at once. It solves no challenge: a site that still wants one answered (some Cloudflare checks ask it of every visitor, for the site's pages too) refuses again, and MDM says <g4>this site lets only browsers through</g4>; Alt+click the link to leave the download to the browser.",
+   "text": "MDM の拡張機能を使用すると、ブラウザでダウンロード リンクをクリックしたときに、MDM がダウンロードを処理します。MDM は、参照元ページ (リファラー)、サイトの Cookie、ブラウザのユーザー エージェントとともにアドレスを取得するため、サインインが必要なダウンロードも機能します。また、ブラウザ自身のダウンロードが到達したアドレスも取得します。サイトが MDM へのリンク自体を拒否する場合 (ブラウザがすでに使用した 1 回限りのリンク、またはブラウザのみがリンクを要求できるサイト)、MDM はそこから 1 回だけ続行し、別のサイトの場合は Cookie なしで続行します。サイトのボット チェック (Cloudflare など) やプログラムの拒否 (FileHippo の <g1>412 Precondition Failed</g1>) によって MDM 自身の接続が拒否された場合、MDM はブラウザと同じ方法で (同じハンドシェイク、設定、ヘッダーの順序で) 再度接続を要求し、ブラウザのユーザー エージェントとそのサイト専用の Cookie を使用して、通常のダウンロードと同じ数の接続でダウンロードします。各接続はファイルの一部を要求します (サイトがそこでの部分を拒否する場合は 1 つの接続)。プロキシ、ネットワーク アダプター、速度制限は通常どおり適用されます。サイトのチェックが拒否した場合、ビデオ ストリーム (HLS、DASH) の断片も同じ方法で処理されます。一部のチェック (SourceForge など) は、ブラウザとして正確に接続しないものをすべて拒否し、それが何であるかを宣言するプログラムを許可します。その接続も拒否された場合、MDM は自身の名前 (<x2/> とそのバージョン、または <g3>オプション → ダウンロード</g3> で入力したユーザー エージェント) で再度要求し、同じ Cookie とリファラーを使用し、MDM が閉じるまでサイトを記憶するため、次のダウンロード、および一時停止したダウンロードが再開されたときに、すぐにその方法で処理されます。これはチャレンジを解決しません。まだ回答を必要とするサイト (一部の Cloudflare チェックは、サイトのページについてもすべての訪問者に要求します) は再度拒否し、MDM は <g4>このサイトはブラウザのみを許可します</g4> と表示します。ダウンロードをブラウザに任せるには、Alt キーを押しながらリンクをクリックします。"
+  },
   "2e3cb33a528c6b52": {
    "source": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,",
    "text": "、<x1/>、<x2/>、<x3/>、<x4/>、<x5/>、<x6/>、<x7/>、<x8/>、"
@@ -3314,6 +3338,10 @@
    "source": "Many sites publish their new torrents as an RSS or Atom feed. MDM can watch feeds, list what they hold, and add the new torrents you want by itself. Choose <g1>Tasks → RSS feeds...</g1>, or click the arrow next to <g2>Add Torrent</g2>.",
    "text": "多くのサイトでは、新しいトレントを RSS または Atom フィードとして公開しています。MDM はフィードを監視し、その内容を一覧表示し、必要な新しいトレントを自動的に追加できます。<g1>タスク → RSS フィード...</g1> を選択するか、<g2>Torrent を追加</g2> の横にある矢印をクリックしてください。"
   },
+  "2f5a8130c47e294d": {
+   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - <g3>Most compatible (H.264 + AAC)</g3>, second in the list: the best H.264 video the site has (YouTube's usually go up to 1080p) with AAC sound (in stereo when the site has it beside surround), in an MP4 that Premiere Pro and other editors, older TVs and most phones open as it is. YouTube's best qualities are AV1 or VP9 with Opus sound, which some of them can't read. The line says its resolution: <x4/>. MDM picks those streams, it doesn't convert anything: when the site has no H.264 video with AAC sound the line isn't there, and when the best line already is that, it isn't listed twice. - The size is that of exactly what downloads, the video and its sound. A size with <x5/> before it (<x6/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g7>Audio only, original</g7>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g8>Audio only MP3</g8> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g9>Audio only OPUS</g9>: an <x10/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g11>Audio only FLAC</g11>: a lossless <x12/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "リストが表示されるまで待ちます。各画質がサイズとともに表示され、最適なものが最初に、次に音声のみが表示されます。- 動画の行には、解像度、コーデック、フレームレート、HDR かどうかが表示されます。<x1/>。複数の形式 (AV1、VP9、H.264、HDR、SDR) で提供される解像度には、それぞれ行があります。AV1 は最小のファイルを作成し、H.264 はほとんどのデバイスで再生でき、HDR のない画面では HDR 動画は色あせて見えます。<x2/> は、同じ解像度の HDR 行の横にのみ表示されます。- リストの 2 番目にある<g3>最も互換性のある形式 (H.264 + AAC)</g3>: サイトが提供する最高の H.264 動画 (YouTube の場合は通常 1080p まで) と AAC サウンド (サイトがサラウンドとともに提供する場合はステレオ) を含む MP4 形式で、Premiere Pro やその他のエディター、古いテレビ、ほとんどのスマートフォンでそのまま開くことができます。YouTube の最高の画質は AV1 または VP9 と Opus サウンドですが、一部のデバイスでは読み取れません。行には解像度が表示されます。<x4/>。MDM はこれらのストリームを選択し、何も変換しません。サイトに AAC サウンド付きの H.264 動画がない場合、その行は表示されず、最高の行がすでにそれである場合、2 回リストされません。- サイズは、ダウンロードされる動画と音声の正確なサイズです。<x5/> の前にサイズがある場合 (<x6/>) は推定値にすぎません。サイトがサイズを提示しなかったため、ストリームのビットレートと長さから算出されます。- <g7>音声のみ（オリジナル）</g7>: サイト独自のファイルで、変換されません。サイトが提供する各タイプ (Opus を含む WebM、M4A) ごとに 1 つずつ、最適なものが最初に表示されます。最小のファイルで最高のサウンドです。- <g8>音声のみ MP3</g8>: 最高の可変ビットレート (VBR) と 320、256、192、128 kbps で、MP3 のみを受け入れるプレーヤー向けです。- <g9>音声のみ OPUS</g9>: <x10/> ファイルです。サイトのサウンドがすでに Opus の場合 (YouTube の場合は通常そうです)、変換されずにそのファイルに移動されるだけなので、何も失われません。- <g11>音声のみ FLAC</g11>: ライブラリや FLAC を必要とするプログラム向けのロスレス <x12/> ファイルです。品質を追加することはできません。サイトのサウンドはすでに損失を伴って圧縮されており、FLAC はそれをそのまま保持し、数倍大きいファイルになります。選択すると、ウィンドウにその旨が表示されます。"
+  },
   "2f5eb68f16f89115": {
    "source": "<g1><g2>Queues and the Scheduler</g2></g1> — run downloads a few at a time, start and stop them by the clock, and turn the computer off when they are done.",
    "text": "<g1><g2>キューとスケジューラ</g2></g1> — ダウンロードを一度に数件ずつ実行する方法、時刻に合わせて開始・停止する方法、完了時にコンピューターをシャットダウンする方法。"
@@ -3385,6 +3413,10 @@
   "300fe42c6f7d0e75": {
    "source": "Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.",
    "text": "ヘルプ: アンチウイルスまたは VirusTotal が MDM を検出した場合の対処法、およびコピーが正規のものであるかを確認する方法。"
+  },
+  "3017321534b213e2": {
+   "source": "Whatever the signature, you can still check every download against the release's signed checksums: see <g1>Check your download</g1>.",
+   "text": "署名に関係なく、リリースの署名済みチェックサムと照合してすべてのダウンロードを確認できます。<g1>ダウンロードを確認する</g1>を参照してください。"
   },
   "301fb01942b6c3a7": {
    "source": "<g1>macOS Intel</g1><g2>.dmg · Macs with an Intel processor · experimental</g2>",
@@ -3742,6 +3774,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "速度制限は、MDMが接続帯域をすべて使用するのを防ぎます。"
   },
+  "36e51409041d8610": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the most compatible, H.264 with AAC; <x6/> = the original sound; <x7/>, <x8/>, <x9/> as for <x10/>). <x11/> as for <x12/>.",
+   "text": "<x1/> 内のリストと同じ名前のフォルダーに、プレイリストまたはチャンネルの動画を次々にダウンロードします。<x2/> は <x3/> と同様に、すべての動画に 1 つの品質を設定します (既定では各動画の最高品質。<x4/> = 最大 720p。<x5/> = 最も互換性のある形式、AAC 付き H.264。<x6/> = オリジナルサウンド。<x7/>、<x8/>、<x9/> は <x10/> と同様)。<x11/> は <x12/> と同様。"
+  },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
    "text": "拡張機能を通じて、Firefox、Chrome、Edge、Brave、Opera、Vivaldi に対応しており、<g1>Firefox のアドオンストア</g1>と<g2>Chrome ウェブストア</g2>から入手できます。拡張機能なしで、リンクをコピーすると MDM がダウンロードウィンドウを開きます。<g3>詳細</g3>"
@@ -3901,6 +3937,10 @@
   "391a6b0e422e6b00": {
    "source": "Through your VPN, or not at all.",
    "text": "VPN 経由、または接続なし"
+  },
+  "391fbe820c800f21": {
+   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (<x5/> for <x6/>, else <x7/>) and <x8/> whether that height wasn't offered. Then <x9/> lines, <x10/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x11/>: the subtitle files saved beside it, and the languages the site refused (<x12/>; <x13/>: they came on a second try, beside the video instead of in it).",
+   "text": "<x1/> がない場合、最初に <x2/>: 取得された品質、<x3/> は <x4/> の高さ (<x5/> は <x6/> の場合、それ以外は <x7/>)、<x8/> はその高さが提供されなかったかどうか。次に <x9/> 行、<x10/> はダウンロードのログが示す内容 (サーバーが提供しない品質で、それ以下の最も近い品質が取得された場合)、次に <x11/>: その横に保存された字幕ファイル、およびサイトが拒否した言語 (<x12/>; <x13/>: 2 回目の試行で、動画内ではなく動画の横に表示された場合)。"
   },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
@@ -4390,10 +4430,6 @@
    "source": "Options: Remote, with the address to open, the certificate's fingerprint and the paired devices",
    "text": "オプション: リモート、開くアドレス、証明書のフィンガープリント、ペアリング済みデバイス"
   },
-  "3fa8036373b9b833": {
-   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added.",
-   "text": "Windowsインストーラーはまだコード署名されていないため、初回起動時にWindows SmartScreenが警告する場合があります。コード署名は今後追加されます。"
-  },
   "3fab3621d5ce1a78": {
    "source": "Slow down one download only",
    "text": "1つのダウンロードのみを遅くする"
@@ -4745,6 +4781,10 @@
   "44f50999ce094e3a": {
    "source": "We may update these terms; the date at the top says when. Changes apply from then on and are recorded in the project's public history on GitHub.",
    "text": "本規約は更新される場合があります。上部に記載された日付が最終更新日です。変更はそれ以降に適用され、プロジェクトのGitHub公開履歴に記録されます。"
+  },
+  "4502e19501791bba": {
+   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent, the one your sign-in and the site's checks know; the one typed here doesn't replace it. If a site turns a browser's User-Agent away, MDM asks once more with the one typed here (with <g4>Automatic</g4>, with Internet Explorer's). If a site's bot check refuses it, and the way a browser connects too, MDM asks once more under its own name, <x5/> and its version (or the one typed here), and remembers that site until MDM closes. A User-Agent typed here for the downloads you add yourself is the only one they send.",
+   "text": "<g1>手動で追加したダウンロードのユーザーエージェント</g1> — 自分で追加したダウンロードについて、MDM がサーバーに名乗る名前です。<g2>自動</g2>にチェックが入っている場合 (既定)、MDM は既定のブラウザーとして自己紹介します。これは、インストールされているブラウザー (Chrome、Edge、Brave、Opera、Vivaldi、Firefox、Safari) が送信するユーザーエージェントです。ボックスに表示され、ポイントするとブラウザー名が表示されます。MDM が既定のブラウザーを認識しない場合は、現在の Chrome のユーザーエージェントを送信します。<g3>自動</g3>のチェックを外すと、独自のユーザーエージェントを入力できます。もう一度チェックを入れると元に戻ります。ブラウザーからのダウンロードでは、そのブラウザー自身のユーザーエージェント (サインインやサイトのチェックで認識されているもの) が使用されます。ここに入力されたものはそれを置き換えません。サイトがブラウザーのユーザーエージェントを拒否した場合、MDM はここに入力されたもの (または<g4>自動</g4>が選択されている場合は Internet Explorer のもの) でもう一度要求します。サイトのボットチェックがそれを拒否し、ブラウザーの接続方法も拒否した場合、MDM は自身の名前 <x5/> とそのバージョン (またはここに入力されたもの) でもう一度要求し、MDM が閉じるまでそのサイトを記憶します。自分で追加したダウンロードに対してここに入力されたユーザーエージェントは、それらが送信する唯一のものです。"
   },
   "4508e7f2d360848f": {
    "source": "The files go to a queue, not all at once. MDM asks which one, and that question can be turned off in <g1>Options → Downloads</g1>. From there the queue runs as many files at a time as you set, and the Scheduler can start it at night. See <g2>Queues and the Scheduler</g2>.",
@@ -5169,6 +5209,10 @@
   "4c48ce4cf971575b": {
    "source": "Download manager for Windows and Linux, with macOS builds",
    "text": "Windows と Linux 用ダウンロード マネージャー (macOS 版もあり)"
+  },
+  "4c51533571f9a9b3": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Most compatible (H.264 + AAC)</g3> (each video's best H.264 picture with AAC sound; a video that has none isn't downloaded), <g4>Up to</g4> a height (each video at that height, or the nearest below it), <g5>Audio only, original</g5>, <g6>Audio only MP3</g6>, <g7>Audio only OPUS</g7> or <g8>Audio only FLAC</g8>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>画質</g1>はすべての動画に適用されます。<g2>最高品質</g2>、<g3>最も互換性のある形式 (H.264 + AAC)</g3> (各動画の最高の H.264 画像と AAC サウンド。ない動画はダウンロードされません)、高さ<g4>まで</g4> (その高さ、またはそれより近い高さの各動画)、<g5>音声のみ（オリジナル）</g5>、<g6>音声のみ MP3</g6>、<g7>音声のみ OPUS</g7>、または<g8>音声のみ FLAC</g8>。ffmpeg がない場合、サウンド付きで提供される画質のみが提供され、MP3、Opus、FLAC は提供されません。"
   },
   "4c5fe1c0a5f7ac2d": {
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
@@ -5830,10 +5874,6 @@
    "source": "Made something others would like? Open a <g1>pull request on GitHub</g1> that adds it to <g2><x3/></g2>, with:",
    "text": "他の人が気に入るものを作成しましたか？<g1>GitHub でプル リクエスト</g1> を開いて、次のものを <g2><x3/></g2> に追加してください。"
   },
-  "560a94f3340fd0a3": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked; <g6>All qualities and subtitles...</g6>, which opens the <g7>Download video from a page</g7> window; then <g8>Hide on this video</g8> (<g9>Esc</g9>), <g10>Never on</g10> the site (MDM remembers the site), and <g11>Button settings...</g11>, which opens MDM's Options. The arrow keys move through it, <g12>Enter</g12> picks, <g13>Esc</g13> closes it.",
-   "text": "<g1>そのメニュー</g1> (隣の矢印、またはボタンがキーボードのフォーカスを持っている場合は<g2>↓</g2>): 動画のタイトル、長さ、サイト。<g3>最高画質をダウンロード</g3>が最初に表示され、次に<g4>ビデオ</g4>と<g5>オーディオ</g5>の下に画質ごとに番号付きの行が表示され、ファイルの種類、フレームレートまたはビットレート、サイズが表示され、最高のものがマークされます。<g6>すべての画質と字幕...</g6>は<g7>ページからビデオをダウンロード</g7>ウィンドウを開きます。次に<g8>この動画では非表示</g8> (<g9>Esc</g9>)、サイトで<g10>常にオフ</g10> (MDM がサイトを記憶します)、そして MDM のオプションを開く<g11>ボタンの設定...</g11>が表示されます。矢印キーで移動し、<g12>Enter</g12>で選択し、<g13>Esc</g13>で閉じます。"
-  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "前の画像"
@@ -5997,6 +6037,10 @@
   "5825a9c27ba24869": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers, and screen readers.",
    "text": "<g1><g2>キーボード ショートカット</g2></g1> — メイン ウィンドウが応答するすべてのキーとスクリーン リーダー。"
+  },
+  "5841102b5b7e5308": {
+   "source": "<g1>Committers and reviewers:</g1> <x2/> (<x3/>). Contributions from other people are reviewed by him before they are merged.",
+   "text": "<g1>コミッターとレビュー担当者:</g1> <x2/> (<x3/>)。他のユーザーからの貢献は、マージされる前に彼によってレビューされます。"
   },
   "584697d876791ed0": {
    "source": "<g1>Download video</g1> finds the video on pages whose player loads a <x2/> or <x3/> address that answers something else first, as SVT Play does (<g4>#377</g4>).",
@@ -6878,6 +6922,10 @@
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>GitHub上のプロジェクト</g1><g2>コード、課題、すべてのリリース</g2>"
   },
+  "64ac94eff5ae08d3": {
+   "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
+   "text": "プログラム: <x1/>、<x2/> (ブラウザー ヘルパー)、<x3/>、<x4/>。"
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "ブラウザとMDMが接続されていません"
@@ -7362,10 +7410,6 @@
    "source": "Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (x64 and ARM64 Windows; on macOS and Linux MDM uses the system's, and on 32-bit Windows one you choose in Helpers).",
    "text": "動画に必要なヘルパー (yt-dlp (署名キーと照合して確認) と ffmpeg (x64 および ARM64 Windows; macOS および Linux では MDM はシステムのヘルパーを使用し、32 ビット Windows では［ヘルパー］で選択したものを使用)) をインストールまたは更新します。"
   },
-  "6cbd30742f3005de": {
-   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>). <x10/> as for <x11/>.",
-   "text": "プレイリストまたはチャンネルの動画を、<x1/> 内のリストと同じ名前のフォルダーに順次ダウンロードします。<x2/> は <x3/> と同様に、すべての動画に適用される画質です (既定では各動画の最高画質。<x4/> = 最大 720p。<x5/> = オリジナル音声。<x6/>、<x7/>、<x8/> は <x9/> と同様)。<x10/> は <x11/> と同様です。"
-  },
   "6cf66bb7f58412f7": {
    "source": "<g1>Downloads from a browser behind a VPN or proxy extension go through it too</g1> (<g2>#42</g2>): the browser extension passes the proxy the browser uses for a download (an extension's, or its settings' manual proxy or auto-config script) with it. MDM downloads through the same proxy while <g3>Options → Proxy / Socks → Use proxy/socks from a browser's request</g3> is on, which is the default. A proxy that needs the VPN extension's own login can't be shared: the download says so rather than going without it. It is an opt-in, off as installed: <g4>Send downloads through this browser's proxy or VPN extension</g4> in the extension's popup. In Firefox the switch asks for the browser's <g5>proxy</g5> permission (to read the browser's proxy, never to change it). Chrome, Edge, Brave, Opera and Vivaldi can't make that permission optional, so their extension has it from the install; Chrome counts it under the access to every site the extension already has, so the update asks for nothing new. There the extension reads the browser's proxy settings: the server for the download's scheme (honouring their bypass list), or their auto-config script. Addresses on this computer (localhost, 127.0.0.1) go straight to it, as the browser sends them.",
    "text": "<g1>VPN またはプロキシ拡張機能の背後にあるブラウザーからのダウンロードもそれらを経由</g1>します (<g2>#42</g2>)。ブラウザー拡張機能は、ブラウザーがダウンロードに使用するプロキシ (拡張機能のプロキシ、またはその設定の手動プロキシや自動構成スクリプト) を渡します。<g3>オプション → プロキシ / SOCKS → ブラウザーのリクエストからのプロキシ/SOCKS を使用する</g3>がオン (デフォルト) の場合、MDM は同じプロキシ経由でダウンロードします。VPN 拡張機能自身のログインが必要なプロキシは共有できません。その場合、ダウンロードはそれなしで続行するのではなく、その旨を伝えます。これはオプトインであり、インストール時はオフです。拡張機能のポップアップにある<g4>このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する</g4>をオンにします。Firefox では、このスイッチはブラウザーの<g5>プロキシ</g5>権限 (ブラウザーのプロキシを読み取るためであり、変更するためではありません) を要求します。Chrome、Edge、Brave、Opera、Vivaldi はこの権限をオプションにできないため、インストール時から拡張機能に付与されています。Chrome では、拡張機能がすでに持っているすべてのサイトへのアクセスに含まれるため、更新時に新しいものは何も要求されません。そこで拡張機能はブラウザーのプロキシ設定を読み取ります。ダウンロードのスキームのサーバー (バイパスリストを尊重します)、またはその自動構成スクリプトです。このコンピューター上のアドレス (localhost、127.0.0.1) は、ブラウザーが送信するのと同じように直接送信されます。"
@@ -7546,6 +7590,10 @@
    "source": "The files go where <g1>What an archive holds goes</g1> says, as with any other extraction. On the way they are in a folder named <x2/> beside the archive.",
    "text": "ファイルは、他の展開と同様に、<g1>アーカイブの内容の保存先</g1>で指定された場所に保存されます。その途中、アーカイブの横にある<x2/>という名前のフォルダーに保存されます。"
   },
+  "6f1ec823eb269593": {
+   "source": "Code signing policy — Mister Download Manager",
+   "text": "コード署名ポリシー — Mister Download Manager"
+  },
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
    "text": "<g1>トレント コマンド</g1> (<g2>#39</g2>): トレントの右クリックメニューには、<g3>トレント → ファイルを再チェック</g3>、<g4>再アナウンス</g4>、<g5>トラッカーの追加...</g5>、<g6>マグネットリンクをコピー</g6> があります。ファイルのタブでは、実行中にファイルをチェックしたり、チェックを外したりできます。<x7/> ファイルの Web アドレスは、URL を追加またはブラウザーから、ファイルの内容を含むトレントを追加を開きます。TORRENT はオプション → ファイルの種類 の既定値に含まれているため、ブラウザーは <x8/> ファイルを渡します。以前に保存されたリストは、その内容を保持します。"
@@ -7581,6 +7629,10 @@
   "6f6f84e7ad3660d6": {
    "source": "Numbers and dates",
    "text": "数字と日付"
+  },
+  "6f817f4cd7d52fd8": {
+   "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites. The popup then says <g2>Downloads from</g2> the site <g3>stay with the browser</g3>, with <g4>Undo</g4> to take it off the list again; it says the same whenever you open it on that site.",
+   "text": "<g1>現在のサイトからダウンロードしない</g1>: そのサイトを MDM の除外サイトに追加します。ポップアップには、そのサイトからの<g2>ダウンロードは</g2><g3>ブラウザーに残る</g3>と表示され、リストから再度削除するための<g4>元に戻す</g4>ボタンが表示されます。そのサイトでポップアップを開くたびに同じメッセージが表示されます。"
   },
   "6fd265830dad2b39": {
    "source": "Untick the folders or files you don't want. <g1>Select all</g1> and <g2>Select none</g2> help with big torrents. <g3>Selected</g3> shows how many files and how much data you picked.",
@@ -7878,6 +7930,10 @@
    "source": "Does it download torrents?",
    "text": "トレントをダウンロードできますか？"
   },
+  "73f8b10fc7956da9": {
+   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and once under its own name (some checks let a program that says what it is through), and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
+   "text": "「<g1>このサイトはブラウザのみを許可しています</g1>」と表示される場合、サイトのボットチェック (Cloudflare など) が MDM を拒否しました。MDM は、ブラウザと同じ方法で、そのサイトのブラウザの Cookie を使用して再接続を試み、また自身の名前で (一部のチェックでは、自身の名前を申告するプログラムを許可します) 接続を試みましたが、サイトは依然としてブラウザでのチェック応答を求めています。ブラウザでサイトを開くか (そこでチェックを通過すれば十分な場合があります。リンクをもう一度クリックしてください)、または <g2>Alt</g2> キーを押しながらリンクをクリックして、そのダウンロードをブラウザに任せてください。<g3>ブラウザ連携</g3>を参照してください。"
+  },
   "73ff421dec347bdf": {
    "source": "Missing or odd translations",
    "text": "不足または不適切な翻訳"
@@ -8041,6 +8097,10 @@
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>オフ</g1> (既定) — 動画のボタンを使用すると、yt-dlp はブラウザー拡張機能からのみ Cookie を取得します。"
+  },
+  "76c5a3f40b58e25c": {
+   "source": "<g1>Approvers:</g1> <x2/> (<x3/>). Every signing request is approved by hand, release by release.",
+   "text": "<g1>承認者:</g1> <x2/> (<x3/>)。すべての署名リクエストは、リリースごとに手動で承認されます。"
   },
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
@@ -8501,10 +8561,6 @@
   "7d9ceeedcf5266a6": {
    "source": "MDM checks its own downloads too",
    "text": "MDM は自身のダウンロードもチェックする"
-  },
-  "7db9ed501785d447": {
-   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
-   "text": "<g1>品質</g1>はすべての動画に適用されます。<g2>最高品質</g2>、高さを指定する<g3>上限</g3>（各動画で指定した高さ、またはそれ以下で最も近い高さ）、<g4>音声のみ、オリジナル</g4>、<g5>音声のみ MP3</g5>、<g6>音声のみ OPUS</g6>、<g7>音声のみ FLAC</g7>から選べます。ffmpegがない場合は、音声付きの品質のみ選択でき、MP3、Opus、FLACは選択できません。"
   },
   "7dc4d6e14d888b60": {
    "source": "A downloader for the terminal",
@@ -9021,6 +9077,10 @@
   "83f9afcb67f234d6": {
    "source": "A clean, simple app for HTTP, FTP, BitTorrent and magnet links, built on aria2",
    "text": "HTTP、FTP、BitTorrent、マグネットリンクに対応した、aria2 ベースのシンプルで使いやすいアプリ"
+  },
+  "83fd235cecaffa5f": {
+   "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
+   "text": "署名されたすべてのファイルは、GitHub のサーバー上の GitHub Actions によって、<g1>github.com/anefzaoui/misterdownloadmanager</g1> の公開ソース コードからビルドされており、個人のコンピューターでビルドされることはありません。各ファイルには、Mister Download Manager であることと、そのバージョンが示されています。"
   },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
@@ -9614,6 +9674,10 @@
    "source": "3. Using it responsibly",
    "text": "3. 責任ある使用"
   },
+  "8d4b165bd0bf1ad4": {
+   "source": "<g1>GitHub, after a crash.</g1> When MDM crashes or freezes, the report window may download that version's debugging symbols from MDM's GitHub release, so the report can say where in MDM's code it happened, and asks GitHub's search whether the same problem was reported already. The search carries only the report's signature, the kind of problem and the name of the function in MDM's code (such as <x2/>). The report itself goes nowhere unless you send it.",
+   "text": "<g1>クラッシュ後の GitHub。</g1> MDM がクラッシュまたはフリーズした場合、レポート ウィンドウは、そのバージョンのデバッグ シンボルを MDM の GitHub リリースからダウンロードする場合があります。これにより、レポートは MDM のコードのどこで問題が発生したかを特定し、GitHub の検索機能に同じ問題が既に報告されているかどうかを問い合わせます。検索には、レポートの署名、問題の種類、MDM のコード内の関数名 (<x2/> など) のみが含まれます。レポート自体は、送信しない限りどこにも送信されません。"
+  },
   "8d5482092a09013b": {
    "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
    "text": "リンクがなくても動画を再生できるページや、プレーヤーがダウンロード ボタンから動画を隠すページがあります。ツールバー ボタンにはページが読み込んだ項目が一覧表示されるため、そこから保存できます。"
@@ -9621,6 +9685,10 @@
   "8d682522748bdfae": {
    "source": "Adwaita",
    "text": "Adwaita"
+  },
+  "8d7218d1ca60de7c": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
+   "text": "最大 8 接続 (<x1/>、1 ～ 128) でファイルをダウンロードし、進捗状況を表示します。<x2/> で一時停止し、<x3/> で再開します。<x4/> で参照元ページのアドレス (Referer ヘッダー) を設定し、<x5/> でリクエストの User-Agent を設定します (設定するとそれのみが送信されます。設定しない場合、MDM は既定のブラウザーとして動作し、サイトのボットチェックがそれを拒否した場合やブラウザーの接続方法が拒否された場合、MDM は自身の名前で再度接続します)。<x6/> で Cookie ヘッダーを設定します (コマンドラインの Cookie はシェルの履歴に残ります。<x7/> は代わりに標準入力から読み取ります)。<x8/> は完了したファイルをチェックします: 16 進数の MD5、SHA-1、SHA-256、SHA-512、または CRC32 で、オプションで名前を指定できます (<x9/>)。<x10/> は DNS を選択します: <x11/> (既定); サービスとその問い合わせ方法、<x12/>、<x13/>、<x14/>、<x15/>、<x16/>; DNS サーバーのアドレス、<x17/>; または DNS-over-HTTPS アドレス。システムの DNS にフォールバックすることはありません。<x18/> は、名前 (<x19/>、<x20/>) またはそのアドレスのいずれかによって、すべての接続を 1 つのネットワークアダプター経由で送信します。接続されていない場合、何も送信されず、ダウンロードは失敗します。デブリットアカウント (<g21>オプション → アカウント</g21>) のいずれかがサポートするファイルホストからのリンクは、アプリと同様にそのアカウントを経由し、<x22/> は <x23/> と表示します。<x24/> はアドレス自体をダウンロードします (<g25>デブリットサービスアカウント</g25>)。"
   },
   "8d833607c2d3b591": {
    "source": "Sites change often, and a newer yt-dlp usually fixes a video that stopped working. MDM doesn't update yt-dlp on its own yet; <g1>the help</g1> shows how to get the newest one.",
@@ -9853,6 +9921,10 @@
   "91413c8d067f6992": {
    "source": "<g1>All Downloads</g1> — everything, with a node per category below it.",
    "text": "<g1>すべてのダウンロード</g1> — すべてのダウンロードが表示され、その下にカテゴリごとの項目があります。"
+  },
+  "91612a24a2045c1f": {
+   "source": "Everything the app, its browser extension and this website do with your data is in the <g1>privacy policy</g1>.",
+   "text": "アプリ、そのブラウザー拡張機能、およびこのウェブサイトがお客様のデータに対して行うすべてのことは、<g1>プライバシー ポリシー</g1>に記載されています。"
   },
   "916757d942e8dd7f": {
    "source": "When you added it.",
@@ -11178,6 +11250,10 @@
    "source": "<g1>Remote control</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>リモート コントロール</g1><g2>Mister Download Manager</g2>"
   },
+  "a3ab409ea198a57d": {
+   "source": "<g1>Updates:</g1> when it starts, and once a day while it stays open, MDM asks GitHub for its latest version. You can turn this off in <g2>Help → Check for updates</g2> (<g3>Check for updates at every start</g3>).",
+   "text": "<g1>更新:</g1> 起動時および開いている間は 1 日に 1 回、MDM は GitHub に最新バージョンを要求します。これは、<g2>ヘルプ → 更新プログラムの確認</g2> (<g3>起動時に更新を確認する</g3>) でオフにできます。"
+  },
   "a3c9e8e877390e25": {
    "source": "A message to the host is at most 1 MB (<x1/>; the host refuses more, and the browser lets a host answer no more than that either). A page's links past it go in parts, each measured as the widest browser writes it (<x2/> in <x3/>) and carrying the page's referrer and cookies and its place (<x4/>); the host hands each over as it comes, and the app keeps them (<x5/>) until the last is in, then opens Link grabber with the whole list.",
    "text": "ホストへのメッセージは最大 1 MB です (<x1/>)。ホストはそれ以上を拒否し、ブラウザーもホストがそれ以上応答することを許可しません。それを超えるページのリンクは分割され、それぞれが最も広いブラウザーが書き込む形式 (<x2/> を <x3/> で) で測定され、ページの参照元、Cookie、およびその場所 (<x4/>) を運びます。ホストはそれぞれを到着次第渡し、アプリは最後のリンクが届くまでそれらを保持し (<x5/>)、その後、リスト全体でリンク グラバーを開きます。"
@@ -11906,6 +11982,10 @@
    "source": "Transfer: first request to last byte",
    "text": "転送: 最初のリクエストから最後のバイトまで"
   },
+  "adcd8aefd0f19eea": {
+   "source": "the installers, <x1/> and its ARM64 and 32-bit versions, and the uninstaller they put on your computer;",
+   "text": "インストーラー (<x1/> およびその ARM64 および 32 ビット バージョン) と、それらがコンピューターにインストールするアンインストーラー。"
+  },
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM は、ウェブブラウザと同じように、指定されたものをダウンロードします。ただし、より高速で、より詳細な制御が可能です。ソフトウェアやアップデート、ドキュメント、クラウドストレージからの自分のファイル、保存が許可されている動画や音楽、作成者が共有する Linux イメージやその他のトレントなど、ダウンロードする権利があるものすべてを日常的にダウンロードするために作られています。"
@@ -12069,6 +12149,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>すべてのファイルとチェックサム</g1><g2>GitHub Releases のバージョン 0.5.2 と SHA256SUMS.txt</g2>"
+  },
+  "b0912015dbe6e3fb": {
+   "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
+   "text": "<g1>クラッシュ レポート:</g1> クラッシュ後、レポート ウィンドウは MDM の GitHub リリースからそのバージョンのデバッグ シンボルを取得し、同じ問題がすでに報告されているかどうかを GitHub に問い合わせる場合があります。レポート自体は、送信を選択した場合にのみ、ブラウザーで GitHub 上で開きます。"
   },
   "b0c0ef4ee0008226": {
    "source": "— FTP secured with TLS from the start of the session (explicit FTPS, <x1/>, usually port 21). Use it when the server says it supports TLS.",
@@ -12514,9 +12598,9 @@
    "source": "Children",
    "text": "お子様"
   },
-  "b6812b16e31188d5": {
-   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. It solves no challenge: a site that still wants one answered refuses again, and MDM says <g2>this site lets only browsers through</g2>; Alt+click the link to leave the download to the browser.",
-   "text": "MDM 拡張機能を使用すると、ブラウザーでダウンロード リンクをクリックしたときに、MDM がダウンロードを処理します。MDM は、リンク元のページ (リファラー)、そのサイトの Cookie、およびブラウザーのユーザー エージェントとともにアドレスを取得するため、サインインが必要なダウンロードも機能します。また、ブラウザー独自のダウンロードが到達したアドレスも取得します。サイトが MDM リンク自体を拒否した場合 (ブラウザーがすでに使用した 1 回限りのリンク、またはブラウザーのみがリンクを要求できるサイト)、MDM はそこから 1 回続行します。別のサイトの場合は Cookie なしで続行します。サイトのボット チェック (Cloudflare など) またはプログラムの拒否 (FileHippo の <g1>412 Precondition Failed</g1>) によって MDM 独自の接続が拒否された場合、MDM はブラウザーが接続する方法 (同じハンドシェイク、設定、ヘッダーの順序) で、ブラウザーのユーザー エージェントとそのサイト専用の Cookie を使用してもう一度要求し、他のダウンロードと同じ数の接続でダウンロードします。各接続はファイルのその部分を要求します (サイトがその部分を拒否する場合は 1 つの接続)。プロキシ、ネットワーク アダプター、速度制限は通常どおり適用されます。サイトのチェックが拒否した場合、ビデオ ストリーム (HLS、DASH) のピースも同じ方法で処理されます。これはチャレンジを解決しません。まだ回答を求めているサイトは再び拒否し、MDM は <g2>このサイトはブラウザーのみを許可します</g2> と表示します。Alt キーを押しながらリンクをクリックすると、ダウンロードはブラウザーに任されます。"
+  "b680d858b4ec85a9": {
+   "source": "Code signing policy",
+   "text": "コード署名ポリシー"
   },
   "b68461ac7025e237": {
    "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
@@ -12649,6 +12733,10 @@
   "b8544619a7ae8ec9": {
    "source": "YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.",
    "text": "YouTube の動画ダウンロード ボタンと、Chrome、Edge、Brave のボタンの修正。"
+  },
+  "b8608265852b1c20": {
+   "source": "the same programs in the portable and plain zips.",
+   "text": "ポータブル版および通常の zip ファイルに含まれる同じプログラム。"
   },
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
@@ -12998,10 +13086,6 @@
    "source": "A minimal Linux system (often with the AppImage, the tar.gz or a build from source) may have no CA certificates, which MDM needs to check a secure server. Plain <x1/> and <x2/> downloads still work; each <x3/> or <x4/> one stops at once saying the computer has no certificates to check the server with. Install the <x5/> package (<x6/>, <x7/>), then resume the download. The .deb and .rpm bring it.",
    "text": "最小限の Linux システム (AppImage、tar.gz、またはソースからのビルドを使用している場合が多い) には、MDM が安全なサーバーをチェックするために必要な CA 証明書がない場合があります。通常の <x1/> および <x2/> ダウンロードは引き続き機能しますが、各 <x3/> または <x4/> ダウンロードは、サーバーをチェックするための証明書がコンピューターにないというメッセージとともにすぐに停止します。<x5/> パッケージ (<x6/>、<x7/>) をインストールしてから、ダウンロードを再開してください。.deb および .rpm はこれを提供します。"
   },
-  "bd7aa0b403ef8727": {
-   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (else <x5/>) and <x6/> whether that height wasn't offered. Then <x7/> lines, <x8/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x9/>: the subtitle files saved beside it, and the languages the site refused (<x10/>; <x11/>: they came on a second try, beside the video instead of in it).",
-   "text": "<x1/> がない場合、最初に <x2/>: 取得された品質、<x3/> は <x4/> の高さ (それ以外の場合は <x5/>)、<x6/> はその高さが提供されなかったかどうか。次に <x7/> 行、<x8/> はダウンロードのログが示す内容 (サーバーが提供しない品質で、最も近い低い品質で取得されたもの)、次に <x9/>: その横に保存された字幕ファイル、およびサイトが拒否した言語 (<x10/>; <x11/>: 2 回目の試行で、動画内ではなく動画の横に表示されたもの)。"
-  },
   "bd8e50643c3c4ebf": {
    "source": "Going the other way is just as easy: <g1>Tasks → Export → To text file</g1> saves one address per line, and <g2>To IDM export file</g2> writes an <x3/> file.",
    "text": "逆方向の操作も同様に簡単です。<g1>タスク → エクスポート → テキスト ファイルへ</g1> を選択すると、1 行に 1 つのアドレスが保存され、<g2>IDM エクスポート ファイルへ</g2> を選択すると <x3/> ファイルが作成されます。"
@@ -13085,6 +13169,10 @@
   "bf124e15a5fd6568": {
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "最初のメニュー（<g1>タスク</g1>）を開く。Macでは<g2>Ctrl+F2</g2>"
+  },
+  "bf189404e74090ee": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
+   "text": "動画をダウンロードします。<x1/> または <x2/> がない場合、動画ダウンロードウィンドウで最初に表示される最高品質が選択されます。ffmpeg を使用する場合、最高の画質と最高の音質が結合されます (Bilibili のように画質と音質が分離しているサイトの動画には ffmpeg が必要です)。それ以外の場合は、両方を含む最高のファイルが選択されます。<x3/> (または <x4/>) はその高さを取得し、ページが提供するそれ以下の最も近い高さ (それ以外の場合はそれ以上の最も近い高さ) を選択し、その旨を表示します。<x5/> は、ウィンドウの <g6>最も互換性のある形式 (H.264 + AAC)</g6> と同様に、最も互換性のある品質を選択します。これは、すべてのエディター、テレビ、電話で再生できる MP4 形式の、AAC サウンド付きの最高の H.264 画質です。そのような形式がないページではその旨が表示されます (変換は行われません)。<x7/> は <x8/> から品質セレクターを取得します (<x9/> = 最高の単一ファイル。<x10/> = サイトが提供するそのままの音質で、変換なし。<x11/>、<x12/>、<x13/>、<x14/> = そのビットレートの MP3 形式の音質。<x15/> = 最高の可変ビットレート。<x16/> = Opus 形式。<x17/> = FLAC 形式、ロスレスですがサイトの音質より優れているわけではありません。変換には ffmpeg が必要です)。<x18/>: MDM 独自のダウンローダーは、yt-dlp が見つけた各ストリームをこの数の接続 (既定は 8、1 ～ 128) で取得し、分割されたストリーム (HLS、DASH) は一度にこの数のピースで取得します。<x19/> は字幕をその横に保存します: <x20/> (<x21/>) からの言語コード、またはアップローダーが提供したすべての字幕の場合は <x22/>。<x23/> は代わりにサイトの自動キャプションを取得します。<x24/> は字幕を動画に埋め込みます (ffmpeg、MP4 または MKV が必要です)。ffmpeg を使用すると、動画のチャプターもファイルに埋め込まれます。これは動画ダウンロードの <g25>チャプターを埋め込む</g25> と同じです。<x26/> は、ダウンロードの接続と yt-dlp (および ffmpeg) の接続を、<x27/> と同様に 1 つのネットワークアダプター経由で送信します。接続されていない場合、何も開始されません。ページの形式が一致しない場合、エラーは <x28/> と同様に、提供されている形式を一覧表示します。"
   },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
@@ -13374,6 +13462,10 @@
    "source": "The page on a phone",
    "text": "スマートフォン上のページ"
   },
+  "c373806ec4894f52": {
+   "source": "How Mister Download Manager's Windows programs are code-signed, who decides what gets signed, and what the app sends over the network.",
+   "text": "Mister Download Manager の Windows プログラムがどのようにコード署名されているか、誰が署名を決定するか、およびアプリがネットワーク経由で送信する内容について説明します。"
+  },
   "c39475c811938808": {
    "source": "After deleting, the next download in the list is selected, so you can press <g1>Delete</g1> again.",
    "text": "削除後、リストの次のダウンロードが選択されるため、再度<g1>Delete</g1>を押すことができます。"
@@ -13553,10 +13645,6 @@
   "c5fa121420a2cd5d": {
    "source": "Opera",
    "text": "Opera"
-  },
-  "c608b90547be8d53": {
-   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - The size is that of exactly what downloads, the video and its sound. A size with <x3/> before it (<x4/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g5>Audio only, original</g5>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g6>Audio only MP3</g6> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g7>Audio only OPUS</g7>: an <x8/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g9>Audio only FLAC</g9>: a lossless <x10/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
-   "text": "リストが表示されるまでお待ちください。各品質がサイズとともに表示され、最適なものから順に、次に音声のみが表示されます。- 動画の行には、解像度、コーデック、フレームレート、HDR かどうかが表示されます: <x1/>。複数の形式（AV1、VP9、H.264、HDR、SDR）で提供される解像度には、それぞれ個別の行があります。AV1 は最もファイルサイズが小さく、H.264 はほとんどのデバイスで再生でき、HDR のない画面では HDR 動画は色あせて見えます。<x2/> は、同じ解像度の HDR 行の横にのみ表示されます。- サイズは、ダウンロードされる動画と音声の正確なサイズです。<x3/> が前にあるサイズ（<x4/>）は推定値です。サイトがサイズを提示しなかったため、ストリームのビットレートと長さから算出されます。- <g5>音声のみ（オリジナル）</g5>: サイト独自のファイルで、変換されません。サイトが提供する各タイプ（Opus を含む WebM、M4A）ごとに 1 つずつ、最適なものから順に表示されます。最小のファイルで最高の音質です。- <g6>音声のみ MP3</g6>: 最高の可変ビットレート（VBR）と、320、256、192、128 kbps で提供され、MP3 のみをサポートするプレーヤー向けです。- <g7>音声のみ OPUS</g7>: <x8/> ファイルです。サイトの音声がすでに Opus の場合（YouTube は通常そうです）、変換されずにそのファイルに移動されるだけなので、何も失われません。- <g9>音声のみ FLAC</g9>: ロスレスの <x10/> ファイルで、ライブラリや FLAC を必要とするプログラム向けです。品質を追加することはできません。サイトの音声はすでに損失を伴う圧縮がされており、FLAC はそれをそのまま、数倍大きなファイルに保持します。選択するとウィンドウにその旨が表示されます。"
   },
   "c616fb0beefab805": {
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
@@ -14005,6 +14093,10 @@
   "cc738cbd5fc52de1": {
    "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window). The <x7/> and <x8/> (Compose, Unraid's template) run it on a server (<g9>server.md</g9>).",
    "text": "(<x1/>、#157) は、eframe なしで同じ <x2/> を実行します。ループは、コマンド チャネルによって起動されるベア <x5/> でその <x3/> (すべてのフレームで <x4/> が実行するもの) を呼び出し、その <x6/> は呼び出しません。コマンドはリモート コントロールが追加するのと同じように追加されます (ウィンドウなし)。<x7/> と <x8/> (Compose、Unraid のテンプレート) は、サーバー (<g9>server.md</g9>) でそれを実行します。"
+  },
+  "cc8e6434e304ae05": {
+   "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
+   "text": "<g1>コード署名ポリシー</g1><g2>署名されるもの、承認者、プライバシー</g2>"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -15934,10 +16026,6 @@
    "source": "A tooltip's top padding",
    "text": "ツールチップの上部のパディング"
   },
-  "ea282dea9c9a7014": {
-   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
-   "text": "「<g1>このサイトはブラウザーのみを許可しています</g1>」と表示される場合、サイトのボットチェック (Cloudflare など) によって MDM がブロックされています。MDM は、ブラウザーと同じ方法で、そのサイトのブラウザーの Cookie を使用して再接続を試みましたが、サイトは依然としてブラウザーでのチェック応答を求めています。ブラウザーでサイトを開く (そこでチェックを通過するだけで十分な場合があります: もう一度リンクをクリックしてください)、または <g2>Alt</g2> キーを押しながらリンクをクリックして、そのダウンロードをブラウザーに任せます。<g3>ブラウザー連携</g3>を参照してください。"
-  },
   "ea2b2840bdb83f99": {
    "source": "Ctrl+0",
    "text": "Ctrl+0"
@@ -16021,10 +16109,6 @@
   "eb1be33b4d67a5a9": {
    "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Add batch download from clipboard</g3>, the <g4>Speed Limiter</g4>, the <g5>Scheduler</g5>, the main download queue and <g6>Options</g6>.",
    "text": "タスク バーのメニューには、<g1>新しいダウンロードを追加</g1>、<g2>バッチ ダウンロードを追加</g2>、<g3>クリップボードからバッチ ダウンロードを追加</g3>、<g4>速度制限</g4>、<g5>スケジューラ</g5>、メインのダウンロード キュー、<g6>オプション</g6>もあります。"
-  },
-  "eb1e3724d60ad6dd": {
-   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.",
-   "text": "<g1>手動で追加したダウンロードのユーザーエージェント</g1> — MDM が、ユーザーが追加したダウンロードについてサーバーに自身を通知する方法です。<g2>自動</g2>がオン (既定) の場合、MDM は既定のブラウザーとして自身を通知します。つまり、インストールされているブラウザー (Chrome、Edge、Brave、Opera、Vivaldi、Firefox、Safari) が送信するユーザーエージェントを使用します。ボックスにそれが表示され、ポイントするとブラウザー名が表示されます。MDM が既定のブラウザーを認識しない場合、現在の Chrome のユーザーエージェントを送信します。<g3>自動</g3>のチェックを外すと、独自のユーザーエージェントを入力できます。もう一度チェックを入れると元に戻ります。ブラウザーからのダウンロードでは、そのブラウザー自身のユーザーエージェントを使用します。サイトがブラウザーのユーザーエージェントを拒否した場合、MDM は自身のユーザーエージェントでもう一度要求します。"
   },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
@@ -16334,6 +16418,10 @@
    "source": "(the foreground)",
    "text": "(前景)"
   },
+  "ef0391d17d9aa462": {
+   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added: see the <g1>code signing policy</g1>.",
+   "text": "Windows インストーラーはまだコード署名されていないため、初回起動時に Windows SmartScreen が警告を表示する場合があります。コード署名は今後追加されます。<g1>コード署名ポリシー</g1>をご覧ください。"
+  },
   "ef078e7bf8101d03": {
    "source": "1 the file types MDM takes, 2 the sites it leaves to the browser.",
    "text": "1 MDMが取得するファイルの種類、2 ブラウザに任せるサイト。"
@@ -16526,6 +16614,10 @@
    "source": "More than 80 fixes. The main ones:",
    "text": "80 を超える修正。主なものは次のとおりです。"
   },
+  "f12989ae03685a0f": {
+   "source": "Mister Download Manager's code signing policy: free code signing by SignPath.io with a certificate by SignPath Foundation, which Windows files are signed, who may approve a signature, and what the app sends over the network.",
+   "text": "Mister Download Manager のコード署名ポリシー: SignPath Foundation の証明書を使用した SignPath.io による無料のコード署名、署名される Windows ファイル、署名を承認できる者、およびアプリがネットワーク経由で送信する内容。"
+  },
   "f135b1b9671dc439": {
    "source": "Make everything larger / smaller, in every window (<g1>View → Interface size</g1>, 100 % to 200 %)",
    "text": "すべてのウィンドウで表示を拡大 / 縮小します (<g1>表示 → インターフェイスのサイズ</g1>、100 % から 200 %)。"
@@ -16561,10 +16653,6 @@
   "f1769eb2aa5104ff": {
    "source": "<g1>Categories</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>カテゴリ</g1><g2>Mister Download Manager</g2>"
-  },
-  "f181173f9c765d13": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent, <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
-   "text": "最大 8 接続 (<x1/>、1 ～ 128) でファイルをダウンロードし、進行状況を表示します。<x2/> で一時停止し、<x3/> で再開します。<x4/> は参照元ページのアドレス (Referer ヘッダー) を設定し、<x5/> はリクエストの User-Agent を設定し、<x6/> は Cookie ヘッダーを設定します (コマンドラインの Cookie はシェルの履歴に残ります。<x7/> は代わりに標準入力から読み取ります)。<x8/> は完了したファイルをチェックします: 16 進数の MD5、SHA-1、SHA-256、SHA-512、または CRC32 で、オプションで名前を付けます (<x9/>)。<x10/> は DNS を選択します: <x11/> (デフォルト)。サービスと問い合わせ方法、<x12/>、<x13/>、<x14/>、<x15/>、<x16/>。DNS サーバーのアドレス、<x17/>。または DNS-over-HTTPS アドレス。システムの DNS にフォールバックすることはありません。<x18/> は、名前 (<x19/>、<x20/>) またはそのアドレスのいずれかによって、すべての接続を 1 つのネットワークアダプター経由で送信します。接続されていない場合、何も送信されず、ダウンロードは失敗します。<g21>オプション → アカウント</g21> でサポートされているデブリットアカウントのいずれかからのファイルホストからのリンクは、アプリと同様にそのアカウントを介して行われ、<x22/> は <x23/> と言います。<x24/> はアドレス自体をダウンロードします (<g25>デブリットサービスアカウント</g25>)。"
   },
   "f19042c8ea331c71": {
    "source": "Start MDM. The download is in the list under <g1>Unfinished</g1>.",
@@ -16817,6 +16905,10 @@
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
    "text": "以下に示すように、使用する各ブラウザーに拡張機能を追加します。Firefox はアドオン ストアから、その他のブラウザーは Chrome Web Store から追加します。ブラウザーの拡張機能が MDM に到達するまで、MDM の<g1>Mister Download Manager をブラウザーに追加する</g1>ウィンドウが起動するたびに開きます。検出されたブラウザーが一覧表示され、<g2>拡張機能を追加</g2>をクリックすると、そのブラウザーでストアのページが開きます。<g3>手動でインストール</g3>をクリックすると、ストアなしでロードする手順が開きます。<g4>次回から表示しない</g4>をクリックすると、ウィンドウが表示されなくなります。"
+  },
+  "f6014e24fd45ae66": {
+   "source": "What is signed",
+   "text": "署名されるもの"
   },
   "f6036d014e6073ae": {
    "source": "<g1>Media on this page</g1> lists the video streams and the video and sound files a page has loaded, so a video with no link can still be saved. Copy-protected streams are listed as <g2>Protected</g2> and never sent.",

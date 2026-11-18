@@ -66,6 +66,10 @@
    "source": "On the same PC, downloading from a test server on that PC, MDM fetched a 1 GiB file in 1.0 s against IDM 6.42's 5.5 s, and a 256 KiB file in 0.03 s against 3.1 s: the medians of alternating runs. It is a loopback test: it times the programs, not an internet connection. The <g1>benchmark page</g1> has every run, the method and the raw data.",
    "text": "No mesmo PC, ao transferir de um servidor de teste nesse PC, o MDM obteve um ficheiro de 1 GiB em 1,0 s contra 5,5 s do IDM 6.42, e um ficheiro de 256 KiB em 0,03 s contra 3,1 s: as medianas de execuções alternadas. É um teste de loopback: mede o tempo dos programas, não de uma ligação à internet. A <g1>página de referência</g1> tem todas as execuções, o método e os dados brutos."
   },
+  "013ffb458262cc02": {
+   "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
+   "text": "Uma assinatura de código permite que o Windows mostre quem publicou um programa e verifique se este não foi alterado após a sua criação. Quando uma versão do Mister Download Manager («MDM») é assinada, a sua assinatura abrange os ficheiros Windows que provêm deste projeto:"
+  },
   "01579d403b821195": {
    "source": "<x1/> pull requests",
    "text": "<x1/> pedidos de incorporação"
@@ -1186,6 +1190,10 @@
    "source": "<g1>Chrome</g1><g2>Google · <g3>Add to Chrome</g3></g2>",
    "text": "<g1>Chrome</g1><g2>Google · <g3>Adicionar ao Chrome</g3></g2>"
   },
+  "116ed22c951d837d": {
+   "source": "Team roles",
+   "text": "Funções da equipa"
+  },
   "1171655e77148bd2": {
    "source": "Every release, with its notes and files, is on <g1>GitHub Releases</g1>. The source code is at <g2>github.com/anefzaoui/misterdownloadmanager</g2> under the GNU GPL, version 3.",
    "text": "Todas as versões, com as suas notas e ficheiros, estão em <g1>GitHub Releases</g1>. O código fonte está em <g2>github.com/anefzaoui/misterdownloadmanager</g2> sob a GNU GPL, versão 3."
@@ -1926,6 +1934,10 @@
    "source": "Yes: every release has an AppImage, .deb, .rpm and .tar.gz for Linux and a .dmg for Apple Silicon and Intel Macs. Linux is supported, checked on four desktops (GNOME, KDE Plasma, Xfce and Cinnamon); macOS is still experimental. <g1>More</g1>",
    "text": "Sim: cada versão tem um AppImage, .deb, .rpm e .tar.gz para Linux e um .dmg para Apple Silicon e Intel Macs. O Linux é suportado, verificado em quatro ambientes de trabalho (GNOME, KDE Plasma, Xfce e Cinnamon); o macOS ainda é experimental. <g1>Mais</g1>"
   },
+  "1be4beda32ded4a9": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked, and <g6>Most compatible (H.264 + AAC)</g6> beside the resolution of the one that plays everywhere (<g7>Choose the quality</g7>); <g8>All qualities and subtitles...</g8>, which opens the <g9>Download video from a page</g9> window; then <g10>Hide on this video</g10> (<g11>Esc</g11>), <g12>Never on</g12> the site (MDM remembers the site), and <g13>Button settings...</g13>, which opens MDM's Options. The arrow keys move through it, <g14>Enter</g14> picks, <g15>Esc</g15> closes it.",
+   "text": "<g1>O seu menu</g1> (a seta ao lado, ou <g2>↓</g2> quando o botão tem o foco do teclado): o título, duração e site do vídeo; <g3>Transferir melhor</g3> primeiro, depois uma linha numerada por qualidade em <g4>VÍDEO</g4> e <g5>ÁUDIO</g5>, com o seu tipo de ficheiro, taxa de fotogramas ou bitrate e tamanho, o melhor marcado, e <g6>Mais compatível (H.264 + AAC)</g6> ao lado da resolução do que é reproduzido em todo o lado (<g7>Escolha a qualidade</g7>); <g8>Todas as qualidades e legendas...</g8>, que abre a janela <g9>Transferir vídeo de uma página</g9>; depois <g10>Ocultar neste vídeo</g10> (<g11>Esc</g11>), <g12>Nunca em</g12> o site (o MDM lembra-se do site), e <g13>Definições do botão...</g13>, que abre as Opções do MDM. As teclas de seta movem-se por ele, <g14>Enter</g14> seleciona, <g15>Esc</g15> fecha-o."
+  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>O foco do teclado perdia-se</g1> quando um botão ficava desativado ou Escape fechava um menu pendente: Tab recomeçava no início da janela. Agora, avança ou regressa, como no Windows."
@@ -2362,6 +2374,10 @@
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, uTP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
    "text": "<g1>Opções → Proxy / Socks → Adaptador de rede</g1> mantém as ligações do MDM a um adaptador, geralmente o de uma VPN (<g2>Opções</g2>). O motor de torrent associa cada socket a ele: pares (TCP, uTP e através de um proxy SOCKS), rastreadores HTTP e UDP, o DHT e a porta de escuta. No Linux e macOS, ele associa o próprio adaptador. No Windows, ele associa o endereço do adaptador (o seu IPv4 quando tem um), e o Windows envia um pacote apenas através do adaptador que tem o seu endereço de origem. O UPnP e a descoberta de pares locais são desativados então, porque eles comunicam com a rede local em vez de através do adaptador."
   },
+  "2268a0b1cd6985ad": {
+   "source": "<g1>What you ask for:</g1> the servers you download from, torrent peers and trackers, and the services you turn on yourself, such as a proxy, a DNS or a debrid account.",
+   "text": "<g1>O que pede:</g1> os servidores de onde transfere, pares e rastreadores de torrent, e os serviços que ativa, como um proxy, um DNS ou uma conta debrid."
+  },
   "228586c26511a211": {
    "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
    "text": "Abra a página do suplemento em addons.mozilla.org, <g1>Mister Download Manager</g1>, e clique em <g2>Adicionar ao Firefox</g2>. O Zen e o LibreWolf usam a mesma página."
@@ -2369,6 +2385,10 @@
   "2293a114810b4b8f": {
    "source": "More control in version 0.5.0",
    "text": "Mais controlo na versão 0.5.0"
+  },
+  "229512f572cbcf74": {
+   "source": "MDM has no telemetry, no analytics and no ads, and it sends nothing about you to us. It connects to other systems only for these:",
+   "text": "O MDM não tem telemetria, análises nem anúncios, e não nos envia nada sobre si. Liga-se a outros sistemas apenas para o seguinte:"
   },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
@@ -2629,6 +2649,10 @@
   "26389260c1c38a82": {
    "source": "Feeds and rules are kept in <x1/> in MDM's data folder. MDM reads at most 5 MB of a feed.",
    "text": "Os feeds e as regras são guardados em <x1/> na pasta de dados do MDM. O MDM lê no máximo 5 MB de um feed."
+  },
+  "264823238b3f18e6": {
+   "source": "<g1>Helpers you install:</g1> yt-dlp and ffmpeg (and gallery-dl) come from their official releases when you choose to install them, and yt-dlp is kept up to date when you download videos.",
+   "text": "<g1>Auxiliares que instala:</g1> yt-dlp e ffmpeg (e gallery-dl) provêm das suas versões oficiais quando opta por instalá-los, e o yt-dlp é mantido atualizado quando transfere vídeos."
   },
   "2656643a5769e161": {
    "source": "<g1>Real-Debrid, AllDebrid and Premiumize</g1> (<g2>#44</g2>): <g3>Options → Accounts</g3> keeps your debrid service accounts. Real-Debrid signs in by code in the browser, or with your API token; AllDebrid by a PIN in the browser or with an API key, and MDM waits while it prepares a slow link; Premiumize with its API key. A link from a file host your service supports is unlocked through your account, then downloaded with all of MDM's connections, pause and resume, from Add URL, the browser's link menu and batch downloads. When the direct link expires, MDM asks the service for a new one. The direct link is never shown or copied, and the sign-in is kept like your other passwords (the system's keychain, below). Each service is asked well under its request limit. See <g4>Debrid service accounts</g4>. Experimental: built from the services' public API documentation, not yet confirmed with a real paid account.",
@@ -3218,6 +3242,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e27925360e4deec": {
+   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. Some checks (SourceForge's) refuse anything that calls itself a browser without connecting exactly like one, and let a program that says what it is through: when that connection is refused too, MDM asks once more under its own name (<x2/> and its version, or the User-Agent you typed in <g3>Options → Downloads</g3>), with the same cookies and referrer, and remembers the site until MDM closes, so its next downloads, and a paused one when it resumes, go that way at once. It solves no challenge: a site that still wants one answered (some Cloudflare checks ask it of every visitor, for the site's pages too) refuses again, and MDM says <g4>this site lets only browsers through</g4>; Alt+click the link to leave the download to the browser.",
+   "text": "Com a extensão do MDM, clicar numa ligação de transferência no seu navegador entrega a transferência ao MDM. O MDM obtém o endereço juntamente com a página de origem (o referenciador), os seus cookies para o site e o User-Agent do navegador, para que as transferências que exigem que esteja com sessão iniciada continuem a funcionar. Também obtém o endereço que a própria transferência do navegador tinha alcançado: quando um site recusa ao MDM a própria ligação (uma ligação de uso único que o navegador já usou, ou um site que permite que apenas os navegadores peçam as suas ligações), o MDM continua a partir daí uma vez, sem os seus cookies se for outro site. Quando uma verificação de bot de um site (a da Cloudflare, por exemplo) ou a sua recusa de programas (o <g1>412 Precondition Failed</g1> do FileHippo) rejeita a própria ligação do MDM, o MDM pede mais uma vez ligando-se da forma como o seu navegador o faz (o mesmo handshake, definições e ordem de cabeçalhos), com o User-Agent do seu navegador e os seus cookies apenas para esse site, e transfere com tantas ligações como qualquer transferência, cada uma pedindo a sua parte do ficheiro (com uma ligação quando o site recusa partes lá); o seu proxy, adaptador de rede e limites de velocidade aplicam-se como de costume. As partes de um fluxo de vídeo (HLS, DASH) seguem o mesmo caminho quando a verificação do site as recusa. Algumas verificações (as do SourceForge) recusam qualquer coisa que se intitule um navegador sem se ligar exatamente como um, e permitem a passagem de um programa que diz o que é: quando essa ligação também é recusada, o MDM pede mais uma vez com o seu próprio nome (<x2/> e a sua versão, ou o User-Agent que digitou em <g3>Opções → Transferências</g3>), com os mesmos cookies e referenciador, e lembra-se do site até que o MDM feche, para que as suas próximas transferências, e uma em pausa quando é retomada, sigam esse caminho de imediato. Não resolve nenhum desafio: um site que ainda quer um respondido (algumas verificações da Cloudflare pedem-no a cada visitante, também para as páginas do site) recusa novamente, e o MDM diz <g4>este site só permite a passagem de navegadores</g4>; Alt+clicar na ligação para deixar a transferência para o navegador."
+  },
   "2e3cb33a528c6b52": {
    "source": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,",
    "text": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,"
@@ -3310,6 +3338,10 @@
    "source": "Many sites publish their new torrents as an RSS or Atom feed. MDM can watch feeds, list what they hold, and add the new torrents you want by itself. Choose <g1>Tasks → RSS feeds...</g1>, or click the arrow next to <g2>Add Torrent</g2>.",
    "text": "Muitos sites publicam os seus novos torrents como um feed RSS ou Atom. O MDM pode monitorizar feeds, listar o seu conteúdo e adicionar os novos torrents que desejar automaticamente. Escolha <g1>Tarefas → Feeds RSS...</g1>, ou clique na seta ao lado de <g2>Adicionar Torrent</g2>."
   },
+  "2f5a8130c47e294d": {
+   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - <g3>Most compatible (H.264 + AAC)</g3>, second in the list: the best H.264 video the site has (YouTube's usually go up to 1080p) with AAC sound (in stereo when the site has it beside surround), in an MP4 that Premiere Pro and other editors, older TVs and most phones open as it is. YouTube's best qualities are AV1 or VP9 with Opus sound, which some of them can't read. The line says its resolution: <x4/>. MDM picks those streams, it doesn't convert anything: when the site has no H.264 video with AAC sound the line isn't there, and when the best line already is that, it isn't listed twice. - The size is that of exactly what downloads, the video and its sound. A size with <x5/> before it (<x6/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g7>Audio only, original</g7>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g8>Audio only MP3</g8> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g9>Audio only OPUS</g9>: an <x10/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g11>Audio only FLAC</g11>: a lossless <x12/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Aguarde pela lista. Ela mostra cada qualidade com o seu tamanho, a melhor primeiro, depois só o som: - Uma linha de vídeo indica a sua resolução, o seu codec, a sua taxa de fotogramas e se é HDR: <x1/>. Uma resolução que vem em várias (AV1, VP9 e H.264, HDR e SDR) tem uma linha para cada: AV1 cria o ficheiro mais pequeno, H.264 é reproduzido na maioria dos dispositivos, e um vídeo HDR parece desbotado num ecrã sem HDR. <x2/> é dito apenas ao lado de uma linha HDR da mesma resolução. - <g3>Mais compatível (H.264 + AAC)</g3>, segundo na lista: o melhor vídeo H.264 que o site tem (os do YouTube geralmente vão até 1080p) com som AAC (em estéreo quando o site o tem ao lado de som surround), num MP4 que o Premiere Pro e outros editores, TVs mais antigas e a maioria dos telemóveis abrem tal como está. As melhores qualidades do YouTube são AV1 ou VP9 com som Opus, que alguns deles não conseguem ler. A linha indica a sua resolução: <x4/>. O MDM escolhe esses fluxos, não converte nada: quando o site não tem vídeo H.264 com som AAC, a linha não aparece, e quando a melhor linha já é essa, não é listada duas vezes. - O tamanho é exatamente o do que é transferido, o vídeo e o seu som. Um tamanho com <x5/> antes (<x6/>) é apenas uma estimativa: o site não indicou o tamanho, por isso vem da taxa de bits e da duração do fluxo. - <g7>Só áudio, original</g7>: o ficheiro do próprio site, não convertido, uma vez para cada tipo que o site o tem (WebM com Opus dentro, M4A), o melhor primeiro. O melhor som que existe, no ficheiro mais pequeno. - <g8>Só áudio MP3</g8> na sua melhor taxa de bits variável (VBR) e a 320, 256, 192 e 128 kbps, para leitores que só aceitam MP3. - <g9>Só áudio OPUS</g9>: um ficheiro <x10/>. Quando o som do site já é Opus (o do YouTube geralmente é), é apenas movido para esse ficheiro, não convertido, para que nada se perca. - <g11>Só áudio FLAC</g11>: um ficheiro <x12/> sem perdas, para uma biblioteca ou um programa que queira FLAC. Não pode adicionar qualidade: o som do site já está comprimido com perdas, e o FLAC mantém-no exatamente como veio, num ficheiro várias vezes maior. A janela indica-o quando o escolhe."
+  },
   "2f5eb68f16f89115": {
    "source": "<g1><g2>Queues and the Scheduler</g2></g1> — run downloads a few at a time, start and stop them by the clock, and turn the computer off when they are done.",
    "text": "<g1><g2>Filas e o Agendador</g2></g1> — executar transferências algumas de cada vez, iniciá-las e pará-las por hora, e desligar o computador quando terminarem."
@@ -3381,6 +3413,10 @@
   "300fe42c6f7d0e75": {
    "source": "Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.",
    "text": "Ajuda: o que fazer quando um antivírus ou o VirusTotal sinaliza o MDM, e como verificar se a sua cópia é a verdadeira."
+  },
+  "3017321534b213e2": {
+   "source": "Whatever the signature, you can still check every download against the release's signed checksums: see <g1>Check your download</g1>.",
+   "text": "Independentemente da assinatura, pode sempre verificar cada transferência em relação aos somatórios de verificação assinados da versão: consulte <g1>Verificar a sua transferência</g1>."
   },
   "301fb01942b6c3a7": {
    "source": "<g1>macOS Intel</g1><g2>.dmg · Macs with an Intel processor · experimental</g2>",
@@ -3738,6 +3774,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "O Limitador de Velocidade impede que o MDM utilize toda a sua ligação."
   },
+  "36e51409041d8610": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the most compatible, H.264 with AAC; <x6/> = the original sound; <x7/>, <x8/>, <x9/> as for <x10/>). <x11/> as for <x12/>.",
+   "text": "Transferir os vídeos de uma lista de reprodução ou canal um após o outro, para uma pasta com o nome da lista dentro de <x1/>. <x2/> é uma qualidade para todos, como para <x3/> (por predefinição, a melhor de cada vídeo; <x4/> = até 720p; <x5/> = a mais compatível, H.264 com AAC; <x6/> = o som original; <x7/>, <x8/>, <x9/> como para <x10/>). <x11/> como para <x12/>."
+  },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
    "text": "Firefox, Chrome, Edge, Brave, Opera e Vivaldi através da extensão, da <g1>loja de suplementos do Firefox</g1> e da <g2>Chrome Web Store</g2>. Sem a extensão, copie um link e o MDM abre a janela de download. <g3>Mais</g3>"
@@ -3897,6 +3937,10 @@
   "391a6b0e422e6b00": {
    "source": "Through your VPN, or not at all.",
    "text": "Através da sua VPN, ou de todo não."
+  },
+  "391fbe820c800f21": {
+   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (<x5/> for <x6/>, else <x7/>) and <x8/> whether that height wasn't offered. Then <x9/> lines, <x10/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x11/>: the subtitle files saved beside it, and the languages the site refused (<x12/>; <x13/>: they came on a second try, beside the video instead of in it).",
+   "text": "Sem <x1/>, <x2/> primeiro: a qualidade usada, <x3/> a altura de <x4/> (<x5/> para <x6/>, caso contrário <x7/>) e <x8/> se essa altura não foi oferecida. Depois <x9/> linhas, <x10/> para o que o registo da transferência diz (uma qualidade que os servidores não dão, usada na mais próxima abaixo), depois <x11/>: os ficheiros de legendas guardados ao lado, e os idiomas que o site recusou (<x12/>; <x13/>: vieram numa segunda tentativa, ao lado do vídeo em vez de nele)."
   },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
@@ -4386,10 +4430,6 @@
    "source": "Options: Remote, with the address to open, the certificate's fingerprint and the paired devices",
    "text": "Opções: Remoto, com o endereço a abrir, a impressão digital do certificado e os dispositivos emparelhados"
   },
-  "3fa8036373b9b833": {
-   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added.",
-   "text": "O instalador do Windows ainda não tem assinatura digital, por isso o Windows SmartScreen pode apresentar um aviso antes da primeira execução. A assinatura digital será adicionada."
-  },
   "3fab3621d5ce1a78": {
    "source": "Slow down one download only",
    "text": "Diminuir a velocidade de apenas uma transferência"
@@ -4741,6 +4781,10 @@
   "44f50999ce094e3a": {
    "source": "We may update these terms; the date at the top says when. Changes apply from then on and are recorded in the project's public history on GitHub.",
    "text": "Podemos atualizar estes termos; a data no topo indica quando. As alterações aplicam-se a partir dessa data e são registadas no histórico público do projeto no GitHub."
+  },
+  "4502e19501791bba": {
+   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent, the one your sign-in and the site's checks know; the one typed here doesn't replace it. If a site turns a browser's User-Agent away, MDM asks once more with the one typed here (with <g4>Automatic</g4>, with Internet Explorer's). If a site's bot check refuses it, and the way a browser connects too, MDM asks once more under its own name, <x5/> and its version (or the one typed here), and remembers that site until MDM closes. A User-Agent typed here for the downloads you add yourself is the only one they send.",
+   "text": "<g1>User-Agent para transferências adicionadas manualmente</g1> — como o MDM se identifica aos servidores para as transferências que adiciona. Com a opção <g2>Automático</g2> selecionada (a predefinição), o MDM identifica-se como o seu navegador predefinido: o User-Agent que esse navegador envia, na versão que tem instalada (Chrome, Edge, Brave, Opera, Vivaldi, Firefox ou Safari). A caixa mostra-o, e apontar para ela indica o nome do navegador. Quando o MDM não reconhece o seu navegador predefinido, envia o User-Agent de uma versão atual do Chrome. Desselecione <g3>Automático</g3> para escrever o seu próprio; selecione-o novamente para reverter. As transferências do navegador usam o User-Agent do próprio navegador, aquele que o seu início de sessão e as verificações do site conhecem; o que é digitado aqui não o substitui. Se um site rejeitar o User-Agent de um navegador, o MDM tenta novamente com o que foi digitado aqui (com <g4>Automático</g4>, com o do Internet Explorer). Se a verificação de bot de um site o recusar, e também a forma como um navegador se conecta, o MDM tenta novamente com o seu próprio nome, <x5/> e a sua versão (ou o que foi digitado aqui), e lembra-se desse site até o MDM ser fechado. Um User-Agent digitado aqui para as transferências que adiciona é o único que elas enviam."
   },
   "4508e7f2d360848f": {
    "source": "The files go to a queue, not all at once. MDM asks which one, and that question can be turned off in <g1>Options → Downloads</g1>. From there the queue runs as many files at a time as you set, and the Scheduler can start it at night. See <g2>Queues and the Scheduler</g2>.",
@@ -5165,6 +5209,10 @@
   "4c48ce4cf971575b": {
    "source": "Download manager for Windows and Linux, with macOS builds",
    "text": "Gestor de transferências para Windows e Linux, com compilações para macOS"
+  },
+  "4c51533571f9a9b3": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Most compatible (H.264 + AAC)</g3> (each video's best H.264 picture with AAC sound; a video that has none isn't downloaded), <g4>Up to</g4> a height (each video at that height, or the nearest below it), <g5>Audio only, original</g5>, <g6>Audio only MP3</g6>, <g7>Audio only OPUS</g7> or <g8>Audio only FLAC</g8>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>Qualidade</g1> aplica-se a todos os vídeos: <g2>Melhor qualidade</g2>, <g3>Mais compatível (H.264 + AAC)</g3> (a melhor imagem H.264 de cada vídeo com som AAC; um vídeo que não tenha nenhum não é transferido), <g4>Até</g4> uma altura (cada vídeo nessa altura, ou a mais próxima abaixo dela), <g5>Só áudio, original</g5>, <g6>Só áudio MP3</g6>, <g7>Só áudio OPUS</g7> ou <g8>Só áudio FLAC</g8>. Sem o ffmpeg, apenas as qualidades que vêm com o seu som são oferecidas, e não MP3, Opus ou FLAC."
   },
   "4c5fe1c0a5f7ac2d": {
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
@@ -5826,10 +5874,6 @@
    "source": "Made something others would like? Open a <g1>pull request on GitHub</g1> that adds it to <g2><x3/></g2>, with:",
    "text": "Criou algo que outros gostariam? Abra um <g1>pedido de pull no GitHub</g1> que o adicione a <g2><x3/></g2>, com:"
   },
-  "560a94f3340fd0a3": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked; <g6>All qualities and subtitles...</g6>, which opens the <g7>Download video from a page</g7> window; then <g8>Hide on this video</g8> (<g9>Esc</g9>), <g10>Never on</g10> the site (MDM remembers the site), and <g11>Button settings...</g11>, which opens MDM's Options. The arrow keys move through it, <g12>Enter</g12> picks, <g13>Esc</g13> closes it.",
-   "text": "<g1>O seu menu</g1> (a seta ao lado, ou <g2>↓</g2> quando o botão tem o foco do teclado): o título do vídeo, duração e site; <g3>Transferir melhor</g3> primeiro, depois uma linha numerada por qualidade em <g4>VÍDEO</g4> e <g5>ÁUDIO</g5>, com o seu tipo de ficheiro, taxa de fotogramas ou bitrate e tamanho, o melhor marcado; <g6>Todas as qualidades e legendas...</g6>, que abre a janela <g7>Transferir vídeo de uma página</g7>; depois <g8>Ocultar neste vídeo</g8> (<g9>Esc</g9>), <g10>Nunca neste</g10> site (o MDM lembra-se do site), e <g11>Definições do botão...</g11>, que abre as Opções do MDM. As teclas de seta movem-se por ele, <g12>Enter</g12> seleciona, <g13>Esc</g13> fecha-o."
-  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "Imagem anterior"
@@ -5993,6 +6037,10 @@
   "5825a9c27ba24869": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers, and screen readers.",
    "text": "<g1><g2>Atalhos de teclado</g2></g1> — todas as teclas a que a janela principal responde e leitores de ecrã."
+  },
+  "5841102b5b7e5308": {
+   "source": "<g1>Committers and reviewers:</g1> <x2/> (<x3/>). Contributions from other people are reviewed by him before they are merged.",
+   "text": "<g1>Contribuidores e revisores:</g1> <x2/> (<x3/>). As contribuições de outras pessoas são revistas por ele antes de serem incorporadas."
   },
   "584697d876791ed0": {
    "source": "<g1>Download video</g1> finds the video on pages whose player loads a <x2/> or <x3/> address that answers something else first, as SVT Play does (<g4>#377</g4>).",
@@ -6878,6 +6926,10 @@
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>O projeto no GitHub</g1><g2>Código, problemas e todas as versões</g2>"
   },
+  "64ac94eff5ae08d3": {
+   "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
+   "text": "os programas: <x1/>, <x2/> (o auxiliar do navegador), <x3/> e <x4/>;"
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "O navegador e o MDM não estão ligados"
@@ -7362,10 +7414,6 @@
    "source": "Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (x64 and ARM64 Windows; on macOS and Linux MDM uses the system's, and on 32-bit Windows one you choose in Helpers).",
    "text": "Instalar ou atualizar os auxiliares de que os vídeos precisam: yt-dlp (verificado com a sua chave de assinatura) e ffmpeg (Windows x64 e ARM64; no macOS e Linux, o MDM usa o do sistema, e no Windows de 32 bits, um que escolher em Auxiliares)."
   },
-  "6cbd30742f3005de": {
-   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>). <x10/> as for <x11/>.",
-   "text": "Transfere os vídeos de uma lista de reprodução ou canal um após o outro, para uma pasta com o nome da lista dentro de <x1/>. <x2/> é uma qualidade para todos, como para <x3/> (por predefinição, a melhor de cada vídeo; <x4/> = até 720p; <x5/> = o som original; <x6/>, <x7/>, <x8/> como para <x9/>). <x10/> como para <x11/>."
-  },
   "6cf66bb7f58412f7": {
    "source": "<g1>Downloads from a browser behind a VPN or proxy extension go through it too</g1> (<g2>#42</g2>): the browser extension passes the proxy the browser uses for a download (an extension's, or its settings' manual proxy or auto-config script) with it. MDM downloads through the same proxy while <g3>Options → Proxy / Socks → Use proxy/socks from a browser's request</g3> is on, which is the default. A proxy that needs the VPN extension's own login can't be shared: the download says so rather than going without it. It is an opt-in, off as installed: <g4>Send downloads through this browser's proxy or VPN extension</g4> in the extension's popup. In Firefox the switch asks for the browser's <g5>proxy</g5> permission (to read the browser's proxy, never to change it). Chrome, Edge, Brave, Opera and Vivaldi can't make that permission optional, so their extension has it from the install; Chrome counts it under the access to every site the extension already has, so the update asks for nothing new. There the extension reads the browser's proxy settings: the server for the download's scheme (honouring their bypass list), or their auto-config script. Addresses on this computer (localhost, 127.0.0.1) go straight to it, as the browser sends them.",
    "text": "<g1>As transferências de um navegador atrás de uma extensão VPN ou proxy também passam por ela</g1> (<g2>#42</g2>): a extensão do navegador passa o proxy que o navegador usa para uma transferência (de uma extensão, ou o proxy manual ou script de configuração automática das suas definições) com ela. O MDM transfere através do mesmo proxy enquanto <g3>Opções → Proxy / Socks → Usar proxy/socks do pedido de um navegador</g3> estiver ativado, que é o padrão. Um proxy que requer o próprio início de sessão da extensão VPN não pode ser partilhado: a transferência indica isso em vez de prosseguir sem ele. É uma opção, desativada por predefinição: <g4>Enviar transferências através do proxy ou extensão VPN deste browser</g4> no pop-up da extensão. No Firefox, o interruptor pede a permissão de <g5>proxy</g5> do navegador (para ler o proxy do navegador, nunca para o alterar). Chrome, Edge, Brave, Opera e Vivaldi não podem tornar essa permissão opcional, por isso a sua extensão tem-na desde a instalação; o Chrome conta-a sob o acesso a todos os sites que a extensão já tem, por isso a atualização não pede nada de novo. Aí, a extensão lê as definições de proxy do navegador: o servidor para o esquema da transferência (respeitando a sua lista de exclusão), ou o seu script de configuração automática. Os endereços neste computador (localhost, 127.0.0.1) vão diretamente para ele, como o navegador os envia."
@@ -7545,6 +7593,10 @@
   "6f1cdc5d8ae09e38": {
    "source": "The files go where <g1>What an archive holds goes</g1> says, as with any other extraction. On the way they are in a folder named <x2/> beside the archive.",
    "text": "Os ficheiros vão para onde <g1>O que um arquivo contém vai</g1> indica, como em qualquer outra extração. No caminho, ficam numa pasta chamada <x2/> ao lado do arquivo."
+  },
+  "6f1ec823eb269593": {
+   "source": "Code signing policy — Mister Download Manager",
+   "text": "Política de assinatura de código — Mister Download Manager"
   },
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
@@ -7882,6 +7934,10 @@
    "source": "Does it download torrents?",
    "text": "Transfere torrents?"
   },
+  "73f8b10fc7956da9": {
+   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and once under its own name (some checks let a program that says what it is through), and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
+   "text": "Se aparecer <g1>este site só permite navegadores</g1>, a verificação de bots do site (por exemplo, do Cloudflare) rejeitou o MDM. O MDM já tentou ligar-se novamente como o seu navegador, com os cookies do seu navegador para esse site, e uma vez com o seu próprio nome (algumas verificações permitem a passagem de um programa que se identifique), mas o site continua a exigir que a verificação seja respondida num navegador. Abra o site no seu navegador (passar a verificação aí pode ser suficiente: clique novamente na ligação) ou mantenha <g2>Alt</g2> premido enquanto clica na ligação para deixar essa transferência para o navegador. Consulte <g3>Integração com o navegador</g3>."
+  },
   "73ff421dec347bdf": {
    "source": "Missing or odd translations",
    "text": "Traduções em falta ou pouco naturais"
@@ -8045,6 +8101,10 @@
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>Desativado</g1> (a predefinição) — o yt-dlp obtém cookies apenas da extensão do navegador, quando usa o botão sobre um vídeo."
+  },
+  "76c5a3f40b58e25c": {
+   "source": "<g1>Approvers:</g1> <x2/> (<x3/>). Every signing request is approved by hand, release by release.",
+   "text": "<g1>Aprovadores:</g1> <x2/> (<x3/>). Cada pedido de assinatura é aprovado manualmente, versão a versão."
   },
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
@@ -8505,10 +8565,6 @@
   "7d9ceeedcf5266a6": {
    "source": "MDM checks its own downloads too",
    "text": "O MDM também verifica as suas próprias transferências"
-  },
-  "7db9ed501785d447": {
-   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
-   "text": "<g1>Qualidade</g1> aplica-se a todos os vídeos: <g2>Melhor qualidade</g2>, <g3>Até</g3> uma altura (cada vídeo nessa altura, ou a mais próxima abaixo dela), <g4>Só áudio, original</g4>, <g5>Só áudio MP3</g5>, <g6>Só áudio OPUS</g6> ou <g7>Só áudio FLAC</g7>. Sem o ffmpeg, apenas são oferecidas as qualidades que vêm com o seu som, e não MP3, Opus ou FLAC."
   },
   "7dc4d6e14d888b60": {
    "source": "A downloader for the terminal",
@@ -9025,6 +9081,10 @@
   "83f9afcb67f234d6": {
    "source": "A clean, simple app for HTTP, FTP, BitTorrent and magnet links, built on aria2",
    "text": "Uma aplicação limpa e simples para links HTTP, FTP, BitTorrent e magnet, baseada em aria2"
+  },
+  "83fd235cecaffa5f": {
+   "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
+   "text": "Cada ficheiro assinado é criado a partir do código-fonte público em <g1>github.com/anefzaoui/misterdownloadmanager</g1> pelas GitHub Actions, nos servidores do GitHub, nunca num computador pessoal. Cada um indica que é o Mister Download Manager e qual a sua versão."
   },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
@@ -9618,6 +9678,10 @@
    "source": "3. Using it responsibly",
    "text": "3. Utilização responsável"
   },
+  "8d4b165bd0bf1ad4": {
+   "source": "<g1>GitHub, after a crash.</g1> When MDM crashes or freezes, the report window may download that version's debugging symbols from MDM's GitHub release, so the report can say where in MDM's code it happened, and asks GitHub's search whether the same problem was reported already. The search carries only the report's signature, the kind of problem and the name of the function in MDM's code (such as <x2/>). The report itself goes nowhere unless you send it.",
+   "text": "<g1>GitHub, após uma falha.</g1> Quando o MDM falha ou bloqueia, a janela de relatório pode transferir os símbolos de depuração dessa versão da versão do MDM no GitHub, para que o relatório possa indicar onde no código do MDM ocorreu e pergunta à pesquisa do GitHub se o mesmo problema já foi reportado. A pesquisa contém apenas a assinatura do relatório, o tipo de problema e o nome da função no código do MDM (como <x2/>). O relatório em si não é enviado para lado nenhum, a menos que o envie."
+  },
   "8d5482092a09013b": {
    "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
    "text": "Algumas páginas reproduzem um vídeo sem uma ligação para o mesmo, e alguns leitores também o ocultam do botão de transferência. O botão da barra de ferramentas lista o que a página carregou, para que possa guardá-lo:"
@@ -9625,6 +9689,10 @@
   "8d682522748bdfae": {
    "source": "Adwaita",
    "text": "Adwaita"
+  },
+  "8d7218d1ca60de7c": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
+   "text": "Transferir um ficheiro com até 8 ligações (<x1/>, 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> define o endereço da página de referência (cabeçalho Referer), <x5/> define o User-Agent do pedido (o único enviado; sem ele, o MDM comunica como o seu navegador predefinido e, quando a verificação de bot de um site recusa isso e a forma como um navegador se liga, mais uma vez com o seu próprio nome), <x6/> define o cabeçalho Cookie (um cookie na linha de comandos acaba no histórico da shell; <x7/> lê-o da entrada padrão). <x8/> verifica o ficheiro concluído: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x9/>). <x10/> escolhe o DNS: <x11/> (o predefinido); um serviço e como o pedir, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; endereços de servidores DNS, <x17/>; ou um endereço DNS-over-HTTPS. Nunca volta ao DNS do sistema. <x18/> envia cada ligação através de um adaptador de rede, pelo seu nome (<x19/>, <x20/>) ou um dos seus endereços; quando não está ligado, nada é enviado e a transferência falha. Uma ligação de um anfitrião de ficheiros que uma das suas contas debrid (<g21>Opções → Contas</g21>) suporta passa por essa conta, como na aplicação, e <x22/> diz <x23/>; <x24/> transfere o próprio endereço (<g25>Contas de serviços Debrid</g25>)."
   },
   "8d833607c2d3b591": {
    "source": "Sites change often, and a newer yt-dlp usually fixes a video that stopped working. MDM doesn't update yt-dlp on its own yet; <g1>the help</g1> shows how to get the newest one.",
@@ -9857,6 +9925,10 @@
   "91413c8d067f6992": {
    "source": "<g1>All Downloads</g1> — everything, with a node per category below it.",
    "text": "<g1>Todos os Downloads</g1> — todas as transferências, com um nó por categoria abaixo deste."
+  },
+  "91612a24a2045c1f": {
+   "source": "Everything the app, its browser extension and this website do with your data is in the <g1>privacy policy</g1>.",
+   "text": "Tudo o que a aplicação, a sua extensão de navegador e este website fazem com os seus dados está na <g1>política de privacidade</g1>."
   },
   "916757d942e8dd7f": {
    "source": "When you added it.",
@@ -11182,6 +11254,10 @@
    "source": "<g1>Remote control</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Controlo remoto</g1><g2>Mister Download Manager</g2>"
   },
+  "a3ab409ea198a57d": {
+   "source": "<g1>Updates:</g1> when it starts, and once a day while it stays open, MDM asks GitHub for its latest version. You can turn this off in <g2>Help → Check for updates</g2> (<g3>Check for updates at every start</g3>).",
+   "text": "<g1>Atualizações:</g1> ao iniciar, e uma vez por dia enquanto permanece aberto, o MDM pergunta ao GitHub qual a sua versão mais recente. Pode desativar isto em <g2>Ajuda → Procurar atualizações</g2> (<g3>Procurar atualizações em cada arranque</g3>)."
+  },
   "a3c9e8e877390e25": {
    "source": "A message to the host is at most 1 MB (<x1/>; the host refuses more, and the browser lets a host answer no more than that either). A page's links past it go in parts, each measured as the widest browser writes it (<x2/> in <x3/>) and carrying the page's referrer and cookies and its place (<x4/>); the host hands each over as it comes, and the app keeps them (<x5/>) until the last is in, then opens Link grabber with the whole list.",
    "text": "Uma mensagem para o anfitrião tem no máximo 1 MB (<x1/>; o anfitrião recusa mais, e o navegador também não permite que um anfitrião responda mais do que isso). Os links de uma página que a ultrapassam vão em partes, cada uma medida como o navegador mais largo a escreve (<x2/> em <x3/>) e transportando o referenciador e os cookies da página e o seu lugar (<x4/>); o anfitrião entrega cada um à medida que chega, e a aplicação os mantém (<x5/>) até que o último esteja dentro, então abre o Link grabber com a lista completa."
@@ -11910,6 +11986,10 @@
    "source": "Transfer: first request to last byte",
    "text": "Transferência: do primeiro pedido ao último byte"
   },
+  "adcd8aefd0f19eea": {
+   "source": "the installers, <x1/> and its ARM64 and 32-bit versions, and the uninstaller they put on your computer;",
+   "text": "os instaladores, <x1/> e as suas versões ARM64 e de 32 bits, e o desinstalador que estes colocam no seu computador;"
+  },
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "O MDM transfere aquilo que indicar, tal como um navegador, mas de forma mais rápida e com mais controlo. Foi concebido para transferências do dia a dia: software e atualizações, documentos, os seus próprios ficheiros armazenados na nuvem, vídeos e música que tem autorização para guardar, imagens Linux e outros torrents partilhados pelos respetivos criadores, e tudo o mais que tenha o direito de transferir."
@@ -12073,6 +12153,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>Todos os ficheiros e somas de verificação</g1><g2>Versão 0.5.2 em GitHub Releases, com SHA256SUMS.txt</g2>"
+  },
+  "b0912015dbe6e3fb": {
+   "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
+   "text": "<g1>Relatórios de falhas:</g1> após uma falha, a janela de relatório pode obter os símbolos de depuração dessa versão da versão do MDM no GitHub e perguntar ao GitHub se o mesmo problema já foi reportado. O relatório em si abre no seu navegador, no GitHub, apenas se optar por enviá-lo."
   },
   "b0c0ef4ee0008226": {
    "source": "— FTP secured with TLS from the start of the session (explicit FTPS, <x1/>, usually port 21). Use it when the server says it supports TLS.",
@@ -12518,9 +12602,9 @@
    "source": "Children",
    "text": "Crianças"
   },
-  "b6812b16e31188d5": {
-   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. It solves no challenge: a site that still wants one answered refuses again, and MDM says <g2>this site lets only browsers through</g2>; Alt+click the link to leave the download to the browser.",
-   "text": "Com a extensão do MDM, clicar num link de transferência no seu navegador entrega a transferência ao MDM. O MDM obtém o endereço juntamente com a página de origem (o referenciador), os seus cookies para o site e o User-Agent do navegador, para que as transferências que exigem que esteja com sessão iniciada continuem a funcionar. Também obtém o endereço que a própria transferência do navegador tinha alcançado: quando um site recusa ao MDM o próprio link (um link de uso único que o navegador já usou, ou um site que permite apenas que os navegadores peçam os seus links), o MDM continua a partir daí uma vez, sem os seus cookies se for outro site. Quando uma verificação de bot de um site (a do Cloudflare, por exemplo) ou a sua recusa de programas (o <g1>412 Precondition Failed</g1> do FileHippo) afasta a própria ligação do MDM, o MDM pede mais uma vez ligando-se da forma como o seu navegador o faz (o mesmo handshake, definições e ordem de cabeçalhos), com o User-Agent do seu navegador e os seus cookies apenas para esse site, e transfere com tantas ligações como qualquer transferência, cada uma pedindo a sua parte do ficheiro (numa ligação quando o site recusa partes lá); o seu proxy, adaptador de rede e limites de velocidade aplicam-se como de costume. As partes de um fluxo de vídeo (HLS, DASH) seguem o mesmo caminho quando a verificação do site as recusa. Não resolve nenhum desafio: um site que ainda quer uma resposta recusa novamente, e o MDM diz <g2>este site só permite navegadores</g2>; Alt+clicar no link para deixar a transferência para o navegador."
+  "b680d858b4ec85a9": {
+   "source": "Code signing policy",
+   "text": "Política de assinatura de código"
   },
   "b68461ac7025e237": {
    "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
@@ -12653,6 +12737,10 @@
   "b8544619a7ae8ec9": {
    "source": "YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.",
    "text": "Correções do YouTube para o botão Transferir vídeo e o botão no Chrome, Edge e Brave."
+  },
+  "b8608265852b1c20": {
+   "source": "the same programs in the portable and plain zips.",
+   "text": "os mesmos programas nos ficheiros zip portáteis e simples."
   },
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
@@ -13001,10 +13089,6 @@
   "bd7a6a6a0b2e95e2": {
    "source": "A minimal Linux system (often with the AppImage, the tar.gz or a build from source) may have no CA certificates, which MDM needs to check a secure server. Plain <x1/> and <x2/> downloads still work; each <x3/> or <x4/> one stops at once saying the computer has no certificates to check the server with. Install the <x5/> package (<x6/>, <x7/>), then resume the download. The .deb and .rpm bring it.",
    "text": "Um sistema Linux mínimo (muitas vezes com o AppImage, o tar.gz ou uma compilação a partir do código-fonte) pode não ter certificados CA, de que o MDM precisa para verificar um servidor seguro. As transferências <x1/> e <x2/> normais ainda funcionam; cada uma de <x3/> ou <x4/> para imediatamente, indicando que o computador não tem certificados para verificar o servidor. Instale o pacote <x5/> (<x6/>, <x7/>), e depois retome a transferência. Os pacotes .deb e .rpm trazem-no."
-  },
-  "bd7aa0b403ef8727": {
-   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (else <x5/>) and <x6/> whether that height wasn't offered. Then <x7/> lines, <x8/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x9/>: the subtitle files saved beside it, and the languages the site refused (<x10/>; <x11/>: they came on a second try, beside the video instead of in it).",
-   "text": "Sem <x1/>, <x2/> primeiro: a qualidade escolhida, <x3/> a altura de <x4/> (caso contrário <x5/>) e <x6/> se essa altura não foi oferecida. Depois <x7/> linhas, <x8/> para o que o registo da transferência diz (uma qualidade que os servidores não fornecem, escolhida na mais próxima abaixo), depois <x9/>: os ficheiros de legendas guardados ao lado, e os idiomas que o site recusou (<x10/>; <x11/>: vieram numa segunda tentativa, ao lado do vídeo em vez de nele)."
   },
   "bd8e50643c3c4ebf": {
    "source": "Going the other way is just as easy: <g1>Tasks → Export → To text file</g1> saves one address per line, and <g2>To IDM export file</g2> writes an <x3/> file.",
@@ -13378,6 +13462,10 @@
    "source": "The page on a phone",
    "text": "A página num telemóvel"
   },
+  "c373806ec4894f52": {
+   "source": "How Mister Download Manager's Windows programs are code-signed, who decides what gets signed, and what the app sends over the network.",
+   "text": "Como os programas Windows do Mister Download Manager são assinados digitalmente, quem decide o que é assinado e o que a aplicação envia pela rede."
+  },
   "c39475c811938808": {
    "source": "After deleting, the next download in the list is selected, so you can press <g1>Delete</g1> again.",
    "text": "Após eliminar, o próximo download na lista é selecionado, para que possa premir <g1>Delete</g1> novamente."
@@ -13561,10 +13649,6 @@
   "c5fa121420a2cd5d": {
    "source": "Opera",
    "text": "Opera"
-  },
-  "c608b90547be8d53": {
-   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - The size is that of exactly what downloads, the video and its sound. A size with <x3/> before it (<x4/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g5>Audio only, original</g5>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g6>Audio only MP3</g6> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g7>Audio only OPUS</g7>: an <x8/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g9>Audio only FLAC</g9>: a lossless <x10/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
-   "text": "Aguarde pela lista. Mostra cada qualidade com o seu tamanho, a melhor primeiro, depois só o som: - Uma linha de vídeo indica a sua resolução, o seu codec, a sua taxa de fotogramas e se é HDR: <x1/>. Uma resolução que existe em várias (AV1, VP9 e H.264, HDR e SDR) tem uma linha para cada: AV1 cria o ficheiro mais pequeno, H.264 é reproduzido na maioria dos dispositivos e um vídeo HDR parece desbotado num ecrã sem HDR. <x2/> é indicado apenas junto a uma linha HDR da mesma resolução. - O tamanho é exatamente o do que é transferido, o vídeo e o seu som. Um tamanho com <x3/> antes (<x4/>) é apenas uma estimativa: o site não indicou o tamanho, por isso é calculado a partir da taxa de bits e da duração do fluxo. - <g5>Só áudio, original</g5>: o ficheiro próprio do site, não convertido, uma vez para cada tipo que o site tenha (WebM com Opus, M4A), o melhor primeiro. O melhor som que existe, no ficheiro mais pequeno. - <g6>Só áudio MP3</g6> na sua melhor taxa de bits variável (VBR) e a 320, 256, 192 e 128 kbps, para leitores que só aceitam MP3. - <g7>Só áudio OPUS</g7>: um ficheiro <x8/>. Quando o som do site já é Opus (o do YouTube geralmente é), é apenas movido para esse ficheiro, não convertido, por isso nada se perde. - <g9>Só áudio FLAC</g9>: um ficheiro <x10/> sem perdas, para uma biblioteca ou um programa que pretenda FLAC. Não pode adicionar qualidade: o som do site já está comprimido com perdas, e o FLAC mantém-no exatamente como veio, num ficheiro várias vezes maior. A janela indica-o quando o seleciona."
   },
   "c616fb0beefab805": {
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
@@ -14013,6 +14097,10 @@
   "cc738cbd5fc52de1": {
    "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window). The <x7/> and <x8/> (Compose, Unraid's template) run it on a server (<g9>server.md</g9>).",
    "text": "(<x1/>, #157) executa o mesmo <x2/> sem eframe: um ciclo chama o seu <x3/> (o que <x4/> executa em cada fotograma) num <x5/> simples, ativado pelo canal de comando, e nunca o seu <x6/>; os comandos são adicionados à medida que o controlo remoto os adiciona (sem janela). O <x7/> e o <x8/> (Compose, modelo do Unraid) executam-no num servidor (<g9>server.md</g9>)."
+  },
+  "cc8e6434e304ae05": {
+   "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
+   "text": "<g1>Política de assinatura de código</g1><g2>O que é assinado, quem aprova e privacidade</g2>"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -15938,10 +16026,6 @@
    "source": "A tooltip's top padding",
    "text": "Preenchimento superior de uma descrição"
   },
-  "ea282dea9c9a7014": {
-   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
-   "text": "Se aparecer a mensagem <g1>este site só permite navegadores</g1>, a verificação de bots do site (por exemplo, do Cloudflare) recusou o MDM. O MDM já tentou ligar novamente da mesma forma que o seu navegador, com os cookies do seu navegador para esse site, e o site ainda quer que a verificação seja respondida num navegador. Abra o site no seu navegador (passar na verificação pode ser suficiente: clique novamente na ligação) ou mantenha <g2>Alt</g2> premido enquanto clica na ligação para deixar essa transferência para o navegador. Consulte <g3>Integração com o navegador</g3>."
-  },
   "ea2b2840bdb83f99": {
    "source": "Ctrl+0",
    "text": "Ctrl+0"
@@ -16025,10 +16109,6 @@
   "eb1be33b4d67a5a9": {
    "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Add batch download from clipboard</g3>, the <g4>Speed Limiter</g4>, the <g5>Scheduler</g5>, the main download queue and <g6>Options</g6>.",
    "text": "O menu da área de notificação também tem <g1>Adicionar nova transferência</g1>, <g2>Adicionar transferência em lote</g2>, <g3>Adicionar transferência em lote da área de transferência</g3>, o <g4>Limitador de Velocidade</g4>, o <g5>Agendador</g5>, a fila de transferências principal e as <g6>Opções</g6>."
-  },
-  "eb1e3724d60ad6dd": {
-   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.",
-   "text": "<g1>User-Agent para transferências adicionadas manualmente</g1> — como o MDM se identifica aos servidores para as transferências que adiciona. Com a opção <g2>Automático</g2> selecionada (a predefinição), o MDM identifica-se como o seu navegador predefinido: o User-Agent que esse navegador envia, na versão que tem instalada (Chrome, Edge, Brave, Opera, Vivaldi, Firefox ou Safari). A caixa mostra-o e, ao apontar para ela, é apresentado o nome do navegador. Quando o MDM não reconhece o seu navegador predefinido, envia o User-Agent de uma versão atual do Chrome. Desselecione <g3>Automático</g3> para introduzir o seu próprio; selecione-o novamente para reverter. As transferências do navegador utilizam o User-Agent desse navegador. Se um site rejeitar o User-Agent de um navegador, o MDM tenta novamente com o seu próprio."
   },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
@@ -16338,6 +16418,10 @@
    "source": "(the foreground)",
    "text": "(o primeiro plano)"
   },
+  "ef0391d17d9aa462": {
+   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added: see the <g1>code signing policy</g1>.",
+   "text": "O instalador do Windows ainda não tem assinatura de código, por isso o SmartScreen do Windows pode avisar antes da primeira execução. A assinatura de código será adicionada: consulte a <g1>política de assinatura de código</g1>."
+  },
   "ef078e7bf8101d03": {
    "source": "1 the file types MDM takes, 2 the sites it leaves to the browser.",
    "text": "1 os tipos de ficheiro que o MDM aceita, 2 os sites que deixa para o navegador."
@@ -16530,6 +16614,10 @@
    "source": "More than 80 fixes. The main ones:",
    "text": "Mais de 80 correções. As principais são:"
   },
+  "f12989ae03685a0f": {
+   "source": "Mister Download Manager's code signing policy: free code signing by SignPath.io with a certificate by SignPath Foundation, which Windows files are signed, who may approve a signature, and what the app sends over the network.",
+   "text": "Política de assinatura de código do Mister Download Manager: assinatura de código gratuita pela SignPath.io com um certificado da SignPath Foundation, quais os ficheiros Windows que são assinados, quem pode aprovar uma assinatura e o que a aplicação envia pela rede."
+  },
   "f135b1b9671dc439": {
    "source": "Make everything larger / smaller, in every window (<g1>View → Interface size</g1>, 100 % to 200 %)",
    "text": "Aumentar / diminuir tudo, em todas as janelas (<g1>Ver → Tamanho da interface</g1>, 100 % a 200 %)"
@@ -16565,10 +16653,6 @@
   "f1769eb2aa5104ff": {
    "source": "<g1>Categories</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Categorias</g1><g2>Mister Download Manager</g2>"
-  },
-  "f181173f9c765d13": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent, <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
-   "text": "Transferir um ficheiro com até 8 ligações (<x1/>, 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> define o endereço da página de referência (cabeçalho Referer), <x5/> define o User-Agent do pedido, <x6/> define o cabeçalho Cookie (um cookie na linha de comandos acaba no histórico da shell; <x7/> lê-o da entrada padrão). <x8/> verifica o ficheiro concluído: MD5, SHA-1, SHA-256, SHA-512 ou CRC32 em hexadecimal, opcionalmente com nome (<x9/>). <x10/> escolhe o DNS: <x11/> (o predefinido); um serviço e como o consultar, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; endereços de servidores DNS, <x17/>; ou um endereço DNS-over-HTTPS. Nunca recorre ao DNS do sistema. <x18/> envia cada ligação através de um adaptador de rede, pelo seu nome (<x19/>, <x20/>) ou um dos seus endereços; se não estiver ligado, nada é enviado e a transferência falha. Uma ligação de um anfitrião de ficheiros que uma das suas contas debrid (<g21>Opções → Contas</g21>) suporta passa por essa conta, como na aplicação, e <x22/> diz <x23/>; <x24/> transfere o próprio endereço (<g25>Contas de serviços Debrid</g25>)."
   },
   "f19042c8ea331c71": {
    "source": "Start MDM. The download is in the list under <g1>Unfinished</g1>.",
@@ -16821,6 +16905,10 @@
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
    "text": "Adicione a extensão a cada navegador que utiliza, como indicado abaixo: o Firefox a partir da sua loja de suplementos, os outros a partir da Chrome Web Store. Enquanto a extensão de um navegador não tiver chegado ao MDM, a janela <g1>Adicionar o Mister Download Manager ao seu navegador</g1> do MDM abre-se a cada início: lista os navegadores que encontrou e <g2>Adicionar a extensão</g2> abre a página da loja nesse navegador. <g3>Instalar manualmente</g3> abre os passos para o carregar sem a loja; <g4>Não perguntar novamente</g4> fecha a janela."
+  },
+  "f6014e24fd45ae66": {
+   "source": "What is signed",
+   "text": "O que é assinado"
   },
   "f6036d014e6073ae": {
    "source": "<g1>Media on this page</g1> lists the video streams and the video and sound files a page has loaded, so a video with no link can still be saved. Copy-protected streams are listed as <g2>Protected</g2> and never sent.",

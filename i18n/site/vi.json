@@ -66,6 +66,10 @@
    "source": "On the same PC, downloading from a test server on that PC, MDM fetched a 1 GiB file in 1.0 s against IDM 6.42's 5.5 s, and a 256 KiB file in 0.03 s against 3.1 s: the medians of alternating runs. It is a loopback test: it times the programs, not an internet connection. The <g1>benchmark page</g1> has every run, the method and the raw data.",
    "text": "Trên cùng một máy tính, khi tải xuống từ máy chủ thử nghiệm trên máy tính đó, MDM đã tải tệp 1 GiB trong 1,0 giây so với 5,5 giây của IDM 6.42, và tệp 256 KiB trong 0,03 giây so với 3,1 giây: đây là các giá trị trung vị của các lần chạy xen kẽ. Đây là thử nghiệm vòng lặp: nó đo thời gian của chương trình, không phải kết nối internet. <g1>Trang điểm chuẩn</g1> có tất cả các lần chạy, phương pháp và dữ liệu thô."
   },
+  "013ffb458262cc02": {
+   "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
+   "text": "Chữ ký mã cho phép Windows hiển thị nhà phát hành chương trình và kiểm tra xem chương trình đó có bị thay đổi sau khi được tạo hay không. Khi một bản phát hành của Mister Download Manager (\"MDM\") được ký, chữ ký của nó bao gồm các tệp Windows đến từ dự án này:"
+  },
   "01579d403b821195": {
    "source": "<x1/> pull requests",
    "text": "<x1/> yêu cầu kéo"
@@ -313,10 +317,6 @@
   "049652ed195253e0": {
    "source": "MDM is free and always will be. If it saves you time, you can support its creator on GitHub Sponsors.",
    "text": "MDM miễn phí và sẽ luôn như vậy. Nếu chương trình giúp bạn tiết kiệm thời gian, bạn có thể ủng hộ tác giả trên GitHub Sponsors."
-  },
-  "04a7f9ae361a7bb3": {
-   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes a quality's selector from <x6/> (<x7/> = the best single file; <x8/> = the sound alone as the site has it, not converted; <x9/>, <x10/>, <x11/> or <x12/> = the sound as an MP3 at that bitrate, <x13/> at its best variable one; <x14/> = as Opus; <x15/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x16/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x17/> saves subtitles beside it: language codes from <x18/> (<x19/>), or <x20/> for every one the uploader gave; <x21/> takes the site's automatic captions instead; <x22/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g23>Embed chapters</g23> does. <x24/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x25/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x26/> does.",
-   "text": "Tải xuống một video. Không có <x1/> hoặc <x2/>, chất lượng tốt nhất, chất lượng mà cửa sổ Tải xuống video bắt đầu: với ffmpeg, hình ảnh tốt nhất cùng với âm thanh tốt nhất được ghép nối (một trang web có hình ảnh và âm thanh tách rời, chẳng hạn như Bilibili, cần ffmpeg cho video), nếu không thì là tệp tốt nhất có cả hai. <x3/> (hoặc <x4/>) lấy chiều cao đó, hoặc chiều cao gần nhất bên dưới mà trang cung cấp (nếu không thì chiều cao gần nhất bên trên), và thông báo. <x5/> lấy bộ chọn chất lượng từ <x6/> (<x7/> = tệp đơn tốt nhất; <x8/> = chỉ âm thanh như trang web có, không chuyển đổi; <x9/>, <x10/>, <x11/> hoặc <x12/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x13/> ở tốc độ bit biến đổi tốt nhất; <x14/> = dưới dạng Opus; <x15/> = dưới dạng FLAC, không mất dữ liệu nhưng không tốt hơn âm thanh của trang web; chuyển đổi cần ffmpeg). <x16/>: trình tải xuống của MDM mang mỗi luồng mà yt-dlp tìm thấy qua số kết nối này (mặc định là 8, từ 1 đến 128), một luồng theo từng phần (HLS, DASH) với số phần này cùng một lúc. <x17/> lưu phụ đề bên cạnh: mã ngôn ngữ từ <x18/> (<x19/>), hoặc <x20/> cho mọi ngôn ngữ mà người tải lên đã cung cấp; <x21/> thay vào đó lấy phụ đề tự động của trang web; <x22/> đặt chúng vào video (cần ffmpeg, MP4 hoặc MKV). Với ffmpeg, các chương của video cũng được đưa vào tệp, như <g23>Nhúng chương</g23> của Tải xuống video. <x24/> gửi các kết nối tải xuống, và của yt-dlp (và ffmpeg), qua một bộ điều hợp mạng, như đối với <x25/>; khi nó không được kết nối, không có gì bắt đầu. Khi không có định dạng nào của trang khớp, lỗi sẽ liệt kê các định dạng mà nó cung cấp, như <x26/>."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -1190,6 +1190,10 @@
    "source": "<g1>Chrome</g1><g2>Google · <g3>Add to Chrome</g3></g2>",
    "text": "<g1>Chrome</g1><g2>Google · <g3>Thêm vào Chrome</g3></g2>"
   },
+  "116ed22c951d837d": {
+   "source": "Team roles",
+   "text": "Vai trò của nhóm"
+  },
   "1171655e77148bd2": {
    "source": "Every release, with its notes and files, is on <g1>GitHub Releases</g1>. The source code is at <g2>github.com/anefzaoui/misterdownloadmanager</g2> under the GNU GPL, version 3.",
    "text": "Mọi bản phát hành, cùng với ghi chú và tệp của nó, đều có trên <g1>GitHub Releases</g1>. Mã nguồn có tại <g2>github.com/anefzaoui/misterdownloadmanager</g2> theo GNU GPL, phiên bản 3."
@@ -1930,6 +1934,10 @@
    "source": "Yes: every release has an AppImage, .deb, .rpm and .tar.gz for Linux and a .dmg for Apple Silicon and Intel Macs. Linux is supported, checked on four desktops (GNOME, KDE Plasma, Xfce and Cinnamon); macOS is still experimental. <g1>More</g1>",
    "text": "Có: mỗi bản phát hành đều có AppImage, .deb, .rpm và .tar.gz cho Linux và .dmg cho Apple Silicon và Intel Mac. Linux được hỗ trợ, đã kiểm tra trên bốn môi trường desktop (GNOME, KDE Plasma, Xfce và Cinnamon); macOS vẫn đang trong giai đoạn thử nghiệm. <g1>Thêm</g1>"
   },
+  "1be4beda32ded4a9": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked, and <g6>Most compatible (H.264 + AAC)</g6> beside the resolution of the one that plays everywhere (<g7>Choose the quality</g7>); <g8>All qualities and subtitles...</g8>, which opens the <g9>Download video from a page</g9> window; then <g10>Hide on this video</g10> (<g11>Esc</g11>), <g12>Never on</g12> the site (MDM remembers the site), and <g13>Button settings...</g13>, which opens MDM's Options. The arrow keys move through it, <g14>Enter</g14> picks, <g15>Esc</g15> closes it.",
+   "text": "<g1>Menu của nó</g1> (mũi tên bên cạnh, hoặc <g2>↓</g2> khi nút có tiêu điểm bàn phím): tiêu đề, độ dài và trang web của video; <g3>Tải xuống chất lượng tốt nhất</g3> trước, sau đó là một dòng được đánh số cho mỗi chất lượng dưới <g4>VIDEO</g4> và <g5>AUDIO</g5>, với loại tệp, tốc độ khung hình hoặc tốc độ bit và kích thước của nó, chất lượng tốt nhất được đánh dấu, và <g6>Tương thích nhất (H.264 + AAC)</g6> bên cạnh độ phân giải của video phát được ở mọi nơi (<g7>Chọn chất lượng</g7>); <g8>Tất cả chất lượng và phụ đề...</g8>, mở cửa sổ <g9>Tải xuống video từ một trang</g9>; sau đó là <g10>Ẩn trên video này</g10> (<g11>Esc</g11>), <g12>Không bao giờ trên</g12> trang web (MDM ghi nhớ trang web), và <g13>Cài đặt nút...</g13>, mở Tùy chọn của MDM. Các phím mũi tên di chuyển qua nó, <g14>Enter</g14> chọn, <g15>Esc</g15> đóng nó."
+  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>Tiêu điểm bàn phím bị mất</g1> khi nút chuyển sang màu xám hoặc khi nhấn Escape để đóng menu thả xuống: nhấn Tab sẽ quay lại đầu cửa sổ. Giờ đây, tiêu điểm chuyển tiếp hoặc quay lại đúng như trên Windows."
@@ -2366,6 +2374,10 @@
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, uTP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
    "text": "<g1>Tùy chọn → Proxy / Socks → Bộ điều hợp mạng</g1> giữ các kết nối của MDM với một bộ điều hợp, thường là của VPN (<g2>Tùy chọn</g2>). Công cụ torrent liên kết mọi socket với nó: các peer (TCP, uTP và thông qua proxy SOCKS), trình theo dõi HTTP và UDP, DHT và cổng nghe. Trên Linux và macOS, nó liên kết chính bộ điều hợp. Trên Windows, nó liên kết địa chỉ của bộ điều hợp (địa chỉ IPv4 của nó khi có), và Windows chỉ gửi gói qua bộ điều hợp có địa chỉ nguồn của nó. UPnP và khám phá peer cục bộ bị tắt khi đó, vì chúng giao tiếp với mạng cục bộ chứ không phải qua bộ điều hợp."
   },
+  "2268a0b1cd6985ad": {
+   "source": "<g1>What you ask for:</g1> the servers you download from, torrent peers and trackers, and the services you turn on yourself, such as a proxy, a DNS or a debrid account.",
+   "text": "<g1>Những gì bạn yêu cầu:</g1> các máy chủ bạn tải xuống từ đó, các peer và tracker torrent, và các dịch vụ bạn tự bật, chẳng hạn như proxy, DNS hoặc tài khoản debrid."
+  },
   "228586c26511a211": {
    "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
    "text": "Mở trang tiện ích bổ sung trên addons.mozilla.org, <g1>Mister Download Manager</g1>, rồi nhấp vào <g2>Thêm vào Firefox</g2>. Zen và LibreWolf sử dụng cùng trang này."
@@ -2373,6 +2385,10 @@
   "2293a114810b4b8f": {
    "source": "More control in version 0.5.0",
    "text": "Kiểm soát tốt hơn trong phiên bản 0.5.0"
+  },
+  "229512f572cbcf74": {
+   "source": "MDM has no telemetry, no analytics and no ads, and it sends nothing about you to us. It connects to other systems only for these:",
+   "text": "MDM không có đo từ xa, không có phân tích và không có quảng cáo, và nó không gửi bất cứ điều gì về bạn cho chúng tôi. Nó chỉ kết nối với các hệ thống khác cho những mục đích sau:"
   },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
@@ -2633,6 +2649,10 @@
   "26389260c1c38a82": {
    "source": "Feeds and rules are kept in <x1/> in MDM's data folder. MDM reads at most 5 MB of a feed.",
    "text": "Các nguồn cấp dữ liệu và quy tắc được lưu giữ trong <x1/> trong thư mục dữ liệu của MDM. MDM đọc tối đa 5 MB của một nguồn cấp dữ liệu."
+  },
+  "264823238b3f18e6": {
+   "source": "<g1>Helpers you install:</g1> yt-dlp and ffmpeg (and gallery-dl) come from their official releases when you choose to install them, and yt-dlp is kept up to date when you download videos.",
+   "text": "<g1>Trợ giúp bạn cài đặt:</g1> yt-dlp và ffmpeg (và gallery-dl) đến từ các bản phát hành chính thức của chúng khi bạn chọn cài đặt chúng, và yt-dlp được cập nhật khi bạn tải xuống video."
   },
   "2656643a5769e161": {
    "source": "<g1>Real-Debrid, AllDebrid and Premiumize</g1> (<g2>#44</g2>): <g3>Options → Accounts</g3> keeps your debrid service accounts. Real-Debrid signs in by code in the browser, or with your API token; AllDebrid by a PIN in the browser or with an API key, and MDM waits while it prepares a slow link; Premiumize with its API key. A link from a file host your service supports is unlocked through your account, then downloaded with all of MDM's connections, pause and resume, from Add URL, the browser's link menu and batch downloads. When the direct link expires, MDM asks the service for a new one. The direct link is never shown or copied, and the sign-in is kept like your other passwords (the system's keychain, below). Each service is asked well under its request limit. See <g4>Debrid service accounts</g4>. Experimental: built from the services' public API documentation, not yet confirmed with a real paid account.",
@@ -3222,6 +3242,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e27925360e4deec": {
+   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. Some checks (SourceForge's) refuse anything that calls itself a browser without connecting exactly like one, and let a program that says what it is through: when that connection is refused too, MDM asks once more under its own name (<x2/> and its version, or the User-Agent you typed in <g3>Options → Downloads</g3>), with the same cookies and referrer, and remembers the site until MDM closes, so its next downloads, and a paused one when it resumes, go that way at once. It solves no challenge: a site that still wants one answered (some Cloudflare checks ask it of every visitor, for the site's pages too) refuses again, and MDM says <g4>this site lets only browsers through</g4>; Alt+click the link to leave the download to the browser.",
+   "text": "Với tiện ích mở rộng của MDM, khi bạn nhấp vào liên kết tải xuống trong trình duyệt, MDM sẽ tiếp nhận quá trình tải xuống. MDM nhận địa chỉ cùng với trang gốc (referrer), cookie của bạn cho trang web và User-Agent của trình duyệt, nhờ đó các lượt tải xuống yêu cầu bạn đăng nhập vẫn hoạt động. MDM cũng nhận địa chỉ mà lượt tải xuống của trình duyệt đã đạt được: khi một trang web từ chối MDM liên kết đó (một liên kết dùng một lần mà trình duyệt đã sử dụng, hoặc một trang web chỉ cho phép trình duyệt yêu cầu liên kết của nó), MDM sẽ tiếp tục từ đó một lần, không có cookie của bạn nếu đó là một trang web khác. Khi kiểm tra bot của một trang web (ví dụ: của Cloudflare) hoặc việc từ chối các chương trình (ví dụ: <g1>412 Precondition Failed</g1> của FileHippo) khiến kết nối của MDM bị từ chối, MDM sẽ yêu cầu lại một lần nữa bằng cách kết nối theo cách trình duyệt của bạn làm (cùng một bắt tay, cài đặt và thứ tự tiêu đề), với User-Agent của trình duyệt và cookie của nó chỉ cho trang web đó, và tải xuống với số lượng kết nối như bất kỳ lượt tải xuống nào, mỗi kết nối yêu cầu một phần của tệp (trên một kết nối khi trang web từ chối các phần ở đó); proxy, bộ điều hợp mạng và giới hạn tốc độ của bạn vẫn áp dụng như bình thường. Các phần của luồng video (HLS, DASH) cũng theo cách tương tự khi kiểm tra của trang web từ chối chúng. Một số kiểm tra (của SourceForge) từ chối bất cứ thứ gì tự gọi mình là trình duyệt mà không kết nối chính xác như một trình duyệt, và cho phép một chương trình tự nhận dạng đi qua: khi kết nối đó cũng bị từ chối, MDM sẽ yêu cầu lại một lần nữa dưới tên của chính nó (<x2/> và phiên bản của nó, hoặc User-Agent bạn đã nhập trong <g3>Tùy chọn → Tải xuống</g3>), với cùng cookie và referrer, và ghi nhớ trang web cho đến khi MDM đóng, để các lượt tải xuống tiếp theo của nó, và một lượt tải xuống đã tạm dừng khi tiếp tục, sẽ đi theo cách đó ngay lập tức. Nó không giải quyết được thử thách nào: một trang web vẫn muốn có câu trả lời (một số kiểm tra của Cloudflare yêu cầu mọi khách truy cập, cả đối với các trang của trang web) sẽ từ chối lại, và MDM thông báo <g4>trang web này chỉ cho phép trình duyệt đi qua</g4>; Alt+nhấp vào liên kết để để trình duyệt tải xuống."
+  },
   "2e3cb33a528c6b52": {
    "source": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,",
    "text": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,"
@@ -3314,6 +3338,10 @@
    "source": "Many sites publish their new torrents as an RSS or Atom feed. MDM can watch feeds, list what they hold, and add the new torrents you want by itself. Choose <g1>Tasks → RSS feeds...</g1>, or click the arrow next to <g2>Add Torrent</g2>.",
    "text": "Nhiều trang web xuất bản torrent mới của họ dưới dạng nguồn cấp dữ liệu RSS hoặc Atom. MDM có thể theo dõi các nguồn cấp dữ liệu, liệt kê nội dung của chúng và tự động thêm các torrent mới mà bạn muốn. Chọn <g1>Tác vụ → Nguồn cấp dữ liệu RSS...</g1> hoặc nhấp vào mũi tên bên cạnh <g2>Thêm Torrent</g2>."
   },
+  "2f5a8130c47e294d": {
+   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - <g3>Most compatible (H.264 + AAC)</g3>, second in the list: the best H.264 video the site has (YouTube's usually go up to 1080p) with AAC sound (in stereo when the site has it beside surround), in an MP4 that Premiere Pro and other editors, older TVs and most phones open as it is. YouTube's best qualities are AV1 or VP9 with Opus sound, which some of them can't read. The line says its resolution: <x4/>. MDM picks those streams, it doesn't convert anything: when the site has no H.264 video with AAC sound the line isn't there, and when the best line already is that, it isn't listed twice. - The size is that of exactly what downloads, the video and its sound. A size with <x5/> before it (<x6/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g7>Audio only, original</g7>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g8>Audio only MP3</g8> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g9>Audio only OPUS</g9>: an <x10/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g11>Audio only FLAC</g11>: a lossless <x12/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Chờ danh sách. Danh sách hiển thị từng chất lượng với kích thước của nó, tốt nhất trước, sau đó là chỉ âm thanh: - Dòng video hiển thị độ phân giải, codec, tốc độ khung hình và liệu có phải HDR không: <x1/>. Độ phân giải có nhiều loại (AV1, VP9 và H.264, HDR và SDR) có một dòng cho mỗi loại: AV1 tạo tệp nhỏ nhất, H.264 phát trên hầu hết các thiết bị và video HDR trông nhạt nhòa trên màn hình không có HDR. <x2/> chỉ được nói bên cạnh dòng HDR cùng độ phân giải. - <g3>Tương thích nhất (H.264 + AAC)</g3>, thứ hai trong danh sách: video H.264 tốt nhất mà trang web có (của YouTube thường lên đến 1080p) với âm thanh AAC (âm thanh nổi khi trang web có nó bên cạnh âm thanh vòm), trong một tệp MP4 mà Premiere Pro và các trình chỉnh sửa khác, TV cũ hơn và hầu hết điện thoại mở được nguyên bản. Chất lượng tốt nhất của YouTube là AV1 hoặc VP9 với âm thanh Opus, mà một số thiết bị không thể đọc. Dòng này cho biết độ phân giải của nó: <x4/>. MDM chọn các luồng đó, nó không chuyển đổi bất cứ thứ gì: khi trang web không có video H.264 với âm thanh AAC thì dòng đó không có, và khi dòng tốt nhất đã là như vậy, nó không được liệt kê hai lần. - Kích thước là chính xác của những gì được tải xuống, video và âm thanh của nó. Kích thước có <x5/> trước đó (<x6/>) chỉ là ước tính: trang web không cho biết kích thước, vì vậy nó đến từ tốc độ bit và độ dài của luồng. - <g7>Chỉ âm thanh, gốc</g7>: tệp gốc của trang web, không được chuyển đổi, một lần cho mỗi loại mà trang web có (WebM với Opus bên trong, M4A), tốt nhất trước. Âm thanh tốt nhất hiện có, trong tệp nhỏ nhất. - <g8>Chỉ âm thanh MP3</g8> ở tốc độ bit biến đổi (VBR) tốt nhất và ở 320, 256, 192 và 128 kbps, cho các trình phát chỉ chấp nhận MP3. - <g9>Chỉ âm thanh OPUS</g9>: một tệp <x10/>. Khi âm thanh của trang web đã là Opus (của YouTube thường là vậy), nó chỉ được chuyển vào tệp đó, không được chuyển đổi, vì vậy không có gì bị mất. - <g11>Chỉ âm thanh FLAC</g11>: một tệp <x12/> không mất dữ liệu, cho thư viện hoặc chương trình muốn FLAC. Nó không thể thêm chất lượng: âm thanh của trang web đã được nén có mất dữ liệu, và FLAC giữ nguyên chính xác như nó đã đến, trong một tệp lớn hơn vài lần. Cửa sổ sẽ thông báo như vậy khi bạn chọn nó."
+  },
   "2f5eb68f16f89115": {
    "source": "<g1><g2>Queues and the Scheduler</g2></g1> — run downloads a few at a time, start and stop them by the clock, and turn the computer off when they are done.",
    "text": "<g1><g2>Hàng đợi và Bộ lập lịch</g2></g1> — tải xuống vài tệp cùng lúc, bắt đầu và dừng tải theo giờ, rồi tắt máy tính khi hoàn tất."
@@ -3385,6 +3413,10 @@
   "300fe42c6f7d0e75": {
    "source": "Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.",
    "text": "Trợ giúp: phải làm gì khi phần mềm diệt virus hoặc VirusTotal gắn cờ MDM, và cách kiểm tra bản sao của bạn có phải là bản thật hay không."
+  },
+  "3017321534b213e2": {
+   "source": "Whatever the signature, you can still check every download against the release's signed checksums: see <g1>Check your download</g1>.",
+   "text": "Dù có chữ ký, bạn vẫn có thể kiểm tra mọi bản tải xuống dựa trên tổng kiểm đã ký của bản phát hành: xem <g1>Kiểm tra bản tải xuống của bạn</g1>."
   },
   "301fb01942b6c3a7": {
    "source": "<g1>macOS Intel</g1><g2>.dmg · Macs with an Intel processor · experimental</g2>",
@@ -3742,6 +3774,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "Giới hạn tốc độ giúp MDM không sử dụng hết băng thông kết nối của bạn."
   },
+  "36e51409041d8610": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the most compatible, H.264 with AAC; <x6/> = the original sound; <x7/>, <x8/>, <x9/> as for <x10/>). <x11/> as for <x12/>.",
+   "text": "Tải xuống các video của danh sách phát hoặc kênh lần lượt, vào một thư mục được đặt tên theo danh sách bên trong <x1/>. <x2/> là một chất lượng cho tất cả, như đối với <x3/> (mặc định là chất lượng tốt nhất của mỗi video; <x4/> = tối đa 720p; <x5/> = tương thích nhất, H.264 với AAC; <x6/> = âm thanh gốc; <x7/>, <x8/>, <x9/> như đối với <x10/>). <x11/> như đối với <x12/>."
+  },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
    "text": "Firefox, Chrome, Edge, Brave, Opera và Vivaldi được hỗ trợ qua tiện ích mở rộng, có tại <g1>trang tiện ích bổ sung của Firefox</g1> và <g2>Chrome Web Store</g2>. Nếu không cài tiện ích mở rộng, hãy sao chép liên kết để MDM mở cửa sổ tải xuống. <g3>Xem thêm</g3>"
@@ -3901,6 +3937,10 @@
   "391a6b0e422e6b00": {
    "source": "Through your VPN, or not at all.",
    "text": "Qua VPN của bạn, hoặc không kết nối gì cả."
+  },
+  "391fbe820c800f21": {
+   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (<x5/> for <x6/>, else <x7/>) and <x8/> whether that height wasn't offered. Then <x9/> lines, <x10/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x11/>: the subtitle files saved beside it, and the languages the site refused (<x12/>; <x13/>: they came on a second try, beside the video instead of in it).",
+   "text": "Không có <x1/>, <x2/> trước: chất lượng đã lấy, <x3/> chiều cao của <x4/> (<x5/> cho <x6/>, nếu không thì <x7/>) và <x8/> liệu chiều cao đó có được cung cấp hay không. Sau đó <x9/> dòng, <x10/> cho những gì nhật ký tải xuống nói (một chất lượng mà máy chủ không cung cấp, được lấy ở mức gần nhất bên dưới), sau đó <x11/>: các tệp phụ đề đã lưu bên cạnh, và các ngôn ngữ mà trang web từ chối (<x12/>; <x13/>: chúng đã đến trong lần thử thứ hai, bên cạnh video thay vì trong đó)."
   },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
@@ -4390,10 +4430,6 @@
    "source": "Options: Remote, with the address to open, the certificate's fingerprint and the paired devices",
    "text": "Tùy chọn: Điều khiển từ xa, với địa chỉ để mở, dấu vân tay của chứng chỉ và các thiết bị đã ghép nối"
   },
-  "3fa8036373b9b833": {
-   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added.",
-   "text": "Trình cài đặt Windows chưa được ký mã, vì vậy Windows SmartScreen có thể cảnh báo trước lần khởi động đầu tiên. Việc ký mã sẽ được bổ sung."
-  },
   "3fab3621d5ce1a78": {
    "source": "Slow down one download only",
    "text": "Chỉ làm chậm một lượt tải xuống"
@@ -4745,6 +4781,10 @@
   "44f50999ce094e3a": {
    "source": "We may update these terms; the date at the top says when. Changes apply from then on and are recorded in the project's public history on GitHub.",
    "text": "Chúng tôi có thể cập nhật các điều khoản này; ngày ở trên cùng cho biết thời điểm cập nhật. Các thay đổi có hiệu lực kể từ thời điểm đó và được ghi lại trong lịch sử công khai của dự án trên GitHub."
+  },
+  "4502e19501791bba": {
+   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent, the one your sign-in and the site's checks know; the one typed here doesn't replace it. If a site turns a browser's User-Agent away, MDM asks once more with the one typed here (with <g4>Automatic</g4>, with Internet Explorer's). If a site's bot check refuses it, and the way a browser connects too, MDM asks once more under its own name, <x5/> and its version (or the one typed here), and remembers that site until MDM closes. A User-Agent typed here for the downloads you add yourself is the only one they send.",
+   "text": "<g1>User-Agent cho các lượt tải xuống thêm thủ công</g1> — cách MDM tự giới thiệu với máy chủ cho các lượt tải xuống bạn tự thêm. Khi <g2>Tự động</g2> được chọn (mặc định), MDM tự giới thiệu là trình duyệt mặc định của bạn: User-Agent mà trình duyệt đó gửi, với phiên bản bạn đã cài đặt (Chrome, Edge, Brave, Opera, Vivaldi, Firefox hoặc Safari). Hộp này hiển thị User-Agent đó, và khi bạn trỏ vào sẽ hiển thị tên trình duyệt. Khi MDM không nhận diện được trình duyệt mặc định của bạn, nó sẽ gửi User-Agent của một phiên bản Chrome hiện tại. Bỏ chọn <g3>Tự động</g3> để nhập User-Agent của riêng bạn; chọn lại để quay về. Các lượt tải xuống từ trình duyệt sẽ sử dụng User-Agent của chính trình duyệt đó, cái mà thông tin đăng nhập và các kiểm tra của trang web biết; cái được nhập ở đây không thay thế nó. Nếu một trang web từ chối User-Agent của trình duyệt, MDM sẽ yêu cầu lại một lần nữa với User-Agent được nhập ở đây (với <g4>Tự động</g4>, với User-Agent của Internet Explorer). Nếu kiểm tra bot của trang web từ chối nó, và cả cách trình duyệt kết nối, MDM sẽ yêu cầu lại một lần nữa dưới tên của chính nó, <x5/> và phiên bản của nó (hoặc cái được nhập ở đây), và ghi nhớ trang web đó cho đến khi MDM đóng. User-Agent được nhập ở đây cho các lượt tải xuống bạn tự thêm là cái duy nhất chúng gửi đi."
   },
   "4508e7f2d360848f": {
    "source": "The files go to a queue, not all at once. MDM asks which one, and that question can be turned off in <g1>Options → Downloads</g1>. From there the queue runs as many files at a time as you set, and the Scheduler can start it at night. See <g2>Queues and the Scheduler</g2>.",
@@ -5169,6 +5209,10 @@
   "4c48ce4cf971575b": {
    "source": "Download manager for Windows and Linux, with macOS builds",
    "text": "Trình quản lý tải xuống cho Windows và Linux, có bản dựng cho macOS"
+  },
+  "4c51533571f9a9b3": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Most compatible (H.264 + AAC)</g3> (each video's best H.264 picture with AAC sound; a video that has none isn't downloaded), <g4>Up to</g4> a height (each video at that height, or the nearest below it), <g5>Audio only, original</g5>, <g6>Audio only MP3</g6>, <g7>Audio only OPUS</g7> or <g8>Audio only FLAC</g8>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>Chất lượng</g1> áp dụng cho mọi video: <g2>Chất lượng tốt nhất</g2>, <g3>Tương thích nhất (H.264 + AAC)</g3> (hình ảnh H.264 tốt nhất của mỗi video với âm thanh AAC; video nào không có sẽ không được tải xuống), <g4>Tối đa</g4> một chiều cao (mỗi video ở chiều cao đó, hoặc gần nhất bên dưới nó), <g5>Chỉ âm thanh, gốc</g5>, <g6>Chỉ âm thanh MP3</g6>, <g7>Chỉ âm thanh OPUS</g7> hoặc <g8>Chỉ âm thanh FLAC</g8>. Nếu không có ffmpeg, chỉ các chất lượng đi kèm với âm thanh của chúng mới được cung cấp, và không có MP3, Opus hoặc FLAC."
   },
   "4c5fe1c0a5f7ac2d": {
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
@@ -5830,10 +5874,6 @@
    "source": "Made something others would like? Open a <g1>pull request on GitHub</g1> that adds it to <g2><x3/></g2>, with:",
    "text": "Đã tạo thứ gì đó mà người khác sẽ thích? Mở một <g1>yêu cầu kéo trên GitHub</g1> để thêm nó vào <g2><x3/></g2>, với:"
   },
-  "560a94f3340fd0a3": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked; <g6>All qualities and subtitles...</g6>, which opens the <g7>Download video from a page</g7> window; then <g8>Hide on this video</g8> (<g9>Esc</g9>), <g10>Never on</g10> the site (MDM remembers the site), and <g11>Button settings...</g11>, which opens MDM's Options. The arrow keys move through it, <g12>Enter</g12> picks, <g13>Esc</g13> closes it.",
-   "text": "<g1>Menu của nó</g1> (mũi tên bên cạnh, hoặc <g2>↓</g2> khi nút có tiêu điểm bàn phím): tiêu đề, độ dài và trang web của video; <g3>Tải xuống chất lượng tốt nhất</g3> trước, sau đó là một dòng được đánh số cho mỗi chất lượng dưới <g4>VIDEO</g4> và <g5>AUDIO</g5>, với loại tệp, tốc độ khung hình hoặc tốc độ bit và kích thước của nó, chất lượng tốt nhất được đánh dấu; <g6>Tất cả chất lượng và phụ đề...</g6>, mở cửa sổ <g7>Tải xuống video từ một trang</g7>; sau đó là <g8>Ẩn trên video này</g8> (<g9>Esc</g9>), <g10>Không bao giờ trên</g10> trang web (MDM ghi nhớ trang web), và <g11>Cài đặt nút...</g11>, mở Tùy chọn của MDM. Các phím mũi tên di chuyển qua nó, <g12>Enter</g12> chọn, <g13>Esc</g13> đóng nó."
-  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "Ảnh trước"
@@ -5997,6 +6037,10 @@
   "5825a9c27ba24869": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers, and screen readers.",
    "text": "<g1><g2>Phím tắt</g2></g1> — mọi phím mà cửa sổ chính phản hồi và trình đọc màn hình."
+  },
+  "5841102b5b7e5308": {
+   "source": "<g1>Committers and reviewers:</g1> <x2/> (<x3/>). Contributions from other people are reviewed by him before they are merged.",
+   "text": "<g1>Người đóng góp và người duyệt:</g1> <x2/> (<x3/>). Các đóng góp từ người khác sẽ được anh ấy duyệt trước khi hợp nhất."
   },
   "584697d876791ed0": {
    "source": "<g1>Download video</g1> finds the video on pages whose player loads a <x2/> or <x3/> address that answers something else first, as SVT Play does (<g4>#377</g4>).",
@@ -6882,6 +6926,10 @@
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>Dự án trên GitHub</g1><g2>Mã nguồn, các vấn đề và mọi bản phát hành</g2>"
   },
+  "64ac94eff5ae08d3": {
+   "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
+   "text": "các chương trình: <x1/>, <x2/> (trợ giúp trình duyệt), <x3/> và <x4/>;"
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "Trình duyệt và MDM chưa kết nối"
@@ -7366,10 +7414,6 @@
    "source": "Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (x64 and ARM64 Windows; on macOS and Linux MDM uses the system's, and on 32-bit Windows one you choose in Helpers).",
    "text": "Cài đặt hoặc cập nhật các trợ giúp mà video cần: yt-dlp (được kiểm tra bằng khóa ký của nó) và ffmpeg (Windows x64 và ARM64; trên macOS và Linux, MDM sử dụng của hệ thống, và trên Windows 32-bit, bạn chọn một trong Trợ giúp)."
   },
-  "6cbd30742f3005de": {
-   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>). <x10/> as for <x11/>.",
-   "text": "Tải xuống các video trong danh sách phát hoặc kênh, lần lượt vào một thư mục được đặt tên theo danh sách đó trong <x1/>. <x2/> là một chất lượng cho tất cả, như đối với <x3/> (mặc định là chất lượng tốt nhất của mỗi video; <x4/> = tối đa 720p; <x5/> = âm thanh gốc; <x6/>, <x7/>, <x8/> như đối với <x9/>). <x10/> như đối với <x11/>."
-  },
   "6cf66bb7f58412f7": {
    "source": "<g1>Downloads from a browser behind a VPN or proxy extension go through it too</g1> (<g2>#42</g2>): the browser extension passes the proxy the browser uses for a download (an extension's, or its settings' manual proxy or auto-config script) with it. MDM downloads through the same proxy while <g3>Options → Proxy / Socks → Use proxy/socks from a browser's request</g3> is on, which is the default. A proxy that needs the VPN extension's own login can't be shared: the download says so rather than going without it. It is an opt-in, off as installed: <g4>Send downloads through this browser's proxy or VPN extension</g4> in the extension's popup. In Firefox the switch asks for the browser's <g5>proxy</g5> permission (to read the browser's proxy, never to change it). Chrome, Edge, Brave, Opera and Vivaldi can't make that permission optional, so their extension has it from the install; Chrome counts it under the access to every site the extension already has, so the update asks for nothing new. There the extension reads the browser's proxy settings: the server for the download's scheme (honouring their bypass list), or their auto-config script. Addresses on this computer (localhost, 127.0.0.1) go straight to it, as the browser sends them.",
    "text": "<g1>Các bản tải xuống từ trình duyệt đằng sau tiện ích VPN hoặc proxy cũng đi qua đó</g1> (<g2>#42</g2>): tiện ích trình duyệt chuyển proxy mà trình duyệt sử dụng cho một bản tải xuống (của tiện ích, hoặc proxy thủ công trong cài đặt của nó hoặc tập lệnh cấu hình tự động) cùng với nó. MDM tải xuống qua cùng một proxy khi <g3>Tùy chọn → Proxy / Socks → Sử dụng proxy/socks từ yêu cầu của trình duyệt</g3> được bật, đây là cài đặt mặc định. Một proxy yêu cầu đăng nhập riêng của tiện ích VPN không thể chia sẻ: bản tải xuống sẽ thông báo điều đó thay vì tiếp tục mà không có nó. Đây là một tùy chọn, tắt theo mặc định: <g4>Gửi các bản tải xuống qua proxy hoặc tiện ích VPN của trình duyệt này</g4> trong cửa sổ bật lên của tiện ích. Trong Firefox, công tắc này yêu cầu quyền <g5>proxy</g5> của trình duyệt (để đọc proxy của trình duyệt, không bao giờ thay đổi nó). Chrome, Edge, Brave, Opera và Vivaldi không thể đặt quyền đó là tùy chọn, vì vậy tiện ích của chúng có quyền đó ngay từ khi cài đặt; Chrome tính nó vào quyền truy cập vào mọi trang web mà tiện ích đã có, vì vậy bản cập nhật không yêu cầu gì mới. Ở đó, tiện ích đọc cài đặt proxy của trình duyệt: máy chủ cho lược đồ tải xuống (tôn trọng danh sách bỏ qua của chúng), hoặc tập lệnh cấu hình tự động của chúng. Các địa chỉ trên máy tính này (localhost, 127.0.0.1) đi thẳng đến đó, như trình duyệt gửi chúng."
@@ -7549,6 +7593,10 @@
   "6f1cdc5d8ae09e38": {
    "source": "The files go where <g1>What an archive holds goes</g1> says, as with any other extraction. On the way they are in a folder named <x2/> beside the archive.",
    "text": "Các tệp sẽ đi đến nơi <g1>Nội dung lưu trữ sẽ đến</g1> nói, giống như bất kỳ quá trình giải nén nào khác. Trên đường đi, chúng nằm trong một thư mục có tên <x2/> bên cạnh kho lưu trữ."
+  },
+  "6f1ec823eb269593": {
+   "source": "Code signing policy — Mister Download Manager",
+   "text": "Chính sách ký mã — Mister Download Manager"
   },
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
@@ -7886,6 +7934,10 @@
    "source": "Does it download torrents?",
    "text": "Nó có tải xuống torrent không?"
   },
+  "73f8b10fc7956da9": {
+   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and once under its own name (some checks let a program that says what it is through), and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
+   "text": "Nếu thông báo <g1>trang này chỉ cho phép trình duyệt truy cập</g1>, tức là kiểm tra bot của trang web (ví dụ: của Cloudflare) đã từ chối MDM. MDM đã thử kết nối một lần nữa theo cách trình duyệt của bạn làm, với cookie của trình duyệt cho trang đó, và một lần nữa dưới tên của chính nó (một số kiểm tra cho phép chương trình tự nhận dạng đi qua), nhưng trang web vẫn yêu cầu trả lời kiểm tra trong trình duyệt. Hãy mở trang web trong trình duyệt của bạn (vượt qua kiểm tra ở đó có thể là đủ: nhấp lại vào liên kết), hoặc giữ <g2>Alt</g2> khi bạn nhấp vào liên kết để trình duyệt xử lý việc tải xuống đó. Xem <g3>Tích hợp trình duyệt</g3>."
+  },
   "73ff421dec347bdf": {
    "source": "Missing or odd translations",
    "text": "Bản dịch thiếu hoặc chưa tự nhiên"
@@ -8049,6 +8101,10 @@
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>Tắt</g1> (mặc định) — yt-dlp chỉ lấy cookie từ tiện ích mở rộng của trình duyệt khi bạn sử dụng nút trên video."
+  },
+  "76c5a3f40b58e25c": {
+   "source": "<g1>Approvers:</g1> <x2/> (<x3/>). Every signing request is approved by hand, release by release.",
+   "text": "<g1>Người phê duyệt:</g1> <x2/> (<x3/>). Mỗi yêu cầu ký được phê duyệt thủ công, từng bản phát hành một."
   },
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
@@ -8509,10 +8565,6 @@
   "7d9ceeedcf5266a6": {
    "source": "MDM checks its own downloads too",
    "text": "MDM cũng kiểm tra các bản tải xuống của chính nó"
-  },
-  "7db9ed501785d447": {
-   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
-   "text": "<g1>Chất lượng</g1> áp dụng cho mọi video: <g2>Chất lượng tốt nhất</g2>, <g3>Tối đa</g3> một độ phân giải (mỗi video dùng độ phân giải đó hoặc độ phân giải gần nhất thấp hơn), <g4>Chỉ âm thanh, gốc</g4>, <g5>Chỉ âm thanh MP3</g5>, <g6>Chỉ âm thanh OPUS</g6> hoặc <g7>Chỉ âm thanh FLAC</g7>. Nếu không có ffmpeg, chỉ cung cấp các chất lượng có âm thanh đi kèm, không có MP3, Opus hoặc FLAC."
   },
   "7dc4d6e14d888b60": {
    "source": "A downloader for the terminal",
@@ -9029,6 +9081,10 @@
   "83f9afcb67f234d6": {
    "source": "A clean, simple app for HTTP, FTP, BitTorrent and magnet links, built on aria2",
    "text": "Một ứng dụng gọn gàng, đơn giản cho HTTP, FTP, BitTorrent và liên kết magnet, được xây dựng trên aria2"
+  },
+  "83fd235cecaffa5f": {
+   "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
+   "text": "Mọi tệp đã ký đều được xây dựng từ mã nguồn công khai tại <g1>github.com/anefzaoui/misterdownloadmanager</g1> bởi GitHub Actions, trên máy chủ của GitHub, không bao giờ trên máy tính cá nhân. Mỗi tệp đều ghi rõ là Mister Download Manager và phiên bản nào."
   },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
@@ -9622,6 +9678,10 @@
    "source": "3. Using it responsibly",
    "text": "3. Sử dụng có trách nhiệm"
   },
+  "8d4b165bd0bf1ad4": {
+   "source": "<g1>GitHub, after a crash.</g1> When MDM crashes or freezes, the report window may download that version's debugging symbols from MDM's GitHub release, so the report can say where in MDM's code it happened, and asks GitHub's search whether the same problem was reported already. The search carries only the report's signature, the kind of problem and the name of the function in MDM's code (such as <x2/>). The report itself goes nowhere unless you send it.",
+   "text": "<g1>GitHub, sau khi gặp sự cố.</g1> Khi MDM gặp sự cố hoặc bị treo, cửa sổ báo cáo có thể tải xuống các ký hiệu gỡ lỗi của phiên bản đó từ bản phát hành GitHub của MDM, để báo cáo có thể cho biết sự cố xảy ra ở đâu trong mã của MDM, và hỏi tìm kiếm của GitHub xem vấn đề tương tự đã được báo cáo chưa. Tìm kiếm chỉ mang theo chữ ký của báo cáo, loại vấn đề và tên hàm trong mã của MDM (chẳng hạn như <x2/>). Bản báo cáo sẽ không được gửi đi đâu trừ khi bạn gửi nó."
+  },
   "8d5482092a09013b": {
    "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
    "text": "Một số trang phát video mà không có liên kết đến video đó, và một số trình phát còn ẩn video khỏi nút tải xuống. Nút trên thanh công cụ liệt kê nội dung trang đã tải, vì vậy bạn vẫn có thể lưu video:"
@@ -9629,6 +9689,10 @@
   "8d682522748bdfae": {
    "source": "Adwaita",
    "text": "Adwaita"
+  },
+  "8d7218d1ca60de7c": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
+   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>, từ 1 đến 128), hiển thị tiến độ. <x2/> tạm dừng; <x3/> tiếp tục. <x4/> đặt địa chỉ trang giới thiệu (tiêu đề Referer), <x5/> đặt User-Agent của yêu cầu (sau đó chỉ gửi một cái; nếu không có, MDM sẽ nói chuyện như trình duyệt mặc định của bạn, và, khi kiểm tra bot của một trang web từ chối điều đó và cả cách trình duyệt kết nối, một lần nữa dưới tên riêng của nó), <x6/> đặt tiêu đề Cookie (một cookie trên dòng lệnh sẽ nằm trong lịch sử shell; <x7/> đọc nó từ đầu vào chuẩn thay vào đó). <x8/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn đặt tên (<x9/>). <x10/> chọn DNS: <x11/> (mặc định); một dịch vụ và cách hỏi nó, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; địa chỉ máy chủ DNS, <x17/>; hoặc một địa chỉ DNS-over-HTTPS. Nó không bao giờ quay lại DNS của hệ thống. <x18/> gửi mọi kết nối qua một bộ điều hợp mạng, theo tên của nó (<x19/>, <x20/>) hoặc một trong các địa chỉ của nó; khi nó không được kết nối, không có gì được gửi và quá trình tải xuống thất bại. Một liên kết từ một máy chủ tệp mà một trong các tài khoản debrid của bạn (<g21>Tùy chọn → Tài khoản</g21>) hỗ trợ sẽ đi qua tài khoản đó, như trong ứng dụng, và <x22/> nói <x23/>; <x24/> tải xuống chính địa chỉ đó (<g25>Tài khoản dịch vụ debrid</g25>)."
   },
   "8d833607c2d3b591": {
    "source": "Sites change often, and a newer yt-dlp usually fixes a video that stopped working. MDM doesn't update yt-dlp on its own yet; <g1>the help</g1> shows how to get the newest one.",
@@ -9861,6 +9925,10 @@
   "91413c8d067f6992": {
    "source": "<g1>All Downloads</g1> — everything, with a node per category below it.",
    "text": "<g1>Tất cả các bản tải xuống</g1> — mọi bản tải xuống, được chia thành các nút theo từng danh mục bên dưới."
+  },
+  "91612a24a2045c1f": {
+   "source": "Everything the app, its browser extension and this website do with your data is in the <g1>privacy policy</g1>.",
+   "text": "Mọi thứ mà ứng dụng, tiện ích mở rộng trình duyệt và trang web này làm với dữ liệu của bạn đều nằm trong <g1>chính sách quyền riêng tư</g1>."
   },
   "916757d942e8dd7f": {
    "source": "When you added it.",
@@ -11186,6 +11254,10 @@
    "source": "<g1>Remote control</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Điều khiển từ xa</g1><g2>Mister Download Manager</g2>"
   },
+  "a3ab409ea198a57d": {
+   "source": "<g1>Updates:</g1> when it starts, and once a day while it stays open, MDM asks GitHub for its latest version. You can turn this off in <g2>Help → Check for updates</g2> (<g3>Check for updates at every start</g3>).",
+   "text": "<g1>Cập nhật:</g1> khi khởi động và một lần mỗi ngày khi vẫn mở, MDM hỏi GitHub về phiên bản mới nhất của nó. Bạn có thể tắt tính năng này trong <g2>Trợ giúp → Kiểm tra bản cập nhật</g2> (<g3>Kiểm tra bản cập nhật mỗi khi khởi động</g3>)."
+  },
   "a3c9e8e877390e25": {
    "source": "A message to the host is at most 1 MB (<x1/>; the host refuses more, and the browser lets a host answer no more than that either). A page's links past it go in parts, each measured as the widest browser writes it (<x2/> in <x3/>) and carrying the page's referrer and cookies and its place (<x4/>); the host hands each over as it comes, and the app keeps them (<x5/>) until the last is in, then opens Link grabber with the whole list.",
    "text": "Một tin nhắn gửi đến máy chủ có kích thước tối đa 1 MB (<x1/>; máy chủ từ chối nhiều hơn, và trình duyệt cũng không cho phép máy chủ trả lời nhiều hơn thế). Các liên kết của một trang vượt quá giới hạn đó sẽ được gửi theo từng phần, mỗi phần được đo theo cách trình duyệt rộng nhất viết (<x2/> trong <x3/>) và mang theo referrer, cookie của trang cùng vị trí của nó (<x4/>); máy chủ chuyển giao từng phần khi nó đến, và ứng dụng giữ chúng (<x5/>) cho đến khi phần cuối cùng vào, sau đó mở Trình lấy liên kết với toàn bộ danh sách."
@@ -11914,6 +11986,10 @@
    "source": "Transfer: first request to last byte",
    "text": "Truyền dữ liệu: từ yêu cầu đầu tiên đến byte cuối cùng"
   },
+  "adcd8aefd0f19eea": {
+   "source": "the installers, <x1/> and its ARM64 and 32-bit versions, and the uninstaller they put on your computer;",
+   "text": "các trình cài đặt, <x1/> và các phiên bản ARM64 và 32-bit của nó, cùng với trình gỡ cài đặt mà chúng đặt trên máy tính của bạn;"
+  },
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM tải xuống những gì bạn chỉ định, giống như trình duyệt web, nhưng nhanh hơn và dễ kiểm soát hơn. Nó được tạo ra cho các tác vụ tải xuống hàng ngày: phần mềm và bản cập nhật, tài liệu, tệp của bạn từ bộ nhớ đám mây, video và nhạc bạn được phép lưu, ảnh đĩa Linux và các torrent khác được nhà sản xuất chia sẻ, cùng bất kỳ thứ gì khác mà bạn có quyền tải xuống."
@@ -12077,6 +12153,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>Tất cả tệp và tổng kiểm</g1><g2>Phiên bản 0.5.2 trên GitHub Releases, kèm SHA256SUMS.txt</g2>"
+  },
+  "b0912015dbe6e3fb": {
+   "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
+   "text": "<g1>Báo cáo sự cố:</g1> sau một sự cố, cửa sổ báo cáo có thể tìm nạp các ký hiệu gỡ lỗi của phiên bản đó từ bản phát hành GitHub của MDM và hỏi GitHub xem vấn đề tương tự đã được báo cáo chưa. Bản báo cáo tự mở trong trình duyệt của bạn, trên GitHub, chỉ khi bạn chọn gửi nó."
   },
   "b0c0ef4ee0008226": {
    "source": "— FTP secured with TLS from the start of the session (explicit FTPS, <x1/>, usually port 21). Use it when the server says it supports TLS.",
@@ -12522,9 +12602,9 @@
    "source": "Children",
    "text": "Trẻ em"
   },
-  "b6812b16e31188d5": {
-   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. It solves no challenge: a site that still wants one answered refuses again, and MDM says <g2>this site lets only browsers through</g2>; Alt+click the link to leave the download to the browser.",
-   "text": "Với tiện ích mở rộng của MDM, khi bạn nhấp vào một liên kết tải xuống trong trình duyệt, MDM sẽ tiếp nhận quá trình tải xuống. MDM nhận địa chỉ cùng với trang gốc (referrer), cookie của bạn cho trang web và User-Agent của trình duyệt, nhờ đó các lượt tải xuống yêu cầu bạn đăng nhập vẫn hoạt động. MDM cũng nhận địa chỉ mà trình duyệt đã đạt được: khi một trang web từ chối MDM liên kết đó (một liên kết dùng một lần mà trình duyệt đã sử dụng, hoặc một trang web chỉ cho phép trình duyệt yêu cầu liên kết của nó), MDM sẽ tiếp tục từ đó một lần, không có cookie của bạn nếu đó là một trang web khác. Khi kiểm tra bot của một trang web (ví dụ: của Cloudflare) hoặc việc từ chối các chương trình (ví dụ: <g1>412 Precondition Failed</g1> của FileHippo) khiến kết nối của MDM bị từ chối, MDM sẽ yêu cầu lại một lần nữa bằng cách kết nối theo cách trình duyệt của bạn làm (cùng một giao thức bắt tay, cài đặt và thứ tự tiêu đề), với User-Agent của trình duyệt và cookie của nó chỉ cho trang web đó, và tải xuống bằng nhiều kết nối như bất kỳ lượt tải xuống nào, mỗi kết nối yêu cầu một phần của tệp (trên một kết nối khi trang web từ chối các phần ở đó); proxy, bộ điều hợp mạng và giới hạn tốc độ của bạn vẫn áp dụng như bình thường. Các phần của luồng video (HLS, DASH) cũng đi theo cách tương tự khi kiểm tra của trang web từ chối chúng. Nó không giải quyết được thách thức nào: một trang web vẫn muốn có câu trả lời sẽ từ chối lại, và MDM sẽ thông báo <g2>trang web này chỉ cho phép trình duyệt truy cập</g2>; Alt+nhấp vào liên kết để để trình duyệt tự tải xuống."
+  "b680d858b4ec85a9": {
+   "source": "Code signing policy",
+   "text": "Chính sách ký mã"
   },
   "b68461ac7025e237": {
    "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
@@ -12657,6 +12737,10 @@
   "b8544619a7ae8ec9": {
    "source": "YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.",
    "text": "Sửa lỗi YouTube cho nút Tải xuống video và nút trong Chrome, Edge và Brave."
+  },
+  "b8608265852b1c20": {
+   "source": "the same programs in the portable and plain zips.",
+   "text": "các chương trình tương tự trong các tệp zip di động và thông thường."
   },
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
@@ -13006,10 +13090,6 @@
    "source": "A minimal Linux system (often with the AppImage, the tar.gz or a build from source) may have no CA certificates, which MDM needs to check a secure server. Plain <x1/> and <x2/> downloads still work; each <x3/> or <x4/> one stops at once saying the computer has no certificates to check the server with. Install the <x5/> package (<x6/>, <x7/>), then resume the download. The .deb and .rpm bring it.",
    "text": "Một hệ thống Linux tối thiểu (thường với AppImage, tar.gz hoặc bản dựng từ mã nguồn) có thể không có chứng chỉ CA, mà MDM cần để kiểm tra máy chủ bảo mật. Các lượt tải xuống <x1/> và <x2/> thông thường vẫn hoạt động; mỗi lượt <x3/> hoặc <x4/> sẽ dừng ngay lập tức với thông báo rằng máy tính không có chứng chỉ để kiểm tra máy chủ. Cài đặt gói <x5/> (<x6/>, <x7/>), sau đó tiếp tục tải xuống. Các gói .deb và .rpm đã bao gồm nó."
   },
-  "bd7aa0b403ef8727": {
-   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (else <x5/>) and <x6/> whether that height wasn't offered. Then <x7/> lines, <x8/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x9/>: the subtitle files saved beside it, and the languages the site refused (<x10/>; <x11/>: they came on a second try, beside the video instead of in it).",
-   "text": "Không có <x1/>, <x2/> trước tiên: chất lượng đã chọn, <x3/> chiều cao của <x4/> (nếu không thì <x5/>) và <x6/> liệu chiều cao đó có được cung cấp hay không. Sau đó <x7/> dòng, <x8/> cho những gì nhật ký tải xuống nói (một chất lượng mà máy chủ không cung cấp, được lấy ở mức gần nhất bên dưới), sau đó <x9/>: các tệp phụ đề đã lưu bên cạnh, và các ngôn ngữ mà trang web từ chối (<x10/>; <x11/>: chúng đã được tải xuống trong lần thử thứ hai, bên cạnh video thay vì trong video)."
-  },
   "bd8e50643c3c4ebf": {
    "source": "Going the other way is just as easy: <g1>Tasks → Export → To text file</g1> saves one address per line, and <g2>To IDM export file</g2> writes an <x3/> file.",
    "text": "Chuyển đổi ngược lại cũng dễ dàng: <g1>Tác vụ → Xuất → Xuất sang tệp văn bản</g1> sẽ lưu một địa chỉ trên mỗi dòng, và <g2>Xuất sang tệp IDM</g2> sẽ ghi một tệp <x3/>."
@@ -13093,6 +13173,10 @@
   "bf124e15a5fd6568": {
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "Mở menu đầu tiên (<g1>Tác vụ</g1>); trên máy Mac <g2>Ctrl+F2</g2>"
+  },
+  "bf189404e74090ee": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
+   "text": "Tải xuống một video. Không có <x1/> hoặc <x2/>, chất lượng tốt nhất, chất lượng mà cửa sổ Tải xuống video bắt đầu: với ffmpeg là hình ảnh tốt nhất với âm thanh tốt nhất được ghép vào (một trang web có hình ảnh và âm thanh tách rời, như Bilibili, cần ffmpeg cho video), nếu không thì là tệp tốt nhất có cả hai. <x3/> (hoặc <x4/>) lấy chiều cao đó, hoặc chiều cao gần nhất bên dưới mà trang cung cấp (nếu không thì là chiều cao gần nhất bên trên), và thông báo như vậy. <x5/> lấy chất lượng tương thích nhất, như <g6>Tương thích nhất (H.264 + AAC)</g6> của cửa sổ: hình ảnh H.264 tốt nhất với âm thanh AAC, trong một tệp MP4 phát được trên mọi trình chỉnh sửa, TV và điện thoại; một trang không có sẽ thông báo như vậy (không có gì được chuyển đổi). <x7/> lấy bộ chọn chất lượng từ <x8/> (<x9/> = tệp đơn tốt nhất; <x10/> = chỉ âm thanh như trang web có, không chuyển đổi; <x11/>, <x12/>, <x13/> hoặc <x14/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x15/> ở tốc độ bit biến đổi tốt nhất; <x16/> = dưới dạng Opus; <x17/> = dưới dạng FLAC, không mất dữ liệu nhưng không tốt hơn âm thanh của trang web; chuyển đổi cần ffmpeg). <x18/>: trình tải xuống riêng của MDM mang mỗi luồng mà yt-dlp tìm thấy qua số lượng kết nối này (mặc định là 8, từ 1 đến 128), một luồng chia nhỏ (HLS, DASH) với số lượng mảnh này cùng một lúc. <x19/> lưu phụ đề bên cạnh: mã ngôn ngữ từ <x20/> (<x21/>), hoặc <x22/> cho mọi ngôn ngữ mà người tải lên đã cung cấp; <x23/> thay vào đó lấy phụ đề tự động của trang web; <x24/> đưa chúng vào video (cần ffmpeg, MP4 hoặc MKV). Với ffmpeg, các chương của video cũng được đưa vào tệp, như <g25>Nhúng chương</g25> của Tải xuống video. <x26/> gửi các kết nối tải xuống, và của yt-dlp (và ffmpeg), qua một bộ điều hợp mạng, như đối với <x27/>; khi nó không được kết nối, không có gì bắt đầu. Khi không có định dạng nào của trang phù hợp, lỗi sẽ liệt kê các định dạng mà nó cung cấp, như <x28/>."
   },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
@@ -13382,6 +13466,10 @@
    "source": "The page on a phone",
    "text": "Trang trên điện thoại"
   },
+  "c373806ec4894f52": {
+   "source": "How Mister Download Manager's Windows programs are code-signed, who decides what gets signed, and what the app sends over the network.",
+   "text": "Cách các chương trình Windows của Mister Download Manager được ký mã, ai quyết định những gì được ký, và ứng dụng gửi gì qua mạng."
+  },
   "c39475c811938808": {
    "source": "After deleting, the next download in the list is selected, so you can press <g1>Delete</g1> again.",
    "text": "Sau khi xóa, bản tải xuống tiếp theo trong danh sách sẽ được chọn để bạn có thể nhấn <g1>Delete</g1> lần nữa."
@@ -13565,10 +13653,6 @@
   "c5fa121420a2cd5d": {
    "source": "Opera",
    "text": "Opera"
-  },
-  "c608b90547be8d53": {
-   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - The size is that of exactly what downloads, the video and its sound. A size with <x3/> before it (<x4/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g5>Audio only, original</g5>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g6>Audio only MP3</g6> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g7>Audio only OPUS</g7>: an <x8/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g9>Audio only FLAC</g9>: a lossless <x10/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
-   "text": "Đợi danh sách hiện ra. Danh sách hiển thị từng chất lượng với kích thước tương ứng, chất lượng tốt nhất ở trên cùng, sau đó là âm thanh riêng: - Dòng của video cho biết độ phân giải, codec, tốc độ khung hình và liệu có phải HDR không: <x1/>. Độ phân giải có nhiều định dạng (AV1, VP9 và H.264, HDR và SDR) sẽ có một dòng cho mỗi định dạng: AV1 tạo ra tệp nhỏ nhất, H.264 phát được trên nhiều thiết bị nhất, và video HDR sẽ trông nhợt nhạt trên màn hình không hỗ trợ HDR. <x2/> chỉ được ghi bên cạnh dòng HDR có cùng độ phân giải. - Kích thước là kích thước chính xác của nội dung sẽ tải xuống, bao gồm video và âm thanh. Kích thước có <x3/> đứng trước (<x4/>) chỉ là ước tính: trang web không cung cấp kích thước, nên nó được tính từ tốc độ bit và độ dài của luồng. - <g5>Chỉ âm thanh, gốc</g5>: tệp gốc của trang web, không chuyển đổi, mỗi loại một lần nếu trang web có (WebM với Opus bên trong, M4A), loại tốt nhất ở trên cùng. Âm thanh tốt nhất có thể, trong tệp nhỏ nhất. - <g6>Chỉ âm thanh MP3</g6> ở tốc độ bit biến đổi (VBR) tốt nhất và ở 320, 256, 192 và 128 kbps, dành cho các trình phát chỉ hỗ trợ MP3. - <g7>Chỉ âm thanh OPUS</g7>: một tệp <x8/>. Khi âm thanh của trang web đã là Opus (thường là của YouTube), nó chỉ được chuyển vào tệp đó, không chuyển đổi, nên không mất mát gì. - <g9>Chỉ âm thanh FLAC</g9>: một tệp <x10/> không mất dữ liệu, dành cho thư viện hoặc chương trình yêu cầu FLAC. Nó không thể tăng chất lượng: âm thanh của trang web đã được nén có mất dữ liệu, và FLAC giữ nguyên chính xác như ban đầu, trong một tệp lớn hơn nhiều lần. Cửa sổ sẽ thông báo điều này khi bạn chọn."
   },
   "c616fb0beefab805": {
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
@@ -14017,6 +14101,10 @@
   "cc738cbd5fc52de1": {
    "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window). The <x7/> and <x8/> (Compose, Unraid's template) run it on a server (<g9>server.md</g9>).",
    "text": "(<x1/>, #157) chạy cùng <x2/> mà không có eframe: một vòng lặp gọi <x3/> của nó (những gì <x4/> chạy ở mỗi khung hình) trên một <x5/> trần, được đánh thức bởi kênh lệnh, và không bao giờ <x6/> của nó; các lệnh được thêm vào khi điều khiển từ xa thêm chúng (không có cửa sổ). <x7/> và <x8/> (Compose, mẫu của Unraid) chạy nó trên một máy chủ (<g9>server.md</g9>)."
+  },
+  "cc8e6434e304ae05": {
+   "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
+   "text": "<g1>Chính sách ký mã</g1><g2>Những gì được ký, ai phê duyệt và quyền riêng tư</g2>"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -15946,10 +16034,6 @@
    "source": "A tooltip's top padding",
    "text": "Khoảng đệm trên của chú giải công cụ"
   },
-  "ea282dea9c9a7014": {
-   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
-   "text": "Nếu thông báo <g1>trang web này chỉ cho phép trình duyệt truy cập</g1>, tức là hệ thống kiểm tra bot của trang web (ví dụ: của Cloudflare) đã từ chối MDM. MDM đã thử kết nối lại theo cách trình duyệt của bạn làm, dùng cookie của trình duyệt cho trang đó, nhưng trang web vẫn yêu cầu xác minh qua trình duyệt. Bạn hãy mở trang web trong trình duyệt (việc vượt qua kiểm tra ở đó có thể đủ: nhấp lại vào liên kết), hoặc giữ <g2>Alt</g2> khi nhấp vào liên kết để trình duyệt xử lý việc tải xuống đó. Xem <g3>Tích hợp trình duyệt</g3>."
-  },
   "ea2b2840bdb83f99": {
    "source": "Ctrl+0",
    "text": "Ctrl+0"
@@ -16033,10 +16117,6 @@
   "eb1be33b4d67a5a9": {
    "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Add batch download from clipboard</g3>, the <g4>Speed Limiter</g4>, the <g5>Scheduler</g5>, the main download queue and <g6>Options</g6>.",
    "text": "Menu khay hệ thống cũng có <g1>Thêm tải xuống mới</g1>, <g2>Thêm tải xuống hàng loạt</g2>, <g3>Thêm tải xuống hàng loạt từ bảng tạm</g3>, <g4>Giới hạn tốc độ</g4>, <g5>Bộ lập lịch</g5>, hàng đợi tải xuống chính và <g6>Tùy chọn</g6>."
-  },
-  "eb1e3724d60ad6dd": {
-   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.",
-   "text": "<g1>User-Agent cho các tải xuống được thêm thủ công</g1> — cách MDM tự giới thiệu với máy chủ cho các tải xuống bạn tự thêm. Khi <g2>Tự động</g2> được chọn (mặc định), MDM tự giới thiệu là trình duyệt mặc định của bạn: User-Agent mà trình duyệt đó gửi, với phiên bản bạn đã cài đặt (Chrome, Edge, Brave, Opera, Vivaldi, Firefox hoặc Safari). Hộp hiển thị thông tin này, và trỏ vào đó sẽ hiển thị tên trình duyệt. Khi MDM không nhận diện được trình duyệt mặc định của bạn, nó sẽ gửi User-Agent của một phiên bản Chrome hiện tại. Bỏ chọn <g3>Tự động</g3> để nhập User-Agent của riêng bạn; chọn lại để quay về mặc định. Các tải xuống từ trình duyệt sẽ sử dụng User-Agent của chính trình duyệt đó. Nếu một trang web từ chối User-Agent của trình duyệt, MDM sẽ thử lại một lần nữa với User-Agent của riêng nó."
   },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
@@ -16346,6 +16426,10 @@
    "source": "(the foreground)",
    "text": "(tiền cảnh)"
   },
+  "ef0391d17d9aa462": {
+   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added: see the <g1>code signing policy</g1>.",
+   "text": "Trình cài đặt Windows chưa được ký mã, nên Windows SmartScreen có thể cảnh báo trước khi khởi chạy lần đầu. Ký mã sẽ được thêm vào: xem <g1>chính sách ký mã</g1>."
+  },
   "ef078e7bf8101d03": {
    "source": "1 the file types MDM takes, 2 the sites it leaves to the browser.",
    "text": "1 các loại tệp MDM sẽ tải, 2 các trang web MDM sẽ bỏ qua và để trình duyệt xử lý."
@@ -16538,6 +16622,10 @@
    "source": "More than 80 fixes. The main ones:",
    "text": "Hơn 80 bản sửa lỗi. Các lỗi chính:"
   },
+  "f12989ae03685a0f": {
+   "source": "Mister Download Manager's code signing policy: free code signing by SignPath.io with a certificate by SignPath Foundation, which Windows files are signed, who may approve a signature, and what the app sends over the network.",
+   "text": "Chính sách ký mã của Mister Download Manager: ký mã miễn phí bởi SignPath.io với chứng chỉ của SignPath Foundation, các tệp Windows nào được ký, ai có thể phê duyệt chữ ký và ứng dụng gửi gì qua mạng."
+  },
   "f135b1b9671dc439": {
    "source": "Make everything larger / smaller, in every window (<g1>View → Interface size</g1>, 100 % to 200 %)",
    "text": "Phóng to / thu nhỏ mọi thứ, trong mọi cửa sổ (<g1>Xem → Kích thước giao diện</g1>, 100 % đến 200 %)"
@@ -16573,10 +16661,6 @@
   "f1769eb2aa5104ff": {
    "source": "<g1>Categories</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>Danh mục</g1><g2>Mister Download Manager</g2>"
-  },
-  "f181173f9c765d13": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent, <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
-   "text": "Tải xuống một tệp với tối đa 8 kết nối (<x1/>, từ 1 đến 128), hiển thị tiến trình. <x2/> tạm dừng; <x3/> tiếp tục. <x4/> đặt địa chỉ trang giới thiệu (tiêu đề Referer), <x5/> đặt User-Agent của yêu cầu, <x6/> đặt tiêu đề Cookie (cookie trên dòng lệnh sẽ nằm trong lịch sử shell; <x7/> đọc từ đầu vào chuẩn thay vào đó). <x8/> kiểm tra tệp đã hoàn tất: hex MD5, SHA-1, SHA-256, SHA-512 hoặc CRC32, tùy chọn đặt tên (<x9/>). <x10/> chọn DNS: <x11/> (mặc định); một dịch vụ và cách hỏi nó, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; địa chỉ máy chủ DNS, <x17/>; hoặc địa chỉ DNS-over-HTTPS. Nó không bao giờ quay lại DNS của hệ thống. <x18/> gửi mọi kết nối qua một bộ điều hợp mạng, theo tên của nó (<x19/>, <x20/>) hoặc một trong các địa chỉ của nó; khi không kết nối, không có gì được gửi và quá trình tải xuống thất bại. Một liên kết từ máy chủ tệp mà một trong các tài khoản debrid của bạn (<g21>Tùy chọn → Tài khoản</g21>) hỗ trợ sẽ đi qua tài khoản đó, như trong ứng dụng, và <x22/> nói <x23/>; <x24/> tải xuống chính địa chỉ đó (<g25>Tài khoản dịch vụ debrid</g25>)."
   },
   "f19042c8ea331c71": {
    "source": "Start MDM. The download is in the list under <g1>Unfinished</g1>.",
@@ -16829,6 +16913,10 @@
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
    "text": "Thêm tiện ích mở rộng vào mỗi trình duyệt bạn sử dụng, như dưới đây: Firefox từ cửa hàng tiện ích bổ sung của nó, các trình duyệt khác từ Chrome Web Store. Cho đến khi tiện ích mở rộng của trình duyệt đã kết nối với MDM, cửa sổ <g1>Thêm Mister Download Manager vào trình duyệt của bạn</g1> của MDM sẽ mở ra mỗi khi khởi động: nó liệt kê các trình duyệt đã tìm thấy và <g2>Thêm tiện ích mở rộng</g2> sẽ mở trang của cửa hàng trong trình duyệt đó. <g3>Cài đặt thủ công</g3> sẽ mở các bước để tải tiện ích mà không cần qua cửa hàng; <g4>Không hỏi lại</g4> sẽ tắt cửa sổ này."
+  },
+  "f6014e24fd45ae66": {
+   "source": "What is signed",
+   "text": "Những gì được ký"
   },
   "f6036d014e6073ae": {
    "source": "<g1>Media on this page</g1> lists the video streams and the video and sound files a page has loaded, so a video with no link can still be saved. Copy-protected streams are listed as <g2>Protected</g2> and never sent.",

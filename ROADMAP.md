@@ -1554,6 +1554,10 @@ These ship in the next version.
   first, community packages labelled); the benchmark's figures say they come from a test server
   on the same PC
 - ✅ CI's Linux libraries step retries a slow package mirror instead of timing out
+- ✅ Website: a [code signing policy](https://misterdownloadmanager.com/code-signing-policy.html)
+  page (which Windows files are signed, who reviews and approves, privacy), linked from every
+  page's footer, the download page and the README; the privacy policy says what the crash
+  report window asks GitHub
 
 ## Being worked on
 

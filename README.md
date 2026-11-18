@@ -126,6 +126,12 @@ winget install AhmedNefzaoui.MisterDownloadManager
 winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
 
+### Code signing policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+Which Windows files are signed, who reviews and approves them, and what MDM sends over the
+network: [code signing policy](https://misterdownloadmanager.com/code-signing-policy.html).
+
 ### On Linux
 
 MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, KDE Plasma, Xfce

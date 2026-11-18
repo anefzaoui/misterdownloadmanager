@@ -66,6 +66,10 @@
    "source": "On the same PC, downloading from a test server on that PC, MDM fetched a 1 GiB file in 1.0 s against IDM 6.42's 5.5 s, and a 256 KiB file in 0.03 s against 3.1 s: the medians of alternating runs. It is a loopback test: it times the programs, not an internet connection. The <g1>benchmark page</g1> has every run, the method and the raw data.",
    "text": "在同一台电脑上，从该电脑上的测试服务器下载时，MDM 下载 1 GiB 文件耗时 1.0 秒，而 IDM 6.42 耗时 5.5 秒；下载 256 KiB 文件耗时 0.03 秒，而 IDM 耗时 3.1 秒：这些都是交替运行的中位数。这是一项回环测试：它测试的是程序本身，而非互联网连接。<g1>基准测试页面</g1>包含每次运行的详细信息、测试方法和原始数据。"
   },
+  "013ffb458262cc02": {
+   "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
+   "text": "代码签名让 Windows 能够显示程序的发布者，并验证程序在构建后是否被篡改。当 Mister Download Manager（“MDM”）发布版本被签名时，其签名涵盖了来自此项目的 Windows 文件："
+  },
   "01579d403b821195": {
    "source": "<x1/> pull requests",
    "text": "<x1/> 个拉取请求"
@@ -313,10 +317,6 @@
   "049652ed195253e0": {
    "source": "MDM is free and always will be. If it saves you time, you can support its creator on GitHub Sponsors.",
    "text": "MDM 是免费的，并将永远免费。如果它为您节省了时间，您可以在 GitHub Sponsors 上支持其创建者。"
-  },
-  "04a7f9ae361a7bb3": {
-   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes a quality's selector from <x6/> (<x7/> = the best single file; <x8/> = the sound alone as the site has it, not converted; <x9/>, <x10/>, <x11/> or <x12/> = the sound as an MP3 at that bitrate, <x13/> at its best variable one; <x14/> = as Opus; <x15/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x16/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x17/> saves subtitles beside it: language codes from <x18/> (<x19/>), or <x20/> for every one the uploader gave; <x21/> takes the site's automatic captions instead; <x22/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g23>Embed chapters</g23> does. <x24/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x25/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x26/> does.",
-   "text": "下载视频。不带 <x1/> 或 <x2/> 时，默认下载“下载视频”窗口中显示的最佳质量：如果网站的视频和音频是分离的（例如 Bilibili），则使用 ffmpeg 将最佳画质与最佳音质合并（需要 ffmpeg）；否则下载包含视频和音频的最佳文件。<x3/>（或 <x4/>）选择该高度或页面提供的最接近的更低高度（否则选择最接近的更高高度），并显示出来。<x5/> 从 <x6/> 获取质量选择器（<x7/> = 最佳单一文件；<x8/> = 网站提供的原始音频，不转换；<x9/>、<x10/>、<x11/> 或 <x12/> = 该比特率的 MP3 音频，<x13/> 为最佳可变比特率；<x14/> = Opus 格式；<x15/> = FLAC 格式，无损但质量不高于网站原始音频；转换需要 ffmpeg）。<x16/>：MDM 自己的下载器通过指定数量的连接（默认为 8，范围 1 到 128）下载 yt-dlp 找到的每个流，对于分段流（HLS、DASH），则同时下载指定数量的片段。<x17/> 将字幕保存到视频文件旁边：语言代码来自 <x18/>（<x19/>），或 <x20/> 表示上传者提供的所有字幕；<x21/> 则获取网站的自动生成字幕；<x22/> 将字幕嵌入视频中（需要 ffmpeg，MP4 或 MKV 格式）。使用 ffmpeg 时，视频的章节也会嵌入到文件中，就像“下载视频”中的 <g23>嵌入章节</g23> 功能一样。<x24/> 通过一个网络适配器发送下载连接以及 yt-dlp（和 ffmpeg）的连接，与 <x25/> 类似；如果未连接，则不开始任何操作。当页面没有匹配的格式时，错误信息会列出可用的格式，与 <x26/> 类似。"
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -1190,6 +1190,10 @@
    "source": "<g1>Chrome</g1><g2>Google · <g3>Add to Chrome</g3></g2>",
    "text": "<g1>Chrome</g1><g2>Google · <g3>添加到 Chrome</g3></g2>"
   },
+  "116ed22c951d837d": {
+   "source": "Team roles",
+   "text": "团队角色"
+  },
   "1171655e77148bd2": {
    "source": "Every release, with its notes and files, is on <g1>GitHub Releases</g1>. The source code is at <g2>github.com/anefzaoui/misterdownloadmanager</g2> under the GNU GPL, version 3.",
    "text": "所有发布版本及其说明和文件都在<g1>GitHub Releases</g1>上。源代码位于<g2>github.com/anefzaoui/misterdownloadmanager</g2>，遵循 GNU GPL v3 许可。"
@@ -1930,6 +1934,10 @@
    "source": "Yes: every release has an AppImage, .deb, .rpm and .tar.gz for Linux and a .dmg for Apple Silicon and Intel Macs. Linux is supported, checked on four desktops (GNOME, KDE Plasma, Xfce and Cinnamon); macOS is still experimental. <g1>More</g1>",
    "text": "是的：每个版本都提供适用于 Linux 的 AppImage、.deb、.rpm 和 .tar.gz，以及适用于 Apple Silicon 和 Intel Mac 的 .dmg。Linux 受到支持，已在四种桌面环境（GNOME、KDE Plasma、Xfce 和 Cinnamon）上进行过检查；macOS 仍处于实验阶段。<g1>更多</g1>"
   },
+  "1be4beda32ded4a9": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked, and <g6>Most compatible (H.264 + AAC)</g6> beside the resolution of the one that plays everywhere (<g7>Choose the quality</g7>); <g8>All qualities and subtitles...</g8>, which opens the <g9>Download video from a page</g9> window; then <g10>Hide on this video</g10> (<g11>Esc</g11>), <g12>Never on</g12> the site (MDM remembers the site), and <g13>Button settings...</g13>, which opens MDM's Options. The arrow keys move through it, <g14>Enter</g14> picks, <g15>Esc</g15> closes it.",
+   "text": "<g1>其菜单</g1>（按钮旁边的箭头，或当按钮获得键盘焦点时的 <g2>↓</g2>）：显示视频标题、时长和网站；首先是<g3>下载最佳</g3>，然后在<g4>视频</g4>和<g5>音频</g5>下方，每种画质一行，显示文件类型、帧率或比特率和大小，最佳画质会标记出来，<g6>最兼容 (H.264 + AAC)</g6>会显示在可在任何地方播放的分辨率旁边（<g7>选择画质</g7>）；<g8>所有画质和字幕…</g8>，这会打开<g9>从页面下载视频</g9>窗口；然后是<g10>仅在此视频上隐藏</g10>（<g11>Esc</g11>），<g12>永不在</g12>此网站显示（MDM 会记住该网站），以及<g13>按钮设置…</g13>，这会打开 MDM 的选项。方向键可在其中移动，<g14>Enter</g14>选择，<g15>Esc</g15>关闭。"
+  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>键盘焦点会丢失</g1>：按钮变灰或按 Escape 关闭下拉菜单时，按 Tab 会从窗口顶部重新开始。现在，焦点会像在 Windows 中一样继续移动或返回。"
@@ -2366,6 +2374,10 @@
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, uTP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
    "text": "“<g1>选项 → 代理/SOCKS → 网络适配器</g1>”将 MDM 的连接绑定到一个适配器，通常是 VPN 的适配器（<g2>选项</g2>）。种子引擎会将每个套接字绑定到它：对等点（TCP、uTP，以及通过 SOCKS 代理）、HTTP 和 UDP 追踪器、DHT 和监听端口。在 Linux 和 macOS 上，它绑定适配器本身。在 Windows 上，它绑定适配器的地址（如果有 IPv4 地址，则绑定其 IPv4 地址），Windows 仅通过具有其源地址的适配器发送数据包。此时 UPnP 和本地对等点发现会被关闭，因为它们是与本地网络通信，而不是通过适配器通信。"
   },
+  "2268a0b1cd6985ad": {
+   "source": "<g1>What you ask for:</g1> the servers you download from, torrent peers and trackers, and the services you turn on yourself, such as a proxy, a DNS or a debrid account.",
+   "text": "<g1>您的请求：</g1>您从中下载的服务器、Torrent 对等点和追踪器，以及您自己开启的服务，例如代理、DNS 或网盘账户。"
+  },
   "228586c26511a211": {
    "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
    "text": "在 addons.mozilla.org 上打开附加组件页面，<g1>Mister Download Manager</g1>，然后点击<g2>添加到 Firefox</g2>。Zen 和 LibreWolf 使用相同的页面。"
@@ -2373,6 +2385,10 @@
   "2293a114810b4b8f": {
    "source": "More control in version 0.5.0",
    "text": "0.5.0 版带来更多控制"
+  },
+  "229512f572cbcf74": {
+   "source": "MDM has no telemetry, no analytics and no ads, and it sends nothing about you to us. It connects to other systems only for these:",
+   "text": "MDM 没有遥测、分析和广告，也不会向我们发送任何关于您的信息。它仅为以下目的连接到其他系统："
   },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
@@ -2633,6 +2649,10 @@
   "26389260c1c38a82": {
    "source": "Feeds and rules are kept in <x1/> in MDM's data folder. MDM reads at most 5 MB of a feed.",
    "text": "源和规则保存在 MDM 数据文件夹中的<x1/>里。MDM 最多读取 5 MB 的源内容。"
+  },
+  "264823238b3f18e6": {
+   "source": "<g1>Helpers you install:</g1> yt-dlp and ffmpeg (and gallery-dl) come from their official releases when you choose to install them, and yt-dlp is kept up to date when you download videos.",
+   "text": "<g1>您安装的帮助程序：</g1>当您选择安装 yt-dlp 和 ffmpeg（以及 gallery-dl）时，它们来自其官方发布版本，并且当您下载视频时，yt-dlp 会保持最新。"
   },
   "2656643a5769e161": {
    "source": "<g1>Real-Debrid, AllDebrid and Premiumize</g1> (<g2>#44</g2>): <g3>Options → Accounts</g3> keeps your debrid service accounts. Real-Debrid signs in by code in the browser, or with your API token; AllDebrid by a PIN in the browser or with an API key, and MDM waits while it prepares a slow link; Premiumize with its API key. A link from a file host your service supports is unlocked through your account, then downloaded with all of MDM's connections, pause and resume, from Add URL, the browser's link menu and batch downloads. When the direct link expires, MDM asks the service for a new one. The direct link is never shown or copied, and the sign-in is kept like your other passwords (the system's keychain, below). Each service is asked well under its request limit. See <g4>Debrid service accounts</g4>. Experimental: built from the services' public API documentation, not yet confirmed with a real paid account.",
@@ -3222,6 +3242,10 @@
    "source": "Mac",
    "text": "Mac"
   },
+  "2e27925360e4deec": {
+   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. Some checks (SourceForge's) refuse anything that calls itself a browser without connecting exactly like one, and let a program that says what it is through: when that connection is refused too, MDM asks once more under its own name (<x2/> and its version, or the User-Agent you typed in <g3>Options → Downloads</g3>), with the same cookies and referrer, and remembers the site until MDM closes, so its next downloads, and a paused one when it resumes, go that way at once. It solves no challenge: a site that still wants one answered (some Cloudflare checks ask it of every visitor, for the site's pages too) refuses again, and MDM says <g4>this site lets only browsers through</g4>; Alt+click the link to leave the download to the browser.",
+   "text": "通过 MDM 扩展，在浏览器中点击下载链接时，下载任务会交给 MDM 处理。MDM 会获取下载地址以及来源页面（引用页）、您在该网站的 Cookie 和浏览器的 User-Agent，因此需要登录才能进行的下载也能正常工作。它还会获取浏览器自身下载已达到的地址：当网站拒绝 MDM 直接获取链接（浏览器已使用过的一次性链接，或只允许浏览器请求其链接的网站）时，MDM 会从该地址继续下载一次，如果目标是另一个网站，则不带您的 Cookie。当网站的机器人检测（例如 Cloudflare）或其拒绝程序（FileHippo 的 <g1>412 Precondition Failed</g1>）拒绝 MDM 自身的连接时，MDM 会再次尝试以浏览器的方式连接（相同的握手、设置和请求头顺序），只带您的浏览器 User-Agent 和该网站的 Cookie，并以与任何下载任务相同的连接数进行下载，每个连接请求文件的一部分（如果网站拒绝分段下载，则只用一个连接）；您的代理、网络适配器和速度限制照常适用。当网站的检测拒绝视频流（HLS、DASH）的片段时，处理方式也相同。有些检测（SourceForge）会拒绝任何自称浏览器但连接方式不完全一致的请求，而允许明确表明身份的程序通过：当这种连接也被拒绝时，MDM 会再次以其自身名称（<x2/> 及其版本，或您在<g3>选项 → 下载</g3>中输入的 User-Agent）请求，带上相同的 Cookie 和引用页，并记住该网站直到 MDM 关闭，这样其后续下载以及恢复的暂停下载会立即采用这种方式。它不解决任何挑战：如果网站仍然需要回答挑战（某些 Cloudflare 检测会要求每个访问者回答，包括网站页面），它会再次拒绝，MDM 会提示<g4>此网站只允许浏览器通过</g4>；Alt+单击链接可将下载留给浏览器处理。"
+  },
   "2e3cb33a528c6b52": {
    "source": ", <x1/>, <x2/>, <x3/>, <x4/>, <x5/>, <x6/>, <x7/>, <x8/>,",
    "text": "、<x1/>、<x2/>、<x3/>、<x4/>、<x5/>、<x6/>、<x7/>、<x8/>、"
@@ -3314,6 +3338,10 @@
    "source": "Many sites publish their new torrents as an RSS or Atom feed. MDM can watch feeds, list what they hold, and add the new torrents you want by itself. Choose <g1>Tasks → RSS feeds...</g1>, or click the arrow next to <g2>Add Torrent</g2>.",
    "text": "许多网站会通过 RSS 或 Atom 源发布新种子。MDM 可以监视源、列出其中的内容，并自动添加您想要的新种子。选择<g1>任务 → RSS 源...</g1>，或点击<g2>添加 Torrent</g2>旁边的箭头。"
   },
+  "2f5a8130c47e294d": {
+   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - <g3>Most compatible (H.264 + AAC)</g3>, second in the list: the best H.264 video the site has (YouTube's usually go up to 1080p) with AAC sound (in stereo when the site has it beside surround), in an MP4 that Premiere Pro and other editors, older TVs and most phones open as it is. YouTube's best qualities are AV1 or VP9 with Opus sound, which some of them can't read. The line says its resolution: <x4/>. MDM picks those streams, it doesn't convert anything: when the site has no H.264 video with AAC sound the line isn't there, and when the best line already is that, it isn't listed twice. - The size is that of exactly what downloads, the video and its sound. A size with <x5/> before it (<x6/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g7>Audio only, original</g7>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g8>Audio only MP3</g8> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g9>Audio only OPUS</g9>: an <x10/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g11>Audio only FLAC</g11>: a lossless <x12/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "等待列表加载。列表会显示每种画质及其大小，最佳画质优先，然后是纯音频： - 视频行显示分辨率、编解码器、帧率以及是否为 HDR：<x1/>。如果某个分辨率有多种格式（AV1、VP9 和 H.264，HDR 和 SDR），则每种格式都会有一行：AV1 生成的文件最小，H.264 在大多数设备上都能播放，而 HDR 视频在不支持 HDR 的屏幕上会显得色彩暗淡。<x2/> 仅在相同分辨率的 HDR 行旁边显示。 - <g3>最兼容 (H.264 + AAC)</g3>，列表中的第二项：网站提供的最佳 H.264 视频（YouTube 通常最高支持 1080p），配以 AAC 音频（如果网站同时提供环绕声，则为立体声），格式为 MP4，Premiere Pro 和其他编辑器、旧电视以及大多数手机都能直接打开。YouTube 的最佳画质是 AV1 或 VP9 配 Opus 音频，有些设备无法读取。该行会显示其分辨率：<x4/>。MDM 会选择这些流，不进行任何转换：如果网站没有 H.264 视频配 AAC 音频，则该行不会显示；如果最佳画质本身就是这种格式，则不会重复列出。 - 大小是下载内容的实际大小，包括视频和音频。前面带有 <x5/> 的大小（<x6/>）仅为估算值：网站未提供大小，因此根据流的比特率和时长计算得出。 - <g7>仅音频，原始</g7>：网站自身的原始文件，未转换，每种类型（WebM 内含 Opus，M4A）各一个，最佳的优先。这是音质最好的文件，且文件最小。 - <g8>仅音频 MP3</g8>，提供最佳可变比特率 (VBR) 以及 320、256、192 和 128 kbps，适用于仅支持 MP3 的播放器。 - <g9>仅音频 OPUS</g9>：一个 <x10/> 文件。如果网站的音频已经是 Opus 格式（YouTube 通常是），则仅将其移入该文件，不进行转换，因此不会有任何损失。 - <g11>仅音频 FLAC</g11>：一个无损 <x12/> 文件，适用于需要 FLAC 的音乐库或程序。它无法提升音质：网站的音频已经经过有损压缩，FLAC 只是将其原样保存，文件大小会增加数倍。选择此项时，窗口会提示。"
+  },
   "2f5eb68f16f89115": {
    "source": "<g1><g2>Queues and the Scheduler</g2></g1> — run downloads a few at a time, start and stop them by the clock, and turn the computer off when they are done.",
    "text": "<g1><g2>队列和计划程序</g2></g1> — 限制同时运行的下载数量，按时间启动和停止下载，并在下载完成后关闭计算机。"
@@ -3385,6 +3413,10 @@
   "300fe42c6f7d0e75": {
    "source": "Help: what to do when an antivirus or VirusTotal flags MDM, and how to check your copy is the real one.",
    "text": "帮助：当杀毒软件或 VirusTotal 标记 MDM 时该怎么做，以及如何检查您的副本是否为正版。"
+  },
+  "3017321534b213e2": {
+   "source": "Whatever the signature, you can still check every download against the release's signed checksums: see <g1>Check your download</g1>.",
+   "text": "无论签名如何，您仍然可以根据发布版本的签名校验和检查每次下载：请参阅<g1>检查您的下载</g1>。"
   },
   "301fb01942b6c3a7": {
    "source": "<g1>macOS Intel</g1><g2>.dmg · Macs with an Intel processor · experimental</g2>",
@@ -3742,6 +3774,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "速度限制器可防止 MDM 占用全部网络带宽。"
   },
+  "36e51409041d8610": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the most compatible, H.264 with AAC; <x6/> = the original sound; <x7/>, <x8/>, <x9/> as for <x10/>). <x11/> as for <x12/>.",
+   "text": "将播放列表或频道的视频逐个下载到 <x1/> 内以列表命名的文件夹中。<x2/> 是所有视频的统一画质，与 <x3/> 相同（默认是每个视频的最佳画质；<x4/> = 最高 720p；<x5/> = 最兼容的 H.264 + AAC；<x6/> = 原始音频；<x7/>、<x8/>、<x9/> 与 <x10/> 相同）。<x11/> 与 <x12/> 相同。"
+  },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
    "text": "通过扩展程序支持 Firefox、Chrome、Edge、Brave、Opera 和 Vivaldi，可从<g1>Firefox 附加组件商店</g1>和<g2>Chrome 网上应用店</g2>获取。如果没有扩展程序，复制链接后 MDM 会打开下载窗口。<g3>更多</g3>"
@@ -3901,6 +3937,10 @@
   "391a6b0e422e6b00": {
    "source": "Through your VPN, or not at all.",
    "text": "通过您的 VPN，否则不下载。"
+  },
+  "391fbe820c800f21": {
+   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (<x5/> for <x6/>, else <x7/>) and <x8/> whether that height wasn't offered. Then <x9/> lines, <x10/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x11/>: the subtitle files saved beside it, and the languages the site refused (<x12/>; <x13/>: they came on a second try, beside the video instead of in it).",
+   "text": "如果没有 <x1/>，则首先显示 <x2/>：所选画质，<x3/> 是 <x4/> 的高度（<x5/> 用于 <x6/>，否则为 <x7/>），以及 <x8/> 是否未提供该高度。然后是 <x9/> 行，<x10/> 用于下载日志中的内容（服务器未提供但已选择的最接近的较低画质），然后是 <x11/>：保存到旁边的字幕文件，以及网站拒绝的语言（<x12/>；<x13/>：它们在第二次尝试时成功下载，保存到视频旁边而不是嵌入视频中）。"
   },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
@@ -4390,10 +4430,6 @@
    "source": "Options: Remote, with the address to open, the certificate's fingerprint and the paired devices",
    "text": "选项：远程，包含要打开的地址、证书指纹和已配对设备"
   },
-  "3fa8036373b9b833": {
-   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added.",
-   "text": "Windows 安装程序尚未进行代码签名，因此首次启动前 Windows SmartScreen 可能会发出警告。之后会添加代码签名。"
-  },
   "3fab3621d5ce1a78": {
    "source": "Slow down one download only",
    "text": "仅减慢一个下载的速度"
@@ -4745,6 +4781,10 @@
   "44f50999ce094e3a": {
    "source": "We may update these terms; the date at the top says when. Changes apply from then on and are recorded in the project's public history on GitHub.",
    "text": "我们可能会更新这些条款；顶部的日期注明了更新时间。变更自该日期起生效，并记录在项目 GitHub 公开历史中。"
+  },
+  "4502e19501791bba": {
+   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent, the one your sign-in and the site's checks know; the one typed here doesn't replace it. If a site turns a browser's User-Agent away, MDM asks once more with the one typed here (with <g4>Automatic</g4>, with Internet Explorer's). If a site's bot check refuses it, and the way a browser connects too, MDM asks once more under its own name, <x5/> and its version (or the one typed here), and remembers that site until MDM closes. A User-Agent typed here for the downloads you add yourself is the only one they send.",
+   "text": "<g1>手动添加下载的用户代理</g1> — MDM 向服务器表明自身身份的方式，用于您手动添加的下载。勾选<g2>自动</g2>（默认）时，MDM 会将自己标识为您的默认浏览器：发送该浏览器当前安装版本（Chrome、Edge、Brave、Opera、Vivaldi、Firefox 或 Safari）的用户代理。框中会显示该信息，鼠标悬停时会显示浏览器名称。如果 MDM 无法识别您的默认浏览器，它会发送当前 Chrome 的用户代理。取消勾选<g3>自动</g3>可手动输入；再次勾选可恢复。来自浏览器的下载会使用该浏览器自己的用户代理，即您的登录信息和网站检查所识别的用户代理；此处输入的用户代理不会替换它。如果某个网站拒绝了浏览器的用户代理，MDM 会使用此处输入的用户代理（如果勾选<g4>自动</g4>，则使用 Internet Explorer 的用户代理）再次尝试。如果网站的机器人检查拒绝了它，并且浏览器连接方式也被拒绝，MDM 会以自己的名称（<x5/>及其版本，或此处输入的用户代理）再次尝试，并记住该网站直到 MDM 关闭。此处为手动添加的下载输入的用户代理是它们唯一发送的用户代理。"
   },
   "4508e7f2d360848f": {
    "source": "The files go to a queue, not all at once. MDM asks which one, and that question can be turned off in <g1>Options → Downloads</g1>. From there the queue runs as many files at a time as you set, and the Scheduler can start it at night. See <g2>Queues and the Scheduler</g2>.",
@@ -5169,6 +5209,10 @@
   "4c48ce4cf971575b": {
    "source": "Download manager for Windows and Linux, with macOS builds",
    "text": "适用于 Windows 和 Linux 的下载管理器，也提供 macOS 版本"
+  },
+  "4c51533571f9a9b3": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Most compatible (H.264 + AAC)</g3> (each video's best H.264 picture with AAC sound; a video that has none isn't downloaded), <g4>Up to</g4> a height (each video at that height, or the nearest below it), <g5>Audio only, original</g5>, <g6>Audio only MP3</g6>, <g7>Audio only OPUS</g7> or <g8>Audio only FLAC</g8>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>画质</g1> 适用于所有视频：<g2>最佳画质</g2>、<g3>最兼容 (H.264 + AAC)</g3>（每个视频的最佳 H.264 画面配 AAC 音频；没有此格式的视频不会下载）、<g4>最高</g4> 某个高度（每个视频在该高度或低于该高度的最近画质）、<g5>仅音频，原始</g5>、<g6>仅音频 MP3</g6>、<g7>仅音频 OPUS</g7> 或 <g8>仅音频 FLAC</g8>。如果没有 ffmpeg，则只提供自带音频的画质，不提供 MP3、Opus 或 FLAC。"
   },
   "4c5fe1c0a5f7ac2d": {
    "source": "<g1>Linux</g1>: install the <g2>.deb</g2> with <x3/> (Debian, Ubuntu, Mint) or the <g4>.rpm</g4> with <x5/> (Fedora), and the packages bring what MDM needs. Or make the <g6>AppImage</g6> executable (<x7/>) and run it. MDM connects itself to your browsers at each start; then add the extension from your browser's store, above. <g8>More in the help</g8>.",
@@ -5830,10 +5874,6 @@
    "source": "Made something others would like? Open a <g1>pull request on GitHub</g1> that adds it to <g2><x3/></g2>, with:",
    "text": "制作了其他人可能会喜欢的主题？在 <g1>GitHub 上提交拉取请求</g1>，将其添加到 <g2><x3/></g2>，并附带："
   },
-  "560a94f3340fd0a3": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, frame rate or bitrate and size, the best one marked; <g6>All qualities and subtitles...</g6>, which opens the <g7>Download video from a page</g7> window; then <g8>Hide on this video</g8> (<g9>Esc</g9>), <g10>Never on</g10> the site (MDM remembers the site), and <g11>Button settings...</g11>, which opens MDM's Options. The arrow keys move through it, <g12>Enter</g12> picks, <g13>Esc</g13> closes it.",
-   "text": "<g1>其菜单</g1>（旁边的箭头，或当按钮具有键盘焦点时为<g2>↓</g2>）：视频的标题、时长和网站；首先是<g3>下载最佳</g3>，然后是<g4>视频</g4>和<g5>音频</g5>下的每种画质的一行，包含文件类型、帧率或比特率和大小，最佳画质会标记出来；<g6>所有画质和字幕...</g6>，它会打开<g7>从页面下载视频</g7>窗口；然后是<g8>仅在此视频上隐藏</g8>（<g9>Esc</g9>），<g10>从不在此站点显示</g10>（MDM 会记住该站点），以及<g11>按钮设置...</g11>，它会打开 MDM 的“选项”。箭头键用于移动，<g12>Enter</g12>用于选择，<g13>Esc</g13>用于关闭。"
-  },
   "560b06bdc37086ad": {
    "source": "Previous image",
    "text": "上一张图片"
@@ -5997,6 +6037,10 @@
   "5825a9c27ba24869": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers, and screen readers.",
    "text": "<g1><g2>键盘快捷方式</g2></g1> — 主窗口响应的每个按键，以及屏幕阅读器。"
+  },
+  "5841102b5b7e5308": {
+   "source": "<g1>Committers and reviewers:</g1> <x2/> (<x3/>). Contributions from other people are reviewed by him before they are merged.",
+   "text": "<g1>提交者和审阅者：</g1> <x2/>（<x3/>）。其他人的贡献在合并前由他审阅。"
   },
   "584697d876791ed0": {
    "source": "<g1>Download video</g1> finds the video on pages whose player loads a <x2/> or <x3/> address that answers something else first, as SVT Play does (<g4>#377</g4>).",
@@ -6882,6 +6926,10 @@
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
    "text": "<g1>GitHub 上的项目</g1><g2>代码、问题和所有发布版本</g2>"
   },
+  "64ac94eff5ae08d3": {
+   "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
+   "text": "程序：<x1/>、<x2/>（浏览器帮助程序）、<x3/> 和 <x4/>；"
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "浏览器和 MDM 未连接"
@@ -7366,10 +7414,6 @@
    "source": "Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (x64 and ARM64 Windows; on macOS and Linux MDM uses the system's, and on 32-bit Windows one you choose in Helpers).",
    "text": "安装或更新视频所需的辅助程序：yt-dlp（通过其签名密钥验证）和 ffmpeg（适用于 x64 和 ARM64 Windows；在 macOS 和 Linux 上，MDM 使用系统自带的，在 32 位 Windows 上则使用您在“帮助程序”中选择的）。"
   },
-  "6cbd30742f3005de": {
-   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>). <x10/> as for <x11/>.",
-   "text": "将播放列表或频道中的视频逐个下载到 <x1/> 内以列表命名的文件夹中。<x2/> 指定所有视频的统一画质，与 <x3/> 的用法相同（默认为每个视频的最佳画质；<x4/> = 最高 720p；<x5/> = 原始音轨；<x6/>、<x7/>、<x8/> 的用法与 <x9/> 相同）。<x10/> 的用法与 <x11/> 相同。"
-  },
   "6cf66bb7f58412f7": {
    "source": "<g1>Downloads from a browser behind a VPN or proxy extension go through it too</g1> (<g2>#42</g2>): the browser extension passes the proxy the browser uses for a download (an extension's, or its settings' manual proxy or auto-config script) with it. MDM downloads through the same proxy while <g3>Options → Proxy / Socks → Use proxy/socks from a browser's request</g3> is on, which is the default. A proxy that needs the VPN extension's own login can't be shared: the download says so rather than going without it. It is an opt-in, off as installed: <g4>Send downloads through this browser's proxy or VPN extension</g4> in the extension's popup. In Firefox the switch asks for the browser's <g5>proxy</g5> permission (to read the browser's proxy, never to change it). Chrome, Edge, Brave, Opera and Vivaldi can't make that permission optional, so their extension has it from the install; Chrome counts it under the access to every site the extension already has, so the update asks for nothing new. There the extension reads the browser's proxy settings: the server for the download's scheme (honouring their bypass list), or their auto-config script. Addresses on this computer (localhost, 127.0.0.1) go straight to it, as the browser sends them.",
    "text": "<g1>通过 VPN 或代理扩展的浏览器下载也会通过它</g1>（<g2>#42</g2>）：浏览器扩展会将浏览器用于下载的代理（扩展的，或其设置中的手动代理或自动配置脚本）一并传递。当<g3>选项 → 代理/SOCKS → 使用浏览器请求中的代理/SOCKS</g3>开启时（默认设置），MDM 会通过相同的代理下载。需要 VPN 扩展自身登录的代理无法共享：下载会提示此情况，而不是在没有代理的情况下进行。这是一个选择性加入功能，默认安装时关闭：在扩展的弹出窗口中选择<g4>通过此浏览器的代理或 VPN 扩展发送下载</g4>。在 Firefox 中，此开关会请求浏览器的<g5>代理</g5>权限（读取浏览器的代理，绝不更改）。Chrome、Edge、Brave、Opera 和 Vivaldi 无法使该权限成为可选，因此其扩展在安装时就拥有此权限；Chrome 将其计入扩展已拥有的对每个站点的访问权限中，因此更新不会请求任何新内容。在此，扩展会读取浏览器的代理设置：下载方案的服务器（遵守其绕过列表），或其自动配置脚本。此计算机上的地址（localhost、127.0.0.1）会直接发送，就像浏览器发送它们一样。"
@@ -7549,6 +7593,10 @@
   "6f1cdc5d8ae09e38": {
    "source": "The files go where <g1>What an archive holds goes</g1> says, as with any other extraction. On the way they are in a folder named <x2/> beside the archive.",
    "text": "文件会保存到<g1>压缩包内容保存位置</g1>所指定的位置，与其他任何解压操作一样。在此过程中，它们会先保存在压缩包旁一个名为<x2/>的文件夹中。"
+  },
+  "6f1ec823eb269593": {
+   "source": "Code signing policy — Mister Download Manager",
+   "text": "代码签名策略 — Mister Download Manager"
   },
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
@@ -7886,6 +7934,10 @@
    "source": "Does it download torrents?",
    "text": "它能下载种子文件吗？"
   },
+  "73f8b10fc7956da9": {
+   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and once under its own name (some checks let a program that says what it is through), and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
+   "text": "如果提示<g1>此网站只允许浏览器访问</g1>，则表示网站的机器人检测（例如 Cloudflare 的检测）拒绝了 MDM。MDM 已经尝试过一次以您浏览器的方式连接，并带上您浏览器在该网站的 Cookie；也尝试过一次以 MDM 自己的名义连接（有些检测允许表明身份的程序通过），但网站仍然要求在浏览器中完成检测。请在浏览器中打开该网站（通过其检测可能就足够了：再次点击链接），或者在点击链接时按住 <g2>Alt</g2> 键，将该下载任务交给浏览器处理。请参阅<g3>浏览器集成</g3>。"
+  },
   "73ff421dec347bdf": {
    "source": "Missing or odd translations",
    "text": "翻译缺失或不自然"
@@ -8049,6 +8101,10 @@
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>关</g1>（默认）— yt-dlp 仅在您使用视频上方的按钮时，从浏览器扩展程序获取 Cookie。"
+  },
+  "76c5a3f40b58e25c": {
+   "source": "<g1>Approvers:</g1> <x2/> (<x3/>). Every signing request is approved by hand, release by release.",
+   "text": "<g1>批准者：</g1> <x2/>（<x3/>）。每个签名请求都由人工逐个版本批准。"
   },
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
@@ -8509,10 +8565,6 @@
   "7d9ceeedcf5266a6": {
    "source": "MDM checks its own downloads too",
    "text": "MDM 也会检查自己的下载"
-  },
-  "7db9ed501785d447": {
-   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
-   "text": "<g1>画质</g1>适用于所有视频：<g2>最佳质量</g2>、<g3>最高</g3>高度（每个视频下载该高度或最接近的较低高度）、<g4>仅音频，原始</g4>、<g5>仅音频 MP3</g5>、<g6>仅音频 OPUS</g6>或<g7>仅音频 FLAC</g7>。没有 ffmpeg 时，只提供带有音频的视频画质选项，不提供 MP3、Opus 或 FLAC。"
   },
   "7dc4d6e14d888b60": {
    "source": "A downloader for the terminal",
@@ -9029,6 +9081,10 @@
   "83f9afcb67f234d6": {
    "source": "A clean, simple app for HTTP, FTP, BitTorrent and magnet links, built on aria2",
    "text": "一款简洁易用的应用，支持 HTTP、FTP、BitTorrent 和磁力链接，基于 aria2 构建"
+  },
+  "83fd235cecaffa5f": {
+   "source": "Every signed file is built from the public source code at <g1>github.com/anefzaoui/misterdownloadmanager</g1> by GitHub Actions, on GitHub's servers, never on a personal computer. Each one says it is Mister Download Manager and which version it is.",
+   "text": "每个签名文件都由 GitHub Actions 在 GitHub 服务器上，而非个人计算机上，从 <g1>github.com/anefzaoui/misterdownloadmanager</g1> 的公共源代码构建。每个文件都表明它是 Mister Download Manager 及其版本。"
   },
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
@@ -9622,6 +9678,10 @@
    "source": "3. Using it responsibly",
    "text": "3. 负责任地使用"
   },
+  "8d4b165bd0bf1ad4": {
+   "source": "<g1>GitHub, after a crash.</g1> When MDM crashes or freezes, the report window may download that version's debugging symbols from MDM's GitHub release, so the report can say where in MDM's code it happened, and asks GitHub's search whether the same problem was reported already. The search carries only the report's signature, the kind of problem and the name of the function in MDM's code (such as <x2/>). The report itself goes nowhere unless you send it.",
+   "text": "<g1>GitHub，崩溃后。</g1> 当 MDM 崩溃或卡死时，报告窗口可能会从 MDM 的 GitHub 发布页下载该版本的调试符号，以便报告能指出 MDM 代码中发生问题的位置，并询问 GitHub 搜索是否已有相同问题报告。搜索仅包含报告签名、问题类型和 MDM 代码中函数名称（例如 <x2/>）。除非您发送，否则报告本身不会发送到任何地方。"
+  },
   "8d5482092a09013b": {
    "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
    "text": "有些页面播放的视频没有链接，有些播放器也会隐藏视频，不让下载按钮检测到。工具栏按钮会列出页面已加载的内容，因此您仍然可以保存这些内容："
@@ -9629,6 +9689,10 @@
   "8d682522748bdfae": {
    "source": "Adwaita",
    "text": "Adwaita"
+  },
+  "8d7218d1ca60de7c": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent (then the only one sent; without it, MDM speaks as your default browser, and, when a site's bot check refuses that and the way a browser connects too, once more under its own name), <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
+   "text": "下载文件，最多 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 设置引用页面地址（Referer 头），<x5/> 设置请求的 User-Agent（此时只发送此项；若无此项，MDM 会以您的默认浏览器身份通信，如果网站的机器人检查拒绝此方式，则会再次以 MDM 自己的名称通信），<x6/> 设置 Cookie 头（命令行中的 cookie 会留在 shell 历史记录中；<x7/> 则从标准输入读取）。<x8/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x9/>）。<x10/> 选择 DNS：<x11/>（默认）；一个服务及其查询方式，<x12/>、<x13/>、<x14/>、<x15/>、<x16/>；DNS 服务器地址，<x17/>；或一个 DNS-over-HTTPS 地址。它绝不会回退到系统的 DNS。<x18/> 通过一个网络适配器发送每个连接，通过其名称（<x19/>、<x20/>）或其某个地址；如果未连接，则不发送任何内容，下载失败。来自文件主机且您的某个 Debrid 账户（<g21>选项 → 账户</g21>）支持的链接会通过该账户，与应用程序中一样，<x22/> 表示 <x23/>；<x24/> 下载地址本身（<g25>Debrid 服务账户</g25>）。"
   },
   "8d833607c2d3b591": {
    "source": "Sites change often, and a newer yt-dlp usually fixes a video that stopped working. MDM doesn't update yt-dlp on its own yet; <g1>the help</g1> shows how to get the newest one.",
@@ -9861,6 +9925,10 @@
   "91413c8d067f6992": {
    "source": "<g1>All Downloads</g1> — everything, with a node per category below it.",
    "text": "<g1>所有下载</g1> — 显示所有下载，下方按类别列出各个节点。"
+  },
+  "91612a24a2045c1f": {
+   "source": "Everything the app, its browser extension and this website do with your data is in the <g1>privacy policy</g1>.",
+   "text": "应用程序、其浏览器扩展和本网站对您的数据所做的所有操作均在<g1>隐私政策</g1>中。"
   },
   "916757d942e8dd7f": {
    "source": "When you added it.",
@@ -11186,6 +11254,10 @@
    "source": "<g1>Remote control</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>远程控制</g1><g2>Mister Download Manager</g2>"
   },
+  "a3ab409ea198a57d": {
+   "source": "<g1>Updates:</g1> when it starts, and once a day while it stays open, MDM asks GitHub for its latest version. You can turn this off in <g2>Help → Check for updates</g2> (<g3>Check for updates at every start</g3>).",
+   "text": "<g1>更新：</g1>MDM 启动时以及保持打开状态时每天一次，会向 GitHub 查询最新版本。您可以在<g2>帮助 → 检查更新</g2>（<g3>每次启动时检查更新</g3>）中关闭此功能。"
+  },
   "a3c9e8e877390e25": {
    "source": "A message to the host is at most 1 MB (<x1/>; the host refuses more, and the browser lets a host answer no more than that either). A page's links past it go in parts, each measured as the widest browser writes it (<x2/> in <x3/>) and carrying the page's referrer and cookies and its place (<x4/>); the host hands each over as it comes, and the app keeps them (<x5/>) until the last is in, then opens Link grabber with the whole list.",
    "text": "发往主机的消息最大为 1 MB（<x1/>；主机拒绝更多，浏览器也只允许主机回复不超过此大小）。页面超出此限制的链接分部分发送，每部分都按最宽的浏览器写入方式测量（<x2/> 在 <x3/> 中），并携带页面的引用者、Cookie 及其位置（<x4/>）；主机按接收顺序处理每个部分，应用程序将其保留（<x5/>），直到最后一个部分到达，然后用整个列表打开链接抓取器。"
@@ -11914,6 +11986,10 @@
    "source": "Transfer: first request to last byte",
    "text": "传输：从首次请求到最后一个字节"
   },
+  "adcd8aefd0f19eea": {
+   "source": "the installers, <x1/> and its ARM64 and 32-bit versions, and the uninstaller they put on your computer;",
+   "text": "安装程序：<x1/> 及其 ARM64 和 32 位版本，以及它们安装在您计算机上的卸载程序；"
+  },
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM 像网页浏览器一样下载您指定的内容，只是速度更快、控制更灵活。它适用于日常下载：软件和更新、文档、您自己的云存储文件、您有权保存的视频和音乐、Linux 镜像以及制作者分享的其他种子文件，还有您有权下载的任何其他内容。"
@@ -12077,6 +12153,10 @@
   "b08e516b19471d83": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.5.2 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>所有文件和校验和</g1><g2>GitHub Releases 上的 0.5.2 版本，包含 SHA256SUMS.txt</g2>"
+  },
+  "b0912015dbe6e3fb": {
+   "source": "<g1>Crash reports:</g1> after a crash, the report window may fetch that version's debugging symbols from MDM's GitHub release and ask GitHub whether the same problem was reported already. The report itself opens in your browser, on GitHub, only if you choose to send it.",
+   "text": "<g1>崩溃报告：</g1>崩溃后，报告窗口可能会从 MDM 的 GitHub 发布版本中获取该版本的调试符号，并向 GitHub 查询是否已报告相同问题。报告本身仅在您选择发送时才会在您的浏览器中，于 GitHub 上打开。"
   },
   "b0c0ef4ee0008226": {
    "source": "— FTP secured with TLS from the start of the session (explicit FTPS, <x1/>, usually port 21). Use it when the server says it supports TLS.",
@@ -12522,9 +12602,9 @@
    "source": "Children",
    "text": "儿童"
   },
-  "b6812b16e31188d5": {
-   "source": "With the MDM extension, clicking a download link in your browser hands the download to MDM. MDM gets the address together with the page it came from (the referrer), your cookies for the site and the browser's User-Agent, so downloads that need you to be signed in still work. It also gets the address the browser's own download had reached: when a site refuses MDM the link itself (a one-time link the browser has already used, or a site that lets only browsers ask for its links), MDM goes on from there once, without your cookies if it is another site. When a site's bot check (Cloudflare's, for one) or its refusal of programs (FileHippo's <g1>412 Precondition Failed</g1>) turns MDM's own connection away, MDM asks once more connecting the way your browser does (the same handshake, settings and order of headers), with your browser's User-Agent and its cookies for that site only, and downloads on it with as many connections as any download, each asking for its part of the file (on one connection when the site refuses parts there); your proxy, network adapter and speed limits apply as usual. The pieces of a video stream (HLS, DASH) go the same way when the site's check refuses them. It solves no challenge: a site that still wants one answered refuses again, and MDM says <g2>this site lets only browsers through</g2>; Alt+click the link to leave the download to the browser.",
-   "text": "MDM 扩展程序让您在浏览器中点击下载链接时，将下载任务交给 MDM 处理。MDM 会获取下载地址、来源页面（referrer）、您在该网站的 cookie 以及浏览器的 User-Agent，因此需要登录才能下载的任务也能正常进行。它还会获取浏览器自身下载已达到的地址：当某个网站拒绝 MDM 直接获取链接（浏览器已使用过的一次性链接，或只允许浏览器请求其链接的网站）时，MDM 会从该地址继续下载一次，如果目标是另一个网站，则不带您的 cookie。当网站的机器人检查（例如 Cloudflare）或其拒绝程序（FileHippo 的 <g1>412 Precondition Failed</g1>）拒绝 MDM 自身的连接时，MDM 会再次尝试以浏览器的方式连接（相同的握手、设置和请求头顺序），并仅使用您浏览器的 User-Agent 和该网站的 cookie 进行下载，以与任何下载任务相同的连接数进行下载，每个连接请求文件的一部分（如果网站拒绝分段下载，则使用一个连接）；您的代理、网络适配器和速度限制照常适用。当网站检查拒绝视频流（HLS、DASH）的片段时，这些片段也以相同方式处理。它不解决任何挑战：如果网站仍然需要回答挑战，它会再次拒绝，MDM 会提示<g2>此网站只允许浏览器通过</g2>；按 Alt+点击链接可将下载任务留给浏览器处理。"
+  "b680d858b4ec85a9": {
+   "source": "Code signing policy",
+   "text": "代码签名策略"
   },
   "b68461ac7025e237": {
    "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
@@ -12657,6 +12737,10 @@
   "b8544619a7ae8ec9": {
    "source": "YouTube fixes for the Download video button, and the button in Chrome, Edge and Brave.",
    "text": "YouTube 下载视频按钮以及 Chrome、Edge 和 Brave 浏览器中的按钮修复。"
+  },
+  "b8608265852b1c20": {
+   "source": "the same programs in the portable and plain zips.",
+   "text": "便携版和普通 zip 包中的相同程序。"
   },
   "b86face263e9f2af": {
    "source": "We'd rather you knew. IDM has a site grabber that follows a whole website's pages (MDM's link grabber takes the links of one page), and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
@@ -13006,10 +13090,6 @@
    "source": "A minimal Linux system (often with the AppImage, the tar.gz or a build from source) may have no CA certificates, which MDM needs to check a secure server. Plain <x1/> and <x2/> downloads still work; each <x3/> or <x4/> one stops at once saying the computer has no certificates to check the server with. Install the <x5/> package (<x6/>, <x7/>), then resume the download. The .deb and .rpm bring it.",
    "text": "最小化的 Linux 系统（通常使用 AppImage、tar.gz 或从源代码构建）可能没有 CA 证书，MDM 需要这些证书来检查安全服务器。普通的<x1/>和<x2/>下载仍然有效；每个<x3/>或<x4/>下载会立即停止，并提示电脑没有证书来检查服务器。安装<x5/>软件包（<x6/>、<x7/>），然后恢复下载。.deb 和 .rpm 包自带此功能。"
   },
-  "bd7aa0b403ef8727": {
-   "source": "Without <x1/>, <x2/> first: the quality taken, <x3/> the height of <x4/> (else <x5/>) and <x6/> whether that height wasn't offered. Then <x7/> lines, <x8/> for what the download's log says (a quality the servers don't give, taken at the nearest below), then <x9/>: the subtitle files saved beside it, and the languages the site refused (<x10/>; <x11/>: they came on a second try, beside the video instead of in it).",
-   "text": "不带 <x1/> 时，首先显示 <x2/>：所选质量，<x3/> 为 <x4/> 的高度（否则为 <x5/>），以及 <x6/> 是否未提供该高度。然后是 <x7/> 行，<x8/> 用于显示下载日志信息（服务器未提供但已选择的质量，选择的是最接近的更低质量），然后是 <x9/>：旁边保存的字幕文件，以及网站拒绝的语言（<x10/>；<x11/>：它们在第二次尝试时获得，保存到视频文件旁边而不是嵌入其中）。"
-  },
   "bd8e50643c3c4ebf": {
    "source": "Going the other way is just as easy: <g1>Tasks → Export → To text file</g1> saves one address per line, and <g2>To IDM export file</g2> writes an <x3/> file.",
    "text": "反向操作也同样简单：<g1>任务 → 导出 → 导出到文本文件</g1>会每行保存一个地址，而<g2>导出到 IDM 文件</g2>会写入一个 <x3/> 文件。"
@@ -13093,6 +13173,10 @@
   "bf124e15a5fd6568": {
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "打开第一个菜单（<g1>任务</g1>）；在Mac上是<g2>Ctrl+F2</g2>"
+  },
+  "bf189404e74090ee": {
+   "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
+   "text": "下载视频。如果没有 <x1/> 或 <x2/>，则下载最佳画质，即“下载视频”窗口默认的画质：如果使用 ffmpeg，则将最佳画面与最佳音频合并（Bilibili 等画面和音频分离的网站需要 ffmpeg 才能下载视频），否则下载包含画面和音频的最佳文件。<x3/>（或 <x4/>）选择该高度，或页面提供的最接近的较低高度（否则为最接近的较高高度），并显示此信息。<x5/> 选择最兼容的画质，与窗口中的<g6>最兼容 (H.264 + AAC)</g6> 相同：最佳 H.264 画面与 AAC 音频，封装为可在所有编辑器、电视和手机上播放的 MP4；如果页面没有此格式，则显示此信息（不进行转换）。<x7/> 从 <x8/> 中选择画质选择器（<x9/> = 最佳单一文件；<x10/> = 网站提供的纯音频，不转换；<x11/>、<x12/>、<x13/> 或 <x14/> = 该比特率的 MP3 音频，<x15/> 为最佳可变比特率；<x16/> = Opus 音频；<x17/> = FLAC 音频，无损但音质不优于网站源文件；转换需要 ffmpeg）。<x18/>：MDM 自己的下载器通过此数量的连接（默认 8 个，1 到 128）下载 yt-dlp 找到的每个流，分段流（HLS、DASH）则同时下载此数量的片段。<x19/> 将字幕保存到视频旁边：来自 <x20/> 的语言代码（<x21/>），或 <x22/> 表示上传者提供的所有字幕；<x23/> 则选择网站的自动生成字幕；<x24/> 将字幕嵌入视频（需要 ffmpeg，MP4 或 MKV 格式）。如果使用 ffmpeg，视频的章节也会嵌入文件中，与“下载视频”的<g25>嵌入章节</g25>功能相同。<x26/> 通过一个网络适配器发送下载连接以及 yt-dlp（和 ffmpeg）的连接，与 <x27/> 相同；如果未连接，则不开始任何操作。如果页面没有匹配的格式，错误信息会列出它提供的格式，与 <x28/> 相同。"
   },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
@@ -13382,6 +13466,10 @@
    "source": "The page on a phone",
    "text": "手机上的页面"
   },
+  "c373806ec4894f52": {
+   "source": "How Mister Download Manager's Windows programs are code-signed, who decides what gets signed, and what the app sends over the network.",
+   "text": "Mister Download Manager 的 Windows 程序如何进行代码签名，谁决定哪些文件被签名，以及应用程序通过网络发送哪些数据。"
+  },
   "c39475c811938808": {
    "source": "After deleting, the next download in the list is selected, so you can press <g1>Delete</g1> again.",
    "text": "删除后，列表中的下一个下载会被选中，因此可以再次按 <g1>Delete</g1>。"
@@ -13565,10 +13653,6 @@
   "c5fa121420a2cd5d": {
    "source": "Opera",
    "text": "Opera"
-  },
-  "c608b90547be8d53": {
-   "source": "Wait for the list. It shows each quality with its size, best first, then the sound alone: - A video's line says its resolution, its codec, its frame rate and whether it is HDR: <x1/>. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. <x2/> is said only beside an HDR line of the same resolution. - The size is that of exactly what downloads, the video and its sound. A size with <x3/> before it (<x4/>) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length. - <g5>Audio only, original</g5>: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file. - <g6>Audio only MP3</g6> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g7>Audio only OPUS</g7>: an <x8/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g9>Audio only FLAC</g9>: a lossless <x10/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
-   "text": "等待列表加载。列表中会显示每种画质及其大小，最佳画质排在最前面，然后是纯音频选项： - 视频行显示其分辨率、编解码器、帧率以及是否为 HDR：<x1/>。如果某个分辨率有多种（AV1、VP9 和 H.264，HDR 和 SDR），则每种都会有一行：AV1 生成的文件最小，H.264 可以在大多数设备上播放，而 HDR 视频在不支持 HDR 的屏幕上会显得色彩暗淡。<x2/> 仅在相同分辨率的 HDR 行旁边显示。 - 大小是实际下载内容（视频和音频）的大小。前面带有 <x3/> 的大小（<x4/>）只是一个估算值：网站没有提供大小，因此它是根据流的比特率和长度计算得出的。 - <g5>仅音频，原始</g5>：网站提供的原始文件，未经转换，每种类型（包含 Opus 的 WebM、M4A）各一个，最佳的排在最前面。这是音质最佳且文件最小的音频。 - <g6>仅音频 MP3</g6>：提供最佳可变比特率 (VBR) 以及 320、256、192 和 128 kbps 的选项，适用于仅支持 MP3 的播放器。 - <g7>仅音频 OPUS</g7>：一个 <x8/> 文件。如果网站的音频已经是 Opus 格式（YouTube 通常是），则只会将其移入该文件，不进行转换，因此不会有任何损失。 - <g9>仅音频 FLAC</g9>：一个无损 <x10/> 文件，适用于需要 FLAC 的音乐库或程序。它无法提升音质：网站的音频已经经过有损压缩，FLAC 只是将其原封不动地保存下来，文件大小会增加数倍。当您选择此选项时，窗口会显示相关说明。"
   },
   "c616fb0beefab805": {
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
@@ -14017,6 +14101,10 @@
   "cc738cbd5fc52de1": {
    "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window). The <x7/> and <x8/> (Compose, Unraid's template) run it on a server (<g9>server.md</g9>).",
    "text": "(<x1/>, #157) 运行相同的 <x2/> 而不使用 eframe：一个循环在裸 <x5/> 上调用其 <x3/>（<x4/> 在每一帧运行的内容），由命令通道唤醒，从不调用其 <x6/>；命令由远程控制添加（无窗口）。<x7/> 和 <x8/>（Compose、Unraid 的模板）在服务器上运行它（<g9>server.md</g9>）。"
+  },
+  "cc8e6434e304ae05": {
+   "source": "<g1>Code signing policy</g1><g2>What is signed, who approves it, and privacy</g2>",
+   "text": "<g1>代码签名策略</g1><g2>签名内容、批准方和隐私</g2>"
   },
   "cca215a39bfa83ba": {
    "source": "<g1>Less memory in the notification area</g1> (<g2>#72</g2>): closed to the tray, or minimized there (on by default), MDM gives the memory it isn't using back to Windows. Task Manager's <g3>Memory</g3> drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to about 14 MB). It gives it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation have brought some back, then every 10 minutes while MDM stays there. After the language list (which needs a font for every script) closes, those fonts are let go: about 70 MB less than before. On Linux the heap's free memory goes back to the system the same way. <g4>MDM uses a lot of memory</g4> explains Task Manager's figures.",
@@ -15946,10 +16034,6 @@
    "source": "A tooltip's top padding",
    "text": "工具提示顶部内边距"
   },
-  "ea282dea9c9a7014": {
-   "source": "If it says <g1>this site lets only browsers through</g1>, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold <g2>Alt</g2> as you click the link to leave that download to the browser. See <g3>Browser integration</g3>.",
-   "text": "如果提示<g1>此网站只允许浏览器访问</g1>，则说明网站的机器人检测（例如 Cloudflare 的检测）拒绝了 MDM。MDM 已经尝试以您浏览器的方式再次连接，并使用了您浏览器在该网站的 Cookie，但网站仍然要求在浏览器中完成检测。请在浏览器中打开该网站（通过检测可能就足够了：再次点击链接），或者在点击链接时按住 <g2>Alt</g2> 键，将该下载任务交给浏览器处理。详见<g3>浏览器集成</g3>。"
-  },
   "ea2b2840bdb83f99": {
    "source": "Ctrl+0",
    "text": "Ctrl+0"
@@ -16033,10 +16117,6 @@
   "eb1be33b4d67a5a9": {
    "source": "The tray menu also has <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Add batch download from clipboard</g3>, the <g4>Speed Limiter</g4>, the <g5>Scheduler</g5>, the main download queue and <g6>Options</g6>.",
    "text": "托盘菜单还包括<g1>添加新下载</g1>、<g2>添加批量下载</g2>、<g3>从剪贴板批量添加下载</g3>、<g4>速度限制器</g4>、<g5>计划程序</g5>、主下载队列和<g6>选项</g6>。"
-  },
-  "eb1e3724d60ad6dd": {
-   "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. With <g2>Automatic</g2> ticked (the default), MDM introduces itself as your default browser: the User-Agent that browser sends, at the version you have installed (Chrome, Edge, Brave, Opera, Vivaldi, Firefox or Safari). The box shows it, and pointing at it names the browser. When MDM doesn't recognise your default browser, it sends a current Chrome's. Untick <g3>Automatic</g3> to type your own; tick it again to go back. Downloads from the browser use that browser's own User-Agent. If a site turns a browser's User-Agent away, MDM asks once more with its own.",
-   "text": "<g1>手动添加下载的用户代理</g1> — MDM 在您手动添加下载时向服务器表明身份的方式。勾选“<g2>自动</g2>”（默认）后，MDM 会将自己标识为您的默认浏览器：发送该浏览器当前安装版本（Chrome、Edge、Brave、Opera、Vivaldi、Firefox 或 Safari）的用户代理。框中会显示该信息，鼠标指向时会显示浏览器名称。如果 MDM 无法识别您的默认浏览器，它会发送当前 Chrome 的用户代理。取消勾选“<g3>自动</g3>”可自行输入；再次勾选可恢复。通过浏览器发起的下载会使用该浏览器自己的用户代理。如果某个网站拒绝了浏览器的用户代理，MDM 会再次尝试使用自己的用户代理。"
   },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
@@ -16346,6 +16426,10 @@
    "source": "(the foreground)",
    "text": "（前景）"
   },
+  "ef0391d17d9aa462": {
+   "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added: see the <g1>code signing policy</g1>.",
+   "text": "Windows 安装程序尚未进行代码签名，因此 Windows SmartScreen 可能会在首次启动前发出警告。代码签名功能将添加：请参阅<g1>代码签名政策</g1>。"
+  },
   "ef078e7bf8101d03": {
    "source": "1 the file types MDM takes, 2 the sites it leaves to the browser.",
    "text": "1 MDM 捕获的文件类型，2 MDM 留给浏览器处理的站点。"
@@ -16538,6 +16622,10 @@
    "source": "More than 80 fixes. The main ones:",
    "text": "超过 80 项修复。主要包括："
   },
+  "f12989ae03685a0f": {
+   "source": "Mister Download Manager's code signing policy: free code signing by SignPath.io with a certificate by SignPath Foundation, which Windows files are signed, who may approve a signature, and what the app sends over the network.",
+   "text": "Mister Download Manager 的代码签名策略：由 SignPath.io 提供免费代码签名，使用 SignPath Foundation 颁发的证书，说明哪些 Windows 文件已签名，谁可以批准签名，以及应用程序通过网络发送哪些数据。"
+  },
   "f135b1b9671dc439": {
    "source": "Make everything larger / smaller, in every window (<g1>View → Interface size</g1>, 100 % to 200 %)",
    "text": "放大 / 缩小所有窗口中的界面元素（<g1>视图 → 界面大小</g1>，100% 到 200%）"
@@ -16573,10 +16661,6 @@
   "f1769eb2aa5104ff": {
    "source": "<g1>Categories</g1><g2>Mister Download Manager</g2>",
    "text": "<g1>类别</g1><g2>Mister Download Manager</g2>"
-  },
-  "f181173f9c765d13": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> sets the referring page address (Referer header), <x5/> sets the request's User-Agent, <x6/> sets the Cookie header (a cookie on the command line ends up in the shell's history; <x7/> reads it from standard input instead). <x8/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x9/>). <x10/> picks the DNS: <x11/> (the default); a service and how to ask it, <x12/>, <x13/>, <x14/>, <x15/>, <x16/>; DNS servers' addresses, <x17/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x18/> sends every connection through one network adapter, by its name (<x19/>, <x20/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g21>Options → Accounts</g21>) supports goes through that account, as in the app, and <x22/> says <x23/>; <x24/> downloads the address itself (<g25>Debrid service accounts</g25>).",
-   "text": "下载文件，最多 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 设置引用页地址（Referer 头），<x5/> 设置请求的 User-Agent，<x6/> 设置 Cookie 头（命令行中的 cookie 会留在 shell 历史中；<x7/> 改为从标准输入读取）。<x8/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x9/>）。<x10/> 选择 DNS：<x11/>（默认）；服务及其查询方式，<x12/>、<x13/>、<x14/>、<x15/>、<x16/>；DNS 服务器地址，<x17/>；或 DNS-over-HTTPS 地址。它绝不会回退到系统 DNS。<x18/> 通过一个网络适配器发送所有连接，按其名称（<x19/>、<x20/>）或其某个地址；如果未连接，则不发送任何内容，下载失败。来自文件主机且您的某个 debrid 账户（<g21>选项 → 账户</g21>）支持的链接会通过该账户，与应用中一样，<x22/> 表示 <x23/>；<x24/> 下载地址本身（<g25>Debrid 服务账户</g25>）。"
   },
   "f19042c8ea331c71": {
    "source": "Start MDM. The download is in the list under <g1>Unfinished</g1>.",
@@ -16829,6 +16913,10 @@
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
    "text": "按照以下说明，将扩展程序添加到您使用的每个浏览器：Firefox 从其附加组件商店获取，其他浏览器从 Chrome 网上应用店获取。在浏览器的扩展程序连接到 MDM 之前，MDM 的<g1>将 Mister Download Manager 添加到您的浏览器</g1>窗口会在每次启动时打开：它会列出找到的浏览器，<g2>添加扩展</g2>会在该浏览器中打开商店页面。<g3>手动安装</g3>会打开不通过商店加载扩展程序的步骤；<g4>不再询问</g4>会关闭此窗口。"
+  },
+  "f6014e24fd45ae66": {
+   "source": "What is signed",
+   "text": "签名内容"
   },
   "f6036d014e6073ae": {
    "source": "<g1>Media on this page</g1> lists the video streams and the video and sound files a page has loaded, so a video with no link can still be saved. Copy-protected streams are listed as <g2>Protected</g2> and never sent.",
