@@ -1529,6 +1529,7 @@ These ship in the next version.
 - ✅ The Docker image's base images, the website build's Python package and the lab VM's Rust
   installer are pinned to exact versions and checked by their hashes; the MCP server's library
   (rmcp) is updated to 3.9.0
+- ✅ Dependency updates leave the font parser to move with the drawing library
 
 ## Being worked on
 
