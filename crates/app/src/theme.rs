@@ -396,13 +396,14 @@ fn symbol_fonts() -> Vec<Vec<u8>> {
         .collect();
 }
 
-/// Whether egui can draw with `bytes`: a TrueType or OpenType font, or a collection of them (its
-/// first face), as the parser egui reads fonts with reads it. A bitmap font (PCF or BDF, gzipped
-/// or not), a Type 1 font, a file cut short or anything else is not one, and egui stops on a font
-/// it was given and can't read (#931: fontconfig named a gzipped PCF font for Japanese).
-fn loadable_font(bytes: &[u8]) -> bool {
+/// Whether egui can draw with `bytes`' face `index`: a TrueType or OpenType font, or a face of a
+/// collection of them, as the parser egui reads fonts with (skrifa) reads it. A bitmap font (PCF or
+/// BDF, gzipped or not), a Type 1 font, a file cut short, a face the collection doesn't have or
+/// anything else is not one, and egui stops on a font it was given and can't read (#931:
+/// fontconfig named a gzipped PCF font for Japanese; #1412: a BDF font for the symbols).
+fn loadable_font(bytes: &[u8], index: u32) -> bool {
     use skrifa::raw::TableProvider as _;
-    let Ok(font) = skrifa::FontRef::from_index(bytes, 0) else {
+    let Ok(font) = skrifa::FontRef::from_index(bytes, index) else {
         return false;
     };
     // A font whose list of tables is whole but whose tables are cut short (a copy that stopped)
@@ -424,7 +425,8 @@ pub(crate) fn read_font(path: &std::path::Path) -> Option<Vec<u8>> {
     static SAID: std::sync::Mutex<Option<std::collections::HashSet<std::path::PathBuf>>> =
         std::sync::Mutex::new(None);
     let bytes = std::fs::read(path).ok()?;
-    if loadable_font(&bytes) {
+    // Given to egui as `FontData::from_owned`: its first face.
+    if loadable_font(&bytes, 0) {
         return Some(bytes);
     }
     let mut said = SAID.lock().unwrap_or_else(|e| e.into_inner());
@@ -438,6 +440,26 @@ pub(crate) fn read_font(path: &std::path::Path) -> Option<Vec<u8>> {
         );
     }
     None
+}
+
+/// The last look at the fonts before egui gets them: each one egui can read ([`loadable_font`], at
+/// the face it names) stays, any other is left out of the fonts and of every family that names it,
+/// and the log says so. Every system font MDM adds came through [`read_font`] already; this keeps
+/// a font from any other path (or a face of a collection egui can't find) from stopping MDM as it
+/// starts, which egui does with a font it was given and can't parse (#1412).
+fn only_loadable_fonts(defs: &mut egui::FontDefinitions) {
+    defs.font_data.retain(|name, data| {
+        let loadable = loadable_font(data.bytes(), data.index);
+        if !loadable {
+            tracing::warn!(
+                "fonts: {name} is not a TrueType or OpenType font egui can read, left out"
+            );
+        }
+        loadable
+    });
+    for list in defs.families.values_mut() {
+        list.retain(|name| defs.font_data.contains_key(name));
+    }
 }
 
 /// The folder the font tables name files in.
@@ -1111,6 +1133,7 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
     }
     #[cfg(windows)]
     sharp_text(&mut defs);
+    only_loadable_fonts(&mut defs);
     ctx.set_fonts(defs);
     text_styles(ctx);
 }
@@ -1355,8 +1378,8 @@ mod font_file_tests {
     #[test]
     fn only_fonts_egui_can_read_are_taken() {
         let ttf = real_ttf("Ubuntu-Light");
-        assert!(loadable_font(&ttf), "a real TrueType font");
-        assert!(loadable_font(&real_ttf("Hack")), "another");
+        assert!(loadable_font(&ttf, 0), "a real TrueType font");
+        assert!(loadable_font(&real_ttf("Hack"), 0), "another");
 
         // The start of 12x13ja.pcf.gz: gzip's magic, read as the sfnt version 0x1F8B0800.
         let mut pcf_gz = vec![0x1f, 0x8b, 0x08, 0x00, 0, 0, 0, 0, 0x02, 0x03];
@@ -1368,16 +1391,7 @@ mod font_file_tests {
             b"STARTFONT 2.1\nFONT -misc-fixed-medium-r-normal--13-120-75-75-c-120-iso10646-1\n";
         let mut pfb = vec![0x80, 0x01, 0x10, 0x00, 0x00, 0x00];
         pfb.extend(b"%!PS-AdobeFont-1.0: Test 001.000\n");
-        // Random bytes (a fixed xorshift, so the test is the same every run).
-        let mut x = 0x9e37_79b9u32;
-        let random: Vec<u8> = (0..8192)
-            .map(|_| {
-                x ^= x << 13;
-                x ^= x >> 17;
-                x ^= x << 5;
-                x as u8
-            })
-            .collect();
+        let random = random_bytes();
         for (what, bytes) in [
             ("a gzipped PCF font", pcf_gz.as_slice()),
             ("a PCF font", &pcf),
@@ -1391,7 +1405,7 @@ mod font_file_tests {
                 &ttf[..ttf.len().min(400)],
             ),
         ] {
-            assert!(!loadable_font(bytes), "{what} was taken");
+            assert!(!loadable_font(bytes, 0), "{what} was taken");
         }
     }
 
@@ -1442,6 +1456,116 @@ mod font_file_tests {
         assert!(pick_font(std::slice::from_ref(&bdf), &mut HashMap::new()).is_none());
         assert!(read_font(&bdf).is_none());
         assert!(read_font(&ubuntu).is_some());
+    }
+
+    /// Random bytes (a fixed xorshift, so the tests are the same every run).
+    fn random_bytes() -> Vec<u8> {
+        let mut x = 0x9e37_79b9u32;
+        (0..8192)
+            .map(|_| {
+                x ^= x << 13;
+                x ^= x >> 17;
+                x ^= x << 5;
+                x as u8
+            })
+            .collect()
+    }
+
+    /// The start of a BDF bitmap font: read as an sfnt version, "STAR" (0x53544152), #1412's.
+    const BDF: &[u8] = b"STARTFONT 2.1\nFONT -misc-fixed-medium-r-normal--13-120-75-75-c-120-iso10646-1\nSIZE 13 75 75\n";
+
+    /// #1412: fontconfig's answer for the symbols, a BDF font first (as on CachyOS), then an
+    /// empty file and random bytes named as fonts: only the TrueType font after them is taken.
+    #[test]
+    fn a_bdf_an_empty_and_a_random_file_are_passed_over_for_the_truetype_font() {
+        let dir = tempfile::tempdir().unwrap();
+        let file = |name: &str, bytes: &[u8]| {
+            let path = dir.path().join(name);
+            std::fs::write(&path, bytes).unwrap();
+            path
+        };
+        let candidates = [
+            file("symbols.bdf", BDF),
+            file("empty.ttf", &[]),
+            file("random.otf", &random_bytes()),
+            file("Ubuntu-Light.ttf", &real_ttf("Ubuntu-Light")),
+        ];
+        let mut looked = HashMap::new();
+        let (picked, bytes) = pick_font(&candidates, &mut looked).expect("a font");
+        assert_eq!(picked, candidates[3]);
+        assert_eq!(bytes, real_ttf("Ubuntu-Light"));
+        for refused in &candidates[..3] {
+            assert_eq!(looked.get(refused), Some(&false), "{}", refused.display());
+            assert!(read_font(refused).is_none(), "{}", refused.display());
+        }
+    }
+
+    /// #1412: the fonts egui gets are each one it can read, whatever path added them: a BDF font,
+    /// an empty file, random bytes and a TrueType font named at a face it doesn't have are left
+    /// out (of the fonts and of the families), the TrueType font stays, and egui lays text out.
+    /// Without that last look egui stops on the first of them, as MDM 0.5.2 did as it started.
+    #[test]
+    fn a_font_egui_cant_read_never_reaches_it() {
+        use egui::epaint::text::{Fonts, TextOptions};
+        use egui::{FontData, FontFamily, FontId};
+        use std::sync::Arc;
+
+        let mut defs = egui::FontDefinitions::default();
+        let mut missing_face = FontData::from_owned(real_ttf("Ubuntu-Light"));
+        missing_face.index = 3;
+        let added = [
+            ("symbols-0", FontData::from_owned(BDF.to_vec())),
+            ("empty", FontData::from_owned(Vec::new())),
+            ("random", FontData::from_owned(random_bytes())),
+            ("missing-face", missing_face),
+            ("valid", FontData::from_owned(real_ttf("Ubuntu-Light"))),
+        ];
+        for (name, data) in added {
+            defs.font_data.insert(name.into(), Arc::new(data));
+            for family in [FontFamily::Proportional, FontFamily::Monospace] {
+                defs.families
+                    .entry(family)
+                    .or_default()
+                    .insert(0, name.into());
+            }
+        }
+
+        // What egui does with them as given: it stops (the panic MDM 0.5.2 started with).
+        let unchecked = defs.clone();
+        let stopped = std::panic::catch_unwind(std::panic::AssertUnwindSafe(move || {
+            let mut fonts = Fonts::new(TextOptions::default(), unchecked);
+            fonts.has_glyphs(&FontId::proportional(13.0), "a")
+        }));
+        let why = stopped.expect_err("egui took a font it can't read");
+        let why = why
+            .downcast_ref::<String>()
+            .map(String::as_str)
+            .or_else(|| why.downcast_ref::<&str>().copied())
+            .unwrap_or_default();
+        assert!(why.contains("TTF/OTF font file"), "{why}");
+
+        super::only_loadable_fonts(&mut defs);
+        for name in ["symbols-0", "empty", "random", "missing-face"] {
+            assert!(!defs.font_data.contains_key(name), "{name} reached egui");
+            for list in defs.families.values() {
+                assert!(!list.iter().any(|n| n == name), "a family names {name}");
+            }
+        }
+        assert!(defs.font_data.contains_key("valid"));
+        for family in [FontFamily::Proportional, FontFamily::Monospace] {
+            assert_eq!(
+                defs.families[&family].first().map(String::as_str),
+                Some("valid")
+            );
+        }
+        // egui's own fonts are all still there.
+        for name in egui::FontDefinitions::default().font_data.keys() {
+            assert!(defs.font_data.contains_key(name), "{name} was left out");
+        }
+
+        let mut fonts = Fonts::new(TextOptions::default(), defs);
+        assert!(fonts.has_glyphs(&FontId::proportional(13.0), "Mister Download Manager"));
+        assert!(fonts.has_glyphs(&FontId::monospace(13.0), "0123456789"));
     }
 }
 

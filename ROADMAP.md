@@ -946,8 +946,10 @@ These ship in the next version.
   shortcut of two or three keys that shows or hides MDM's window from any program
   ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
-  Japanese): the best font that scales and MDM can read is used instead
-  ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
+  Japanese or for the symbols): the best font that scales and MDM can read is used instead, and
+  no font MDM can't read reaches its windows on any system
+  ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931),
+  [#1412](https://github.com/anefzaoui/misterdownloadmanager/issues/1412))
 - ✅ Bangla reviewed by a native speaker: the main window, the list, the progress window, the
   dialogs and the tray, with the menus' letters on English letters
   ([#927](https://github.com/anefzaoui/misterdownloadmanager/pull/927))
