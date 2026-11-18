@@ -1513,6 +1513,8 @@ These ship in the next version.
   private window's video never falls back to Cookies for video sites, after a restart either
 - ✅ The log's test of a flush writing what was dropped holds on a slow machine too (it failed now
   and then on macOS)
+- ✅ Dependabot proposes updates to the workflows' actions, the Rust crates, the store tools and
+  the website build's Python package, once a week, grouped into one pull request per kind
 - ✅ The lab VM scripts clear the temporary files an interrupted run left behind
 - ✅ The website's translation check takes a list of the app's names (themes) as it is, so those
   lines are no longer left in English
