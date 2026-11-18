@@ -564,6 +564,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The browser extension remembers paired servers and switches between them and this computer
+  with a click without re-pairing (thanks to [@kngkatak](https://github.com/kngkatak))
 - ✅ A Docker image of the headless server is published with each release, at
   `ghcr.io/anefzaoui/misterdownloadmanager` (x86-64 only for now, thanks to
   [@kngkatak](https://github.com/kngkatak))

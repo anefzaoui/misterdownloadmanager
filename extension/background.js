@@ -91,6 +91,14 @@ async function native(message, ms = HOST_WAIT) {
 
 // ---- another MDM (#157): a server's, through its remote control ------------------------------
 
+// A list of all known paired servers: [{url, token}, ...]
+async function readRemotes() {
+  const { remotes, remote } = await ext.storage.local.get({ remotes: null, remote: null });
+  if (Array.isArray(remotes)) return remotes.filter((r) => r && r.url && r.token);
+  if (remote && remote.url && remote.token) return [remote];
+  return [];
+}
+
 // {url, token} while downloads go to another MDM instead of this computer's, else null.
 async function remoteTarget() {
   const { remote } = await ext.storage.local.get({ remote: null });
@@ -129,7 +137,11 @@ async function remoteCall(base, path, body, token) {
 async function remoteSend(target, message) {
   const r = await remoteCall(target.url, "api/add", { url: message.url, start: true }, target.token);
   if (r.status === 200 && r.body && !r.body.error) return { ok: true };
-  if (r.status === 401) await ext.storage.local.set({ remote: null }); // unpaired there
+  if (r.status === 401) {
+    const list = await readRemotes();
+    const updated = list.filter((item) => item.url !== target.url);
+    await ext.storage.local.set({ remotes: updated, remote: null });
+  }
   return { ok: false, why: "refused" };
 }
 
@@ -151,7 +163,11 @@ async function remotePair(address, code) {
   const name = ext.i18n.getMessage("remote_device_name") || "Browser";
   const r = await remoteCall(base, "api/pair", { code: String(code), name }, null);
   if (r.status === 200 && r.body && typeof r.body.token === "string") {
-    await ext.storage.local.set({ remote: { url: base, token: r.body.token } });
+    const list = await readRemotes();
+    const updated = list.filter((item) => item.url !== base);
+    const item = { url: base, token: r.body.token };
+    updated.push(item);
+    await ext.storage.local.set({ remotes: updated, remote: item });
     await refreshRules();
     await showStatus();
     return { ok: true };
@@ -160,10 +176,35 @@ async function remotePair(address, code) {
   return { ok: false, why, left: r.body && r.body.left };
 }
 
-// Back to this computer: unpaired there too (when it answers).
-async function remoteOff() {
-  const target = await remoteTarget();
+// Switch active remote to a previously paired MDM at `url`.
+async function remoteSelect(url) {
+  const list = await readRemotes();
+  const target = list.find((item) => item.url === url);
+  if (target) {
+    await ext.storage.local.set({ remote: target });
+    await refreshRules();
+    await showStatus();
+    return { ok: true };
+  }
+  return { ok: false, why: "not-found" };
+}
+
+// Forget a paired MDM at `url`: unpair there (when it answers) and remove from remotes.
+async function remoteForget(url) {
+  const list = await readRemotes();
+  const target = list.find((item) => item.url === url);
   if (target) await remoteCall(target.url, "api/forget", {}, target.token);
+  const updated = list.filter((item) => item.url !== url);
+  const { remote } = await ext.storage.local.get({ remote: null });
+  const nextRemote = remote && remote.url === url ? null : remote;
+  await ext.storage.local.set({ remotes: updated, remote: nextRemote });
+  await refreshRules();
+  await showStatus();
+  return { ok: true };
+}
+
+// Back to this computer: active remote set to null without forgetting paired remotes.
+async function remoteOff() {
   await ext.storage.local.set({ remote: null });
   await refreshRules();
   await showStatus();
@@ -3192,10 +3233,13 @@ async function popupMessage(m) {
     const s = await readStatus();
     const { declined } = await ext.storage.local.get({ declined: null });
     const remote = await remoteTarget();
-    if (remote) return { connected: true, why: null, remote: remote.url, version: VERSION, paused, declined };
-    return { connected: Boolean(r) && (!s.why || s.why === "update-app"), why: s.why, app: s.app, version: VERSION, paused, declined };
+    const remotes = (await readRemotes()).map((x) => x.url);
+    if (remote) return { connected: true, why: null, remote: remote.url, remotes, version: VERSION, paused, declined };
+    return { connected: Boolean(r) && (!s.why || s.why === "update-app"), why: s.why, app: s.app, remote: null, remotes, version: VERSION, paused, declined };
   }
   if (m.type === "remote-pair" && typeof m.url === "string" && typeof m.code === "string") return remotePair(m.url, m.code);
+  if (m.type === "remote-select" && typeof m.url === "string") return remoteSelect(m.url);
+  if (m.type === "remote-forget" && typeof m.url === "string") return remoteForget(m.url);
   if (m.type === "remote-off") return remoteOff();
   if (m.type === "pause") {
     await ext.storage.local.set({ paused: Boolean(m.paused) });
