@@ -885,6 +885,14 @@ impl Job {
         }
     }
 
+    /// Preview: a file's download goes on from its start onward. Only the engine's own file
+    /// downloads take it (a torrent, a video's helper or a remote job go on as they were).
+    pub fn set_sequential(&self) {
+        if let Job::File(d) = self {
+            d.set_sequential(true);
+        }
+    }
+
     pub fn speed_limit(&self) -> Option<u64> {
         match self {
             Job::File(d) => d.speed_limit(),

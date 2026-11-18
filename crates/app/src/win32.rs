@@ -8900,6 +8900,54 @@ pub fn open_file_shell(path: &std::path::Path) -> Result<(), std::io::Error> {
     Ok(())
 }
 
+/// [`open_file_shell`] with the program registered for the file type `ext` (".mkv") instead of
+/// `path`'s own: Preview opens a download's `.mdm.part` with the user's video player.
+pub fn open_file_as(path: &std::path::Path, ext: &str) -> Result<(), std::io::Error> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::UI::Shell::{
+        SEE_MASK_CLASSNAME, SEE_MASK_NOASYNC, SHELLEXECUTEINFOW, ShellExecuteExW,
+    };
+    use windows_sys::Win32::UI::WindowsAndMessaging::SW_SHOWNORMAL;
+
+    if ext.is_empty() {
+        return open_file_shell(path);
+    }
+    com_on_this_thread();
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
+    let class: Vec<u16> = ext.encode_utf16().chain(Some(0)).collect();
+    let folder: Option<Vec<u16>> = std::path::absolute(path).ok().and_then(|p| {
+        p.parent()
+            .map(|d| d.as_os_str().encode_wide().chain(Some(0)).collect())
+    });
+    // SAFETY: zeroed is a valid SHELLEXECUTEINFOW (all pointers NULL); cbSize is set as the API
+    // requires.
+    let mut info: SHELLEXECUTEINFOW = unsafe { std::mem::zeroed() };
+    info.cbSize = std::mem::size_of::<SHELLEXECUTEINFOW>() as u32;
+    info.fMask = SEE_MASK_CLASSNAME | SEE_MASK_NOASYNC;
+    info.lpFile = wide.as_ptr();
+    info.lpClass = class.as_ptr();
+    info.lpDirectory = folder.as_ref().map_or(std::ptr::null(), |f| f.as_ptr());
+    info.nShow = SW_SHOWNORMAL;
+    // SAFETY: `info` and the NUL-ended strings it points to outlive the call.
+    if unsafe { ShellExecuteExW(&mut info) } == 0 {
+        return Err(std::io::Error::last_os_error());
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod open_file_as_tests {
+    /// Preview: a part file opens in the program for the video's type. Opens a player, so run
+    /// by hand on a partial video: `MDM_PREVIEW_FILE=<x.mkv.mdm.part> cargo test -p mdm-app
+    /// a_part_file_opens_as_a_video -- --ignored`.
+    #[test]
+    #[ignore = "opens the video player"]
+    fn a_part_file_opens_as_a_video() {
+        let part = std::path::PathBuf::from(std::env::var("MDM_PREVIEW_FILE").unwrap());
+        super::open_file_as(&part, ".mkv").unwrap();
+    }
+}
+
 #[cfg(test)]
 mod open_file_tests {
     /// #1216: the program a file opens with starts in the file's folder, not in MDM's own

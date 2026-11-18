@@ -3839,6 +3839,101 @@ pub const DUPLICATE_NUMBERED: usize = 1;
 /// [`Duplicate`]'s answer "Add the duplicate and overwrite the existing file".
 pub const DUPLICATE_OVERWRITE: usize = 2;
 
+/// "Preview": open the unfinished download of `file` — its part file — with the program that
+/// opens `file`'s type (a video player for an .mkv), as qBittorrent's Preview does. Returns at once.
+pub fn preview_download(file: &Path) {
+    let part = mdm_engine::naming::part_path(file);
+    let ext = file
+        .extension()
+        .map(|e| format!(".{}", e.to_string_lossy()))
+        .unwrap_or_default();
+    let file = file.to_owned();
+    crate::launch::spawn("preview", move || {
+        let name = crate::i18n::isolate(&part.file_name().unwrap_or_default().to_string_lossy());
+        let failed = if !part.exists() {
+            crate::i18n::fmt(
+                // i18n: Preview of a download with no data on the disk yet (or already finished)
+                crate::i18n::t("{file} isn't there: nothing of it is on the disk yet."),
+                &[("file", &name)],
+            )
+        } else if let Some(link) = preview_link(&part, &file) {
+            // The player shows the file's own name, and finds the program by its extension.
+            match open_file_platform(&link) {
+                Ok(()) => return,
+                Err(e) => crate::i18n::fmt(
+                    crate::i18n::t("{file} could not be opened: {error}"),
+                    &[("file", &name), ("error", &e.to_string())],
+                ),
+            }
+        } else {
+            #[cfg(windows)]
+            let opened = crate::win32::open_file_as(&part, &ext);
+            // Linux and macOS: no program can be asked for by type; the desktop's opener looks
+            // at the file's contents (a video's header) to choose one.
+            #[cfg(not(windows))]
+            let opened = {
+                let _ = &ext;
+                open::that_detached(&part)
+            };
+            match opened {
+                Ok(()) => return,
+                Err(e) => crate::i18n::fmt(
+                    crate::i18n::t("{file} could not be opened: {error}"),
+                    &[("file", &name), ("error", &e.to_string())],
+                ),
+            }
+        };
+        // i18n: title of the message when an unfinished download can't be previewed
+        tell(crate::i18n::mark("Preview"), failed);
+    });
+}
+
+/// "Preview" of a torrent: its file (a multi-file torrent's folder: its largest file, the
+/// video) opens with its program. Returns at once.
+pub fn preview_torrent(dest: &Path) {
+    fn largest(dir: &Path) -> Option<(u64, PathBuf)> {
+        std::fs::read_dir(dir)
+            .ok()?
+            .flatten()
+            .filter_map(|e| {
+                let p = e.path();
+                if p.is_dir() {
+                    largest(&p)
+                } else {
+                    Some((e.metadata().ok()?.len(), p))
+                }
+            })
+            .max()
+    }
+    let dest = dest.to_owned();
+    crate::launch::spawn("preview", move || {
+        let file = if dest.is_dir() {
+            largest(&dest).map_or(dest, |(_, p)| p)
+        } else {
+            dest
+        };
+        open_download_now(&file, false);
+    });
+}
+
+/// A second name for the part file, the finished file's own (`<folder>\.mdm-preview\<name>`): the
+/// same data, growing with it, that a player shows by its real name. None where the drive has no
+/// hard links (FAT32, exFAT) or the name is taken by a link a player still holds.
+/// shortcut: old links go only at the next Preview from that folder; clear them as a download ends.
+fn preview_link(part: &Path, file: &Path) -> Option<PathBuf> {
+    let dir = part.parent()?.join(".mdm-preview");
+    // Earlier previews' links (one a player still has open stays until the next time).
+    if let Ok(old) = std::fs::read_dir(&dir) {
+        for e in old.flatten() {
+            let _ = std::fs::remove_file(e.path());
+        }
+    }
+    std::fs::create_dir_all(&dir).ok()?;
+    let link = dir.join(file.file_name()?);
+    std::fs::hard_link(part, &link).ok()?;
+    Some(link)
+}
+
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a
 /// duplicate download link is added: Show a dialog and ask what to do"). `Done` with the
 /// choice, numbered as Options lists them (1 numbered name, 2 overwrite, 3 open or resume).
