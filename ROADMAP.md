@@ -1511,6 +1511,8 @@ These ship in the next version.
   window's downloads are saved like any other and survive MDM closing or restarting, still apart
   from normal windows' downloads (a saved private-window mark; their cookies never saved); a
   private window's video never falls back to Cookies for video sites, after a restart either
+- ✅ CodeQL reads the Rust, the extension's JavaScript and the workflows on every pull request,
+  every change to main and once a week; its results are in the Security tab
 - ✅ The log's test of a flush writing what was dropped holds on a slow machine too (it failed now
   and then on macOS)
 - ✅ The lab VM scripts clear the temporary files an interrupted run left behind
