@@ -2873,6 +2873,7 @@ function videoButton({ stored = {} } = {}) {
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).length, 24, "a codec's name is cut");
     // #1439: the most compatible choice (H.264 + AAC) says so in place of its codec.
     const compatible = { label: "Most compatible (H.264 + AAC) · 1080p", ext: "mp4", height: 1080, fps: 60, codec: "H.264", compatible: true };
+    assert.ok(source.includes('if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);'), "its line's tip is the app's whole name");
     assert.equal(w.qualityName(compatible, tt), "1080p");
     assert.equal(w.qualityMeta(compatible, tt), "video_compatible");
     // #801: an estimate is marked; an exact size isn't; an older app's has no mark.
