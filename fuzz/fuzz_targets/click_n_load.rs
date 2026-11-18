@@ -2,7 +2,7 @@
 //! `jk` script, its `crypted` links opened with that key, and the links in what they decrypt to.
 //!
 //! The input's first line is `jk`; the rest is `crypted` as posted, and also, encrypted here the
-//! way a link site encrypts its links (with a key from the first line's first 16 bytes), the
+//! way a link site encrypts its links (with the first line's first 16 bytes as the key), the
 //! links themselves, so that the fuzzer reaches the link list's reader.
 #![no_main]
 
@@ -35,10 +35,13 @@ fuzz_target!(|data: &[u8]| {
     let _ = mdm_cnl::key_of(jk);
     let _ = mdm_cnl::decrypt(rest, jk);
 
-    let mut key = [0u8; 16];
-    for (k, b) in key.iter_mut().zip(jk.bytes()) {
-        *k = b;
-    }
+    let Some(key) = jk
+        .as_bytes()
+        .get(..16)
+        .and_then(|k| <[u8; 16]>::try_from(k).ok())
+    else {
+        return;
+    };
     let hex: String = key.iter().map(|b| format!("{b:02x}")).collect();
     let jk = format!("function f(){{ return '{hex}'; }}");
     let links = mdm_cnl::decrypt(&crypted(key, rest.as_bytes()), &jk).expect("our own post opens");
