@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Una firma del codice permette a Windows di mostrare chi ha pubblicato un programma e di verificare che non sia stato modificato dopo la sua creazione. Quando una release di Mister Download Manager (\"MDM\") è firmata, la sua firma copre i file Windows che provengono da questo progetto:"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> pull request"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Sì. MDM registra l'avanzamento man mano che procede, quindi dopo un'interruzione della connessione, un arresto anomalo o un riavvio riprende da dove si era fermato. Prima di riprendere, verifica che il file sul server non sia cambiato. Quando un indirizzo di download è scaduto, <g1>Aggiorna indirizzo di download</g1> ti permette di inserirne uno nuovo senza perdere i dati. Vedi <g2>Riprendere un download interrotto</g2>."
@@ -213,6 +217,10 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Guida → Informazioni su Mister Download Manager</g1> mostra la versione installata."
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>Pull request</g1><g2><x3/> persone</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -2282,6 +2290,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "Su macOS, solo un amministratore può pianificare una riattivazione, quindi l'opzione è disattivata. MDM non chiede la password di un amministratore. Per esempio, un amministratore può impostare la riattivazione del Mac ogni giorno un minuto prima dell'inizio della coda, alle 22:59 per una coda che inizia alle 23:00:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "A tutti coloro che hanno inviato una pull request, aperto una issue o commentato su GitHub dalla versione <x1/>."
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>Passare da IDM</g1><g2>Il tuo elenco IDM arriva in un unico file, ogni download con indirizzo, referrer e cookie.</g2>"
@@ -4001,6 +4013,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "Fai clic su <g1>OK</g1>."
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>Issue</g1><g2><x3/> persone</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5838,6 +5854,10 @@
    "source": "A small file",
    "text": "Un file piccolo"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "Ringraziamenti"
+  },
   "55b9b5b1ff4877f3": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes, unless you tick <g1>Options → General → Keep private-window downloads in the list</g1>: then they are saved like any other and survive a restart (their cookies are never saved).",
    "text": "I download da una finestra privata usano i cookie di quella finestra, mai quelli normali, e non restano nell'elenco di MDM dopo la chiusura, a meno che tu non selezioni <g1>Opzioni → Generale → Mantieni i download da finestra privata nell'elenco</g1>: in questo caso vengono salvati come gli altri e sopravvivono a un riavvio (i loro cookie non vengono mai salvati)."
@@ -5974,6 +5994,10 @@
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 e Linux; macOS in prova"
   },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "Reso possibile da queste persone fantastiche"
+  },
   "57e101e4403fd046": {
    "source": "Command",
    "text": "Comando"
@@ -6009,6 +6033,10 @@
   "5825a9c27ba24869": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers, and screen readers.",
    "text": "<g1><g2>Scorciatoie da tastiera</g2></g1>: tutti i tasti a cui risponde la finestra principale e i lettori di schermo."
+  },
+  "5841102b5b7e5308": {
+   "source": "<g1>Committers and reviewers:</g1> <x2/> (<x3/>). Contributions from other people are reviewed by him before they are merged.",
+   "text": "<g1>Committers e revisori:</g1> <x2/> (<x3/>). I suoi contributi sono revisionati prima di essere uniti."
   },
   "584697d876791ed0": {
    "source": "<g1>Download video</g1> finds the video on pages whose player loads a <x2/> or <x3/> address that answers something else first, as SVT Play does (<g4>#377</g4>).",
@@ -8226,6 +8254,10 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Serve un tuo account a pagamento con uno di questi servizi: MDM non ne vende né ne include uno. La condivisione di un account o dei suoi collegamenti viola i termini dei servizi e può comportare la sospensione dell'account."
   },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>Tutti coloro che hanno contribuito</g2>"
+  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "Domande e risposte | Mister Download Manager"
@@ -9934,6 +9966,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Accelerazione e ripresa</g1><g2>Un file diviso su un massimo di 32 connessioni, ripartito fino all'ultimo byte e ripreso dopo qualsiasi arresto anomalo.</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> le persone che hanno inviato una pull request, segnalato un problema o partecipato a una conversazione su GitHub. <g2>Incontrali tutti</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Barra del titolo disegnata da MDM, quando la sua finestra non è attiva (trasparente: come quando è attiva)"
@@ -10829,6 +10865,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "Invia i download dal browser"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> commento"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -13950,6 +13990,10 @@
    "source": "Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code.",
    "text": "Mostra un nuovo codice per associare un telefono o un browser remoto al controllo remoto dell'applicazione in esecuzione: i suoi indirizzi web, il codice di associazione e un codice QR."
   },
+  "cb3fee6871e1183d": {
+   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
+   "text": "<g1>0.5.2</g1> <g2>17.1 MB</g2>"
+  },
   "cb565e5b28b1036b": {
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> Aggiungi a Firefox</g1><g3><x4/> Aggiungi a Chrome</g3>"
@@ -14165,6 +14209,10 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Link grabber e archivi | Guida di Mister Download Manager"
+  },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>Commenti</g1><g2><x3/> persone</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -14725,6 +14773,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager e IDM, a confronto."
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> issue"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -15737,6 +15789,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "Una seconda copia di MDM controlla la prima. Quando MDM si arresta in modo anomalo, la finestra del rapporto indica <g1>Mister Download Manager si è chiuso in modo imprevisto</g1>. Quando la sua finestra non risponde per 8 secondi, indica <g2>Mister Download Manager non risponde</g2> e <g3>Termina e riavvia MDM</g3> chiude la copia bloccata e ne avvia una nuova. Se MDM si riavvia da solo, la finestra lo indica."
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> pull request"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -16966,6 +17022,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Interrompi la condivisione dopo … minuti di condivisione</g1>: oppure quando il torrent è stato condiviso così a lungo, sommando tutte le sessioni. Disattivata per impostazione predefinita."
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> commenti"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "nomi, oltre ai suoi indirizzi, con cui si può aprire la pagina"
@@ -17065,6 +17125,10 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Novità della versione 0.5.0 <g1>08/11/2026</g1>"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> issue"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
