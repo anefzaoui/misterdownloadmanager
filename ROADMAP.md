@@ -1516,6 +1516,9 @@ These ship in the next version.
 - ✅ The lab VM scripts clear the temporary files an interrupted run left behind
 - ✅ The website's translation check takes a list of the app's names (themes) as it is, so those
   lines are no longer left in English
+- ✅ The Docker image's base images, the website build's Python package and the lab VM's Rust
+  installer are pinned to exact versions and checked by their hashes; the MCP server's library
+  (rmcp) is updated to 3.9.0
 
 ## Being worked on
 
