@@ -1509,6 +1509,8 @@ These ship in the next version.
 - ✅ The log's test of a flush writing what was dropped holds on a slow machine too (it failed now
   and then on macOS)
 - ✅ The lab VM scripts clear the temporary files an interrupted run left behind
+- ✅ The website's translation check takes a list of the app's names (themes) as it is, so those
+  lines are no longer left in English
 
 ## Being worked on
 
