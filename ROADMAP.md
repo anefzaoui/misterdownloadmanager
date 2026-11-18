@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ SourceForge downloads from the browser: when a site's bot check refuses the browser's
+  User-Agent and the browser-like connection too, MDM asks once more under its own name, with
+  the same cookies and referrer, and remembers the site for the session, resumes included
+  ([#1422](https://github.com/anefzaoui/misterdownloadmanager/issues/1422))
 - ✅ Add batch download: a long address scrolls to its caret in right-to-left languages (every
   one-line box did not), and a Save to row puts the whole batch in one folder
   ([#1403](https://github.com/anefzaoui/misterdownloadmanager/issues/1403))

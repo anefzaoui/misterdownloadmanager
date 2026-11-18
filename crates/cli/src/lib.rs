@@ -1726,12 +1726,15 @@ impl std::fmt::Display for NoFormat {
 
 impl std::error::Error for NoFormat {}
 
-/// A download's options: the app's defaults (the default browser's User-Agent, #668, and MDM's
-/// former one once if a site refuses it, #372).
+/// A download's options: the app's defaults (the default browser's User-Agent, #668, MDM's
+/// former one once if a site refuses it, #372, and MDM's own name once if a site's bot check
+/// refuses the browser's and the browser-like connection too, #1422; a `--user-agent` or a
+/// `User-Agent` header given is the only one sent).
 fn opts(connections: u32) -> Options {
     Options {
         max_connections: connections,
         agent_fallback: Some(mdm_engine::agent::IE11_USER_AGENT.to_owned()),
+        own_agent: Some(mdm_engine::agent::OWN_USER_AGENT.to_owned()),
         ..Options::default()
     }
 }
