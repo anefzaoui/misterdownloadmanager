@@ -13,7 +13,8 @@ computer on your network), the browser extension pointed at it, or its command l
 
 ## With Docker
 
-Pull the published image from GitHub Container Registry (x86-64 only for now):
+From the release after 0.5.2, pull the published image from GitHub Container Registry (x86-64
+only for now):
 
 ```sh
 docker pull ghcr.io/anefzaoui/misterdownloadmanager:<version>
