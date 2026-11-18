@@ -1054,7 +1054,10 @@ fn compatible(v: &Video, can_merge: bool, sounds: &[&Format]) -> Option<Choice> 
             .as_ref()
             .map_or_else(|| near.clone(), |e| format!("{e}/{near}")),
         ext: "mp4".into(),
-        size: f.size.map(|s| s + sound.and_then(|a| a.size).unwrap_or(0)),
+        // As for the other lines: the most a u64 holds, never past it.
+        size: f
+            .size
+            .map(|s| s.saturating_add(sound.and_then(|a| a.size).unwrap_or(0))),
         approx: f.approx || exact.is_none() || sound.is_some_and(|a| a.approx || a.size.is_none()),
         height: Some(h),
         fps: f.fps.map(|x| x.round() as u32).filter(|x| *x > 0),
