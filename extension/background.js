@@ -2402,7 +2402,7 @@ function dispositionName(cd) {
   const star = /filename\*\s*=\s*([\w-]+)'[^']*'([^;]+)/i.exec(cd);
   if (star) {
     try {
-      return decodeURIComponent(star[2].trim().replace(/^"|"$/g, ""));
+      return decodeURIComponent(escapedSeparators(star[2].trim().replace(/^"|"$/g, "")));
     } catch {
       // Not percent-encoded as it says: the plain name below.
     }
@@ -2412,16 +2412,92 @@ function dispositionName(cd) {
   return decodedPlain((plain[2] !== undefined ? plain[2].replace(/\\(.)/g, "$1") : plain[1]).trim());
 }
 
-// A plain `filename` as sent, or its percent-encoded UTF-8 decoded when that is what it holds
-// (non-ASCII once decoded: `100%25.txt` stays as it is), as the app reads it (naming.rs).
+// A plain `filename` as Chrome and Firefox read it (#1427), and the app (naming.rs
+// `decode_plain`): RFC 2047's encoded words (`=?UTF-8?B?…?=`) decoded, else its percent-encoding
+// whenever that decodes to UTF-8 (`My%20Report.pdf` is "My Report.pdf"), else as sent.
 function decodedPlain(name) {
+  const words = encodedWords(name);
+  if (words !== null) return words;
   if (!name.includes("%")) return name;
-  try {
-    const decoded = decodeURIComponent(name);
-    return /[^\x00-\x7f]/.test(decoded) ? decoded : name;
-  } catch {
-    return name; // not percent-encoded UTF-8
+  // Byte by byte, as the app: an escape that isn't one (`50%off`) stays as it is.
+  const bytes = new TextEncoder().encode(escapedSeparators(name));
+  const out = [];
+  for (let i = 0; i < bytes.length; i++) {
+    const hex = String.fromCharCode(bytes[i + 1] || 0, bytes[i + 2] || 0);
+    if (bytes[i] === 0x25 && /^[0-9a-f]{2}$/i.test(hex)) {
+      out.push(parseInt(hex, 16));
+      i += 2;
+    } else out.push(bytes[i]);
   }
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(out));
+  } catch {
+    return name; // not UTF-8 once decoded
+  }
+}
+
+// A name's percent-encoded `/` and `\` as `_`, as Chrome and Firefox save them (naming.rs
+// `escaped_separators`): a character of the name, never a folder.
+function escapedSeparators(name) {
+  return name.replace(/%(2f|5c)/gi, "_");
+}
+
+// `name` with its RFC 2047 encoded words (`=?charset?B|Q?text?=`, UTF-8 or ISO-8859-1) decoded,
+// the space between two of them dropped; null when it has none, or one it can't read (naming.rs
+// `encoded_words`).
+function encodedWords(name) {
+  const word = /=\?([^?\s]+)\?([bq])\?([^?\s]*)\?=/gi;
+  let out = "";
+  let at = 0;
+  let any = false;
+  for (let m; (m = word.exec(name)); ) {
+    const text = wordText(m[1], m[2], m[3]);
+    if (text === null) return null;
+    const between = name.slice(at, m.index);
+    // Only space between two encoded words isn't the name's.
+    out += any && /^\s*$/.test(between) ? "" : between;
+    out += text;
+    at = m.index + m[0].length;
+    any = true;
+  }
+  return any ? out + name.slice(at) : null;
+}
+
+// An encoded word's text: its bytes base64 (B) or quoted-printable with `_` for a space (Q), in
+// UTF-8 or ISO-8859-1 (and US-ASCII); null for anything else.
+function wordText(charset, kind, text) {
+  let bytes;
+  if (kind.toLowerCase() === "b") {
+    try {
+      bytes = Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
+    } catch {
+      return null;
+    }
+  } else {
+    const out = [];
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === "_") out.push(0x20);
+      else if (text[i] === "=") {
+        const hex = text.slice(i + 1, i + 3);
+        if (!/^[0-9a-f]{2}$/i.test(hex)) return null;
+        out.push(parseInt(hex, 16));
+        i += 2;
+      } else if (text.charCodeAt(i) < 0x80) out.push(text.charCodeAt(i));
+      else return null;
+    }
+    bytes = Uint8Array.from(out);
+  }
+  // RFC 2231's language after a `*` (`UTF-8*en`) isn't the charset's.
+  const cs = charset.split("*")[0].toLowerCase();
+  if (cs === "utf-8" || cs === "utf8") {
+    try {
+      return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    } catch {
+      return null;
+    }
+  }
+  if (["iso-8859-1", "iso_8859-1", "latin1", "us-ascii"].includes(cs)) return String.fromCharCode(...bytes);
+  return null;
 }
 
 // A response header's value as text. Firefox gives its bytes one character each (ISO-8859-1), so

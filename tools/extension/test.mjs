@@ -282,6 +282,8 @@ function load(api, firefox, extra = {}) {
     URL,
     URLSearchParams,
     TextDecoder,
+    TextEncoder,
+    atob,
     setTimeout,
     clearTimeout,
     Promise,
@@ -3500,9 +3502,9 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     ["attachment; filename=\"plain report.pdf\"", "plain report.pdf"],
     // ISO-8859-1 bytes (é alone is not valid UTF-8).
     ["attachment; filename=\"caf\u00e9.pdf\"", "café.pdf"],
-    // Percent-encoded UTF-8 in the plain name, as Firefox and the app read it.
+    // Percent-encoded UTF-8 in the plain name, as Firefox and the app read it; ASCII too (#1427).
     ["attachment; filename=\"%D8%AA%D9%82%D8%B1%D9%8A%D8%B1.pdf\"", "تقرير.pdf"],
-    ["attachment; filename=\"100%25.pdf\"", "100%25.pdf"],
+    ["attachment; filename=\"100%25.pdf\"", "100%.pdf"],
     ["attachment; filename=\"50%.pdf\"", "50%.pdf"],
     // RFC 8187 keeps winning, ASCII as it comes.
     ["attachment; filename=\"fallback.pdf\"; filename*=UTF-8''%D8%AA%D9%82%D8%B1%D9%8A%D8%B1.pdf", "تقرير.pdf"],
@@ -3514,6 +3516,46 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     assert.equal(natives(calls)[0].filename, want, value);
   }
   ok("#447 Firefox: a raw UTF-8 file name in a header reaches the app readable, other names as they were");
+}
+// #1427: a link that only redirects (302) to the file, whose own answer alone names it: the 302 is
+// no download, the file's answer is, under its name read as Chrome and Firefox read it (both
+// checked on a lab server) and as the app does (naming.rs `decode_plain`): a plain filename's
+// percent-encoding decoded, ASCII too, and RFC 2047's encoded words.
+{
+  for (const [value, want] of [
+    ["attachment; filename=\"fallback.bin\"; filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf", "My Report – v2.pdf"],
+    ["attachment; filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf", "My Report – v2.pdf"],
+    ["attachment; filename=\"My%20Report.pdf\"", "My Report.pdf"],
+    ["attachment; filename=My%20Report%20v3.pdf", "My Report v3.pdf"],
+    ["attachment; filename=\"100%25 sure.zip\"", "100% sure.zip"],
+    ["attachment; filename=\"50%off sale.zip\"", "50%off sale.zip"],
+    ["attachment; filename=\"caf%E9 menu.zip\"", "caf%E9 menu.zip"],
+    ["attachment; filename=\"=?UTF-8?B?5oql5ZGKIHY1LnBkZg==?=\"", "报告 v5.pdf"],
+    ["attachment; filename=\"=?utf-8?q?My_Report_=E2=80=93_v6.pdf?=\"", "My Report – v6.pdf"],
+    ["attachment; filename=\"Report =?UTF-8?B?5oql5ZGK?= v7.pdf\"", "Report 报告 v7.pdf"],
+    ["attachment; filename=\"=?UTF-8?Q?My_?= =?UTF-8?Q?Report.pdf?=\"", "My Report.pdf"],
+    ["attachment; filename=\"=?ISO-8859-1?Q?caf=E9.zip?=\"", "café.zip"],
+    ["attachment; filename*=UTF-8''100%2525%20double.zip", "100%25 double.zip"],
+    ["attachment; filename=\"a%2Fb report.pdf\"", "a_b report.pdf"],
+    ["attachment; filename*=UTF-8''a%2Fb%5Cc.pdf", "a_b_c.pdf"],
+  ]) {
+    const { api, calls, listeners } = fakeApi({ firefox: true });
+    load(api, true);
+    await settle();
+    const first = "https://site.test/download/42";
+    const file = "https://cdn.test/files/7f3e/x.bin";
+    listeners.beforeRequest({ requestId: "c1", method: "GET", url: first, tabId: 3, type: "main_frame" });
+    // The 302 itself: no name, no download.
+    assert.deepEqual(await held(listeners, answer(first, { Location: file }, { requestId: "c1", statusCode: 302 })), {});
+    listeners.beforeRedirect({ url: first, redirectUrl: file });
+    listeners.beforeRequest({ requestId: "c1", method: "GET", url: file, tabId: 3, type: "main_frame" });
+    const res = await held(listeners, answer(file, { "Content-Type": "application/octet-stream", "Content-Disposition": value }, { requestId: "c1" }));
+    assert.deepEqual(res, { cancel: true }, value);
+    const sent = natives(calls);
+    assert.equal(sent.length, 1, value);
+    assert.deepEqual([sent[0].url, sent[0].finalUrl, sent[0].filename], [first, file, want], value);
+  }
+  ok("#1427 Firefox: a link that redirects to its file, named by the file's own answer as browsers read it");
 }
 // A download taken from its answer (#208) is cancelled, so its response never starts: the proxy a
 // VPN add-on chose for it (proxy.onRequest, in the answer's proxyInfo) still goes with it.

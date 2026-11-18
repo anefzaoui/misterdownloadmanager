@@ -2,7 +2,7 @@
 //!
 //! Routes (every parameter is listed by `GET /`, [`HELP`]):
 //! - `GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>` — deterministic content (see
-//!   `content`); the file params shape its headers (`cd`, `cdstar`, `inline`)
+//!   `content`); the file params shape its headers (`cd`, `cdstar`, `cdraw`, `inline`)
 //! - `POST /form/{size}[/{name}]?need=FIELD=VALUE[&see_other=1]&<as /gen>` — the same file, only
 //!   for a form post that carries `FIELD=VALUE`
 //! - `GET /files/{name}` — a real file from `--files DIR` (Range too; 404 without it): archives
@@ -726,6 +726,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     cd=NAME        Content-Disposition: attachment; filename="NAME" (whatever the path's name;
                    UTF-8 is sent raw, as many servers do)
     cdstar=NAME    attachment; filename="fallback-name.zip"; filename*=UTF-8''<NAME %-encoded>
+    cdraw=VALUE    Content-Disposition: VALUE, exactly as given (a name the way a server wrote
+                   it: only filename*, %-encoded or RFC 2047 in filename=, #1427)
     inline=1       Content-Disposition: inline (filename: cdstar, cd or the path's name) and the
                    name's real Content-Type (.pdf application/pdf, .mp3 audio/mpeg, .mp4
                    video/mp4, ...): a browser displays or plays it
@@ -1380,6 +1382,8 @@ struct FileQuery {
     uses: Option<u64>,
     cd: Option<String>,
     cdstar: Option<String>,
+    /// `cdraw`: the whole `Content-Disposition` value, sent as given (#1427).
+    cd_raw: Option<String>,
     disposition: Disposition,
     /// `type`: the Content-Type sent instead of the name's (`none`: none at all).
     content_type: Option<String>,
@@ -1784,6 +1788,9 @@ const ATTR_CHAR: &AsciiSet = &NON_ALPHANUMERIC
 
 /// The `Content-Disposition` of a generated file; `path_name` is the name in its path.
 fn content_disposition(q: &FileQuery, path_name: Option<&str>) -> Option<String> {
+    if let Some(raw) = &q.cd_raw {
+        return Some(raw.clone());
+    }
     let kind = match q.disposition {
         Disposition::Attachment => "attachment",
         Disposition::Inline => "inline",
@@ -1843,6 +1850,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
         uses: None,
         cd: None,
         cdstar: None,
+        cd_raw: None,
         disposition: Disposition::Attachment,
         content_type: None,
         magic: None,
@@ -1895,6 +1903,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             }
             "cd" => out.cd = name(&k, v)?,
             "cdstar" => out.cdstar = name(&k, v)?,
+            "cdraw" => out.cd_raw = name(&k, v)?,
             "inline" => {
                 out.disposition = match (v.as_str(), parse_flag(&v)) {
                     ("bare" | "none", _) => Disposition::Bare,
@@ -2067,6 +2076,14 @@ mod tests {
         assert!(content_disposition(&split_query("inline=bare").unwrap(), Some("a.pdf")).is_none());
         assert!(split_query("inline=maybe").is_err());
         assert!(split_query("cd=a%0Ab").is_err());
+        // #1427: a value as a server wrote it, sent as given.
+        let raw = "attachment; filename=\"My%20Report.pdf\"";
+        let q = split_query(&format!(
+            "cdraw={}",
+            utf8_percent_encode(raw, NON_ALPHANUMERIC)
+        ))
+        .unwrap();
+        assert_eq!(content_disposition(&q, Some("x.bin")).unwrap(), raw);
         // A CloudFront signed address's keys (#1087) change nothing; a type is sent as asked.
         let q = split_query(
             "inline=bare&type=binary/octet-stream&Expires=1&Signature=a~b&Key-Pair-Id=K",
