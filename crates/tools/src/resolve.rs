@@ -931,7 +931,10 @@ fn videos(v: &Video, can_merge: bool, audio: Option<&Format>) -> Vec<Choice> {
             } else {
                 f.ext.clone()
             };
-            let size = f.size.map(|s| s + sound.and_then(|a| a.size).unwrap_or(0));
+            // A site's sizes are its own to say: the most a u64 holds, never past it.
+            let size = f
+                .size
+                .map(|s| s.saturating_add(sound.and_then(|a| a.size).unwrap_or(0)));
             let approx =
                 f.approx || exact.is_none() || sound.is_some_and(|a| a.approx || a.size.is_none());
             Choice {
@@ -1431,6 +1434,22 @@ mod tests {
         );
         let v = parse(odd.as_bytes()).expect("a size below zero");
         assert!(v.formats.iter().all(|f| f.size != Some(0)));
+    }
+
+    #[test]
+    fn sizes_past_a_u64_stay_the_most_one_holds() {
+        let json = format!(
+            r#"{{"title": "t", "duration": 10, "formats": [
+                {{"format_id": "137", "ext": "mp4", "height": 1080, "vcodec": "avc1.640028",
+                  "acodec": "none", "filesize": {max}}},
+                {{"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2",
+                  "filesize": 10}}]}}"#,
+            max = u64::MAX
+        );
+        let v = parse(json.as_bytes()).unwrap();
+        let merged = choices(&v, true);
+        assert_eq!(merged[0].height, Some(1080));
+        assert_eq!(merged[0].size, Some(u64::MAX));
     }
 
     #[test]

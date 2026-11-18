@@ -569,6 +569,12 @@ These ship in the next version.
   ([#1403](https://github.com/anefzaoui/misterdownloadmanager/issues/1403))
 - ✅ Malay: 24 menu and column items reviewed by a native speaker (torrent columns, Linux display
   systems, text rendering and graphics notes) (thanks to [@9M2PJU](https://github.com/9M2PJU))
+- ✅ Fuzzing: the parts that read what servers, pages and downloaded files send (HLS playlists,
+  yt-dlp's answers, web pages, file names, .torrent files and magnet links, release signatures,
+  Click'n'Load posts, archives) are tried with generated inputs on every pull request that
+  changes them and every week (ClusterFuzzLite); robustness fixes in reading HLS and DASH
+  streams' pieces, a video's sizes and a .torrent file's trackers came out of it, and Link grabber
+  no longer lists an `ftps:` link that names no server
 
 - ✅ Torrents connect over uTP (BitTorrent over UDP) beside TCP, on by default with a switch in
   Torrent settings: peers that take only uTP are reached, so torrents find as many peers as in
