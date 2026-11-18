@@ -23,7 +23,7 @@ Whatever the signature, you can still check every download against the release's
 
 ## Team roles
 
-- **Committers and reviewers:** <a href="https://github.com/anefzaoui" translate="no">Ahmed Nefzaoui</a> (<span translate="no">@anefzaoui</span>). Contributions from other people are reviewed by him before they are merged.
+- **Committers and reviewers:** <a href="https://github.com/anefzaoui" translate="no">Ahmed Nefzaoui</a> (<span translate="no">@anefzaoui</span>). Contributions from other people are reviewed by Ahmed before they are merged.
 - **Approvers:** <a href="https://github.com/anefzaoui" translate="no">Ahmed Nefzaoui</a> (<span translate="no">@anefzaoui</span>). Every signing request is approved by hand, release by release.
 
 ## Privacy

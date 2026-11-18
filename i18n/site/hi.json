@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "एक कोड हस्ताक्षर Windows को यह दिखाने देता है कि किसी प्रोग्राम को किसने प्रकाशित किया और यह जांचने में मदद करता है कि इसे बनाने के बाद बदला नहीं गया था। जब Mister Download Manager (\"MDM\") का कोई रिलीज़ साइन किया जाता है, तो उसका हस्ताक्षर इस प्रोजेक्ट से आने वाली Windows फ़ाइलों को कवर करता है:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> पुल रिक्वेस्ट"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "हाँ। MDM डाउनलोड की प्रगति को लगातार सहेजता रहता है, इसलिए कनेक्शन टूटने, क्रैश होने या रीस्टार्ट होने के बाद डाउनलोड वहीं से जारी रहता है जहाँ रुका था। फिर से शुरू करने से पहले यह जाँचता है कि सर्वर पर फ़ाइल बदली तो नहीं है। डाउनलोड का पता समाप्त हो जाने पर <g1>डाउनलोड पता रीफ़्रेश करें</g1> से नया पता देकर डेटा सुरक्षित रखा जा सकता है। <g2>रुका हुआ डाउनलोड फिर से शुरू करें</g2> देखें।"
@@ -217,10 +213,6 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>सहायता → Mister Download Manager के बारे में</g1> आपके पास मौजूद संस्करण दिखाता है।"
-  },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>पुल रिक्वेस्ट</g1><g2><x3/> लोग</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -2290,10 +2282,6 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOS पर वेक शेड्यूल केवल व्यवस्थापक ही कर सकता है, इसलिए यह विकल्प धूसर रहता है। MDM व्यवस्थापक का पासवर्ड नहीं माँगता। उदाहरण के लिए, व्यवस्थापक Mac को हर दिन कतार शुरू होने से एक मिनट पहले जगा सकता है। 11:00 PM पर शुरू होने वाली कतार के लिए समय 10:59 PM सेट किया जा सकता है:"
   },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "हर उस व्यक्ति को जिसने <x1/> संस्करण के बाद से GitHub पर पुल रिक्वेस्ट भेजा, कोई समस्या बताई या टिप्पणी की।"
-  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>IDM से स्थानांतरण</g1><g2>आपकी IDM सूची एक फ़ाइल में आती है, प्रत्येक डाउनलोड अपने पते, रेफ़रर और कुकीज़ के साथ।</g2>"
@@ -4017,10 +4005,6 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "<g1>ठीक है</g1> पर क्लिक करें।"
-  },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>समस्याएँ</g1><g2><x3/> लोग</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -5858,10 +5842,6 @@
    "source": "A small file",
    "text": "एक छोटी फ़ाइल"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "धन्यवाद"
-  },
   "55b9b5b1ff4877f3": {
    "source": "Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes, unless you tick <g1>Options → General → Keep private-window downloads in the list</g1>: then they are saved like any other and survive a restart (their cookies are never saved).",
    "text": "एक निजी विंडो से डाउनलोड उस विंडो की कुकीज़ का उपयोग करते हैं, सामान्य कुकीज़ का कभी नहीं, और MDM की सूची में तब तक नहीं रहते जब तक वह बंद न हो जाए, जब तक आप <g1>विकल्प → सामान्य → निजी-विंडो डाउनलोड को सूची में रखें</g1> को टिक न करें: तब वे किसी अन्य की तरह सहेजे जाते हैं और पुनरारंभ के बाद भी बने रहते हैं (उनकी कुकीज़ कभी सहेजी नहीं जातीं)।"
@@ -5998,10 +5978,6 @@
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 और Linux; macOS आज़माने के लिए"
   },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "इन अद्भुत लोगों ने इसे संभव बनाया"
-  },
   "57e101e4403fd046": {
    "source": "Command",
    "text": "कमांड"
@@ -6037,10 +6013,6 @@
   "5825a9c27ba24869": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers, and screen readers.",
    "text": "<g1><g2>कीबोर्ड शॉर्टकट</g2></g1> — मुख्य विंडो में हर कुंजी का जवाब, और स्क्रीन रीडर।"
-  },
-  "5841102b5b7e5308": {
-   "source": "<g1>Committers and reviewers:</g1> <x2/> (<x3/>). Contributions from other people are reviewed by him before they are merged.",
-   "text": "<g1>कमिटर्स और समीक्षक:</g1> <x2/> (<x3/>)। अन्य लोगों के योगदान को मर्ज करने से पहले उनके द्वारा समीक्षा की जाती है।"
   },
   "584697d876791ed0": {
    "source": "<g1>Download video</g1> finds the video on pages whose player loads a <x2/> or <x3/> address that answers something else first, as SVT Play does (<g4>#377</g4>).",
@@ -7822,6 +7794,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Google Drive के लिंक को उसी रूप में चिपकाएँ, जैसा <g1>शेयर करें → लिंक कॉपी करें</g1> से मिलता है:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "इस पृष्ठ के बनने के समय GitHub से सूची नहीं पढ़ी जा सकी। इस बीच, हर कोई प्रोजेक्ट के <g1>पुल रिक्वेस्ट</g1> और <g2>इश्यू</g2> में GitHub पर है।"
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "समस्याओं की रिपोर्ट करना"
@@ -8253,10 +8229,6 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "आपको इनमें से किसी एक सेवा के साथ अपना सशुल्क खाता चाहिए: MDM एक को बेचता या शामिल नहीं करता है। एक खाते या उसके लिंक को साझा करना सेवाओं की शर्तों का उल्लंघन करता है और खाते को निलंबित कर सकता है।"
-  },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>सभी सहायक</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -9970,10 +9942,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>तेज़ डाउनलोड और फिर से शुरू करना</g1><g2>एक फ़ाइल को 32 कनेक्शनों तक विभाजित किया जाता है, अंतिम बाइट तक फिर से विभाजित किया जाता है, और किसी भी क्रैश के बाद फिर से शुरू किया जाता है।</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> वे लोग जिन्होंने पुल रिक्वेस्ट भेजी, समस्या बताई या GitHub पर बातचीत में शामिल हुए। <g2>उन सभी से मिलें</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM द्वारा खींची गई शीर्षक पट्टी, जब उसकी विंडो सक्रिय न हो (पारदर्शी: जैसे सक्रिय होने पर)"
@@ -10869,10 +10837,6 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "अपने ब्राउज़र से डाउनलोड भेजें"
-  },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> टिप्पणी"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -13998,10 +13962,6 @@
    "source": "Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code.",
    "text": "चल रहे ऐप के रिमोट कंट्रोल के साथ एक फ़ोन या रिमोट ब्राउज़र को युग्मित करने के लिए एक नया कोड दिखाएँ: इसके वेब पते, युग्मन कोड और एक QR कोड।"
   },
-  "cb3fee6871e1183d": {
-   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
-   "text": "<g1>0.5.2</g1> <g2>17.1 MB</g2>"
-  },
   "cb565e5b28b1036b": {
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> Firefox में जोड़ें</g1><g3><x4/> Chrome में जोड़ें</g3>"
@@ -14217,10 +14177,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "लिंक ग्रैबर और संग्रह — Mister Download Manager सहायता"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>टिप्पणियाँ</g1><g2><x3/> लोग</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -14781,10 +14737,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager और IDM, साथ-साथ।"
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> समस्या"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -15426,6 +15378,10 @@
    "source": "<g1>Help → Check for updates...</g1> tells you whether a newer version is out, and what is new in it. <g2>Check for updates at every start</g2> in that window lets MDM look by itself: a few seconds after it starts, and once a day while it stays open. When there's a new version, its window opens in front.",
    "text": "<g1>सहायता → अपडेट के लिए जाँच करें...</g1> से पता चलता है कि नया संस्करण उपलब्ध है या नहीं और उसमें क्या नया है। उस विंडो में <g2>हर शुरुआत में अपडेट के लिए जांच करें</g2> विकल्प चालू करने पर MDM अपने आप अपडेट जाँचता है: शुरू होने के कुछ सेकंड बाद और खुला रहने पर दिन में एक बार। नया संस्करण उपलब्ध होने पर उसकी विंडो सामने खुलती है।"
   },
+  "e15c2c420d929eac": {
+   "source": "<g1>Committers and reviewers:</g1> <x2/> (<x3/>). Contributions from other people are reviewed by Ahmed before they are merged.",
+   "text": "<g1>कमिटर्स और समीक्षक:</g1> <x2/> (<x3/>)। अन्य लोगों के योगदान को मर्ज करने से पहले अहमद द्वारा समीक्षा की जाती है।"
+  },
   "e15d599e6927add3": {
    "source": "Options on its Save to page: a category, its file types and its folder",
    "text": "अपने इसमें सहेजें पृष्ठ पर विकल्प: एक श्रेणी, उसके फ़ाइल प्रकार और उसका फ़ोल्डर"
@@ -15793,10 +15749,6 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM की एक दूसरी कॉपी पहली पर नज़र रखती है। जब MDM क्रैश होता है, तो रिपोर्ट विंडो कहती है <g1>Mister Download Manager अप्रत्याशित रूप से बंद हो गया</g1>। जब उसकी विंडो 8 सेकंड तक जवाब नहीं देती है, तो वह कहती है <g2>Mister Download Manager ने प्रतिक्रिया देना बंद कर दिया</g2>, और <g3>MDM को समाप्त करें और पुनरारंभ करें</g3> फ़्रीज़ हुई कॉपी को बंद कर देता है और एक नई शुरू करता है। यदि MDM अपने आप वापस आ जाता है, तो विंडो ऐसा कहती है।"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> पुल रिक्वेस्ट"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17026,10 +16978,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>इतने समय तक साझा करने के बाद साझा करना बंद करें … मिनट</g1> — या, जब कुल मिलाकर इतने समय तक साझा किया जा चुका हो, तो इसे साझा करना बंद करें। डिफ़ॉल्ट रूप से बंद।"
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> टिप्पणियाँ"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "इसके पतों के अलावा वे नाम जिनसे पेज खोला जा सकता है"
@@ -17129,10 +17077,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "संस्करण 0.5.0 में नया क्या है <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> समस्याएँ"
   },
   "f9ad81eb1765abbd": {
    "source": "In the browser extension's menu, <g1>Send downloads to → Another Mister Download Manager (a server)</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
