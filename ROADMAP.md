@@ -1527,6 +1527,14 @@ These ship in the next version.
 - ✅ The Docker image's base images, the website build's Python package and the lab VM's Rust
   installer are pinned to exact versions and checked by their hashes; the MCP server's library
   (rmcp) is updated to 3.9.0
+- ✅ Website: Linux is called supported everywhere (no longer "experimental" or "to try"; macOS
+  still is); the download page's **Get it safely** lists the official places to get MDM, how to
+  check a download's checksum and signature, and why Windows or an antivirus may warn; the home
+  page shows the browser stores' and GitHub's figures and what reviewers wrote, quoted exactly;
+  a new [Press and mentions](https://misterdownloadmanager.com/press.html) page lists articles and
+  videos by language, the fair criticism of the benchmark, and where MDM is available (official
+  first, community packages labelled); the benchmark's figures say they come from a test server
+  on the same PC
 
 ## Being worked on
 

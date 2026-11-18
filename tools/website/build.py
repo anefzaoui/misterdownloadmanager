@@ -164,6 +164,7 @@ FILES = {
     "chromium": f"{RELEASE}-extension-chromium.zip",
     "firefox": f"{RELEASE}-extension-firefox.xpi",
     "sums": f"{REPO}/releases/download/v{VERSION}/SHA256SUMS.txt",
+    "sums_sig": f"{REPO}/releases/download/v{VERSION}/SHA256SUMS.txt.sig",
 }
 
 # Every page built, for the sitemap: (path, priority).
@@ -394,7 +395,7 @@ def os_menu() -> str:
         ("windows", "Windows portable", "portable.zip · runs from a folder or USB stick", FILES["portable"]),
         ("macos", "macOS Apple Silicon", ".dmg · M1 and later · experimental", FILES["dmg_arm64"]),
         ("macos", "macOS Intel", ".dmg · Macs with an Intel processor · experimental", FILES["dmg_intel"]),
-        ("linux", "Linux AppImage", "any distribution · experimental", FILES["appimage"]),
+        ("linux", "Linux AppImage", "any distribution", FILES["appimage"]),
         ("linux", "Linux .deb / .rpm", "Debian, Ubuntu · Fedora, openSUSE", "/download.html#linux"),
     ]
     items = "".join(
@@ -553,6 +554,7 @@ def footer() -> str:
             <li><a href="/news.html">What's new</a></li>
             <li><a href="/contributing.html">Contributing</a></li>
             <li><a href="/contributors.html">Contributors</a></li>
+            <li><a href="/press.html">Press and mentions</a></li>
             <li><a href="/news.xml">News feed</a></li>
           </ul>
         </div>
@@ -704,7 +706,7 @@ def waybill_fields() -> str:
     size = f' <small>{SETUP_SIZE}</small>' if SETUP_SIZE else ""
     return (f'<dl class="fields">'
             f'<div><dt>Postage</dt><dd>Free</dd></div>'
-            f'<div><dt>Delivery</dt><dd><a href="/benchmark.html">1 GiB in 1.0 s</a> <small>IDM: 5.5 s</small></dd></div>'
+            f'<div><dt>Delivery</dt><dd><a href="/benchmark.html">1 GiB in 1.0 s</a> <small>IDM: 5.5 s</small> <small class="wb-note">local test server</small></dd></div>'
             f'<div><dt>System</dt><dd>Windows 10 and 11</dd></div>'
             f'<div><dt>Version</dt><dd><a href="/news.html">{VERSION}</a>{size}</dd></div></dl>')
 
@@ -716,7 +718,7 @@ SOFTWARE_LD = {
     "alternateName": "MDM",
     "applicationCategory": "UtilitiesApplication",
     "applicationSubCategory": "Download manager",
-    "operatingSystem": "Windows 10, Windows 11, macOS (experimental), Linux (experimental)",
+    "operatingSystem": "Windows 10, Windows 11, Linux, macOS (experimental)",
     "softwareVersion": VERSION,
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
     "license": "https://www.gnu.org/licenses/gpl-3.0.html",
@@ -1159,6 +1161,174 @@ def build_contributors() -> None:
     </div>""", jsonld=[crumbs_ld(trail)], priority="0.5")
 
 
+# ---- What others say: the stores' figures, quotes, /press.html ------------------------------------
+
+TRENDSHIFT = "https://trendshift.io/repositories/337427"
+SOURCEFORGE = "https://sourceforge.net/projects/mister-download-manager.mirror/files/"
+RELEASE_KEY = f"{REPO}/blob/main/crates/tools/keys/mdm-release.asc"
+# The figures the home page and /press.html show, as each source showed them on FIGURES_CHECKED,
+# rounded down. Read them again where they come from before changing them (and the date): the
+# Chrome Web Store listing (users, rating); the add-ons API, addons.mozilla.org/api/v5/addons/addon/
+# mister-download-manager/ (average_daily_users, ratings); GitHub's releases API, the
+# download_count of the app's own files in every release (installers, zips, .dmg, AppImage, .deb,
+# .rpm, .tar.gz: not the checksums, symbols or extensions); Trendshift's page (its placements).
+FIGURES_CHECKED = "2026-11-18"
+FIGURES = [
+    # (field name, where it comes from, value, its fine print)
+    ("Chrome Web Store", CWS, "50,000+ users", "4.9 out of 5, from 43 ratings"),
+    ("Firefox Add-ons", AMO, "3,800+ daily users", "4.7 out of 5, from 7 ratings"),
+    ("GitHub Releases", f"{REPO}/releases", "280,000+ downloads", "of the app, every version together"),
+    ("Trendshift", TRENDSHIFT, "#1 in Rust",
+     'repository of the day on <time datetime="2026-11-09" translate="no">2026-11-09</time>'),
+]
+# Where MDM comes from, for /press.html's "Available on": (name, link, what it is). The official
+# places first; the community's packages are made by volunteers, each checked to install the
+# release's own files (their checksums match SHA256SUMS.txt) when it was added.
+OFFICIAL = [
+    ("GitHub Releases", f"{REPO}/releases", "Every file of every version, with SHA256SUMS.txt and its signature"),
+    ("misterdownloadmanager.com", "/download.html", "This website: its download links lead to GitHub Releases"),
+    ("Chrome Web Store", CWS, "The browser extension, for Chrome, Edge, Brave, Opera and Vivaldi"),
+    ("Firefox Add-ons", AMO, "The browser extension for Firefox"),
+    ("WinGet", "/download.html#winget", "Windows' package manager installs the setup from GitHub Releases"),
+    ("SourceForge mirror", SOURCEFORGE, "An automatic, exact copy of the GitHub releases; SourceForge shows ads around its downloads"),
+]
+COMMUNITY = [
+    ("AUR: misterdownloadmanager-bin", "https://aur.archlinux.org/packages/misterdownloadmanager-bin", "Arch Linux, from the release's .tar.gz"),
+    ("AUR: mister-download-manager-bin", "https://aur.archlinux.org/packages/mister-download-manager-bin", "Arch Linux, from the release's .deb"),
+    ("Nix: misterdm-nix", "https://github.com/TamagoMasgend/misterdm-nix", "A Nix flake, for NixOS"),
+    ("AM", "https://github.com/ivan-hc/AM", "A package manager for Linux AppImages: installs the release's AppImage"),
+]
+# The language groups of /press.html, in the reader's order: a quote's or a piece's `lang` (its
+# first part) and the group's name.
+PRESS_LANGS = {"en": "English", "ar": "Arabic", "bn": "Bengali", "zh": "Chinese", "fa": "Persian",
+               "id": "Indonesian", "it": "Italian", "ko": "Korean", "pt": "Portuguese", "ru": "Russian",
+               "tr": "Turkish"}
+
+
+def content_tsv(name: str) -> list[list[str]]:
+    """website/content/<name>'s rows (tab-separated; # lines are comments)."""
+    return [l.split("\t") for l in (CONTENT / name).read_text("utf-8").splitlines()
+            if l.strip() and not l.startswith("#")]
+
+
+def figures_fields() -> str:
+    """The stores' figures in the label's field grammar, each a link to where it was read. The
+    sources' names are names (translate="no": a lone element in its block would still be sent)."""
+    return '<dl class="fields figures">' + "".join(
+        f'<div><dt translate="no">{name}</dt><dd><a href="{esc(href)}">{value}</a><small>{fine}</small></dd></div>'
+        for name, href, value, fine in FIGURES) + "</dl>"
+
+
+def checked_on(text: str = "Checked on") -> str:
+    return f'{text} <time datetime="{FIGURES_CHECKED}" translate="no">{FIGURES_CHECKED}</time>'
+
+
+def said_list() -> str:
+    """website/content/quotes.tsv: each quote as written, in its own language (all of them left to
+    right), with its source; under it our translation, marked so (styles.css hides it where the
+    page is in the quote's language). Who said it is a name: its block is translate="no"."""
+    items = []
+    for lang, language, who, role, outlet, date, url, quote, english in content_tsv("quotes.tsv"):
+        when = f'<time datetime="{date}" translate="no">{date}</time>'
+        source = f'<a href="{esc(url)}"><span translate="no">{esc(outlet)}</span></a>'
+        if who == outlet:
+            by, line = f'<b translate="no">{esc(who)}</b>', f"{role}, {when}"
+        else:
+            by, line = f'<b translate="no">{esc(who)}</b>', f"{role} on {source}, {when}"
+            source = ""
+        if source:
+            by = f'<a href="{esc(url)}">{by}</a>'
+        items.append(
+            f'<li><figure class="said">'
+            f'<blockquote lang="{lang}" dir="ltr" translate="no" cite="{esc(url)}"><p>{esc(quote)}</p></blockquote>'
+            f'<div class="said-tr" data-same="{lang.split("-")[0]}"><p class="said-tr-name">Translated from {language}</p>'
+            f'<p>{esc(english)}</p></div>'
+            f'<figcaption><p class="said-by" translate="no">{by}</p><p class="said-where">{line}</p></figcaption>'
+            f'</figure></li>')
+    return f'<ul class="said-list" role="list">{"".join(items)}</ul>'
+
+
+def signed_sheet() -> str:
+    """The home page's proof of delivery: the stores' figures, then what people wrote."""
+    return (f'<div class="sheet sheet-labelled signed-sheet"><p class="sheet-band"><b>Proof of delivery</b>'
+            f'<span>{checked_on("Figures checked on")} · quotes exact, linked to their source</span></p>'
+            f'{figures_fields()}{said_list()}</div>')
+
+
+def press_groups(rows: list[list[str]]) -> str:
+    """Pieces by language group (English first, then by name), each a link: its title in its own
+    language, the outlet and the date. Titles and names stay as written (translate="no")."""
+    order = sorted({r[1].split("-")[0] for r in rows},
+                   key=lambda k: (k != "en", PRESS_LANGS[k]))
+    out = []
+    for key in order:
+        items = "".join(
+            f'<li><a href="{esc(url)}"><b lang="{lang}" dir="auto">{esc(title)}</b>'
+            f'<span><span dir="auto">{esc(outlet)}</span> · <time datetime="{date}">{date}</time></span>'
+            f'<svg class="mf-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>'
+            for _, lang, outlet, date, url, title in sorted(rows, key=lambda r: r[3], reverse=True)
+            if lang.split("-")[0] == key)
+        out.append(f'<div class="mf-group"><h3 class="mf-name">{PRESS_LANGS[key]}</h3>'
+                   f'<ul class="mf-list press-list" role="list" translate="no">{items}</ul></div>')
+    return "".join(out)
+
+
+def channel_group(name: str, rows: list[tuple[str, str, str]], fine: str = "") -> str:
+    items = "".join(
+        f'<li><a href="{esc(href)}"><b translate="no">{esc(label)}</b><span>{what}</span>'
+        f'<svg class="mf-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>'
+        for label, href, what in rows)
+    note = f'<p class="fine channel-note">{fine}</p>' if fine else ""
+    return (f'<div class="mf-group"><h3 class="mf-name">{name}</h3>'
+            f'<div><ul class="mf-list" role="list">{items}</ul>{note}</div></div>')
+
+
+def build_press() -> None:
+    """/press.html: the stores' figures, what independent writers and video makers published about
+    MDM (website/content/press.tsv), the fair criticism with our answer, and where MDM comes from."""
+    path = "/press.html"
+    trail = [("Home", "/"), ("Press and mentions", path)]
+    rows = content_tsv("press.tsv")
+    articles = [r for r in rows if r[0] == "article"]
+    videos = [r for r in rows if r[0] == "video"]
+    locker = "https://lockergnome.com/mister-download-manager-one-second-localhost-benchmark/"
+    lede = ("What others wrote and filmed about Mister Download Manager, in their own languages, and the "
+            "places to get it. Independent pieces only: pages that re-host MDM's files are left out.")
+    fine = (f'{checked_on("Every link checked on")}. Wrote about MDM, or found a mistake here? '
+            f'<a href="{REPO}/issues/new?template=website.yml&amp;page={urllib.parse.quote(SITE + path)}">Tell us on GitHub</a>.')
+    body = f"""{page_head("Press and mentions", lede, trail, fine)}
+    <div class="wrap press-page">
+      <section class="sheet sheet-labelled press-sheet" aria-labelledby="figures-title">
+        <h2 class="sheet-band" id="figures-title"><b>In figures</b><span>{checked_on()}, rounded down</span></h2>
+        {figures_fields()}
+      </section>
+      <section class="sheet sheet-labelled press-sheet" aria-labelledby="articles-title">
+        <h2 class="sheet-band" id="articles-title"><b>Articles and reviews</b><span>{len(articles)}, newest first in each language</span></h2>
+        {press_groups(articles)}
+      </section>
+      <section class="sheet sheet-labelled press-sheet" aria-labelledby="videos-title">
+        <h2 class="sheet-band" id="videos-title"><b>Videos</b><span>{len(videos)}, on YouTube</span></h2>
+        {press_groups(videos)}
+      </section>
+      <section class="page-body prose press-critique" aria-labelledby="criticism">
+        <h2 id="criticism">The fair criticism</h2>
+        <p class="press-cite"><a href="{locker}"><cite lang="en" translate="no">Mister Download Manager's one-second gigabyte came from a server on the same PC</cite></a> <span>Chris Pirillo, <span translate="no">Lockergnome</span>, <time datetime="2026-11-12" translate="no">2026-11-12</time></span></p>
+        <p>He is right about the setup. Our "1 GiB in 1 second" comes from a loopback test: both programs downloaded from a test server on the same PC. It compares the two programs under the same load; it doesn't measure an internet connection, and MDM won't make yours faster than it is. We now say so wherever the figure appears.</p>
+        <p><a href="/benchmark.html">The benchmark report</a> has every run, the method and the raw data, so anyone can check it or run it again.</p>
+      </section>
+      <section class="sheet sheet-labelled press-sheet" id="available-on" aria-labelledby="available-title">
+        <h2 class="sheet-band" id="available-title"><b>Available on</b><span>The official places first</span></h2>
+        {channel_group("Official", OFFICIAL)}
+        {channel_group("Community packages", COMMUNITY, "Made and kept up by volunteers, not by us. Each one installed the release's own files when we looked; check what yours installs against SHA256SUMS.txt.")}
+      </section>
+      <p class="crew-join"><a class="btn btn-line" href="/download.html#get-it-safely">How to get MDM safely</a></p>
+    </div>"""
+    write(path, f"Press and mentions — {NAME}",
+          f"Articles, reviews and videos about {NAME} in many languages, its figures in the browser stores "
+          "and on GitHub, and the official places to get it.",
+          body, jsonld=[crumbs_ld(trail)], priority="0.5")
+
+
 # ---- Languages: i18n/languages.tsv ---------------------------------------------------------------
 
 def build_languages() -> None:
@@ -1345,10 +1515,10 @@ def fill(text: str) -> str:
     if "<!--@features-->" in text:
         text = text.replace("<!--@features-->", manifest(feature_list()))
     text = coming_marks(text.replace("<!--@coming-->", coming_banner()))
-    text = text.replace("<!--@crew-->", crew_pile())
+    text = text.replace("<!--@crew-->", crew_pile()).replace("<!--@signed-->", signed_sheet())
     text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
-            .replace("{{SPONSORS}}", SPONSORS).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
+            .replace("{{SPONSORS}}", SPONSORS).replace("{{RELEASE_KEY}}", RELEASE_KEY).replace("{{SOURCEFORGE}}", SOURCEFORGE).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
 
 
 def build_templated(name: str, path: str, section: str, priority: str) -> None:
@@ -1792,6 +1962,7 @@ def main() -> None:
     build_languages()
     build_repo_pages()
     build_contributors()
+    build_press()
     build_content_pages()
     build_features()
     build_themes()

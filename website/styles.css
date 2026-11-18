@@ -597,6 +597,63 @@ tbody th { font-weight: 650; }
 .roster-counts b { font-weight: 750; color: var(--ink); font-variant-numeric: tabular-nums; }
 .crew-join { margin: 0; }
 
+/* Signed for (home) and /press.html: the stores' figures as fields, then what people wrote, ruled
+   like the packing list. A quote stays as written, in its language (quotes: auto gives each
+   language its own marks); our translation under it is hidden where the page is in that language. */
+.figures dd { font-size: 19px; font-weight: 750; font-stretch: 92%; }
+.figures dd a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.figures dd a:hover { text-decoration-thickness: 2px; }
+.figures dd small { display: block; margin: 3px 0 0; font-size: 14px; font-stretch: 100%; white-space: normal; }
+.figures > div { padding: 14px clamp(16px, 2.4vw, 22px) 16px; }
+.sheet-band + .figures > div:nth-child(-n+2) { border-top: 0; }
+@media (min-width: 981px) {
+  .figures { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .figures > div:nth-child(n) { border-inline-start: 1.5px solid var(--ink); }
+  .figures > div:nth-child(4n+1) { border-inline-start: 0; }
+  .sheet-band + .figures > div:nth-child(-n+4) { border-top: 0; }
+}
+@media (max-width: 720px) { .sheet-band + .figures > div:nth-child(2) { border-top: 1.5px solid var(--ink); } }
+.said-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); margin: 0 -1px -1px 0; padding: 0; list-style: none; border-top: 1.5px solid var(--ink); }
+[dir="rtl"] .said-list { margin: 0 0 -1px -1px; }
+.said-list > li { min-width: 0; box-shadow: inset -1px -1px 0 var(--line); }
+[dir="rtl"] .said-list > li { box-shadow: inset 1px -1px 0 var(--line); }
+.said { display: flex; flex-direction: column; gap: 12px; height: 100%; margin: 0; padding: 22px clamp(18px, 2.6vw, 26px) 20px; }
+.said blockquote { margin: 0; quotes: auto; }
+.said blockquote p { max-width: 46ch; font-size: 19px; font-weight: 600; line-height: 1.45; color: var(--ink); text-wrap: pretty; }
+.said blockquote p::before { content: open-quote; }
+.said blockquote p::after { content: close-quote; }
+.said-tr { padding-inline-start: 12px; border-inline-start: 1px solid var(--line); }
+.said-tr p { max-width: 50ch; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+.said-tr p + p { margin-top: 2px; quotes: auto; }
+:is(:lang(ar), :lang(fa)) .said-tr p + p { quotes: "«" "»"; }
+.said-tr p + p::before { content: open-quote; }
+.said-tr p + p::after { content: close-quote; }
+.said-tr-name { font-size: 12px !important; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; text-transform: uppercase; color: var(--ink-3) !important; }
+html[lang|="en"] .said-tr[data-same="en"], html[lang|="zh"] .said-tr[data-same="zh"],
+html[lang|="it"] .said-tr[data-same="it"], html[lang|="tr"] .said-tr[data-same="tr"] { display: none; }
+.said figcaption { margin-top: auto; padding-top: 10px; border-top: 1.5px solid var(--ink); }
+.said-by { font-size: 16.5px; font-weight: 750; line-height: 1.3; }
+.said-where { margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.said figcaption a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+.said .said-by a { color: var(--ink); text-decoration-thickness: 1px; }
+.signed .services-links, .press-page .crew-join { margin-top: 24px; }
+.press-page { display: grid; gap: clamp(20px, 3vw, 32px); margin-bottom: var(--gap-section); }
+.press-page > .page-body { margin-bottom: 0; }
+.press-sheet h2.sheet-band { line-height: 1.15; letter-spacing: 0; text-wrap: initial; }
+.press-sheet h2.sheet-band span { font-weight: 400; font-stretch: 100%; }
+.press-list b { font-size: 16.5px; font-stretch: 92%; overflow-wrap: anywhere; }
+.press-list span { font-variant-numeric: tabular-nums; }
+.press-list time { white-space: nowrap; }
+.press-list :is(b, span)[dir="auto"] { unicode-bidi: isolate; }
+.channel-note { margin: 0; padding: 14px 20px 18px; border-top: 1px solid var(--line); }
+.press-cite { font-size: 19px; font-weight: 750; font-stretch: 86%; line-height: 1.3; }
+.press-cite cite { font-style: normal; }
+.press-cite > span { display: block; margin-top: 6px; font-size: 14px; font-weight: 400; font-stretch: 100%; color: var(--ink-3); }
+.prose .safe-sources { margin-block: .8em 1.2em; border-bottom: 1.5px solid var(--ink); }
+.prose .safe-sources dt a { color: var(--link); }
+.prose .safe-sources dd { font-size: 16.5px; font-weight: 500; color: var(--ink-2); }
+.wb-note { display: block; margin: 2px 0 0 !important; white-space: normal !important; }
+
 .questions h2 { font-size: clamp(32px, 4vw, 48px); margin-bottom: 28px; }
 .qa { background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow-sheet); overflow: hidden; }
 .qa details + details { border-top: 1px solid var(--line); }
