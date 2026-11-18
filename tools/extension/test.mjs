@@ -2842,7 +2842,7 @@ function videoButton({ stored = {} } = {}) {
   const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
   for (const key of ["video_looking", "video_all_qualities", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
     "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_show",
-    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original"]) {
+    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original", "video_compatible"]) {
     assert.ok(english[key], key);
     assert.ok(source.includes(`${key}: ${JSON.stringify(english[key].message)}`), `video.js FALLBACK: ${key}`);
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
@@ -2871,6 +2871,11 @@ function videoButton({ stored = {} } = {}) {
     assert.equal(w.qualityMeta({ height: 360, ext: "webm", codec: "VP9", fps: 30 }, tt), "WEBM · VP9 · 30 fps", "a type other than MP4 is said");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: 7, range: { x: 1 } }, tt), "MP4", "only text is shown");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).length, 24, "a codec's name is cut");
+    // #1439: the most compatible choice (H.264 + AAC) says so in place of its codec.
+    const compatible = { label: "Most compatible (H.264 + AAC) · 1080p", ext: "mp4", height: 1080, fps: 60, codec: "H.264", compatible: true };
+    assert.ok(source.includes('if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);'), "its line's tip is the app's whole name");
+    assert.equal(w.qualityName(compatible, tt), "1080p");
+    assert.equal(w.qualityMeta(compatible, tt), "video_compatible");
     // #801: an estimate is marked; an exact size isn't; an older app's has no mark.
     assert.equal(w.choiceSize({ size: 557842432, approx: true }, "en"), "~532 MB");
     assert.equal(w.choiceSize({ size: 557842432 }, "en"), "532 MB");

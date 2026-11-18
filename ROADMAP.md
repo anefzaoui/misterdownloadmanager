@@ -564,6 +564,14 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Video qualities: **Most compatible (H.264 + AAC)**, the best H.264 picture with AAC sound in an
+  MP4 that editors, older TVs and phones open as it is, in the Download video window, the menu over
+  a video, a playlist's quality and `video-get -q compatible`; picked, never converted
+  ([#1439](https://github.com/anefzaoui/misterdownloadmanager/issues/1439))
+- ✅ SourceForge downloads from the browser: when a site's bot check refuses the browser's
+  User-Agent and the browser-like connection too, MDM asks once more under its own name, with
+  the same cookies and referrer, and remembers the site for the session, resumes included
+  ([#1422](https://github.com/anefzaoui/misterdownloadmanager/issues/1422))
 - ✅ Add batch download: a long address scrolls to its caret in right-to-left languages (every
   one-line box did not), and a Save to row puts the whole batch in one folder
   ([#1403](https://github.com/anefzaoui/misterdownloadmanager/issues/1403))
@@ -580,6 +588,11 @@ These ship in the next version.
   Torrent settings: peers that take only uTP are reached, so torrents find as many peers as in
   other clients; off with a SOCKS5 proxy, held to a chosen network adapter
   ([#1384](https://github.com/anefzaoui/misterdownloadmanager/issues/1384))
+- ✅ Torrents keep uTP when the port picked for them is taken for UDP by another program: the
+  session listens on a port free for both TCP and UDP, where it went on with TCP alone and never
+  reached the peers that take only uTP. Two tests that failed now and then on Windows runners
+  because of it are steady, and a Rapidgator test whose link expired before a slow runner's first
+  request times the link from that request
 - ✅ A stream's own address — an HLS playlist (`.m3u8`) or DASH's (`.mpd`) — opens the video
   window like a page's: pasting a playlist downloads the video and merges it into one playable
   file, instead of saving the playlist itself
@@ -955,8 +968,10 @@ These ship in the next version.
   shortcut of two or three keys that shows or hides MDM's window from any program
   ([#558](https://github.com/anefzaoui/misterdownloadmanager/issues/558))
 - ✅ Linux: no crash when fontconfig offers a font MDM can't draw with (an old bitmap font for
-  Japanese): the best font that scales and MDM can read is used instead
-  ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931))
+  Japanese or for the symbols): the best font that scales and MDM can read is used instead, and
+  no font MDM can't read reaches its windows on any system
+  ([#931](https://github.com/anefzaoui/misterdownloadmanager/issues/931),
+  [#1412](https://github.com/anefzaoui/misterdownloadmanager/issues/1412))
 - ✅ Bangla reviewed by a native speaker: the main window, the list, the progress window, the
   dialogs and the tray, with the menus' letters on English letters
   ([#927](https://github.com/anefzaoui/misterdownloadmanager/pull/927))
@@ -1522,6 +1537,8 @@ These ship in the next version.
   private window's video never falls back to Cookies for video sites, after a restart either
 - ✅ CodeQL reads the Rust, the extension's JavaScript and the workflows on every pull request,
   every change to main and once a week; its results are in the Security tab
+- ✅ CodeQL's first findings went through one by one; it leaves out the local test server and the
+  test tooling, which never ship, and still reads everything that does
 - ✅ The log's test of a flush writing what was dropped holds on a slow machine too (it failed now
   and then on macOS)
 - ✅ Dependabot proposes updates to the workflows' actions, the Rust crates, the store tools and
@@ -1533,6 +1550,16 @@ These ship in the next version.
 - ✅ The Docker image's base images, the website build's Python package and the lab VM's Rust
   installer are pinned to exact versions and checked by their hashes; the MCP server's library
   (rmcp) is updated to 3.9.0
+- ✅ Dependency updates leave the font parser to move with the drawing library
+- ✅ Website: Linux is called supported everywhere (no longer "experimental" or "to try"; macOS
+  still is); the download page's **Get it safely** lists the official places to get MDM, how to
+  check a download's checksum and signature, and why Windows or an antivirus may warn; the home
+  page shows the browser stores' and GitHub's figures and what reviewers wrote, quoted exactly;
+  a new [Press and mentions](https://misterdownloadmanager.com/press.html) page lists articles and
+  videos by language, the fair criticism of the benchmark, and where MDM is available (official
+  first, community packages labelled); the benchmark's figures say they come from a test server
+  on the same PC
+- ✅ CI's Linux libraries step retries a slow package mirror instead of timing out
 
 ## Being worked on
 

@@ -50,6 +50,9 @@ updates:
       - dependency-name: "naga*"
       - dependency-name: "librqbit*"
       - dependency-name: "craft-*"
+      # The font parser egui's epaint uses: MDM checks fonts with the same one (#953, #1412),
+      # so it moves with egui.
+      - dependency-name: skrifa
     groups:
       crates:
         applies-to: version-updates

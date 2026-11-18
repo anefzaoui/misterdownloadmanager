@@ -766,6 +766,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    request carries a browser's Sec-Fetch-Mode header and, over HTTPS (--tls),
                    came on a TLS handshake with GREASE, as Chrome's has (#668)
     refuse_programs=STATUS  the same check answering STATUS, empty (FileHippo's 412, #630)
+    refuse_browsers=1  a bot check that refuses whatever claims to be a browser (a User-Agent with
+                   Mozilla/) on any connection, the browser-like one too, and lets programs that
+                   say what they are through: 403 with cf-mitigated: challenge (SourceForge's, #1422)
     refuse_ranges=STATUS    every request with a Range answered with STATUS (the whole file
                    still served): with browser_only=1, a site that lets the browser-like
                    connection download a file only whole (#668)
@@ -1483,9 +1486,8 @@ pub(crate) async fn serve(
         shared.record(entry, status.as_u16(), "fault:refuse_programs");
         return (status, [(header::RETRY_AFTER, "0")]).into_response();
     }
-    if f.browser_only == Some(true) && a_program {
-        shared.record(entry, 403, "fault:browser_only");
-        return (
+    let challenge = || {
+        (
             StatusCode::FORBIDDEN,
             [
                 ("cf-mitigated", "challenge"),
@@ -1493,7 +1495,21 @@ pub(crate) async fn serve(
             ],
             "<!DOCTYPE html><title>Just a moment...</title>\n",
         )
-            .into_response();
+            .into_response()
+    };
+    if f.browser_only == Some(true) && a_program {
+        shared.record(entry, 403, "fault:browser_only");
+        return challenge();
+    }
+    // SourceForge's (#1422): a browser's name on whatever connection, refused.
+    if f.refuse_browsers == Some(true)
+        && entry
+            .user_agent
+            .as_deref()
+            .is_some_and(|ua| ua.contains("Mozilla/"))
+    {
+        shared.record(entry, 403, "fault:refuse_browsers");
+        return challenge();
     }
     if let Some(want) = &f.require_cookie
         && !has_cookie(entry.cookie.as_deref(), want)

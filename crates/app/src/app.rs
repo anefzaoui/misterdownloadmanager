@@ -3219,7 +3219,7 @@ impl App {
                     v.show_sample_adaptive(tab == "runtime");
                 }
             }
-            // A sample playlist (#69), its quality by its place in the list: `video-playlist:7`.
+            // A sample playlist (#69), its quality by its place in the list: `video-playlist:8`.
             "video-playlist" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
@@ -3704,6 +3704,15 @@ impl App {
             agent_fallback: match (context.user_agent.is_some(), own) {
                 (true, Some(own)) => Some(own.to_owned()),
                 (_, None) => Some(mdm_engine::agent::IE11_USER_AGENT.to_owned()),
+                (false, Some(_)) => None,
+            },
+            // A site whose bot check refuses the browser's User-Agent and the browser-like
+            // connection too (#1422, SourceForge's): asked once more under MDM's own name, or
+            // the one set in Options when a browser handed the download over. Again, one the
+            // user set for every download is the user's choice: no other.
+            own_agent: match (context.user_agent.is_some(), own) {
+                (true, Some(own)) => Some(own.to_owned()),
+                (_, None) => Some(mdm_engine::agent::OWN_USER_AGENT.to_owned()),
                 (false, Some(_)) => None,
             },
             // Where the browser's own download of it ended: asked when the link itself is

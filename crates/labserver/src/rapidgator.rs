@@ -1,10 +1,10 @@
 //! A fake Rapidgator for the engine's tests. Its host names are told apart by the `Host` header
 //! (the tests resolve them to the lab server, `HOSTS`), and each answers as Rapidgator does for a
 //! signed-in premium account: a file's page (`/file/<id>/<name>.html`) holds a download link on a
-//! file host (`/download/<token>`), which gives the file for a while only and then answers 404 Not
-//! Found, as the real one did at 90 % of a 3 GB file. Without the account's session cookie
-//! ([`COOKIE`]) the page has no link (a free account's or a signed-out visitor's page). The pages
-//! are written here, not copied from Rapidgator.
+//! file host (`/download/<token>`), which gives the file for a while only (from its first request:
+//! `lasting_link`) and then answers 404 Not Found, as the real one did at 90 % of a 3 GB file.
+//! Without the account's session cookie ([`COOKIE`]) the page has no link (a free account's or a
+//! signed-out visitor's page). The pages are written here, not copied from Rapidgator.
 //!
 //! An id says what it is ([`id`]): the file's size, how long a link its page hands out lasts,
 //! how many requests a link answers, and whether the page redirects to its link (a premium
@@ -39,7 +39,7 @@ pub const COOKIE: &str = "lab_session=premium";
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct Spec {
     size: String,
-    /// How long a link the page hands out lasts.
+    /// How long a link the page hands out lasts, from its first request.
     ttl_ms: u64,
     /// How many requests a link answers before 404 (None: as many as come while it lasts).
     uses: Option<u64>,
@@ -121,11 +121,41 @@ static LINKS: AtomicU64 = AtomicU64::new(0);
 /// Requests each link with a number of uses answered.
 static USED: Mutex<Option<HashMap<String, u64>>> = Mutex::new(None);
 
+/// First requests of the links that last from it ([`lasting_link`]), by token (unix ms).
+static FIRST: Mutex<Option<HashMap<String, u64>>> = Mutex::new(None);
+
 /// A new link to the file `id` on the file host, at the lab's `port`, good until `expires` (unix
-/// ms): what a file's page gives, and what the browser hands over.
+/// ms), however late it is first asked: one the browser handed over a while before.
 pub fn file_link(port: u16, id: &str, expires: u64) -> String {
     let n = LINKS.fetch_add(1, Ordering::SeqCst);
     format!("http://{FILES}:{port}/download/{expires}-{n}-{id}")
+}
+
+/// A new link to the file `id` on the file host, at the lab's `port`, good for `ttl_ms` from the
+/// first request made of it: what a file's page gives, and what the browser hands over just
+/// after. Its time runs from the download's first request, not from when it was made: a
+/// download's first request may come late on a busy computer (a test's link of 700 ms, made
+/// before the download started, had expired before it asked on a busy CI runner).
+pub fn lasting_link(port: u16, id: &str, ttl_ms: u64) -> String {
+    let n = LINKS.fetch_add(1, Ordering::SeqCst);
+    format!("http://{FILES}:{port}/download/f{ttl_ms}-{n}-{id}")
+}
+
+/// When the link `token` expires: its `expires` part (unix ms), or `f<ttl>` after its first
+/// request ([`lasting_link`]), this one when it is the first.
+fn expiry(token: &str, expires: &str) -> Option<u64> {
+    match expires.strip_prefix('f') {
+        Some(ttl) => {
+            let ttl: u64 = ttl.parse().ok()?;
+            let mut first = FIRST.lock().unwrap();
+            let at = *first
+                .get_or_insert_with(HashMap::new)
+                .entry(token.to_owned())
+                .or_insert_with(unix_ms);
+            Some(at + ttl)
+        }
+        None => expires.parse().ok(),
+    }
 }
 
 /// Every request on Rapidgator's host names (`server::by_host`).
@@ -153,7 +183,7 @@ pub(crate) async fn handle(
         // else's only the slow way, which the browser takes.
         (SITE, ["file", id, ..]) => match parse(id) {
             Some(spec) if premium => {
-                let mut link = file_link(port.parse().unwrap_or(80), id, unix_ms() + spec.ttl_ms);
+                let mut link = lasting_link(port.parse().unwrap_or(80), id, spec.ttl_ms);
                 // A mirrored file's fresh links lead to its other server.
                 if spec.mirrors {
                     link = link.replacen(FILES, FILES2, 1);
@@ -170,10 +200,7 @@ pub(crate) async fn handle(
         // The file, while its link lasts (and has uses left); 404 after.
         (FILES | FILES2, ["download", token]) => {
             let mut parts = token.splitn(3, '-');
-            let (expires, id) = (
-                parts.next().and_then(|e| e.parse::<u64>().ok()),
-                parts.nth(1),
-            );
+            let (expires, id) = (parts.next().and_then(|e| expiry(token, e)), parts.nth(1));
             let (Some(expires), Some(id)) = (expires, id) else {
                 return page(StatusCode::NOT_FOUND, NOT_FOUND, shared, entry);
             };

@@ -44,12 +44,8 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: none
-          # Third-party code kept in the repository as it came (the website's chart library,
-          # the agent skills' scripts) is not MDM's to fix.
-          config: |
-            paths-ignore:
-              - website/vendor
-              - .claude
+          # What is left out (third-party code, the test server, the test tooling) and why.
+          config-file: ./.github/codeql/codeql-config.yml
 
       - uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
