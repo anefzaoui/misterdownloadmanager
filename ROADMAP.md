@@ -567,6 +567,10 @@ These ship in the next version.
 - ✅ A Docker image of the headless server is published with each release, at
   `ghcr.io/anefzaoui/misterdownloadmanager` (x86-64 only for now, thanks to
   [@kngkatak](https://github.com/kngkatak))
+- ✅ OpenGL: no crash when the graphics driver can't switch drawing between MDM's windows for a
+  moment (an Intel HD Graphics 520); that window is drawn again just after, and one that can't be
+  drawn for seconds starts MDM again, as a lost graphics card does
+  ([#1448](https://github.com/anefzaoui/misterdownloadmanager/issues/1448))
 - ✅ File names as browsers read them: a server's percent-encoded `filename="My%20Report.pdf"` is
   `My Report.pdf`, as in Chrome and Firefox (it stayed encoded), and RFC 2047's encoded words are
   read too; checked behind one and two redirects, relative ones included
