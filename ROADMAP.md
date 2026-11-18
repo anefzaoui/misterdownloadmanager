@@ -1519,6 +1519,7 @@ These ship in the next version.
 - ✅ The lab VM scripts clear the temporary files an interrupted run left behind
 - ✅ The website's translation check takes a list of the app's names (themes) as it is, so those
   lines are no longer left in English
+- ✅ The browser extension tells a stream's manifest by a simpler reading of its start
 
 ## Being worked on
 

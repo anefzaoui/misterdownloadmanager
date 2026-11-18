@@ -1315,6 +1315,35 @@ const ok = (what) => {
   ok("a page's title names its video without the site's name; a player in a frame by the tab's title");
 }
 
+// What a fetched start says it is: an HLS playlist, a DASH manifest (after an XML declaration and
+// comments, with a namespace prefix or not), or neither; read in one pass, so a long or odd start
+// costs no more than its length.
+{
+  const ctx = { URL, URLSearchParams, console: quietConsole, setTimeout, clearTimeout, Promise, TextDecoder, fetch: async () => ({ ok: false }), navigator: { userAgent: "UA" } };
+  ctx.chrome = fakeApi({ firefox: false }).api;
+  vm.runInNewContext(code, ctx);
+  for (const [text, want] of [
+    ["#EXTM3U\n#EXT-X-VERSION:3", "hls"],
+    ["﻿  #EXTM3U", "hls"],
+    ['<?xml version="1.0" encoding="UTF-8"?>\n<MPD xmlns="urn:mpeg:dash:schema:mpd:2011">', "dash"],
+    ['<!-- made by a packager -->\n<!-- two -->\n<MPD type="static">', "dash"],
+    ['<?xml version="1.0"?><!-- c --><mpd:MPD xmlns:mpd="x">', "dash"],
+    ["<MPD/>", "dash"],
+    ["<html><body>MPD</body></html>", ""],
+    ["<MPDX>", ""],
+    ["<!-- never closed <MPD>", ""],
+    ['<?xml version="1.0"', ""],
+    ["", ""],
+  ]) {
+    assert.equal(ctx.manifestKind(text), want, JSON.stringify(text));
+  }
+  const odd = "<!--" + "--><!--".repeat(2000) + "x";
+  const started = Date.now();
+  assert.equal(ctx.manifestKind(odd), "");
+  assert.ok(Date.now() - started < 200, `an odd start took ${Date.now() - started} ms`);
+  ok("a fetched start is told an HLS playlist, a DASH manifest or neither, in one pass");
+}
+
 // #38: the media a tab loaded, as the popup lists them. A response is media by its type or its
 // address; segments, byte ranges and small pieces a player fetched are parts of a stream.
 const H = (type, more = {}) => [{ name: "Content-Type", value: type }, ...Object.entries(more).map(([name, value]) => ({ name, value }))];
