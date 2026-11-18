@@ -349,7 +349,9 @@ function renderRemotes(remotes, activeUrl) {
     forget.type = "button";
     forget.className = "remote-forget";
     forget.textContent = "×";
-    forget.title = "Forget";
+    const forgetTitle = t("popup_remote_forget");
+    forget.title = forgetTitle;
+    forget.setAttribute("aria-label", forgetTitle);
     forget.addEventListener("click", async (e) => {
       e.stopPropagation();
       await ask({ type: "remote-forget", url });

@@ -266,7 +266,14 @@ async function fakeFetch(url, opts) {
       r.read += 1024;
     },
   });
-  return { ok: (r.status || 200) < 300, status: r.status || 200, headers: { get: () => null }, body, text: async () => r.body };
+  return {
+    ok: (r.status || 200) < 300,
+    status: r.status || 200,
+    headers: { get: () => null },
+    body,
+    text: async () => r.body,
+    json: async () => (typeof r.body === "string" ? JSON.parse(r.body) : r.body || null),
+  };
 }
 
 // What background.js wrote to the console as an error or a warning (#42: none, granted or not).
@@ -3971,6 +3978,67 @@ ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser"
   }
   assert.ok(english.status_remote, "status_remote");
   ok("another MDM: the app's file types, every pairing message");
+}
+// Another MDM (#157): multiple servers, migration from a single remote, switching, forget, and 401 pruning.
+{
+  const { api, listeners, store } = fakeApi({ firefox: false });
+  load(api, false);
+  const send = (m) => new Promise((r) => listeners.message(m, { id: "ours" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+
+  // 1. Migration: upgrading from a single legacy `remote` in storage.
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a" };
+  delete store.remotes;
+  const state1 = await send({ type: "state" });
+  assert.equal(state1.remote, "https://server-a.test:8463/");
+  assert.deepEqual(state1.remotes, ["https://server-a.test:8463/"]);
+  assert.deepEqual(store.remotes, [{ url: "https://server-a.test:8463/", token: "token-a" }], "migrated list saved on read");
+
+  // Switching to "This computer" (remote-off) sets active remote to null, but leaves the server in remotes.
+  assert.deepEqual(await send({ type: "remote-off" }), { ok: true });
+  assert.equal(store.remote, null);
+  assert.deepEqual(store.remotes, [{ url: "https://server-a.test:8463/", token: "token-a" }]);
+  const state2 = await send({ type: "state" });
+  assert.equal(state2.remote, null);
+  assert.deepEqual(state2.remotes, ["https://server-a.test:8463/"]);
+
+  // 2. Pair a second server: both are remembered, and the new one becomes active.
+  served["https://server-b.test:8463/api/pair"] = { status: 200, body: JSON.stringify({ token: "token-b" }) };
+  const paired = await send({ type: "remote-pair", url: "https://server-b.test:8463/", code: "12345678" });
+  assert.deepEqual(paired, { ok: true });
+  assert.equal(store.remote.url, "https://server-b.test:8463/");
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-a.test:8463/", "https://server-b.test:8463/"]);
+
+  // 3. remote-select: switch back to server A.
+  assert.deepEqual(await send({ type: "remote-select", url: "https://server-a.test:8463/" }), { ok: true });
+  assert.equal(store.remote.url, "https://server-a.test:8463/");
+  // An address not in the list is refused.
+  assert.deepEqual(await send({ type: "remote-select", url: "https://unknown.test:8463/" }), { ok: false, why: "not-found" });
+  assert.equal(store.remote.url, "https://server-a.test:8463/");
+
+  // 4. remote-forget: the token goes only to its own server.
+  served["https://server-a.test:8463/api/forget"] = { status: 200, body: JSON.stringify({ ok: true }) };
+  served["https://server-b.test:8463/api/forget"] = { status: 200, body: JSON.stringify({ ok: true }) };
+  const beforeFetches = fetched.length;
+  assert.deepEqual(await send({ type: "remote-forget", url: "https://server-a.test:8463/" }), { ok: true });
+  assert.equal(store.remote, null, "active server A cleared on forget");
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-b.test:8463/"]);
+  const forgetCalls = fetched.slice(beforeFetches).filter(([u]) => u.includes("api/forget"));
+  assert.equal(forgetCalls.length, 1);
+  assert.ok(forgetCalls[0][0].startsWith("https://server-a.test:8463/"), "token went only to server A");
+
+  // 5. 401 pruning: a 401 from server B removes B and resets active B to null.
+  store.remotes = [
+    { url: "https://server-a.test:8463/", token: "token-a" },
+    { url: "https://server-b.test:8463/", token: "token-b" },
+  ];
+  store.remote = { url: "https://server-b.test:8463/", token: "token-b" };
+  served["https://server-b.test:8463/api/add"] = { status: 401, body: JSON.stringify({ error: "unauthorized" }) };
+  listeners.determining({ id: 81, url: "https://dl.test/file.zip", filename: "file.zip" }, () => {});
+  await settle();
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-a.test:8463/"], "server B pruned on 401");
+  assert.equal(store.remote, null, "active server B reset on 401");
+
+  ok("another MDM: multiple servers, migration, switching, forget, and 401 pruning");
 }
 // Safari has no downloads API: the extension still starts, and a link page.js holds (a file type
 // Options lists) is offered to the app as a browser's download is; the app taking it is told to

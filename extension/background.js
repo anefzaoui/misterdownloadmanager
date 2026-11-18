@@ -95,7 +95,11 @@ async function native(message, ms = HOST_WAIT) {
 async function readRemotes() {
   const { remotes, remote } = await ext.storage.local.get({ remotes: null, remote: null });
   if (Array.isArray(remotes)) return remotes.filter((r) => r && r.url && r.token);
-  if (remote && remote.url && remote.token) return [remote];
+  if (remote && remote.url && remote.token) {
+    const list = [remote];
+    await ext.storage.local.set({ remotes: list });
+    return list;
+  }
   return [];
 }
 
@@ -140,7 +144,9 @@ async function remoteSend(target, message) {
   if (r.status === 401) {
     const list = await readRemotes();
     const updated = list.filter((item) => item.url !== target.url);
-    await ext.storage.local.set({ remotes: updated, remote: null });
+    const { remote } = await ext.storage.local.get({ remote: null });
+    const nextRemote = remote && remote.url === target.url ? null : remote;
+    await ext.storage.local.set({ remotes: updated, remote: nextRemote });
   }
   return { ok: false, why: "refused" };
 }
