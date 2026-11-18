@@ -1730,7 +1730,7 @@ fn file_icon(name: &str) -> IconKey {
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
 /// `queued`: the download is in a queue (the Q column's mark).
 fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
-    let frac = it.fraction().unwrap_or(0.0);
+    let frac = it.shown_fraction().unwrap_or(0.0);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
         // As the column shows it: in a queue or not.
@@ -8241,11 +8241,7 @@ impl App {
             ctx.request_repaint_after(progress::SHOWN_WHOLE.saturating_sub(now.duration_since(at)));
         }
         if any_live {
-            // Live, like IDM, without waiting for the mouse: the main list redraws about
-            // 15 times a second while anything downloads, so MB/s, % and downloaded bytes
-            // move continuously. egui otherwise only repaints on an event (a mouse move),
-            // which is why idle progress looked stuck at 1-2 updates a second.
-            ctx.request_repaint_after(Duration::from_millis(66));
+            ctx.request_repaint_after(Duration::from_millis(250));
             // The speeds shown change on their own clock (#1176): a frame as it ticks.
             ctx.request_repaint_after(model::until_shown(now));
             // The list's progress figures, every 30 s while something runs: after a crash the
