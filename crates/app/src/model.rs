@@ -952,7 +952,10 @@ pub const SPEED_TAU: f64 = 3.0;
 pub const SPLIT_TAU: f64 = 2.0;
 /// How often the speed shown changes (seconds), with its time left: every download's on the
 /// same clock, so the list's rows and the total beside them change together (#1176).
-pub const SHOWN_EVERY: f64 = 0.5;
+/// 0.1 s (10 times a second) so the MB/s, % and downloaded bytes stay live while a download
+/// runs, like IDM, without waiting for the mouse to move. The average underneath is still
+/// smoothed over 3 s ([`SPEED_TAU`]), so the figure stays readable.
+pub const SHOWN_EVERY: f64 = 0.1;
 /// No byte for this long (seconds): the speed is 0, not what is left of the average.
 const STILL: f64 = 5.0;
 
@@ -2636,10 +2639,10 @@ mod speed_tests {
         }
     }
 
-    /// The figure shown changes on the clock's ticks, twice a second, however often it is read;
+    /// The figure shown changes on the clock's ticks, ten times a second, however often it is read;
     /// the average moves under it meanwhile.
     #[test]
-    fn the_figure_shown_changes_twice_a_second() {
+    fn the_figure_shown_changes_ten_times_a_second() {
         // A speed that wobbles about 1 MB/s.
         let wobble = |t: f64| ((t + 0.5 * (1.0 - t.cos())) * MB) as u64;
         let (_, seen) = run(&every(0.04, 5.0), wobble);
@@ -2653,16 +2656,16 @@ mod speed_tests {
         // Between ticks the figure stays as it is.
         let within: Vec<_> = seen
             .iter()
-            .filter(|(t, ..)| (2.1..2.45).contains(t))
+            .filter(|(t, ..)| (2.31..2.39).contains(t))
             .collect();
         assert!(within.iter().all(|x| x.2 == within[0].2));
         assert!(within.first().unwrap().1 != within.last().unwrap().1);
         // The next frame is asked for as the clock ticks.
-        let wait = until_shown(at(2.3)).as_secs_f64();
-        assert!((0.2..0.21).contains(&wait), "{wait}");
+        let wait = until_shown(at(2.33)).as_secs_f64();
+        assert!((0.07..0.08).contains(&wait), "{wait}");
         assert_eq!(
-            shown_tick(at(2.3) + until_shown(at(2.3))),
-            shown_tick(at(2.6))
+            shown_tick(at(2.33) + until_shown(at(2.33))),
+            shown_tick(at(2.4))
         );
     }
 
