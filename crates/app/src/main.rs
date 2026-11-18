@@ -40,6 +40,7 @@ mod linkparts;
 mod list;
 mod lookwatch;
 mod model;
+mod mover;
 mod native;
 mod netwatch;
 mod options;

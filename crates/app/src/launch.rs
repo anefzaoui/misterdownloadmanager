@@ -43,6 +43,27 @@ pub fn open(target: impl AsRef<OsStr>) {
     });
 }
 
+/// Make `dir` when it isn't there yet and open it in the file manager, on a thread of its own:
+/// `create_dir_all` on a sleeping drive or a network share that doesn't answer waits for the disk
+/// (#743, #1170), as the launcher itself can.
+pub fn open_folder(dir: std::path::PathBuf) {
+    open_folder_with(dir, |d| {
+        if !crate::offscreen() {
+            let _ = open::that_detached(d);
+        }
+    });
+}
+
+fn open_folder_with(
+    dir: std::path::PathBuf,
+    launch: impl FnOnce(&std::path::Path) + Send + 'static,
+) {
+    spawn("launch", move || {
+        let _ = std::fs::create_dir_all(&dir);
+        launch(&dir);
+    });
+}
+
 /// Open a web page in the browser (a service's sign-in, a site's page the download needs, #701).
 /// Never in an off-screen test run (MDM_OFFSCREEN), whose clicks come from scripts, not from a
 /// person at the browser: its log says what would have opened.
@@ -576,5 +597,26 @@ mod asked_tests {
             std::thread::sleep(Duration::from_millis(10));
         }
         assert_eq!(asked.get(&"x".into(), long, NO_WAIT, None, slow), Some(1));
+    }
+
+    #[test]
+    fn open_folder_makes_the_folder_beside_the_caller() {
+        let root = tempfile::tempdir().unwrap();
+        let nested = root.path().join("category").join("sub");
+        let gate = Arc::new(Mutex::new(()));
+        let held = gate.lock().unwrap();
+        let (tx, rx) = std::sync::mpsc::channel();
+        let start = Instant::now();
+        open_folder_with(nested.clone(), {
+            let gate = gate.clone();
+            move |d| {
+                drop(gate.lock().unwrap());
+                let _ = tx.send(d.is_dir());
+            }
+        });
+        assert!(start.elapsed() < Duration::from_millis(500));
+        drop(held);
+        assert_eq!(rx.recv_timeout(STUCK), Ok(true));
+        assert!(nested.is_dir());
     }
 }

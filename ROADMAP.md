@@ -564,9 +564,15 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Moving downloads to another folder (**Move/Rename** on a selection, File Properties'
+  **Move**) and **Browse** no longer read or create the folder on the window's thread: unstarted
+  downloads take their folder at once and settle their numbered names beside the window, finished
+  files find their free names and move in order on a thread of their own, and **Browse** makes a
+  missing folder on the thread that opens it
+  (follows [#743](https://github.com/anefzaoui/misterdownloadmanager/issues/743),
+  [#1170](https://github.com/anefzaoui/misterdownloadmanager/issues/1170))
 - ✅ Malay: 24 menu and column items reviewed by a native speaker (torrent columns, Linux display
   systems, text rendering and graphics notes) (thanks to [@9M2PJU](https://github.com/9M2PJU))
-
 - ✅ Torrents connect over uTP (BitTorrent over UDP) beside TCP, on by default with a switch in
   Torrent settings: peers that take only uTP are reached, so torrents find as many peers as in
   other clients; off with a SOCKS5 proxy, held to a chosen network adapter

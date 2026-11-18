@@ -628,22 +628,6 @@ fn stop_all_plan(
     (running, ids)
 }
 
-/// A file move's answer, from its thread.
-type MoveDone = std::sync::mpsc::Receiver<Result<(), String>>;
-
-/// Move a file: a rename, else a copy and the original deleted (a copy whose original can't go,
-/// in use, is taken back: the file stays in one place).
-fn move_file(from: &std::path::Path, to: &std::path::Path) -> Result<(), String> {
-    if std::fs::rename(from, to).is_ok() {
-        return Ok(());
-    }
-    std::fs::copy(from, to).map_err(|e| e.to_string())?;
-    std::fs::remove_file(from).map_err(|e| {
-        let _ = std::fs::remove_file(to);
-        e.to_string()
-    })
-}
-
 /// Whether Move/Rename can take a download now: a finished file, or nothing of it come in yet.
 fn can_move(i: &Item) -> bool {
     i.live.is_none() && (i.status == Status::Complete || i.downloaded == 0)
@@ -668,14 +652,15 @@ fn place_in(
     name: &str,
     taken: &mut std::collections::HashSet<PathBuf>,
 ) -> PathBuf {
-    let (stem, ext) = match name.rfind('.') {
-        Some(i) if i > 0 => (&name[..i], &name[i..]),
-        _ => (name, ""),
+    let fitted = mdm_engine::naming::fit_name(dir, name).unwrap_or_else(|| name.to_owned());
+    let (stem, ext) = match fitted.rfind('.') {
+        Some(i) if i > 0 => (&fitted[..i], &fitted[i..]),
+        _ => (fitted.as_str(), ""),
     };
-    let mut at = mdm_engine::naming::destination(dir, name);
+    let mut at = mdm_engine::naming::unique_path(dir, &fitted);
     let mut n = 1u32;
     while !taken.insert(at.clone()) {
-        at = mdm_engine::naming::destination(dir, &format!("{stem} ({n}){ext}"));
+        at = mdm_engine::naming::unique_path(dir, &format!("{stem} ({n}){ext}"));
         n += 1;
     }
     at
@@ -1416,8 +1401,8 @@ pub struct App {
     importing: crate::transfer::Importing,
     /// Why the last save of the download list failed (told once per reason).
     save_failed: Option<String>,
-    /// Finished files being moved (Move/Rename, Properties → Move): where to, and the answer.
-    moving: Vec<(u64, PathBuf, MoveDone)>,
+    /// Downloads being moved or numbered into another folder beside the window (`mover.rs`).
+    mover: crate::mover::Mover,
     /// Finished downloads whose rename on completion is under way: a file's on a thread of its
     /// own (#1103), a torrent's through `torrent_host`. The answer: the new path, and why
     /// sharing stopped.
@@ -2115,7 +2100,10 @@ impl App {
             notice: None,
             importing: Default::default(),
             save_failed: None,
-            moving: Vec::new(),
+            mover: {
+                let ctx = ctx.clone();
+                crate::mover::Mover::new(move || ctx.request_repaint())
+            },
             renaming: Vec::new(),
             rename_checks: Vec::new(),
             deferred_torrent_queue,
@@ -5005,14 +4993,13 @@ impl App {
         // Moved into the folder it is already in: nothing to do (it became "a (1).zip").
         let move_to = c
             .move_to
-            .filter(|dir| item.dest.parent() != Some(dir.as_path()))
-            .map(|dir| mdm_engine::naming::destination(&dir, &item.file_name));
+            .filter(|dir| item.dest.parent() != Some(dir.as_path()));
         if rerouted || readdressed.is_some() {
             self.rewrite_state(c.id, rerouted, readdressed);
         }
         self.dirty = true;
-        if let Some(target) = move_to {
-            self.start_move(c.id, target);
+        if let Some(dir) = move_to {
+            self.move_into_folder(&[c.id], dir);
         }
     }
 
@@ -5106,45 +5093,141 @@ impl App {
         true
     }
 
-    /// Move a download to `target` (its name too): a finished file moves on a thread of its
-    /// own (a copy to another drive takes a while), one not started just takes the new place.
-    /// A failure says why.
+    /// Move a download to `target` (its name too, from Save As): a finished file moves beside
+    /// the window (a copy to another drive takes a while), one not started just takes the new
+    /// place. A failure says why.
     fn start_move(&mut self, id: u64, target: PathBuf) {
+        if self.mover.is_moving(id) {
+            return;
+        }
         let Some(item) = self.item(id) else { return };
         if target == item.dest {
             return;
         }
         if item.status != Status::Complete {
-            if item.downloaded == 0 {
+            if item.downloaded == 0 && item.live.is_none() {
                 take_place(item, target);
+                item.number_at_start = false;
+                if let Some(v) = item.video.as_mut() {
+                    v.named = true;
+                }
                 self.dirty = true;
             }
             return;
         }
-        let (tx, rx) = std::sync::mpsc::channel();
         let from = item.dest.clone();
-        let to = target.clone();
         item.note(crate::i18n::t("Moving the file..."));
-        std::thread::spawn(move || {
-            let _ = tx.send(move_file(&from, &to));
-        });
-        self.moving.push((id, target, rx));
+        self.mover.submit(vec![crate::mover::Step::Exact {
+            id,
+            from,
+            to: target,
+        }]);
     }
 
-    /// Moves that finished: the download takes its new place, or the user is told why not.
-    fn poll_moves(&mut self) {
-        let mut done = Vec::new();
-        self.moving.retain(|(id, target, rx)| match rx.try_recv() {
-            Ok(r) => {
-                done.push((*id, target.clone(), r));
-                false
+    /// Move `ids` into `dir` under their own names without reading `dir` on the window's thread:
+    /// unstarted rows take `dir` at once (apart from one another and from the rows already in
+    /// `dir`, with `number_at_start` for a start meanwhile) and settle their numbered names once
+    /// the mover has looked at `dir`; finished files find a free name and move there in order.
+    /// True when any row in `ids` couldn't move.
+    fn move_into_folder(&mut self, ids: &[u64], dir: PathBuf) -> bool {
+        let listed_files: std::collections::HashSet<String> = self
+            .items
+            .iter()
+            .filter(|i| i.dest.parent() == Some(dir.as_path()))
+            .map(|i| i.dest.to_string_lossy().to_lowercase())
+            .collect();
+        let listed_stems: std::collections::HashSet<String> = self
+            .items
+            .iter()
+            .filter(|i| i.dest.parent() == Some(dir.as_path()) && !i.number_at_start)
+            .filter_map(|i| i.dest.file_stem())
+            .map(|s| s.to_string_lossy().to_lowercase())
+            .collect();
+        let mut taken_files = listed_files.clone();
+        let mut taken_stems: std::collections::HashSet<String> = self
+            .items
+            .iter()
+            .filter(|i| i.dest.parent() == Some(dir.as_path()))
+            .filter_map(|i| i.dest.file_stem())
+            .map(|s| s.to_string_lossy().to_lowercase())
+            .collect();
+        let mut batch = Vec::new();
+        let mut stay = false;
+        for &id in ids {
+            let Some(idx) = self.items.iter().position(|i| i.id == id) else {
+                continue;
+            };
+            if !can_move(&self.items[idx]) {
+                stay = true;
+                continue;
             }
-            Err(std::sync::mpsc::TryRecvError::Empty) => true,
-            Err(_) => false,
-        });
-        for (id, target, r) in done {
-            match r {
-                Ok(()) => {
+            if self.mover.is_moving(id) || self.items[idx].dest.parent() == Some(dir.as_path()) {
+                continue;
+            }
+            let name = self.items[idx].file_name.clone();
+            if self.items[idx].status == Status::Complete {
+                let reserved_guess = crate::mover::guess_file_in(&dir, &name, &mut taken_files);
+                if let Some(s) = reserved_guess.file_stem() {
+                    taken_stems.insert(s.to_string_lossy().to_lowercase());
+                }
+                let from = self.items[idx].dest.clone();
+                self.items[idx].note(crate::i18n::t("Moving the file..."));
+                batch.push(crate::mover::Step::InFolder {
+                    id,
+                    from,
+                    dir: dir.clone(),
+                    name,
+                });
+            } else {
+                let video = self.items[idx].video.as_ref().map(|v| v.named);
+                let temp = match video {
+                    Some(named) => {
+                        let p = crate::mover::guess_video_in(&dir, &name, named, &mut taken_stems);
+                        taken_files.insert(p.to_string_lossy().to_lowercase());
+                        p
+                    }
+                    None => {
+                        let p = crate::mover::guess_file_in(&dir, &name, &mut taken_files);
+                        if let Some(s) = p.file_stem() {
+                            taken_stems.insert(s.to_string_lossy().to_lowercase());
+                        }
+                        p
+                    }
+                };
+                let listed = if video.is_some() {
+                    listed_stems.clone()
+                } else {
+                    listed_files.clone()
+                };
+                let item = &mut self.items[idx];
+                let guessed = item.name_from_url;
+                take_place(item, temp.clone());
+                item.name_from_url = guessed;
+                item.number_at_start = true;
+                batch.push(crate::mover::Step::Place {
+                    id,
+                    asked: temp,
+                    dir: dir.clone(),
+                    name,
+                    video,
+                    listed,
+                });
+            }
+        }
+        self.mover.submit(batch);
+        stay
+    }
+
+    /// Moves that finished: a moved file takes its new place (or says why not), and an unstarted
+    /// row still waiting at its temporary folder guess takes its numbered name past the folder's
+    /// files.
+    fn poll_moves(&mut self) {
+        for out in self.mover.take() {
+            match out {
+                crate::mover::Outcome::Moved {
+                    id,
+                    result: Ok(target),
+                } => {
                     if let Some(item) = self.item(id) {
                         take_place(item, target.clone());
                     }
@@ -5155,7 +5238,7 @@ impl App {
                     }
                     self.dirty = true;
                 }
-                Err(e) => {
+                crate::mover::Outcome::Moved { id, result: Err(e) } => {
                     if let Some(item) = self.item(id) {
                         item.note(crate::i18n::t("The file could not be moved"));
                     }
@@ -5166,6 +5249,26 @@ impl App {
                             &[("error", &e)],
                         ),
                     ));
+                }
+                crate::mover::Outcome::Placed { id, asked, to } => {
+                    let waiting = self.video_places.waiting(id);
+                    if let Some(item) = self.items.iter_mut().find(|i| i.id == id)
+                        && !waiting
+                        && item.live.is_none()
+                        && item.status != Status::Complete
+                        && item.downloaded == 0
+                        && item.dest == asked
+                    {
+                        let guessed = item.name_from_url;
+                        if to != item.dest {
+                            take_place(item, to);
+                        }
+                        item.name_from_url = guessed;
+                        if item.video.is_some() {
+                            item.number_at_start = false;
+                        }
+                        self.dirty = true;
+                    }
                 }
             }
         }
@@ -7678,8 +7781,7 @@ impl App {
             Cmd::StopQueue(q) => self.stop_queue(q),
             Cmd::Browse(c) => {
                 let dir = self.settings.category_dir(c, &self.downloads);
-                let _ = std::fs::create_dir_all(&dir);
-                crate::launch::open(dir);
+                crate::launch::open_folder(dir);
             }
             Cmd::DoubleClickOpen(open) => {
                 self.settings.double_click_open = open;
@@ -7764,8 +7866,7 @@ impl App {
             }
             Cmd::OpenThemesFolder => {
                 if let Some(dir) = crate::themefile::dir() {
-                    let _ = std::fs::create_dir_all(&dir);
-                    crate::launch::open(dir);
+                    crate::launch::open_folder(dir);
                 }
             }
             Cmd::AddThemeFile => {
@@ -7774,11 +7875,11 @@ impl App {
                 // i18n: the kind of file View → Theme → Add a theme file lists: MDM's themes (TOML, JSON), Base16 schemes (YAML) and pywal's colors.json
                 let kinds = crate::i18n::t("Themes and colour schemes").to_owned();
                 let all = crate::i18n::t("All files").to_owned();
-                // Where pywal writes its colours, when it has: the first place to look.
-                let start = crate::themefile::pywal_file()
-                    .filter(|p| p.is_file())
-                    .and_then(|p| p.parent().map(std::path::Path::to_path_buf));
                 winui::start_pick(&self.ui_ctx, "app-theme-file", move || {
+                    // Where pywal writes its colours, when it has: the first place to look.
+                    let start = crate::themefile::pywal_file()
+                        .filter(|p| p.is_file())
+                        .and_then(|p| p.parent().map(std::path::Path::to_path_buf));
                     let dialog = crate::winui::file_dialog(&title);
                     let dialog = match start {
                         Some(dir) => dialog.set_directory(dir),
@@ -8118,7 +8219,7 @@ impl App {
         self.poll_moves();
         self.poll_dragged_out();
         self.poll_deferred_torrent_renames();
-        if !self.moving.is_empty()
+        if self.mover.has_moves()
             || !self.renaming.is_empty()
             || !self.rename_checks.is_empty()
             || !self.deferred_torrent_queue.is_empty()
@@ -11129,24 +11230,10 @@ impl App {
         });
     }
 
-    /// The several downloads' new folder: each that can go goes there, under its own name.
+    /// The several downloads' new folder: each that can go goes there, under its own name,
+    /// without reading `dir` on the window's thread.
     fn move_many_to(&mut self, ids: Vec<u64>, dir: PathBuf) {
-        let mut taken = std::collections::HashSet::new();
-        let mut stay = false;
-        for id in ids {
-            let Some(item) = self.items.iter().find(|i| i.id == id) else {
-                continue;
-            };
-            if !can_move(item) {
-                stay = true;
-                continue;
-            }
-            if item.dest.parent() == Some(dir.as_path()) {
-                continue;
-            }
-            let target = place_in(&dir, &item.file_name, &mut taken);
-            self.start_move(id, target);
-        }
+        let stay = self.move_into_folder(&ids, dir);
         self.dirty = true;
         if stay {
             self.notice = Some(cant_move_notice());
@@ -12675,7 +12762,10 @@ impl App {
                 d.saturating_duration_since(Instant::now()).min(cap)
             })
         };
-        // Let any rename on completion under way finish and update `item.dest` before saving.
+        // Let any move or rename on completion under way finish and update `item.dest` before
+        // saving; a disk that holds it doesn't hold the exit.
+        let _ = self.mover.finish(left(Duration::from_secs(2)));
+        self.poll_moves();
         for (id, rx) in std::mem::take(&mut self.renaming) {
             if let Ok((r, sharing_error)) = rx.recv_timeout(left(Duration::from_secs(2))) {
                 self.apply_finished_rename(id, r, sharing_error, false);
@@ -15400,6 +15490,101 @@ mod start_disk_tests {
             seen.lock().unwrap().last(),
             Some(&a),
             "the finished file last"
+        );
+    }
+
+    /// File Properties' Move and Move/Rename on a selection return at once when the chosen folder
+    /// is on a slow disk: unstarted downloads take the folder at once (apart from one another and
+    /// keeping `name_from_url`, with `number_at_start` for a start meanwhile), and finished files
+    /// and unstarted rows alike settle their numbered names once the mover's thread reaches the
+    /// folder.
+    #[test]
+    fn moving_downloads_to_a_folder_never_waits_on_the_window_thread() {
+        let src1 = tempfile::tempdir().unwrap();
+        let src2 = tempfile::tempdir().unwrap();
+        let dst = tempfile::tempdir().unwrap();
+        let prop_dst = tempfile::tempdir().unwrap();
+        std::fs::write(dst.path().join("a.bin"), b"already there").unwrap();
+        std::fs::write(prop_dst.path().join("p.bin"), b"already there").unwrap();
+
+        let f1 = src1.path().join("a.bin");
+        let f2 = src2.path().join("a.bin");
+        let fp = src1.path().join("p.bin");
+        std::fs::write(&f1, b"done 1").unwrap();
+        std::fs::write(&f2, b"done 2").unwrap();
+        std::fs::write(&fp, b"done p").unwrap();
+
+        let mut u3 = row(3, src1.path().join("a.bin"), Status::Queued);
+        u3.name_from_url = true;
+        let u4 = row(4, src2.path().join("a.bin"), Status::Queued);
+
+        let mut app = app_with(vec![
+            row(1, f1.clone(), Status::Complete),
+            row(2, f2.clone(), Status::Complete),
+            u3,
+            u4,
+            row(5, fp.clone(), Status::Complete),
+        ]);
+        let gate = Arc::new(Mutex::new(()));
+        let held = gate.lock().unwrap();
+        app.mover = crate::mover::Mover::with(
+            {
+                let gate = gate.clone();
+                move |_| drop(gate.lock().unwrap())
+            },
+            crate::mover::move_file,
+            || {},
+        );
+
+        let at = Instant::now();
+        app.move_many_to(vec![1, 2, 3, 4], dst.path().to_owned());
+        app.apply_properties(crate::properties::Changes {
+            id: 5,
+            description: String::new(),
+            referer: None,
+            login: None,
+            address: None,
+            move_to: Some(prop_dst.path().to_owned()),
+            direct: None,
+        });
+        assert!(at.elapsed() < AT_ONCE, "the window doesn't wait");
+
+        // While the disk is held: finished files haven't moved yet, and unstarted rows already
+        // sit in `dst` with distinct names, `number_at_start`, and `name_from_url` preserved.
+        assert_eq!(get(&app, 1).dest, f1);
+        assert_eq!(get(&app, 2).dest, f2);
+        assert_eq!(get(&app, 5).dest, fp);
+        assert_eq!(get(&app, 3).dest.parent(), Some(dst.path()));
+        assert_eq!(get(&app, 4).dest.parent(), Some(dst.path()));
+        assert_ne!(get(&app, 3).dest, get(&app, 4).dest);
+        assert!(get(&app, 3).number_at_start && get(&app, 4).number_at_start);
+        assert!(get(&app, 3).name_from_url && !get(&app, 4).name_from_url);
+
+        drop(held);
+        until(&mut app, App::poll_moves, |app| {
+            !app.mover.has_moves() && get(app, 4).dest == dst.path().join("a (4).bin")
+        });
+        assert_eq!(get(&app, 1).dest, dst.path().join("a (1).bin"));
+        assert_eq!(get(&app, 2).dest, dst.path().join("a (2).bin"));
+        assert_eq!(get(&app, 3).dest, dst.path().join("a (3).bin"));
+        assert!(get(&app, 3).name_from_url, "folder move keeps server's say");
+        assert_eq!(get(&app, 4).dest, dst.path().join("a (4).bin"));
+        assert_eq!(get(&app, 5).dest, prop_dst.path().join("p (1).bin"));
+        assert_eq!(
+            std::fs::read(dst.path().join("a.bin")).unwrap(),
+            b"already there"
+        );
+        assert_eq!(
+            std::fs::read(dst.path().join("a (1).bin")).unwrap(),
+            b"done 1"
+        );
+        assert_eq!(
+            std::fs::read(dst.path().join("a (2).bin")).unwrap(),
+            b"done 2"
+        );
+        assert_eq!(
+            std::fs::read(prop_dst.path().join("p (1).bin")).unwrap(),
+            b"done p"
         );
     }
 }
