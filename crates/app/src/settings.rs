@@ -366,6 +366,10 @@ pub struct Settings {
     /// browser's last used). A settings file from before has neither: off.
     pub video_cookies: String,
     pub video_cookies_profile: String,
+    /// Options → Sites Logins → Use my yt-dlp config file: yt-dlp also reads its own config
+    /// file, and MDM's arguments still win over it. Off; a settings file from before has none:
+    /// off.
+    pub ytdlp_config: bool,
     /// Options → Archives (#37): extract an archive when its download completes (a Link grabber
     /// package says so itself). Off, as a browser leaves archives alone.
     pub extract_auto: bool,
@@ -548,6 +552,7 @@ impl Default for Settings {
             video_chapters: true,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
+            ytdlp_config: false,
             extract_auto: false,
             extract_delete: false,
             extract_in_place: false,
@@ -1158,10 +1163,11 @@ impl Settings {
     }
 }
 
-/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change),
-/// and every video started on Embed chapters (#827).
+/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change)
+/// and on Use my yt-dlp config file, and every video started on Embed chapters (#827).
 pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
+    mdm_tools::proc::set_user_config(s.ytdlp_config);
     mdm_tools::video::set_chapters(s.video_chapters);
 }
 
@@ -1457,6 +1463,13 @@ mod tests {
         let listed = |name| mdm_ipc::capture::type_listed(&s.auto_types, name);
         assert!(listed("setup.EXE") && listed("a.r01") && listed("x.zip"));
         assert!(!listed("page.html") && !listed("noext"));
+    }
+
+    #[test]
+    fn the_persons_ytdlp_config_is_off_until_chosen() {
+        let old: Settings = serde_json::from_str(r#"{"video_chapters":true}"#).unwrap();
+        assert!(!old.ytdlp_config);
+        assert!(!Settings::default().ytdlp_config);
     }
 
     #[test]

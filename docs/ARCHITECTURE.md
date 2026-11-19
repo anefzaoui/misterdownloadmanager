@@ -127,7 +127,11 @@ every system (`crates/app/src/renderer.rs`): when the chosen one can't start, th
 tried, so the windows always open. A watched start with the system's API leaves a marker until
 its first frame is drawn: a start that ends before it (a crash inside the driver), one whose
 first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics
-card lost twice in 10 minutes is remembered with its reason, which the menu shows.
+card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL,
+a window eframe can't paint (its context can't be made current on it, its frame can't be shown)
+is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost
+device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows).
+The fork's eframe tells MDM through its viewport hooks (`gl_paint_failed`, #1448).
 
 View → Interface size (`scale.rs`, #262) is egui's zoom factor over the display's own scale:
 every window is laid out in points, so it opens that much larger; one larger than the screen

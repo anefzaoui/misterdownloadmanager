@@ -566,6 +566,9 @@ These ship in the next version.
 
 - ✅ The browser extension remembers paired servers and switches between them and this computer
   with a click without re-pairing (thanks to [@kngkatak](https://github.com/kngkatak))
+- ✅ Your own yt-dlp config file: Options → Sites Logins → Use my yt-dlp config file (off by
+  default) lets yt-dlp read it for the app's videos, most of MDM's own choices still winning; an
+  external downloader it names doesn't stop the progress
 - ✅ Download File Info: a name typed in **Save as** that is a file already there asks first
   (the duplicate question: a numbered name, or overwrite it, replaced only once the download
   completes), instead of numbering it without a word
@@ -573,6 +576,10 @@ These ship in the next version.
 - ✅ A Docker image of the headless server is published with each release, at
   `ghcr.io/anefzaoui/misterdownloadmanager` (x86-64 only for now, thanks to
   [@kngkatak](https://github.com/kngkatak))
+- ✅ OpenGL: no crash when the graphics driver can't switch drawing between MDM's windows for a
+  moment (an Intel HD Graphics 520); that window is drawn again just after, and one that can't be
+  drawn for seconds starts MDM again, as a lost graphics card does
+  ([#1448](https://github.com/anefzaoui/misterdownloadmanager/issues/1448))
 - ✅ File names as browsers read them: a server's percent-encoded `filename="My%20Report.pdf"` is
   `My Report.pdf`, as in Chrome and Firefox (it stayed encoded), and RFC 2047's encoded words are
   read too; checked behind one and two redirects, relative ones included
