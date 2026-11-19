@@ -2168,6 +2168,36 @@ function samplePage(html) {
   ok(`#689: a video in a feed names its post, never the feed (${pages.length} sample pages, ${checked} videos)`);
 }
 
+// #1458: Kwai's video page (our own sample of its player's shape: no real account or video) plays
+// its video's plain MP4 in a <video src>, a signed `?tag=` after it, the next one ready below it.
+// Each names the page (which yt-dlp can't read: it has no Kwai reader), and its own file goes with
+// it as the click's download (video.js lookOf: a plain file, not a stream): MDM downloads that
+// file, the page its Referer, rather than looking the file up as a page.
+{
+  const file = (n) => `https://aws-br-cdn.kwai.net/upic/2026/11/18/20/BMjAyNjExMTgy_b_Bsample${n}.mp4?tag=1-1795051555-s-0-sample${n}-8830deb705ea7edb`;
+  const html = `<!doctype html><html><head><meta name="mdm-page" content="https://www.kwai.com/@sample/video/5250000000000000001"><title>kwai-nuxt-pwa-pc</title></head><body>
+    <div class="video-swiper"><div class="video-content"><div class="video-box"><a-video-player class="container video-detail-player">
+      <div class="video-tag _kwai-player_uxc1a_2"><div class="_kwai-player-video_uxc1a_11"><video src="${file(1)}"></video></div></div>
+    </a-video-player></div><div class="video-box"><a-video-player class="container video-detail-player">
+      <div class="video-tag _kwai-player_uxc1a_2"><div class="_kwai-player-video_uxc1a_11"><video src="${file(2)}"></video></div></div>
+    </a-video-player></div></div></div></body></html>`;
+  const { document, page, videos } = samplePage(html);
+  const location = new URL(page);
+  assert.equal(videos.length, 2);
+  for (const v of videos) assert.equal(videoPageOn(location, document)(v), page, "the page names it");
+  const source = readText("../../extension/video.js");
+  const scripts = JSON.parse(/const SCRIPT_EXTENSIONS = (\[[^\]]+\]);/.exec(source)[1]);
+  const at = source.indexOf("  function fileType(");
+  const fileType = new Function(`const SCRIPT_EXTENSIONS = ${JSON.stringify(scripts)};\n${source.slice(at, source.indexOf("\n  }\n", at) + 4)}\nreturn fileType;`)();
+  assert.equal(fileType(file(1)), "mp4", "its own file, an MP4");
+  const stream = /const STREAM = \/(.+)\/i;/.exec(source)[1];
+  assert.ok(!new RegExp(stream, "i").test(file(1)), "not a stream: no look-up, the file itself");
+  // Kwai isn't one of the sites whose reader takes a post over its file (describe: `post`).
+  const sites = source.indexOf("const SITES = [");
+  assert.ok(sites > 0 && !/kwai/i.test(source.slice(sites, source.indexOf("\n  ];", sites))), "no Kwai reader");
+  ok("#1458: Kwai's player: its page named, its own MP4 the click's download");
+}
+
 // What the resolvers build is a form yt-dlp's extractors read (their _VALID_URL, yt-dlp
 // 2026.08.19), so the app's lookup finds the one video.
 {

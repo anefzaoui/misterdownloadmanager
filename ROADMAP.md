@@ -569,6 +569,10 @@ These ship in the next version.
   it stops before anything is saved, says both sizes and suggests Alt+click; where the browser's
   own download ended is asked once first
   ([#1460](https://github.com/anefzaoui/misterdownloadmanager/issues/1460))
+- ✅ Download video: a video's own file (Kwai's MP4) is offered and downloaded when its server
+  doesn't say it is a video, instead of "No video this can download on that page"; the button's
+  click downloads such a file at once
+  ([#1458](https://github.com/anefzaoui/misterdownloadmanager/issues/1458))
 - ✅ Your own yt-dlp config file: Options → Sites Logins → Use my yt-dlp config file (off by
   default) lets yt-dlp read it for the app's videos, most of MDM's own choices still winning; an
   external downloader it names doesn't stop the progress
