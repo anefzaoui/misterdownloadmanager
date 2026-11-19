@@ -105,6 +105,10 @@ A live stream, a broadcast still going on, is recorded by yt-dlp with ffmpeg int
 - **The last moments may be missing:** at most the last 1 MiB the recorder hadn't written yet. That is a few seconds of video, and up to about a minute for a stream with sound only.
 - **If the MP4 can't be made**, the recording is kept as an MPEG-TS file (`.ts`), which most players open. If that can't be done either, the download says so and the unfinished file stays as it is.
 - **The recording is removed only when the MP4 holds all of it**: as long as the recording to within a second, its picture and its sound each too (ffprobe's durations; without them, at least 90 % of the recording's size). A shorter MP4 is kept with the recording beside it, as `My stream (recording 1).ts`, and the download's log says why (if the recording can't be renamed, the log says so: it stays as the unfinished file).
+- **A live stream that ends by itself** while MDM records it is made an MP4 the same way, with the same check: yt-dlp is told to leave its recording as it is, and MDM makes the MP4 of it (when it has ffmpeg and the recording is the MPEG-TS yt-dlp made). From the moment yt-dlp says the recording is finished, the window says **Saving...** (only a moment when there is no MP4 to make), and a Stop waits for it: the download is then **Complete**. The recording goes only when the MP4 holds all of it, it is kept beside a shorter one, and if no MP4 can be made it is the download's `.ts` file (`My stream (recording 1).ts` when `My stream.ts` is taken). Subtitles asked to go inside the video are saved beside it instead, and no chapters are added: the recording isn't changed once it is made.
+- **MP3, Opus or FLAC of a live stream:** the sound is saved as asked, and the recording it was made of stays beside it, as `My stream (recording 1).ts`.
+- **A picture and a sound yt-dlp joined itself** once the stream ended stay beside the video, as yt-dlp left them, when the video doesn't hold all of both; otherwise they go.
+- **A recording yt-dlp finished but MDM didn't make an MP4 of** (a try that failed just after, or MDM closed meanwhile) is still MPEG-TS under the MP4's name. Before the download starts again, MDM makes it an MP4 with the same check (the list says **Merging** meanwhile, and a Stop waits for it, then stops the download before anything else runs): when the MP4 holds all of it, it is the download. Otherwise the recording is kept as `My stream (recording 1).ts` and the download starts over. Without MDM's ffmpeg it is set aside the same way. The same goes for a normal video in pieces (HLS) MDM's engine left as MPEG-TS in `My video.mp4` when yt-dlp failed or was stopped while it fixed it up.
 - **A recording in several parts** (a picture and a sound part yt-dlp left apart) is made one MP4 with all of them. If they can't be joined, the download says so and every part stays as it is.
 - **Cancel** in the progress window only stops the download: the recording stays in its unfinished file. So does reaching a [download limit](queues-and-scheduler.md#download-limits), which counts a recording as it grows and stops it as it stops other downloads. **Resume**, or MDM starting the download again by itself (after a network adapter change or the download limit, or a queue that starts when MDM opens), records the stream anew. It first sets the earlier recording aside, next to it, as `My stream (recording 1).ts` (then `(recording 2)`, and so on), so nothing is recorded over; so it does when the stream has ended meanwhile and the download goes on as a normal video. (An unfinished MPEG-TS file yt-dlp downloads directly, without its resume state, is taken for a recording the same way: it starts over, what it had kept aside.) If that file can't be set aside, MDM doesn't record over it and says so.
 - These kept recordings aren't the download's own files: **Delete** with its files leaves them.
@@ -119,7 +123,7 @@ When the video has subtitles, the **Subtitles** list offers them: the uploader's
 *Choose the subtitles; tick Put them into the video to keep them inside the file.*
 
 - Saved beside the video, they get its name and the language: `My video.fr.srt`. Players such as VLC and MPV pick them up on their own. With ffmpeg they're always SRT; without it, the site's own format (often WebVTT, `.vtt`).
-- **Put them into the video** puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.
+- **Put them into the video** puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video. A live stream's recording keeps them beside it ([Recording a live stream](#recording-a-live-stream)).
 - A sound-only choice (**Audio only**, MP3, Opus, FLAC) has no subtitles.
 
 MDM offers the same choice again for the next video when it has that language.
@@ -132,7 +136,7 @@ Many videos are split into chapters on their page: YouTube's list under the play
 
 - It's ticked to begin with, and stays as you leave it for the next video.
 - It needs ffmpeg, which writes them. A video without chapters is saved as it is.
-- They go into a video (MP4, MKV, WebM) and into the sound as the site has it (**Audio only, original**), not into an MP3, Opus or FLAC file.
+- They go into a video (MP4, MKV, WebM) and into the sound as the site has it (**Audio only, original**), not into an MP3, Opus or FLAC file, nor into a live stream's recording.
 - The command line (`video-get`) puts them in too, whenever ffmpeg is there.
 
 ## Playlists and channels

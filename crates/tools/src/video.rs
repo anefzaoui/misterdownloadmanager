@@ -586,10 +586,19 @@ pub struct VideoJob {
 /// ends it (it records with ffmpeg, which leaves the recording an MPEG-TS `.part`), then MDM's
 /// ffmpeg makes that `.part` into the MP4 kept.
 struct Recorder {
-    /// Set once by `save`, under the child's lock and the progress's: from then on no yt-dlp
+    /// Set once by `save` (or as a recording yt-dlp finished itself is made an MP4,
+    /// [`finished_live`]), under the child's lock and the progress's: from then on no yt-dlp
     /// starts again, and a Stop changes nothing. Read and set with the progress locked, so it
     /// and the state change together.
     saving: std::sync::atomic::AtomicBool,
+    /// MDM's ffmpeg makes a file yt-dlp left as MPEG-TS an MP4 ([`remade`]): the job isn't over
+    /// until it is done, whatever a Stop said meanwhile ([`VideoJob::progress`]), so nothing
+    /// starts on its files before then.
+    finishing: std::sync::atomic::AtomicBool,
+    /// [`Recorder::finishing`] for a live stream's recording yt-dlp finished (from its `MDMF` to
+    /// the download done): shown as being saved ([`VideoJob::live_state`]), so MDM's own stops
+    /// spare it as they spare a save.
+    live_finishing: std::sync::atomic::AtomicBool,
     /// MDM's ffmpeg, which makes the recording an MP4; without it the recording is kept as the
     /// MPEG-TS it is.
     ffmpeg: Option<PathBuf>,
@@ -598,6 +607,31 @@ struct Recorder {
 impl Recorder {
     fn saving(&self) -> bool {
         self.saving.load(std::sync::atomic::Ordering::SeqCst)
+    }
+
+    fn finishing(&self) -> bool {
+        self.finishing.load(std::sync::atomic::Ordering::SeqCst)
+    }
+
+    fn set_finishing(&self, on: bool) {
+        self.finishing
+            .store(on, std::sync::atomic::Ordering::SeqCst);
+        if !on {
+            self.live_finishing
+                .store(false, std::sync::atomic::Ordering::SeqCst);
+        }
+    }
+
+    /// [`Recorder::set_finishing`] for a live stream's recording yt-dlp finished.
+    fn set_live_finishing(&self) {
+        self.live_finishing
+            .store(true, std::sync::atomic::Ordering::SeqCst);
+        self.set_finishing(true);
+    }
+
+    fn live_finishing(&self) -> bool {
+        self.live_finishing
+            .load(std::sync::atomic::Ordering::SeqCst)
     }
 }
 
@@ -815,10 +849,17 @@ fn finish_recording(
         return Saved::Stopped;
     };
     let all = parts_of(&dir, &stem);
-    // yt-dlp finished the file itself (it said so, or it is there by our name).
+    // yt-dlp finished the file itself (it said so, or it is there by our name): still the
+    // MPEG-TS it recorded under an MP4's name (it is told to leave it as it is), it is made an
+    // MP4 as a saved recording is.
     if all.is_empty() {
         return match said.filter(|f| f.is_file()).or_else(|| saved_by_name(ours)) {
-            Some(f) => Saved::Done(f),
+            Some(f) => Saved::Done(match ffmpeg {
+                Some(ffmpeg) if ts_in_mp4(&f) => {
+                    remade_after_run(&f, remade(&f, ffmpeg, progress), progress)
+                }
+                _ => f,
+            }),
             None => Saved::Stopped,
         };
     }
@@ -841,7 +882,7 @@ fn finish_recording(
         );
     }
     let made = match ffmpeg {
-        Some(ffmpeg) => remuxed(ffmpeg, &parts, &dir, &stem),
+        Some(ffmpeg) => remuxed(ffmpeg, &parts, &dir, &stem, "mp4"),
         None => Err("there's no ffmpeg".to_owned()),
     };
     match made {
@@ -872,7 +913,7 @@ fn finish_recording(
                         Err(e) => note(
                             progress,
                             format!(
-                                "The MP4 doesn't hold all of the recording (it plays shorter, or one of its streams starts later or ends sooner), and the recording {} couldn't be renamed ({e}); it stays as {}",
+                                "{NOT_WHOLE}, and the recording {} couldn't be renamed ({e}); it stays as {}",
                                 part.display(),
                                 name_of(part)
                             ),
@@ -883,7 +924,7 @@ fn finish_recording(
                     note(
                         progress,
                         format!(
-                            "The MP4 doesn't hold all of the recording (it plays shorter, or one of its streams starts later or ends sooner), so the recording is kept beside it too: {}",
+                            "{NOT_WHOLE}, so the recording is kept beside it too: {}",
                             kept.join(", ")
                         ),
                     );
@@ -936,16 +977,21 @@ fn ff_file(p: &Path) -> std::ffi::OsString {
 /// part (`-map` each input) copied as it is into one file, data streams left out and a stream
 /// the MP4 can't hold dropped, as yt-dlp's `FixupM3u8` does with the one file of a live stream it
 /// recorded; a picture and a sound recorded apart are joined that way, side by side. Into
-/// `<stem>.temp.mp4`, then renamed to its [`recording_name`]. Usable only when ffmpeg ended well and its file is at least half the
-/// parts' size (a copy of the same streams). Whatever fails, the temporary file goes and the
-/// parts stay.
+/// `<stem>.temp.<ext>`, then renamed to its [`recording_name`] (`ext`: `mp4`, or `m4a` for a
+/// sound yt-dlp named so; an MP4 either way). Usable only when ffmpeg ended well and its file is
+/// at least half the parts' size (a copy of the same streams). Whatever fails, the temporary file
+/// goes and the parts stay.
 fn remuxed(
     ffmpeg: &Path,
     parts: &[(PathBuf, u64)],
     dir: &Path,
     stem: &str,
+    ext: &str,
 ) -> Result<PathBuf, String> {
-    let temp = dir.join(format!("{stem}.temp.mp4"));
+    // `<stem>.temp.<ext>` is written over (`-y`) and removed when it fails, whatever was there:
+    // yt-dlp's own name for a merge under way, never a finished file (an accepted risk: one left
+    // there by another program under that name would go).
+    let temp = dir.join(format!("{stem}.temp.{ext}"));
     let len: u64 = parts.iter().map(|(_, n)| n).sum();
     let mut cmd = std::process::Command::new(ffmpeg);
     cmd.args(["-nostdin", "-y"]);
@@ -974,7 +1020,7 @@ fn remuxed(
             }
         })
         .and_then(|()| {
-            keep_as(&temp, dir, stem, "mp4", true)
+            keep_as(&temp, dir, stem, ext, true)
                 .map_err(|e| format!("{} couldn't be renamed ({e})", temp.display()))
         });
     if made.is_err() {
@@ -1078,6 +1124,429 @@ fn whole(ffprobe: Option<&Path>, mp4: &Path, parts: &[(PathBuf, u64)]) -> bool {
     whole
 }
 
+/// What the log says when an MP4 made of a recording may not hold all of it.
+const NOT_WHOLE: &str = "The MP4 doesn't hold all of the recording (it plays shorter, or one of its streams starts later or ends sooner)";
+
+/// Whether `f` is MPEG-TS under an MP4's name (`.mp4`, `.m4a`), a file of its own (never a
+/// link): what yt-dlp's ffmpeg records a live stream as, renamed so when the stream ends, and
+/// what MDM's engine joins an HLS stream's pieces into, for yt-dlp's fix-up.
+fn ts_in_mp4(f: &Path) -> bool {
+    let ext = f
+        .extension()
+        .map(|e| e.to_string_lossy().to_ascii_lowercase());
+    matches!(ext.as_deref(), Some("mp4" | "m4a"))
+        && std::fs::symlink_metadata(f).is_ok_and(|m| m.is_file())
+        && is_ts(f)
+}
+
+/// What became of MPEG-TS under an MP4's name ([`remade`]).
+#[derive(Debug, PartialEq)]
+enum Remade {
+    /// It couldn't be renamed out of the way (why): left as it was.
+    Unmoved(String),
+    /// Made an MP4 by MDM's ffmpeg, under the file's own name; the MPEG-TS removed, or kept as
+    /// `<stem> (recording N).ts` when the MP4 may not hold all of it ([`whole`]).
+    Mp4(PathBuf, Option<PathBuf>),
+    /// No usable MP4 (ffmpeg failed, or made too little): the MPEG-TS, as
+    /// `<stem> (recording N).ts`.
+    Ts(PathBuf),
+}
+
+/// `f`, MPEG-TS under an MP4's name ([`ts_in_mp4`]), made an MP4 as a saved recording is, never
+/// in its place: first renamed out of the way to `<stem> (recording N).ts` (whatever ends MDM
+/// from there leaves all of it under that name), then copied by `ffmpeg` into an MP4 under `f`'s
+/// own name, now free ([`remuxed`]); the MPEG-TS is removed only when the MP4 holds all of it
+/// ([`whole`]). Nothing is removed when anything fails, nor renamed over.
+fn remade(f: &Path, ffmpeg: &Path, progress: &Mutex<Progress>) -> Remade {
+    let (Some(dir), Some(stem), Some(ext)) = (f.parent(), f.file_stem(), f.extension()) else {
+        return Remade::Unmoved("it has no name".into());
+    };
+    let stem = stem.to_string_lossy().into_owned();
+    let ext = ext.to_string_lossy().to_ascii_lowercase();
+    let len = std::fs::metadata(f).map_or(0, |m| m.len());
+    let ts = match keep_as(f, dir, &stem, "ts", false) {
+        Ok(ts) => ts,
+        Err(e) => return Remade::Unmoved(e.to_string()),
+    };
+    note(
+        progress,
+        format!(
+            "{} is the recording as it was made (MPEG-TS): kept as {} while it is made an MP4",
+            name_of(f),
+            name_of(&ts)
+        ),
+    );
+    let parts = [(ts.clone(), len)];
+    match remuxed(ffmpeg, &parts, dir, &stem, &ext) {
+        Ok(mp4) if whole(ffprobe_of(ffmpeg).as_deref(), &mp4, &parts) => {
+            if let Err(e) = retrying(|| removed(&ts)) {
+                note(
+                    progress,
+                    format!(
+                        "The recording is saved, but its MPEG-TS {} couldn't be removed ({e})",
+                        ts.display()
+                    ),
+                );
+            }
+            Remade::Mp4(mp4, None)
+        }
+        Ok(mp4) => Remade::Mp4(mp4, Some(ts)),
+        Err(why) => {
+            note(
+                progress,
+                format!("The recording couldn't be made an MP4 ({why}); keeping it as MPEG-TS"),
+            );
+            Remade::Ts(ts)
+        }
+    }
+}
+
+/// [`remade`] once yt-dlp finished `f` itself: the file the download is, the log saying what
+/// became of the recording. Not renamed out of the way: `f` as it is ([`named_for_content`] names
+/// it `.ts` then, as before). No usable MP4: the MPEG-TS as `<stem>.ts` when that name is free
+/// (the download's own file), else as it is kept.
+fn remade_after_run(f: &Path, made: Remade, progress: &Mutex<Progress>) -> PathBuf {
+    match made {
+        Remade::Unmoved(why) => {
+            note(
+                progress,
+                format!(
+                    "The recording {} couldn't be renamed to be made an MP4 ({why}); it is kept as it is",
+                    name_of(f)
+                ),
+            );
+            f.to_owned()
+        }
+        Remade::Mp4(mp4, None) => mp4,
+        Remade::Mp4(mp4, Some(ts)) => {
+            note(
+                progress,
+                format!(
+                    "{NOT_WHOLE}, so the recording is kept beside it too: {}",
+                    name_of(&ts)
+                ),
+            );
+            mp4
+        }
+        Remade::Ts(ts) => {
+            let stem = f.file_stem().unwrap_or_default().to_string_lossy();
+            let plain = ts.with_file_name(format!("{stem}.ts"));
+            let renamed = retrying(|| {
+                if std::fs::symlink_metadata(&plain).is_ok() {
+                    return Ok(false);
+                }
+                std::fs::rename(&ts, &plain).map(|()| true)
+            });
+            if renamed.is_ok_and(|r| r) { plain } else { ts }
+        }
+    }
+}
+
+/// While MDM's ffmpeg makes a file an MP4 ([`Recorder::finishing`]); over when dropped.
+struct Finishing<'a>(&'a Recorder);
+
+impl Drop for Finishing<'_> {
+    fn drop(&mut self) {
+        self.0.set_finishing(false);
+    }
+}
+
+/// Before each run of a video: a file of ours left as MPEG-TS under an MP4's name
+/// (`<stem>.mp4`, `<stem>.m4a`: a live stream's recording yt-dlp finished while its run failed,
+/// or with no MDM to see it end; MDM's engine's HLS pieces, joined for yt-dlp's fix-up) would be
+/// taken as whole by the engine and fixed up in its place by yt-dlp (`--fixup force`), unchecked:
+/// [`remade`] first, the job shown as joining (`merging`) until then, a Stop said once it is
+/// over. All of it in the MP4: the MP4 is the file. Maybe not: the recording is kept as
+/// `<stem> (recording N).ts`, the MP4 made of it removed (a copy of what is kept), and the
+/// download starts over. No usable MP4, or no ffmpeg of MDM's (an ffmpeg yt-dlp finds would
+/// change it unchecked): the recording kept aside the same way. One that can't be kept aside:
+/// nothing starts, and the error names it.
+fn remade_before_run(
+    ours: &[String],
+    ffmpeg: Option<&Path>,
+    progress: &Mutex<Progress>,
+    recorder: &Recorder,
+) -> Result<(), String> {
+    let Some((dir, stem)) = template_of(ours) else {
+        return Ok(());
+    };
+    for ext in ["mp4", "m4a"] {
+        let f = dir.join(format!("{stem}.{ext}"));
+        if !ts_in_mp4(&f) {
+            continue;
+        }
+        {
+            let mut p = progress.lock().unwrap();
+            if p.state == State::Stopped {
+                return Ok(());
+            }
+            recorder.set_finishing(true);
+            p.merging = Some(None);
+        }
+        let _over = Finishing(recorder);
+        let made = kept_before_run(&f, &dir, &stem, ffmpeg, progress);
+        progress.lock().unwrap().merging = None;
+        made?;
+    }
+    Ok(())
+}
+
+/// [`remade_before_run`] for `f`, `<stem>.<ext>`.
+fn kept_before_run(
+    f: &Path,
+    dir: &Path,
+    stem: &str,
+    ffmpeg: Option<&Path>,
+    progress: &Mutex<Progress>,
+) -> Result<(), String> {
+    let unfinished = |f: &Path, why: String| {
+        format!(
+            "An earlier recording of this video wasn't finished: {} {why}; move or rename it, then resume",
+            f.display()
+        )
+    };
+    let kept = |ts: &Path| {
+        note(
+            progress,
+            format!(
+                "The earlier recording was kept as {}, and the download starts over",
+                name_of(ts)
+            ),
+        );
+    };
+    let Some(ffmpeg) = ffmpeg else {
+        return match keep_as(f, dir, stem, "ts", false) {
+            Ok(ts) => {
+                kept(&ts);
+                Ok(())
+            }
+            Err(e) => Err(unfinished(f, format!("couldn't be kept aside ({e})"))),
+        };
+    };
+    match remade(f, ffmpeg, progress) {
+        Remade::Unmoved(why) => Err(unfinished(f, format!("couldn't be kept aside ({why})"))),
+        Remade::Mp4(mp4, None) => {
+            note(
+                progress,
+                format!("The earlier recording was made an MP4: {}", name_of(&mp4)),
+            );
+            Ok(())
+        }
+        Remade::Mp4(mp4, Some(ts)) => match retrying(|| removed(&mp4)) {
+            Ok(()) => {
+                note(
+                    progress,
+                    format!(
+                        "{NOT_WHOLE}, so the recording is kept as {}, the MP4 made of it removed, and the download starts over",
+                        name_of(&ts)
+                    ),
+                );
+                Ok(())
+            }
+            Err(e) => Err(unfinished(
+                &mp4,
+                format!(
+                    "may not hold all of it ({} is kept), and couldn't be removed ({e})",
+                    name_of(&ts)
+                ),
+            )),
+        },
+        Remade::Ts(ts) => {
+            kept(&ts);
+            Ok(())
+        }
+    }
+}
+
+/// The options a live stream's run turns off, in case the person's own yt-dlp config asks them
+/// (MDM asks none of them then): each changes a finished file in its place, and `-k` keeps no
+/// original of those. A post-processor that config adds by name (`--use-postprocessor`) isn't
+/// turned off.
+const LIVE_UNCHANGED: [&str; 7] = [
+    "--no-embed-subs",
+    "--no-embed-chapters",
+    "--no-embed-metadata",
+    "--no-embed-thumbnail",
+    "--no-embed-info-json",
+    "--no-sponsorblock",
+    "--no-remove-chapters",
+];
+
+/// A live stream's run ([`live_args`]): its arguments.
+#[derive(Clone, Debug)]
+struct LiveRun {
+    args: Vec<String>,
+}
+
+/// yt-dlp's arguments `ours` for a live stream's run, told to leave the recording as it is once
+/// the stream ends: its fix-up (`FixupM3u8`) would make the MPEG-TS an MP4 in place of the only
+/// copy, unchecked, and MDM does that itself as Stop and save does ([`finished_live`]). No fix-up
+/// (`--fixup never`, in place of the engine's `--fixup force`: the last one counts, and the
+/// person's config comes first), no subtitles nor chapters put into the file (subtitles asked
+/// into it are saved beside it, `--write-subs`), and `-k`: an original a post-processor would
+/// remove once it made another file of it (an audio extraction, a merge) stays. What the
+/// person's own config could put into the file is turned off too ([`LIVE_UNCHANGED`]; nothing
+/// without it). Also whether subtitles asked into the file go beside it.
+fn live_args(ours: &[String]) -> (Vec<String>, bool) {
+    let writes = ours
+        .iter()
+        .any(|a| a == "--write-subs" || a == "--write-auto-subs");
+    let mut out: Vec<String> = Vec::with_capacity(ours.len() + 10);
+    let mut beside = false;
+    let mut args = ours.iter();
+    while let Some(a) = args.next() {
+        match a.as_str() {
+            "--fixup" => {
+                args.next();
+            }
+            "--embed-chapters" => {}
+            "--embed-subs" => {
+                beside = true;
+                if !writes {
+                    out.push("--write-subs".into());
+                }
+            }
+            _ => out.push(a.clone()),
+        }
+    }
+    out.extend(["--fixup".into(), "never".into(), "-k".into()]);
+    out.extend(LIVE_UNCHANGED.map(String::from));
+    (out, beside)
+}
+
+/// A live stream's recording yt-dlp finished itself (the stream ended while it recorded), told
+/// to change nothing in it ([`live_args`]): `f`, the file it said, made an MP4 by MDM ([`remade`],
+/// as Stop and save makes one) when it is the MPEG-TS recorded, under an MP4's name, and MDM has
+/// ffmpeg. All of it runs while the job says it is being saved (the caller set it so before
+/// yt-dlp was ended), and a Stop or a Save changes nothing, as during a save. What `-k` kept,
+/// which a post-processor would have removed: an original an audio extraction (`-x`) or the
+/// person's own config's conversion started from, MPEG-TS, kept aside as
+/// `<stem> (recording N).ts` (never a `.ts` of the download's, nor the file yt-dlp said); the
+/// streams a merge joined (`MDMQ`'s format ids, `quality`), removed only when the merged file
+/// holds all of them ([`whole`]); a subtitle's original once converted to SRT, when that SRT has
+/// something in it. The file the download is.
+fn finished_live(
+    run: &LiveRun,
+    f: PathBuf,
+    quality: Option<&str>,
+    recorder: &Recorder,
+    progress: &Mutex<Progress>,
+) -> PathBuf {
+    let Some((dir, stem)) = template_of(&run.args) else {
+        return f;
+    };
+    let said = name_of(&f).to_lowercase();
+    // What an audio extraction or a conversion started from (`-x`, or the person's own config).
+    {
+        let originals = MEDIA.iter().filter(|e| **e != "ts").flat_map(|e| {
+            [
+                dir.join(format!("{stem}.{e}")),
+                dir.join(format!("{stem}.orig.{e}")),
+            ]
+        });
+        for original in originals {
+            if name_of(&original).to_lowercase() == said
+                || !std::fs::symlink_metadata(&original).is_ok_and(|m| m.is_file())
+                || !is_ts(&original)
+            {
+                continue;
+            }
+            match keep_as(&original, &dir, &stem, "ts", false) {
+                Ok(to) => note(
+                    progress,
+                    format!("The recording as it was made is kept as {}", name_of(&to)),
+                ),
+                Err(e) => note(
+                    progress,
+                    format!(
+                        "The recording as it was made couldn't be renamed ({e}); it stays as {}",
+                        name_of(&original)
+                    ),
+                ),
+            }
+        }
+    }
+    let f = match recorder.ffmpeg.as_deref() {
+        Some(ffmpeg) if ts_in_mp4(&f) => {
+            remade_after_run(&f, remade(&f, ffmpeg, progress), progress)
+        }
+        _ => f,
+    };
+    // The streams a merge joined.
+    let ids: Vec<&str> = quality
+        .and_then(|q| q.split_whitespace().next())
+        .map(|ids| ids.split('+').collect())
+        .unwrap_or_default();
+    let mut streams: Vec<(PathBuf, u64)> = Vec::new();
+    if ids.len() > 1 && f.is_file() {
+        for id in &ids {
+            for e in MEDIA {
+                let s = dir.join(format!("{stem}.f{id}.{e}"));
+                if let Ok(m) = std::fs::symlink_metadata(&s)
+                    && m.is_file()
+                {
+                    streams.push((s, m.len()));
+                }
+            }
+        }
+    }
+    if !streams.is_empty() {
+        let ffprobe = recorder.ffmpeg.as_deref().and_then(ffprobe_of);
+        if whole(ffprobe.as_deref(), &f, &streams) {
+            for (s, _) in &streams {
+                if let Err(e) = retrying(|| removed(s)) {
+                    note(
+                        progress,
+                        format!(
+                            "The video is saved, but its stream {} couldn't be removed ({e})",
+                            s.display()
+                        ),
+                    );
+                }
+            }
+        } else {
+            note(
+                progress,
+                format!(
+                    "The video may not hold all of its streams, so they are kept beside it: {}",
+                    streams
+                        .iter()
+                        .map(|(s, _)| name_of(s))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                ),
+            );
+        }
+    }
+    // A subtitle converted to SRT: its original.
+    if run.args.iter().any(|a| a == "--convert-subs") {
+        let prefix = format!("{}.", stem.to_lowercase());
+        let originals: Vec<PathBuf> = std::fs::read_dir(&dir)
+            .into_iter()
+            .flatten()
+            .filter_map(Result::ok)
+            .map(|e| e.path())
+            .filter(|p| {
+                let name = name_of(p).to_lowercase();
+                let Some((language, ext)) = name
+                    .strip_prefix(&prefix)
+                    .and_then(|rest| rest.split_once('.'))
+                else {
+                    return false;
+                };
+                !language.is_empty()
+                    && SUB_EXTS.contains(&ext)
+                    && ext != "srt"
+                    && std::fs::metadata(p.with_extension("srt")).is_ok_and(|m| m.len() > 0)
+            })
+            .collect();
+        for original in originals {
+            let _ = removed(&original);
+        }
+    }
+    f
+}
+
 /// A private file for the looked-up page (its links are signed; removed when the run ends), in
 /// the helpers' temporary folder ([`crate::workdir::temp_dir`]).
 fn info_file() -> PathBuf {
@@ -1136,9 +1605,9 @@ impl Cookies {
 
 /// How one run of yt-dlp ended.
 enum Attempt {
-    /// The video saved, the subtitles that didn't come with it, and the quality yt-dlp chose
-    /// (`137+251 1920x1080`).
-    Done(PathBuf, Vec<SubProblem>, Option<String>),
+    /// The video saved, the subtitles that didn't come with it, the quality yt-dlp chose
+    /// (`137+251 1920x1080`), and the run's own when it recorded a live stream ([`live_args`]).
+    Done(PathBuf, Vec<SubProblem>, Option<String>, Option<LiveRun>),
     Stopped,
     /// `rerouted`: links were moved to other servers for this run.
     Failed {
@@ -1244,9 +1713,18 @@ fn supervise(
     }
     for _ in 0..5 {
         let page = preloaded.take();
-        // Being saved: no run after it, another look-up neither.
+        // Being saved: no run after it, another look-up neither. Before each run, a file of ours
+        // yt-dlp left as MPEG-TS is made an MP4 with a check first: neither MDM's engine nor
+        // yt-dlp's fix-up takes it as it is.
         let ended = if recorder.saving() {
             Attempt::Save(None)
+        } else if let Err(error) =
+            remade_before_run(&ours, recorder.ffmpeg.as_deref(), progress, recorder)
+        {
+            Attempt::Blocked(error)
+        } else if progress.lock().unwrap().state == State::Stopped {
+            // Stopped while that was done (or before): no look-up, no run.
+            Attempt::Stopped
         } else {
             attempt(
                 exe,
@@ -1265,9 +1743,25 @@ fn supervise(
                 recorder,
             )
         };
+        // Whatever this run's end masked (`run`'s `live`, `remade_before_run`) is over with it.
+        let _over = Finishing(recorder);
         match ended {
             Attempt::Stopped => return,
-            Attempt::Done(f, problems, quality) => {
+            Attempt::Done(f, problems, quality, live) => {
+                if live.is_some() {
+                    // As `save` does, before yt-dlp is ended: nothing starts again, a Stop or a
+                    // Save is nothing more, and the job is being saved until it is done. A Stop
+                    // since yt-dlp finished the recording was never shown (`run`): it ends done.
+                    let _slot = child.lock().unwrap_or_else(|e| e.into_inner());
+                    let mut p = progress.lock().unwrap();
+                    recorder
+                        .saving
+                        .store(true, std::sync::atomic::Ordering::SeqCst);
+                    recorder.set_live_finishing();
+                    if p.state == State::Stopped {
+                        p.state = State::Running;
+                    }
+                }
                 end(child);
                 // Which way it worked (#686): the browser's cookies are the usual way, unsaid.
                 if cookies.without.get() && proc::has_cookies(browser) {
@@ -1275,10 +1769,14 @@ fn supervise(
                     tracing::info!("A video was downloaded without the browser's cookies (#686)");
                 }
                 if relaxed_to.is_some()
-                    && let Some(q) = quality
+                    && let Some(q) = &quality
                 {
                     note(progress, format!("Downloaded {q} instead"));
                 }
+                let f = match &live {
+                    Some(run) => finished_live(run, f, quality.as_deref(), recorder, progress),
+                    None => f,
+                };
                 done(progress, saved, f, problems);
                 return;
             }
@@ -1326,6 +1824,10 @@ fn supervise(
             }
             Attempt::Failed { error, rerouted } => {
                 end(child);
+                // Stopped meanwhile (a Stop while the run's end was masked): no other try.
+                if progress.lock().unwrap().state == State::Stopped {
+                    return;
+                }
                 let gone: Vec<String> = servers::unreachable_in(&error)
                     .into_iter()
                     .filter(|h| !dead.contains(h))
@@ -1646,6 +2148,13 @@ struct Ran {
 /// Run yt-dlp with `ours` on the page looked up into `file`, following its progress with
 /// `meter` (a live stream's, by its recording's size). None: stopped before or while it ran, or
 /// `recorder` was saving before it started.
+///
+/// `live`: a live stream's run. From the moment yt-dlp says it finished the file (`MDMF`), or
+/// once it ended, the job isn't over until what comes after it is done
+/// ([`Recorder::finishing`]): a Stop from then on is said only then, so nothing starts on the
+/// recording while MDM makes its MP4 ([`finished_live`]); one after `MDMF` doesn't undo the
+/// file yt-dlp finished.
+#[allow(clippy::too_many_arguments)]
 fn run(
     exe: &Path,
     ours: &[String],
@@ -1654,6 +2163,7 @@ fn run(
     child: &Child,
     mut meter: Option<&mut Meter>,
     recorder: &Recorder,
+    live: bool,
 ) -> Result<Option<Ran>, String> {
     let stdout = {
         // Under the child's lock: stop() and save() either came first (nothing starts) or find
@@ -1705,7 +2215,13 @@ fn run(
                 saved = Some(PathBuf::from(rest.trim()));
                 // Merged and moved: done joining.
                 *merged.lock().unwrap() = None;
-                progress.lock().unwrap().merging = None;
+                let mut p = progress.lock().unwrap();
+                p.merging = None;
+                // A live stream's recording finished by yt-dlp: whatever comes now, MDM goes on
+                // with it to the end (`finished_live`).
+                if live && p.state != State::Stopped {
+                    recorder.set_live_finishing();
+                }
             } else if let Some(rest) = line.strip_prefix("MDMQ ") {
                 if let Some(m) = meter.as_deref_mut() {
                     m.quality(rest);
@@ -1747,8 +2263,14 @@ fn run(
         let mut p = progress.lock().unwrap();
         // The run is over: nothing records now, so save() is a Stop from here.
         p.recorded = 0;
-        if p.state == State::Stopped {
+        // Stopped, unless yt-dlp had said it finished a live stream's recording before that.
+        if p.state == State::Stopped && !(live && recorder.finishing() && saved.is_some()) {
             return Ok(None);
+        }
+        if live && saved.is_some() {
+            recorder.set_live_finishing();
+        } else if live {
+            recorder.set_finishing(true);
         }
     }
     let slot = child.lock().unwrap();
@@ -2081,6 +2603,9 @@ fn attempt(
     let _cleanup = Remove(file.clone());
     // MDM's engine downloads the streams (#769); yt-dlp then finds them in place.
     let mut by_engine = false;
+    // A live stream, as this run finds it (the page says so, or the engine), never as an
+    // earlier run did: this run's yt-dlp records it.
+    let mut live = crate::streams::is_live(&info);
     if let Some(e) = engine {
         // With the run's selector: the nearest quality once the chosen one wasn't offered
         // (#94), or the engine would ask for that one again (#1240).
@@ -2094,12 +2619,26 @@ fn attempt(
                     progress,
                     format!("yt-dlp downloads this video itself: {}", why.english()),
                 );
+                live |= why == crate::streams::Helper::Live;
                 progress.lock().unwrap().helper = Some(why);
             }
             Engined::Stopped => return Attempt::Stopped,
             Engined::Failed(error) => return failed(error, rerouted),
         }
     }
+    // A live stream's recording is left as it is by yt-dlp once the stream ends: MDM makes the
+    // MP4 of it, with a check (`finished_live`).
+    let live = live.then(|| {
+        let (args, beside) = live_args(ours);
+        if beside {
+            note(
+                progress,
+                "A live stream's recording isn't changed once it is recorded: its subtitles are saved beside it, not in it".into(),
+            );
+        }
+        LiveRun { args }
+    });
+    let ours: &[String] = live.as_ref().map_or(ours, |r| &r.args);
     let mut meter = Meter::new(expected);
     // The streams are in place: what yt-dlp says of them isn't the download's progress.
     let meter = (!by_engine).then_some(&mut meter);
@@ -2111,7 +2650,16 @@ fn attempt(
     {
         return Attempt::Blocked(e);
     }
-    let ran = match run(exe, ours, &file, progress, child, meter, recorder) {
+    let ran = match run(
+        exe,
+        ours,
+        &file,
+        progress,
+        child,
+        meter,
+        recorder,
+        live.is_some(),
+    ) {
         Ok(Some(r)) => r,
         Ok(None) if recorder.saving() => return Attempt::Save(None),
         Ok(None) => return Attempt::Stopped,
@@ -2127,6 +2675,9 @@ fn attempt(
     }
     let quality = ran.quality.clone();
     let video = match (&ran.status, ran.saved) {
+        // A live stream's recording yt-dlp said it finished (a Stop after that ended it, or it
+        // failed after the move): the file is there, whole, for MDM to make the MP4 of.
+        (_, Some(f)) if live.is_some() && f.is_file() => f,
         // `--ignore-errors` (subtitles asked) lets yt-dlp end well with no file: the file
         // itself is the proof.
         (Ok(s), Some(f)) if s.success() && f.is_file() => f,
@@ -2159,7 +2710,7 @@ fn attempt(
     };
     let refused = subtitle_failures(&ran.warnings);
     if refused.is_empty() {
-        return Attempt::Done(video, Vec::new(), quality);
+        return Attempt::Done(video, Vec::new(), quality, live.clone());
     }
     for (code, why) in &refused {
         note(
@@ -2180,7 +2731,7 @@ fn attempt(
             format!("Asking for the subtitles again in {} s", delay.as_secs()),
         );
         if !pause(delay, progress) {
-            return Attempt::Done(video, Vec::new(), quality);
+            return Attempt::Done(video, Vec::new(), quality, live.clone());
         }
         let codes: Vec<String> = refused.iter().map(|(c, _)| c.clone()).collect();
         match run(
@@ -2191,11 +2742,12 @@ fn attempt(
             child,
             None,
             recorder,
+            false,
         ) {
             Ok(Some(again)) if again.status.as_ref().is_ok_and(|s| s.success()) => {
                 still = subtitle_failures(&again.warnings);
             }
-            Ok(None) => return Attempt::Done(video, Vec::new(), quality.clone()),
+            Ok(None) => return Attempt::Done(video, Vec::new(), quality.clone(), live.clone()),
             _ => {}
         }
     }
@@ -2226,7 +2778,7 @@ fn attempt(
             }
         }
     }
-    Attempt::Done(video, problems, quality)
+    Attempt::Done(video, problems, quality, live.clone())
 }
 
 /// Move `info`'s links off servers that can't be reached (and off `dead`, the ones an earlier run
@@ -2702,6 +3254,8 @@ impl VideoJob {
         }));
         let recorder = Arc::new(Recorder {
             saving: std::sync::atomic::AtomicBool::new(false),
+            finishing: std::sync::atomic::AtomicBool::new(false),
+            live_finishing: std::sync::atomic::AtomicBool::new(false),
             ffmpeg: ffmpeg.map(Path::to_owned),
         });
         let child: Child = Arc::new(Mutex::new(None));
@@ -2738,6 +3292,7 @@ impl VideoJob {
                 });
                 if std::panic::catch_unwind(run).is_err() {
                     // Given up: nothing may go on downloading unseen (#79).
+                    recorder.set_finishing(false);
                     end(&child);
                     if let Some(b) = &by_engine {
                         b.current.cancel();
@@ -2759,11 +3314,12 @@ impl VideoJob {
         })
     }
 
-    /// Its progress. Stopped only once the engine's download has saved where it stopped: a
-    /// start again before then would find the stream still held.
+    /// Its progress. Stopped only once the engine's download has saved where it stopped, and
+    /// MDM's ffmpeg has made the MP4 it was making ([`Recorder::finishing`]): a start again
+    /// before then would find the stream still held, or its files being made.
     pub fn progress(&self) -> Progress {
         let mut p = self.progress.lock().unwrap().clone();
-        if p.state == State::Stopped && self.current.busy() {
+        if p.state == State::Stopped && (self.current.busy() || self.recorder.finishing()) {
             p.state = State::Running;
             p.speed = 0.0;
         }
@@ -2771,7 +3327,9 @@ impl VideoJob {
     }
 
     /// Stop (the partial file stays; starting again continues it). Nothing while a live
-    /// stream's recording is being saved ([`VideoJob::save`]): it ends saved.
+    /// stream's recording is being saved ([`VideoJob::save`], or once yt-dlp finished it,
+    /// [`finished_live`]): it ends saved. While MDM's ffmpeg makes an earlier recording an MP4
+    /// before a run ([`remade_before_run`]), the job stops once that is done.
     pub fn stop(&self) {
         {
             let mut p = self.progress.lock().unwrap();
@@ -2833,13 +3391,18 @@ impl VideoJob {
         self.stop();
     }
 
-    /// A live stream's download: recording (some of it in), being saved, or neither (`None`:
-    /// not a live stream, not started recording, or over).
+    /// A live stream's download: recording (some of it in), being saved (by Stop and save, or
+    /// from the moment yt-dlp said it finished it until the download is done), or neither
+    /// (`None`: not a live stream, not started recording, or over; an earlier recording made an
+    /// MP4 before a run shows as merging instead).
     pub fn live_state(&self) -> Option<LiveState> {
         let p = self.progress.lock().unwrap();
-        if p.state != State::Running {
+        // Over (done, failed), or stopped and shown so: neither.
+        let running =
+            p.state == State::Running || (p.state == State::Stopped && self.recorder.finishing());
+        if !running {
             None
-        } else if self.recorder.saving() {
+        } else if self.recorder.saving() || self.recorder.live_finishing() {
             Some(LiveState::Saving)
         } else if p.helper == Some(crate::streams::Helper::Live) && p.recorded > 0 {
             Some(LiveState::Recording)
@@ -4122,6 +4685,254 @@ mod tests {
         );
     }
 
+    /// A live stream's run: no fix-up (one `--fixup`, `never`, in place of the engine's
+    /// `force`), `-k`, nothing put into the file (subtitles asked into it written beside it,
+    /// automatic ones as they were asked), whatever the person's own config says.
+    #[test]
+    fn a_live_streams_run_leaves_its_recording_as_it_is() {
+        let ours: Vec<String> = [
+            "-f",
+            "b",
+            "-o",
+            "/v/Talk.%(ext)s",
+            "--sub-langs",
+            "en",
+            "--embed-subs",
+            "--ignore-errors",
+            "--embed-chapters",
+            "--hls-prefer-native",
+            "--fixup",
+            "force",
+        ]
+        .map(String::from)
+        .to_vec();
+        let unchanged = LIVE_UNCHANGED.map(String::from);
+        let (args, beside) = live_args(&ours);
+        assert!(beside);
+        let mut expected: Vec<String> = [
+            "-f",
+            "b",
+            "-o",
+            "/v/Talk.%(ext)s",
+            "--sub-langs",
+            "en",
+            "--write-subs",
+            "--ignore-errors",
+            "--hls-prefer-native",
+            "--fixup",
+            "never",
+            "-k",
+        ]
+        .map(String::from)
+        .to_vec();
+        expected.extend(unchanged.clone());
+        assert_eq!(args, expected);
+        let mut auto = ours.clone();
+        auto.insert(4, "--write-auto-subs".into());
+        let (args, _) = live_args(&auto);
+        assert!(!args.contains(&"--write-subs".to_owned()), "{args:?}");
+        assert!(args.ends_with(&unchanged), "{args:?}");
+        assert_eq!(args.iter().filter(|a| *a == "--fixup").count(), 1);
+        // Nothing asked into the file: nothing said of it.
+        let (args, beside) = live_args(&ours[..4]);
+        assert!(!beside);
+        assert_eq!(args[4..7], ["--fixup", "never", "-k"]);
+    }
+
+    fn recorder(ffmpeg: Option<PathBuf>) -> Recorder {
+        Recorder {
+            saving: std::sync::atomic::AtomicBool::new(false),
+            finishing: std::sync::atomic::AtomicBool::new(false),
+            live_finishing: std::sync::atomic::AtomicBool::new(false),
+            ffmpeg,
+        }
+    }
+
+    /// MPEG-TS under an MP4's name, by its content and its name only: never a `.ts`, nor
+    /// another download's or a stream's file. Before a run it is kept aside (nothing lost, the
+    /// download starts over) without MDM's ffmpeg or with one that fails, an `.m4a` too; one that
+    /// can't be kept aside stops the run, as it is. Once yt-dlp finished a recording it is the
+    /// download's `<stem>.ts`.
+    #[test]
+    fn mpeg_ts_named_as_an_mp4_is_never_taken_as_it_is() {
+        let progress = Mutex::new(Progress::default());
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let ours = template(d);
+        let recorder = recorder(None);
+        let mp4 = d.join("Talk.mp4");
+        std::fs::write(&mp4, ts(5000)).unwrap();
+        assert!(ts_in_mp4(&mp4));
+        for other in ["Talk.ts", "Talk.f96.mp4", "Talk (2).mp4"] {
+            std::fs::write(d.join(other), ts(5000)).unwrap();
+        }
+        assert!(!ts_in_mp4(&d.join("Talk.ts")));
+        // No ffmpeg: kept aside as it is.
+        assert_eq!(remade_before_run(&ours, None, &progress, &recorder), Ok(()));
+        assert!(!mp4.exists());
+        assert_eq!(
+            std::fs::read(d.join("Talk (recording 1).ts")).unwrap(),
+            ts(5000)
+        );
+        assert!(
+            log(&progress).iter().any(|t| t
+                == "The earlier recording was kept as Talk (recording 1).ts, and the download starts over"),
+            "{:?}",
+            log(&progress)
+        );
+        // An ffmpeg that can't run: the same, an `.m4a` too.
+        let missing = d.join("no-such-ffmpeg");
+        let m4a = d.join("Talk.m4a");
+        std::fs::write(&m4a, ts(6000)).unwrap();
+        assert!(ts_in_mp4(&m4a));
+        assert_eq!(
+            remade_before_run(&ours, Some(&missing), &progress, &recorder),
+            Ok(())
+        );
+        assert!(!m4a.exists());
+        assert_eq!(
+            std::fs::read(d.join("Talk (recording 2).ts")).unwrap(),
+            ts(6000)
+        );
+        for other in ["Talk.ts", "Talk.f96.mp4", "Talk (2).mp4"] {
+            assert_eq!(std::fs::read(d.join(other)).unwrap(), ts(5000), "{other}");
+        }
+        assert!(!recorder.finishing());
+        assert_eq!(progress.lock().unwrap().merging, None);
+        // Not MPEG-TS: an MP4 already.
+        std::fs::write(&mp4, b"FAKEMP4 video").unwrap();
+        assert!(!ts_in_mp4(&mp4));
+        // Once yt-dlp finished a recording (Stop and save came after): the download's
+        // `<stem>.ts` when free, else kept as it is aside.
+        std::fs::remove_file(d.join("Talk.ts")).unwrap();
+        std::fs::write(&mp4, ts(7000)).unwrap();
+        let said = finish_recording(&ours, Some(mp4.clone()), Some(&missing), &progress);
+        assert_eq!(said, Saved::Done(d.join("Talk.ts")));
+        assert_eq!(std::fs::read(d.join("Talk.ts")).unwrap(), ts(7000));
+        std::fs::write(&mp4, ts(9000)).unwrap();
+        let said = finish_recording(&ours, Some(mp4.clone()), Some(&missing), &progress);
+        assert_eq!(said, Saved::Done(d.join("Talk (recording 3).ts")));
+        assert_eq!(
+            std::fs::read(d.join("Talk (recording 3).ts")).unwrap(),
+            ts(9000)
+        );
+        assert_eq!(std::fs::read(d.join("Talk.ts")).unwrap(), ts(7000));
+        // No name left to keep it aside under (`(recording 1)` to `(recording 999)` taken):
+        // nothing starts, the error names it, and it stays as it is. Stopped: not looked at.
+        for n in 1..1000 {
+            let taken = d.join(format!("Talk (recording {n}).ts"));
+            if !taken.exists() {
+                std::fs::write(taken, b"").unwrap();
+            }
+        }
+        std::fs::write(&mp4, ts(4000)).unwrap();
+        let e = remade_before_run(&ours, Some(&missing), &progress, &recorder).unwrap_err();
+        assert!(
+            e.contains(&mp4.display().to_string()) && e.contains("couldn't be kept aside"),
+            "{e}"
+        );
+        assert_eq!(std::fs::read(&mp4).unwrap(), ts(4000));
+        assert!(!recorder.finishing());
+        progress.lock().unwrap().state = State::Stopped;
+        assert_eq!(remade_before_run(&ours, None, &progress, &recorder), Ok(()));
+        assert_eq!(std::fs::read(&mp4).unwrap(), ts(4000));
+    }
+
+    /// What `-k` kept of a live stream's run that yt-dlp finished itself: the recording an audio
+    /// extraction started from kept aside as `<stem> (recording N).ts` (never the file yt-dlp
+    /// said, a `.ts` of the download's, nor what isn't MPEG-TS); the streams a merge joined
+    /// removed only when the merged file holds them; a subtitle's original removed only beside
+    /// an SRT with something in it.
+    #[test]
+    fn what_a_live_streams_run_kept_is_kept_or_removed_with_a_check() {
+        let progress = Mutex::new(Progress::default());
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let mut args = template(d);
+        args.extend(["--convert-subs".into(), "srt".into()]);
+        let run = LiveRun { args };
+        let recorder = recorder(None);
+        // `-x`: the MP3 said, the recording it was made of kept beside.
+        let mp3 = d.join("Talk.mp3");
+        std::fs::write(&mp3, b"ID3 sound").unwrap();
+        std::fs::write(d.join("Talk.mp4"), ts(3000)).unwrap();
+        std::fs::write(d.join("Talk.ts"), ts(1000)).unwrap();
+        std::fs::write(d.join("Talk.webm"), b"not MPEG-TS").unwrap();
+        let f = finished_live(&run, mp3.clone(), Some("96 1280x720"), &recorder, &progress);
+        assert_eq!(f, mp3);
+        assert_eq!(
+            std::fs::read(d.join("Talk (recording 1).ts")).unwrap(),
+            ts(3000)
+        );
+        assert!(!d.join("Talk.mp4").exists());
+        assert_eq!(std::fs::read(d.join("Talk.ts")).unwrap(), ts(1000));
+        assert_eq!(std::fs::read(d.join("Talk.webm")).unwrap(), b"not MPEG-TS");
+        assert_eq!(std::fs::read(&mp3).unwrap(), b"ID3 sound");
+        assert_eq!(
+            log(&progress),
+            ["The recording as it was made is kept as Talk (recording 1).ts"]
+        );
+        // The file said is never taken for an original, MPEG-TS as it may be (no ffmpeg here).
+        let said = d.join("Talk.mkv");
+        std::fs::write(&said, ts(2000)).unwrap();
+        assert_eq!(
+            finished_live(&run, said.clone(), None, &recorder, &progress),
+            said
+        );
+        assert_eq!(std::fs::read(&said).unwrap(), ts(2000));
+        std::fs::remove_file(&said).unwrap();
+        // The streams a merge joined: kept when the merged file is smaller than nine tenths of
+        // them (no ffprobe), removed when it holds them.
+        let merged = d.join("Talk.mkv");
+        std::fs::write(d.join("Talk.f1.webm"), vec![1u8; 600]).unwrap();
+        std::fs::write(d.join("Talk.f2.m4a"), vec![2u8; 400]).unwrap();
+        std::fs::write(&merged, vec![0u8; 899]).unwrap();
+        finished_live(
+            &run,
+            merged.clone(),
+            Some("1+2 1280x720"),
+            &recorder,
+            &progress,
+        );
+        assert!(d.join("Talk.f1.webm").exists() && d.join("Talk.f2.m4a").exists());
+        assert!(
+            log(&progress).iter().any(|t| t
+                == "The video may not hold all of its streams, so they are kept beside it: Talk.f1.webm, Talk.f2.m4a"),
+            "{:?}",
+            log(&progress)
+        );
+        std::fs::write(&merged, vec![0u8; 900]).unwrap();
+        finished_live(
+            &run,
+            merged.clone(),
+            Some("1+2 1280x720"),
+            &recorder,
+            &progress,
+        );
+        assert!(!d.join("Talk.f1.webm").exists() && !d.join("Talk.f2.m4a").exists());
+        // Subtitles converted to SRT: the original goes only beside an SRT with something in it.
+        std::fs::write(d.join("Talk.en.vtt"), b"WEBVTT en").unwrap();
+        std::fs::write(d.join("Talk.en.srt"), b"1\n").unwrap();
+        std::fs::write(d.join("Talk.fr.vtt"), b"WEBVTT fr").unwrap();
+        std::fs::write(d.join("Talk.fr.srt"), b"").unwrap();
+        std::fs::write(d.join("Talk.de.vtt"), b"WEBVTT de").unwrap();
+        finished_live(&run, merged.clone(), None, &recorder, &progress);
+        assert!(!d.join("Talk.en.vtt").exists());
+        assert!(d.join("Talk.en.srt").exists());
+        assert_eq!(std::fs::read(d.join("Talk.fr.vtt")).unwrap(), b"WEBVTT fr");
+        assert_eq!(std::fs::read(d.join("Talk.de.vtt")).unwrap(), b"WEBVTT de");
+        // Not converted: every subtitle stays.
+        std::fs::write(d.join("Talk.en.vtt"), b"WEBVTT en").unwrap();
+        finished_live(
+            &LiveRun { args: template(d) },
+            merged,
+            None,
+            &recorder,
+            &progress,
+        );
+        assert!(d.join("Talk.en.vtt").exists());
+    }
+
     /// Whether the MP4 made of a recording holds all of it, by its size when ffprobe can't
     /// tell: nine tenths of the parts' at least. ffprobe is looked for beside ffmpeg.
     #[test]
@@ -4303,7 +5114,7 @@ mod tests {
         s.extend(["-f", "mpegts"]);
         ffmpeg_made(&ffmpeg, &s, &audio);
         let split = parts(&[&video, &audio]);
-        let joined = remuxed(&ffmpeg, &split, d, "Talk").unwrap();
+        let joined = remuxed(&ffmpeg, &split, d, "Talk", "mp4").unwrap();
         report("(c) joined", &joined);
         assert!(whole(Some(&probe), &joined, &split));
         // (d) The same, its sound cut to half: the MP4 plays to the end, its sound doesn't.

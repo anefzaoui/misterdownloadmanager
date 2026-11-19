@@ -599,6 +599,12 @@ These ship in the next version.
   record over it; a new speed limit no longer restarts a recording. Closing MDM while it records
   and the command line still don't save it
   ([#1450](https://github.com/anefzaoui/misterdownloadmanager/pull/1450))
+- ✅ A live stream that ends by itself while it records is made an MP4 by MDM with Stop and save's
+  check, never by yt-dlp in place of the recording unchecked: the recording goes only once the
+  MP4 holds all of it, else it is kept beside it (or as the download's `.ts`); an MP3, Opus or
+  FLAC of a live stream keeps the recording beside it; one left as MPEG-TS when a try failed or
+  MDM closed is made an MP4 the same way before the download starts again, else kept as
+  `<name> (recording 1).ts` and the download starts over (found while testing [#1450](https://github.com/anefzaoui/misterdownloadmanager/pull/1450))
 - ✅ Download video: a video's own file (Kwai's MP4) is offered and downloaded when its server
   doesn't say it is a video, instead of "No video this can download on that page"; the button's
   click downloads such a file at once
