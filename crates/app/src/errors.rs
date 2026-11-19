@@ -579,10 +579,7 @@ mod tests {
             size: 123_365_000,
             sent: 4_762,
         });
-        assert!(
-            short.contains("117.65 MB") && short.contains("4.65 KB"),
-            "{short}"
-        );
+        assert!(short.contains("117.65 MB") && short.contains("4.65 KB"));
         assert_eq!(
             os_text("Access is denied. (os error 5)"),
             "Access is denied"
