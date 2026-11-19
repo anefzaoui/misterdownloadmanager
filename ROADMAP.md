@@ -641,6 +641,10 @@ These ship in the next version.
   internet address for its hourly limit: the release is read from github.com's own release pages
   instead, and checked as before (signed checksum lists, checksums)
   ([#1337](https://github.com/anefzaoui/misterdownloadmanager/issues/1337))
+- ✅ Browser downloads open only the relevant dialog (Download File Info or Download video)
+  without pulling up, unhiding, or focusing the main window, and starting MDM from the browser
+  launches it in the notification area without marking an OS session login (thanks to
+  [@9M2PJU](https://github.com/9M2PJU)) ([#1333](https://github.com/anefzaoui/misterdownloadmanager/pull/1333))
 - ✅ Windows: dialogs open on the main window's monitor when the monitors have different display
   scales (a 125 % laptop and a 100 % monitor), where they opened out of sight; a window on no
   screen is brought onto one ([#1311](https://github.com/anefzaoui/misterdownloadmanager/issues/1311))
