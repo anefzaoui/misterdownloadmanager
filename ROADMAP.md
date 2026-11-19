@@ -564,6 +564,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Your own yt-dlp config file: Options → Sites Logins → Use my yt-dlp config file (off by
+  default) lets yt-dlp read it for the app's videos, most of MDM's own choices still winning; an
+  external downloader it names doesn't stop the progress
 - ✅ Videos in Google Drive shared folders: the Download video button reads the file's ID from
   the player's stream or preview dialog, and MDM downloads the file directly through its Google
   Drive segmented engine instead of failing on the folder address

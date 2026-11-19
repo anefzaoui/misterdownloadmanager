@@ -1101,6 +1101,42 @@ fn js_runtime_args(exe: &Path) -> Vec<String> {
     js_runtime_found(exe).unwrap_or_default()
 }
 
+/// Options → Sites Logins → Use my yt-dlp config file: off, the default.
+static USER_CONFIG: AtomicBool = AtomicBool::new(false);
+
+/// Let every later yt-dlp run read the person's own config file (or not, the default).
+pub fn set_user_config(on: bool) {
+    USER_CONFIG.store(on, Ordering::Relaxed);
+}
+
+/// With the person's own config file read (yt-dlp reads it before every argument), what MDM
+/// can't leave to it, placed before MDM's own arguments so those still win: yt-dlp's own
+/// downloader (an external one, aria2c, prints no progress lines, and one named for HLS skips
+/// the fix-up of what the engine joined; live HLS still goes to ffmpeg, live DASH is left out
+/// as `native` would keep it from ffmpeg), no download archive (it skips a look-up of a video
+/// once downloaded), no forced overwrites (it implies `--no-continue`, deleting the engine's
+/// streams), the default fix-ups, and no marking as watched (`--mark-watched` would mark every
+/// look-up, the quality menu's included, not only what is downloaded), and part files (yt-dlp
+/// reuses the streams the engine downloaded only with `--continue` and `--part`, so `--no-part`
+/// would fetch every one again into a doubled file). Nothing when the config isn't read
+/// (`--ignore-config`).
+fn config_args(on: bool) -> &'static [&'static str] {
+    if on {
+        &[
+            "--downloader",
+            "http,ftp,m3u8:native",
+            "--no-download-archive",
+            "--no-force-overwrites",
+            "--fixup",
+            "detect_or_warn",
+            "--no-mark-watched",
+            "--part",
+        ]
+    } else {
+        &[]
+    }
+}
+
 /// `yt-dlp` with arguments in layers: `user` extras, then `ours` (then the chosen browser's
 /// cookies when neither brought any, [`layers`]), then the fixed ones last (so nothing can
 /// switch them off), then `--` and the URL (so a URL starting with `-` is never read as an
@@ -1113,8 +1149,13 @@ pub fn ytdlp(
 ) -> Result<Command, ProcError> {
     let mut cmd = helper_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp, Some(url))?;
+    let own_config = USER_CONFIG.load(Ordering::Relaxed);
+    cmd.args(config_args(own_config));
     layers(&mut cmd, user, ours)?;
-    cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    if !own_config {
+        cmd.arg("--ignore-config");
+    }
+    cmd.args(["--no-exec", "--no-update"]);
     cmd.args(js_runtime_args(exe));
     cmd.args(cert_args(SYSTEM_CERTS.load(Ordering::Relaxed)));
     cmd.args(UTF8);
@@ -1134,8 +1175,13 @@ pub fn ytdlp_info(
 ) -> Result<Command, ProcError> {
     let mut cmd = helper_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp, None)?;
+    let own_config = USER_CONFIG.load(Ordering::Relaxed);
+    cmd.args(config_args(own_config));
     layers(&mut cmd, user, ours)?;
-    cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    if !own_config {
+        cmd.arg("--ignore-config");
+    }
+    cmd.args(["--no-exec", "--no-update"]);
     cmd.args(js_runtime_args(exe));
     cmd.args(cert_args(SYSTEM_CERTS.load(Ordering::Relaxed)));
     cmd.args(UTF8);
@@ -2415,6 +2461,24 @@ foreach ($d in $env:PATH.Split(';')) {
         let exe = Path::new("yt-dlp");
         assert!(ytdlp(exe, &[], &[], "https://x/\n--exec calc").is_err());
         assert!(ytdlp(exe, &["--format\0best".into()], &[], "https://x/").is_err());
+    }
+
+    #[test]
+    fn the_persons_config_only_when_asked() {
+        assert!(config_args(false).is_empty());
+        assert_eq!(
+            config_args(true),
+            [
+                "--downloader",
+                "http,ftp,m3u8:native",
+                "--no-download-archive",
+                "--no-force-overwrites",
+                "--fixup",
+                "detect_or_warn",
+                "--no-mark-watched",
+                "--part",
+            ]
+        );
     }
 
     #[test]

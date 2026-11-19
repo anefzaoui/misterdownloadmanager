@@ -4424,6 +4424,10 @@
 #. button in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 	Use MDM's own copy	استخدام نسخة MDM الخاصة
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	استخدام ملف إعدادات yt-dlp الخاص بي
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Use one * only	استخدم نجمة واحدة فقط
@@ -4692,6 +4696,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	يحتاج YouTube إلى وقت تشغيل JavaScript لسرد جودات الفيديو: ثبت Node.js أو Deno، ثم ابحث عنه مرة أخرى
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	يقرأ yt-dlp أيضًا ملفات الإعدادات الخاصة به (في Windows: %APPDATA%\\yt-dlp\\config.txt، وفي Linux وmacOS: ~/.config/yt-dlp/config). يبقى معظم ما يختاره MDM، أي المجلد والاسم والجودة، هو المعتمد، لكن الخيارات الموجودة فيها التي تتخطى مقاطع الفيديو أو تصفّيها تُطبَّق أيضًا.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	لا يمكن لـ yt-dlp قراءة ملفات تعريف الارتباط الخاصة بـ {browser} أثناء فتح {browser}. أغلق {browser} وابحث عن الصفحة مرة أخرى، أو اختر Firefox في الخيارات ← تسجيلات دخول المواقع.
