@@ -1986,7 +1986,12 @@ fn mb(b: u64) -> String {
 /// A throwaway torrent session for the command line (its own state folder, nothing kept).
 async fn torrents() -> anyhow::Result<(mdm_torrent::Torrents, tempfile::TempDir)> {
     let dir = tempfile::tempdir()?;
-    let t = mdm_torrent::Torrents::start(mdm_torrent::Config::new(dir.path().to_owned())).await?;
+    let t = mdm_torrent::Torrents::start(mdm_torrent::Config {
+        // Its own folder, nothing of the person's is there: the engine may open what it makes.
+        require_authorization: false,
+        ..mdm_torrent::Config::new(dir.path().to_owned())
+    })
+    .await?;
     Ok((t, dir))
 }
 
@@ -2044,11 +2049,11 @@ mod tests {
         let merged = mdm_tools::resolve::choices(&v, true);
         assert_eq!(
             pick_quality(&v, &merged, None, true, true).unwrap(),
-            "100022+30216/bv*[height=288]+ba/b[height=288]"
+            "100022+30216/bv*[height=288][vcodec^=av01]+ba/bv*[height=288]+ba/b[height=288]"
         );
         assert_eq!(
             pick_quality(&v, &merged, Some(Quality::Height(4320)), true, true).unwrap(),
-            "100022+30216/bv*[height=288]+ba/b[height=288]"
+            "100022+30216/bv*[height=288][vcodec^=av01]+ba/bv*[height=288]+ba/b[height=288]"
         );
         let apart = mdm_tools::resolve::choices(&v, false);
         let e = pick_quality(&v, &apart, None, false, true).unwrap_err();
@@ -2085,7 +2090,7 @@ mod tests {
         let e = pick_quality(&av1, &offered, compatible, true, true).unwrap_err();
         let n = e.downcast_ref::<NoFormat>().expect("the formats said");
         assert!(n.why.contains("no H.264 video with AAC sound"), "{}", n.why);
-        assert!(n.to_string().contains("1080p · AV1"), "{n}");
+        assert!(n.to_string().contains("1080p MP4 · AV1"), "{n}");
     }
 
     #[test]

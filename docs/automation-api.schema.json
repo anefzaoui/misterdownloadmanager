@@ -421,6 +421,11 @@
             "null"
           ]
         },
+        "hidden": {
+          "default": false,
+          "description": "`/fromhost` (beyond IDM, #1333): started by the browser native messaging host:\nstarts hidden without marking an OS session login.",
+          "type": "boolean"
+        },
         "ids": {
           "default": [],
           "items": {

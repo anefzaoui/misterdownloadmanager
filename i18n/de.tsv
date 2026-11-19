@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Eine unbekannte Website möchte {n} Link an den Link-Grabber senden.|Eine unbekannte Website möchte {n} Links an den Link-Grabber senden.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	Und {n} weitere Datei.|Und {n} weitere Dateien.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -284,6 +289,10 @@
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
 	A rule adds the new articles whose titles it matches, as they come.	Eine Regel fügt neue Artikel, deren Titel sie abgleicht, hinzu, sobald sie erscheinen.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM hat diese Dateien nicht erstellt. Beim Starten des Torrents können sie in ihrer Größe geändert und ihr Inhalt ersetzt werden, auch bei nicht angehakten Dateien, die sich Datenblöcke teilen. Sollen sie für diesen Torrent verwendet werden?
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -292,6 +301,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Ein Einzeldatei-Torrent behält seinen Namen
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	Der Ordner einer Torrent-Datei verweist außerhalb ihres Zielordners
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -578,6 +591,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Anderer DNS...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	Ein anderer Download beansprucht bereits das Ziel dieses Torrents
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	Ein anderer Download beansprucht bereits {file}. Wählen Sie ein anderes Ziel.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
@@ -4851,6 +4872,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	Die Verbindung ging beim Empfangen von Daten verloren.
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	Das Ziel ändert sich ständig. Beenden Sie die Änderungen an seinen Dateien und starten Sie den Torrent erneut.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4949,6 +4974,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	Die Dateien konnten nicht ausgewählt werden: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	Die Dateien wurden behalten, weil für diesen älteren Download kein Eigentumsnachweis vorliegt
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4983,6 +5012,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	Der Netzwerkadapter {adapter} ist nicht verbunden.
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	Der Ausgabeordner ist ungültig
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -5013,6 +5046,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	Der Bericht befindet sich in Ihrer Zwischenablage: Fügen Sie ihn in einen Kommentar zum Problem ein.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	Die gespeicherte .torrent-Datei passt nicht zu diesem Download
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	Die gespeicherte .torrent-Datei fehlt oder ist nicht lesbar. Fügen Sie den Torrent erneut hinzu, um seine Metadaten wiederherzustellen; die vorhandenen Dateien bleiben erhalten.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5044,6 +5085,11 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	Der Server hat einen unerwarteten Teil der Datei gesendet ({detail}).
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	Der Server hat nur {sent} gesendet, obwohl die Browserdatei {size} groß ist (ein Link, der nur einmal oder nur im Browser funktioniert): Alt+Klick auf den Link, um ihn vom Browser herunterladen zu lassen
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
@@ -5128,6 +5174,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	Der Torrent ist nicht mehr vorhanden
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	Der Eigentumsnachweis des Torrents enthält einen unsicheren Pfad
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	Der Eigentumsnachweis des Torrents passt nicht zu seiner Dateiliste
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	Der Eigentumsnachweis des Torrents ist ungültig
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	Der Torrent wurde nicht gestartet, weil die Erlaubnis zur Verwendung vorhandener Dateien abgelehnt wurde.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5302,9 +5365,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Dieser Torrent ist bereits in der Downloadliste
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	Dieser Torrent ist beschäftigt. Warten Sie, bis der aktuelle Vorgang beendet ist, bevor Sie ihn erneut hinzufügen.
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	Dieser Torrent ist nicht in der Liste
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	Dieser Torrent braucht die Erlaubnis, {file} zu verwenden, bevor er starten kann.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	Dieser Torrent teilt seinen Zielordner mit anderen Dateien
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5635,6 +5710,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	Automatisches Konfigurationsskript verwenden
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	Vorhandene Torrent-Dateien verwenden
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	FTP im PASV-Modus verwenden
@@ -6138,6 +6216,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: Die Datei stimmt mit ihrer Prüfsumme überein ({algorithm})
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: Diese Dateien sind auf dem Datenträger geblieben, weil MDM sie nicht erstellt hat oder ein anderer Download sie verwendet:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -7670,3 +7752,9 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/s
+#. Add torrent: outer folder option
+#, machine
+	Create a folder for this torrent	Ordner für diesen Torrent erstellen
+#. Add torrent: outer folder option
+#, machine
+	This option is available for direct BitTorrent downloads	Diese Option ist für direkte BitTorrent-Downloads verfügbar

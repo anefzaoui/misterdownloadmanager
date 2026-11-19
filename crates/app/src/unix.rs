@@ -9,6 +9,114 @@
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 
+/// Inode and birth time: a freed inode is soon given to another file, so the inode alone can
+/// name a file the person saved later. The device is left out on purpose: its number depends on
+/// the order disks were plugged in and changes across a reboot or a replug, which would make
+/// MDM's own files look like strangers. A filesystem that keeps no birth time gives no
+/// identity, and such files are never deleted by MDM; a start asks before writing to them.
+pub fn torrent_file_identity(file: &std::fs::File) -> std::io::Result<[u64; 5]> {
+    use std::os::unix::fs::MetadataExt;
+    let metadata = file.metadata()?;
+    let born = metadata
+        .created()?
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_err(std::io::Error::other)?;
+    if born.is_zero() {
+        return Err(std::io::ErrorKind::Unsupported.into());
+    }
+    Ok([
+        0,
+        metadata.ino(),
+        0,
+        born.as_secs(),
+        u64::from(born.subsec_nanos()),
+    ])
+}
+
+/// The identity of the plain file or folder at `path` (the folders MDM made for a torrent are
+/// recorded too). Anything else there (a pipe, a device, a link) has none and is not opened:
+/// opening a FIFO with nobody writing to it waits for ever, and the torrent would stay busy
+/// until MDM was restarted.
+pub fn torrent_file_identity_at(path: &Path) -> std::io::Result<[u64; 5]> {
+    use std::os::unix::fs::OpenOptionsExt;
+    let kind = std::fs::symlink_metadata(path)?.file_type();
+    if !kind.is_file() && !kind.is_dir() {
+        return Err(std::io::ErrorKind::InvalidInput.into());
+    }
+    // Not through a link or a pipe that took the name since the check above.
+    let file = std::fs::OpenOptions::new()
+        .read(true)
+        .custom_flags(libc::O_NOFOLLOW | libc::O_NONBLOCK)
+        .open(path)?;
+    let kind = file.metadata()?.file_type();
+    if !kind.is_file() && !kind.is_dir() {
+        return Err(std::io::ErrorKind::InvalidInput.into());
+    }
+    torrent_file_identity(&file)
+}
+
+/// Open (or, with `create`, make with `create_new`) the file at `path` for the torrent engine
+/// without following a link at its end (`O_NOFOLLOW`), and without waiting on a pipe
+/// (`O_NONBLOCK`). What was opened must be a plain file.
+pub fn open_torrent_file(path: &Path, create: bool) -> std::io::Result<std::fs::File> {
+    use std::os::unix::fs::OpenOptionsExt;
+    let mut options = std::fs::OpenOptions::new();
+    options
+        .read(true)
+        .write(true)
+        .custom_flags(libc::O_NOFOLLOW | libc::O_NONBLOCK);
+    if create {
+        options.create_new(true);
+    }
+    let file = options.open(path)?;
+    if !file.metadata()?.file_type().is_file() {
+        return Err(std::io::ErrorKind::InvalidInput.into());
+    }
+    Ok(file)
+}
+
+/// Where the opened object really is, links resolved: `/proc/self/fd` on Linux, `F_GETPATH` on
+/// macOS. A system that can't say gives `Unsupported`.
+#[allow(unsafe_code)]
+pub fn torrent_file_path(file: &std::fs::File) -> std::io::Result<PathBuf> {
+    #[cfg(target_os = "linux")]
+    {
+        use std::os::fd::AsRawFd;
+        std::fs::read_link(format!("/proc/self/fd/{}", file.as_raw_fd()))
+    }
+    #[cfg(target_os = "macos")]
+    {
+        use std::os::{fd::AsRawFd, unix::ffi::OsStringExt};
+        let mut buffer = vec![0u8; libc::PATH_MAX as usize];
+        // SAFETY: F_GETPATH fills the buffer, which is PATH_MAX bytes, with a NUL-ended path.
+        let r = unsafe { libc::fcntl(file.as_raw_fd(), libc::F_GETPATH, buffer.as_mut_ptr()) };
+        if r == -1 {
+            return Err(std::io::Error::last_os_error());
+        }
+        let end = buffer.iter().position(|b| *b == 0).unwrap_or(buffer.len());
+        buffer.truncate(end);
+        Ok(PathBuf::from(std::ffi::OsString::from_vec(buffer)))
+    }
+    #[cfg(not(any(target_os = "linux", target_os = "macos")))]
+    {
+        let _ = file;
+        Err(std::io::ErrorKind::Unsupported.into())
+    }
+}
+
+/// Delete `path` when it is still the object whose identity is `expected`. POSIX can't delete
+/// through a handle: the identity is checked, then the file is removed by name, so a rename in
+/// that gap by another program can still make this remove the wrong file. (Windows deletes
+/// through the verified handle.)
+pub fn remove_owned_torrent_file(path: &Path, expected: [u64; 5]) -> std::io::Result<bool> {
+    // Without following a link or waiting on a pipe: the identity read of the path does both.
+    if torrent_file_identity_at(path)? != expected {
+        return Ok(false);
+    }
+    std::fs::remove_file(path)?;
+    Ok(true)
+}
+
 /// The program to start again later: the AppImage file itself when running from one (its
 /// programs sit in a temporary mount), else this executable.
 pub fn program() -> Option<PathBuf> {

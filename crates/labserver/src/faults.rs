@@ -54,6 +54,14 @@ pub struct Faults {
     /// (`html`'s, with `html_type` and `html_cd`): a link that leads to a waiting page once
     /// the download is resumed (#701).
     pub html_after: Option<u64>,
+    /// With `html` or `html_after`: what comes instead of the waiting page (#1460): `challenge`
+    /// (a bot check's script page, `<html><script>…`, as text/html, a one-time link's host's
+    /// answer to a second request), `json` (a JSON error, as `application/json`) or `text` (a
+    /// line of text, as `text/plain`); `html_type` still sets the type.
+    pub html_body: Option<String>,
+    /// With `html` or `html_after`: the page without a `Content-Length`, chunked (#1460).
+    #[serde(deserialize_with = "flag_opt")]
+    pub html_chunked: Option<bool>,
     /// ETag / Last-Modified change every N requests (resume validation).
     pub etag_change_every: Option<u64>,
     /// ETag style: `weak` (W/"…"), `per-request` (a new strong ETag on every answer, same file,
@@ -137,6 +145,8 @@ impl Faults {
             html_type: over.html_type.clone().or(self.html_type.clone()),
             html_cd: over.html_cd.or(self.html_cd),
             html_after: over.html_after.or(self.html_after),
+            html_body: over.html_body.clone().or(self.html_body.clone()),
+            html_chunked: over.html_chunked.or(self.html_chunked),
             etag_change_every: over.etag_change_every.or(self.etag_change_every),
             etag: over.etag.clone().or(self.etag.clone()),
             node: over.node.or(self.node),
@@ -229,6 +239,9 @@ mod tests {
         )
         .unwrap();
         let page = Faults::parse("html_type=none&html_cd=1&html_after=2").unwrap();
+        let stub = Faults::parse("html_body=json&html_chunked=1").unwrap();
+        assert_eq!(stub.html_body.as_deref(), Some("json"));
+        assert_eq!(stub.html_chunked, Some(true));
         assert_eq!(page.html_type.as_deref(), Some("none"));
         assert_eq!(page.html_cd, Some(true));
         assert_eq!(page.html_after, Some(2));

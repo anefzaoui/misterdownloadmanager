@@ -714,11 +714,12 @@
     return String(c.label ?? "").slice(0, 200);
   }
 
-  // What else the menu says of a quality: its file type, its codec, its frame rate and its
-  // range (#755: "VP9 · 60 fps · HDR"), its sound's bitrate. The type goes without saying when
-  // it is MP4 and the codec is said (every merged video is an MP4). An older app's choice (no
-  // height) says it all in its label: nothing more.
-  function qualityMeta(c, t) {
+  // What else the menu says of a quality: the file it makes, its picture's codec, its frame rate
+  // and its range (#755, #1465: "MP4 · VP9 · 60 fps · HDR", as the app's window says it), its
+  // sound's bitrate. Both the type and the codec: every merged video is an MP4, whatever its
+  // picture. An older app's choice (no height) says it all in its label: nothing more. `brief`:
+  // the type and the codec only.
+  function qualityMeta(c, t, brief = false) {
     if (!c || typeof c !== "object") return "";
     // The sound's rows say what they are in their label; their bitrate when the app says it.
     // (fps, kbps, codecs and HDR are the same in every language.)
@@ -730,10 +731,19 @@
     const word = (x) => (typeof x === "string" ? x.trim().slice(0, 24) : "");
     const codec = word(c.codec);
     const ext = String(c.ext || "").toUpperCase();
-    const parts = [codec && ext === "MP4" ? "" : ext, codec];
-    if (Number(c.fps) > 0) parts.push(`${Math.round(c.fps)} fps`);
-    parts.push(word(c.range));
+    const parts = [ext, codec];
+    if (!brief && Number(c.fps) > 0) parts.push(`${Math.round(c.fps)} fps`);
+    if (!brief) parts.push(word(c.range));
     return parts.filter(Boolean).join(" · ");
+  }
+
+  // A quality's whole name, as the app's window says it (#1465): "1080p MP4 · AV1 · 60 fps";
+  // `brief`, its name, type and codec ("1080p MP4 · AV1"); the sound's, a type's or an older
+  // app's, its short name.
+  function qualityWords(c, t, brief = false) {
+    const name = qualityName(c, t);
+    if (!c || !c.height || c.audio === true) return name;
+    return [name, qualityMeta(c, t, brief)].filter(Boolean).join(" ");
   }
 
   // The quality one click downloads: the app's first (best) video choice, else its first; the
@@ -753,12 +763,12 @@
     return text ? { text, hd: (Number(c.height) || 0) >= 720 } : null;
   }
 
-  // The hover tip's first line: exactly what one click downloads ("Download 1080p MP4 · 412 MB").
+  // The hover tip's first line: exactly what one click downloads ("Download 1080p MP4 · AV1 ·
+  // 60 fps · 412 MB").
   function tipFor(look, t, lang) {
     const c = bestOf(look);
     if (!c) return look && look.state === "pending" ? t("video_tip_best") : t("video_download");
-    const name = qualityName(c, t);
-    const what = c.height || c.file ? [name, String(c.ext || "").toUpperCase()].filter(Boolean).join(" ") : name;
+    const what = qualityWords(c, t);
     const size = choiceSize(c, lang);
     return t("video_tip", size ? `${what} · ${size}` : what);
   }
@@ -2073,7 +2083,7 @@ button:focus-visible { outline: none; }
     return s;
   };
 
-  // A quality's words on its line: "1080p", "MP4 · 60 fps"; the sound's "MP3", "320 kbps", and
+  // A quality's words on its line: "1080p", "MP4 · AV1 · 60 fps"; the sound's "MP3", "320 kbps", and
   // the sound as the site sends it "128 kbps · original" (just "original" when its rate isn't said).
   function lineWords(c, t) {
     if (c && c.audio === true) {
@@ -2083,7 +2093,7 @@ button:focus-visible { outline: none; }
     return { q: qualityName(c, t), f: qualityMeta(c, t) };
   }
 
-  // The first line: what one click downloads ("Download best · 1080p MP4 · 60 fps · 412 MB"),
+  // The first line: what one click downloads ("Download best · 1080p MP4 · AV1 · 412 MB"),
   // chosen as the list opens.
   function topRow(c, { choice, file }) {
     const b = document.createElement("button");
@@ -2094,8 +2104,10 @@ button:focus-visible { outline: none; }
     else b.dataset.row = file ? "file" : "best";
     const mi = span("mi", "");
     mi.append(arrowIcon.cloneNode(true));
-    const name = c ? [qualityName(c, t), c.height || c.file ? String(c.ext || "").toUpperCase() : ""].filter(Boolean).join(" ") : "";
-    const what = [name, c && c.fps ? `${Math.round(c.fps)} fps` : ""].filter(Boolean).join(" · ");
+    // The name, type and codec (its frame rate is on its line below, #1465); all its words in its
+    // tip, as a long language's "Download best" leaves little room.
+    const what = c ? qualityWords(c, t, true) : "";
+    if (c) b.title = qualityWords(c, t);
     b.append(mi, span("lead", t("video_download_best")), span("f", what), span("z", c ? choiceSize(c, lang) : ""));
     return b;
   }

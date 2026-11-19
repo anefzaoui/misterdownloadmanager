@@ -566,6 +566,15 @@ These ship in the next version.
 
 - ✅ The browser extension remembers paired servers and switches between them and this computer
   with a click without re-pairing (thanks to [@kngkatak](https://github.com/kngkatak))
+- ✅ Video qualities say the file and the codec that downloads (`1080p MP4 · AV1 · 60 fps`): in
+  the Download video window, the menu over a video and `video-info`; "MP4" alone read as H.264.
+  A line whose very stream is gone takes the nearest of its codec first
+  ([#1465](https://github.com/anefzaoui/misterdownloadmanager/issues/1465))
+- ✅ A download the browser handed over is never called complete with an answer no larger than a
+  web page where the browser's file was larger than any (a JSON or text error, an empty answer):
+  it stops before anything is saved, says both sizes and suggests Alt+click; where the browser's
+  own download ended is asked once first
+  ([#1460](https://github.com/anefzaoui/misterdownloadmanager/issues/1460))
 - ✅ A live stream that is recording is saved when it is stopped: the progress window says
   **Recording...** with **Downloaded** and **Transfer rate** following the recording's size, its
   pause button reads **Stop and save**, and Stop, Stop All, a queue's stop and the phone page's
@@ -638,6 +647,10 @@ These ship in the next version.
   internet address for its hourly limit: the release is read from github.com's own release pages
   instead, and checked as before (signed checksum lists, checksums)
   ([#1337](https://github.com/anefzaoui/misterdownloadmanager/issues/1337))
+- ✅ Browser downloads open only the relevant dialog (Download File Info or Download video)
+  without pulling up, unhiding, or focusing the main window, and starting MDM from the browser
+  launches it in the notification area without marking an OS session login (thanks to
+  [@9M2PJU](https://github.com/9M2PJU)) ([#1333](https://github.com/anefzaoui/misterdownloadmanager/pull/1333))
 - ✅ Windows: dialogs open on the main window's monitor when the monitors have different display
   scales (a 125 % laptop and a 100 % monitor), where they opened out of sight; a window on no
   screen is brought onto one ([#1311](https://github.com/anefzaoui/misterdownloadmanager/issues/1311))
@@ -1605,6 +1618,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 **Add torrent**: choose whether a multi-file torrent gets an outer folder, with shared-destination ownership and deletion safeguards ([discussion #965](https://github.com/anefzaoui/misterdownloadmanager/discussions/965), [PR #1121](https://github.com/anefzaoui/misterdownloadmanager/pull/1121)): in review
 - 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from

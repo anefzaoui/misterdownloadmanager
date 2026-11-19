@@ -22,6 +22,7 @@ use librqbit::{
     ListenerOptions, Session, SessionOptions, SessionPersistenceConfig, TorrentStatsState,
 };
 
+pub mod authorized_storage;
 pub mod blocklist;
 mod names;
 pub mod rename_plugin;
@@ -347,7 +348,13 @@ impl Meta {
     /// Where its files go when saved in `dir`: a torrent of several files gets its own folder
     /// (named after it), a single file goes straight in.
     pub fn folder_in(&self, dir: &Path) -> PathBuf {
-        if self.files.iter().filter(|f| !f.padding).count() > 1 {
+        self.folder_in_with_subfolder(dir, true)
+    }
+
+    /// Where files go with the chosen outer-folder policy. Internal paths are kept;
+    /// choosing files does not turn a multi-file torrent into a single-file torrent.
+    pub fn folder_in_with_subfolder(&self, dir: &Path, create_subfolder: bool) -> PathBuf {
+        if create_subfolder && self.files.iter().filter(|f| !f.padding).count() > 1 {
             let name: String = self
                 .name
                 .chars()
@@ -374,7 +381,13 @@ impl Meta {
     /// (`folder_in`). Unticked ones count too: librqbit opens every file of the torrent, and
     /// writes into an unticked one the parts of a piece it shares with a ticked one.
     pub fn existing_in(&self, dir: &Path) -> Vec<PathBuf> {
-        let base = self.folder_in(dir);
+        self.existing_in_with_subfolder(dir, true)
+    }
+
+    /// Existing files at the same layout used for preview and the session's output.
+    /// Includes unselected files: pieces shared with selected files may write there.
+    pub fn existing_in_with_subfolder(&self, dir: &Path, create_subfolder: bool) -> Vec<PathBuf> {
+        let base = self.folder_in_with_subfolder(dir, create_subfolder);
         self.files
             .iter()
             .filter(|f| !f.padding)
@@ -442,6 +455,8 @@ pub struct Swarm {
 /// How the session runs (#40: each of these is the person's to choose, Torrent settings).
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Config {
+    /// App storage must use ownership-checked handles, including restored sessions.
+    pub require_authorization: bool,
     /// Where librqbit keeps its resume data and DHT nodes (in our data folder, portable-aware).
     pub state_dir: PathBuf,
     /// Accept connections from peers (better speed; Windows may ask about the firewall once).
@@ -506,6 +521,9 @@ impl Config {
     /// Everything on, as BitTorrent clients usually are; no proxy, no blocklist.
     pub fn new(state_dir: PathBuf) -> Config {
         Config {
+            // Storage opens only the files MDM hands over; a session that has no grant to give
+            // (the command line's throwaway one, the examples) turns this off itself.
+            require_authorization: true,
             state_dir,
             listen: true,
             upnp: true,
@@ -854,6 +872,7 @@ impl Torrents {
             fastresume: true,
             default_storage_factory: Some(rename_plugin::storage_factory(
                 cfg.state_dir.join("session"),
+                cfg.require_authorization,
             )),
             persistence: Some(SessionPersistenceConfig::Json {
                 folder: Some(cfg.state_dir.join("session")),
@@ -1720,6 +1739,7 @@ mod tests {
             dht: true,
             dht_bootstrap: Some(vec![dht.addr.to_string()]),
             bind: Some(Bind::Address(bound)),
+            require_authorization: false,
             ..Config::new(tmp.path().join("s2"))
         })
         .await
@@ -1812,6 +1832,7 @@ mod tests {
             dht: false,
             proxy: Some(format!("socks5://{}", proxy.addr)),
             bind: Some(Bind::Address(bound)),
+            require_authorization: false,
             ..Config::new(tmp.path().join("s"))
         })
         .await
@@ -1860,6 +1881,7 @@ mod tests {
                 dht: dht_on,
                 dht_bootstrap: Some(vec![dht.addr.to_string()]),
                 bind: Some(Bind::Address(gone)),
+                require_authorization: false,
                 ..Config::new(tmp.path().join(format!("s{n}")))
             })
             .await;
@@ -1904,8 +1926,400 @@ mod tests {
         Config {
             dht: false,
             offline: true,
+            require_authorization: false,
             ..Config::new(state.to_owned())
         }
+    }
+
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn authorized_storage_refuses_unticked_foreign_files_before_resizing_anything() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        let output = tmp.path().join("output");
+        std::fs::create_dir_all(&source).unwrap();
+        std::fs::create_dir_all(&output).unwrap();
+        std::fs::write(source.join("README.txt"), b"torrent README").unwrap();
+        std::fs::write(source.join("selected.bin"), b"torrent payload").unwrap();
+        let bytes = make_torrent(&source).await;
+        let foreign = output.join("README.txt");
+        let user_data = b"the person's own README must keep every byte";
+        std::fs::write(&foreign, user_data).unwrap();
+        let selected = output.join("selected.bin");
+        std::fs::write(
+            &selected,
+            b"authorized but untouched until every path is checked",
+        )
+        .unwrap();
+        let mut config = offline(&tmp.path().join("state"));
+        config.require_authorization = true;
+        let session = config.state_dir.join("session");
+        let t = Torrents::start(config).await.unwrap();
+        let meta = t
+            .metadata(&Source::File(bytes.clone()), Duration::from_secs(5), None)
+            .await
+            .unwrap();
+        let index = meta
+            .files
+            .iter()
+            .position(|f| f.path == Path::new("selected.bin"))
+            .unwrap();
+        authorized_storage::authorize(
+            &session,
+            &meta.info_hash,
+            &output,
+            vec![authorized_storage::PreparedFile {
+                index,
+                path: selected.clone(),
+                file: std::fs::OpenOptions::new()
+                    .read(true)
+                    .write(true)
+                    .open(&selected)
+                    .unwrap(),
+            }],
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        if let Ok(hash) = t
+            .add(&bytes, &output, Some(vec![index]), Vec::new(), false)
+            .await
+        {
+            let until = std::time::Instant::now() + Duration::from_secs(10);
+            while t.stats(&hash).unwrap().phase != Phase::Error {
+                assert!(
+                    std::time::Instant::now() < until,
+                    "unauthorized storage was not refused"
+                );
+                tokio::time::sleep(Duration::from_millis(30)).await;
+            }
+        }
+        t.stop().await;
+        assert_eq!(std::fs::read(foreign).unwrap(), user_data);
+        assert_eq!(
+            std::fs::read(selected).unwrap(),
+            b"authorized but untouched until every path is checked"
+        );
+        authorized_storage::forget(&session, &meta.info_hash);
+    }
+
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn authorized_storage_writes_to_the_verified_handle_after_a_name_replacement() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        let output = tmp.path().join("output");
+        std::fs::create_dir_all(&source).unwrap();
+        std::fs::create_dir_all(&output).unwrap();
+        let data: Vec<u8> = (0..200_000).map(|n| (n % 241) as u8).collect();
+        std::fs::write(source.join("cover.jpg"), &data).unwrap();
+        let bytes = make_torrent(&source).await;
+        let seed = Torrents::start(offline(&tmp.path().join("seed")))
+            .await
+            .unwrap();
+        let hash = seed
+            .add(&bytes, &source, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let until = std::time::Instant::now() + Duration::from_secs(15);
+        while seed.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < until);
+            tokio::time::sleep(Duration::from_millis(30)).await;
+        }
+        let path = output.join("cover.jpg");
+        std::fs::write(&path, b"not the torrent contents yet").unwrap();
+        let file = std::fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open(&path)
+            .unwrap();
+        let retained = output.join("original-owned-object");
+        std::fs::rename(&path, &retained).unwrap();
+        let user_data = b"a different file that took the original name";
+        std::fs::write(&path, user_data).unwrap();
+        let mut config = offline(&tmp.path().join("leecher"));
+        config.require_authorization = true;
+        let session = config.state_dir.join("session");
+        authorized_storage::authorize(
+            &session,
+            &hash,
+            &output,
+            vec![authorized_storage::PreparedFile {
+                index: 0,
+                path: path.clone(),
+                file,
+            }],
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let t = Torrents::start(config).await.unwrap();
+        t.add(
+            &bytes,
+            &output,
+            None,
+            vec![seed.listen_addr().unwrap()],
+            false,
+        )
+        .await
+        .unwrap();
+        let until = std::time::Instant::now() + Duration::from_secs(15);
+        while t.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(
+                std::time::Instant::now() < until,
+                "authorized transfer did not finish"
+            );
+            assert_ne!(t.stats(&hash).unwrap().phase, Phase::Error);
+            tokio::time::sleep(Duration::from_millis(30)).await;
+        }
+        t.stop().await;
+        seed.stop().await;
+        assert_eq!(std::fs::read(path).unwrap(), user_data);
+        assert_eq!(std::fs::read(retained).unwrap(), data);
+        authorized_storage::forget(&session, &hash);
+    }
+
+    /// The session restore at start opens every saved torrent before the app has said anything
+    /// about it. With authorization required, that open is refused: a file the person put in a
+    /// stopped torrent's place while MDM was closed is not cut or filled.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn restore_at_start_never_touches_a_file_it_was_not_given() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        let output = tmp.path().join("output");
+        std::fs::create_dir_all(&source).unwrap();
+        std::fs::create_dir_all(&output).unwrap();
+        std::fs::write(source.join("README.txt"), vec![7u8; 40_000]).unwrap();
+        std::fs::write(source.join("b.bin"), vec![9u8; 40_000]).unwrap();
+        let bytes = make_torrent(&source).await;
+        let state = tmp.path().join("state");
+        // A session that knows the torrent, stopped.
+        let first = Torrents::start(offline(&state)).await.unwrap();
+        let hash = first
+            .add(&bytes, &output, None, Vec::new(), true)
+            .await
+            .unwrap();
+        first.stop().await;
+        // The person's own file takes the place of one of its files while MDM is closed.
+        let theirs = b"my own notes, shorter than the torrent's file";
+        std::fs::write(output.join("README.txt"), theirs).unwrap();
+        let mut config = offline(&state);
+        config.require_authorization = true;
+        let restored = Torrents::start(config).await.unwrap();
+        tokio::time::sleep(Duration::from_secs(3)).await;
+        assert!(
+            std::fs::read(output.join("README.txt")).unwrap() == theirs,
+            "the person's file was changed"
+        );
+        println!(
+            "restored: has={} stats={:?}",
+            restored.has(&hash),
+            restored.stats(&hash).map(|s| s.phase)
+        );
+        restored.stop().await;
+        assert!(
+            std::fs::read(output.join("README.txt")).unwrap() == theirs,
+            "the person's file was changed"
+        );
+    }
+
+    /// Recheck or a file choice of a torrent that is not in the session adds it, and adding
+    /// opens every file at its path and sets its length. An add the app forgot to prepare (no
+    /// grant) must not touch the person's file: the guard is in the storage, not in each caller.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn an_add_without_a_grant_never_touches_a_file_at_its_path() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        let output = tmp.path().join("output");
+        std::fs::create_dir_all(&source).unwrap();
+        std::fs::create_dir_all(&output).unwrap();
+        std::fs::write(source.join("README.txt"), vec![7u8; 40_000]).unwrap();
+        std::fs::write(source.join("b.bin"), vec![9u8; 40_000]).unwrap();
+        let bytes = make_torrent(&source).await;
+        let theirs = b"my own notes".to_vec();
+        std::fs::write(output.join("README.txt"), &theirs).unwrap();
+        let mut config = offline(&tmp.path().join("state"));
+        config.require_authorization = true;
+        let t = Torrents::start(config).await.unwrap();
+        for (selected, paused) in [(None, true), (Some(vec![1usize]), false)] {
+            let _ = t.add(&bytes, &output, selected, Vec::new(), paused).await;
+            tokio::time::sleep(Duration::from_secs(1)).await;
+            assert!(
+                std::fs::read(output.join("README.txt")).unwrap() == theirs,
+                "the person's file was changed"
+            );
+            assert!(
+                !output.join("b.bin").exists(),
+                "the engine made a file nobody recorded"
+            );
+        }
+        t.stop().await;
+    }
+
+    /// A re-add (Recheck of a torrent in the session, a file choice, a tracker change) opens the
+    /// storage again: it asks the grant again, and a file swapped meanwhile is refused.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_readd_asks_again_and_a_file_swapped_meanwhile_is_left_alone() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        let output = tmp.path().join("output");
+        std::fs::create_dir_all(&source).unwrap();
+        std::fs::create_dir_all(&output).unwrap();
+        std::fs::write(source.join("README.txt"), vec![7u8; 40_000]).unwrap();
+        std::fs::write(source.join("b.bin"), vec![9u8; 40_000]).unwrap();
+        let bytes = make_torrent(&source).await;
+        let mut config = offline(&tmp.path().join("state"));
+        config.require_authorization = true;
+        let session = config.state_dir.join("session");
+        let t = Torrents::start(config).await.unwrap();
+        let meta = t
+            .metadata(&Source::File(bytes.clone()), Duration::from_secs(5), None)
+            .await
+            .unwrap();
+        // The app's own files, made empty and handed over.
+        let handles: Vec<_> = meta
+            .files
+            .iter()
+            .enumerate()
+            .map(|(index, f)| {
+                let path = output.join(&f.path);
+                authorized_storage::PreparedFile {
+                    index,
+                    file: std::fs::OpenOptions::new()
+                        .read(true)
+                        .write(true)
+                        .create_new(true)
+                        .open(&path)
+                        .unwrap(),
+                    path,
+                }
+            })
+            .collect();
+        // Every later open asks again; the app answers by checking the files, here: refusing.
+        authorized_storage::authorize(
+            &session,
+            &meta.info_hash,
+            &output,
+            handles,
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let hash = t
+            .add(&bytes, &output, None, Vec::new(), true)
+            .await
+            .unwrap();
+        // The person swaps one of them for their own while it sits in the session.
+        let readme = output.join("README.txt");
+        std::fs::rename(&readme, tmp.path().join("original-object")).unwrap();
+        let theirs = b"my own notes".to_vec();
+        std::fs::write(&readme, &theirs).unwrap();
+        let _ = t.readd(&hash, &bytes, true).await;
+        tokio::time::sleep(Duration::from_secs(1)).await;
+        assert!(
+            std::fs::read(&readme).unwrap() == theirs,
+            "the person's file was changed"
+        );
+        t.stop().await;
+        authorized_storage::forget(&session, &meta.info_hash);
+    }
+
+    /// A finished torrent is not restored when MDM starts (the engine opens only what the app
+    /// has checked), so the app checks it and adds it again: it is back in the session, finished
+    /// from its files as they are, none of them changed.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_finished_torrent_is_shared_again_after_a_restart_once_it_is_checked() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        let output = tmp.path().join("output");
+        std::fs::create_dir_all(&source).unwrap();
+        std::fs::create_dir_all(&output).unwrap();
+        std::fs::write(source.join("a.bin"), vec![3u8; 40_000]).unwrap();
+        std::fs::write(source.join("b.bin"), vec![5u8; 40_000]).unwrap();
+        let bytes = make_torrent(&source).await;
+        let state = tmp.path().join("state");
+        let session = state.join("session");
+        let handed = |t: Meta| -> Vec<authorized_storage::PreparedFile> {
+            t.files
+                .iter()
+                .enumerate()
+                .map(|(index, f)| {
+                    let path = output.join(&f.path);
+                    std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+                    authorized_storage::PreparedFile {
+                        index,
+                        file: std::fs::OpenOptions::new()
+                            .read(true)
+                            .write(true)
+                            .create(true)
+                            .truncate(false)
+                            .open(&path)
+                            .unwrap(),
+                        path,
+                    }
+                })
+                .collect()
+        };
+        // The person's finished download: its files are all there.
+        let mut config = offline(&state);
+        config.require_authorization = true;
+        let t = Torrents::start(config).await.unwrap();
+        let meta = t
+            .metadata(&Source::File(bytes.clone()), Duration::from_secs(5), None)
+            .await
+            .unwrap();
+        for f in &meta.files {
+            let to = output.join(&f.path);
+            std::fs::create_dir_all(to.parent().unwrap()).unwrap();
+            std::fs::copy(source.join(&f.path), to).unwrap();
+        }
+        let hash = meta.info_hash.clone();
+        let finished = |t: &Torrents| t.stats(&hash).is_ok_and(|s| s.phase == Phase::Finished);
+        authorized_storage::authorize(
+            &session,
+            &hash,
+            &output,
+            handed(meta.clone()),
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        t.add(&bytes, &output, None, Vec::new(), false)
+            .await
+            .unwrap();
+        for _ in 0..100 {
+            if finished(&t) {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(200)).await;
+        }
+        assert!(finished(&t), "finished from the files it was given");
+        t.stop().await;
+        authorized_storage::forget(&session, &hash);
+        // MDM starts again: nothing is checked yet, so the engine takes nothing back.
+        let mut config = offline(&state);
+        config.require_authorization = true;
+        let t = Torrents::start(config).await.unwrap();
+        tokio::time::sleep(Duration::from_secs(2)).await;
+        assert!(!t.has(&hash), "restored without anyone checking its files");
+        // The app checks them and adds it again.
+        authorized_storage::authorize(
+            &session,
+            &hash,
+            &output,
+            handed(meta.clone()),
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        t.add(&bytes, &output, None, Vec::new(), false)
+            .await
+            .unwrap();
+        for _ in 0..100 {
+            if t.has(&hash) && finished(&t) {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(200)).await;
+        }
+        assert!(t.has(&hash) && finished(&t), "shared again, finished");
+        for (name, byte) in [("a.bin", 3u8), ("b.bin", 5u8)] {
+            let data =
+                std::fs::read(output.join(&meta.files[0].path).with_file_name(name)).unwrap();
+            assert!(
+                data.len() == 40_000 && data.iter().all(|b| *b == byte),
+                "{name} changed"
+            );
+        }
+        t.stop().await;
+        authorized_storage::forget(&session, &hash);
     }
 
     /// A .torrent with one 5-byte file at `folder/<name>`, written by hand (librqbit makes only
@@ -2144,6 +2558,7 @@ mod tests {
             dht: false,
             lsd: false,
             listen_ip: Some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST)),
+            require_authorization: false,
             ..Config::new(tmp.path().join(dir))
         };
         let t = Torrents::start(Config {
@@ -2183,6 +2598,7 @@ mod tests {
             dht: false,
             lsd: false,
             listen_ip: Some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST)),
+            require_authorization: false,
             ..Config::new(tmp.path().join(dir))
         };
         let port = |t: &Torrents| t.listen_addr().expect("listens").port();
@@ -2418,6 +2834,100 @@ mod tests {
         );
         seeder.stop().await;
         leecher.stop().await;
+    }
+
+    /// #965: download directly into a shared folder, recheck there after restart,
+    /// and remove the torrent's files without removing unrelated files or the root.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn direct_layout_downloads_resumes_and_keeps_internal_paths() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("Set");
+        std::fs::create_dir_all(source.join("sub")).unwrap();
+        let a = vec![7u8; 100_000];
+        let b = vec![11u8; 50_000];
+        std::fs::write(source.join("a.bin"), &a).unwrap();
+        std::fs::write(source.join("sub/b.bin"), &b).unwrap();
+        let torrent = make_torrent(&source).await;
+        let seed = Torrents::start(offline(&tmp.path().join("seed-state")))
+            .await
+            .unwrap();
+        let meta = seed
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
+            .await
+            .unwrap();
+        seed.add(&torrent, &source, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let only_b = meta
+            .files
+            .iter()
+            .position(|f| f.path == Path::new("sub/b.bin"))
+            .unwrap();
+        for (case, selected) in [None, Some(vec![only_b])].into_iter().enumerate() {
+            let output =
+                meta.folder_in_with_subfolder(&tmp.path().join(format!("shared{case}")), false);
+            std::fs::create_dir_all(&output).unwrap();
+            std::fs::write(output.join("unrelated.txt"), b"keep me").unwrap();
+            let state = tmp.path().join(format!("download-state{case}"));
+            let download = Torrents::start(offline(&state)).await.unwrap();
+            let hash = download
+                .add(
+                    &torrent,
+                    &output,
+                    selected.clone(),
+                    vec![seed.listen_addr().unwrap()],
+                    false,
+                )
+                .await
+                .unwrap();
+            let deadline = std::time::Instant::now() + Duration::from_secs(30);
+            while download.stats(&hash).unwrap().phase != Phase::Finished {
+                assert!(
+                    std::time::Instant::now() < deadline,
+                    "direct-layout transfer timed out"
+                );
+                tokio::time::sleep(Duration::from_millis(50)).await;
+            }
+            if selected.is_none() {
+                assert_eq!(std::fs::read(output.join("a.bin")).unwrap(), a);
+            }
+            assert_eq!(std::fs::read(output.join("sub/b.bin")).unwrap(), b);
+            assert!(!output.join("Set").exists(), "no added outer folder");
+            download.stop().await;
+            let restored = Torrents::start(offline(&state)).await.unwrap();
+            for old in restored.hashes() {
+                restored.remove(&old, false).await.unwrap();
+            }
+            // The app restores its resolved folder from downloads.json; no re-appending the name.
+            restored
+                .add(&torrent, &output, selected.clone(), Vec::new(), true)
+                .await
+                .unwrap();
+            let deadline = std::time::Instant::now() + Duration::from_secs(30);
+            loop {
+                let stats = restored.stats(&hash).unwrap();
+                if stats.phase == Phase::Paused && stats.done == stats.total {
+                    break;
+                }
+                assert!(
+                    std::time::Instant::now() < deadline,
+                    "restored files were not found"
+                );
+                tokio::time::sleep(Duration::from_millis(50)).await;
+            }
+            restored.remove(&hash, false).await.unwrap();
+            assert_eq!(
+                std::fs::read(output.join("unrelated.txt")).unwrap(),
+                b"keep me"
+            );
+            assert!(output.join("sub/b.bin").exists());
+            restored.stop().await;
+        }
+        seed.stop().await;
     }
 
     /// The app's Recheck of a finished torrent that left the session: added again paused, it
@@ -3117,6 +3627,7 @@ mod tests {
                 upnp: false,
                 lsd: false,
                 dht_bootstrap: Some(vec![node.to_string()]),
+                require_authorization: false,
                 ..Config::new(tmp.path().join(dir))
             })
         };
