@@ -3460,10 +3460,10 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       await until("deleted from MDM's list", 10000, async () => !(await now(files.failed)));
       steps.push(`download again, remove, delete (asked: "${asked}")`);
       // Clear finished: asked, then the finished ones go, their files stay.
+      const again = (await now(files.done)).path;
       await p.evaluate(`(document.getElementById("dl-clear").click(), true)`);
       await until("Clear's question", 5000, () => p.evaluate(`document.getElementById("ask").open`));
       await p.evaluate(`(document.getElementById("ask-ok").click(), true)`);
-      const again = (await now(files.done)).path;
       await until("the finished ones cleared", 10000, async () => !(await now(files.done)));
       if (!fs.existsSync(again)) throw new Error("Clear finished deleted a file");
       // The running one stopped and removed; then the empty list, and MDM not running.
