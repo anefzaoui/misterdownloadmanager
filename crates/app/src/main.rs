@@ -302,17 +302,22 @@ pub enum Start {
     /// queues and the Scheduler running. It stays in the notification area once MDM's icon is
     /// there, or shows minimized if none comes (app.rs `at_login`, decided there alone).
     Session,
+    /// Started hidden by the browser host or a background caller ([`mdm_ipc::FROM_HOST`], #1333):
+    /// the main window is hidden, without marking an OS session login.
+    Hidden,
     /// Started with the session where a window can't be hidden (Wayland): minimized.
     Minimized,
 }
 
-/// How a start shows the main window: `at_login` when the startup entry started it, `can_hide`
-/// where a window can be hidden (not on Wayland).
-fn start_mode(at_login: bool, can_hide: bool) -> Start {
-    match (at_login, can_hide) {
-        (false, _) => Start::Shown,
-        (true, true) => Start::Session,
-        (true, false) => Start::Minimized,
+/// How a start shows the main window: `at_login` when the startup entry started it, `hidden`
+/// when started hidden from host, `can_hide` where a window can be hidden (not on Wayland).
+fn start_mode(at_login: bool, hidden: bool, can_hide: bool) -> Start {
+    match (at_login, hidden, can_hide) {
+        (true, _, true) => Start::Session,
+        (true, _, false) => Start::Minimized,
+        (false, true, true) => Start::Hidden,
+        (false, true, false) => Start::Minimized,
+        (false, false, _) => Start::Shown,
     }
 }
 
@@ -429,9 +434,10 @@ fn app() -> eframe::Result {
     };
     #[cfg(windows)]
     win32::mark_running();
-    // Started with the session (#226): read before the command goes to the channel; the start's
-    // mode once the window system is known (below).
+    // Started with the session (#226) or from browser native messaging host (#1333): read before
+    // the command goes to the channel; the start's mode once the window system is known (below).
     let at_login = cmd.as_ref().is_some_and(|c| c.startup);
+    let from_host = cmd.as_ref().is_some_and(|c| c.hidden);
     // This launch is MDM: its fonts are looked up while the rest starts (only the instance pays
     // for them, not a launch that hands its command over).
     theme::prepare_fonts();
@@ -520,9 +526,10 @@ fn app() -> eframe::Result {
             tracing::warn!("{text}");
         }
     }
-    // Started with the session (#226): in the notification area, not in front, where a window
-    // can be hidden (Linux: known once the window system is chosen above, with the saved choice).
-    let start = start_mode(at_login, can_hide());
+    // Started with the session (#226) or from host (#1333): in the notification area, not in
+    // front, where a window can be hidden (Linux: known once the window system is chosen above,
+    // with the saved choice).
+    let start = start_mode(at_login, from_host, can_hide());
     // Secrets from before (sealed, or kept as they were) go to the system's keychain now; the
     // list is saved with their references once it holds them (secrets.rs, #44).
     let _ = loaded.settings.for_disk();
@@ -552,8 +559,12 @@ fn app() -> eframe::Result {
     }
     // Hidden from its first frame on (eframe keeps a root window built hidden so), until the
     // app knows whether its tray icon is shown (app.rs at_login).
-    if start == Start::Session {
-        tracing::info!("started with the session: hidden");
+    if matches!(start, Start::Session | Start::Hidden) {
+        if start == Start::Session {
+            tracing::info!("started with the session: hidden");
+        } else {
+            tracing::info!("started from host: hidden");
+        }
         viewport = viewport.with_visible(false);
     }
     // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
@@ -710,14 +721,16 @@ mod tests {
             .unwrap_or_else(std::sync::PoisonError::into_inner)
     }
 
-    /// Started with the session (#226): hidden (the tray decided by the app), or minimized
-    /// where a window can't be hidden; a start by the user shows the window.
+    /// Started with the session (#226) or from host (#1333): hidden (the tray decided by
+    /// the app), or minimized where a window can't be hidden; a start by the user shows the window.
     #[test]
     fn a_start_with_the_session_waits_in_the_tray() {
-        assert_eq!(start_mode(true, true), Start::Session);
-        assert_eq!(start_mode(true, false), Start::Minimized);
-        assert_eq!(start_mode(false, true), Start::Shown);
-        assert_eq!(start_mode(false, false), Start::Shown);
+        assert_eq!(start_mode(true, false, true), Start::Session);
+        assert_eq!(start_mode(true, false, false), Start::Minimized);
+        assert_eq!(start_mode(false, true, true), Start::Hidden);
+        assert_eq!(start_mode(false, true, false), Start::Minimized);
+        assert_eq!(start_mode(false, false, true), Start::Shown);
+        assert_eq!(start_mode(false, false, false), Start::Shown);
     }
 
     /// An off-screen run neither reads the clipboard (Add URL, Batch, the clipboard monitor…)

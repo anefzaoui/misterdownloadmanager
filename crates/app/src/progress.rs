@@ -1376,9 +1376,9 @@ impl Progress {
         };
         let web_page = item.got_web_page();
         // A failure that takes a paragraph to explain: the reason under "Error", in the rows of
-        // the sizes and times, which say nothing then (a site's page, #701; a video's failed
-        // merge, what stays for Resume).
-        let explained = web_page || item.merge_failed();
+        // the sizes and times, which say nothing then (a site's page, #701; an answer far smaller
+        // than the browser's file, #1460; a video's failed merge, what stays for Resume).
+        let explained = web_page || item.got_other_answer() || item.merge_failed();
         let status = match item.status {
             // A live stream being recorded or saved shows no progress of its own: said first.
             _ if let Some(live) = live_status(item.live_state()) => live.to_owned(),

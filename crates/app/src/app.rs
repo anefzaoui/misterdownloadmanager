@@ -1496,12 +1496,13 @@ pub struct App {
     /// how many times it was since the window hid.
     trim_when_hidden: Option<Instant>,
     trims_since_hidden: u32,
-    /// Started with the session, the window hidden until the notification area is known
-    /// (#226, [`at_login`]): when, when MDM's tray icon was first seen, and when it was last
-    /// looked at.
-    at_login: Option<Instant>,
-    at_login_icon: Option<Instant>,
-    at_login_checked: Option<Instant>,
+    /// Started with the session or from the browser (#226, #1333): hidden until the notification
+    /// area is known ([`at_login`]): when, whether started from the browser host, when MDM's
+    /// tray icon was first seen, and when it was last looked at.
+    tray_wait: Option<Instant>,
+    tray_wait_browser: bool,
+    tray_wait_icon: Option<Instant>,
+    tray_wait_checked: Option<Instant>,
     exiting: bool,
     /// Run without a window (`--headless`, #157): nothing is shown or asked; what arrives is
     /// added as the remote control adds it.
@@ -2172,14 +2173,16 @@ impl App {
             tray_limiter: None,
             hotkey: None,
             tray_last_focused: None,
-            // Started with the session (#226): hidden from the first frame.
-            hidden: start == crate::Start::Session,
-            trim_when_hidden: (start == crate::Start::Session)
+            // Started with the session (#226) or from host (#1333): hidden from the first frame.
+            hidden: matches!(start, crate::Start::Session | crate::Start::Hidden),
+            trim_when_hidden: matches!(start, crate::Start::Session | crate::Start::Hidden)
                 .then(|| Instant::now() + next_trim(0)),
             trims_since_hidden: 0,
-            at_login: (start == crate::Start::Session).then(Instant::now),
-            at_login_icon: None,
-            at_login_checked: None,
+            tray_wait: matches!(start, crate::Start::Session | crate::Start::Hidden)
+                .then(Instant::now),
+            tray_wait_browser: start == crate::Start::Hidden,
+            tray_wait_icon: None,
+            tray_wait_checked: None,
             exiting: false,
             headless: false,
             confirm_delete: None,
@@ -3478,9 +3481,9 @@ impl App {
             }
             return;
         }
-        // The startup entry's (#226): this start began in the tray (main.rs), or MDM already
-        // ran; either way the window stays where it is.
-        if cmd.startup {
+        // The startup entry's (#226) or browser host's (#1333): this start began in the tray
+        // (main.rs), or MDM already ran; either way the window stays where it is.
+        if cmd.startup || cmd.hidden {
             return;
         }
         if let Some(name) = cmd.show.as_deref() {
@@ -4579,8 +4582,8 @@ impl App {
 
     /// The window back from the tray (or from minimized), in front.
     fn show_window(&mut self, ctx: &egui::Context) {
-        // Asked for (a second launch, the tray icon): no start with the session to settle.
-        self.at_login = None;
+        // Asked for (a second launch, the tray icon): no start with the session or browser to settle.
+        self.tray_wait = None;
         self.trim_when_hidden = None;
         self.hidden = false;
         // The freeze watchdog: from here a stall is seen (no longer the computer's, #1126).
@@ -4620,13 +4623,10 @@ impl App {
         }
     }
 
-    /// Before a handoff's dialog: the main window stays where it is (hidden, minimized) and
-    /// only the dialog opens, as dialogs are windows of their own.
+    /// Before a handoff's dialog: the main window stays where it is (hidden, minimized, or
+    /// behind other windows) and only the dialog opens, as dialogs are windows of their own.
     fn show_for_dialog(&mut self, ctx: &egui::Context) {
-        let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
-        if !self.hidden && !minimized {
-            self.show_window(ctx);
-        }
+        ctx.request_repaint();
     }
 
     /// What the shell says of the tray icon (Linux: there when a tray host is, asked each time:
@@ -4661,42 +4661,47 @@ impl App {
         }
     }
 
-    /// Started with the session (#226): once a second, until it is known, where the window goes
-    /// ([`at_login`]): it stays hidden in the notification area, or shows minimized.
+    /// Started with the session (#226) or from the browser (#1333): once a second, until it is known,
+    /// where the window goes ([`at_login`]): it stays hidden in the notification area, or shows minimized.
     fn settle_at_login(&mut self, ctx: &egui::Context) {
-        let Some(started) = self.at_login else {
+        let Some(started) = self.tray_wait else {
             return;
         };
         ctx.request_repaint_after(Duration::from_secs(1));
         if self
-            .at_login_checked
+            .tray_wait_checked
             .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
         {
             return;
         }
-        self.at_login_checked = Some(Instant::now());
-        if self.tray.is_some() && self.at_login_icon.is_none() {
-            self.at_login_icon = Some(Instant::now());
+        self.tray_wait_checked = Some(Instant::now());
+        if self.tray.is_some() && self.tray_wait_icon.is_none() {
+            self.tray_wait_icon = Some(Instant::now());
         }
-        let icon = self.at_login_icon.map(|t| t.elapsed());
+        let icon = self.tray_wait_icon.map(|t| t.elapsed());
         let since = started.elapsed();
         let shown = icon.is_some() && self.tray_icon() == crate::tray::Icon::There;
+        let why = if self.tray_wait_browser {
+            "started from the browser"
+        } else {
+            "started with the session"
+        };
         match at_login(since, icon, shown) {
             AtLogin::Wait => {}
             AtLogin::Tray => {
                 tracing::info!(
-                    "started with the session: in the notification area ({} ms on)",
+                    "{why}: in the notification area ({} ms on)",
                     since.as_millis()
                 );
-                self.at_login = None;
+                self.tray_wait = None;
             }
             AtLogin::Minimize => {
                 tracing::info!(
-                    "started with the session: no notification area within {} s of the icon: minimized ({} ms on)",
+                    "{why}: no notification area within {} s of the icon: minimized ({} ms on)",
                     TRAY_GRACE.as_secs(),
                     since.as_millis()
                 );
-                self.at_login = None;
+                self.tray_wait = None;
                 self.trim_when_hidden = None;
                 self.hidden = false;
                 ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
@@ -4805,7 +4810,7 @@ impl App {
         // back to the taskbar, minimized. Never on no answer, or while Explorer isn't running
         // (it gives the icon back as it starts again).
         #[cfg(windows)]
-        if self.hidden && self.at_login.is_none() && self.tray.as_ref().is_some_and(|t| t.rescue())
+        if self.hidden && self.tray_wait.is_none() && self.tray.as_ref().is_some_and(|t| t.rescue())
         {
             tracing::info!(
                 "hidden, and the shell has no tray icon of MDM's: back in the taskbar, minimized"
@@ -14958,6 +14963,10 @@ mod start_disk_tests {
     const AT_ONCE: Duration = Duration::from_secs(5);
 
     pub(super) fn app_with(items: Vec<Item>) -> std::mem::ManuallyDrop<App> {
+        app_with_start(items, crate::Start::Shown)
+    }
+
+    fn app_with_start(items: Vec<Item>, start: crate::Start) -> std::mem::ManuallyDrop<App> {
         let rt = Box::leak(Box::new(
             tokio::runtime::Builder::new_current_thread()
                 .enable_all()
@@ -14978,7 +14987,7 @@ mod start_disk_tests {
             rt.handle().clone(),
             commands,
             loaded,
-            crate::Start::Shown,
+            start,
         ))
     }
 
@@ -15652,6 +15661,56 @@ mod start_disk_tests {
             seen.lock().unwrap().last(),
             Some(&a),
             "the finished file last"
+        );
+    }
+
+    #[test]
+    fn show_for_dialog_leaves_main_window_hidden() {
+        let mut app = app_with(vec![]);
+        app.hidden = true;
+        let ctx = egui::Context::default();
+        app.show_for_dialog(&ctx);
+        assert!(app.hidden, "main window must stay hidden when dialog opens");
+    }
+
+    #[test]
+    fn start_hidden_waits_for_tray() {
+        let app = app_with_start(vec![], crate::Start::Hidden);
+        assert!(app.hidden, "Start::Hidden must start hidden");
+        assert!(
+            app.tray_wait.is_some(),
+            "Start::Hidden must set tray_wait like session startup"
+        );
+        assert!(
+            app.tray_wait_browser,
+            "Start::Hidden must record browser origin for log messages"
+        );
+
+        let app_session = app_with_start(vec![], crate::Start::Session);
+        assert!(app_session.hidden, "Start::Session must start hidden");
+        assert!(
+            app_session.tray_wait.is_some(),
+            "Start::Session must set tray_wait for session startup"
+        );
+        assert!(
+            !app_session.tray_wait_browser,
+            "Start::Session was not started from browser"
+        );
+    }
+
+    #[test]
+    fn command_with_hidden_flag_alone_does_not_show_window() {
+        let mut app = app_with(vec![]);
+        app.hidden = true;
+        let ctx = egui::Context::default();
+        let cmd = mdm_ipc::Command {
+            hidden: true,
+            ..Default::default()
+        };
+        app.handle_command(cmd, &ctx);
+        assert!(
+            app.hidden,
+            "handing /fromhost to an already running app must not call show_window"
         );
     }
 }

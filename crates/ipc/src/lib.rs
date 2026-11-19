@@ -116,6 +116,9 @@ pub struct Command {
     /// startup, or the installer's "Start when Windows starts", #226): MDM starts in the
     /// notification area, its window hidden. Changes nothing in a running app.
     pub startup: bool,
+    /// `/fromhost` (beyond IDM, #1333): started by the browser native messaging host:
+    /// starts hidden without marking an OS session login.
+    pub hidden: bool,
     /// `/show <window>` (beyond IDM): the running app opens one of its windows by name, for
     /// screenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,
     /// `scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,
@@ -760,6 +763,10 @@ pub fn random_token() -> String {
 /// LaunchAgent, the installer's): MDM starts in the notification area ([`Command::startup`]).
 pub const STARTUP: &str = "/startup";
 
+/// The argument passed when the browser native messaging host starts MDM (#1333): MDM starts
+/// in the notification area with its main window hidden, without marking an OS session login.
+pub const FROM_HOST: &str = "/fromhost";
+
 /// Parse IDM's command line: `/d URL [/p dir] [/f name] [/a] [/n] [/q] [/s]` (case-insensitive;
 /// `-d` also accepted). Returns None when there is nothing to do.
 pub fn parse_args(args: &[String]) -> Option<Command> {
@@ -778,6 +785,7 @@ pub fn parse_args(args: &[String]) -> Option<Command> {
             "q" | "h" => {}
             "exit" => cmd.exit = true,
             "startup" => cmd.startup = true,
+            "fromhost" => cmd.hidden = true,
             "show" => cmd.show = it.next().map(|w| w.to_ascii_lowercase()),
             // A bare magnet link or .torrent file (what Windows passes for an association).
             _ if a
@@ -839,7 +847,12 @@ mod tests {
         // The startup entries' argument (#226), as written and as a Linux user might.
         assert!(parse_args(&[STARTUP.into()]).unwrap().startup);
         assert!(parse_args(&a("--startup")).unwrap().startup);
+        assert!(!parse_args(&[STARTUP.into()]).unwrap().hidden);
         assert!(!parse_args(&a("/s")).unwrap().startup);
+        // The browser host's argument (#1333): hidden start without startup session markers.
+        assert!(parse_args(&[FROM_HOST.into()]).unwrap().hidden);
+        assert!(parse_args(&a("--fromhost")).unwrap().hidden);
+        assert!(!parse_args(&[FROM_HOST.into()]).unwrap().startup);
         assert!(parse_args(&[]).is_none());
     }
 

@@ -1471,6 +1471,18 @@ impl Item {
             })
     }
 
+    /// It failed because the server's answer was no larger than a web page where the browser's
+    /// file was larger than any (#1460): the progress window explains it in full under "Error",
+    /// as a site's page. As its last run ended (this session only).
+    pub fn got_other_answer(&self) -> bool {
+        self.status == Status::Error
+            && self.live.is_none()
+            && self.snap.as_ref().is_some_and(|s| {
+                s.state == State::Failed
+                    && matches!(s.failure, Some(mdm_engine::Error::NotTheFile { .. }))
+            })
+    }
+
     /// Its last run failed joining a video's streams and kept them for Resume
     /// ([`VideoSpec::parts`]): the progress window explains it in full under "Error", as a
     /// site's page (#701).

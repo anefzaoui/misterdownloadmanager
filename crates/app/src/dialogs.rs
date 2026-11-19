@@ -602,8 +602,9 @@ fn dialog_window<T>(
     // Download File Info on Linux (#484): asked for from the browser, it opened behind it.
     // Windows and macOS lift and focus in `keep_theme` once visible.
     let focused = key.with("focus-sent");
-    let takes_focus =
-        modal || (cfg!(all(not(windows), not(target_os = "macos"))) && id == "file-info");
+    let takes_focus = modal
+        || (cfg!(all(not(windows), not(target_os = "macos")))
+            && matches!(id, "file-info" | "video-page" | "torrent" | "grabber"));
     if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {

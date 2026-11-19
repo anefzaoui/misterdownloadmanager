@@ -568,6 +568,11 @@ These ship in the next version.
   the Download video window, the menu over a video and `video-info`; "MP4" alone read as H.264.
   A line whose very stream is gone takes the nearest of its codec first
   ([#1465](https://github.com/anefzaoui/misterdownloadmanager/issues/1465))
+- ✅ A download the browser handed over is never called complete with an answer no larger than a
+  web page where the browser's file was larger than any (a JSON or text error, an empty answer):
+  it stops before anything is saved, says both sizes and suggests Alt+click; where the browser's
+  own download ended is asked once first
+  ([#1460](https://github.com/anefzaoui/misterdownloadmanager/issues/1460))
 - ✅ A live stream that is recording is saved when it is stopped: the progress window says
   **Recording...** with **Downloaded** and **Transfer rate** following the recording's size, its
   pause button reads **Stop and save**, and Stop, Stop All, a queue's stop and the phone page's
@@ -640,6 +645,10 @@ These ship in the next version.
   internet address for its hourly limit: the release is read from github.com's own release pages
   instead, and checked as before (signed checksum lists, checksums)
   ([#1337](https://github.com/anefzaoui/misterdownloadmanager/issues/1337))
+- ✅ Browser downloads open only the relevant dialog (Download File Info or Download video)
+  without pulling up, unhiding, or focusing the main window, and starting MDM from the browser
+  launches it in the notification area without marking an OS session login (thanks to
+  [@9M2PJU](https://github.com/9M2PJU)) ([#1333](https://github.com/anefzaoui/misterdownloadmanager/pull/1333))
 - ✅ Windows: dialogs open on the main window's monitor when the monitors have different display
   scales (a 125 % laptop and a 100 % monitor), where they opened out of sight; a window on no
   screen is brought onto one ([#1311](https://github.com/anefzaoui/misterdownloadmanager/issues/1311))
