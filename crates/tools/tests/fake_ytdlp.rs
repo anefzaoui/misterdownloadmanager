@@ -105,6 +105,13 @@ fn fake_ytdlp() -> ExitCode {
     if args.first().map(String::as_str) == Some("--linger") {
         return linger(Path::new(&args[1]));
     }
+    // `--version` as yt-dlp answers it, and nothing else: MDM asks a yt-dlp it didn't install
+    // whether it has `--js-runtimes` (2025.11.12, #1448) before telling it of this computer's
+    // JavaScript runtime. Not a run of its own (not in the logs below).
+    if args == ["--version"] {
+        println!("2026.10.26");
+        return ExitCode::SUCCESS;
+    }
     let after = |flag: &str| {
         args.iter()
             .position(|a| a == flag)

@@ -861,7 +861,7 @@ impl Programs {
             crate::i18n::t("lets yt-dlp list all of YouTube's qualities"),
             winui::MUTED(),
             o.x + 486.0,
-            "helper-runtime-what",
+            ("helper-what", k),
         );
         let available = mdm_tools::deno::available();
         let status = if self.installing_deno.is_some() {
