@@ -501,8 +501,9 @@ async function chromium(bin, profile, dl, page, ready) {
         const { data } = await cdp.send("Page.captureScreenshot", { format: "png", clip }, s);
         fs.writeFileSync(file, Buffer.from(data, "base64"));
       };
-      // Its viewport as the popup's (#1496): what the popup lays out in, and where a dialog opens.
-      const viewport = (width, height) => cdp.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 0, mobile: false }, s);
+      // Its viewport as the popup's (#1496): what the popup lays out in, and where a dialog opens;
+      // at twice the pixels, as the pictures are taken (the file icons asked for that size).
+      const viewport = (width, height) => cdp.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 2, mobile: false }, s);
       return { evaluate: ev, shot, viewport, close: () => cdp.send("Target.closeTarget", { targetId: tid }).catch(() => {}) };
     };
     // The tab's requests to `hosts` (http and https) answered here, never by the network:
@@ -1858,7 +1859,8 @@ async function proxyInChromium(t) {
     return seen;
   };
   const fixed = { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "127.0.0.1", port: PROXY_PORT } } };
-  const popup = await s.tab(`${s.base}popup.html`);
+  // Its switches are on the Settings tab (#1496).
+  const popup = await s.tab(`${s.base}popup.html?tab=settings`);
   try {
     await setProxy(fixed);
     await until("the popup", 10000, () =>
@@ -1962,7 +1964,8 @@ const CASES = {
     await pref("network.proxy.http", "127.0.0.1");
     await pref("network.proxy.http_port", PROXY_PORT);
     await pref("network.proxy.type", 1);
-    const popupUrl = `${s.base}popup.html`;
+    // Its switches are on the Settings tab (#1496), where a click lands on them.
+    const popupUrl = `${s.base}popup.html?tab=settings`;
     const granted = async (popup) => popup.evaluate("browser.permissions.contains({ permissions: ['proxy'] })");
     // One file through the lab's host: how many of its requests went through the proxy (the
     // browser's own first; MDM's when it got the proxy) after `wait` ms.
@@ -2208,7 +2211,8 @@ const CASES = {
     const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
     const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
     if (shots && t.session.tab) {
-      const popup = await t.session.tab(`${t.session.base}popup.html`);
+      // The reason is on the popup's This page tab (#1496).
+      const popup = await t.session.tab(`${t.session.base}popup.html?tab=page`);
       try {
         const said = await until("the popup's reason", 10000, () =>
           popup.evaluate(`(() => { const b = document.getElementById("declined"); return b && !b.hidden && document.getElementById("declined-why").textContent; })()`).catch(() => ""),
@@ -3287,6 +3291,23 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       running: "linux-distro-image.iso",
       failed: "setup-tool.exe",
     };
+    // An empty list and no copies of these files from an earlier case or browser: the counts and
+    // names are this case's own.
+    const earlier = await mdmList();
+    if (earlier.length) {
+      await ipc({ action: "pause", ids: earlier.filter((d) => d.status === "Downloading").map((d) => d.id) }).catch(() => {});
+      await ipc({ action: "remove", ids: earlier.map((d) => d.id) });
+      await until("an empty list", 10000, async () => !(await mdmList()).length);
+    }
+    const stems = Object.values(files).map((f) => f.replace(/\.[^.]+$/, ""));
+    const sweep = (dir) => {
+      for (const e of fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }) : []) {
+        const p = path.join(dir, e.name);
+        if (e.isDirectory()) sweep(p);
+        else if (stems.some((stem) => e.name.startsWith(stem))) fs.rmSync(p, { force: true });
+      }
+    };
+    sweep(downloads);
     // Through the browser (its hand-off starts the toolbar button's count), and through MDM's own
     // channel (as from its window).
     await clickLink(t, `/gen/2M/${files.done}`);
@@ -3301,6 +3322,8 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     await keptNothing(t.dl);
     const byName = async () => Object.fromEntries((await mdmList()).map((d) => [d.file, d]));
     const ids = await byName();
+    // Each by its id from here (Download again may number the file's new copy).
+    const now = async (file) => (await mdmList()).find((d) => d.id === ids[file].id);
     const p = await open();
     const ROWS = `JSON.stringify([...document.querySelectorAll("#dl-list li.dl")].map((li) => ({
       id: Number(li.dataset.id), state: li.dataset.state, name: li.querySelector(".dl-name").dataset.full,
@@ -3405,11 +3428,11 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
         const b = [...li.querySelectorAll(".dl-quick button")].find((x) => !x.hidden && x.title === ${JSON.stringify(title)}); b.click(); return true; })()`);
       const titles = JSON.parse(await p.evaluate(`JSON.stringify([document.querySelector('#dl-list li.dl [data-label="popup_act_pause"]').title, document.querySelector('#dl-list li.dl [data-label="popup_act_resume"]').title])`));
       await quick(files.running, titles[0]);
-      await until("paused in MDM", 10000, async () => (await byName())[files.running].status === "Stopped");
+      await until("paused in MDM", 10000, async () => ((await now(files.running)) || {}).status === "Stopped");
       await until("paused in the popup", 5000, async () => (await row(files.running)).state === "paused");
       await snap(p, "dl-paused");
       await quick(files.running, titles[1]);
-      await until("resumed in MDM", 10000, async () => (await byName())[files.running].status === "Downloading");
+      await until("resumed in MDM", 10000, async () => ((await now(files.running)) || {}).status === "Downloading");
       steps.push("paused and resumed");
       // The arrow keys move between the rows.
       const keys = await p.evaluate(`(() => {
@@ -3425,26 +3448,27 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       await menuOf(files.done);
       await choose("again");
       await until("downloaded again", 30000, () => logged(`redownload download ${ids[files.done].id}: done`).length > 0);
-      await until("complete again", 30000, async () => (await byName())[files.done].status === "Complete");
+      await until("complete again", 30000, async () => ((await now(files.done)) || {}).status === "Complete");
       await menuOf(files.gone);
       await choose("remove");
-      await until("removed from MDM's list", 10000, async () => !(await byName())[files.gone]);
+      await until("removed from MDM's list", 10000, async () => !(await now(files.gone)));
       await menuOf(files.failed);
       await choose("del");
       const asked = await until("Delete's question", 5000, () => p.evaluate(`document.getElementById("ask").open && document.getElementById("ask-text").textContent`));
       await snap(p, "dl-delete-ask");
       await p.evaluate(`(document.getElementById("ask-ok").click(), true)`);
-      await until("deleted from MDM's list", 10000, async () => !(await byName())[files.failed]);
+      await until("deleted from MDM's list", 10000, async () => !(await now(files.failed)));
       steps.push(`download again, remove, delete (asked: "${asked}")`);
       // Clear finished: asked, then the finished ones go, their files stay.
       await p.evaluate(`(document.getElementById("dl-clear").click(), true)`);
       await until("Clear's question", 5000, () => p.evaluate(`document.getElementById("ask").open`));
       await p.evaluate(`(document.getElementById("ask-ok").click(), true)`);
-      await until("the finished ones cleared", 10000, async () => !(await byName())[files.done]);
-      if (!fs.existsSync(donePath)) throw new Error("Clear finished deleted a file");
+      const again = (await now(files.done)).path;
+      await until("the finished ones cleared", 10000, async () => !(await now(files.done)));
+      if (!fs.existsSync(again)) throw new Error("Clear finished deleted a file");
       // The running one stopped and removed; then the empty list, and MDM not running.
       await quick(files.running, titles[0]);
-      await until("stopped", 10000, async () => (await byName())[files.running].status === "Stopped");
+      await until("stopped", 10000, async () => ((await now(files.running)) || {}).status === "Stopped");
       await ipc({ action: "remove", ids: [ids[files.running].id] });
       await until("the empty list", 10000, () => p.evaluate(`!document.getElementById("dl-empty").hidden && document.getElementById("dl-empty-title").textContent`));
       await snap(p, "dl-empty");
@@ -3469,9 +3493,11 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       await p.close();
       await startApp().catch(() => {});
       const left = await mdmList().catch(() => []);
-      const ours = left.filter((d) => Object.values(files).includes(d.file));
+      const ours = left.filter((d) => Object.values(ids).some((i) => i.id === d.id) || Object.values(files).includes(d.file));
       for (const d of ours) await ipc({ action: "pause", ids: [d.id] }).catch(() => {});
       if (ours.length) await ipc({ action: "remove", ids: ours.map((d) => d.id) }).catch(() => {});
+      await sleep(500);
+      sweep(downloads);
     }
   },
 
