@@ -4025,7 +4025,8 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
 // says it as the button goes down (pointerdown) and again at the click; the download may come
 // before the click's word, under the link's address, its redirect's end, or another address a
 // page's script went to. Each is the browser's; one click leaves one such download to it, for ten
-// seconds.
+// seconds; the link's own address, and a download its own page starts, for a minute (#1494: a
+// bot check's page runs its script first).
 {
   const clock = { t: Date.now() };
   class FakeDate extends Date {
@@ -4064,10 +4065,30 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     calls.length = 0;
     await send({ type: "bypass", url: "https://site.test/dl/10" }, page);
     assert.ok(!(await kept({ id: 64, url: "https://other.test/e.zip", referrer: "https://other.test/page", filename: "e.zip" })), "another site's");
-    // Ten seconds on, the click is forgotten: its link goes to MDM again.
+    // Ten seconds on, a download from the page the link was on is MDM's again; the link's own
+    // address stays the browser's for a minute (#1494), then it is forgotten too.
     clock.t += 10001;
-    assert.ok(!(await kept({ id: 65, url: "https://site.test/dl/10", referrer: "https://site.test/files", filename: "f.zip" })), "forgotten");
-    assert.equal(natives(calls).length, 2);
+    assert.ok(!(await kept({ id: 65, url: "https://files.test/token/f.zip", referrer: "https://site.test/files", filename: "f.zip" })), "the page's, later");
+    assert.ok(await kept({ id: 66, url: "https://site.test/dl/10", referrer: "https://site.test/files", filename: "g.zip" }), "the link itself, later");
+    clock.t += 50000;
+    assert.ok(!(await kept({ id: 67, url: "https://site.test/dl/10", referrer: "https://site.test/files", filename: "h.zip" })), "forgotten");
+    assert.equal(natives(calls).length, 3);
+    // #1494: a link to a page behind a bot check ("Just a moment..."). page.js followed it: its
+    // page opened in the tab, its script ran (half a minute, a box ticked) and loaded the address
+    // again, which is the file now: the browser's. Or the check sent to the file elsewhere, from
+    // its page (its referrer: the link's address with the check's token added): the browser's,
+    // once. A download from the page the link was on that late is MDM's.
+    calls.length = 0;
+    await send({ type: "bypass", url: "https://site.test/get?id=8" }, page);
+    clock.t += 30000;
+    assert.ok(await kept({ id: 68, url: "https://site.test/get?id=8", referrer: "https://site.test/files", filename: "i.zip" }), "the link, after its check");
+    await send({ type: "bypass", url: "https://site.test/get?id=9" }, page);
+    clock.t += 30000;
+    assert.ok(!(await kept({ id: 69, url: "https://files.test/j.zip", referrer: "https://site.test/files", filename: "j.zip" })), "the page the link was on, half a minute on");
+    assert.ok(!(await kept({ id: 70, url: "https://files.test/k.zip", referrer: "https://site.test/get?id=10&__cf_chl_rt_tk=abc", filename: "k.zip" })), "another link's page");
+    assert.ok(await kept({ id: 71, url: "https://files.test/l.zip", referrer: "https://site.test/get?id=9&__cf_chl_rt_tk=abc", filename: "l.zip" }), "the link's page, after its check");
+    assert.ok(!(await kept({ id: 72, url: "https://files.test/m.zip", referrer: "https://site.test/get?id=9&__cf_chl_rt_tk=abc", filename: "m.zip" })), "once");
+    assert.equal(natives(calls).length, 3);
   }
   // Firefox (on a Mac too): page.js follows the link once the background has it (the browser
   // alone does nothing with an Alt+click); the page load's answer is the download. Straight, by a
@@ -4540,9 +4561,16 @@ ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser"
   assert.ok(e.defaultPrevented);
   ({ e } = t.click("https://x.test/f/page.html"));
   assert.ok(!e.defaultPrevented, "not a listed type");
-  ({ e } = t.click("https://x.test/f/a.zip", { altKey: true }));
-  assert.ok(!e.defaultPrevented, "Alt: the browser's");
-  assert.deepEqual(t.sent.at(-1), { type: "bypass", url: "https://x.test/f/a.zip" });
+  // Alt (Option): never held; Safari's own Option+click (a save of the link) is stopped and the
+  // link followed as a plain click once the background has it, not held either (#1494).
+  const links = () => t.sent.filter((m) => m.type === "link").length;
+  const before = links();
+  ({ a, e } = t.click("https://x.test/f/a.zip", { altKey: true }));
+  assert.ok(e.defaultPrevented && a.clicks === 0, "Alt: the browser's, not held");
+  await t.settle();
+  assert.ok(a.clicks === 1 && !a.again.altKey, "Safari: followed as a plain click");
+  assert.equal(links(), before, "the click followed isn't held");
+  assert.ok(t.sent.slice(-2).every((m) => m.type === "bypass" && m.url === "https://x.test/f/a.zip"));
   ({ e } = t.click("https://x.test/dl?id=4", {}, { download: "b.iso" }));
   assert.ok(e.defaultPrevented, "a download attribute names the type");
   assert.deepEqual(t.sent.at(-1), { type: "link", url: "https://x.test/dl?id=4", name: "b.iso" }, "and is sent with it");
@@ -4563,36 +4591,43 @@ ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser"
   assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented);
   t = await run({ safari: false, taken: true });
   assert.ok(!t.click("https://x.test/f/a.zip").e.defaultPrevented, "Chrome and Firefox take it from the downloads API");
-  // #332, Alt (Option on a Mac) on a link. Chromium (and Safari) download it themselves at the
-  // click: the press already said it, the click is left as it is.
-  ({ a, e } = t.click("https://x.test/f/a.zip", { altKey: true }));
-  await t.settle();
-  assert.ok(!e.defaultPrevented && a.clicks === 0);
-  assert.deepEqual(t.sent.slice(-2), [{ type: "bypass", url: "https://x.test/f/a.zip" }, { type: "bypass", url: "https://x.test/f/a.zip" }], "at the press, and the click");
-  // Firefox does nothing with it (or saves it, with browser.altClickSave): its own handling is
-  // stopped, and once the background has it the link is followed as a plain click (one click,
-  // not trusted, without Alt).
-  t = await run({ firefox: true, taken: true });
-  ({ a, e } = t.click("https://x.test/go?f=a", { altKey: true }));
-  assert.ok(e.defaultPrevented && a.clicks === 0, "not before the background has it");
-  await t.settle();
-  assert.ok(a.clicks === 1 && !a.again.altKey && a.again.isTrusted !== true, "followed");
-  assert.ok(t.sent.length >= 2 && t.sent.every((m) => m.type === "bypass" && m.url === "https://x.test/go?f=a"));
-  // A link the page's own script took, Alt with Shift or Cmd (Firefox's new window, new tab),
-  // the middle button: left as they are.
-  ({ a, e } = t.click("https://x.test/go?f=b", { altKey: true }, undefined, (ev) => ev.preventDefault()));
-  await t.settle();
-  assert.equal(a.clicks, 0, "the page's script");
-  for (const keys of [{ shiftKey: true }, { metaKey: true }, { ctrlKey: true }]) {
-    ({ a, e } = t.click("https://x.test/go?f=c", { altKey: true, ...keys }));
+  // #332, #1494: Alt (Option on a Mac) on a link, in every browser. Chromium would save the link
+  // without opening it at the click (a bot check's page, "Just a moment...", saved instead of
+  // run), Firefox does nothing with it (or saves it, with browser.altClickSave): the browser's
+  // own handling is stopped, and once the background has it the link is followed as a plain
+  // click (one click, not trusted, without Alt), so its page opens in the tab and its check runs.
+  for (const firefox of [false, true]) {
+    const who = firefox ? "Firefox" : "Chromium";
+    t = await run({ firefox, taken: true });
+    ({ a, e } = t.click("https://x.test/go?f=a", { altKey: true }));
+    assert.ok(e.defaultPrevented && a.clicks === 0, `${who}: not before the background has it`);
     await t.settle();
-    assert.ok(!e.defaultPrevented && a.clicks === 0, JSON.stringify(keys));
+    assert.ok(a.clicks === 1 && !a.again.altKey && a.again.isTrusted !== true, `${who}: followed`);
+    assert.deepEqual(t.sent.slice(0, 2), [{ type: "bypass", url: "https://x.test/go?f=a" }, { type: "bypass", url: "https://x.test/go?f=a" }], `${who}: at the press, and the click`);
+    assert.ok(t.sent.every((m) => m.type === "bypass" && m.url === "https://x.test/go?f=a"));
+    // A link with a `download` name: followed the same way (the browser then downloads it under
+    // that name, as a plain click does).
+    ({ a, e } = t.click("https://x.test/dl?id=5", { altKey: true }, { download: "c.iso" }));
+    await t.settle();
+    assert.ok(e.defaultPrevented && a.clicks === 1 && !a.again.altKey, `${who}: a download link`);
+    // A link the page's own script took, Alt with Shift, Cmd or Ctrl (a new window, a new tab),
+    // the middle button: left as they are (said, so their download stays the browser's).
+    ({ a, e } = t.click("https://x.test/go?f=b", { altKey: true }, undefined, (ev) => ev.preventDefault()));
+    await t.settle();
+    assert.equal(a.clicks, 0, `${who}: the page's script`);
+    for (const keys of [{ shiftKey: true }, { metaKey: true }, { ctrlKey: true }, { button: 1 }]) {
+      ({ a, e } = t.click("https://x.test/go?f=c", { altKey: true, ...keys }));
+      await t.settle();
+      assert.ok(!e.defaultPrevented && a.clicks === 0, `${who}: ${JSON.stringify(keys)}`);
+      assert.deepEqual(t.sent.at(-1), { type: "bypass", url: "https://x.test/go?f=c" });
+    }
+    // Without Alt nothing changes.
+    const said = t.sent.length;
+    ({ a, e } = t.click("https://x.test/f/a.zip"));
+    await t.settle();
+    assert.ok(!e.defaultPrevented && a.clicks === 0 && t.sent.length === said, `${who}: a plain click`);
   }
-  // Without Alt nothing changes.
-  ({ a, e } = t.click("https://x.test/f/a.zip"));
-  await t.settle();
-  assert.ok(!e.defaultPrevented && a.clicks === 0);
-  ok("Safari: page.js holds a click on a listed file type, never Alt or other types; #332: Alt said at the press, Firefox follows the link");
+  ok("Safari: page.js holds a click on a listed file type, never Alt or other types; #332, #1494: Alt said at the press, the link followed in every browser");
 }
 
 // #1092: what the tab played, offered when the page's look-up finds nothing (a feed, a post

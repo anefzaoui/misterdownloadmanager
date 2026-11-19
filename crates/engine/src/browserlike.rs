@@ -329,6 +329,7 @@ mod imp {
     use reqwest::header::{self, HeaderMap, HeaderValue};
     use tokio_util::sync::CancellationToken;
     use url::Url;
+    use wreq::IntoEmulation;
     use wreq_util::{Emulation, Platform, Profile};
 
     use super::{Browser, Lease, MAX_REDIRECTS, Stream, net_error};
@@ -505,13 +506,103 @@ mod imp {
     /// The profile of the browser `agent` names, at its version (the newest profile up to it;
     /// the oldest when it is older than all), on its system: Edge's, Opera's, Firefox's,
     /// Safari's, else Chrome's (Chrome, Brave, Vivaldi and the other Chromium browsers name
-    /// themselves Chrome; so does nothing else).
-    pub(super) fn emulation_for(agent: &str) -> Emulation {
+    /// themselves Chrome; so does nothing else). A Chrome or Edge newer than its newest profile
+    /// names its own version in `sec-ch-ua` too (`client_hints`), as the User-Agent does
+    /// (#1494): the profile's would name an older browser than the User-Agent.
+    pub(super) fn emulation_for(agent: &str) -> wreq::Emulation {
         let (profile, platform) = choose(agent);
-        Emulation::builder()
+        let mut emulation = Emulation::builder()
             .profile(profile)
             .platform(platform)
             .build()
+            .into_emulation();
+        if let Some(hints) = client_hints(agent, profile)
+            && let Ok(value) = HeaderValue::from_str(&hints)
+        {
+            // In the profile's place among its headers.
+            emulation
+                .headers
+                .insert(header::HeaderName::from_static("sec-ch-ua"), value);
+        }
+        // Chrome and Edge ask for a page (and the file a link leads to) at the highest
+        // priority, weight 256 in their HTTP/2 HEADERS frame, as their `priority: u=0, i` says;
+        // these profiles say 220 (#1494, measured against Chrome and Edge 157).
+        let name = format!("{profile:?}");
+        if (name.starts_with("Chrome") || name.starts_with("Edge"))
+            && let Some(h2) = emulation.http2_options.as_mut()
+        {
+            h2.headers_stream_dependency = Some(wreq::http2::StreamDependency::new(
+                wreq::http2::StreamId::zero(),
+                255,
+                true,
+            ));
+        }
+        emulation
+    }
+
+    /// The `sec-ch-ua` a Chrome or Edge newer than `profile` sends, from `agent`'s major
+    /// version, in Chromium's own way: its brand, "Chromium" and a made-up brand, in an order
+    /// and with a made-up brand's name and version that its version picks (Chrome 157:
+    /// `"Not-A.Brand";v="99", "Google Chrome";v="157", "Chromium";v="157"`). None when
+    /// `profile` is that version or newer (its own is right), or for another browser.
+    pub(super) fn client_hints(agent: &str, profile: Profile) -> Option<String> {
+        let major = |key: &str| -> Option<u32> {
+            let at = agent.find(key)? + key.len();
+            let digits: String = agent[at..]
+                .chars()
+                .take_while(char::is_ascii_digit)
+                .collect();
+            digits.parse().ok()
+        };
+        if agent.contains("OPR/") || agent.contains("Firefox/") {
+            return None;
+        }
+        let chromium = major("Chrome/")?;
+        let (brand, version) = match major("Edg/") {
+            Some(v) => ("Microsoft Edge", v),
+            None => ("Google Chrome", chromium),
+        };
+        let name = format!("{profile:?}");
+        let ours: u32 = name
+            .strip_prefix("Chrome")
+            .or_else(|| name.strip_prefix("Edge"))?
+            .parse()
+            .ok()?;
+        if ours >= version {
+            return None;
+        }
+        const CHARS: [&str; 11] = [" ", "(", ":", "-", ".", "/", ")", ";", "=", "?", "_"];
+        const VERSIONS: [&str; 3] = ["8", "99", "24"];
+        const ORDERS: [[usize; 3]; 6] = [
+            [0, 1, 2],
+            [0, 2, 1],
+            [1, 0, 2],
+            [1, 2, 0],
+            [2, 0, 1],
+            [2, 1, 0],
+        ];
+        let seed = chromium as usize;
+        let made_up = format!(
+            "Not{}A{}Brand",
+            CHARS[seed % CHARS.len()],
+            CHARS[(seed + 1) % CHARS.len()]
+        );
+        let brands = [
+            (made_up, VERSIONS[seed % VERSIONS.len()].to_owned()),
+            ("Chromium".to_owned(), chromium.to_string()),
+            (brand.to_owned(), version.to_string()),
+        ];
+        let mut placed: [&(String, String); 3] = [&brands[0]; 3];
+        for (brand, at) in brands.iter().zip(ORDERS[seed % ORDERS.len()]) {
+            placed[at] = brand;
+        }
+        Some(
+            placed
+                .iter()
+                .map(|(b, v)| format!("\"{b}\";v=\"{v}\""))
+                .collect::<Vec<_>>()
+                .join(", "),
+        )
     }
 
     /// The profile and system `emulation_for` takes for `agent`.
@@ -615,19 +706,22 @@ mod imp {
                 }
                 .into());
             }
-            let mut req = b
-                .client
-                .get(url.as_str())
-                .group(group.clone())
-                .headers(headers.clone())
-                .header(header::USER_AGENT, b.agent.clone());
+            // The download's User-Agent in the headers' place, never beside one they carry:
+            // wreq's `header` adds a second (#1494).
+            let mut sent = headers.clone();
+            sent.insert(header::USER_AGENT, b.agent.clone());
             if range {
                 // As browsers ask for a part of a file: its bytes as they are.
-                req = req.header(
+                sent.insert(
                     header::ACCEPT_ENCODING,
                     HeaderValue::from_static("identity"),
                 );
             }
+            let req = b
+                .client
+                .get(url.as_str())
+                .group(group.clone())
+                .headers(sent);
             let resp = cancellable(cancel, async {
                 req.send().await.map_err(|e| net_error(&e))
             })
@@ -711,5 +805,88 @@ mod tests {
             "{}",
             profile_of(newer)
         );
+    }
+
+    /// #1494: Chrome 158 (Brave, Helium and the other Chromium browsers name themselves Chrome)
+    /// takes the newest Chrome profile there is, and its `sec-ch-ua` names 158, as its
+    /// User-Agent does; a profile of the browser's own version keeps its own.
+    #[test]
+    fn a_newer_chrome_takes_the_newest_profile_and_names_its_version() {
+        use super::imp::{client_hints, emulation_for};
+        let hints = |agent: &str| {
+            emulation_for(agent)
+                .headers
+                .get("sec-ch-ua")
+                .and_then(|v| v.to_str().ok())
+                .map(str::to_owned)
+                .unwrap_or_default()
+        };
+        let chrome = |v: u32| {
+            format!(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{v}.0.0.0 Safari/537.36"
+            )
+        };
+        let edge = |v: u32| format!("{} Edg/{v}.0.0.0", chrome(v));
+        let newest = wreq_util::Profile::VARIANTS
+            .iter()
+            .filter_map(|p| format!("{p:?}").strip_prefix("Chrome")?.parse::<u32>().ok())
+            .max()
+            .unwrap();
+        assert!(
+            profile_of(&chrome(158)).contains(&format!("Chrome{newest}")),
+            "{}",
+            profile_of(&chrome(158))
+        );
+        // As Chrome 157 and Edge 157 send it on this computer (headless, their own profile).
+        assert_eq!(
+            hints(&chrome(157)),
+            r#""Not-A.Brand";v="99", "Google Chrome";v="157", "Chromium";v="157""#
+        );
+        assert_eq!(
+            hints(&edge(157)),
+            r#""Not-A.Brand";v="99", "Microsoft Edge";v="157", "Chromium";v="157""#
+        );
+        assert_eq!(
+            hints(&chrome(158)),
+            r#""Chromium";v="158", "Not.A/Brand";v="24", "Google Chrome";v="158""#
+        );
+        // The profile's own, for its own version: the same words.
+        let own = emulation_for(&chrome(newest));
+        assert!(client_hints(&chrome(newest), super::imp::choose(&chrome(newest)).0).is_none());
+        assert_eq!(
+            hints(&chrome(newest)),
+            own.headers.get("sec-ch-ua").unwrap().to_str().unwrap()
+        );
+        assert!(
+            hints(&chrome(newest)).contains(&format!("\"Google Chrome\";v=\"{newest}\"")),
+            "{}",
+            hints(&chrome(newest))
+        );
+        // Chrome's highest priority in its HEADERS frame, and its Accept-Encoding (before
+        // Accept-Language, as Chrome sends them).
+        let e = emulation_for(&chrome(158));
+        let dep = e
+            .http2_options
+            .as_ref()
+            .and_then(|h| h.headers_stream_dependency.as_ref())
+            .map(|d| format!("{d:?}"))
+            .unwrap_or_default();
+        assert!(dep.contains("255"), "{dep}");
+        let names: Vec<&str> = e.headers.keys().map(|k| k.as_str()).collect();
+        let at = |n: &str| names.iter().position(|k| *k == n);
+        assert_eq!(
+            e.headers
+                .get("accept-encoding")
+                .and_then(|v| v.to_str().ok()),
+            Some("gzip, deflate, br, zstd"),
+            "{names:?}"
+        );
+        assert!(at("accept-encoding") < at("accept-language"), "{names:?}");
+        // Firefox and Safari send none; Opera's stays its profile's.
+        let firefox =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0";
+        assert!(emulation_for(firefox).headers.get("sec-ch-ua").is_none());
+        let opera = format!("{} OPR/140.0.0.0", chrome(157));
+        assert!(client_hints(&opera, super::imp::choose(&opera).0).is_none());
     }
 }

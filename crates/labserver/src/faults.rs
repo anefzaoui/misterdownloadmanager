@@ -103,6 +103,12 @@ pub struct Faults {
     /// `cf-mitigated: challenge` and a challenge page, as `browser_only`'s.
     #[serde(deserialize_with = "flag_opt")]
     pub refuse_browsers: Option<bool>,
+    /// A bot check whose challenge a browser passes by running its script (Cloudflare's "Just a
+    /// moment...", #1494): every file request without the cookie [`CLEARANCE`] gets 403 with
+    /// `cf-mitigated: challenge` and a page whose script, after this many milliseconds, sets
+    /// that cookie and loads the address again; with it, the file. A program that runs no
+    /// script never gets past it on its own.
+    pub js_challenge: Option<u64>,
     /// The same check answering this status instead, empty, with `Retry-After: 0` (FileHippo's
     /// 412 to whatever isn't a browser, #630, #668).
     pub refuse_programs: Option<u16>,
@@ -158,6 +164,7 @@ impl Faults {
             refuse: over.refuse.or(self.refuse),
             browser_only: over.browser_only.or(self.browser_only),
             refuse_browsers: over.refuse_browsers.or(self.refuse_browsers),
+            js_challenge: over.js_challenge.or(self.js_challenge),
             refuse_programs: over.refuse_programs.or(self.refuse_programs),
             refuse_ranges: over.refuse_ranges.or(self.refuse_ranges),
             require_referer: over
@@ -196,6 +203,20 @@ pub(crate) fn parse_flag(s: &str) -> Option<bool> {
         "0" | "false" | "no" => Some(false),
         _ => None,
     }
+}
+
+/// The cookie `js_challenge`'s script sets, and lets through.
+pub const CLEARANCE: &str = "mdm_lab_clearance=1";
+
+/// `js_challenge`'s page: after `wait_ms`, its script sets [`CLEARANCE`] and loads the page's
+/// address again, as Cloudflare's challenge page does once its check is passed.
+pub fn challenge_page(wait_ms: u64) -> String {
+    format!(
+        "<!DOCTYPE html><html><head><title>Just a moment...</title></head>\n\
+         <body><p>Checking your browser before you go on.</p>\n\
+         <script>setTimeout(function () {{ document.cookie = \"{CLEARANCE}; path=/\"; \
+         location.reload(); }}, {wait_ms});</script></body></html>\n"
+    )
 }
 
 /// True when the `Cookie` header `cookie` satisfies `require_cookie` (`name=value` or `name`).
@@ -257,6 +278,10 @@ mod tests {
         assert!(!has_cookie(Some("sid=11"), "sid=1"));
         assert!(!has_cookie(Some("xsid=1"), "sid=1"));
         assert!(!has_cookie(None, "sid"));
+        let js = Faults::parse("js_challenge=2500").unwrap();
+        assert_eq!(js.js_challenge, Some(2500));
+        assert!(challenge_page(2500).contains("2500"));
+        assert!(challenge_page(0).contains(CLEARANCE));
     }
 
     #[test]

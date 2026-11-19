@@ -613,16 +613,22 @@ function firstUrl(item) {
 
 // Links clicked with Alt (Option on a Mac) held (page.js): the browser keeps their download. By
 // the link's address (the click's own download, the start of a redirect), and once per click the
-// download that follows it under another address in the next seconds (#332): one in the same
-// tab (Firefox says which tab a page load is in), or one whose referrer is the link or the page
-// it was on (a page's script that starts the download, a link to a page whose script does).
+// download that follows it under another address (#332): one whose referrer is the link's own
+// page (a bot check's page that sends to the file once its script ran, #1494), or, in the next
+// seconds, one in the same tab (Firefox says which tab a page load is in) or whose referrer is the
+// page the link was on (a page's script that starts the download, a link to a page whose script
+// does).
 const bypass = new Map(); // address -> {at, tab, page, used}
+// The page a link opens may be a site's bot check ("Just a moment...", Cloudflare's): its script
+// runs in the tab (some want a box ticked) before the file comes. The link's own address, and a
+// download its page starts, stay the browser's that long; anything else only BYPASS_MS.
+const BYPASS_CHECK_MS = 60000;
 const BYPASS_MS = 10000;
 
 // `clicked`: the download is a link the user just clicked without Alt (Safari's `link`), never
 // one that follows an Alt+click.
 function altClicked(item, url, first, clicked = false) {
-  forget(bypass, BYPASS_MS);
+  forget(bypass, BYPASS_CHECK_MS);
   const exact = [item.url, url, first].map((u) => u && bypass.get(u)).find(Boolean);
   if (exact) {
     exact.used = true;
@@ -630,15 +636,33 @@ function altClicked(item, url, first, clicked = false) {
   }
   if (clicked) return false;
   const ref = item.referrer || "";
+  const now = Date.now();
   for (const [link, b] of bypass) {
     if (b.used) continue;
-    const tab = Number.isInteger(item.tabId) && item.tabId >= 0 && item.tabId === b.tab;
-    if (tab || fromPage(ref, link) || fromPage(ref, b.page)) {
+    const soon = now - b.at <= BYPASS_MS;
+    const tab = soon && Number.isInteger(item.tabId) && item.tabId >= 0 && item.tabId === b.tab;
+    if (tab || linkPage(ref, link) || (soon && (fromPage(ref, link) || fromPage(ref, b.page)))) {
       b.used = true;
       return true;
     }
   }
   return false;
+}
+
+// Whether `ref` (a download's referrer) is the page at `link` itself: the same address, give or
+// take what its own script added to its query (Cloudflare's check puts its token there) and its
+// #part. Never only the site's address: that may be any of its pages.
+function linkPage(ref, link) {
+  if (!ref || !link) return false;
+  try {
+    const r = new URL(ref);
+    const l = new URL(link);
+    if (r.origin !== l.origin || r.pathname !== l.pathname) return false;
+    for (const [k, v] of l.searchParams) if (!r.searchParams.getAll(k).includes(v)) return false;
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // Whether `ref` (a download's referrer) names `page`: the same address without its #part, or

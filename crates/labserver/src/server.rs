@@ -55,7 +55,7 @@ use tokio::sync::Notify;
 use tokio::task::JoinHandle;
 
 use crate::content;
-use crate::faults::{Faults, every, has_cookie, parse_flag};
+use crate::faults::{CLEARANCE, Faults, challenge_page, every, has_cookie, parse_flag};
 use crate::{debrid, drive, mediafire, pages, rapidgator, streams};
 
 const CHUNK: u64 = 64 * 1024;
@@ -775,6 +775,10 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     refuse_browsers=1  a bot check that refuses whatever claims to be a browser (a User-Agent with
                    Mozilla/) on any connection, the browser-like one too, and lets programs that
                    say what they are through: 403 with cf-mitigated: challenge (SourceForge's, #1422)
+    js_challenge=MS  a bot check passed by running its script (Cloudflare's "Just a moment...",
+                   #1494): 403 with cf-mitigated: challenge and a page whose script, after MS ms,
+                   sets the cookie mdm_lab_clearance=1 and loads the address again; with that
+                   cookie, the file
     refuse_ranges=STATUS    every request with a Range answered with STATUS (the whole file
                    still served): with browser_only=1, a site that lets the browser-like
                    connection download a file only whole (#668)
@@ -1518,6 +1522,23 @@ pub(crate) async fn serve(
     {
         shared.record(entry, 403, "fault:refuse_browsers");
         return challenge();
+    }
+    // A challenge a browser passes by running its script (#1494), whatever the connection: a
+    // program that runs none never gets the cookie it sets.
+    if let Some(wait) = f.js_challenge
+        && !has_cookie(entry.cookie.as_deref(), CLEARANCE)
+    {
+        shared.record(entry, 403, "fault:js_challenge");
+        return (
+            StatusCode::FORBIDDEN,
+            [
+                ("cf-mitigated", "challenge"),
+                ("content-type", "text/html; charset=UTF-8"),
+                ("cache-control", "no-store"),
+            ],
+            challenge_page(wait),
+        )
+            .into_response();
     }
     if let Some(want) = &f.require_cookie
         && !has_cookie(entry.cookie.as_deref(), want)

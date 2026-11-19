@@ -21,7 +21,8 @@
 // (Content-Disposition), torrents (a tracker's .torrent stays with the browser
 // while Torrent settings leave torrents alone, #1058), redirect, redirectNames (a link that only redirects to its file, named by
 // the file's own answer: filename*, a percent-encoded filename, relative and two redirects, #1427), leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
-// to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), sites (a listed
+// to the browser: a link, a redirect, a page's script, a bot check's page that runs its script first,
+// #1494; Firefox's own default too, #332), sites (a listed
 // site's page linking to a file on another host leaves it to the browser, #1049), manylinks
 // (Download all links on a page of 20,000 long links, in parts, to one Link grabber list), opened
 // (a PDF or MP3 the browser would show or play), openedNames
@@ -2347,14 +2348,17 @@ const CASES = {
     return `posted again with token=abc (${posts.length} request(s)); 303: ${seen.map((e) => `${e.method} ${e.path.split("/")[1]} ${e.status}`).join(", ")}`;
   },
 
-  // Alt+click (Option+click on a Mac, #332): the browser keeps the download, MDM gets nothing. A
-  // link to the file; one that redirects to it; Firefox's family: one to a page whose script goes
-  // to the file (Chromium downloads such a link's page itself), and its default setting, where the
-  // browser alone does nothing with an Alt+click (browser.altClickSave off; the run's profile has
-  // it on, as Chromium's behaviour).
+  // Alt+click (Option+click on a Mac, #332): the browser keeps the download, MDM gets nothing. The
+  // extension stops the browser's own Alt+click (Chromium's save of the link without opening it)
+  // and follows the link as a plain click, so its page opens in the tab (#1494). A link to the
+  // file; one that redirects to it; one to a page whose script goes to the file; one to a page
+  // behind a bot check whose script must run first (the lab's js_challenge: "Just a moment...",
+  // a cookie set and the address loaded again 3 s later, then the file: before #1494 Chromium
+  // saved the check's page); Firefox's family: its default setting too, where the browser alone
+  // does nothing with an Alt+click (browser.altClickSave off; the run's profile has it on).
   async alt(t) {
     const firefox = Boolean(t.session.inBrowser);
-    const kept = async (label, link, file) => {
+    const kept = async (label, link, file, { refused = 0 } = {}) => {
       const p = `/gen/1M/${file}`;
       await t.session.navigate(`${LAB}/page?link=${encodeURIComponent(link)}`);
       const a = await rect(t.session, "#link");
@@ -2375,7 +2379,13 @@ const CASES = {
       const item = (await mdmList()).find((d) => d.file === file);
       if (item) throw new Error(`${label}: MDM got it too: ${item.status} ${item.path}`);
       const all = await requests(p);
-      if (all.length !== 1) throw new Error(`${label}: ${all.length} requests for it (only the browser's expected): ${all.map(brief).join("; ")}`);
+      // The check's page first (the browser's page load, refused), then the file, once.
+      const served = all.filter((e) => e.status === 200);
+      const checks = all.filter((e) => e.outcome === "fault:js_challenge");
+      if (served.length !== 1 || checks.length !== refused || all.length !== refused + 1) {
+        throw new Error(`${label}: ${all.length} requests for it (${refused ? `the check's page and ` : ""}only the browser's expected): ${all.map(brief).join("; ")}`);
+      }
+      if (refused && all.at(-1).status !== 200) throw new Error(`${label}: the file wasn't asked after the check: ${all.map(brief).join("; ")}`);
       fs.rmSync(at);
       return label;
     };
@@ -2383,8 +2393,9 @@ const CASES = {
     const name = (k) => `e2e-alt-${k}-${t.name}.zip`;
     done.push(await kept("the link", `/gen/1M/${name("link")}`, name("link")));
     done.push(await kept("a redirect", `/redirect?to=${encodeURIComponent(`/gen/1M/${name("redirect")}`)}`, name("redirect")));
+    done.push(await kept("a page's script", `/leadon?to=${encodeURIComponent(`/gen/1M/${name("script")}`)}`, name("script")));
+    done.push(await kept("a bot check's page (3 s)", `/gen/1M/${name("check")}?js_challenge=3000`, name("check"), { refused: 1 }));
     if (firefox) {
-      done.push(await kept("a page's script", `/leadon?to=${encodeURIComponent(`/gen/1M/${name("script")}`)}`, name("script")));
       const pref = JSON.stringify("browser.altClickSave");
       await t.session.inBrowser(`(Services.prefs.setBoolPref(${pref}, false), "set")`);
       try {
