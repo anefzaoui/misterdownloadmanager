@@ -111,6 +111,10 @@ enum Cmd {
     /// Install (or update) gallery-dl for image galleries: its checksum list is verified against
     /// its author's signing key, the program against that list (Windows and Linux x86-64).
     InstallGalleryDl,
+    /// Install (or update) Deno, the JavaScript runtime yt-dlp needs for YouTube's qualities:
+    /// Deno's official build, checked against its release's SHA-256 (64-bit Windows, Linux and
+    /// macOS). yt-dlp is told of it from then on.
+    InstallDeno,
     /// Download an image gallery's files with gallery-dl (needs `install-gallery-dl`).
     GalleryGet {
         /// The gallery's address (a Wikimedia Commons category, a Flickr album, ...).
@@ -724,6 +728,7 @@ fn runs_helpers(cmd: &Cmd) -> bool {
         Cmd::InstallYtdlp
             | Cmd::InstallFfmpeg
             | Cmd::InstallGalleryDl
+            | Cmd::InstallDeno
             | Cmd::GalleryGet { .. }
             | Cmd::VideoInfo { .. }
             | Cmd::PlaylistInfo { .. }
@@ -820,6 +825,21 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             } else {
                 println!(
                     "ffmpeg {} verified and installed: {}",
+                    i.version,
+                    i.exe.display()
+                );
+            }
+            Ok(())
+        }
+        Cmd::InstallDeno => {
+            let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+            let i =
+                mdm_tools::deno::install_latest(&dir, &mdm_tools::net(Proxy::System), None).await?;
+            if json {
+                emit(json!({ "tool": "deno", "version": i.version, "path": i.exe }));
+            } else {
+                println!(
+                    "Deno {} verified and installed: {}",
                     i.version,
                     i.exe.display()
                 );

@@ -1279,7 +1279,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Nombre max. de connexions par défaut
-#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs; text in torrent downloads
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1520,6 +1520,11 @@
 #, machine
 	Downloading again from the start	Téléchargement à nouveau depuis le début
 #. text in the Download video window
+#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying Deno (about 40 MB)...	Téléchargement et vérification de Deno (environ 40 Mo)...
+#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Téléchargement et vérification de ffmpeg (environ 80 Mo)...
@@ -1598,14 +1603,15 @@
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	Liens déposés
-#. window title in a dialog box
+#. text in a dialog box
+#. window title: the question asked when an address added is already in the list of downloads
 #, machine
 	Duplicate download link	Lien de téléchargement en double
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	Chaque connexion emprunte l’itinéraire du système.
-#. text in the Link grabber window
+#. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	Dossier de catégorie de chaque fichier
@@ -2341,6 +2347,10 @@
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	Installez 7-Zip (gratuit), puis cliquez avec le bouton droit sur le téléchargement et choisissez Extraire.
 #. text in the Download video window
+#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
+#, machine
+	Install Deno	Installer Deno
+#. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Installer ffmpeg
@@ -2479,6 +2489,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Japan	Japon
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+#, machine
+	JavaScript runtime (Deno)	Moteur d’exécution JavaScript (Deno)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2596,6 +2610,10 @@
 #. Options → Remote check box (off by default)
 #, machine
 	Let phones and computers on the local network control MDM	Autoriser les téléphones et les ordinateurs du réseau local à contrôler MDM
+#. text in helpers.rs
+#. Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+#, machine
+	lets yt-dlp list all of YouTube's qualities	permet à yt-dlp de lister toutes les qualités de YouTube
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2858,6 +2876,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM ne répond pas. Nouvelle tentative...
+#. text in helpers.rs
+#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
+#, machine
+	MDM has no copy for this system: install Deno or Node.js	MDM n’a pas de copie pour ce système : installez Deno ou Node.js
 #. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
@@ -4043,7 +4065,8 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Enregistrer dans :
-#. text in the Link grabber window; text in rssdlg.rs
+#. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
+#. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
@@ -5938,6 +5961,10 @@
 #, machine
 	Your own program: {path} ({version})	Votre programme : {path} ({version})
 #. text in helpers.rs
+#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
+#, machine
+	Your system's, nothing to download: {path}	Celui de votre système, rien à télécharger : {path}
+#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	Votre système : {path}
@@ -6065,8 +6092,9 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	Fichier {ext}
-#. text in the main window's messages (deleting downloads' files)
+#. text in the main window's messages (deleting downloads' files); text in torrent downloads
 #. a message: a deleted download's file stayed on the disk; {file} = its name
+#. error dialog when a torrent's files could not be deleted; {file} is the download's name, {error} why
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	{file} n’a pas pu être supprimé du disque : {error}

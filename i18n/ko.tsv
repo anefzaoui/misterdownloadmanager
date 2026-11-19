@@ -1274,7 +1274,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	기본 최대 연결 수
-#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs; text in torrent downloads
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1515,6 +1515,11 @@
 #, machine
 	Downloading again from the start	처음부터 다시 다운로드 중
 #. text in the Download video window
+#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying Deno (about 40 MB)...	Deno 다운로드 및 확인 중(약 40MB)...
+#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg(약 80MB) 다운로드 및 확인 중...
@@ -1593,14 +1598,15 @@
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	끌어다 놓은 링크
-#. window title in a dialog box
+#. text in a dialog box
+#. window title: the question asked when an address added is already in the list of downloads
 #, machine
 	Duplicate download link	중복 다운로드 링크
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	각 연결은 시스템 경로를 따릅니다.
-#. text in the Link grabber window
+#. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	각 파일의 범주 폴더
@@ -2332,6 +2338,10 @@
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip(무료)을 설치한 다음 다운로드를 마우스 오른쪽 단추로 클릭하고 압축 해제를 선택하세요.
 #. text in the Download video window
+#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
+#, machine
+	Install Deno	Deno 설치
+#. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg 설치
@@ -2470,6 +2480,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Japan	일본
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+#, machine
+	JavaScript runtime (Deno)	자바스크립트 런타임(Deno)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2587,6 +2601,10 @@
 #. Options → Remote check box (off by default)
 #, machine
 	Let phones and computers on the local network control MDM	로컬 네트워크의 휴대폰 및 컴퓨터가 MDM을 제어하도록 허용
+#. text in helpers.rs
+#. Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+#, machine
+	lets yt-dlp list all of YouTube's qualities	yt-dlp가 YouTube의 모든 품질을 나열하도록 허용
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2849,6 +2867,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM이 응답하지 않습니다. 다시 시도 중...
+#. text in helpers.rs
+#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
+#, machine
+	MDM has no copy for this system: install Deno or Node.js	이 시스템에서 사용할 수 있는 MDM 버전이 없습니다. Deno 또는 Node.js를 설치하세요.
 #. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
@@ -4034,7 +4056,8 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	저장 위치:
-#. text in the Link grabber window; text in rssdlg.rs
+#. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
+#. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
@@ -5929,6 +5952,10 @@
 #, machine
 	Your own program: {path} ({version})	사용자 프로그램: {path} ({version})
 #. text in helpers.rs
+#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
+#, machine
+	Your system's, nothing to download: {path}	시스템 자체, 다운로드할 필요 없음: {path}
+#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	시스템: {path}
@@ -6056,8 +6083,9 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} 파일
-#. text in the main window's messages (deleting downloads' files)
+#. text in the main window's messages (deleting downloads' files); text in torrent downloads
 #. a message: a deleted download's file stayed on the disk; {file} = its name
+#. error dialog when a torrent's files could not be deleted; {file} is the download's name, {error} why
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	디스크에서 {file}을 삭제할 수 없습니다: {error}

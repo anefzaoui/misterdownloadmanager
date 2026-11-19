@@ -1274,7 +1274,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ಡೀಫಾಲ್ಟ್ ಗರಿಷ್ಠ ಸಂಪರ್ಕ ಸಂಖ್ಯೆ
-#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs; text in torrent downloads
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1515,6 +1515,11 @@
 #, machine
 	Downloading again from the start	ಮೊದಲಿನಿಂದ ಮತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ
 #. text in the Download video window
+#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying Deno (about 40 MB)...	Deno ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ಮತ್ತು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ (ಸುಮಾರು 40 MB)...
+#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ಮತ್ತು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ (ಸುಮಾರು 80 MB)...
@@ -1593,14 +1598,15 @@
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	ಬಿಡಲಾದ ಲಿಂಕ್‌ಗಳು
-#. window title in a dialog box
+#. text in a dialog box
+#. window title: the question asked when an address added is already in the list of downloads
 #, machine
 	Duplicate download link	ನಕಲಿ ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	ಪ್ರತಿ ಸಂಪರ್ಕವು ಸಿಸ್ಟಮ್‌ನ ಮಾರ್ಗವನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ.
-#. text in the Link grabber window
+#. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	ಪ್ರತಿ ಫೈಲ್‌ನ ವರ್ಗ ಫೋಲ್ಡರ್
@@ -2332,6 +2338,10 @@
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (ಉಚಿತ) ಅನ್ನು ಸ್ಥಾಪಿಸಿ, ನಂತರ ಡೌನ್‌ಲೋಡ್ ಮೇಲೆ ಬಲ ಕ್ಲಿಕ್ ಮಾಡಿ ಮತ್ತು ಹೊರತೆಗೆಯಿರಿ ಆಯ್ಕೆಮಾಡಿ.
 #. text in the Download video window
+#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
+#, machine
+	Install Deno	Deno ಸ್ಥಾಪಿಸಿ
+#. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ಅನ್ನು ಸ್ಥಾಪಿಸಿ
@@ -2470,6 +2480,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Japan	ಜಪಾನ್
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+#, machine
+	JavaScript runtime (Deno)	ಜಾವಾಸ್ಕ್ರಿಪ್ಟ್ ರನ್‌ಟೈಮ್ (Deno)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2587,6 +2601,10 @@
 #. Options → Remote check box (off by default)
 #, machine
 	Let phones and computers on the local network control MDM	ಸ್ಥಳೀಯ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿರುವ ಫೋನ್‌ಗಳು ಮತ್ತು ಕಂಪ್ಯೂಟರ್‌ಗಳು MDM ಅನ್ನು ನಿಯಂತ್ರಿಸಲು ಅನುಮತಿಸಿ
+#. text in helpers.rs
+#. Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+#, machine
+	lets yt-dlp list all of YouTube's qualities	yt-dlp ಗೆ YouTube ನ ಎಲ್ಲಾ ಗುಣಮಟ್ಟಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಲು ಅನುಮತಿಸುತ್ತದೆ
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2849,6 +2867,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM ಉತ್ತರಿಸುವುದಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ...
+#. text in helpers.rs
+#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
+#, machine
+	MDM has no copy for this system: install Deno or Node.js	MDM ಈ ಸಿಸ್ಟಮ್‌ಗಾಗಿ ಯಾವುದೇ ನಕಲನ್ನು ಹೊಂದಿಲ್ಲ: Deno ಅಥವಾ Node.js ಅನ್ನು ಸ್ಥಾಪಿಸಿ
 #. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
@@ -4034,7 +4056,8 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ಇಲ್ಲಿಗೆ ಉಳಿಸಿ:
-#. text in the Link grabber window; text in rssdlg.rs
+#. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
+#. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
@@ -5929,6 +5952,10 @@
 #, machine
 	Your own program: {path} ({version})	ನಿಮ್ಮ ಸ್ವಂತ ಪ್ರೋಗ್ರಾಂ: {path} ({version})
 #. text in helpers.rs
+#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
+#, machine
+	Your system's, nothing to download: {path}	ನಿಮ್ಮ ಸಿಸ್ಟಮ್‌ನ, ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಏನೂ ಇಲ್ಲ: {path}
+#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	ನಿಮ್ಮ ಸಿಸ್ಟಮ್‌ನ: {path}
@@ -6056,8 +6083,9 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} ಫೈಲ್
-#. text in the main window's messages (deleting downloads' files)
+#. text in the main window's messages (deleting downloads' files); text in torrent downloads
 #. a message: a deleted download's file stayed on the disk; {file} = its name
+#. error dialog when a torrent's files could not be deleted; {file} is the download's name, {error} why
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	{file} ಅನ್ನು ಡಿಸ್ಕ್‌ನಿಂದ ಅಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}

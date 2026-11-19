@@ -566,6 +566,13 @@ These ship in the next version.
 
 - ✅ The browser extension remembers paired servers and switches between them and this computer
   with a click without re-pairing (thanks to [@kngkatak](https://github.com/kngkatak))
+- ✅ Helpers downloads Deno, the JavaScript runtime YouTube now needs yt-dlp to have (without one a
+  look-up is slow, lists few qualities or fails with "Requested format is not available"):
+  Deno's official build, checked against its release's SHA-256, used by yt-dlp from then on; a
+  Node.js or Deno already on the computer is found and said instead, and the Download video
+  window offers **Install Deno** where YouTube lacked one
+  ([#1448](https://github.com/anefzaoui/misterdownloadmanager/issues/1448),
+  [#1470](https://github.com/anefzaoui/misterdownloadmanager/issues/1470))
 - ✅ Video qualities say the file and the codec that downloads (`1080p MP4 · AV1 · 60 fps`): in
   the Download video window, the menu over a video and `video-info`; "MP4" alone read as H.264.
   A line whose very stream is gone takes the nearest of its codec first

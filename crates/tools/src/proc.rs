@@ -1057,48 +1057,144 @@ fn with_usable_path(cmd: &mut Command) {
     }
 }
 
-/// This computer's JavaScript runtime for yt-dlp ([`js_runtime`]): `Some` with the arguments
-/// that tell yt-dlp of it (none for Deno where yt-dlp finds it itself), in the PATH folders a
-/// helper gets ([`usable_dirs`]: a node.exe behind a junction is named by its real folder) and
+/// The folders of MDM's PATH a helper gets ([`usable_dirs`]: a node.exe behind a junction is
+/// named by its real folder).
+fn path_dirs() -> Vec<PathBuf> {
+    std::env::var_os("PATH")
+        .map(|p| usable_dirs(&p))
+        .unwrap_or_default()
+}
+
+/// The person's home folder (`HOME`, else Windows' `USERPROFILE`).
+fn home_dir() -> Option<PathBuf> {
+    std::env::var_os("HOME")
+        .or_else(|| std::env::var_os("USERPROFILE"))
+        .map(PathBuf::from)
+}
+
+/// `--js-runtimes name:path`.
+fn runtime_args(name: &str, path: &Path) -> Vec<String> {
+    vec![
+        "--js-runtimes".to_owned(),
+        format!("{name}:{}", path.display()),
+    ]
+}
+
+/// This computer's own JavaScript runtime for yt-dlp, MDM's aside (#1448): Deno on the PATH, else
+/// the one [`js_runtime`] finds (Deno where its installer puts it, Node.js, QuickJS, Bun). What
+/// Helpers shows, so that nothing is downloaded that is already here. Looked for afresh.
+pub fn system_js_runtime() -> Option<PathBuf> {
+    let dirs = path_dirs();
+    program_in(&dirs, "deno")
+        .or_else(|| js_runtime(&dirs, &runtime_dirs(), home_dir().as_deref()).map(|(_, path)| path))
+}
+
+/// This computer's JavaScript runtime for yt-dlp: MDM's own Deno first (Helpers, #1448, #1470),
+/// named to yt-dlp; else [`js_runtime`]: `Some` with the arguments that tell yt-dlp of it (none
+/// for Deno where yt-dlp finds it itself), in the PATH folders a helper gets ([`path_dirs`]) and
 /// in MDM's own tools folder (per the EJS guide, a runtime beside `yt-dlp.exe` counts too; only
 /// MDM's, never a folder a chosen program sits in, where a node.exe nobody meant could land and
 /// be run, cached for the session). Kept once found; while there is none it is looked for again
-/// at each run, so one installed meanwhile counts at the next look-up (#852).
+/// at each run, so one installed meanwhile counts at the next look-up (#852). MDM's own Deno is
+/// read at each run, so the one Helpers just installed is used from the next look-up on.
 fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
+    if let Some(own) = crate::tools_dir()
+        .as_deref()
+        .and_then(crate::deno::installed)
+    {
+        return Some(runtime_args("deno", &own.exe));
+    }
     static FOUND: Mutex<Option<Vec<String>>> = Mutex::new(None);
     let mut found = FOUND
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
     if found.is_none() {
-        let mut dirs: Vec<PathBuf> = std::env::var_os("PATH")
-            .map(|p| usable_dirs(&p))
-            .unwrap_or_default();
+        let mut dirs = path_dirs();
         if let Some(tools) = crate::tools_dir()
             && exe.starts_with(&tools)
             && let Some(beside) = exe.parent()
         {
             dirs.push(beside.to_path_buf());
         }
-        let home = std::env::var_os("HOME")
-            .or_else(|| std::env::var_os("USERPROFILE"))
-            .map(PathBuf::from);
         *found = if program_in(&dirs, "deno").is_some() {
             Some(Vec::new())
         } else {
-            js_runtime(&dirs, &runtime_dirs(), home.as_deref()).map(|(name, path)| {
-                vec![
-                    "--js-runtimes".to_owned(),
-                    format!("{name}:{}", path.display()),
-                ]
-            })
+            js_runtime(&dirs, &runtime_dirs(), home_dir().as_deref())
+                .map(|(name, path)| runtime_args(name, &path))
         };
     }
     found.clone()
 }
 
-/// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it.
+/// The first yt-dlp that has `--js-runtimes` (2025.11.12, when YouTube came to need a
+/// JavaScript runtime): an older one stops at an option it doesn't know, on every site.
+const JS_RUNTIMES_SINCE: &str = "2025.11.12";
+
+/// Whether yt-dlp `version` has `--js-runtimes` ([`JS_RUNTIMES_SINCE`]); a version that isn't a
+/// date (a build of the person's own) is taken to have it, as before.
+fn knows_js_runtimes(version: &str) -> bool {
+    let dated = version
+        .split('.')
+        .filter(|p| p.parse::<u64>().is_ok())
+        .count()
+        >= 3;
+    !dated || !crate::newer(JS_RUNTIMES_SINCE, version)
+}
+
+/// Whether the yt-dlp at `exe` has `--js-runtimes`: MDM's own and a chosen one by the version
+/// they were installed or chosen with; the system's is asked (`--version`), once a session.
+/// Not known (it didn't answer): taken to have it, as before.
+fn takes_js_runtimes(exe: &Path) -> bool {
+    static KNOWN: Mutex<Vec<(PathBuf, bool)>> = Mutex::new(Vec::new());
+    let known = KNOWN
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .iter()
+        .find(|(p, _)| p == exe)
+        .map(|(_, t)| *t);
+    if let Some(takes) = known {
+        return takes;
+    }
+    let version = crate::tools_dir()
+        .as_deref()
+        .and_then(crate::installed)
+        .filter(|i| i.exe == exe && !i.is_system())
+        .map(|i| i.version)
+        .or_else(|| {
+            crate::chosen::ask(crate::chosen::Helper::YtDlp, exe)
+                .ok()
+                .map(|i| i.version)
+        });
+    let takes = version.as_deref().is_none_or(knows_js_runtimes);
+    if !takes {
+        tracing::warn!(
+            "yt-dlp {} is older than {JS_RUNTIMES_SINCE}: not told of a JavaScript runtime",
+            version.unwrap_or_default()
+        );
+    }
+    KNOWN
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .push((exe.to_owned(), takes));
+    takes
+}
+
+/// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it and knows how to
+/// hear it ([`takes_js_runtimes`]). Said in MDM's log each time it changes.
 fn js_runtime_args(exe: &Path) -> Vec<String> {
-    js_runtime_found(exe).unwrap_or_default()
+    let args = js_runtime_found(exe).unwrap_or_default();
+    if args.is_empty() || !takes_js_runtimes(exe) {
+        return Vec::new();
+    }
+    static SAID: Mutex<Vec<String>> = Mutex::new(Vec::new());
+    let mut said = SAID
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    if *said != args {
+        tracing::info!("yt-dlp's JavaScript runtime: {}", args.join(" "));
+        said.clone_from(&args);
+    }
+    args
 }
 
 /// Options → Sites Logins → Use my yt-dlp config file: off, the default.
@@ -2087,6 +2183,48 @@ mod tests {
         // Deno on the PATH: yt-dlp finds it itself.
         touch(&path, "deno");
         assert_eq!(js_runtime(&dirs, &[], Some(&home)), None);
+    }
+
+    /// #1448: MDM's own Deno is named to yt-dlp by its path, as one argument after the option
+    /// (a Windows path's `C:` stays whole: yt-dlp splits at the first colon only).
+    #[test]
+    fn mdms_own_deno_is_named_to_yt_dlp() {
+        let deno = Path::new(
+            r"C:\Users\A B\AppData\Roaming\misterdownloadmanager\tools\deno\2.9.8\deno.exe",
+        );
+        assert_eq!(
+            runtime_args("deno", deno),
+            [
+                "--js-runtimes".to_owned(),
+                format!("deno:{}", deno.display())
+            ]
+        );
+        let deno = Path::new("/home/a/.local/share/misterdownloadmanager/tools/deno/2.9.8/deno");
+        assert_eq!(
+            runtime_args("deno", deno)[1],
+            "deno:/home/a/.local/share/misterdownloadmanager/tools/deno/2.9.8/deno"
+        );
+    }
+
+    /// yt-dlp before 2025.11.12 has no `--js-runtimes`, and stops at it: it isn't told of a
+    /// runtime. A version that isn't a date (a build of the person's own) is, as before.
+    #[test]
+    fn only_a_yt_dlp_that_has_the_option_is_told_of_a_runtime() {
+        for old in ["2025.10.22", "2025.11.11", "2024.12.23", "2023.03.04.1"] {
+            assert!(!knows_js_runtimes(old), "{old}");
+        }
+        for new in [
+            "2025.11.12",
+            "2025.11.12.232521",
+            "2025.12.8",
+            "2026.10.26",
+            "2026.10.26.1",
+        ] {
+            assert!(knows_js_runtimes(new), "{new}");
+        }
+        for unknown in ["", "system", "master", "1.0"] {
+            assert!(knows_js_runtimes(unknown), "{unknown}");
+        }
     }
 
     /// #852: what yt-dlp 2026.10.26 wrote looking a YouTube video up (`-J`, its stderr as is):

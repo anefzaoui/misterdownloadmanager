@@ -243,10 +243,6 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 	A rule adds the new articles whose titles it matches, as they come.	تضيف القاعدة المقالات الجديدة التي تطابق عناوينها، فور ورودها.
-#. text in torrent downloads
-#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
-#, machine
-	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	لم ينشئ MDM هذه الملفات. قد يؤدي بدء التورنت إلى تغيير حجمها واستبدال محتواها، بما في ذلك الملفات غير المحددة التي تشترك في الأجزاء. هل تريد استخدامها لهذا التورنت؟
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	أرسل خادم على هذا الكمبيوتر التنزيل إلى مكان آخر، ولن يمر عبر {adapter}
@@ -985,6 +981,10 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 	Couldn't extract {name}: {why}	تعذر استخراج {name}: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	إنشاء مجلد لهذا التورنت
 #. window title in a dialog box
 	Create folder	إنشاء مجلد
 #. text in countries.rs
@@ -1040,7 +1040,7 @@
 	Default download settings	إعدادات التنزيل الافتراضية
 #. text in the Options window
 	Default max. conn. number	الحد الأقصى الافتراضي لعدد الاتصالات
-#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs; text in torrent downloads
 #. button: deletes the category
 #. verb: delete the item
 	Delete	حذف
@@ -1223,6 +1223,11 @@
 #. message or event log entry in the main window
 	Downloading again from the start	قيد التنزيل مرة أخرى من البداية
 #. text in the Download video window
+#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying Deno (about 40 MB)...	قيد تنزيل Deno والتحقق منه (حوالي 40 ميغابايت)...
+#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying ffmpeg (about 80 MB)...	قيد تنزيل ffmpeg والتحقق منه (حوالي 80 ميغابايت)...
 #. text in gallerydlg.rs
@@ -1288,12 +1293,13 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 	Dropped links	روابط مفلتة
-#. window title in a dialog box
+#. text in a dialog box
+#. window title: the question asked when an address added is already in the list of downloads
 	Duplicate download link	رابط تنزيل مكرر
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 	Each connection takes the system's route.	يتخذ كل اتصال مسار النظام.
-#. text in the Link grabber window
+#. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 	Each file's category folder	مجلد فئة كل ملف
 #. text in countries.rs
@@ -1861,6 +1867,10 @@
 #. in the "7-Zip needed" window, under why
 	Install 7-Zip (free), then right-click the download and choose Extract.	ثبت 7-Zip (مجاني)، ثم انقر بزر الماوس الأيمن فوق التنزيل واختر استخراج.
 #. text in the Download video window
+#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
+#, machine
+	Install Deno	تثبيت Deno
+#. text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	تثبيت ffmpeg
 #. button in gallerydlg.rs
@@ -1972,6 +1982,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Japan	اليابان
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+#, machine
+	JavaScript runtime (Deno)	وقت تشغيل JavaScript (Deno)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Jersey	جيرزي
@@ -2065,6 +2079,10 @@
 #. Options → Remote check box (off by default)
 #, machine
 	Let phones and computers on the local network control MDM	السماح للهواتف وأجهزة الكمبيوتر على الشبكة المحلية بالتحكم في MDM
+#. text in helpers.rs
+#. Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+#, machine
+	lets yt-dlp list all of YouTube's qualities	يسمح لـ yt-dlp بسرد جميع مستويات جودة YouTube
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 	Letters	أحرف
@@ -2269,6 +2287,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	تعذر على MDM القيام بذلك.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	لم ينشئ MDM هذه الملفات. قد يؤدي بدء التورنت إلى تغيير حجمها واستبدال محتواها، بما في ذلك الملفات غير المحددة التي تشترك في الأجزاء. هل تريد استخدامها لهذا التورنت؟
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -2278,6 +2300,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM لا يستجيب. تتم المحاولة مرة أخرى...
+#. text in helpers.rs
+#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
+#, machine
+	MDM has no copy for this system: install Deno or Node.js	لا تتوفر نسخة من MDM لهذا النظام: ثبت Deno أو Node.js
 #. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
@@ -3214,7 +3240,8 @@
 	Save To...	حفظ في...
 #. text in a download's progress window; text in a download's Properties window
 	Save To:	حفظ في:
-#. text in the Link grabber window; text in rssdlg.rs
+#. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
+#. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 	Save to:	حفظ في:
@@ -4213,6 +4240,10 @@
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	يتطلب هذا ffmpeg
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	هذا الخيار متاح لتنزيلات BitTorrent المباشرة
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	تحتفظ هذه النسخة المحمولة ببيانات تسجيل الدخول وكلمات المرور في إعداداتها الخاصة، وهي مشفرة لحساب Windows الخاص بك.
@@ -4782,6 +4813,10 @@
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	البرنامج الخاص بك: {path} ({version})
 #. text in helpers.rs
+#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
+#, machine
+	Your system's, nothing to download: {path}	نسخة نظامك، لا شيء للتنزيل: {path}
+#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	نسخة نظامك: {path}
 #. text in the Download video window
@@ -4891,8 +4926,9 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	ملف {ext}
-#. text in the main window's messages (deleting downloads' files)
+#. text in the main window's messages (deleting downloads' files); text in torrent downloads
 #. a message: a deleted download's file stayed on the disk; {file} = its name
+#. error dialog when a torrent's files could not be deleted; {file} is the download's name, {error} why
 #. {error} = an error message (keep the braces as they are)
 	{file} could not be deleted from the disk: {error}	تعذر حذف {file} من القرص: {error}
 #. text in a dialog box
@@ -6177,9 +6213,3 @@ unit	{n} MB	{n} ميغابايت
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 unit	{n} MB/sec	{n} ميغابايت/ثانية
-#. Add torrent: outer folder option
-#, machine
-	Create a folder for this torrent	إنشاء مجلد لهذا التورنت
-#. Add torrent: outer folder option
-#, machine
-	This option is available for direct BitTorrent downloads	هذا الخيار متاح لتنزيلات BitTorrent المباشرة

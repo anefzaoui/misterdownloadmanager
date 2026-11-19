@@ -1158,6 +1158,10 @@
 #. message or event log entry in the main window
 	Downloading again from the start	Downloading again from the start
 #. text in the Download video window
+#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
+#. the trailing ... means it is still going on: keep it
+	Downloading and verifying Deno (about 40 MB)...	Downloading and verifying Deno (about 40 MB)...
+#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying ffmpeg (about 80 MB)...	Downloading and verifying ffmpeg (about 80 MB)...
 #. text in gallerydlg.rs
@@ -1763,6 +1767,9 @@
 #. in the "7-Zip needed" window, under why
 	Install 7-Zip (free), then right-click the download and choose Extract.	Install 7-Zip (free), then right-click the download and choose Extract.
 #. text in the Download video window
+#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
+	Install Deno	Install Deno
+#. text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	Install ffmpeg
 #. button in gallerydlg.rs
@@ -1867,6 +1874,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Japan	Japan
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+	JavaScript runtime (Deno)	JavaScript runtime (Deno)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Jersey	Jersey
@@ -1956,6 +1966,9 @@
 #. checkbox in the Options window
 #. Options → Remote check box (off by default)
 	Let phones and computers on the local network control MDM	Let phones and computers on the local network control MDM
+#. text in helpers.rs
+#. Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+	lets yt-dlp list all of YouTube's qualities	lets yt-dlp list all of YouTube's qualities
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 	Letters	Letters
@@ -2157,6 +2170,9 @@
 #. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
 #. the trailing ... means it is still going on: keep it
 	MDM does not answer. Trying again...	MDM does not answer. Trying again...
+#. text in helpers.rs
+#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
+	MDM has no copy for this system: install Deno or Node.js	MDM has no copy for this system: install Deno or Node.js
 #. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 	MDM has no copy for this system: install it, or use another program	MDM has no copy for this system: install it, or use another program
@@ -4504,6 +4520,9 @@
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	Your own program: {path} ({version})
+#. text in helpers.rs
+#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
+	Your system's, nothing to download: {path}	Your system's, nothing to download: {path}
 #. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	Your system's: {path}

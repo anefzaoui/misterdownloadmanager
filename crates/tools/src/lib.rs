@@ -7,6 +7,8 @@
 pub mod bgutil;
 pub mod chosen;
 pub mod declared;
+// Deno, the JavaScript runtime yt-dlp needs for YouTube (#1448, #1470).
+pub mod deno;
 pub mod ffmpeg;
 mod folder;
 pub mod gallery;
