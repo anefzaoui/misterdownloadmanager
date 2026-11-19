@@ -1119,6 +1119,16 @@ const ok = (what) => {
   const res2 = await ask({ type: "drive-frame-pointer" }, otherSubframe);
   assert.deepEqual(res2, { ok: false });
 
+  // Docs subframe that is not a player frame -> rejected
+  const docsSubframe = {
+    id: "ours",
+    url: "https://docs.google.com/document/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/edit",
+    frameId: 2,
+    tab: { id: 7, url: "https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3" },
+  };
+  const resDocs = await ask({ type: "drive-frame-pointer" }, docsSubframe);
+  assert.deepEqual(resDocs, { ok: false });
+
   // Top-level frame (frameId 0) -> rejected
   const topFrame = {
     id: "ours",
@@ -2402,7 +2412,7 @@ function samplePage(html) {
 
 // #670: video.js's button against a fake DOM — whether it shows over a video while the page is
 // in full screen, with the popup's option off (as installed) or on.
-function videoButton({ stored = {}, location, iframes, videos } = {}) {
+function videoButton({ stored = {}, location, iframes, videos, subframe = false } = {}) {
   const source = readText("../../extension/video.js");
   const handlers = {};
   // The frames asked for, by id: one cancelled since (a tick after a hide) does not run.
@@ -2530,13 +2540,13 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
       onChanged: { addListener: (f) => storageListeners.push(f) },
     },
   };
-  const loc = location || { hostname: "vid.test", href: "https://vid.test/watch" };
+  const loc = { hostname: "vid.test", href: "https://vid.test/watch", search: "", pathname: "/watch", ...location };
   const win = {
     top: null,
     location: loc,
     document: doc,
   };
-  win.top = win;
+  win.top = subframe ? {} : win;
   class HTMLAudioElement {}
   vm.runInNewContext(source, {
     browser: api,
@@ -2588,6 +2598,7 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
       for (const f of storageListeners) f({ hideVideoFullscreen: { newValue: value } }, "local");
       await settle();
     },
+    hasFramePointer: () => Boolean((handlers.pointermove || []).some((f) => f.name === "onFrameMove")),
   };
 }
 {
@@ -2682,21 +2693,41 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
   ok("#758: non-video preview frame never gets the button, video player frame does");
 
   // #758: only the player's own subframe sets isDriveFrame, never docs/sheets subframes
-  const isPlayerFrame = (url) => {
-    const u = new URL(url);
-    const isDriveHost = /(^|\.)(?:drive|docs)\.google\.com$/.test(u.hostname);
-    return (
-      (u.hostname === "youtube.googleapis.com" && /[?&](?:driveid|docid)=/.test(u.search)) ||
-      (isDriveHost && /\/file\/d\/[^/]+\/preview/.test(u.pathname))
-    );
-  };
-  assert.equal(isPlayerFrame("https://youtube.googleapis.com/embed/abc?driveid=1s52ek"), true);
-  assert.equal(isPlayerFrame("https://youtube.googleapis.com/embed/abc?docid=1s52ek"), true);
-  assert.equal(isPlayerFrame("https://drive.google.com/file/d/1s52ek/preview"), true);
-  assert.equal(isPlayerFrame("https://docs.google.com/file/d/1s52ek/preview"), true);
-  assert.equal(isPlayerFrame("https://docs.google.com/document/d/1s52ek/edit"), false);
-  assert.equal(isPlayerFrame("https://docs.google.com/spreadsheets/d/1s52ek/edit"), false);
-  assert.equal(isPlayerFrame("https://drive.google.com/drive/folders/18l2MEarb"), false);
+  const playerYt = videoButton({
+    location: { hostname: "youtube.googleapis.com", href: "https://youtube.googleapis.com/embed/abc?driveid=1s52ek", search: "?driveid=1s52ek", pathname: "/embed/abc" },
+    subframe: true,
+  });
+  assert.equal(playerYt.hasFramePointer(), true, "youtube embed with driveid registers frame pointer");
+
+  const playerYtDoc = videoButton({
+    location: { hostname: "youtube.googleapis.com", href: "https://youtube.googleapis.com/embed/abc?docid=1s52ek", search: "?docid=1s52ek", pathname: "/embed/abc" },
+    subframe: true,
+  });
+  assert.equal(playerYtDoc.hasFramePointer(), true, "youtube embed with docid registers frame pointer");
+
+  const playerPreview = videoButton({
+    location: { hostname: "drive.google.com", href: "https://drive.google.com/file/d/1s52ek/preview", search: "", pathname: "/file/d/1s52ek/preview" },
+    subframe: true,
+  });
+  assert.equal(playerPreview.hasFramePointer(), true, "Drive /file/d/.../preview registers frame pointer");
+
+  const docsSubframe = videoButton({
+    location: { hostname: "docs.google.com", href: "https://docs.google.com/document/d/1s52ek/edit", search: "", pathname: "/document/d/1s52ek/edit" },
+    subframe: true,
+  });
+  assert.equal(docsSubframe.hasFramePointer(), false, "Docs subframe does not register frame pointer");
+
+  const sheetsSubframe = videoButton({
+    location: { hostname: "docs.google.com", href: "https://docs.google.com/spreadsheets/d/1s52ek/edit", search: "", pathname: "/spreadsheets/d/1s52ek/edit" },
+    subframe: true,
+  });
+  assert.equal(sheetsSubframe.hasFramePointer(), false, "Sheets subframe does not register frame pointer");
+
+  const folderSubframe = videoButton({
+    location: { hostname: "drive.google.com", href: "https://drive.google.com/drive/folders/18l2MEarb", search: "", pathname: "/drive/folders/18l2MEarb" },
+    subframe: true,
+  });
+  assert.equal(folderSubframe.hasFramePointer(), false, "Folder subframe does not register frame pointer");
   ok("#758: pointer bridge only triggers on player subframe, not Docs or Sheets");
 }
 

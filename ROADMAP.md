@@ -605,7 +605,6 @@ These ship in the next version.
   changes them and every week (ClusterFuzzLite); robustness fixes in reading HLS and DASH
   streams' pieces, a video's sizes and a .torrent file's trackers came out of it, and Link grabber
   no longer lists an `ftps:` link that names no server
->>>>>>> origin/main
 
 - ✅ Torrents connect over uTP (BitTorrent over UDP) beside TCP, on by default with a switch in
   Torrent settings: peers that take only uTP are reached, so torrents find as many peers as in

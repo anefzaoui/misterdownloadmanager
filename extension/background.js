@@ -3118,12 +3118,15 @@ async function pageMessage(m, sender) {
     const tabId = tab.id;
     const tabUrl = tab.url || "";
     const senderUrl = sender.url || "";
+    const isPlayer =
+      (/(^|\.)youtube\.googleapis\.com$/i.test(siteOf(senderUrl)) && /[?&](?:driveid|docid)=/.test(senderUrl)) ||
+      (isDrive(senderUrl) && /\/file\/d\/[^/]+\/preview/.test(senderUrl));
     if (
       Number.isInteger(tabId) &&
       Number.isInteger(sender.frameId) &&
       sender.frameId !== 0 &&
       isDrive(tabUrl) &&
-      (isDrive(senderUrl) || /(^|\.)youtube\.googleapis\.com$/i.test(siteOf(senderUrl)))
+      isPlayer
     ) {
       ext.tabs.sendMessage(tabId, { type: "drive-frame-pointer" }, { frameId: 0 }).catch(() => {});
       return { ok: true };
