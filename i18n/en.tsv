@@ -2876,6 +2876,10 @@
 #. event log entry: Recheck failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 	Recheck failed: {error}	Recheck failed: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+	Recording...	Recording...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 	Redownload	Redownload
@@ -3035,6 +3039,10 @@
 #. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 	Saved in	Saved in
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+	Saving...	Saving...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 	Schedule	Schedule
@@ -3402,6 +3410,9 @@
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	Stop
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+	Stop and save	Stop and save
 #. text in the Scheduler window; checkbox in the Scheduler window
 	Stop download at	Stop download at
 #. text in playlistdlg.rs

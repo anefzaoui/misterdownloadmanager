@@ -757,12 +757,16 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         V::Stopped => (State::Cancelled, None, None),
     };
     let size = p.total;
+    // A live stream yt-dlp records says no progress: what it has recorded is what's downloaded,
+    // so Downloaded and the rate (from its growth) follow the recording.
+    let downloaded = p.downloaded.max(p.recorded);
     // Downloaded by the helper itself (a live stream, RTMP; looking the page up): its one
-    // connection, not an empty list (#793).
+    // connection, not an empty list (#793); receiving once a live stream's recording grows,
+    // though yt-dlp gives it no speed.
     let own = (p.engine.is_none() && state == State::Downloading).then(|| ConnView {
         id: 0,
-        downloaded: p.downloaded,
-        status: if p.speed > 0.0 {
+        downloaded,
+        status: if p.speed > 0.0 || p.recorded > 0 {
             ConnStatus::Receiving
         } else {
             ConnStatus::Connecting
@@ -774,7 +778,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         size.map(|t| {
             vec![mdm_engine::download::SegmentView {
                 start: 0,
-                cursor: p.downloaded.min(t),
+                cursor: downloaded.min(t),
                 end: t,
             }]
         })
@@ -789,7 +793,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         url: engine.address.clone().unwrap_or_else(|| url.clone()),
         file,
         size,
-        downloaded: p.downloaded,
+        downloaded,
         resumable: Some(true),
         segments,
         connections: own.into_iter().chain(engine.connections).collect(),
@@ -832,6 +836,23 @@ impl Job {
             Job::Gallery { job, .. } => job.stop(),
             Job::Torrent(t) => t.cancel(),
             Job::Remote(r) => r.cancel(),
+        }
+    }
+
+    /// Stop and save: a live stream yt-dlp records is stopped and what it recorded kept
+    /// as a video, the download then done; anything else is cancelled as [`Job::cancel`] does.
+    pub fn save(&self) {
+        match self {
+            Job::Video { job, .. } => job.save(),
+            _ => self.cancel(),
+        }
+    }
+
+    /// A live stream's download: recording, being saved, or neither (`None`: every other job).
+    pub fn live_state(&self) -> Option<mdm_tools::video::LiveState> {
+        match self {
+            Job::Video { job, .. } => job.live_state(),
+            _ => None,
         }
     }
 
@@ -1248,6 +1269,11 @@ impl Item {
         let Some(live) = &mut self.live else {
             return false;
         };
+        // Before the snapshot, not after: a live stream recording or being saved as this is read
+        // can only show, in the snapshot taken next, more recorded, 0 (its run over, being
+        // saved) or its file's size (saved). Read after, a save begun or ended in between would
+        // show 0 for one look, unheld, and its file's size counted again by the download limit.
+        let live_now = live.dl.live_state();
         let s = live.dl.snapshot();
         // The service's id for a torrent sent to it (#44), kept to continue after a restart.
         if let (Job::Remote(r), Some(spec)) = (&live.dl, self.remote.as_mut())
@@ -1263,7 +1289,7 @@ impl Item {
             live.addressed = true;
             self.file_url = Some(s.url.clone());
         }
-        self.downloaded = s.downloaded;
+        self.downloaded = shown_downloaded(live_now, s.downloaded, self.downloaded);
         self.size = size_after(s.state, s.size, s.downloaded, self.size);
         self.resumable = s.resumable.or(self.resumable);
         if let Some(f) = &s.file {
@@ -1287,9 +1313,9 @@ impl Item {
         if self.torrent.is_none() && every_byte_in(&s) {
             // Every byte in (#736): nothing comes in while the last of it is written out, the
             // file checked, joined or named; the rate the download ended on isn't one any more.
-            live.speed.clear(Instant::now(), s.downloaded);
+            live.speed.clear(Instant::now(), self.downloaded);
         } else {
-            live.speed.read(Instant::now(), s.downloaded);
+            live.speed.read(Instant::now(), self.downloaded);
         }
         let seen = live.seen;
         for e in s.events.iter().filter(|e| e.seq > seen) {
@@ -1503,6 +1529,12 @@ impl Item {
         }
     }
 
+    /// A running live stream's download: recording, or its recording being saved
+    /// ([`Job::live_state`]); `None` when nothing runs.
+    pub fn live_state(&self) -> Option<mdm_tools::video::LiveState> {
+        self.live.as_ref().and_then(|l| l.dl.live_state())
+    }
+
     /// Resume / Download Now may start it: not running, and not finished (a gallery finished
     /// may start again: it fetches the files not there yet, #58).
     pub fn can_start(&self) -> bool {
@@ -1681,6 +1713,15 @@ impl Item {
 fn site_only(address: &str) -> bool {
     Url::parse(address)
         .is_ok_and(|u| u.path() == "/" && u.query().is_none() && u.fragment().is_none())
+}
+
+/// What a running download shows as downloaded: `now`, its job's; a live stream recording or
+/// being saved (`live`, read before `now`) never less than `shown`. Its recording being saved, its
+/// run is over and what it recorded no longer counts in its progress (0 until its file is
+/// there): what it got stays, for the window and for the download limit, which counts only what
+/// is more than before (`Quota::record`) and would count the recording again as it came back.
+fn shown_downloaded(live: Option<mdm_tools::video::LiveState>, now: u64, shown: u64) -> u64 {
+    if live.is_some() { now.max(shown) } else { now }
 }
 
 /// Every byte of a download is in (#736): the last of it is written out (its whole size
@@ -2030,6 +2071,7 @@ mod file_address_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            recorded: 0,
         };
         // Looking the page up: no stream yet.
         assert_eq!(tool_snapshot(p.clone(), &page).url, page);
@@ -2476,7 +2518,67 @@ mod helper_connection_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            recorded: 0,
         }
+    }
+
+    /// A live stream yt-dlp records says no progress: what it has recorded is what's downloaded
+    /// (Downloaded, and the rate from its growth); a progress of its own counts when larger.
+    #[test]
+    fn a_recording_counts_as_downloaded() {
+        let page: Url = "https://www.example.com/live".parse().unwrap();
+        let mut p = progress();
+        p.helper = Some(mdm_tools::streams::Helper::Live);
+        p.recorded = 3 << 20;
+        let s = tool_snapshot(p.clone(), &page);
+        assert_eq!(s.downloaded, 3 << 20);
+        assert_eq!(s.connections[0].downloaded, 3 << 20);
+        assert!(matches!(s.connections[0].status, ConnStatus::Receiving));
+        p.downloaded = 4 << 20;
+        assert_eq!(tool_snapshot(p.clone(), &page).downloaded, 4 << 20);
+        p.recorded = 0;
+        p.downloaded = 0;
+        assert_eq!(tool_snapshot(p, &page).downloaded, 0);
+    }
+
+    /// A live stream recorded, stopped and saved: what it shows as downloaded never drops while
+    /// it is saved (its run over, its progress 0), and the download limit counts the recording
+    /// once, not again as its file comes. A live stream started anew shows its new recording.
+    #[test]
+    fn a_saved_recording_is_counted_once() {
+        use mdm_tools::video::LiveState::{Recording, Saving};
+        const M: u64 = 1 << 20;
+        // (live_state read before the snapshot, the snapshot's downloaded)
+        let looks = [
+            // Started: nothing recorded yet.
+            (None, 0),
+            (Some(Recording), 4 * M),
+            (Some(Recording), 10 * M),
+            // Stop and save: read as recording, its run over in the snapshot.
+            (Some(Recording), 0),
+            (Some(Saving), 0),
+            // Saved as the snapshot was taken: its file's size.
+            (Some(Saving), 10 * M - 1000),
+            (None, 10 * M - 1000),
+        ];
+        let start = std::time::Instant::now();
+        let mut quota = crate::quota::Quota::default();
+        let mut shown = 0;
+        for (n, (live, now)) in looks.into_iter().enumerate() {
+            let before = shown;
+            shown = shown_downloaded(live, now, shown);
+            if live.is_some() {
+                assert!(shown >= before, "look {n}: {shown} < {before}");
+            }
+            quota.record(start, std::iter::once((7, shown)));
+        }
+        assert_eq!(shown, 10 * M - 1000);
+        assert_eq!(
+            quota.used(start, std::time::Duration::from_secs(3600)),
+            10 * M
+        );
+        // Not a live stream, or one not recording (yet, again): its job's own figure.
+        assert_eq!(shown_downloaded(None, 0, 10 * M), 0);
     }
 
     /// #793: a video yt-dlp downloads itself shows its one connection, not an empty list; one
