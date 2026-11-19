@@ -9374,6 +9374,50 @@ fn share_on_this_thread(
     path: &std::path::Path,
     said: &std::sync::mpsc::Sender<Result<(), String>>,
 ) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        DispatchMessageW, GetMessageW, KillTimer, MSG, SetTimer, TranslateMessage, WM_CLOSE,
+        WM_TIMER,
+    };
+    com_on_this_thread();
+    let Some(window) = ShareAnchor::new(true) else {
+        let _ = said.send(Err("no window for the share sheet".into()));
+        return;
+    };
+    let hwnd = window.0;
+    let asked = share_prepare(hwnd, path).and_then(|interop| {
+        // SAFETY: our window, shown and in front.
+        unsafe { interop.ShowShareUIForWindow(windows::Win32::Foundation::HWND(hwnd)) }
+    });
+    let failed = asked.as_ref().err().map(|e| e.to_string());
+    let _ = said.send(asked.map_err(|e| e.to_string()));
+    if let Some(e) = failed {
+        tracing::warn!("share sheet: {e}");
+        return;
+    }
+    // SAFETY: this thread's own window and message loop; the timer is ours and killed after.
+    unsafe {
+        let timer = SetTimer(hwnd, 1, SHARE_WAIT_MS, None);
+        let mut msg: MSG = zeroed();
+        while GetMessageW(&mut msg, std::ptr::null_mut(), 0, 0) > 0 {
+            if msg.hwnd == hwnd && (msg.message == WM_CLOSE || msg.message == WM_TIMER) {
+                break;
+            }
+            TranslateMessage(&msg);
+            DispatchMessageW(&msg);
+        }
+        KillTimer(hwnd, timer);
+    }
+    drop(window);
+}
+
+/// Everything the share sheet needs for the file at `path` and window `hwnd` but showing it:
+/// the file as a `StorageFile`, the window's DataTransferManager (through the desktop interop),
+/// and its `DataRequested` handler, which gives the sheet the file and closes the window once
+/// the share is done or cancelled. On the window's thread, with COM on it.
+fn share_prepare(
+    hwnd: HWND,
+    path: &std::path::Path,
+) -> windows::core::Result<windows::Win32::UI::Shell::IDataTransferManagerInterop> {
     use windows::ApplicationModel::DataTransfer::{
         DataPackage, DataRequestedEventArgs, DataTransferManager, ShareCompletedEventArgs,
     };
@@ -9381,17 +9425,8 @@ fn share_on_this_thread(
     use windows::Storage::{IStorageItem, StorageFile};
     use windows::Win32::UI::Shell::IDataTransferManagerInterop;
     use windows::core::{AgileReference, HSTRING, IInspectable, Interface, Ref};
-    use windows_sys::Win32::UI::WindowsAndMessaging::{
-        DispatchMessageW, GetMessageW, KillTimer, MSG, PostMessageW, SetTimer, TranslateMessage,
-        WM_CLOSE, WM_TIMER,
-    };
-    com_on_this_thread();
-    let Some(window) = ShareAnchor::new() else {
-        let _ = said.send(Err("no window for the share sheet".into()));
-        return;
-    };
-    let hwnd = window.0;
-    let asked = (|| -> windows::core::Result<()> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{PostMessageW, WM_CLOSE};
+    {
         let file: StorageFile = StorageFile::GetFileFromPathAsync(&HSTRING::from(path))?.join()?;
         // The handler may run on another thread: the file reaches it through an agile
         // reference (a StorageFile itself isn't sent between threads).
@@ -9403,7 +9438,7 @@ fn share_on_this_thread(
         );
         let interop = windows::core::factory::<DataTransferManager, IDataTransferManagerInterop>()?;
         let raw = windows::Win32::Foundation::HWND(hwnd);
-        // SAFETY: our window, alive until this thread's loop below ends.
+        // SAFETY: our window, alive while its thread's loop runs.
         let manager: DataTransferManager = unsafe { interop.GetForWindow(raw)? };
         // The window's handle as a number, for the handlers (on this thread or another).
         let anchor = hwnd as usize;
@@ -9435,38 +9470,18 @@ fn share_on_this_thread(
                 Ok(())
             },
         ))?;
-        // SAFETY: our window, shown and in front.
-        unsafe { interop.ShowShareUIForWindow(raw) }
-    })();
-    let failed = asked.as_ref().err().map(|e| e.to_string());
-    let _ = said.send(asked.map_err(|e| e.to_string()));
-    if let Some(e) = failed {
-        tracing::warn!("share sheet: {e}");
-        return;
+        Ok(interop)
     }
-    // SAFETY: this thread's own window and message loop; the timer is ours and killed after.
-    unsafe {
-        let timer = SetTimer(hwnd, 1, SHARE_WAIT_MS, None);
-        let mut msg: MSG = zeroed();
-        while GetMessageW(&mut msg, std::ptr::null_mut(), 0, 0) > 0 {
-            if msg.hwnd == hwnd && (msg.message == WM_CLOSE || msg.message == WM_TIMER) {
-                break;
-            }
-            TranslateMessage(&msg);
-            DispatchMessageW(&msg);
-        }
-        KillTimer(hwnd, timer);
-    }
-    drop(window);
 }
 
 /// The share sheet's window ([`share_file`]): destroyed when dropped.
 struct ShareAnchor(HWND);
 
 impl ShareAnchor {
-    /// A 1×1 tool window at the pointer, shown, all but transparent (a window at alpha 0 counts
-    /// as hidden), letting clicks through, and brought to the front.
-    fn new() -> Option<ShareAnchor> {
+    /// A 1×1 tool window at the pointer, all but transparent (a window at alpha 0 counts as
+    /// hidden), letting clicks through; `show`: shown and brought to the front (the tests make
+    /// one never shown).
+    fn new(show: bool) -> Option<ShareAnchor> {
         use windows_sys::Win32::Foundation::POINT;
         use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
         use windows_sys::Win32::UI::WindowsAndMessaging::{
@@ -9504,8 +9519,10 @@ impl ShareAnchor {
                 return None;
             }
             SetLayeredWindowAttributes(hwnd, 0, 1, LWA_ALPHA);
-            ShowWindow(hwnd, SW_SHOWNOACTIVATE);
-            SetForegroundWindow(hwnd);
+            if show {
+                ShowWindow(hwnd, SW_SHOWNOACTIVATE);
+                SetForegroundWindow(hwnd);
+            }
             Some(ShareAnchor(hwnd))
         }
     }
@@ -9542,6 +9559,21 @@ mod fileclip_tests {
             .collect();
         let text = String::from_utf16(&units).unwrap();
         assert_eq!(text, "C:\\Downloads\\report.pdf\0D:\\é\\b.zip\0\0");
+    }
+
+    /// The share sheet's preparation, everything but showing it (nothing appears on the screen):
+    /// a downloaded file as a StorageFile from its path, the DataTransferManager of an MDM window
+    /// through the desktop interop, and the handler that gives the sheet the file.
+    #[test]
+    fn the_share_sheet_is_prepared_for_a_file() {
+        super::com_on_this_thread();
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("report é.pdf");
+        std::fs::write(&file, b"%PDF").unwrap();
+        let window = super::ShareAnchor::new(false).expect("a window");
+        super::share_prepare(window.0, &file).expect("prepared");
+        // A file that isn't there is refused before any sheet.
+        assert!(super::share_prepare(window.0, &dir.path().join("gone.pdf")).is_err());
     }
 
     /// The real clipboard, a private one (`private_clipboard`: the person's is neither read nor

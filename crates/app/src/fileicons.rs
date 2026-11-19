@@ -209,12 +209,15 @@ pub(crate) fn fit(rgba: &[u8], side: u32, premultiplied: bool, px: u32) -> Vec<u
 
 // ---- for the browser's popup ------------------------------------------------------------------
 
-/// The icons the browser popup's list shows (#1496), as `data:` addresses, by type and size:
-/// None while the lookup runs.
-type Pictures = HashMap<(What, u32), Option<String>>;
+/// The icons the browser popup's list shows (#1496), as `data:` addresses, by type and size
+/// (None while the lookup runs), and where their lookups are asked for.
+#[derive(Default)]
+struct Pictures {
+    urls: HashMap<(What, u32), Option<String>>,
+    lookups: Option<Sender<(What, u32)>>,
+}
 
-static PICTURES: LazyLock<Mutex<(Pictures, Option<Sender<(What, u32)>>)>> =
-    LazyLock::new(Default::default);
+static PICTURES: LazyLock<Mutex<Pictures>> = LazyLock::new(Default::default);
 
 /// The system's icon for `what` at `px` pixels as a `data:` address for the browser popup's list
 /// (#1496): a PNG (a Linux icon theme's SVG as it is), Tango's where the system has none. None
@@ -224,11 +227,11 @@ static PICTURES: LazyLock<Mutex<(Pictures, Option<Sender<(What, u32)>>)>> =
 pub fn data_url(what: &What, px: u32) -> Option<String> {
     let mut p = PICTURES.lock().unwrap_or_else(|e| e.into_inner());
     let key = (what.clone(), px);
-    if let Some(got) = p.0.get(&key) {
+    if let Some(got) = p.urls.get(&key) {
         return got.clone();
     }
-    p.0.insert(key, None);
-    let tx = p.1.get_or_insert_with(start_pictures);
+    p.urls.insert(key, None);
+    let tx = p.lookups.get_or_insert_with(start_pictures);
     let _ = tx.send((what.clone(), px));
     None
 }
@@ -247,7 +250,7 @@ fn start_pictures() -> Sender<(What, u32)> {
                 PICTURES
                     .lock()
                     .unwrap_or_else(|e| e.into_inner())
-                    .0
+                    .urls
                     .insert((what, px), Some(url));
             }
         });
