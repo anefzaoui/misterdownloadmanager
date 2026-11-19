@@ -3268,7 +3268,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     const open = async (query = "", width = 400) => {
       const p = await t.session.tab(`${t.session.base}popup.html?keep=1${query ? `&${query}` : ""}`);
       if (p.viewport) await p.viewport(width, 548);
-      await until("the popup", 10000, () => p.evaluate(`document.readyState === "complete" && Boolean(document.getElementById("dl-list"))`).catch(() => false));
+      await until("the popup", 10000, () => p.evaluate(`document.readyState === "complete" && Boolean(document.getElementById("dl-list") || document.getElementById("status"))`).catch(() => false));
       return p;
     };
     const snap = async (p, name) => {
