@@ -1652,6 +1652,9 @@ These ship in the next version.
 - ✅ CI keeps the extension's locale files equal to the catalogs' output: a text added to
   English's messages.json without a translate.py run, or a catalog fix left unregenerated,
   fails the browser-extension job (thanks to [@Seyamalam](https://github.com/Seyamalam))
+- ✅ How a change is verified, written down: a `verify` skill (`.claude/skills/verify`) for
+  running a change for real before it's merged, and REVIEW.md, what to check by what a pull
+  request touches; every pull request says what was verified and what wasn't
 
 ## Being worked on
 
