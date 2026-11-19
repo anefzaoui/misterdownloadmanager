@@ -4916,7 +4916,7 @@ const MP4 = (() => {
   // No size: how much came, a bar that can't measure; another MDM's row without `left`: from its speed.
   assert.deepEqual(st({ status: "Downloading", downloaded: 5 * MB, speed: MB }), { text: "5 MB · 1 MB/s", tone: "", bar: null, busy: true });
   assert.equal(st({ status: "Downloading", size: 10 * MB, downloaded: 4 * MB, speed: MB }).text, "4 MB of 10 MB · 1 MB/s · 0:06 left");
-  assert.equal(st({ status: "Downloading", downloaded: 0, speed: 0 }).text, "Starting…");
+  assert.equal(st({ status: "Downloading", downloaded: 0, speed: 0 }).text, "Starting...");
   assert.equal(st({ status: "Stopped", size: 40 * MB, downloaded: 10 * MB }).text, "Paused · 25% · 10 MB of 40 MB");
   assert.equal(st({ status: "Queued", size: 2 ** 30, downloaded: 0 }).text, "Waiting · 1 GB");
   const done = (ago) => st({ status: "Complete", size: 48.7 * MB, downloaded: 48.7 * MB, exists: true, finished: (now - ago) / 1000 });
