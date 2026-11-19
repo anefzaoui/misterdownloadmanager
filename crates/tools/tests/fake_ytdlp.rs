@@ -1789,6 +1789,16 @@ fn recording_checks(me: &Path) {
     let recording = |job: &VideoJob| {
         job.live_state() == Some(LiveState::Recording) && job.progress().recorded > 0
     };
+    // Recording, and enough of it that what a check tells apart doesn't hang on how much was in
+    // when it saved (the watcher reads the size once a second while the fake writes a block of
+    // 65,424 bytes every tenth: anything from one block to ten). The fake ffprobe's `short` modes
+    // say the MP4 (or its sound) plays half as long as the recording, and MDM takes an MP4 up to
+    // a second shorter as whole (`SLACK` in video.rs): up to 2 s recorded (three blocks), the
+    // missing half is within that second and the MP4 counts as whole. 3 s of the fake's playback
+    // (five blocks) is past it, as past the 64 KiB `tiny` checks (two blocks) and the two rounds
+    // `live-split` checks. What is recorded only grows until yt-dlp is stopped.
+    let enough =
+        |job: &VideoJob| recording(job) && job.progress().recorded as f64 >= 3.0 * BYTES_PER_SECOND;
     // Recording, whatever has been written.
     let opened = |job: &VideoJob| job.live_state() == Some(LiveState::Recording);
     // For a while (twice the watcher's second) nothing says it records: it isn't, while the
@@ -1913,7 +1923,7 @@ fn recording_checks(me: &Path) {
     // ffmpeg's file far smaller than the recording: not taken, the recording kept whole.
     let (_tools, out, exe, ffmpeg) = folders("live", "tiny");
     let job = start(&exe, out.path(), Some(&ffmpeg), true);
-    until(&job, "recording", &recording);
+    until(&job, "enough recorded", &enough);
     job.save();
     let p = ended(&job);
     assert_eq!(p.state, State::Done(out.path().join("Talk.ts")));
@@ -2127,7 +2137,7 @@ fn recording_checks(me: &Path) {
     let (_tools, out, exe, ffmpeg) = folders("live", "");
     std::fs::write(out.path().join("ffprobe-mode.txt"), "short").unwrap();
     let job = start(&exe, out.path(), Some(&ffmpeg), true);
-    until(&job, "recording", &recording);
+    until(&job, "enough recorded", &enough);
     job.save();
     let p = ended(&job);
     let log = log_of(&p);
@@ -2167,7 +2177,7 @@ fn recording_checks(me: &Path) {
             mode => std::fs::write(out.path().join("ffprobe-mode.txt"), mode).unwrap(),
         }
         let job = start(&exe, out.path(), Some(&ffmpeg), true);
-        until(&job, "recording", &recording);
+        until(&job, "enough recorded", &enough);
         job.save();
         let p = ended(&job);
         let log = log_of(&p);
@@ -2200,7 +2210,7 @@ fn recording_checks(me: &Path) {
     // the parts gone, the log naming them.
     let (_tools, out, exe, ffmpeg) = folders("live-split", "");
     let job = start(&exe, out.path(), Some(&ffmpeg), true);
-    until(&job, "recording", &recording);
+    until(&job, "enough recorded", &enough);
     let (video, audio) = (
         out.path().join("Talk.f1.mp4.part"),
         out.path().join("Talk.f2.m4a.part"),

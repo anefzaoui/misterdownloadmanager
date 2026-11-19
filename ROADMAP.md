@@ -614,6 +614,10 @@ These ship in the next version.
   its first 256 KB block was written (some 15 s at 128 kbit/s, longer at lower bitrates); Stop and
   save before that block keeps nothing yet and leaves the download stopped to resume
   ([#1450](https://github.com/anefzaoui/misterdownloadmanager/pull/1450))
+- ✅ Tests: the live recording checks that failed now and then (most runs on Linux) wait until
+  enough is recorded for what they check, instead of saving at the first block: a recording that
+  short is within the second an MP4 may lose and still count as whole, so whether the MP4 was
+  judged short depended on when the save came
 - ✅ Download video: a video's own file (Kwai's MP4) is offered and downloaded when its server
   doesn't say it is a video, instead of "No video this can download on that page"; the button's
   click downloads such a file at once
