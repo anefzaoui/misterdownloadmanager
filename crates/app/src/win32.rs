@@ -8394,12 +8394,15 @@ mod classic_text {
             self.faces
                 .entry(file)
                 .or_insert_with(|| {
-                    let path: Vec<u16> = dir
-                        .join(file)
-                        .as_os_str()
-                        .encode_wide()
-                        .chain([0])
-                        .collect();
+                    let full = dir.join(file);
+                    // A .ttc holds a collection: the face egui draws with too (#1483).
+                    let collection = file.to_ascii_lowercase().ends_with(".ttc");
+                    let index = if collection {
+                        crate::theme::font_face_index(&full)
+                    } else {
+                        0
+                    };
+                    let path: Vec<u16> = full.as_os_str().encode_wide().chain([0]).collect();
                     // SAFETY: `path` is NUL-terminated and outlives the calls; plain COM calls.
                     unsafe {
                         let font = factory
@@ -8407,14 +8410,13 @@ mod classic_text {
                             .ok()?;
                         factory
                             .CreateFontFace(
-                                // A .ttc holds a collection: face 0 is its regular face.
-                                if file.to_ascii_lowercase().ends_with(".ttc") {
+                                if collection {
                                     DWRITE_FONT_FACE_TYPE_TRUETYPE_COLLECTION
                                 } else {
                                     DWRITE_FONT_FACE_TYPE_TRUETYPE
                                 },
                                 &[Some(font)],
-                                0,
+                                index,
                                 DWRITE_FONT_SIMULATIONS_NONE,
                             )
                             .ok()

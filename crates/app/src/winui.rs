@@ -69,7 +69,7 @@ pub fn install_fonts(defs: &mut egui::FontDefinitions, font_dir: Option<&std::pa
             Some(bytes) => {
                 defs.font_data.insert(
                     family.into(),
-                    std::sync::Arc::new(egui::FontData::from_owned(bytes)),
+                    std::sync::Arc::new(crate::theme::font_data(bytes)),
                 );
                 vec![family.to_owned()]
             }

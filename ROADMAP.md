@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Chinese text from a font collection (macOS's Songti) is drawn with its regular face, not its
+  first one, Songti SC Black ([#1483](https://github.com/anefzaoui/misterdownloadmanager/issues/1483))
 - ✅ The browser extension remembers paired servers and switches between them and this computer
   with a click without re-pairing (thanks to [@kngkatak](https://github.com/kngkatak))
 - ✅ Helpers downloads Deno, the JavaScript runtime YouTube now needs yt-dlp to have (without one a
