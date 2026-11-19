@@ -97,6 +97,11 @@ footer { display: flex; justify-content: space-between; align-items: baseline; m
 .send { margin-top: 12px; border-top: 1px solid var(--edge); padding-top: 8px; }
 .send h2 { margin: 0 0 6px; font-size: 12px; font-weight: 600; color: var(--muted); }
 .choice { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+.remote-item { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin: 4px 0; }
+.remote-item .choice { margin: 0; min-width: 0; flex: 1; }
+.remote-item .choice span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.remote-forget { flex: none; border: 0; background: none; padding: 0 4px; font-size: 15px; line-height: 1; color: var(--muted); cursor: pointer; border-radius: 3px; }
+.remote-forget:hover { color: var(--bad); background: var(--field); }
 #remote-form input[type="url"], #remote-form input[inputmode] { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 4px 6px; border: 1px solid var(--edge); border-radius: 4px; background: var(--field); color: inherit; font: inherit; }
 #remote-form .actions { margin-top: 8px; }
 .note.bad { color: var(--bad); }

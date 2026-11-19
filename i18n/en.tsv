@@ -10,6 +10,10 @@
 #. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
 #. {n} = a number (keep the braces as they are)
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+@plural	And {n} other file.|And {n} other files.	And {n} other file.|And {n} other files.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -227,6 +231,9 @@
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box for a single-file torrent
 	A single-file torrent keeps its name	A single-file torrent keeps its name
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+	A torrent file's folder points outside its destination	A torrent file's folder points outside its destination
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	A tracker on this computer or the local network is never contacted: {line}
@@ -439,6 +446,12 @@
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
 	Another DNS...	Another DNS...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+	Another download already claims this torrent's destination	Another download already claims this torrent's destination
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+	Another download already claims {file}. Choose a different destination.	Another download already claims {file}. Choose a different destination.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 	Another program has set the computer's wake alarm	Another program has set the computer's wake alarm
@@ -911,6 +924,9 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 	Couldn't extract {name}: {why}	Couldn't extract {name}: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+	Create a folder for this torrent	Create a folder for this torrent
 #. window title in a dialog box
 	Create folder	Create folder
 #. text in countries.rs
@@ -966,7 +982,7 @@
 	Default download settings	Default download settings
 #. text in the Options window
 	Default max. conn. number	Default max. conn. number
-#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs; text in torrent downloads
 #. button: deletes the category
 #. verb: delete the item
 	Delete	Delete
@@ -2131,6 +2147,9 @@
 #. text in remote.rs
 #. remote control page (on a phone): an action failed
 	MDM could not do it.	MDM could not do it.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 	MDM does not answer. Check that it is running and on the same network.	MDM does not answer. Check that it is running and on the same network.
@@ -2876,6 +2895,10 @@
 #. event log entry: Recheck failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 	Recheck failed: {error}	Recheck failed: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+	Recording...	Recording...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 	Redownload	Redownload
@@ -3035,6 +3058,10 @@
 #. label over the folder the downloads were saved in
 #. label before the folder the torrent is saved in
 	Saved in	Saved in
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+	Saving...	Saving...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 	Schedule	Schedule
@@ -3402,6 +3429,9 @@
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	Stop
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+	Stop and save	Stop and save
 #. text in the Scheduler window; checkbox in the Scheduler window
 	Stop download at	Stop download at
 #. text in playlistdlg.rs
@@ -3596,6 +3626,9 @@
 	the connection to {host} was cut: a firewall, or a network that blocks it	the connection to {host} was cut: a firewall, or a network that blocks it
 #. text in errors.rs
 	the connection was lost while receiving data	the connection was lost while receiving data
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	The destination keeps changing. Stop changes to its files and try starting the torrent again.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.
@@ -3667,6 +3700,9 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The files could not be chosen: {error}	The files could not be chosen: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+	The files were kept because this older download has no ownership record	The files were kept because this older download has no ownership record
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 	The folder could not be created: {error}	The folder could not be created: {error}
@@ -3692,6 +3728,9 @@
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 	the network adapter {adapter} is not connected	the network adapter {adapter} is not connected
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+	The output folder is invalid	The output folder is invalid
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	the password is wrong	the password is wrong
@@ -3714,6 +3753,12 @@
 	The report is on your clipboard.	The report is on your clipboard.
 #. text in crashui.rs
 	The report is on your clipboard: paste it in a comment on the issue.	The report is on your clipboard: paste it in a comment on the issue.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+	The saved .torrent file does not match this download	The saved .torrent file does not match this download
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 	the secure connection failed	the secure connection failed
@@ -3736,6 +3781,10 @@
 	the server is busy ({status}); try again later	the server is busy ({status}); try again later
 #. text in errors.rs
 	the server sent an unexpected part of the file ({detail})	the server sent an unexpected part of the file ({detail})
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 	the service doesn't say whether it is premium	the service doesn't say whether it is premium
@@ -3799,6 +3848,19 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 	the torrent is no longer there	the torrent is no longer there
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+	The torrent ownership record contains an unsafe path	The torrent ownership record contains an unsafe path
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+	The torrent ownership record does not match its file list	The torrent ownership record does not match its file list
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+	The torrent ownership record is invalid	The torrent ownership record is invalid
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+	The torrent was not started because permission to use existing files was declined.	The torrent was not started because permission to use existing files was declined.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The trackers could not be added: {error}	The trackers could not be added: {error}
@@ -3905,6 +3967,9 @@
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+	This option is available for direct BitTorrent downloads	This option is available for direct BitTorrent downloads
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.
@@ -3928,8 +3993,17 @@
 	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	this torrent has a file name that isn't safe to write, so it wasn't added: {name}
 #. text in the Add torrent window
 	This torrent is already in the download list	This torrent is already in the download list
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+	This torrent is busy. Wait for its current operation to finish before adding it again.	This torrent is busy. Wait for its current operation to finish before adding it again.
 #. text in errors.rs
 	this torrent is not in the list	this torrent is not in the list
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+	This torrent needs permission to use {file} before it can start.	This torrent needs permission to use {file} before it can start.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+	This torrent shares its destination folder	This torrent shares its destination folder
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 	This video is protected (DRM): no tool can save it.	This video is protected (DRM): no tool can save it.
@@ -4176,6 +4250,8 @@
 	Use authorization	Use authorization
 #. text in the Options window
 	Use automatic configuration script	Use automatic configuration script
+#. text in torrent downloads
+	Use existing torrent files	Use existing torrent files
 #. checkbox in the Options window
 	Use FTP in PASV mode	Use FTP in PASV mode
 #. button in helpers.rs
@@ -4528,8 +4604,9 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File
-#. text in the main window's messages (deleting downloads' files)
+#. text in the main window's messages (deleting downloads' files); text in torrent downloads
 #. a message: a deleted download's file stayed on the disk; {file} = its name
+#. error dialog when a torrent's files could not be deleted; {file} is the download's name, {error} why
 #. {error} = an error message (keep the braces as they are)
 	{file} could not be deleted from the disk: {error}	{file} could not be deleted from the disk: {error}
 #. text in a dialog box
@@ -4551,6 +4628,9 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 	{file}: the file matches its checksum ({algorithm})	{file}: the file matches its checksum ({algorithm})
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4854,6 +4934,9 @@ extension	Drag the dots to move it along the edge	Drag the dots to move it along
 #. text in the browser extension
 #. the address typed isn't an https:// address
 extension	Enter its https:// address.	Enter its https:// address.
+#. text in the browser extension
+#. button: forget / unpair this server
+extension	Forget	Forget
 #. text in the browser extension
 #. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
 extension	Get MDM	Get MDM

@@ -5002,6 +5002,11 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	സെർവർ ഫയലിന്റെ അപ്രതീക്ഷിത ഭാഗം അയച്ചു ({detail})
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	ബ്രൗസറിന്റെ ഫയൽ {size} ആയിരിക്കുമ്പോൾ സെർവർ {sent} മാത്രമേ അയച്ചുള്ളൂ (ഒരിക്കൽ മാത്രം പ്രവർത്തിക്കുന്ന ലിങ്ക്, അല്ലെങ്കിൽ ബ്രൗസറിൽ മാത്രം): ബ്രൗസർ ഡൗൺലോഡ് ചെയ്യാൻ അനുവദിക്കാൻ ലിങ്കിൽ Alt+ക്ലിക്ക് ചെയ്യുക
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine

@@ -739,6 +739,21 @@ pub fn codec_name(vcodec: Option<&str>) -> Option<&'static str> {
     }
 }
 
+/// What a `[vcodec^=…]` filter takes for a picture codec as yt-dlp spells it (#1465): the codec's
+/// own name before its profile (`av01` of `av01.0.13M.08`, `vp09` of `vp09.02.51.10`, `vp9`,
+/// `avc1`, `hev1`), the way that site spells it again in a new look-up. None for none, or a name
+/// a filter can't take unquoted.
+fn vcodec_family(vcodec: Option<&str>) -> Option<&str> {
+    let c = vcodec?.trim();
+    let family = c.split('.').next().unwrap_or(c);
+    (!family.is_empty()
+        && !family.eq_ignore_ascii_case("none")
+        && family
+            .chars()
+            .all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '-'))
+    .then_some(family)
+}
+
 /// yt-dlp's preference among dynamic ranges (its sorter's `hdr:12`, best highest).
 fn range_rank(r: Option<&str>) -> u8 {
     match r.map(str::to_ascii_uppercase).as_deref() {
@@ -838,8 +853,10 @@ struct Line<'a> {
     range: Option<&'static str>,
 }
 
-/// A video line's words (#755): its height, its file type when that isn't MP4 (or nothing else
-/// is known), the codec, the frame rate and the range: `2160p · VP9 · 60 fps · HDR`.
+/// A video line's words (#755, #1465): its height and the file it makes, then the picture's
+/// codec, the frame rate and the range: `2160p MP4 · VP9 · 60 fps · HDR`. The file type alone
+/// doesn't say the codec (every merged video is an MP4, whatever its picture), so both are said;
+/// the codec only when yt-dlp names one MDM knows ([`codec_name`]).
 fn video_label(
     height: u32,
     ext: &str,
@@ -847,10 +864,10 @@ fn video_label(
     fps: Option<u32>,
     range: Option<&str>,
 ) -> String {
-    let mut parts = vec![format!("{height}p")];
-    if !ext.eq_ignore_ascii_case("mp4") || codec.is_none() {
-        parts.push(ext.to_uppercase());
-    }
+    let mut parts = vec![match ext.trim() {
+        "" => format!("{height}p"),
+        ext => format!("{height}p {}", ext.to_uppercase()),
+    }];
     parts.extend(codec.map(str::to_owned));
     parts.extend(fps.map(|f| format!("{f} fps")));
     parts.extend(range.map(str::to_owned));
@@ -938,11 +955,17 @@ fn videos(v: &Video, can_merge: bool, audio: Option<&Format>) -> Vec<Choice> {
                 None => plain_id(&f.id).then(|| f.id.clone()),
             };
             // Should the page no longer offer that very format (servers left out, #94; a new
-            // look-up's other IDs), the nearest of that height.
-            let near = if can_merge {
-                format!("bv*[height={h}]+ba/b[height={h}]")
-            } else {
-                format!("b[height={h}]")
+            // look-up's other IDs), the nearest of that height in the codec the line names
+            // (#1465: yt-dlp's best of a height is often another codec), then of any codec
+            // rather than none.
+            let same = l.codec.and(vcodec_family(f.vcodec.as_deref()));
+            let near = match (can_merge, same) {
+                (true, Some(v)) => {
+                    format!("bv*[height={h}][vcodec^={v}]+ba/bv*[height={h}]+ba/b[height={h}]")
+                }
+                (true, None) => format!("bv*[height={h}]+ba/b[height={h}]"),
+                (false, Some(v)) => format!("b[height={h}][vcodec^={v}]/b[height={h}]"),
+                (false, None) => format!("b[height={h}]"),
             };
             let ext = if can_merge {
                 "mp4".to_owned()
@@ -1296,18 +1319,24 @@ mod tests {
         let v = parse(PORTRAIT.as_bytes()).unwrap();
         // The most compatible line (#1439) has its own test.
         let c = without_compatible(choices(&v, true));
-        assert_eq!(c[0].label, "3840p · AV1 · 60 fps");
+        assert_eq!(c[0].label, "3840p MP4 · AV1 · 60 fps");
         assert!(
             c[0].selector
                 .starts_with(&format!("{}/", ytdlp_pick(PORTRAIT)))
         );
-        assert_eq!(c[0].selector, "401+251/bv*[height=3840]+ba/b[height=3840]");
+        assert_eq!(
+            c[0].selector,
+            "401+251/bv*[height=3840][vcodec^=av01]+ba/bv*[height=3840]+ba/b[height=3840]"
+        );
         assert_eq!(c[0].size, Some(555_978_141 + 2_113_634));
         assert!(!c[0].approx);
         // The VP9 one of that height is its own line, from the file (315), not the HLS
         // variant's estimate (628).
-        assert_eq!(c[1].label, "3840p · VP9 · 60 fps");
-        assert_eq!(c[1].selector, "315+251/bv*[height=3840]+ba/b[height=3840]");
+        assert_eq!(c[1].label, "3840p MP4 · VP9 · 60 fps");
+        assert_eq!(
+            c[1].selector,
+            "315+251/bv*[height=3840][vcodec^=vp9]+ba/bv*[height=3840]+ba/b[height=3840]"
+        );
         assert_eq!(c[1].size, Some(1_144_096_984 + 2_113_634));
         assert!(c.iter().all(|c| !c.selector.starts_with("628")));
         // One line for each height, frame rate and codec; every one exact but a variant that
@@ -1319,7 +1348,7 @@ mod tests {
             .filter(|c| c.approx)
             .map(|c| c.label.as_str())
             .collect();
-        assert_eq!(about, ["256p · VP9 · 15 fps"]);
+        assert_eq!(about, ["256p MP4 · VP9 · 15 fps"]);
         let mut seen = std::collections::HashSet::new();
         assert!(
             videos.iter().all(|c| seen.insert(&c.label)),
@@ -1362,16 +1391,16 @@ mod tests {
             top,
             [
                 (
-                    "2160p · AV1 · 60 fps · HDR",
-                    "701+251/bv*[height=2160]+ba/b[height=2160]"
+                    "2160p MP4 · AV1 · 60 fps · HDR",
+                    "701+251/bv*[height=2160][vcodec^=av01]+ba/bv*[height=2160]+ba/b[height=2160]"
                 ),
                 (
-                    "2160p · VP9 · 60 fps · HDR",
-                    "337+251/bv*[height=2160]+ba/b[height=2160]"
+                    "2160p MP4 · VP9 · 60 fps · HDR",
+                    "337+251/bv*[height=2160][vcodec^=vp9]+ba/bv*[height=2160]+ba/b[height=2160]"
                 ),
                 (
-                    "2160p · VP9 · 60 fps · SDR",
-                    "315+251/bv*[height=2160]+ba/b[height=2160]"
+                    "2160p MP4 · VP9 · 60 fps · SDR",
+                    "315+251/bv*[height=2160][vcodec^=vp9]+ba/bv*[height=2160]+ba/b[height=2160]"
                 ),
             ]
         );
@@ -1388,7 +1417,7 @@ mod tests {
             .filter(|c| c.codec.as_deref() == Some("H.264"))
             .map(|c| c.label.as_str())
             .collect();
-        assert_eq!(h264[0], "1080p · H.264 · 60 fps · SDR");
+        assert_eq!(h264[0], "1080p MP4 · H.264 · 60 fps · SDR");
         // Without ffmpeg YouTube has no format with both: only the sound.
         assert!(choices(&v, false).iter().all(|c| c.height.is_none()));
     }
@@ -1410,6 +1439,91 @@ mod tests {
         assert_eq!(range_name(Some("HLG")), Some("HDR"));
         assert_eq!(range_name(Some("DV")), Some("Dolby Vision"));
         assert_eq!(range_name(Some("SDR")), None);
+        // What a codec-bound selector takes (#1465).
+        let f = |c: &'static str| vcodec_family(Some(c));
+        assert_eq!(f("av01.0.13M.10.0.110.09.16.09.0"), Some("av01"));
+        assert_eq!(f("vp09.02.51.10.01.09.16.09.00"), Some("vp09"));
+        assert_eq!(f("vp9"), Some("vp9"));
+        assert_eq!(f("avc1.64002A"), Some("avc1"));
+        assert_eq!(f("hev1.1.6.L150.90"), Some("hev1"));
+        assert_eq!(f("none"), None);
+        assert_eq!(f("a b"), None);
+        assert_eq!(f(""), None);
+        assert_eq!(vcodec_family(None), None);
+    }
+
+    /// #1465: every video line says the codec of the picture it downloads, after the file it
+    /// makes (`1080p MP4 · AV1`): the codec of the very format its selector names first and,
+    /// should the page no longer offer that one, of every format yt-dlp's nearest of that height
+    /// (`bv*[height=1080][vcodec^=av01]`) could take. From real yt-dlp look-ups (YouTube's 4K60
+    /// portrait and HDR videos) and a Bilibili one with AV1, H.265 and H.264 of one height.
+    #[test]
+    fn each_line_says_the_codec_it_downloads() {
+        for page in [PORTRAIT, HDR, BILIBILI] {
+            let v = parse(page.as_bytes()).unwrap();
+            let lines = choices(&v, true);
+            let videos: Vec<&Choice> = lines
+                .iter()
+                .filter(|c| c.height.is_some() && !is_compatible(c))
+                .collect();
+            assert!(videos.len() > 3);
+            for c in videos {
+                let h = c.height.unwrap();
+                let codec = c.codec.as_deref().expect("the page names every codec");
+                assert!(
+                    c.label.starts_with(&format!("{h}p MP4 · {codec}")),
+                    "{}",
+                    c.label
+                );
+                let alts: Vec<&str> = c.selector.split('/').collect();
+                let id = alts[0].split('+').next().unwrap();
+                let exact = v.formats.iter().find(|f| f.id == id).unwrap();
+                assert_eq!(
+                    codec_name(exact.vcodec.as_deref()),
+                    Some(codec),
+                    "{}",
+                    c.label
+                );
+                let family = alts[1]
+                    .strip_prefix(&format!("bv*[height={h}][vcodec^="))
+                    .and_then(|r| r.strip_suffix("]+ba"))
+                    .unwrap_or_else(|| panic!("{}", c.selector));
+                let could: Vec<&Format> = v
+                    .formats
+                    .iter()
+                    .filter(|f| f.video && f.height == Some(h))
+                    .filter(|f| f.vcodec.as_deref().is_some_and(|v| v.starts_with(family)))
+                    .collect();
+                assert!(could.iter().any(|f| f.id == id), "{}", c.label);
+                assert!(
+                    could
+                        .iter()
+                        .all(|f| codec_name(f.vcodec.as_deref()) == Some(codec)),
+                    "{}",
+                    c.label
+                );
+            }
+        }
+        // As the issue found it (#1465): YouTube's 1080p comes in AV1, VP9 and H.264, each its
+        // own line saying so.
+        let v = parse(HDR.as_bytes()).unwrap();
+        let labels: Vec<String> = choices(&v, true).into_iter().map(|c| c.label).collect();
+        let at = |p: &str| -> Vec<String> {
+            labels
+                .iter()
+                .filter(|l| l.starts_with(p))
+                .cloned()
+                .collect()
+        };
+        assert_eq!(
+            at("1080p "),
+            [
+                "1080p MP4 · AV1 · 60 fps · HDR",
+                "1080p MP4 · VP9 · 60 fps · HDR",
+                "1080p MP4 · VP9 · 60 fps · SDR",
+                "1080p MP4 · H.264 · 60 fps · SDR"
+            ]
+        );
     }
 
     /// Only an ID yt-dlp's `-f` reads as that ID is named; else the line keeps the selector by
@@ -1436,7 +1550,10 @@ mod tests {
             {"format_id": "a/b", "ext": "mp4", "height": 720, "vcodec": "avc1", "acodec": "none", "filesize": 10},
             {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a", "filesize": 1}]}"#;
         let c = choices(&parse(page.as_bytes()).unwrap(), true);
-        assert_eq!(c[0].selector, "bv*[height=720]+ba/b[height=720]");
+        assert_eq!(
+            c[0].selector,
+            "bv*[height=720][vcodec^=avc1]+ba/bv*[height=720]+ba/b[height=720]"
+        );
         assert!(c[0].approx);
     }
 
@@ -1548,8 +1665,8 @@ mod tests {
         assert_eq!(
             sizes,
             [
-                ("720p · MP4".to_owned(), Some(187_500_000)),
-                ("360p · MP4".to_owned(), Some(60_000_000))
+                ("720p MP4".to_owned(), Some(187_500_000)),
+                ("360p MP4".to_owned(), Some(60_000_000))
             ]
         );
         let live = HLS.replace(r#""duration": 600, "#, "");
@@ -1609,9 +1726,9 @@ mod tests {
         assert_eq!(
             labels,
             [
-                "1080p · H.264 · 60 fps",
-                "720p · H.264 · 30 fps",
-                "360p · H.264",
+                "1080p MP4 · H.264 · 60 fps",
+                "720p MP4 · H.264 · 30 fps",
+                "360p MP4 · H.264",
                 "Audio only original M4A",
                 "Audio only MP3 VBR",
                 "Audio only MP3 320 kbps",
@@ -1638,8 +1755,11 @@ mod tests {
         // Without ffmpeg only the format that has both survives, and no MP3 (it converts).
         let plain = choices(&v, false);
         let labels: Vec<&str> = plain.iter().map(|c| c.label.as_str()).collect();
-        assert_eq!(labels, ["360p · H.264", "Audio only original M4A"]);
-        assert_eq!(plain[0].selector, "18/b[height=360]");
+        assert_eq!(labels, ["360p MP4 · H.264", "Audio only original M4A"]);
+        assert_eq!(
+            plain[0].selector,
+            "18/b[height=360][vcodec^=avc1]/b[height=360]"
+        );
     }
 
     /// Live (#352): `MDM_LIVE_YTDLP=<yt-dlp> MDM_LIVE_PAGE=<video page> cargo test -p mdm-tools
@@ -1812,7 +1932,7 @@ mod tests {
         assert_eq!(without, ["Audio only original M4A"]);
         assert!(needs_merging(&v));
         let with: Vec<String> = choices(&v, true).into_iter().map(|c| c.label).collect();
-        assert_eq!(&with[..2], ["1080p · H.264", "360p · H.264"]);
+        assert_eq!(&with[..2], ["1080p MP4 · H.264", "360p MP4 · H.264"]);
         // A format carrying both, as good as any video: nothing more to get from merging.
         let muxed = r#"{"title": "T", "formats": [
             {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a"},
@@ -1918,7 +2038,7 @@ mod tests {
             {"format_id": "18", "ext": "mp4", "height": 360, "vcodec": "avc1", "acodec": "mp4a", "filesize": 500}]}"#;
         let v = parse(json.as_bytes()).unwrap();
         let labels: Vec<String> = choices(&v, false).into_iter().map(|c| c.label).collect();
-        assert_eq!(labels, ["360p · H.264", "Audio only original M4A"]);
+        assert_eq!(labels, ["360p MP4 · H.264", "Audio only original M4A"]);
     }
 
     /// A page's subtitles (#68), as yt-dlp -J lists them: the uploader's by name, the chat
@@ -1996,7 +2116,7 @@ mod tests {
         assert_eq!(p.choice.codec.as_deref(), Some("AV1"));
         assert_eq!(
             p.choice.selector,
-            "100026+30280/bv*[height=1080]+ba/b[height=1080]"
+            "100026+30280/bv*[height=1080][vcodec^=av01]+ba/bv*[height=1080]+ba/b[height=1080]"
         );
         assert_eq!(p.choice.ext, "mp4");
         assert_eq!(p.choice.size, Some(60_000_000 + 12_000_000));
@@ -2005,7 +2125,7 @@ mod tests {
         assert_eq!(p.instead_of, None);
         assert_eq!(
             p.choice.selector,
-            "30064+30280/bv*[height=720]+ba/b[height=720]"
+            "30064+30280/bv*[height=720][vcodec^=avc1]+ba/bv*[height=720]+ba/b[height=720]"
         );
     }
 
@@ -2068,7 +2188,7 @@ mod tests {
     fn the_most_compatible_is_h264_with_aac() {
         let v = parse(PORTRAIT.as_bytes()).unwrap();
         let c = choices(&v, true);
-        assert_eq!(c[0].label, "3840p · AV1 · 60 fps");
+        assert_eq!(c[0].label, "3840p MP4 · AV1 · 60 fps");
         let m = &c[1];
         assert!(is_compatible(m));
         assert_eq!(m.label, "Most compatible (H.264 + AAC) · 1920p");

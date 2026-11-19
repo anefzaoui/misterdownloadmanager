@@ -751,7 +751,10 @@ mod tests {
         assert_eq!(p.context.user_agent.as_deref(), Some("UA"));
         assert_eq!(p.context.video_title.as_deref(), Some("A talk: in Lisbon"));
         assert!(!p.context.private && !p.context.startup);
-        assert_eq!(p.choice.selector, "hls-800/b[height=360]");
+        assert_eq!(
+            p.choice.selector,
+            "hls-800/b[height=360][vcodec^=avc1]/b[height=360]"
+        );
         // Once.
         assert!(
             l.pick(&pick(&a.token, 1, Some("firefox-container-1")), false, now)
@@ -1324,7 +1327,7 @@ mod tests {
         let add = video_add(p, &folder, None, true, &de).unwrap();
         assert_eq!(add.page.as_str(), SRC);
         assert_eq!(
-            add.selector, "hls-2500/b[height=720]",
+            add.selector, "hls-2500/b[height=720][vcodec^=avc1]/b[height=720]",
             "MDM's own, never the browser's"
         );
         assert_eq!(add.dest, folder.join("A talk_ in Lisbon.mp4"));
@@ -1341,7 +1344,11 @@ mod tests {
         let pre = add.preloaded.as_ref().unwrap();
         assert_eq!(
             (pre.selector.as_str(), pre.label.as_str(), pre.merge),
-            ("hls-2500/b[height=720]", "720p · H.264", false)
+            (
+                "hls-2500/b[height=720][vcodec^=avc1]/b[height=720]",
+                "720p MP4 · H.264",
+                false
+            )
         );
         // No page title (a page yt-dlp names itself), Options' "only add to the queue", a
         // language this page doesn't have.
@@ -1357,7 +1364,10 @@ mod tests {
         };
         let add = video_add(p, &folder, None, false, &ja).unwrap();
         assert_eq!(add.dest, folder.join("master.mp4"));
-        assert_eq!(add.selector, "hls-800/b[height=360]");
+        assert_eq!(
+            add.selector,
+            "hls-800/b[height=360][vcodec^=avc1]/b[height=360]"
+        );
         assert!(!add.start_now);
         assert!(add.subs.langs.is_empty());
         // A video yt-dlp titled itself keeps its title, whatever the page's (#345).

@@ -602,8 +602,9 @@ fn dialog_window<T>(
     // Download File Info on Linux (#484): asked for from the browser, it opened behind it.
     // Windows and macOS lift and focus in `keep_theme` once visible.
     let focused = key.with("focus-sent");
-    let takes_focus =
-        modal || (cfg!(all(not(windows), not(target_os = "macos"))) && id == "file-info");
+    let takes_focus = modal
+        || (cfg!(all(not(windows), not(target_os = "macos")))
+            && matches!(id, "file-info" | "video-page" | "torrent" | "grabber"));
     if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
@@ -3436,6 +3437,82 @@ pub fn drag_downloads_out(
 /// Something that failed, to tell the user (the app shows it in its notice): from any window,
 /// without a handle on the app.
 static TOLD: std::sync::Mutex<Vec<(&'static str, String)>> = std::sync::Mutex::new(Vec::new());
+
+pub struct Confirmation {
+    title: &'static str,
+    text: String,
+    answer: tokio::sync::oneshot::Sender<bool>,
+}
+impl Confirmation {
+    pub fn answer(self, yes: bool) {
+        let _ = self.answer.send(yes);
+    }
+}
+static QUESTIONS: Mutex<std::collections::VecDeque<Confirmation>> =
+    Mutex::new(std::collections::VecDeque::new());
+
+/// Ask from a worker without blocking the UI or treating a closed question as consent.
+pub async fn confirm(title: &'static str, text: String) -> bool {
+    let (answer, reply) = tokio::sync::oneshot::channel();
+    QUESTIONS.lock().unwrap().push_back(Confirmation {
+        title,
+        text,
+        answer,
+    });
+    reply.await.unwrap_or(false)
+}
+pub fn next_confirmation() -> Option<Confirmation> {
+    QUESTIONS.lock().unwrap().pop_front()
+}
+pub fn show_confirmation(ctx: &egui::Context, ask: &Confirmation) -> Outcome<bool> {
+    let id = "torrent-file-permission";
+    let extra = grow_extra(ctx, id);
+    question(
+        ctx,
+        id,
+        ask.title,
+        [540.0, 112.0 + extra],
+        false,
+        winui::BG(),
+        |ui, o| {
+            let lines = winui::paragraph(
+                &ui.painter().clone(),
+                o.x + 16.0,
+                o.y + 20.0,
+                &ask.text,
+                winui::TEXT(),
+                o.x + 524.0,
+                13.0,
+            );
+            grow_to(ui.ctx(), id, lines, 4);
+            let yes = winui::button(
+                ui,
+                r(o, 176.0, 77.0 + extra, 73.0, 21.0),
+                "Yes",
+                ButtonKind::Normal,
+                false,
+                None,
+            )
+            .clicked();
+            let no = winui::button(
+                ui,
+                r(o, 268.0, 77.0 + extra, 73.0, 21.0),
+                "No",
+                ButtonKind::Default,
+                false,
+                None,
+            )
+            .clicked();
+            if yes {
+                Outcome::Done(true)
+            } else if no || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
+                Outcome::Done(false)
+            } else {
+                Outcome::Open
+            }
+        },
+    )
+}
 
 /// Tell the user `text` under the window title `title` (English, marked; the text translated).
 pub fn tell(title: &'static str, text: String) {

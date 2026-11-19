@@ -3846,6 +3846,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	Error al volver a comprobar: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	Grabando...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4057,6 +4062,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	Guardado en
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	Guardando...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4556,6 +4566,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Detener
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	Detener y guardar
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Detener descarga a las
@@ -5011,6 +5025,11 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	el servidor envió una parte inesperada del archivo ({detail})
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	el servidor solo envió {sent} cuando el archivo del navegador es {size} (un vínculo que funciona una vez o solo en el navegador): haz Alt+clic en el vínculo para que el navegador lo descargue
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine

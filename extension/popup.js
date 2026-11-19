@@ -54,8 +54,10 @@ async function show() {
   $("open").disabled = $("options").disabled = !s.connected;
   $("version").textContent = s.version ? `v${s.version}` : "";
   // Send downloads to: this computer, or another MDM (#157).
+  const remotes = Array.isArray(s.remotes) ? s.remotes : [];
+  renderRemotes(remotes, s.remote);
   $("to-here").checked = !s.remote && $("remote-form").hidden;
-  $("to-remote").checked = Boolean(s.remote) || !$("remote-form").hidden;
+  $("to-remote").checked = (remotes.length === 0 ? Boolean(s.remote) : false) || !$("remote-form").hidden;
   $("open").disabled = $("open").disabled || Boolean(s.remote);
   $("options").disabled = $("options").disabled || Boolean(s.remote);
   const tab = await currentTab();
@@ -312,11 +314,62 @@ $("options").addEventListener("click", async () => {
   window.close();
 });
 
+function renderRemotes(remotes, activeUrl) {
+  const list = $("remotes-list");
+  if (!list) return;
+  list.textContent = "";
+  for (const url of remotes) {
+    const row = document.createElement("div");
+    row.className = "remote-item";
+
+    const label = document.createElement("label");
+    label.className = "choice";
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "to";
+    radio.checked = url === activeUrl && $("remote-form").hidden;
+    radio.addEventListener("change", async () => {
+      $("remote-form").hidden = true;
+      await ask({ type: "remote-select", url });
+      show();
+    });
+
+    const span = document.createElement("span");
+    try {
+      span.textContent = new URL(url).host;
+    } catch {
+      span.textContent = url;
+    }
+    span.title = url;
+
+    label.append(radio, span);
+
+    const forget = document.createElement("button");
+    forget.type = "button";
+    forget.className = "remote-forget";
+    forget.textContent = "×";
+    const forgetTitle = t("popup_remote_forget");
+    forget.title = forgetTitle;
+    forget.setAttribute("aria-label", forgetTitle);
+    forget.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      await ask({ type: "remote-forget", url });
+      show();
+    });
+
+    row.append(label, forget);
+    list.append(row);
+  }
+}
+
 // Send downloads to (#157): another MDM is paired here with its address and a code it shows.
-$("to-remote").addEventListener("change", () => {
+const openRemoteForm = () => {
   $("remote-form").hidden = false;
   $("remote-url").focus();
-});
+};
+$("to-remote").addEventListener("change", openRemoteForm);
+$("to-remote").addEventListener("click", openRemoteForm);
 $("to-here").addEventListener("change", async () => {
   $("remote-form").hidden = true;
   await ask({ type: "remote-off" });

@@ -750,7 +750,11 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     html_after=N   the first N requests for this path and query get the file, every later one
                    the page (as html=1 with html_type and html_cd): a link that leads to a
                    waiting page once the download is resumed; vary seed= for a fresh link
-    node=N         another server's copy of the same file: its own ETag and date
+    html_body=challenge|json|text  with html=1 or html_after=N: a bot check's script page
+                   (text/html), a JSON error (application/json) or a line of text (text/plain)
+                   instead of the waiting page: a one-time link asked a second time (#1460)
+    html_chunked=1 with html=1 or html_after=N: the page chunked, without a Content-Length
+    node=N        another server's copy of the same file: its own ETag and date
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -1735,18 +1739,37 @@ pub(crate) async fn serve(
 /// `html=1`'s page: a sign-in wall, or (with `html_type` or `html_cd`) a file host's waiting page
 /// as it comes, its blank lines first (#701).
 fn web_page(f: &Faults, name: Option<&str>, size: u64) -> Response {
-    if f.html_type.is_none() && f.html_cd != Some(true) {
-        return (
-            [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
-            "<!doctype html><title>Sign in</title><form>Please sign in</form>\n",
-        )
-            .into_response();
+    // #1460: a one-time link's host's answer to a second request, instead of a page.
+    let other = match f.html_body.as_deref() {
+        Some("challenge") => Some((
+            "text/html; charset=utf-8",
+            "<html><script>var arg1='5C95CC7557DB4053192CC0CE9891F2B874A9E345';\
+             document.cookie='acw_sc__v2='+arg1;location.reload();</script></html>",
+        )),
+        Some("json") => Some((
+            "application/json",
+            "{\"zt\":0,\"info\":\"\\u94fe\\u63a5\\u5df2\\u5931\\u6548\"}",
+        )),
+        Some("text") => Some(("text/plain; charset=utf-8", "Access denied\n")),
+        _ => None,
+    };
+    if other.is_none() && f.html_type.is_none() && f.html_cd != Some(true) {
+        return page_body(
+            Response::builder()
+                .status(StatusCode::OK)
+                .header(header::CONTENT_TYPE, "text/html; charset=utf-8"),
+            "<!doctype html><title>Sign in</title><form>Please sign in</form>\n".to_owned(),
+            f,
+        );
     }
     let mut builder = Response::builder().status(StatusCode::OK);
     match f.html_type.as_deref() {
         Some("none") => {}
         Some(t) => builder = builder.header(header::CONTENT_TYPE, t),
-        None => builder = builder.header(header::CONTENT_TYPE, "text/html; charset=utf-8"),
+        None => {
+            let t = other.map_or("text/html; charset=utf-8", |(t, _)| t);
+            builder = builder.header(header::CONTENT_TYPE, t);
+        }
     }
     if f.html_cd == Some(true) {
         let name = name.unwrap_or("file.zip").replace(['"', '\\'], "_");
@@ -1754,6 +1777,9 @@ fn web_page(f: &Faults, name: Option<&str>, size: u64) -> Response {
             header::CONTENT_DISPOSITION,
             format!("attachment; filename=\"{name}\""),
         );
+    }
+    if let Some((_, body)) = other {
+        return page_body(builder, body.to_owned(), f);
     }
     let mut page = String::from(
         "\r\n\r\n<!DOCTYPE html>\n<html><head><title>Your file is almost ready</title></head>\
@@ -1767,6 +1793,16 @@ fn web_page(f: &Faults, name: Option<&str>, size: u64) -> Response {
         page.push_str("<!--");
         page.push_str(&" ".repeat(want - page.len() - 8));
         page.push_str("-->\n");
+    }
+    page_body(builder, page, f)
+}
+
+/// `web_page`'s answer with `page` as its body: with its length, or chunked without one
+/// (`html_chunked`).
+fn page_body(builder: axum::http::response::Builder, page: String, f: &Faults) -> Response {
+    if f.html_chunked == Some(true) {
+        let chunks = futures::stream::iter([Ok::<_, std::io::Error>(bytes::Bytes::from(page))]);
+        return builder.body(Body::from_stream(chunks)).unwrap();
     }
     builder.body(Body::from(page)).unwrap()
 }

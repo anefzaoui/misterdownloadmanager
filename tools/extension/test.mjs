@@ -240,8 +240,11 @@ const fetched = [];
 async function fakeFetch(url, opts) {
   const range = /^bytes=(\d+)-(\d+)$/.exec((opts && opts.headers && opts.headers.Range) || "");
   fetched.push([String(url), opts && opts.credentials, ...(range ? [range[0]] : [])]);
-  const r = served[url];
+  let r = served[url];
+  if (typeof r === "function") r = r(opts);
+  r = await r;
   if (!r) throw new TypeError("Failed to fetch");
+  r.calls = [...(r.calls || []), opts];
   // Its body as a stream too, 1 KB a chunk: `r.read` counts what was pulled (#171 reads 4 KB).
   // `r.bytes`: a file's (#1092), whose ranges are served as a server does (206); `r.noRange`:
   // a server that ignores them (the whole file, 200).
@@ -267,7 +270,14 @@ async function fakeFetch(url, opts) {
       r.read += 1024;
     },
   });
-  return { ok: (r.status || 200) < 300, status: r.status || 200, headers: { get: () => null }, body, text: async () => r.body };
+  return {
+    ok: (r.status || 200) < 300,
+    status: r.status || 200,
+    headers: { get: () => null },
+    body,
+    text: async () => r.body,
+    json: async () => (typeof r.body === "string" ? JSON.parse(r.body) : r.body || null),
+  };
 }
 
 // What background.js wrote to the console as an error or a warning (#42: none, granted or not).
@@ -3162,8 +3172,8 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
   }
   {
-    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords", "compactFor"],
-      "{ choiceSize, qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords, compactFor }");
+    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "qualityWords", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords", "compactFor"],
+      "{ choiceSize, qualityName, qualityMeta, qualityWords, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords, compactFor }");
     const tt = (k, ...a) => (a.length ? `${k}(${a.join(",")})` : k);
     const hd = { label: "1080p 60fps MP4", ext: "mp4", size: 412000000, audio: false, height: 1080, fps: 60 };
     const k4 = { label: "2160p MP4", ext: "mp4", height: 2160 };
@@ -3176,15 +3186,26 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.equal(w.qualityMeta(sound, tt), "128 kbps");
     assert.equal(w.qualityMeta(mp3, tt), "", "a conversion says it in its label");
     assert.equal(w.qualityMeta(older, tt), "", "an older app's label says it all");
-    // #755: the codec, frame rate and range, the type only when it isn't MP4 (or no codec is
-    // said); each line of one height its own.
-    const av1 = { label: "2160p · AV1 · 60 fps · HDR", ext: "mp4", height: 2160, fps: 60, codec: "AV1", range: "HDR", size: 305554961 };
-    const vp9 = { label: "2160p · VP9 · 60 fps · SDR", ext: "mp4", height: 2160, fps: 60, codec: "VP9", range: "SDR", size: 292630287 };
-    assert.equal(w.qualityMeta(av1, tt), "AV1 · 60 fps · HDR");
-    assert.equal(w.qualityMeta(vp9, tt), "VP9 · 60 fps · SDR");
+    // #755, #1465: the file type and the codec (every merged video is an MP4, whatever its
+    // picture), the frame rate and range; each line of one height its own.
+    const av1 = { label: "2160p MP4 · AV1 · 60 fps · HDR", ext: "mp4", height: 2160, fps: 60, codec: "AV1", range: "HDR", size: 305554961 };
+    const vp9 = { label: "2160p MP4 · VP9 · 60 fps · SDR", ext: "mp4", height: 2160, fps: 60, codec: "VP9", range: "SDR", size: 292630287 };
+    assert.equal(w.qualityMeta(av1, tt), "MP4 · AV1 · 60 fps · HDR");
+    assert.equal(w.qualityMeta(vp9, tt), "MP4 · VP9 · 60 fps · SDR");
+    // #1465: a quality's whole name is the app's label, as its window and video-info say it.
+    for (const c of [av1, vp9]) assert.equal(w.qualityWords(c, tt), c.label.replace(/^2160p/, "4K"));
+    const fhd = { label: "1080p MP4 · AV1 · 30 fps", ext: "mp4", height: 1080, fps: 30, codec: "AV1" };
+    assert.equal(w.qualityWords(fhd, tt), fhd.label);
+    assert.equal(w.qualityWords(av1, tt, true), "4K MP4 · AV1", "Download best's line: the name, type and codec");
+    assert.equal(w.qualityMeta(av1, tt, true), "MP4 · AV1");
+    assert.equal(w.qualityWords({ height: 720, ext: "mp4" }, tt), "720p MP4", "no codec said: none guessed");
+    assert.equal(w.qualityWords(sound, tt), "video_tab_audio");
+    assert.equal(w.qualityWords(older, tt), "720p MP4", "an older app's label as it is");
+    assert.equal(w.qualityWords({ file: true, ext: "webm" }, tt), "WEBM", "a plain file's type once");
+    assert.equal(w.qualityWords({ file: true, height: 720, ext: "mp4" }, tt), "720p MP4");
     assert.equal(w.qualityMeta({ height: 360, ext: "webm", codec: "VP9", fps: 30 }, tt), "WEBM · VP9 · 30 fps", "a type other than MP4 is said");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: 7, range: { x: 1 } }, tt), "MP4", "only text is shown");
-    assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).length, 24, "a codec's name is cut");
+    assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).split(" · ")[1].length, 24, "a codec's name is cut");
     // #1439: the most compatible choice (H.264 + AAC) says so in place of its codec.
     const compatible = { label: "Most compatible (H.264 + AAC) · 1080p", ext: "mp4", height: 1080, fps: 60, codec: "H.264", compatible: true };
     assert.ok(source.includes('if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);'), "its line's tip is the app's whole name");
@@ -3213,8 +3234,9 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.equal(w.chipFor({ state: "ready", choices: [older] }, tt), null, "no height: no chip");
     assert.deepEqual(w.chipFor({ file: true, height: 720, ext: "mp4" }, tt), { text: "720p", hd: true });
     assert.equal(w.chipFor({ state: "failed" }, tt), null);
-    assert.equal(w.tipFor(ready, tt, "en"), "video_tip(1080p MP4 · 392.9 MB)");
-    assert.equal(w.tipFor({ state: "ready", choices: [{ ...hd, approx: true }] }, tt, "en"), "video_tip(1080p MP4 · ~392.9 MB)");
+    assert.equal(w.tipFor(ready, tt, "en"), "video_tip(1080p MP4 · 60 fps · 392.9 MB)");
+    assert.equal(w.tipFor({ state: "ready", choices: [{ ...hd, approx: true }] }, tt, "en"), "video_tip(1080p MP4 · 60 fps · ~392.9 MB)");
+    assert.equal(w.tipFor({ state: "ready", choices: [fhd] }, tt, "en"), "video_tip(1080p MP4 · AV1 · 30 fps)", "#1465: the codec too");
     assert.equal(w.tipFor({ state: "pending" }, tt, "en"), "video_tip_best");
     assert.equal(w.tipFor(null, tt, "en"), "video_download");
     assert.deepEqual([596, 3723, 0, null, "x"].map(w.durationText), ["9:56", "1:02:03", "", "", ""]);
@@ -4283,6 +4305,110 @@ ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser"
   }
   assert.ok(english.status_remote, "status_remote");
   ok("another MDM: the app's file types, every pairing message");
+}
+// Another MDM (#157): multiple servers, migration from a single remote, switching, forget, and 401 pruning.
+{
+  const { api, listeners, store } = fakeApi({ firefox: false });
+  load(api, false);
+  const send = (m) => new Promise((r) => listeners.message(m, { id: "ours" }, (v) => r(JSON.parse(JSON.stringify(v)))));
+
+  // 1. Migration: upgrading from a single legacy `remote` in storage.
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a" };
+  delete store.remotes;
+  const state1 = await send({ type: "state" });
+  assert.equal(state1.remote, "https://server-a.test:8463/");
+  assert.deepEqual(state1.remotes, ["https://server-a.test:8463/"]);
+  assert.deepEqual(store.remotes, [{ url: "https://server-a.test:8463/", token: "token-a" }], "migrated list saved on read");
+
+  // Switching to "This computer" (remote-off) sets active remote to null, but leaves the server in remotes.
+  assert.deepEqual(await send({ type: "remote-off" }), { ok: true });
+  assert.equal(store.remote, null);
+  assert.deepEqual(store.remotes, [{ url: "https://server-a.test:8463/", token: "token-a" }]);
+  const state2 = await send({ type: "state" });
+  assert.equal(state2.remote, null);
+  assert.deepEqual(state2.remotes, ["https://server-a.test:8463/"]);
+
+  // 2. Pair a second server: both are remembered, and the new one becomes active.
+  served["https://server-b.test:8463/api/pair"] = { status: 200, body: JSON.stringify({ token: "token-b" }) };
+  const paired = await send({ type: "remote-pair", url: "https://server-b.test:8463/", code: "12345678" });
+  assert.deepEqual(paired, { ok: true });
+  assert.equal(store.remote.url, "https://server-b.test:8463/");
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-a.test:8463/", "https://server-b.test:8463/"]);
+
+  // 3. remote-select: switch back to server A.
+  assert.deepEqual(await send({ type: "remote-select", url: "https://server-a.test:8463/" }), { ok: true });
+  assert.equal(store.remote.url, "https://server-a.test:8463/");
+  // An address not in the list is refused.
+  assert.deepEqual(await send({ type: "remote-select", url: "https://unknown.test:8463/" }), { ok: false, why: "not-found" });
+  assert.equal(store.remote.url, "https://server-a.test:8463/");
+
+  // 4. remote-forget: the token goes only to its own server.
+  served["https://server-a.test:8463/api/forget"] = { status: 200, body: JSON.stringify({ ok: true }) };
+  served["https://server-b.test:8463/api/forget"] = { status: 200, body: JSON.stringify({ ok: true }) };
+  const beforeFetches = fetched.length;
+  assert.deepEqual(await send({ type: "remote-forget", url: "https://server-a.test:8463/" }), { ok: true });
+  assert.equal(store.remote, null, "active server A cleared on forget");
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-b.test:8463/"]);
+  const forgetCalls = fetched.slice(beforeFetches).filter(([u]) => u.includes("api/forget"));
+  assert.equal(forgetCalls.length, 1);
+  assert.ok(forgetCalls[0][0].startsWith("https://server-a.test:8463/"), "token went only to server A");
+  assert.equal(served["https://server-a.test:8463/api/forget"].calls?.[0]?.headers?.Authorization, "Bearer token-a");
+  assert.equal(served["https://server-b.test:8463/api/forget"].calls, undefined, "server B never received forget");
+
+  // 5. 401 pruning: a 401 from server B removes B and resets active B to null.
+  store.remotes = [
+    { url: "https://server-a.test:8463/", token: "token-a" },
+    { url: "https://server-b.test:8463/", token: "token-b" },
+  ];
+  store.remote = { url: "https://server-b.test:8463/", token: "token-b" };
+  served["https://server-b.test:8463/api/add"] = { status: 401, body: JSON.stringify({ error: "unauthorized" }) };
+  listeners.determining({ id: 81, url: "https://dl.test/file.zip", filename: "file.zip" }, () => {});
+  await settle();
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-a.test:8463/"], "server B pruned on 401");
+  assert.equal(store.remote, null, "active server B reset on 401");
+
+  // 6. Race: a late 401 from server A while user already switched to B prunes A but keeps active B.
+  store.remotes = [
+    { url: "https://server-a.test:8463/", token: "token-a" },
+    { url: "https://server-b.test:8463/", token: "token-b" },
+  ];
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a" };
+  let serverACalled;
+  const serverACalledPromise = new Promise((resolve) => { serverACalled = resolve; });
+  let finishLate401;
+  served["https://server-a.test:8463/api/add"] = () => new Promise((resolve) => {
+    serverACalled();
+    finishLate401 = () => resolve({ status: 401, body: JSON.stringify({ error: "unauthorized" }) });
+  });
+  listeners.determining({ id: 82, url: "https://dl.test/file2.zip", filename: "file2.zip" }, () => {});
+  await serverACalledPromise;
+  assert.deepEqual(await send({ type: "remote-select", url: "https://server-b.test:8463/" }), { ok: true });
+  assert.equal(store.remote?.url, "https://server-b.test:8463/");
+  finishLate401();
+  await settle();
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-b.test:8463/"], "server A pruned on late 401");
+  assert.equal(store.remote?.url, "https://server-b.test:8463/", "active server B kept after late 401 from A");
+
+  // 7. Token mismatch: a late 401 with old token does not prune re-paired server A.
+  store.remotes = [{ url: "https://server-a.test:8463/", token: "token-a-old" }];
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a-old" };
+  let oldCalled;
+  const oldCalledPromise = new Promise((resolve) => { oldCalled = resolve; });
+  let finishOld401;
+  served["https://server-a.test:8463/api/add"] = () => new Promise((resolve) => {
+    oldCalled();
+    finishOld401 = () => resolve({ status: 401, body: JSON.stringify({ error: "unauthorized" }) });
+  });
+  listeners.determining({ id: 83, url: "https://dl.test/file3.zip", filename: "file3.zip" }, () => {});
+  await oldCalledPromise;
+  store.remotes = [{ url: "https://server-a.test:8463/", token: "token-a-new" }];
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a-new" };
+  finishOld401();
+  await settle();
+  assert.deepEqual(store.remotes, [{ url: "https://server-a.test:8463/", token: "token-a-new" }], "re-paired server A kept");
+  assert.deepEqual(store.remote, { url: "https://server-a.test:8463/", token: "token-a-new" });
+
+  ok("another MDM: multiple servers, migration, switching, forget, and 401 pruning");
 }
 // Safari has no downloads API: the extension still starts, and a link page.js holds (a file type
 // Options lists) is offered to the app as a browser's download is; the app taking it is told to

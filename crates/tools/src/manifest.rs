@@ -973,7 +973,7 @@ mod tests {
         assert_eq!(v.title, "master");
         assert_eq!(v.duration, Some(20.0));
         let labels: Vec<String> = choices(&v, false).into_iter().map(|c| c.label).collect();
-        assert_eq!(labels, ["720p · H.264", "360p · H.264"]);
+        assert_eq!(labels, ["720p MP4 · H.264", "360p MP4 · H.264"]);
     }
 
     /// DRM, a live stream, a picture without its resolution, a playlist on another server, a

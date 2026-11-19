@@ -6,6 +6,231 @@
 use std::ffi::c_void;
 use std::mem::{size_of, zeroed};
 
+/// Stable identity of the opened object; paths alone do not prove ownership.
+/// Volume, file index and creation time: file indexes are reused (FAT and exFAT derive them
+/// from the directory entry, ReFS does not promise uniqueness), a creation time tells a file
+/// that took the name later from the one recorded. Without all three, no identity.
+pub fn torrent_file_identity(file: &std::fs::File) -> std::io::Result<[u64; 5]> {
+    use std::os::windows::io::AsRawHandle;
+    use windows_sys::Win32::Storage::FileSystem::{
+        FILE_BASIC_INFO, FILE_ID_INFO, FileBasicInfo, FileIdInfo, GetFileInformationByHandleEx,
+    };
+    // SAFETY: every field of this output structure admits zero.
+    let mut id: FILE_ID_INFO = unsafe { zeroed() };
+    // SAFETY: every field of this output structure admits zero.
+    let mut basic: FILE_BASIC_INFO = unsafe { zeroed() };
+    // SAFETY: the file owns a live handle and info is a writable output structure.
+    if unsafe {
+        GetFileInformationByHandleEx(
+            file.as_raw_handle(),
+            FileIdInfo,
+            (&mut id as *mut FILE_ID_INFO).cast(),
+            size_of::<FILE_ID_INFO>() as u32,
+        )
+    } == 0
+    {
+        return Err(std::io::Error::last_os_error());
+    }
+    // SAFETY: the live handle and correctly sized output are valid for FileBasicInfo.
+    if unsafe {
+        GetFileInformationByHandleEx(
+            file.as_raw_handle(),
+            FileBasicInfo,
+            (&mut basic as *mut FILE_BASIC_INFO).cast(),
+            size_of::<FILE_BASIC_INFO>() as u32,
+        )
+    } == 0
+    {
+        return Err(std::io::Error::last_os_error());
+    }
+    if id.FileId.Identifier == [0; 16] || basic.CreationTime <= 0 || !keeps_file_ids(file) {
+        return Err(std::io::ErrorKind::Unsupported.into());
+    }
+    Ok([
+        id.VolumeSerialNumber,
+        u64::from_le_bytes(id.FileId.Identifier[..8].try_into().unwrap()),
+        u64::from_le_bytes(id.FileId.Identifier[8..].try_into().unwrap()),
+        basic.CreationTime as u64,
+        0,
+    ])
+}
+
+/// Whether the file's volume is NTFS or ReFS, where a file's index is its own and a recreated
+/// file gets a new one. FAT and exFAT make the index from the entry's place in its folder and
+/// restore a creation time within about 15 seconds ("tunnelling"), so a file saved under the
+/// same name just after another was deleted looks the same: there, no identity is given, and
+/// the files are never deleted by MDM and a start asks before writing to them.
+fn keeps_file_ids(file: &std::fs::File) -> bool {
+    use std::os::windows::io::AsRawHandle;
+    use windows_sys::Win32::Storage::FileSystem::GetVolumeInformationByHandleW;
+    let mut name = [0u16; 32];
+    // SAFETY: the file owns a live handle; `name` is a writable buffer of the length given, and
+    // the other outputs are not asked for.
+    let ok = unsafe {
+        GetVolumeInformationByHandleW(
+            file.as_raw_handle(),
+            std::ptr::null_mut(),
+            0,
+            std::ptr::null_mut(),
+            std::ptr::null_mut(),
+            std::ptr::null_mut(),
+            name.as_mut_ptr(),
+            name.len() as u32,
+        )
+    };
+    if ok == 0 {
+        return false;
+    }
+    let end = name.iter().position(|c| *c == 0).unwrap_or(name.len());
+    let name = String::from_utf16_lossy(&name[..end]);
+    name.eq_ignore_ascii_case("NTFS") || name.eq_ignore_ascii_case("ReFS")
+}
+
+pub fn torrent_file_identity_at(path: &std::path::Path) -> std::io::Result<[u64; 5]> {
+    use std::os::windows::fs::OpenOptionsExt;
+    use windows_sys::Win32::Storage::FileSystem::{
+        FILE_FLAG_BACKUP_SEMANTICS, FILE_FLAG_OPEN_REPARSE_POINT, FILE_READ_ATTRIBUTES,
+    };
+    let file = std::fs::OpenOptions::new()
+        .access_mode(FILE_READ_ATTRIBUTES)
+        .custom_flags(FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT)
+        .open(path)?;
+    torrent_file_identity(&file)
+}
+
+/// Open (or, with `create`, make with `create_new`) the file at `path` for the torrent engine
+/// without following a link at its end: `FILE_FLAG_OPEN_REPARSE_POINT` opens a symbolic link
+/// itself, not what it points to, and one is refused. A folder is refused too.
+pub fn open_torrent_file(path: &std::path::Path, create: bool) -> std::io::Result<std::fs::File> {
+    use std::os::windows::fs::{MetadataExt, OpenOptionsExt};
+    use windows_sys::Win32::Storage::FileSystem::{
+        FILE_ATTRIBUTE_DIRECTORY, FILE_ATTRIBUTE_REPARSE_POINT, FILE_FLAG_OPEN_REPARSE_POINT,
+    };
+    let mut options = std::fs::OpenOptions::new();
+    options
+        .read(true)
+        .write(true)
+        .custom_flags(FILE_FLAG_OPEN_REPARSE_POINT);
+    if create {
+        options.create_new(true);
+    }
+    let file = options.open(path)?;
+    let metadata = file.metadata()?;
+    let attributes = metadata.file_attributes();
+    if attributes & FILE_ATTRIBUTE_DIRECTORY != 0
+        || (attributes & FILE_ATTRIBUTE_REPARSE_POINT != 0 && metadata.file_type().is_symlink())
+    {
+        return Err(std::io::ErrorKind::InvalidInput.into());
+    }
+    Ok(file)
+}
+
+/// Where the opened object really is: the system's final path of the handle, links resolved.
+pub fn torrent_file_path(file: &std::fs::File) -> std::io::Result<std::path::PathBuf> {
+    use std::os::windows::{ffi::OsStringExt, io::AsRawHandle};
+    use windows_sys::Win32::Storage::FileSystem::GetFinalPathNameByHandleW;
+    let handle = file.as_raw_handle();
+    let mut buffer = vec![0u16; 1024];
+    loop {
+        // SAFETY: the live handle and a buffer of the length given.
+        let n = unsafe {
+            GetFinalPathNameByHandleW(handle, buffer.as_mut_ptr(), buffer.len() as u32, 0)
+        } as usize;
+        if n == 0 {
+            return Err(std::io::Error::last_os_error());
+        }
+        if n < buffer.len() {
+            buffer.truncate(n);
+            return Ok(std::ffi::OsString::from_wide(&buffer).into());
+        }
+        buffer.resize(n + 1, 0);
+    }
+}
+
+/// Delete the verified object through its handle, even if the path is replaced. The handle is
+/// opened sharing read, write and delete, so a program that has the file open (the torrent
+/// engine on its way out, an antivirus scanning a file just made, the indexer) does not stop it,
+/// and the name goes at once, as `std::fs::remove_file` does; where the system doesn't know that
+/// way (before Windows 10 1709) the older one is used. A refusal that is only a moment's
+/// contention is tried again a few times.
+pub fn remove_owned_torrent_file(
+    path: &std::path::Path,
+    expected: [u64; 5],
+) -> std::io::Result<bool> {
+    use std::os::windows::{fs::OpenOptionsExt, io::AsRawHandle};
+    use windows_sys::Win32::Storage::FileSystem::{
+        DELETE, FILE_DISPOSITION_FLAG_DELETE, FILE_DISPOSITION_FLAG_IGNORE_READONLY_ATTRIBUTE,
+        FILE_DISPOSITION_FLAG_POSIX_SEMANTICS, FILE_DISPOSITION_INFO, FILE_DISPOSITION_INFO_EX,
+        FILE_FLAG_OPEN_REPARSE_POINT, FILE_READ_ATTRIBUTES, FILE_SHARE_DELETE, FILE_SHARE_READ,
+        FILE_SHARE_WRITE, FileDispositionInfo, FileDispositionInfoEx, SetFileInformationByHandle,
+    };
+    let mut last = None;
+    for attempt in 0..4 {
+        if attempt > 0 {
+            std::thread::sleep(std::time::Duration::from_millis(100 * attempt));
+        }
+        let file = match std::fs::OpenOptions::new()
+            .access_mode(DELETE | FILE_READ_ATTRIBUTES)
+            .share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE)
+            .custom_flags(FILE_FLAG_OPEN_REPARSE_POINT)
+            .open(path)
+        {
+            Ok(file) => file,
+            // Gone already, or a refusal that may pass: look again.
+            Err(e) if matches!(e.raw_os_error(), Some(5 | 32)) => {
+                last = Some(e);
+                continue;
+            }
+            Err(e) => return Err(e),
+        };
+        if torrent_file_identity(&file)? != expected {
+            return Ok(false);
+        }
+        let handle = file.as_raw_handle();
+        let ex = FILE_DISPOSITION_INFO_EX {
+            Flags: FILE_DISPOSITION_FLAG_DELETE
+                | FILE_DISPOSITION_FLAG_POSIX_SEMANTICS
+                | FILE_DISPOSITION_FLAG_IGNORE_READONLY_ATTRIBUTE,
+        };
+        // SAFETY: the live handle permits deletion; the structure and its size are the ones
+        // the information class names.
+        if unsafe {
+            SetFileInformationByHandle(
+                handle,
+                FileDispositionInfoEx,
+                (&ex as *const FILE_DISPOSITION_INFO_EX).cast(),
+                size_of::<FILE_DISPOSITION_INFO_EX>() as u32,
+            )
+        } != 0
+        {
+            return Ok(true);
+        }
+        let first = std::io::Error::last_os_error();
+        let info = FILE_DISPOSITION_INFO { DeleteFile: true };
+        // SAFETY: as above, for the older structure.
+        if unsafe {
+            SetFileInformationByHandle(
+                handle,
+                FileDispositionInfo,
+                (&info as *const FILE_DISPOSITION_INFO).cast(),
+                size_of::<FILE_DISPOSITION_INFO>() as u32,
+            )
+        } != 0
+        {
+            return Ok(true);
+        }
+        let second = std::io::Error::last_os_error();
+        if matches!(second.raw_os_error(), Some(5 | 32))
+            || matches!(first.raw_os_error(), Some(5 | 32))
+        {
+            last = Some(second);
+            continue;
+        }
+        return Err(second);
+    }
+    Err(last.unwrap_or_else(|| std::io::ErrorKind::PermissionDenied.into()))
+}
+
 use windows_sys::Win32::Foundation::{HWND, LPARAM, LRESULT, RECT, WPARAM};
 use windows_sys::Win32::Graphics::Gdi::{
     BI_RGB, BITMAPINFO, BITMAPINFOHEADER, DIB_RGB_COLORS, DeleteObject, GetDC, GetDIBits, ReleaseDC,
