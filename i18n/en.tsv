@@ -4181,6 +4181,9 @@
 #. button in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 	Use MDM's own copy	Use MDM's own copy
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+	Use my yt-dlp config file	Use my yt-dlp config file
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Use one * only	Use one * only
@@ -4431,6 +4434,9 @@
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.
