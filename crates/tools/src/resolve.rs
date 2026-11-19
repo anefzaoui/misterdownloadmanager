@@ -120,8 +120,13 @@ pub struct Choice {
 struct RawVideo {
     title: Option<String>,
     duration: Option<f64>,
+    /// None when yt-dlp lists no formats: a video of one file, which the answer itself then
+    /// describes (its `url`, `format_id`, `ext`: [`parse`]).
     #[serde(default)]
-    formats: Vec<RawFormat>,
+    formats: Option<Vec<RawFormat>>,
+    /// The file's address, in an answer that is its one format.
+    #[serde(default)]
+    url: Option<String>,
     #[serde(default)]
     subtitles: Option<std::collections::BTreeMap<String, Vec<RawSub>>>,
     #[serde(default)]
@@ -317,7 +322,21 @@ fn page_reader(extractor_key: &str) -> bool {
 
 /// Parse `yt-dlp -J` output.
 pub fn parse(json: &[u8]) -> Option<Video> {
-    let raw: RawVideo = serde_json::from_slice(json).ok()?;
+    let mut raw: RawVideo = serde_json::from_slice(json).ok()?;
+    // A video of one file is its own format (#1458): yt-dlp lists no `formats` then and leaves
+    // that one's `url`, `format_id` and `ext` in the answer itself, as for a plain file whose
+    // server doesn't say it is a video (`application/octet-stream`). Read as an empty list, it
+    // was "No video this can download on that page".
+    let formats = match raw.formats.take() {
+        Some(list) => list,
+        None if raw.url.as_deref().is_some_and(|u| !u.is_empty()) => {
+            serde_json::from_slice::<RawFormat>(json)
+                .ok()
+                .into_iter()
+                .collect()
+        }
+        None => Vec::new(),
+    };
     // yt-dlp: "none" means the stream isn't there; a missing codec is just unknown (plain
     // files on generic sites carry both).
     let has = |c: &Option<String>| c.as_deref() != Some("none");
@@ -335,8 +354,7 @@ pub fn parse(json: &[u8]) -> Option<Video> {
     Some(Video {
         title: raw.title.unwrap_or_else(|| "video".into()),
         duration: raw.duration,
-        formats: raw
-            .formats
+        formats: formats
             .into_iter()
             // yt-dlp never chooses a DRM format (`has_drm` true; "maybe" it still tries).
             .filter(|f| f.has_drm.as_ref().and_then(serde_json::Value::as_bool) != Some(true))
@@ -1734,6 +1752,49 @@ mod tests {
         let sized =
             r#"{"title": "t", "direct": true, "formats": [{"format_id": "mp4", "filesize": 9}]}"#;
         assert!(!parse(sized.as_bytes()).unwrap().needs_size());
+    }
+
+    /// #1458: yt-dlp's answer for a plain file whose server sends it as
+    /// `application/octet-stream` (real output, 2026.08.19, trimmed: a short video site's
+    /// address): no `formats` list, the one file described by the answer itself. That file is
+    /// offered (its MP4, the size its server says, MP3 from it with ffmpeg), downloaded by its
+    /// own format id.
+    #[test]
+    fn a_file_yt_dlp_lists_as_the_answer_itself_is_offered() {
+        let json = r#"{"id": "BMjAy_b_B5b72", "title": "BMjAy_b_B5b72", "timestamp": null,
+            "direct": true, "url": "https://cdn.test/upic/v/BMjAy_b_B5b72.mp4?tag=1-1795051555-s-0",
+            "ext": "mp4", "webpage_url": "https://cdn.test/upic/v/BMjAy_b_B5b72.mp4?tag=1-1795051555-s-0",
+            "extractor": "generic", "extractor_key": "Generic", "playlist": null,
+            "protocol": "https", "video_ext": "mp4", "audio_ext": "none", "vbr": null, "abr": null,
+            "tbr": null, "resolution": null, "dynamic_range": "SDR", "aspect_ratio": null,
+            "filesize_approx": null, "format_id": "0", "format": "0 - unknown", "_type": "video"}"#;
+        let mut v = parse(json.as_bytes()).unwrap();
+        assert_eq!(v.formats.len(), 1);
+        let f = &v.formats[0];
+        assert_eq!((f.id.as_str(), f.ext.as_str()), ("0", "mp4"));
+        assert!(f.video && f.audio, "codecs unknown: a video with its sound");
+        assert!(v.needs_size());
+        v.set_size(4_870_897);
+        for merge in [false, true] {
+            let c = choices(&v, merge);
+            assert_eq!(
+                (c[0].label.as_str(), c[0].selector.as_str(), c[0].size),
+                ("MP4", "0", Some(4_870_897))
+            );
+        }
+        // A listed format still comes from the list, never from the answer's own fields (the
+        // chosen format's, which yt-dlp copies there).
+        let listed = r#"{"title": "t", "url": "https://cdn.test/a.mp4", "format_id": "x",
+            "formats": [{"format_id": "18", "ext": "mp4"}]}"#;
+        let v = parse(listed.as_bytes()).unwrap();
+        assert_eq!(
+            v.formats.iter().map(|f| f.id.as_str()).collect::<Vec<_>>(),
+            ["18"]
+        );
+        // An answer with neither (a list's, an extractor's empty one): no format, as before.
+        let none = parse(br#"{"title": "t", "formats": []}"#).unwrap();
+        assert!(none.formats.is_empty());
+        assert!(parse(br#"{"title": "t"}"#).unwrap().formats.is_empty());
     }
 
     /// #351: what yt-dlp lists on YouTube with no JavaScript runtime (real output, 2026.10.26):
