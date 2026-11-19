@@ -2155,8 +2155,9 @@ fn table_sized(
         bg,
     );
     fill(p, o.x + 19.0, o.y + 275.0, o.x + 527.0, o.y + 298.0, head);
+    winui::header_shade(p, o.x + 19.0, o.x + 527.0, o.y + 298.0, false);
     for x in seps {
-        fill(p, o.x + x, o.y + 275.0, o.x + x, o.y + 298.0, line);
+        winui::header_divider(p, o.x + x, o.y + 275.0, o.y + 298.0, line);
     }
     for (x, h) in heads {
         text(p, o.x + x, o.y + 290.0, crate::i18n::t(h), winui::TEXT());
@@ -2401,6 +2402,12 @@ fn helper_line(why: &mdm_tools::streams::Helper) -> String {
     }
 }
 
+/// The connections table's background: the theme's `progress.connections`, or a list's.
+fn connections_bg() -> Color32 {
+    let own = crate::theme::colors().connections;
+    if own.a() > 0 { own } else { winui::FIELD() }
+}
+
 /// The connections table (spec "Connections table"): N. · Downloaded · Info.
 fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>) {
     let outer = r(o, 17.0, 273.0, 513.0, 128.0);
@@ -2411,8 +2418,8 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         o.y + 274.0,
         o.x + 528.0,
         o.y + 399.0,
-        // Every list's background (IDM's light one is mauve, #beb4be: the only one of its kind).
-        winui::FIELD(),
+        // A list's background, or the theme's own for this table (Luna's greyish mauve).
+        connections_bg(),
     );
     fill(
         p,
@@ -2422,6 +2429,7 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         o.y + 298.0,
         winui::LIST_HEADER(),
     );
+    winui::header_shade(p, o.x + 19.0, o.x + 510.0, o.y + 298.0, false);
     // Listed by connection number, like IDM (the engine reports them in arrival order).
     let mut conns: Vec<_> = snap
         .map(|s| s.connections.iter().collect())
@@ -2437,11 +2445,10 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
         .fold(0.0, f32::max);
     let dx = number_column_extra(widest, winui::text_width(p, number));
     for x in [48.0 + dx, 148.0 + dx, 498.0] {
-        fill(
+        winui::header_divider(
             p,
             o.x + x,
             o.y + 275.0,
-            o.x + x,
             o.y + 298.0,
             crate::theme::colors().header_sep,
         );

@@ -227,6 +227,11 @@ Everything below ships together, in version 0.5.0.
   glossy buttons, their check boxes and progress bars, their title bars on Windows, icons drawn
   for MDM); Metro, Adwaita and Breeze get MDM's own icons where theirs had none
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Luna closer to Windows XP's own look: its title bar's shading and buttons, push
+  buttons white over their top half, progress in XP's green blocks, scroll bars on pale blue
+  buttons, column headers shaded along their bottom, Tahoma menus, and the progress window's
+  connections in XP-era colours; theme files can take the headers, scroll bars and menu font
+  too ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Themes: Base16 and pywal colour schemes imported as themes (View → Theme → Add a theme
   file…, or the themes folder); **pywal** follows `wal` as it writes new colours, text kept
   readable (4.5:1) ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))

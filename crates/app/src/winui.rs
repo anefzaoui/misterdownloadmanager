@@ -336,9 +336,14 @@ fn name_from_caption(resp: &Response) {
     }
 }
 
-/// Segoe UI −12: menu bar, toolbar labels.
+/// Segoe UI −12: menu bar, toolbar labels; Tahoma where the theme's menus take it (Luna:
+/// `[controls] ui-font = "tahoma"`).
 pub fn segoe() -> FontId {
-    FontId::proportional(crate::theme::font_size(crate::theme::metrics().font_ui))
+    let size = crate::theme::font_size(crate::theme::metrics().font_ui);
+    match crate::theme::current().controls.ui_font {
+        crate::palette::UiFont::System => FontId::proportional(size),
+        crate::palette::UiFont::Tahoma => FontId::new(size, FontFamily::Name("tahoma".into())),
+    }
 }
 
 /// Arial Bold −13: the Categories close "x".
@@ -1901,10 +1906,11 @@ impl Shine {
     pub fn stops(self, f: Color32, g: Color32) -> [(f32, Color32); 4] {
         use crate::derive::mix;
         match self {
+            // White over its top half, falling to the face along its bottom.
             Shine::Luna => [
-                (0.0, mix(f, g, 0.85)),
-                (0.4, mix(f, g, 0.6)),
-                (0.85, mix(f, g, 0.2)),
+                (0.0, g),
+                (0.45, mix(f, g, 0.92)),
+                (0.86, mix(f, g, 0.55)),
                 (1.0, f),
             ],
             Shine::Aero => [
@@ -2064,7 +2070,7 @@ fn era_bar(p: &Painter, rc: Rect, from: f32, to: f32, fill: Color32, mirrored: b
             (1.0, c.meter_track),
         ],
     );
-    let inner = rc.shrink(if blocks { 2.0 + m.border } else { m.border });
+    let inner = rc.shrink(if blocks { 1.0 + m.border } else { m.border });
     let w = inner.width();
     // A part of the inside, `a` to `b` of it from the bar's start.
     let span = |a: f32, b: f32| {
@@ -2083,10 +2089,16 @@ fn era_bar(p: &Painter, rc: Rect, from: f32, to: f32, fill: Color32, mirrored: b
     let (a, b) = ((from * w).round(), (to * w).round());
     if b > a && w > 0.0 {
         if blocks {
-            // Windows XP: blocks 2 points apart, lighter across their middle; whole ones, the
-            // last cut at the bar's end.
-            let stops = [(0.0, fill), (0.45, mix(fill, c.gloss, 0.55)), (1.0, fill)];
-            let bw = (inner.height() * 0.6).round().max(4.0);
+            // Windows XP: blocks 2 points apart, light along their top and bottom, deep across
+            // their middle; whole ones, the last cut at the bar's end.
+            let stops = [
+                (0.0, mix(fill, c.gloss, 0.7)),
+                (0.3, mix(fill, c.gloss, 0.3)),
+                (0.55, fill),
+                (0.8, mix(fill, c.gloss, 0.35)),
+                (1.0, mix(fill, c.gloss, 0.75)),
+            ];
+            let bw = (inner.height() * 0.5).round().max(4.0);
             let mut x = (a / (bw + 2.0)).floor() * (bw + 2.0);
             while x < b {
                 let block = span(x.max(a), (x + bw).min(w));
@@ -5624,6 +5636,52 @@ pub fn px_l(p: &Painter, x: f32, y: f32, c: Color32) {
     px(p, mcol(x), y, c);
 }
 
+/// Windows XP's column headers (`[controls] header = "luna"`, `palette::HeaderLook`): the
+/// header's last three rows, English pixels `x0..=x1` ending at row `bottom`, shading toward
+/// the dividers' colour; under the pointer the theme's button glow (XP's orange). Nothing for
+/// flat headers.
+pub fn header_shade(p: &Painter, x0: f32, x1: f32, bottom: f32, hot: bool) {
+    use crate::derive::mix;
+    if crate::theme::current().controls.header != crate::palette::HeaderLook::Luna {
+        return;
+    }
+    let c = crate::theme::colors();
+    let rows = if hot && c.button_glow.a() > 0 {
+        let g = c.button_glow;
+        [mix(c.header, g, 0.55), g, crate::derive::shade(g, -0.06)]
+    } else {
+        [
+            mix(c.header, c.header_line, 0.5),
+            c.header_line,
+            c.header_sep,
+        ]
+    };
+    for (i, row) in rows.into_iter().enumerate() {
+        let y = bottom - 2.0 + i as f32;
+        fill_l(p, x0, y, x1, y, row);
+    }
+}
+
+/// A divider between two column headers at English pixel column `x`, header rows `top..=bottom`,
+/// in `line`: the header's whole height (flat headers), or Windows XP's, inset from both ends
+/// with a light line after it.
+pub fn header_divider(p: &Painter, x: f32, top: f32, bottom: f32, line: Color32) {
+    if crate::theme::current().controls.header == crate::palette::HeaderLook::Luna {
+        let (top, bottom) = (top + 3.0, bottom - 4.0);
+        fill_l(p, x, top, x, bottom, line);
+        fill_l(
+            p,
+            x + 1.0,
+            top,
+            x + 1.0,
+            bottom,
+            crate::theme::colors().gloss,
+        );
+    } else {
+        fill_l(p, x, top, x, bottom, line);
+    }
+}
+
 /// One tab of a light tab control: its x range (inclusive, from the client origin) when
 /// selected and when not (Windows draws the selected tab wider).
 pub struct LightTab {
@@ -6409,11 +6467,17 @@ pub mod caption {
     fn bar_stops(era: Shine, bar: Color32, g: Color32) -> Vec<(f32, Color32)> {
         use crate::derive::{mix, shade};
         match era {
+            // A bright rim along the top, the bar's colour, lighter again toward the bottom,
+            // then a dark bottom edge.
             Shine::Luna => vec![
-                (0.0, mix(bar, g, 0.45)),
-                (0.12, mix(bar, g, 0.12)),
-                (0.5, bar),
-                (1.0, shade(bar, -0.06)),
+                (0.0, shade(bar, 0.1)),
+                (0.06, shade(bar, 0.13)),
+                (0.12, shade(bar, 0.05)),
+                (0.2, bar),
+                (0.55, bar),
+                (0.88, shade(bar, 0.05)),
+                (0.94, shade(bar, 0.02)),
+                (1.0, shade(bar, -0.1)),
             ],
             Shine::Aero => vec![
                 (0.0, mix(bar, g, 0.45)),
@@ -6729,7 +6793,17 @@ pub mod caption {
             Shine::Aero => (0.0, 4.0),
             Shine::Aqua => (size.y / 2.0, size.y / 2.0),
         };
-        fill_shaded_corners(p, tile, top, bottom, &era.stops(base, c.gloss));
+        let stops = match era {
+            // Windows XP: a light corner at the top, the face deep below it.
+            Shine::Luna => vec![
+                (0.0, mix(base, c.gloss, 0.4)),
+                (0.3, mix(base, c.gloss, 0.1)),
+                (0.8, base),
+                (1.0, shade(base, -0.04)),
+            ],
+            _ => era.stops(base, c.gloss).to_vec(),
+        };
+        fill_shaded_corners(p, tile, top, bottom, &stops);
         let edge = match era {
             Shine::Luna => c.gloss.gamma_multiply(0.9),
             Shine::Aero => shade(bar, -0.35),
@@ -6847,7 +6921,13 @@ pub mod caption {
             egui::Image::new(egui::include_image!("../assets/icons/app/mdm-32.png"))
                 .paint_at(ui, Rect::from_center_size(icon_c.round(), vec2(16.0, 16.0)));
         }
-        let font = if st.bold {
+        let font = if st.era == Some(Shine::Luna) {
+            // Windows XP's title: bold and larger than its menus.
+            FontId::new(
+                crate::theme::font_size(crate::theme::metrics().font_ui_bold),
+                egui::FontFamily::Name("tahoma-bold".into()),
+            )
+        } else if st.bold {
             FontId::new(segoe().size, egui::FontFamily::Name("tahoma-bold".into()))
         } else {
             segoe()

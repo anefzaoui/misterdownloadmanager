@@ -766,6 +766,7 @@ pub fn show(
     let p_all = p.clone();
     let p = p.with_clip_rect(screen(header));
     fill(&p, cl, ct, rr, ct + header_h() - 1.0, HEADER_BG());
+    winui::header_shade(&p, cl, rr, ct + header_h() - 1.0, false);
     for (c, x0, x1) in &cols {
         let hovered = hresp
             .hover_pos()
@@ -803,7 +804,11 @@ pub fn show(
         } else if let Some(t) = tint {
             fill(&p, *x0, ct, x1 - 1.0, ct + header_h() - 1.0, t);
         }
-        fill(&p, *x1, ct, *x1, ct + header_h() - 1.0, HEADER_SEP());
+        // Windows XP's headers: the shaded bottom (orange under the pointer) over the tints.
+        if state != winui::State::Normal || st.sort.is_some_and(|(sc, _)| sc == *c) {
+            winui::header_shade(&p, *x0, x1 - 1.0, ct + header_h() - 1.0, hovered);
+        }
+        winui::header_divider(&p, *x1, ct, ct + header_h() - 1.0, HEADER_SEP());
         let mut arrow_room = if st.sort.is_some_and(|(sc, _)| sc == *c) {
             14.0
         } else {

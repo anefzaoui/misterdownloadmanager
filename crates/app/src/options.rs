@@ -5081,6 +5081,7 @@ fn report(
         head + 23.0,
         winui::LIST_HEADER(),
     );
+    winui::header_shade(&p, left + 1.0, rc.right() - 2.0, head + 23.0, false);
     let mut x0 = left;
     for (i, (title, right)) in cols.iter().enumerate() {
         let title = crate::i18n::t(title);
@@ -5090,7 +5091,7 @@ fn report(
         if cut {
             winui::full_on_hover(ui, rect, (id, "head", i), title);
         }
-        fill(&p, right, head + 1.0, right, head + 23.0, divider);
+        winui::header_divider(&p, right, head + 1.0, head + 23.0, divider);
         x0 = right;
     }
     // The rows: the shared row list under the header (its frame on the list's).
