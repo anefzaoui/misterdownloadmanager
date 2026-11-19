@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Video qualities say the file and the codec that downloads (`1080p MP4 · AV1 · 60 fps`): in
+  the Download video window, the menu over a video and `video-info`; "MP4" alone read as H.264.
+  A line whose very stream is gone takes the nearest of its codec first
+  ([#1465](https://github.com/anefzaoui/misterdownloadmanager/issues/1465))
 - ✅ A live stream that is recording is saved when it is stopped: the progress window says
   **Recording...** with **Downloaded** and **Transfer rate** following the recording's size, its
   pause button reads **Stop and save**, and Stop, Stop All, a queue's stop and the phone page's

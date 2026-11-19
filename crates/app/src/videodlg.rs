@@ -897,8 +897,8 @@ impl VideoDialog {
                 &mut self.rows,
                 |ui, clip, i, row, look| {
                     let c = &choices[i];
-                    // The icon of the file this choice gives, then the format ("2160p · VP9 ·
-                    // 60 fps · HDR", left to right); its size at the trailing edge: exactly
+                    // The icon of the file this choice gives, then the format ("2160p MP4 ·
+                    // VP9 · 60 fps · HDR", left to right); its size at the trailing edge: exactly
                     // that of the streams it downloads, or "~" before an estimate (#801).
                     let file = format!("video.{}", c.ext);
                     let kind = crate::fileicons::Kind::File(&file);

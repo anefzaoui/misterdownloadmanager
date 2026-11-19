@@ -2880,8 +2880,8 @@ function videoButton({ stored = {} } = {}) {
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
   }
   {
-    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords", "compactFor"],
-      "{ choiceSize, qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords, compactFor }");
+    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "qualityWords", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords", "compactFor"],
+      "{ choiceSize, qualityName, qualityMeta, qualityWords, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords, compactFor }");
     const tt = (k, ...a) => (a.length ? `${k}(${a.join(",")})` : k);
     const hd = { label: "1080p 60fps MP4", ext: "mp4", size: 412000000, audio: false, height: 1080, fps: 60 };
     const k4 = { label: "2160p MP4", ext: "mp4", height: 2160 };
@@ -2894,15 +2894,26 @@ function videoButton({ stored = {} } = {}) {
     assert.equal(w.qualityMeta(sound, tt), "128 kbps");
     assert.equal(w.qualityMeta(mp3, tt), "", "a conversion says it in its label");
     assert.equal(w.qualityMeta(older, tt), "", "an older app's label says it all");
-    // #755: the codec, frame rate and range, the type only when it isn't MP4 (or no codec is
-    // said); each line of one height its own.
-    const av1 = { label: "2160p · AV1 · 60 fps · HDR", ext: "mp4", height: 2160, fps: 60, codec: "AV1", range: "HDR", size: 305554961 };
-    const vp9 = { label: "2160p · VP9 · 60 fps · SDR", ext: "mp4", height: 2160, fps: 60, codec: "VP9", range: "SDR", size: 292630287 };
-    assert.equal(w.qualityMeta(av1, tt), "AV1 · 60 fps · HDR");
-    assert.equal(w.qualityMeta(vp9, tt), "VP9 · 60 fps · SDR");
+    // #755, #1465: the file type and the codec (every merged video is an MP4, whatever its
+    // picture), the frame rate and range; each line of one height its own.
+    const av1 = { label: "2160p MP4 · AV1 · 60 fps · HDR", ext: "mp4", height: 2160, fps: 60, codec: "AV1", range: "HDR", size: 305554961 };
+    const vp9 = { label: "2160p MP4 · VP9 · 60 fps · SDR", ext: "mp4", height: 2160, fps: 60, codec: "VP9", range: "SDR", size: 292630287 };
+    assert.equal(w.qualityMeta(av1, tt), "MP4 · AV1 · 60 fps · HDR");
+    assert.equal(w.qualityMeta(vp9, tt), "MP4 · VP9 · 60 fps · SDR");
+    // #1465: a quality's whole name is the app's label, as its window and video-info say it.
+    for (const c of [av1, vp9]) assert.equal(w.qualityWords(c, tt), c.label.replace(/^2160p/, "4K"));
+    const fhd = { label: "1080p MP4 · AV1 · 30 fps", ext: "mp4", height: 1080, fps: 30, codec: "AV1" };
+    assert.equal(w.qualityWords(fhd, tt), fhd.label);
+    assert.equal(w.qualityWords(av1, tt, true), "4K MP4 · AV1", "Download best's line: the name, type and codec");
+    assert.equal(w.qualityMeta(av1, tt, true), "MP4 · AV1");
+    assert.equal(w.qualityWords({ height: 720, ext: "mp4" }, tt), "720p MP4", "no codec said: none guessed");
+    assert.equal(w.qualityWords(sound, tt), "video_tab_audio");
+    assert.equal(w.qualityWords(older, tt), "720p MP4", "an older app's label as it is");
+    assert.equal(w.qualityWords({ file: true, ext: "webm" }, tt), "WEBM", "a plain file's type once");
+    assert.equal(w.qualityWords({ file: true, height: 720, ext: "mp4" }, tt), "720p MP4");
     assert.equal(w.qualityMeta({ height: 360, ext: "webm", codec: "VP9", fps: 30 }, tt), "WEBM · VP9 · 30 fps", "a type other than MP4 is said");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: 7, range: { x: 1 } }, tt), "MP4", "only text is shown");
-    assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).length, 24, "a codec's name is cut");
+    assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).split(" · ")[1].length, 24, "a codec's name is cut");
     // #1439: the most compatible choice (H.264 + AAC) says so in place of its codec.
     const compatible = { label: "Most compatible (H.264 + AAC) · 1080p", ext: "mp4", height: 1080, fps: 60, codec: "H.264", compatible: true };
     assert.ok(source.includes('if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);'), "its line's tip is the app's whole name");
@@ -2931,8 +2942,9 @@ function videoButton({ stored = {} } = {}) {
     assert.equal(w.chipFor({ state: "ready", choices: [older] }, tt), null, "no height: no chip");
     assert.deepEqual(w.chipFor({ file: true, height: 720, ext: "mp4" }, tt), { text: "720p", hd: true });
     assert.equal(w.chipFor({ state: "failed" }, tt), null);
-    assert.equal(w.tipFor(ready, tt, "en"), "video_tip(1080p MP4 · 392.9 MB)");
-    assert.equal(w.tipFor({ state: "ready", choices: [{ ...hd, approx: true }] }, tt, "en"), "video_tip(1080p MP4 · ~392.9 MB)");
+    assert.equal(w.tipFor(ready, tt, "en"), "video_tip(1080p MP4 · 60 fps · 392.9 MB)");
+    assert.equal(w.tipFor({ state: "ready", choices: [{ ...hd, approx: true }] }, tt, "en"), "video_tip(1080p MP4 · 60 fps · ~392.9 MB)");
+    assert.equal(w.tipFor({ state: "ready", choices: [fhd] }, tt, "en"), "video_tip(1080p MP4 · AV1 · 30 fps)", "#1465: the codec too");
     assert.equal(w.tipFor({ state: "pending" }, tt, "en"), "video_tip_best");
     assert.equal(w.tipFor(null, tt, "en"), "video_download");
     assert.deepEqual([596, 3723, 0, null, "x"].map(w.durationText), ["9:56", "1:02:03", "", "", ""]);
