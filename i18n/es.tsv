@@ -3846,6 +3846,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	Error al volver a comprobar: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	Grabando...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4057,6 +4062,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	Guardado en
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	Guardando...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4556,6 +4566,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Detener
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	Detener y guardar
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Detener descarga a las
