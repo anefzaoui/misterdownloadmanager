@@ -239,8 +239,11 @@ const fetched = [];
 async function fakeFetch(url, opts) {
   const range = /^bytes=(\d+)-(\d+)$/.exec((opts && opts.headers && opts.headers.Range) || "");
   fetched.push([String(url), opts && opts.credentials, ...(range ? [range[0]] : [])]);
-  const r = served[url];
+  let r = served[url];
+  if (typeof r === "function") r = r(opts);
+  r = await r;
   if (!r) throw new TypeError("Failed to fetch");
+  r.calls = [...(r.calls || []), opts];
   // Its body as a stream too, 1 KB a chunk: `r.read` counts what was pulled (#171 reads 4 KB).
   // `r.bytes`: a file's (#1092), whose ranges are served as a server does (206); `r.noRange`:
   // a server that ignores them (the whole file, 200).
@@ -4025,6 +4028,8 @@ ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser"
   const forgetCalls = fetched.slice(beforeFetches).filter(([u]) => u.includes("api/forget"));
   assert.equal(forgetCalls.length, 1);
   assert.ok(forgetCalls[0][0].startsWith("https://server-a.test:8463/"), "token went only to server A");
+  assert.equal(served["https://server-a.test:8463/api/forget"].calls?.[0]?.headers?.Authorization, "Bearer token-a");
+  assert.equal(served["https://server-b.test:8463/api/forget"].calls, undefined, "server B never received forget");
 
   // 5. 401 pruning: a 401 from server B removes B and resets active B to null.
   store.remotes = [
@@ -4037,6 +4042,47 @@ ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser"
   await settle();
   assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-a.test:8463/"], "server B pruned on 401");
   assert.equal(store.remote, null, "active server B reset on 401");
+
+  // 6. Race: a late 401 from server A while user already switched to B prunes A but keeps active B.
+  store.remotes = [
+    { url: "https://server-a.test:8463/", token: "token-a" },
+    { url: "https://server-b.test:8463/", token: "token-b" },
+  ];
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a" };
+  let serverACalled;
+  const serverACalledPromise = new Promise((resolve) => { serverACalled = resolve; });
+  let finishLate401;
+  served["https://server-a.test:8463/api/add"] = () => new Promise((resolve) => {
+    serverACalled();
+    finishLate401 = () => resolve({ status: 401, body: JSON.stringify({ error: "unauthorized" }) });
+  });
+  listeners.determining({ id: 82, url: "https://dl.test/file2.zip", filename: "file2.zip" }, () => {});
+  await serverACalledPromise;
+  assert.deepEqual(await send({ type: "remote-select", url: "https://server-b.test:8463/" }), { ok: true });
+  assert.equal(store.remote?.url, "https://server-b.test:8463/");
+  finishLate401();
+  await settle();
+  assert.deepEqual(store.remotes.map((r) => r.url), ["https://server-b.test:8463/"], "server A pruned on late 401");
+  assert.equal(store.remote?.url, "https://server-b.test:8463/", "active server B kept after late 401 from A");
+
+  // 7. Token mismatch: a late 401 with old token does not prune re-paired server A.
+  store.remotes = [{ url: "https://server-a.test:8463/", token: "token-a-old" }];
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a-old" };
+  let oldCalled;
+  const oldCalledPromise = new Promise((resolve) => { oldCalled = resolve; });
+  let finishOld401;
+  served["https://server-a.test:8463/api/add"] = () => new Promise((resolve) => {
+    oldCalled();
+    finishOld401 = () => resolve({ status: 401, body: JSON.stringify({ error: "unauthorized" }) });
+  });
+  listeners.determining({ id: 83, url: "https://dl.test/file3.zip", filename: "file3.zip" }, () => {});
+  await oldCalledPromise;
+  store.remotes = [{ url: "https://server-a.test:8463/", token: "token-a-new" }];
+  store.remote = { url: "https://server-a.test:8463/", token: "token-a-new" };
+  finishOld401();
+  await settle();
+  assert.deepEqual(store.remotes, [{ url: "https://server-a.test:8463/", token: "token-a-new" }], "re-paired server A kept");
+  assert.deepEqual(store.remote, { url: "https://server-a.test:8463/", token: "token-a-new" });
 
   ok("another MDM: multiple servers, migration, switching, forget, and 401 pruning");
 }

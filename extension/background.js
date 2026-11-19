@@ -143,9 +143,9 @@ async function remoteSend(target, message) {
   if (r.status === 200 && r.body && !r.body.error) return { ok: true };
   if (r.status === 401) {
     const list = await readRemotes();
-    const updated = list.filter((item) => item.url !== target.url);
+    const updated = list.filter((item) => !(item.url === target.url && item.token === target.token));
     const { remote } = await ext.storage.local.get({ remote: null });
-    const nextRemote = remote && remote.url === target.url ? null : remote;
+    const nextRemote = remote && remote.url === target.url && remote.token === target.token ? null : remote;
     await ext.storage.local.set({ remotes: updated, remote: nextRemote });
   }
   return { ok: false, why: "refused" };
