@@ -57,7 +57,9 @@ KEEP = sorted(set(tr.KEEP + ["macOS", "Linux", "Rust", "YouTube", "Vimeo", "Tone
                              "Free Download Manager", "AB Download Manager", "Motrix",
                              "Neat Download Manager", "Prism", "JDownloader 2", "JDownloader",
                              "Xtreme Download Manager", "Gopeed", "DOWNitUP", "PyIDM", "aria2",
-                             "Hugging Face"]), key=len, reverse=True)
+                             "Hugging Face",
+                             # The code signing policy's signer.
+                             "SignPath Foundation", "SignPath.io", "SignPath"]), key=len, reverse=True)
 # Kept names a language writes in its own script instead (the maintainer's spelling of his name).
 OWN_SPELLING = {
     "ar": {"Ahmed Nefzaoui": "أحمد نفزاوي"},
@@ -112,8 +114,8 @@ def latin_digits(text: str) -> str:
 PRICE_IN, PRICE_OUT = 0.30, 2.50
 
 RULES = """You translate the website of Mister Download Manager (MDM) from English into {english}
-({native}, language code {code}). MDM is a free, open-source download manager for Windows (macOS
-and Linux builds are experimental). It looks and works like Internet Download Manager (IDM), the
+({native}, language code {code}). MDM is a free, open-source download manager for Windows and Linux
+(macOS builds are experimental). It looks and works like Internet Download Manager (IDM), the
 paid download manager many people know, but it is a separate program, written from scratch.
 
 The readers are ordinary computer users who want faster, safer downloads, and people looking for

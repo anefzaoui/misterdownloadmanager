@@ -113,26 +113,29 @@ pub fn filter_magnet(magnet: &str, proxied: bool) -> String {
 /// info hash is the same. None when it isn't a bencoded dictionary.
 pub fn filter_torrent(bytes: &[u8], proxied: bool) -> Option<Vec<u8>> {
     let entries = top_level(bytes)?;
+    // An `announce-list` replaces `announce` ([`listed`]): when none of its trackers is kept,
+    // `announce` goes too, or the torrent would ask a tracker it never named for its peers.
+    let list = entries
+        .iter()
+        .find(|(k, _)| *k == b"announce-list")
+        .map(|e| e.1);
+    let replaced = list.and_then(list_of_lists).is_some_and(|t| !t.is_empty());
+    let none_kept = match list {
+        Some(v) => kept(v, proxied)?.is_empty(),
+        None => false,
+    };
     let mut out = b"d".to_vec();
     for (key, value) in entries {
         match key {
             b"announce" => {
                 let url = string_at(value)?;
-                if allowed(&String::from_utf8_lossy(url), proxied) {
+                if allowed(&String::from_utf8_lossy(url), proxied) && !(replaced && none_kept) {
                     push_string(&mut out, key);
                     out.extend_from_slice(value);
                 }
             }
             b"announce-list" => {
-                let tiers: Vec<Vec<&[u8]>> = list_of_lists(value)?
-                    .into_iter()
-                    .map(|tier| {
-                        tier.into_iter()
-                            .filter(|u| allowed(&String::from_utf8_lossy(u), proxied))
-                            .collect::<Vec<_>>()
-                    })
-                    .filter(|tier| !tier.is_empty())
-                    .collect();
+                let tiers = kept(value, proxied)?;
                 if !tiers.is_empty() {
                     push_string(&mut out, key);
                     out.push(b'l');
@@ -154,6 +157,22 @@ pub fn filter_torrent(bytes: &[u8], proxied: bool) -> Option<Vec<u8>> {
     }
     out.push(b'e');
     Some(out)
+}
+
+/// An `announce-list`'s tiers with only the trackers MDM may contact, and only the tiers left
+/// with one. None when it isn't a list of lists.
+fn kept(value: &[u8], proxied: bool) -> Option<Vec<Vec<&[u8]>>> {
+    Some(
+        list_of_lists(value)?
+            .into_iter()
+            .map(|tier| {
+                tier.into_iter()
+                    .filter(|u| allowed(&String::from_utf8_lossy(u), proxied))
+                    .collect::<Vec<_>>()
+            })
+            .filter(|tier| !tier.is_empty())
+            .collect(),
+    )
 }
 
 /// A .torrent's trackers, each once, in its order: `announce-list`'s tiers, or `announce` when
@@ -483,5 +502,34 @@ mod tests {
         assert_eq!(filter_torrent(&t, true).unwrap(), bare);
         assert_eq!(filter_torrent(b"not bencode", false), None);
         assert_eq!(filter_torrent(b"d4:infoi1e", false), None, "unterminated");
+    }
+
+    /// Filtering never brings a tracker in: an `announce` that a list replaced stays unused.
+    #[test]
+    fn filtering_only_takes_trackers_away() {
+        let s = |v: &str| format!("{}:{v}", v.len());
+        let (public, local) = ("http://t.example/announce", "http://127.0.0.1/announce");
+        // The list names only trackers MDM won't ask: `announce` (not used) doesn't come back.
+        let t = format!("d8:announce{}13:announce-listll{}eee", s(public), s(local));
+        let out = filter_torrent(t.as_bytes(), false).unwrap();
+        assert_eq!(listed(t.as_bytes()), [local]);
+        assert!(listed(&out).is_empty(), "{}", String::from_utf8_lossy(&out));
+        assert_eq!(out, b"de");
+        // An empty tier is a list all the same.
+        let t = format!("d8:announce{}13:announce-listlleee", s(public));
+        assert!(listed(&filter_torrent(t.as_bytes(), false).unwrap()).is_empty());
+        // With a tracker of the list kept, or no list at all, `announce` stays as it was.
+        let t = format!(
+            "d8:announce{}13:announce-listll{}{}eee",
+            s(public),
+            s(local),
+            s(public)
+        );
+        assert_eq!(
+            listed(&filter_torrent(t.as_bytes(), false).unwrap()),
+            [public]
+        );
+        let t = format!("d8:announce{}e", s(public));
+        assert_eq!(filter_torrent(t.as_bytes(), false).unwrap(), t.as_bytes());
     }
 }

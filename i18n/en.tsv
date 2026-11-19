@@ -199,6 +199,9 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 	A file of this torrent can't be saved safely: {name}	A file of this torrent can't be saved safely: {name}
+#. text in a dialog box
+#. the question about a name typed in Save As, above the file's path; the choices are the duplicate question's (numbered name, overwrite)
+	A file with this name is already there:	A file with this name is already there:
 #. message or event log entry in the main window
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
@@ -1197,12 +1200,13 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 	Dropped links	Dropped links
-#. window title in a dialog box
+#. text in a dialog box
+#. window title: the question asked when an address added is already in the list of downloads
 	Duplicate download link	Duplicate download link
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 	Each connection takes the system's route.	Each connection takes the system's route.
-#. text in the Link grabber window
+#. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 	Each file's category folder	Each file's category folder
 #. text in countries.rs
@@ -1375,6 +1379,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 	File	File
+#. text in a dialog box
+#. window title: the question asked when the name typed in Download File Info's Save As is a file already there
+	File already exists	File already exists
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 	File managers show where the files marked this way came from. Unticked, no download is marked.	File managers show where the files marked this way came from. Unticked, no download is marked.
@@ -2238,6 +2245,12 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Morocco	Morocco
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is
+	Most compatible (H.264 + AAC)	Most compatible (H.264 + AAC)
+#. text in the Download video window
+#. a choice in the Download video window: the best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is; {height} is the resolution (1080p)
+	Most compatible (H.264 + AAC) · {height}	Most compatible (H.264 + AAC) · {height}
 #. button in a download's Properties window
 #. verb: move the file to another folder
 	Move	Move
@@ -3010,7 +3023,8 @@
 	Save To...	Save To...
 #. text in a download's progress window; text in a download's Properties window
 	Save To:	Save To:
-#. text in the Link grabber window; text in rssdlg.rs
+#. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
+#. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 	Save to:	Save to:
@@ -4925,6 +4939,9 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 extension	More options	More options
+#. text in the browser extension
+#. in the list under the download button over a video, after a quality's height (1080p): the H.264 video with AAC sound in an MP4, the file that plays in every video editor, TV and phone; short, about 20 characters at most
+extension	Most compatible	Most compatible
 #. text in the browser extension
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)

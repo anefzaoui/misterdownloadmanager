@@ -352,7 +352,8 @@ impl VideoDialog {
     }
 
     /// The sample's choice whose label starts with `prefix` (any case), chosen and scrolled into
-    /// view (`/show video-subs:flac`: a screenshot of a choice below the list's first rows).
+    /// view (`/show video-subs:flac`: a screenshot of a choice below the list's first rows;
+    /// `video-subs:most`, the most compatible one, #1439).
     pub fn pick(&mut self, prefix: &str) {
         let prefix = prefix.to_lowercase();
         let found = self.video.as_ref().and_then(|(_, choices)| {
@@ -1691,6 +1692,14 @@ pub(crate) fn choice_size(c: &Choice) -> (String, String) {
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
 /// resolution, a type) as they are, kept left to right.
 pub(crate) fn choice_label(label: &str) -> String {
+    if let Some(rest) = label.strip_prefix(mdm_tools::resolve::COMPATIBLE) {
+        let height = rest.trim_start_matches([' ', '·']).trim();
+        return crate::i18n::fmt(
+            // i18n: a choice in the Download video window: the best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is; {height} is the resolution (1080p)
+            crate::i18n::t("Most compatible (H.264 + AAC) · {height}"),
+            &[("height", &crate::i18n::ltr(height))],
+        );
+    }
     if let Some(kind) = label.strip_prefix(mdm_tools::resolve::AUDIO_ORIGINAL) {
         return crate::i18n::fmt(
             // i18n: a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
@@ -2396,9 +2405,9 @@ mod tests {
             Some(VideoOut::Many(add)) => (add.folder.parent().unwrap().to_owned(), add.category),
             _ => panic!("a playlist is added"),
         };
-        // "Audio only, original" (7), then "Up to 1080p" (3).
+        // "Audio only, original" (8), then "Up to 1080p" (4).
         for (pick, folder, category) in
-            [("7", music, Category::Music), ("3", video, Category::Video)]
+            [("8", music, Category::Music), ("4", video, Category::Video)]
         {
             let mut d = looked_up(true);
             d.show_sample_list(pick);
@@ -2407,5 +2416,27 @@ mod tests {
             assert_eq!(d.save_folder(), folder, "quality {pick}");
             assert_eq!(many(&d), (folder, category), "quality {pick}");
         }
+    }
+
+    /// #1439: the most compatible choice is said in the user's language, its height as data.
+    #[test]
+    fn the_most_compatible_choice_is_labelled() {
+        let l = choice_label("Most compatible (H.264 + AAC) · 1080p");
+        assert!(l.starts_with("Most compatible (H.264 + AAC) · "), "{l}");
+        assert!(l.contains("1080p") && !l.contains("·  "), "{l}");
+        // The sample's list has it second, picked by its name for the screenshots.
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        // ffmpeg there (never looked for on this computer): the merged qualities.
+        let ffmpeg = mdm_tools::Installed {
+            version: "test".into(),
+            exe: PathBuf::from("ffmpeg"),
+        };
+        d.tools = Some((None, None, Some(ffmpeg)));
+        d.show_sample();
+        d.pick("most");
+        let (_, choices) = d.video.as_ref().unwrap();
+        assert_eq!(d.chosen, 1);
+        assert_eq!(choices[1].label, "Most compatible (H.264 + AAC) · 1080p");
+        assert!(choices[1].selector.starts_with("299+140/"));
     }
 }

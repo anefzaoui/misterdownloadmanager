@@ -65,6 +65,7 @@
     video_turn_on: "Turn on",
     video_best: "best",
     video_original: "original",
+    video_compatible: "Most compatible",
     video_download_best: "Download best",
     video_all_qualities: "All qualities and subtitles...",
     video_looking: "Looking up the qualities…",
@@ -797,6 +798,9 @@
     // (fps, kbps, codecs and HDR are the same in every language.)
     if (c.audio === true) return Number(c.kbps) > 0 ? `${Math.round(c.kbps)} kbps` : "";
     if (!c.height && !c.file) return "";
+    // #1439: the H.264 picture with AAC sound, in an MP4 that plays everywhere, says so instead
+    // (the app's whole name for it, "Most compatible (H.264 + AAC) · 1080p", is the line's tip).
+    if (c.compatible === true) return t("video_compatible");
     const word = (x) => (typeof x === "string" ? x.trim().slice(0, 24) : "");
     const codec = word(c.codec);
     const ext = String(c.ext || "").toUpperCase();
@@ -1534,7 +1538,7 @@ button:focus-visible { outline: none; }
     if (typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname)) {
       return (
         document.querySelectorAll?.(
-          "iframe.drive-viewer-video-iframe, iframe#ucc-136, iframe[src*='youtube.googleapis.com'], iframe[src*='driveid='], iframe[src*='docid=']",
+          "iframe.drive-viewer-video-iframe, iframe[src*='youtube.googleapis.com'], iframe[src*='driveid='], iframe[src*='docid=']",
         ) || []
       );
     }
@@ -2192,6 +2196,7 @@ button:focus-visible { outline: none; }
     const { q, f } = lineWords(c, t);
     const fs = span("f", f);
     if (best) fs.append(span("best", t("video_best")));
+    if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);
     b.append(span("n", String(n)), span("q", q), fs, span("z", rowText(c, lang).size));
     return b;
   }
@@ -2406,11 +2411,8 @@ button:focus-visible { outline: none; }
     typeof window !== "undefined" &&
     window !== window.top &&
     typeof location !== "undefined" &&
-    (isDriveHost ||
-      (location.hostname === "youtube.googleapis.com" &&
-        (/[?&](?:driveid|docid)=/.test(location.search) ||
-          /(?:drive|docs)\.google\.com/.test(location.search) ||
-          (typeof document !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(new URL(document.referrer || "http://x").hostname)))));
+    ((location.hostname === "youtube.googleapis.com" && /[?&](?:driveid|docid)=/.test(location.search)) ||
+      (isDriveHost && /\/file\/d\/[^/]+\/preview/.test(location.pathname)));
 
   let lastFrameMove = 0;
   function onFrameMove() {

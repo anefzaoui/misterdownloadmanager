@@ -324,8 +324,8 @@ pub fn needs_sniff(url: &Url, disposition: Option<&str>, content_type: Option<&s
 /// The file name a `Content-Disposition` value suggests (RFC 6266), read as browsers do:
 /// `filename*` (RFC 8187: `charset'language'percent-encoded`, UTF-8 or ISO-8859-1) wins over
 /// `filename`, which is only the fallback for clients that can't decode it. A plain
-/// `filename` is unquoted (with `\` escapes), and percent-encoded UTF-8 in it is decoded, as
-/// Chromium does. Not sanitized.
+/// `filename` is unquoted (with `\` escapes) and decoded as Chrome and Firefox decode it
+/// ([`decode_plain`], #1427). Not sanitized.
 pub fn disposition_name(value: &str) -> Option<String> {
     let params = disposition_params(value);
     let param = |key: &str| {
@@ -401,7 +401,7 @@ fn disposition_params(value: &str) -> Vec<(String, String)> {
 fn decode_extended(v: &str) -> Option<String> {
     let mut parts = v.splitn(3, '\'');
     let (charset, _language, encoded) = (parts.next()?, parts.next()?, parts.next()?);
-    let bytes: Vec<u8> = percent_decode_str(encoded.trim()).collect();
+    let bytes: Vec<u8> = percent_decode_str(&escaped_separators(encoded.trim())).collect();
     match charset.trim().to_ascii_lowercase().as_str() {
         "utf-8" | "utf8" => String::from_utf8(bytes).ok(),
         "iso-8859-1" | "iso_8859-1" | "latin1" | "us-ascii" => {
@@ -411,16 +411,130 @@ fn decode_extended(v: &str) -> Option<String> {
     }
 }
 
-/// A plain `filename` as given, or its percent-encoded UTF-8 decoded when that is what it
-/// holds (non-ASCII once decoded: `100%25.txt` stays as it is).
+/// A plain `filename` as Chrome and Firefox read it (#1427; both checked against a lab
+/// server): its RFC 2047 encoded words decoded ([`encoded_words`]: `=?UTF-8?B?…?=`), else its
+/// percent-encoding whenever that decodes to UTF-8, ASCII too (`My%20Report.pdf` →
+/// `My Report.pdf`, `100%25.txt` → `100%.txt`; an escape that isn't one, `50%off`, stays),
+/// else as given (bytes that aren't UTF-8 once decoded). The browser extension's
+/// `decodedPlain` is the same.
 fn decode_plain(v: &str) -> String {
+    if let Some(decoded) = encoded_words(v) {
+        return decoded;
+    }
     if v.contains('%')
-        && let Ok(decoded) = percent_decode_str(v).decode_utf8()
-        && !decoded.is_ascii()
+        && let Ok(decoded) = percent_decode_str(&escaped_separators(v)).decode_utf8()
     {
         return decoded.into_owned();
     }
     v.to_owned()
+}
+
+/// A name's percent-encoded `/` and `\` (`a%2Fb.pdf`) as `_`, as Chrome and Firefox save them
+/// (#1427): a character of the name, never a folder; a separator written as such still is one
+/// (the name's last component is taken).
+fn escaped_separators(v: &str) -> std::borrow::Cow<'_, str> {
+    if !v.contains('%') {
+        return v.into();
+    }
+    let mut out = String::with_capacity(v.len());
+    let mut rest = v;
+    while let Some(i) = rest.find('%') {
+        out.push_str(&rest[..i]);
+        let code = rest.get(i + 1..i + 3).unwrap_or_default();
+        if code.eq_ignore_ascii_case("2F") || code.eq_ignore_ascii_case("5C") {
+            out.push('_');
+            rest = &rest[i + 3..];
+        } else {
+            out.push('%');
+            rest = &rest[i + 1..];
+        }
+    }
+    out.push_str(rest);
+    out.into()
+}
+
+/// `v` with its RFC 2047 encoded words (`=?charset?B|Q?text?=`) decoded, the space between two
+/// of them dropped (RFC 2047 §6.2); None when it has none, or one it can't read (a charset other
+/// than UTF-8 or ISO-8859-1 and its subset US-ASCII, or bytes that aren't its charset's).
+fn encoded_words(v: &str) -> Option<String> {
+    let mut out = String::new();
+    let mut rest = v;
+    let mut any = false;
+    while let Some(start) = rest.find("=?") {
+        let Some((word, len)) = encoded_word(&rest[start..]) else {
+            // Not a word: as it is, and on after its `=?`.
+            out.push_str(&rest[..start + 2]);
+            rest = &rest[start + 2..];
+            continue;
+        };
+        let between = &rest[..start];
+        // Only space between two encoded words isn't the name's.
+        if !(any && between.chars().all(char::is_whitespace)) {
+            out.push_str(between);
+        }
+        out.push_str(&word?);
+        rest = &rest[start + len..];
+        any = true;
+    }
+    any.then(|| out + rest)
+}
+
+/// The encoded word `s` starts with: its text (None if it can't be read) and its length; None
+/// when `s` doesn't start with one.
+fn encoded_word(s: &str) -> Option<(Option<String>, usize)> {
+    let body = s.strip_prefix("=?")?;
+    let mut parts = body.splitn(3, '?');
+    let (charset, kind, tail) = (parts.next()?, parts.next()?, parts.next()?);
+    let end = tail.find("?=")?;
+    let text = &tail[..end];
+    let token = |t: &str| !t.is_empty() && !t.contains(char::is_whitespace);
+    if !token(charset)
+        || !matches!(kind, "B" | "b" | "Q" | "q")
+        || text.contains(char::is_whitespace)
+    {
+        return None;
+    }
+    let len = 2 + charset.len() + 1 + kind.len() + 1 + end + 2;
+    let bytes = if kind.eq_ignore_ascii_case("b") {
+        use base64::Engine;
+        // With its padding or without, as browsers take it.
+        base64::engine::general_purpose::STANDARD_NO_PAD
+            .decode(text.trim_end_matches('='))
+            .ok()
+    } else {
+        q_bytes(text)
+    };
+    // RFC 2231's language after a `*` (`UTF-8*en`) isn't the charset's.
+    let charset = charset.split('*').next().unwrap_or_default();
+    let decoded = bytes.and_then(|b| match charset.to_ascii_lowercase().as_str() {
+        "utf-8" | "utf8" => String::from_utf8(b).ok(),
+        "iso-8859-1" | "iso_8859-1" | "latin1" | "us-ascii" => {
+            Some(b.into_iter().map(char::from).collect())
+        }
+        _ => None,
+    });
+    Some((decoded, len))
+}
+
+/// An RFC 2047 "Q" text's bytes: `=XX` escapes, `_` for a space, other ASCII as it is.
+fn q_bytes(text: &str) -> Option<Vec<u8>> {
+    let mut out = Vec::with_capacity(text.len());
+    let mut b = text.bytes();
+    while let Some(c) = b.next() {
+        match c {
+            b'_' => out.push(b' '),
+            b'=' => {
+                let hex = [b.next()?, b.next()?];
+                if !hex.iter().all(u8::is_ascii_hexdigit) {
+                    return None;
+                }
+                out.push(u8::from_str_radix(std::str::from_utf8(&hex).ok()?, 16).ok()?);
+            }
+            c if c.is_ascii() => out.push(c),
+            _ => return None,
+        }
+    }
+    Some(out)
 }
 
 /// Make `name` a valid single file name on Windows (the strictest target). Invisible format
@@ -1381,17 +1495,99 @@ mod tests {
         );
         assert_eq!(n("attachment; filename=  spaced.txt  ; x=1"), "spaced.txt");
         assert_eq!(n("filename=no-type.pdf"), "no-type.pdf");
-        // Percent-encoded UTF-8 in the plain name (Chromium decodes it); ASCII stays as sent.
+        // Percent-encoded UTF-8 in the plain name, decoded as Chrome and Firefox do (#1427).
         assert_eq!(
             n("attachment; filename=\"%E6%97%A5%E6%9C%AC.txt\""),
             "日本.txt"
         );
-        assert_eq!(n("attachment; filename=\"100%25.txt\""), "100%25.txt");
         // Raw UTF-8 in the header (the download reads its bytes as UTF-8).
         assert_eq!(n("attachment; filename=\"été.mp3\""), "été.mp3");
         // Nothing usable: the URL's name.
         assert_eq!(n("attachment; filename=\"\""), "a.bin");
         assert_eq!(n("attachment"), "a.bin");
+    }
+
+    /// #1427: a plain `filename` is read as Chrome and Firefox read it (both checked on a lab
+    /// server): percent-encoding decoded whenever it decodes to UTF-8, ASCII too (`%20`); RFC
+    /// 2047's encoded words decoded; anything else as sent. `filename*` is decoded once only.
+    #[test]
+    fn plain_names_are_decoded_as_browsers_do() {
+        let u = url("http://x/download");
+        let n = |cd: &str| file_name(Some(cd), &u);
+        for (cd, want) in [
+            ("attachment; filename=\"My%20Report.pdf\"", "My Report.pdf"),
+            (
+                "attachment; filename=My%20Report%20v3.pdf",
+                "My Report v3.pdf",
+            ),
+            (
+                "attachment; filename=\"%E6%8A%A5%E5%91%8A%20v4.pdf\"",
+                "报告 v4.pdf",
+            ),
+            ("attachment; filename=\"100%25 sure.txt\"", "100% sure.txt"),
+            // Not percent-encoding: as sent.
+            (
+                "attachment; filename=\"50%off sale.txt\"",
+                "50%off sale.txt",
+            ),
+            ("attachment; filename=\"a+b report.pdf\"", "a+b report.pdf"),
+            // Bytes that aren't UTF-8 once decoded: as sent.
+            (
+                "attachment; filename=\"caf%E9 menu.txt\"",
+                "caf%E9 menu.txt",
+            ),
+            // RFC 2047, B and Q, a whole name or a word of it.
+            (
+                "attachment; filename=\"=?UTF-8?B?5oql5ZGKIHY1LnBkZg==?=\"",
+                "报告 v5.pdf",
+            ),
+            (
+                "attachment; filename=\"=?utf-8?q?My_Report_=E2=80=93_v6.pdf?=\"",
+                "My Report – v6.pdf",
+            ),
+            (
+                "attachment; filename=\"Report =?UTF-8?B?5oql5ZGK?= v7.pdf\"",
+                "Report 报告 v7.pdf",
+            ),
+            // Adjacent encoded words: the space between them isn't the name's.
+            (
+                "attachment; filename=\"=?UTF-8?Q?My_?= =?UTF-8?Q?Report.pdf?=\"",
+                "My Report.pdf",
+            ),
+            (
+                "attachment; filename=\"=?ISO-8859-1?Q?caf=E9.txt?=\"",
+                "café.txt",
+            ),
+            // A charset it can't read, or a word that isn't one: as sent.
+            (
+                "attachment; filename=\"=?KOI8-R?Q?=C1.txt?=\"",
+                "=_KOI8-R_Q_=C1.txt_=",
+            ),
+            (
+                "attachment; filename=\"=?UTF-8?B?not base64?=\"",
+                "=_UTF-8_B_not base64_=",
+            ),
+            // filename* is decoded once (Chrome): `%25` in it stays a percent sign's code.
+            (
+                "attachment; filename*=UTF-8''100%2525%20double.txt",
+                "100%25 double.txt",
+            ),
+            // An encoded separator is a character of the name, as browsers save it; one written
+            // as such is still one (the last component).
+            (
+                "attachment; filename=\"a%2Fb report.pdf\"",
+                "a_b report.pdf",
+            ),
+            (
+                "attachment; filename=\"..%2F..%5cevil.exe\"",
+                ".._.._evil.exe",
+            ),
+            ("attachment; filename*=UTF-8''a%2Fb%5Cc.pdf", "a_b_c.pdf"),
+            ("attachment; filename=\"a/b report.pdf\"", "b report.pdf"),
+            ("attachment; filename=\"%2E%2E\"", "download"),
+        ] {
+            assert_eq!(n(cd), want, "{cd}");
+        }
     }
 
     #[test]

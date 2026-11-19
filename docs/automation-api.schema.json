@@ -730,6 +730,10 @@
             "null"
           ]
         },
+        "compatible": {
+          "description": "The most compatible choice (#1439): an H.264 picture with AAC sound in an MP4, which\nevery video editor, TV and phone plays; the menu says so beside its height. False from\nan app older than the field.",
+          "type": "boolean"
+        },
         "ext": {
           "default": "",
           "description": "The file's type (`mp4`, `mp3`).",

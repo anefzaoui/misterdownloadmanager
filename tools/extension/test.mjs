@@ -283,6 +283,8 @@ function load(api, firefox, extra = {}) {
     URL,
     URLSearchParams,
     TextDecoder,
+    TextEncoder,
+    atob,
     setTimeout,
     clearTimeout,
     Promise,
@@ -1358,6 +1360,35 @@ const ok = (what) => {
     assert.equal(ctx.withoutSiteName(title, url), want, title);
   }
   ok("a page's title names its video without the site's name; a player in a frame by the tab's title");
+}
+
+// What a fetched start says it is: an HLS playlist, a DASH manifest (after an XML declaration and
+// comments, with a namespace prefix or not), or neither; read in one pass, so a long or odd start
+// costs no more than its length.
+{
+  const ctx = { URL, URLSearchParams, console: quietConsole, setTimeout, clearTimeout, Promise, TextDecoder, fetch: async () => ({ ok: false }), navigator: { userAgent: "UA" } };
+  ctx.chrome = fakeApi({ firefox: false }).api;
+  vm.runInNewContext(code, ctx);
+  for (const [text, want] of [
+    ["#EXTM3U\n#EXT-X-VERSION:3", "hls"],
+    ["﻿  #EXTM3U", "hls"],
+    ['<?xml version="1.0" encoding="UTF-8"?>\n<MPD xmlns="urn:mpeg:dash:schema:mpd:2011">', "dash"],
+    ['<!-- made by a packager -->\n<!-- two -->\n<MPD type="static">', "dash"],
+    ['<?xml version="1.0"?><!-- c --><mpd:MPD xmlns:mpd="x">', "dash"],
+    ["<MPD/>", "dash"],
+    ["<html><body>MPD</body></html>", ""],
+    ["<MPDX>", ""],
+    ["<!-- never closed <MPD>", ""],
+    ['<?xml version="1.0"', ""],
+    ["", ""],
+  ]) {
+    assert.equal(ctx.manifestKind(text), want, JSON.stringify(text));
+  }
+  const odd = "<!--" + "--><!--".repeat(2000) + "x";
+  const started = Date.now();
+  assert.equal(ctx.manifestKind(odd), "");
+  assert.ok(Date.now() - started < 200, `an odd start took ${Date.now() - started} ms`);
+  ok("a fetched start is told an HLS playlist, a DASH manifest or neither, in one pass");
 }
 
 // #38: the media a tab loaded, as the popup lists them. A response is media by its type or its
@@ -2469,7 +2500,6 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
       if (iframes && sel.includes("iframe")) {
         return iframes.filter((el) => {
           if (sel.includes("drive-viewer-video-iframe") && el.classList.contains("drive-viewer-video-iframe")) return true;
-          if (sel.includes("#ucc-136") && el.id === "ucc-136") return true;
           if (sel.includes("youtube.googleapis.com") && el.src.includes("youtube.googleapis.com")) return true;
           if (sel.includes("driveid=") && el.src.includes("driveid=")) return true;
           if (sel.includes("docid=") && el.src.includes("docid=")) return true;
@@ -2633,7 +2663,6 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
   // A Google Drive video player frame gets the button.
   const videoFrame = {
     localName: "iframe",
-    id: "ucc-136",
     src: "https://youtube.googleapis.com/embed/abc?driveid=1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu",
     classList: { contains: (c) => c === "drive-viewer-video-iframe" },
     isConnected: true,
@@ -2651,6 +2680,24 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
   await bVideo.move();
   assert.equal(bVideo.display(), "block", "the video player frame on drive.google.com gets the button");
   ok("#758: non-video preview frame never gets the button, video player frame does");
+
+  // #758: only the player's own subframe sets isDriveFrame, never docs/sheets subframes
+  const isPlayerFrame = (url) => {
+    const u = new URL(url);
+    const isDriveHost = /(^|\.)(?:drive|docs)\.google\.com$/.test(u.hostname);
+    return (
+      (u.hostname === "youtube.googleapis.com" && /[?&](?:driveid|docid)=/.test(u.search)) ||
+      (isDriveHost && /\/file\/d\/[^/]+\/preview/.test(u.pathname))
+    );
+  };
+  assert.equal(isPlayerFrame("https://youtube.googleapis.com/embed/abc?driveid=1s52ek"), true);
+  assert.equal(isPlayerFrame("https://youtube.googleapis.com/embed/abc?docid=1s52ek"), true);
+  assert.equal(isPlayerFrame("https://drive.google.com/file/d/1s52ek/preview"), true);
+  assert.equal(isPlayerFrame("https://docs.google.com/file/d/1s52ek/preview"), true);
+  assert.equal(isPlayerFrame("https://docs.google.com/document/d/1s52ek/edit"), false);
+  assert.equal(isPlayerFrame("https://docs.google.com/spreadsheets/d/1s52ek/edit"), false);
+  assert.equal(isPlayerFrame("https://drive.google.com/drive/folders/18l2MEarb"), false);
+  ok("#758: pointer bridge only triggers on player subframe, not Docs or Sheets");
 }
 
 // The qualities' menu (video.js; its plain functions run here): the questions' pace and their
@@ -3027,7 +3074,7 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
   const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
   for (const key of ["video_looking", "video_all_qualities", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
     "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_show",
-    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original"]) {
+    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original", "video_compatible"]) {
     assert.ok(english[key], key);
     assert.ok(source.includes(`${key}: ${JSON.stringify(english[key].message)}`), `video.js FALLBACK: ${key}`);
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
@@ -3056,6 +3103,11 @@ function videoButton({ stored = {}, location, iframes, videos } = {}) {
     assert.equal(w.qualityMeta({ height: 360, ext: "webm", codec: "VP9", fps: 30 }, tt), "WEBM · VP9 · 30 fps", "a type other than MP4 is said");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: 7, range: { x: 1 } }, tt), "MP4", "only text is shown");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).length, 24, "a codec's name is cut");
+    // #1439: the most compatible choice (H.264 + AAC) says so in place of its codec.
+    const compatible = { label: "Most compatible (H.264 + AAC) · 1080p", ext: "mp4", height: 1080, fps: 60, codec: "H.264", compatible: true };
+    assert.ok(source.includes('if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);'), "its line's tip is the app's whole name");
+    assert.equal(w.qualityName(compatible, tt), "1080p");
+    assert.equal(w.qualityMeta(compatible, tt), "video_compatible");
     // #801: an estimate is marked; an exact size isn't; an older app's has no mark.
     assert.equal(w.choiceSize({ size: 557842432, approx: true }, "en"), "~532 MB");
     assert.equal(w.choiceSize({ size: 557842432 }, "en"), "532 MB");
@@ -3680,9 +3732,9 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     ["attachment; filename=\"plain report.pdf\"", "plain report.pdf"],
     // ISO-8859-1 bytes (é alone is not valid UTF-8).
     ["attachment; filename=\"caf\u00e9.pdf\"", "café.pdf"],
-    // Percent-encoded UTF-8 in the plain name, as Firefox and the app read it.
+    // Percent-encoded UTF-8 in the plain name, as Firefox and the app read it; ASCII too (#1427).
     ["attachment; filename=\"%D8%AA%D9%82%D8%B1%D9%8A%D8%B1.pdf\"", "تقرير.pdf"],
-    ["attachment; filename=\"100%25.pdf\"", "100%25.pdf"],
+    ["attachment; filename=\"100%25.pdf\"", "100%.pdf"],
     ["attachment; filename=\"50%.pdf\"", "50%.pdf"],
     // RFC 8187 keeps winning, ASCII as it comes.
     ["attachment; filename=\"fallback.pdf\"; filename*=UTF-8''%D8%AA%D9%82%D8%B1%D9%8A%D8%B1.pdf", "تقرير.pdf"],
@@ -3694,6 +3746,46 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     assert.equal(natives(calls)[0].filename, want, value);
   }
   ok("#447 Firefox: a raw UTF-8 file name in a header reaches the app readable, other names as they were");
+}
+// #1427: a link that only redirects (302) to the file, whose own answer alone names it: the 302 is
+// no download, the file's answer is, under its name read as Chrome and Firefox read it (both
+// checked on a lab server) and as the app does (naming.rs `decode_plain`): a plain filename's
+// percent-encoding decoded, ASCII too, and RFC 2047's encoded words.
+{
+  for (const [value, want] of [
+    ["attachment; filename=\"fallback.bin\"; filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf", "My Report – v2.pdf"],
+    ["attachment; filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf", "My Report – v2.pdf"],
+    ["attachment; filename=\"My%20Report.pdf\"", "My Report.pdf"],
+    ["attachment; filename=My%20Report%20v3.pdf", "My Report v3.pdf"],
+    ["attachment; filename=\"100%25 sure.zip\"", "100% sure.zip"],
+    ["attachment; filename=\"50%off sale.zip\"", "50%off sale.zip"],
+    ["attachment; filename=\"caf%E9 menu.zip\"", "caf%E9 menu.zip"],
+    ["attachment; filename=\"=?UTF-8?B?5oql5ZGKIHY1LnBkZg==?=\"", "报告 v5.pdf"],
+    ["attachment; filename=\"=?utf-8?q?My_Report_=E2=80=93_v6.pdf?=\"", "My Report – v6.pdf"],
+    ["attachment; filename=\"Report =?UTF-8?B?5oql5ZGK?= v7.pdf\"", "Report 报告 v7.pdf"],
+    ["attachment; filename=\"=?UTF-8?Q?My_?= =?UTF-8?Q?Report.pdf?=\"", "My Report.pdf"],
+    ["attachment; filename=\"=?ISO-8859-1?Q?caf=E9.zip?=\"", "café.zip"],
+    ["attachment; filename*=UTF-8''100%2525%20double.zip", "100%25 double.zip"],
+    ["attachment; filename=\"a%2Fb report.pdf\"", "a_b report.pdf"],
+    ["attachment; filename*=UTF-8''a%2Fb%5Cc.pdf", "a_b_c.pdf"],
+  ]) {
+    const { api, calls, listeners } = fakeApi({ firefox: true });
+    load(api, true);
+    await settle();
+    const first = "https://site.test/download/42";
+    const file = "https://cdn.test/files/7f3e/x.bin";
+    listeners.beforeRequest({ requestId: "c1", method: "GET", url: first, tabId: 3, type: "main_frame" });
+    // The 302 itself: no name, no download.
+    assert.deepEqual(await held(listeners, answer(first, { Location: file }, { requestId: "c1", statusCode: 302 })), {});
+    listeners.beforeRedirect({ url: first, redirectUrl: file });
+    listeners.beforeRequest({ requestId: "c1", method: "GET", url: file, tabId: 3, type: "main_frame" });
+    const res = await held(listeners, answer(file, { "Content-Type": "application/octet-stream", "Content-Disposition": value }, { requestId: "c1" }));
+    assert.deepEqual(res, { cancel: true }, value);
+    const sent = natives(calls);
+    assert.equal(sent.length, 1, value);
+    assert.deepEqual([sent[0].url, sent[0].finalUrl, sent[0].filename], [first, file, want], value);
+  }
+  ok("#1427 Firefox: a link that redirects to its file, named by the file's own answer as browsers read it");
 }
 // A download taken from its answer (#208) is cancelled, so its response never starts: the proxy a
 // VPN add-on chose for it (proxy.onRequest, in the answer's proxyInfo) still goes with it.

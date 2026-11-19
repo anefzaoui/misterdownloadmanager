@@ -13,7 +13,16 @@ computer on your network), the browser extension pointed at it, or its command l
 
 ## With Docker
 
-Build the image from MDM's source (a published image comes later):
+From the release after 0.5.2, pull the published image from GitHub Container Registry (x86-64
+only for now):
+
+```sh
+docker pull ghcr.io/anefzaoui/misterdownloadmanager:<version>
+# or the latest release:
+docker pull ghcr.io/anefzaoui/misterdownloadmanager:latest
+```
+
+Or build the image yourself from MDM's source:
 
 ```sh
 git clone https://github.com/anefzaoui/misterdownloadmanager
@@ -36,8 +45,11 @@ docker run -d --name mdm --restart unless-stopped \
   -v /srv/mdm-config:/config \
   -v /srv/downloads:/downloads \
   --user "$(id -u):$(id -g)" \
-  misterdownloadmanager
+  ghcr.io/anefzaoui/misterdownloadmanager:<version>
 ```
+
+(Replace `ghcr.io/anefzaoui/misterdownloadmanager:<version>` with `misterdownloadmanager` if
+you built the image yourself.)
 
 - `/config` keeps the list, the settings, the certificate and the paired devices.
 - `/downloads` is where files land: each category has its folder inside (`Music`, `Video`,

@@ -738,6 +738,53 @@ fn listener(cfg: &Config, port: u16) -> Option<ListenerOptions> {
     })
 }
 
+/// How many ports [`port_for_both`] asks the system for before leaving the choice to librqbit.
+const PORT_TRIES: usize = 20;
+
+/// How long a session waits for the port it asks (Torrent settings', or the one saved) to be free
+/// for TCP and UDP: the session before it, stopped, may still be letting its uTP socket go.
+const PORT_WAIT: Duration = Duration::from_secs(2);
+
+/// `port` on the listener `l`'s address (0: one the system gives for UDP), when it is free for
+/// TCP and UDP alike, tried as librqbit binds them (`librqbit::listen`: the TCP listener, then
+/// librqbit-utp's socket on the same number) and let go of at once for it.
+fn free_for_both(l: &ListenerOptions, port: u16) -> Option<u16> {
+    use librqbit_dualstack_sockets::{BindOpts, TcpListener, UdpSocket};
+    // librqbit's own address: every IPv4 address for an IPv4-only session on every address.
+    let ip = match l.listen_addr.ip() {
+        std::net::IpAddr::V6(v6) if l.ipv4_only && v6.is_unspecified() => {
+            std::net::IpAddr::V4(Ipv4Addr::UNSPECIFIED)
+        }
+        ip => ip,
+    };
+    // Without the adapter's device: a port free without it is free with it.
+    let udp = UdpSocket::bind_udp((ip, port).into(), BindOpts::default()).ok()?;
+    let port = udp.bind_addr().port();
+    let tcp = BindOpts {
+        request_dualstack: !l.ipv4_only,
+        ..BindOpts::default()
+    };
+    TcpListener::bind_tcp((ip, port).into(), tcp).ok()?;
+    Some(port)
+}
+
+/// A port the listener `l` can have for TCP and uTP (UDP) alike (#1384). librqbit binds TCP
+/// first, on `l`'s port (0: any the system gives), then UDP on the same number; when that number
+/// is taken for UDP (another program's socket: TCP and UDP ports are handed out apart; a range
+/// Windows keeps for UDP only), it goes on without uTP for the whole session, saying so in its
+/// log only, and the peers that take only uTP are never reached. `l`'s own port when that is free
+/// for both; else (or with port 0) one the system gives for UDP that TCP has free too. None when
+/// none was found.
+fn port_for_both(l: &ListenerOptions) -> Option<u16> {
+    let asked = l.listen_addr.port();
+    if asked != 0
+        && let Some(port) = free_for_both(l, asked)
+    {
+        return Some(port);
+    }
+    (0..PORT_TRIES).find_map(|_| free_for_both(l, 0))
+}
+
 impl Torrents {
     pub async fn start(cfg: Config) -> Result<Torrents, TorrentError> {
         std::fs::create_dir_all(&cfg.state_dir).map_err(engine)?;
@@ -834,15 +881,52 @@ impl Torrents {
         prepare_saved(&cfg.state_dir.join("session"), proxied);
         let saved_nodes = dht_on && cfg.state_dir.join("dht.json").is_file();
         let output = cfg.state_dir.join("unsorted");
-        let port = cfg.port.or(saved).unwrap_or(0);
+        // With uTP, a port that UDP has free too (`port_for_both`), else librqbit's choice.
+        let with_utp = |port: u16| listener(&cfg, port).filter(|_| cfg.utp);
+        let for_both = |port: u16| with_utp(port).and_then(|l| port_for_both(&l));
+        // The port asked, once free for both (or after `PORT_WAIT`).
+        let asked_free = match cfg.port.or(saved).and_then(|p| with_utp(p).map(|l| (p, l))) {
+            Some((port, l)) => {
+                let deadline = std::time::Instant::now() + PORT_WAIT;
+                loop {
+                    let free = free_for_both(&l, port).is_some();
+                    if free || std::time::Instant::now() >= deadline {
+                        break free;
+                    }
+                    tokio::time::sleep(Duration::from_millis(100)).await;
+                }
+            }
+            None => true,
+        };
+        let port = match (cfg.port, saved) {
+            // A port set in Torrent settings is kept: TCP only while UDP can't have it.
+            (Some(port), _) => {
+                if !asked_free {
+                    tracing::warn!(
+                        "torrents: port {port} is taken for UDP; uTP is off until it is free"
+                    );
+                }
+                port
+            }
+            (None, Some(saved)) if asked_free => saved,
+            // The saved port taken for UDP (or TCP): another that both have free.
+            (None, Some(saved)) => match for_both(0) {
+                Some(port) => {
+                    tracing::warn!(
+                        "torrents: port {saved} is no longer free for TCP and UDP; taking {port}"
+                    );
+                    port
+                }
+                None => saved,
+            },
+            (None, None) => for_both(0).unwrap_or(0),
+        };
         let session = match Session::new_with_opts(output.clone(), opts(port)).await {
-            // The saved port taken (another program has it now): any other one. A port set in
-            // Torrent settings is kept, and its error says why.
-            Err(e) if saved.is_some() => {
-                tracing::warn!(
-                    "torrents: can't listen on port {port} again ({e:#}); taking another one"
-                );
-                Session::new_with_opts(output, opts(0)).await
+            // The port picked taken since (another program has it now): any other one. A port
+            // set in Torrent settings is kept, and its error says why.
+            Err(e) if cfg.port.is_none() && port != 0 => {
+                tracing::warn!("torrents: can't listen on port {port} ({e:#}); taking another one");
+                Session::new_with_opts(output, opts(for_both(0).unwrap_or(0))).await
             }
             started => started,
         }
@@ -2086,8 +2170,9 @@ mod tests {
     }
 
     /// #650: with no port in Torrent settings, the one picked is kept: the next session
-    /// listens on it again. When another program has it by then, another one is taken, and kept
-    /// from then on. A port set in Torrent settings isn't saved.
+    /// listens on it again, for TCP and uTP (#1384: the one before, stopped and let go of as the
+    /// app does, frees its UDP socket in a moment). When another program has it by then, another
+    /// one is taken, and kept from then on. A port set in Torrent settings isn't saved.
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn the_picked_port_is_kept() {
         let tmp = tempfile::tempdir().unwrap();
@@ -2107,9 +2192,15 @@ mod tests {
         let first = port(&t);
         assert_eq!(saved(), Some(first));
         t.stop().await;
+        drop(t);
         let t = Torrents::start(cfg("auto")).await.unwrap();
         assert_eq!(port(&t), first, "the same port again");
+        assert!(
+            std::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, first)).is_err(),
+            "uTP listens on {first} again"
+        );
         t.stop().await;
+        drop(t);
 
         let other = std::net::TcpListener::bind((Ipv4Addr::LOCALHOST, first)).unwrap();
         let t = Torrents::start(cfg("auto")).await.unwrap();
@@ -2133,6 +2224,35 @@ mod tests {
         assert_eq!(port(&t), free);
         assert_eq!(saved_port(&tmp.path().join("fixed")), None);
         t.stop().await;
+    }
+
+    /// #1384: a port another program has for UDP (TCP's twin free) is not listened on with TCP
+    /// only, uTP left off for the session: the saved one is left for one free for both, whose
+    /// UDP the session then holds. Before, CI runners' sessions met a UDP port taken now and
+    /// then and never reached a peer on uTP.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_port_taken_for_udp_is_left_for_one_free_for_both() {
+        let tmp = tempfile::tempdir().unwrap();
+        let state = tmp.path().join("s");
+        std::fs::create_dir_all(&state).unwrap();
+        let (taken, port) = loop {
+            let udp = std::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, 0)).unwrap();
+            let port = udp.local_addr().unwrap().port();
+            if std::net::TcpListener::bind((Ipv4Addr::LOCALHOST, port)).is_ok() {
+                break (udp, port);
+            }
+        };
+        std::fs::write(state.join(PORT_FILE), port.to_string()).unwrap();
+        let t = Torrents::start(offline(&state)).await.unwrap();
+        let got = t.listen_addr().expect("listens").port();
+        assert_ne!(got, port, "the port taken for UDP was kept");
+        assert_eq!(saved_port(&state), Some(got));
+        assert!(
+            std::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, got)).is_err(),
+            "uTP listens on {got} too"
+        );
+        t.stop().await;
+        drop(taken);
     }
 
     /// #650: the DHT starts from several public routers, not librqbit's two alone; a test's

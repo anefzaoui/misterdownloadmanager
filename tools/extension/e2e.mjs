@@ -19,7 +19,8 @@
 // forwarded), startedfrom (the page a download was started from goes whole, where its Referer is
 // the site's address only; kept with the download for Refresh download address, #607), names
 // (Content-Disposition), torrents (a tracker's .torrent stays with the browser
-// while Torrent settings leave torrents alone, #1058), redirect, leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
+// while Torrent settings leave torrents alone, #1058), redirect, redirectNames (a link that only redirects to its file, named by
+// the file's own answer: filename*, a percent-encoded filename, relative and two redirects, #1427), leadon (a page going to the file by script, #374), form (POST, 303), alt (Alt+click leaves it
 // to the browser: a link, a redirect, a page's script; Firefox's own default too, #332), sites (a listed
 // site's page linking to a file on another host leaves it to the browser, #1049), manylinks
 // (Download all links on a page of 20,000 long links, in parts, to one Link grabber list), opened
@@ -2267,6 +2268,47 @@ const CASES = {
     await mdmRequests(`/gen/2M/${file}`);
     await keptNothing(t.dl);
     return "the address clicked kept, the file from its target";
+  },
+
+  // #1427: a link that only redirects (302) to its file, whose own answer alone names it: MDM
+  // saves it under the name the browser gives it (filename* or a percent-encoded filename),
+  // through a relative Location and two redirects too, never the first address's name.
+  async redirectNames(t) {
+    const enc = encodeURIComponent;
+    const star = (n) => `attachment; filename="fallback.bin"; filename*=UTF-8''${enc(n)}`;
+    const cases = [
+      ["both", `e2e Report – both ${t.name}.zip`, star, (f) => `/redirect?to=${enc(`/${f}`)}`],
+      ["star only", `e2e Report – star ${t.name}.zip`, (n) => `attachment; filename*=UTF-8''${enc(n)}`, (f) => `/redirect?to=${enc(`/${f}`)}`],
+      ["plain %20", `e2e Report plain ${t.name}.zip`, (n) => `attachment; filename="${n.replaceAll(" ", "%20")}"`, (f) => `/redirect?to=${enc(`/${f}`)}`],
+      ["relative", `e2e Report – relative ${t.name}.zip`, star, (f) => `/redirect?to=${enc(f)}`],
+      ["two", `e2e Report – two ${t.name}.zip`, star, (f) => `/redirect?to=${enc(`/redirect?to=${enc(`/${f}`)}`)}`],
+      ["pdf", `e2e Report – pdf ${t.name}.pdf`, star, (f) => `/redirect?to=${enc(`/${f}`)}`],
+      // Files the browser would show or play, named inline (#948's rule makes them downloads).
+      ["pdf inline", `e2e Report – inline ${t.name}.pdf`, (n) => `inline; filename*=UTF-8''${enc(n)}`, (f) => `/redirect?to=${enc(`/${f}&type=application%2Fpdf`)}`],
+      ["mp4 inline %20", `e2e Clip inline ${t.name}.mp4`, (n) => `inline; filename="${n.replaceAll(" ", "%20")}"`, (f) => `/redirect?to=${enc(`/${f}&type=video%2Fmp4`)}`],
+    ];
+    const folder = (n) => (n.endsWith(".pdf") ? "Documents" : n.endsWith(".mp4") ? "Video" : "Compressed");
+    const done = [];
+    for (const [label, name, cd, link] of cases) {
+      // As in `opened`: IDM, when it runs, takes a PDF or a video the browser would show.
+      if (idmRunning && label.includes("inline")) {
+        done.push(`${label} (left out: IDM runs and takes it)`);
+        continue;
+      }
+      const file = `gen/1M/download?seed=${done.length + 41}&cdraw=${enc(cd(name))}`;
+      await clickLink(t, link(file));
+      try {
+        await arrived(name, 1 << 20, folder(name));
+      } catch (e) {
+        const tab = await t.session.evaluate("[location.href, document.contentType]").catch((x) => x.message);
+        const log = (await requests("/gen/1M/download")).slice(-3).map(brief).join("; ");
+        e.message = `${label}: ${e.message} [the tab: ${JSON.stringify(tab)}; the file's last requests: ${log}; the browser's folder: ${fs.readdirSync(t.dl).join(", ") || "empty"}]`;
+        throw e;
+      }
+      await keptNothing(t.dl);
+      done.push(label);
+    }
+    return `named by the file's own answer: ${done.join(", ")}`;
   },
 
   // A page that goes to the file by script (#374): MDM gets the file's address, not the page's.
