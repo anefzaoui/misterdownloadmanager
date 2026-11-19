@@ -4881,6 +4881,9 @@ extension	Added to MDM	Added to MDM
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 extension	Added to the queue	Added to the queue
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+extension	All	All
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 extension	All qualities and subtitles...	All qualities and subtitles...
@@ -4904,8 +4907,32 @@ extension	Button settings...	Button settings...
 #. on the download button over a copy-protected video, after 'Protected video ·': it can't be downloaded; short, lower case
 extension	can't be saved	can't be saved
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+extension	Can't reach Mister Download Manager	Can't reach Mister Download Manager
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+extension	Can't reach the Mister Download Manager at {server}	Can't reach the Mister Download Manager at {server}
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 extension	Can't tell which video this is: open its own page and try there	Can't tell which video this is: open its own page and try there
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+extension	Cancel	Cancel
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+extension	Clear	Clear
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+extension	Clear finished	Clear finished
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+extension	Clear finished downloads?	Clear finished downloads?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+extension	Connected	Connected
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 extension	Connected to Mister Download Manager	Connected to Mister Download Manager
@@ -4914,11 +4941,41 @@ extension	Connected to Mister Download Manager	Connected to Mister Download Mana
 #. {version} = a version number (keep the braces as they are)
 extension	Connected to Mister Download Manager {version}	Connected to Mister Download Manager {version}
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+extension	Connected · {version}	Connected · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+extension	Copied {file}. Paste it into a folder, a chat or a message.	Copied {file}. Paste it into a folder, a chat or a message.
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+extension	Copy file	Copy file
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+extension	Copy link	Copy link
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 extension	Could not look it up	Could not look it up
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+extension	Delete	Delete
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+extension	Delete file...	Delete file...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+extension	Delete the file?	Delete the file?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+extension	Done	Done
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 extension	Download	Download
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+extension	Download again	Download again
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 extension	Download all links with Mister Download Manager	Download all links with Mister Download Manager
@@ -4941,7 +4998,17 @@ extension	Download with Mister Download Manager	Download with Mister Download Ma
 #. first line of the tooltip of the download button over a video: what one click downloads; $what$ is a quality, a file type and a size, e.g. '1080p MP4 · 412 MB'
 extension	Download {what}	Download {what}
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+extension	Downloading {file} again	Downloading {file} again
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+extension	Downloading: {count}	Downloading: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+extension	Downloads	Downloads
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Downloads from {site} stay with the browser	Downloads from {site} stay with the browser
 #. text in the browser extension
@@ -4953,6 +5020,19 @@ extension	Drag the dots to move it along the edge	Drag the dots to move it along
 #. text in the browser extension
 #. the address typed isn't an https:// address
 extension	Enter its https:// address.	Enter its https:// address.
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+extension	Failed	Failed
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+extension	Failed: {why}	Failed: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+extension	File deleted or moved	File deleted or moved
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+extension	Finished downloads cleared	Finished downloads cleared
 #. text in the browser extension
 #. button: forget / unpair this server
 extension	Forget	Forget
@@ -4993,18 +5073,34 @@ extension	It's smaller than the minimum size in Options → File types.	It's sma
 #. why a download stayed with the browser: its address matches the app's list of addresses not to take
 extension	Its address is in Options → File types, addresses left to the browser.	Its address is in Options → File types, addresses left to the browser.
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+extension	Its file is no longer where it was saved (moved or deleted).	Its file is no longer where it was saved (moved or deleted).
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 extension	Its site is in Options → File types, sites left to the browser.	Its site is in Options → File types, sites left to the browser.
 #. text in the browser extension
 #. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
 extension	Its type isn't in Options → File types.	Its type isn't in Options → File types.
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+extension	just now	just now
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+extension	Left to the browser by a rule in Options	Left to the browser by a rule in Options
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 extension	Left to the browser: {name}	Left to the browser: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+extension	Link copied	Link copied
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 extension	Live	Live
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+extension	Looking for downloads...	Looking for downloads...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 extension	Looking up the qualities…	Looking up the qualities…
@@ -5021,6 +5117,9 @@ extension	Media on this page	Media on this page
 #. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager didn't answer in time. Try again.
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 extension	Mister Download Manager didn't start in time	Mister Download Manager didn't start in time
 #. text in the browser extension
@@ -5030,11 +5129,21 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #. in the menu under the download button over a video: the app is already looking up other videos and can't look this one up now; keep the name Mister Download Manager as it is
 extension	Mister Download Manager is busy with other videos	Mister Download Manager is busy with other videos
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager is busy. Trying again...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager isn't installed or didn't start
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager isn't installed, or its browser integration isn't set up
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+extension	Mister Download Manager isn't running	Mister Download Manager isn't running
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+extension	Mister Download Manager isn't running.	Mister Download Manager isn't running.
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 extension	Mister Download Manager needs yt-dlp for this video	Mister Download Manager needs yt-dlp for this video
@@ -5044,6 +5153,12 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+extension	More actions	More actions
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+extension	More actions for {file}	More actions for {file}
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 extension	More options	More options
@@ -5055,9 +5170,15 @@ extension	Most compatible	Most compatible
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Never on {site}	Never on {site}
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Never take downloads from {site}	Never take downloads from {site}
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+extension	No download's name or address has “{words}”.	No download's name or address has “{words}”.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+extension	No downloads yet	No downloads yet
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	No video or sound found on this page yet. Play it, then open this again.
@@ -5065,17 +5186,29 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #. in the menu under the download button over a video: the app found no quality of the video it could download
 extension	No video to download here	No video to download here
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+extension	Not connected	Not connected
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Not reached. Open its address once in this browser and accept its certificate, then try again.
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+extension	Nothing matches	Nothing matches
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 extension	Off on this site	Off on this site
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+extension	Open	Open
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 extension	Open it	Open it
 #. text in the browser extension
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+extension	Open its page	Open its page
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 extension	Open Mister Download Manager	Open Mister Download Manager
@@ -5085,6 +5218,12 @@ extension	Open post	Open post
 #. text in the browser extension
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 extension	Open the post to download it	Open the post to download it
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+extension	Open {file}	Open {file}
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+extension	Options in Mister Download Manager	Options in Mister Download Manager
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -5099,8 +5238,24 @@ extension	Pair	Pair
 #. placeholder of the box for the 8-digit code the other MDM shows
 extension	Pairing code	Pairing code
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+extension	Pause	Pause
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+extension	Pause it first.	Pause it first.
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+extension	Pause {file}	Pause {file}
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+extension	Paused	Paused
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 extension	Paused: downloads stay with the browser	Paused: downloads stay with the browser
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+extension	Popup sections	Popup sections
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 extension	Prefix media file names with the page title	Prefix media file names with the page title
@@ -5111,8 +5266,23 @@ extension	Protected	Protected
 #. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
 extension	Protected video	Protected video
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+extension	Remove from list	Remove from list
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+extension	Resume	Resume
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+extension	Resume {file}	Resume {file}
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 extension	Retry	Retry
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+extension	Running	Running
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+extension	Search downloads	Search downloads
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 extension	Send downloads through this browser's proxy or VPN extension	Send downloads through this browser's proxy or VPN extension
@@ -5124,17 +5294,56 @@ extension	Send downloads to	Send downloads to
 #. the trailing ... means it is still going on: keep it
 extension	Sending to MDM...	Sending to MDM...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+extension	Sending to {server}	Sending to {server}
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+extension	Settings	Settings
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+extension	Share...	Share...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 extension	Show	Show
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+extension	Show all downloads	Show all downloads
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+extension	Show in folder	Show in folder
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+extension	Show {file} in folder	Show {file} in folder
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+extension	Start it to see your downloads here.	Start it to see your downloads here.
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+extension	Start Mister Download Manager	Start Mister Download Manager
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+extension	Starting...	Starting...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 extension	Support MDM	Support MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 extension	Take downloads from this browser	Take downloads from this browser
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+extension	That can't be done to this download now.	That can't be done to this download now.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+extension	That didn't work. Try again.	That didn't work. Try again.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+extension	That download is no longer in the list.	That download is no longer in the list.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 extension	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.	The Chrome Web Store's rules keep this copy of the add-on away from this site's videos. Help says what you can do.
@@ -5148,6 +5357,16 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
 extension	The last download was left to the browser.	The last download was left to the browser.
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	The newest {shown} of {total}. Mister Download Manager lists them all.
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+extension	The {count} finished downloads go off the list. Their files stay where they are.	The {count} finished downloads go off the list. Their files stay where they are.
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	These are the downloads of the Mister Download Manager at {server}. Open their files there.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 extension	This browser isn't ticked in Options → General.	This browser isn't ticked in Options → General.
 #. text in the browser extension
@@ -5157,14 +5376,27 @@ extension	This computer	This computer
 #. status when a download carried too much data (very large cookies) to give to the app
 extension	This download's details were too large to hand over	This download's details were too large to hand over
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+extension	This isn't a web page: there's nothing to do here.	This isn't a web page: there's nothing to do here.
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+extension	This page	This page
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+extension	This system can't do that.	This system can't do that.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+extension	This version can't list its downloads here yet.	This version can't list its downloads here yet.
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 extension	Turn on	Turn on
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
-extension	Undo	Undo
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
+extension	Update Mister Download Manager	Update Mister Download Manager
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 extension	Update Mister Download Manager to use everything this extension offers	Update Mister Download Manager to use everything this extension offers
@@ -5178,11 +5410,38 @@ extension	Video	Video
 #. pairing failed: codes tried too fast
 extension	Wait a moment, then try again.	Wait a moment, then try again.
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+extension	Waiting	Waiting
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+extension	What you download with Mister Download Manager shows up here.	What you download with Mister Download Manager shows up here.
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 extension	While the page is in full screen, its videos show no Download video button	While the page is in full screen, its videos show no Download video button
 #. text in the browser extension
 #. pairing failed: the code was wrong
 extension	Wrong code.	Wrong code.
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+extension	{count} downloading now	{count} downloading now
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+extension	{done} of {size}	{done} of {size}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+extension	{file} deleted	{file} deleted
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+extension	{file} removed from the list	{file} removed from the list
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+extension	{time} left	{time} left
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Alt+Enter	Alt+Enter

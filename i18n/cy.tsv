@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Mae safle anhysbys eisiau anfon {n} ddolen i'r Grapwr dolenni.|Mae safle anhysbys eisiau anfon {n} ddolen i'r Grapwr dolenni.|Mae safle anhysbys eisiau anfon {n} dolen i'r Grapwr dolenni.|Mae safle anhysbys eisiau anfon {n} dolen i'r Grapwr dolenni.|Mae safle anhysbys eisiau anfon {n} dolen i'r Grapwr dolenni.|Mae safle anhysbys eisiau anfon {n} dolen i'r Grapwr dolenni.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	Ac {n} ffeil arall.|Ac {n} ffeil arall.|Ac {n} ffeiliau eraill.|Ac {n} ffeiliau eraill.|Ac {n} ffeiliau eraill.|Ac {n} ffeiliau eraill.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -292,6 +297,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Mae torrent ffeil sengl yn cadw ei enw
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	Mae ffolder ffeil cenllif yn pwyntio y tu allan i'w gyrchfan
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -578,6 +587,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS arall...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	Mae lawrlwythiad arall eisoes yn defnyddio cyrchfan y cenllif hwn
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	Mae lawrlwythiad arall eisoes yn hawlio {file}. Dewiswch gyrchfan wahanol.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
@@ -963,6 +980,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Os caiff ei wirio, mae cau'r ffenestr yn cadw MDM i redeg: mae'n cuddio yn yr ardal hysbysu pan fydd ar gael, neu'n lleihau i'r bar tasgau fel arall, ac mae lawrlwythiadau'n parhau; os na chaiff ei wirio, mae cau'n rhoi'r gorau i MDM.
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	Os yw wedi'i dicio, caiff lawrlwythiadau o ffenestr breifat porwr eu cadw yn y rhestr a byddant yno o hyd pan fydd MDM yn ailgychwyn; os nad yw wedi'i dicio, cânt eu cadw yn y cof yn unig a byddant wedi mynd pan fydd MDM yn cau. Ni chaiff eu cwcis eu cadw byth.
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -1128,6 +1149,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	Congo
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	Cysylltu dros uTP hefyd (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1202,6 +1227,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	Methu echdynnu {name}: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	Creu ffolder ar gyfer y cenllif hwn
 #. window title in a dialog box
 #, machine
 	Create folder	Creu ffolder
@@ -2518,6 +2547,10 @@
 #, machine
 	KBytes/sec	KB/eiliad
 #. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	Cadw lawrlwythiadau ffenestr breifat yn y rhestr
+#. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
 	Keep running when closing the window	Cadw i redeg wrth gau'r ffenestr
@@ -2793,6 +2826,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Ffurfweddiad dirprwy/socks â llaw
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	Dim ond uTP y mae llawer o gyfoedion yn ei ddefnyddio. Hebddo, ni all MDM eu cyrraedd.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2867,6 +2904,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	Ni allai MDM ei wneud.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	Ni chreodd MDM y ffeiliau hyn. Gall cychwyn y cenllif newid eu maint a disodli eu cynnwys, gan gynnwys ffeiliau heb eu ticio sy'n rhannu darnau. Ydych chi am eu defnyddio ar gyfer y cenllif hwn?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -3154,6 +3195,11 @@
 #. button: create a new item
 #, machine
 	New	Newydd
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	Cyfeiriad newydd o'r porwr ({host}): parhau ohono
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3404,6 +3450,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	I ffwrdd
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	Analluog gyda'r dirprwy: mae uTP yn defnyddio UDP, nad yw dirprwy SOCKS5 yn ei gludo
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	I ffwrdd: mae cenllif gorffenedig yn stopio, fel unrhyw lawrlwythiad.
@@ -3754,6 +3804,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Nid yw rhagolwg ar gael eto
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	Nid yw lawrlwythiadau o ffenestr breifat yn defnyddio Cwcis ar gyfer safleoedd fideo o'r Gosodiadau. Agorwch y dudalen mewn ffenestr breifat, mewngofnodwch yno, a defnyddiwch fotwm Lawrlwytho fideo y ffenestr honno eto.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3868,6 +3922,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	Methodd yr ail-wirio: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	Wrthi'n recordio...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4080,6 +4139,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	Cadwyd yn
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	Wrthi'n cadw...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4579,6 +4643,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Atal
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	Stopio ac arbed
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Atal lawrlwytho am
@@ -4841,6 +4909,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	collwyd y cysylltiad wrth dderbyn data
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	Mae'r gyrchfan yn newid yn barhaus. Atal newidiadau i'w ffeiliau a cheisio cychwyn y cenllif eto.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4939,6 +5011,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	Ni ellid dewis y ffeiliau: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	Cadwyd y ffeiliau oherwydd nad oes cofnod perchnogaeth gan y lawrlwythiad hŷn hwn
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4973,6 +5049,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	nid yw’r addasydd rhwydwaith {adapter} wedi’i gysylltu
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	Mae'r ffolder allbwn yn annilys
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -5003,6 +5083,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	Mae'r adroddiad ar eich clipfwrdd: gludwch ef mewn sylw ar y mater.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	Nid yw'r ffeil .torrent a gadwyd yn cyfateb i'r lawrlwythiad hwn
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	Mae'r ffeil .torrent a gadwyd ar goll neu'n annarllenadwy. Ychwanegwch y cenllif eto i adfer ei fetadata; cadwch ei ffeiliau presennol.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5123,6 +5211,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	nid yw'r torrent yno mwyach
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	Mae cofnod perchnogaeth y cenllif yn cynnwys llwybr anniogel
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	Nid yw cofnod perchnogaeth y cenllif yn cyfateb i'w restr ffeiliau
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	Mae cofnod perchnogaeth y cenllif yn annilys
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	Ni chychwynnwyd y cenllif oherwydd gwrthodwyd caniatâd i ddefnyddio ffeiliau presennol.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5267,6 +5372,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Mae hyn angen ffmpeg
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	Mae'r opsiwn hwn ar gael ar gyfer lawrlwythiadau BitTorrent uniongyrchol
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5298,9 +5407,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Mae'r torrent hwn eisoes yn y rhestr lawrlwythiadau
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	Mae'r cenllif hwn yn brysur. Arhoswch i'r gweithrediad presennol ddod i ben cyn ei ychwanegu eto.
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	nid yw'r cenllif hwn yn y rhestr
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	Mae angen caniatâd ar y cenllif hwn i ddefnyddio {file} cyn y gall ddechrau.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	Mae'r cenllif hwn yn rhannu ei ffolder cyrchfan
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5631,6 +5752,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	Defnyddio sgript ffurfweddu awtomatig
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	Defnyddio ffeiliau cenllif presennol
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Defnyddio FTP yn y modd PASV
@@ -5638,6 +5762,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	Defnyddio copi MDM ei hun
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	Defnyddio fy ffeil ffurfweddu yt-dlp
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5693,6 +5821,10 @@
 #. label in the Options window
 #, machine
 	UserName	Enw Defnyddiwr
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	Mae uTP yn defnyddio'r porthladd ar gyfer cysylltiadau sy'n dod i mewn: trowch Derbyn cysylltiadau sy'n dod i mewn ymlaen
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5786,6 +5918,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Yn aros
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	Wrthi'n aros am gyfeiriad newydd o'r porwr
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5972,6 +6108,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	Mae angen amgylchedd rhedeg JavaScript ar YouTube i restru'r lefelau ansawdd fideo: gosodwch Node.js neu Deno, yna chwiliwch amdano eto
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	Mae yt-dlp hefyd yn darllen ei ffeiliau ffurfweddu ei hun (ar Windows %APPDATA%\\yt-dlp\\config.txt, ac ar Linux a macOS ~/.config/yt-dlp/config). Mae'r rhan fwyaf o'r hyn y mae MDM yn ei ddewis—y ffolder, yr enw a'r ansawdd—yn dal i gael blaenoriaeth, ond mae opsiynau yno sy'n hepgor neu'n hidlo fideos hefyd yn berthnasol.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6124,6 +6264,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: mae'r ffeil yn cyfateb i'w harchwiliad ({algorithm})
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: arhosodd y ffeiliau hyn ar y ddisg, oherwydd ni chreodd MDM mohonynt neu mae lawrlwythiad arall yn eu defnyddio:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6427,6 +6571,10 @@ extension	Added to MDM	Ychwanegwyd at MDM
 #, machine
 extension	Added to the queue	Ychwanegwyd at y ciw
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	Pawb
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6457,9 +6605,41 @@ extension	Button settings...	Gosodiadau botwm...
 #, machine
 extension	can't be saved	methu cael ei gadw
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	Methu cyrraedd Mister Download Manager
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	Methu cyrraedd Mister Download Manager yn {server}
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	Methu dweud pa fideo yw hwn: agorwch ei dudalen ei hun a rhowch gynnig arni yno
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	Canslo
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	Gwiriwch ei fod yn rhedeg, a bod y porwr hwn yn derbyn ei dystysgrif (Gosodiadau → Anfon lawrlwythiadau i → Agor).
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	Clirio
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	Clirio rhai gorffenedig
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	Clirio lawrlwythiadau gorffenedig?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	Wedi cysylltu
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6470,13 +6650,52 @@ extension	Connected to Mister Download Manager	Wedi cysylltu â Mister Download 
 #, machine
 extension	Connected to Mister Download Manager {version}	Wedi cysylltu â Mister Download Manager {version}
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	Wedi cysylltu · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	Wedi copïo {file}. Gludwch ef i ffolder, sgwrs neu neges.
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	Copïo ffeil
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	Copïo dolen
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	Methu dod o hyd iddo
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	Dileu
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	Dileu ffeil...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	Dileu'r ffeil?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	Wedi gorffen
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	Lawrlwytho
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	Lawrlwytho eto
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6506,7 +6725,20 @@ extension	Download with Mister Download Manager	Lawrlwytho gyda Mister Download 
 #, machine
 extension	Download {what}	Lawrlwytho {what}
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	Wrthi'n lawrlwytho {file} eto
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	Wrthi'n lawrlwytho: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	Lawrlwythiadau
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	Mae lawrlwythiadau o {site} yn aros gyda'r porwr
@@ -6522,6 +6754,27 @@ extension	Drag the dots to move it along the edge	Llusgwch y dotiau i'w symud ar
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Rhowch ei gyfeiriad https://.
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	Wedi methu
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	Wedi methu: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	Ffeil wedi'i dileu neu ei symud
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	Lawrlwythiadau gorffenedig wedi'u clirio
+#. text in the browser extension
+#. button: forget / unpair this server
+#, machine
+extension	Forget	Anghofio
 #. text in the browser extension
 #. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
 #, machine
@@ -6571,6 +6824,10 @@ extension	It's smaller than the minimum size in Options → File types.	Mae'n ll
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	Mae ei gyfeiriad yn Opsiynau → Mathau ffeiliau, cyfeiriadau a adawyd i'r porwr.
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	Nid yw ei ffeil bellach lle cafodd ei chadw (wedi'i symud neu ei dileu).
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	Mae ei safle yn Opsiynau → Mathau ffeiliau, safleoedd a adawyd i'r porwr.
@@ -6579,14 +6836,31 @@ extension	Its site is in Options → File types, sites left to the browser.	Mae 
 #, machine
 extension	Its type isn't in Options → File types.	Nid yw ei fath yn Opsiynau → Mathau ffeiliau.
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	yn awr
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	Wedi'i adael i'r porwr gan reol yn Opsiynau
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	Gadawyd i'r porwr: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	Dolen wedi'i chopïo
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Byw
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	Wrthi'n chwilio am lawrlwythiadau...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6608,6 +6882,10 @@ extension	Media on this page	Cyfryngau ar y dudalen hon
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Ni atebodd Mister Download Manager mewn pryd. Rhowch gynnig arall arni.
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Ni ddechreuodd Mister Download Manager mewn pryd
@@ -6620,6 +6898,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Nid 
 #, machine
 extension	Mister Download Manager is busy with other videos	Mae Mister Download Manager yn brysur gyda fideos eraill
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mae Mister Download Manager yn brysur. Wrthi'n ceisio eto...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Nid yw Mister Download Manager wedi'i osod neu ni ddechreuodd
@@ -6627,6 +6910,14 @@ extension	Mister Download Manager isn't installed or didn't start	Nid yw Mister 
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Nid yw Mister Download Manager wedi'i osod, neu nid yw ei integreiddiad porwr wedi'i sefydlu
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Nid yw Mister Download Manager yn rhedeg
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Nid yw Mister Download Manager yn rhedeg.
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6639,6 +6930,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Yna mae Mister Download Manager yn lawrlwytho drwy'r un ddirprwy â'r porwr hwn. Tra bod hyn i ffwrdd, nid yw'r estyniad yn darllen dirprwy'r porwr.
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	Rhagor o gamau
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	Rhagor o gamau ar gyfer {file}
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6653,10 +6952,18 @@ extension	Most compatible	Mwyaf cydnaws
 #, machine
 extension	Never on {site}	Byth ar {site}
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	Peidiwch byth â chymryd lawrlwythiadau o {site}
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	Nid oes enw na chyfeiriad lawrlwythiad yn cynnwys “{words}”.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	Dim lawrlwythiadau eto
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6666,13 +6973,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	Dim fideo i'w lawrlwytho yma
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	Heb gysylltu
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Heb ei gyrraedd. Agorwch ei gyfeiriad unwaith yn y porwr hwn a derbyniwch ei dystysgrif, yna rhowch gynnig arall arni.
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	Dim byd yn cyfateb
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	Wedi'i ddiffodd ar y safle hwn
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	Agor
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6681,6 +7000,10 @@ extension	Open it	Agorwch ef
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Agorwch ei gyfeiriad unwaith a derbyniwch ei dystysgrif, yna rhowch god o'i Opsiynau, O bell, Paru dyfais (neu misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	Agor ei dudalen
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6693,6 +7016,14 @@ extension	Open post	Agor post
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	Agorwch y post i'w lawrlwytho
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	Agor {file}
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	Opsiynau yn Mister Download Manager
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6711,9 +7042,30 @@ extension	Pair	Paru
 #, machine
 extension	Pairing code	Cod paru
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	Oedi
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	Oedwch ef yn gyntaf.
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	Oedi {file}
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	Wedi'i oedi
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	Wedi'i oedi: mae lawrlwythiadau'n aros gyda'r porwr
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	Adrannau naidlen
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6727,9 +7079,29 @@ extension	Protected	Wedi'i ddiogelu
 #, machine
 extension	Protected video	Fideo gwarchodedig
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	Tynnu oddi ar y rhestr
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	Ailgychwyn
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	Ailgychwyn {file}
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	Ail-geisio
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	Yn rhedeg
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	Chwilio lawrlwythiadau
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6744,13 +7116,52 @@ extension	Send downloads to	Anfon lawrlwythiadau i
 #, machine
 extension	Sending to MDM...	Yn anfon i MDM...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	Yn anfon i {server}
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Anfonwyd at Mister Download Manager
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	Gosodiadau
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	Rhannu...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	Dangos
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	Dangos pob lawrlwythiad
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	Dangos yn y ffolder
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	Dangos {file} yn y ffolder
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	Dechreuwch ef i weld eich lawrlwythiadau yma.
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	Dechrau Mister Download Manager
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	Wrthi'n cychwyn...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6759,6 +7170,18 @@ extension	Support MDM	Cefnogi MDM
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	Cymerwch lawrlwythiadau o'r porwr hwn
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	Ni ellir gwneud hyn i'r lawrlwythiad hwn nawr.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	Ni weithiodd hynny. Rhowch gynnig arall arni.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	Nid yw'r lawrlwythiad hwnnw ar y rhestr bellach.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6776,6 +7199,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	Gadawyd y lawrlwythiad diwethaf i'r porwr.
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	Y {shown} lawrlwythiad mwyaf diweddar o {total}. Mae Mister Download Manager yn rhestru pob un.
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	Mae'r {count} lawrlwythiad gorffenedig yn gadael y rhestr. Mae eu ffeiliau'n aros lle maent.
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	Dyma lawrlwythiadau Mister Download Manager yn {server}. Agorwch eu ffeiliau yno.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	Nid yw'r porwr hwn wedi'i dicio yn Opsiynau → Cyffredinol.
@@ -6788,17 +7224,34 @@ extension	This computer	Y cyfrifiadur hwn
 #, machine
 extension	This download's details were too large to hand over	Roedd manylion y lawrlwythiad hwn yn rhy fawr i'w trosglwyddo
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	Nid yw hon yn dudalen we: does dim i'w wneud yma.
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	Y dudalen hon
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	Mae chwaraewr y dudalen hon yn ffrydio ei fideo mewn darnau, felly nid oes ffeil i'w rhestru. Pwyntiwch at y fideo a defnyddiwch ei fotwm Lawrlwytho fideo.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	Ni all y system hon wneud hynny.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	Ni all y fersiwn hon restru ei lawrlwythiadau yma eto.
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	Trowch ymlaen
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	Dadwneud
+extension	Update Mister Download Manager	Diweddaru Mister Download Manager
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6816,6 +7269,14 @@ extension	Video	Fideo
 #, machine
 extension	Wait a moment, then try again.	Arhoswch funud, yna rhowch gynnig arall arni.
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	Yn aros
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	Mae'r hyn rydych chi'n ei lawrlwytho gyda Mister Download Manager yn ymddangos yma.
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	Tra bod y dudalen mewn sgrin lawn, nid yw ei fideos yn dangos botwm Lawrlwytho fideo
@@ -6823,6 +7284,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	Cod anghywir.
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	{count} yn lawrlwytho nawr
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{done} o {size}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	Wedi dileu {file}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	Wedi tynnu {file} oddi ar y rhestr
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	Bydd {file} yn cael ei ddileu o'ch cyfrifiadur, a bydd y lawrlwythiad yn cael ei dynnu oddi ar y rhestr. Ni ellir dadwneud hyn.
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	{time} ar ôl
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

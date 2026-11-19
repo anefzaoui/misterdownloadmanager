@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	ᏂᎦᏔᎲᎾ ས་ᏚᏓᏢᏒᎢ ᎤᏚᎵᎭ {n} ᎠᏕᎳᏗᏗᏍᏙᏗ ᎦᏟᏐᏗᏱ ᎦᏟᏐᏗᏍᎩ.|ᏂᎦᏔᎲᎾ ས་ᏚᏓᏢᏒᎢ ᎤᏚᎵᎭ {n} ᎠᏕᎳᏗᏗᏍᏙᏗ ᎦᏟᏐᏗᏱ ᎦᏟᏐᏗᏍᎩ.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	ᎠᎴ {n} ᏅᏩᏓᎴ ᎢᏗᏓᎴᎩ.|ᎠᎴ {n} ᏅᏩᏓᎴ ᎢᏗᏓᎴᎩ.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -6291,6 +6296,26 @@ extension	can't be saved	ᎥᏝ ᏗᏓᎴᏔᏅᎢ
 #, machine
 extension	Can't tell which video this is: open its own page and try there	ᎥᏝ ᏲᏒᎦ ᎦᏙ ᎤᏍᏗ ᏫᏗᎣ ᎾᏍᎩ: ᎤᏩᏒ ᎤᏤᎵ ᎪᏪᎵ ᎠᏍᏚᎢᏍᏗ ᎠᎴ ᎾᎿ ᏂᏑᎵᎪᎦ
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	ᎢᎪᏢᏂᎦ ᎾᏍᎩ ᎢᏳᏍᏗ ᎤᎾᏙᏢᏒ, ᎠᎴ ᎾᏍᎩ ᎯᎠ ᎾᏍᎩ Ꮎ ᏗᎪᏪᎵ ᏗᎬᏔᏅᎯ ᏗᎬᏔᏅᎯ ᎨᏒᎢ (Settings → Send downloads to → Open it).
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	ᎠᏓᏅᎦᎸᏗ
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	ᎠᏓᏅᎦᎸᏗ ᎤᏍᏆᏛᎯ
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	ᎠᏓᏅᎦᎸᏗ ᎤᏍᏆᏛᎯ ᏗᎦᏁᏟᏴᏍᏗ?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	ᏗᏙᏯᏅᎯᏛ
+#. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
 extension	Connected to Mister Download Manager	ᏚᎾᏙᏢᏒᎢ Mister Download Manager
@@ -6300,13 +6325,47 @@ extension	Connected to Mister Download Manager	ᏚᎾᏙᏢᏒᎢ Mister Downloa
 #, machine
 extension	Connected to Mister Download Manager {version}	ᏚᎾᏙᏢᏒᎢ Mister Download Manager {version}
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	ᏗᏙᏯᏅᎯᏛ · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	ᏗᎪᏪᎵ {file}. ᏗᎪᏪᎵ ᏗᏙᏪᎳᏅᎯ, ᏗᏙᏪᎳᏅᎯ, ᎠᎴ ᏗᏙᏪᎳᏅᎯ.
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	ᏗᎪᏪᎵ ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	ᎥᏝ ᎢᏗᏴᏔᏅᎢ
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	Delete
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	ᏗᎪᏪᎵ ᏗᏙᏪᎳᏅᎯ?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	ᎤᏍᏆᏛᎯ
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ᎠᏠᏯᏍᏗ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	ᏗᏙᏪᎳᏅᎯ ᏔᎵᏁ
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6336,7 +6395,20 @@ extension	Download with Mister Download Manager	ᏗᏓᏃᏍᏙᏗ Mister Downlo
 #, machine
 extension	Download {what}	ᏗᏓᎴᏔᏅᎢ {what}
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	ᏗᏙᏪᎳᏅᎯ {file} ᏔᎵᏁ
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	ᏗᏙᏪᎳᏅᎯ: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ {site} ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ
@@ -6352,6 +6424,27 @@ extension	Drag the dots to move it along the edge	ᏗᏓᎴᏔᏅᎢ ᏗᏓᎴ�
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	https:// ᎤᏃᎴ-ᎠᏂᏃᏔᏅᎯ ᎤᏃᎴᏍᏙᏗ ᎰᏪᎸᎦ.
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	ᎤᏓᏍᏙᏴᎯ
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	ᎤᏓᏍᏙᏴᎯ: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	ᏗᎪᏪᎵ ᏗᏙᏪᎳᏅᎯ ᎠᎴ ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	ᎤᏍᏆᏛᎯ ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
+#. button: forget / unpair this server
+#, machine
+extension	Forget	ᎤᏓᏅᏓᏗ
 #. text in the browser extension
 #. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
 #, machine
@@ -6401,6 +6494,10 @@ extension	It's smaller than the minimum size in Options → File types.	ᎠᏍ�
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	ᎤᏤᎵᎦ ᏗᎦᏛᏗ ᎨᏒ ᎾᎿ ᎪᎯᏍᏗ → ᏗᏓᏟᎶᏍᏗ ᎢᏳᏍᏗ ᎢᏯᏓᏛᏁᏗ, ᏗᎦᏛᏗ ᎨᏒ ᏗᏕᎪᏗ ᎨᏒᎢ.
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	ᏗᎪᏪᎵ ᏗᏙᏪᎳᏅᎯ ᎠᎴ ᏗᏙᏪᎳᏅᎯ (ᏗᏙᏪᎳᏅᎯ ᎠᎴ ᏗᏙᏪᎳᏅᎯ).
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	ᎤᏤᎵᎦ ᏗᎦᏛᏗ ᎨᏒ ᎾᎿ ᎪᎯᏍᏗ → ᏗᏓᏟᎶᏍᏗ ᎢᏳᏍᏗ ᎢᏯᏓᏛᏁᏗ, ᏗᎦᏛᏗ ᎨᏒ ᏗᏕᎪᏗ ᎨᏒᎢ.
@@ -6409,14 +6506,31 @@ extension	Its site is in Options → File types, sites left to the browser.	Ꭴ�
 #, machine
 extension	Its type isn't in Options → File types.	ᎤᏤᎵᎦ ᎢᏳᏍᏗ ᎢᏯᏓᏛᏁᏗ ᎨᏒ ᎾᎿ ᎪᎯᏍᏗ → ᏗᏓᏟᎶᏍᏗ ᎢᏳᏍᏗ ᎢᏯᏓᏛᏁᏗ.
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	ᎪᎯ ᎨᏒᎢ
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	ᏗᏕᎪᏗ ᎨᏒᎢ: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ᎬᏃᏛ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	ᎠᏯᏍᏗᎭ ᏗᎦᏃᏍᏔᏅᎢ...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6438,6 +6552,10 @@ extension	Media on this page	ᎠᏰᎵ ᎢᏗᏓᏛᏗ ᎯᎠ ᎢᏗᏓᏛᏗ
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ. ᏔᎵᏁ ᏗᏙᏪᎳᏅᎯ.
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏱᏚᎾᏙᏢᏒᎢ
@@ -6450,6 +6568,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager ᏚᎸᏫᏍᏓᏁᎭ ᏅᏩᏓᎴ ᏗᎪᏪᎵ
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager ᎠᎦᏎᏍᏗᎭ. ᎠᎴᏅᏗᎭ ᏔᎵᏁ...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏱᏚᎾᏙᏢᏒᎢ ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏱᏚᎾᏙᏢᏒᎢ
@@ -6457,6 +6580,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏱᏚᎾᏙᏢᏒᎢ, ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏱᏚᎾᏙᏢᏒᎢ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager ᏗᏙᏪᎳᏅᎯ.
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6469,6 +6600,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager ᎿᏉ ᏕᎦᏅᏗᎭ ᎾᏍᎩᏯᏉ ᎯᎠ ᏗᏓᏟᎶᏍᏗ ᎤᏤᎵ ᏗᏓᏟᎶᏍᏗ ᎢᏗᎬᏔᏅᎯ. ᎯᎠ ᎢᎬᏁᎸᎯ ᏂᎨᏒᎾ ᏥᎨᏐᎢ, ᎯᎠ ᏗᏓᏟᎶᏍᏗ ᎥᏝ ᏯᏓᏁᏟᏴᏍᎦ ᎯᎠ ᏗᏓᏟᎶᏍᏗ ᎤᏤᎵ ᏗᏓᏟᎶᏍᏗ.
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	ᎤᏟ ᎢᎦᎢ ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	ᎤᏟ ᎢᎦᎢ ᏗᏙᏪᎳᏅᎯ {file}
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6483,10 +6622,18 @@ extension	Most compatible	ᎤᏟ ᎢᎦᎷᎩ
 #, machine
 extension	Never on {site}	ᏞᏍᏗ ᎢᎸᎯᏳ {site} ᎦᎸᎳᏗᏢ
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ {site}
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ “{words}”.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	ᏗᏙᏪᎳᏅᎯ ᏗᏙᏪᎳᏅᎯ
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6496,13 +6643,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	ᎥᏝ ᏗᎪᏪᎵ ᏗᎪᏪᎵ ᎾᎿ
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	ᎥᏝ ᏳᎾᎷᏤᎢ. ᎢᎬᏱ ᎾᏍᎩ ᎤᏃᎴᏍᏙᏗ ᎢᏣᏍᏚᎢᏓ ᎯᎠ ᎤᏃᎴ-ᎠᏂᏃᏔᏅᎯ ᎠᎴ ᎢᏣᏓᏂᎸᎦ ᎤᏤᎵᎦ ᎪᏪᎵ ᎤᏃᎯᏳᏓᏁᎯ, ᎿᏉᏃ ᏔᎵᏁ ᎢᏣᏢᏓᎳ.
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	ᎯᎠ ᎤᎾᏙᏢᏒ ᎭᏫᏂᏗᏢ ᏗᏓᎴᏔᏅᎢ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	ᎤᏙᏢᏒ
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6511,6 +6670,10 @@ extension	Open it	ᎢᏣᏍᏚᎢᏓ
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	ᎢᎬᏱ ᎾᏍᎩ ᎤᏃᎴᏍᏙᏗ ᎢᏣᏍᏚᎢᏓ ᎠᎴ ᎢᏣᏓᏂᎸᎦ ᎤᏤᎵᎦ ᎪᏪᎵ ᎤᏃᎯᏳᏓᏁᎯ, ᎿᏉᏃ ᎢᏣᎰᏪᎸᎦ ᎪᏪᎵ ᎾᎿ ᎤᏤᎵᎦ ᎢᏯᏓᏅᏖᏗ, ᎢᏅᎯᏳ, ᎢᏣᏢᏓᎳ ᎪᏪᎵ (ᎠᎴ misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	ᎤᏙᏢᏒ ᎤᏙᏢᏒ
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6523,6 +6686,14 @@ extension	Open post	ᏗᏓᎴᏔᏅᎢ
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	ᏗᏓᎴᏔᏅᎢ ᏗᏓᎴᏔᏅᎢ ᏗᏓᎴᏔᏅᎢ
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	ᎤᏙᏢᏒ {file}
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	Mister Download Manager ᎾᎿ ᏗᎦᏟᎶᏍᏗ
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6541,9 +6712,30 @@ extension	Pair	ᎢᏣᏢᏓᎳ
 #, machine
 extension	Pairing code	ᎢᏣᏢᏓᎳ ᎪᏪᎵ
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	ᏙᎴᏅ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	ᎢᎬᏱ ຢᏍᏓᏢᏓ.
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	ຢᏍᏓᏢᏓ {file}
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	ᏙᎴᏅ
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	ᎠᏅᏅᏗ: ᎠᎾᏓᏛᏗᏍᎩ ᎾᎿᏉ ᎤᎾᏕᎳᎰᏒᎢ
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	ᎦᏟᎶᏍᏗ ᎢᏗᎦᏅᏁᏗ
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6557,9 +6749,29 @@ extension	Protected	ᎤᎦᏘᏗᏍᏗ
 #, machine
 extension	Protected video	ᏗᏓᎴᏔᏅᎢ ᏗᏓᎴᏔᏅᎢ
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	ᎠᏰᎵ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏛ ᏩᏍᎦᎸᏓ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	ᎢᏴᏛ ᏩᏍᎦᎸᏓ
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	ᎢᏴᏛ ᏩᏍᎦᎸᏓ {file}
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	ᏔᎵᏁ ᎭᏟᎶᏓ
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	ᎠᎾᏛᏁᎲᎢ
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	ᎠᎾᏛᏁᎲᎢ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6574,13 +6786,52 @@ extension	Send downloads to	ᎠᎾᏗᏒᏍᎬᎢ ᏩᏂᎷᎪᎢ
 #, machine
 extension	Sending to MDM...	MDM ᏗᏓᎴᏔᏅᎢ...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	{server} ᎢᏗᎦᏅᏁᏗ
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	ᎦᎴᏅᏔᏅᎢ Mister Download Manager ᎢᎬᏁᏗ
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	ᏗᎦᏟᎶᏍᏗ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	ᏗᏯᏙᎳᏤᏗ...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	ᏗᏓᎴᏔᏅᎢ
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	ᏂᎦᏗᏳ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	ᏗᎦᏟᎶᏍᏗ ᎢᏗᎦᏅᏁᏗ
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	ᏗᎦᏟᎶᏍᏗ {file} ᎢᏗᎦᏅᏁᏗ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	ᎢᏴᏛ ᏩᏍᎦᎸᏓ ᎾᏍᎩ ᏂᎦᏗᏳ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ.
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	ᎢᏴᏛ ᏩᏍᎦᎸᏓ Mister Download Manager
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	ᎠᎴᏅᏗᎭ...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6589,6 +6840,18 @@ extension	Support MDM	MDM ᎠᎵᏍᏕᎸᏙᏗ
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	ᎯᎠ ᎠᎾᏓᏛᏗᏍᎩ ᎯᎠ ᎾᎿᏉ ᎤᎾᏕᎳᎰᏒᎢ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᎥᏝ ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ ᏱᎩ.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	ᎾᏍᎩ Ꮎ ᎥᏝ ᏱᏚᎸᏫᏍᏓᏁᎴᎢ. ᎢᏴᏛ ᏩᏍᎦᎸᏓ.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᎥᏝ ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ ᏱᎩ.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6606,6 +6869,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	ᎤᎵᏍᏆᎸᏗ ᏗᎦᏛᏗ ᎨᏒ ᏗᏕᎪᏗ ᎨᏒᎢ.
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	ᎾᏍᎩ Ꮎ {shown} ᎾᎿ {total}. Mister Download Manager ᏂᎦᏗᏳ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ.
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	ᎾᏍᎩ Ꮎ {count} ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎢᏴᏛ ᏩᏍᎦᎸᏓ. ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎥᏝ ᏱᏚᎸᏫᏍᏓᏁᎴᎢ.
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎾᎿ Mister Download Manager ᎾᎿ {server}. ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎢᏴᏛ ᏩᏍᎦᎸᏓ.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	ᎯᎠ ᏗᏓᏟᎶᏍᏗ ᎨᏒ ᎥᏝ ᎤᎵᏍᎪᎸᏔᏅᎯ ᏱᎩ ᎾᎿ ᎪᎯᏍᏗ → ᎦᎸᎳᏗᏢ.
@@ -6618,17 +6894,34 @@ extension	This computer	ᎯᎠ ᎢᏗᎾᏓᏟᏃᏅᎯ
 #, machine
 extension	This download's details were too large to hand over	ᎯᎠ ᎠᎾᏓᏛᏗᏍᎩ ᎤᎾᏕᎳᎰᏒᎢ ᎤᏟᎯᎨᎢ ᎤᎾᏕᎳᎰᏒᎢ
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	ᎾᏍᎩ Ꮎ ᎥᏝ ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ ᏱᎩ: ᎥᏝ ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ ᏱᎩ.
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	ᎯᎠ ᎪᏪᎵ ᏫᏗᎣ ᏗᎪᏢᏔᏅ ᎠᏰᎵ ᎢᏯᏛᏁᎵ ᎠᏁᎭ, ᎾᏍᎩᏃ ᎥᏝ ᎠᏍᏆᏂᎪᏙᏗ ᏱᎩ ᎪᏪᎵ. ᏫᏗᎣ ᏂᏗᎦᎶᏍᏗ ᎠᎴ ᎤᏤᎵ Download video ᎠᏍᏗᏰᏗ ᎠᏂᏴᏫ.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	ᎾᏍᎩ Ꮎ ᎥᏝ ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ ᏱᎩ.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	ᎾᏍᎩ Ꮎ ᎥᏝ ᎾᏍᎩ Ꮎ ᎢᏗᎦᏅᏁᏗ ᏱᎩ.
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	ᏗᏓᎴᏔᏅᎢ
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	ᏔᎵᏁ ᏔᏚᎵ
+extension	Update Mister Download Manager	ᎢᏴᏛ ᏩᏍᎦᎸᏓ Mister Download Manager
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6646,6 +6939,14 @@ extension	Video	ᏗᎪᏪᎵ
 #, machine
 extension	Wait a moment, then try again.	ᎣᏍᏓ ᎢᏣᎦᏘᏓ, ᎿᏉᏃ ᏔᎵᏁ ᎢᏣᏢᏓᎳ.
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	ᎠᎦᏘᏗᏍᏗ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎾᎿ Mister Download Manager ᎾᎿ ᎢᏗᎦᏅᏁᏗ.
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	ᎢᎬᎾᏗᏢ ᏗᏓᏟᎶᏍᏔᏅᎯ ᎨᏒ ᎥᏝ ᏯᏙᎴᎰᏍᎦ
@@ -6653,6 +6954,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	ᎤᎾᏓᎴ ᎪᏪᎵ.
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	{count} ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{done} ᎾᎿ {size}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	{file} ᏗᎦᏁᏟᏴᏍᏗ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	{file} ᏗᎦᏁᏟᏴᏍᏗ ᎢᏴᏛ ᏩᏍᎦᎸᏓ
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} ᏗᎦᏁᏟᏴᏍᏗ ᎢᏴᏛ ᏩᏍᎦᎸᏓ ᎾᎿ ᎢᏗᎦᏅᏁᏗ. ᎾᏍᎩ Ꮎ ᎥᏝ ᏱᏚᎸᏫᏍᏓᏁᎴᎢ.
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	{time} ᎢᏴᏛ ᏩᏍᎦᎸᏓ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

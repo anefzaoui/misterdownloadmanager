@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Непозната страница сака да испрати {n} врска до грабачот на врски.|Непозната страница сака да испрати {n} врски до грабачот на врски.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	И уште {n} друга датотека.|И уште {n} други датотеки.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -292,6 +297,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Торент со една датотека го задржува своето име
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	Папката на торент-датотеката води надвор од нејзината дестинација
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -578,6 +587,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Друг DNS...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	Друго преземање веќе ја зафаќа дестинацијата на овој торент
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	Друго преземање веќе ја зафаќа патеката {file}. Изберете друга дестинација.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
@@ -963,6 +980,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Ако е штиклирано, затворањето на прозорецот го задржува MDM да работи: се крие во областа за известувања кога е достапно, или се минимизира во лентата со задачи, а преземањата продолжуваат; ако не е штиклирано, затворањето го исклучува MDM.
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	Ако е штиклирано, преземањата од приватен прозорец на прелистувачот се зачувуваат во списокот и остануваат таму кога MDM ќе се рестартира; ако не е штиклирано, тие се чуваат само во меморијата и ги нема кога MDM ќе се затвори. Нивните колачиња никогаш не се зачувуваат.
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -1123,6 +1144,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	Конго
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	Поврзете се и преку uTP (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1197,6 +1222,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	Не можеше да се извади {name}: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	Креирајте папка за овој торент
 #. window title in a dialog box
 #, machine
 	Create folder	Креирај папка
@@ -2509,6 +2538,10 @@
 #, machine
 	KBytes/sec	КБ/сек
 #. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	Зачувајте ги преземањата од приватен прозорец во списокот
+#. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
 	Keep running when closing the window	Продолжи со работа при затворање на прозорецот
@@ -2784,6 +2817,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Рачна конфигурација на прокси/SOCKS
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	Многу учесници користат само uTP. Без него, MDM не може да се поврзе со нив.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2858,6 +2895,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM не можеше да го направи тоа.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM не ги создал овие датотеки. Започнувањето на торентот може да им ја промени големината и да ја замени нивната содржина, вклучувајќи ги и непотврдените датотеки што споделуваат парчиња. Дали да се користат за овој торент?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -3145,6 +3186,11 @@
 #. button: create a new item
 #, machine
 	New	Ново
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	Нова адреса од прелистувачот ({host}): се продолжува од неа
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3395,6 +3441,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	Исклучено
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	Исклучено со прокси: uTP оди преку UDP, што SOCKS5 прокси не го пренесува
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	Исклучено: завршен торент запира, како и секое преземање.
@@ -3745,6 +3795,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Прегледот сè уште не е достапен
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	Преземањата од приватен прозорец не користат колачиња за видео-страници од Поставки. Отворете ја страницата во приватен прозорец, најавете се таму и повторно користете го копчето „Преземи видео“.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3859,6 +3913,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	Повторната проверка не успеа: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	Се снима...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4071,6 +4130,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	Зачувано во
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	Се зачувува...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4570,6 +4634,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Стоп
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	Запрете и зачувајте
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Заврши преземање во
@@ -4832,6 +4900,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	врската беше изгубена при примање податоци
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	Дестинацијата постојано се менува. Запрете ги промените на неговите датотеки и обидете се повторно да го стартувате торентот.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4930,6 +5002,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	Датотеките не можеа да се изберат: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	Датотеките беа зачувани бидејќи ова постаро преземање нема запис за сопственост
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4964,6 +5040,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	мрежниот адаптер {adapter} не е поврзан
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	Излезната папка е невалидна
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4994,6 +5074,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	Извештајот е во вашиот клипборд: залепете го во коментар за проблемот.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	Зачуваната .torrent датотека не се совпаѓа со ова преземање
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	Зачуваната .torrent датотека недостасува или е нечитлива. Додадете го торентот повторно за да ги вратите неговите метаподатоци; зачувајте ги неговите постоечки датотеки.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5114,6 +5202,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	торентот повеќе го нема
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	Записот за сопственост на торентот содржи небезбедна патека
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	Записот за сопственост на торентот не се совпаѓа со неговиот список на датотеки
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	Записот за сопственост на торентот е невалиден
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	Торентот не беше стартуван бидејќи дозволата за користење постоечки датотеки беше одбиена.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5258,6 +5363,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Ова бара ffmpeg
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	Оваа опција е достапна за директни BitTorrent преземања
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5289,9 +5398,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Овој торент е веќе во списокот за преземања
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	Овој торент е зафатен. Почекајте да заврши неговата тековна операција пред повторно да го додадете.
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	овој торент не е на листата
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	На овој торент му е потребна дозвола за користење на {file} пред да може да започне.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	Овој торент ја споделува својата дестинациска папка
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5622,6 +5743,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	Користи скрипта за автоматска конфигурација
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	Користете постоечки торент-датотеки
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Користи FTP во PASV режим
@@ -5629,6 +5753,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	Користи сопствена копија на MDM
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	Користете ја мојата yt-dlp конфигурациска датотека
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5684,6 +5812,10 @@
 #. label in the Options window
 #, machine
 	UserName	Корисничко име
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP го користи портот за дојдовни врски: вклучете „Прифати дојдовни врски“
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5777,6 +5909,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	На чекање
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	Се чека нова адреса од прелистувачот
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5963,6 +6099,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube бара JavaScript runtime за да ги наведе квалитетите на видеото: инсталирајте Node.js или Deno, па побарајте повторно
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp ги чита и сопствените конфигурациски датотеки (на Windows %APPDATA%\\yt-dlp\\config.txt, на Linux и macOS ~/.config/yt-dlp/config). Повеќето од она што MDM го избира, папката, името и квалитетот, сè уште победува, но опциите таму што прескокнуваат или филтрираат видеа исто така се применуваат.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6115,6 +6255,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: датотеката се совпаѓа со нејзината контролна сума ({algorithm})
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: овие датотеки останаа на дискот, бидејќи MDM не ги креираше или друго преземање ги користи:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6418,6 +6562,10 @@ extension	Added to MDM	Додадено во MDM
 #, machine
 extension	Added to the queue	Додадено во редот
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	Сите
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6448,9 +6596,41 @@ extension	Button settings...	Поставки за копчето...
 #, machine
 extension	can't be saved	не може да се зачува
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	Не може да се поврзе со Mister Download Manager
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	Не може да се поврзе со Mister Download Manager на {server}
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	Не може да се утврди кое видео е ова: отворете ја неговата страница и обидете се таму
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	Откажете
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	Проверете дали работи и дали овој прелистувач го прифаќа неговиот сертификат (Поставки → Испраќајте преземања до → Отворете го).
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	Исчистете
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	Исчистете ги завршените
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	Дали да се исчистат завршените преземања?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	Поврзано
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6461,13 +6641,52 @@ extension	Connected to Mister Download Manager	Поврзано со Mister Down
 #, machine
 extension	Connected to Mister Download Manager {version}	Поврзано со Mister Download Manager {version}
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	Поврзано · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	Копирано {file}. Залепете го во папка, разговор или порака.
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	Копирајте датотека
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	Копирајте врска
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	Не можеше да се побара
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	Избришете
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	Избриши датотека...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	Дали да се избрише датотеката?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	Завршено
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	Преземете
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	Преземете повторно
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6497,7 +6716,20 @@ extension	Download with Mister Download Manager	Преземете со Mister D
 #, machine
 extension	Download {what}	Преземете {what}
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	Се презема {file} повторно
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	Се преземаат: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	Преземања
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	Преземањата од {site} остануваат во прелистувачот
@@ -6513,6 +6745,27 @@ extension	Drag the dots to move it along the edge	Повлечете ги точ
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Внесете ја неговата https:// адреса.
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	Неуспешно
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	Неуспешно: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	Датотеката е избришана или преместена
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	Завршените преземања се исчистени
+#. text in the browser extension
+#. button: forget / unpair this server
+#, machine
+extension	Forget	Заборавете
 #. text in the browser extension
 #. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
 #, machine
@@ -6562,6 +6815,10 @@ extension	It's smaller than the minimum size in Options → File types.	Пома
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	Нејзината адреса е во Опции → Типови датотеки, адреси оставени на прелистувачот.
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	Датотеката повеќе не е таму каде што беше зачувана (преместена или избришана).
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	Нејзината страница е во Опции → Типови датотеки, страници оставени на прелистувачот.
@@ -6570,14 +6827,31 @@ extension	Its site is in Options → File types, sites left to the browser.	Не
 #, machine
 extension	Its type isn't in Options → File types.	Нејзиниот тип не е во Опции → Типови датотеки.
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	тукушто
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	Препуштено на прелистувачот според правило во „Опции“
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	Оставено на прелистувачот: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	Врската е копирана
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Во живо
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	Се бараат преземања...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6599,6 +6873,10 @@ extension	Media on this page	Медиуми на оваа страница
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager не одговори навреме. Обидете се повторно.
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager не стартуваше навреме
@@ -6611,6 +6889,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager е зафатен со други видеа
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager е зафатен. Се обидува повторно...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager не е инсталиран или не стартуваше
@@ -6618,6 +6901,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager не е инсталиран или не е поставена неговата интеграција со прелистувачот
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager не работи
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager не работи.
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6630,6 +6921,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager потоа презема преку истиот прокси како овој прелистувач. Додека ова е исклучено, екстензијата не го чита проксито на прелистувачот.
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	Повеќе дејства
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	Повеќе дејства за {file}
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6644,10 +6943,18 @@ extension	Most compatible	Најкомпатибилно
 #, machine
 extension	Never on {site}	Никогаш на {site}
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	Никогаш не преземајте од {site}
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	Името или адресата на ниту едно преземање не содржи „{words}“.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	Сè уште нема преземања
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6657,13 +6964,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	Нема видео за преземање овде
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	Не е поврзано
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Не е достапно. Отворете ја неговата адреса еднаш во овој прелистувач и прифатете го неговиот сертификат, па обидете се повторно.
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	Нема совпаѓања
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	Исклучено на оваа страница
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	Отворете
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6672,6 +6991,10 @@ extension	Open it	Отвори го
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Отворете ја неговата адреса еднаш и прифатете го неговиот сертификат, па внесете код од неговите Опции, Далечински, Спари уред (или misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	Отворете ја неговата страница
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6684,6 +7007,14 @@ extension	Open post	Отвори објава
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	Отворете ја објавата за да ја преземете
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	Отворете ја датотеката „{file}“
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	Опции во Mister Download Manager
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6702,9 +7033,30 @@ extension	Pair	Спари
 #, machine
 extension	Pairing code	Код за спарување
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	Паузирајте
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	Прво паузирајте го.
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	Паузирајте ја датотеката „{file}“
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	Паузирано
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	Паузирано: преземањата остануваат во прелистувачот
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	Делови од скокачкиот прозорец
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6718,9 +7070,29 @@ extension	Protected	Заштитено
 #, machine
 extension	Protected video	Заштитено видео
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	Отстранете од списокот
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	Продолжете
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	Продолжете ја датотеката „{file}“
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	Обиди се повторно
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	Активни
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	Пребарајте преземања
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6735,13 +7107,52 @@ extension	Send downloads to	Испрати преземања на
 #, machine
 extension	Sending to MDM...	Се испраќа до MDM...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	Се испраќа до {server}
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Испратено до Mister Download Manager
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	Поставки
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	Сподели...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	Прикажи
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	Прикажете ги сите преземања
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	Прикажете во папка
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	Прикажете ја датотеката „{file}“ во папка
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	Стартувајте го за да ги видите вашите преземања овде.
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	Стартувајте го Mister Download Manager
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	Се започнува...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6750,6 +7161,18 @@ extension	Support MDM	Поддржете го MDM
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	Преземање од овој прелистувач
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	Тоа не може да се направи со ова преземање сега.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	Тоа не успеа. Обидете се повторно.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	Тоа преземање повеќе не е на списокот.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6767,6 +7190,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	Последното преземање беше оставено на прелистувачот.
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	Најнови {shown} од {total}. Mister Download Manager ги наведува сите.
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	Завршените {count} преземања се отстрануваат од списокот. Нивните датотеки остануваат таму каде што се.
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	Ова се преземањата на Mister Download Manager на {server}. Отворете ги нивните датотеки таму.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	Овој прелистувач не е штиклиран во Опции → Општо.
@@ -6779,17 +7215,34 @@ extension	This computer	Овој компјутер
 #, machine
 extension	This download's details were too large to hand over	Деталите за ова преземање беа преголеми за да се предадат
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	Ова не е веб-страница: нема што да се прави овде.
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	Оваа страница
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	Плеерот на оваа страница го пренесува видеото во делови, па нема датотека за прикажување во список. Покажете на видеото и користете го неговото копче „Преземи видео“.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	Овој систем не може да го направи тоа.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	Оваа верзија сè уште не може да ги наведе своите преземања овде.
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	Вклучи
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	Вратете
+extension	Update Mister Download Manager	Ажурирајте го Mister Download Manager
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6807,6 +7260,14 @@ extension	Video	Видео
 #, machine
 extension	Wait a moment, then try again.	Почекајте момент, па обидете се повторно.
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	Се чека
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	Она што го преземате со Mister Download Manager се прикажува овде.
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	Кога страницата е на цел екран, на нејзините видеа не се прикажува копчето „Преземете видео“
@@ -6814,6 +7275,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	Погрешен код.
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	{count} се преземаат сега
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{done} од {size}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	Датотеката „{file}“ е избришана
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	Датотеката „{file}“ е отстранета од списокот
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	Датотеката „{file}“ ќе биде избришана од вашиот компјутер, а преземањето отстрането од списокот. Ова не може да се врати.
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	Останато е {time}
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
