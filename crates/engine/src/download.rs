@@ -424,6 +424,16 @@ pub enum Error {
         "the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM"
     )]
     GotWebPage,
+    /// The server's answer is no larger than a web page (`sent` bytes) where the browser's own
+    /// download of the link was a file of `size` bytes, larger than any page (#1460): an error,
+    /// a notice or an empty answer in the file's place (a link that works once, or only in the
+    /// browser), never saved as the file.
+    #[error(
+        "the server sent only {} where the browser's file is {} (a link that works once, or only in the browser): Alt+click the link to let the browser download it",
+        disk::human(*sent),
+        disk::human(*size)
+    )]
+    NotTheFile { size: u64, sent: u64 },
     /// A full answer to a range request for the same, unchanged file: the server (or one CDN
     /// edge) didn't serve the range this time. Retried; the file did not change.
     #[error("the server did not send the requested part")]
@@ -478,13 +488,19 @@ impl Error {
     /// next download of it) is what helps; the interface waits for one.
     pub fn wants_new_address(&self) -> bool {
         matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410))
-            || matches!(self, Error::LinkExpired | Error::GotWebPage)
+            || matches!(
+                self,
+                Error::LinkExpired | Error::GotWebPage | Error::NotTheFile { .. }
+            )
     }
 
     /// The address no longer serves this file (or refuses us): retrying won't help.
     fn link_dead(&self) -> bool {
         matches!(self, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 416))
-            || matches!(self, Error::GotWebPage | Error::LinkExpired | Error::BotCheck)
+            || matches!(
+                self,
+                Error::GotWebPage | Error::NotTheFile { .. } | Error::LinkExpired | Error::BotCheck
+            )
             // A site's refusal; a service's, unless waiting helps (#44).
             || matches!(self, Error::Refused(r) if !matches!(r, Refusal::Service { fault, .. } if fault.retry_wait().is_some()))
             // Login refused; no such file (or no permission); a name the server won't take.
@@ -1082,6 +1098,11 @@ pub async fn probe_kept(
         StatusCode::OK => (head.len, true),
         _ => (head.len, false),
     };
+    // No larger than a page where the browser's file is larger than any (#1460): said here, before
+    // anything is saved.
+    if let Some(sent) = size {
+        not_the_file(opts.expected_size, sent)?;
+    }
     // A page where a file that never is one was expected, whatever type it came as (#701).
     let body = if from_zero
         && never_a_page(
@@ -2345,6 +2366,11 @@ async fn run_fresh(
         head.status,
         size.map_or("unknown".to_owned(), disk::human),
     ));
+    // #1460: no larger than a page where the browser's file is larger than any, however it was
+    // asked (the look's kept answer, the browser-like connection, MDM's own name).
+    if let Some(sent) = size {
+        not_the_file(opts.expected_size, sent)?;
+    }
     // Credentials stay with the host they were given for, with the cookies pages set on the way
     // (`get`); the first request's own range (`request_cap`) isn't theirs.
     let mut headers = headers;
@@ -2397,6 +2423,12 @@ async fn run_fresh(
         not_a_page(body, cancel).await?
     } else {
         body
+    };
+    // #1460: an answer that doesn't say its size, read as far as a page goes first where the
+    // browser's file is larger: one that ends there isn't the file.
+    let body = match size {
+        None => not_short(body, opts.expected_size, cancel).await?,
+        Some(_) => body,
     };
     // A file the engine names whose address and server leave its type unsaid: its first bytes
     // say it (#800), and still come first to the file.
@@ -3379,8 +3411,8 @@ fn forced_gap(force: bool, took: Duration) -> Duration {
 fn link_refused(e: &Error) -> bool {
     matches!(e, Error::Status(s) if matches!(s.as_u16(), 401 | 403 | 404 | 410 | 412))
         // The site's page where the browser got the file (#701): its link spent, or bound to
-        // the browser's visit.
-        || matches!(e, Error::GotWebPage)
+        // the browser's visit. So is an answer far smaller than the browser's file (#1460).
+        || matches!(e, Error::GotWebPage | Error::NotTheFile { .. })
 }
 
 /// What a download's first request needs besides its address, headers and options.
@@ -3943,7 +3975,52 @@ async fn first_get(
         )
     })
     .await?;
+    // #1460: an answer no larger than a page where the browser's file is larger than any, told
+    // here so the address the browser's download ended at is asked instead (#630).
+    if let Some(sent) = answer_size(resp.status(), resp.headers(), resp.content_length()) {
+        not_the_file(opts.expected_size, sent)?;
+    }
     Ok(((resp, headers), took))
+}
+
+/// The whole file's size an answer gives: a 200's length, a 206's total; None when it doesn't
+/// say (a chunked answer, a 206 of unknown total).
+fn answer_size(status: StatusCode, headers: &HeaderMap, len: Option<u64>) -> Option<u64> {
+    match status {
+        StatusCode::OK => len,
+        StatusCode::PARTIAL_CONTENT => parse_content_range(headers).ok().and_then(|(.., t)| t),
+        _ => None,
+    }
+}
+
+/// `Error::NotTheFile` when the server's answer, `sent` bytes in all, is no larger than a web
+/// page (`PAGE_PEEK`) where the browser's own download of the link announced a file of `size`
+/// bytes, larger than any page (#1460, `Options::expected_size`): an error, a notice or an empty
+/// answer in the file's place, which a type alone doesn't tell (JSON, plain text, none). Sizes
+/// that differ less are left alone: a file the server changed, a browser's estimate.
+fn not_the_file(size: Option<u64>, sent: u64) -> Result<(), Error> {
+    match size {
+        Some(size) if size > PAGE_PEEK as u64 && sent <= PAGE_PEEK as u64 => {
+            Err(Error::NotTheFile { size, sent })
+        }
+        _ => Ok(()),
+    }
+}
+
+/// [`not_the_file`] for an answer that doesn't say its size (chunked): its first bytes, up to
+/// one more than a page has, are read (still first in the body returned); an answer that ends
+/// before is no larger than a page. Nothing is read when the browser announced no larger file.
+async fn not_short(
+    body: Body,
+    size: Option<u64>,
+    cancel: &CancellationToken,
+) -> Result<Body, Error> {
+    if size.is_none_or(|n| n <= PAGE_PEEK as u64) {
+        return Ok(body);
+    }
+    let (body, first) = peek(body, PAGE_PEEK + 1, cancel).await?;
+    not_the_file(size, first.len() as u64)?;
+    Ok(body)
 }
 
 /// `attempt` retried as `first_get` does; with its result, how long the try that got it took.
@@ -5037,6 +5114,89 @@ mod web_page_tests {
         // A file shorter than what is looked at.
         let short = not_a_page(answer(&[b"Rar!"]), &cancel).await.unwrap();
         assert_eq!(all(short).await, b"Rar!");
+    }
+
+    /// #1460: an answer no larger than a page where the browser's file is larger than any is
+    /// not the file; sizes that differ less, or no size from the browser, are left alone.
+    #[test]
+    fn an_answer_far_smaller_than_the_browsers_file_is_not_it() {
+        let page = PAGE_PEEK as u64;
+        // The report's: 117.65 MB announced, 4.65 KB sent.
+        let report = 123_365_000;
+        assert!(matches!(
+            not_the_file(Some(report), 4_762),
+            Err(Error::NotTheFile {
+                size: 123_365_000,
+                sent: 4_762
+            })
+        ));
+        assert!(not_the_file(Some(report), 0).is_err(), "an empty answer");
+        assert!(not_the_file(Some(page + 1), page).is_err());
+        // The file, a file a little different (changed, re-encoded), or a larger one.
+        assert!(not_the_file(Some(report), report).is_ok());
+        assert!(not_the_file(Some(report), report - (5 << 20)).is_ok());
+        assert!(not_the_file(Some(page + 1), page + 1).is_ok());
+        // A browser's file no larger than a page: a small file is a small file.
+        assert!(not_the_file(Some(page), 10).is_ok());
+        assert!(not_the_file(Some(40 << 10), 4_762).is_ok());
+        // Nothing announced (a link added by hand, Link grabber).
+        assert!(not_the_file(None, 0).is_ok());
+    }
+
+    /// #1460: the size an answer gives, by its status.
+    #[test]
+    fn an_answers_size_by_its_status() {
+        let mut h = HeaderMap::new();
+        assert_eq!(answer_size(StatusCode::OK, &h, Some(4_762)), Some(4_762));
+        assert_eq!(answer_size(StatusCode::OK, &h, None), None);
+        h.insert(
+            header::CONTENT_RANGE,
+            HeaderValue::from_static("bytes 0-1023/123365000"),
+        );
+        assert_eq!(
+            answer_size(StatusCode::PARTIAL_CONTENT, &h, Some(1024)),
+            Some(123_365_000)
+        );
+        h.insert(
+            header::CONTENT_RANGE,
+            HeaderValue::from_static("bytes 0-1023/*"),
+        );
+        assert_eq!(
+            answer_size(StatusCode::PARTIAL_CONTENT, &h, Some(1024)),
+            None
+        );
+        assert_eq!(answer_size(StatusCode::NO_CONTENT, &h, Some(0)), None);
+    }
+
+    /// #1460: a chunked answer that ends before a page's size, where the browser's file is
+    /// larger, is refused; a longer one comes whole, its first bytes still first; nothing is read
+    /// without a larger file announced.
+    #[tokio::test]
+    async fn a_chunked_answer_is_read_as_far_as_a_page() {
+        let cancel = CancellationToken::new();
+        let big = Some(123_365_000);
+        let json: &'static [u8] = b"{\"zt\":0,\"info\":\"link expired\"}";
+        assert!(matches!(
+            not_short(answer(&[&json[..5], &json[5..]]), big, &cancel).await,
+            Err(Error::NotTheFile { sent: 30, .. })
+        ));
+        assert!(matches!(
+            not_short(answer(&[]), big, &cancel).await,
+            Err(Error::NotTheFile { sent: 0, .. })
+        ));
+        let file: Vec<u8> = (0..(PAGE_PEEK as u32 + 5000))
+            .map(|i| (i % 251) as u8)
+            .collect();
+        let leaked: &'static [u8] = Box::leak(file.clone().into_boxed_slice());
+        let body = answer(&[&leaked[..100], &leaked[100..70_000], &leaked[70_000..]]);
+        let kept = not_short(body, big, &cancel).await.unwrap();
+        assert_eq!(all(kept).await, file);
+        let small = not_short(answer(&[json]), Some(40 << 10), &cancel)
+            .await
+            .unwrap();
+        assert_eq!(all(small).await, json);
+        let none = not_short(answer(&[json]), None, &cancel).await.unwrap();
+        assert_eq!(all(none).await, json);
     }
 }
 

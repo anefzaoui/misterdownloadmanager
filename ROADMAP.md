@@ -564,6 +564,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A download the browser handed over is never called complete with an answer no larger than a
+  web page where the browser's file was larger than any (a JSON or text error, an empty answer):
+  it stops before anything is saved, says both sizes and suggests Alt+click; where the browser's
+  own download ended is asked once first
+  ([#1460](https://github.com/anefzaoui/misterdownloadmanager/issues/1460))
 - ✅ Your own yt-dlp config file: Options → Sites Logins → Use my yt-dlp config file (off by
   default) lets yt-dlp read it for the app's videos, most of MDM's own choices still winning; an
   external downloader it names doesn't stop the progress

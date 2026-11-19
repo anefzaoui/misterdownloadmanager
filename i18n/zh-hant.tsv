@@ -4997,6 +4997,11 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	伺服器傳送了非預期的檔案部分（{detail}）
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	伺服器只傳送了 {sent}，而瀏覽器下載的檔案大小為 {size}（此連結只能使用一次，或只能在瀏覽器中使用）：按住 Alt 並按一下連結，讓瀏覽器下載。
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
