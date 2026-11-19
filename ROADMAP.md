@@ -564,6 +564,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Download video: a video's own file (Kwai's MP4) is offered and downloaded when its server
+  doesn't say it is a video, instead of "No video this can download on that page"; the button's
+  click downloads such a file at once
+  ([#1458](https://github.com/anefzaoui/misterdownloadmanager/issues/1458))
 - ✅ Download File Info: a name typed in **Save as** that is a file already there asks first
   (the duplicate question: a numbered name, or overwrite it, replaced only once the download
   completes), instead of numbering it without a word
