@@ -783,7 +783,6 @@ unsafe fn above_others(hwnd: HWND) {
 /// Returns true once applied (call again each frame until it is).
 pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owned: bool) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_USE_IMMERSIVE_DARK_MODE, DwmSetWindowAttribute};
-    use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     let Some(hwnd) = find_own_window(title) else {
         return false;
     };
@@ -811,13 +810,47 @@ pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owne
         let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32 | WS_EX_DLGMODALFRAME;
         SetWindowLongPtrW(hwnd, GWL_STYLE, style as isize);
         SetWindowLongPtrW(hwnd, GWL_EXSTYLE, ex as isize);
+        size_to_client(hwnd, style, ex, client_px(client, scale));
+    }
+    true
+}
+
+/// A client of `client` points at `scale` pixels per point, in whole device pixels.
+fn client_px(client: [f32; 2], scale: f32) -> [i32; 2] {
+    [
+        (client[0] * scale).round() as i32,
+        (client[1] * scale).round() as i32,
+    ]
+}
+
+/// Size our window `hwnd` so its client is `client` device pixels: the window its styles
+/// (`style`, `ex`) put round that client at the window's own DPI, then its client measured and
+/// the window made larger or smaller by what it came back short or over (#1495). A dialog is as
+/// large as its fixed layout: a client a few pixels short of it showed both scroll bars over a
+/// window whose content was all there, its buttons cut at the bottom. The frame of a window
+/// whose title bar is ours was reckoned, not measured, on Windows 10 in 0.5.2: 2 px a side
+/// counted, the system's sizing frame less 6 px drawn, which is 3 px at 125 %, 5 at 150 %.
+/// Measured, the client is what was asked for, whatever puts the frame round it (a version of
+/// Windows, a scale, a tool that changes the window borders). Not while minimized or maximized,
+/// whose client isn't the window's own size.
+///
+/// # Safety
+/// `hwnd` is a window of this thread.
+unsafe fn size_to_client(hwnd: HWND, style: u32, ex: u32, client: [i32; 2]) {
+    use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetClientRect, GetWindowRect, IsIconic, IsZoomed,
+    };
+    // SAFETY: (the caller's) our own window, on its thread; the rectangles are locals written
+    // during the calls.
+    unsafe {
         let mut rc = RECT {
             left: 0,
             top: 0,
-            right: (client[0] * scale).round() as i32,
-            bottom: (client[1] * scale).round() as i32,
+            right: client[0],
+            bottom: client[1],
         };
-        AdjustWindowRectExForDpi(&mut rc, style, 0, ex, GetDpiForWindow(hwnd));
+        AdjustWindowRectExForDpi(&mut rc, style, 0, ex, GetDpiForWindow(hwnd).max(96));
         SetWindowPos(
             hwnd,
             std::ptr::null_mut(),
@@ -827,8 +860,37 @@ pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owne
             rc.bottom - rc.top,
             SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE,
         );
+        if IsIconic(hwnd) != 0 || IsZoomed(hwnd) != 0 {
+            return;
+        }
+        let (mut w, mut c): (RECT, RECT) = (zeroed(), zeroed());
+        if GetWindowRect(hwnd, &mut w) == 0 || GetClientRect(hwnd, &mut c) == 0 {
+            return;
+        }
+        let got = [c.right - c.left, c.bottom - c.top];
+        let Some(outer) = outer_for_client([w.right - w.left, w.bottom - w.top], got, client)
+        else {
+            return;
+        };
+        tracing::info!(
+            "window client {got:?} where {client:?} was asked for: the window made {outer:?}"
+        );
+        SetWindowPos(
+            hwnd,
+            std::ptr::null_mut(),
+            0,
+            0,
+            outer[0],
+            outer[1],
+            SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE,
+        );
     }
-    true
+}
+
+/// The size for a window of `outer` pixels whose client came back `got` to have the client
+/// `want`: its frame kept, whatever it measures. None when the client is right already.
+fn outer_for_client(outer: [i32; 2], got: [i32; 2], want: [i32; 2]) -> Option<[i32; 2]> {
+    (got != want).then(|| [outer[0] + want[0] - got[0], outer[1] + want[1] - got[1]])
 }
 
 /// Hit-test results (winuser.h).
@@ -997,7 +1059,6 @@ pub fn thin_frame_on(
     scale: f32,
     hide_item: Option<&str>,
 ) -> Option<isize> {
-    use windows_sys::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForWindow};
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         AppendMenuW, DeleteMenu, GetSystemMenu, IsWindow, MF_BYCOMMAND, MF_STRING,
     };
@@ -1034,22 +1095,7 @@ pub fn thin_frame_on(
         // minimized window has for its animation, [`animation_caption`]).
         let style = drawn_style(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, kind);
         let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
-        let mut rc = RECT {
-            left: 0,
-            top: 0,
-            right: (client[0] * scale).round() as i32,
-            bottom: (client[1] * scale).round() as i32,
-        };
-        AdjustWindowRectExForDpi(&mut rc, style, 0, ex, GetDpiForWindow(hwnd).max(96));
-        SetWindowPos(
-            hwnd,
-            std::ptr::null_mut(),
-            0,
-            0,
-            rc.right - rc.left,
-            rc.bottom - rc.top,
-            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE,
-        );
+        size_to_client(hwnd, style, ex, client_px(client, scale));
     }
     Some(hwnd as isize)
 }
@@ -2159,6 +2205,111 @@ mod caption_less_tests {
                 assert!(animating(hwnd));
                 animation_caption(hwnd, kind, false);
                 assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, st);
+                DestroyWindow(hwnd);
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod size_to_client_tests {
+    use super::*;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        CreateWindowExW, DefWindowProcW, DestroyWindow, GetClientRect, GetWindowRect,
+        NCCALCSIZE_PARAMS, RegisterClassW, WNDCLASSW, WS_BORDER, WS_POPUP,
+    };
+
+    /// The size a window must be for the client asked for: its frame added back, whatever it is.
+    #[test]
+    fn the_window_grows_or_shrinks_by_what_its_client_is_off() {
+        // #1495: Keys at 125 % on Windows 10 in 0.5.2, a 500 × 240 px client asked for in a
+        // window of 505 × 243 whose frame was 3 px a side, not 2.5: 499 × 240 came back.
+        assert_eq!(
+            outer_for_client([505, 243], [499, 240], [500, 240]),
+            Some([506, 243])
+        );
+        // Over: smaller.
+        assert_eq!(
+            outer_for_client([512, 250], [504, 246], [500, 240]),
+            Some([508, 244])
+        );
+        assert_eq!(outer_for_client([502, 242], [500, 240], [500, 240]), None);
+        assert_eq!(client_px([400.0, 192.0], 1.25), [500, 240]);
+        assert_eq!(client_px([420.0, 268.0], 1.15), [483, 308]);
+    }
+
+    /// A window procedure framing the client as Windows 10 framed a window whose title bar is
+    /// ours in 0.5.2 at 125 %: 3 px left, right and bottom (the 9 px sizing frame less a fixed
+    /// 6), none at the top, where its styles (a plain popup) say there is none.
+    unsafe extern "system" fn three_px_frame(
+        hwnd: HWND,
+        msg: u32,
+        wparam: WPARAM,
+        lparam: LPARAM,
+    ) -> LRESULT {
+        if msg == WM_NCCALCSIZE && wparam != 0 {
+            // SAFETY: with wParam TRUE, lParam points to NCCALCSIZE_PARAMS (Win32 contract).
+            let r = unsafe { &mut (*(lparam as *mut NCCALCSIZE_PARAMS)).rgrc[0] };
+            r.left += 3;
+            r.right -= 3;
+            r.bottom -= 3;
+            return 0;
+        }
+        // SAFETY: the system's own procedure, with the message as it came.
+        unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) }
+    }
+
+    /// Real (hidden, off-screen) windows: one framed as its styles say has its client at once;
+    /// one framed otherwise (0.5.2's frame on Windows 10 at 125 %) has it too, its window
+    /// made larger by what the client came back short.
+    #[test]
+    fn a_window_s_client_is_what_was_asked_whatever_its_frame() {
+        for (n, (proc_, style, frame)) in [
+            (
+                DefWindowProcW as unsafe extern "system" fn(_, _, _, _) -> _,
+                WS_POPUP | WS_BORDER,
+                [2, 2],
+            ),
+            (three_px_frame, WS_POPUP, [6, 3]),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let class: Vec<u16> = format!("mdm-size-to-client-test-{n}\0")
+                .encode_utf16()
+                .collect();
+            // SAFETY: a class of this test's, and a hidden window of it on this thread,
+            // destroyed below; the strings are NUL-terminated; plain queries to it.
+            unsafe {
+                let mut wc: WNDCLASSW = zeroed();
+                wc.lpfnWndProc = Some(proc_);
+                wc.lpszClassName = class.as_ptr();
+                RegisterClassW(&wc);
+                let hwnd = CreateWindowExW(
+                    0,
+                    class.as_ptr(),
+                    class.as_ptr(),
+                    style,
+                    -20000,
+                    -20000,
+                    300,
+                    200,
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null(),
+                );
+                assert!(!hwnd.is_null());
+                size_to_client(hwnd, style, 0, [500, 240]);
+                let (mut w, mut c): (RECT, RECT) = (zeroed(), zeroed());
+                GetWindowRect(hwnd, &mut w);
+                GetClientRect(hwnd, &mut c);
+                assert_eq!([c.right, c.bottom], [500, 240], "{n}");
+                assert_eq!(
+                    [w.right - w.left, w.bottom - w.top],
+                    [500 + frame[0], 240 + frame[1]],
+                    "{n}"
+                );
                 DestroyWindow(hwnd);
             }
         }

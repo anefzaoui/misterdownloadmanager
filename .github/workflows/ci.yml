@@ -180,6 +180,14 @@ jobs:
       - name: Logic against fake Firefox and Chrome APIs
         run: node tools/extension/test.mjs
 
+      # The committed locale files are the catalogs' output: a text added to English's
+      # messages.json without translate.py, or a catalog fix not regenerated, shows here,
+      # like "English catalog matches the code" does for i18n/en.tsv.
+      - name: Locale files match the catalogs
+        run: |
+          python3 tools/extension/locales.py
+          git diff --exit-code -- extension/_locales
+
       # Chrome, Edge, Brave, Opera, Vivaldi (mdm-chromium.zip), Firefox (mdm-firefox.xpi) and
       # the Chrome Web Store's copy (mdm-chrome-store.zip).
       - name: Pack for every browser

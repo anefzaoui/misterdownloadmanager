@@ -576,6 +576,9 @@ These ship in the next version.
   and macOS's share sheet), **Copy link**, **Download again**, **Remove from list** and **Delete
   file**; the toolbar button counts the running ones. The popup has tabs now: **Downloads**,
   **This page** and **Settings** ([#1496](https://github.com/anefzaoui/misterdownloadmanager/issues/1496))
+- ✅ Small windows (About, Tell a friend, Speed Limiter settings, Keys and the others) are exactly
+  as large as their content at every display scale and interface size, with no scroll bars over
+  their buttons ([#1495](https://github.com/anefzaoui/misterdownloadmanager/issues/1495))
 - ✅ Chinese text from a font collection (macOS's Songti) is drawn with its regular face, not its
   first one, Songti SC Black ([#1483](https://github.com/anefzaoui/misterdownloadmanager/issues/1483))
 - ✅ The browser extension remembers paired servers and switches between them and this computer
@@ -1641,6 +1644,14 @@ These ship in the next version.
   page (which Windows files are signed, who reviews and approves, privacy), linked from every
   page's footer, the download page and the README; the privacy policy says what the crash
   report window asks GitHub
+- ✅ The extension's translations match its catalogs again — the shipped Arabic, Bangla, Malay
+  and Chinese texts take the termbase corrections (المستعرض, সব, বিস্তারিত, baris gilir) —
+  and the catalogs carry the extension's **Forget** row again, so regenerating the locale
+  files keeps the popup's forget-a-server button in every language (thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
+- ✅ CI keeps the extension's locale files equal to the catalogs' output: a text added to
+  English's messages.json without a translate.py run, or a catalog fix left unregenerated,
+  fails the browser-extension job (thanks to [@Seyamalam](https://github.com/Seyamalam))
 
 ## Being worked on
 

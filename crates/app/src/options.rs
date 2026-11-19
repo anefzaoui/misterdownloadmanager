@@ -293,7 +293,8 @@ impl OptionsDialog {
 
     /// With General → Test browser integration's window over it, Accounts → Add's, or
     /// Downloads → Customize "Download progress" dialog's (`/show options:test`,
-    /// `options:account`, `options:progress`: screenshots, #192, #1041).
+    /// `options:account`, `options:progress`: screenshots, #192, #1041), or General → Keys...
+    /// (`options:keys`, #1495).
     pub fn with_window(mut self, name: &str) -> Self {
         match name {
             "test" => {
@@ -303,6 +304,7 @@ impl OptionsDialog {
             }
             "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
             "progress" => self.sub = Some(Sub::Progress(self.s.show_progress)),
+            "keys" => self.sub = Some(Sub::Keys(self.s.capture_opened)),
             _ => {}
         }
         self
