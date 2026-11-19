@@ -3119,8 +3119,9 @@ async function pageMessage(m, sender) {
     const tabUrl = tab.url || "";
     const senderUrl = sender.url || "";
     const isPlayer =
-      (/(^|\.)youtube\.googleapis\.com$/i.test(siteOf(senderUrl)) && /[?&](?:driveid|docid)=/.test(senderUrl)) ||
-      (isDrive(senderUrl) && /\/file\/d\/[^/]+\/preview/.test(senderUrl));
+      (/(^|\.)youtube\.googleapis\.com$/i.test(siteOf(senderUrl)) &&
+        (/[?&](?:driveid|docid)=/.test(senderUrl) || /[?&]ps=docs\b/.test(senderUrl))) ||
+      (isDrive(senderUrl) && (/\/file\/d\/[^/]+\/preview/.test(senderUrl) || /\/viewer\/main\b/.test(senderUrl)));
     if (
       Number.isInteger(tabId) &&
       Number.isInteger(sender.frameId) &&

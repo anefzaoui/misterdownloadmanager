@@ -729,6 +729,14 @@
           }
         }
 
+        // A player container element directly carrying data-doc-id (used by Google Drive viewer
+        // in both signed-in and signed-out states) or data-id for this file.
+        const docId = (node.getAttribute && (node.getAttribute("data-doc-id") || node.getAttribute("data-id"))) || "";
+        if (/^[\w-]{25,}$/.test(docId) && !docId.startsWith("ucc-") && docId !== "_gd") {
+          file(docId, sure);
+          return { sure, maybe };
+        }
+
         // 2. Fall back to links or iframes only inside the preview dialog that holds the player
         // (not the folder list), and never to generic data-* attributes.
         const isDialog =
@@ -752,12 +760,28 @@
             let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&](?:id|driveid|docid)=([\w-]{25,})/.exec(src);
             if (m && /^[\w-]{25,}$/.test(m[1])) candidates.add(m[1]);
           }
+          for (const el of node.querySelectorAll ? node.querySelectorAll("[data-doc-id]") : []) {
+            const id = el.getAttribute && el.getAttribute("data-doc-id");
+            if (id && /^[\w-]{25,}$/.test(id)) candidates.add(id);
+          }
 
           // 3. With more than one candidate left, return them as maybe, not sure.
           if (candidates.size === 1) {
             file([...candidates][0], sure);
           } else if (candidates.size > 1) {
             for (const id of candidates) file(id, maybe);
+          }
+        }
+
+        // 4. Same-origin top window fallback: in Google Drive viewer iframe, inspect top frame's selected row.
+        if (!sure.size && !maybe.size && typeof window !== "undefined" && window !== window.top) {
+          try {
+            const topDoc = window.top.document;
+            const sel = topDoc?.querySelector?.('[role="row"][aria-selected="true"][data-id], [data-id][aria-selected="true"]');
+            const id = sel?.getAttribute?.("data-id");
+            if (id && /^[\w-]{25,}$/.test(id)) file(id, sure);
+          } catch {
+            // Cross-origin top window.
           }
         }
 
@@ -1538,7 +1562,7 @@ button:focus-visible { outline: none; }
     if (typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname)) {
       return (
         document.querySelectorAll?.(
-          "iframe.drive-viewer-video-iframe, iframe[src*='youtube.googleapis.com'], iframe[src*='driveid='], iframe[src*='docid=']",
+          "iframe.drive-viewer-video-iframe, iframe.drive-viewer-iframe, iframe.h3t5Od, iframe[src*='/viewer/main'], iframe[src*='youtube.googleapis.com'], iframe[src*='driveid='], iframe[src*='docid=']",
         ) || []
       );
     }
@@ -2407,11 +2431,16 @@ button:focus-visible { outline: none; }
   // ---- wiring -----------------------------------------------------------------------------------
   const isDriveHost = typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname);
   const isDriveTop = typeof window !== "undefined" && window === window.top && isDriveHost;
+  const isDriveViewer =
+    typeof window !== "undefined" &&
+    isDriveHost &&
+    (window === window.top || /\/viewer\/main\b/.test(location.pathname) || /\/file\/d\/[^/]+\/preview/.test(location.pathname));
   const isDriveFrame =
     typeof window !== "undefined" &&
     window !== window.top &&
     typeof location !== "undefined" &&
-    ((location.hostname === "youtube.googleapis.com" && /[?&](?:driveid|docid)=/.test(location.search)) ||
+    ((location.hostname === "youtube.googleapis.com" &&
+      (/[?&](?:driveid|docid)=/.test(location.search) || /[?&]ps=docs\b/.test(location.search))) ||
       (isDriveHost && /\/file\/d\/[^/]+\/preview/.test(location.pathname)));
 
   let lastFrameMove = 0;
@@ -2448,7 +2477,7 @@ button:focus-visible { outline: none; }
     cancelAnimationFrame(scan);
     removeEventListener("pointermove", onMove, true);
     if (isDriveFrame) removeEventListener("pointermove", onFrameMove, true);
-    if (isDriveTop) ext.runtime?.onMessage?.removeListener(onDriveFramePointer);
+    if (isDriveViewer) ext.runtime?.onMessage?.removeListener(onDriveFramePointer);
     removeEventListener("keydown", onTab, true);
     removeEventListener("loadstart", onLoadStart, true);
     root.remove();
@@ -2460,7 +2489,7 @@ button:focus-visible { outline: none; }
   if (isDriveFrame) {
     addEventListener("pointermove", onFrameMove, { capture: true, passive: true });
   }
-  if (isDriveTop) {
+  if (isDriveViewer) {
     ext.runtime?.onMessage?.addListener(onDriveFramePointer);
   }
   addEventListener("pointermove", onMove, { capture: true, passive: true });

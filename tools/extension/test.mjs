@@ -2363,6 +2363,11 @@ function samplePage(html) {
             getAttribute: (k) => (k === "src" ? s : null),
           }));
         }
+        if (sel === "[data-doc-id]") {
+          return parentAttrs["data-doc-id"]
+            ? [{ localName: "div", getAttribute: (k) => (k === "data-doc-id" ? parentAttrs["data-doc-id"] : null) }]
+            : [];
+        }
         return [];
       },
     };
@@ -2399,6 +2404,22 @@ function samplePage(html) {
     testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
       parentAttrs: { role: "dialog" },
       iframes: ["https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/preview"],
+    }),
+    "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+  );
+
+  // Video in signed-out Google Drive viewer: player container carrying data-doc-id.
+  assert.equal(
+    testDrive("https://drive.google.com/viewer/main?origin=https://drive.google.com&source=10", {
+      parentAttrs: { "data-doc-id": "1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu" },
+    }),
+    "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
+  );
+
+  // Video in preview dialog with data-doc-id inside dialog element.
+  assert.equal(
+    testDrive("https://drive.google.com/drive/folders/18l2MEarbNGo94E1x0sU2mpfkRmLrVVo3", {
+      parentAttrs: { role: "dialog", "data-doc-id": "1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu" },
     }),
     "https://drive.google.com/file/d/1s52ek_4YTDRt_EOkx1FS53u-vJa0c4nu/view",
   );
