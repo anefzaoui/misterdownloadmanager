@@ -83,6 +83,7 @@ Terminal=false
 Categories=Network;FileTransfer;
 StartupWMClass=misterdownloadmanager
 MimeType=x-scheme-handler/magnet;application/x-bittorrent;
+Keywords=mdm;idm;download manager;
 EOF
 
 # tar.gz: the programs, the extension and the licence in one folder.
