@@ -26,6 +26,10 @@ pub struct Command {
     /// Save folder (`/p`) and file name (`/f`).
     pub dir: Option<String>,
     pub name: Option<String>,
+    /// The checksum the finished file must have, as the command line takes it (`sha256:…`, a
+    /// bare hex value, …): `mdm_engine::verify::Hash` reads it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub checksum: Option<String>,
     /// `/a`: add to the main queue, don't start.
     pub later: bool,
     /// `/n`: silent — no Download File Info dialog.
@@ -34,6 +38,12 @@ pub struct Command {
     pub start_queue: bool,
     /// From the browser: request context to reuse.
     pub referer: Option<String>,
+    /// From the browser (#607): the web page the download was started from, whole (its tab's
+    /// address; a link's opened in a tab of its own, the tab that opened it), where the Referer
+    /// is often cut to the site's address by the page's referrer policy. Kept with the download:
+    /// Refresh download address opens it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub page_url: Option<String>,
     /// From the browser (#900): the `Origin` its page's player sent with a video's stream or
     /// file (`video_page`, `video_lookup`), sent again with it, its playlists and each of its
     /// pieces, as a site's video server may serve its own pages' players only.
@@ -57,8 +67,16 @@ pub struct Command {
     /// Content-Type (`post_type`).
     pub post: Option<String>,
     pub post_type: Option<String>,
-    /// From a private (incognito) window: the download is never written to the saved list.
+    /// From a private (incognito) window: the download is not written to the saved list, unless
+    /// the app's Options → General → "Keep private-window downloads in the list" is on.
     pub private: bool,
+    /// Set by the native messaging host alone, on the download the browser itself handed over
+    /// (its own download, cancelled in the browser): not by the command line, the automation API
+    /// or MCP, whatever cookies or Referer they carry. The one a waiting download's fresh
+    /// address is taken from. Not in the published schema; older senders leave it off (false).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    #[schemars(skip)]
+    pub browser_handoff: bool,
     /// From the browser (#42): the proxy it uses for this address ("http://host:port",
     /// "https://…", "socks5h://…", "socks4://…"), set by a VPN or proxy extension or its
     /// settings; or its proxy auto-config script's text. The app downloads through the same
@@ -108,8 +126,9 @@ pub struct Command {
     /// From the browser's download button over a video: open the Download video window for this
     /// page (its address; an embedded player's own).
     pub video_page: Option<String>,
-    /// The title of the page the button was clicked on: a video yt-dlp knows only by its address
-    /// is named by it.
+    /// The title of the page the button was clicked on (the tab's, for a player in a frame of
+    /// it), without the site's name (`Film | Site` is `Film`: the extension's `withoutSiteName`):
+    /// a video yt-dlp knows only by its address is named by it.
     pub video_title: Option<String>,
     /// From the browser's quality menu over a video (the button's click): look this video up
     /// with yt-dlp, off the window, and answer at once with a token to ask about it
@@ -136,6 +155,11 @@ pub struct Command {
     /// From the browser's right-click menu: the links of a page or a selection, offered in the
     /// list window to pick from (the browser's `referer` and `cookies` go with them).
     pub links: Vec<String>,
+    /// With `links`: which part of a page's list they are, when the list was too long for one
+    /// message from the browser ([`MAX_MESSAGE`]); the app adds the list once all its parts are
+    /// in. None: the whole list (an older extension's, or a short one).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub links_part: Option<LinksPart>,
     /// From the browser's toolbar button: leave this site's downloads (a host name) to the
     /// browser from now on (Options → File types → excluded sites).
     pub exclude_site: Option<String>,
@@ -143,6 +167,38 @@ pub struct Command {
     /// sites again (a pattern of the user's own that covers it stays).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub include_site: Option<String>,
+}
+
+/// The most parts a page's links come in ([`LinksPart`]): 256 messages of up to 1 MB each.
+pub const MAX_LINK_PARTS: u32 = 256;
+
+/// One part of a page's links ([`Command::links_part`]): the browser's extension sends a list
+/// longer than the native host takes at once ([`MAX_MESSAGE`]) in parts, each with the page's
+/// referrer and cookies, and the app puts them back together into one list.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct LinksPart {
+    /// The same in every part of one list, and in no other list's (random, made by the
+    /// extension): letters, digits and `-`, at most 64.
+    pub batch: String,
+    /// This part's place in the list, from 0.
+    pub index: u32,
+    /// How many parts the list came in (at most [`MAX_LINK_PARTS`]).
+    pub count: u32,
+}
+
+impl LinksPart {
+    /// A part the app can place: a batch name it takes, and a place among at most
+    /// [`MAX_LINK_PARTS`] parts.
+    pub fn valid(&self) -> bool {
+        (1..=64).contains(&self.batch.len())
+            && self
+                .batch
+                .bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b == b'-')
+            && (1..=MAX_LINK_PARTS).contains(&self.count)
+            && self.index < self.count
+    }
 }
 
 /// One cookie as the browser keeps it (`cookies.getAll`'s fields, under the extension's names
@@ -172,8 +228,8 @@ pub struct VideoLookup {
     /// What yt-dlp looks up: the video's own file or its stream's manifest when the page plays
     /// one, else the page.
     pub address: String,
-    /// The title of the page the button was clicked on: a video yt-dlp knows only by its address
-    /// is named by it (as [`Command::video_title`]).
+    /// The title of the page the button was clicked on, as [`Command::video_title`] has it: a
+    /// video yt-dlp knows only by its address is named by it.
     pub title: Option<String>,
     /// The browser's cookie store the page is in (Firefox's containers): a choice is only taken
     /// from the same one.
@@ -190,10 +246,6 @@ pub struct VideoPick {
     pub choice: usize,
     /// The cookie store the choice was made in: the look-up's, or it isn't taken.
     pub store_id: Option<String>,
-    /// The browser confirmation's Download (true) or Later (false). None from an older
-    /// extension: follow Options' "only add to the queue", as before.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_now: Option<bool>,
 }
 
 impl Command {
@@ -206,6 +258,9 @@ impl Command {
             || self.video_lookup.is_some()
             || self.video_poll.is_some()
             || self.video_pick.is_some()
+            // An add's expected checksum is read before it is added: a bad one is answered,
+            // not dropped while the add goes on.
+            || (self.url.is_some() && self.checksum.is_some())
     }
 }
 
@@ -633,7 +688,9 @@ fn same_secret(a: &str, b: &str) -> bool {
 }
 
 /// The largest message the browser's native host takes from the extension (a download with
-/// its cookies and a form's body); a request line carrying one, escaped, fits `MAX_REQUEST`.
+/// its cookies and a form's body; a page's links longer than this come in parts under it,
+/// [`LinksPart`], as `MESSAGE_MAX` in extension/background.js); a request line carrying one,
+/// escaped, fits `MAX_REQUEST`.
 pub const MAX_MESSAGE: usize = 1 << 20;
 /// Largest request line accepted, and the time a client gets to send it.
 const MAX_REQUEST: usize = 2 * MAX_MESSAGE + 4096;
@@ -920,7 +977,6 @@ mod tests {
                 token: "abc".into(),
                 choice: 2,
                 store_id: None,
-                start_now: None,
             }),
             startup: true,
             ..Default::default()
@@ -963,7 +1019,6 @@ mod tests {
                 token: "abc".into(),
                 choice: 3,
                 store_id: Some("firefox-private".into()),
-                start_now: None,
             })
         );
         let raw: Command =
@@ -989,6 +1044,72 @@ mod tests {
         assert_eq!(exchange(port, pick), "gone\n");
     }
 
+    /// A page's links in parts: what a part may say, and that it travels the channel whole.
+    #[test]
+    fn link_parts_are_checked() {
+        let part = |batch: &str, index, count| LinksPart {
+            batch: batch.into(),
+            index,
+            count,
+        };
+        assert!(part("6f1c2a9e-5b7d-4c3e-8a1f-0d2b4e6c8a9b", 0, 1).valid());
+        assert!(part("b", MAX_LINK_PARTS - 1, MAX_LINK_PARTS).valid());
+        for bad in [
+            part("", 0, 1),
+            part(&"x".repeat(65), 0, 1),
+            part("a b", 0, 1),
+            part("a/b", 0, 1),
+            part("b", 0, 0),
+            part("b", 2, 2),
+            part("b", 0, MAX_LINK_PARTS + 1),
+        ] {
+            assert!(!bad.valid(), "{bad:?}");
+        }
+        let cmd = Command {
+            links: vec!["https://x.test/a.zip".into()],
+            links_part: Some(part("b", 1, 3)),
+            ..Default::default()
+        };
+        let line = serde_json::to_string(&Envelope {
+            token: "t".into(),
+            cmd,
+        })
+        .unwrap();
+        let back = serde_json::from_str::<Envelope>(&line).unwrap().cmd;
+        assert_eq!(back.links_part, Some(part("b", 1, 3)));
+        // A whole list (an older host's) says nothing of parts.
+        let whole = serde_json::to_string(&Command {
+            links: vec!["https://x.test/a.zip".into()],
+            ..Default::default()
+        })
+        .unwrap();
+        assert!(!whole.contains("links_part"), "{whole}");
+    }
+
+    /// An add may carry the checksum its finished file must have (the command line's
+    /// `--checksum`): read from a request line, left out of one that has none, and answered so
+    /// a bad one can be refused rather than dropped.
+    #[test]
+    fn an_adds_checksum_travels_and_is_left_out_when_unset() {
+        let sha256 = "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
+        let raw: Command = serde_json::from_str(&format!(
+            r#"{{"url":"https://x.test/a.zip","checksum":"{sha256}"}}"#
+        ))
+        .unwrap();
+        assert_eq!(raw.checksum.as_deref(), Some(sha256));
+        assert!(raw.wants_reply(), "the add's answer can say no");
+        // An older app's line has no checksum at all.
+        let old: Command = serde_json::from_str(r#"{"url":"https://x.test/a.zip"}"#).unwrap();
+        assert_eq!(old.checksum, None);
+        // Without one, the key is not written (the line stays as it was).
+        let whole = serde_json::to_string(&Command {
+            url: Some("https://x.test/a.zip".into()),
+            ..Default::default()
+        })
+        .unwrap();
+        assert!(!whole.contains("checksum"), "{whole}");
+    }
+
     #[test]
     fn secrets_compare_whole() {
         assert!(same_secret("abc", "abc"));
@@ -999,5 +1120,27 @@ mod tests {
     fn tokens_are_random() {
         assert_ne!(random_token(), random_token());
         assert_eq!(random_token().len(), 64);
+    }
+}
+
+#[cfg(test)]
+mod handoff_tests {
+    use super::*;
+
+    /// The browser hand-off mark is off by default (older senders, the command line, MCP), only
+    /// written when set, and a command carrying cookies is not marked by them.
+    #[test]
+    fn the_browser_hand_off_is_explicit() {
+        let old: Command =
+            serde_json::from_str(r#"{"url":"https://x/a","cookies":"a=1"}"#).unwrap();
+        assert!(!old.browser_handoff);
+        let json = serde_json::to_string(&old).unwrap();
+        assert!(!json.contains("browser_handoff"), "{json}");
+        let marked = Command {
+            browser_handoff: true,
+            ..Default::default()
+        };
+        let back: Command = serde_json::from_str(&serde_json::to_string(&marked).unwrap()).unwrap();
+        assert!(back.browser_handoff);
     }
 }

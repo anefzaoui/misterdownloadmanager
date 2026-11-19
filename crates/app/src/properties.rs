@@ -66,6 +66,14 @@ impl Properties {
         std::mem::take(&mut self.files_requested)
     }
 
+    /// `item` took a new address while this window was open (the browser's next download of
+    /// its file, after Refresh download address): the window shows it, and its Referer, so OK
+    /// keeps them rather than putting back what the window opened with.
+    pub fn readdressed(&mut self, item: &Item) {
+        self.address = item.file_address().to_string();
+        self.referer = item.context.referer.clone().unwrap_or_default();
+    }
+
     /// `item` is read every frame, so status and size stay live.
     pub fn show(
         &mut self,

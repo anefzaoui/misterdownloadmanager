@@ -7,6 +7,7 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 use egui::{Pos2, Ui, pos2};
+use mdm_tools::declared::Declared;
 use mdm_tools::resolve::{Choice, Looked, SubChoice, Video};
 use mdm_tools::video::{ALL_UPLOADERS, Subs};
 
@@ -42,6 +43,20 @@ pub struct VideoAdd {
     /// A lookup from the browser's quality menu or this window, for the download's first run
     /// (videolookup.rs and the dialog's Helpers refresh).
     pub preloaded: Option<mdm_tools::video::Preloaded>,
+    /// The user typed the file name (#1102): kept as typed; else it is the page's title, which
+    /// is shortened to fit the path limits.
+    pub named: bool,
+    /// The video's length (whole seconds) as looked up, for the duplicate check
+    /// ([`whole_seconds`], `model::VideoSpec::duration`).
+    pub duration: Option<u32>,
+}
+
+/// A looked-up length (`resolve::Video::duration`, seconds) as a video download keeps it: whole
+/// seconds; none under a second, or not a number.
+pub fn whole_seconds(length: Option<f64>) -> Option<u32> {
+    length
+        .filter(|s| s.is_finite() && *s >= 1.0 && *s < f64::from(u32::MAX))
+        .map(|s| s.round() as u32)
 }
 
 /// Which helper is being installed.
@@ -66,7 +81,10 @@ pub struct VideoDialog {
     /// Save to was last set for a sound-only choice.
     sound: bool,
     name: String,
-    lookup: Option<Slot<Looked>>,
+    lookup: Option<Slot<(Looked, Option<Declared>)>>,
+    /// The video the page looked up declares its own (#1076): what the download is added with
+    /// (its address, the page as its Referer), while the address is still the one looked up.
+    declared: Option<Declared>,
     /// The yt-dlp and the browser's context the look-up ran with (a list is listed with them).
     looking: Option<(PathBuf, mdm_tools::proc::FromBrowser)>,
     /// The page is a playlist or a channel: its videos (#69).
@@ -181,6 +199,7 @@ impl VideoDialog {
             folder,
             name: String::new(),
             lookup: None,
+            declared: None,
             looking: None,
             list: None,
             confirmed: None,
@@ -320,7 +339,8 @@ impl VideoDialog {
             v.title = title.to_owned();
         }
         let choices = mdm_tools::resolve::choices(&v, merge);
-        self.chosen = 0;
+        // The best, as `video-get` takes it by default (#1240).
+        self.chosen = mdm_tools::resolve::pick(&choices, None).map_or(0, |p| p.index);
         self.rows = Default::default();
         self.error = choices
             .is_empty()
@@ -415,7 +435,8 @@ impl VideoDialog {
     }
 
     /// The sample's choice whose label starts with `prefix` (any case), chosen and scrolled into
-    /// view (`/show video-subs:flac`: a screenshot of a choice below the list's first rows).
+    /// view (`/show video-subs:flac`: a screenshot of a choice below the list's first rows;
+    /// `video-subs:most`, the most compatible one, #1439).
     pub fn pick(&mut self, prefix: &str) {
         let prefix = prefix.to_lowercase();
         let found = self.video.as_ref().and_then(|(_, choices)| {
@@ -450,9 +471,13 @@ impl VideoDialog {
         let looked = self.lookup.as_ref().and_then(|s| s.lock().unwrap().take());
         if let Some(res) = looked {
             self.lookup = None;
+            self.declared = None;
             match res {
-                Ok(Looked::Video(v)) => self.set_video(v),
-                Ok(Looked::List(l)) => {
+                Ok((Looked::Video(v), declared)) => {
+                    self.declared = declared;
+                    self.set_video(v);
+                }
+                Ok((Looked::List(l), _)) => {
                     if let Some((exe, browser)) = self.looking.take() {
                         self.list = Some(crate::playlistdlg::PlaylistView::start(
                             &exe,
@@ -463,13 +488,13 @@ impl VideoDialog {
                     }
                 }
                 Err(e) => {
-                    // Whose cookies the look-up had (#229): the extension's, or (none came) the
-                    // browser's Options names, or none.
-                    let sent = self.looking.as_ref().is_some_and(|(_, b)| {
-                        b.cookies.as_deref().is_some_and(|c| !c.trim().is_empty())
-                    });
-                    let store = (!sent).then(mdm_tools::proc::browser_cookies).flatten();
-                    self.error = Some(lookup_error(&e, sent, store.as_ref()));
+                    let browser = self
+                        .looking
+                        .as_ref()
+                        .map(|(_, b)| b)
+                        .cloned()
+                        .unwrap_or_default();
+                    self.error = Some(request_error(&e, &browser));
                 }
             }
         }
@@ -556,7 +581,20 @@ impl VideoDialog {
         };
         let c = choices.get(self.chosen)?;
         let name = mdm_engine::naming::sanitize(self.name.trim());
+        // Not the name the choice gave it (the page's title): the user's (#1102).
+        let named = name
+            != mdm_engine::naming::sanitize(file_name(&self.video.as_ref()?.0.title, c).trim());
         let chosen = self.chosen_subs();
+        // The video the page declares (#1076): its address, the page as its Referer.
+        let declared = self
+            .declared
+            .as_ref()
+            .filter(|_| self.looked_up == self.page.trim())
+            .and_then(|d| Some((url::Url::parse(&d.address).ok()?, d)));
+        let (page, context) = match declared {
+            Some((address, d)) => (address, declared_context(&self.context(), d)),
+            None => (page, self.context()),
+        };
         Some(VideoOut::One(VideoAdd {
             page,
             selector: c.selector.clone(),
@@ -564,7 +602,7 @@ impl VideoDialog {
             category: self.category(),
             size: c.size,
             start_now,
-            context: self.context(),
+            context,
             subs: subs_for_choice(c, &chosen),
             remember: (!self.subs.is_empty()).then_some(chosen),
             preloaded: self.preloaded.as_ref().and_then(|preloaded| {
@@ -577,6 +615,8 @@ impl VideoDialog {
                     },
                 )
             }),
+            named,
+            duration: whole_seconds(self.video.as_ref().and_then(|v| v.0.duration)),
         }))
     }
 
@@ -725,7 +765,7 @@ impl VideoDialog {
         {
             // A typed or pasted address too (#359); the box shows what is looked up.
             self.page = mdm_tools::pages::video_address(self.page.trim());
-            let slot: Slot<Looked> = Arc::new(Mutex::new(None));
+            let slot: Slot<(Looked, Option<Declared>)> = Arc::new(Mutex::new(None));
             let (out, exe, page, ctx, rt) = (
                 slot.clone(),
                 tool.exe.clone(),
@@ -761,13 +801,22 @@ impl VideoDialog {
                     "Video lookups use yt-dlp (about 23 MB, checked against its signature).",
                 ),
             )),
-            // MDM installs ffmpeg on Windows only (its builds are Windows ones); elsewhere the
-            // system's package manager has it, and the note says so instead of a button.
-            (Some(_), None) if cfg!(windows) => Some((
+            // MDM installs ffmpeg on 64-bit Windows only (its builds are Windows ones, x64 and
+            // ARM64); elsewhere the system's package manager has it, and the note says so instead
+            // of a button.
+            (Some(_), None) if mdm_tools::ffmpeg::available() => Some((
                 Tool::Ffmpeg,
                 // i18n: button: download and install the ffmpeg program
                 crate::i18n::mark("Install ffmpeg"),
                 ffmpeg_note(),
+            )),
+            (Some(_), None) if cfg!(windows) => Some((
+                Tool::Ffmpeg,
+                "",
+                // i18n: in Download video, on 32-bit Windows (no button: no ffmpeg build MDM can check exists for it); Helpers... is the button below
+                crate::i18n::t(
+                    "The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...",
+                ),
             )),
             (Some(_), None) => Some((Tool::Ffmpeg, "", ffmpeg_note())),
             _ => None,
@@ -1413,10 +1462,12 @@ pub(crate) fn js_runtime_note() -> &'static str {
 }
 
 /// The title of the page the browser played video `v` on (`mdm_ipc::Command::video_title`,
-/// trimmed), when yt-dlp knows `v` only by the address it looked up, `page`: it has no page
-/// reader for the site, and on some servers that part is a long hash (#345). None otherwise:
-/// yt-dlp's title stays. The Download video window and the browser's quality menu both name a
-/// video by it.
+/// trimmed), when yt-dlp knows `v` only by the address it looked up, `page` (on some servers
+/// that part is a long hash, #345), or only by the page's own title (`Video::page_titled`: it has
+/// no reader for the site, and a player embedded in another site's page has its own: "Watch
+/// file.mp4 - VOE", where the tab names the episode, #1351). None otherwise: the title a site's
+/// reader knows the video by stays (a YouTube video in an article's frame keeps its own). The
+/// Download video window and the browser's quality menu both name a video by it.
 ///
 /// A page that shows one file is often titled with the file's name (Dropbox's, a server's own
 /// listing: `Episode 31.mp4`): its video or sound extension is left out, as the choice's type
@@ -1430,7 +1481,10 @@ pub(crate) fn page_title<'a>(
         .video_title
         .as_deref()
         .map(|t| without_media_extension(t.trim()))
-        .filter(|t| !t.is_empty() && mdm_tools::resolve::named_after_address(&v.title, page))
+        .filter(|t| {
+            !t.is_empty()
+                && (v.page_titled || mdm_tools::resolve::named_after_address(&v.title, page))
+        })
 }
 
 /// `title` without a video or sound file's extension at its end (`Episode 31.mp4` → `Episode
@@ -1455,20 +1509,53 @@ pub(crate) fn file_name(title: &str, c: &Choice) -> String {
     format!("{stem}.{}", c.ext)
 }
 
-/// yt-dlp's look-up of `page` with the browser's context, as the Download video window and the
-/// browser's quality menu make it: a plain file's size is asked of its server, as yt-dlp doesn't
-/// say it (#320).
+/// The Download video window's look-up of `page` with the browser's context: yt-dlp's, or, when
+/// yt-dlp read the page generically, the video the page declares its own (#1076,
+/// `mdm_tools::declared`, the page read as Options says MDM's own requests go), which the
+/// download then keeps as its address. A plain file's size is asked of its server, as yt-dlp
+/// doesn't say it (#320).
 pub(crate) fn look_up(
     exe: &std::path::Path,
     page: &str,
     browser: &mdm_tools::proc::FromBrowser,
     rt: &tokio::runtime::Handle,
-) -> Result<Looked, String> {
-    look_up_kept(exe, page, browser, rt).0
+) -> Result<(Looked, Option<Declared>), String> {
+    let reader = mdm_tools::streams::Engine {
+        handle: rt.clone(),
+        opts: crate::settings::own_net(),
+    };
+    let (mut looked, _, declared) =
+        mdm_tools::declared::look_up(exe, page, browser, &reader).map_err(|e| e.to_string())?;
+    if let Looked::Video(v) = &mut looked
+        && v.needs_size()
+    {
+        let size = match &declared {
+            Some(d) => direct_size(rt, &d.address, &d.browser(browser)),
+            None => direct_size(rt, page, browser),
+        };
+        if let Some(size) = size {
+            v.set_size(size);
+        }
+    }
+    Ok((looked, declared))
 }
 
-/// [`look_up`], with yt-dlp's answer as it gave it, when it gave one (the browser's quality menu
-/// keeps it for the download chosen there, `mdm_tools::video::Preloaded`).
+/// The browser's request context `context` for the video a page declares (#1076, `d`), as its
+/// download keeps it: the page as its Referer, the browser's User-Agent and cookie jar, not the
+/// page's own Cookie header nor a stream's Origin (`Declared::browser`).
+fn declared_context(context: &mdm_ipc::Command, d: &Declared) -> mdm_ipc::Command {
+    mdm_ipc::Command {
+        referer: Some(d.page.clone()),
+        origin: None,
+        cookies: None,
+        ..context.clone()
+    }
+}
+
+/// yt-dlp's look-up of `page` with the browser's context, as the browser's quality menu makes it
+/// (videolookup.rs), with its answer as it gave it, when it gave one (kept for the download
+/// chosen there, `mdm_tools::video::Preloaded`): a plain file's size is asked of its server, as
+/// yt-dlp doesn't say it (#320).
 pub(crate) fn look_up_kept(
     exe: &std::path::Path,
     page: &str,
@@ -1491,12 +1578,57 @@ pub(crate) fn look_up_kept(
 /// yt-dlp's view of the browser's request context.
 pub fn from_browser(c: &mdm_ipc::Command) -> mdm_tools::proc::FromBrowser {
     mdm_tools::proc::FromBrowser {
+        private: c.private,
         referer: c.referer.clone(),
         origin: c.origin.clone(),
         user_agent: c.user_agent.clone(),
         cookies: c.cookies.clone(),
         jar: c.cookie_jar.clone(),
     }
+}
+
+/// A saved row keeps its private origin when its memory-only browser context is gone.
+pub fn from_item(item: &crate::model::Item) -> mdm_tools::proc::FromBrowser {
+    mdm_tools::proc::FromBrowser {
+        private: item.is_private_window(),
+        ..from_browser(&item.context)
+    }
+}
+
+/// Explain an authentication refusal without suggesting the normal profile for a private row.
+pub(crate) fn private_auth_error(e: &str) -> Option<String> {
+    let lower = e.to_ascii_lowercase();
+    [
+        "sign in", "log in", "login", "private video", "members-only", "members only",
+        "authentication", "anti-bot", "not a bot", "confirm your age",
+    ]
+    .iter()
+    .any(|s| lower.contains(s))
+    .then(|| {
+        let hint = crate::i18n::t(
+            // i18n: a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+            "Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.",
+        );
+        format!("{e}\n\n{hint}")
+    })
+}
+
+/// Whose cookies a look-up actually used, for its error message as well as its arguments.
+pub(crate) fn request_error(e: &str, browser: &mdm_tools::proc::FromBrowser) -> String {
+    if browser.private
+        && let Some(message) = private_auth_error(e)
+    {
+        return message;
+    }
+    let sent = !browser.jar.is_empty()
+        || browser
+            .cookies
+            .as_deref()
+            .is_some_and(|c| !c.trim().is_empty());
+    let store = (!browser.private && !sent)
+        .then(mdm_tools::proc::browser_cookies)
+        .flatten();
+    lookup_error(e, sent, store.as_ref())
 }
 
 /// The size the server says for a plain file at `page`, asked as the browser would (its Referer,
@@ -1663,6 +1795,14 @@ pub(crate) fn choice_size(c: &Choice) -> (String, String) {
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
 /// resolution, a type) as they are, kept left to right.
 pub(crate) fn choice_label(label: &str) -> String {
+    if let Some(rest) = label.strip_prefix(mdm_tools::resolve::COMPATIBLE) {
+        let height = rest.trim_start_matches([' ', '·']).trim();
+        return crate::i18n::fmt(
+            // i18n: a choice in the Download video window: the best H.264 video with AAC sound, an MP4 that every video editor, TV and phone plays; keep "(H.264 + AAC)" as it is; {height} is the resolution (1080p)
+            crate::i18n::t("Most compatible (H.264 + AAC) · {height}"),
+            &[("height", &crate::i18n::ltr(height))],
+        );
+    }
     if let Some(kind) = label.strip_prefix(mdm_tools::resolve::AUDIO_ORIGINAL) {
         return crate::i18n::fmt(
             // i18n: a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
@@ -1683,6 +1823,96 @@ pub(crate) fn choice_label(label: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The builder start_video uses must remember a kept row's origin after serde drops its
+    /// request context; in-session private context and ordinary rows keep their own behavior.
+    #[test]
+    fn private_video_cookie_policy_survives_a_restart() {
+        let page: url::Url = "https://videos.test/watch".parse().unwrap();
+        for private in [false, true] {
+            let mut item = crate::model::Item::new(
+                1,
+                page.clone(),
+                PathBuf::from("Clip.mp4"),
+                Category::Video,
+            );
+            item.video = Some(crate::model::VideoSpec {
+                selector: "best".into(),
+                subs: Default::default(),
+                parts: vec![],
+                named: false,
+                duration: None,
+            });
+            item.private_window = private;
+            item.context.private = private;
+            item.context.cookies = Some("sid=private-secret".into());
+            let saved = serde_json::to_string(&item).unwrap();
+            assert!(!saved.contains("private-secret"));
+            let reloaded: crate::model::Item = serde_json::from_str(&saved).unwrap();
+            assert!(!reloaded.context.private);
+            assert!(reloaded.context.cookies.is_none());
+            let browser = from_item(&reloaded);
+            assert_eq!(browser.private, private);
+            let (args, file) = browser.args(page.as_str()).unwrap();
+            assert!(file.is_none());
+            assert_eq!(
+                args.iter().any(|a| a == "--no-cookies-from-browser"),
+                private
+            );
+            if private {
+                let cmd = mdm_tools::proc::ytdlp(
+                    std::path::Path::new("yt-dlp"),
+                    &[],
+                    &args,
+                    page.as_str(),
+                )
+                .unwrap();
+                assert!(!cmd.get_args().any(|a| a == "--cookies-from-browser"));
+                assert!(!mdm_tools::proc::has_cookies(&args));
+            } else {
+                assert!(args.is_empty(), "normal rows still allow Options' fallback");
+            }
+        }
+        let mut item =
+            crate::model::Item::new(2, page.clone(), PathBuf::from("Clip.mp4"), Category::Video);
+        item.context.private = true;
+        assert!(
+            !item.private_window,
+            "also protect a memory-only private context"
+        );
+        assert!(
+            from_item(&item)
+                .args(page.as_str())
+                .unwrap()
+                .0
+                .contains(&"--no-cookies-from-browser".into())
+        );
+        item.context.cookies = Some("sid=private".into());
+        let browser = from_item(&item);
+        let (args, file) = browser.args(page.as_str()).unwrap();
+        assert!(file.is_some());
+        assert!(args.contains(&"--cookies".into()));
+        assert!(!args.contains(&"--no-cookies-from-browser".into()));
+        assert!(
+            from_browser(&item.context).private,
+            "fresh private look-ups too"
+        );
+    }
+
+    #[test]
+    fn a_private_video_authentication_error_explains_its_cookie_policy() {
+        let refusal = "ERROR: Private video. Sign in to watch.";
+        let browser = mdm_tools::proc::FromBrowser {
+            private: true,
+            ..Default::default()
+        };
+        let message = request_error(refusal, &browser);
+        assert!(message.starts_with(refusal), "{message}");
+        assert!(message.contains("Private-window downloads do not use Cookies for video sites"));
+        assert!(message.contains("private window"));
+        assert!(!request_error(refusal, &Default::default()).contains("Private-window downloads"));
+        assert_eq!(private_auth_error("HTTP Error 500"), None);
+    }
 
     /// #359: a Dailymotion player embedded in another site is looked up at the video's own page,
     /// without that site as its Referer (Dailymotion answers 403); any other page keeps it.
@@ -2000,6 +2230,53 @@ mod tests {
         );
     }
 
+    /// #1351: a player embedded in a frame of another site's page (VOE's on an episode's page),
+    /// which yt-dlp has no reader for: its generic reader names the video by the frame's own
+    /// title, and the tab's names it instead. A site's reader's title (YouTube's, in an
+    /// article's frame) stays.
+    #[test]
+    fn an_embedded_player_yt_dlp_reads_generically_is_named_by_the_tabs_title() {
+        let frame = "https://player.test/e/dzA1YmtiODgyWDhCQi9NMW85K1Nq";
+        let answer = |key: &str| {
+            format!(
+                r#"{{"title": "Watch file.mp4 - VOE | Content Delivery Network (CDN) & Video Cloud",
+                    "extractor_key": "{key}",
+                    "formats": [{{"format_id": "0", "ext": "mp4", "url": "https://cdn.test/v.mp4"}}]}}"#
+            )
+        };
+        let context = mdm_ipc::Command {
+            video_title: Some("Renegade Immortal Episodio 167 Sub Español".into()),
+            ..Default::default()
+        };
+        let generic = mdm_tools::resolve::parse(answer("Generic").as_bytes()).unwrap();
+        assert!(generic.page_titled);
+        let title = page_title(&context, &generic, frame).unwrap();
+        assert_eq!(title, "Renegade Immortal Episodio 167 Sub Español");
+        let mp4 = Choice {
+            ext: "mp4".into(),
+            ..Default::default()
+        };
+        assert_eq!(
+            file_name(title, &mp4),
+            "Renegade Immortal Episodio 167 Sub Español.mp4"
+        );
+        // A page's plain `<video>` in the frame: yt-dlp's HTML5 reader, the page's title too.
+        let html5 = mdm_tools::resolve::parse(answer("HTML5MediaEmbed").as_bytes()).unwrap();
+        assert_eq!(
+            page_title(&context, &html5, frame),
+            Some("Renegade Immortal Episodio 167 Sub Español")
+        );
+        // Nothing from the browser: yt-dlp's title stays.
+        assert_eq!(
+            page_title(&mdm_ipc::Command::default(), &generic, frame),
+            None
+        );
+        // A site yt-dlp has a reader for: its title stays.
+        let known = mdm_tools::resolve::parse(answer("Youtube").as_bytes()).unwrap();
+        assert!(!known.page_titled);
+        assert_eq!(page_title(&context, &known, frame), None);
+    }
+
     #[test]
     fn a_browser_lookup_seeds_the_matching_choice_and_keeps_its_cache() {
         const TALK: &str = r#"{"title":"A talk","formats":[
@@ -2043,6 +2320,8 @@ mod tests {
                     label: choice.label.clone(),
                     merge: false,
                 }),
+                named: true,
+                duration: None,
             };
             let (video_dir, music_dir) = dirs();
             let saved = Subs {
@@ -2193,6 +2472,8 @@ mod tests {
                 label: String::new(),
                 merge: false,
             }),
+            named: false,
+            duration: None,
         };
         assert!(
             VideoDialog::blank(PathBuf::from("."))
@@ -2215,6 +2496,7 @@ mod tests {
             language: None,
             direct: false,
             needs_js_runtime: false,
+            page_titled: false,
         };
         let mp4 = Choice {
             ext: "mp4".into(),
@@ -2239,6 +2521,30 @@ mod tests {
                 assert_eq!(file_name(got, &mp4), "Episode 31.mp4");
             }
         }
+    }
+
+    /// A film whose video plays in another site's player, in a frame (Vimeo's on a film site),
+    /// as a browser saw it (`tests/data/embedded-player-title.json`): yt-dlp knows the stream
+    /// the button sends only by its address (`playlist`), and the title the extension sends
+    /// with it (the tab's, without the site's name: tools/extension/test.mjs) names the video
+    /// in the window and its file. It was the player frame's own, "Before The - Short Film from
+    /// Justin Barry on Vimeo".
+    #[test]
+    fn a_stream_from_an_embedded_player_is_named_by_the_pages_title() {
+        let film: serde_json::Value =
+            serde_json::from_str(include_str!("../tests/data/embedded-player-title.json")).unwrap();
+        let text = |k: &str| film[k].as_str().unwrap().to_owned();
+        let v = mdm_tools::resolve::parse(film["ytdlp"].to_string().as_bytes()).unwrap();
+        assert_eq!(v.title, "playlist");
+        let context = mdm_ipc::Command {
+            video_title: Some(text("sent")),
+            ..Default::default()
+        };
+        let title = page_title(&context, &v, &text("stream")).unwrap();
+        assert_eq!(title, text("sent"));
+        let best = &mdm_tools::resolve::choices(&v, true)[0];
+        assert_eq!(best.height, Some(2160));
+        assert_eq!(file_name(title, best), text("file"));
     }
 
     /// #661: a page's address from the clipboard comes a frame or more after the window opens:
@@ -2284,6 +2590,183 @@ mod tests {
         d
     }
 
+    /// Run the dialog body in an in-memory egui frame; no native window or app queue is involved.
+    fn body_frame(
+        ctx: &egui::Context,
+        d: &mut VideoDialog,
+        rt: &tokio::runtime::Handle,
+        input: egui::RawInput,
+    ) -> Outcome<()> {
+        let mut outcome = Outcome::Open;
+        let mut out = ctx.run_ui(input, |ui| {
+            outcome = d.body(ui, Pos2::ZERO, rt);
+        });
+        out.textures_delta.clear();
+        outcome
+    }
+
+    /// Cancel and Escape close a real looked-up dialog through its body action path.
+    #[test]
+    fn browser_dialog_cancel_and_escape_close_the_video_dialog_body() {
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap();
+        for escape in [false, true] {
+            let ctx = egui::Context::default();
+            let mut fonts = egui::FontDefinitions::default();
+            winui::install_fonts(&mut fonts, None);
+            ctx.set_fonts(fonts);
+            let mut d = looked_up(false);
+            body_frame(
+                &ctx,
+                &mut d,
+                rt.handle(),
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, 450.0),
+                    )),
+                    ..Default::default()
+                },
+            );
+            let input = if escape {
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, 450.0),
+                    )),
+                    events: vec![egui::Event::Key {
+                        key: egui::Key::Escape,
+                        physical_key: None,
+                        pressed: true,
+                        repeat: false,
+                        modifiers: egui::Modifiers::default(),
+                    }],
+                    ..Default::default()
+                }
+            } else {
+                egui::RawInput::default()
+            };
+            let open = body_frame(&ctx, &mut d, rt.handle(), input);
+            if escape {
+                assert!(matches!(open, Outcome::Closed));
+            } else {
+                // Cancel occupies the rightmost button at x=416..489, y=389..410.
+                let press = egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, 450.0),
+                    )),
+                    events: vec![
+                        egui::Event::PointerMoved(egui::pos2(450.0, 399.0)),
+                        egui::Event::PointerButton {
+                            pos: egui::pos2(450.0, 399.0),
+                            button: egui::PointerButton::Primary,
+                            pressed: true,
+                            modifiers: egui::Modifiers::default(),
+                        },
+                    ],
+                    ..Default::default()
+                };
+                body_frame(&ctx, &mut d, rt.handle(), press);
+                let release = egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        Pos2::ZERO,
+                        egui::vec2(600.0, 450.0),
+                    )),
+                    events: vec![egui::Event::PointerButton {
+                        pos: egui::pos2(450.0, 399.0),
+                        button: egui::PointerButton::Primary,
+                        pressed: false,
+                        modifiers: egui::Modifiers::default(),
+                    }],
+                    ..Default::default()
+                };
+                assert!(matches!(
+                    body_frame(&ctx, &mut d, rt.handle(), release),
+                    Outcome::Closed
+                ));
+            }
+        }
+    }
+
+    /// Later follows the button path and preserves the chosen quality and edited destination.
+    #[test]
+    fn browser_dialog_later_keeps_quality_name_and_folder_and_sets_start_now_false() {
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap();
+        let ctx = egui::Context::default();
+        let mut fonts = egui::FontDefinitions::default();
+        winui::install_fonts(&mut fonts, None);
+        ctx.set_fonts(fonts);
+        let mut d = looked_up(false);
+        let (_, video) = rows(&d);
+        choose(&mut d, video);
+        d.name = "edited title".into();
+        d.folder = std::env::temp_dir()
+            .join("video-dialog-later")
+            .display()
+            .to_string();
+        let selector = d.video.as_ref().unwrap().1[d.chosen].selector.clone();
+        body_frame(
+            &ctx,
+            &mut d,
+            rt.handle(),
+            egui::RawInput {
+                screen_rect: Some(egui::Rect::from_min_size(
+                    Pos2::ZERO,
+                    egui::vec2(600.0, 450.0),
+                )),
+                ..Default::default()
+            },
+        );
+        let press = egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(
+                Pos2::ZERO,
+                egui::vec2(600.0, 450.0),
+            )),
+            events: vec![
+                egui::Event::PointerMoved(egui::pos2(370.0, 399.0)),
+                egui::Event::PointerButton {
+                    pos: egui::pos2(370.0, 399.0),
+                    button: egui::PointerButton::Primary,
+                    pressed: true,
+                    modifiers: egui::Modifiers::default(),
+                },
+            ],
+            ..Default::default()
+        };
+        body_frame(&ctx, &mut d, rt.handle(), press);
+        let release = egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(
+                Pos2::ZERO,
+                egui::vec2(600.0, 450.0),
+            )),
+            events: vec![egui::Event::PointerButton {
+                pos: egui::pos2(370.0, 399.0),
+                button: egui::PointerButton::Primary,
+                pressed: false,
+                modifiers: egui::Modifiers::default(),
+            }],
+            ..Default::default()
+        };
+        assert!(matches!(
+            body_frame(&ctx, &mut d, rt.handle(), release),
+            Outcome::Done(())
+        ));
+        assert_eq!(d.video.as_ref().unwrap().1[d.chosen].selector, selector);
+        assert_eq!(d.name, "edited title");
+        assert_eq!(
+            d.folder,
+            std::env::temp_dir()
+                .join("video-dialog-later")
+                .display()
+                .to_string()
+        );
+        assert_eq!(d.start_now, Some(false));
+    }
+
     /// The choices' rows: (a sound-only one, a video one).
     fn rows(d: &VideoDialog) -> (usize, usize) {
         let choices = &d.video.as_ref().unwrap().1;
@@ -2306,6 +2789,46 @@ mod tests {
             Some(VideoOut::One(add)) => (add.dest.parent().unwrap().to_owned(), add.category),
             _ => panic!("a video is added"),
         }
+    }
+
+    /// #1076: the video a page declares is what the download keeps (its address, the page as its
+    /// Referer, the browser's User-Agent, not the page's Cookie header), so the download's own
+    /// look-up, when it starts, finds that one again; until the address is edited.
+    #[test]
+    fn a_declared_video_is_added_at_its_own_address() {
+        let page = "https://films.example/films/before";
+        let mut d = looked_up(false);
+        d.page = page.into();
+        d.from_browser = page.into();
+        d.looked_up = page.into();
+        d.context = mdm_ipc::Command {
+            user_agent: Some("UA".into()),
+            cookies: Some("session=1".into()),
+            referer: Some("https://search.example/".into()),
+            ..Default::default()
+        };
+        d.declared = Some(Declared {
+            address: "https://player.vimeo.com/video/1244858801".into(),
+            page: page.into(),
+            name: Some("Before".into()),
+        });
+        let added = |d: &VideoDialog| match d.added() {
+            Some(VideoOut::One(add)) => add,
+            _ => panic!("a video is added"),
+        };
+        let add = added(&d);
+        assert_eq!(
+            add.page.as_str(),
+            "https://player.vimeo.com/video/1244858801"
+        );
+        assert_eq!(add.context.referer.as_deref(), Some(page));
+        assert_eq!(add.context.user_agent.as_deref(), Some("UA"));
+        assert_eq!(add.context.cookies, None);
+        // An address edited since: that address, as typed.
+        d.page = "https://films.example/films/other".into();
+        let add = added(&d);
+        assert_eq!(add.page.as_str(), "https://films.example/films/other");
+        assert_eq!(add.context.referer, None);
     }
 
     /// #611: a sound-only choice saves in the Music category's folder and is listed under Music;
@@ -2367,9 +2890,9 @@ mod tests {
             Some(VideoOut::Many(add)) => (add.folder.parent().unwrap().to_owned(), add.category),
             _ => panic!("a playlist is added"),
         };
-        // "Audio only, original" (7), then "Up to 1080p" (3).
+        // "Audio only, original" (8), then "Up to 1080p" (4).
         for (pick, folder, category) in
-            [("7", music, Category::Music), ("3", video, Category::Video)]
+            [("8", music, Category::Music), ("4", video, Category::Video)]
         {
             let mut d = looked_up(true);
             d.show_sample_list(pick);
@@ -2378,5 +2901,94 @@ mod tests {
             assert_eq!(d.save_folder(), folder, "quality {pick}");
             assert_eq!(many(&d), (folder, category), "quality {pick}");
         }
+    }
+
+    /// #1439: the most compatible choice is said in the user's language, its height as data.
+    #[test]
+    fn the_most_compatible_choice_is_labelled() {
+        let l = choice_label("Most compatible (H.264 + AAC) · 1080p");
+        assert!(l.starts_with("Most compatible (H.264 + AAC) · "), "{l}");
+        assert!(l.contains("1080p") && !l.contains("·  "), "{l}");
+        // The sample's list has it second, picked by its name for the screenshots.
+        let mut d = VideoDialog::blank(PathBuf::from("."));
+        // ffmpeg there (never looked for on this computer): the merged qualities.
+        let ffmpeg = mdm_tools::Installed {
+            version: "test".into(),
+            exe: PathBuf::from("ffmpeg"),
+        };
+        d.tools = Some((None, None, Some(ffmpeg)));
+        d.show_sample();
+        d.pick("most");
+        let (_, choices) = d.video.as_ref().unwrap();
+        assert_eq!(d.chosen, 1);
+        assert_eq!(choices[1].label, "Most compatible (H.264 + AAC) · 1080p");
+        assert!(choices[1].selector.starts_with("299+140/"));
+    }
+
+    #[test]
+    fn browser_lookup_keeps_the_most_compatible_choice_through_helper_refresh() {
+        const TALK: &str = r#"{"title":"A talk","formats":[
+            {"format_id":"140","ext":"m4a","vcodec":"none","acodec":"mp4a.40.2"},
+            {"format_id":"701","ext":"mp4","height":2160,"vcodec":"av01.0.13M.10","acodec":"none"},
+            {"format_id":"299","ext":"mp4","height":1080,"vcodec":"avc1.64002A","acodec":"none"}]}"#;
+        let video = mdm_tools::resolve::parse(TALK.as_bytes()).unwrap();
+        let choices = mdm_tools::resolve::choices(&video, true);
+        let choice = choices
+            .iter()
+            .find(|choice| mdm_tools::resolve::is_compatible(choice))
+            .unwrap();
+        assert_eq!(choices[0].height, Some(2160));
+        assert_ne!(choices[0].selector, choice.selector);
+        assert!(choice.selector.starts_with("299+140/"));
+
+        let page = url::Url::parse("https://video.example/talk").unwrap();
+        let folder = std::env::temp_dir().join("mdm-browser-video");
+        let slot = mdm_tools::video::InfoSlot::new(std::time::Instant::now());
+        let add = VideoAdd {
+            page: page.clone(),
+            selector: choice.selector.clone(),
+            dest: folder.join("talk.mp4"),
+            category: Category::Video,
+            size: choice.size,
+            start_now: false,
+            context: Default::default(),
+            subs: Subs::default(),
+            remember: None,
+            preloaded: Some(mdm_tools::video::Preloaded {
+                slot,
+                selector: choice.selector.clone(),
+                label: choice.label.clone(),
+                merge: true,
+            }),
+            named: false,
+            duration: None,
+        };
+        let ffmpeg = mdm_tools::Installed {
+            version: "test".into(),
+            exe: PathBuf::from("ffmpeg"),
+        };
+        let mut dialog = VideoDialog::blank(folder.clone());
+        dialog.tools = Some((None, None, Some(ffmpeg)));
+        let mut dialog = dialog.with_lookup(add, video).unwrap();
+
+        let selected = &dialog.video.as_ref().unwrap().1[dialog.chosen];
+        assert_eq!(selected.selector, choice.selector);
+        assert_eq!(dialog.preloaded.as_ref().unwrap().selector, choice.selector);
+        assert!(dialog.preloaded.as_ref().unwrap().merge);
+
+        dialog.refresh_video();
+        let selected = &dialog.video.as_ref().unwrap().1[dialog.chosen];
+        assert_eq!(selected.selector, choice.selector);
+        assert_eq!(dialog.preloaded.as_ref().unwrap().selector, choice.selector);
+        assert!(dialog.preloaded.as_ref().unwrap().merge);
+
+        let VideoOut::One(out) = dialog.added().unwrap() else {
+            panic!("one video")
+        };
+        assert_eq!(out.selector, choice.selector);
+        let cache = out.preloaded.unwrap();
+        assert_eq!(cache.selector, choice.selector);
+        assert_eq!(cache.label, choice.label);
+        assert!(cache.merge);
     }
 }

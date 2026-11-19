@@ -14,10 +14,10 @@ Every download keeps a log of its recent events: retries, redirects, the server'
 
 1. Read the reason (hover over **Status**).
 2. Select the download and click **Resume**. Many errors are a server or connection having a bad moment.
-3. If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → **Refresh download address**. See [Resume a broken download](guide-resume-broken-download.md).
+3. If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → **Refresh download address**, then start the download again in the browser, and MDM gives its new address to the download that waits for it, which continues (a Rapidgator download waits by itself: starting it again in the browser is enough). See [Resume a broken download](guide-resume-broken-download.md).
 4. If it says **the file changed on the server**, the file isn't the one MDM started with. Right-click → **Redownload** to start again from the beginning.
 5. If it says **Google Drive won't give this file now**, Drive's download limit for that file was reached. See [Google Drive links](adding-downloads.md#google-drive-links).
-6. If it says **this site lets only browsers through**, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold **Alt** as you click the link to leave that download to the browser. See [Browser integration](browser-integration.md).
+6. If it says **this site lets only browsers through**, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and once under its own name (some checks let a program that says what it is through), and the site still wants its check answered in a browser. Open the site in your browser (passing its check there can be enough: click the link again), or hold **Alt** as you click the link to leave that download to the browser. See [Browser integration](browser-integration.md).
 7. If it says **the site sent a web page instead of the file**, the link led to the site's own page: a file host's countdown, a captcha, a **Download** button to press, or a sign-in. MDM never saves that page as your file. Click **Open in browser** in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.
 
 ## A download starts over instead of resuming
@@ -141,6 +141,8 @@ When there is one, **Update now** downloads it, checks it, puts it in place and 
 | Linux, another package manager's package (pacman, ...) | Nothing: the window says so, and your system's updates bring the new version. |
 
 MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and **Download** opens the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.
+
+MDM asks GitHub's API for the newest version (of MDM, and of yt-dlp and ffmpeg). GitHub answers 60 such questions an hour for each internet address, so on a network many people share (a mobile or home internet provider that puts many customers behind one address, a campus, an office) others can use them up. MDM then reads GitHub's ordinary release pages instead, with the same checks of what it downloads. If GitHub refuses those too, the window says **api.github.com refused the request (403 Forbidden): too many requests from your network for now**: try again in an hour, or from another network.
 
 The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its `.AppImage.zsync` file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.
 

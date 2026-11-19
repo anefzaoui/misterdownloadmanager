@@ -91,14 +91,6 @@ struct Search {
     info: InfoSlot,
     /// Its choices are merged qualities (ffmpeg was there).
     merge: bool,
-    /// Destinations shown with this token, frozen until it is confirmed or expires.
-    folders: Option<Folders>,
-}
-
-#[derive(Clone, Debug)]
-struct Folders {
-    video: PathBuf,
-    music: Option<PathBuf>,
 }
 
 /// What makes two clicks one look-up ([`Lookups::share`]): the address looked up and everything
@@ -175,7 +167,6 @@ pub struct Picked {
     /// yt-dlp's look-up, for the download (its `Debug` shows nothing of it).
     pub info: InfoSlot,
     pub merge: bool,
-    folders: Option<Folders>,
 }
 
 /// The look-ups the browser's quality menu asked for (`App::lookups`).
@@ -185,81 +176,9 @@ pub struct Lookups {
     /// The look-ups a click may share, at most [`KEPT`], for [`TTL`] after they began.
     recent: Vec<Recent>,
     running: Arc<AtomicUsize>,
-    /// A retry of a confirmed choice gets its first answer, never another job or dialog.
-    receipts: Vec<Receipt>,
-}
-
-struct Receipt {
-    pick: mdm_ipc::VideoPick,
-    private: bool,
-    answer: VideoLookupAnswer,
-    created: Instant,
 }
 
 impl Lookups {
-    /// Bind the advertised folders to this token so changing Options while a confirmation
-    /// is open cannot change where its download will be saved.
-    pub fn with_folders(
-        &mut self,
-        answer: VideoLookupAnswer,
-        video: &Path,
-        music: Option<&Path>,
-    ) -> VideoLookupAnswer {
-        if answer.state != lookup::READY {
-            return answer;
-        }
-        let Some(search) = answer
-            .token
-            .as_ref()
-            .and_then(|token| self.searches.get_mut(token))
-        else {
-            return answer;
-        };
-        let folders = search.folders.get_or_insert_with(|| Folders {
-            video: video.to_owned(),
-            music: music.map(Path::to_owned),
-        });
-        with_folders(answer, &folders.video, folders.music.as_deref())
-    }
-
-    /// The answer already given for this token and choice, in this browser context.
-    pub fn received(
-        &mut self,
-        pick: &mdm_ipc::VideoPick,
-        private: bool,
-        now: Instant,
-    ) -> Option<VideoLookupAnswer> {
-        self.prune(now);
-        self.receipts
-            .iter()
-            .find(|r| {
-                r.pick.token == pick.token
-                    && r.pick.choice == pick.choice
-                    && r.private == private
-                    && store(&r.pick.store_id) == store(&pick.store_id)
-            })
-            .map(|r| r.answer.clone())
-    }
-
-    /// Keep only the result, token and browser identity; no cookies or media addresses.
-    pub fn remember(
-        &mut self,
-        pick: &mdm_ipc::VideoPick,
-        private: bool,
-        answer: VideoLookupAnswer,
-        now: Instant,
-    ) {
-        if self.receipts.len() >= KEPT {
-            self.receipts.remove(0);
-        }
-        self.receipts.push(Receipt {
-            pick: pick.clone(),
-            private,
-            answer,
-            created: now,
-        });
-    }
-
     /// Look `ask` up with yt-dlp `exe` and the browser's context of `cmd` (`rt`: for a plain
     /// file's server): answered at once, `pending` with its token (`busy` while [`RUNNING`] run
     /// already).
@@ -334,7 +253,6 @@ impl Lookups {
                 found,
                 info,
                 merge,
-                folders: None,
             },
         );
         Some(token)
@@ -395,7 +313,6 @@ impl Lookups {
                 found,
                 info,
                 merge,
-                folders: None,
             },
         );
         Some(job)
@@ -454,7 +371,6 @@ impl Lookups {
             choice,
             info: s.info,
             merge: s.merge,
-            folders: s.folders,
         })
     }
 
@@ -465,25 +381,7 @@ impl Lookups {
             .retain(|_, s| now.saturating_duration_since(s.created) < TTL);
         self.recent
             .retain(|r| now.saturating_duration_since(r.started) < TTL);
-        self.receipts
-            .retain(|r| now.saturating_duration_since(r.created) < TTL);
     }
-}
-
-/// A ready menu also tells the browser where each kind of choice goes. Older native hosts
-/// discard this field, so the extension uses MDM's own confirmation instead in that case.
-pub fn with_folders(
-    mut answer: VideoLookupAnswer,
-    video: &Path,
-    music: Option<&Path>,
-) -> VideoLookupAnswer {
-    if answer.state == lookup::READY {
-        answer.save_to = Some(mdm_ipc::api::VideoFolders {
-            video: video.display().to_string(),
-            audio: music.unwrap_or(video).display().to_string(),
-        });
-    }
-    answer
 }
 
 /// A cookie store's name, none when blank.
@@ -513,6 +411,9 @@ pub fn context_of(ask: &mdm_ipc::VideoLookup, cmd: &mdm_ipc::Command) -> mdm_ipc
             .filter(|t| !t.is_empty())
             .map(|t| cut(t, TITLE_MAX)),
         referer: cmd.referer.clone(),
+        // The page it was picked on (#607): the download keeps it, and knows the same video
+        // picked again by it (a stream's address is often signed for each load).
+        page_url: cmd.page_url.clone(),
         origin: cmd.origin.clone(),
         cookies: cmd.cookies.clone(),
         cookie_jar: cmd.cookie_jar.clone(),
@@ -530,7 +431,8 @@ fn title_of<'a>(v: &'a Video, address: &str, context: &'a mdm_ipc::Command) -> &
 }
 
 /// Choice `c` as the browser's quality menu shows it: its label in MDM's language, and what the
-/// menu's line says beside it (#755: height, codec, frame rate, range; #801: an about size).
+/// menu's line says beside it (#755: height, codec, frame rate, range; #801: an about size;
+/// #1439: the most compatible one).
 fn menu_choice(c: &Choice) -> VideoChoice {
     VideoChoice {
         label: crate::videodlg::choice_label(&c.label),
@@ -544,6 +446,7 @@ fn menu_choice(c: &Choice) -> VideoChoice {
         codec: c.codec.clone(),
         range: c.range.clone(),
         approx: c.approx && c.size.is_some(),
+        compatible: mdm_tools::resolve::is_compatible(c),
     }
 }
 
@@ -593,15 +496,8 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
         },
         Found::List => VideoLookupAnswer::of(lookup::LIST),
         Found::Failed(e) => {
-            // Whose cookies the look-up had (#229): the extension's, or (none came) those of
-            // the browser Options names.
-            let sent = s
-                .context
-                .cookies
-                .as_deref()
-                .is_some_and(|c| !c.trim().is_empty());
-            let store = (!sent).then(mdm_tools::proc::browser_cookies).flatten();
-            let message = crate::videodlg::lookup_error(e, sent, store.as_ref());
+            let message =
+                crate::videodlg::request_error(e, &crate::videodlg::from_browser(&s.context));
             VideoLookupAnswer::failed(lookup::ERROR, Some(cut(&message, MESSAGE_MAX)))
         }
     }
@@ -621,10 +517,6 @@ pub fn video_add(
     start_now: bool,
     pref: &Subs,
 ) -> Option<VideoAdd> {
-    let (folder, music) = p
-        .folders
-        .as_ref()
-        .map_or((folder, music), |f| (f.video.as_path(), f.music.as_deref()));
     let page = url::Url::parse(&p.address)
         .ok()
         .filter(|u| matches!(u.scheme(), "http" | "https"))?;
@@ -649,6 +541,9 @@ pub fn video_add(
             label: p.choice.label,
             merge: p.merge,
         }),
+        // The page's title, shortened to fit (#1102).
+        named: false,
+        duration: crate::videodlg::whole_seconds(p.video.duration),
     })
 }
 
@@ -763,113 +658,6 @@ mod tests {
     use mdm_ipc::{Command, VideoLookup, VideoPick};
 
     #[test]
-    fn confirmed_choices_are_replayed_only_in_their_own_browser_context() {
-        let now = Instant::now();
-        let mut lookups = Lookups::default();
-        let chosen = pick("one", 1, Some("container-1"));
-        let answer = VideoLookupAnswer::of(lookup::QUEUED);
-        lookups.remember(&chosen, true, answer.clone(), now);
-        assert_eq!(lookups.received(&chosen, true, now), Some(answer.clone()));
-        assert!(lookups.received(&chosen, false, now).is_none());
-        assert!(
-            lookups
-                .received(&pick("one", 0, Some("container-1")), true, now)
-                .is_none()
-        );
-        assert!(
-            lookups
-                .received(&pick("one", 1, Some("container-2")), true, now)
-                .is_none()
-        );
-        let mut retry = chosen.clone();
-        retry.start_now = Some(true);
-        assert_eq!(lookups.received(&retry, true, now), Some(answer));
-        assert!(lookups.received(&chosen, true, now + TTL).is_none());
-    }
-
-    #[test]
-    fn confirmation_receipts_are_bounded() {
-        let now = Instant::now();
-        let mut lookups = Lookups::default();
-        for i in 0..=KEPT {
-            lookups.remember(
-                &pick(&i.to_string(), 0, None),
-                false,
-                VideoLookupAnswer::of(lookup::STARTED),
-                now,
-            );
-        }
-        assert_eq!(lookups.receipts.len(), KEPT);
-        assert!(lookups.received(&pick("0", 0, None), false, now).is_none());
-        assert!(
-            lookups
-                .received(&pick(&KEPT.to_string(), 0, None), false, now)
-                .is_some()
-        );
-    }
-
-    #[test]
-    fn confirmation_follows_the_configured_video_and_audio_folders() {
-        let ready = with_folders(
-            VideoLookupAnswer::of(lookup::READY),
-            Path::new("custom/video"),
-            Some(Path::new("custom/music")),
-        );
-        assert_eq!(
-            ready.save_to.unwrap(),
-            mdm_ipc::api::VideoFolders {
-                video: "custom/video".into(),
-                audio: "custom/music".into(),
-            }
-        );
-        let fallback = with_folders(
-            VideoLookupAnswer::of(lookup::READY),
-            Path::new("video"),
-            None,
-        );
-        assert_eq!(fallback.save_to.unwrap().audio, "video");
-        assert!(
-            with_folders(VideoLookupAnswer::pending("one"), Path::new("video"), None)
-                .save_to
-                .is_none()
-        );
-    }
-
-    #[test]
-    fn the_confirmed_destination_survives_a_settings_change() {
-        let now = Instant::now();
-        let mut lookups = Lookups::default();
-        let job = lookups
-            .begin(&look(SRC, Some("Film"), None), &sent(false, ""), false, now)
-            .unwrap();
-        answered(&job, STREAM);
-        let answer = lookups.poll(&job.token, now);
-        let answer = lookups.with_folders(answer, Path::new("confirmed/video"), None);
-        assert_eq!(answer.save_to.unwrap().video, "confirmed/video");
-        let again = lookups.poll(&job.token, now);
-        assert_eq!(
-            lookups
-                .with_folders(again, Path::new("changed/video"), None)
-                .save_to
-                .unwrap()
-                .video,
-            "confirmed/video"
-        );
-        let picked = lookups
-            .pick(&pick(&job.token, 0, None), false, now)
-            .unwrap();
-        let add = video_add(
-            picked,
-            Path::new("changed/video"),
-            None,
-            false,
-            &Subs::default(),
-        )
-        .unwrap();
-        assert!(add.dest.starts_with("confirmed/video"));
-    }
-
-    #[test]
     fn missing_ffmpeg_explains_why_only_audio_is_offered() {
         let mut video = mdm_tools::resolve::parse(
             br#"{"title":"A film","formats":[
@@ -905,6 +693,7 @@ mod tests {
     fn sent(private: bool, cookies: &str) -> Command {
         Command {
             referer: Some(PAGE.into()),
+            page_url: Some(PAGE.into()),
             cookies: Some(cookies.into()),
             user_agent: Some("UA".into()),
             private,
@@ -918,7 +707,6 @@ mod tests {
             token: token.into(),
             choice,
             store_id: store.map(str::to_owned),
-            start_now: None,
         }
     }
 
@@ -987,6 +775,11 @@ mod tests {
         assert_eq!(p.address, SRC);
         assert_eq!(p.context.cookies.as_deref(), Some("a=1"));
         assert_eq!(p.context.referer.as_deref(), Some(PAGE));
+        assert_eq!(
+            p.context.page_url.as_deref(),
+            Some(PAGE),
+            "the page it was picked on: the download keeps it, for the duplicate check (#607)"
+        );
         assert_eq!(p.context.user_agent.as_deref(), Some("UA"));
         assert_eq!(p.context.video_title.as_deref(), Some("A talk: in Lisbon"));
         assert!(!p.context.private && !p.context.startup);
@@ -1632,7 +1425,8 @@ mod tests {
     }
 
     /// What the browser's menu is told of each choice (#755, #801): the height, frame rate,
-    /// codec and range of a video's, the sound's bitrate, whether its size is about.
+    /// codec and range of a video's, the sound's bitrate, whether its size is about, which one is
+    /// the most compatible (#1439).
     #[test]
     fn the_buttons_details_of_each_choice() {
         const V: &str = r#"{"title": "A talk", "duration": 60, "formats": [
@@ -1667,8 +1461,15 @@ mod tests {
                 false
             )
         );
+        // #1439: the most compatible, H.264 with AAC, right after the best, said to be.
         assert_eq!(
             of(1),
+            (Some(1080), Some(60), Some("H.264"), None, Some(8900), false)
+        );
+        assert!(a[1].compatible);
+        assert_eq!(a.iter().filter(|c| c.compatible).count(), 1);
+        assert_eq!(
+            of(2),
             (
                 Some(1080),
                 Some(60),
@@ -1679,11 +1480,11 @@ mod tests {
             )
         );
         assert_eq!(
-            of(2),
+            of(3),
             (Some(720), Some(30), Some("H.264"), None, Some(7900), true),
             "a size the site only guessed"
         );
-        let sound = &a[3];
+        let sound = &a[4];
         assert!(sound.original && sound.audio);
         assert_eq!(
             (sound.kbps, sound.size, sound.approx),

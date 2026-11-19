@@ -60,6 +60,343 @@ pub async fn terminated() {
     }
 }
 
+// ---- The session's end (Linux: logging out, shutting down; a `kill`; the display going away) ---
+
+/// Linux: why MDM's session ends, as the system says it (Windows: `win32::SessionEnd`; macOS's
+/// logout quits the app through AppKit, which `App`'s drop saves, main.rs).
+#[cfg(target_os = "linux")]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SessionEnd {
+    /// SIGTERM: logind ending the session's programs at logout or shutdown (systemd stops their
+    /// scopes; SIGKILL follows 90 s later by default, sooner on some desktops), or a `kill`.
+    Terminated,
+    /// SIGHUP: the terminal MDM was started from closed.
+    HungUp,
+    /// SIGINT: Ctrl+C in the terminal MDM was started from.
+    Interrupted,
+    /// The display went away: the X server's connection is lost (GNOME's X server ends at logout
+    /// before logind's SIGTERM comes).
+    DisplayLost,
+}
+
+#[cfg(target_os = "linux")]
+impl SessionEnd {
+    const ALL: [SessionEnd; 4] = [
+        SessionEnd::Terminated,
+        SessionEnd::HungUp,
+        SessionEnd::Interrupted,
+        SessionEnd::DisplayLost,
+    ];
+
+    /// The signal that says it; None for the display going away.
+    fn signal(self) -> Option<libc::c_int> {
+        match self {
+            SessionEnd::Terminated => Some(libc::SIGTERM),
+            SessionEnd::HungUp => Some(libc::SIGHUP),
+            SessionEnd::Interrupted => Some(libc::SIGINT),
+            SessionEnd::DisplayLost => None,
+        }
+    }
+
+    /// Kept in [`END_ASKED`]: 0 is none.
+    fn code(self) -> u8 {
+        Self::ALL
+            .iter()
+            .position(|&e| e == self)
+            .map_or(0, |i| i as u8 + 1)
+    }
+
+    fn of_code(code: u8) -> Option<SessionEnd> {
+        Self::ALL.get(usize::from(code).checked_sub(1)?).copied()
+    }
+}
+
+/// The end asked for and not yet run ([`SessionEnd::code`]; 0: none).
+#[cfg(target_os = "linux")]
+static END_ASKED: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+
+/// The end is asked for: true the first time (the window's thread is to run it), false when it
+/// already was.
+#[cfg(target_os = "linux")]
+fn ask_end(why: SessionEnd) -> bool {
+    use std::sync::atomic::Ordering;
+    END_ASKED
+        .compare_exchange(0, why.code(), Ordering::AcqRel, Ordering::Acquire)
+        .is_ok()
+}
+
+/// Linux: the session's end that was asked for ([`on_session_end`]), for the window's thread to
+/// run at its next frame (main.rs).
+#[cfg(target_os = "linux")]
+pub fn session_ending() -> Option<SessionEnd> {
+    SessionEnd::of_code(END_ASKED.load(std::sync::atomic::Ordering::Acquire))
+}
+
+/// How long the window's thread has, once the end is asked for, before MDM ends without it: a
+/// frame that never comes (the window's thread held up) must not hold the session's end until
+/// logind's SIGKILL. The end itself takes at most `App::end_session`'s 4 s and the log's 2 s.
+#[cfg(target_os = "linux")]
+const END_GRACE: std::time::Duration = std::time::Duration::from_secs(10);
+
+/// Linux: the session's end reaches MDM as a signal: logind's SIGTERM at logout and shutdown (and
+/// a `kill`), SIGHUP and SIGINT from the terminal it was started from. Each is run as Windows'
+/// session end is: `wake` brings the window's next frame, which saves as an Exit saves and ends
+/// MDM (main.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
+/// stays ignored. Ctrl+C once more ends MDM at once, and so does a window that hasn't ended
+/// within [`END_GRACE`]: then each download resumes from its last save, as before. Heard on
+/// `rt`, a signal handler itself only wakes it (tokio's).
+#[cfg(target_os = "linux")]
+pub fn on_session_end(rt: &tokio::runtime::Handle, wake: std::sync::Arc<dyn Fn() + Send + Sync>) {
+    hear_signals(rt, wake, Some(END_GRACE));
+}
+
+/// [`on_session_end`]'s signals, the window given `grace` (None: as long as it takes, the tests).
+#[cfg(target_os = "linux")]
+fn hear_signals(
+    rt: &tokio::runtime::Handle,
+    wake: std::sync::Arc<dyn Fn() + Send + Sync>,
+    grace: Option<std::time::Duration>,
+) {
+    use tokio::signal::unix::{SignalKind, signal};
+    let _ = WAKE.set(wake.clone());
+    for why in SessionEnd::ALL {
+        let Some(sig) = why.signal() else { continue };
+        if ignored(sig) {
+            tracing::info!("{why:?}: its signal is ignored, as when MDM was started");
+            continue;
+        }
+        let wake = wake.clone();
+        rt.spawn(async move {
+            let mut heard = match signal(SignalKind::from_raw(sig)) {
+                Ok(s) => s,
+                Err(e) => {
+                    tracing::warn!("{why:?}: its signal isn't heard ({e})");
+                    return;
+                }
+            };
+            while heard.recv().await.is_some() {
+                end_asked(why, &*wake, grace);
+            }
+        });
+    }
+}
+
+/// A signal asks for the end ([`on_session_end`]).
+#[cfg(target_os = "linux")]
+fn end_asked(why: SessionEnd, wake: &dyn Fn(), grace: Option<std::time::Duration>) {
+    if !ask_end(why) {
+        if again_ends_now(why) {
+            tracing::warn!("asked again to end ({why:?}): MDM ends now");
+            end_now();
+        }
+        tracing::info!("asked again to end ({why:?}): the end is under way");
+        return;
+    }
+    tracing::info!("asked to end ({why:?}): the window saves and ends");
+    wait_for_the_window(wake, grace);
+}
+
+/// Whether `why`, once the end is under way, cuts it short: Ctrl+C once more does. Nothing else:
+/// systemd sends a session's programs SIGHUP right after its SIGTERM at shutdown (logind's
+/// session scopes, SendSIGHUP), which must not undo the end it asked for.
+#[cfg(target_os = "linux")]
+fn again_ends_now(why: SessionEnd) -> bool {
+    why == SessionEnd::Interrupted
+}
+
+/// The end is asked of the window's thread: `wake` brings its next frame, which runs it; one
+/// that hasn't come within `grace` ends MDM without it.
+#[cfg(target_os = "linux")]
+fn wait_for_the_window(wake: &dyn Fn(), grace: Option<std::time::Duration>) {
+    wake();
+    let Some(grace) = grace else { return };
+    let _ = std::thread::Builder::new()
+        .name("session end".into())
+        .spawn(move || {
+            std::thread::sleep(grace);
+            tracing::warn!("the window didn't end within {grace:?}: MDM ends without it");
+            end_now();
+        });
+}
+
+/// What wakes the window's thread ([`on_session_end`]'s), for the display's end too.
+#[cfg(target_os = "linux")]
+static WAKE: std::sync::OnceLock<std::sync::Arc<dyn Fn() + Send + Sync>> =
+    std::sync::OnceLock::new();
+
+/// Linux: the process ends now, once the session's end has saved (main.rs), without the
+/// libraries' exit handlers: with the display gone they would only touch it again, which runs
+/// Xlib's handler (and so the end) once more.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn exit_now(code: i32) -> ! {
+    // SAFETY: ends the process; the log was flushed by the caller.
+    unsafe { libc::_exit(code) }
+}
+
+/// MDM ends at once, the list and the downloads as last saved: the session's end, not a crash.
+#[cfg(target_os = "linux")]
+fn end_now() -> ! {
+    // yt-dlp and gallery-dl end with it (#1301).
+    mdm_tools::proc::end_all();
+    crate::crash::clean_exit();
+    std::process::exit(1);
+}
+
+/// Whether the signal `sig` is ignored (SIG_IGN), as MDM was started.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+fn ignored(sig: libc::c_int) -> bool {
+    // SAFETY: zeroed is a valid `sigaction` (plain integers and a mask) for the call to fill.
+    let mut old: libc::sigaction = unsafe { std::mem::zeroed() };
+    // SAFETY: a null new action only reads the current one into `old`.
+    let read = unsafe { libc::sigaction(sig, std::ptr::null(), &mut old) } == 0;
+    read && old.sa_sigaction == libc::SIG_IGN
+}
+
+/// What the display going away runs ([`on_display_lost`]): the end now, true; false when the app
+/// is busy in a frame of its own (the window's thread is in it), and nothing was done.
+#[cfg(target_os = "linux")]
+type OnDisplayLost = Box<dyn Fn() -> bool>;
+
+#[cfg(target_os = "linux")]
+thread_local! {
+    /// Run when the display goes away, on the window's thread.
+    static DISPLAY_LOST: std::cell::RefCell<Option<OnDisplayLost>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+/// Xlib returns from its I/O error handler to the call that failed, instead of ending the
+/// program ([`on_display_lost`]: XSetIOErrorExitHandler, Xlib 1.7 and later).
+#[cfg(target_os = "linux")]
+static XLIB_RETURNS: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Linux, X11 (XWayland too): when the X server of `display` (eframe's creation context) goes
+/// away (GNOME's at logout, before logind's SIGTERM comes), MDM saves as an Exit does and ends:
+/// `end` runs on the window's thread between two frames, or, when the display's end is found in
+/// the middle of one, the end waits for the next frame (`session_ending`), as a SIGTERM's does.
+/// Call it on the window's thread once the window is open. It is found two ways, whichever comes
+/// first: winit's own calls on the lost connection fail and panic on the window's thread
+/// (`inner_size`'s unwrap: crash.rs asks [`display_lost_panic`]); or Xlib sees it and calls its
+/// I/O error handler, whose default ends the program (`exit(1)`). Either way MDM ended unsaved,
+/// or with a crash report. Wayland's windows: winit's event loop ends on its own when the
+/// connection is lost, and eframe drops the app, which saves as an Exit does.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn on_display_lost(
+    display: &impl raw_window_handle::HasDisplayHandle,
+    end: impl Fn() -> bool + 'static,
+) {
+    if on_wayland() {
+        return;
+    }
+    DISPLAY_LOST.with(|d| *d.borrow_mut() = Some(Box::new(end)));
+    type IoErrorHandler = unsafe extern "C" fn(*mut std::ffi::c_void) -> libc::c_int;
+    type SetIoErrorHandler = unsafe extern "C" fn(Option<IoErrorHandler>) -> Option<IoErrorHandler>;
+    type ExitHandler = unsafe extern "C" fn(*mut std::ffi::c_void, *mut std::ffi::c_void);
+    type SetExitHandler =
+        unsafe extern "C" fn(*mut std::ffi::c_void, Option<ExitHandler>, *mut std::ffi::c_void);
+    // SAFETY: a NUL-terminated name; RTLD_NOLOAD only finds the library winit already loaded
+    // (and keeps it loaded, which it is for the program's life anyway).
+    let lib = unsafe {
+        libc::dlopen(
+            c"libX11.so.6".as_ptr(),
+            libc::RTLD_LAZY | libc::RTLD_LOCAL | libc::RTLD_NOLOAD,
+        )
+    };
+    if lib.is_null() {
+        tracing::warn!("Xlib's end of the display isn't heard: Xlib isn't loaded");
+        return;
+    }
+    // SAFETY: the handle dlopen just gave; NUL-terminated names.
+    let (set, set_exit) = unsafe {
+        (
+            libc::dlsym(lib, c"XSetIOErrorHandler".as_ptr()),
+            libc::dlsym(lib, c"XSetIOErrorExitHandler".as_ptr()),
+        )
+    };
+    if set.is_null() {
+        tracing::warn!("Xlib's end of the display isn't heard: no XSetIOErrorHandler");
+        return;
+    }
+    // The display winit opened, for Xlib to return to it once its I/O error handler has.
+    let xlib_display = match display.display_handle().map(|h| h.as_raw()) {
+        Ok(raw_window_handle::RawDisplayHandle::Xlib(h)) => h.display,
+        _ => None,
+    };
+    if let Some(dpy) = xlib_display
+        && !set_exit.is_null()
+    {
+        // SAFETY: the symbol is Xlib's XSetIOErrorExitHandler, of this signature (Xlib.h).
+        let set_exit =
+            unsafe { std::mem::transmute::<*mut std::ffi::c_void, SetExitHandler>(set_exit) };
+        // SAFETY: winit's display, open for the program's life; the handler a function of the
+        // signature Xlib calls, for the program's life.
+        unsafe { set_exit(dpy.as_ptr(), Some(xlib_returns), std::ptr::null_mut()) };
+        XLIB_RETURNS.store(true, std::sync::atomic::Ordering::Release);
+    }
+    // SAFETY: the symbol is Xlib's XSetIOErrorHandler, of this signature (Xlib.h).
+    let set = unsafe { std::mem::transmute::<*mut std::ffi::c_void, SetIoErrorHandler>(set) };
+    // SAFETY: the handler is a function of the signature Xlib calls, for the program's life.
+    unsafe { set(Some(xlib_lost_display)) };
+}
+
+/// Xlib's I/O error handler ([`on_display_lost`]): the X server's connection is lost.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+unsafe extern "C" fn xlib_lost_display(_display: *mut std::ffi::c_void) -> libc::c_int {
+    tracing::warn!("the display went away (Xlib: the X server's connection is lost)");
+    display_lost();
+    if !XLIB_RETURNS.load(std::sync::atomic::Ordering::Acquire) {
+        // An older Xlib ends the program once this returns: before it, as it is.
+        tracing::warn!("in the middle of a frame: nothing more is saved");
+        crate::crash::clean_exit();
+        mdm_crash::logs::flush(std::time::Duration::from_secs(1));
+        // SAFETY: ends the process, as Xlib's own handler would (with exit).
+        unsafe { libc::_exit(1) }
+    }
+    0
+}
+
+/// Xlib's exit handler ([`on_display_lost`]): returning lets the call that failed return.
+#[cfg(target_os = "linux")]
+extern "C" fn xlib_returns(_display: *mut std::ffi::c_void, _data: *mut std::ffi::c_void) {}
+
+/// Linux: whether a panic on `thread` is winit's on a lost display ([`on_display_lost`]): on the
+/// window's thread, with MDM's windows on X11 and its X server gone (a new connection to it is
+/// refused). Then it's the session's end, not a crash: [`display_lost`] instead of a report.
+#[cfg(target_os = "linux")]
+pub fn display_lost_panic(thread: &str) -> bool {
+    thread == "main"
+        && DISPLAY_LOST.with(|d| d.try_borrow().is_ok_and(|d| d.is_some()))
+        && x11rb::rust_connection::RustConnection::connect(None).is_err()
+}
+
+/// The display went away. Between two frames: the end now ([`on_display_lost`]'s), and MDM ends
+/// at once, without the libraries' exit handlers, which would only touch the lost display again.
+/// In the middle of a frame (the app busy in it): the end is asked of the next frame, as a
+/// SIGTERM's is, and this returns; a panic of winit's then unwinds, which drops the app, and its
+/// drop saves as an Exit does.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub fn display_lost() {
+    let ended = DISPLAY_LOST.with(|d| {
+        d.try_borrow()
+            .ok()
+            .and_then(|d| d.as_ref().map(|end| end()))
+    });
+    if ended == Some(true) {
+        // SAFETY: ends the process, as Xlib's own handler would (with exit).
+        unsafe { libc::_exit(0) }
+    }
+    if ask_end(SessionEnd::DisplayLost) {
+        tracing::info!("the display went away during a frame: the next one saves and ends");
+        crate::crash::clean_exit();
+        let wake = WAKE.get().cloned();
+        wait_for_the_window(&|| wake.as_ref().map_or((), |w| w()), Some(END_GRACE));
+    }
+}
+
 pub fn run_at_startup() -> bool {
     startup_file().is_some_and(|f| f.is_file())
 }
@@ -173,15 +510,14 @@ pub fn update_run_at_startup() {
 const HOST: &str = "misterdownloadmanager-nmhost";
 /// The manifest it writes in each browser's folder.
 const MANIFEST: &str = "com.misterdownloadmanager.host.json";
-/// How long the helper's `--register` has at a start (it writes a few small files).
+/// How long the helper's `--repair` has at a start (it writes a few small files).
 const REGISTER_LIMIT: std::time::Duration = std::time::Duration::from_secs(20);
-/// Why the last registration failed, in the system's words (Test browser integration says it);
-/// None once one succeeded.
-static REGISTER_ERROR: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
 
 /// Browser integration: the host's manifests in every installed browser's folder. There is no
 /// installer step on Linux and macOS, so this runs at each start, on a thread of its own: a
-/// moved app, a browser installed since, or a helper copy that went missing is repaired.
+/// moved app, a browser installed since, or a helper copy that went missing is repaired. A
+/// manifest that works naming another copy of MDM is left alone (the helper's `--repair`, #818):
+/// Set it up takes it.
 ///
 /// From an AppImage, whose programs sit in a mount that is gone once it quits, the host is first
 /// copied to the data folder with the AppImage's path beside it (`app-path`: the host starts
@@ -189,29 +525,18 @@ static REGISTER_ERROR: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(
 pub fn register_browsers() {
     let started = std::thread::Builder::new()
         .name("register-browsers".into())
-        .spawn(|| register_browsers_now(REGISTER_LIMIT));
+        .spawn(|| register_browsers_now(REGISTER_LIMIT, "--repair"));
     if let Err(e) = started {
         tracing::warn!("browser integration: not set up, no thread for it: {e}");
     }
 }
 
-/// `register_browsers`, waiting for it to finish, up to `limit` (Test browser integration's Set
-/// it up, on a thread of its own: extension::set_up). Every failure is logged and kept for Test
-/// browser integration ([`register_error`]).
-pub fn register_browsers_now(limit: std::time::Duration) {
-    let result = host_program().and_then(|host| run_register(&host, limit));
-    match &result {
-        Ok(said) => tracing::info!("browser integration set up: {said}"),
-        Err(e) => tracing::warn!("browser integration not set up: {e}"),
-    }
-    if let Ok(mut last) = REGISTER_ERROR.lock() {
-        *last = result.err();
-    }
-}
-
-/// Why the last registration failed, if it did.
-pub fn register_error() -> Option<String> {
-    REGISTER_ERROR.lock().ok().and_then(|e| e.clone())
+/// `register_browsers` with the helper's `arg` (`--register`: Set it up, which takes the
+/// browsers from any other copy), waiting for it to finish, up to `limit` (on a thread of its
+/// own: extension::set_up). Every failure is logged and kept for Test browser integration.
+pub fn register_browsers_now(limit: std::time::Duration, arg: &str) {
+    let result = host_program().and_then(|host| crate::extension::run_host(&host, arg, limit));
+    crate::extension::registered_as(&result);
 }
 
 /// The helper to register: beside this program, or from an AppImage its copy in the data folder
@@ -283,37 +608,6 @@ fn runs(path: &Path) -> bool {
     std::fs::metadata(path).is_ok_and(|m| m.is_file() && m.permissions().mode() & 0o111 != 0)
 }
 
-/// The helper's `--register`: what it says it did, or why it failed.
-fn run_register(host: &Path, limit: std::time::Duration) -> Result<String, String> {
-    use std::io::Read;
-    let mut child = Command::new(host)
-        .arg("--register")
-        .stdin(Stdio::null())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .map_err(|e| format!("{}: {e}", host.display()))?;
-    let status = crate::launch::wait_within(&mut child, limit);
-    // A few lines at most: they fit the pipes, so the helper never waits on them.
-    let mut said = String::new();
-    if let Some(mut out) = child.stdout.take() {
-        let _ = out.read_to_string(&mut said);
-    }
-    if let Some(mut err) = child.stderr.take() {
-        said.push('\n');
-        let _ = err.read_to_string(&mut said);
-    }
-    let said = said.split_whitespace().collect::<Vec<_>>().join(" ");
-    match status {
-        Some(s) if s.success() => Ok(said),
-        Some(s) => Err(format!("{} --register: {s}: {said}", host.display())),
-        None => Err(format!(
-            "{} --register: no answer in {limit:?}",
-            host.display()
-        )),
-    }
-}
-
 /// Where browser integration stands (Options → General → Test browser integration): the
 /// manifests in the folders the browsers here read (mdm_ipc::browsers), for this user, or for
 /// everyone when no browser is there for this user, and the helper each names. A browser that
@@ -351,28 +645,53 @@ fn registration_in(
     dirs: Vec<(PathBuf, mdm_ipc::browsers::Family)>,
     all_users: bool,
 ) -> crate::extension::Registration {
+    registration_with(dirs, all_users, &|dir| {
+        cfg!(target_os = "macos") && refused(dir)
+    })
+}
+
+/// macOS refused to let MDM into the browser folder `dir` (#1218): its manifest, or the folder
+/// itself, can't be read, "Operation not permitted" (EPERM). macOS's protection of other apps'
+/// data says so; a folder that is simply not there, or not MDM's to read, says other errors.
+fn refused(dir: &Path) -> bool {
+    let eperm = |e: std::io::Error| e.raw_os_error() == Some(libc::EPERM);
+    std::fs::File::open(dir.join(MANIFEST))
+        .err()
+        .is_some_and(eperm)
+        || std::fs::read_dir(dir).err().is_some_and(eperm)
+}
+
+/// `registration_in`, with `refuses` telling a folder whose manifest is missing because the
+/// system refused it.
+fn registration_with(
+    dirs: Vec<(PathBuf, mdm_ipc::browsers::Family)>,
+    all_users: bool,
+    refuses: &dyn Fn(&Path) -> bool,
+) -> crate::extension::Registration {
     use crate::extension::Registration;
     if dirs.is_empty() {
         return Registration::NoBrowser;
     }
     // A browser reads its user folder's manifest first: each must be there and name a helper
     // that runs. Everyone's folders: one that works is enough.
-    let (mut ready, mut missing, mut broken) = (0, 0, None);
+    let (mut ready, mut missing, mut broken, mut refused) = (0, 0, None, None);
     for (dir, _) in dirs {
-        let manifest = dir.join(MANIFEST);
-        if !manifest.is_file() {
-            missing += 1;
-            continue;
-        }
-        match mdm_ipc::browsers::manifest_program(&manifest) {
-            Some(p) if runs(&p) => ready += 1,
-            Some(p) => broken = broken.or(Some(p)),
-            None => missing += 1,
+        match mdm_ipc::browsers::Holder::of(&dir.join(MANIFEST)) {
+            mdm_ipc::browsers::Holder::Alive(_) => ready += 1,
+            mdm_ipc::browsers::Holder::ProgramGone(p) => broken = broken.or(Some(p)),
+            mdm_ipc::browsers::Holder::ManifestGone(_) => {
+                missing += 1;
+                if refused.is_none() && refuses(&dir) {
+                    refused = Some(dir);
+                }
+            }
         }
     }
-    match broken {
-        Some(p) if !(all_users && ready > 0) => Registration::HelperMissing(p),
+    match (broken, refused) {
+        (Some(p), _) if !(all_users && ready > 0) => Registration::HelperMissing(p),
         _ if ready > 0 && (all_users || missing == 0) => Registration::Ready,
+        // Missing because the system refused it: said, with what to do (extension::Refused).
+        (_, Some(dir)) => Registration::Refused(dir),
         _ => Registration::Missing,
     }
 }
@@ -668,6 +987,22 @@ pub fn set_torrent_handlers(on: bool) {
         "x-scheme-handler/magnet",
         "application/x-bittorrent",
     ]));
+}
+
+/// `win32::torrent_handler_is_ours`: is MDM what the desktop opens .torrent files with? Linux:
+/// xdg-mime's default app for them is the packages' desktop entry; macOS: Launch Services'
+/// default for the type is this app (`open_events::is_default`). Asked once, to settle Torrent
+/// settings' switch (#1058).
+pub fn torrent_handler_is_ours() -> bool {
+    #[cfg(target_os = "macos")]
+    return open_events::is_default();
+    #[cfg(not(target_os = "macos"))]
+    Command::new("xdg-mime")
+        .args(["query", "default", "application/x-bittorrent"])
+        .stdin(Stdio::null())
+        .stderr(Stdio::null())
+        .output()
+        .is_ok_and(|o| String::from_utf8_lossy(&o.stdout).trim() == "misterdownloadmanager.desktop")
 }
 
 /// `win32::assistive_technology_listening`: Linux's AT-SPI adapter answers a screen reader with
@@ -1413,7 +1748,8 @@ const WAYLAND_LIBS: &[WindowLib] = &[
 pub struct WindowSystem {
     /// Wayland's windows, not X11's (or XWayland's).
     pub wayland: bool,
-    /// X11 is chosen in a Wayland session (XWayland): winit is told so.
+    /// X11's windows in a Wayland session (XWayland): chosen there (winit is told so), or the only
+    /// display MDM was given, whose server is XWayland (`on_xwayland_server`).
     x11_over_wayland: bool,
     /// X11 was MDM's choice, but these are missing: Wayland's windows instead.
     pub x11_missing: Vec<&'static WindowLib>,
@@ -1533,6 +1869,32 @@ fn choose_window_system(
     ws
 }
 
+/// `ws`, an X11 session's, as XWayland's when its X server is XWayland (`xwayland`, asked only
+/// then): a program started without `WAYLAND_DISPLAY` in a Wayland session (Hyprland's apps
+/// started from an environment that lacks it) sees an X11 session only. Its windows are
+/// XWayland's all the same, and are paced as such (renderer.rs `Swaps::NoneWait`): taken for
+/// Xorg's, the main window's swaps waited for the screen's refresh, which XWayland gives a window
+/// the compositor isn't showing (on another workspace, in a special one) only by a timer about a
+/// second long; and every dialog is drawn in the main window's pass, so a click in Download File
+/// Info or Download complete showed its effect one to two seconds later.
+#[cfg(target_os = "linux")]
+fn on_xwayland_server(mut ws: WindowSystem, xwayland: impl FnOnce() -> bool) -> WindowSystem {
+    if !ws.wayland && !ws.x11_over_wayland && ws.missing.is_empty() && !ws.both && xwayland() {
+        ws.x11_over_wayland = true;
+        ws.why = "the session's only one, on XWayland: no Wayland display given";
+    }
+    ws
+}
+
+/// Whether the X server is XWayland: it has the XWAYLAND extension (XWayland 23.1 and later;
+/// an older one is taken for Xorg, as before).
+#[cfg(target_os = "linux")]
+fn xwayland_server() -> Result<bool, Box<dyn std::error::Error>> {
+    use x11rb::protocol::xproto::ConnectionExt;
+    let (conn, _) = x11rb::rust_connection::RustConnection::connect(None)?;
+    Ok(conn.query_extension(b"XWAYLAND")?.reply()?.present)
+}
+
 /// View → Window system's saved choice, given before the first window opens.
 #[cfg(target_os = "linux")]
 static SAVED_PICK: std::sync::OnceLock<Option<crate::settings::WindowSystemPick>> =
@@ -1559,12 +1921,15 @@ pub fn window_system() -> &'static WindowSystem {
             std::env::var_os("MDM_WAYLAND").as_deref(),
             SAVED_PICK.get().copied().flatten(),
         );
-        let ws = choose_window_system(
-            set("WAYLAND_DISPLAY"),
-            set("DISPLAY"),
-            pick,
-            x11_fit,
-            |lib| lib.names.iter().any(|n| loads(n)),
+        let ws = on_xwayland_server(
+            choose_window_system(
+                set("WAYLAND_DISPLAY"),
+                set("DISPLAY"),
+                pick,
+                x11_fit,
+                |lib| lib.names.iter().any(|n| loads(n)),
+            ),
+            || xwayland_server().unwrap_or(false),
         );
         let system = match (ws.wayland, ws.x11_over_wayland) {
             (true, _) => "Wayland",
@@ -1726,31 +2091,142 @@ pub fn on_xwayland() -> bool {
     window_system().x11_over_wayland
 }
 
-/// Linux: the vendor of the GLX that will draw MDM's OpenGL windows on the X display, before any
-/// of them is made (their swap interval is chosen when the first one is): `glXGetClientString`'s
-/// `GLX_VENDOR` ("NVIDIA Corporation", "Mesa Project and SGI"). libglvnd picks the driver for
-/// the display the same way when eframe makes its context. None without libGL or a display.
+/// Linux, X11 and XWayland: the main window's X11 id, for [`withdraw_main_window`]; 0 until it is
+/// known, and on Wayland.
 #[cfg(target_os = "linux")]
-#[allow(unsafe_code)]
-pub fn glx_vendor() -> Option<String> {
-    let xlib = x11_dl::xlib::Xlib::open().ok()?;
-    let glx = x11_dl::glx::Glx::open().ok()?;
-    // SAFETY: a display opened here and closed before returning; the vendor string belongs to
-    // the GLX library, and is copied while the display is open.
-    unsafe {
-        let display = (xlib.XOpenDisplay)(std::ptr::null());
-        if display.is_null() {
-            return None;
-        }
-        let vendor = (glx.glXGetClientString)(display, x11_dl::glx::GLX_VENDOR);
-        let vendor = (!vendor.is_null()).then(|| {
-            std::ffi::CStr::from_ptr(vendor)
-                .to_string_lossy()
-                .into_owned()
-        });
-        (xlib.XCloseDisplay)(display);
-        vendor
+static MAIN_X11_WINDOW: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// Linux: the main window, as eframe made it (`win32::set_main_window`'s counterpart).
+#[cfg(target_os = "linux")]
+pub fn set_main_window(cc: &eframe::CreationContext<'_>) {
+    use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+    let id = match cc.window_handle().map(|h| h.as_raw()) {
+        Ok(RawWindowHandle::Xlib(h)) => u32::try_from(h.window).unwrap_or(0),
+        Ok(RawWindowHandle::Xcb(h)) => h.window.get(),
+        _ => 0,
+    };
+    MAIN_X11_WINDOW.store(id, std::sync::atomic::Ordering::Relaxed);
+}
+
+/// Linux, X11 and XWayland: the main window out of the taskbar and the window list, hidden in the
+/// notification area (#1255). winit hides a window by unmapping it, which takes a shown window
+/// out of the window manager's hands, but does nothing to a minimized one: the window manager
+/// already unmapped it, and keeps it, minimized, in its list (XFCE's window buttons showed it
+/// beside the tray icon). ICCCM (4.1.4) asks for both to withdraw a window: the unmap, and a
+/// synthetic UnmapNotify sent to the root window, which Xlib's XWithdrawWindow does and winit
+/// doesn't. Both here, on a connection of MDM's own, in that order; winit's own unmap after them
+/// finds the window unmapped already, and showing it maps it again, as a new window.
+#[cfg(target_os = "linux")]
+pub fn withdraw_main_window() {
+    let window = MAIN_X11_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    if window == 0 || on_wayland() {
+        return;
     }
+    if let Err(e) = withdraw(window) {
+        tracing::warn!("the window couldn't be taken out of the window list: {e}");
+    }
+}
+
+/// ICCCM's withdrawal of X11 window `window` ([`withdraw_main_window`]).
+#[cfg(target_os = "linux")]
+fn withdraw(window: u32) -> Result<(), Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{ConnectionExt, EventMask, UNMAP_NOTIFY_EVENT, UnmapNotifyEvent};
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = conn.setup().roots.get(screen).ok_or("no such screen")?.root;
+    conn.unmap_window(window)?;
+    let unmapped = UnmapNotifyEvent {
+        response_type: UNMAP_NOTIFY_EVENT,
+        sequence: 0,
+        event: root,
+        window,
+        from_configure: false,
+    };
+    conn.send_event(
+        false,
+        root,
+        EventMask::SUBSTRUCTURE_REDIRECT | EventMask::SUBSTRUCTURE_NOTIFY,
+        unmapped,
+    )?;
+    // A round trip: both requests reached the server before the connection closes.
+    conn.get_input_focus()?.reply()?;
+    Ok(())
+}
+
+/// Linux, XWayland only: a window of MDM's was clicked while it hasn't the keyboard (winit
+/// saw it lose the X input focus, or never get it), so the X server's input focus goes to it:
+/// to the window under the pointer, when it is MDM's and the focus is elsewhere. A window manager
+/// gives a clicked window the focus; Hyprland's (0.56) can leave the focus with another X11
+/// window than the one it shows active, and never sets it again since it takes that one for
+/// focused already: after another X11 program's window took the focus itself (Hyprland's revert
+/// then does nothing), or after MDM's main window was hidden in the notification area and shown
+/// again (the focus went with the window, and came back to none). Clicks kept working, keys went
+/// elsewhere: File Properties' boxes took the caret, but no typing and no Ctrl+V. Keys reach
+/// an X11 window only while the compositor gives XWayland the keyboard, so this never takes it
+/// from another program. Native Wayland: the compositor alone decides, nothing to do. Plain
+/// Xorg: the window manager's own focus rules stand (some keep the keyboard on a dialog while
+/// the main window behind it is clicked), nothing to do either.
+#[cfg(target_os = "linux")]
+pub fn take_keyboard_on_click() {
+    if !takes_keyboard_on_click(window_system()) || crate::offscreen() {
+        return;
+    }
+    match keyboard_to_window_under_pointer() {
+        Ok(Some(window)) => {
+            tracing::info!("a window clicked without the keyboard (X11): given it (0x{window:x})");
+        }
+        Ok(None) => {}
+        Err(e) => tracing::warn!("the clicked window couldn't be given the keyboard: {e}"),
+    }
+}
+
+/// Whether [`take_keyboard_on_click`] acts under `ws`: only in XWayland, X11 windows in a
+/// Wayland session (not native Wayland, not plain Xorg).
+#[cfg(target_os = "linux")]
+fn takes_keyboard_on_click(ws: &WindowSystem) -> bool {
+    ws.x11_over_wayland && !ws.wayland
+}
+
+/// [`take_keyboard_on_click`]'s work, on a connection of MDM's own: the X input focus to this
+/// process's window under the pointer, unless it has it. Some(window) when it was given.
+#[cfg(target_os = "linux")]
+fn keyboard_to_window_under_pointer() -> Result<Option<u32>, Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{AtomEnum, ConnectionExt, InputFocus};
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = conn.setup().roots.get(screen).ok_or("no such screen")?.root;
+    let pid_atom = conn.intern_atom(false, b"_NET_WM_PID")?.reply()?.atom;
+    // Down from the root to the program's window under the pointer: XWayland's root holds it,
+    // an X11 window manager's frame may (reparenting). The first with a process id is the one.
+    let mut window = root;
+    let mut ours = None;
+    for _ in 0..8 {
+        let child = conn.query_pointer(window)?.reply()?.child;
+        if child == x11rb::NONE {
+            break;
+        }
+        window = child;
+        let pid = conn
+            .get_property(false, window, pid_atom, AtomEnum::CARDINAL, 0, 1)?
+            .reply()?
+            .value32()
+            .and_then(|mut v| v.next());
+        if let Some(pid) = pid {
+            ours = (pid == std::process::id()).then_some(window);
+            break;
+        }
+    }
+    let Some(window) = ours else {
+        return Ok(None);
+    };
+    if conn.get_input_focus()?.reply()?.focus == window {
+        return Ok(None);
+    }
+    // The time of now: the click that asks for it has just happened.
+    conn.set_input_focus(InputFocus::PARENT, window, x11rb::CURRENT_TIME)?;
+    // A round trip: the request reached the server before the connection closes.
+    conn.get_input_focus()?.reply()?;
+    Ok(Some(window))
 }
 
 /// Linux: the vendor OpenGL says it is (`GL_VENDOR`), with eframe's context current.
@@ -2094,11 +2570,17 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
 /// down the command channel, as a .torrent or magnet link on Windows' or Linux's command line
 /// goes (`mdm_ipc::parse_args`): Add torrent opens for it. The app's Info.plist
 /// (tools/installer/build-macos.sh) tells macOS that MDM opens them.
+///
+/// The same goes for MDM opened again while it runs (#1125): a click on its icon in the Dock,
+/// or MDM.app opened from Finder, Launchpad or Spotlight. macOS starts no second copy for that:
+/// it sends the running one a reopen event, which brings the main window back as a second start
+/// does on Windows and Linux. So a window closed into the Dock always has its way back.
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub mod open_events {
     use std::ffi::c_void;
     use std::sync::Arc;
+    use std::sync::atomic::{AtomicBool, Ordering};
     use std::sync::mpsc::Sender;
 
     use objc2::rc::Retained;
@@ -2115,6 +2597,11 @@ pub mod open_events {
     const INTERNET_EVENT_CLASS: u32 = u32::from_be_bytes(*b"GURL");
     const GET_URL: u32 = u32::from_be_bytes(*b"GURL");
     const DIRECT_OBJECT: u32 = u32::from_be_bytes(*b"----");
+    /// kAEReopenApplication: the app opened again while it runs (its icon in the Dock clicked).
+    const REOPEN: u32 = u32::from_be_bytes(*b"rapp");
+
+    /// Whether MDM receives the reopen event (its handler is installed as the app starts).
+    static REOPENS: AtomicBool = AtomicBool::new(false);
 
     pub struct Ivars {
         tx: Sender<mdm_ipc::Incoming>,
@@ -2146,7 +2633,13 @@ pub mod open_events {
                     let _: () = msg_send![&*manager, setEventHandler: self,
                         andSelector: sel!(getURL:withReplyEvent:),
                         forEventClass: INTERNET_EVENT_CLASS, andEventID: GET_URL];
+                    // In AppKit's place: its own handler brings back a minimized window, not
+                    // one closed into the Dock (ordered out).
+                    let _: () = msg_send![&*manager, setEventHandler: self,
+                        andSelector: sel!(reopen:withReplyEvent:),
+                        forEventClass: CORE_EVENT_CLASS, andEventID: REOPEN];
                 }
+                REOPENS.store(true, Ordering::Release);
             }
 
             #[unsafe(method(openDocuments:withReplyEvent:))]
@@ -2166,8 +2659,27 @@ pub mod open_events {
                     self.hand(link);
                 }
             }
+
+            /// Opened again (its icon in the Dock clicked): a plain second start, which brings
+            /// the main window back in front, hidden or minimized.
+            #[unsafe(method(reopen:withReplyEvent:))]
+            fn reopen(&self, _event: &NSAppleEventDescriptor, _reply: &NSAppleEventDescriptor) {
+                tracing::info!("opened again from the system (the Dock): the window comes back");
+                let _ = self.ivars().tx.send(mdm_ipc::Incoming {
+                    cmd: mdm_ipc::Command::default(),
+                    reply: None,
+                });
+                (self.ivars().wake)();
+            }
         }
     );
+
+    /// Whether a click on MDM's icon in the Dock brings a hidden main window back: the reopen
+    /// event's handler is in place. Closing can then leave the window in the Dock, as Mac apps
+    /// do, whether the menu bar shows MDM's icon or not.
+    pub fn dock_reopens() -> bool {
+        REOPENS.load(Ordering::Acquire)
+    }
 
     impl OpenEvents {
         /// A .torrent's path or a magnet link to the app, as its command line would.
@@ -2220,6 +2732,25 @@ pub mod open_events {
             role: u32,
             bundle_id: *const c_void,
         ) -> i32;
+        fn LSCopyDefaultRoleHandlerForContentType(
+            content_type: *const c_void,
+            role: u32,
+        ) -> *mut c_void;
+    }
+
+    /// Is this app Launch Services' default for .torrent files (`unix::torrent_handler_is_ours`)?
+    pub fn is_default() -> bool {
+        let torrent = NSString::from_str(TORRENT_TYPE);
+        // kLSRolesAll, as `make_default` sets it.
+        const ALL_ROLES: u32 = 0xFFFF_FFFF;
+        // SAFETY: NSString is toll-free bridged to CFString. A Copy function's result is ours to
+        // release, which Retained does; null (no default) is None.
+        let handler = unsafe {
+            Retained::from_raw(
+                LSCopyDefaultRoleHandlerForContentType(cf(&torrent), ALL_ROLES).cast::<NSString>(),
+            )
+        };
+        handler.is_some_and(|h| h.to_string().eq_ignore_ascii_case(BUNDLE_ID))
     }
 
     /// MDM the default app for magnet links and .torrent files (Torrent settings' switch). A
@@ -2330,12 +2861,20 @@ pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter
     #[cfg(target_os = "linux")]
     let monitor = reporter.monitor_pid();
     // SAFETY: the closure runs in the signal / exception handler; it only sends the dump request
-    // over the already-open socket.
+    // over the monitor's socket, when its connection is open (before it is, the dump is refused
+    // and the process dies the system's way).
     let event = unsafe { make_crash_event(move |cc| CrashEventResult::Handled(reporter.dump(cc))) };
     match CrashHandler::attach(event) {
         Ok(h) => {
             #[cfg(target_os = "linux")]
-            h.set_ptracer(monitor);
+            {
+                h.set_ptracer(monitor);
+                // Its handler reads a signal's context inside the frame, even where the kernel's
+                // frame is smaller than the copy it makes (no XSAVE, #1239).
+                if !in_frame::keep_handler_in_frame() {
+                    tracing::warn!("crash handler: its signals couldn't be routed in frame");
+                }
+            }
             CRASH_HANDLER.set(h).is_ok()
         }
         Err(e) => {
@@ -2344,6 +2883,125 @@ pub fn attach_crash_handler(reporter: std::sync::Arc<mdm_crash::client::Reporter
         }
     }
 }
+
+// ---- The handler in front of crash-handler's (#1239). examples/crashy.rs in crates/crash keeps
+// a copy of this module, from this line to the end mark, that crates/crash/tests/in_frame.rs
+// checks is the same.
+/// crash-handler's signal handler, kept inside the signal's frame where the kernel's is smaller
+/// than the context it copies (no XSAVE: mdm_crash::frame says how). Linux only: crash-handler
+/// takes Mach exceptions on macOS, with no signal frame.
+#[cfg(target_os = "linux")]
+#[allow(unsafe_code)]
+pub mod in_frame {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    /// The signals crash-handler catches (its `EXCEPTION_SIGNALS`).
+    pub const SIGNALS: [libc::c_int; 6] = [
+        libc::SIGABRT,
+        libc::SIGBUS,
+        libc::SIGFPE,
+        libc::SIGILL,
+        libc::SIGSEGV,
+        libc::SIGTRAP,
+    ];
+
+    type Handler = unsafe extern "C" fn(libc::c_int, *mut libc::siginfo_t, *mut libc::c_void);
+
+    /// crash-handler's own handler, which [`in_frame`] calls; 0 until [`keep_handler_in_frame`]
+    /// found it.
+    static THEIRS: AtomicUsize = AtomicUsize::new(0);
+
+    /// Put [`in_frame`] in front of crash-handler's handler; call it right after
+    /// `CrashHandler::attach`. True when the signals go through it.
+    pub fn keep_handler_in_frame() -> bool {
+        let mut routed = false;
+        for sig in SIGNALS {
+            let Some(mut sa) = action(sig) else {
+                continue;
+            };
+            if is_ours(&sa) {
+                routed = true;
+                continue;
+            }
+            // crash-handler installs one handler, with SA_SIGINFO, for all six: the first one
+            // found is it (SIGABRT's, just attached); a signal left to another isn't touched.
+            if sa.sa_flags & libc::SA_SIGINFO == 0 {
+                continue;
+            }
+            let theirs = match THEIRS.compare_exchange(
+                0,
+                sa.sa_sigaction,
+                Ordering::AcqRel,
+                Ordering::Acquire,
+            ) {
+                Ok(_) => sa.sa_sigaction,
+                Err(found) => found,
+            };
+            if sa.sa_sigaction != theirs {
+                continue;
+            }
+            // The same mask and flags (SA_ONSTACK, SA_SIGINFO), only the function is ours.
+            sa.sa_sigaction = in_frame as Handler as usize;
+            // SAFETY: `sa` is crash-handler's own action with `in_frame`, an `extern "C"`
+            // handler of the SA_SIGINFO kind, in its place; THEIRS was set above, before a
+            // signal can reach it.
+            if unsafe { libc::sigaction(sig, &sa, std::ptr::null_mut()) } == 0 {
+                routed = true;
+            }
+        }
+        routed
+    }
+
+    /// Signal `sig`'s current action.
+    pub fn action(sig: libc::c_int) -> Option<libc::sigaction> {
+        // SAFETY: a zeroed `sigaction` is a valid value for it (no handler, empty mask).
+        let mut sa: libc::sigaction = unsafe { std::mem::zeroed() };
+        // SAFETY: sigaction only reads the signal's current action into `sa`.
+        (unsafe { libc::sigaction(sig, std::ptr::null(), &mut sa) } == 0).then_some(sa)
+    }
+
+    /// True when action `sa` is [`in_frame`]'s.
+    pub fn is_ours(sa: &libc::sigaction) -> bool {
+        sa.sa_sigaction == in_frame as Handler as usize
+    }
+
+    /// The handler in front of crash-handler's: the kernel's context, or the part of it inside
+    /// the alternate stack.
+    unsafe extern "C" fn in_frame(
+        sig: libc::c_int,
+        info: *mut libc::siginfo_t,
+        uc: *mut libc::c_void,
+    ) {
+        let theirs = THEIRS.load(Ordering::Acquire);
+        // SAFETY: THEIRS holds crash-handler's handler, a function of this type, from before
+        // this handler was installed (keep_handler_in_frame).
+        let theirs = unsafe { std::mem::transmute::<usize, Handler>(theirs) };
+        // SAFETY: a zeroed `stack_t` is a valid value for it (no stack).
+        let mut ss: libc::stack_t = unsafe { std::mem::zeroed() };
+        // SAFETY: sigaltstack (a plain system call, safe in a signal handler) only reads this
+        // thread's alternate stack into `ss`.
+        let on_alt_stack = unsafe { libc::sigaltstack(std::ptr::null(), &mut ss) } == 0
+            && ss.ss_flags & libc::SS_ONSTACK != 0;
+        let stack = on_alt_stack.then(|| ss.ss_sp as usize..ss.ss_sp as usize + ss.ss_size);
+        let len = mdm_crash::frame::context_len();
+        let readable = mdm_crash::frame::readable(uc as usize, len, stack);
+        if readable == len {
+            // SAFETY: crash-handler's handler with the kernel's own arguments, as without this.
+            unsafe { theirs(sig, info, uc) };
+            return;
+        }
+        mdm_crash::frame::with_copy(|copy| {
+            // SAFETY: the first `readable` bytes at `uc` are the kernel's frame, inside the
+            // alternate stack; `copy` is a zeroed context of the type crash-handler reads, `len`
+            // bytes, more than `readable`.
+            unsafe {
+                std::ptr::copy_nonoverlapping(uc.cast::<u8>(), copy.cast::<u8>(), readable);
+                theirs(sig, info, copy);
+            }
+        });
+    }
+}
+// ---- End of the handler in front of crash-handler's.
 
 /// Have the monitor dump this process now (a panic, a freeze): every thread, this one asking.
 /// The process goes on.
@@ -2476,6 +3134,63 @@ pub fn gl_driver(gl: &eframe::glow::Context) -> String {
         )
     };
     format!("{renderer} ({version})")
+}
+
+/// The graphics drivers (name, version, software renderer), for a remembered failure to be tried
+/// again once they change (renderer.rs, #1205). Read without starting Vulkan or Metal:
+///
+/// - Linux: the Vulkan drivers' manifests (`vulkan/icd.d/*.json`, which a driver's update writes
+///   anew: their time stands for the version), lavapipe's (`lvp_icd…`) as the software renderer;
+///   and NVIDIA's own version (`/proc/driver/nvidia/version`), whose OpenGL comes with it.
+/// - macOS: its build (`sw_vers -buildVersion`): Metal's drivers come with macOS.
+///
+/// None elsewhere (no system's API there).
+pub fn graphics_drivers() -> Option<Vec<(String, String, bool)>> {
+    #[cfg(target_os = "macos")]
+    {
+        let build = printed_within(Command::new("sw_vers").arg("-buildVersion"), 2)?;
+        Some(vec![("macOS".to_owned(), build, false)])
+    }
+    #[cfg(target_os = "linux")]
+    {
+        let mut dirs: Vec<PathBuf> = std::env::var("XDG_DATA_DIRS")
+            .ok()
+            .filter(|d| !d.is_empty())
+            .unwrap_or_else(|| "/usr/local/share:/usr/share".into())
+            .split(':')
+            .map(|d| Path::new(d).join("vulkan/icd.d"))
+            .collect();
+        dirs.push(PathBuf::from("/etc/vulkan/icd.d"));
+        let mut list = Vec::new();
+        for dir in dirs {
+            let Ok(entries) = std::fs::read_dir(&dir) else {
+                continue;
+            };
+            for e in entries.flatten() {
+                let name = e.file_name().to_string_lossy().into_owned();
+                if !name.ends_with(".json") {
+                    continue;
+                }
+                let time = e
+                    .metadata()
+                    .and_then(|m| m.modified())
+                    .ok()
+                    .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                    .map_or(0, |d| d.as_secs());
+                list.push((name.clone(), time.to_string(), name.starts_with("lvp_icd")));
+            }
+        }
+        if let Ok(v) = std::fs::read_to_string("/proc/driver/nvidia/version")
+            && let Some(first) = v.lines().next()
+        {
+            list.push(("NVIDIA".to_owned(), first.trim().to_owned(), false));
+        }
+        Some(list)
+    }
+    #[cfg(not(any(target_os = "linux", target_os = "macos")))]
+    {
+        None
+    }
 }
 
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
@@ -2661,6 +3376,33 @@ pub fn macos_is_active_and_visible() -> bool {
     }
 }
 
+/// macOS: unhides the application if [`macos_hide_window`] hid it, without activating it or
+/// ordering any window back to the front. While `NSApp` is hidden, macOS lets none of its windows
+/// draw, so eframe runs only the app's logic: a window a command opens (the browser's Download
+/// video, Download File Info) is never created, and the browser's click seems to do nothing.
+/// The main window stays ordered out (hidden to the menu bar) as it was.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_unhide_app() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    // SAFETY: called on the main UI thread; reads `isHidden` of, and sends
+    // `unhideWithoutActivation` to, `NSApplication.sharedApplication`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return;
+        }
+        let hidden: Bool = msg_send![app, isHidden];
+        if hidden.as_bool() {
+            let _: () = msg_send![app, unhideWithoutActivation];
+        }
+    }
+}
+
 /// macOS: orders out the main window and hides the application when no other titled window is
 /// visible, so focus returns cleanly to the previously active app (#558).
 #[cfg(target_os = "macos")]
@@ -2705,6 +3447,120 @@ pub fn macos_hide_window() {
     }
 }
 
+/// Whether bringing a dialog or progress window forward on macOS should activate MDM and order
+/// that window front: true when MDM is inactive, hidden, or that window isn't key yet.
+#[cfg(any(target_os = "macos", test))]
+fn macos_window_needs_lift(app_active: bool, app_hidden: bool, window_key: bool) -> bool {
+    !app_active || app_hidden || !window_key
+}
+
+/// SAFETY: called on the main UI thread with a valid `NSApplication` pointer.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+unsafe fn activate_nsapp(app: *mut objc2::runtime::AnyObject, all_windows: bool) {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    let null_obj: *mut AnyObject = std::ptr::null_mut();
+    // SAFETY: main UI thread; unhides `NSApp` if hidden and activates the current running app.
+    unsafe {
+        let _: () = msg_send![app, unhide: null_obj];
+        if let Some(run_cls) = AnyClass::get(c"NSRunningApplication") {
+            let cur: *mut AnyObject = msg_send![run_cls, currentApplication];
+            if !cur.is_null() {
+                // NSApplicationActivateAllWindows (1) | NSApplicationActivateIgnoringOtherApps (2)
+                let opts: usize = if all_windows { 3 } else { 2 };
+                let _: Bool = msg_send![cur, activateWithOptions: opts];
+            }
+        }
+        let _: () = msg_send![app, activateIgnoringOtherApps: Bool::YES];
+    }
+}
+
+/// macOS: activates MDM without pulling up minimized or tray-hidden windows (for `dialogs::raise`).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_activate_app() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject};
+    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    unsafe {
+        let Some(cls) = AnyClass::get(c"NSApplication") else {
+            return;
+        };
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if !app.is_null() {
+            activate_nsapp(app, false);
+        }
+    }
+}
+
+/// macOS: activates MDM and orders a newly shown visible window matching `title` (already stripped
+/// via [`crate::i18n::os_text`]) to the foreground in front of browsers and other apps without
+/// deminiaturizing or showing unrelated windows. Returns `Some(lifted)` once the window is
+/// visible, or `None` while winit has not yet applied `Visible(true)` (`keep_theme` retries across
+/// frames).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2_foundation::NSString;
+    let want = NSString::from_str(&crate::i18n::os_text(title));
+    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and orders the matching
+    // visible, non-miniaturized titled window to the front.
+    unsafe {
+        let cls = AnyClass::get(c"NSApplication")?;
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return None;
+        }
+        let windows: *mut AnyObject = msg_send![app, windows];
+        if windows.is_null() {
+            return None;
+        }
+        let count: usize = msg_send![windows, count];
+        let mut target: *mut AnyObject = std::ptr::null_mut();
+        for i in 0..count {
+            let win: *mut AnyObject = msg_send![windows, objectAtIndex: i];
+            if win.is_null() {
+                continue;
+            }
+            let style: usize = msg_send![win, styleMask];
+            if (style & 1) == 0 {
+                continue;
+            }
+            let visible: Bool = msg_send![win, isVisible];
+            let mini: Bool = msg_send![win, isMiniaturized];
+            if !visible.as_bool() || mini.as_bool() {
+                continue;
+            }
+            let win_title: *mut AnyObject = msg_send![win, title];
+            if win_title.is_null() {
+                continue;
+            }
+            let same: Bool = msg_send![win_title, isEqualToString: &*want];
+            if same.as_bool() {
+                target = win;
+                break;
+            }
+        }
+        if target.is_null() {
+            return None;
+        }
+        let active: Bool = msg_send![app, isActive];
+        let hidden: Bool = msg_send![app, isHidden];
+        let key: Bool = msg_send![target, isKeyWindow];
+        let lift = macos_window_needs_lift(active.as_bool(), hidden.as_bool(), key.as_bool());
+        if lift {
+            let null_obj: *mut AnyObject = std::ptr::null_mut();
+            activate_nsapp(app, false);
+            let _: () = msg_send![target, makeKeyAndOrderFront: null_obj];
+            let _: () = msg_send![target, orderFrontRegardless];
+        }
+        Some(lift)
+    }
+}
+
 /// macOS: brings MDM and its windows to the topmost foreground in front of all other apps when
 /// woken from the menu bar icon or the global hotkey (#558).
 #[cfg(target_os = "macos")]
@@ -2723,15 +3579,7 @@ pub fn macos_activate_and_show() {
             return;
         }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
-        let _: () = msg_send![app, unhide: null_obj];
-        if let Some(run_cls) = AnyClass::get(c"NSRunningApplication") {
-            let cur: *mut AnyObject = msg_send![run_cls, currentApplication];
-            if !cur.is_null() {
-                // NSApplicationActivateAllWindows (1) | NSApplicationActivateIgnoringOtherApps (2) = 3
-                let _: Bool = msg_send![cur, activateWithOptions: 3usize];
-            }
-        }
-        let _: () = msg_send![app, activateIgnoringOtherApps: Bool::YES];
+        activate_nsapp(app, true);
         let windows: *mut AnyObject = msg_send![app, windows];
         if !windows.is_null() {
             let count: usize = msg_send![windows, count];
@@ -3012,13 +3860,25 @@ pub(crate) fn fallback_rename_no_replace(from: &Path, to: &Path) -> std::io::Res
 #[cfg(target_os = "macos")]
 pub use macos_hotkey::GlobalHotKeyOs;
 
+#[cfg(test)]
+mod macos_focus_tests {
+    #[test]
+    fn macos_window_needs_lift_when_inactive_hidden_or_not_key() {
+        assert!(!super::macos_window_needs_lift(true, false, true));
+        assert!(super::macos_window_needs_lift(false, false, true));
+        assert!(super::macos_window_needs_lift(true, true, true));
+        assert!(super::macos_window_needs_lift(true, false, false));
+        assert!(super::macos_window_needs_lift(false, true, false));
+    }
+}
+
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use zbus::zvariant::Value;
 
     use super::{
         Pick, WindowLib, X11_LIBS, X11Fit, choose_window_system, desktop_looks_after_x11,
-        install_command, menu_window_type,
+        install_command, menu_window_type, on_xwayland_server,
     };
 
     /// #277: each menu's window says which menu it is, as GTK's and Qt's do.
@@ -3035,6 +3895,19 @@ mod tests {
         let b = super::menu_window(crate::window_builder(), MenuKind::Bar);
         assert_eq!(b.override_redirect, Some(true));
         assert_eq!(b.window_type, Some(X11WindowType::DropdownMenu));
+    }
+
+    /// PR #1360: a click gives the keyboard only in XWayland; plain Xorg keeps its window
+    /// manager's focus rules, native Wayland the compositor's.
+    #[test]
+    fn a_click_takes_the_keyboard_in_xwayland_only() {
+        use super::takes_keyboard_on_click as takes;
+        let ws = |wayland, x11| choose_window_system(wayland, x11, Pick::Auto, CARED, |_| true);
+        assert!(takes(&ws(true, true)), "XWayland");
+        assert!(!takes(&ws(false, true)), "plain Xorg");
+        assert!(!takes(&ws(true, false)), "native Wayland, the only system");
+        let wayland = choose_window_system(true, true, Pick::Wayland("test"), CARED, |_| true);
+        assert!(!takes(&wayland), "native Wayland chosen");
     }
 
     const X11_KEYBOARD: &str = "libxkbcommon-x11.so.0";
@@ -3123,6 +3996,30 @@ mod tests {
         assert!(!x11_session.wayland && !x11_session.both && !x11_session.x11_over_wayland);
         let wayland_only = choose_window_system(true, false, Pick::X11("saved"), || panic!(), ok);
         assert!(wayland_only.wayland && !wayland_only.both);
+    }
+
+    /// Started without WAYLAND_DISPLAY in a Wayland session, MDM sees an X11 session only: its
+    /// windows are XWayland's when the X server is (they swap without waiting there, so a dialog
+    /// answers a click at once while the main window is out of sight). The server is asked only
+    /// for an X11-only session MDM can open its windows in.
+    #[test]
+    fn an_x11_only_session_on_xwayland_is_xwaylands() {
+        let ok = |_: &WindowLib| true;
+        let x11_only = || choose_window_system(false, true, Pick::Auto, || panic!(), ok);
+        let on_xwayland = on_xwayland_server(x11_only(), || true);
+        assert!(!on_xwayland.wayland && on_xwayland.x11_over_wayland && !on_xwayland.both);
+        assert!(on_xwayland.why.contains("XWayland"), "{on_xwayland:?}");
+        let xorg = on_xwayland_server(x11_only(), || false);
+        assert_eq!(xorg, x11_only());
+        // A Wayland session's choice stands; the server isn't asked.
+        let asked = || -> bool { panic!("asked") };
+        let wayland = choose_window_system(true, true, Pick::Wayland("saved"), || panic!(), ok);
+        assert_eq!(on_xwayland_server(wayland, asked).why, "saved");
+        let x11 = choose_window_system(true, true, Pick::X11("saved"), || panic!(), ok);
+        assert!(on_xwayland_server(x11, asked).x11_over_wayland);
+        // X11's libraries missing: nothing opens on it, nothing to pace.
+        let missing = choose_window_system(false, true, Pick::Auto, || panic!(), |_| false);
+        assert!(!on_xwayland_server(missing, asked).x11_over_wayland);
     }
 
     /// The desktops that start a settings daemon for XWayland's programs, by
@@ -3366,7 +4263,6 @@ ID_LIKE=arch
     /// own, so the test runs itself again as a child with it (no `set_var` in a test).
     #[test]
     fn show_in_folder_never_waits_for_the_file_manager() {
-        use std::os::unix::fs::PermissionsExt;
         use std::time::{Duration, Instant};
         if let Some(file) = std::env::var_os(SHOW_CHILD) {
             let file = std::path::PathBuf::from(file);
@@ -3393,9 +4289,7 @@ ID_LIKE=arch
         std::fs::write(&file, b"test").unwrap();
         let opened = folder.join("opened.txt");
         let tool = |name: &str, body: String| {
-            let p = bin.join(name);
-            std::fs::write(&p, format!("#!/bin/sh\n{body}\n")).unwrap();
-            std::fs::set_permissions(&p, std::fs::Permissions::from_mode(0o755)).unwrap();
+            super::write_program(&bin.join(name), format!("#!/bin/sh\n{body}\n").as_bytes());
         };
         tool("gdbus", "exec sleep 30".into());
         tool("xdg-open", format!("echo \"$1\" > '{}'", opened.display()));
@@ -3437,9 +4331,106 @@ ID_LIKE=arch
     }
 }
 
+/// Write a program a test then runs: `content` goes to `path`, executable.
+///
+/// A `sh` of its own writes it, never this process: a file written here while another test's
+/// thread starts a program is handed to that child still open for writing, and Linux refuses to
+/// run a file open for writing anywhere ("Text file busy"), so running it would fail now and
+/// then.
+#[cfg(test)]
+fn write_program(path: &Path, content: &[u8]) {
+    use std::io::Write;
+    let mut sh = Command::new("/bin/sh")
+        .args(["-c", "cat > \"$1\" && chmod 755 \"$1\"", "sh"])
+        .arg(path)
+        .stdin(Stdio::piped())
+        .spawn()
+        .unwrap();
+    sh.stdin.take().unwrap().write_all(content).unwrap();
+    assert!(sh.wait().unwrap().success(), "{}", path.display());
+}
+
+#[cfg(all(test, target_os = "linux"))]
+mod session_end_tests {
+    use super::{SessionEnd, again_ends_now, ask_end, hear_signals, ignored, session_ending};
+    use std::time::Duration;
+
+    #[test]
+    fn each_end_is_kept_as_its_own_code_and_none_as_zero() {
+        for why in SessionEnd::ALL {
+            assert_ne!(why.code(), 0);
+            assert_eq!(SessionEnd::of_code(why.code()), Some(why));
+        }
+        assert_eq!(SessionEnd::of_code(0), None);
+        assert_eq!(SessionEnd::of_code(99), None);
+        assert_eq!(SessionEnd::Terminated.signal(), Some(libc::SIGTERM));
+        assert_eq!(SessionEnd::DisplayLost.signal(), None);
+    }
+
+    /// Once the end is under way, only Ctrl+C again cuts it short: systemd's SIGHUP right after
+    /// its SIGTERM at shutdown (seen in the lab's VM) must not.
+    #[test]
+    fn only_ctrl_c_again_cuts_the_end_short() {
+        assert!(again_ends_now(SessionEnd::Interrupted));
+        assert!(!again_ends_now(SessionEnd::HungUp));
+        assert!(!again_ends_now(SessionEnd::Terminated));
+        assert!(!again_ends_now(SessionEnd::DisplayLost));
+    }
+
+    /// A real SIGHUP to this process (tokio's handler in place, so it doesn't end it): the end is
+    /// asked for, the window woken, and `session_ending` gives it to the window's next frame. A
+    /// second ask is refused (Ctrl+C again would end the process: not tried here). The only test
+    /// that touches the end's flag (it's the process's).
+    #[test]
+    #[allow(unsafe_code)]
+    fn a_signal_asks_for_the_end_and_wakes_the_window_once() {
+        if ignored(libc::SIGHUP) {
+            // Run under nohup: MDM leaves an ignored SIGHUP ignored, so nothing would come.
+            return;
+        }
+        assert_eq!(session_ending(), None);
+        let rt = tokio::runtime::Runtime::new().unwrap();
+        let (tx, woken) = std::sync::mpsc::channel();
+        let tx = std::sync::Mutex::new(tx);
+        hear_signals(
+            rt.handle(),
+            std::sync::Arc::new(move || {
+                let _ = tx.lock().unwrap().send(());
+            }),
+            None,
+        );
+        // The listeners are spawned tasks: once SIGHUP's handler is tokio's (the default one
+        // would end the test's process), and its listener settled, one SIGHUP.
+        let handled = |sig| {
+            // SAFETY: zeroed is a valid `sigaction` for the call to fill.
+            let mut now: libc::sigaction = unsafe { std::mem::zeroed() };
+            // SAFETY: a null new action only reads the current one.
+            unsafe { libc::sigaction(sig, std::ptr::null(), &mut now) };
+            now.sa_sigaction != libc::SIG_DFL
+        };
+        let mut waited = 0;
+        while !handled(libc::SIGHUP) {
+            assert!(waited < 100, "SIGHUP's handler wasn't installed");
+            std::thread::sleep(Duration::from_millis(20));
+            waited += 1;
+        }
+        std::thread::sleep(Duration::from_millis(200));
+        // SAFETY: a signal to this process, which tokio's handler (installed above) takes.
+        unsafe { libc::kill(libc::getpid(), libc::SIGHUP) };
+        assert!(
+            woken.recv_timeout(Duration::from_secs(5)).is_ok(),
+            "the window wasn't woken"
+        );
+        assert_eq!(session_ending(), Some(SessionEnd::HungUp));
+        // Asked again (here directly: a second signal would end the test's process).
+        assert!(!ask_end(SessionEnd::Terminated));
+        assert_eq!(session_ending(), Some(SessionEnd::HungUp));
+    }
+}
+
 #[cfg(test)]
 mod host_copy_tests {
-    use super::{HOST, MANIFEST, install_host_copy, registration_in, runs};
+    use super::{HOST, MANIFEST, install_host_copy, registration_in, registration_with, runs};
     use crate::extension::Registration;
     use mdm_ipc::browsers::Family;
     use std::path::Path;
@@ -3502,7 +4493,7 @@ mod host_copy_tests {
         // them apart by the name it's started under, so a copy of it named after the helper ended
         // at once. `; :` keeps the shell from replacing itself with `sleep`.
         let old = dir.join(HOST);
-        std::fs::copy("/bin/sh", &old).unwrap();
+        super::write_program(&old, &std::fs::read("/bin/sh").unwrap());
         let mut running = std::process::Command::new(&old)
             .args(["-c", "sleep 30; :"])
             .spawn()
@@ -3574,6 +4565,36 @@ mod host_copy_tests {
             Registration::HelperMissing(gone.clone())
         );
         assert_eq!(registration_in(dirs(), true), Registration::Ready);
+    }
+
+    /// #1218: a browser's folder the system refused (macOS: "Operation not permitted") is said
+    /// as such, with the folder; one that works for everyone is still enough; Linux never says
+    /// it (`registration_in` asks only on macOS).
+    #[test]
+    fn a_refused_folder_is_said_as_refused() {
+        let t = tempfile::tempdir().unwrap();
+        let helper = program(t.path(), HOST, "true");
+        let (a, b) = (t.path().join("a"), t.path().join("b"));
+        std::fs::create_dir_all(&a).unwrap();
+        let json = serde_json::json!({ "name": "com.misterdownloadmanager.host", "path": helper });
+        std::fs::write(a.join(MANIFEST), json.to_string()).unwrap();
+        let dirs = || vec![(a.clone(), Family::Chromium), (b.clone(), Family::Chromium)];
+        let refuses_b = |d: &Path| d == b;
+        assert_eq!(
+            registration_with(dirs(), false, &refuses_b),
+            Registration::Refused(b.clone())
+        );
+        assert_eq!(
+            registration_with(dirs(), true, &refuses_b),
+            Registration::Ready
+        );
+        assert_eq!(
+            registration_with(dirs(), false, &|_| false),
+            Registration::Missing
+        );
+        if cfg!(target_os = "linux") {
+            assert_eq!(registration_in(dirs(), false), Registration::Missing);
+        }
     }
 }
 
@@ -4063,11 +5084,14 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
 }
 
 /// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
-/// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
-/// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
-/// session may take it without a password. False when logind refused, or didn't answer within
-/// 25 s. Called on wake::Holder's thread, never the window's: logind can be slow right after a
-/// resume.
+/// system's settings say. Linux: logind's sleep inhibitor, held by its file descriptor
+/// (`systemd-inhibit --list` shows it with its reason); a user in the active session may take it
+/// without a password. It stops the desktop's automatic suspend (GNOME, KDE) and logind's own
+/// idle action, which go through logind's suspend; not the screen's dimming, turning off and
+/// locking, as Windows' power request and `caffeinate -i` don't either. (An `idle` inhibitor
+/// too would keep KDE's screen on for as long as downloads run, #939.) False when logind refused,
+/// or didn't answer within 25 s. Called on wake::Holder's thread, never the window's: logind can
+/// be slow right after a resume.
 #[cfg(target_os = "linux")]
 pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
@@ -4090,7 +5114,7 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
         )?;
         logind.call(
             "Inhibit",
-            &("sleep:idle", "Mister Download Manager", reason, "block"),
+            &("sleep", "Mister Download Manager", reason, "block"),
         )
     };
     match take() {
@@ -4099,7 +5123,15 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
             true
         }
         Err(e) => {
-            tracing::warn!("wake: logind's inhibitor refused ({e})");
+            // Once per refusal of its own: a system without logind (a container, #157) refuses
+            // every time downloads run, asked again once a minute.
+            static LAST: Mutex<String> = Mutex::new(String::new());
+            let why = e.to_string();
+            let mut last = LAST.lock().unwrap_or_else(|p| p.into_inner());
+            if *last != why {
+                tracing::warn!("wake: logind's inhibitor refused ({why})");
+                *last = why;
+            }
             false
         }
     }

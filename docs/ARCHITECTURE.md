@@ -50,10 +50,15 @@ place; the file's date can follow the server's.
 
 A download's first request (`get`) follows redirects and the pages that lead on to a file by
 themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module
-in `sites/` (Google Drive: `sites/gdrive.rs`): it turns the link into the file's address, reads
-the site's own pages (a confirmation form, an error page) and names its refusals
-(`Error::Refused`), with pure functions tested without a network. The lab server plays such a
-site on its real host names for the end-to-end tests (`labserver/src/drive.rs`).
+in `sites/` (Google Drive: `sites/gdrive.rs`; MediaFire: `sites/mediafire.rs`; Rapidgator:
+`sites/rapidgator.rs`): it turns the link into the file's address, reads the site's own pages (a
+confirmation form, a download button, an error page), names its refusals (`Error::Refused`) and,
+where the file's addresses expire, the page that gives a fresh one (`sites::origin`, asked again
+when a connection meets an expired address, at most once per expiry and never again at once for
+an address it then refused; Rapidgator's page is the browser's tab the download came from,
+`Options::page`), with pure functions tested without a network. The lab server plays such a site
+on its real host names for the end-to-end tests (`labserver/src/drive.rs`,
+`labserver/src/mediafire.rs`, `labserver/src/rapidgator.rs`).
 
 FTP and FTPS (`ftp.rs`) go through the same planner, workers and state: a segment is `REST` +
 `RETR` on a control session instead of a ranged `GET`, `SIZE` and `MDTM` stand in for the
@@ -67,7 +72,11 @@ toolbar, key and IPC commands into actions. Each dialog is its own module and re
 `Outcome` (open, closed, done with a value). Windows-only calls are confined to `win32.rs` and
 their Linux and macOS counterparts to `unix.rs` (starting with the session, the browsers' host,
 sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system:
-Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). On Windows, Latin,
+Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). The interface language's
+script fonts load at start; text in another script gets its font the first time it shows: from MDM's
+lists of the system's fonts for each script, then, on Windows and macOS, from the system's own fallback
+(DirectWrite's, CoreText's, through fontique: `egui_system_font_provider`) for what the lists don't
+name; Linux asks fontconfig for any letter. On Windows, Latin,
 Greek, Cyrillic and single-codepoint CJK text is drawn by DirectWrite (`win32.rs`, through egui's glyph rasterizer hook):
 View → Text → Smooth in its natural mode, anti-aliased at the size asked for and placed at quarter
 pixels with the font's own advances; Classic (the default) in GDI-classic mode, so each letter's
@@ -118,7 +127,11 @@ every system (`crates/app/src/renderer.rs`): when the chosen one can't start, th
 tried, so the windows always open. A watched start with the system's API leaves a marker until
 its first frame is drawn: a start that ends before it (a crash inside the driver), one whose
 first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics
-card lost twice in 10 minutes is remembered with its reason, which the menu shows.
+card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL,
+a window eframe can't paint (its context can't be made current on it, its frame can't be shown)
+is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost
+device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows).
+The fork's eframe tells MDM through its viewport hooks (`gl_paint_failed`, #1448).
 
 View → Interface size (`scale.rs`, #262) is egui's zoom factor over the display's own scale:
 every window is laid out in points, so it opens that much larger; one larger than the screen
@@ -152,6 +165,13 @@ page ──► extension ──native messaging──► mdm-nmhost ──ipc─
 The extension asks the host which file types to take, checks each download against them, and
 cancels the browser's download only after the app has accepted it; otherwise the browser keeps
 it, and the extension says why.
+
+A message to the host is at most 1 MB (`mdm_ipc::MAX_MESSAGE`; the host refuses more, and the
+browser lets a host answer no more than that either). A page's links past it go in parts, each
+measured as the widest browser writes it (`wireSize` in `background.js`) and carrying the page's
+referrer and cookies and its place (`mdm_ipc::LinksPart`); the host hands each over as it comes,
+and the app keeps them (`linkparts.rs`) until the last is in, then opens Link grabber with the
+whole list.
 
 The host serves only MDM's own extension. Its IDs are in one place, `mdm_ipc::extension`
 (`crates/ipc/src/extension.rs`): the unpacked copy's (`UNPACKED_ID`, from the manifest's public

@@ -14,6 +14,10 @@
 //! (`-O "MDMJ %()j"`) it answers as yt-dlp does after choosing; and asked to download a choice
 //! whose streams are already there (MDM's engine downloaded them), it merges them as yt-dlp
 //! does ("has already been downloaded"), downloading only what isn't there.
+//!
+//! #686: with `page-signed-in.json` beside it too, a look-up with the browser's cookies gets that
+//! page (a signed-in viewer's, whose streams the lab refuses); it notes every run's cookies in
+//! `cookies.log`, and refuses two YouTube addresses as YouTube does (`fixtures/ytdlp-refusals`).
 
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
@@ -28,12 +32,16 @@ fn main() -> ExitCode {
         return fake_ytdlp();
     }
     if std::env::var_os("MDM_SUBS_RETRY_SECS").is_some() {
+        private_cookie_checks(&me);
         checks(&me);
         job_checks(&me);
         merge_checks(&me);
         list_checks(&me);
         preloaded_checks(&me);
         engine_checks(&me);
+        long_name_checks(&me);
+        saved_checks(&me);
+        live_checks(&me);
         println!("fake_ytdlp: ok");
         return ExitCode::SUCCESS;
     }
@@ -119,6 +127,49 @@ fn fake_ytdlp() -> ExitCode {
         .ok()
         .and_then(|e| e.parent().map(Path::to_owned))
         .expect("the fake's folder");
+    if home.join("record-cookie-args").exists() {
+        use std::io::Write;
+        let mut log = std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(home.join("cookie-args.jsonl"))
+            .unwrap();
+        writeln!(log, "{}", serde_json::to_string(&args).unwrap()).unwrap();
+    }
+    // #686: every run beside the fake, in order, with the browser's cookies or without them:
+    // `J` a look-up, `O` a choice of formats, `D` a download.
+    {
+        use std::io::Write;
+        let kind = if has("-J") {
+            "J"
+        } else if after("-O").is_some_and(|o| o.starts_with("MDMJ")) {
+            "O"
+        } else {
+            "D"
+        };
+        let cookies = if has("--cookies") { "with" } else { "without" };
+        if let Ok(mut f) = std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(home.join("cookies.log"))
+        {
+            let _ = writeln!(f, "{kind} {cookies}");
+        }
+    }
+    // #686: YouTube's bot check refusing a signed-in look-up, and a channel members' video,
+    // refused with the cookies and without them; in yt-dlp's real words.
+    let video = args.last().map(String::as_str).unwrap_or_default();
+    if has("-J") && video.ends_with("v=botcheck000") && has("--cookies") {
+        eprint!(
+            "{}",
+            include_str!("fixtures/ytdlp-refusals/bot-check.stderr")
+        );
+        return ExitCode::FAILURE;
+    }
+    if has("-J") && video.ends_with("v=members0000") {
+        eprint!("{}", include_str!("fixtures/ytdlp-refusals/members.stderr"));
+        return ExitCode::FAILURE;
+    }
     if has("-J") {
         // Each look-up counted beside the fake: the quality menu's is taken instead (A2).
         let file = home.join("looked.txt");
@@ -137,8 +188,15 @@ fn fake_ytdlp() -> ExitCode {
                 include_str!("fixtures/ytdlp-js-runtime/no-runtime.stderr")
             );
         }
-        // #769: a page of the test's, its links signed for a little while from now.
-        match std::fs::read_to_string(home.join("page.json")) {
+        // #769: a page of the test's, its links signed for a little while from now; #686: the
+        // signed-in viewer's (`page-signed-in.json`) when the look-up has the browser's cookies.
+        let signed_in = home.join("page-signed-in.json");
+        let page = if has("--cookies") && signed_in.is_file() {
+            signed_in
+        } else {
+            home.join("page.json")
+        };
+        match std::fs::read_to_string(page) {
             Ok(page) => {
                 let ms = std::time::SystemTime::now()
                     .duration_since(std::time::UNIX_EPOCH)
@@ -156,7 +214,16 @@ fn fake_ytdlp() -> ExitCode {
             std::fs::read_to_string(after("--load-info-json").expect("a page")).expect("the page");
         let info: serde_json::Value = serde_json::from_str(&info).expect("json");
         let template = after("-o").expect("-o").replace("%%", "%");
-        let chosen = choice(&info, &after("-f").unwrap_or_default(), &template);
+        let selector = after("-f").unwrap_or_default();
+        // #94, #1240: the chosen height isn't offered, for the engine's choice too.
+        let dir = Path::new(&template).parent().expect("a folder");
+        if mode(dir) == "unavailable" && selector.contains("[height=") {
+            eprintln!(
+                "ERROR: [youtube] talk: Requested format is not available. Use --list-formats for a list of available formats"
+            );
+            return ExitCode::FAILURE;
+        }
+        let chosen = choice(&info, &selector, &template);
         println!("MDMJ {chosen}");
         return ExitCode::SUCCESS;
     }
@@ -313,7 +380,18 @@ fn fake_ytdlp() -> ExitCode {
             match std::fs::read(s) {
                 // "has already been downloaded"
                 Ok(b) => merged.extend(b),
-                Err(_) => merged.extend(b"downloaded by yt-dlp"),
+                // Downloaded here, through yt-dlp's own unfinished files (#1102): `.part`, and
+                // the fragments' resume file, `.ytdl`.
+                Err(_) => {
+                    for temp in [format!("{s}.part"), format!("{s}.ytdl")] {
+                        if let Err(failed) = python_write(&temp, b"") {
+                            return failed;
+                        }
+                    }
+                    let _ = std::fs::remove_file(format!("{s}.part"));
+                    let _ = std::fs::remove_file(format!("{s}.ytdl"));
+                    merged.extend(b"downloaded by yt-dlp");
+                }
             }
         }
         for s in streams.iter().filter(|s| **s != output) {
@@ -327,12 +405,14 @@ fn fake_ytdlp() -> ExitCode {
             let temp = output.replace(".mp4", ".temp.mp4");
             let step = merged.len().div_ceil(5);
             for k in 1..=5 {
-                std::fs::write(&temp, &merged[..(k * step).min(merged.len())]).unwrap();
+                if let Err(failed) = python_write(&temp, &merged[..(k * step).min(merged.len())]) {
+                    return failed;
+                }
                 std::thread::sleep(Duration::from_millis(300));
             }
             std::fs::rename(&temp, &output).unwrap();
-        } else {
-            std::fs::write(&output, merged).unwrap();
+        } else if let Err(failed) = python_write(&output, &merged) {
+            return failed;
         }
         println!("MDMF {output}");
         return ExitCode::SUCCESS;
@@ -365,6 +445,45 @@ fn fake_ytdlp() -> ExitCode {
         }
     }
     ExitCode::SUCCESS
+}
+
+/// Write `path` as yt-dlp's Python does on a new install (#1102): on Windows, with long paths
+/// off (the default), a path past 259 UTF-16 units fails as `[Errno 2] No such file or
+/// directory`; a name past 255 (UTF-16 units on Windows, bytes elsewhere) as `[Errno 22]
+/// Invalid argument` on Windows, `[Errno 36] File name too long` elsewhere. Said as yt-dlp says
+/// it, the path in Python's quotes.
+fn python_write(path: &str, data: &[u8]) -> Result<(), ExitCode> {
+    let units = |s: &str| {
+        if cfg!(windows) {
+            s.encode_utf16().count()
+        } else {
+            s.len()
+        }
+    };
+    let long_name = Path::new(path)
+        .iter()
+        .any(|n| units(&n.to_string_lossy()) > 255);
+    let error = if cfg!(windows) && units(path) > 259 {
+        Some("[Errno 2] No such file or directory")
+    } else if long_name && cfg!(windows) {
+        Some("[Errno 22] Invalid argument")
+    } else if long_name {
+        Some("[Errno 36] File name too long")
+    } else {
+        None
+    };
+    if let Some(error) = error {
+        let escaped = path.replace('\\', "\\\\");
+        let quoted = if path.contains('\'') && !path.contains('"') {
+            format!("\"{escaped}\"")
+        } else {
+            format!("'{}'", escaped.replace('\'', "\\'"))
+        };
+        eprintln!("ERROR: Unable to download video: {error}: {quoted}");
+        return Err(ExitCode::FAILURE);
+    }
+    std::fs::write(path, data).unwrap();
+    Ok(())
 }
 
 /// yt-dlp's choice of formats on page `info` for `selector`: a format id the page has, that one;
@@ -455,6 +574,115 @@ fn fake_in(me: &Path, dir: &Path) -> PathBuf {
     exe
 }
 
+/// Options' browser store is on: inspect arguments received by an actual child process for
+/// look-ups and downloads, both private (empty, own header, own jar) and ordinary requests.
+fn private_cookie_checks(me: &Path) {
+    use mdm_tools::proc::{BrowserCookies, FromBrowser, set_browser_cookies};
+    set_browser_cookies(BrowserCookies::new("firefox", "normal-profile"));
+    let private = FromBrowser {
+        private: true,
+        ..Default::default()
+    };
+    let header = FromBrowser {
+        cookies: Some("sid=private".into()),
+        ..private.clone()
+    };
+    let jar = FromBrowser {
+        jar: vec![mdm_ipc::BrowserCookie {
+            name: "sid".into(),
+            value: "private".into(),
+            domain: "video.example".into(),
+            path: "/".into(),
+            ..Default::default()
+        }],
+        ..private.clone()
+    };
+    for browser in [private.clone(), header, jar, FromBrowser::default()] {
+        let tools = tempfile::tempdir().unwrap();
+        let out = tempfile::tempdir().unwrap();
+        let exe = fake_in(me, tools.path());
+        std::fs::write(tools.path().join("record-cookie-args"), "").unwrap();
+        let url = "https://video.example/talk";
+        mdm_tools::resolve::look_up(&exe, url, &browser).unwrap();
+        let job = VideoJob::start(
+            &exe,
+            url,
+            "b",
+            out.path(),
+            "Talk",
+            None,
+            None,
+            None,
+            &browser,
+            &Subs::default(),
+            None,
+        )
+        .unwrap();
+        let until = Instant::now() + Duration::from_secs(30);
+        let progress = loop {
+            let progress = job.progress();
+            if progress.state != State::Running {
+                break progress;
+            }
+            assert!(Instant::now() < until, "still running: {progress:?}");
+            std::thread::sleep(Duration::from_millis(20));
+        };
+        assert!(matches!(progress.state, State::Done(_)), "{progress:?}");
+        let runs: Vec<Vec<String>> =
+            std::fs::read_to_string(tools.path().join("cookie-args.jsonl"))
+                .unwrap()
+                .lines()
+                .map(|s| serde_json::from_str(s).unwrap())
+                .collect();
+        assert!(
+            runs.iter().any(|args| args.iter().any(|a| a == "-J")),
+            "look-up ran"
+        );
+        assert!(
+            runs.iter()
+                .any(|args| args.iter().any(|a| a == "--load-info-json")),
+            "download ran"
+        );
+        let own = browser.cookies.is_some() || !browser.jar.is_empty();
+        for args in runs {
+            assert_eq!(
+                args.iter().any(|a| a == "--cookies-from-browser"),
+                !browser.private,
+                "{args:?}"
+            );
+            assert_eq!(args.iter().any(|a| a == "--cookies"), own, "{args:?}");
+            assert_eq!(
+                args.iter().any(|a| a == "--no-cookies-from-browser"),
+                browser.private && !own,
+                "{args:?}"
+            );
+        }
+        assert_eq!(
+            progress
+                .events
+                .iter()
+                .any(|(_, e)| e.contains("Cookies read from firefox")),
+            !browser.private
+        );
+    }
+    // A private members-only video fails once with the original authentication refusal;
+    // retrying must never borrow the normal profile to make it succeed.
+    let tools = tempfile::tempdir().unwrap();
+    let exe = fake_in(me, tools.path());
+    std::fs::write(tools.path().join("record-cookie-args"), "").unwrap();
+    let error = mdm_tools::resolve::look_up(
+        &exe,
+        "https://www.youtube.com/watch?v=members0000",
+        &private,
+    )
+    .unwrap_err();
+    assert!(error.to_string().contains("members-only"), "{error}");
+    let log = std::fs::read_to_string(tools.path().join("cookie-args.jsonl")).unwrap();
+    assert_eq!(log.lines().count(), 1, "no cookie retry: {log}");
+    assert!(!log.contains("\"--cookies-from-browser\""), "{log}");
+    set_browser_cookies(None);
+}
+
 /// Download with `subs` while the fake behaves as `mode`; the end state, its log and folder.
 fn download(me: &Path, mode: &str, subs: &Subs) -> (mdm_tools::video::Progress, Vec<String>) {
     let (p, files, _out) = download_as(me, mode, subs, "b", "Talk");
@@ -504,6 +732,69 @@ fn download_as(
         .collect();
     files.sort();
     (p, files, out)
+}
+
+/// #1103: the saved video is shown to `saved` (the app's mark that it came from the internet) on
+/// the job's own thread before the job says it is done, and a disk slow to take the mark keeps
+/// only that thread waiting: the progress, which the window reads every frame, answers at once.
+fn saved_checks(me: &Path) {
+    use std::sync::{Arc, Mutex};
+    let tools = tempfile::tempdir().unwrap();
+    let out = tempfile::tempdir().unwrap();
+    std::fs::write(out.path().join("mode.txt"), "").unwrap();
+    let exe = fake_in(me, tools.path());
+    // Each file shown, and when the hook returned; it takes 2 s, as a busy disk did (#1103: 8 s).
+    let shown: Arc<Mutex<Vec<(PathBuf, Instant)>>> = Arc::default();
+    let hook = {
+        let shown = shown.clone();
+        mdm_engine::FileHook::new(move |p: &Path| {
+            std::thread::sleep(Duration::from_secs(2));
+            shown.lock().unwrap().push((p.to_owned(), Instant::now()));
+        })
+    };
+    let job = VideoJob::start_with(
+        &exe,
+        "https://video.example/talk",
+        "b",
+        out.path(),
+        "Talk",
+        None,
+        None,
+        None,
+        &Default::default(),
+        &Subs::default(),
+        None,
+        None,
+        Some(hook),
+    )
+    .expect("started");
+    let end = Instant::now() + Duration::from_secs(120);
+    let mut slowest = Duration::ZERO;
+    let (p, done_at) = loop {
+        let asked = Instant::now();
+        let p = job.progress();
+        slowest = slowest.max(asked.elapsed());
+        if p.state != State::Running {
+            break (p, Instant::now());
+        }
+        assert!(Instant::now() < end, "still running: {p:?}");
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    let State::Done(file) = &p.state else {
+        panic!("not done: {:?}", p.state)
+    };
+    let shown = shown.lock().unwrap().clone();
+    assert_eq!(shown.len(), 1, "{shown:?}");
+    assert_eq!(&shown[0].0, file, "the saved file is the one marked");
+    assert!(
+        shown[0].1 <= done_at,
+        "marked before it was said to be done"
+    );
+    assert!(
+        slowest < Duration::from_millis(500),
+        "the progress waited {slowest:?} for the mark"
+    );
+    println!("saved_checks: marked before done; the slowest look at the progress took {slowest:?}");
 }
 
 fn log_of(p: &mdm_tools::video::Progress) -> Vec<String> {
@@ -702,6 +993,7 @@ fn preloaded_checks(me: &Path) {
             &Subs::default(),
             preloaded,
             None,
+            None,
         )
         .expect("started");
         let end = Instant::now() + Duration::from_secs(120);
@@ -734,8 +1026,7 @@ fn preloaded_checks(me: &Path) {
         })
     };
     let menu = |label: &str, without_cookies: Option<bool>| menu_of(PAGE, label, without_cookies);
-    let note =
-        "The site offered no format with the browser's cookies; looked the page up without them";
+    let note = "The site refused the look-up with the browser's cookies, or offered no format with them; looked the page up without them";
 
     let (p, looked, _) = run("", menu("360p · H.264", Some(true)));
     assert!(matches!(p.state, State::Done(_)), "{:?}", p.state);
@@ -1079,6 +1370,43 @@ fn engine_checks(me: &Path) {
         "no part file or state left"
     );
 
+    // #1240: the chosen height isn't offered (a reroute left it out): the engine downloads the
+    // nearest below too, not the one asked for again.
+    let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
+    std::fs::write(
+        tools.path().join("page.json"),
+        page("/gen/3M/v.mp4?seed=1", "/gen/1M/a.m4a?seed=2", "https"),
+    )
+    .unwrap();
+    std::fs::write(out.path().join("mode.txt"), "unavailable").unwrap();
+    let job = VideoJob::start(
+        &fake_in(me, tools.path()),
+        "https://video.example/talk",
+        "bv*[height=1080]+ba/b[height=1080]",
+        out.path(),
+        "Talk",
+        None,
+        None,
+        None,
+        &Default::default(),
+        &Subs::default(),
+        Some(engine(2)),
+    )
+    .expect("started");
+    let (p, _) = wait(&job);
+    let log = log_of(&p);
+    assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
+    assert!(p.helper.is_none(), "the engine downloaded it: {log:?}");
+    assert!(
+        log.iter()
+            .any(|t| t.starts_with("The chosen quality isn't offered")),
+        "{log:?}"
+    );
+    assert!(
+        std::fs::read(out.path().join("Talk.mp4")).unwrap() == expected(),
+        "the streams merged"
+    );
+
     // Stopped half-way, then started again: it goes on from the bytes already there.
     lab.clear_log();
     let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
@@ -1165,8 +1493,207 @@ fn engine_checks(me: &Path) {
             .any(|t| t == "yt-dlp downloads this video itself: its protocol (rtmp)"),
         "{log:?}"
     );
+    signed_in_checks(me, &lab, &engine);
     pieces_checks(me, &rt, &lab, &engine, &expected_audio());
     println!("fake_ytdlp: the engine's checks ok");
+}
+
+/// #1102: an X post with a long text, as the report's: its video saved in a deep folder (here,
+/// under the build's own folder) under a name shortened so that every file MDM's engine and
+/// yt-dlp make for it stays within Windows' 259 (and names within 255 everywhere), both when the
+/// engine downloads its streams (an HLS sound in pieces) and when yt-dlp does (its `.part` and
+/// `.ytdl`). A name not shortened is refused at once, and a path yt-dlp couldn't make is named
+/// as too long, not as a missing folder.
+fn long_name_checks(me: &Path) {
+    use mdm_labserver::{Config, LabServer};
+    const TITLE: &str = "Kira on X: \"This is f*cking insane. Nvidia CEO Jensen Huang on what he expects from an engineer he pays $500,000 a year: \"If that $500,000 engineer did not consume at least $250,000 worth of tokens\" He'd be deeply alarmed";
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    let lab = rt.block_on(LabServer::start(Config::default())).unwrap();
+    let engine = mdm_tools::streams::Engine {
+        handle: rt.handle().clone(),
+        opts: mdm_engine::Options {
+            max_connections: 2,
+            retry_delay: Duration::from_millis(50),
+            ..Default::default()
+        },
+    };
+    let page = |protocol: &str, audio_id: &str| {
+        format!(
+            r#"{{"id": "1", "title": "{}", "ext": "mp4", "formats": [
+            {{"format_id": "hls-2176", "ext": "mp4", "protocol": "{protocol}", "filesize": 1048576,
+              "vcodec": "avc1", "acodec": "none", "url": "{}"}},
+            {{"format_id": "{audio_id}", "ext": "mp4", "protocol": "{}",
+              "vcodec": "none", "acodec": "mp4a", "url": "{}"}}]}}"#,
+            TITLE.replace('"', "\\\""),
+            lab.url("/gen/1M/v.mp4?seed=1"),
+            if protocol == "https" {
+                "m3u8_native"
+            } else {
+                protocol
+            },
+            lab.url("/hls/720p/index.m3u8")
+        )
+    };
+    // Folders 100 characters long (89, and a temporary folder's `\.tmpXXXXXX` in it), on this
+    // computer's disk under the build's folder.
+    let base = tempfile::tempdir_in(env!("CARGO_TARGET_TMPDIR")).unwrap();
+    let pad = 89usize
+        .saturating_sub(base.path().as_os_str().len() + 1)
+        .max(1);
+    let folder = base.path().join("d".repeat(pad));
+    std::fs::create_dir_all(&folder).unwrap();
+    let name = format!("{}.mp4", mdm_engine::naming::sanitize(TITLE));
+    let units = |p: &Path| {
+        let s = p.to_string_lossy();
+        if cfg!(windows) {
+            s.encode_utf16().count()
+        } else {
+            s.len()
+        }
+    };
+    let longest = |dir: &Path| -> usize {
+        fn walk(d: &Path, out: &mut Vec<PathBuf>) {
+            for e in std::fs::read_dir(d).into_iter().flatten().flatten() {
+                out.push(e.path());
+                if e.path().is_dir() {
+                    walk(&e.path(), out);
+                }
+            }
+        }
+        let mut all = Vec::new();
+        walk(dir, &mut all);
+        all.iter().map(|p| units(p)).max().unwrap_or(0)
+    };
+    for protocol in ["https", "rtmp"] {
+        let (tools, out) = (
+            tempfile::tempdir().unwrap(),
+            tempfile::tempdir_in(&folder).unwrap(),
+        );
+        let dir = out.path().to_owned();
+        std::fs::write(
+            tools.path().join("page.json"),
+            page(protocol, "audio-128000-Audio"),
+        )
+        .unwrap();
+        let dest = mdm_engine::naming::stem_destination(&dir, &name, |_| false);
+        let stem = dest.file_stem().unwrap().to_string_lossy().into_owned();
+        assert!(stem.len() < 221, "shortened: {stem}");
+        assert!(
+            mdm_engine::naming::sanitize(TITLE).starts_with(&stem),
+            "{stem}"
+        );
+        let exe = fake_in(me, tools.path());
+        let job = VideoJob::start(
+            &exe,
+            "https://x.example/kira/status/1",
+            "bv*+ba/b",
+            &dir,
+            &stem,
+            None,
+            None,
+            None,
+            &Default::default(),
+            &Subs::default(),
+            Some(engine.clone()),
+        )
+        .expect("started");
+        let end = Instant::now() + Duration::from_secs(120);
+        let mut most = 0;
+        let p = loop {
+            most = most.max(longest(&dir));
+            let p = job.progress();
+            if p.state != State::Running {
+                break p;
+            }
+            assert!(Instant::now() < end, "still running: {:?}", log_of(&p));
+            std::thread::sleep(Duration::from_millis(20));
+        };
+        let log = log_of(&p);
+        let State::Done(saved) = &p.state else {
+            panic!("{protocol}: {:?}: {log:?}", p.state);
+        };
+        assert_eq!(saved, &dest, "{protocol}");
+        if protocol == "https" {
+            assert!(p.helper.is_none(), "the engine's: {:?}", p.helper);
+        }
+        if cfg!(windows) {
+            assert!(units(saved) <= 259 && most <= 259, "{protocol}: {most}");
+        }
+        println!(
+            "fake_ytdlp: #1102 ({protocol}): saved as {} ({} long, the longest file on the way {most})",
+            saved.display(),
+            units(saved)
+        );
+    }
+
+    // The title's name, not shortened: refused before yt-dlp is asked anything.
+    let dir = tempfile::tempdir_in(&folder).unwrap();
+    let whole = mdm_engine::naming::sanitize(TITLE);
+    let refused = VideoJob::start(
+        Path::new("not-run"),
+        "https://x.example/kira/status/1",
+        "bv*+ba/b",
+        dir.path(),
+        &whole,
+        None,
+        None,
+        None,
+        &Default::default(),
+        &Subs::default(),
+        None,
+    );
+    assert!(
+        matches!(refused, Err(mdm_tools::proc::ProcError::PathTooLong(_))),
+        "refused at once"
+    );
+
+    // A format id longer than the room kept for one (rare): yt-dlp can't make its file, and
+    // the path is named as too long (Windows, where the path limit is).
+    if cfg!(windows) {
+        let (tools, out) = (
+            tempfile::tempdir().unwrap(),
+            tempfile::tempdir_in(&folder).unwrap(),
+        );
+        std::fs::write(
+            tools.path().join("page.json"),
+            page("rtmp", &"long-id-".repeat(10)),
+        )
+        .unwrap();
+        let dest = mdm_engine::naming::stem_destination(out.path(), &name, |_| false);
+        let stem = dest.file_stem().unwrap().to_string_lossy().into_owned();
+        let exe = fake_in(me, tools.path());
+        let job = VideoJob::start(
+            &exe,
+            "https://x.example/kira/status/1",
+            "bv*+ba/b",
+            out.path(),
+            &stem,
+            None,
+            None,
+            None,
+            &Default::default(),
+            &Subs::default(),
+            Some(engine.clone()),
+        )
+        .expect("started");
+        let end = Instant::now() + Duration::from_secs(120);
+        let p = loop {
+            let p = job.progress();
+            if p.state != State::Running {
+                break p;
+            }
+            assert!(Instant::now() < end, "still running");
+            std::thread::sleep(Duration::from_millis(50));
+        };
+        let State::Failed(error) = &p.state else {
+            panic!("{:?}", p.state);
+        };
+        assert!(error.contains("[Errno 2]"), "{error}");
+        let path = mdm_tools::video::too_long(error).expect("named as too long");
+        assert!(units(&path) > 259, "{}", path.display());
+        assert!(path.starts_with(out.path()), "{}", path.display());
+    }
+    println!("fake_ytdlp: #1102's long names ok");
 }
 
 /// The sound every page of the engine's checks has (format 140, the lab's `/gen/1M/a.m4a`).
@@ -1343,5 +1870,287 @@ fn pieces_checks(
         log.iter()
             .any(|t| t == "Format dash-exp: Asking yt-dlp for the pieces' new addresses"),
         "{log:?}"
+    );
+}
+
+/// #686: YouTube refusing the signed-in viewer. The browser's extension sends the page's cookies;
+/// a look-up with them gets the signed-in viewer's page, whose stream the lab refuses (403, as
+/// googlevideo.com refuses the reporter's), where the page without them downloads (a private
+/// window). The download tries once more without the cookies and every run after that goes
+/// without them; a video only signed-in viewers may watch, and another site, keep them and fail
+/// as before. A look-up YouTube's bot check refuses with them is made without them; a members'
+/// video's isn't.
+fn signed_in_checks(
+    me: &Path,
+    lab: &mdm_labserver::LabServer,
+    engine: &dyn Fn(u32) -> mdm_tools::streams::Engine,
+) {
+    use mdm_tools::resolve::{Looked, look_up};
+    let page = |video: &str, availability: &str| {
+        format!(
+            r#"{{"id": "jNQXAC9IVRw", "title": "Talk", "ext": "mp4", "availability": "{availability}",
+            "formats": [{{"format_id": "18", "ext": "mp4", "protocol": "https", "filesize": {},
+              "vcodec": "avc1", "acodec": "mp4a", "url": "{}"}}]}}"#,
+            1 << 20,
+            lab.url(video)
+        )
+    };
+    let browser = mdm_tools::proc::FromBrowser {
+        cookies: Some("SAPISID=made-up; LOGIN_INFO=made-up".into()),
+        ..Default::default()
+    };
+    let youtube = "https://www.youtube.com/watch?v=jNQXAC9IVRw";
+    // `availability` of the video on both pages; the end state, each run's cookies (`J with`,
+    // `O without`…) and what was saved.
+    let run = |url: &str, availability: &str| {
+        let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
+        std::fs::write(
+            tools.path().join("page.json"),
+            page("/gen/1M/v.mp4?seed=5", availability),
+        )
+        .unwrap();
+        std::fs::write(
+            tools.path().join("page-signed-in.json"),
+            page("/gen/1M/v.mp4?seed=5&refuse=403", availability),
+        )
+        .unwrap();
+        let exe = fake_in(me, tools.path());
+        let job = VideoJob::start(
+            &exe,
+            url,
+            "18",
+            out.path(),
+            "Talk",
+            None,
+            None,
+            None,
+            &browser,
+            &Subs::default(),
+            Some(engine(2)),
+        )
+        .expect("started");
+        let end = Instant::now() + Duration::from_secs(120);
+        let p = loop {
+            let p = job.progress();
+            if p.state != State::Running {
+                break p;
+            }
+            assert!(Instant::now() < end, "still running: {:?}", log_of(&p));
+            std::thread::sleep(Duration::from_millis(50));
+        };
+        let runs: Vec<String> = std::fs::read_to_string(tools.path().join("cookies.log"))
+            .unwrap_or_default()
+            .lines()
+            .map(str::to_owned)
+            .collect();
+        let saved = match &p.state {
+            State::Done(f) => std::fs::read(f).ok(),
+            _ => None,
+        };
+        (p, runs, saved)
+    };
+    let mut want = vec![0u8; 1 << 20];
+    mdm_labserver::content::fill(5, 0, &mut want);
+
+    // A public YouTube video: refused with the cookies, downloaded without them, as a private
+    // window gets it; every run after the refusal goes without them.
+    let (p, runs, saved) = run(youtube, "public");
+    let log = log_of(&p);
+    println!("fake_ytdlp: #686 public: {:?} {runs:?} {log:?}", p.state);
+    assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
+    assert!(
+        saved.as_deref() == Some(&want[..]),
+        "the private window's stream"
+    );
+    assert!(
+        log.iter().any(|t| t.contains(
+            "YouTube refused the video with the browser's cookies: looking it up again without them"
+        )),
+        "{log:?}"
+    );
+    assert_eq!(
+        log.last().map(String::as_str),
+        Some("Downloaded without the browser's cookies"),
+        "which way worked: {log:?}"
+    );
+    assert_eq!(runs[0], "J with", "the cookies first: {runs:?}");
+    let first_without = runs.iter().position(|r| r.ends_with("without")).unwrap();
+    assert_eq!(runs[first_without], "J without", "{runs:?}");
+    assert!(
+        runs[first_without..].iter().all(|r| r.ends_with("without")),
+        "never the cookies again: {runs:?}"
+    );
+    assert_eq!(
+        runs.iter().filter(|r| *r == "J without").count(),
+        1,
+        "one look-up without them: {runs:?}"
+    );
+
+    // A channel members' video (yt-dlp: only signed-in viewers may watch it): the cookies stay,
+    // and it fails as before.
+    let (p, runs, _) = run(youtube, "subscriber_only");
+    println!("fake_ytdlp: #686 members: {:?} {runs:?}", p.state);
+    assert!(
+        matches!(&p.state, State::Failed(e) if e.contains("403")),
+        "{:?}",
+        p.state
+    );
+    assert!(runs.iter().all(|r| r.ends_with(" with")), "{runs:?}");
+
+    // The download's own look-up refused by YouTube's bot check with the cookies: made without
+    // them, and the rest of that video's download goes without them too.
+    let (p, runs, saved) = run("https://www.youtube.com/watch?v=botcheck000", "public");
+    let log = log_of(&p);
+    assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
+    assert!(saved.as_deref() == Some(&want[..]));
+    assert_eq!(runs, ["J with", "J without", "O without", "D without"]);
+    assert_eq!(
+        log.last().map(String::as_str),
+        Some("Downloaded without the browser's cookies"),
+        "{log:?}"
+    );
+
+    // Another site: as before.
+    let (p, runs, _) = run("https://video.example/talk", "public");
+    assert!(matches!(&p.state, State::Failed(_)), "{:?}", p.state);
+    assert!(runs.iter().all(|r| r.ends_with(" with")), "{runs:?}");
+
+    // The look-up itself refused by YouTube's bot check with the cookies: made once more without
+    // them, and said so.
+    let tools = tempfile::tempdir().unwrap();
+    let exe = fake_in(me, tools.path());
+    let bot = "https://www.youtube.com/watch?v=botcheck000";
+    let (args, _file) = browser.args(bot).unwrap();
+    let ours: Vec<String> = ["-J".to_owned()].into_iter().chain(args).collect();
+    let out = mdm_tools::proc::look_up(&exe, &ours, bot, Duration::from_secs(30)).unwrap();
+    assert!(out.without_cookies, "the second look-up, without them");
+    assert!(matches!(
+        look_up(&exe, bot, &browser).unwrap(),
+        Looked::Video(_)
+    ));
+    // A members' video: refused for want of the sign-in, so not made again without it.
+    let members = "https://www.youtube.com/watch?v=members0000";
+    std::fs::remove_file(tools.path().join("cookies.log")).unwrap();
+    let e = look_up(&exe, members, &browser).unwrap_err().to_string();
+    assert!(e.contains("Join this channel"), "{e}");
+    let runs = std::fs::read_to_string(tools.path().join("cookies.log")).unwrap();
+    assert_eq!(runs.lines().collect::<Vec<_>>(), ["J with"], "tried once");
+    println!("fake_ytdlp: #686 checks ok");
+}
+
+/// #686, live, only with `MDM_LIVE_YTDLP=<yt-dlp>` (and `MDM_LIVE_PAGE=<a public YouTube video>`,
+/// a short one: its 360p format 18 is downloaded, then deleted):
+///
+///   MDM_LIVE_YTDLP=…\yt-dlp.exe MDM_LIVE_PAGE=https://www.youtube.com/watch?v=jNQXAC9IVRw cargo test -p mdm-tools --test fake_ytdlp
+///
+/// The real yt-dlp looks the video up without cookies, as MDM does (no account, signed in
+/// nowhere). The fake then stands in for it with that answer: as is for a look-up without the
+/// browser's cookies, and with every stream's address expired for one with them, which
+/// googlevideo.com really refuses with 403, as it refuses a signed-in viewer's. The made-up
+/// cookies go to the fake only. MDM's engine downloads the video from YouTube's servers once the
+/// download has gone without the cookies.
+fn live_checks(me: &Path) {
+    let Some(real) = std::env::var_os("MDM_LIVE_YTDLP").map(PathBuf::from) else {
+        return;
+    };
+    let page = std::env::var("MDM_LIVE_PAGE")
+        .unwrap_or("https://www.youtube.com/watch?v=jNQXAC9IVRw".into());
+    let t = Instant::now();
+    let (looked, out) =
+        mdm_tools::resolve::look_up_kept(&real, &page, &Default::default()).expect("looked up");
+    assert!(!out.without_cookies);
+    let mdm_tools::resolve::Looked::Video(v) = looked else {
+        panic!("a list")
+    };
+    println!(
+        "fake_ytdlp: live: looked {page} up without cookies in {:?}: {:?}, {} formats",
+        t.elapsed(),
+        v.title,
+        v.formats.len()
+    );
+    let mut info: serde_json::Value = serde_json::from_slice(&out.json).unwrap();
+    assert_eq!(info["availability"], "public", "a public video");
+    // yt-dlp's own choice of formats goes: the fake chooses as asked (format 18).
+    if let Some(o) = info.as_object_mut() {
+        o.remove("requested_formats");
+    }
+    let tools = tempfile::tempdir().unwrap();
+    std::fs::write(tools.path().join("page.json"), info.to_string()).unwrap();
+    // Every googlevideo.com address, expired.
+    fn expired(v: &mut serde_json::Value) {
+        match v {
+            serde_json::Value::String(s) if s.contains(".googlevideo.com/") => {
+                if let Ok(mut u) = url::Url::parse(s) {
+                    let pairs: Vec<(String, String)> = u
+                        .query_pairs()
+                        .map(|(k, v)| {
+                            let v = if k == "expire" {
+                                "1600000000".into()
+                            } else {
+                                v.into_owned()
+                            };
+                            (k.into_owned(), v)
+                        })
+                        .collect();
+                    u.query_pairs_mut().clear().extend_pairs(pairs);
+                    *s = u.to_string();
+                }
+            }
+            serde_json::Value::Array(a) => a.iter_mut().for_each(expired),
+            serde_json::Value::Object(o) => o.values_mut().for_each(expired),
+            _ => {}
+        }
+    }
+    expired(&mut info);
+    std::fs::write(tools.path().join("page-signed-in.json"), info.to_string()).unwrap();
+    let exe = fake_in(me, tools.path());
+    let out = tempfile::tempdir().unwrap();
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    let browser = mdm_tools::proc::FromBrowser {
+        cookies: Some("SAPISID=made-up; LOGIN_INFO=made-up".into()),
+        ..Default::default()
+    };
+    let job = VideoJob::start(
+        &exe,
+        &page,
+        "18",
+        out.path(),
+        "Live",
+        None,
+        None,
+        None,
+        &browser,
+        &Subs::default(),
+        Some(mdm_tools::streams::Engine {
+            handle: rt.handle().clone(),
+            opts: Default::default(),
+        }),
+    )
+    .expect("started");
+    let end = Instant::now() + Duration::from_secs(180);
+    let p = loop {
+        let p = job.progress();
+        if p.state != State::Running {
+            break p;
+        }
+        assert!(Instant::now() < end, "still running: {:?}", log_of(&p));
+        std::thread::sleep(Duration::from_millis(100));
+    };
+    let log = log_of(&p);
+    let runs = std::fs::read_to_string(tools.path().join("cookies.log")).unwrap_or_default();
+    println!("fake_ytdlp: live: {:?}\n  runs: {runs:?}", p.state);
+    for line in &log {
+        println!("  log: {line}");
+    }
+    let State::Done(file) = &p.state else {
+        panic!("{:?}: {log:?}", p.state)
+    };
+    let size = std::fs::metadata(file).unwrap().len();
+    println!("fake_ytdlp: live: saved {size} bytes from YouTube's servers, then deleted");
+    assert!(size > 0 && size < 8 << 20, "{size}");
+    assert!(log.iter().any(|t| t.contains("403")), "{log:?}");
+    assert_eq!(
+        log.last().map(String::as_str),
+        Some("Downloaded without the browser's cookies")
     );
 }

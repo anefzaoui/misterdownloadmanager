@@ -4,10 +4,13 @@
 //! list, install it next to earlier versions (`tools/yt-dlp/<version>/`), switch to it
 //! atomically, never downgrade, and keep the previous version for rollback.
 
+pub mod bgutil;
 pub mod chosen;
+pub mod declared;
 pub mod ffmpeg;
 mod folder;
 pub mod gallery;
+pub mod github;
 pub mod manifest;
 mod openpgp;
 pub mod pages;
@@ -18,12 +21,13 @@ pub mod relay;
 pub mod resolve;
 pub mod servers;
 pub mod streams;
-// System helper discovery is for Linux and macOS; Windows keeps its verified managed copies.
-#[cfg(unix)]
+// System helper discovery, on every system (#452): a copy found on the PATH (a package manager's,
+// Homebrew's, pip's or an installer's), used when MDM has none of its own.
 mod system;
 pub mod update;
 pub mod video;
 pub mod workdir;
+pub mod youtube;
 
 use std::path::{Path, PathBuf};
 
@@ -36,8 +40,12 @@ const YTDLP_KEY: &str = include_str!("../keys/yt-dlp.asc");
 /// 5826D399249DE856EA087D802E293C28E8A69D74): release.yml signs each release's SHA256SUMS.txt
 /// with it (the MDM_RELEASE_KEY secret), and MDM updates itself only from a list it signed.
 const MDM_KEY: &str = include_str!("../keys/mdm-release.asc");
-/// Where releases come from.
+/// Where releases come from: GitHub's API, else its pages (`github`, #1337).
 const RELEASES: &str = "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest";
+/// yt-dlp's repository on GitHub.
+const YTDLP_REPO: &str = "yt-dlp/yt-dlp";
+/// yt-dlp's checksum list in each release, and its signature.
+const YTDLP_SUMS: [&str; 2] = ["SHA2-256SUMS", "SHA2-256SUMS.sig"];
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -109,7 +117,8 @@ pub struct Installed {
     pub exe: PathBuf,
 }
 
-/// `Installed::version` of a program found on the system: its package manager's, not asked (#452).
+/// `Installed::version` of a program found on the system: its package manager's or installer's,
+/// not asked (#452).
 const SYSTEM: &str = "system";
 
 impl Installed {
@@ -124,15 +133,25 @@ pub fn tools_dir() -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join("tools"))
 }
 
-/// yt-dlp's file name for this platform in its releases. On Windows and macOS, its folder build:
-/// why, in `folder`.
-pub fn ytdlp_asset() -> &'static str {
-    if cfg!(windows) {
-        "yt-dlp_win.zip"
-    } else if cfg!(target_os = "macos") {
-        "yt-dlp_macos.zip"
-    } else {
-        "yt-dlp_linux"
+/// yt-dlp's file name for this system and processor in its releases; None where it publishes
+/// none (the system's yt-dlp, or one chosen in Helpers, works there).
+pub fn ytdlp_asset() -> Option<&'static str> {
+    ytdlp_asset_for(std::env::consts::OS, std::env::consts::ARCH)
+}
+
+/// yt-dlp's file name in its releases for a system and a processor, as Rust names them
+/// (`std::env::consts`). On Windows and macOS, its folder build (why, in `folder`): Windows on
+/// ARM and 32-bit Windows have their own; macOS's is one for both processors. On Linux, the
+/// single program for that processor.
+fn ytdlp_asset_for(os: &str, arch: &str) -> Option<&'static str> {
+    match (os, arch) {
+        ("windows", "x86_64") => Some("yt-dlp_win.zip"),
+        ("windows", "aarch64") => Some("yt-dlp_win_arm64.zip"),
+        ("windows", "x86") => Some("yt-dlp_win_x86.zip"),
+        ("macos", _) => Some("yt-dlp_macos.zip"),
+        ("linux", "x86_64") => Some("yt-dlp_linux"),
+        ("linux", "aarch64") => Some("yt-dlp_linux_aarch64"),
+        _ => None,
     }
 }
 
@@ -279,13 +298,10 @@ pub fn sum_for(sums: &str, name: &str) -> Option<[u8; 32]> {
 }
 
 /// The yt-dlp to use: the person's own (`chosen`), else MDM's install in `dir`
-/// (`dir/yt-dlp/current.json`), if any and still there; on Linux and macOS, else the system's.
+/// (`dir/yt-dlp/current.json`), if any and still there; else the system's.
 pub fn installed(dir: &Path) -> Option<Installed> {
     let own = chosen::chosen(dir, chosen::Helper::YtDlp).or_else(|| own_ytdlp(dir));
-    #[cfg(unix)]
-    return own.or_else(|| system::installed("yt-dlp"));
-    #[cfg(not(unix))]
-    own
+    own.or_else(|| system::installed("yt-dlp"))
 }
 
 fn own_ytdlp(dir: &Path) -> Option<Installed> {
@@ -303,18 +319,6 @@ fn own_ytdlp(dir: &Path) -> Option<Installed> {
 pub(crate) fn newer(a: &str, b: &str) -> bool {
     let parts = |v: &str| -> Vec<u64> { v.split('.').filter_map(|p| p.parse().ok()).collect() };
     parts(a) > parts(b)
-}
-
-#[derive(Deserialize)]
-struct Release {
-    tag_name: String,
-    assets: Vec<Asset>,
-}
-
-#[derive(Deserialize)]
-struct Asset {
-    name: String,
-    browser_download_url: String,
 }
 
 /// Whether the once-per-session update has a yt-dlp to refresh: not the system's, which is its
@@ -336,18 +340,21 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::YtDlp) {
         return Ok(mine);
     }
-    let client = client(net, RELEASES)?;
-    let body = client
-        .get(RELEASES)
-        .send()
-        .await?
-        .error_for_status()?
-        .bytes()
-        .await?;
-    let release: Release =
-        serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
+    let asset =
+        ytdlp_asset().ok_or_else(|| Error::Missing("yt-dlp build for this system".into()))?;
+    // From GitHub's API, else (its rate limit) github.com's pages: the same files either way,
+    // checked the same way below.
+    let [sums_name, sig_name] = YTDLP_SUMS;
+    let release = github::latest_release(
+        net,
+        RELEASES,
+        github::WEB,
+        YTDLP_REPO,
+        &[sums_name, sig_name, asset],
+    )
+    .await?;
     if let Some(current) = own_ytdlp(dir)
-        && !newer(&release.tag_name, &current.version)
+        && !newer(&release.tag, &current.version)
         // The same release again only as the folder build, in place of the one-file one that
         // earlier versions of MDM installed on Windows (#1053).
         && !(folder::BUILD && folder::one_file_build(&current.exe))
@@ -356,20 +363,15 @@ pub async fn install_latest(
     }
     let url = |name: &str| {
         release
-            .assets
+            .files
             .iter()
-            .find(|a| a.name == name)
-            .map(|a| a.browser_download_url.clone())
+            .find(|(n, _)| n == name)
+            .map(|(_, u)| u.clone())
             .ok_or_else(|| Error::Missing(name.to_owned()))
     };
-    let sums = signed_list(
-        &client,
-        &url("SHA2-256SUMS")?,
-        &url("SHA2-256SUMS.sig")?,
-        signed_by_ytdlp,
-    )
-    .await?;
-    let asset = ytdlp_asset();
+    let sums_url = url(sums_name)?;
+    let client = client(net, &sums_url)?;
+    let sums = signed_list(&client, &sums_url, &url(sig_name)?, signed_by_ytdlp).await?;
     let expected =
         sum_for(&sums, asset).ok_or_else(|| Error::Missing(format!("checksum for {asset}")))?;
     let exe_url = url(asset)?;
@@ -384,9 +386,9 @@ pub async fn install_latest(
         return Err(Error::BadChecksum);
     }
     #[cfg(any(windows, target_os = "macos"))]
-    return folder::put_folder(dir, &release.tag_name, &program, &exe_url);
+    return folder::put_folder(dir, &release.tag, &program, &exe_url);
     #[cfg(not(any(windows, target_os = "macos")))]
-    put(dir, "yt-dlp", &release.tag_name, asset, &program, &exe_url)
+    put(dir, "yt-dlp", &release.tag, asset, &program, &exe_url)
 }
 
 /// Install verified `program` as `version` of `tool` (`dir/<tool>/<version>/<asset>`) and make it
@@ -515,6 +517,32 @@ mod tests {
             "f5389d3698ecde4ef06f4e6b1ce0294fe9ac1396228c8990b8d3416d6d177a7d"
         );
         assert!(sum_for(&sums, "yt-dlp.ex").is_none());
+    }
+
+    /// Each system and processor MDM is published for takes yt-dlp's own build for it, and the
+    /// release's signed list has a checksum for each (a real release's list).
+    #[test]
+    fn ytdlp_has_a_build_for_each_processor() {
+        let sums = String::from_utf8_lossy(SUMS);
+        for (os, arch, asset) in [
+            ("windows", "x86_64", "yt-dlp_win.zip"),
+            ("windows", "aarch64", "yt-dlp_win_arm64.zip"),
+            ("windows", "x86", "yt-dlp_win_x86.zip"),
+            ("linux", "x86_64", "yt-dlp_linux"),
+            ("linux", "aarch64", "yt-dlp_linux_aarch64"),
+            ("macos", "aarch64", "yt-dlp_macos.zip"),
+            ("macos", "x86_64", "yt-dlp_macos.zip"),
+        ] {
+            assert_eq!(ytdlp_asset_for(os, arch), Some(asset), "{os} {arch}");
+            assert!(sum_for(&sums, asset).is_some(), "{asset} not in the list");
+        }
+        // No build of yt-dlp's own: the system's, or one chosen in Helpers.
+        assert_eq!(ytdlp_asset_for("linux", "riscv64"), None);
+        assert_eq!(ytdlp_asset_for("freebsd", "x86_64"), None);
+        assert_eq!(
+            ytdlp_asset(),
+            ytdlp_asset_for(std::env::consts::OS, std::env::consts::ARCH)
+        );
     }
 
     #[test]

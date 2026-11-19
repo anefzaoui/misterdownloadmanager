@@ -3,7 +3,8 @@
 //! (Codeberg), its `SHA256SUMS` checked against its author's OpenPGP key (pinned in
 //! `keys/gallery-dl.asc`), the program against that list, kept in `tools/gallery-dl/<version>/`
 //! with the previous version, never older; or the person's own copy (`chosen`). It runs in the
-//! same job as yt-dlp does (`proc::spawn`), so Stop and MDM's end take it and all it started.
+//! same kind of job (Windows) or process group (Linux, macOS) as yt-dlp does (`proc::spawn`), so
+//! Stop and MDM's end take it and all it started.
 //!
 //! A download is a folder: gallery-dl prints each file it saves (one path a line, `# path` for
 //! one already there), and skips what is already there when started again, so a gallery started
@@ -16,6 +17,7 @@
 //! headers of its own, a sign-in). A gallery-dl too old to list them (before 1.32) downloads them all
 //! itself, as before.
 
+use std::collections::HashSet;
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
@@ -42,16 +44,22 @@ pub const USER_AGENT: &str = concat!(
     " (+https://misterdownloadmanager.com) gallery-dl"
 );
 
-/// gallery-dl's program for this system in its releases. None on macOS (it publishes no build
-/// for it: Homebrew's `gallery-dl`, chosen in Helpers, works there) and on Linux other than
-/// x86-64 (the same, from the system's packages or pip).
+/// gallery-dl's program for this system and processor in its releases: see [`asset_for`].
 pub fn asset() -> Option<&'static str> {
-    if cfg!(windows) {
-        Some("gallery-dl.exe")
-    } else if cfg!(all(target_os = "linux", target_arch = "x86_64")) {
-        Some("gallery-dl.bin")
-    } else {
-        None
+    asset_for(std::env::consts::OS, std::env::consts::ARCH)
+}
+
+/// gallery-dl's program in its releases for a system and a processor, as Rust names them
+/// (`std::env::consts`). It builds for 64-bit and 32-bit Windows and for Linux on x86-64; Windows
+/// on ARM runs the x64 one (Windows 11 runs x64 programs on ARM). None on macOS (no build: Homebrew's
+/// `gallery-dl`, chosen in Helpers, works there) and on Linux on ARM (the same, from the system's
+/// packages or pip).
+fn asset_for(os: &str, arch: &str) -> Option<&'static str> {
+    match (os, arch) {
+        ("windows", "x86_64" | "aarch64") => Some("gallery-dl.exe"),
+        ("windows", "x86") => Some("gallery-dl_x86.exe"),
+        ("linux", "x86_64") => Some("gallery-dl.bin"),
+        _ => None,
     }
 }
 
@@ -122,18 +130,15 @@ pub fn too_old(version: &str) -> bool {
     release(version).is_some_and(|have| Some(have) < release(OLDEST))
 }
 
-/// The gallery-dl to use: the person's own (`chosen`), else MDM's install in `dir`; on Linux
-/// and macOS, else the system's (#571, as yt-dlp's: a package manager's or Homebrew's, kept up
-/// to date by it). A chosen one too old for MDM ([`too_old`], chosen before #236 checked) is
-/// passed over; [`chosen_too_old`] names it, for the Helpers window to say so.
+/// The gallery-dl to use: the person's own (`chosen`), else MDM's install in `dir`; else the
+/// system's (#571, as yt-dlp's: a package manager's, Homebrew's or pip's, kept up to date by
+/// it). A chosen one too old for MDM ([`too_old`], chosen before #236 checked) is passed over;
+/// [`chosen_too_old`] names it, for the Helpers window to say so.
 pub fn installed(dir: &Path) -> Option<Installed> {
     let own = chosen::chosen(dir, chosen::Helper::GalleryDl)
         .filter(|mine| !too_old(&mine.version))
         .or_else(|| own(dir));
-    #[cfg(unix)]
-    return own.or_else(|| crate::system::installed("gallery-dl"));
-    #[cfg(not(unix))]
-    own
+    own.or_else(|| crate::system::installed("gallery-dl"))
 }
 
 /// The person's own gallery-dl when it is too old for MDM, so passed over.
@@ -281,10 +286,24 @@ struct Shared {
     there: u64,
     /// The files saved this run (at most `KEEP_PATHS`).
     files: Vec<PathBuf>,
-    /// Every file gallery-dl reported for this gallery (`Saved` + `There`, at most `KEEP_PATHS`).
+    /// Every file gallery-dl reported for this gallery (`Saved` + `There`, at most `KEEP_PATHS`),
+    /// each once, in the order reported.
     known: Vec<PathBuf>,
+    /// `known`'s paths, to tell one already listed at once: a gallery's lines number up to
+    /// `KEEP_PATHS`, so searching `known` for each would take time squared, with the lock held.
+    known_set: HashSet<PathBuf>,
     /// The files MDM's engine saved this run (#769), counted among gallery-dl's `There`.
     by_engine: u64,
+}
+
+impl Shared {
+    /// Lists `p` among `known`, once.
+    fn know(&mut self, p: PathBuf) {
+        if self.known.len() < KEEP_PATHS && !self.known_set.contains(&p) {
+            self.known_set.insert(p.clone());
+            self.known.push(p);
+        }
+    }
 }
 
 /// MDM's engine for a gallery's files (#769).
@@ -400,6 +419,7 @@ impl ByEngine<'_> {
             token.clone(),
             pieces_shared.clone(),
             relist,
+            None,
         ));
         let mut cancelled = false;
         while !task.is_finished() {
@@ -488,7 +508,9 @@ fn listed(line: &str, folder: &Path) -> Option<(url::Url, PathBuf)> {
 impl GalleryJob {
     /// Download `url`'s files into `folder`, the gallery's own.
     /// `engine`: MDM's engine, which downloads the files gallery-dl lists (#769); without it, or
-    /// with a gallery-dl too old to list them, gallery-dl downloads them itself.
+    /// with a gallery-dl too old to list them, gallery-dl downloads them itself. `saved` is shown
+    /// each file saved, on the job's own thread before the job says it is done (#1103): the
+    /// app's mark that they came from the internet, never written on the window's thread.
     pub fn start(
         tool: &Installed,
         url: &str,
@@ -496,6 +518,7 @@ impl GalleryJob {
         ask: &Ask,
         browser: &FromBrowser,
         engine: Option<crate::streams::Engine>,
+        saved: Option<mdm_engine::FileHook>,
     ) -> Result<GalleryJob, ProcError> {
         let mut ours: Vec<String> = vec![
             // The files right in `folder` (the gallery's own), not in subfolders of the site's.
@@ -598,7 +621,7 @@ impl GalleryJob {
                 }
             };
             read(stdout, &sh);
-            finish(&sh, &ch, folder);
+            finish(&sh, &ch, folder, saved.as_ref());
         });
         Ok(GalleryJob {
             shared,
@@ -667,7 +690,8 @@ impl Drop for GalleryJob {
 
 /// The browser's context (`FromBrowser::args`, made for yt-dlp) as gallery-dl takes it: its
 /// cookies, and its User-Agent or MDM's (`--user-agent`, or `-o user-agent=…` before 1.24); no
-/// Referer or Origin (`--add-header`), which gallery-dl has no option for.
+/// Referer, Origin (`--add-header`), or yt-dlp's browser-store opt-out, which gallery-dl has no
+/// option for (it never reads Options' video cookie store).
 fn browser_args(theirs: Vec<String>, accepts: Accepts) -> Vec<String> {
     let mut out = Vec::new();
     let mut agent = None;
@@ -677,6 +701,7 @@ fn browser_args(theirs: Vec<String>, accepts: Accepts) -> Vec<String> {
             "--referer" | "--add-header" => {
                 theirs.next();
             }
+            "--no-cookies-from-browser" => {}
             "--user-agent" => agent = theirs.next(),
             "--cookies" => {
                 out.push(a);
@@ -734,15 +759,11 @@ fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
                 if sh.files.len() < KEEP_PATHS {
                     sh.files.push(p.clone());
                 }
-                if sh.known.len() < KEEP_PATHS {
-                    sh.known.push(p);
-                }
+                sh.know(p);
             }
             Line::There(p) => {
                 sh.there += 1;
-                if sh.known.len() < KEEP_PATHS && !sh.known.contains(&p) {
-                    sh.known.push(p);
-                }
+                sh.know(p);
             }
         }
         let secs = started.elapsed().as_secs_f64().max(0.5);
@@ -750,8 +771,14 @@ fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
     }
 }
 
-/// gallery-dl's end: what it saved and what it couldn't, said in the download's log.
-fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBuf) {
+/// gallery-dl's end: what it saved and what it couldn't, said in the download's log; each saved
+/// file shown to `saved` first.
+fn finish(
+    shared: &Mutex<Shared>,
+    child: &Mutex<Option<Spawned>>,
+    folder: PathBuf,
+    saved: Option<&mdm_engine::FileHook>,
+) {
     // Polled with the lock free in between, so `stop` never waits on it.
     let (code, failure) = loop {
         let mut slot = child.lock().unwrap();
@@ -771,6 +798,14 @@ fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBu
         std::thread::sleep(Duration::from_millis(100));
     };
     child.lock().unwrap().take();
+    // Before Done, with the progress unlocked: a disk slow to take the mark keeps this thread
+    // waiting, never a window reading the progress (#1103).
+    if let Some(hook) = saved {
+        let files = shared.lock().unwrap().files.clone();
+        for file in files.iter().filter(|f| f.is_file()) {
+            (hook.0)(file);
+        }
+    }
     let mut sh = shared.lock().unwrap();
     let (saved, there, engine) = (sh.saved, sh.there, sh.by_engine);
     sh.progress.speed = 0.0;
@@ -803,6 +838,50 @@ fn finish(shared: &Mutex<Shared>, child: &Mutex<Option<Spawned>>, folder: PathBu
 mod tests {
     use super::*;
 
+    /// A gallery whose files are all there already (every file MDM's engine saved comes back so,
+    /// #769) is read in time linear in its files: each line's path is told from those listed at
+    /// once, not searched for among them, with the lock `progress` waits on held.
+    #[test]
+    fn a_gallery_already_there_is_read_in_linear_time() {
+        let lines = |n: usize| {
+            let mut text = String::new();
+            for i in 0..n {
+                text.push_str(&format!(
+                    "# /gallery/image-{i:09}.jpg
+"
+                ));
+            }
+            text.into_bytes()
+        };
+        mdm_labserver::growth::assert_linear(2_000, lines, |text| {
+            let shared = Mutex::new(Shared::default());
+            read(&text[..], &shared);
+            let sh = shared.into_inner().unwrap();
+            assert_eq!(sh.there as usize, sh.known.len());
+            sh.known.len()
+        });
+        // Each path listed once, in the order reported, a file saved as well as there included.
+        let shared = Mutex::new(Shared::default());
+        let saved = std::env::temp_dir().join("mdm-gallery-known-once.jpg");
+        let text = format!(
+            "# /g/a.jpg
+# /g/b.jpg
+# /g/a.jpg
+{}
+{}
+",
+            saved.display(),
+            saved.display()
+        );
+        read(text.as_bytes(), &shared);
+        let sh = shared.into_inner().unwrap();
+        assert_eq!((sh.there, sh.saved), (3, 2));
+        assert_eq!(
+            sh.known,
+            [PathBuf::from("/g/a.jpg"), PathBuf::from("/g/b.jpg"), saved]
+        );
+    }
+
     const SUMS: &[u8] = include_bytes!("../tests/fixtures/gallery-dl-SHA256SUMS");
     const SIG: &[u8] = include_bytes!("../tests/fixtures/gallery-dl-SHA256SUMS.sig");
 
@@ -818,6 +897,36 @@ mod tests {
         assert_eq!(
             hex::encode(crate::sum_for(&sums, "gallery-dl.exe").unwrap()),
             "4dda3f14efbc8a8e616af1fc7e1e88d795995326b47692453e620117254dec18"
+        );
+    }
+
+    /// Each processor MDM is published for takes gallery-dl's build for it, or the x64 one on
+    /// Windows on ARM, and the release's signed list has a checksum for each.
+    #[test]
+    fn gallery_dl_has_a_build_for_each_windows_processor() {
+        let sums = String::from_utf8_lossy(SUMS);
+        for (os, arch, want) in [
+            ("windows", "x86_64", "gallery-dl.exe"),
+            ("windows", "aarch64", "gallery-dl.exe"),
+            ("windows", "x86", "gallery-dl_x86.exe"),
+            ("linux", "x86_64", "gallery-dl.bin"),
+        ] {
+            assert_eq!(asset_for(os, arch), Some(want), "{os} {arch}");
+            assert!(
+                crate::sum_for(&sums, want).is_some(),
+                "{want} not in the list"
+            );
+        }
+        for (os, arch) in [
+            ("linux", "aarch64"),
+            ("macos", "aarch64"),
+            ("macos", "x86_64"),
+        ] {
+            assert_eq!(asset_for(os, arch), None, "{os} {arch}");
+        }
+        assert_eq!(
+            asset(),
+            asset_for(std::env::consts::OS, std::env::consts::ARCH)
         );
     }
 
@@ -907,6 +1016,12 @@ mod tests {
             ["--cookies", "/c.txt", "-o", "user-agent=Firefox/150"]
         );
         assert_eq!(browser_args(Vec::new(), new), ["--user-agent", USER_AGENT]);
+        let private = FromBrowser {
+            private: true,
+            ..Default::default()
+        };
+        let (args, _) = private.args("https://x.test/g").unwrap();
+        assert_eq!(browser_args(args, new), ["--user-agent", USER_AGENT]);
         assert_eq!(
             browser_args(Vec::new(), old),
             ["-o".to_owned(), format!("user-agent={USER_AGENT}")]

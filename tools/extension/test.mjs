@@ -4,7 +4,11 @@ import { readFileSync, readdirSync } from "node:fs";
 import vm from "node:vm";
 import assert from "node:assert/strict";
 
-const code = readFileSync(new URL("../../extension/background.js", import.meta.url), "utf8");
+// A file's text with LF line endings: a Windows checkout (core.autocrlf=true) hands us CRLF, and
+// the tests slice and match sources, JSON and locales by "\n".
+const readText = (url) => readFileSync(url instanceof URL ? url : new URL(url, import.meta.url), "utf8").replace(/\r\n/g, "\n");
+
+const code = readText("../../extension/background.js");
 const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
 
 // A fake extension API; `firefox` picks which download event exists. `reply` is the app's
@@ -29,6 +33,9 @@ function fakeApi({
   host = true,
   finished,
   panelOn,
+  // Options → Download panels → Button size (#1278): Compact (a function: the app's answer now);
+  // undefined: an older host, which doesn't say.
+  panelCompact,
   access = true,
   rules = {},
   rulesReply,
@@ -45,6 +52,10 @@ function fakeApi({
   // The host's answer to the video button's lookups (`videoLookup`, `videoPoll`, `videoPick`): a
   // function of the message; none: `reply`.
   lookup,
+  // The page's links, as the right-click menu's script collects them (pageLinks).
+  pageLinks = ["https://x/1.zip", "https://x/2.zip"],
+  // tabs.query's answer for the active tab of the window last used (#607).
+  activeTab,
 }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
@@ -140,12 +151,17 @@ function fakeApi({
         }
         calls.push(["native", name, m]);
         // The video button: "may it show" follows `panelOn` (a function: the app's answer now).
-        if (m.panel) return { ok: typeof panelOn === "function" ? panelOn(m) : panelOn !== false };
+        if (m.panel) {
+          const on = typeof panelOn === "function" ? panelOn(m) : panelOn !== false;
+          const compact = typeof panelCompact === "function" ? panelCompact(m) : panelCompact;
+          return { ok: on, ...(on && compact !== undefined ? { compact } : {}) };
+        }
         // A notice of a download left alone (#208): an older host, which knows none, takes it
         // for an address it can't download (`noticeReply`).
         if (m.declined) return noticeReply || { ok: true };
         if (lookup && (m.videoLookup || m.videoPoll || m.videoPick)) return lookup(m);
-        // A function: the app's answer to this message (it may change its rules, as the app would).
+        // A function: the app's answer to each message (a page's links' parts, one by one; it may
+        // change its rules, as the app would).
         return typeof reply === "function" ? reply(m) : reply;
       },
       getManifest: () => ({
@@ -167,7 +183,7 @@ function fakeApi({
       onUpdated: event("tabUpdated"),
       get: async (id) => tabs[id] || { id, url: "about:blank", status: "complete" },
       remove: async (id) => calls.push(["closeTab", id]),
-      query: async () => [],
+      query: async (q) => (q && q.active && activeTab ? [activeTab] : []),
       create: async (t) => calls.push(["openTab", t.url]),
     },
     webRequest: {
@@ -190,7 +206,7 @@ function fakeApi({
           if (!frames) throw new Error("Cannot access contents of the page");
           return Object.entries(frames).map(([frameId, result]) => ({ frameId: Number(frameId), result }));
         }
-        return func ? [{ result: ["https://x/1.zip", "https://x/2.zip"] }] : [];
+        return func ? [{ result: pageLinks }] : [];
       },
     },
     action: {
@@ -221,11 +237,27 @@ function fakeApi({
 let served = {};
 const fetched = [];
 async function fakeFetch(url, opts) {
-  fetched.push([String(url), opts && opts.credentials]);
+  const range = /^bytes=(\d+)-(\d+)$/.exec((opts && opts.headers && opts.headers.Range) || "");
+  fetched.push([String(url), opts && opts.credentials, ...(range ? [range[0]] : [])]);
   const r = served[url];
   if (!r) throw new TypeError("Failed to fetch");
   // Its body as a stream too, 1 KB a chunk: `r.read` counts what was pulled (#171 reads 4 KB).
-  const bytes = new TextEncoder().encode(r.body);
+  // `r.bytes`: a file's (#1092), whose ranges are served as a server does (206); `r.noRange`:
+  // a server that ignores them (the whole file, 200).
+  if (r.bytes && range && !r.noRange) {
+    const part = r.bytes.slice(Number(range[1]), Number(range[2]) + 1);
+    r.ranges = [...(r.ranges || []), range[0]];
+    let sent = 0;
+    const body = new ReadableStream({
+      pull(c) {
+        if (sent >= part.length) return c.close();
+        c.enqueue(part.slice(sent, sent + 1024));
+        sent += 1024;
+      },
+    });
+    return { ok: true, status: 206, headers: { get: () => null }, body };
+  }
+  const bytes = r.bytes || new TextEncoder().encode(r.body);
   r.read = 0;
   const body = new ReadableStream({
     pull(c) {
@@ -250,14 +282,19 @@ function load(api, firefox, extra = {}) {
     URL,
     URLSearchParams,
     TextDecoder,
+    TextEncoder,
+    atob,
     setTimeout,
     clearTimeout,
     Promise,
+    crypto: globalThis.crypto,
   };
   if (firefox) ctx.browser = api;
   else ctx.chrome = api;
   Object.assign(ctx, extra);
   vm.runInNewContext(code, ctx);
+  // Its globals (the functions it declares), for the tests of its parts (#1092: called as they are).
+  return ctx;
 }
 
 const settle = () => new Promise((r) => setTimeout(r, 30));
@@ -571,6 +608,12 @@ const ok = (what) => {
   assert.ok(await keep({ id: 65, url: "https://dl.mirror.org/f.zip", filename: "f.zip" }), "*.mirror.*");
   assert.ok(await keep({ id: 66, url: "https://mirror.net/g.zip", filename: "g.zip" }), "*.mirror.* takes the domain");
   assert.ok(await keep({ id: 67, url: "https://cdn.files.test/h.zip", referrer: "https://www.kept.test/", filename: "h.zip" }), "*kept*");
+  // `example.test.` is `example.test` (the root's dot), for the file and for its page.
+  assert.ok(await keep({ id: 68, url: "https://www.example.test./i.zip", filename: "i.zip" }), "the root's dot");
+  assert.ok(
+    await keep({ id: 69, url: "https://cdn.files.test/j.zip", referrer: "https://www.example.test./get", filename: "j.zip" }),
+    "a page with the root's dot",
+  );
   assert.equal(natives(calls).length, 3);
   ok("#1049: excluded sites take their subdomains and the files their pages link to");
 }
@@ -666,6 +709,9 @@ const ok = (what) => {
   const values = rule.addRules[0].condition.responseHeaders[0].values;
   assert.ok(values.includes("application/pdf*") && values.includes("audio/mpeg*"));
   assert.ok(!values.some((v) => v.startsWith("video/mp4")), "MP4 not listed");
+  // #1087: one a page shows in a frame, an <embed> or an <object> too, never one its script
+  // fetches (the page's own viewer reads it).
+  assert.deepEqual(rule.addRules[0].condition.resourceTypes, ["main_frame", "sub_frame", "object"]);
   // Options' excluded sites keep opening in the browser, with their subdomains whether written
   // with *. or not (#1049), and so do the files their pages lead to on another host.
   const ex = fakeApi({ firefox: false, types: "PDF", rules: { excludedSites: "*.docs.test files.test:8080 docs.test" } });
@@ -744,6 +790,117 @@ const ok = (what) => {
   ok("context menus: explicit links, a page's links, failures explained");
 }
 
+// A page's links past what the host takes in one message (1 MB, crates/ipc MAX_MESSAGE): sent in
+// parts, each under it as every browser writes it, in order, each with the page's referrer and
+// cookies and its place in the list; a list exactly at the limit still goes whole, without
+// parts, as before.
+{
+  const MAX = 1 << 20;
+  // As the host counts: the bytes of the message's JSON in UTF-8.
+  const bytes = (m) => Buffer.byteLength(JSON.stringify(m), "utf8");
+  const { api } = fakeApi({ firefox: false });
+  const g = load(api, false);
+  assert.equal(vm.runInContext("MESSAGE_MAX", g), MAX, "the host's limit (crates/ipc MAX_MESSAGE)");
+  // wireSize: JSON.stringify's UTF-8, plus what Chromium (< DEL U+2028 U+2029) and Safari's
+  // helper (/) escape: never less than any of them writes.
+  assert.equal(g.wireSize({ a: "plain text, é, ✓, 😀" }), bytes({ a: "plain text, é, ✓, 😀" }));
+  assert.equal(g.wireSize("a/b"), bytes("a/b") + 1);
+  assert.equal(g.wireSize("<\u007f\u2028\u2029"), 2 + 4 * 6);
+  assert.equal(g.wireSize("\ud800"), bytes("\ud800"), "a lone surrogate, escaped by JSON.stringify");
+  // Cut in order, every part's message within the limit, nothing lost or doubled.
+  const base = { referrer: "https://x.test/files/", cookies: "sid=1", private: false, userAgent: "UA", brands: [], v: "1", linksPart: { batch: "b", index: 256, count: 256 } };
+  const many = Array.from({ length: 5000 }, (_, k) => `https://x.test/files/${"d".repeat(k % 300)}/file${k}.zip`);
+  // The script's arrays are of its own realm: compared as plain copies.
+  const cutAt = (...a) => JSON.parse(JSON.stringify(g.linkParts(...a)));
+  const { parts, left } = cutAt(base, many, 100000);
+  assert.ok(parts.length > 5);
+  assert.deepEqual(parts.flat(), many);
+  assert.equal(left.length, 0);
+  for (const links of parts) assert.ok(g.wireSize({ ...base, links }) <= 100000);
+  // Each part as full as the next link allows.
+  for (let k = 0; k + 1 < parts.length; k++) assert.ok(g.wireSize({ ...base, links: [...parts[k], parts[k + 1][0]] }) > 100000);
+  // A link too long to go even alone is left out, the others go.
+  const huge = `https://x.test/${"x".repeat(100000)}`;
+  const cut = cutAt(base, ["https://x.test/a.zip", huge, "https://x.test/b.zip"], 100000);
+  assert.deepEqual([cut.parts, cut.left], [[["https://x.test/a.zip", "https://x.test/b.zip"]], [huge]]);
+  // Exactly at the limit: one part; a byte more: two.
+  const exact = cutAt(base, ["https://x.test/a"], g.wireSize({ ...base, links: ["https://x.test/a"] }));
+  assert.equal(exact.parts.length, 1);
+  const over = cutAt(base, ["https://x.test/a", "https://x.test/b"], g.wireSize({ ...base, links: ["https://x.test/a", "https://x.test/b"] }) - 1);
+  assert.deepEqual(over.parts, [["https://x.test/a"], ["https://x.test/b"]]);
+  ok("a page's links: measured as browsers write them, cut in order within the limit");
+}
+
+// Through the right-click menu: a page whose links' message would be exactly 1 MB goes as one
+// message, as before (an older app knows nothing else); one byte more, in two parts; 30,000 long
+// links (7 MB) in parts the host takes, as one list.
+{
+  const MAX = 1 << 20;
+  const bytes = (m) => Buffer.byteLength(JSON.stringify(m), "utf8");
+  // The message the menu sends for `links`, as background.js stamps it (fakeApi's browser).
+  const message = (links) => ({ links, referrer: "https://x.test/files/", cookies: "sid=1", private: false, userAgent: "UA", brands: ["Chromium", "Brave"], v: "0.2.5" });
+  const probe = load(fakeApi({ firefox: false }).api, false);
+  const filler = (n) => `https://x.test/${"f".repeat(n)}`;
+  const fixed = Array.from({ length: 2000 }, (_, k) => `https://x.test/files/file${k}.zip`);
+  const room = MAX - probe.wireSize(message([...fixed, filler(0)]));
+  const atLimit = [...fixed, filler(room)];
+  assert.equal(probe.wireSize(message(atLimit)), MAX);
+  const run = async (links, reply) => {
+    const f = fakeApi({ firefox: false, pageLinks: links, ...(reply ? { reply } : {}) });
+    load(f.api, false);
+    // Its start's own asking for the rules done first.
+    await settle();
+    await f.listeners.menu({ menuItemId: "mdm-all", pageUrl: "https://x.test/files/", frameId: 0 }, { id: 1, incognito: false });
+    await settle();
+    return { sent: natives(f.calls), tabs: f.calls.filter((c) => c[0] === "openTab").map((c) => c[1]), store: f.store };
+  };
+  let { sent, tabs } = await run(atLimit);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].linksPart, undefined, "whole, as before");
+  assert.equal(probe.wireSize(sent[0]), MAX, "at the limit as the widest browser writes it");
+  assert.ok(bytes(sent[0]) <= MAX);
+  assert.deepEqual(tabs, []);
+  ({ sent, tabs } = await run([...fixed, filler(room + 1)]));
+  assert.equal(sent.length, 2);
+  assert.deepEqual(sent.map((m) => [m.linksPart.index, m.linksPart.count]), [[0, 2], [1, 2]]);
+  assert.equal(sent[0].linksPart.batch, sent[1].linksPart.batch);
+  assert.deepEqual(sent.flatMap((m) => m.links), [...fixed, filler(room + 1)]);
+  // 30,000 links of about 240 characters: parts within the limit, in order, one batch, each
+  // with the page's context; nothing to explain.
+  const long = Array.from({ length: 30000 }, (_, k) => `https://x.test/files/${"d".repeat(200)}/file${k}.zip?seed=${k}`);
+  ({ sent, tabs } = await run(long));
+  assert.ok(sent.length >= 7, `${sent.length} parts`);
+  assert.deepEqual(sent.flatMap((m) => m.links), long);
+  assert.deepEqual(sent.map((m) => m.linksPart.index), [...sent.keys()]);
+  assert.ok(sent.every((m) => m.linksPart.count === sent.length && m.linksPart.batch === sent[0].linksPart.batch));
+  assert.match(sent[0].linksPart.batch, /^[A-Za-z0-9-]{1,64}$/);
+  for (const m of sent) {
+    assert.ok(bytes(m) <= MAX, `${bytes(m)} bytes`);
+    assert.deepEqual([m.referrer, m.cookies, m.private, m.v], ["https://x.test/files/", "sid=1", false, "0.2.5"]);
+  }
+  assert.deepEqual(tabs, []);
+  // Another click: another batch.
+  const again = await run(long);
+  assert.notEqual(again.sent[0].linksPart.batch, sent[0].linksPart.batch);
+  // A part refused (MDM quit meanwhile): no more parts, and the help page says why.
+  let answered = 0;
+  ({ sent, tabs } = await run(long, () => (++answered === 3 ? { ok: false, why: "not-running" } : { ok: true })));
+  assert.equal(sent.length, 3);
+  assert.deepEqual(tabs, ["https://misterdownloadmanager.com/help/browser-help.html#not-running"]);
+  // A link longer than a whole message: the others go, and the help page says one was left out.
+  const huge = `https://x.test/${"x".repeat(MAX)}`;
+  ({ sent, tabs } = await run([...long, huge]));
+  assert.deepEqual(sent.flatMap((m) => m.links), long);
+  assert.deepEqual(tabs, ["https://misterdownloadmanager.com/help/browser-help.html#too-large"]);
+  // Only such links: nothing goes, too large.
+  let store;
+  ({ sent, tabs, store } = await run([huge]));
+  assert.deepEqual(sent, []);
+  assert.deepEqual(tabs, ["https://misterdownloadmanager.com/help/browser-help.html#too-large"]);
+  assert.equal(store.status.why, "too-large");
+  ok("Download all links: a list at the limit whole, past it in parts the host takes, failures explained");
+}
+
 // The download button over videos: the page asks once a minute per site, a click opens the
 // app's video window for the page the browser says sent it (with the tab as referrer and its
 // cookies), "Never on this site" goes to the app and is remembered at once; nothing from
@@ -759,8 +916,8 @@ const ok = (what) => {
       );
       if (!async_) resolve(undefined);
     });
-  assert.deepEqual(await ask({ type: "panel" }), { on: true });
-  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/2"), { on: true });
+  assert.deepEqual(await ask({ type: "panel" }), { on: true, compact: false });
+  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/2"), { on: true, compact: false });
   assert.equal(natives(calls).filter((m) => m.panel).length, 1, "asked once for the site");
   assert.equal((await ask({ type: "video", page: "https://evil.test/" })).ok, true);
   const video = natives(calls).find((m) => m.video);
@@ -771,8 +928,8 @@ const ok = (what) => {
   assert.deepEqual(video.cookieJar, [{ name: "sid", value: "1", domain: ".tube.test", hostOnly: false, path: "/", secure: true, expirationDate: 1893456000.5 }]);
   assert.deepEqual(await ask({ type: "hide-site", host: "elsewhere.test" }), { ok: true });
   assert.ok(natives(calls).some((m) => m.hideSite === "tube.test"));
-  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/3"), { on: false }, "off at once");
-  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test:8443/embed/4"), { on: false }, "whatever the port");
+  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test/embed/3"), { on: false, compact: false }, "off at once");
+  assert.deepEqual(await ask({ type: "panel" }, "https://tube.test:8443/embed/4"), { on: false, compact: false }, "whatever the port");
   assert.deepEqual(await ask({ type: "video" }, "javascript:alert(1)"), { ok: false });
   // The video's own address, when the content script names one of its site's: a watch page opened
   // from a mix or a playlist is the list in the address bar, but the video the button is on is one
@@ -867,26 +1024,58 @@ const ok = (what) => {
   const top = { id: "ours", url: "https://tube.test/watch", frameId: 0, tab: { url: "https://tube.test/watch" } };
   const ask = (sender) =>
     new Promise((r) => listeners.message({ type: "panel" }, sender, (v) => r(JSON.parse(JSON.stringify(v)))));
-  assert.deepEqual(await ask(embed), { on: true });
+  assert.deepEqual(await ask(embed), { on: true, compact: false });
   const asked = () => natives(calls).filter((m) => m.panel);
   assert.equal(asked()[0].referrer, "https://blog.test/post", "the tab's address with an embedded player's question");
-  assert.deepEqual(await ask(top), { on: true });
+  assert.deepEqual(await ask(top), { on: true, compact: false });
   assert.equal(asked()[1].referrer, undefined, "none for the tab's own page");
   appSays = false;
   clock.t += 1000;
-  assert.deepEqual(await ask(top), { on: true }, "kept a moment (the page's frames ask together)");
+  assert.deepEqual(await ask(top), { on: true, compact: false }, "kept a moment (the page's frames ask together)");
   assert.equal(asked().length, 2);
   clock.t += 5000;
-  assert.deepEqual(await ask(top), { on: false }, "switched off in Options: the next question has it");
-  assert.deepEqual(await ask(embed), { on: false });
+  assert.deepEqual(await ask(top), { on: false, compact: false }, "switched off in Options: the next question has it");
+  assert.deepEqual(await ask(embed), { on: false, compact: false });
   appSays = true;
   clock.t += 6000;
-  assert.deepEqual(await ask(embed), { on: true }, "and on again");
+  assert.deepEqual(await ask(embed), { on: true, compact: false }, "and on again");
   // "Never on this site" from the embed: off at once, in its tab and in any other.
   await new Promise((r) => listeners.message({ type: "hide-site" }, embed, r));
-  assert.deepEqual(await ask(embed), { on: false });
-  assert.deepEqual(await ask({ ...embed, tab: { url: "https://news.test/" } }), { on: false }, "whatever the tab");
+  assert.deepEqual(await ask(embed), { on: false, compact: false });
+  assert.deepEqual(await ask({ ...embed, tab: { url: "https://news.test/" } }), { on: false, compact: false }, "whatever the tab");
   ok("#532: the video button follows Options within seconds; an embed asks with its tab's address");
+}
+// #1278: Options → Download panels → Button size comes with the answer, and follows a change in
+// Options as "may it show" does (kept a few seconds); an older host that doesn't say: Full.
+{
+  const clock = { t: Date.now() };
+  class FakeDate extends Date {
+    static now() {
+      return clock.t;
+    }
+  }
+  let compact = true;
+  let on = true;
+  const { api, listeners } = fakeApi({ firefox: false, panelOn: () => on, panelCompact: () => compact });
+  load(api, false, { Date: FakeDate });
+  const page = { id: "ours", url: "https://tube.test/watch", frameId: 0, tab: { url: "https://tube.test/watch" } };
+  const ask = () =>
+    new Promise((r) => listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await ask(), { on: true, compact: true });
+  compact = false;
+  clock.t += 1000;
+  assert.deepEqual(await ask(), { on: true, compact: true }, "kept a moment");
+  clock.t += 5000;
+  assert.deepEqual(await ask(), { on: true, compact: false }, "Full again in Options: the next question has it");
+  compact = true;
+  on = false;
+  clock.t += 6000;
+  assert.deepEqual(await ask(), { on: false, compact: false }, "off: never compact");
+  const older = fakeApi({ firefox: false, panelOn: () => true });
+  load(older.api, false);
+  const said = await new Promise((r) => older.listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(said, { on: true, compact: false }, "an older host: Full");
+  ok("#1278: the video button's size comes from Options with its answer, and follows a change");
 }
 {
   const { api, listeners } = fakeApi({ firefox: true, panelOn: false });
@@ -894,7 +1083,7 @@ const ok = (what) => {
   const on = await new Promise((r) =>
     listeners.message({ type: "panel" }, { id: "ours", url: "https://x.test/", tab: {} }, (v) => r(JSON.parse(JSON.stringify(v)))),
   );
-  assert.deepEqual(on, { on: false }, "where the app says no");
+  assert.deepEqual(on, { on: false, compact: false }, "where the app says no");
   ok("video button messages");
 }
 
@@ -991,11 +1180,10 @@ const ok = (what) => {
       [{ token: "t1", choice: 0, storeId: "firefox-private" }, true, undefined, undefined],
       "the tab's window and container, not the page's say",
     );
-    // The confirmation's Later action must survive the background/native-host boundary.
+    // Browser picks contain only the lookup token and selected row; settings control confirmation in MDM.
     await ask(listeners, { type: "video-pick", token: "t1", choice: 0, startNow: false }, sender);
-    assert.equal(natives(calls).filter((x) => x.videoPick).at(-1).videoPick.startNow, false);
-    await ask(listeners, { type: "video-pick", token: "t1", choice: 0, startNow: true }, sender);
-    assert.equal(natives(calls).filter((x) => x.videoPick).at(-1).videoPick.startNow, true);
+    const directPick = natives(calls).filter((x) => x.videoPick).at(-1).videoPick;
+    assert.deepEqual(directPick, { token: "t1", choice: 0, storeId: "firefox-container-2" });
     // An answer without `lookup`: the lookup is gone; a pick gets the window.
     answers.videoPoll = { ok: true };
     answers.videoPick = { ok: true };
@@ -1076,6 +1264,90 @@ const ok = (what) => {
     assert.equal(natives(calls).filter((x) => x.video).at(-1).direct, undefined);
   }
   ok("video button: qualities looked up by the app, picked in the page; else the window, as before; Show, Turn on, Get MDM, Open post, a plain file");
+}
+
+// The title a video is named by when yt-dlp knows it only by its address goes without the site's
+// name, and a player in a frame of the page (another site's, an embed) is named by the tab's title,
+// not by its own ("… from Justin Barry on Vimeo"): the film page a browser saw, reduced
+// (crates/app/tests/data/embedded-player-title.json; the app's side is videodlg.rs').
+{
+  const film = JSON.parse(readText("../../crates/app/tests/data/embedded-player-title.json"));
+  const ask = (listeners, m, sender) => new Promise((r) => listeners.message(m, sender, (x) => r(JSON.parse(JSON.stringify(x)))));
+  const tab = { id: 8, url: film.tab.url, title: film.tab.title, status: "complete" };
+  const frames = { 0: { href: film.tab.url, players: [] }, 4: { href: film.frame.url, players: [] } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, frames, tabs: { 8: tab }, rules: { videoLookup: true }, lookup: () => ({ ok: true, lookup: { state: "pending", token: "t1" } }) });
+  load(api, false);
+  await settle();
+  listeners.responseStarted({ tabId: 8, frameId: 4, url: film.stream, responseHeaders: [{ name: "Content-Type", value: "application/vnd.apple.mpegurl" }] });
+  const framed = { id: "ours", url: film.frame.url, frameId: 4, tab };
+  const clicked = { src: "", title: film.frame.title, url: film.frame.url, at: { x: 1, y: 1 } };
+  await ask(listeners, { type: "video-lookup", ...clicked }, framed);
+  const looked = natives(calls).find((x) => x.videoLookup).videoLookup;
+  assert.deepEqual([looked.page, looked.src, looked.title], [film.frame.url, film.stream, film.sent], "the lookup: the frame's stream, the tab's title");
+  await ask(listeners, { type: "video", ...clicked }, framed);
+  assert.equal(natives(calls).find((x) => x.video).title, film.sent, "the window: the same title");
+  // The same page's own player (not in a frame): its title, without the site's name.
+  const top = { id: "ours", url: film.tab.url, frameId: 0, tab: framed.tab };
+  await ask(listeners, { type: "video", src: "", title: film.tab.title, url: film.tab.url }, top);
+  assert.equal(natives(calls).filter((x) => x.video).at(-1).title, film.sent, "the page's own player");
+  // A frame in a tab without a title: the frame's own.
+  await ask(listeners, { type: "video", ...clicked }, { ...framed, tab: { id: 8, url: film.tab.url } });
+  assert.equal(natives(calls).filter((x) => x.video).at(-1).title, film.frame.title);
+  // The toolbar's media list: the stream goes with the tab's title, without the site's name.
+  const listed = await ask(listeners, { type: "media-download", tab: 8, url: film.stream }, { id: "ours", url: "chrome-extension://ours/popup.html" });
+  assert.ok(listed.ok, "sent from the list");
+  assert.equal(natives(calls).filter((x) => x.video).at(-1).title, film.sent, "the media list");
+
+  const ctx = { URL, URLSearchParams, console: quietConsole, setTimeout, clearTimeout, Promise, TextDecoder, fetch: fakeFetch, navigator: { userAgent: "UA" } };
+  ctx.chrome = fakeApi({ firefox: false }).api;
+  vm.runInNewContext(code, ctx);
+  for (const [title, url, want] of [
+    [film.tab.title, film.tab.url, film.sent],
+    ["Election results – BBC News", "https://www.bbc.co.uk/news/x", "Election results"],
+    ["The Verge | A phone, reviewed", "https://www.theverge.com/x", "A phone, reviewed"],
+    ["Watch: a talk about download managers - YouTube", "https://m.youtube.com/watch?v=x", "Watch: a talk about download managers"],
+    ["A talk :: Example", "https://example.org/", "A talk"],
+    // Only the site's own name, only at an end; never the whole title.
+    ["Before The - Short Film", film.tab.url, "Before The - Short Film"],
+    ["A clip | Another site", film.tab.url, "A clip | Another site"],
+    ["Apple pie - Easy dessert | Apple", "https://www.apple.com/", "Apple pie - Easy dessert"],
+    ["Shortverse", film.tab.url, "Shortverse"],
+    ["Shortverse | Shortverse", film.tab.url, "Shortverse"],
+    ["Clip - 192", "http://192.168.1.5/clip", "Clip - 192"],
+    [" A film | Shortverse ", "not an address", "A film | Shortverse"],
+  ]) {
+    assert.equal(ctx.withoutSiteName(title, url), want, title);
+  }
+  ok("a page's title names its video without the site's name; a player in a frame by the tab's title");
+}
+
+// What a fetched start says it is: an HLS playlist, a DASH manifest (after an XML declaration and
+// comments, with a namespace prefix or not), or neither; read in one pass, so a long or odd start
+// costs no more than its length.
+{
+  const ctx = { URL, URLSearchParams, console: quietConsole, setTimeout, clearTimeout, Promise, TextDecoder, fetch: async () => ({ ok: false }), navigator: { userAgent: "UA" } };
+  ctx.chrome = fakeApi({ firefox: false }).api;
+  vm.runInNewContext(code, ctx);
+  for (const [text, want] of [
+    ["#EXTM3U\n#EXT-X-VERSION:3", "hls"],
+    ["﻿  #EXTM3U", "hls"],
+    ['<?xml version="1.0" encoding="UTF-8"?>\n<MPD xmlns="urn:mpeg:dash:schema:mpd:2011">', "dash"],
+    ['<!-- made by a packager -->\n<!-- two -->\n<MPD type="static">', "dash"],
+    ['<?xml version="1.0"?><!-- c --><mpd:MPD xmlns:mpd="x">', "dash"],
+    ["<MPD/>", "dash"],
+    ["<html><body>MPD</body></html>", ""],
+    ["<MPDX>", ""],
+    ["<!-- never closed <MPD>", ""],
+    ['<?xml version="1.0"', ""],
+    ["", ""],
+  ]) {
+    assert.equal(ctx.manifestKind(text), want, JSON.stringify(text));
+  }
+  const odd = "<!--" + "--><!--".repeat(2000) + "x";
+  const started = Date.now();
+  assert.equal(ctx.manifestKind(odd), "");
+  assert.ok(Date.now() - started < 200, `an odd start took ${Date.now() - started} ms`);
+  ok("a fetched start is told an HLS playlist, a DASH manifest or neither, in one pass");
 }
 
 // #38: the media a tab loaded, as the popup lists them. A response is media by its type or its
@@ -1283,7 +1555,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.equal((await saved(given))[0], "Movie the title - FL262-1E01-4.mp4");
   assert.equal((await saved(bare))[0], "Movie the title.webm");
   // The popup's tag is the saved file's type (popup.js tagOf), its name the saved one (nameOf).
-  const popup = readFileSync(new URL("../../extension/popup.js", import.meta.url), "utf8");
+  const popup = readText("../../extension/popup.js");
   const part = (name) => popup.slice(popup.indexOf(`function ${name}(`), popup.indexOf("\n}\n", popup.indexOf(`function ${name}(`)) + 2);
   const shown = new Function(`const TYPES = {}; ${part("tagOf")}\n${part("nameOf")}\nreturn [tagOf, nameOf];`)();
   const [tagOf, nameOf] = shown;
@@ -1302,9 +1574,9 @@ const MPD = (protect) => `<?xml version="1.0"?>
   const ctx = { URL, URLSearchParams, console: quietConsole, setTimeout, clearTimeout, Promise, TextDecoder, fetch: fakeFetch, navigator: { userAgent: "UA" } };
   ctx.chrome = fakeApi({ firefox: false }).api;
   vm.runInNewContext(code, ctx);
-  const cases = JSON.parse(readFileSync(new URL("../../crates/engine/tests/data/media-names.json", import.meta.url), "utf8")).cases;
+  const cases = JSON.parse(readText("../../crates/engine/tests/data/media-names.json")).cases;
   for (const [u, mime, title, want] of cases) assert.equal(ctx.mediaName(u, mime, title, false).name, want, u);
-  const naming = readFileSync(new URL("../../crates/engine/src/naming.rs", import.meta.url), "utf8");
+  const naming = readText("../../crates/engine/src/naming.rs");
   const table = naming.slice(naming.indexOf("pub const TYPES"), naming.indexOf("];", naming.indexOf("pub const TYPES")));
   const rustTypes = Object.fromEntries([...table.matchAll(/\("([^"]+)", "([^"]+)"\)/g)].map((m) => [m[1], m[2]]));
   assert.ok(Object.keys(rustTypes).length > 30);
@@ -1316,7 +1588,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
   };
   assert.deepEqual([...vm.runInNewContext("SCRIPT_EXTENSIONS", ctx)], list("SCRIPT_EXTENSIONS"));
   assert.deepEqual([...vm.runInNewContext("PAGE_EXTENSIONS", ctx)], list("PAGE_EXTENSIONS"));
-  const video = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const video = readText("../../extension/video.js");
   const scripts = JSON.parse(/const SCRIPT_EXTENSIONS = (\[[^\]]+\]);/.exec(video)[1]);
   assert.deepEqual(scripts, [...list("SCRIPT_EXTENSIONS"), ...list("PAGE_EXTENSIONS")], "video.js knows the same scripts and pages");
   // The button over a plain file says its type as the address says it: a script's file= value's,
@@ -1619,7 +1891,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
 
 // The button's logo is the extension's own icon, kept in video.js as data.
 {
-  const video = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const video = readText("../../extension/video.js");
   const icon = readFileSync(new URL("../../extension/icons/icon-48.png", import.meta.url)).toString("base64");
   assert.ok(video.includes(`"data:image/png;base64,${icon}"`), "video.js's LOGO is extension/icons/icon-48.png");
   ok("video button logo");
@@ -1628,7 +1900,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
 // video.js's videoPage, with what it calls (from it to its end mark), run against `location` and
 // `document`: the address the button hands the app for a <video>.
 const videoPageOn = (() => {
-  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const source = readText("../../extension/video.js");
   const start = source.indexOf("function videoPage(v) {");
   const end = source.indexOf("// ---- the video's own address: end.");
   assert.ok(start > 0 && end > start, "video.js has videoPage and its end mark");
@@ -1741,6 +2013,29 @@ const videoPageOn = (() => {
     assert.deepEqual(list.media.map((m) => m.url), ["https://x.test/song.mp3"]);
   }
   ok("in-place navigation and YouTube's player: the video playing now, or nothing");
+}
+
+// #1271: the player the background asks on YouTube (playingAt, run in the page) is the one at the
+// point video.js sends. YouTube's main player under its home page has no box (the window's
+// corner, 0,0) and still names the video watched last; a hover preview it stopped has none either
+// (hidden in a container of no size). Neither is at any point, the corner included: the preview
+// playing there is, and with nothing there the address video.js named (the card's link) goes.
+{
+  const source = code.slice(code.indexOf("function playingAt("), code.indexOf("const isYouTube"));
+  const page = (...videos) => new Function("document", `${source}
+return playingAt;`)({ querySelectorAll: () => videos });
+  const video = (id, left, top, width, height) => ({
+    getBoundingClientRect: () => ({ left, top, right: left + width, bottom: top + height, width, height }),
+    closest: () => ({ getVideoData: () => ({ video_id: id }) }),
+  });
+  const main = video("watchedLast", 0, 0, 0, 0);
+  const stopped = page(main, video("thePreview1", 0, 0, 0, 0));
+  assert.equal(stopped(0, 0), "", "the corner: no player there");
+  assert.equal(stopped(660, 239), "", "where the stopped preview was");
+  const playing = page(main, video("thePreview1", 476, 135, 369, 208));
+  assert.equal(playing(660, 239), "thePreview1", "the preview playing there");
+  assert.equal(playing(0, 0), "");
+  ok("#1271: YouTube's player at a point: one with no box is at none");
 }
 
 // A small DOM for the sample pages (tools/extension/feeds): elements with their attributes, open
@@ -1858,7 +2153,7 @@ function samplePage(html) {
   };
   let checked = 0;
   for (const file of pages) {
-    const { document, page, videos } = samplePage(readFileSync(new URL(file, dir), "utf8"));
+    const { document, page, videos } = samplePage(readText(new URL(file, dir)));
     assert.ok(videos.length, `${file}: its videos`);
     for (const at of [page, ...(OTHER[file] || [])]) {
       const location = new URL(at);
@@ -1889,11 +2184,12 @@ function samplePage(html) {
     /^https?:\/\/www\.tiktok\.com\/@[\w.-]+\/video\/(\d+)/,
     /^https?:\/\/vimeo\.com\/(\d+)(?:\/[\da-f]{10})?$/,
     /^https?:\/\/www\.dailymotion\.com\/video\/([^/?_&#]+)/,
+    /^https?:\/\/(?:www\.)?douyin\.com\/video\/([0-9]+)/,
   ];
   const dir = new URL("feeds/", import.meta.url);
   let checked = 0;
   for (const file of readdirSync(dir).filter((f) => f.endsWith(".html") && !/^(social|article)\.html$/.test(f))) {
-    const { page, videos } = samplePage(readFileSync(new URL(file, dir), "utf8"));
+    const { page, videos } = samplePage(readText(new URL(file, dir)));
     for (const v of videos) {
       const expect = v.getAttribute("data-expect").replaceAll("{origin}", new URL(page).origin);
       // fb.watch's short links lead to the video's page; a LinkedIn post known by its ugcPost
@@ -1958,10 +2254,230 @@ function samplePage(html) {
   ok("video.js: Shorts and live pages name their video");
 }
 
+// #670: video.js's button against a fake DOM — whether it shows over a video while the page is
+// in full screen, with the popup's option off (as installed) or on.
+function videoButton({ stored = {} } = {}) {
+  const source = readText("../../extension/video.js");
+  const handlers = {};
+  // The frames asked for, by id: one cancelled since (a tick after a hide) does not run.
+  const frames = new Map();
+  let frameId = 0;
+  let root = null;
+  const node = (name = "") => {
+    const style = new Map();
+    const classes = new Set();
+    const el = {
+      localName: name,
+      children: new Proxy([], {
+        get(t, k) {
+          if (typeof k === "string" && /^\d+$/.test(k)) return t[k] || (t[k] = node());
+          return t[k];
+        },
+      }),
+      parentNode: null,
+      dataset: {},
+      textContent: "",
+      innerHTML: "",
+      dir: "",
+      title: "",
+      src: "",
+      offsetWidth: 0,
+      offsetHeight: 0,
+      activeElement: undefined,
+      hidden: false,
+      style: {
+        setProperty: (k, v) => style.set(k, v),
+        getPropertyValue: (k) => style.get(k) || "",
+      },
+      classList: {
+        add: (c) => classes.add(c),
+        remove: (c) => classes.delete(c),
+        toggle: (c, on) => (on === false ? classes.delete(c) : classes.add(c)),
+        contains: (c) => classes.has(c),
+      },
+      addEventListener(n, f) {
+        (el.handlers[n] = el.handlers[n] || []).push(f);
+      },
+      removeEventListener() {},
+      setAttribute() {},
+      append(c) {
+        el.appendChild(c);
+      },
+      appendChild(c) {
+        c.parentNode = el;
+        el.children.push(c);
+        return c;
+      },
+      get lastElementChild() {
+        return el.children[el.children.length - 1] || node();
+      },
+      replaceChildren(...kids) {
+        el.children.length = 0;
+        for (const k of kids) if (k && typeof k === "object") el.appendChild(k);
+      },
+      attachShadow: () => node("#shadow-root"),
+      querySelector: () => node(),
+      querySelectorAll: () => [],
+      closest: () => null,
+      matches: () => false,
+      contains: () => true,
+      remove() {
+        el.parentNode = null;
+      },
+      focus() {},
+      blur() {},
+      getAttribute: () => null,
+      getBoundingClientRect: () => ({ left: 0, top: 0, right: 640, bottom: 360, width: 640, height: 360 }),
+    };
+    el.handlers = {};
+    if (name === "mdm-video-button") root = el;
+    return el;
+  };
+  const rect = { left: 0, top: 0, right: 640, bottom: 360, width: 640, height: 360 };
+  const video = {
+    isConnected: true,
+    muted: false,
+    loop: false,
+    controls: true,
+    duration: 60,
+    currentSrc: "",
+    getBoundingClientRect: () => rect,
+  };
+  const fs = node("div");
+  const documentElement = node("html");
+  const doc = {
+    title: "A video",
+    createElement: (tag) => node(tag),
+    getElementsByTagName: (tag) => (tag === "video" ? [video] : []),
+    querySelector: () => null,
+    querySelectorAll: () => [],
+    documentElement,
+    elementsFromPoint: () => [],
+    activeElement: null,
+    fullscreenElement: null,
+    addEventListener(n, f) {
+      (handlers[n] = handlers[n] || []).push(f);
+    },
+    createTreeWalker: () => ({ nextNode: () => null }),
+  };
+  // The storage listeners the script keeps, so a change can be fired at them as the browser does.
+  const storageListeners = [];
+  const api = {
+    i18n: { getMessage: () => "" },
+    runtime: { id: "ours", sendMessage: async (m) => (m.type === "panel" ? { on: true } : { ok: false }) },
+    storage: {
+      local: {
+        get: async (defaults) => ({ ...defaults, ...stored }),
+        set: async () => {},
+      },
+      onChanged: { addListener: (f) => storageListeners.push(f) },
+    },
+  };
+  class HTMLAudioElement {}
+  vm.runInNewContext(source, {
+    browser: api,
+    location: { hostname: "vid.test", href: "https://vid.test/watch" },
+    document: doc,
+    matchMedia: () => ({ matches: false, addEventListener() {} }),
+    getComputedStyle: () => ({ visibility: "visible", display: "block", opacity: "1" }),
+    requestAnimationFrame: (f) => (frames.set(++frameId, f), frameId),
+    cancelAnimationFrame: (id) => frames.delete(id),
+    addEventListener: (n, f) => ((handlers[n] = handlers[n] || []).push(f)),
+    removeEventListener: () => {},
+    setTimeout,
+    clearTimeout,
+    Promise,
+    Date,
+    innerHeight: 800,
+    innerWidth: 1280,
+    NodeFilter: { SHOW_ELEMENT: 1 },
+    HTMLAudioElement,
+    console: quietConsole,
+  });
+  // The pointer over the video, up to the button's question being answered: only its look runs
+  // (its tick would ask for another frame). Each move lands a pixel to the side, as the script
+  // ignores a move at the same spot (#741).
+  let moved = 0;
+  const move = async () => {
+    moved += 1;
+    for (const f of handlers.pointermove || []) f({ clientX: 320 + (moved % 2), clientY: 180 });
+    assert.ok(frames.size, "the look queued");
+    const [id, look] = [...frames].pop();
+    frames.delete(id);
+    await look();
+    await settle();
+  };
+  return {
+    display: () => root.style.getPropertyValue("display"),
+    move,
+    setFullscreen: (on) => {
+      doc.fullscreenElement = on ? fs : null;
+    },
+    fullscreenchange: async () => {
+      for (const f of handlers.fullscreenchange || []) await f();
+      await settle();
+    },
+    // The popup's checkbox changing, as the browser tells every page (#670).
+    setting: async (value) => {
+      stored.hideVideoFullscreen = value;
+      for (const f of storageListeners) f({ hideVideoFullscreen: { newValue: value } }, "local");
+      await settle();
+    },
+  };
+}
+{
+  // Off, as installed: the button shows in full screen once the pointer moves, and entering full
+  // screen leaves it out of the way until then.
+  const b = videoButton();
+  b.setFullscreen(true);
+  await b.move();
+  assert.equal(b.display(), "block", "off: the button shows in full screen");
+  b.setFullscreen(false);
+  await b.fullscreenchange();
+  await b.move();
+  assert.equal(b.display(), "block", "off, not fullscreen: the button shows");
+  b.setFullscreen(true);
+  await b.fullscreenchange();
+  assert.equal(b.display(), "none", "off: entering full screen hides it");
+  await b.move();
+  assert.equal(b.display(), "block", "off: the pointer's next move brings it back");
+  ok("#670: with the option off, the button shows in full screen once the pointer moves");
+}
+{
+  // On: it never shows while the page is in full screen: entering it hides a placed button,
+  // leaving it shows the button again.
+  const b = videoButton({ stored: { hideVideoFullscreen: true } });
+  await b.move();
+  assert.equal(b.display(), "block", "on, not fullscreen: the button shows");
+  b.setFullscreen(true);
+  await b.fullscreenchange();
+  assert.equal(b.display(), "none", "on: entering full screen hides it");
+  await b.move();
+  assert.equal(b.display(), "none", "on: it stays hidden while fullscreen");
+  b.setFullscreen(false);
+  await b.fullscreenchange();
+  assert.equal(b.display(), "block", "on: leaving full screen shows it again");
+  ok("#670: with the option on, the button hides in full screen");
+}
+{
+  // The setting changed while the video was already in full screen: it hides at once, and comes
+  // back at once when turned off again, without waiting for the page to leave full screen.
+  const b = videoButton();
+  b.setFullscreen(true);
+  await b.move();
+  assert.equal(b.display(), "block", "off in full screen: the button shows");
+  await b.setting(true);
+  assert.equal(b.display(), "none", "turned on in full screen: the button hides at once");
+  await b.setting(false);
+  await b.move();
+  assert.equal(b.display(), "block", "turned off in full screen: the button comes back");
+  ok("#670: turning the option on and off while in full screen");
+}
+
 // The qualities' menu (video.js; its plain functions run here): the questions' pace and their
 // minute, a row's text, and what a page can never make it do.
 {
-  const source = readFileSync(new URL("../../extension/video.js", import.meta.url), "utf8");
+  const source = readText("../../extension/video.js");
   // A function's own source (async with its keyword), by its braces.
   const fn = (name) => {
     let start = source.indexOf(`function ${name}(`);
@@ -1976,84 +2492,103 @@ function samplePage(html) {
     throw new Error(`${name}: no end`);
   };
   const make = (names, value) => new Function(`${names.map(fn).join("\n")}\nreturn ${value};`)();
-  // Execute the actual confirmation handlers with a small DOM and a native-message recorder.
-  // Merely choosing a quality (or cancelling it) must never send a download request.
+  // A selected quality is sent directly; SENT stays neutral, BUSY leaves it retryable, and stale choices fail closed.
   {
-    class Element {
-      constructor() { this.children = []; this.dataset = {}; this.textContent = ""; this.attrs = {}; this.classList = { add() {}, remove() {} }; }
-      append(...children) { this.children.push(...children); }
-      replaceChildren(...children) { this.children = children; }
-      setAttribute(key, value) { this.attrs[key] = value; }
-      get firstElementChild() { return this.children[0]; }
-      focus() {}
-    }
-    const elements = new Map();
     const messages = [];
     const statuses = [];
-    const location = { href: "https://video.test/watch?v=one" };
     const context = {
-      document: { createElement: () => new Element() }, location,
-      $: (sel) => { if (!elements.has(sel)) elements.set(sel, new Element()); return elements.get(sel); },
-      rows: new Element(), menu: new Element(), more: new Element(), note: new Element(),
-      busy: false, confirmation: null, menuOpen: false, lastMove: 0, lang: "en", LOOKUP_MS: 60000,
-      t: (key) => key, position() {}, endStatus() {},
-      closeMenu() { context.confirmation = null; context.menuOpen = false; },
+      LOOKUP_MS: 60000, t: (key) => key, endStatus() {},
+      within: (promise) => promise,
       setStatus: (status) => statuses.push(status),
       showFlash: (action) => statuses.push(action),
-      within: (promise) => promise,
-      send: async (message) => { messages.push({ ...message }); return { lookup: { state: message.startNow ? "started" : "queued" } }; },
+      send: async (message) => { messages.push({ ...message }); return { lookup: { state: "sent" } }; },
     };
     vm.createContext(context);
-    vm.runInContext(["sizeText", "choiceSize", "rowText", "qualityName", "replyState", "lookupAction", "selectionCurrent", "confirmSelection", "confirmDownload", "pick"].map(fn).join("\n"), context);
-    const job = () => ({ video: { isConnected: true, currentSrc: "blob:one" }, src: "blob:one", href: location.href, asked: { title: "A film" } });
-    const ready = () => ({ token: "lookup-one", title: "<b>A film</b>", save_to: { video: "/chosen/Video", audio: "/chosen/Music" }, choices: [
-      { label: "720p MP4", ext: "mp4", size: 9000 },
-      { label: "Original M4A", ext: "m4a", audio: true, size: null },
-    ] });
-    let look = ready();
-    context.confirmSelection(job(), look, 1);
-    assert.equal(messages.length, 0);
-    assert.equal(elements.get(".mh .t").textContent, "<b>A film</b>", "title is text, not markup");
-    assert.equal(context.rows.children[0].children[0].textContent, "/chosen/Music");
-    assert.ok(elements.get(".mh .s").textContent.includes("video_size_unknown"));
-    await context.confirmDownload("cancel");
-    assert.equal(messages.length, 0, "Cancel adds no job and does not consume the lookup");
-    assert.ok(!look.picked);
-    context.confirmSelection(job(), look, 1);
-    await Promise.all([context.confirmDownload("later"), context.confirmDownload("now")]);
-    assert.deepEqual(messages, [{ type: "video-pick", token: "lookup-one", choice: 1, startNow: false }]);
-    assert.equal(statuses.at(-1).text, "video_queued");
-    await context.pick(job(), look, 1, true);
-    assert.equal(messages.length, 1, "a consumed choice is never sent twice");
-    look = ready();
-    context.confirmSelection(job(), look, 0);
-    assert.equal(context.rows.children[0].children[0].textContent, "/chosen/Video");
-    await context.confirmDownload("now");
-    assert.deepEqual(messages.at(-1), { type: "video-pick", token: "lookup-one", choice: 0, startNow: true });
-    assert.equal(statuses.at(-1).text, "video_added");
-    const changed = job();
-    context.confirmSelection(changed, ready(), 0);
-    changed.video.currentSrc = "blob:another-video";
-    await context.confirmDownload("now");
-    assert.equal(messages.length, 2, "a replaced video is not downloaded under the old choice");
-    assert.equal(statuses.at(-1).text, "video_changed");
-    context.confirmSelection(job(), ready(), 0);
+    vm.runInContext(["qualityName", "replyState", "lookupAction", "pick"].map(fn).join("\n"), context);
+    const look = { token: "lookup-one", picked: false, choices: [{ label: "720p MP4" }] };
+    await context.pick({}, look, 0);
+    assert.deepEqual(messages, [{ type: "video-pick", token: "lookup-one", choice: 0 }]);
+    assert.equal(statuses.at(-1).text, "video_sent");
+    const busyLook = { token: "lookup-two", picked: false, choices: [{}] };
+    context.send = async () => ({ lookup: { state: "busy" } });
+    await context.pick({}, busyLook, 0);
+    assert.equal(busyLook.picked, false, "BUSY permits retry");
+    assert.equal(statuses.at(-1).text, "video_busy");
+    const staleLook = { token: "lookup-three", picked: false, choices: [{}] };
     context.send = async () => ({ lookup: { state: "gone" } });
-    await context.confirmDownload("now");
-    assert.equal(statuses.at(-1).text, "video_choice_expired", "expiry must not start an unselected fallback");
-    // The app may have accepted a job even when its acknowledgement was lost. Retry the
-    // original token, choice and Later action, allowing the app's receipt to answer it.
-    look = ready();
-    context.send = async (message) => { messages.push({ ...message }); return { late: true }; };
-    context.confirmSelection(job(), look, 1);
-    await context.confirmDownload("later");
-    const uncertain = messages.at(-1);
-    assert.ok(look.submission.pending);
-    context.send = async (message) => { messages.push({ ...message }); return { lookup: { state: "queued" } }; };
-    await context.pick(job(), look, 0, true, true);
-    assert.deepEqual(messages.at(-1), uncertain, "retry cannot change the token, format or queue action");
-    assert.equal(look.submission.pending, false);
-    ok("video confirmation: selection, Download, Later, Cancel, repeated clicks, changed video and expired lookup");
+    await context.pick({}, staleLook, 0);
+    assert.equal(statuses.at(-1).text, "video_choice_expired", "stale picks do not fall back to a window");
+    assert.ok(!fn("pick").includes("startNow"));
+    ok("video pick: direct selection, neutral SENT, BUSY retry and stale fail-closed");
+  }
+  // Execute download() itself with only its page and app dependencies stubbed. A menu row is
+  // valid only for the ready look-up it came from; an expired row must never fall back to a
+  // fresh look-up or the Download video window.
+  {
+    const statuses = [];
+    const calls = [];
+    let activeLook;
+    const context = {
+      busy: false,
+      video: { currentSrc: "", getBoundingClientRect: () => ({}) },
+      held: { d: { src: "", url: "https://video.test/watch", at: null, drm: false } },
+      location: { href: "https://video.test/watch" },
+      landedAt: "https://video.test/watch",
+      document: { title: "A video", querySelector: () => null },
+      closeMenu() {}, tipOff() {}, render() {},
+      lookKey: () => "video-key",
+      lookOf: () => activeLook,
+      usable: (l) => Boolean(l),
+      startLook: (...args) => { calls.push(["startLook", ...args]); return activeLook; },
+      lookupAction: () => ({ act: "offer" }),
+      bestOf: (l) => l.choices[0],
+      qualityName: () => "720p",
+      t: (key) => key,
+      setStatus: (status) => statuses.push(status),
+      within: (p) => p,
+      useWindow: (...args) => { calls.push(["useWindow", ...args]); },
+      send: (...args) => { calls.push(["send", ...args]); },
+      LOOKUP_MS: 60000,
+    };
+    vm.createContext(context);
+    vm.runInContext(`${fn("download")}\nglobalThis.runDownload = download; globalThis.isBusy = () => busy;`, context);
+    const ready = (overrides = {}) => ({ token: "live-token", state: "ready", picked: false, choices: [{}, {}, {}], ...overrides });
+    const rejected = [
+      ["stale token", ready(), { token: "expired-token", choice: 1 }],
+      ["missing look-up", null, { token: "live-token", choice: 1 }],
+      ["already picked", ready({ picked: true }), { token: "live-token", choice: 1 }],
+      ["non-ready look-up", ready({ state: "pending" }), { token: "live-token", choice: 1 }],
+      ["mismatched token", ready({ token: "other-token" }), { token: "live-token", choice: 1 }],
+    ];
+    for (const [label, look, row] of rejected) {
+      activeLook = look;
+      calls.length = 0;
+      statuses.length = 0;
+      await context.runDownload(row);
+      assert.deepEqual(calls.map(([name]) => name), [], `${label}: no lookup, window, pick, or send`);
+      assert.equal(statuses.at(-1)?.text, "video_choice_expired", `${label}: expired warning`);
+      assert.equal(context.isBusy(), false, `${label}: busy released`);
+    }
+
+    activeLook = ready();
+    calls.length = 0;
+    statuses.length = 0;
+    let release;
+    context.pick = (...args) => {
+      calls.push(["pick", ...args]);
+      return new Promise((resolve) => { release = resolve; });
+    };
+    const first = context.runDownload({ token: "live-token", choice: 2 });
+    const second = context.runDownload({ token: "live-token", choice: 2 });
+    await second;
+    assert.deepEqual(calls.map(([name]) => name), ["pick"], "a repeated in-flight click submits once, without lookup or window fallback");
+    assert.equal(calls[0][2].token, "live-token");
+    assert.equal(calls[0][3], 2, "the selected non-first choice reaches pick unchanged");
+    assert.equal(context.isBusy(), true, "busy remains held for the pending pick");
+    release();
+    await first;
+    assert.equal(context.isBusy(), false, "busy released after pick completes");
+    ok("video download: stale rows fail closed; exact choice sent once while busy");
   }
   // 100 ms before the first question, then the old backoff's target (1 s x 1.25^n, 2 s at most)
   // less what the last answer took (50 ms at least): an older app (60 ms) is asked as seldom as
@@ -2214,7 +2749,7 @@ function samplePage(html) {
   // A choice: downloading, or handed to the app ("sent", which didn't say in time what became of
   // it: it will download it, so no window), or queued; anything else, the window.
   assert.deepEqual(act({ lookup: { state: "started" } }, true), { act: "flash", kind: "ok", text: "video_added" });
-  assert.deepEqual(act({ lookup: { state: "sent" } }, true), { act: "flash", kind: "ok", text: "video_added" });
+  assert.deepEqual(act({ lookup: { state: "sent" } }, true), { act: "flash", kind: "ok", text: "video_sent" });
   assert.deepEqual(act({ lookup: { state: "queued" } }, true), { act: "flash", kind: "ok", text: "video_queued" });
   for (const s of ["use-window", "gone", "pending", "ready", "busy", "off", "failed", "list", "late"]) {
     assert.deepEqual(act({ lookup: { state: s, token: "t1", choices: ready.choices } }, true), { act: "window" }, `a choice answered ${s}`);
@@ -2259,6 +2794,21 @@ function samplePage(html) {
   assert.equal(pointerTarget(next, null, false), next);
   assert.equal(pointerTarget(null, mine, false), null);
   assert.ok(fn("look").includes("pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen)"), "look: kept on its video while its menu is open");
+  // #1271: where the background asks the page's player what the click's video is (the window's
+  // message): its middle while it has a box on the screen; a hover preview the page stopped as
+  // the pointer went to the button (taken out, or hidden in a container of no size) is at the
+  // point the click was taken at, never the window's corner (YouTube's main player there names
+  // the video watched last).
+  const middle = make(["middle"], "middle");
+  const shown = (left, top, width, height, isConnected = true) => ({ isConnected, getBoundingClientRect: () => ({ left, top, width, height }) });
+  const was = { x: 660, y: 239 };
+  assert.deepEqual(middle(shown(100, 50, 640, 360), was), { x: 420, y: 230 }, "a video on the screen: its middle now");
+  assert.deepEqual(middle(shown(0, 0, 0, 0), was), was, "a stopped preview, hidden");
+  assert.deepEqual(middle(shown(476, 135, 369, 0), was), was, "no height");
+  assert.deepEqual(middle(shown(476, 135, 369, 208, false), was), was, "taken out of the page");
+  assert.equal(middle(shown(0, 0, 0, 0), undefined), undefined, "nowhere known: no point");
+  assert.ok(fn("useWindow").includes("at: middle(j.video, j.asked.at)"), "useWindow: the point the click was taken at, for a video gone");
+  assert.ok(/const d = held \? held\.d : describe\(/.test(fn("download")), "download: a held video's own (#503), its point with it");
   // What a page can never make it do: the menu's rows and keys take only the user's own clicks
   // and keys; rows are text (markup only for the fixed parts); a pick sends the token and the
   // row's number alone; nothing is asked on a timer of its own, nor before a click.
@@ -2268,11 +2818,11 @@ function samplePage(html) {
   // The page's own controls: a key the open menu used doesn't reach the page, and the button (and
   // so its menu) stays where it is while the menu is open.
   const keys = source.slice(source.indexOf('shadow.addEventListener("keydown"'), source.indexOf("// The main part: a click downloads"));
-  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 6, "Tab in confirmation, Escape, Enter and Space, arrows: not the page's too");
+  assert.equal(keys.match(/e\.stopPropagation\(\)/g).length, 5, "Escape, Enter and Space, arrows: not the page's too");
   assert.ok(fn("spot").includes("if (menuOpen && auto.v === video && auto.at) return auto.at;"), "spot: still while its menu is open");
   assert.equal(source.match(/innerHTML/g).length, 1, "markup only for the fixed parts");
   assert.ok(!/insertAdjacentHTML|outerHTML|setInterval/.test(source));
-  assert.ok(/send\(\{ type: "video-pick", token: l\.token, choice: i, startNow \}\)/.test(fn("pick")), "a pick: token, row and the confirmed action");
+  assert.ok(/send\(\{ type: "video-pick", token: l\.token, choice: i \}\)/.test(fn("pick")), "a pick: only token and row");
   assert.equal(source.split('"video-lookup"').length, 2, "one lookup message");
   // #703: asked as the button shows, once it stayed a moment over the same video (previews the
   // pointer only crosses aren't), one per video for the page's life; a plain file never.
@@ -2303,7 +2853,9 @@ function samplePage(html) {
       const render = () => {};
       const fillMenu = () => {};
       const within = (p) => p;
-      ${["pollDelay", "followLookup", "replyState", "lookOf", "startLook", "restWait"].map(fn).join("\n")}
+      // #1092: what the tab played, never asked for here.
+      const playedLook = async () => null;
+      ${["pollDelay", "followLookup", "replyState", "playedWanted", "lookOf", "startLook", "restWait"].map(fn).join("\n")}
       return { REST_MS, looks, usable, lookOf, startLook, restWait };`,
     );
     const asked = [];
@@ -2391,17 +2943,17 @@ function samplePage(html) {
   assert.ok(source.includes('if (!t.matches(":focus-visible")) return;'), "focusin: the keyboard's focus only");
   assert.ok(/const IDLE_MS = 1500;/.test(source), "fades 1.5 s after the pointer rests");
   // Its texts: English's, kept as the fallback too.
-  const english = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
   for (const key of ["video_looking", "video_all_qualities", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
-    "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_show",
-    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original"]) {
+    "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_sent", "video_show",
+    "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original", "video_compatible", "video_choice_expired"]) {
     assert.ok(english[key], key);
     assert.ok(source.includes(`${key}: ${JSON.stringify(english[key].message)}`), `video.js FALLBACK: ${key}`);
     assert.ok(source.includes(`t("${key}")`), `video.js uses ${key}`);
   }
   {
-    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords"],
-      "{ choiceSize, qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords }");
+    const w = make(["sizeText", "choiceSize", "qualityName", "qualityMeta", "bestOf", "chipFor", "tipFor", "durationText", "headerLine", "moveIn", "fitsWords", "compactFor"],
+      "{ choiceSize, qualityName, qualityMeta, bestOf, chipFor, tipFor, durationText, headerLine, moveIn, fitsWords, compactFor }");
     const tt = (k, ...a) => (a.length ? `${k}(${a.join(",")})` : k);
     const hd = { label: "1080p 60fps MP4", ext: "mp4", size: 412000000, audio: false, height: 1080, fps: 60 };
     const k4 = { label: "2160p MP4", ext: "mp4", height: 2160 };
@@ -2423,6 +2975,11 @@ function samplePage(html) {
     assert.equal(w.qualityMeta({ height: 360, ext: "webm", codec: "VP9", fps: 30 }, tt), "WEBM · VP9 · 30 fps", "a type other than MP4 is said");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: 7, range: { x: 1 } }, tt), "MP4", "only text is shown");
     assert.equal(w.qualityMeta({ height: 720, ext: "mp4", codec: "H.264".repeat(9) }, tt).length, 24, "a codec's name is cut");
+    // #1439: the most compatible choice (H.264 + AAC) says so in place of its codec.
+    const compatible = { label: "Most compatible (H.264 + AAC) · 1080p", ext: "mp4", height: 1080, fps: 60, codec: "H.264", compatible: true };
+    assert.ok(source.includes('if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);'), "its line's tip is the app's whole name");
+    assert.equal(w.qualityName(compatible, tt), "1080p");
+    assert.equal(w.qualityMeta(compatible, tt), "video_compatible");
     // #801: an estimate is marked; an exact size isn't; an older app's has no mark.
     assert.equal(w.choiceSize({ size: 557842432, approx: true }, "en"), "~532 MB");
     assert.equal(w.choiceSize({ size: 557842432 }, "en"), "532 MB");
@@ -2457,6 +3014,22 @@ function samplePage(html) {
     assert.equal(w.fitsWords(640, 240, 14), true);
     assert.equal(w.fitsWords(359, 100, 14), false, "under 360 px: the round button only");
     assert.equal(w.fitsWords(400, 380, 14), false, "a long language that wouldn't fit");
+    // #1278: Options → Download panels → Button size. Full (the default): the words where they
+    // fit, the round button on a small video or for a long language; Compact: round on every video.
+    const english = 240;
+    const german = 380; // the same button's width with longer words
+    assert.equal(w.compactFor(false, 1280, english, 14), false, "Full on a large video: the words");
+    assert.equal(w.compactFor(false, 1280, german, 14), false, "Full, a long language on a large video: the words");
+    assert.equal(w.compactFor(false, 320, english, 14), true, "Full on a small video: round");
+    assert.equal(w.compactFor(false, 400, german, 14), true, "Full, a long language that wouldn't fit: round");
+    for (const [width, full] of [[1920, english], [1280, german], [640, english], [400, german], [200, english]]) {
+      assert.equal(w.compactFor(true, width, full, 14), true, `Compact: round at ${width} px whatever the language`);
+    }
+    assert.equal(w.compactFor(undefined, 1280, english, 14), false, "not said (an older app): Full");
+    // The answer to `panel` sets it, and position() decides from it.
+    const ask = fn("ask");
+    assert.ok(ask.includes("compactAlways = Boolean(r && r.compact);"), "ask: the size comes with the app's answer");
+    assert.ok(fn("position").includes('pill.classList.toggle("compact", compactFor(compactAlways, vr.width, fullWidth, INSET));'), "position: compact from the setting and the video's width");
   }
   ok("video.js: the qualities' menu follows a lookup one question at a time for a minute; rows as text, the user's own clicks and keys; its words, #703's early look-up, #741's moves");
 }
@@ -2465,7 +3038,7 @@ function samplePage(html) {
 {
   for (const file of readdirSync(new URL("../../extension/", import.meta.url))) {
     if (!/\.(js|html|css|json)$/.test(file)) continue;
-    const text = readFileSync(new URL(`../../extension/${file}`, import.meta.url), "utf8");
+    const text = readText(`../../extension/${file}`);
     assert.ok(!/\bIDM\b|Internet Download Manager|notes\//.test(text), `${file} names IDM or the private notes`);
   }
   ok("nothing of IDM's in the extension");
@@ -2480,21 +3053,21 @@ function samplePage(html) {
   const item = calls.find((c) => c[0] === "menu-item")[1];
   assert.equal(item.title, "Mit Mister Download Manager herunterladen");
   const dir = new URL("../../extension/_locales/", import.meta.url);
-  const english = JSON.parse(readFileSync(new URL("en/messages.json", dir), "utf8"));
+  const english = JSON.parse(readText(new URL("en/messages.json", dir)));
   for (const locale of readdirSync(dir)) {
-    const m = JSON.parse(readFileSync(new URL(`${locale}/messages.json`, dir), "utf8"));
+    const m = JSON.parse(readText(new URL(`${locale}/messages.json`, dir)));
     for (const key of Object.keys(m)) assert.ok(english[key], `${locale}: known message ${key}`);
     // A missing localized entry must still resolve to a nonempty default message.
     for (const key of Object.keys(english)) assert.ok((m[key] || english[key]).message, `${locale}: ${key}`);
   }
   for (const name of ["manifest.json", "manifest.firefox.json"]) {
-    const text = readFileSync(new URL(`../../extension/${name}`, import.meta.url), "utf8");
+    const text = readText(`../../extension/${name}`);
     assert.equal(JSON.parse(text).default_locale, "en", `${name}: missing translations fall back to English`);
     for (const [, key] of text.matchAll(/__MSG_(\w+)__/g)) assert.ok(english[key], `${name}: ${key}`);
   }
   // Every key the scripts use exists in English.
   for (const file of ["background.js", "popup.js", "popup.html", "video.js"]) {
-    const text = readFileSync(new URL(`../../extension/${file}`, import.meta.url), "utf8");
+    const text = readText(`../../extension/${file}`);
     for (const [, key] of text.matchAll(/(?:t\(|data-i18n=)"((?:menu|status|popup|video)_\w+)"/g)) assert.ok(english[key], `${file}: ${key}`);
   }
   for (const why of ["not_installed", "forbidden", "not_running", "host_failed", "too_large", "update_app"]) {
@@ -2826,14 +3399,51 @@ const popupState = (listeners) =>
   ok("#208: a private window's refusal names nothing");
 }
 
+// #1058: the app's Torrent settings leave torrents to the browser (its own torrent client): a
+// .torrent (a tracker's download.php named by Content-Disposition, or a .torrent address) stays
+// with the browser and says why; other types go as before. On, or a host before it: taken.
+for (const firefox of [false, true]) {
+  const fire = (listeners, id, url, filename, mime) =>
+    firefox ? listeners.created({ id, url, filename: `C:\\dl\\${filename}`, mime }) : listeners.determining({ id, url, filename, mime }, () => {});
+  const types = "ZIP TORRENT";
+  {
+    const { api, calls, listeners } = fakeApi({ firefox, types, rules: { torrents: false } });
+    load(api, firefox);
+    fire(listeners, 70, "https://tracker.test/download.php?id=42", "Show.S01.torrent", "application/x-bittorrent");
+    await settle();
+    fire(listeners, 71, "https://tracker.test/dl/set.torrent", "set.torrent", "");
+    await settle();
+    assert.deepEqual(natives(calls).filter((m) => m.url), [], "no torrent offered");
+    assert.deepEqual(notices(calls).map((n) => n.why), ["torrents", "torrents"]);
+    assert.equal((await popupState(listeners)).declined.why, "torrents");
+    fire(listeners, 72, "https://tracker.test/a.zip", "a.zip", "application/zip");
+    await settle();
+    assert.deepEqual(natives(calls).filter((m) => m.url).map((m) => m.filename), ["a.zip"], "other types as before");
+  }
+  for (const rules of [{ torrents: true }, {}]) {
+    const { api, calls, listeners } = fakeApi({ firefox, types, rules });
+    load(api, firefox);
+    fire(listeners, 73, "https://tracker.test/download.php?id=42", "Show.S01.torrent", "application/x-bittorrent");
+    await settle();
+    assert.deepEqual(natives(calls).filter((m) => m.url).map((m) => m.filename), ["Show.S01.torrent"], JSON.stringify(rules));
+    assert.deepEqual(notices(calls), []);
+  }
+}
+{
+  // Safari's page.js holds no .torrent link then (its stored rules say so).
+  const page = readText("../../extension/page.js");
+  assert.ok(/noTorrents = Boolean\(rules && rules\.torrents === false\)/.test(page) && page.includes("!(noTorrents && /^torrent$/i.test(type))"));
+}
+ok("#1058: a torrent stays with the browser while the app's Torrent settings leave torrents alone");
+
 // The codes agree end to end: the app's (mdm_ipc::capture::Declined::code), the extension's own
 // ("site-access"), and a popup text for each.
 {
-  const rust = readFileSync(new URL("../../crates/ipc/src/capture.rs", import.meta.url), "utf8");
+  const rust = readText("../../crates/ipc/src/capture.rs");
   const body = /pub fn code\(self\)[\s\S]*?\n    \}\n/.exec(rust)[0];
   const codes = [...body.matchAll(/=> "([a-z-]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(codes, ["integration-off", "browser", "file-type", "site", "address", "small"]);
-  const en = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  assert.deepEqual(codes, ["integration-off", "browser", "file-type", "site", "address", "small", "torrents"]);
+  const en = JSON.parse(readText("../../extension/_locales/en/messages.json"));
   for (const c of [...codes, "site-access"]) assert.ok(en[`declined_${c.replace(/-/g, "_")}`], `a popup text for ${c}`);
   assert.ok(en.popup_declined && en.popup_declined_unnamed);
   const bg = code;
@@ -2889,6 +3499,103 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a download caught from its answer, before the browser's dialog");
 }
+// #607: the page a download was started from goes whole with it (the app's Refresh download
+// address opens it), where the Referer is often the site's address only. Firefox names it for the
+// load (originUrl), through its redirects; never the file's own address.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  const page = "https://site.test/files/report.html?lang=en";
+  listeners.beforeRequest({ requestId: "q1", method: "GET", url: "https://site.test/get?id=7", tabId: 3, originUrl: page });
+  listeners.beforeRequest({ requestId: "q1", method: "GET", url: "https://cdn.test/r/7.zip", tabId: 3, originUrl: page });
+  listeners.beforeRedirect({ url: "https://site.test/get?id=7", redirectUrl: "https://cdn.test/r/7.zip" });
+  listeners.beforeSendHeaders({ requestId: "q1", method: "GET", url: "https://cdn.test/r/7.zip", requestHeaders: [{ name: "Referer", value: "https://site.test/" }] });
+  await held(listeners, answer("https://cdn.test/r/7.zip", { "Content-Type": "application/zip", "Content-Disposition": "attachment" }, { requestId: "q1" }));
+  const m = natives(calls)[0];
+  assert.deepEqual([m.url, m.referrer, m.pageUrl], ["https://site.test/get?id=7", "https://site.test/", page]);
+  // Typed in the address bar: no page started it, the tab shows none, nothing is said.
+  listeners.beforeRequest({ requestId: "q2", method: "GET", url: "https://cdn.test/typed.zip", tabId: 3 });
+  await held(listeners, answer("https://cdn.test/typed.zip", { "Content-Type": "application/zip", "Content-Disposition": "attachment" }, { requestId: "q2" }));
+  assert.equal(natives(calls)[1].pageUrl, undefined);
+  ok("#607 Firefox: the page a download was started from goes with it, whole");
+}
+// #607 Chromium: the tab the download's load was in still shows the page; a link opened in a tab
+// of its own, the tab that opened it; a download no load names (a script's, <a download>), the
+// active tab of the window last used, from the same kind of window only.
+{
+  const page = "https://site.test/list?page=2";
+  const tabs = { 4: { id: 4, url: page }, 5: { id: 5, url: "about:blank", openerTabId: 4 } };
+  const { api, calls, listeners } = fakeApi({ tabs, activeTab: { id: 6, url: "https://other.test/news", incognito: false } });
+  load(api, false);
+  await settle();
+  listeners.beforeRequest({ requestId: "c1", method: "GET", url: "https://cdn.test/a.zip", tabId: 4, initiator: "https://site.test" });
+  listeners.determining({ id: 41, url: "https://cdn.test/a.zip", referrer: "https://site.test/", filename: "a.zip" }, () => {});
+  await settle();
+  listeners.beforeRequest({ requestId: "c2", method: "GET", url: "https://cdn.test/b.zip", tabId: 5 });
+  listeners.determining({ id: 42, url: "https://cdn.test/b.zip", filename: "b.zip" }, () => {});
+  await settle();
+  listeners.determining({ id: 43, url: "https://cdn.test/c.zip", filename: "c.zip" }, () => {});
+  await settle();
+  listeners.determining({ id: 44, url: "https://cdn.test/d.zip", filename: "d.zip", incognito: true }, () => {});
+  await settle();
+  const sent = natives(calls).map((m) => [m.url, m.pageUrl]);
+  assert.deepEqual(sent, [
+    ["https://cdn.test/a.zip", page],
+    ["https://cdn.test/b.zip", page],
+    ["https://cdn.test/c.zip", "https://other.test/news"],
+    ["https://cdn.test/d.zip", undefined],
+  ]);
+  ok("#607 Chromium: the page is the download's tab, its opener, else the active tab");
+}
+// A file host's Download button (a premium Rapidgator file): the file page is on the site's
+// /file/… address, the download comes from another of its servers, the Referer is the site's
+// address only. Chromium: by the time the answer is a download, the tab opened for the button's
+// link is closed by the browser (or the tab has gone on to another page): the page is the one
+// its tab (or its opener) showed as the load started, never the Referer's bare site.
+{
+  const page = "https://rapidgator.test/file/0a1b2c/report.zip.html";
+  const file = "https://s118.rapidgator.test/download/7f3e-uuid/report.zip";
+  const tabs = { 4: { id: 4, url: page }, 5: { id: 5, url: "", openerTabId: 4 }, 6: { id: 6, url: page } };
+  const { api, calls, listeners } = fakeApi({ tabs, activeTab: { id: 9, url: "https://other.test/news", incognito: false } });
+  load(api, false);
+  await settle();
+  // Opened in a tab of its own, which the browser closes as the download starts.
+  listeners.beforeRequest({ requestId: "r1", method: "GET", url: file, tabId: 5, type: "main_frame", initiator: "https://rapidgator.test" });
+  await settle();
+  Object.defineProperty(tabs, 5, { get: () => Promise.reject(new Error("No tab with id: 5")) });
+  listeners.determining({ id: 51, url: file, referrer: "https://rapidgator.test/", filename: "report.zip" }, () => {});
+  await settle();
+  // Through a redirect in the same tab, which has moved on by then (the site's home).
+  const start = "https://rapidgator.test/download/premium/0a1b2c";
+  const file2 = "https://s118.rapidgator.test/download/8a4f-uuid/report2.zip";
+  listeners.beforeRequest({ requestId: "r2", method: "GET", url: start, tabId: 6, type: "main_frame", initiator: "https://rapidgator.test" });
+  listeners.beforeRequest({ requestId: "r2", method: "GET", url: file2, tabId: 6, type: "main_frame", initiator: "https://rapidgator.test" });
+  await settle();
+  tabs[6] = { id: 6, url: "https://rapidgator.test/" };
+  listeners.determining({ id: 52, url: start, finalUrl: file2, referrer: "https://rapidgator.test/", filename: "report2.zip" }, () => {});
+  await settle();
+  const sent = natives(calls).map((m) => [m.finalUrl || m.url, m.referrer, m.pageUrl]);
+  assert.deepEqual(sent, [
+    [file, "https://rapidgator.test/", page],
+    [file2, "https://rapidgator.test/", page],
+  ]);
+  ok("#607 Chromium: a file host's button, its tab closed or moved on: the file page, not the site");
+}
+// Firefox: the same button's load names its page (originUrl), the one in a tab of its own too.
+{
+  const page = "https://rapidgator.test/file/0a1b2c/report.zip.html";
+  const file = "https://s118.rapidgator.test/download/7f3e-uuid/report.zip";
+  const { api, calls, listeners } = fakeApi({ firefox: true, activeTab: { id: 9, url: "https://other.test/news", incognito: false } });
+  load(api, true);
+  await settle();
+  listeners.beforeRequest({ requestId: "f1", method: "GET", url: file, tabId: 5, type: "main_frame", originUrl: page });
+  listeners.beforeSendHeaders({ requestId: "f1", method: "GET", url: file, requestHeaders: [{ name: "Referer", value: "https://rapidgator.test/" }] });
+  await held(listeners, answer(file, { "Content-Type": "application/octet-stream", "Content-Disposition": "attachment; filename=report.zip" }, { requestId: "f1", tabId: 5 }));
+  const m = natives(calls)[0];
+  assert.deepEqual([m.url, m.referrer, m.pageUrl], [file, "https://rapidgator.test/", page]);
+  ok("#607 Firefox: a file host's button on another of its servers: the file page, not the site");
+}
 // #447: Firefox hands a header's value over byte for byte, each byte one character. A name sent as
 // raw UTF-8 is read as UTF-8; bytes that aren't valid UTF-8 (ISO-8859-1) and a real percent sign stay.
 {
@@ -2900,9 +3607,9 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     ["attachment; filename=\"plain report.pdf\"", "plain report.pdf"],
     // ISO-8859-1 bytes (é alone is not valid UTF-8).
     ["attachment; filename=\"caf\u00e9.pdf\"", "café.pdf"],
-    // Percent-encoded UTF-8 in the plain name, as Firefox and the app read it.
+    // Percent-encoded UTF-8 in the plain name, as Firefox and the app read it; ASCII too (#1427).
     ["attachment; filename=\"%D8%AA%D9%82%D8%B1%D9%8A%D8%B1.pdf\"", "تقرير.pdf"],
-    ["attachment; filename=\"100%25.pdf\"", "100%25.pdf"],
+    ["attachment; filename=\"100%25.pdf\"", "100%.pdf"],
     ["attachment; filename=\"50%.pdf\"", "50%.pdf"],
     // RFC 8187 keeps winning, ASCII as it comes.
     ["attachment; filename=\"fallback.pdf\"; filename*=UTF-8''%D8%AA%D9%82%D8%B1%D9%8A%D8%B1.pdf", "تقرير.pdf"],
@@ -2914,6 +3621,46 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     assert.equal(natives(calls)[0].filename, want, value);
   }
   ok("#447 Firefox: a raw UTF-8 file name in a header reaches the app readable, other names as they were");
+}
+// #1427: a link that only redirects (302) to the file, whose own answer alone names it: the 302 is
+// no download, the file's answer is, under its name read as Chrome and Firefox read it (both
+// checked on a lab server) and as the app does (naming.rs `decode_plain`): a plain filename's
+// percent-encoding decoded, ASCII too, and RFC 2047's encoded words.
+{
+  for (const [value, want] of [
+    ["attachment; filename=\"fallback.bin\"; filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf", "My Report – v2.pdf"],
+    ["attachment; filename*=UTF-8''My%20Report%20%E2%80%93%20v2.pdf", "My Report – v2.pdf"],
+    ["attachment; filename=\"My%20Report.pdf\"", "My Report.pdf"],
+    ["attachment; filename=My%20Report%20v3.pdf", "My Report v3.pdf"],
+    ["attachment; filename=\"100%25 sure.zip\"", "100% sure.zip"],
+    ["attachment; filename=\"50%off sale.zip\"", "50%off sale.zip"],
+    ["attachment; filename=\"caf%E9 menu.zip\"", "caf%E9 menu.zip"],
+    ["attachment; filename=\"=?UTF-8?B?5oql5ZGKIHY1LnBkZg==?=\"", "报告 v5.pdf"],
+    ["attachment; filename=\"=?utf-8?q?My_Report_=E2=80=93_v6.pdf?=\"", "My Report – v6.pdf"],
+    ["attachment; filename=\"Report =?UTF-8?B?5oql5ZGK?= v7.pdf\"", "Report 报告 v7.pdf"],
+    ["attachment; filename=\"=?UTF-8?Q?My_?= =?UTF-8?Q?Report.pdf?=\"", "My Report.pdf"],
+    ["attachment; filename=\"=?ISO-8859-1?Q?caf=E9.zip?=\"", "café.zip"],
+    ["attachment; filename*=UTF-8''100%2525%20double.zip", "100%25 double.zip"],
+    ["attachment; filename=\"a%2Fb report.pdf\"", "a_b report.pdf"],
+    ["attachment; filename*=UTF-8''a%2Fb%5Cc.pdf", "a_b_c.pdf"],
+  ]) {
+    const { api, calls, listeners } = fakeApi({ firefox: true });
+    load(api, true);
+    await settle();
+    const first = "https://site.test/download/42";
+    const file = "https://cdn.test/files/7f3e/x.bin";
+    listeners.beforeRequest({ requestId: "c1", method: "GET", url: first, tabId: 3, type: "main_frame" });
+    // The 302 itself: no name, no download.
+    assert.deepEqual(await held(listeners, answer(first, { Location: file }, { requestId: "c1", statusCode: 302 })), {});
+    listeners.beforeRedirect({ url: first, redirectUrl: file });
+    listeners.beforeRequest({ requestId: "c1", method: "GET", url: file, tabId: 3, type: "main_frame" });
+    const res = await held(listeners, answer(file, { "Content-Type": "application/octet-stream", "Content-Disposition": value }, { requestId: "c1" }));
+    assert.deepEqual(res, { cancel: true }, value);
+    const sent = natives(calls);
+    assert.equal(sent.length, 1, value);
+    assert.deepEqual([sent[0].url, sent[0].finalUrl, sent[0].filename], [first, file, want], value);
+  }
+  ok("#1427 Firefox: a link that redirects to its file, named by the file's own answer as browsers read it");
 }
 // A download taken from its answer (#208) is cancelled, so its response never starts: the proxy a
 // VPN add-on chose for it (proxy.onRequest, in the answer's proxyInfo) still goes with it.
@@ -2998,6 +3745,31 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(await held(refused.listeners, answer("https://x.test/a.zip", { "Content-Type": "application/zip" })), {});
   assert.equal(natives(refused.calls).length, 1);
   ok("#208 Firefox: a PDF taken when Options say so; the app's no lets the browser go on");
+}
+// #1087: a PDF a page shows in a frame, an <embed> or an <object> (a course's, from a CDN, at a
+// signed address) is taken as one the tab goes to is, with the page as its referrer; the page,
+// in a tab just opened, stays. One the page's script fetches is never held: its listener isn't
+// asked for those.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  assert.deepEqual([...listeners.headersReceivedSpec[0].types], ["main_frame", "sub_frame", "object"]);
+  assert.deepEqual([...listeners.beforeSendHeadersSpec[0].types], ["main_frame", "sub_frame", "object"]);
+  const pdf = { "Content-Type": "application/pdf", "Content-Length": "448712" };
+  const signed = "https://d1.cloudfront.test/pro/course/content/01M5.pdf?Expires=1893456000&Signature=a~b__&Key-Pair-Id=K2";
+  listeners.tabCreated({ id: 14 });
+  for (const [i, type] of ["sub_frame", "object"].entries()) {
+    const requestId = `f${i}`;
+    listeners.beforeSendHeaders({ requestId, method: "GET", url: signed, type, requestHeaders: [{ name: "Referer", value: "https://course.test/lesson/7" }] });
+    const res = await held(listeners, answer(signed, pdf, { requestId, type, tabId: 14, frameId: 5 }));
+    assert.deepEqual(res, { cancel: true }, type);
+    const m = natives(calls)[i];
+    assert.deepEqual([m.url, m.filename, m.size, m.referrer], [signed, "01M5.pdf", 448712, "https://course.test/lesson/7"], type);
+  }
+  await settle();
+  assert.ok(!calls.some((c) => c[0] === "closeTab"), "the page's tab stays");
+  ok("#1087 Firefox: a PDF in a frame, an <embed> or an <object> taken, its page stays");
 }
 // Alt held, Options' excluded sites, a file under the minimum size, a form that can't be posted
 // again, paused: the browser keeps it, nothing asked.
@@ -3131,6 +3903,33 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.equal(listeners.headersReceived, undefined);
   ok("#208 Chromium: answers aren't held");
 }
+// #1345: Telegram Web's downloads come from its service worker, under addresses that are
+// nothing outside the page (a 302 to the app): the browser keeps them, from the K and A apps.
+for (const [id, url] of [
+  [93, "https://web.telegram.org/k/d/1284042609"],
+  [94, "https://web.telegram.org/a/progressive/document5123456789"],
+]) {
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  await settle();
+  let suggested;
+  listeners.determining(
+    {
+      id,
+      url,
+      finalUrl: url,
+      referrer: "https://web.telegram.org/k/",
+      filename: "Episode.mp4",
+      totalBytes: 376_637_440,
+      mime: "video/mp4",
+    },
+    (value) => (suggested = value),
+  );
+  await settle();
+  assert.ok(suggested, `the browser keeps Telegram Web's download (${url})`);
+  assert.equal(natives(calls).length, 0, "nothing offered to MDM");
+}
+ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser");
 // #603: only a tokenized Colab runtime-proxy transfer stays with the browser. A normal
 // download linked from a Colab notebook is still offered to MDM.
 {
@@ -3250,28 +4049,28 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
 // The manifests (#42): "proxy" optional in Firefox's, required in Chrome's (it can't be optional
 // there); the popup's switch: the permission in Firefox, the extension's own setting in Chrome.
 {
-  const chrome = JSON.parse(readFileSync(new URL("../../extension/manifest.json", import.meta.url), "utf8"));
-  const firefox = JSON.parse(readFileSync(new URL("../../extension/manifest.firefox.json", import.meta.url), "utf8"));
+  const chrome = JSON.parse(readText("../../extension/manifest.json"));
+  const firefox = JSON.parse(readText("../../extension/manifest.firefox.json"));
   assert.ok((chrome.permissions || []).includes("proxy") && !(chrome.optional_permissions || []).includes("proxy"), "Chrome: proxy required");
   assert.ok(!(firefox.permissions || []).includes("proxy"), "Firefox: proxy not required");
   assert.deepEqual(firefox.optional_permissions, ["proxy"], "Firefox: proxy optional");
-  const popup = readFileSync(new URL("../../extension/popup.js", import.meta.url), "utf8");
+  const popup = readText("../../extension/popup.js");
   assert.ok(/optional_permissions \|\| \[\]\)\.includes\("proxy"\)/.test(popup), "Firefox's switch where proxy is optional");
   assert.ok(/permissions\.request\(PROXY\)/.test(popup) && /permissions\.remove\(PROXY\)/.test(popup), "asked for and taken back on the switch");
   assert.ok(/storage\.local\s*\.get\(\{ proxyOn: false \}\)/.test(popup) && /storage\.local\.set\(\{ proxyOn: box\.checked \}\)/.test(popup), "Chrome's switch: its own setting");
   assert.ok(/const PROXY_SWITCH = "proxyOn"/.test(code), "the same setting in background.js");
-  const en = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  const en = JSON.parse(readText("../../extension/_locales/en/messages.json"));
   assert.ok(en.popup_proxy && en.popup_proxy_title && en.popup_proxy_title_chromium, "the switch's texts");
   ok("manifests: proxy optional in Firefox, required in Chrome; the popup's switch in each");
 }
 // Another MDM (#157): the file types caught for it are the app's defaults, and every message
 // the pairing can end with is there.
 {
-  const capture = readFileSync(new URL("../../crates/ipc/src/capture.rs", import.meta.url), "utf8");
+  const capture = readText("../../crates/ipc/src/capture.rs");
   const app = /pub const DEFAULT_AUTO_TYPES: &str = "([^"]+)"/.exec(capture)[1];
   const ours = /const DEFAULT_TYPES =\s*"([^"]+)"/.exec(code)[1];
   assert.equal(ours, app, "DEFAULT_TYPES is the app's DEFAULT_AUTO_TYPES");
-  const english = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
   for (const why of ["address", "unreachable", "wrong_code", "no_code", "too_soon", "failed", "device_name"]) {
     assert.ok(english[`remote_${why}`], `remote_${why}`);
   }
@@ -3332,7 +4131,7 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
 // page.js, in a page: Safari holds a plain click on a link to a listed file type, tells the app,
 // and (when it isn't taken) clicks again; Alt and other types are never held.
 {
-  const pageCode = readFileSync(new URL("../../extension/page.js", import.meta.url), "utf8");
+  const pageCode = readText("../../extension/page.js");
   const run = async ({ safari, firefox, taken, types = "ZIP ISO R0*", capture = true }) => {
     const sent = [];
     const handlers = {};
@@ -3461,6 +4260,272 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   await t.settle();
   assert.ok(!e.defaultPrevented && a.clicks === 0);
   ok("Safari: page.js holds a click on a listed file type, never Alt or other types; #332: Alt said at the press, Firefox follows the link");
+}
+
+// #1092: what the tab played, offered when the page's look-up finds nothing (a feed, a post
+// yt-dlp can't read, a site it doesn't know). A file's header (MP4) says its length and its
+// tracks; the video under the button is the one whose length is its own, never a feed's next
+// video, a picture or a sound alone, nor a guess between several.
+const MP4 = (() => {
+  const cat = (...parts) => {
+    const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
+    let at = 0;
+    for (const p of parts) {
+      out.set(p, at);
+      at += p.length;
+    }
+    return out;
+  };
+  const u32 = (n) => new Uint8Array([(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]);
+  const text = (s) => new TextEncoder().encode(s);
+  const box = (type, ...parts) => {
+    const body = cat(...parts);
+    return cat(u32(8 + body.length), text(type), body);
+  };
+  const zeros = (n) => new Uint8Array(n);
+  // A movie of `seconds` (timescale 1000; 0: unknown, as a fragmented file's mvhd may say), its
+  // tracks ("vide" with a picture `height`, "soun"), `pad` bytes of sample tables in each track
+  // (a long file's header), the movie after its data when `atEnd`, a fragmented one's length in
+  // its mehd (`fragments`).
+  return ({ seconds, tracks = ["soun", "vide"], height = 720, pad = 100, atEnd = false, fragments = 0, data = 2000 }) => {
+    const mvhd = box("mvhd", zeros(4), zeros(8), u32(1000), u32(Math.round(seconds * 1000)), zeros(80));
+    const trak = (kind) =>
+      box(
+        "trak",
+        box("tkhd", zeros(4), zeros(72), u32(kind === "vide" ? (height * 2) << 15 : 0), u32(kind === "vide" ? height << 16 : 0)),
+        box("mdia", box("mdhd", zeros(24)), box("hdlr", zeros(8), text(kind), zeros(13)), box("minf", zeros(pad))),
+      );
+    const mvex = fragments ? [box("mvex", box("mehd", zeros(4), u32(fragments * 1000)))] : [];
+    const moov = box("moov", mvhd, ...tracks.map(trak), ...mvex);
+    const ftyp = box("ftyp", text("isomiso2avc1mp41"));
+    const mdat = box("mdat", zeros(data));
+    return atEnd ? cat(ftyp, mdat, moov) : cat(ftyp, moov, mdat);
+  };
+})();
+{
+  const ctx = load(fakeApi({ firefox: false }).api, false);
+  // The header, read from bytes in memory as the background reads a file's (a few small reads).
+  const head = async (bytes) => {
+    const reads = [];
+    const info = await ctx.mp4Head(async (start, len) => {
+      reads.push(start);
+      return start < bytes.length ? bytes.slice(start, start + len) : null;
+    });
+    return { info: info && JSON.parse(JSON.stringify(info)), reads };
+  };
+  let h = await head(MP4({ seconds: 10.007 }));
+  assert.deepEqual(h.info, { duration: 10.007, video: true, audio: true, height: 720 });
+  assert.equal(h.reads.length, 1, "a short file's header in one read");
+  // A long file: its first track's tables are large, the second track is read where it starts.
+  h = await head(MP4({ seconds: 1501.8, height: 1080, pad: 300_000 }));
+  assert.deepEqual(h.info, { duration: 1501.8, video: true, audio: true, height: 1080 });
+  assert.ok(h.reads.length >= 2 && h.reads.length <= 6, `${h.reads.length} reads`);
+  // The movie after its data (not made for the web): found past it.
+  h = await head(MP4({ seconds: 33, atEnd: true, data: 5_000_000 }));
+  assert.deepEqual([h.info.duration, h.info.video, h.info.audio], [33, true, true]);
+  // One of a video's tracks alone (Douyin's long videos: a picture and a sound, apart).
+  assert.deepEqual((await head(MP4({ seconds: 796.5, tracks: ["vide"] }))).info, { duration: 796.5, video: true, audio: false, height: 720 });
+  assert.deepEqual((await head(MP4({ seconds: 796.5, tracks: ["soun"] }))).info, { duration: 796.5, video: false, audio: true, height: 0 });
+  // A fragmented file: its length in the mehd.
+  assert.equal((await head(MP4({ seconds: 0, fragments: 42 }))).info.duration, 42);
+  // Tracks past the reads it may make: not known (never a picture alone by mistake).
+  h = await head(MP4({ seconds: 60, tracks: ["soun", "soun", "soun", "soun", "soun", "soun", "vide"], pad: 50_000 }));
+  assert.deepEqual([h.info.duration, h.info.video, h.info.audio], [60, null, null]);
+  // Not an MP4: a WebM, a page, nothing.
+  assert.equal((await head(new Uint8Array([0x1a, 0x45, 0xdf, 0xa3, 0x9f, 0x42, 0x86, 0x81, 1, 0x42, 0xf7, 0x81]))).info, null);
+  assert.equal((await head(new TextEncoder().encode("<!doctype html><title>x</title>"))).info, null);
+  assert.equal((await head(new Uint8Array(0))).info, null);
+  ok("#1092: an MP4's header read for its length, its tracks and its picture's height, in a few small reads");
+
+  // The choice (playedChoice), each candidate as playedCandidates makes it.
+  const file = (url, duration, more = {}) => ({
+    url,
+    kind: "video",
+    stream: false,
+    at: 0,
+    size: 2e6,
+    duration,
+    live: false,
+    tracks: { video: true, audio: true },
+    height: 720,
+    drm: false,
+    ...more,
+  });
+  const stream = (url, duration, more = {}) => ({ ...file(url, duration), kind: "hls", stream: true, size: 0, tracks: null, ...more });
+  const choose = (cands, v) => {
+    const r = JSON.parse(JSON.stringify(ctx.playedChoice(cands, { duration: 0, live: false, height: 720, audio: false, began: 0, nextBegan: 0, alone: false, ...v })));
+    return r.pick ? r.pick.url : r.several ? `several ${r.several}` : "none";
+  };
+  // Douyin's feed: the video playing (10 s), the next one preloaded (5.6 s), the page's own clip.
+  const feed = [file("https://v.test/clip-a/", 10.007), file("https://v.test/clip-b/", 5.617), file("https://s.test/bg.mp4", 2.6, { size: 199164 })];
+  assert.equal(choose(feed, { duration: 10.167 }), "https://v.test/clip-a/", "its length (the player says a little more)");
+  assert.equal(choose(feed, { duration: 5.757 }), "https://v.test/clip-b/");
+  assert.equal(choose(feed, { duration: 31 }), "none", "nothing of its length");
+  // A picture and a sound apart: neither is the video.
+  const split = [
+    file("https://v.test/a/media-video-hvc1/", 796.5, { tracks: { video: true, audio: false } }),
+    file("https://v.test/a/media-audio-und-mp4a/", 796.5, { tracks: { video: false, audio: true }, height: 0 }),
+  ];
+  assert.equal(choose(split, { duration: 796.5 }), "none");
+  assert.equal(choose([...split, ...feed], { duration: 10 }), "https://v.test/clip-a/");
+  // Two of its length: the one with the player's picture height, else said, never guessed.
+  const two = [file("https://v.test/hd.mp4", 30, { height: 1080 }), file("https://v.test/sd.mp4", 30, { height: 480 })];
+  assert.equal(choose(two, { duration: 30, height: 480 }), "https://v.test/sd.mp4");
+  assert.equal(choose(two, { duration: 30, height: 720 }), "several 2");
+  // A stream of its length is the video, its files beside it its pieces; a protected one never.
+  assert.equal(choose([stream("https://v.test/m.m3u8", 12), file("https://v.test/init.mp4", 12)], { duration: 12 }), "https://v.test/m.m3u8");
+  assert.equal(choose([stream("https://v.test/m.m3u8", 12, { drm: true })], { duration: 12 }), "none");
+  // A live video: a live stream; never a file.
+  const live = stream("https://v.test/live.m3u8", 0, { live: true });
+  assert.equal(choose([live, file("https://v.test/x.mp4", 30)], { live: true }), "https://v.test/live.m3u8");
+  assert.equal(choose([live], { duration: 30 }), "none");
+  // A sound player: a sound.
+  const m4a = file("https://v.test/x.m4a", 30, { kind: "audio", tracks: { video: false, audio: true } });
+  assert.equal(choose([file("https://v.test/x.mp4", 30), m4a], { duration: 30, audio: true }), "https://v.test/x.m4a");
+  // Lengths not known (a WebM, a manifest the extension can't read): the frame's only video's,
+  // or what came while this video loaded before the next one began to; else said.
+  const webm = (url, at) => file(url, 0, { at, tracks: null });
+  assert.equal(choose([webm("https://v.test/a.webm", 5000)], { duration: 30, alone: true }), "https://v.test/a.webm");
+  const loaded = [webm("https://v.test/a.webm", 5000), webm("https://v.test/b.webm", 9000)];
+  assert.equal(choose(loaded, { duration: 30, began: 4000, nextBegan: 8000 }), "https://v.test/a.webm");
+  assert.equal(choose(loaded, { duration: 30, began: 8000 }), "https://v.test/b.webm");
+  assert.equal(choose(loaded, { duration: 30 }), "several 2", "when it began isn't known");
+  assert.equal(choose(loaded, { duration: 30, began: 1000, nextBegan: 2000 }), "several 2");
+  // A known length beats an unknown one.
+  assert.equal(choose([...loaded, file("https://v.test/c.mp4", 30)], { duration: 30, alone: true }), "https://v.test/c.mp4");
+  ok("#1092: what the tab played is offered for the video of its length, never the next one, a track alone or a guess");
+}
+
+// #1092, from the button's question to the app: a feed's player fetched files in ranges (kept
+// apart, never in the media list), the button asks what the tab played for its video, the file of
+// its length goes to the app as the video's own (its page as Referer, its title, its type); a
+// stream goes to the look-up instead of the feed. An address the tab didn't load is never taken.
+{
+  const A = "https://v3.douyinvod.test/video/tos/cn/a/?mime_type=video_mp4&sig=1";
+  const B = "https://v3.douyinvod.test/video/tos/cn/b/?mime_type=video_mp4&sig=2";
+  const V = "https://v3.douyinvod.test/video/tos/cn/c/media-video-hvc1/?sig=3";
+  const S = "https://v3.douyinvod.test/video/tos/cn/c/media-audio-und-mp4a/?sig=4";
+  const M = "https://cdn.test/f/master.m3u8";
+  const M720 = "https://cdn.test/f/720p/index.m3u8";
+  served = {
+    [A]: { bytes: MP4({ seconds: 10.007, data: 300_000 }) },
+    [B]: { bytes: MP4({ seconds: 5.617, data: 200_000 }) },
+    [V]: { bytes: MP4({ seconds: 796.5, tracks: ["vide"] }) },
+    [S]: { bytes: MP4({ seconds: 796.5, tracks: ["soun"] }) },
+    [M]: { body: "#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=1280000,RESOLUTION=1280x720\n720p/index.m3u8\n" },
+    [M720]: { body: "#EXTM3U\n#EXT-X-TARGETDURATION:4\n#EXTINF:4.0,\na.ts\n#EXTINF:4.0,\nb.ts\n#EXTINF:4.0,\nc.ts\n#EXT-X-ENDLIST\n" },
+  };
+  const page = "https://www.douyin.test/?recommend=1";
+  const tabs = { 4: { id: 4, url: page, title: "抖音-记录美好生活", incognito: false } };
+  const { api, calls, listeners } = fakeApi({
+    firefox: false,
+    tabs,
+    rules: { videoLookup: true },
+    lookup: () => ({ ok: true, lookup: { state: "pending", token: "t9" } }),
+  });
+  load(api, false);
+  listeners.tabUpdated(4, { url: page });
+  await settle();
+  const ranged = (url, total) => res(url, "xmlhttprequest", H("video/mp4", { "Content-Range": `bytes 0-1023/${total}` }), { statusCode: 206, tabId: 4 });
+  for (const d of [
+    ranged(A, 2304964),
+    ranged(B, 1981590),
+    ranged(V, 76408983),
+    ranged(S, 19271821),
+    // Too small to be a video's file; a piece named by its address.
+    ranged("https://v3.douyinvod.test/tiny.mp4", 40000),
+    res("https://v3.douyinvod.test/x.mp4?range=0-99", "xmlhttprequest", H("video/mp4", { "Content-Range": "bytes 0-99/900000" }), { statusCode: 206, tabId: 4 }),
+  ]) {
+    listeners.responseStarted(d);
+  }
+  await settle();
+  assert.deepEqual((await popupAsk(listeners, { type: "media", tab: 4 })).media, [], "never in the media list");
+  const message = (m, frameId = 0) =>
+    new Promise((r) => listeners.message(m, { id: "ours", url: page, frameId, tab: tabs[4] }, (x) => r(JSON.parse(JSON.stringify(x)))));
+  fetched.length = 0;
+  const answer = await message({ type: "video-played", duration: 10.167, height: 720, began: 0, nextBegan: 0, alone: false });
+  assert.deepEqual(answer, { played: { url: A, stream: false, ext: "mp4", size: 2304964, height: 720, duration: 10.007 } });
+  assert.ok(
+    fetched.every(([, c, r]) => c === "include" && /^bytes=\d+-\d+$/.test(r)),
+    "each header read in ranges, with the site's cookies",
+  );
+  assert.ok(fetched.length <= 8, `${fetched.length} reads`);
+  assert.deepEqual(served[A].ranges, ["bytes=0-4095"]);
+  // Asked again: each header read once.
+  const reads = fetched.length;
+  assert.deepEqual(await message({ type: "video-played", duration: 5.7, height: 720 }), {
+    played: { url: B, stream: false, ext: "mp4", size: 1981590, height: 720, duration: 5.617 },
+  });
+  assert.equal(fetched.length, reads);
+  // The feed moving to another address of the site (Douyin's /jingxuan to /?recommend=1, after its
+  // player fetched the first video): its files stay; another site's page: they go.
+  listeners.tabUpdated(4, { url: "https://www.douyin.test/jingxuan?from=feed" });
+  await settle();
+  assert.equal((await message({ type: "video-played", duration: 10.167, height: 720 })).played.url, A);
+  listeners.tabUpdated(4, { url: page });
+  await settle();
+  // The long video, a picture and a sound apart: nothing (its post, if any, is the way).
+  assert.deepEqual(await message({ type: "video-played", duration: 796.5, height: 1080 }), {});
+  // Another frame played none of these.
+  assert.deepEqual(await message({ type: "video-played", duration: 10.167, height: 720 }, 3), {});
+  // The click: the file as the video's own, the feed as its page and Referer, the page's title,
+  // the type the server said.
+  assert.equal((await message({ type: "video", url: null, src: A, played: A, direct: true, title: "抖音-记录美好生活" })).ok, true);
+  const sent = natives(calls).filter((x) => x.video).at(-1);
+  assert.deepEqual([sent.url, sent.src, sent.direct, sent.mime, sent.title, sent.referrer], [page, A, true, "video/mp4", "抖音-记录美好生活", ""]);
+  // A post's (Douyin's /video/<id>, #707 names it): the same file, with its title.
+  const post = "https://www.douyin.test/video/7677883232318323279";
+  await message({ type: "video", url: post, src: A, played: A, direct: true, title: "抖音" });
+  const fromPost = natives(calls).filter((x) => x.video).at(-1);
+  assert.deepEqual([fromPost.src, fromPost.direct, fromPost.title], [A, true, "抖音"]);
+  // A stream the frame played: its master stands for its variants and goes to the look-up.
+  listeners.responseStarted(res(M, "xmlhttprequest", H("application/vnd.apple.mpegurl"), { tabId: 4, frameId: 2 }));
+  listeners.responseStarted(res(M720, "xmlhttprequest", H("application/vnd.apple.mpegurl"), { tabId: 4, frameId: 2 }));
+  await settle();
+  assert.deepEqual(await message({ type: "video-played", duration: 12, height: 720 }, 2), {
+    played: { url: M, stream: true, ext: "", size: 0, height: 720, duration: 12 },
+  });
+  const looked = await message({ type: "video-lookup", url: null, src: "", played: M, title: "Feed" }, 2);
+  assert.deepEqual(looked, { lookup: { state: "pending", token: "t9" }, show: M });
+  // Named after the tab, as a frame's player is (#1075), not after its frame's own title.
+  assert.deepEqual(natives(calls).filter((x) => x.videoLookup).at(-1).videoLookup, { page, src: M, title: "抖音-记录美好生活" });
+  // Without it (or with an address the tab didn't load, or another frame's): the feed, as before.
+  for (const [played, frame] of [
+    [undefined, 2],
+    ["https://evil.test/x.m3u8", 2],
+    [M, 0],
+  ]) {
+    assert.deepEqual(await message({ type: "video-lookup", url: null, src: "", played, title: "Feed" }, frame), { ok: false, why: "feed" }, String(played));
+  }
+  listeners.tabUpdated(4, { url: "https://elsewhere.test/" });
+  await settle();
+  assert.deepEqual(await message({ type: "video-played", duration: 10.167, height: 720 }), {}, "another site: its files gone");
+  ok("#1092: a feed's file of the video's length goes as its own (kept while the tab stays on its site), its stream to the look-up; ranged files never listed");
+}
+
+// #1092: Douyin names its posts (a slide's data-e2e-vid, ?modal_id=), and the button asks what the
+// tab played only after a look-up found nothing.
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf("  function playedWanted(");
+  const playedWanted = new Function(`${source.slice(start, source.indexOf("\n  }\n", start) + 4)}\nreturn playedWanted;`)();
+  for (const s of [{ state: "feed" }, { state: "failed", reason: "error" }, { state: "failed", reason: "no-ytdlp" }, { state: "ready", choices: [] }, { state: "failed", reason: "no-choices" }]) {
+    assert.equal(playedWanted(s), true, JSON.stringify(s));
+  }
+  for (const s of [{ state: "ready", choices: [{ label: "720p" }] }, { state: "list" }, { state: "busy" }, { state: "off" }, { state: "late" }, { state: "unnamed" }, { state: "use-window" }, { state: "gone" }, null]) {
+    assert.equal(playedWanted(s), false, JSON.stringify(s));
+  }
+  // Douyin's own pages, and one opened over a profile's (videoPage).
+  const named = (href) =>
+    videoPageOn(new URL(href), { querySelector: () => null, querySelectorAll: () => [] })({ parentElement: null, getAttribute: () => null, querySelectorAll: () => [] });
+  assert.equal(named("https://www.douyin.com/video/7692732464107719962"), "https://www.douyin.com/video/7692732464107719962");
+  assert.equal(
+    named("https://www.douyin.com/user/self?modal_id=7704568510928004170&showSubTab=video&showTab=favorite_collection"),
+    "https://www.douyin.com/video/7704568510928004170",
+  );
+  assert.equal(named("https://www.douyin.com/?recommend=1"), null);
+  assert.equal(named("https://www.douyin.com/jingxuan?modal_id=12"), null);
+  ok("#1092: Douyin's posts named; what the tab played asked only after a look-up found nothing");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

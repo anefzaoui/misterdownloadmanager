@@ -37,15 +37,17 @@ enum Sub {
     Login(Option<usize>, String, String, String),
     /// Connection → New / Edit exception: (row, server, number).
     Exception(Option<usize>, String, String),
-    /// General → Download panels → Edit...: (the button over videos on, the sites it stays off).
-    Panels(bool, String, String),
+    /// General → Download panels → Edit...: (the button over videos on, its size Compact
+    /// (#1278), the sites it stays off, what Export / Import said).
+    Panels(bool, bool, String, String),
     /// General → Keys...: (also take the files the browser would open).
     Keys(bool),
     /// Downloads → Customize "Download progress" dialog → Edit... (#1041): (show it when a
     /// download starts).
     Progress(bool),
-    /// General → Test browser integration...: the checks, as found when it opened.
-    Test(Vec<crate::extension::Check>),
+    /// General → Test browser integration...: the checks, read beside the window (#1218) when it
+    /// opened, and again once a Set it up finished.
+    Test(crate::extension::Tester),
     /// File types → "Don't start downloading automatically from the following addresses" →
     /// Edit list...: one address pattern per line.
     Addresses(String),
@@ -55,10 +57,14 @@ enum Sub {
     Account(AccountEdit),
     /// Remote → Pair a device...: the code shown, until a device pairs or it is closed.
     Pair,
+    /// Archives → Archive passwords...: one password per line (#37).
+    Passwords(String),
 }
 
 /// Options → Remote's page number (the tabs' numbers).
 const REMOTE_PAGE: usize = 11;
+/// Test browser integration: from a check's line to the path under it (#818).
+const DETAIL_H: f32 = 18.0;
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -221,8 +227,6 @@ pub struct OptionsDialog {
     remote: Option<mdm_remote::Remote>,
     port: String,
     device_rows: winui::RowList,
-    /// Test browser integration → Set it up's runs seen finished (crate::extension).
-    set_up_seen: u64,
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
     cookie_browser: usize,
@@ -280,6 +284,7 @@ impl OptionsDialog {
     pub fn with_panels(mut self) -> Self {
         self.sub = Some(Sub::Panels(
             self.s.video_panel,
+            self.s.video_panel_compact,
             self.s.video_panel_sites.clone(),
             String::new(),
         ));
@@ -291,7 +296,11 @@ impl OptionsDialog {
     /// `options:account`, `options:progress`: screenshots, #192, #1041).
     pub fn with_window(mut self, name: &str) -> Self {
         match name {
-            "test" => self.sub = Some(Sub::Test(crate::extension::checks(&self.s))),
+            "test" => {
+                self.sub = Some(Sub::Test(crate::extension::Tester::new(
+                    self.s.advanced_integration,
+                )))
+            }
             "account" => self.sub = Some(Sub::Account(AccountEdit::default())),
             "progress" => self.sub = Some(Sub::Progress(self.s.show_progress)),
             _ => {}
@@ -321,7 +330,6 @@ impl OptionsDialog {
             account_rows: Default::default(),
             sound_rows: Default::default(),
             sub: None,
-            set_up_seen: 0,
             cat_edit: None,
             restore_ask: None,
             learned,
@@ -478,7 +486,7 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
-        let checks: [(f32, &mut bool, &str); 7] = [
+        let checks: [(f32, &mut bool, &str); 8] = [
             (
                 94.0,
                 &mut s.launch_on_startup,
@@ -506,17 +514,26 @@ impl OptionsDialog {
                 &mut s.confirm_delete,
                 crate::i18n::mark("Confirm before deleting downloads"),
             ),
+            // MDM's: a private window's downloads saved in the list like any other (off: memory
+            // only, gone when MDM closes). The rows below, and the browsers' group, a row lower,
+            // its list a row shorter again (it scrolls).
+            (
+                191.0,
+                &mut s.keep_private_downloads,
+                // i18n: checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+                crate::i18n::mark("Keep private-window downloads in the list"),
+            ),
             // MDM's (#63): Minimize hides the main window and progress windows in the tray too.
             // The browsers' group starts a row lower again, its list a row shorter (it scrolls).
             (
-                191.0,
+                210.0,
                 &mut s.minimize_to_tray,
                 // i18n: checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
                 crate::i18n::mark("Minimize to the notification area"),
             ),
             // MDM's: the × hides the window in the notification area, or quits.
             (
-                210.0,
+                229.0,
                 &mut s.close_to_tray,
                 // i18n: checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
                 crate::i18n::mark("Keep running when closing the window"),
@@ -529,7 +546,7 @@ impl OptionsDialog {
             // Portable: nothing is written to the registry, so no start with Windows. Manifest 2
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
             // shown as IDM has it, greyed (D-021).
-            let enabled = !(portable && i == 0) && i != 2 && (i < 5 || tray);
+            let enabled = !(portable && i == 0) && i != 2 && (i < 6 || tray);
             let check = winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
             // Where a start with the session leaves the window (#226).
             if i == 0 && enabled && check.hovered() {
@@ -542,7 +559,12 @@ impl OptionsDialog {
                         "Started with the computer, it starts minimized: no notification area shows its icon here",
                     )
                 });
-            } else if i == 6 && check.hovered() {
+            } else if i == 5 && check.hovered() {
+                // i18n: tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+                check.on_hover_text(crate::i18n::t(
+                    "Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved",
+                ));
+            } else if i == 7 && check.hovered() {
                 // i18n: tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
                 check.on_hover_text(crate::i18n::t(
                     "Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM",
@@ -574,15 +596,15 @@ impl OptionsDialog {
         let (lbl_rc, lbl_cut) = winui::text_fit(
             &p,
             o.x + 30.0,
-            o.y + 243.0,
+            o.y + 262.0,
             hk_label,
             lbl_ink,
             o.x + box_x - 6.0,
         );
         if lbl_cut {
-            winui::full_on_hover(ui, lbl_rc, ("general-hotkey", 243), hk_label);
+            winui::full_on_hover(ui, lbl_rc, ("general-hotkey", 262), hk_label);
         }
-        let box_rc = r(o, box_x, 229.0, box_w, 21.0);
+        let box_rc = r(o, box_x, 248.0, box_w, 21.0);
         let box_resp = ui.interact(
             box_rc,
             egui::Id::unique("hotkey-recorder"),
@@ -683,7 +705,7 @@ impl OptionsDialog {
             ui,
             &p,
             o.x + box_x + 6.0,
-            o.y + 243.0,
+            o.y + 262.0,
             &hk_text,
             hk_ink,
             o.x + box_x + box_w - 6.0,
@@ -697,7 +719,7 @@ impl OptionsDialog {
             };
         if winui::button_light(
             ui,
-            r(o, clear_x, 229.0, clear_w, 21.0),
+            r(o, clear_x, 248.0, clear_w, 21.0),
             "Clear",
             clear_kind,
             false,
@@ -711,9 +733,9 @@ impl OptionsDialog {
             ui,
             o,
             16.0,
-            256.0,
+            275.0,
             392.0,
-            138.0,
+            119.0,
             "Capture downloads from the following browsers:",
         );
         // Check list: one row per browser in the shared row list (Space ticks the selected
@@ -724,7 +746,7 @@ impl OptionsDialog {
         let ev = winui::row_list(
             ui,
             "browsers",
-            r(o, 30.0, 266.0, 362.0, 56.0),
+            r(o, 30.0, 285.0, 362.0, 37.0),
             browsers.len(),
             17.0,
             &mut self.browser_rows,
@@ -783,7 +805,9 @@ impl OptionsDialog {
         )
         .clicked()
         {
-            self.sub = Some(Sub::Test(crate::extension::checks(&self.s)));
+            self.sub = Some(Sub::Test(crate::extension::Tester::new(
+                self.s.advanced_integration,
+            )));
         }
         winui::etched_h(&p, o.x + 34.0, o.y + 356.0, 357.0);
         // The buttons at the right as wide as their labels in this language (#192), their
@@ -847,6 +871,7 @@ impl OptionsDialog {
         {
             self.sub = Some(Sub::Panels(
                 self.s.video_panel,
+                self.s.video_panel_compact,
                 self.s.video_panel_sites.clone(),
                 String::new(),
             ));
@@ -2393,7 +2418,7 @@ impl OptionsDialog {
         );
         let s = &mut self.s;
         // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 92.0, 392.0, 228.0, "Archives");
+        group(ui, o, 16.0, 92.0, 392.0, 243.0, "Archives");
         winui::checkbox_light(
             ui,
             o + vec2(30.0, 110.0),
@@ -2418,7 +2443,7 @@ impl OptionsDialog {
         text(
             &p,
             o.x + 30.0,
-            o.y + 174.0,
+            o.y + 166.0,
             // i18n: Options → Archives: a label before the list of where extracted files go
             crate::i18n::t("What an archive holds goes:"),
             LIGHT_TEXT(),
@@ -2433,7 +2458,7 @@ impl OptionsDialog {
         ];
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 30.0, 181.0, 364.0, 21.0),
+            r(o, 30.0, 173.0, 364.0, 21.0),
             &INTO,
             s.extract_subfolder.min(2) as usize,
             true,
@@ -2444,7 +2469,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 226.0,
+            o.y + 218.0,
             crate::i18n::t(
                 "ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.",
             ),
@@ -2484,7 +2509,7 @@ impl OptionsDialog {
             ui,
             &p,
             o.x + 30.0,
-            o.y + 272.0,
+            o.y + 264.0,
             &rar,
             ink,
             o.x + 400.0,
@@ -2493,7 +2518,7 @@ impl OptionsDialog {
         let has_hatchzip = self.hatch_zip.is_some();
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 294.0),
+            o + vec2(30.0, 284.0),
             &mut s.extract_in_place,
             if has_hatchzip {
                 // i18n: Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
@@ -2504,11 +2529,42 @@ impl OptionsDialog {
             },
             has_hatchzip,
         );
+        // The passwords tried on an encrypted archive before it is asked (#37).
+        let (pw_x, pw_w) = winui::button_row_from_left(
+            &p,
+            &[("Archive passwords...", 30.0, 150.0)],
+            0.0,
+            389.0,
+            300.0,
+        )[0];
+        // i18n: Options → Archives: button: edit the list of passwords tried on encrypted archives
+        if winui::button_light(
+            ui,
+            r(o, pw_x, 304.0, pw_w, 21.0),
+            "Archive passwords...",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked()
+        {
+            self.sub = Some(Sub::Passwords(s.archive_passwords.clone()));
+        }
+        let saved = s.archive_password_list().len() as u64;
+        if saved > 0 {
+            text(
+                &p,
+                o.x + pw_x + pw_w + 10.0,
+                o.y + 320.0,
+                // i18n: Options → Archives: beside the Archive passwords button: how many are saved
+                &crate::i18n::tn(saved, "{n} saved", "{n} saved"),
+                LIGHT_DISABLED(),
+            );
+        }
         // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 320.0, 392.0, 132.0, "Link grabber");
+        group(ui, o, 16.0, 335.0, 392.0, 128.0, "Link grabber");
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 338.0),
+            o + vec2(30.0, 353.0),
             &mut s.grabber_check,
             // i18n: Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
             "Look links up when they arrive (name, size, online)",
@@ -2516,14 +2572,14 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 362.0),
+            o + vec2(30.0, 377.0),
             &mut s.grabber_hide_pages,
             "Hide web pages",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 386.0),
+            o + vec2(30.0, 401.0),
             &mut s.cnl_on,
             // i18n: Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
             "Accept Click'n'Load from web pages (port 9666)",
@@ -2532,7 +2588,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 418.0,
+            o.y + 429.0,
             crate::i18n::t(
                 "Tasks → Link grabber, or the browser's \"Download all links\": a split\narchive's volumes are one package, the other links of a page another.",
             ),
@@ -3462,13 +3518,13 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Panels(mut on, mut sites, mut said) => {
+            Sub::Panels(mut on, mut compact, mut sites, mut said) => {
                 let out = window(
                     ctx,
                     "opt-panels",
                     // i18n: window title: the download button the extension shows over videos
                     "Download panels",
-                    [380.0, 190.0],
+                    [380.0, 241.0],
                     false,
                     LIGHT_BG(),
                     |ui, o| {
@@ -3480,30 +3536,72 @@ impl OptionsDialog {
                             "Show a download button over videos in browsers",
                             true,
                         );
+                        // Its size (#1278): Full, its words where they fit; Compact, the round
+                        // button over every video.
+                        let shade = if on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
+                        // i18n: Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+                        let size_label = crate::i18n::t("Button size:");
+                        winui::text_in_window(ui, &p, o.x + 30.0, o.y + 52.0, size_label, shade);
+                        // i18n: Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+                        let full_caption = crate::i18n::mark("Full");
+                        let full_x = (30.0 + winui::text_width(&p, size_label) + 12.0).max(110.0);
+                        let compact_x = full_x
+                            + 16.0
+                            + winui::text_width(&p, crate::i18n::t(full_caption))
+                            + 20.0;
+                        let full = winui::radio_light(
+                            ui,
+                            o + vec2(full_x, 42.0),
+                            !compact,
+                            full_caption,
+                            on,
+                        );
+                        let small = winui::radio_light(
+                            ui,
+                            o + vec2(compact_x, 42.0),
+                            compact,
+                            // i18n: Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
+                            "Compact",
+                            on,
+                        );
+                        match winui::radio_keys(ui, &[full.clone(), small.clone()]) {
+                            Some(i) => compact = i == 1,
+                            None if full.clicked() => compact = false,
+                            None if small.clicked() => compact = true,
+                            None => {}
+                        }
                         winui::text_in_window(
                             ui,
                             &p,
                             o.x + 14.0,
-                            o.y + 55.0,
+                            o.y + 83.0,
                             crate::i18n::t("Never show it on these sites:"),
-                            if on { LIGHT_TEXT() } else { LIGHT_DISABLED() },
+                            shade,
                         );
                         multiline(
                             ui,
-                            r(o, 14.0, 62.0, 352.0, 55.0),
+                            r(o, 14.0, 90.0, 352.0, 55.0),
                             &mut sites,
                             "panel-sites",
                             on,
                         );
-                        winui::text_in_window(
-                            ui,
+                        // On a row of its own, the list's width: beside Export... and Import... it
+                        // ran under them (English already, German further).
+                        let hint = crate::i18n::t(
+                            // i18n: under Download panels site exclusions list
+                            "(separate by spaces; * matches anything)",
+                        );
+                        let (rect, cut) = winui::text_fit(
                             &p,
                             o.x + 14.0,
-                            o.y + 133.0,
-                            // i18n: under Download panels site exclusions list
-                            crate::i18n::t("(separate by spaces; * matches anything)"),
+                            o.y + 161.0,
+                            hint,
                             LIGHT_TEXT(),
+                            o.x + 366.0,
                         );
+                        if cut {
+                            winui::full_on_hover(ui, rect, "opt-panels-hint", hint);
+                        }
                         // The list as a file, to keep or carry to a new installation (#424).
                         let [export_at, import_at] = winui::button_row(
                             &p,
@@ -3516,7 +3614,7 @@ impl OptionsDialog {
                         };
                         if winui::button_light(
                             ui,
-                            r(o, export_at.0, 128.0, export_at.1, 21.0),
+                            r(o, export_at.0, 172.0, export_at.1, 21.0),
                             "Export...",
                             ButtonKind::Normal,
                             false,
@@ -3533,7 +3631,7 @@ impl OptionsDialog {
                         }
                         if winui::button_light(
                             ui,
-                            r(o, import_at.0, 128.0, import_at.1, 21.0),
+                            r(o, import_at.0, 172.0, import_at.1, 21.0),
                             "Import...",
                             ButtonKind::Normal,
                             false,
@@ -3585,7 +3683,7 @@ impl OptionsDialog {
                             let (rect, cut) = winui::text_fit(
                                 &p,
                                 o.x + 14.0,
-                                o.y + 163.0,
+                                o.y + 187.0,
                                 &said,
                                 LIGHT_TEXT(),
                                 o.x + 205.0,
@@ -3594,13 +3692,14 @@ impl OptionsDialog {
                                 winui::full_on_hover(ui, rect, "opt-panels-said", &said);
                             }
                         }
-                        ok_cancel(ui, o, 212.0, 157.0, true)
+                        ok_cancel(ui, o, 212.0, 208.0, true)
                     },
                 );
                 match out {
-                    Outcome::Open => self.sub = Some(Sub::Panels(on, sites, said)),
+                    Outcome::Open => self.sub = Some(Sub::Panels(on, compact, sites, said)),
                     Outcome::Done(()) => {
                         self.s.video_panel = on;
+                        self.s.video_panel_compact = compact;
                         self.s.video_panel_sites =
                             sites.split_whitespace().collect::<Vec<_>>().join(" ");
                     }
@@ -3656,6 +3755,47 @@ impl OptionsDialog {
                         .signin
                         .stop
                         .store(true, std::sync::atomic::Ordering::Relaxed),
+                }
+            }
+            Sub::Passwords(mut list) => {
+                let out = window(
+                    ctx,
+                    "opt-archive-passwords",
+                    // i18n: window title: the passwords tried on encrypted archives
+                    "Archive passwords",
+                    [420.0, 230.0],
+                    false,
+                    LIGHT_BG(),
+                    |ui, o| {
+                        let p = ui.painter().clone();
+                        winui::paragraph(
+                            &p,
+                            o.x + 14.0,
+                            o.y + 20.0,
+                            // i18n: Archive passwords window: how the list is used
+                            crate::i18n::t(
+                                "One password per line, tried in this order on an encrypted archive before MDM asks. The one that fits moves to the top.",
+                            ),
+                            LIGHT_TEXT(),
+                            o.x + 406.0,
+                            14.0,
+                        );
+                        multiline(
+                            ui,
+                            r(o, 14.0, 52.0, 392.0, 122.0),
+                            &mut list,
+                            "archive-passwords",
+                            true,
+                        );
+                        ok_cancel(ui, o, 252.0, 192.0, true)
+                    },
+                );
+                match out {
+                    Outcome::Open => self.sub = Some(Sub::Passwords(list)),
+                    Outcome::Done(()) => {
+                        self.s.archive_passwords = settings::password_lines(&list).join("\n");
+                    }
+                    Outcome::Closed => {}
                 }
             }
             Sub::Addresses(mut list) => {
@@ -3758,8 +3898,20 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
-            Sub::Test(mut checks) => {
-                let h = 120.0 + checks.len() as f32 * 22.0;
+            Sub::Test(tester) => {
+                // Read beside the window (#1218): the last checks while new ones are read (Set it
+                // up finished), "Checking..." before the first.
+                let found = tester.checks(Some(ctx));
+                let checking = found.is_none();
+                let checks = found.unwrap_or_default();
+                // A check's path takes a line of its own (#818), what to do about it a paragraph
+                // (#1218), as tall as it was last drawn.
+                let details = checks.iter().filter(|c| c.detail.is_some()).count();
+                let rows = checks.len().max(usize::from(checking));
+                let h = 120.0
+                    + rows as f32 * 22.0
+                    + details as f32 * DETAIL_H
+                    + crate::dialogs::grow_extra(ctx, "opt-test-how");
                 let mut set_up = false;
                 let out = window(
                     ctx,
@@ -3771,8 +3923,20 @@ impl OptionsDialog {
                     LIGHT_BG(),
                     |ui, o| {
                         let p = ui.painter().clone();
+                        let mut y = o.y + 22.0;
+                        let mut how_h = 0.0;
+                        if checking {
+                            winui::text_in_window(
+                                ui,
+                                &p,
+                                o.x + 34.0,
+                                y,
+                                // i18n: Test browser integration, while it reads where browser integration stands (a moment, usually)
+                                crate::i18n::t("Checking..."),
+                                LIGHT_TEXT(),
+                            );
+                        }
                         for (k, c) in checks.iter().enumerate() {
-                            let y = o.y + 22.0 + k as f32 * 22.0;
                             let (mark, color) = if c.ok {
                                 ("\u{2714}", winui::SUCCESS())
                             } else {
@@ -3780,7 +3944,37 @@ impl OptionsDialog {
                             };
                             winui::text_in_window(ui, &p, o.x + 14.0, y, mark, color);
                             winui::text_in_window(ui, &p, o.x + 34.0, y, &c.text, LIGHT_TEXT());
+                            if let Some(path) = &c.detail {
+                                y += DETAIL_H;
+                                // A path reads left to right in a right-to-left language too.
+                                winui::fit_middle(
+                                    ui,
+                                    &p,
+                                    o.x + 34.0,
+                                    y,
+                                    &crate::i18n::ltr(path),
+                                    LIGHT_TEXT(),
+                                    o.x + 440.0 - 14.0,
+                                    ("test-detail", k),
+                                );
+                            }
+                            if let Some(how) = &c.how {
+                                let lines = winui::paragraph(
+                                    &p,
+                                    o.x + 34.0,
+                                    y + DETAIL_H,
+                                    how,
+                                    LIGHT_TEXT(),
+                                    o.x + 440.0 - 14.0,
+                                    14.0,
+                                );
+                                let more = DETAIL_H + 14.0 * lines.saturating_sub(1) as f32;
+                                y += more;
+                                how_h += more;
+                            }
+                            y += 22.0;
                         }
+                        crate::dialogs::grow_px(ui.ctx(), "opt-test-how", how_h);
                         let first = checks.iter().find(|c| !c.ok);
                         let y = h - 46.0;
                         // As wide as their labels in this language (#192), short of Close.
@@ -3807,8 +4001,11 @@ impl OptionsDialog {
                             {
                                 crate::help::open_page(&mdm_ipc::extension::help_doc(why));
                             }
+                            // Not from a portable copy, nor one in a temporary folder: neither
+                            // registers (#818).
                             if c.why == Some("not-installed")
                                 && mdm_ipc::portable_dir().is_none()
+                                && !crate::extension::temporary_copy()
                                 && winui::button_light(
                                     ui,
                                     r(o, set_up_at.0, y, set_up_at.1, 25.0),
@@ -3841,11 +4038,8 @@ impl OptionsDialog {
                 if set_up {
                     crate::extension::set_up(ctx);
                 }
-                if crate::extension::set_up_finished(&mut self.set_up_seen) {
-                    checks = crate::extension::checks(&self.s);
-                }
                 if matches!(out, Outcome::Open) {
-                    self.sub = Some(Sub::Test(checks));
+                    self.sub = Some(Sub::Test(tester));
                 }
             }
         }

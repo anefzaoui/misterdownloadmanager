@@ -189,6 +189,10 @@
     "message": "Use advanced browser integration is off in Options → General.",
     "description": "why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it"
   },
+  "declined_torrents": {
+    "message": "It's a torrent, and Open magnet links and .torrent files with Mister Download Manager is off in Torrent settings.",
+    "description": "why a download stayed with the browser: it is a .torrent file and the app's Torrent settings don't open torrents with Mister Download Manager, so the browser keeps it for the user's own torrent program; keep the setting's name as the app shows it"
+  },
   "declined_site_access": {
     "message": "The extension isn't allowed to read this site (the browser's site access).",
     "description": "why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on"
@@ -425,36 +429,20 @@
     "message": "original",
     "description": "in the list under the download button over a video, after a sound-only line's bitrate: the sound as the site sends it, not converted (e.g. '128 kbps · original'); lower case; one word"
   },
-  "video_confirm": {
-    "message": "Confirm download",
-    "description": "title of the confirmation after choosing a video or audio quality in the browser"
-  },
-  "video_confirm_now": {
-    "message": "Download",
-    "description": "button in the browser video confirmation: start the selected download now"
-  },
-  "video_confirm_later": {
-    "message": "Download Later",
-    "description": "button in the browser video confirmation: queue the selected download without starting it"
-  },
-  "video_confirm_cancel": {
-    "message": "Cancel",
-    "description": "button in the browser video confirmation: close it without adding a download"
-  },
-  "video_save_to": {
-    "message": "Save to",
-    "description": "label above the destination folder in the browser video confirmation"
-  },
-  "video_size_unknown": {
-    "message": "Size unknown",
-    "description": "in the browser video confirmation when the site gave no size or estimate"
+  "video_compatible": {
+    "message": "Most compatible",
+    "description": "in the list under the download button over a video, after a quality's height (1080p): the H.264 video with AAC sound in an MP4, the file that plays in every video editor, TV and phone; short, about 20 characters at most"
   },
   "video_choice_expired": {
     "message": "This choice expired. Choose a quality again.",
     "description": "browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format"
   },
-  "video_changed": {
-    "message": "The video changed. Choose a quality again.",
-    "description": "browser video changed while its download was being confirmed; no download was added"
+  "popup_video_hide_fullscreen": {
+    "message": "Hide the download button in full screen",
+    "description": "Option in the toolbar button's popup: while a web page is in full screen, the Download video button over its videos stays hidden"
+  },
+  "popup_video_hide_fullscreen_title": {
+    "message": "While the page is in full screen, its videos show no Download video button",
+    "description": "Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos"
   }
 }

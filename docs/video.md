@@ -6,18 +6,22 @@ MDM downloads videos from their web pages: YouTube, Vimeo, Dailymotion, Twitch, 
 
 ## Start a video download
 
-With the browser extension, open the menu on **Download video** to choose a video quality or
-an audio format. MDM shows a confirmation in the page with your selection, its size (or
-**Size unknown**) and its category folder. **Download** starts it, **Download Later** adds it
-to the main queue without starting, and **Cancel** adds nothing. A repeated confirmation adds
-only one download. **All qualities and subtitles...** opens MDM's full video window instead.
-Update both MDM and its browser extension to use the browser confirmation; older components
-use MDM's own window.
+With the browser extension, open the menu on **Download video** and choose a video quality or
+an audio format.
+
+When **Options → Downloads → Show start download dialog** is on, MDM opens its video window
+with that choice already selected. Check **Save to** and **File name**, then click **Download Now**
+to start, or **Later** to queue it without starting. **Cancel** closes the window without adding
+a download.
+
+With the setting off, MDM adds the choice directly, starting it or leaving it queued according
+to your download settings. **All qualities and subtitles...** opens the full video window so
+you can choose a quality and subtitles there.
 
 - Give the video's page address to **Add URL** (**Ctrl+N**). MDM recognises video pages and opens the video window, already looking the page up.
 - Or choose **Tasks → Download video from a page...**, paste the address into **Page address** and click **Look up**.
 
-Any other page address that turns out to be a web page, not a file, is offered to the video window too.
+Any other page address that turns out to be a web page, not a file, is offered to the video window too. On a site yt-dlp has no reader of its own for, the video is the one the page says it is about, when it names one (in what it tells search engines and link previews: its JSON-LD, `og:video` or `twitter:player`), rather than the first player written in its HTML, and the file is named as the page names it.
 
 <!-- steps -->
 
@@ -36,6 +40,7 @@ resumes, and uses your proxy settings:
 
 - **yt-dlp** (about 23 MB) looks the page up and finds where the video and its sound come from; MDM downloads them ([How a video comes down](#how-a-video-comes-down)). The first time, click **Install yt-dlp**. MDM checks the download against the signature yt-dlp's developers publish before it uses it.
 - **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
+- **Each processor gets its own build:** yt-dlp's for x64, ARM64 and 32-bit Windows and for Linux on ARM, and ffmpeg's for x64 and ARM64 Windows. No ffmpeg is built for 32-bit Windows that MDM can check, so there MDM offers none: choose your own in **Helpers...** (below), or download the qualities that come with their sound.
 
 Both are kept in a `tools` folder in MDM's data folder.
 
@@ -67,13 +72,14 @@ A distribution's yt-dlp can also be too old for YouTube: if the list stays short
 
 1. Wait for the list. It shows each quality with its size, best first, then the sound alone:
    - A video's line says its resolution, its codec, its frame rate and whether it is HDR: `2160p · AV1 · 60 fps · HDR`. A resolution that comes in several (AV1, VP9 and H.264, HDR and SDR) has a line for each: AV1 makes the smallest file, H.264 plays on the most devices, and an HDR video looks washed out on a screen without HDR. `SDR` is said only beside an HDR line of the same resolution.
+   - **Most compatible (H.264 + AAC)**, second in the list: the best H.264 video the site has (YouTube's usually go up to 1080p) with AAC sound (in stereo when the site has it beside surround), in an MP4 that Premiere Pro and other editors, older TVs and most phones open as it is. YouTube's best qualities are AV1 or VP9 with Opus sound, which some of them can't read. The line says its resolution: `Most compatible (H.264 + AAC) · 1080p`. MDM picks those streams, it doesn't convert anything: when the site has no H.264 video with AAC sound the line isn't there, and when the best line already is that, it isn't listed twice.
    - The size is that of exactly what downloads, the video and its sound. A size with `~` before it (`~532 MB`) is only an estimate: the site didn't say the size, so it comes from the stream's bitrate and length.
    - **Audio only, original**: the site's own file, not converted, once for each type the site has it in (WebM with Opus inside, M4A), the best first. The best sound there is, in the smallest file.
    - **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3.
    - **Audio only OPUS**: an `.opus` file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost.
    - **Audio only FLAC**: a lossless `.flac` file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.
 2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).
-3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title.
+3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title. A long title is shortened, at the end of a word, so that the files saved beside the video while it downloads fit the system's limit on a path's length; a name you type is kept as you typed it.
 4. Choose **Subtitles** if you want them (see below). **Embed chapters** is ticked: see [Chapters](#chapters).
 5. Click **Download Now**, or **Later** to add it to the list without starting.
 
@@ -135,7 +141,7 @@ Paste the address of a playlist (`youtube.com/playlist?list=…`) or a channel's
 - A playlist is listed whole, as its videos come in: the line above the list says how far it is ("Listing the videos: 1,200 of 6,000"). **Stop listing** keeps the ones listed so far, and **List the rest** carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and **List the rest** tries again from there.
 - A channel is listed 50 videos at a time, newest first. **Load more** lists the next 50.
 - Every video starts ticked. Untick the ones you don't want, or use **Select all** and **Select none**. Private and deleted videos are greyed out and can't be ticked.
-- **Quality** applies to every video: **Best quality**, **Up to** a height (each video at that height, or the nearest below it), **Audio only, original**, **Audio only MP3**, **Audio only OPUS** or **Audio only FLAC**. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.
+- **Quality** applies to every video: **Best quality**, **Most compatible (H.264 + AAC)** (each video's best H.264 picture with AAC sound; a video that has none isn't downloaded), **Up to** a height (each video at that height, or the nearest below it), **Audio only, original**, **Audio only MP3**, **Audio only OPUS** or **Audio only FLAC**. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.
 - The videos go into a folder named after the list, inside **Save to**, each under its own title.
 
 **Download Now** adds each video as its own download and starts the main queue, which runs as many at once as you set in the [Scheduler](queues-and-scheduler.md) (**Download N files at the same time**). **Later** adds them without starting. Adding more than 500 at once asks first.
@@ -176,6 +182,12 @@ cookies, the small files that keep you signed in.
   reads that profile's cookies only. yt-dlp's developers advise this too: a site may limit an
   account it sees used by a program.
 
+Signed in, YouTube sometimes refuses what it gives a visitor: its servers answer the video with
+*HTTP Error 403: Forbidden*, or the look-up with its bot check, where a private window plays it.
+When YouTube refuses a video anyone may watch that way, MDM looks it up once more without your
+cookies, as a private window would, and the download's log says so. A private, members' or
+age-restricted video keeps them.
+
 ![Options, Sites Logins: Cookies for video sites, From browser: Firefox](images/help/options-logins.webp)
 *Cookies for video sites: off, or a browser and its profile.*
 
@@ -212,6 +224,7 @@ Some sites, YouTube among them, send each viewer to a nearby video server, somet
 - **No video this can download on that page** means yt-dlp found nothing on the page. Check that the address is the video's own page.
 - **This video needs you to be signed in**, or the site wants you signed in: see [Sites that want you signed in](#sites-that-want-you-signed-in).
 - Sites change often, and a newer yt-dlp usually fixes it. MDM doesn't update yt-dlp on its own yet. To get the newest one: quit MDM (**Tasks → Exit**), delete the `tools\yt-dlp` folder in MDM's data folder (`%APPDATA%\misterdownloadmanager`, or the `data` folder of a portable copy), start MDM, open the video window and click **Install yt-dlp**.
+- **The path is too long for Windows** (or **the file name is too long**) means the folder and the file name together, with the files saved beside the video while it downloads, are longer than the system allows: 259 characters on Windows unless long paths are turned on there, 255 a name (255 bytes on Linux and macOS). MDM shortens a title by itself, so this comes from a name you typed or a very deep **Save to** folder: add the video again with a shorter name, or a folder nearer the top of the drive.
 - Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's [Media on this page](browser-integration.md#media-on-this-page) shows such a stream as **Protected** and doesn't send it.
 - A page whose video the window can't find: play the video in your browser, then use the extension's [Media on this page](browser-integration.md#media-on-this-page) to send the stream the page loaded.
 - Downloading may be against some sites' terms. Checking that is up to you.

@@ -340,6 +340,12 @@ The people who make MDM possible, from GitHub's public record (`tools/contributo
 - **On `/contributors.html`:** one labelled sheet per group (pull requests, issues, comments), its people in a ruled roster of 1px hairlines: a 48px photo ringed 1.5px in ink, the login at 750 weight, the counts in ink-2 with their numbers in tabular ink.
 - **At the end of each release on the News page:** "Thanks to", then 40px photos ringed in ink, row under row, and a fine line naming the release before.
 
+### Proof of Delivery (what others say)
+The home page's "Signed for" section (`build.py signed_sheet`), between the tracking race and the delivery options: one labelled sheet, "Proof of delivery" in its band with the date the figures were checked. First the figures as fields (four across from 981px, two, then one under 720px): the source as the field name, the figure at 19px/750 as an underlined link to where it was read, its fine print under it. Then the quotes in a ruled grid like the packing list (1px hairlines, a 1.5px ink rule above): each quote in its own language at 19px/600 with that language's own quotation marks (`quotes: auto`), our translation under it in ink-2 behind a 1px hairline, headed "Translated from …" as a field name and hidden where the page is in the quote's language; then a 1.5px ink rule and who said it, where (a link), and when in tabular figures. Real figures and exact quotes only (`website/content/quotes.tsv`); no stars, no portraits, no logos.
+
+### Press and Mentions
+`/press.html` (`build.py build_press`): the figures' sheet, then one labelled sheet each for articles and videos, grouped by language in the packing list's grammar (the language as the group's field name, each piece a ruled cell: its title in its own language and direction, the outlet and date under it, the arrow). The fair criticism sits on a reading sheet, its title as a citation. "Available on" lists the official places first, then the community's packages under their own group with a fine-print note that volunteers make them.
+
 ## Do's and Don'ts
 
 ### Do:
