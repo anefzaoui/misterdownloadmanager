@@ -1684,6 +1684,10 @@ These ship in the next version.
   entry is on and starts this copy; an entry naming a program that's gone (moved, or replaced by an
   upgrade while MDM ran) is written again as MDM starts
   ([#1484](https://github.com/anefzaoui/misterdownloadmanager/issues/1484))
+- ✅ No more **The window stopped responding** report while MDM's window is minimized to the
+  taskbar and its thread waits on the computer: as in the notification area, logged, and reported
+  only if it lasts past a minute, if MDM's thread is busy, or if MDM is asked for something
+  meanwhile and doesn't answer ([#1481](https://github.com/anefzaoui/misterdownloadmanager/issues/1481))
 
 ## Being worked on
 
