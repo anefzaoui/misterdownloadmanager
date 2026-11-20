@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A video download, look-up, playlist or gallery finishes when yt-dlp (or gallery-dl) does:
+  a program it started that still held its output open kept the download running at its last
+  progress ([#1521](https://github.com/anefzaoui/misterdownloadmanager/issues/1521))
 - ✅ macOS crash and freeze reports: the release's symbols are found (by the program's name, or
   by its id when the report has no name for it) and carry unwinding tables and inlined calls, so
   no frame is skipped; a freeze says how much the window's thread ran and how many pages MDM read

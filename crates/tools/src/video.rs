@@ -11,7 +11,6 @@
 //! them, saves the subtitles and the metadata as after its own download. What the engine can't
 //! download (a live stream, RTMP…) yt-dlp downloads itself, as before.
 
-use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Condvar, Mutex};
 use std::time::{Duration, Instant};
@@ -1750,15 +1749,11 @@ fn run(
         }
         // Every line to the end, read as bytes (#79): a line that isn't UTF-8 (a title in a
         // legacy code page) used to end the reading there, while yt-dlp went on; it is read
-        // leniently now, and the saved file is also found by its name (`attempt`).
-        let mut reader = BufReader::new(stdout);
-        let mut buf = Vec::new();
-        loop {
-            buf.clear();
-            match reader.read_until(b'\n', &mut buf) {
-                Ok(0) | Err(_) => break,
-                Ok(_) => {}
-            }
+        // leniently now, and the saved file is also found by its name (`attempt`). The end is
+        // yt-dlp's (#1521): what it started may hold its output open long after it ended, and
+        // the download waited for that, shown running with its last progress.
+        let mut output = proc::Output::read(stdout, MAX_LINE);
+        while let Some(buf) = output.next_line(|| proc::ended(child)) {
             let text = String::from_utf8_lossy(&buf);
             let line = text.trim_end_matches(['\r', '\n']);
             if let Some(rest) = line.strip_prefix("MDMF ") {
@@ -1784,6 +1779,14 @@ fn run(
                 *merged.lock().unwrap() = Some(merge_file(Path::new(rest.trim())));
                 progress.lock().unwrap().merging = Some(None);
             }
+        }
+        if output.held_open() {
+            proc::note_held_open("yt-dlp");
+            note(
+                progress,
+                "yt-dlp ended, but a program it started kept its output open: not waited for"
+                    .into(),
+            );
         }
         read_all.store(true, std::sync::atomic::Ordering::Relaxed);
     });
@@ -2573,6 +2576,9 @@ const MERGE: &str = "post_process:MDMM %(filepath)s";
 /// The quality yt-dlp chose, before it downloads: `MDMQ <format id> <resolution>` (the log names
 /// it when it isn't the one asked for, #94).
 const QUALITY: &str = "video:MDMQ %(format_id)s %(resolution)s";
+
+/// The longest line of yt-dlp's read as one ([`proc::Output`]); its lines are a path at most.
+const MAX_LINE: usize = 1024 * 1024;
 
 impl VideoJob {
     /// Download `url` in format `selector` to `dir/<stem>.<ext>`; when yt-dlp downloads it by
