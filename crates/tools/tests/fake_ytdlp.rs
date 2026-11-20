@@ -39,6 +39,7 @@ fn main() -> ExitCode {
     }
     if std::env::var_os("MDM_SUBS_RETRY_SECS").is_some() {
         private_cookie_checks(&me);
+        proxy_checks(&me);
         checks(&me);
         job_checks(&me);
         merge_checks(&me);
@@ -908,6 +909,64 @@ fn private_cookie_checks(me: &Path) {
     assert_eq!(log.lines().count(), 1, "no cookie retry: {log}");
     assert!(!log.contains("\"--cookies-from-browser\""), "{log}");
     set_browser_cookies(None);
+}
+
+/// #1448: Options' automatic configuration script reaches every run of yt-dlp for a video, the
+/// look-up and the download from its looked-up page alike: each is asked about the page. The
+/// download's run went straight to the site, the script asked about no address.
+fn proxy_checks(me: &Path) {
+    let tools = tempfile::tempdir().unwrap();
+    let out = tempfile::tempdir().unwrap();
+    let exe = fake_in(me, tools.path());
+    std::fs::write(tools.path().join("record-cookie-args"), "").unwrap();
+    mdm_tools::proc::set_proxy(mdm_engine::Proxy::Pac {
+        script: std::sync::Arc::from(
+            "function FindProxyForURL(u,h){return h=='video.example'?'PROXY 127.0.0.1:3128':'DIRECT';}",
+        ),
+    });
+    let job = VideoJob::start(
+        &exe,
+        "https://video.example/talk",
+        "b",
+        out.path(),
+        "Talk",
+        None,
+        None,
+        None,
+        &Default::default(),
+        &Subs::default(),
+        None,
+    )
+    .unwrap();
+    let until = Instant::now() + Duration::from_secs(60);
+    let progress = loop {
+        let progress = job.progress();
+        if progress.state != State::Running {
+            break progress;
+        }
+        assert!(Instant::now() < until, "still running: {progress:?}");
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    mdm_tools::proc::set_proxy(mdm_engine::Proxy::None);
+    assert!(matches!(progress.state, State::Done(_)), "{progress:?}");
+    let runs: Vec<Vec<String>> = std::fs::read_to_string(tools.path().join("cookie-args.jsonl"))
+        .unwrap()
+        .lines()
+        .map(|s| serde_json::from_str(s).unwrap())
+        .collect();
+    assert!(
+        runs.iter()
+            .any(|args| args.iter().any(|a| a == "--load-info-json")),
+        "download ran: {runs:?}"
+    );
+    for args in &runs {
+        let at = args.iter().position(|a| a == "--proxy");
+        assert_eq!(
+            at.and_then(|i| args.get(i + 1)).map(String::as_str),
+            Some("http://127.0.0.1:3128"),
+            "{args:?}"
+        );
+    }
 }
 
 /// Download with `subs` while the fake behaves as `mode`; the end state, its log and folder.

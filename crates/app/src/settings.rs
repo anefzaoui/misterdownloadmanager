@@ -813,8 +813,13 @@ impl Settings {
 
     pub fn proxy(&self) -> mdm_engine::Proxy {
         use mdm_engine::Proxy;
+        // The system's settings, with its automatic configuration script when one is on and
+        // has been fetched (#1448: a proxy program's PAC mode, `pacfetch::watch_system`).
+        let system = || {
+            crate::pacfetch::system_script().map_or(Proxy::System, |script| Proxy::Pac { script })
+        };
         match self.proxy_mode {
-            1 => Proxy::System,
+            1 => system(),
             2 => crate::pacfetch::script(&self.proxy_script)
                 .map_or(Proxy::System, |script| Proxy::Pac { script }),
             3 if !self.proxy_host.trim().is_empty() => {
@@ -838,8 +843,19 @@ impl Settings {
             }
             // "Use proxy/socks from a browser's request": browsers use Windows' proxy settings,
             // so with no proxy of our own so do we (none set there: direct, as before).
-            _ if self.proxy_from_browser => Proxy::System,
+            _ if self.proxy_from_browser => system(),
             _ => Proxy::None,
+        }
+    }
+
+    /// Whether [`Self::proxy`] is the system's settings ("Use system settings", or the
+    /// browser's proxy with no proxy of MDM's own): the system's script is then watched for.
+    pub fn follows_system(&self) -> bool {
+        match self.proxy_mode {
+            1 => true,
+            2 => false,
+            3 if !self.proxy_host.trim().is_empty() => false,
+            _ => self.proxy_from_browser,
         }
     }
 
@@ -1499,8 +1515,15 @@ mod tests {
         // IDM's default: no proxy, but "use the browser's proxy" ticked — the browser's is
         // Windows' (none set there: direct).
         assert_eq!(s.proxy(), mdm_engine::Proxy::System);
+        // #1448: the system's settings are followed, its automatic configuration script too.
+        assert!(s.follows_system());
         s.proxy_from_browser = false;
         assert_eq!(s.proxy(), mdm_engine::Proxy::None);
+        assert!(!s.follows_system());
+        s.proxy_mode = 1;
+        assert!(s.follows_system());
+        s.proxy_mode = 2;
+        assert!(!s.follows_system());
         s.proxy_mode = 3;
         s.proxy_host = "10.0.0.1".into();
         s.proxy_port = "3128".into();
@@ -1510,6 +1533,7 @@ mod tests {
             mdm_engine::Proxy::Manual { ref url, https: true, http: false, .. }
                 if url == "http://10.0.0.1:3128"
         ));
+        assert!(!s.follows_system());
     }
 }
 

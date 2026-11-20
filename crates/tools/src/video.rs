@@ -1697,8 +1697,10 @@ struct Ran {
 /// Run yt-dlp with `ours` on the page looked up into `file`, following its progress with
 /// `meter` (a live stream's, by its recording's size). None: stopped before or while it ran, or
 /// `recorder` was saving before it started.
+#[allow(clippy::too_many_arguments)]
 fn run(
     exe: &Path,
+    url: &str,
     ours: &[String],
     file: &Path,
     progress: &Mutex<Progress>,
@@ -1727,7 +1729,7 @@ fn run(
             return Ok(None);
         }
         let spawned =
-            proc::ytdlp_info(exe, &[], ours, file).and_then(|cmd| proc::spawn(cmd, "yt-dlp"));
+            proc::ytdlp_info(exe, &[], ours, file, url).and_then(|cmd| proc::spawn(cmd, "yt-dlp"));
         match spawned {
             Ok(mut s) => {
                 let out = s.child.stdout.take().expect("piped");
@@ -2182,7 +2184,7 @@ fn attempt(
     {
         return Attempt::Blocked(e);
     }
-    let ran = match run(exe, ours, &file, progress, child, meter, recorder) {
+    let ran = match run(exe, url, ours, &file, progress, child, meter, recorder) {
         Ok(Some(r)) => r,
         Ok(None) if recorder.saving() => return Attempt::Save(None),
         Ok(None) => return Attempt::Stopped,
@@ -2256,6 +2258,7 @@ fn attempt(
         let codes: Vec<String> = refused.iter().map(|(c, _)| c.clone()).collect();
         match run(
             exe,
+            url,
             &cookies.args(&r.args(&codes)),
             &file,
             progress,
@@ -2324,10 +2327,15 @@ fn moved(
 
 /// yt-dlp's choice (`-O "%()j"` after its format selection) on the page looked up into `file`,
 /// with `args` (the choice's `-f`, `-o`, merge and conversion, the browser's context).
-fn choose(exe: &Path, args: &[String], file: &Path) -> Result<serde_json::Value, String> {
+fn choose(
+    exe: &Path,
+    url: &str,
+    args: &[String],
+    file: &Path,
+) -> Result<serde_json::Value, String> {
     let mut ours = args.to_vec();
     ours.extend(["-O".into(), CHOICE.into()]);
-    let cmd = proc::ytdlp_info(exe, &[], &ours, file).map_err(|e| e.to_string())?;
+    let cmd = proc::ytdlp_info(exe, &[], &ours, file, url).map_err(|e| e.to_string())?;
     let out = proc::output(cmd, "yt-dlp", Duration::from_secs(90)).map_err(|e| e.to_string())?;
     String::from_utf8_lossy(&out)
         .lines()
@@ -2408,7 +2416,7 @@ impl ByEngine {
             None => self.choose.clone(),
         };
         let choose_args = cookies.args(&args);
-        let chosen = match choose(exe, &choose_args, file) {
+        let chosen = match choose(exe, url, &choose_args, file) {
             Ok(c) => c,
             Err(e) => return Engined::Failed(e),
         };
@@ -2477,7 +2485,7 @@ fn relink(
     std::fs::write(&file, info.to_string())
         .map_err(|e| format!("Cannot write the video information: {e}"))?;
     let _cleanup = Remove(file.clone());
-    let chosen = choose(exe, &with_selector(choose_args, id), &file)?;
+    let chosen = choose(exe, url, &with_selector(choose_args, id), &file)?;
     crate::streams::format_of(&chosen, id)
         .cloned()
         .ok_or_else(|| format!("the page no longer offers format {id}"))

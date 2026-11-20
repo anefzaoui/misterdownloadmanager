@@ -315,9 +315,11 @@ impl OptionsDialog {
         downloads: &std::path::Path,
         learned: Vec<(String, u32)>,
     ) -> Self {
-        let s = settings.clone();
+        let mut s = settings.clone();
+        let from = s.clone();
+        tick_manual_protocols(&mut s);
         OptionsDialog {
-            from: s.clone(),
+            from,
             browser_rows: Default::default(),
             cat_dir: display_dir(&s.category_dir(Category::General, downloads)),
             conns: s.max_connections.clamp(1, s.connection_limit()).to_string(),
@@ -1777,6 +1779,7 @@ impl OptionsDialog {
                 crate::i18n::mark("Manual proxy/socks configuration"),
             ),
         ];
+        let was = s.proxy_mode;
         let mut group = Vec::new();
         for (i, (x, y, label)) in modes.iter().enumerate() {
             let resp = winui::radio_light(
@@ -1793,6 +1796,9 @@ impl OptionsDialog {
         }
         if let Some(i) = winui::radio_keys(ui, &group) {
             s.proxy_mode = i as u8;
+        }
+        if s.proxy_mode != was {
+            tick_manual_protocols(s);
         }
         winui::etched_h(&p, o.x + 22.0, o.y + 159.0, 380.0);
         winui::etched_h(&p, o.x + 21.0, o.y + 187.0, 380.0);
@@ -4063,6 +4069,16 @@ impl OptionsDialog {
 
 // ---- pieces -----------------------------------------------------------------------------
 
+/// Proxy / Socks → Manual proxy/socks configuration with no protocol ticked uses the proxy for
+/// nothing, and the boxes start unticked (#1448: yt-dlp went straight to YouTube): chosen, or
+/// found so when Options opens, it is ticked for http and https, as Get System ticks it.
+fn tick_manual_protocols(s: &mut Settings) {
+    if s.proxy_mode == 3 && !s.proxy_http && !s.proxy_https {
+        s.proxy_http = true;
+        s.proxy_https = true;
+    }
+}
+
 /// Proxy / Socks → Get System: Windows' own proxy (host, port), if one is set.
 fn system_proxy() -> Option<(String, String)> {
     #[cfg(windows)]
@@ -5292,6 +5308,34 @@ fn snooze_line(ui: &mut Ui, p: &egui::Painter, o: Pos2, until: crate::finish::Un
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1448: Manual proxy/socks configuration with no protocol ticked gets http and https
+    /// ticked, when Options opens on it as when it is chosen; a choice of one is kept, and the
+    /// change is the dialog's (OK saves it, Cancel doesn't).
+    #[test]
+    fn a_manual_proxy_for_nothing_is_ticked_for_http_and_https() {
+        let mut s = Settings {
+            proxy_mode: 3,
+            proxy_host: "127.0.0.1".into(),
+            proxy_port: "7890".into(),
+            ..Settings::default()
+        };
+        let dialog = OptionsDialog::new(&s, std::path::Path::new("."), Vec::new());
+        assert!(dialog.s.proxy_http && dialog.s.proxy_https);
+        assert!(!dialog.from.proxy_http && !dialog.from.proxy_https);
+        s.proxy_http = true;
+        let dialog = OptionsDialog::new(&s, std::path::Path::new("."), Vec::new());
+        assert!(
+            dialog.s.proxy_http && !dialog.s.proxy_https,
+            "http only, as chosen"
+        );
+        let mut other = Settings::default();
+        tick_manual_protocols(&mut other);
+        assert!(
+            !other.proxy_http && !other.proxy_https,
+            "not Manual: as it is"
+        );
+    }
 
     /// #424: the list written and read back through a real file: nothing lost, nothing doubled.
     #[test]

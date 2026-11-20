@@ -5776,6 +5776,46 @@ pub fn system_proxy() -> Option<(String, String)> {
     Some((host.to_owned(), port.to_owned()))
 }
 
+/// Windows' "Use setup script" (Settings → Network → Proxy; Internet Options' "Use automatic
+/// configuration script"): the script's address, when it is on. Proxy programs (Clash, v2rayN)
+/// set it in their PAC mode (#1448). As WinHTTP reads this user's settings.
+pub fn system_proxy_script() -> Option<String> {
+    use windows_sys::Win32::Foundation::GlobalFree;
+    use windows_sys::Win32::Networking::WinHttp::{
+        WINHTTP_CURRENT_USER_IE_PROXY_CONFIG, WinHttpGetIEProxyConfigForCurrentUser,
+    };
+    let mut config = WINHTTP_CURRENT_USER_IE_PROXY_CONFIG::default();
+    // SAFETY: the struct is ours to fill; on success its strings are WinHTTP's, each freed
+    // below with GlobalFree as its documentation says, once read.
+    if unsafe { WinHttpGetIEProxyConfigForCurrentUser(&mut config) } == 0 {
+        return None;
+    }
+    let read = |p: windows_sys::core::PWSTR| -> Option<String> {
+        if p.is_null() {
+            return None;
+        }
+        // SAFETY: a NUL-terminated string WinHTTP allocated, read up to its NUL.
+        let len = (0..).take_while(|&i| unsafe { *p.add(i) } != 0).count();
+        // SAFETY: `len` units were just read at `p`.
+        let units = unsafe { std::slice::from_raw_parts(p, len) };
+        Some(String::from_utf16_lossy(units))
+    };
+    let script = read(config.lpszAutoConfigUrl);
+    for p in [
+        config.lpszAutoConfigUrl,
+        config.lpszProxy,
+        config.lpszProxyBypass,
+    ] {
+        if !p.is_null() {
+            // SAFETY: WinHTTP's own allocation, freed once.
+            unsafe { GlobalFree(p.cast()) };
+        }
+    }
+    script
+        .map(|s| s.trim().to_owned())
+        .filter(|s| !s.is_empty())
+}
+
 /// Play a .wav file without waiting (Options → Sounds).
 pub fn play_sound(file: &str) {
     use windows_sys::Win32::Media::Audio::{PlaySoundW, SND_ASYNC, SND_FILENAME, SND_NODEFAULT};

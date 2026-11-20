@@ -12846,6 +12846,9 @@ impl App {
         // runs no `ui`, and the queues, the Scheduler's starts and stops, the download limits,
         // the kill switch, saving the list, the clipboard monitor, the update check, the tray and
         // the taskbar's progress all stood still until the window was restored.
+        if self.settings.follows_system() {
+            crate::pacfetch::watch_system(&self.rt);
+        }
         crate::settings::share_proxy(self.settings.proxy());
         crate::settings::share_dns(self.settings.dns());
         crate::settings::share_video_settings(&self.settings);
