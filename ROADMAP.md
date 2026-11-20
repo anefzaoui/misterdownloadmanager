@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS crash and freeze reports: the release's symbols are found (by the program's name, or
+  by its id when the report has no name for it) and carry unwinding tables and inlined calls, so
+  no frame is skipped; a freeze says how much the window's thread ran and how many pages MDM read
+  from disk meanwhile ([#1515](https://github.com/anefzaoui/misterdownloadmanager/issues/1515))
 - ✅ Alt+click on a link behind a site's bot check (Cloudflare's "Just a moment...") opens it in
   the tab, so the browser passes the check and keeps the file: Chromium browsers and Safari saved
   the check's page instead ([#1494](https://github.com/anefzaoui/misterdownloadmanager/issues/1494))
