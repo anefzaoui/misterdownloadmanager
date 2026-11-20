@@ -1547,6 +1547,8 @@ impl OptionsDialog {
             &[(winui::widest_label(&p, &["New", "Delete", "Edit"]), 73.0)],
             92.0,
         )[0];
+        // Named by its caption, as the other lists are (#1407).
+        self.exc_rows.name = crate::i18n::t("Exceptions:");
         let (dbl, del_key) = report(
             ui,
             o,
@@ -1635,8 +1637,18 @@ impl OptionsDialog {
                 winui::label(p, x, baseline, s, on);
             },
         );
-        winui::number_field(ui, boxes[0], &mut self.mb, 1, 999_999, on, LIGHT_PAGE());
-        winui::number_field(ui, boxes[1], &mut self.hours, 1, 999, on, LIGHT_PAGE());
+        // The sentence's words are painted, not exposed: each box is named as its part of it
+        // reads, or a screen reader says only "edit, 200" (#1407).
+        let mb_box = winui::number_field(ui, boxes[0], &mut self.mb, 1, 999_999, on, LIGHT_PAGE());
+        // i18n: a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
+        winui::name(
+            &mb_box,
+            crate::i18n::t("Download no more than this many MBytes"),
+        );
+        let hours_box =
+            winui::number_field(ui, boxes[1], &mut self.hours, 1, 999, on, LIGHT_PAGE());
+        // i18n: a11y name of the second Download limits box, where "every {n} hours" puts its {n}
+        winui::name(&hours_box, crate::i18n::t("every this many hours"));
         winui::checkbox_light(
             ui,
             o + vec2(37.0, 376.0),

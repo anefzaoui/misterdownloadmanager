@@ -1676,6 +1676,12 @@ These ship in the next version.
   and the remembered folder field is "Category folder", not the checkbox's caption
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers name more of **Options → Connection**: the exceptions list is
+  "Exceptions" instead of unnamed, and each of the two **Download limits** boxes says what
+  it counts ("Download no more than this many MBytes", "every this many hours") instead of
+  only its number; the same two boxes on the **Scheduler**'s limits page are named too
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
