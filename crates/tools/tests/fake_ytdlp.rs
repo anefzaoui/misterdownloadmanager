@@ -2521,7 +2521,7 @@ fn recording_checks(me: &Path) {
         let (_tools, out, exe, ffmpeg) = folders("live", "");
         std::fs::write(out.path().join("ffprobe-mode.txt"), "short").unwrap();
         let job = start(&exe, out.path(), Some(&ffmpeg), true);
-        until(&job, "recording", &recording);
+        until(&job, "enough recorded", &enough);
         let part = out.path().join("Talk.mp4.part");
         let held = std::fs::OpenOptions::new()
             .read(true)
