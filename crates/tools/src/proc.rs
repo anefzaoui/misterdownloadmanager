@@ -1,5 +1,6 @@
-//! Supervised helper processes (yt-dlp, gallery-dl): every child is in one Windows Job Object
-//! that kills it when we exit (even on a crash), runs without a console window, gets its
+//! Supervised helper processes (yt-dlp, gallery-dl): every child is in a Windows Job Object of
+//! its own that kills it when we exit (even on a crash), or on Linux and macOS in a process group
+//! of its own that MDM's end kills ([`end_all`]), runs without a console window, gets its
 //! arguments in fixed layers (the user's extras, ours, then the fixed ones and `--` before the
 //! URL) with CR / LF / NUL refused, keeps only a short stderr tail for messages, and goes through
 //! the chosen network adapter (#35, `crate::relay`).
@@ -138,7 +139,7 @@ pub fn browser_cookies() -> Option<BrowserCookies> {
 /// browser sent them a moment ago (`FromBrowser`, written to the file `--cookies` names). Those
 /// win: they are that session's, and reading the whole cookie store of a browser may give
 /// another profile's, an older session's, or nothing at all (Chrome on Windows). The browser's
-/// store is read only when nothing came: a pasted address, a link typed into Add URL, a
+/// store is read only for non-private requests when nothing came: a pasted address, Add URL, a
 /// playlist listed later. yt-dlp would merge the two if given both; it never is.
 fn browser_cookie_args(args: &[String], chosen: Option<&BrowserCookies>) -> Vec<String> {
     let settled = args
@@ -611,9 +612,8 @@ pub fn gallery_dl(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
-    let mut cmd = Command::new(&tool.exe);
+    let mut cmd = helper_command(&tool.exe);
     let route = through_adapter(&mut cmd, Helper::GalleryDl, Some(url))?;
-    cmd.env("PYTHONIOENCODING", "utf-8");
     for a in ours {
         cmd.arg(safe(a)?);
     }
@@ -645,6 +645,9 @@ pub fn safe(s: &str) -> Result<&str, ProcError> {
 /// players only.
 #[derive(Clone, Debug, Default)]
 pub struct FromBrowser {
+    /// A private window's request, including a kept row after restart: never read the normal
+    /// browser's cookie store. Cookies explicitly passed with this request remain usable.
+    pub private: bool,
     pub referer: Option<String>,
     pub origin: Option<String>,
     pub user_agent: Option<String>,
@@ -701,7 +704,12 @@ impl FromBrowser {
                 ]);
                 Some(file)
             }
-            _ => None,
+            _ => {
+                if self.private {
+                    args.push(NO_COOKIES.to_owned());
+                }
+                None
+            }
         };
         Ok((args, file))
     }
@@ -824,9 +832,18 @@ fn cookie_file(text: &str) -> std::io::Result<CookieFile> {
 /// Python's.
 const UTF8: [&str; 2] = ["--encoding", "utf-8"];
 
-fn ytdlp_command(exe: &Path) -> Command {
+/// yt-dlp's or gallery-dl's program, built as it will run: output in UTF-8 ([`UTF8`]), and in
+/// the helpers' folder with it as TEMP, TMP and TMPDIR ([`crate::workdir`]), never MDM's own
+/// working folder, which is whatever started MDM gave it: the install folder from the Start
+/// menu or the browser (#834: Chrome starts its host in the host's folder), and
+/// `C:\Windows\System32` when Windows starts it with the session (#1216). On Windows yt-dlp
+/// makes the small file it tries a format with (a YouTube video put online in the last two
+/// days, a stream marked as protected) in its working folder: its `get_output_path('temp')` is
+/// `.` there when MDM gives no `-P temp:`. [`spawn`] gives the same to any other program.
+fn helper_command(exe: &Path) -> Command {
     let mut cmd = Command::new(exe);
     cmd.env("PYTHONIOENCODING", "utf-8");
+    crate::workdir::apply(&mut cmd, crate::workdir::folders());
     cmd
 }
 
@@ -1040,48 +1057,180 @@ fn with_usable_path(cmd: &mut Command) {
     }
 }
 
-/// This computer's JavaScript runtime for yt-dlp ([`js_runtime`]): `Some` with the arguments
-/// that tell yt-dlp of it (none for Deno where yt-dlp finds it itself), in the PATH folders a
-/// helper gets ([`usable_dirs`]: a node.exe behind a junction is named by its real folder) and
+/// The folders of MDM's PATH a helper gets ([`usable_dirs`]: a node.exe behind a junction is
+/// named by its real folder).
+fn path_dirs() -> Vec<PathBuf> {
+    std::env::var_os("PATH")
+        .map(|p| usable_dirs(&p))
+        .unwrap_or_default()
+}
+
+/// The person's home folder (`HOME`, else Windows' `USERPROFILE`).
+fn home_dir() -> Option<PathBuf> {
+    std::env::var_os("HOME")
+        .or_else(|| std::env::var_os("USERPROFILE"))
+        .map(PathBuf::from)
+}
+
+/// `--js-runtimes name:path`.
+fn runtime_args(name: &str, path: &Path) -> Vec<String> {
+    vec![
+        "--js-runtimes".to_owned(),
+        format!("{name}:{}", path.display()),
+    ]
+}
+
+/// This computer's own JavaScript runtime for yt-dlp, MDM's aside (#1448): Deno on the PATH, else
+/// the one [`js_runtime`] finds (Deno where its installer puts it, Node.js, QuickJS, Bun). What
+/// Helpers shows, so that nothing is downloaded that is already here. Looked for afresh.
+pub fn system_js_runtime() -> Option<PathBuf> {
+    let dirs = path_dirs();
+    program_in(&dirs, "deno")
+        .or_else(|| js_runtime(&dirs, &runtime_dirs(), home_dir().as_deref()).map(|(_, path)| path))
+}
+
+/// This computer's JavaScript runtime for yt-dlp: MDM's own Deno first (Helpers, #1448, #1470),
+/// named to yt-dlp; else [`js_runtime`]: `Some` with the arguments that tell yt-dlp of it (none
+/// for Deno where yt-dlp finds it itself), in the PATH folders a helper gets ([`path_dirs`]) and
 /// in MDM's own tools folder (per the EJS guide, a runtime beside `yt-dlp.exe` counts too; only
 /// MDM's, never a folder a chosen program sits in, where a node.exe nobody meant could land and
 /// be run, cached for the session). Kept once found; while there is none it is looked for again
-/// at each run, so one installed meanwhile counts at the next look-up (#852).
+/// at each run, so one installed meanwhile counts at the next look-up (#852). MDM's own Deno is
+/// read at each run, so the one Helpers just installed is used from the next look-up on.
 fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
+    if let Some(own) = crate::tools_dir()
+        .as_deref()
+        .and_then(crate::deno::installed)
+    {
+        return Some(runtime_args("deno", &own.exe));
+    }
     static FOUND: Mutex<Option<Vec<String>>> = Mutex::new(None);
     let mut found = FOUND
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
     if found.is_none() {
-        let mut dirs: Vec<PathBuf> = std::env::var_os("PATH")
-            .map(|p| usable_dirs(&p))
-            .unwrap_or_default();
+        let mut dirs = path_dirs();
         if let Some(tools) = crate::tools_dir()
             && exe.starts_with(&tools)
             && let Some(beside) = exe.parent()
         {
             dirs.push(beside.to_path_buf());
         }
-        let home = std::env::var_os("HOME")
-            .or_else(|| std::env::var_os("USERPROFILE"))
-            .map(PathBuf::from);
         *found = if program_in(&dirs, "deno").is_some() {
             Some(Vec::new())
         } else {
-            js_runtime(&dirs, &runtime_dirs(), home.as_deref()).map(|(name, path)| {
-                vec![
-                    "--js-runtimes".to_owned(),
-                    format!("{name}:{}", path.display()),
-                ]
-            })
+            js_runtime(&dirs, &runtime_dirs(), home_dir().as_deref())
+                .map(|(name, path)| runtime_args(name, &path))
         };
     }
     found.clone()
 }
 
-/// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it.
+/// The first yt-dlp that has `--js-runtimes` (2025.11.12, when YouTube came to need a
+/// JavaScript runtime): an older one stops at an option it doesn't know, on every site.
+const JS_RUNTIMES_SINCE: &str = "2025.11.12";
+
+/// Whether yt-dlp `version` has `--js-runtimes` ([`JS_RUNTIMES_SINCE`]); a version that isn't a
+/// date (a build of the person's own) is taken to have it, as before.
+fn knows_js_runtimes(version: &str) -> bool {
+    let dated = version
+        .split('.')
+        .filter(|p| p.parse::<u64>().is_ok())
+        .count()
+        >= 3;
+    !dated || !crate::newer(JS_RUNTIMES_SINCE, version)
+}
+
+/// Whether the yt-dlp at `exe` has `--js-runtimes`: MDM's own and a chosen one by the version
+/// they were installed or chosen with; the system's is asked (`--version`), once a session.
+/// Not known (it didn't answer): taken to have it, as before.
+fn takes_js_runtimes(exe: &Path) -> bool {
+    static KNOWN: Mutex<Vec<(PathBuf, bool)>> = Mutex::new(Vec::new());
+    let known = KNOWN
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .iter()
+        .find(|(p, _)| p == exe)
+        .map(|(_, t)| *t);
+    if let Some(takes) = known {
+        return takes;
+    }
+    let version = crate::tools_dir()
+        .as_deref()
+        .and_then(crate::installed)
+        .filter(|i| i.exe == exe && !i.is_system())
+        .map(|i| i.version)
+        .or_else(|| {
+            crate::chosen::ask(crate::chosen::Helper::YtDlp, exe)
+                .ok()
+                .map(|i| i.version)
+        });
+    let takes = version.as_deref().is_none_or(knows_js_runtimes);
+    if !takes {
+        tracing::warn!(
+            "yt-dlp {} is older than {JS_RUNTIMES_SINCE}: not told of a JavaScript runtime",
+            version.unwrap_or_default()
+        );
+    }
+    KNOWN
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .push((exe.to_owned(), takes));
+    takes
+}
+
+/// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it and knows how to
+/// hear it ([`takes_js_runtimes`]). Said in MDM's log each time it changes.
 fn js_runtime_args(exe: &Path) -> Vec<String> {
-    js_runtime_found(exe).unwrap_or_default()
+    let args = js_runtime_found(exe).unwrap_or_default();
+    if args.is_empty() || !takes_js_runtimes(exe) {
+        return Vec::new();
+    }
+    static SAID: Mutex<Vec<String>> = Mutex::new(Vec::new());
+    let mut said = SAID
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    if *said != args {
+        tracing::info!("yt-dlp's JavaScript runtime: {}", args.join(" "));
+        said.clone_from(&args);
+    }
+    args
+}
+
+/// Options → Sites Logins → Use my yt-dlp config file: off, the default.
+static USER_CONFIG: AtomicBool = AtomicBool::new(false);
+
+/// Let every later yt-dlp run read the person's own config file (or not, the default).
+pub fn set_user_config(on: bool) {
+    USER_CONFIG.store(on, Ordering::Relaxed);
+}
+
+/// With the person's own config file read (yt-dlp reads it before every argument), what MDM
+/// can't leave to it, placed before MDM's own arguments so those still win: yt-dlp's own
+/// downloader (an external one, aria2c, prints no progress lines, and one named for HLS skips
+/// the fix-up of what the engine joined; live HLS still goes to ffmpeg, live DASH is left out
+/// as `native` would keep it from ffmpeg), no download archive (it skips a look-up of a video
+/// once downloaded), no forced overwrites (it implies `--no-continue`, deleting the engine's
+/// streams), the default fix-ups, and no marking as watched (`--mark-watched` would mark every
+/// look-up, the quality menu's included, not only what is downloaded), and part files (yt-dlp
+/// reuses the streams the engine downloaded only with `--continue` and `--part`, so `--no-part`
+/// would fetch every one again into a doubled file). Nothing when the config isn't read
+/// (`--ignore-config`).
+fn config_args(on: bool) -> &'static [&'static str] {
+    if on {
+        &[
+            "--downloader",
+            "http,ftp,m3u8:native",
+            "--no-download-archive",
+            "--no-force-overwrites",
+            "--fixup",
+            "detect_or_warn",
+            "--no-mark-watched",
+            "--part",
+        ]
+    } else {
+        &[]
+    }
 }
 
 /// `yt-dlp` with arguments in layers: `user` extras, then `ours` (then the chosen browser's
@@ -1094,10 +1243,15 @@ pub fn ytdlp(
     ours: &[String],
     url: &str,
 ) -> Result<Command, ProcError> {
-    let mut cmd = ytdlp_command(exe);
+    let mut cmd = helper_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp, Some(url))?;
+    let own_config = USER_CONFIG.load(Ordering::Relaxed);
+    cmd.args(config_args(own_config));
     layers(&mut cmd, user, ours)?;
-    cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    if !own_config {
+        cmd.arg("--ignore-config");
+    }
+    cmd.args(["--no-exec", "--no-update"]);
     cmd.args(js_runtime_args(exe));
     cmd.args(cert_args(SYSTEM_CERTS.load(Ordering::Relaxed)));
     cmd.args(UTF8);
@@ -1115,10 +1269,15 @@ pub fn ytdlp_info(
     ours: &[String],
     info: &Path,
 ) -> Result<Command, ProcError> {
-    let mut cmd = ytdlp_command(exe);
+    let mut cmd = helper_command(exe);
     let route = through_adapter(&mut cmd, Helper::YtDlp, None)?;
+    let own_config = USER_CONFIG.load(Ordering::Relaxed);
+    cmd.args(config_args(own_config));
     layers(&mut cmd, user, ours)?;
-    cmd.args(["--ignore-config", "--no-exec", "--no-update"]);
+    if !own_config {
+        cmd.arg("--ignore-config");
+    }
+    cmd.args(["--no-exec", "--no-update"]);
     cmd.args(js_runtime_args(exe));
     cmd.args(cert_args(SYSTEM_CERTS.load(Ordering::Relaxed)));
     cmd.args(UTF8);
@@ -1139,6 +1298,54 @@ fn new_job() -> Option<win32job::Job> {
     win32job::Job::create_with_limit_info(&info).ok()
 }
 
+/// The helpers that run (#1301), and whether MDM is ending ([`end_all`]): after that, no helper
+/// starts.
+struct Running {
+    ended: bool,
+    /// Linux, macOS: each helper's process group (its first process's id, [`spawn`]) with its
+    /// `stderr_done`; dropped with the helper.
+    #[cfg(unix)]
+    groups: Vec<(u32, Arc<AtomicBool>)>,
+}
+
+static RUNNING: Mutex<Running> = Mutex::new(Running {
+    ended: false,
+    #[cfg(unix)]
+    groups: Vec::new(),
+});
+
+/// MDM ends (an Exit, the session's end, a command line's Ctrl+C or SIGTERM): every helper that
+/// runs ends with all it started, and none starts after. Windows' job objects end them with MDM
+/// in any case; on Linux and macOS each helper's process group is killed here, as nothing ends it
+/// when MDM's process goes (#1301).
+pub fn end_all() {
+    let mut running = RUNNING.lock().unwrap_or_else(|e| e.into_inner());
+    running.ended = true;
+    #[cfg(unix)]
+    for (group, stderr_done) in running.groups.drain(..) {
+        // Something still holds the helper's stderr: the group is there, its id not reused.
+        if !stderr_done.load(Ordering::Acquire) {
+            kill_group(group);
+        }
+    }
+}
+
+/// SIGKILL to the process group `group` (#1301): yt-dlp's one-file build on Linux
+/// (`yt_dlp_linux`), and gallery-dl's, are a launcher whose child runs Python and downloads, its
+/// ffmpeg under it; killing the launcher alone left them downloading. A kill at once, as Windows'
+/// job does: what the stopped run left (`.part` files) is continued by the next as it is.
+#[cfg(unix)]
+fn kill_group(group: u32) {
+    if let Some(pid) = i32::try_from(group)
+        .ok()
+        .and_then(rustix::process::Pid::from_raw)
+        // Never "every process MDM may signal" (`kill(-1)`).
+        .filter(|pid| *pid != rustix::process::Pid::INIT)
+    {
+        let _ = rustix::process::kill_process_group(pid, rustix::process::Signal::KILL);
+    }
+}
+
 /// A running helper with its stderr tail.
 pub struct Spawned {
     pub child: Child,
@@ -1154,12 +1361,26 @@ pub struct Spawned {
 }
 
 impl Spawned {
-    /// End the helper and everything it started (Windows: its job; elsewhere yt-dlp runs as one
-    /// process, its ffmpeg ending with it).
+    /// End the helper and everything it started: on Windows its job, on Linux and macOS its
+    /// process group (#1301: `yt_dlp_linux` is a launcher whose child downloads, as `yt-dlp.exe`
+    /// is, #61). A helper dropped ends the same way, as its job closes on Windows.
     pub fn kill(&mut self) {
+        #[cfg(unix)]
+        self.kill_group();
         let _ = self.child.kill();
         #[cfg(windows)]
         drop(self.job.take());
+    }
+
+    /// The helper's process group killed, unless all of it is known to have ended: its first
+    /// process reaped and its stderr closed by every process that held it. Until then the
+    /// group's id (that first process's) can't be another's.
+    #[cfg(unix)]
+    fn kill_group(&mut self) {
+        let closed = self.stderr_done.load(std::sync::atomic::Ordering::Acquire);
+        if !(closed && matches!(self.child.try_wait(), Ok(Some(_)))) {
+            kill_group(self.child.id());
+        }
     }
 
     /// The last stderr lines, for an error message.
@@ -1210,6 +1431,25 @@ impl Spawned {
     }
 }
 
+impl Drop for Spawned {
+    /// Linux, macOS: what still runs of the helper ends, as Windows' job ends it when closed
+    /// (`job`), and [`end_all`] no longer has it to end.
+    fn drop(&mut self) {
+        #[cfg(unix)]
+        {
+            self.kill_group();
+            let _ = self.child.kill();
+            let _ = self.child.try_wait();
+            let id = self.child.id();
+            RUNNING
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .groups
+                .retain(|(group, _)| *group != id);
+        }
+    }
+}
+
 /// A failure's `message` with what yt-dlp said earlier about the browser's cookies, when that
 /// isn't the message itself (#229): Chrome's cookies it couldn't decrypt are only a warning,
 /// and the site's "sign in" that follows is the error; "failed to load cookies" comes after the
@@ -1245,6 +1485,22 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         const CREATE_NO_WINDOW: u32 = 0x0800_0000;
         cmd.creation_flags(CREATE_NO_WINDOW);
     }
+    // A process group of its own, which `kill` and MDM's end kill whole (#1301). Not MDM's: a
+    // Ctrl+C in MDM's terminal no longer reaches it, MDM ends it instead (`end_all`).
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        cmd.process_group(0);
+    }
+    // Under the lock: `end_all` either came first (nothing starts) or finds it to end.
+    #[cfg_attr(not(unix), allow(unused_mut))]
+    let mut running = RUNNING.lock().unwrap_or_else(|e| e.into_inner());
+    if running.ended {
+        return Err(ProcError::Start(
+            name.to_owned(),
+            std::io::Error::other("Mister Download Manager is closing"),
+        ));
+    }
     let mut child = cmd
         .spawn()
         .map_err(|e| ProcError::Start(name.to_owned(), e))?;
@@ -1277,6 +1533,9 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
     } else {
         stderr_done.store(true, std::sync::atomic::Ordering::Release);
     }
+    #[cfg(unix)]
+    running.groups.push((child.id(), stderr_done.clone()));
+    drop(running);
     Ok(Spawned {
         child,
         tail,
@@ -1299,6 +1558,26 @@ pub fn output_warned(
     name: &str,
     timeout: Duration,
 ) -> Result<(Vec<u8>, Vec<String>), ProcError> {
+    to_the_end(cmd, name, timeout).map(|(out, s)| (out, s.warnings()))
+}
+
+/// [`output`], with its last lines on stderr ([`Spawned::tail`]): what a tool says of its answer
+/// besides it (ffprobe: a length it only estimated).
+pub fn output_said(
+    cmd: Command,
+    name: &str,
+    timeout: Duration,
+) -> Result<(Vec<u8>, String), ProcError> {
+    to_the_end(cmd, name, timeout).map(|(out, s)| (out, s.tail()))
+}
+
+/// Run `cmd` to the end within `timeout` (killed on timeout): its stdout, and the helper, its
+/// stderr read to the end, when it ended well.
+fn to_the_end(
+    cmd: Command,
+    name: &str,
+    timeout: Duration,
+) -> Result<(Vec<u8>, Spawned), ProcError> {
     let mut s = spawn(cmd, name)?;
     let mut out = s.child.stdout.take().expect("piped");
     let reader = std::thread::spawn(move || {
@@ -1313,7 +1592,7 @@ pub fn output_warned(
                 let stdout = reader.join().unwrap_or_default();
                 return if status.success() {
                     s.settle();
-                    Ok((stdout, s.warnings()))
+                    Ok((stdout, s))
                 } else {
                     // `failure` waits for the stderr reader's last lines.
                     Err(s.failure())
@@ -1746,6 +2025,53 @@ mod tests {
             .collect()
     }
 
+    /// Private requests never inherit Options' normal browser store, but may use their own
+    /// cookie header or jar. Check the final command layers with the store explicitly on.
+    #[test]
+    fn private_video_requests_keep_their_own_cookies_only() {
+        let firefox = BrowserCookies::new("firefox", "normal-profile").unwrap();
+        for (private, header, jar) in [
+            (true, None, vec![]),
+            (true, Some("  "), vec![]),
+            (true, Some("sid=private"), vec![]),
+            (true, None, vec![cookie("sid", "videos.test", true)]),
+            (false, None, vec![]),
+        ] {
+            let own = header.is_some_and(|s| !s.trim().is_empty()) || !jar.is_empty();
+            let browser = FromBrowser {
+                private,
+                cookies: header.map(str::to_owned),
+                jar,
+                ..Default::default()
+            };
+            let (args, file) = browser.args("https://videos.test/watch").unwrap();
+            let mut cmd = Command::new("yt-dlp");
+            layers_with(&mut cmd, &[], &args, Some(&firefox)).unwrap();
+            let final_args = args_of(&cmd);
+            assert_eq!(
+                final_args.iter().any(|a| a == "--cookies-from-browser"),
+                !private
+            );
+            assert_eq!(final_args.iter().any(|a| a == "--cookies"), own);
+            assert_eq!(final_args.iter().any(|a| a == NO_COOKIES), private && !own);
+            assert_eq!(with_cookies(&args, Some(&firefox)), own || !private);
+            if private && !own {
+                assert!(!has_cookies(&args), "no pointless cookie-free retry");
+            }
+            assert_eq!(file.is_some(), own);
+            if let Some(file) = file {
+                assert!(std::fs::read_to_string(&file.0).unwrap().contains("sid"));
+            }
+            let retry = without_cookies(&args);
+            let refs: Vec<&str> = retry.iter().map(String::as_str).collect();
+            assert!(
+                !yt(Some(&firefox), &refs)
+                    .iter()
+                    .any(|a| a == "--cookies-from-browser")
+            );
+        }
+    }
+
     /// #229: Options → Cookies for video sites. Off: nothing added. On: every run without
     /// cookies of its own reads the browser's (a pasted address, a look-up), with yt-dlp's
     /// warnings kept on; a run with the extension's cookies keeps those alone.
@@ -1857,6 +2183,48 @@ mod tests {
         // Deno on the PATH: yt-dlp finds it itself.
         touch(&path, "deno");
         assert_eq!(js_runtime(&dirs, &[], Some(&home)), None);
+    }
+
+    /// #1448: MDM's own Deno is named to yt-dlp by its path, as one argument after the option
+    /// (a Windows path's `C:` stays whole: yt-dlp splits at the first colon only).
+    #[test]
+    fn mdms_own_deno_is_named_to_yt_dlp() {
+        let deno = Path::new(
+            r"C:\Users\A B\AppData\Roaming\misterdownloadmanager\tools\deno\2.9.8\deno.exe",
+        );
+        assert_eq!(
+            runtime_args("deno", deno),
+            [
+                "--js-runtimes".to_owned(),
+                format!("deno:{}", deno.display())
+            ]
+        );
+        let deno = Path::new("/home/a/.local/share/misterdownloadmanager/tools/deno/2.9.8/deno");
+        assert_eq!(
+            runtime_args("deno", deno)[1],
+            "deno:/home/a/.local/share/misterdownloadmanager/tools/deno/2.9.8/deno"
+        );
+    }
+
+    /// yt-dlp before 2025.11.12 has no `--js-runtimes`, and stops at it: it isn't told of a
+    /// runtime. A version that isn't a date (a build of the person's own) is, as before.
+    #[test]
+    fn only_a_yt_dlp_that_has_the_option_is_told_of_a_runtime() {
+        for old in ["2025.10.22", "2025.11.11", "2024.12.23", "2023.03.04.1"] {
+            assert!(!knows_js_runtimes(old), "{old}");
+        }
+        for new in [
+            "2025.11.12",
+            "2025.11.12.232521",
+            "2025.12.8",
+            "2026.10.26",
+            "2026.10.26.1",
+        ] {
+            assert!(knows_js_runtimes(new), "{new}");
+        }
+        for unknown in ["", "system", "master", "1.0"] {
+            assert!(knows_js_runtimes(unknown), "{unknown}");
+        }
     }
 
     /// #852: what yt-dlp 2026.10.26 wrote looking a YouTube video up (`-J`, its stderr as is):
@@ -2254,6 +2622,24 @@ foreach ($d in $env:PATH.Split(';')) {
     }
 
     #[test]
+    fn the_persons_config_only_when_asked() {
+        assert!(config_args(false).is_empty());
+        assert_eq!(
+            config_args(true),
+            [
+                "--downloader",
+                "http,ftp,m3u8:native",
+                "--no-download-archive",
+                "--no-force-overwrites",
+                "--fixup",
+                "detect_or_warn",
+                "--no-mark-watched",
+                "--part",
+            ]
+        );
+    }
+
+    #[test]
     fn fixed_arguments_come_last_and_the_url_after_the_separator() {
         let cmd = ytdlp(
             Path::new("yt-dlp"),
@@ -2339,6 +2725,38 @@ foreach ($d in $env:PATH.Split(';')) {
         }
     }
 
+    /// #1216: yt-dlp's and gallery-dl's commands are built to start in the helpers' folder, with
+    /// it as TEMP, TMP and TMPDIR, whatever folder MDM itself was started in
+    /// (`C:\Windows\System32` when Windows starts it with the session): yt-dlp made the file
+    /// it tries a format with there, and Windows refused it.
+    #[test]
+    fn the_helpers_commands_start_in_the_helpers_folder() {
+        let dir = crate::workdir::folders()
+            .dir
+            .clone()
+            .expect("a temporary folder that can be written");
+        let exe = Path::new("yt-dlp");
+        let tool = crate::Installed {
+            version: "1.32.0".into(),
+            exe: "gallery-dl".into(),
+        };
+        let built = [
+            ytdlp(exe, &[], &["-J".into()], "https://x.test/v").unwrap(),
+            ytdlp_info(exe, &[], &[], Path::new("/info.json")).unwrap(),
+            gallery_dl(&tool, &[], "https://x.test/g").unwrap(),
+        ];
+        for cmd in &built {
+            let program = cmd.get_program().to_string_lossy();
+            assert_eq!(cmd.get_current_dir(), Some(dir.as_path()), "{program}");
+            for var in crate::workdir::TEMP_VARS {
+                let value = cmd.get_envs().find(|(k, _)| *k == var).and_then(|(_, v)| v);
+                assert_eq!(value, Some(dir.as_os_str()), "{program} {var}");
+            }
+            // And nothing it inherits is taken away: the rest of MDM's environment goes too.
+            assert!(cmd.get_envs().all(|(_, v)| v.is_some()), "{program}");
+        }
+    }
+
     /// #61: killing a helper ends what it started too (yt-dlp.exe is a launcher whose child
     /// downloads). Here a script starts a child that writes a line every second for a minute,
     /// holding the helper's stderr as yt-dlp's child does: once killed, the stderr closes (every
@@ -2392,6 +2810,51 @@ foreach ($d in $env:PATH.Split(';')) {
         }
         let after_kill = size();
         // Nothing left to write it: the same a child's second later.
+        std::thread::sleep(Duration::from_millis(1500));
+        assert_eq!(size(), after_kill, "the child ended with the helper");
+    }
+
+    /// #1301: the same on Linux and macOS, where `yt_dlp_linux` is a launcher whose child
+    /// downloads: a shell script starts a child that writes a line every second for a minute,
+    /// holding the helper's stderr. Killed, the stderr closes long before the child's minute
+    /// (its process group ended with the script), and the file stops growing.
+    #[cfg(unix)]
+    #[test]
+    fn killing_a_helper_ends_its_children() {
+        use std::sync::atomic::Ordering;
+        const STUCK: Duration = Duration::from_secs(30);
+        let dir = tempfile::tempdir().unwrap();
+        let marker = dir.path().join("marker.txt");
+        let child = dir.path().join("child.sh");
+        let parent = dir.path().join("parent.sh");
+        std::fs::write(
+            &child,
+            "i=0\nwhile [ $i -lt 60 ]; do echo x >> \"$1\"; sleep 1; i=$((i+1)); done\n",
+        )
+        .unwrap();
+        // The child in the background (no `exec`): the script stays, as the launcher does.
+        std::fs::write(&parent, "/bin/sh \"$1\" \"$2\" &\nsleep 60\n").unwrap();
+        let mut cmd = Command::new("/bin/sh");
+        cmd.arg(&parent).arg(&child).arg(&marker);
+        let mut s = spawn(cmd, "sh").unwrap();
+        let size = || std::fs::metadata(&marker).map_or(0, |m| m.len());
+        let start = Instant::now();
+        while size() == 0 {
+            assert!(start.elapsed() < STUCK, "the child never ran");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        assert!(
+            !s.stderr_done.load(Ordering::Acquire),
+            "the stderr closed early"
+        );
+        s.kill();
+        let _ = s.child.wait();
+        let start = Instant::now();
+        while !s.stderr_done.load(Ordering::Acquire) {
+            assert!(start.elapsed() < STUCK, "the child outlived the helper");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        let after_kill = size();
         std::thread::sleep(Duration::from_millis(1500));
         assert_eq!(size(), after_kill, "the child ended with the helper");
     }

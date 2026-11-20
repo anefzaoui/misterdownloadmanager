@@ -3,7 +3,7 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Mutex, OnceLock};
+use std::sync::{Condvar, Mutex, OnceLock};
 
 use percent_encoding::percent_decode_str;
 use unicode_segmentation::UnicodeSegmentation;
@@ -324,8 +324,8 @@ pub fn needs_sniff(url: &Url, disposition: Option<&str>, content_type: Option<&s
 /// The file name a `Content-Disposition` value suggests (RFC 6266), read as browsers do:
 /// `filename*` (RFC 8187: `charset'language'percent-encoded`, UTF-8 or ISO-8859-1) wins over
 /// `filename`, which is only the fallback for clients that can't decode it. A plain
-/// `filename` is unquoted (with `\` escapes), and percent-encoded UTF-8 in it is decoded, as
-/// Chromium does. Not sanitized.
+/// `filename` is unquoted (with `\` escapes) and decoded as Chrome and Firefox decode it
+/// ([`decode_plain`], #1427). Not sanitized.
 pub fn disposition_name(value: &str) -> Option<String> {
     let params = disposition_params(value);
     let param = |key: &str| {
@@ -401,7 +401,7 @@ fn disposition_params(value: &str) -> Vec<(String, String)> {
 fn decode_extended(v: &str) -> Option<String> {
     let mut parts = v.splitn(3, '\'');
     let (charset, _language, encoded) = (parts.next()?, parts.next()?, parts.next()?);
-    let bytes: Vec<u8> = percent_decode_str(encoded.trim()).collect();
+    let bytes: Vec<u8> = percent_decode_str(&escaped_separators(encoded.trim())).collect();
     match charset.trim().to_ascii_lowercase().as_str() {
         "utf-8" | "utf8" => String::from_utf8(bytes).ok(),
         "iso-8859-1" | "iso_8859-1" | "latin1" | "us-ascii" => {
@@ -411,16 +411,130 @@ fn decode_extended(v: &str) -> Option<String> {
     }
 }
 
-/// A plain `filename` as given, or its percent-encoded UTF-8 decoded when that is what it
-/// holds (non-ASCII once decoded: `100%25.txt` stays as it is).
+/// A plain `filename` as Chrome and Firefox read it (#1427; both checked against a lab
+/// server): its RFC 2047 encoded words decoded ([`encoded_words`]: `=?UTF-8?B?…?=`), else its
+/// percent-encoding whenever that decodes to UTF-8, ASCII too (`My%20Report.pdf` →
+/// `My Report.pdf`, `100%25.txt` → `100%.txt`; an escape that isn't one, `50%off`, stays),
+/// else as given (bytes that aren't UTF-8 once decoded). The browser extension's
+/// `decodedPlain` is the same.
 fn decode_plain(v: &str) -> String {
+    if let Some(decoded) = encoded_words(v) {
+        return decoded;
+    }
     if v.contains('%')
-        && let Ok(decoded) = percent_decode_str(v).decode_utf8()
-        && !decoded.is_ascii()
+        && let Ok(decoded) = percent_decode_str(&escaped_separators(v)).decode_utf8()
     {
         return decoded.into_owned();
     }
     v.to_owned()
+}
+
+/// A name's percent-encoded `/` and `\` (`a%2Fb.pdf`) as `_`, as Chrome and Firefox save them
+/// (#1427): a character of the name, never a folder; a separator written as such still is one
+/// (the name's last component is taken).
+fn escaped_separators(v: &str) -> std::borrow::Cow<'_, str> {
+    if !v.contains('%') {
+        return v.into();
+    }
+    let mut out = String::with_capacity(v.len());
+    let mut rest = v;
+    while let Some(i) = rest.find('%') {
+        out.push_str(&rest[..i]);
+        let code = rest.get(i + 1..i + 3).unwrap_or_default();
+        if code.eq_ignore_ascii_case("2F") || code.eq_ignore_ascii_case("5C") {
+            out.push('_');
+            rest = &rest[i + 3..];
+        } else {
+            out.push('%');
+            rest = &rest[i + 1..];
+        }
+    }
+    out.push_str(rest);
+    out.into()
+}
+
+/// `v` with its RFC 2047 encoded words (`=?charset?B|Q?text?=`) decoded, the space between two
+/// of them dropped (RFC 2047 §6.2); None when it has none, or one it can't read (a charset other
+/// than UTF-8 or ISO-8859-1 and its subset US-ASCII, or bytes that aren't its charset's).
+fn encoded_words(v: &str) -> Option<String> {
+    let mut out = String::new();
+    let mut rest = v;
+    let mut any = false;
+    while let Some(start) = rest.find("=?") {
+        let Some((word, len)) = encoded_word(&rest[start..]) else {
+            // Not a word: as it is, and on after its `=?`.
+            out.push_str(&rest[..start + 2]);
+            rest = &rest[start + 2..];
+            continue;
+        };
+        let between = &rest[..start];
+        // Only space between two encoded words isn't the name's.
+        if !(any && between.chars().all(char::is_whitespace)) {
+            out.push_str(between);
+        }
+        out.push_str(&word?);
+        rest = &rest[start + len..];
+        any = true;
+    }
+    any.then(|| out + rest)
+}
+
+/// The encoded word `s` starts with: its text (None if it can't be read) and its length; None
+/// when `s` doesn't start with one.
+fn encoded_word(s: &str) -> Option<(Option<String>, usize)> {
+    let body = s.strip_prefix("=?")?;
+    let mut parts = body.splitn(3, '?');
+    let (charset, kind, tail) = (parts.next()?, parts.next()?, parts.next()?);
+    let end = tail.find("?=")?;
+    let text = &tail[..end];
+    let token = |t: &str| !t.is_empty() && !t.contains(char::is_whitespace);
+    if !token(charset)
+        || !matches!(kind, "B" | "b" | "Q" | "q")
+        || text.contains(char::is_whitespace)
+    {
+        return None;
+    }
+    let len = 2 + charset.len() + 1 + kind.len() + 1 + end + 2;
+    let bytes = if kind.eq_ignore_ascii_case("b") {
+        use base64::Engine;
+        // With its padding or without, as browsers take it.
+        base64::engine::general_purpose::STANDARD_NO_PAD
+            .decode(text.trim_end_matches('='))
+            .ok()
+    } else {
+        q_bytes(text)
+    };
+    // RFC 2231's language after a `*` (`UTF-8*en`) isn't the charset's.
+    let charset = charset.split('*').next().unwrap_or_default();
+    let decoded = bytes.and_then(|b| match charset.to_ascii_lowercase().as_str() {
+        "utf-8" | "utf8" => String::from_utf8(b).ok(),
+        "iso-8859-1" | "iso_8859-1" | "latin1" | "us-ascii" => {
+            Some(b.into_iter().map(char::from).collect())
+        }
+        _ => None,
+    });
+    Some((decoded, len))
+}
+
+/// An RFC 2047 "Q" text's bytes: `=XX` escapes, `_` for a space, other ASCII as it is.
+fn q_bytes(text: &str) -> Option<Vec<u8>> {
+    let mut out = Vec::with_capacity(text.len());
+    let mut b = text.bytes();
+    while let Some(c) = b.next() {
+        match c {
+            b'_' => out.push(b' '),
+            b'=' => {
+                let hex = [b.next()?, b.next()?];
+                if !hex.iter().all(u8::is_ascii_hexdigit) {
+                    return None;
+                }
+                out.push(u8::from_str_radix(std::str::from_utf8(&hex).ok()?, 16).ok()?);
+            }
+            c if c.is_ascii() => out.push(c),
+            _ => return None,
+        }
+    }
+    Some(out)
 }
 
 /// Make `name` a valid single file name on Windows (the strictest target). Invisible format
@@ -706,6 +820,18 @@ pub fn typed_stem_destination(dir: &Path, name: &str, in_use: impl Fn(&str) -> b
     stem_place(dir, name, in_use)
 }
 
+/// [`stem_destination`] (`typed`: [`typed_stem_destination`]) before the folder is looked at:
+/// the stem fitted to the path limits, not yet numbered, as [`guess`] is for a file. What a new
+/// video's row shows while its folder is asked beside the window (a sleeping drive or a network
+/// folder can take seconds to answer); it is numbered on then, or as it starts. Never touches the
+/// disk.
+pub fn stem_guess(dir: &Path, name: &str, typed: bool) -> PathBuf {
+    if typed {
+        return dir.join(name);
+    }
+    dir.join(fit_stem(dir, name).unwrap_or_else(|| name.to_owned()))
+}
+
 fn stem_place(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -> PathBuf {
     let (stem, ext) = stem_and_ext(name);
     let there: Vec<String> = std::fs::read_dir(dir)
@@ -746,20 +872,27 @@ pub struct Stems {
 impl Stems {
     /// `in_use`: the stems of the other downloads into `dir`.
     pub fn new(dir: &Path, in_use: impl IntoIterator<Item = String>) -> Stems {
-        let mut taken = HashSet::new();
+        let mut stems = Stems::listed(dir, in_use);
         if let Ok(rd) = std::fs::read_dir(dir) {
             for e in rd.filter_map(Result::ok) {
                 let name = e.file_name().to_string_lossy().to_lowercase();
                 for (i, _) in name.match_indices('.') {
-                    taken.insert(name[..i].to_owned());
+                    stems.taken.insert(name[..i].to_owned());
                 }
-                taken.insert(name);
+                stems.taken.insert(name);
             }
         }
-        taken.extend(in_use.into_iter().map(|s| s.to_lowercase()));
+        stems
+    }
+
+    /// [`Stems::new`] without reading the folder (never touches the disk): the stems differ from
+    /// one another and from `in_use`, and each is numbered on past the folder's files later, as
+    /// its download starts ([`stem_destination`], beside a window that mustn't wait for a
+    /// sleeping drive or a network folder).
+    pub fn listed(dir: &Path, in_use: impl IntoIterator<Item = String>) -> Stems {
         Stems {
             dir: dir.to_owned(),
-            taken,
+            taken: in_use.into_iter().map(|s| s.to_lowercase()).collect(),
         }
     }
 
@@ -853,7 +986,14 @@ pub fn part_path(dest: &Path) -> PathBuf {
 /// `dir/name`, or `dir/stem (N).ext` with the lowest N that is free — IDM's default for a
 /// duplicate link is "add the duplicate with a numbered file name" (notes/ENGINE.md §6).
 pub fn unique_path(dir: &Path, name: &str) -> PathBuf {
-    let taken = |p: &Path| p.exists() || part_path(p).exists() || is_reserved(p);
+    // A resume state beside the name is data too: another row's unfinished download, or one a
+    // plain Delete kept. Starting there would resume that link instead of this one (#597).
+    let taken = |p: &Path| {
+        p.exists()
+            || part_path(p).exists()
+            || crate::state::state_path(p).exists()
+            || is_reserved(p)
+    };
     let first = dir.join(name);
     if !taken(&first) {
         return first;
@@ -925,6 +1065,147 @@ pub fn reserve(dest: &Path) -> Option<Reservation> {
         .then(|| Reservation(dest.to_owned()))
 }
 
+/// Folders where a place's old files are being deleted so that a download starts there afresh
+/// (the app's Redownload, a duplicate overwritten, a restart under the same name): how many
+/// such deletes each has under way, by [`clearing_key`].
+fn clearings() -> &'static (Mutex<std::collections::HashMap<String, usize>>, Condvar) {
+    static CLEARING: OnceLock<(Mutex<std::collections::HashMap<String, usize>>, Condvar)> =
+        OnceLock::new();
+    CLEARING.get_or_init(Default::default)
+}
+
+/// A folder as [`clearings`] knows it: letter case aside (Windows' and macOS' folders; on Linux
+/// two folders that differ only in case wait for each other, which costs only a wait).
+fn clearing_key(dir: &Path) -> String {
+    dir.components()
+        .collect::<PathBuf>()
+        .to_string_lossy()
+        .to_lowercase()
+}
+
+/// A place whose old files are being deleted ([`clear`]): until it is dropped, a download that
+/// starts in its folder waits ([`wait_cleared`]) before it looks at the disk, so it finds none
+/// of them, and takes the name they leave.
+#[derive(Debug)]
+pub struct Clearing(String);
+
+impl Drop for Clearing {
+    fn drop(&mut self) {
+        let (map, done) = clearings();
+        let mut map = map.lock().unwrap();
+        if let Some(n) = map.get_mut(&self.0) {
+            *n -= 1;
+            if *n == 0 {
+                map.remove(&self.0);
+            }
+        }
+        done.notify_all();
+    }
+}
+
+/// `place`'s old files are about to be deleted beside the caller, and a download is to start
+/// there afresh: the downloads that start in its folder meanwhile (the engine's, and the looks
+/// that number a new name there) wait until the returned guard is dropped, after the delete.
+/// Unlike [`reserve`], the name stays free for the download that comes after: nothing is
+/// numbered past it.
+pub fn clear(place: &Path) -> Clearing {
+    let key = clearing_key(place.parent().unwrap_or(Path::new("")));
+    *clearings()
+        .0
+        .lock()
+        .unwrap()
+        .entry(key.clone())
+        .or_default() += 1;
+    Clearing(key)
+}
+
+/// Whether old files are being deleted in `dir` ([`clear`]). Never waits.
+pub fn being_cleared(dir: &Path) -> bool {
+    clearings()
+        .0
+        .lock()
+        .unwrap()
+        .contains_key(&clearing_key(dir))
+}
+
+/// Wait until no old files are being deleted in `dir` ([`clear`]): before looking at a name
+/// there. On a thread that may wait (never a window's): a delete can take as long as its disk.
+pub fn wait_cleared(dir: &Path) {
+    let key = clearing_key(dir);
+    let (map, done) = clearings();
+    let map = map.lock().unwrap();
+    let _unused = done.wait_while(map, |m| m.contains_key(&key)).unwrap();
+}
+
+/// Places whose download was stopped and is still writing what its connections received and
+/// its resume state (#1328): how many runs settle at each.
+fn settlings() -> &'static (Mutex<std::collections::HashMap<PathBuf, usize>>, Condvar) {
+    static SETTLING: OnceLock<(Mutex<std::collections::HashMap<PathBuf, usize>>, Condvar)> =
+        OnceLock::new();
+    SETTLING.get_or_init(Default::default)
+}
+
+/// A stopped download still putting its last bytes and its resume state on the disk (#1328):
+/// its connections are closed and it says it is stopped at once, but a disk slower than the
+/// network takes as long as it takes. Until this guard is dropped (after the download has let go
+/// of its place and its part file), whatever comes next at that place waits ([`wait_settled`]):
+/// a resume reads the state saved last, a delete or a rewrite of the state comes after it.
+#[derive(Debug)]
+pub struct Settling(PathBuf);
+
+impl Drop for Settling {
+    fn drop(&mut self) {
+        let (map, done) = settlings();
+        let mut map = map.lock().unwrap();
+        if let Some(n) = map.get_mut(&self.0) {
+            *n -= 1;
+            if *n == 0 {
+                map.remove(&self.0);
+            }
+        }
+        done.notify_all();
+    }
+}
+
+/// `dest`'s download has stopped and is settling: see [`Settling`].
+pub fn settling(dest: &Path) -> Settling {
+    *settlings()
+        .0
+        .lock()
+        .unwrap()
+        .entry(dest.to_owned())
+        .or_default() += 1;
+    Settling(dest.to_owned())
+}
+
+/// Whether a stopped download is still settling at `dest` ([`settling`]). Never waits.
+pub fn is_settling(dest: &Path) -> bool {
+    settlings().0.lock().unwrap().contains_key(dest)
+}
+
+/// Wait until no stopped download is settling at `dest`. On a thread that may wait: it takes as
+/// long as the disk.
+pub fn wait_settled(dest: &Path) {
+    let (map, done) = settlings();
+    let map = map.lock().unwrap();
+    let _unused = done.wait_while(map, |m| m.contains_key(dest)).unwrap();
+}
+
+/// Wait until every stopped download has settled, or `until`: how many still settle then (an
+/// exit waits for them, so each resumes from where it stopped).
+pub fn wait_all_settled(until: std::time::Instant) -> usize {
+    let (map, done) = settlings();
+    let mut map = map.lock().unwrap();
+    loop {
+        let left = map.values().sum();
+        let now = std::time::Instant::now();
+        if left == 0 || now >= until {
+            return left;
+        }
+        map = done.wait_timeout(map, until - now).unwrap().0;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -960,6 +1241,51 @@ mod tests {
             stem_destination(other.path(), "Song.mp3", none),
             other.path().join("Song.mp3")
         );
+    }
+
+    /// A video's name before its folder is looked at: what `stem_destination` gives in an empty
+    /// folder (fitted, not numbered), a typed one as typed; the folder isn't read (it isn't there).
+    #[test]
+    fn a_stem_guess_is_the_name_before_the_folder_answers() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path().join("not there yet");
+        let long = format!("{}.mp4", "t".repeat(400));
+        let none = |_: &str| false;
+        let guessed = stem_guess(&d, &long, false);
+        std::fs::create_dir(&d).unwrap();
+        assert_eq!(guessed, stem_destination(&d, &long, none));
+        assert!(guessed.file_name().unwrap().len() < long.len());
+        assert_eq!(stem_guess(&d, "Talk.mp4", true), d.join("Talk.mp4"));
+        std::fs::write(d.join("Talk.webm"), b"").unwrap();
+        assert_eq!(stem_guess(&d, "Talk.mp4", false), d.join("Talk.mp4"));
+    }
+
+    /// A place being cleared holds up the looks in its folder (letter case aside) until every
+    /// delete there is done, and only there; its name stays free (nothing is numbered past it).
+    #[test]
+    fn a_folder_being_cleared_is_waited_for() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path().join("Clear");
+        let one = clear(&d.join("a.bin"));
+        let two = clear(&d.join("b.bin"));
+        let upper = PathBuf::from(d.to_string_lossy().to_uppercase());
+        assert!(being_cleared(&d) && being_cleared(&upper));
+        assert!(!being_cleared(dir.path()));
+        assert!(!is_reserved(&d.join("a.bin")));
+        let (tx, rx) = std::sync::mpsc::channel();
+        let waiting = d.clone();
+        std::thread::spawn(move || {
+            wait_cleared(&waiting);
+            let _ = tx.send(());
+        });
+        let wait = std::time::Duration::from_millis(200);
+        assert!(rx.recv_timeout(wait).is_err(), "waits");
+        drop(one);
+        assert!(rx.recv_timeout(wait).is_err(), "for every delete there");
+        drop(two);
+        rx.recv_timeout(std::time::Duration::from_secs(10)).unwrap();
+        assert!(!being_cleared(&d));
+        wait_cleared(&d);
     }
 
     /// #1170: a name held in this process (a deleted download's, until its files are gone)
@@ -1169,17 +1495,99 @@ mod tests {
         );
         assert_eq!(n("attachment; filename=  spaced.txt  ; x=1"), "spaced.txt");
         assert_eq!(n("filename=no-type.pdf"), "no-type.pdf");
-        // Percent-encoded UTF-8 in the plain name (Chromium decodes it); ASCII stays as sent.
+        // Percent-encoded UTF-8 in the plain name, decoded as Chrome and Firefox do (#1427).
         assert_eq!(
             n("attachment; filename=\"%E6%97%A5%E6%9C%AC.txt\""),
             "日本.txt"
         );
-        assert_eq!(n("attachment; filename=\"100%25.txt\""), "100%25.txt");
         // Raw UTF-8 in the header (the download reads its bytes as UTF-8).
         assert_eq!(n("attachment; filename=\"été.mp3\""), "été.mp3");
         // Nothing usable: the URL's name.
         assert_eq!(n("attachment; filename=\"\""), "a.bin");
         assert_eq!(n("attachment"), "a.bin");
+    }
+
+    /// #1427: a plain `filename` is read as Chrome and Firefox read it (both checked on a lab
+    /// server): percent-encoding decoded whenever it decodes to UTF-8, ASCII too (`%20`); RFC
+    /// 2047's encoded words decoded; anything else as sent. `filename*` is decoded once only.
+    #[test]
+    fn plain_names_are_decoded_as_browsers_do() {
+        let u = url("http://x/download");
+        let n = |cd: &str| file_name(Some(cd), &u);
+        for (cd, want) in [
+            ("attachment; filename=\"My%20Report.pdf\"", "My Report.pdf"),
+            (
+                "attachment; filename=My%20Report%20v3.pdf",
+                "My Report v3.pdf",
+            ),
+            (
+                "attachment; filename=\"%E6%8A%A5%E5%91%8A%20v4.pdf\"",
+                "报告 v4.pdf",
+            ),
+            ("attachment; filename=\"100%25 sure.txt\"", "100% sure.txt"),
+            // Not percent-encoding: as sent.
+            (
+                "attachment; filename=\"50%off sale.txt\"",
+                "50%off sale.txt",
+            ),
+            ("attachment; filename=\"a+b report.pdf\"", "a+b report.pdf"),
+            // Bytes that aren't UTF-8 once decoded: as sent.
+            (
+                "attachment; filename=\"caf%E9 menu.txt\"",
+                "caf%E9 menu.txt",
+            ),
+            // RFC 2047, B and Q, a whole name or a word of it.
+            (
+                "attachment; filename=\"=?UTF-8?B?5oql5ZGKIHY1LnBkZg==?=\"",
+                "报告 v5.pdf",
+            ),
+            (
+                "attachment; filename=\"=?utf-8?q?My_Report_=E2=80=93_v6.pdf?=\"",
+                "My Report – v6.pdf",
+            ),
+            (
+                "attachment; filename=\"Report =?UTF-8?B?5oql5ZGK?= v7.pdf\"",
+                "Report 报告 v7.pdf",
+            ),
+            // Adjacent encoded words: the space between them isn't the name's.
+            (
+                "attachment; filename=\"=?UTF-8?Q?My_?= =?UTF-8?Q?Report.pdf?=\"",
+                "My Report.pdf",
+            ),
+            (
+                "attachment; filename=\"=?ISO-8859-1?Q?caf=E9.txt?=\"",
+                "café.txt",
+            ),
+            // A charset it can't read, or a word that isn't one: as sent.
+            (
+                "attachment; filename=\"=?KOI8-R?Q?=C1.txt?=\"",
+                "=_KOI8-R_Q_=C1.txt_=",
+            ),
+            (
+                "attachment; filename=\"=?UTF-8?B?not base64?=\"",
+                "=_UTF-8_B_not base64_=",
+            ),
+            // filename* is decoded once (Chrome): `%25` in it stays a percent sign's code.
+            (
+                "attachment; filename*=UTF-8''100%2525%20double.txt",
+                "100%25 double.txt",
+            ),
+            // An encoded separator is a character of the name, as browsers save it; one written
+            // as such is still one (the last component).
+            (
+                "attachment; filename=\"a%2Fb report.pdf\"",
+                "a_b report.pdf",
+            ),
+            (
+                "attachment; filename=\"..%2F..%5cevil.exe\"",
+                ".._.._evil.exe",
+            ),
+            ("attachment; filename*=UTF-8''a%2Fb%5Cc.pdf", "a_b_c.pdf"),
+            ("attachment; filename=\"a/b report.pdf\"", "b report.pdf"),
+            ("attachment; filename=\"%2E%2E\"", "download"),
+        ] {
+            assert_eq!(n(cd), want, "{cd}");
+        }
     }
 
     #[test]
@@ -1573,6 +1981,19 @@ mod tests {
         // A folder of that name.
         std::fs::create_dir(d.path().join("box")).unwrap();
         assert_eq!(replacing_path(d.path(), "box"), d.path().join("box (1)"));
+    }
+
+    /// #597: a resume state beside the name is data even with no file and no part left, so a
+    /// new download takes the next free name instead of resuming that state's own link.
+    #[test]
+    fn a_resume_state_makes_the_name_taken() {
+        let d = tempfile::tempdir().unwrap();
+        let state = crate::state::state_path(&d.path().join("song.mp3"));
+        std::fs::write(&state, b"{}").unwrap();
+        assert_eq!(
+            destination(d.path(), "song.mp3"),
+            d.path().join("song (1).mp3")
+        );
     }
 
     /// Windows with long paths off, as #1102's report: 259 UTF-16 units a path, 255 a name.

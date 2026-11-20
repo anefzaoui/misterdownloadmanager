@@ -65,6 +65,7 @@
     video_turn_on: "Turn on",
     video_best: "best",
     video_original: "original",
+    video_compatible: "Most compatible",
     video_download_best: "Download best",
     video_all_qualities: "All qualities and subtitles...",
     video_looking: "Looking up the qualities…",
@@ -692,6 +693,104 @@
       own: (u) => /^\/(?:video|note)\/\d{15,22}(?:[/?#]|$)/.test(u.pathname),
       opened: (u) => (/^\d{15,22}$/.test(u.searchParams.get("modal_id") || "") ? `https://www.douyin.com/video/${u.searchParams.get("modal_id")}` : null),
     },
+    {
+      // Google Drive videos played in shared folders or direct preview (#758).
+      // The stream's own driveid/docid query parameter names the file; otherwise,
+      // fallback to links or iframes inside the preview dialog that holds the player.
+      hosts: /^(?:drive|docs)\.google\.com$/,
+      embed: (u) => /^\/(?:u\/\d+\/)?file\/d\/[\w-]{25,}\/preview\b/.test(u.pathname),
+      read(node, url) {
+        const sure = new Map();
+        const maybe = new Map();
+        const file = (id, targetMap = sure) => {
+          if (!/^[\w-]{25,}$/.test(id || "")) return;
+          const user = /^\/drive\/(u\/\d+)\//.exec(url.pathname) || /^\/(u\/\d+)\//.exec(url.pathname);
+          const prefix = user ? `/${user[1]}` : "";
+          targetMap.set(id, `https://drive.google.com${prefix}/file/d/${id}/view`);
+        };
+
+        // 1. Take the playing <video>'s own driveid or docid first and stop there.
+        if (node.localName === "video") {
+          const src = node.currentSrc || (node.getAttribute && node.getAttribute("src")) || "";
+          const m = /[?&](?:driveid|docid)=([\w-]{25,})/.exec(src);
+          if (m) {
+            file(m[1], sure);
+            return { sure, maybe };
+          }
+        }
+
+        // An iframe or embed directly playing the video (e.g. YouTube embed player on Drive).
+        if (node.localName === "iframe" || node.localName === "embed") {
+          const src = (node.getAttribute && node.getAttribute("src")) || "";
+          let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&](?:id|driveid|docid)=([\w-]{25,})/.exec(src);
+          if (m && /^[\w-]{25,}$/.test(m[1])) {
+            file(m[1], sure);
+            return { sure, maybe };
+          }
+        }
+
+        // A player container element directly carrying data-doc-id (used by Google Drive viewer
+        // in both signed-in and signed-out states) or data-id for this file.
+        const docId = (node.getAttribute && (node.getAttribute("data-doc-id") || node.getAttribute("data-id"))) || "";
+        if (/^[\w-]{25,}$/.test(docId) && !docId.startsWith("ucc-") && docId !== "_gd") {
+          file(docId, sure);
+          return { sure, maybe };
+        }
+
+        // 2. Fall back to links or iframes only inside the preview dialog that holds the player
+        // (not the folder list), and never to generic data-* attributes.
+        const isDialog =
+          (node.getAttribute && node.getAttribute("role") === "dialog") ||
+          (node.getAttribute && node.getAttribute("aria-modal") === "true") ||
+          /\b(?:preview-dialog|modal|dialog)\b/i.test((node.getAttribute && node.getAttribute("class")) || "");
+
+        if (isDialog) {
+          const candidates = new Set();
+          for (const { u } of linksIn(node)) {
+            if (!/(^|\.)(?:drive|docs)\.google\.com$/.test(u.hostname)) continue;
+            let m = /^\/(?:u\/\d+\/)?file\/d\/([\w-]{25,})/.exec(u.pathname);
+            if (m) candidates.add(m[1]);
+            else if (/^\/(?:u\/\d+\/)?(?:uc|open)$/.test(u.pathname)) {
+              const id = u.searchParams.get("id");
+              if (id && /^[\w-]{25,}$/.test(id)) candidates.add(id);
+            }
+          }
+          for (const el of node.querySelectorAll ? node.querySelectorAll("iframe, embed") : []) {
+            const src = (el.getAttribute && el.getAttribute("src")) || "";
+            let m = /\/file\/d\/([\w-]{25,})/.exec(src) || /[?&](?:id|driveid|docid)=([\w-]{25,})/.exec(src);
+            if (m && /^[\w-]{25,}$/.test(m[1])) candidates.add(m[1]);
+          }
+          for (const el of node.querySelectorAll ? node.querySelectorAll("[data-doc-id]") : []) {
+            const id = el.getAttribute && el.getAttribute("data-doc-id");
+            if (id && /^[\w-]{25,}$/.test(id)) candidates.add(id);
+          }
+
+          // 3. With more than one candidate left, return them as maybe, not sure.
+          if (candidates.size === 1) {
+            file([...candidates][0], sure);
+          } else if (candidates.size > 1) {
+            for (const id of candidates) file(id, maybe);
+          }
+        }
+
+        // 4. Same-origin top window fallback: in Google Drive viewer iframe, inspect top frame's selected row.
+        if (!sure.size && !maybe.size && typeof window !== "undefined" && window !== window.top) {
+          try {
+            const topDoc = window.top.document;
+            const sel = topDoc?.querySelector?.('[role="row"][aria-selected="true"][data-id], [data-id][aria-selected="true"]');
+            const id = sel?.getAttribute?.("data-id");
+            if (id && /^[\w-]{25,}$/.test(id)) file(id, sure);
+          } catch {
+            // Cross-origin top window.
+          }
+        }
+
+        return { sure, maybe };
+      },
+      own: (u) =>
+        /^\/(?:u\/\d+\/)?file\/d\/[\w-]{25,}/.test(u.pathname) ||
+        (/^\/(?:u\/\d+\/)?(?:uc|open)$/.test(u.pathname) && /^[\w-]{25,}$/.test(u.searchParams.get("id") || "")),
+    },
   ];
   // ---- the video's own address: end.
 
@@ -713,23 +812,36 @@
     return String(c.label ?? "").slice(0, 200);
   }
 
-  // What else the menu says of a quality: its file type, its codec, its frame rate and its
-  // range (#755: "VP9 · 60 fps · HDR"), its sound's bitrate. The type goes without saying when
-  // it is MP4 and the codec is said (every merged video is an MP4). An older app's choice (no
-  // height) says it all in its label: nothing more.
-  function qualityMeta(c, t) {
+  // What else the menu says of a quality: the file it makes, its picture's codec, its frame rate
+  // and its range (#755, #1465: "MP4 · VP9 · 60 fps · HDR", as the app's window says it), its
+  // sound's bitrate. Both the type and the codec: every merged video is an MP4, whatever its
+  // picture. An older app's choice (no height) says it all in its label: nothing more. `brief`:
+  // the type and the codec only.
+  function qualityMeta(c, t, brief = false) {
     if (!c || typeof c !== "object") return "";
     // The sound's rows say what they are in their label; their bitrate when the app says it.
     // (fps, kbps, codecs and HDR are the same in every language.)
     if (c.audio === true) return Number(c.kbps) > 0 ? `${Math.round(c.kbps)} kbps` : "";
     if (!c.height && !c.file) return "";
+    // #1439: the H.264 picture with AAC sound, in an MP4 that plays everywhere, says so instead
+    // (the app's whole name for it, "Most compatible (H.264 + AAC) · 1080p", is the line's tip).
+    if (c.compatible === true) return t("video_compatible");
     const word = (x) => (typeof x === "string" ? x.trim().slice(0, 24) : "");
     const codec = word(c.codec);
     const ext = String(c.ext || "").toUpperCase();
-    const parts = [codec && ext === "MP4" ? "" : ext, codec];
-    if (Number(c.fps) > 0) parts.push(`${Math.round(c.fps)} fps`);
-    parts.push(word(c.range));
+    const parts = [ext, codec];
+    if (!brief && Number(c.fps) > 0) parts.push(`${Math.round(c.fps)} fps`);
+    if (!brief) parts.push(word(c.range));
     return parts.filter(Boolean).join(" · ");
+  }
+
+  // A quality's whole name, as the app's window says it (#1465): "1080p MP4 · AV1 · 60 fps";
+  // `brief`, its name, type and codec ("1080p MP4 · AV1"); the sound's, a type's or an older
+  // app's, its short name.
+  function qualityWords(c, t, brief = false) {
+    const name = qualityName(c, t);
+    if (!c || !c.height || c.audio === true) return name;
+    return [name, qualityMeta(c, t, brief)].filter(Boolean).join(" ");
   }
 
   // The quality one click downloads: the app's first (best) video choice, else its first; the
@@ -749,12 +861,12 @@
     return text ? { text, hd: (Number(c.height) || 0) >= 720 } : null;
   }
 
-  // The hover tip's first line: exactly what one click downloads ("Download 1080p MP4 · 412 MB").
+  // The hover tip's first line: exactly what one click downloads ("Download 1080p MP4 · AV1 ·
+  // 60 fps · 412 MB").
   function tipFor(look, t, lang) {
     const c = bestOf(look);
     if (!c) return look && look.state === "pending" ? t("video_tip_best") : t("video_download");
-    const name = qualityName(c, t);
-    const what = c.height || c.file ? [name, String(c.ext || "").toUpperCase()].filter(Boolean).join(" ") : name;
+    const what = qualityWords(c, t);
     const size = choiceSize(c, lang);
     return t("video_tip", size ? `${what} · ${size}` : what);
   }
@@ -789,6 +901,11 @@
   function fitsWords(videoWidth, fullWidth, inset) {
     return videoWidth >= 360 && fullWidth <= videoWidth - 2 * inset;
   }
+  // The round button (the logo, the arrow, the ✕) or the whole one: always round when Options →
+  // Download panels → Button size is Compact (`always`, #1278); else round where its words don't fit.
+  function compactFor(always, videoWidth, fullWidth, inset) {
+    return Boolean(always) || !fitsWords(videoWidth, fullWidth, inset);
+  }
   // ---- the button's words: end.
 
   // The address this page first loaded at (`download`: a page that moves in place keeps its first
@@ -810,6 +927,9 @@
   let asking = null;
   let never = false;
   let placed = false;
+  // Options → Download panels → Button size is Compact (#1278): the round button over every video.
+  // It comes with the app's answer, so a change in Options reaches a page already open with it.
+  let compactAlways = false;
   // Hidden while the page is fullscreen, when chosen in the popup (off: it shows, as now).
   let hideFullscreen = false;
   try {
@@ -1448,11 +1568,22 @@ button:focus-visible { outline: none; }
     return s.visibility !== "hidden" && s.display !== "none" && Number(s.opacity) > 0.05;
   }
 
+  function siteVideos() {
+    if (typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname)) {
+      return (
+        document.querySelectorAll?.(
+          "iframe.drive-viewer-video-iframe, iframe.drive-viewer-iframe, iframe.h3t5Od, iframe[src*='/viewer/main'], iframe[src*='youtube.googleapis.com'], iframe[src*='driveid='], iframe[src*='docid=']",
+        ) || []
+      );
+    }
+    return [];
+  }
+
   // The topmost eligible video under (x, y): players lay their controls over the video, so the
   // video itself rarely gets the pointer's events.
   function videoAt(x, y) {
     let best = null;
-    for (const v of [...videos, ...audios, ...shadowVideos()]) {
+    for (const v of [...videos, ...audios, ...shadowVideos(), ...siteVideos()]) {
       const r = v.getBoundingClientRect();
       if (x < r.left || x > r.right || y < r.top || y > r.bottom || !eligible(v)) continue;
       if (!best || r.width * r.height < best.r.width * best.r.height) best = { v, r };
@@ -1528,9 +1659,10 @@ button:focus-visible { outline: none; }
 
   function position() {
     if (!video) return;
-    // A small video, or one its words wouldn't fit: the round button and its menu only.
+    // A small video, one its words wouldn't fit, or Compact chosen in Options: the round button
+    // and its menu only.
     const vr = held ? held.r : video.getBoundingClientRect();
-    pill.classList.toggle("compact", !fitsWords(vr.width, fullWidth, INSET));
+    pill.classList.toggle("compact", compactFor(compactAlways, vr.width, fullWidth, INSET));
     const { r, w, roomX, roomY } = rects();
     // The pointer on it (or its menu open): it stays where it is, whatever the video does
     // meanwhile. A preview that grows while the pointer is over it and shrinks back when the
@@ -1772,6 +1904,9 @@ button:focus-visible { outline: none; }
     asking = asking || send({ type: "panel" }).then(async (r) => {
       allowed = !never && Boolean(r && r.on);
       askedAt = Date.now();
+      const wasCompact = compactAlways;
+      compactAlways = Boolean(r && r.compact);
+      if (allowed && compactAlways !== wasCompact && video) position();
       // Switched off meanwhile: gone now, unless the menu, a drag or its "Turn on" has it in hand.
       if (!allowed && video && !menuOpen && !dragging && !(status && status.state === "off")) {
         video = null;
@@ -1819,8 +1954,14 @@ button:focus-visible { outline: none; }
 
   // ---- acting ---------------------------------------------------------------------------------
   // The middle of the video: where the background asks the page's own player what it plays.
-  function middle(v) {
+  // A video with no box on the screen any more (a hover preview the page stopped as the pointer
+  // went to the button, #1271: taken out, or hidden in a container of no size) is at no point:
+  // its middle would be the window's corner, where YouTube keeps its main player, whose answer
+  // is the video watched last, not the preview's. The point it was at when the click was taken
+  // (`was`) instead.
+  function middle(v, was) {
     const box = v.getBoundingClientRect();
+    if (!v.isConnected || !(box.width > 0 && box.height > 0)) return was;
     return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
   }
 
@@ -1917,7 +2058,7 @@ button:focus-visible { outline: none; }
   async function useWindow(j, { direct = false, words = "" } = {}) {
     if (!firstWindow(j)) return;
     // Where the video is now, for the background to ask the page's player there.
-    const r = await send({ type: "video", ...j.asked, ...(direct ? { direct: true } : {}), ...(j.video.isConnected ? { at: middle(j.video) } : {}) });
+    const r = await send({ type: "video", ...j.asked, ...(direct ? { direct: true } : {}), at: middle(j.video, j.asked.at) });
     if (r.gone) return;
     if (r.ok) {
       lastShow = r.show || "";
@@ -2051,7 +2192,7 @@ button:focus-visible { outline: none; }
     return s;
   };
 
-  // A quality's words on its line: "1080p", "MP4 · 60 fps"; the sound's "MP3", "320 kbps", and
+  // A quality's words on its line: "1080p", "MP4 · AV1 · 60 fps"; the sound's "MP3", "320 kbps", and
   // the sound as the site sends it "128 kbps · original" (just "original" when its rate isn't said).
   function lineWords(c, t) {
     if (c && c.audio === true) {
@@ -2061,7 +2202,7 @@ button:focus-visible { outline: none; }
     return { q: qualityName(c, t), f: qualityMeta(c, t) };
   }
 
-  // The first line: what one click downloads ("Download best · 1080p MP4 · 60 fps · 412 MB"),
+  // The first line: what one click downloads ("Download best · 1080p MP4 · AV1 · 412 MB"),
   // chosen as the list opens.
   function topRow(c, { choice, file }) {
     const b = document.createElement("button");
@@ -2072,8 +2213,10 @@ button:focus-visible { outline: none; }
     else b.dataset.row = file ? "file" : "best";
     const mi = span("mi", "");
     mi.append(arrowIcon.cloneNode(true));
-    const name = c ? [qualityName(c, t), c.height || c.file ? String(c.ext || "").toUpperCase() : ""].filter(Boolean).join(" ") : "";
-    const what = [name, c && c.fps ? `${Math.round(c.fps)} fps` : ""].filter(Boolean).join(" · ");
+    // The name, type and codec (its frame rate is on its line below, #1465); all its words in its
+    // tip, as a long language's "Download best" leaves little room.
+    const what = c ? qualityWords(c, t, true) : "";
+    if (c) b.title = qualityWords(c, t);
     b.append(mi, span("lead", t("video_download_best")), span("f", what), span("z", c ? choiceSize(c, lang) : ""));
     return b;
   }
@@ -2089,6 +2232,7 @@ button:focus-visible { outline: none; }
     const { q, f } = lineWords(c, t);
     const fs = span("f", f);
     if (best) fs.append(span("best", t("video_best")));
+    if (c && c.compatible === true) b.title = String(c.label ?? "").slice(0, 200);
     b.append(span("n", String(n)), span("q", q), fs, span("z", rowText(c, lang).size));
     return b;
   }
@@ -2297,6 +2441,44 @@ button:focus-visible { outline: none; }
   });
 
   // ---- wiring -----------------------------------------------------------------------------------
+  const isDriveHost = typeof location !== "undefined" && /(^|\.)(?:drive|docs)\.google\.com$/.test(location.hostname);
+  const isDriveTop = typeof window !== "undefined" && window === window.top && isDriveHost;
+  const isDriveViewer =
+    typeof window !== "undefined" &&
+    isDriveHost &&
+    (window === window.top || /\/viewer\/main\b/.test(location.pathname) || /\/file\/d\/[^/]+\/preview/.test(location.pathname));
+  const isDriveFrame =
+    typeof window !== "undefined" &&
+    window !== window.top &&
+    typeof location !== "undefined" &&
+    ((location.hostname === "youtube.googleapis.com" &&
+      (/[?&](?:driveid|docid)=/.test(location.search) || /[?&]ps=docs\b/.test(location.search))) ||
+      (isDriveHost && /\/file\/d\/[^/]+\/preview/.test(location.pathname)));
+
+  let lastFrameMove = 0;
+  function onFrameMove() {
+    const now = Date.now();
+    if (now - lastFrameMove < 80) return;
+    lastFrameMove = now;
+    send({ type: "drive-frame-pointer" });
+  }
+
+  function onDriveFramePointer(m) {
+    if (m && m.type === "drive-frame-pointer") {
+      lastMove = Date.now();
+      if (!video) {
+        const frame = [...siteVideos()].find(eligible);
+        if (frame) {
+          const r = frame.getBoundingClientRect();
+          pointer = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+          show(frame);
+        }
+      } else if (!pill.classList.contains("shown")) {
+        show(video);
+      }
+    }
+  }
+
   // The extension updated or removed under this page: the button and its listeners go (a fresh
   // copy of this script comes with the new extension).
   function teardown() {
@@ -2306,6 +2488,8 @@ button:focus-visible { outline: none; }
     cancelAnimationFrame(raf);
     cancelAnimationFrame(scan);
     removeEventListener("pointermove", onMove, true);
+    if (isDriveFrame) removeEventListener("pointermove", onFrameMove, true);
+    if (isDriveViewer) ext.runtime?.onMessage?.removeListener(onDriveFramePointer);
     removeEventListener("keydown", onTab, true);
     removeEventListener("loadstart", onLoadStart, true);
     root.remove();
@@ -2314,6 +2498,12 @@ button:focus-visible { outline: none; }
     video = null;
   }
   globalThis.__mdmVideoButton = { alive: () => Boolean(ext.runtime?.id), teardown };
+  if (isDriveFrame) {
+    addEventListener("pointermove", onFrameMove, { capture: true, passive: true });
+  }
+  if (isDriveViewer) {
+    ext.runtime?.onMessage?.addListener(onDriveFramePointer);
+  }
   addEventListener("pointermove", onMove, { capture: true, passive: true });
   addEventListener("pointerdown", (e) => {
     if (menuOpen && !e.composedPath().includes(root)) closeMenu();
@@ -2359,7 +2549,9 @@ button:focus-visible { outline: none; }
   });
   document.addEventListener("fullscreenchange", () => {
     if (!video) return;
-    if (hideFullscreen && document.fullscreenElement) hide(true);
+    // Entering full screen: out of the way at once, as the player's own controls are; the
+    // pointer's next move brings it back. Leaving it: shown again, as before.
+    if (document.fullscreenElement) hide(true);
     else show(video);
   });
   addEventListener("blur", () => hide());

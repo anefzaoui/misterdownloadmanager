@@ -67,6 +67,16 @@ pub fn describe(e: &Error) -> String {
             "the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM",
         )
         .to_owned(),
+        Error::NotTheFile { size, sent } => fmt(
+            // i18n: why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+            t(
+                "the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it",
+            ),
+            &[
+                ("sent", &crate::model::size(*sent)),
+                ("size", &crate::model::size(*size)),
+            ],
+        ),
         Error::RangesUnavailable => t("the server did not send the requested part").to_owned(),
         Error::LinkExpired => {
             t("the download link has expired (refresh the download address)").to_owned()
@@ -564,6 +574,12 @@ mod tests {
             message: "Too many users".into(),
         });
         assert!(describe(&quota).contains("Too many users"));
+        // #1460: both sizes, the server's answer's and the browser's file's.
+        let short = describe(&Error::NotTheFile {
+            size: 123_365_000,
+            sent: 4_762,
+        });
+        assert!(short.contains("117.65 MB") && short.contains("4.65 KB"));
         assert_eq!(
             os_text("Access is denied. (os error 5)"),
             "Access is denied"

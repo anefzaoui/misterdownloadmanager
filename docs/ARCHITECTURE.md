@@ -50,12 +50,15 @@ place; the file's date can follow the server's.
 
 A download's first request (`get`) follows redirects and the pages that lead on to a file by
 themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module
-in `sites/` (Google Drive: `sites/gdrive.rs`; MediaFire: `sites/mediafire.rs`): it turns the link
-into the file's address, reads the site's own pages (a confirmation form, a download button, an
-error page), names its refusals (`Error::Refused`) and, where the file's addresses expire, the
-page that gives a fresh one (`sites::origin`, asked again when a connection meets an expired
-address), with pure functions tested without a network. The lab server plays such a site on its
-real host names for the end-to-end tests (`labserver/src/drive.rs`, `labserver/src/mediafire.rs`).
+in `sites/` (Google Drive: `sites/gdrive.rs`; MediaFire: `sites/mediafire.rs`; Rapidgator:
+`sites/rapidgator.rs`): it turns the link into the file's address, reads the site's own pages (a
+confirmation form, a download button, an error page), names its refusals (`Error::Refused`) and,
+where the file's addresses expire, the page that gives a fresh one (`sites::origin`, asked again
+when a connection meets an expired address, at most once per expiry and never again at once for
+an address it then refused; Rapidgator's page is the browser's tab the download came from,
+`Options::page`), with pure functions tested without a network. The lab server plays such a site
+on its real host names for the end-to-end tests (`labserver/src/drive.rs`,
+`labserver/src/mediafire.rs`, `labserver/src/rapidgator.rs`).
 
 FTP and FTPS (`ftp.rs`) go through the same planner, workers and state: a segment is `REST` +
 `RETR` on a control session instead of a ranged `GET`, `SIZE` and `MDTM` stand in for the
@@ -124,7 +127,11 @@ every system (`crates/app/src/renderer.rs`): when the chosen one can't start, th
 tried, so the windows always open. A watched start with the system's API leaves a marker until
 its first frame is drawn: a start that ends before it (a crash inside the driver), one whose
 first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics
-card lost twice in 10 minutes is remembered with its reason, which the menu shows.
+card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL,
+a window eframe can't paint (its context can't be made current on it, its frame can't be shown)
+is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost
+device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows).
+The fork's eframe tells MDM through its viewport hooks (`gl_paint_failed`, #1448).
 
 View → Interface size (`scale.rs`, #262) is egui's zoom factor over the display's own scale:
 every window is laid out in points, so it opens that much larger; one larger than the screen
@@ -165,6 +172,19 @@ measured as the widest browser writes it (`wireSize` in `background.js`) and car
 referrer and cookies and its place (`mdm_ipc::LinksPart`); the host hands each over as it comes,
 and the app keeps them (`linkparts.rs`) until the last is in, then opens Link grabber with the
 whole list.
+
+The toolbar button's popup lists MDM's newest downloads (#1496). While it is open,
+`background.js` keeps one native port to the host (`connectNative`: one helper process, not one
+per question) and asks every second `{"recent": …}`; the host asks the running app
+(`mdm_ipc::RecentAsk`), which answers with `mdm_ipc::api::RecentAnswer`: the newest downloads
+that match the search and the filter, the counts of each filter, and the system's icons for the
+file types the popup lacks (`fileicons.rs`, PNG `data:` addresses, each type once per size), the
+whole within 512 KB. The popup's buttons send `{"downloadAct": …}` (`mdm_ipc::RecentAct`): the
+app opens the file or its folder, puts the file on the clipboard or opens the share sheet
+(`fileclip.rs`, each system's own calls in `win32.rs` and `unix.rs`). Neither question starts the
+app. The toolbar button's count of running downloads comes from the same answers, watched while
+any runs. With downloads sent to another MDM, the list is its remote control's (`api/list`), cut
+to the same view in `background.js`.
 
 The host serves only MDM's own extension. Its IDs are in one place, `mdm_ipc::extension`
 (`crates/ipc/src/extension.rs`): the unpacked copy's (`UNPACKED_ID`, from the manifest's public

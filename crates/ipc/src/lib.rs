@@ -26,6 +26,10 @@ pub struct Command {
     /// Save folder (`/p`) and file name (`/f`).
     pub dir: Option<String>,
     pub name: Option<String>,
+    /// The checksum the finished file must have, as the command line takes it (`sha256:…`, a
+    /// bare hex value, …): `mdm_engine::verify::Hash` reads it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub checksum: Option<String>,
     /// `/a`: add to the main queue, don't start.
     pub later: bool,
     /// `/n`: silent — no Download File Info dialog.
@@ -63,8 +67,16 @@ pub struct Command {
     /// Content-Type (`post_type`).
     pub post: Option<String>,
     pub post_type: Option<String>,
-    /// From a private (incognito) window: the download is never written to the saved list.
+    /// From a private (incognito) window: the download is not written to the saved list, unless
+    /// the app's Options → General → "Keep private-window downloads in the list" is on.
     pub private: bool,
+    /// Set by the native messaging host alone, on the download the browser itself handed over
+    /// (its own download, cancelled in the browser): not by the command line, the automation API
+    /// or MCP, whatever cookies or Referer they carry. The one a waiting download's fresh
+    /// address is taken from. Not in the published schema; older senders leave it off (false).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    #[schemars(skip)]
+    pub browser_handoff: bool,
     /// From the browser (#42): the proxy it uses for this address ("http://host:port",
     /// "https://…", "socks5h://…", "socks4://…"), set by a VPN or proxy extension or its
     /// settings; or its proxy auto-config script's text. The app downloads through the same
@@ -104,6 +116,9 @@ pub struct Command {
     /// startup, or the installer's "Start when Windows starts", #226): MDM starts in the
     /// notification area, its window hidden. Changes nothing in a running app.
     pub startup: bool,
+    /// `/fromhost` (beyond IDM, #1333): started by the browser native messaging host:
+    /// starts hidden without marking an OS session login.
+    pub hidden: bool,
     /// `/show <window>` (beyond IDM): the running app opens one of its windows by name, for
     /// screenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,
     /// `scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,
@@ -155,7 +170,68 @@ pub struct Command {
     /// sites again (a pattern of the user's own that covers it stays).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub include_site: Option<String>,
+    /// From the browser's toolbar button (#1496, its native host asks): the newest downloads its
+    /// popup lists, answered with an [`api::RecentAnswer`] whatever the automation API's switch,
+    /// never for a paired device.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recent: Option<RecentAsk>,
+    /// That list's buttons: act on one download (open it, show it in its folder, copy its file,
+    /// share it, pause, resume…), answered with an [`api::RecentActAnswer`].
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recent_act: Option<RecentAct>,
 }
+
+/// The browser popup's list of downloads ([`Command::recent`], #1496): which ones, and the file
+/// type icons it lacks.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct RecentAsk {
+    /// One of [`RECENT_FILTERS`]: every download, those running, complete, or failed.
+    pub filter: String,
+    /// Words to find in the file's name or its address (case doesn't matter); empty: all.
+    pub search: String,
+    /// The most downloads answered, newest first (at most [`RECENT_MAX`]); 0: none, only the
+    /// counts (the toolbar button's count of running downloads).
+    pub limit: usize,
+    /// The file type icons the popup has already (their keys): not sent again.
+    pub have: Vec<String>,
+    /// The icons' side in pixels (the popup's size for them at the screen's scale), 16 to 64.
+    pub px: u32,
+}
+
+/// [`RecentAsk::filter`]'s values.
+pub const RECENT_FILTERS: [&str; 4] = ["all", "running", "done", "failed"];
+
+/// The most downloads one [`RecentAsk`] is answered with.
+pub const RECENT_MAX: usize = 200;
+
+/// One of the browser popup's buttons on a download ([`Command::recent_act`], #1496).
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct RecentAct {
+    /// One of [`RECENT_ACTS`].
+    pub act: String,
+    /// The download (its `id` in the list); none for `clear-done`.
+    pub id: u64,
+}
+
+/// [`RecentAct::act`]'s values: open the file; show it selected in its folder; put the file on
+/// the clipboard (to paste in a folder, a chat, an upload box); the system's share sheet
+/// (Windows, macOS); stop it (resumable); resume it; download it again from the start; take it
+/// off the list (its file kept); take it off the list and delete its file; take every complete
+/// download off the list (their files kept).
+pub const RECENT_ACTS: [&str; 10] = [
+    "open",
+    "folder",
+    "copy-file",
+    "share",
+    "pause",
+    "resume",
+    "redownload",
+    "remove",
+    "delete",
+    "clear-done",
+];
 
 /// The most parts a page's links come in ([`LinksPart`]): 256 messages of up to 1 MB each.
 pub const MAX_LINK_PARTS: u32 = 256;
@@ -246,6 +322,11 @@ impl Command {
             || self.video_lookup.is_some()
             || self.video_poll.is_some()
             || self.video_pick.is_some()
+            || self.recent.is_some()
+            || self.recent_act.is_some()
+            // An add's expected checksum is read before it is added: a bad one is answered,
+            // not dropped while the add goes on.
+            || (self.url.is_some() && self.checksum.is_some())
     }
 }
 
@@ -745,6 +826,10 @@ pub fn random_token() -> String {
 /// LaunchAgent, the installer's): MDM starts in the notification area ([`Command::startup`]).
 pub const STARTUP: &str = "/startup";
 
+/// The argument passed when the browser native messaging host starts MDM (#1333): MDM starts
+/// in the notification area with its main window hidden, without marking an OS session login.
+pub const FROM_HOST: &str = "/fromhost";
+
 /// Parse IDM's command line: `/d URL [/p dir] [/f name] [/a] [/n] [/q] [/s]` (case-insensitive;
 /// `-d` also accepted). Returns None when there is nothing to do.
 pub fn parse_args(args: &[String]) -> Option<Command> {
@@ -763,6 +848,7 @@ pub fn parse_args(args: &[String]) -> Option<Command> {
             "q" | "h" => {}
             "exit" => cmd.exit = true,
             "startup" => cmd.startup = true,
+            "fromhost" => cmd.hidden = true,
             "show" => cmd.show = it.next().map(|w| w.to_ascii_lowercase()),
             // A bare magnet link or .torrent file (what Windows passes for an association).
             _ if a
@@ -824,7 +910,12 @@ mod tests {
         // The startup entries' argument (#226), as written and as a Linux user might.
         assert!(parse_args(&[STARTUP.into()]).unwrap().startup);
         assert!(parse_args(&a("--startup")).unwrap().startup);
+        assert!(!parse_args(&[STARTUP.into()]).unwrap().hidden);
         assert!(!parse_args(&a("/s")).unwrap().startup);
+        // The browser host's argument (#1333): hidden start without startup session markers.
+        assert!(parse_args(&[FROM_HOST.into()]).unwrap().hidden);
+        assert!(parse_args(&a("--fromhost")).unwrap().hidden);
+        assert!(!parse_args(&[FROM_HOST.into()]).unwrap().startup);
         assert!(parse_args(&[]).is_none());
     }
 
@@ -1071,6 +1162,30 @@ mod tests {
         assert!(!whole.contains("links_part"), "{whole}");
     }
 
+    /// An add may carry the checksum its finished file must have (the command line's
+    /// `--checksum`): read from a request line, left out of one that has none, and answered so
+    /// a bad one can be refused rather than dropped.
+    #[test]
+    fn an_adds_checksum_travels_and_is_left_out_when_unset() {
+        let sha256 = "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
+        let raw: Command = serde_json::from_str(&format!(
+            r#"{{"url":"https://x.test/a.zip","checksum":"{sha256}"}}"#
+        ))
+        .unwrap();
+        assert_eq!(raw.checksum.as_deref(), Some(sha256));
+        assert!(raw.wants_reply(), "the add's answer can say no");
+        // An older app's line has no checksum at all.
+        let old: Command = serde_json::from_str(r#"{"url":"https://x.test/a.zip"}"#).unwrap();
+        assert_eq!(old.checksum, None);
+        // Without one, the key is not written (the line stays as it was).
+        let whole = serde_json::to_string(&Command {
+            url: Some("https://x.test/a.zip".into()),
+            ..Default::default()
+        })
+        .unwrap();
+        assert!(!whole.contains("checksum"), "{whole}");
+    }
+
     #[test]
     fn secrets_compare_whole() {
         assert!(same_secret("abc", "abc"));
@@ -1081,5 +1196,27 @@ mod tests {
     fn tokens_are_random() {
         assert_ne!(random_token(), random_token());
         assert_eq!(random_token().len(), 64);
+    }
+}
+
+#[cfg(test)]
+mod handoff_tests {
+    use super::*;
+
+    /// The browser hand-off mark is off by default (older senders, the command line, MCP), only
+    /// written when set, and a command carrying cookies is not marked by them.
+    #[test]
+    fn the_browser_hand_off_is_explicit() {
+        let old: Command =
+            serde_json::from_str(r#"{"url":"https://x/a","cookies":"a=1"}"#).unwrap();
+        assert!(!old.browser_handoff);
+        let json = serde_json::to_string(&old).unwrap();
+        assert!(!json.contains("browser_handoff"), "{json}");
+        let marked = Command {
+            browser_handoff: true,
+            ..Default::default()
+        };
+        let back: Command = serde_json::from_str(&serde_json::to_string(&marked).unwrap()).unwrap();
+        assert!(back.browser_handoff);
     }
 }

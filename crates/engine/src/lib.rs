@@ -1,14 +1,15 @@
 //! Mister Download Manager download engine. See notes/ENGINE.md.
 
 pub mod agent;
-mod browserlike;
+pub mod browserlike;
 pub mod disk;
 pub mod dns;
 pub mod download;
 pub mod fault;
 pub mod ftp;
 pub mod hosts;
-mod html;
+// Public for the fuzz targets (fuzz/): `links` and `declared_videos` without a network.
+pub mod html;
 pub mod limiter;
 pub mod naming;
 pub mod net;

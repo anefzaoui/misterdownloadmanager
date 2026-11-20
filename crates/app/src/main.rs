@@ -22,9 +22,11 @@ mod droptarget;
 mod errors;
 mod extension;
 mod extractq;
+mod fileclip;
 mod fileicons;
 mod find;
 mod finish;
+mod freshlink;
 mod gallerydlg;
 mod grabber;
 mod headless;
@@ -49,9 +51,11 @@ mod progress;
 mod properties;
 mod queue;
 mod quota;
+mod recent;
 mod regional;
 mod remote;
 mod renderer;
+mod resumeread;
 mod rss;
 mod rssdlg;
 mod scale;
@@ -65,6 +69,7 @@ mod store;
 mod theme;
 mod themefile;
 mod themeicons;
+mod torrent_ownership;
 mod torrent_rename;
 mod torrentdlg;
 mod torrentfiles;
@@ -76,6 +81,7 @@ mod unix;
 mod update;
 mod videodlg;
 mod videolookup;
+mod videoplace;
 mod wake;
 mod webmark;
 mod whereis;
@@ -299,17 +305,22 @@ pub enum Start {
     /// queues and the Scheduler running. It stays in the notification area once MDM's icon is
     /// there, or shows minimized if none comes (app.rs `at_login`, decided there alone).
     Session,
+    /// Started hidden by the browser host or a background caller ([`mdm_ipc::FROM_HOST`], #1333):
+    /// the main window is hidden, without marking an OS session login.
+    Hidden,
     /// Started with the session where a window can't be hidden (Wayland): minimized.
     Minimized,
 }
 
-/// How a start shows the main window: `at_login` when the startup entry started it, `can_hide`
-/// where a window can be hidden (not on Wayland).
-fn start_mode(at_login: bool, can_hide: bool) -> Start {
-    match (at_login, can_hide) {
-        (false, _) => Start::Shown,
-        (true, true) => Start::Session,
-        (true, false) => Start::Minimized,
+/// How a start shows the main window: `at_login` when the startup entry started it, `hidden`
+/// when started hidden from host, `can_hide` where a window can be hidden (not on Wayland).
+fn start_mode(at_login: bool, hidden: bool, can_hide: bool) -> Start {
+    match (at_login, hidden, can_hide) {
+        (true, _, true) => Start::Session,
+        (true, _, false) => Start::Minimized,
+        (false, true, true) => Start::Hidden,
+        (false, true, false) => Start::Minimized,
+        (false, false, _) => Start::Shown,
     }
 }
 
@@ -426,9 +437,10 @@ fn app() -> eframe::Result {
     };
     #[cfg(windows)]
     win32::mark_running();
-    // Started with the session (#226): read before the command goes to the channel; the start's
-    // mode once the window system is known (below).
+    // Started with the session (#226) or from browser native messaging host (#1333): read before
+    // the command goes to the channel; the start's mode once the window system is known (below).
     let at_login = cmd.as_ref().is_some_and(|c| c.startup);
+    let from_host = cmd.as_ref().is_some_and(|c| c.hidden);
     // This launch is MDM: its fonts are looked up while the rest starts (only the instance pays
     // for them, not a launch that hands its command over).
     theme::prepare_fonts();
@@ -447,10 +459,14 @@ fn app() -> eframe::Result {
     let window: std::sync::Arc<std::sync::OnceLock<egui::Context>> = Default::default();
     let wake = window.clone();
     let wake: std::sync::Arc<dyn Fn() + Send + Sync> = std::sync::Arc::new(move || {
+        // A command came in: someone waits for the window's answer, hidden or not (#1126).
+        crash::asked();
         if let Some(ctx) = wake.get() {
             ctx.request_repaint();
         }
     });
+    #[cfg(target_os = "linux")]
+    let wake_at_end = wake.clone();
     // macOS: so do the .torrent files and magnet links Finder and the browsers hand over (#698).
     #[cfg(target_os = "macos")]
     unix::open_events::start(tx.clone(), wake.clone());
@@ -490,6 +506,10 @@ fn app() -> eframe::Result {
             at_login,
         );
     }
+    // Linux: the session's end (logind's SIGTERM at logout or shutdown) is heard from now on,
+    // and run at the window's next frame (`Shared::logic`).
+    #[cfg(target_os = "linux")]
+    unix::on_session_end(rt.handle(), wake_at_end);
     // Linux: the libraries the window loads when it opens (#265). Without them it can't open
     // (winit stopped at start): MDM says what's missing, in its language, and how to install it.
     #[cfg(target_os = "linux")]
@@ -509,9 +529,10 @@ fn app() -> eframe::Result {
             tracing::warn!("{text}");
         }
     }
-    // Started with the session (#226): in the notification area, not in front, where a window
-    // can be hidden (Linux: known once the window system is chosen above, with the saved choice).
-    let start = start_mode(at_login, can_hide());
+    // Started with the session (#226) or from host (#1333): in the notification area, not in
+    // front, where a window can be hidden (Linux: known once the window system is chosen above,
+    // with the saved choice).
+    let start = start_mode(at_login, from_host, can_hide());
     // Secrets from before (sealed, or kept as they were) go to the system's keychain now; the
     // list is saved with their references once it holds them (secrets.rs, #44).
     let _ = loaded.settings.for_disk();
@@ -541,12 +562,18 @@ fn app() -> eframe::Result {
     }
     // Hidden from its first frame on (eframe keeps a root window built hidden so), until the
     // app knows whether its tray icon is shown (app.rs at_login).
-    if start == Start::Session {
-        tracing::info!("started with the session: hidden");
+    if matches!(start, Start::Session | Start::Hidden) {
+        if start == Start::Session {
+            tracing::info!("started with the session: hidden");
+        } else {
+            tracing::info!("started from host: hidden");
+        }
         viewport = viewport.with_visible(false);
     }
     // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
     // WARP before OpenGL, #847).
+    // A first frame late in a start with the session is the busy login's first (#1205).
+    renderer::started_with_session(at_login);
     let plan = renderer::plan(
         loaded.settings.renderer,
         renderer::overridden(&args).as_deref(),
@@ -562,6 +589,8 @@ fn app() -> eframe::Result {
     let result = renderer::run(APP_ID, &plan, options, move |cc| {
         #[cfg(windows)]
         win32::set_main_window(cc);
+        #[cfg(target_os = "linux")]
+        unix::set_main_window(cc);
         scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
         clipboard::wake(&cc.egui_ctx);
@@ -574,17 +603,33 @@ fn app() -> eframe::Result {
             loaded,
             start,
         )));
-        // Windows' end of the session (shut down, restart, sign out, an installer's Restart
-        // Manager): saved as an Exit saves, before Windows is answered, and MDM ends. Not yet
-        // elsewhere (unchecked there): on Linux the session's end (logind's SIGTERM, the display
-        // going away) ends MDM unsaved, the list as last saved and each download from its last
-        // save; on macOS AppKit's terminate at logout reaches eframe as winit's exit, which drops
-        // the app (`Drop` saves as an Exit does, and tells the crash monitor the exit was clean:
-        // #1125).
+        // The session's end saves as an Exit saves, and MDM ends. Windows (shut down, restart,
+        // sign out, an installer's Restart Manager): before Windows is answered. Linux (logout,
+        // shutdown): logind's SIGTERM at the next frame (`Shared::logic`, heard since the start:
+        // `unix::on_session_end`), or the X server going away (GNOME's ends at logout before the
+        // SIGTERM comes) as soon as winit or Xlib finds out (`unix::on_display_lost`); Wayland's
+        // lost connection ends winit's loop, and eframe drops the app, which saves as an Exit
+        // does (unchecked). macOS: AppKit's terminate at logout reaches
+        // eframe as winit's exit, which drops the app (`Drop` saves as an Exit does, and tells
+        // the crash monitor the exit was clean: #1125); signals aren't how macOS ends a session.
         #[cfg(windows)]
         {
             let app = std::rc::Rc::downgrade(&app);
             win32::on_session_end(move |why| end_session(&app, why));
+        }
+        #[cfg(target_os = "linux")]
+        {
+            let app = std::rc::Rc::downgrade(&app);
+            unix::on_display_lost(cc, move || {
+                match app.upgrade() {
+                    // Busy in its frame: the next one (`Shared::logic`).
+                    Some(app) if app.try_borrow_mut().is_err() => return false,
+                    Some(app) => drop(save_for_session_end(&app, unix::SessionEnd::DisplayLost)),
+                    None => crash::clean_exit(),
+                }
+                mdm_crash::logs::flush(LOG_AT_THE_END);
+                true
+            });
         }
         Shared(app)
     });
@@ -598,6 +643,15 @@ struct Shared(std::rc::Rc<std::cell::RefCell<app::App>>);
 
 impl eframe::App for Shared {
     fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        // Linux: the session ends (logind's SIGTERM, unix::on_session_end; or the display went
+        // away during the last frame, unix::on_display_lost): saved before this frame does
+        // anything, and the process ends, as logind would end it.
+        #[cfg(target_os = "linux")]
+        if let Some(why) = unix::session_ending() {
+            drop(save_for_session_end(&self.0, why));
+            mdm_crash::logs::flush(LOG_AT_THE_END);
+            unix::exit_now(0);
+        }
         eframe::App::logic(&mut *self.0.borrow_mut(), ctx, frame);
     }
 
@@ -606,30 +660,47 @@ impl eframe::App for Shared {
     }
 }
 
-/// The session ends (win32::on_session_end): the app's end as an Exit's (`App::end_session`),
-/// the crash monitor told it's a clean one, and the process ends, as Windows would end it once
-/// answered (the Restart Manager waits for it to). Within the 5 s Windows gives before it says
-/// MDM keeps the computer from shutting down.
-#[cfg(windows)]
-fn end_session(app: &std::rc::Weak<std::cell::RefCell<app::App>>, why: win32::SessionEnd) {
-    let app = app.upgrade();
-    let mut app = match app.as_deref().map(std::cell::RefCell::try_borrow_mut) {
-        Some(Ok(mut app)) => {
+/// The session ends: the app's end as an Exit's (`App::end_session`), within the time the
+/// system gives (Windows: 5 s before it says MDM keeps the computer from shutting down), and the
+/// crash monitor told it's a clean one. The process ends right after (the caller): the app, when
+/// it could be reached, for what's left before.
+#[cfg(any(windows, target_os = "linux"))]
+fn save_for_session_end(
+    app: &std::cell::RefCell<app::App>,
+    why: impl std::fmt::Debug,
+) -> Option<std::cell::RefMut<'_, app::App>> {
+    let app = match app.try_borrow_mut() {
+        Ok(mut app) => {
             app.end_session();
             Some(app)
         }
         // In the middle of a frame (a window of the system's open in it): the list and the
         // downloads as last saved.
-        Some(Err(_)) => {
+        Err(_) => {
             tracing::warn!("the session ends during a frame: nothing more is saved");
             None
         }
-        None => None,
     };
     tracing::info!("ending with the session ({why:?})");
     crash::clean_exit();
+    app
+}
+
+/// Windows' session ends (win32::on_session_end): saved (`save_for_session_end`), and the
+/// process ends, as Windows would end it once answered (the Restart Manager waits for it to).
+#[cfg(windows)]
+fn end_session(app: &std::rc::Weak<std::cell::RefCell<app::App>>, why: win32::SessionEnd) {
+    let app = app.upgrade();
+    let mut saved = match app.as_deref() {
+        Some(app) => save_for_session_end(app, why),
+        None => {
+            tracing::info!("ending with the session ({why:?})");
+            crash::clean_exit();
+            None
+        }
+    };
     if why == win32::SessionEnd::Closed
-        && let Some(app) = app.as_mut()
+        && let Some(app) = saved.as_mut()
     {
         app.take_down_tray();
     }
@@ -653,14 +724,16 @@ mod tests {
             .unwrap_or_else(std::sync::PoisonError::into_inner)
     }
 
-    /// Started with the session (#226): hidden (the tray decided by the app), or minimized
-    /// where a window can't be hidden; a start by the user shows the window.
+    /// Started with the session (#226) or from host (#1333): hidden (the tray decided by
+    /// the app), or minimized where a window can't be hidden; a start by the user shows the window.
     #[test]
     fn a_start_with_the_session_waits_in_the_tray() {
-        assert_eq!(start_mode(true, true), Start::Session);
-        assert_eq!(start_mode(true, false), Start::Minimized);
-        assert_eq!(start_mode(false, true), Start::Shown);
-        assert_eq!(start_mode(false, false), Start::Shown);
+        assert_eq!(start_mode(true, false, true), Start::Session);
+        assert_eq!(start_mode(true, false, false), Start::Minimized);
+        assert_eq!(start_mode(false, true, true), Start::Hidden);
+        assert_eq!(start_mode(false, true, false), Start::Minimized);
+        assert_eq!(start_mode(false, false, true), Start::Shown);
+        assert_eq!(start_mode(false, false, false), Start::Shown);
     }
 
     /// An off-screen run neither reads the clipboard (Add URL, Batch, the clipboard monitor…)

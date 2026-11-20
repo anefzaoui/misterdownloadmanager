@@ -69,7 +69,7 @@ pub fn install_fonts(defs: &mut egui::FontDefinitions, font_dir: Option<&std::pa
             Some(bytes) => {
                 defs.font_data.insert(
                     family.into(),
-                    std::sync::Arc::new(egui::FontData::from_owned(bytes)),
+                    std::sync::Arc::new(crate::theme::font_data(bytes)),
                 );
                 vec![family.to_owned()]
             }
@@ -328,6 +328,13 @@ fn caption_for(ctx: &egui::Context, control: Rect) -> Option<String> {
     Some(s.trim_end_matches(':').trim().replace('&', ""))
 }
 
+/// A control's name for screen readers, when its visible text isn't one ("+", "...", a label
+/// another control shares like "Edit..."): a reader says `name` instead.
+pub fn name(resp: &Response, name: &str) {
+    resp.ctx
+        .accesskit_node_builder(resp.id, |node| node.set_label(name.to_owned()));
+}
+
 /// A text box's or drop-down's name for screen readers, from its caption ([`caption_for`]).
 fn name_from_caption(resp: &Response) {
     if let Some(name) = caption_for(&resp.ctx, resp.rect) {
@@ -336,9 +343,14 @@ fn name_from_caption(resp: &Response) {
     }
 }
 
-/// Segoe UI −12: menu bar, toolbar labels.
+/// Segoe UI −12: menu bar, toolbar labels; Tahoma where the theme's menus take it (Luna:
+/// `[controls] ui-font = "tahoma"`).
 pub fn segoe() -> FontId {
-    FontId::proportional(crate::theme::font_size(crate::theme::metrics().font_ui))
+    let size = crate::theme::font_size(crate::theme::metrics().font_ui);
+    match crate::theme::current().controls.ui_font {
+        crate::palette::UiFont::System => FontId::proportional(size),
+        crate::palette::UiFont::Tahoma => FontId::new(size, FontFamily::Name("tahoma".into())),
+    }
 }
 
 /// Arial Bold −13: the Categories close "x".
@@ -1284,21 +1296,35 @@ pub fn reachable_rows(n: usize, first: usize, page: usize) -> std::ops::Range<us
 /// How many rows of a list a screen reader reaches at most ([`reachable_rows`]).
 pub const A11Y_ROWS: usize = 300;
 
-/// The row of `rows` (widget ids `id_of(i)`) a screen reader asked to scroll into view, or to
-/// select (AccessKit's click), this frame.
+/// The row of `rows` (widget ids `id_of(i)`) a screen reader asked to scroll into view, to
+/// select (AccessKit's click) or to move the focus to, this frame.
 pub fn row_asked_for(
     ui: &Ui,
     rows: std::ops::Range<usize>,
     id_of: impl Fn(usize) -> egui::Id,
 ) -> Option<usize> {
     use egui::accesskit::Action;
+    row_asked(
+        ui,
+        rows,
+        id_of,
+        &[Action::ScrollIntoView, Action::Click, Action::Focus],
+    )
+}
+
+/// The row of `rows` (widget ids `id_of(i)`) a screen reader asked for one of `actions` this
+/// frame.
+pub fn row_asked(
+    ui: &Ui,
+    rows: std::ops::Range<usize>,
+    id_of: impl Fn(usize) -> egui::Id,
+    actions: &[egui::accesskit::Action],
+) -> Option<usize> {
     let targets: Vec<egui::accesskit::NodeId> = ui.input(|i| {
         i.events
             .iter()
             .filter_map(|e| match e {
-                egui::Event::AccessKitActionRequest(r)
-                    if matches!(r.action, Action::ScrollIntoView | Action::Click) =>
-                {
+                egui::Event::AccessKitActionRequest(r) if actions.contains(&r.action) => {
                     Some(r.target_node)
                 }
                 _ => None,
@@ -1310,6 +1336,46 @@ pub fn row_asked_for(
     }
     rows.into_iter()
         .find(|i| targets.contains(&id_of(*i).accesskit_id()))
+}
+
+/// Makes `id`'s node one a screen reader can move the focus to (UI Automation's
+/// IsKeyboardFocusable, AT-SPI's focusable) in a part of a window that keeps its keys itself
+/// rather than through egui's focus (the main window's toolbar, Categories tree and download
+/// list: egui's focus would take Tab and the arrows from them), and says whether one asked to
+/// move it there this pass (UI Automation's SetFocus): the caller then gives that part the
+/// keys (#1190).
+pub fn focus_target(ctx: &egui::Context, id: egui::Id) -> bool {
+    use egui::accesskit::Action;
+    ctx.accesskit_node_builder(id, |n| n.add_action(Action::Focus));
+    ctx.input(|i| i.has_accesskit_action_request(id, Action::Focus))
+}
+
+fn keys_with_key(ctx: &egui::Context) -> egui::Id {
+    egui::Id::unique(("keys-with", ctx.viewport_id()))
+}
+
+/// In such a part, the item that has the keys this pass (the download list's focused row, the
+/// tree's selected node, the toolbar's button): what a screen reader is to say has the focus,
+/// and follow as the keys move it. At the end of the pass,
+/// [`crate::chrome::tell_screen_readers`] makes it the active descendant of what has the
+/// accessibility focus (the window's own node: egui's focus is elsewhere), unless a menu opened
+/// from the keyboard is shown (#1190).
+pub fn keys_with(ctx: &egui::Context, item: egui::Id) {
+    // The key first: asking the context inside its data lock deadlocks.
+    let (key, pass) = (keys_with_key(ctx), ctx.cumulative_pass_nr());
+    ctx.data_mut(|d| d.insert_temp(key, (item, pass)));
+}
+
+/// The item [`keys_with`] named this pass, taken.
+pub fn take_keys_with(ctx: &egui::Context) -> Option<egui::Id> {
+    let (key, pass) = (keys_with_key(ctx), ctx.cumulative_pass_nr());
+    ctx.data_mut(|d| {
+        let item = d.get_temp::<(egui::Id, u64)>(key);
+        d.remove::<(egui::Id, u64)>(key);
+        item
+    })
+    .filter(|(_, at)| *at == pass)
+    .map(|(item, _)| item)
 }
 
 /// The one list of whole rows in a box (a dialog's list, a tree drawn as rows): its frame,
@@ -1440,6 +1506,16 @@ pub fn row_list(
     // Rows out of view lie above or below it, clipped: nothing of them shows or takes a click.
     rows_ui.set_clip_rect(rect(area).intersect(ui.clip_rect()));
     let shown = st.first..n.min(st.first + page);
+    // While the list has the keys, its selected row is what a screen reader says has the focus,
+    // and follows as the keys move it (#1190: it said only "list").
+    if focused
+        && let Some(s) = st.selected
+        && reach.contains(&s)
+    {
+        let row = id.with(s).accesskit_id();
+        ui.ctx()
+            .accesskit_node_builder(resp.id, |node| node.set_active_descendant(row));
+    }
     for i in reach {
         let in_view = shown.contains(&i);
         let top = inner.top() + 1.0 + row_h * (i as f32 - st.first as f32);
@@ -1464,7 +1540,10 @@ pub fn row_list(
         if let Some(f) = fill {
             clip.rect_filled(rect(row), 0.0, f);
         }
-        if r.clicked() || r.secondary_clicked() || r.double_clicked() {
+        // A screen reader moving the focus to a row (#1190) selects it, as a click does, and
+        // gives the list the keys.
+        let focus_asked = focus_target(ui.ctx(), r.id);
+        if r.clicked() || r.secondary_clicked() || r.double_clicked() || focus_asked {
             resp.request_focus();
             if st.selected != Some(i) {
                 st.selected = Some(i);
@@ -1834,10 +1913,11 @@ impl Shine {
     pub fn stops(self, f: Color32, g: Color32) -> [(f32, Color32); 4] {
         use crate::derive::mix;
         match self {
+            // White over its top half, falling to the face along its bottom.
             Shine::Luna => [
-                (0.0, mix(f, g, 0.85)),
-                (0.4, mix(f, g, 0.6)),
-                (0.85, mix(f, g, 0.2)),
+                (0.0, g),
+                (0.45, mix(f, g, 0.92)),
+                (0.86, mix(f, g, 0.55)),
                 (1.0, f),
             ],
             Shine::Aero => [
@@ -1997,7 +2077,7 @@ fn era_bar(p: &Painter, rc: Rect, from: f32, to: f32, fill: Color32, mirrored: b
             (1.0, c.meter_track),
         ],
     );
-    let inner = rc.shrink(if blocks { 2.0 + m.border } else { m.border });
+    let inner = rc.shrink(if blocks { 1.0 + m.border } else { m.border });
     let w = inner.width();
     // A part of the inside, `a` to `b` of it from the bar's start.
     let span = |a: f32, b: f32| {
@@ -2016,10 +2096,16 @@ fn era_bar(p: &Painter, rc: Rect, from: f32, to: f32, fill: Color32, mirrored: b
     let (a, b) = ((from * w).round(), (to * w).round());
     if b > a && w > 0.0 {
         if blocks {
-            // Windows XP: blocks 2 points apart, lighter across their middle; whole ones, the
-            // last cut at the bar's end.
-            let stops = [(0.0, fill), (0.45, mix(fill, c.gloss, 0.55)), (1.0, fill)];
-            let bw = (inner.height() * 0.6).round().max(4.0);
+            // Windows XP: blocks 2 points apart, light along their top and bottom, deep across
+            // their middle; whole ones, the last cut at the bar's end.
+            let stops = [
+                (0.0, mix(fill, c.gloss, 0.7)),
+                (0.3, mix(fill, c.gloss, 0.3)),
+                (0.55, fill),
+                (0.8, mix(fill, c.gloss, 0.35)),
+                (1.0, mix(fill, c.gloss, 0.75)),
+            ];
+            let bw = (inner.height() * 0.5).round().max(4.0);
             let mut x = (a / (bw + 2.0)).floor() * (bw + 2.0);
             while x < b {
                 let block = span(x.max(a), (x + bw).min(w));
@@ -2243,6 +2329,17 @@ fn edit_text_with(
             state.store(ui.ctx(), edit_id);
         }
     }
+    // A line longer than its box is laid out from its left, whatever the box's alignment (#1403).
+    // egui keeps a one-line box's caret in sight by scrolling its text, measured from the text's
+    // left edge at 0; a line aligned right (a right-to-left interface's boxes, a number) is laid
+    // out left of 0, so it never scrolled: its end stayed out of sight, and End, the arrows, a
+    // click or typing there went on out of view. A line that fits keeps its alignment: there is
+    // nothing to scroll.
+    let align = if align != egui::Align::LEFT && overflows(ui, value, password, inner.width()) {
+        egui::Align::LEFT
+    } else {
+        align
+    };
     let te = egui::TextEdit::singleline(value)
         .id(edit_id)
         .align(egui::Align2([align, egui::Align::TOP]))
@@ -2317,7 +2414,7 @@ fn edit_text_with(
         // The caret in the box's own ink: egui's default (a pale blue in its dark style) was
         // all but invisible on a light box.
         ui.visuals_mut().text_cursor.stroke.color = color;
-        ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner
+        without_alt_text(ui, |ui| ui.add_enabled_ui(enabled, |ui| ui.add(te)).inner)
     });
     keep_selection_on_right_click(&resp, frame_right, before);
     pass_focus_on(ui, &resp, enabled);
@@ -2334,6 +2431,56 @@ fn edit_text_with(
         edit_menu(&resp, value, password, false);
     }
     resp
+}
+
+/// Is a one-line box's text (`password`: its dots, as egui shows them) wider than `width`?
+fn overflows(ui: &Ui, value: &str, password: bool, width: f32) -> bool {
+    let shown = if password {
+        "\u{2022}".repeat(value.graphemes(true).count())
+    } else {
+        value.to_owned()
+    };
+    text_width_font(ui.painter(), tahoma(), &shown) > width
+}
+
+/// Draws a text box with `add`, without the text typed with Alt held: Alt+letter is an access
+/// key (a dialog's button, the menu bar), never typing, as in Windows' and Linux's boxes.
+/// egui-winit sends Alt+S as the key and the text "s": the button took the key, the focused box
+/// typed the "s". The text stays in the input for the access keys read after the box
+/// ([`mnemonic_pressed`] takes a letter of another script by it).
+fn without_alt_text<R>(ui: &mut Ui, add: impl FnOnce(&mut Ui) -> R) -> R {
+    // Not on macOS: Option (its Alt) is how its keyboards type letters (Option+S is "ß",
+    // Option+E an accent), which a box there takes as Mac boxes do.
+    let held: Vec<egui::Event> = if cfg!(target_os = "macos") {
+        Vec::new()
+    } else {
+        ui.input_mut(|i| {
+            // A text comes right after the key that typed it, which says what was held.
+            let mut with_alt = false;
+            let mut held = Vec::new();
+            for e in std::mem::take(&mut i.events) {
+                match e {
+                    egui::Event::Key {
+                        pressed: true,
+                        modifiers,
+                        ..
+                    } => {
+                        // Ctrl+Alt is AltGr on Windows, which types (@, €...).
+                        with_alt = modifiers.alt && !modifiers.ctrl && !modifiers.command;
+                        i.events.push(e);
+                    }
+                    egui::Event::Text(_) if with_alt => held.push(e),
+                    e => i.events.push(e),
+                }
+            }
+            held
+        })
+    };
+    let out = add(ui);
+    if !held.is_empty() {
+        ui.input_mut(|i| i.events.extend(held));
+    }
+    out
 }
 
 /// A text box's right-click menu, each item enabled or not.
@@ -3764,7 +3911,7 @@ pub fn multiline_light(
                 .desired_width(inner.width())
                 .desired_rows(3);
             let before = selection_now(ui.ctx(), text_id);
-            let resp = ui.add(te);
+            let resp = without_alt_text(ui, |ui| ui.add(te));
             keep_selection_on_right_click(&resp, false, before);
             edit_menu(&resp, value, false, true);
             // Enter here is a new line, not the dialog's OK.
@@ -3929,8 +4076,10 @@ fn button_face(
     if let Some(before) = mnemonic
         && let Some(letter) = shown[before.len()..].chars().next()
     {
-        // Underlined as the menus are (always dark; light once the keyboard is in use), while
-        // Alt+letter always works.
+        // Underlined as the menus are (always in a dark classic look; elsewhere once the
+        // keyboard is in use: Alt pressed in this window, as in the main one), while Alt+letter
+        // always works.
+        cues_on_alt(ui);
         if crate::chrome::cues(ui.ctx()) {
             let (x0, x1) = char_span(p, &tahoma(), &shown, before.chars().count(), drawn);
             hline(p, x0, x1, baseline + 3.0, face.text);
@@ -3939,7 +4088,10 @@ fn button_face(
     }
     let resp = if pressed_by_key {
         let mut r = resp;
-        r.flags.insert(egui::response::Flags::CLICKED);
+        // A click as egui's own keyboard clicks are (Space or Enter on the focused button):
+        // `clicked()` reads the plain CLICKED flag only with a pointer click in the same pass,
+        // so Alt+letter pressed nothing anywhere.
+        r.flags.insert(egui::response::Flags::FAKE_PRIMARY_CLICKED);
         r
     } else {
         resp
@@ -4137,9 +4289,47 @@ fn button_colors_in(
     }
 }
 
+/// Alt as an access key's modifier: without Ctrl (Ctrl+Alt is AltGr on Windows, which types).
+fn access_alt(m: &egui::Modifiers) -> bool {
+    m.alt && !m.ctrl && !m.command
+}
+
+/// Whether this pass's input holds Alt, alone or with a key. Read from the events too, not only
+/// from the pass's modifiers: Alt pressed and let go within one pass (X11 often sends a key and
+/// Alt's release together; a screen reader passes a key on with its release, #328) never shows
+/// in those.
+fn alt_in(i: &egui::InputState) -> bool {
+    access_alt(&i.modifiers)
+        || i.events.iter().any(|e| match e {
+            egui::Event::ModifiersChanged(m) => access_alt(m),
+            egui::Event::Key {
+                pressed: true,
+                modifiers,
+                ..
+            } => access_alt(modifiers),
+            _ => false,
+        })
+}
+
+/// Alt in a window with access letters (a dialog's buttons): the keyboard is in use, so the
+/// letters are underlined from now on in every look (Windows' rule; the main window's menu bar
+/// does the same for its Alt). Not on macOS, whose apps have no access keys.
+fn cues_on_alt(ui: &Ui) {
+    if !cfg!(target_os = "macos") && ui.input(alt_in) {
+        crate::chrome::show_cues(ui.ctx());
+    }
+}
+
 /// Alt+`letter` was pressed (and is taken): Latin letters as egui keys, other scripts (Cyrillic,
 /// Greek, Arabic…) as the text typed with Alt held.
+///
+/// Never on macOS: its apps have no access keys (the menu bar there takes no Alt+letter either,
+/// app.rs), and Option, its Alt, types letters (Option+C is "ç"), which the focused box takes
+/// (`without_alt_text`): the same keys must not also press a button.
 pub fn mnemonic_pressed(ui: &Ui, letter: char) -> bool {
+    if cfg!(target_os = "macos") {
+        return false;
+    }
     let upper: String = letter.to_uppercase().collect();
     if let Some(key) = egui::Key::from_name(&upper)
         && ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, key))
@@ -4148,11 +4338,25 @@ pub fn mnemonic_pressed(ui: &Ui, letter: char) -> bool {
     }
     let lower: String = letter.to_lowercase().collect();
     ui.input_mut(|i| {
-        let alt = i.modifiers.alt;
-        let at = i
-            .events
-            .iter()
-            .position(|e| matches!(e, egui::Event::Text(t) if alt && t.to_lowercase() == lower));
+        // A text comes after the key that typed it, which says whether Alt was held: on X11 Alt
+        // is often let go in the same pass, and the pass's own modifiers no longer have it.
+        let pass_alt = access_alt(&i.modifiers);
+        let mut with_alt = false;
+        let mut at = None;
+        for (k, e) in i.events.iter().enumerate() {
+            match e {
+                egui::Event::Key {
+                    pressed: true,
+                    modifiers,
+                    ..
+                } => with_alt = access_alt(modifiers),
+                egui::Event::Text(t) if (with_alt || pass_alt) && t.to_lowercase() == lower => {
+                    at = Some(k);
+                    break;
+                }
+                _ => {}
+            }
+        }
         at.map(|k| i.events.remove(k)).is_some()
     })
 }
@@ -5183,7 +5387,9 @@ impl egui::Plugin for PickStarter {
 /// draws its menu, whose window closes only at the end of the next frame. On macOS the dialog
 /// runs in a modal loop on the app's main thread (rfd hands it there), which began before that
 /// frame: the menu's window stayed on top of every window until MDM quit. Every system dialog
-/// starts here, so every menu item that opens one closes its menus first, on every system.
+/// starts here, so every menu item that opens one closes its menus first, on every system. And
+/// each is counted open while it runs (`crash::system_dialog`): the freeze watchdog doesn't take
+/// the time macOS's window thread spends in it for a frozen window (#1192).
 pub fn start_pick(
     ctx: &egui::Context,
     key: &str,
@@ -5197,7 +5403,8 @@ pub fn start_pick(
     ctx.data_mut(|d| d.insert_temp(id, slot.clone()));
     let wake = ctx.clone();
     let job = move || {
-        let answer = ask();
+        // On macOS the window thread runs the dialog: its time there isn't a freeze (#1192).
+        let answer = crate::crash::system_dialog(ask);
         *slot.lock().unwrap() = Some(answer);
         wake.request_repaint();
     };
@@ -5220,6 +5427,61 @@ pub fn picked(ctx: &egui::Context, key: &str) -> Option<std::path::PathBuf> {
     let answer = slot.lock().unwrap().take()?;
     ctx.data_mut(|d| d.remove::<PickSlot>(id));
     answer
+}
+
+/// A folder's box and its "..." (the system's folder dialog, [`start_pick`] by `key`) at the
+/// box's trailing end: a window's Save to row. `rc`: the box and the button together, on screen.
+/// `empty`: what an empty box means (Batch download's "Each file's category folder"), shown
+/// muted in it while it isn't typed in. The box's response, and whether a folder was chosen with
+/// "..." this frame (it is then in `value`).
+pub fn folder_box(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    key: &str,
+    empty: Option<&str>,
+) -> (Response, bool) {
+    const BUTTON: f32 = 22.0;
+    const GAP: f32 = 6.0;
+    // English places: the box first, "..." after it (on its left in a right-to-left interface).
+    let e = rect(rc);
+    let field = rect(Rect::from_min_max(
+        e.min,
+        pos2(e.right() - BUTTON - GAP, e.bottom()),
+    ));
+    let dots = rect(Rect::from_min_max(pos2(e.right() - BUTTON, e.top()), e.max));
+    let typed = edit_light(ui, field, value, true, false);
+    if let Some(hint) = empty
+        && value.is_empty()
+        && !typed.has_focus()
+    {
+        let p = ui.painter().clone();
+        let ef = rect(field);
+        fit(
+            ui,
+            &p,
+            ef.left() + 5.0,
+            baseline_in(field.top(), field.height()),
+            hint,
+            MUTED(),
+            ef.right() - 4.0,
+            ("folder-box-empty", key),
+        );
+    }
+    if button_light(ui, dots, "...", ButtonKind::Normal, false).clicked() {
+        let from = value.trim().to_owned();
+        start_pick(ui.ctx(), key, move || {
+            rfd::FileDialog::new().set_directory(from).pick_folder()
+        });
+    }
+    let chose = match picked(ui.ctx(), key) {
+        Some(dir) => {
+            *value = dir.display().to_string();
+            true
+        }
+        None => false,
+    };
+    (typed, chose)
 }
 
 /// A press gives a control the keys, as in Windows (egui focuses only text boxes on a click):
@@ -5379,6 +5641,52 @@ pub fn fill_l(p: &Painter, x0: f32, y0: f32, x1: f32, y1: f32, c: Color32) {
 /// [`px`] at an English pixel.
 pub fn px_l(p: &Painter, x: f32, y: f32, c: Color32) {
     px(p, mcol(x), y, c);
+}
+
+/// Windows XP's column headers (`[controls] header = "luna"`, `palette::HeaderLook`): the
+/// header's last three rows, English pixels `x0..=x1` ending at row `bottom`, shading toward
+/// the dividers' colour; under the pointer the theme's button glow (XP's orange). Nothing for
+/// flat headers.
+pub fn header_shade(p: &Painter, x0: f32, x1: f32, bottom: f32, hot: bool) {
+    use crate::derive::mix;
+    if crate::theme::current().controls.header != crate::palette::HeaderLook::Luna {
+        return;
+    }
+    let c = crate::theme::colors();
+    let rows = if hot && c.button_glow.a() > 0 {
+        let g = c.button_glow;
+        [mix(c.header, g, 0.55), g, crate::derive::shade(g, -0.06)]
+    } else {
+        [
+            mix(c.header, c.header_line, 0.5),
+            c.header_line,
+            c.header_sep,
+        ]
+    };
+    for (i, row) in rows.into_iter().enumerate() {
+        let y = bottom - 2.0 + i as f32;
+        fill_l(p, x0, y, x1, y, row);
+    }
+}
+
+/// A divider between two column headers at English pixel column `x`, header rows `top..=bottom`,
+/// in `line`: the header's whole height (flat headers), or Windows XP's, inset from both ends
+/// with a light line after it.
+pub fn header_divider(p: &Painter, x: f32, top: f32, bottom: f32, line: Color32) {
+    if crate::theme::current().controls.header == crate::palette::HeaderLook::Luna {
+        let (top, bottom) = (top + 3.0, bottom - 4.0);
+        fill_l(p, x, top, x, bottom, line);
+        fill_l(
+            p,
+            x + 1.0,
+            top,
+            x + 1.0,
+            bottom,
+            crate::theme::colors().gloss,
+        );
+    } else {
+        fill_l(p, x, top, x, bottom, line);
+    }
 }
 
 /// One tab of a light tab control: its x range (inclusive, from the client origin) when
@@ -6166,11 +6474,17 @@ pub mod caption {
     fn bar_stops(era: Shine, bar: Color32, g: Color32) -> Vec<(f32, Color32)> {
         use crate::derive::{mix, shade};
         match era {
+            // A bright rim along the top, the bar's colour, lighter again toward the bottom,
+            // then a dark bottom edge.
             Shine::Luna => vec![
-                (0.0, mix(bar, g, 0.45)),
-                (0.12, mix(bar, g, 0.12)),
-                (0.5, bar),
-                (1.0, shade(bar, -0.06)),
+                (0.0, shade(bar, 0.1)),
+                (0.06, shade(bar, 0.13)),
+                (0.12, shade(bar, 0.05)),
+                (0.2, bar),
+                (0.55, bar),
+                (0.88, shade(bar, 0.05)),
+                (0.94, shade(bar, 0.02)),
+                (1.0, shade(bar, -0.1)),
             ],
             Shine::Aero => vec![
                 (0.0, mix(bar, g, 0.45)),
@@ -6486,7 +6800,17 @@ pub mod caption {
             Shine::Aero => (0.0, 4.0),
             Shine::Aqua => (size.y / 2.0, size.y / 2.0),
         };
-        fill_shaded_corners(p, tile, top, bottom, &era.stops(base, c.gloss));
+        let stops = match era {
+            // Windows XP: a light corner at the top, the face deep below it.
+            Shine::Luna => vec![
+                (0.0, mix(base, c.gloss, 0.4)),
+                (0.3, mix(base, c.gloss, 0.1)),
+                (0.8, base),
+                (1.0, shade(base, -0.04)),
+            ],
+            _ => era.stops(base, c.gloss).to_vec(),
+        };
+        fill_shaded_corners(p, tile, top, bottom, &stops);
         let edge = match era {
             Shine::Luna => c.gloss.gamma_multiply(0.9),
             Shine::Aero => shade(bar, -0.35),
@@ -6604,7 +6928,13 @@ pub mod caption {
             egui::Image::new(egui::include_image!("../assets/icons/app/mdm-32.png"))
                 .paint_at(ui, Rect::from_center_size(icon_c.round(), vec2(16.0, 16.0)));
         }
-        let font = if st.bold {
+        let font = if st.era == Some(Shine::Luna) {
+            // Windows XP's title: bold and larger than its menus.
+            FontId::new(
+                crate::theme::font_size(crate::theme::metrics().font_ui_bold),
+                egui::FontFamily::Name("tahoma-bold".into()),
+            )
+        } else if st.bold {
             FontId::new(segoe().size, egui::FontFamily::Name("tahoma-bold".into()))
         } else {
             segoe()
@@ -6698,6 +7028,61 @@ pub mod caption {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1192: every system dialog `start_pick` shows is counted open while it runs (the freeze
+    /// watchdog doesn't take macOS's window thread in it for a frozen window), and closed once
+    /// answered, or when the code that shows it panics.
+    #[test]
+    fn a_picker_is_counted_open_while_it_runs() {
+        let _turn = crate::crash::DIALOG_TESTS
+            .lock()
+            .unwrap_or_else(|e| e.into_inner());
+        let ctx = egui::Context::default();
+        let frame = |ctx: &egui::Context| {
+            let mut out = ctx.run_ui(egui::RawInput::default(), |_| {});
+            out.textures_delta.clear();
+        };
+        let waited = |what: &str, done: &mut dyn FnMut() -> bool| {
+            let until = std::time::Instant::now() + std::time::Duration::from_secs(10);
+            while !done() {
+                assert!(std::time::Instant::now() < until, "{what}");
+                std::thread::sleep(std::time::Duration::from_millis(5));
+            }
+        };
+        // Answered: open while its dialog runs, closed with the answer.
+        let (tx, rx) = std::sync::mpsc::channel();
+        start_pick(&ctx, "test-1192", move || {
+            tx.send(crate::crash::dialogs_open()).unwrap();
+            Some(std::path::PathBuf::from("answer"))
+        });
+        assert_eq!(
+            crate::crash::dialogs_open(),
+            0,
+            "not before a frame starts it"
+        );
+        frame(&ctx);
+        let open = rx.recv_timeout(std::time::Duration::from_secs(10)).unwrap();
+        assert_eq!(open, 1);
+        let mut answer = None;
+        waited("the answer", &mut || {
+            frame(&ctx);
+            answer = answer.take().or_else(|| picked(&ctx, "test-1192"));
+            answer.is_some()
+        });
+        assert_eq!(answer, Some(std::path::PathBuf::from("answer")));
+        assert_eq!(crate::crash::dialogs_open(), 0);
+        // Its code panics (its thread ends without an answer): closed all the same.
+        let (tx, rx) = std::sync::mpsc::channel();
+        start_pick(&ctx, "test-1192-panic", move || {
+            tx.send(()).unwrap();
+            panic!("a dialog's code panics");
+        });
+        frame(&ctx);
+        rx.recv_timeout(std::time::Duration::from_secs(10)).unwrap();
+        waited("closed after the panic", &mut || {
+            crate::crash::dialogs_open() == 0
+        });
+    }
 
     /// #1088: the name typed in Download File Info's Save dialog is the download's, its
     /// extension kept or replaced as typed, the same on every system.
@@ -7150,6 +7535,10 @@ mod tests {
     struct Drawn {
         rows: Vec<(egui::accesskit::NodeId, String, usize, usize)>,
         list_children: usize,
+        /// Rows a screen reader can move its focus to (#1190).
+        focusable_rows: usize,
+        /// The list's active descendant: the row a screen reader says has the focus.
+        active: Option<egui::accesskit::NodeId>,
         st: RowList,
         events: RowEvents,
         took: std::time::Duration,
@@ -7196,15 +7585,24 @@ mod tests {
                 .sum()
         }
         let mut list_children = 0;
+        let mut active = None;
+        let mut focusable_rows = 0;
         for (id, node) in &update.nodes {
             match node.role() {
-                egui::accesskit::Role::ListBoxOption => rows.push((
-                    *id,
-                    node.label().unwrap_or_default().to_owned(),
-                    node.position_in_set().unwrap_or(0),
-                    node.size_of_set().unwrap_or(0),
-                )),
-                egui::accesskit::Role::ListBox => list_children = options(&by_id, node),
+                egui::accesskit::Role::ListBoxOption => {
+                    focusable_rows +=
+                        usize::from(node.supports_action(egui::accesskit::Action::Focus));
+                    rows.push((
+                        *id,
+                        node.label().unwrap_or_default().to_owned(),
+                        node.position_in_set().unwrap_or(0),
+                        node.size_of_set().unwrap_or(0),
+                    ))
+                }
+                egui::accesskit::Role::ListBox => {
+                    list_children = options(&by_id, node);
+                    active = node.active_descendant();
+                }
                 _ => {}
             }
         }
@@ -7212,6 +7610,8 @@ mod tests {
         Drawn {
             rows,
             list_children,
+            focusable_rows,
+            active,
             st,
             events: ev,
             took,
@@ -7256,6 +7656,37 @@ mod tests {
         assert_eq!((d.st.selected, d.events.picked), (Some(2), Some(2)));
         let d = draw_list(&ctx, 40, d.st, vec![]);
         assert!((d.st.first..d.st.first + 5).contains(&2), "{:?}", d.st);
+    }
+
+    /// #1190: a list's rows take a screen reader's focus (the row selected, the list given the
+    /// keys), and while the list has them its selected row is its active descendant: what the
+    /// reader says has the focus, followed as the keys move it.
+    #[test]
+    fn a_row_takes_the_focus_and_the_reader_follows_the_selection() {
+        use egui::accesskit::Action;
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        let d = draw_list(&ctx, 10, RowList::default(), vec![]);
+        let d = draw_list(&ctx, 10, d.st, vec![]);
+        assert_eq!(d.focusable_rows, 10);
+        assert_eq!(d.active, None, "not focused: nothing followed");
+        let row3 = d.rows[3].0;
+        let d = draw_list(&ctx, 10, d.st, vec![ask(row3, Action::Focus)]);
+        assert_eq!((d.st.selected, d.events.picked), (Some(3), Some(3)));
+        let d = draw_list(&ctx, 10, d.st, vec![]);
+        assert!(d.events.focused, "the list has the keys");
+        assert_eq!(d.active, Some(row3));
+        let down = egui::Event::Key {
+            key: egui::Key::ArrowDown,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        };
+        let d = draw_list(&ctx, 10, d.st, vec![down]);
+        assert_eq!(d.st.selected, Some(4));
+        let d = draw_list(&ctx, 10, d.st, vec![]);
+        assert_eq!(d.active, Some(d.rows[4].0));
     }
 
     /// #111: a list of thousands (a playlist, #69) exposes a bounded window of rows around the
@@ -7516,6 +7947,13 @@ mod tests {
         t: f64,
         /// A multi-line box ([`multiline_light`]) instead.
         lines: bool,
+        /// A dialog's access letter after the box (a button's "&Start"): Alt+it presses it; how
+        /// many times it has.
+        access: Option<(char, u32)>,
+        /// Drawn on a right-to-left surface (the box's text starts at its right).
+        rtl: bool,
+        /// Where the last pass drew the box's text on screen (its left and right ends).
+        text_span: Option<(f32, f32)>,
     }
 
     impl TextBoxRun {
@@ -7538,6 +7976,9 @@ mod tests {
                 id: None,
                 t: 0.0,
                 lines,
+                access: None,
+                rtl: false,
+                text_span: None,
             };
             run.pass(Vec::new());
             run
@@ -7552,14 +7993,31 @@ mod tests {
                 ..Default::default()
             };
             let (rc, value, id, lines) = (self.rc, &mut self.value, &mut self.id, self.lines);
+            let access = &mut self.access;
+            let rtl = self.rtl;
             let mut out = self.ctx.run_ui(raw, |ui| {
+                let _s = Surface::enter_if(rtl, 0.0, 600.0);
                 *id = Some(if lines {
                     multiline_light(ui, rc, value, "t1084", true).id
                 } else {
                     edit(ui, rc, value, true, false).id
                 });
+                if let Some((letter, presses)) = access
+                    && mnemonic_pressed(ui, *letter)
+                {
+                    *presses += 1;
+                }
             });
             out.textures_delta.clear();
+            self.text_span = out.shapes.iter().find_map(|c| match &c.shape {
+                egui::Shape::Text(t) if t.galley.text() == self.value && !self.value.is_empty() => {
+                    Some((
+                        t.pos.x + t.galley.rect.left(),
+                        t.pos.x + t.galley.rect.right(),
+                    ))
+                }
+                _ => None,
+            });
             out.platform_output
                 .commands
                 .into_iter()
@@ -7625,6 +8083,23 @@ mod tests {
             copied
         }
 
+        /// A key as the system sends a typed one: the key, then the text it types (egui-winit
+        /// sends both for a letter), with `modifiers` held.
+        fn typed(&mut self, key: egui::Key, text: &str, modifiers: egui::Modifiers) {
+            let mut events = vec![egui::Event::Key {
+                key,
+                physical_key: Some(key),
+                pressed: true,
+                repeat: false,
+                modifiers,
+            }];
+            if !text.is_empty() {
+                events.push(egui::Event::Text(text.to_owned()));
+            }
+            self.pass(events);
+            self.pass(Vec::new());
+        }
+
         /// The selection, in characters (lo, hi).
         fn selection(&self) -> (usize, usize) {
             let r = egui::TextEdit::load_state(&self.ctx, self.id.expect("drawn"))
@@ -7632,6 +8107,69 @@ mod tests {
                 .expect("a caret");
             let (a, b) = (r.primary.index.0, r.secondary.index.0);
             (a.min(b), a.max(b))
+        }
+    }
+
+    /// #1403: a one-line box whose text is longer than the box follows its caret, in a
+    /// left-to-right interface and in a right-to-left one alike (there, its text aligned right,
+    /// it never scrolled: End, typing at the end and a drag past the edge went on out of sight).
+    /// A text that fits keeps to the box's start (the right, in a right-to-left interface).
+    #[test]
+    fn a_long_line_scrolls_to_its_caret_in_both_directions() {
+        use egui::PointerButton::Primary;
+        // A value typed in, not a text to translate.
+        let text = "https://downloads.example.com/archive/2026/november/collections/a-very-long-folder-name/img*.jpg";
+        let n = text.chars().count();
+        for rtl in [false, true] {
+            let mut b = TextBoxRun::new(text);
+            b.rtl = rtl;
+            b.pass(Vec::new());
+            let rc = b.rc;
+            let (left, right) = (rc.left() + 5.0, rc.right() - 5.0);
+            let mid = baseline_in(rc.top(), rc.height()) - 4.0;
+            // Unfocused, it shows its start; it runs past the box's end.
+            let (l, r) = b.text_span.expect("drawn");
+            assert_eq!(l, left, "rtl {rtl}");
+            assert!(r > rc.right(), "rtl {rtl}");
+            b.click(pos2(rc.center().x, mid), Primary);
+            let clicked = b.selection();
+            assert!(clicked.0 > 0 && clicked.0 < n, "rtl {rtl}: {clicked:?}");
+            // End: the caret at the end, the text's end in sight at the box's end.
+            b.typed(egui::Key::End, "", Default::default());
+            assert_eq!(b.selection(), (n, n), "rtl {rtl}");
+            let (l, r) = b.text_span.unwrap();
+            assert!(
+                l < rc.left() && (r - right).abs() < 1.0,
+                "rtl {rtl}: {l} {r}"
+            );
+            // Typed at the end: added there, still in sight.
+            b.typed(egui::Key::X, "X", Default::default());
+            assert!(b.value.ends_with("jpgX"), "rtl {rtl}");
+            assert!((b.text_span.unwrap().1 - right).abs() < 1.0, "rtl {rtl}");
+            // A click at the box's end puts the caret where the text there is: the end.
+            b.click(pos2(right - 1.0, mid), Primary);
+            assert_eq!(b.selection(), (n + 1, n + 1), "rtl {rtl}");
+            // Home: back to the start.
+            b.typed(egui::Key::Home, "", Default::default());
+            assert_eq!(b.selection(), (0, 0), "rtl {rtl}");
+            assert_eq!(b.text_span.unwrap().0, left, "rtl {rtl}");
+            // A drag past the box's end selects on, the text scrolling under it.
+            b.drag(pos2(rc.center().x, mid), pos2(rc.right() + 60.0, mid));
+            let (lo, hi) = b.selection();
+            assert!(lo > 0 && hi > clicked.1, "rtl {rtl}: {lo} {hi}");
+            assert!(b.text_span.unwrap().0 < left, "rtl {rtl}: scrolled");
+        }
+        // A short text keeps to the box's start: the left, or the right in a right-to-left one.
+        for rtl in [false, true] {
+            let mut b = TextBoxRun::new("https://example.com/a*.zip");
+            b.rtl = rtl;
+            b.pass(Vec::new());
+            let (l, r) = b.text_span.unwrap();
+            if rtl {
+                assert!((r - (b.rc.right() - 5.0)).abs() < 1.0, "{l} {r}");
+            } else {
+                assert_eq!(l, b.rc.left() + 5.0);
+            }
         }
     }
 
@@ -7679,6 +8217,283 @@ example.org"; // values typed in, not texts to translate
         b.click(at, Secondary);
         assert_eq!(b.selection(), (0, text.chars().count()));
         assert_eq!(b.choose(egui::Key::C), [text]);
+    }
+
+    /// An open menu takes the keys whole: its item's letter, pressed as the system sends it (the
+    /// key, then the text it types), runs the item and types nothing in the box under the menu,
+    /// as in Windows' boxes (the "p" of Paste was typed in the box too). The arrows move in the
+    /// menu, not the box's caret.
+    #[test]
+    fn a_menu_letter_runs_its_item_and_types_nothing() {
+        use egui::PointerButton::{Primary, Secondary};
+        let text = "https://example.com/files/archive.zip"; // a value typed in, not a text to translate
+        let n = text.chars().count();
+        let mut b = TextBoxRun::new(text);
+        let rc = b.rc;
+        let at = pos2(rc.left() + 60.0, baseline_in(rc.top(), rc.height()) - 4.0);
+        b.click(at, Primary);
+        // The menu, the arrows, Escape: the box as it was, its caret where it was.
+        b.click(at, Secondary);
+        let caret = b.selection();
+        assert!(caret.0 > 0 && caret.0 < n, "{caret:?}");
+        for key in [
+            egui::Key::ArrowDown,
+            egui::Key::ArrowLeft,
+            egui::Key::Escape,
+        ] {
+            b.typed(key, "", Default::default());
+        }
+        assert_eq!(b.value, text);
+        assert_eq!(b.selection(), caret, "the arrows were the menu's");
+        // The menu, "a" for Select all: all of it selected, no "a" typed.
+        b.click(at, Secondary);
+        b.typed(egui::Key::A, "a", Default::default());
+        assert_eq!(b.value, text, "nothing typed");
+        assert_eq!(b.selection(), (0, n));
+        // Once it is closed, typing types again.
+        b.typed(egui::Key::X, "x", Default::default());
+        assert_eq!(b.value, "x");
+    }
+
+    /// An item's letter in another script (Arabic's "&لصق", Russian's "&Вставить") is the text
+    /// its key types; egui names the key by the Latin letter in its place (egui-winit's
+    /// fallback), which no item has.
+    #[test]
+    fn a_menu_letter_of_another_script_runs_its_item() {
+        use crate::chrome::{MenuEntry, PopupResult};
+        // Labels through names, so tools/i18n/extract.py doesn't take them for texts to translate.
+        let [first, second] = ["\u{644}\u{635}&\u{642}", "&\u{644}\u{635}\u{642}"];
+        let entries: Vec<MenuEntry<u8>> = vec![
+            MenuEntry::Item(first, 0, true, false),
+            MenuEntry::Item(second, 1, true, false),
+        ];
+        let ctx = egui::Context::default();
+        let mut t = 0.0;
+        let mut pass = |events: Vec<egui::Event>| {
+            t += 0.05;
+            let raw = egui::RawInput {
+                time: Some(t),
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(600.0, 400.0))),
+                events,
+                ..Default::default()
+            };
+            let mut chosen = None;
+            let mut out = ctx.run_ui(raw, |ui| {
+                if let PopupResult::Chosen(c) = crate::chrome::popup(
+                    ui.ctx(),
+                    crate::chrome::MenuKind::Context,
+                    "t-script",
+                    pos2(100.0, 100.0),
+                    &entries,
+                    &|_| None,
+                ) {
+                    chosen = Some(c);
+                }
+            });
+            out.textures_delta.clear();
+            chosen
+        };
+        assert_eq!(pass(Vec::new()), None);
+        assert_eq!(pass(Vec::new()), None);
+        // On an Arabic keyboard "ل" (U+0644) is on G's key.
+        let chosen = pass(vec![
+            egui::Event::Key {
+                key: egui::Key::G,
+                physical_key: Some(egui::Key::G),
+                pressed: true,
+                repeat: false,
+                modifiers: Default::default(),
+            },
+            egui::Event::Text("\u{644}".into()),
+        ]);
+        assert_eq!(chosen, Some(1));
+    }
+
+    /// Alt+letter is a dialog's access key, never typing (Windows' and Linux's boxes type nothing
+    /// with Alt held): the focused box keeps its text, the button is pressed once.
+    #[test]
+    fn alt_and_a_letter_presses_the_button_and_types_nothing() {
+        use egui::PointerButton::Primary;
+        let text = "archive.zip"; // a value typed in, not a text to translate
+        let mut b = TextBoxRun::new(text);
+        b.access = Some(('s', 0));
+        let rc = b.rc;
+        b.click(
+            pos2(rc.left() + 30.0, baseline_in(rc.top(), rc.height()) - 4.0),
+            Primary,
+        );
+        b.typed(egui::Key::S, "s", egui::Modifiers::ALT);
+        // macOS: Option+letter types a letter (Option+S is "ß"), which its boxes take, and
+        // presses nothing (no access keys there).
+        #[cfg(not(target_os = "macos"))]
+        {
+            assert_eq!(b.access, Some(('s', 1)));
+            assert_eq!(b.value, text, "nothing typed");
+        }
+        #[cfg(target_os = "macos")]
+        assert_eq!(b.access, Some(('s', 0)));
+    }
+
+    /// A dialog's "&Close" button ([`button_light`]) drawn pass after pass, one pass per entry
+    /// of `passes` after a first empty one: whether it was clicked in any of them, and whether
+    /// the keyboard cues (the underlined letters) were turned on.
+    fn close_by_keys(kind: ButtonKind, passes: Vec<Vec<egui::Event>>) -> (bool, bool) {
+        button_by_keys("&Close", kind, passes)
+    }
+
+    /// [`close_by_keys`] for a button labelled `label`.
+    fn button_by_keys(
+        label: &str,
+        kind: ButtonKind,
+        passes: Vec<Vec<egui::Event>>,
+    ) -> (bool, bool) {
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+        let rc = Rect::from_min_size(pos2(20.0, 20.0), egui::vec2(73.0, 21.0));
+        let mut clicked = false;
+        let mut t = 0.0;
+        for events in std::iter::once(Vec::new()).chain(passes) {
+            t += 0.05;
+            let raw = egui::RawInput {
+                time: Some(t),
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, egui::vec2(200.0, 100.0))),
+                events,
+                ..Default::default()
+            };
+            let mut out = ctx.run_ui(raw, |ui| {
+                clicked |= button_light(ui, rc, label, kind, false).clicked();
+            });
+            out.textures_delta.clear();
+        }
+        (clicked, crate::chrome::cues_shown(&ctx))
+    }
+
+    fn key(key: egui::Key, pressed: bool, modifiers: egui::Modifiers) -> egui::Event {
+        egui::Event::Key {
+            key,
+            physical_key: Some(key),
+            pressed,
+            repeat: false,
+            modifiers,
+        }
+    }
+
+    /// Alt+C presses "&Close" and underlines the access letters; C alone, Ctrl+Alt+C (AltGr,
+    /// which types) and Alt+C on a disabled button press nothing. Alt+C presses nothing on macOS,
+    /// where Option types letters. Main pressed nothing anywhere: the button's response was
+    /// flagged as a pointer's click, which egui reads only with a pointer click in that pass.
+    #[test]
+    fn alt_and_an_access_letter_press_the_button() {
+        use egui::{Key, Modifiers};
+        let (alt, none) = (Modifiers::ALT, Modifiers::NONE);
+        let ctrl_alt = Modifiers {
+            ctrl: true,
+            command: !cfg!(target_os = "macos"),
+            ..Modifiers::ALT
+        };
+        // As X11 sends them (GNOME on Xorg, logged): Alt's key and the modifiers in one pass,
+        // C with Alt held, its text and every release in the next.
+        let x11 = vec![
+            vec![
+                key(Key::AltLeft, true, none),
+                egui::Event::ModifiersChanged(alt),
+            ],
+            vec![
+                key(Key::C, true, alt),
+                egui::Event::Text("c".into()),
+                key(Key::AltLeft, false, alt),
+                egui::Event::ModifiersChanged(none),
+                key(Key::C, false, none),
+            ],
+        ];
+        // All in one pass (a screen reader passes keys on with their release, #328).
+        let one_pass = vec![vec![
+            egui::Event::ModifiersChanged(alt),
+            key(Key::C, true, alt),
+            egui::Event::Text("c".into()),
+            key(Key::C, false, alt),
+            egui::Event::ModifiersChanged(none),
+        ]];
+        let plain = vec![vec![
+            key(Key::C, true, none),
+            egui::Event::Text("c".into()),
+            key(Key::C, false, none),
+        ]];
+        let altgr = vec![vec![
+            egui::Event::ModifiersChanged(ctrl_alt),
+            key(Key::C, true, ctrl_alt),
+            egui::Event::Text("c".into()),
+        ]];
+        let alt_alone = vec![vec![
+            key(Key::AltLeft, true, none),
+            egui::Event::ModifiersChanged(alt),
+            key(Key::AltLeft, false, alt),
+            egui::Event::ModifiersChanged(none),
+        ]];
+        let mac = cfg!(target_os = "macos");
+        assert_eq!(close_by_keys(ButtonKind::Normal, x11), (!mac, !mac), "X11");
+        assert_eq!(
+            close_by_keys(ButtonKind::Normal, one_pass.clone()),
+            (!mac, !mac),
+            "one pass"
+        );
+        assert_eq!(
+            close_by_keys(ButtonKind::Normal, plain),
+            (false, false),
+            "C"
+        );
+        assert_eq!(
+            close_by_keys(ButtonKind::Normal, altgr),
+            (false, false),
+            "AltGr"
+        );
+        assert_eq!(
+            close_by_keys(ButtonKind::Disabled, one_pass),
+            (false, !mac),
+            "disabled"
+        );
+        assert_eq!(
+            close_by_keys(ButtonKind::Normal, alt_alone),
+            (false, !mac),
+            "Alt alone"
+        );
+    }
+
+    /// An access letter of another script, typed with Alt held as X11 sends it (on an Arabic
+    /// layout "ل" is on G's key): Alt is let go in the same pass, so the pass's own modifiers no
+    /// longer hold it and only the key that typed the letter says it was held. Main pressed
+    /// nothing.
+    #[test]
+    fn alt_and_an_access_letter_of_another_script_press_the_button() {
+        use egui::{Key, Modifiers};
+        let (alt, none) = (Modifiers::ALT, Modifiers::NONE);
+        let x11 = vec![
+            vec![
+                key(Key::AltLeft, true, none),
+                egui::Event::ModifiersChanged(alt),
+            ],
+            vec![
+                key(Key::G, true, alt),
+                egui::Event::Text("\u{644}".into()),
+                key(Key::AltLeft, false, alt),
+                egui::Event::ModifiersChanged(none),
+                key(Key::G, false, none),
+            ],
+        ];
+        let typed = vec![vec![
+            key(Key::G, true, none),
+            egui::Event::Text("\u{644}".into()),
+        ]];
+        // "&لصق" (Paste): ل is its access letter.
+        let label = "&\u{644}\u{635}\u{642}";
+        let mac = cfg!(target_os = "macos");
+        assert_eq!(button_by_keys(label, ButtonKind::Normal, x11).0, !mac);
+        assert!(
+            !button_by_keys(label, ButtonKind::Normal, typed).0,
+            "no Alt"
+        );
     }
 
     /// #1084: text selected by dragging stays selected under a right-click on it, and Copy copies

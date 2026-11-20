@@ -471,16 +471,24 @@ use mdm_tools::chosen::Helper;
 
 /// Helpers (Download video from a page or a gallery → Helpers...): for yt-dlp, ffmpeg and
 /// gallery-dl (#58), where MDM takes it from (its own copy, or a program of the person's), and the
-/// way to choose another: one copy of each for every program that uses them (#51).
+/// way to choose another: one copy of each for every program that uses them (#51). Then the
+/// JavaScript runtime yt-dlp needs for YouTube (#1448, #1470): the computer's own (Node.js, Deno),
+/// else Deno, MDM's own copy, downloaded and checked here.
 pub struct Programs {
     dir: Option<std::path::PathBuf>,
     /// The helpers as found (read again after each change, not every frame: it reads files).
     found: [Option<mdm_tools::Installed>; 3],
+    /// MDM's own Deno, and the computer's own runtime (`proc::system_js_runtime`), read with
+    /// `found`.
+    deno: Option<mdm_tools::Installed>,
+    runtime: Option<std::path::PathBuf>,
     /// A chosen program being checked (`--version`), and what it answered.
     checking: Option<(Helper, Answer)>,
     /// MDM's own yt-dlp or gallery-dl being downloaded in place of the system's (#452, #571),
     /// and how that went.
     installing: Option<(Helper, Answer)>,
+    /// MDM's own Deno being downloaded, and how that went.
+    installing_deno: Option<Answer>,
     error: Option<String>,
 }
 
@@ -494,8 +502,11 @@ impl Programs {
         let mut p = Programs {
             dir: mdm_tools::tools_dir(),
             found: [None, None, None],
+            deno: None,
+            runtime: None,
             checking: None,
             installing: None,
+            installing_deno: None,
             error: None,
         };
         p.look();
@@ -511,6 +522,31 @@ impl Programs {
             mdm_tools::ffmpeg::installed(dir),
             mdm_tools::gallery::installed(dir),
         ];
+        self.deno = mdm_tools::deno::installed(dir);
+        self.runtime = mdm_tools::proc::system_js_runtime();
+    }
+
+    /// MDM's own Deno (#1448): downloaded and checked against its release's checksums, from then
+    /// on the runtime yt-dlp is told of (`mdm_tools::proc`). It goes on if the window is closed.
+    fn install_deno(
+        &mut self,
+        dir: std::path::PathBuf,
+        rt: &tokio::runtime::Handle,
+        ctx: &egui::Context,
+    ) {
+        let slot: Answer = Arc::new(Mutex::new(None));
+        let (out, wake) = (slot.clone(), ctx.clone());
+        let net = crate::settings::own_net();
+        rt.spawn(async move {
+            let res = mdm_tools::deno::install_latest(&dir, &net, None).await;
+            if let Err(e) = &res {
+                tracing::warn!("Deno download failed: {e}");
+            }
+            *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
+            wake.request_repaint();
+        });
+        self.installing_deno = Some(slot);
+        self.error = None;
     }
 
     /// MDM's own yt-dlp or gallery-dl in place of the system's (#452, #571): downloaded and
@@ -561,6 +597,15 @@ impl Programs {
             self.installing = None;
             self.look();
         }
+        let deno = self
+            .installing_deno
+            .as_ref()
+            .and_then(|slot| slot.lock().unwrap().take());
+        if let Some(res) = deno {
+            self.error = res.err();
+            self.installing_deno = None;
+            self.look();
+        }
         for h in HELPERS {
             if let Some(path) = winui::picked(ctx, &format!("helper-{}", h.name()))
                 && let Some(dir) = self.dir.clone()
@@ -583,7 +628,7 @@ impl Programs {
             "video-helpers",
             // i18n: window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
             "Helpers",
-            [500.0, 292.0],
+            [500.0, 370.0],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
@@ -685,7 +730,7 @@ impl Programs {
                 o.x + 486.0,
                 ("helper", k),
             );
-            let busy = self.checking.is_some() || self.installing.is_some();
+            let busy = self.busy();
             // As wide as their labels in this language (#192), side by side from the left.
             let [other_at, own_at] = winui::button_row_from_left(
                 &p,
@@ -746,16 +791,16 @@ impl Programs {
                     self.install_own(h, dir, rt, ui.ctx());
                 }
             }
-            if k + 1 < HELPERS.len() {
-                winui::etched_h(&p, o.x + 14.0, o.y + 82.0 + k as f32 * 78.0, 472.0);
-            }
+            // A line under each, the JavaScript runtime's row below them.
+            winui::etched_h(&p, o.x + 14.0, o.y + 82.0 + k as f32 * 78.0, 472.0);
         }
+        self.runtime_row(ui, &p, o, HELPERS.len(), rt);
         if let Some(e) = &self.error {
             winui::fit(
                 ui,
                 &p,
                 o.x + 14.0,
-                o.y + 254.0,
+                o.y + 332.0,
                 e,
                 winui::ERROR(),
                 o.x + 400.0,
@@ -764,7 +809,7 @@ impl Programs {
         }
         let close = winui::button(
             ui,
-            r(o, 413.0, 260.0, 77.0, 21.0),
+            r(o, 413.0, 338.0, 77.0, 21.0),
             "Close",
             ButtonKind::Default,
             false,
@@ -774,6 +819,105 @@ impl Programs {
             Outcome::Done(())
         } else {
             Outcome::Open
+        }
+    }
+
+    /// A check or a download is under way: the buttons wait.
+    fn busy(&self) -> bool {
+        self.checking.is_some() || self.installing.is_some() || self.installing_deno.is_some()
+    }
+
+    /// The JavaScript runtime's row, the `k`th (#1448, #1470): YouTube makes yt-dlp solve a
+    /// JavaScript challenge, and without a runtime its look-ups are slow, list few qualities or
+    /// fail. The computer's own (Node.js, Deno) is said and used; else MDM's own Deno, which
+    /// "Use MDM's own copy" downloads (where Deno builds one for this system and processor).
+    fn runtime_row(
+        &mut self,
+        ui: &mut Ui,
+        p: &egui::Painter,
+        o: Pos2,
+        k: usize,
+        rt: &tokio::runtime::Handle,
+    ) {
+        let y = o.y + 8.0 + k as f32 * 78.0;
+        // i18n: Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+        let title = crate::i18n::t("JavaScript runtime (Deno)");
+        winui::text_font(
+            p,
+            winui::tahoma_bold(),
+            o.x + 14.0,
+            y + 16.0,
+            title,
+            winui::TEXT(),
+        );
+        // What it is for, in one line after its name.
+        let after = winui::text_width_font(p, winui::tahoma_bold(), title) + 8.0;
+        winui::fit(
+            ui,
+            p,
+            o.x + 14.0 + after,
+            y + 16.0,
+            // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+            crate::i18n::t("lets yt-dlp list all of YouTube's qualities"),
+            winui::MUTED(),
+            o.x + 486.0,
+            ("helper-what", k),
+        );
+        let available = mdm_tools::deno::available();
+        let status = if self.installing_deno.is_some() {
+            crate::i18n::t("Downloading MDM's own copy...").to_owned()
+        } else if let Some(own) = &self.deno {
+            crate::i18n::fmt(
+                crate::i18n::t("Mister Download Manager's own copy, version {version}"),
+                &[("version", &own.version)],
+            )
+        } else if let Some(path) = &self.runtime {
+            crate::i18n::fmt(
+                // i18n: Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
+                crate::i18n::t("Your system's, nothing to download: {path}"),
+                &[("path", &crate::i18n::ltr(&path.display().to_string()))],
+            )
+        } else if available {
+            crate::i18n::t("Not installed yet").to_owned()
+        } else {
+            // i18n: Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
+            crate::i18n::t("MDM has no copy for this system: install Deno or Node.js").to_owned()
+        };
+        winui::fit(
+            ui,
+            p,
+            o.x + 14.0,
+            y + 36.0,
+            &status,
+            winui::MUTED(),
+            o.x + 486.0,
+            ("helper", k),
+        );
+        let [own_at] = winui::button_row_from_left(
+            p,
+            &[("Use MDM's own copy", 14.0, 180.0)],
+            8.0,
+            486.0,
+            260.0,
+        )[..] else {
+            unreachable!("one button")
+        };
+        if winui::button(
+            ui,
+            r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
+            "Use MDM's own copy",
+            if available && self.deno.is_none() && !self.busy() {
+                ButtonKind::Normal
+            } else {
+                ButtonKind::Disabled
+            },
+            false,
+            None,
+        )
+        .clicked()
+            && let Some(dir) = self.dir.clone()
+        {
+            self.install_deno(dir, rt, ui.ctx());
         }
     }
 }

@@ -36,7 +36,7 @@
 
 <table align="center">
   <tr>
-    <td align="center" width="210"><img src="docs/images/icons/faster.png" width="76" alt=""><h1>5×</h1><b>Faster</b><br><sub>a 1 GB file: 1 s instead of 5.5 s</sub></td>
+    <td align="center" width="210"><img src="docs/images/icons/faster.png" width="76" alt=""><h1>5×</h1><b>Faster</b><br><sub>a 1 GB file: 1 s instead of 5.5 s, on a local test server</sub></td>
     <td align="center" width="210"><img src="docs/images/icons/languages.png" width="76" alt=""><h1>+46</h1><b>More languages</b><br><sub>86 instead of IDM's 40</sub></td>
     <td align="center" width="210"><img src="docs/images/icons/free.png" width="76" alt=""><h1>100%</h1><b>Cheaper (free!)</b><br><sub>no licence, no trial, ever</sub></td>
     <td align="center" width="210"><img src="docs/images/icons/torrent.png" width="76" alt=""><h1>Torrent</h1><b>Supported fully</b><br><sub>magnet links, .torrent files, seeding</sub></td>
@@ -87,8 +87,9 @@
 <!-- compare:end -->
 
 Nothing new to learn: the toolbar, the categories, the list of downloads, the progress window and
-the browser button are where you expect them. Measured on the same computer, same files, both
-programs at their default settings ([how we measured](#the-benchmark-in-detail)).
+the browser button are where you expect them. Measured on the same computer, downloading from a
+test server on that computer (a loopback test: it times the programs, not an internet connection),
+same files, both programs at their default settings ([how we measured](#the-benchmark-in-detail)).
 
 ## Download
 
@@ -124,6 +125,12 @@ manager: in a terminal, the first line installs MDM and the second updates it.
 winget install AhmedNefzaoui.MisterDownloadManager
 winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
+
+### Code signing policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+Which Windows files are signed, who reviews and approves them, and what MDM sends over the
+network: [code signing policy](https://misterdownloadmanager.com/code-signing-policy.html).
 
 ### On Linux
 

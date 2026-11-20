@@ -3,7 +3,8 @@
 //! (Codeberg), its `SHA256SUMS` checked against its author's OpenPGP key (pinned in
 //! `keys/gallery-dl.asc`), the program against that list, kept in `tools/gallery-dl/<version>/`
 //! with the previous version, never older; or the person's own copy (`chosen`). It runs in the
-//! same job as yt-dlp does (`proc::spawn`), so Stop and MDM's end take it and all it started.
+//! same kind of job (Windows) or process group (Linux, macOS) as yt-dlp does (`proc::spawn`), so
+//! Stop and MDM's end take it and all it started.
 //!
 //! A download is a folder: gallery-dl prints each file it saves (one path a line, `# path` for
 //! one already there), and skips what is already there when started again, so a gallery started
@@ -418,6 +419,7 @@ impl ByEngine<'_> {
             token.clone(),
             pieces_shared.clone(),
             relist,
+            None,
         ));
         let mut cancelled = false;
         while !task.is_finished() {
@@ -477,6 +479,8 @@ impl Default for Progress {
             helper: None,
             merging: None,
             merge_failed: None,
+            recorded: 0,
+            recording: false,
         }
     }
 }
@@ -689,7 +693,8 @@ impl Drop for GalleryJob {
 
 /// The browser's context (`FromBrowser::args`, made for yt-dlp) as gallery-dl takes it: its
 /// cookies, and its User-Agent or MDM's (`--user-agent`, or `-o user-agent=…` before 1.24); no
-/// Referer or Origin (`--add-header`), which gallery-dl has no option for.
+/// Referer, Origin (`--add-header`), or yt-dlp's browser-store opt-out, which gallery-dl has no
+/// option for (it never reads Options' video cookie store).
 fn browser_args(theirs: Vec<String>, accepts: Accepts) -> Vec<String> {
     let mut out = Vec::new();
     let mut agent = None;
@@ -699,6 +704,7 @@ fn browser_args(theirs: Vec<String>, accepts: Accepts) -> Vec<String> {
             "--referer" | "--add-header" => {
                 theirs.next();
             }
+            "--no-cookies-from-browser" => {}
             "--user-agent" => agent = theirs.next(),
             "--cookies" => {
                 out.push(a);
@@ -1013,6 +1019,12 @@ mod tests {
             ["--cookies", "/c.txt", "-o", "user-agent=Firefox/150"]
         );
         assert_eq!(browser_args(Vec::new(), new), ["--user-agent", USER_AGENT]);
+        let private = FromBrowser {
+            private: true,
+            ..Default::default()
+        };
+        let (args, _) = private.args("https://x.test/g").unwrap();
+        assert_eq!(browser_args(args, new), ["--user-agent", USER_AGENT]);
         assert_eq!(
             browser_args(Vec::new(), old),
             ["-o".to_owned(), format!("user-agent={USER_AGENT}")]

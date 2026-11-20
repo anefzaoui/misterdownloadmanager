@@ -168,6 +168,10 @@ pub struct Settings {
     /// closing quits). On by default, for existing lists too, in every copy. Only where a tray
     /// shows MDM's icon.
     pub close_to_tray: bool,
+    /// General: a private (incognito) window's downloads are written to the saved list like any
+    /// other, so they survive MDM closing or restarting (their cookies stay in memory, as every
+    /// download's do). Off by default: they live in memory only, as the browser keeps them.
+    pub keep_private_downloads: bool,
     /// General (#558): global keyboard shortcut to show or hide the main window (e.g. `Cmd+U`,
     /// `Shift+Cmd+M`, `Ctrl+Alt+D`); empty when none is set.
     #[serde(default)]
@@ -185,6 +189,10 @@ pub struct Settings {
     /// sites it stays off (space separated; the native host reads both, mdm_ipc::capture).
     pub video_panel: bool,
     pub video_panel_sites: String,
+    /// General → Download panels → Button size (#1278): Compact shows the button as its round
+    /// form (the logo, the arrow, the ✕) over every video; Full (false, the default) shows its
+    /// words where they fit and the round form only on a small video. The host reads it too.
+    pub video_panel_compact: bool,
     /// General: also take the listed types the browser would open itself (a PDF in its viewer,
     /// an MP3 in its player); holding Alt while clicking leaves one to the browser.
     pub capture_opened: bool,
@@ -234,6 +242,10 @@ pub struct Settings {
     /// Sealed on disk like Sites Logins' passwords (`sealed`); a plain one from before still reads.
     #[serde(with = "sealed")]
     pub proxy_pass: String,
+    /// Options → Archives → Archive passwords (#37): tried in this order on an encrypted archive
+    /// before its password is asked, one a line. Kept in the keychain as the other passwords.
+    #[serde(with = "sealed")]
+    pub archive_passwords: String,
     pub proxy_http: bool,
     pub proxy_https: bool,
     pub proxy_ftp: bool,
@@ -306,6 +318,10 @@ pub struct Settings {
     pub torrent_incoming: bool,
     pub torrent_upnp: bool,
     pub torrent_port: u16,
+    /// Torrent settings → "Connect over uTP too" (#1384): BitTorrent over UDP beside TCP, on by
+    /// default (a list saved before it has none: on too). It needs the listening port (librqbit's
+    /// uTP socket is the listener's), and a proxy turns it off (SOCKS5 carries TCP only).
+    pub torrent_utp: bool,
     pub torrent_dht: bool,
     pub torrent_lsd: bool,
     /// Torrents go through Proxy / Socks' SOCKS5 proxy (a manual `socks5://` one only).
@@ -353,6 +369,10 @@ pub struct Settings {
     /// browser's last used). A settings file from before has neither: off.
     pub video_cookies: String,
     pub video_cookies_profile: String,
+    /// Options → Sites Logins → Use my yt-dlp config file: yt-dlp also reads its own config
+    /// file, and MDM's arguments still win over it. Off; a settings file from before has none:
+    /// off.
+    pub ytdlp_config: bool,
     /// Options → Archives (#37): extract an archive when its download completes (a Link grabber
     /// package says so itself). Off, as a browser leaves archives alone.
     pub extract_auto: bool,
@@ -448,6 +468,7 @@ impl Default for Settings {
             clipboard_autostart: true,
             minimize_to_tray: true,
             close_to_tray: true,
+            keep_private_downloads: false,
             show_hide_hotkey: String::new(),
             mv2_extensions: true,
             advanced_integration: true,
@@ -457,6 +478,7 @@ impl Default for Settings {
             excluded_addresses: Vec::new(),
             video_panel: true,
             video_panel_sites: String::new(),
+            video_panel_compact: false,
             capture_opened: true,
             capture_min_kb: 0,
             regional: crate::regional::Regional::default(),
@@ -483,6 +505,7 @@ impl Default for Settings {
             proxy_port: String::new(),
             proxy_user: String::new(),
             proxy_pass: String::new(),
+            archive_passwords: String::new(),
             proxy_http: false,
             proxy_https: false,
             proxy_ftp: false,
@@ -510,6 +533,7 @@ impl Default for Settings {
             torrent_incoming: true,
             torrent_upnp: true,
             torrent_port: 0,
+            torrent_utp: true,
             torrent_dht: true,
             torrent_lsd: true,
             torrent_proxy: false,
@@ -532,6 +556,7 @@ impl Default for Settings {
             video_split_chapters: false,
             video_cookies: String::new(),
             video_cookies_profile: String::new(),
+            ytdlp_config: false,
             extract_auto: false,
             extract_delete: false,
             extract_in_place: false,
@@ -599,6 +624,17 @@ impl Settings {
             },
             &self.proxy_pass,
         );
+        disk.archive_passwords = kept(
+            "archives/passwords".into(),
+            &|| {
+                format!(
+                    "Mister Download Manager: {}",
+                    // i18n: the list of archive passwords in the system's keychain (Credential Manager, the keyring): its name there
+                    crate::i18n::t("archive passwords")
+                )
+            },
+            &self.archive_passwords,
+        );
         for (a, d) in self.debrid_accounts.iter().zip(&mut disk.debrid_accounts) {
             d.secret = kept(
                 format!("debrid/{}", a.id),
@@ -623,6 +659,23 @@ impl Settings {
         disk
     }
 
+    /// Options → Archives' passwords, in the order they are tried.
+    pub fn archive_password_list(&self) -> Vec<String> {
+        password_lines(&self.archive_passwords)
+    }
+
+    /// `password` first in that list (added, or moved up): it opened an archive, or the user
+    /// asked to remember it.
+    pub fn remember_archive_password(&mut self, password: &str) {
+        if password.is_empty() || password.contains(['\n', '\r']) {
+            return;
+        }
+        let mut list = self.archive_password_list();
+        list.retain(|p| p != password);
+        list.insert(0, password.to_owned());
+        self.archive_passwords = list.join("\n");
+    }
+
     /// Options → Archives' folder choice, for mdm-extract.
     pub fn extract_into(&self) -> mdm_extract::Subfolder {
         match self.extract_subfolder {
@@ -631,6 +684,17 @@ impl Settings {
             _ => mdm_extract::Subfolder::Smart,
         }
     }
+}
+
+/// The passwords of a list typed one a line: blank lines out, each once, spaces kept (a password
+/// may have them).
+pub fn password_lines(text: &str) -> Vec<String> {
+    let mut seen = std::collections::HashSet::new();
+    text.lines()
+        .filter(|l| !l.trim().is_empty())
+        .filter(|l| seen.insert(l.to_string()))
+        .map(str::to_owned)
+        .collect()
 }
 
 /// FNV-1a: a stable hash (std's may change between builds), for keychain keys.
@@ -740,6 +804,7 @@ impl Settings {
             listen: self.torrent_incoming,
             upnp: self.torrent_upnp,
             port: (self.torrent_port != 0).then_some(self.torrent_port),
+            utp: self.torrent_utp,
             dht: self.torrent_dht,
             lsd: self.torrent_lsd,
             proxy,
@@ -1102,10 +1167,11 @@ impl Settings {
     }
 }
 
-/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change),
-/// and every video started on Embed chapters (#827).
+/// Keep every yt-dlp run on Options' cookies for video sites (cheap when they didn't change)
+/// and on Use my yt-dlp config file, and every video started on Embed chapters (#827).
 pub fn share_video_settings(s: &Settings) {
     mdm_tools::proc::set_browser_cookies(s.video_cookies());
+    mdm_tools::proc::set_user_config(s.ytdlp_config);
     mdm_tools::video::set_chapters(s.video_chapters);
     mdm_tools::video::set_split_chapters(s.video_split_chapters);
 }
@@ -1185,6 +1251,28 @@ mod tests {
         assert_eq!(s.category_dir(Category::Video, downloads), chosen);
         assert_ne!(s.category_dir(Category::Music, downloads), chosen);
         assert!(!s.keep_category_dir(Category::Video, chosen, downloads));
+    }
+
+    /// #1278: the video button's size is Full unless Compact was chosen, kept across a save,
+    /// and read by the native host under the same name (mdm_ipc::capture::CaptureRules).
+    #[test]
+    fn the_video_buttons_size_is_saved_and_read_by_the_host() {
+        use super::Settings;
+        assert!(!Settings::default().video_panel_compact, "Full by default");
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        assert!(!old.video_panel_compact, "settings saved before it: Full");
+        let s = Settings {
+            video_panel_compact: true,
+            ..Settings::default()
+        };
+        let saved = serde_json::to_value(&s).unwrap();
+        let again: Settings = serde_json::from_value(saved.clone()).unwrap();
+        assert!(again.video_panel_compact);
+        let rules: mdm_ipc::capture::CaptureRules = serde_json::from_value(saved).unwrap();
+        assert!(rules.video_panel_compact);
+        let rules: mdm_ipc::capture::CaptureRules =
+            serde_json::from_value(serde_json::to_value(Settings::default()).unwrap()).unwrap();
+        assert!(!rules.video_panel_compact);
     }
 
     #[test]
@@ -1383,6 +1471,13 @@ mod tests {
     }
 
     #[test]
+    fn the_persons_ytdlp_config_is_off_until_chosen() {
+        let old: Settings = serde_json::from_str(r#"{"video_chapters":true}"#).unwrap();
+        assert!(!old.ytdlp_config);
+        assert!(!Settings::default().ytdlp_config);
+    }
+
+    #[test]
     fn connection_exceptions_and_proxy() {
         let mut s = Settings {
             conn_exceptions: vec![("ftp.slow.org".into(), 1)],
@@ -1536,6 +1631,7 @@ pub(crate) mod sealed {
         fn the_proxy_password_and_debrid_secrets_are_sealed_on_disk() {
             let s = crate::settings::Settings {
                 proxy_pass: "proxy-s3cret".into(),
+                archive_passwords: "zip-s3cret\nother".into(),
                 debrid_accounts: vec![crate::settings::DebridAccount {
                     id: 1,
                     user: "me".into(),
@@ -1546,10 +1642,15 @@ pub(crate) mod sealed {
             };
             let json = serde_json::to_string(&s).unwrap();
             if cfg!(windows) {
-                assert!(!json.contains("proxy-s3cret") && !json.contains("rd-s3cret"));
+                assert!(
+                    !json.contains("proxy-s3cret")
+                        && !json.contains("rd-s3cret")
+                        && !json.contains("zip-s3cret")
+                );
             }
             let back: crate::settings::Settings = serde_json::from_str(&json).unwrap();
             assert_eq!(back.proxy_pass, "proxy-s3cret");
+            assert_eq!(back.archive_password_list(), vec!["zip-s3cret", "other"]);
             assert!(back.debrid_accounts[0].account().is_some());
             // Never in a debug dump either.
             assert!(!format!("{:?}", back.debrid_accounts).contains("rd-s3cret"));
