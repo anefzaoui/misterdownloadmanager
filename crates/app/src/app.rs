@@ -7346,7 +7346,7 @@ impl App {
             }
             "open" => {
                 crate::recent::pass_foreground();
-                crate::dialogs::open_download(&dest, moved_away);
+                crate::dialogs::open_download_in_front(&dest, moved_away);
                 Answer::done()
             }
             "folder" => {

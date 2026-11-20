@@ -9535,6 +9535,20 @@ fn share_on_this_thread(
         return;
     };
     let hwnd = window.0;
+    // Its first messages handled (shown, activated) before the sheet is asked for.
+    // SAFETY: this thread's own queue.
+    unsafe {
+        use windows_sys::Win32::UI::WindowsAndMessaging::{PM_REMOVE, PeekMessageW};
+        let mut msg: MSG = zeroed();
+        let until = std::time::Instant::now() + std::time::Duration::from_millis(200);
+        while std::time::Instant::now() < until {
+            while PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_REMOVE) != 0 {
+                TranslateMessage(&msg);
+                DispatchMessageW(&msg);
+            }
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+    }
     let asked = share_prepare(hwnd, path).and_then(|interop| {
         // SAFETY: our window, shown and in front.
         unsafe { interop.ShowShareUIForWindow(windows::Win32::Foundation::HWND(hwnd)) }
@@ -9629,16 +9643,17 @@ fn share_prepare(
 struct ShareAnchor(HWND);
 
 impl ShareAnchor {
-    /// A 1×1 tool window at the pointer, all but transparent (a window at alpha 0 counts as
-    /// hidden), letting clicks through; `show`: shown and brought to the front (the tests make
-    /// one never shown).
+    /// A 1×1 window at the pointer, all but transparent (a window at alpha 0 counts as hidden);
+    /// `show`: shown, activated and brought to the front (the tests make one never shown). The
+    /// share sheet belongs to the active window, so a tool window or one never activated gets
+    /// none.
     fn new(show: bool) -> Option<ShareAnchor> {
         use windows_sys::Win32::Foundation::POINT;
         use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
         use windows_sys::Win32::UI::WindowsAndMessaging::{
-            CreateWindowExW, DefWindowProcW, GetCursorPos, LWA_ALPHA, RegisterClassW,
-            SW_SHOWNOACTIVATE, SetForegroundWindow, SetLayeredWindowAttributes, ShowWindow,
-            WNDCLASSW, WS_EX_LAYERED, WS_EX_TOOLWINDOW, WS_EX_TOPMOST, WS_EX_TRANSPARENT, WS_POPUP,
+            CreateWindowExW, DefWindowProcW, GetCursorPos, GetForegroundWindow, LWA_ALPHA,
+            RegisterClassW, SW_SHOW, SetLayeredWindowAttributes, ShowWindow, WNDCLASSW,
+            WS_EX_LAYERED, WS_EX_TOPMOST, WS_POPUP,
         };
         let class: Vec<u16> = "MDM share sheet".encode_utf16().chain(Some(0)).collect();
         // SAFETY: a window class of plain defaults, registered once per process (a second
@@ -9653,7 +9668,7 @@ impl ShareAnchor {
             let mut at = POINT { x: 0, y: 0 };
             GetCursorPos(&mut at);
             let hwnd = CreateWindowExW(
-                WS_EX_TOOLWINDOW | WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST,
+                WS_EX_LAYERED | WS_EX_TOPMOST,
                 class.as_ptr(),
                 class.as_ptr(),
                 WS_POPUP,
@@ -9671,8 +9686,14 @@ impl ShareAnchor {
             }
             SetLayeredWindowAttributes(hwnd, 0, 1, LWA_ALPHA);
             if show {
-                ShowWindow(hwnd, SW_SHOWNOACTIVATE);
-                SetForegroundWindow(hwnd);
+                // Activated with the right the browser's host passed on, or by joining the
+                // foreground window's input ([`bring_forward`]).
+                ShowWindow(hwnd, SW_SHOW);
+                bring_forward(hwnd);
+                tracing::info!(
+                    "share sheet: its window in front: {}",
+                    GetForegroundWindow() == hwnd
+                );
             }
             Some(ShareAnchor(hwnd))
         }
@@ -9776,4 +9797,150 @@ mod fileclip_tests {
             },
         );
     }
+}
+
+/// The visible top-level windows of other processes whose title names `file` (its name, or its
+/// name without the extension), with their titles: the window of a program showing that file.
+fn windows_naming(file: &str) -> Vec<(HWND, String)> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{InternalGetWindowText, IsWindowVisible};
+    struct Look {
+        own: u32,
+        names: Vec<String>,
+        found: Vec<(HWND, String)>,
+    }
+    unsafe extern "system" fn each(hwnd: HWND, lparam: LPARAM) -> windows_sys::core::BOOL {
+        // SAFETY: lparam is the &mut Look passed to EnumWindows below, alive for the call.
+        let l = unsafe { &mut *(lparam as *mut Look) };
+        let mut pid = 0u32;
+        // SAFETY: plain queries about any window.
+        unsafe { GetWindowThreadProcessId(hwnd, &mut pid) };
+        if pid == l.own || unsafe { IsWindowVisible(hwnd) } == 0 {
+            return 1;
+        }
+        let mut buf = vec![0u16; 512];
+        // SAFETY: writes at most buf.len() units, the NUL included.
+        let n = unsafe { InternalGetWindowText(hwnd, buf.as_mut_ptr(), buf.len() as i32) };
+        let title = String::from_utf16_lossy(&buf[..n.max(0) as usize]);
+        let lower = title.to_lowercase();
+        if l.names
+            .iter()
+            .any(|n| !n.is_empty() && lower.contains(n.as_str()))
+        {
+            l.found.push((hwnd, title));
+        }
+        1
+    }
+    let name = file.to_lowercase();
+    let stem = std::path::Path::new(&name)
+        .file_stem()
+        .map(|s| s.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let mut look = Look {
+        // SAFETY: takes nothing.
+        own: unsafe { GetCurrentProcessId() },
+        names: vec![name, stem],
+        found: Vec::new(),
+    };
+    // SAFETY: the callback only reads windows and writes to `look`, alive for the call.
+    unsafe { EnumWindows(Some(each), &mut look as *mut Look as LPARAM) };
+    look.found
+}
+
+/// Bring the window `hwnd` (another program's, or a window of ours that must be active) to the
+/// foreground. Windows refuses it to a program in the background unless the right was passed on
+/// (the browser's native host passes it to MDM) or the caller shares the foreground window's
+/// input: so, when refused, lifted above the others ([`above_others`]) and asked again while
+/// joined to the foreground window's thread. Whether it is the foreground window now.
+fn bring_forward(hwnd: HWND) -> bool {
+    use windows_sys::Win32::System::Threading::{AttachThreadInput, GetCurrentThreadId};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        BringWindowToTop, GetForegroundWindow, IsIconic, SW_RESTORE, SetForegroundWindow,
+        ShowWindow,
+    };
+    // SAFETY: plain calls on window handles and thread ids; they fail harmlessly for a window
+    // that is gone; the threads' input is joined only for the call and parted after it.
+    unsafe {
+        if IsIconic(hwnd) != 0 {
+            ShowWindow(hwnd, SW_RESTORE);
+        }
+        if SetForegroundWindow(hwnd) == 0 || GetForegroundWindow() != hwnd {
+            above_others(hwnd);
+            let front = GetForegroundWindow();
+            let theirs = GetWindowThreadProcessId(front, std::ptr::null_mut());
+            let mine = GetCurrentThreadId();
+            let joined = theirs != 0 && theirs != mine && AttachThreadInput(mine, theirs, 1) != 0;
+            BringWindowToTop(hwnd);
+            SetForegroundWindow(hwnd);
+            if joined {
+                AttachThreadInput(mine, theirs, 0);
+            }
+        }
+        GetForegroundWindow() == hwnd
+    }
+}
+
+/// Open the file at `path` with its program and bring the window showing it in front (#1496:
+/// from the browser popup's list). `ShellExecuteW` alone hands a file to a program already
+/// running (Explorer for a zip, a browser for a PDF, Notepad's open window), which then shows it
+/// in a window of its own and doesn't take the foreground: the window came up behind the browser.
+/// So the right to come to the front is passed on first (to any process, and to the program
+/// started, when one is), and the window whose title names the file, new or retitled, is looked
+/// for for a few seconds and brought forward.
+pub fn open_file_in_front(path: &std::path::Path) -> Result<(), std::io::Error> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::System::Threading::GetProcessId;
+    use windows_sys::Win32::UI::Shell::{
+        SEE_MASK_NOASYNC, SEE_MASK_NOCLOSEPROCESS, SHELLEXECUTEINFOW, ShellExecuteExW,
+    };
+    use windows_sys::Win32::UI::WindowsAndMessaging::{AllowSetForegroundWindow, SW_SHOWNORMAL};
+    com_on_this_thread();
+    let name = path
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let before: Vec<(HWND, String)> = windows_naming(&name);
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
+    let folder: Option<Vec<u16>> = std::path::absolute(path).ok().and_then(|p| {
+        p.parent()
+            .map(|d| d.as_os_str().encode_wide().chain(Some(0)).collect())
+    });
+    pass_foreground();
+    // SAFETY: every field admits zero; the strings are NUL-terminated and outlive the call; the
+    // process handle, when one comes back, is closed below.
+    let mut info: SHELLEXECUTEINFOW = unsafe { zeroed() };
+    info.cbSize = size_of::<SHELLEXECUTEINFOW>() as u32;
+    info.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_NOASYNC;
+    info.lpFile = wide.as_ptr();
+    info.lpDirectory = folder.as_ref().map_or(std::ptr::null(), |f| f.as_ptr());
+    info.nShow = SW_SHOWNORMAL;
+    // SAFETY: as above.
+    if unsafe { ShellExecuteExW(&mut info) } == 0 {
+        return Err(std::io::Error::last_os_error());
+    }
+    if !info.hProcess.is_null() {
+        // SAFETY: the handle ShellExecuteExW gave, closed once used.
+        unsafe {
+            AllowSetForegroundWindow(GetProcessId(info.hProcess));
+            windows_sys::Win32::Foundation::CloseHandle(info.hProcess);
+        }
+    }
+    // The window naming the file: a new one, or one whose title changed to it (a browser's tab).
+    let start = std::time::Instant::now();
+    while start.elapsed() < std::time::Duration::from_secs(8) {
+        std::thread::sleep(std::time::Duration::from_millis(150));
+        let now = windows_naming(&name);
+        let fresh = now
+            .iter()
+            .find(|(h, t)| !before.iter().any(|(b, bt)| b == h && bt == t))
+            .or(if before.is_empty() { None } else { now.first() });
+        if let Some((hwnd, title)) = fresh {
+            // A moment for it to finish showing (Explorer paints, then activates).
+            std::thread::sleep(std::time::Duration::from_millis(250));
+            let front = bring_forward(*hwnd);
+            tracing::info!("open: {title:?} brought in front ({front})");
+            return Ok(());
+        }
+    }
+    tracing::info!("open: no window named {name:?} came within 8 s");
+    Ok(())
 }
