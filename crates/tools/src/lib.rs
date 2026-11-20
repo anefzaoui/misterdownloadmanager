@@ -7,6 +7,7 @@
 pub mod bgutil;
 pub mod chosen;
 pub mod declared;
+pub mod deno;
 pub mod ffmpeg;
 mod folder;
 pub mod gallery;

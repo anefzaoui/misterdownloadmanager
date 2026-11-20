@@ -381,6 +381,8 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 	All the uploader's	All the uploader's
+#. text in helpers.rs
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file before it runs. About 120 MB total, once.	All three are open source. MDM gets them from their official releases with its own downloader and checks each file before it runs. About 120 MB total, once.
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 	Allow	Allow
@@ -584,8 +586,6 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Bosnia and Herzegovina	Bosnia and Herzegovina
-#. text in helpers.rs
-	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Botswana	Botswana
@@ -983,6 +983,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Denmark	Denmark
+#. text in helpers.rs
+#. helper name and what it does (Deno is a JavaScript runtime)
+	Deno: unlocks YouTube	Deno: unlocks YouTube
 #. text in a dialog box
 	Description	Description
 #. checkbox in the Find window
@@ -1555,8 +1558,8 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 	Get 7-Zip	Get 7-Zip
-#. window title in helpers.rs
-#. title of the first start's window that offers yt-dlp and ffmpeg
+#. text in helpers.rs
+#. title of the first start's window that offers yt-dlp, Deno and ffmpeg
 	Get ready for video downloads	Get ready for video downloads
 #. button in the Options window
 	Get System	Get System
@@ -1624,7 +1627,7 @@
 #. noun: button that opens the help
 	Help	Help
 #. window title in helpers.rs
-#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl, deno) from
 	Helpers	Helpers
 #. text in errors.rs; button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
@@ -3902,6 +3905,8 @@
 #. a download's error: the address is a site's web page that needs a browser, not the file; {site} = the site's name (gofile)
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 	this {site} link is a web page, not the file: open it in your browser and download from there	this {site} link is a web page, not the file: open it in your browser and download from there
+#. text in helpers.rs
+	Three free helpers make it work: yt-dlp (the downloader), Deno (JavaScript runtime for YouTube), and ffmpeg (audio merger). Get them now, and saving a video is one click away.	Three free helpers make it work: yt-dlp (the downloader), Deno (JavaScript runtime for YouTube), and ffmpeg (audio merger). Get them now, and saving a video is one click away.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 	through a proxy	through a proxy
@@ -4037,8 +4042,6 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu
-#. text in helpers.rs
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 	Type a feed's address above and click Add feed.	Type a feed's address above and click Add feed.
@@ -4387,6 +4390,8 @@
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again
+#. text in helpers.rs
+	YouTube requires a JavaScript runtime to solve bot challenges since late 2025. Deno is yt-dlp's recommended runtime: lightweight, secure, and works everywhere.	YouTube requires a JavaScript runtime to solve bot challenges since late 2025. Deno is yt-dlp's recommended runtime: lightweight, secure, and works everywhere.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.

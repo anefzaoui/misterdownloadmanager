@@ -1394,6 +1394,13 @@ These ship in the next version.
 - ✅ Internet Archive: a download that needs your account keeps the browser's sign-in on its way to
   archive.org's storage servers (thanks to [@arifrhm](https://github.com/arifrhm))
   ([#1298](https://github.com/anefzaoui/misterdownloadmanager/issues/1298))
+- ✅ YouTube: the JavaScript runtime yt-dlp needs for the qualities is installed by MDM itself,
+  beside yt-dlp and ffmpeg. The first start's helpers window offers Deno and says why; the Video
+  helpers window installs it later, or takes a Deno of the person's own as it does for the others.
+  It comes from Deno's official releases (Windows, Linux and macOS, 64-bit and ARM), MDM downloads
+  it with its own downloader, holds the file to the checksum Deno publishes for it (and to GitHub's
+  own digest of it) and unpacks just the program, and the folder it lands in is handed to yt-dlp
+  (`--js-runtimes deno:<path>`), so a video's qualities are listed with nothing installed by hand
 
 ## Being worked on
 

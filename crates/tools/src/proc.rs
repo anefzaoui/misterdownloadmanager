@@ -903,8 +903,9 @@ fn nvm_node(home: &Path) -> Option<PathBuf> {
 /// enabled by default — every other runtime is passed as `--js-runtimes name:path`. Deno on the
 /// PATH (`dirs`): nothing to say. Else Deno where its own installer puts it (`~/.deno/bin`,
 /// #852: no PATH of a program started from the desktop has it), or in `more` (folders a runtime
-/// installed after MDM started is in, [`runtime_dirs`], which on Windows also carries
-/// `~/.deno/bin` and `~/.bun/bin`); else Node.js (≥ 22) on the PATH, under nvm, or in `more`;
+/// installed after MDM started is in, [`runtime_dirs`], which carries MDM's own Deno on every
+/// system and on Windows also `~/.deno/bin` and `~/.bun/bin`); else Node.js (≥ 22) on the PATH,
+/// under nvm, or in `more`;
 /// else QuickJS (`qjs`, the executable must be named so); else Bun — deprecated in yt-dlp and
 /// unsupported past 1.3.14, so only a last resort.
 fn js_runtime(
@@ -940,18 +941,24 @@ fn js_runtime(
 /// Where installers put a JavaScript runtime (#852): winget's links (Deno, Node.js) and Node.js's
 /// own installer. They add these to the PATH of programs started after them, not to MDM's own,
 /// so a runtime installed while MDM runs is found here when the video is looked up again.
+/// Deno follows on every system ([`crate::deno`]): the folder the Helpers window installed it
+/// in — or the one of a Deno the person chose — is on no PATH, so yt-dlp is told of it
+/// (`--js-runtimes deno:<path>`).
 /// None elsewhere: a package manager's folder is on the PATH already ([`usable_dirs`]).
 fn runtime_dirs() -> Vec<PathBuf> {
+    let mut dirs: Vec<PathBuf> = crate::tools_dir()
+        .and_then(|tools| crate::deno::installed(&tools))
+        .and_then(|deno| deno.exe.parent().map(Path::to_path_buf))
+        .into_iter()
+        .collect();
     #[cfg(windows)]
     {
-        let mut dirs = crate::system::extra_dirs();
+        dirs.extend(crate::system::extra_dirs());
         if let Some(programs) = std::env::var_os("ProgramFiles") {
             dirs.push(Path::new(&programs).join("nodejs"));
         }
-        dirs
     }
-    #[cfg(not(windows))]
-    Vec::new()
+    dirs
 }
 
 /// The folders of `path` (a PATH value) a helper can walk, in their order (#508): yt-dlp looks

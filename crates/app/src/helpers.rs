@@ -39,12 +39,14 @@ pub struct Helpers {
 }
 
 /// Whether to offer the helpers at this start: never asked, and one of them is missing (ffmpeg
-/// counts only where MDM can install one, Windows; elsewhere the system's is used).
+/// counts only where MDM can install one, Windows; elsewhere the system's is used). Deno is offered
+/// on all platforms since yt-dlp requires a JavaScript runtime for YouTube since late 2025.
 pub fn worth_asking() -> bool {
     let Some(dir) = mdm_tools::tools_dir() else {
         return false;
     };
     mdm_tools::installed(&dir).is_none()
+        || mdm_tools::deno::installed(&dir).is_none()
         || (cfg!(windows) && mdm_tools::ffmpeg::installed(&dir).is_none())
 }
 
@@ -66,6 +68,10 @@ impl Helpers {
         if mdm_tools::installed(&dir).is_none() {
             list.push("yt-dlp");
         }
+        // Deno: JavaScript runtime for yt-dlp's YouTube challenge solving (required since late 2025).
+        if mdm_tools::deno::installed(&dir).is_none() {
+            list.push("deno");
+        }
         // ffmpeg: MDM's own on Windows (it has no build elsewhere, where the system's is used).
         if cfg!(windows) && mdm_tools::ffmpeg::installed(&dir).is_none() {
             list.push("ffmpeg");
@@ -85,10 +91,12 @@ impl Helpers {
                     progress.total.store(0, Relaxed);
                 }
                 state.lock().unwrap().current = Some((name, k + 1, total));
-                let res = if name == "ffmpeg" {
-                    mdm_tools::ffmpeg::install_latest(&dir, &net, Some(&progress)).await
-                } else {
-                    mdm_tools::install_latest(&dir, &net, Some(&progress)).await
+                let res = match name {
+                    "ffmpeg" => {
+                        mdm_tools::ffmpeg::install_latest(&dir, &net, Some(&progress)).await
+                    }
+                    "deno" => mdm_tools::deno::install_latest(&dir, &net, Some(&progress)).await,
+                    _ => mdm_tools::install_latest(&dir, &net, Some(&progress)).await,
                 };
                 let mut s = state.lock().unwrap();
                 match res {
@@ -134,12 +142,12 @@ impl Helpers {
         window(
             ctx,
             "helpers",
-            // i18n: title of the first start's window that offers yt-dlp and ffmpeg
+            // i18n: title of the first start's window that offers yt-dlp, Deno and ffmpeg
             "Get ready for video downloads",
             // Taller once Yes is pressed: the progress under the last section.
             [
                 520.0,
-                if self.job.is_some() { 418.0 } else { 382.0 } + extra,
+                if self.job.is_some() { 490.0 } else { 454.0 } + extra,
             ],
             false,
             winui::BG(),
@@ -179,7 +187,7 @@ impl Helpers {
             // i18n: the headline of the first start's helpers window
             crate::i18n::t("Download videos from YouTube and 1,000+ sites"),
             crate::i18n::t(
-                "Two free helpers make it work. Get them now, and saving a video is one click away when you find one.",
+                "Three free helpers make it work: yt-dlp (the downloader), Deno (JavaScript runtime for YouTube), and ffmpeg (audio merger). Get them now, and saving a video is one click away.",
             ),
         );
         // Everything below it moves down with a taller banner.
@@ -190,13 +198,22 @@ impl Helpers {
             .as_deref()
             .and_then(mdm_tools::ffmpeg::installed)
             .is_some();
-        let rows: [(Icon, &str, String); 3] = [
+        let rows: [(Icon, &str, String); 4] = [
             (
                 Icon::HelperVideo,
                 // i18n: helper name and what it does (yt-dlp is a program's name)
                 "yt-dlp: finds the video",
                 crate::i18n::t(
                     "Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.",
+                )
+                .to_owned(),
+            ),
+            (
+                Icon::HelperChecked,
+                // i18n: helper name and what it does (Deno is a JavaScript runtime)
+                "Deno: unlocks YouTube",
+                crate::i18n::t(
+                    "YouTube requires a JavaScript runtime to solve bot challenges since late 2025. Deno is yt-dlp's recommended runtime: lightweight, secure, and works everywhere.",
                 )
                 .to_owned(),
             ),
@@ -221,7 +238,7 @@ impl Helpers {
                 // i18n: a promise in the helpers window: the helpers are free, official and checked
                 "Free, official and checked",
                 crate::i18n::t(
-                    "Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.",
+                    "All three are open source. MDM gets them from their official releases with its own downloader and checks each file before it runs. About 120 MB total, once.",
                 )
                 .to_owned(),
             ),
@@ -250,7 +267,8 @@ impl Helpers {
         }
 
         // After Yes: one bar for both, centred under the last section, and what it is doing.
-        let mut y = 322.0;
+        // (Below the four sections: 100 + 3 * 72 + what the last one wraps to.)
+        let mut y = 394.0;
         if let Some(job) = &self.job {
             let st = job.state.lock().unwrap();
             let f = job.progress.fraction().unwrap_or(0.0);
@@ -316,7 +334,7 @@ impl Helpers {
             };
             drop(st);
             let bar_w = 320.0;
-            winui::meter(&p, r(o, (w - bar_w) / 2.0, 312.0, bar_w, 8.0), fraction);
+            winui::meter(&p, r(o, (w - bar_w) / 2.0, 384.0, bar_w, 8.0), fraction);
             let room = w - 40.0;
             let mut more = 0.0;
             if failed && winui::text_width(&p, &line) > room {
@@ -325,7 +343,7 @@ impl Helpers {
                 let n = winui::paragraph(
                     &p,
                     o.x + 20.0,
-                    o.y + 340.0,
+                    o.y + 412.0,
                     &line,
                     color,
                     o.x + w - 20.0,
@@ -340,7 +358,7 @@ impl Helpers {
                     &p,
                     winui::tahoma(),
                     (o.x + (w - tw) / 2.0).round(),
-                    o.y + 340.0,
+                    o.y + 412.0,
                     &shown,
                     color,
                 );
@@ -469,13 +487,13 @@ impl Helpers {
 
 use mdm_tools::chosen::Helper;
 
-/// Helpers (Download video from a page or a gallery → Helpers...): for yt-dlp, ffmpeg and
-/// gallery-dl (#58), where MDM takes it from (its own copy, or a program of the person's), and the
+/// Helpers (Download video from a page or a gallery → Helpers...): for yt-dlp, ffmpeg, gallery-dl
+/// and Deno (#58), where MDM takes it from (its own copy, or a program of the person's), and the
 /// way to choose another: one copy of each for every program that uses them (#51).
 pub struct Programs {
     dir: Option<std::path::PathBuf>,
     /// The helpers as found (read again after each change, not every frame: it reads files).
-    found: [Option<mdm_tools::Installed>; 3],
+    found: [Option<mdm_tools::Installed>; 4],
     /// A chosen program being checked (`--version`), and what it answered.
     checking: Option<(Helper, Answer)>,
     /// MDM's own yt-dlp or gallery-dl being downloaded in place of the system's (#452, #571),
@@ -484,7 +502,12 @@ pub struct Programs {
     error: Option<String>,
 }
 
-const HELPERS: [Helper; 3] = [Helper::YtDlp, Helper::Ffmpeg, Helper::GalleryDl];
+const HELPERS: [Helper; 4] = [
+    Helper::YtDlp,
+    Helper::Ffmpeg,
+    Helper::GalleryDl,
+    Helper::Deno,
+];
 
 /// A check's answer, once it has one (Err: why the program wasn't taken, in words).
 type Answer = Arc<Mutex<Option<Result<(), String>>>>;
@@ -493,7 +516,7 @@ impl Programs {
     pub fn new() -> Self {
         let mut p = Programs {
             dir: mdm_tools::tools_dir(),
-            found: [None, None, None],
+            found: [None, None, None, None],
             checking: None,
             installing: None,
             error: None,
@@ -510,6 +533,7 @@ impl Programs {
             mdm_tools::installed(dir),
             mdm_tools::ffmpeg::installed(dir),
             mdm_tools::gallery::installed(dir),
+            mdm_tools::deno::installed(dir),
         ];
     }
 
@@ -531,6 +555,8 @@ impl Programs {
                 mdm_tools::gallery::install_latest(&dir, &net, None).await
             } else if h == Helper::Ffmpeg {
                 mdm_tools::ffmpeg::install_latest(&dir, &net, None).await
+            } else if h == Helper::Deno {
+                mdm_tools::deno::install_latest(&dir, &net, None).await
             } else {
                 mdm_tools::install_latest(&dir, &net, None).await
             };
@@ -581,9 +607,9 @@ impl Programs {
         window(
             ctx,
             "video-helpers",
-            // i18n: window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+            // i18n: window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl, deno) from
             "Helpers",
-            [500.0, 292.0],
+            [500.0, 370.0],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
@@ -621,6 +647,7 @@ impl Programs {
                 Helper::YtDlp => mdm_tools::ytdlp_asset().is_some(),
                 Helper::GalleryDl => mdm_tools::gallery::asset().is_some(),
                 Helper::Ffmpeg => mdm_tools::ffmpeg::available(),
+                Helper::Deno => mdm_tools::deno::available(),
             };
             // The system's copy may be the person's to keep up to date: MDM's own can replace it
             // (#452, #571), where MDM has one for this system and processor.
@@ -755,7 +782,7 @@ impl Programs {
                 ui,
                 &p,
                 o.x + 14.0,
-                o.y + 254.0,
+                o.y + 332.0,
                 e,
                 winui::ERROR(),
                 o.x + 400.0,
@@ -764,7 +791,7 @@ impl Programs {
         }
         let close = winui::button(
             ui,
-            r(o, 413.0, 260.0, 77.0, 21.0),
+            r(o, 413.0, 338.0, 77.0, 21.0),
             "Close",
             ButtonKind::Default,
             false,

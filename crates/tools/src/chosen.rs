@@ -1,8 +1,8 @@
-//! The yt-dlp and ffmpeg the person chose instead of MDM's own copies (#51: one copy of each
-//! for every program that uses them). `<tools>/programs.json` holds them; `installed` and
-//! `ffmpeg::installed` read it first, so the app and the command line agree, and MDM's own
-//! updates leave a chosen program alone (`install_latest`). The app's Video helpers window
-//! writes it.
+//! The yt-dlp, ffmpeg, gallery-dl and Deno the person chose instead of MDM's own copies (#51: one
+//! copy of each for every program that uses them). `<tools>/programs.json` holds them;
+//! `installed`, `ffmpeg::installed`, `gallery::installed` and `deno::installed` read it first,
+//! so the app and the command line agree, and MDM's own updates leave a chosen program alone
+//! (`install_latest`). The app's Video helpers window writes it.
 
 use std::path::Path;
 use std::process::Command;
@@ -19,6 +19,8 @@ pub enum Helper {
     Ffmpeg,
     /// Image galleries (#58).
     GalleryDl,
+    /// yt-dlp's JavaScript runtime for YouTube's formats.
+    Deno,
 }
 
 impl Helper {
@@ -27,6 +29,7 @@ impl Helper {
             Helper::YtDlp => "yt-dlp",
             Helper::Ffmpeg => "ffmpeg",
             Helper::GalleryDl => "gallery-dl",
+            Helper::Deno => "deno",
         }
     }
 }
@@ -43,6 +46,8 @@ struct Programs {
         skip_serializing_if = "Option::is_none"
     )]
     gallery_dl: Option<Installed>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    deno: Option<Installed>,
 }
 
 const FILE: &str = "programs.json";
@@ -72,6 +77,7 @@ fn slot(p: &mut Programs, h: Helper) -> &mut Option<Installed> {
         Helper::YtDlp => &mut p.ytdlp,
         Helper::Ffmpeg => &mut p.ffmpeg,
         Helper::GalleryDl => &mut p.gallery_dl,
+        Helper::Deno => &mut p.deno,
     }
 }
 
@@ -118,7 +124,7 @@ pub fn ask(h: Helper, exe: &Path) -> Result<Installed, Error> {
 fn version_of(h: Helper, exe: &Path) -> Result<String, Error> {
     let mut cmd = Command::new(exe);
     cmd.arg(match h {
-        Helper::YtDlp | Helper::GalleryDl => "--version",
+        Helper::YtDlp | Helper::GalleryDl | Helper::Deno => "--version",
         Helper::Ffmpeg => "-version",
     });
     let out = crate::proc::output(cmd, h.name(), Duration::from_secs(20))
@@ -136,6 +142,7 @@ fn parse_version(h: Helper, out: &str) -> Option<String> {
             .strip_prefix("ffmpeg version ")?
             .split_whitespace()
             .next()?,
+        Helper::Deno => first.strip_prefix("deno ")?.split_whitespace().next()?,
     };
     let plausible = !v.is_empty()
         && v.len() <= 64
@@ -179,6 +186,17 @@ mod tests {
         );
         assert_eq!(parse_version(Helper::YtDlp, ""), None);
         assert_eq!(
+            parse_version(
+                Helper::Deno,
+                "deno 2.6.3 (stable, release, x86_64-pc-windows-msvc)\nv8 13.8.258.9\ntypescript 5.9.2\n"
+            )
+            .as_deref(),
+            Some("2.6.3")
+        );
+        // Another program's answer.
+        assert_eq!(parse_version(Helper::Deno, "Python 3.13.1\n"), None);
+        assert_eq!(parse_version(Helper::Deno, "Usage: deno <file>\n"), None);
+        assert_eq!(
             parse_version(Helper::GalleryDl, "\n1.30.0\n\n").as_deref(),
             Some("1.30.0")
         );
@@ -201,12 +219,14 @@ mod tests {
                 ytdlp: Some(mine.clone()),
                 ffmpeg: Some(mine.clone()),
                 gallery_dl: Some(mine.clone()),
+                deno: Some(mine.clone()),
             },
         )
         .unwrap();
         assert_eq!(crate::installed(dir.path()), Some(mine.clone()));
         assert_eq!(crate::ffmpeg::installed(dir.path()), Some(mine.clone()));
         assert_eq!(crate::gallery::installed(dir.path()), Some(mine.clone()));
+        assert_eq!(crate::deno::installed(dir.path()), Some(mine.clone()));
         let net = mdm_engine::Options::default();
         assert_eq!(
             crate::install_latest(dir.path(), &net, None).await.unwrap(),
@@ -224,11 +244,18 @@ mod tests {
                 .unwrap(),
             mine
         );
+        assert_eq!(
+            crate::deno::install_latest(dir.path(), &net, None)
+                .await
+                .unwrap(),
+            mine
+        );
         assert!(!dir.path().join("yt-dlp").exists(), "nothing downloaded");
         assert!(
             !dir.path().join("gallery-dl").exists(),
             "nothing downloaded"
         );
+        assert!(!dir.path().join("deno").exists(), "nothing downloaded");
     }
 
     #[test]
@@ -260,6 +287,7 @@ mod tests {
                 exe: exe.clone(),
             }),
             gallery_dl: None,
+            deno: None,
         };
         write(dir.path(), &p).unwrap();
         assert_eq!(
