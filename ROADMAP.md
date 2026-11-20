@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The command line's downloads, look-ups, helper installs and torrents go through Options →
+  Proxy / Socks (and its network adapter and DNS) as the app's do, with a `--proxy` switch for
+  one run ([#1556](https://github.com/anefzaoui/misterdownloadmanager/issues/1556))
 - ✅ 7z and RAR archives are extracted with the 7-Zip another archiver brings: PeaZip's and
   NanaZip's command line are found by themselves on Windows, and **Options → Archives → Use
   another program...** takes any other 7-Zip command line program (a portable copy), checked
