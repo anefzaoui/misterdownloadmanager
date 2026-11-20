@@ -2002,12 +2002,15 @@ impl App {
                 crate::win32::update_run_at_startup();
             }
         }
+        // Linux and macOS: an entry naming a program that's gone (this one's path before an
+        // upgrade replaced it while it ran, an AppImage moved) is written again first; then the
+        // option says whether the entry is on and starts this very program (#1484).
         #[cfg(unix)]
         {
-            settings.launch_on_startup = crate::unix::run_at_startup();
-            if settings.launch_on_startup && mdm_ipc::portable_dir().is_none() {
+            if mdm_ipc::portable_dir().is_none() {
                 crate::unix::update_run_at_startup();
             }
+            settings.launch_on_startup = crate::unix::run_at_startup();
         }
         // Browser integration: a registration that leads nowhere is repaired (#818); Linux and
         // macOS, which have no installer step, register with each browser here too.
