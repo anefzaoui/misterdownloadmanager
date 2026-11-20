@@ -88,16 +88,16 @@
 
   // ---- The language picker: a dialog over the page ------------------------------------------
   // The header's button opens it (without scripts it is a link to the languages page). It is a
-  // modal of the site kit (website/kit/modal.js, on the browser's own dialog): the focus stays
+  // Vitrine modal (website/vitrine/, on the browser's own dialog): the focus stays
   // inside and starts on the current language, Escape, a click on the backdrop, its close button
   // or Back close it, the page behind doesn't scroll, and the focus goes back to the button.
   each("[data-lang-open]", function (btn) {
     var dialog = btn.parentNode.querySelector(".lang-dialog");
-    if (!dialog || !window.SiteKit || !SiteKit.modal || typeof dialog.showModal !== "function") return;
+    if (!dialog || !window.Vitrine || !Vitrine.modal || typeof dialog.showModal !== "function") return;
     btn.setAttribute("role", "button");
     function open(e) {
       e.preventDefault();
-      if (!SiteKit.modal.open(dialog, btn)) return;
+      if (!Vitrine.modal.open(dialog, btn)) return;
       var cur = dialog.querySelector("[aria-current]");
       if (cur) cur.focus();
     }
@@ -313,20 +313,20 @@
   });
 
   // ---- Lightbox: any screenshot, big ----------------------------------------------------------
-  // The site kit's (website/kit/lightbox.js, its README). Pictures in [data-lightbox] groups and
+  // Vitrine's (anefzaoui/vitrine, vendored in website/vitrine/). Pictures in [data-lightbox] groups and
   // every screenshot in a help article open over the page, flying from where they are, at their
   // real size (the width and height the page gives them, which tools/website/screens.py and
   // build.py keep true) fitted to the screen, never larger. A click, a double tap or the wheel
   // zooms (drag to look around), arrows, keys and swipes go through the group, Escape, Back or
   // the backdrop close it. The day or night version shown on the page is the one opened. Moving
   // through the tour's pictures moves the tour along, so closing lands on the one last seen.
-  if (window.SiteKit && SiteKit.lightbox) {
-    SiteKit.setStrings({
+  if (window.Vitrine && Vitrine.lightbox) {
+    Vitrine.setStrings({
       viewer: t("Image viewer"), close: t("Close"), prev: t("Previous image"), next: t("Next image"),
       zoomIn: t("Zoom in"), zoomOut: t("Zoom out"), counter: t("{n} of {total}"),
       hint: t("Click to zoom · drag to move")
     });
-    SiteKit.lightbox.init({
+    Vitrine.lightbox.init({
       auto: ".prose",
       skip: ".lb-skip, [data-lightbox-skip]",
       minWidth: 121,

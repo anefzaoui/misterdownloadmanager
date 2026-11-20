@@ -573,7 +573,7 @@ These ship in the next version.
   video's page for every yt-dlp run, "Use system settings" follows Windows' setup script (a
   proxy program's PAC mode), and a manual proxy chosen with no protocol ticked gets http and
   https ticked ([#1448](https://github.com/anefzaoui/misterdownloadmanager/issues/1448))
-- ✅ Website: screenshots open over the page in a viewer of the site's own, growing out of their
+- ✅ Website: screenshots open over the page in [Vitrine](https://github.com/anefzaoui/vitrine), growing out of their
   place and back: arrows, keys and swipes through a group, zoom by click, double tap, pinch or
   wheel, Back and Escape to close, the focus and the page kept where they were, right to left,
   light and dark, reduced motion; the language picker opens and closes the same way

@@ -235,7 +235,7 @@ dt, .field-name, .carrier-row h3, .doc-nav p, th[scope="col"] {
   box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 55%, transparent);
 }
 .langs-btn:hover { background: color-mix(in srgb, currentColor 12%, transparent); text-decoration: none; }
-/* A modal of the site kit (website/kit/): its backdrop, slide and timing come from the --kit-
+/* A Vitrine modal (website/vitrine/): its backdrop, slide and timing come from the --vitrine-
    properties below; the sheet inside is the look. */
 .lang-dialog {
   width: min(820px, calc(100vw - 24px)); max-width: none; max-height: min(86vh, 760px); padding: 0; border: 0;
@@ -909,20 +909,20 @@ html[lang|="it"] .said-tr[data-same="it"], html[lang|="tr"] .said-tr[data-same="
 }
 .lang-offer .btn { height: 38px; padding: 0 14px; font-size: 14.5px; }
 
-/* The site kit (website/kit/kit.css: the lightbox, the language dialog): its look from these
+/* Vitrine (website/vitrine/: the lightbox, the language dialog): its look from these
    properties. The lightbox is the navy depot in both themes (screenshots read best on it), its
    controls on-board white; dialogs slide up 14px over a navy backdrop. */
 :root {
-  --kit-dur: 280ms; --kit-dur-out: 220ms; --kit-ease: cubic-bezier(.16, 1, .3, 1);
-  --kit-focus: #86b6ff;
-  --kit-lb-scrim: rgb(8 18 38 / .94); --kit-lb-scrim-solid: rgb(8 18 38 / .985); --kit-lb-blur: 20px;
-  --kit-lb-fg: #f2f5fb; --kit-lb-fg-2: #c3cde0;
-  --kit-lb-btn: rgb(242 245 251 / .1); --kit-lb-btn-hover: rgb(242 245 251 / .2);
-  --kit-lb-media-radius: 8px; --kit-lb-cap-size: 15px;
-  --kit-modal-scrim: rgba(4, 14, 36, .66); --kit-modal-shift: 14px;
+  --vitrine-dur: 280ms; --vitrine-dur-out: 220ms; --vitrine-ease: cubic-bezier(.16, 1, .3, 1);
+  --vitrine-focus: #86b6ff;
+  --vitrine-scrim: rgb(8 18 38 / .94); --vitrine-scrim-solid: rgb(8 18 38 / .985); --vitrine-blur: 20px;
+  --vitrine-fg: #f2f5fb; --vitrine-fg-2: #c3cde0;
+  --vitrine-btn: rgb(242 245 251 / .1); --vitrine-btn-hover: rgb(242 245 251 / .2);
+  --vitrine-media-radius: 8px; --vitrine-cap-size: 15px;
+  --vitrine-modal-scrim: rgba(4, 14, 36, .66); --vitrine-modal-shift: 14px;
 }
-.kit-lb-count { font-weight: 650; }
-.kit-lb-cap { font-weight: 500; }
+.vitrine-count { font-weight: 650; }
+.vitrine-cap { font-weight: 500; }
 /* A help figure's picture is a link to its file (build.py shot_html): a block the picture's width. */
 :where(.prose .shot-link) { display: block; width: fit-content; max-width: 100%; }
 

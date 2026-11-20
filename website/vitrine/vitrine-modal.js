@@ -1,19 +1,21 @@
-/*! SiteKit 1.0.2 | synced from anefzaoui/misterdownloadmanager website/kit/ | MIT License */
+/*! Vitrine modal v1.0.0 · https://github.com/anefzaoui/vitrine-modal · GPL-3.0-or-later. Copies elsewhere are synced from that repository, unmodified. */
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Ahmed Nefzaoui and the Vitrine contributors.
 // Modals on the browser's own <dialog> (showModal: the page behind is inert, the focus stays
-// inside, the top layer stacks one over another). The kit adds what the element lacks: entry and
+// inside, the top layer stacks one over another). Vitrine adds what the element lacks: entry and
 // exit transitions, a click on the backdrop and Escape that close (each can be turned off), the
 // focus back where it was, the shared scroll lock, and the Back button closing the top one.
 //
 //   <button data-modal-open="about">About</button>
-//   <dialog id="about" class="kit-modal" data-size="sm|lg|sheet" data-dismiss="backdrop esc"
+//   <dialog id="about" class="vitrine-modal" data-size="sm|lg|sheet" data-dismiss="backdrop esc"
 //           aria-labelledby="about-title"> … <button data-modal-close>Close</button></dialog>
 //
-//   SiteKit.modal.open("about", opener?)  SiteKit.modal.close(dialog?, value?)  SiteKit.modal.top()
-// Events on the dialog: "kit:open", "kit:close" (detail: the return value).
+//   Vitrine.modal.open("about", opener?)  Vitrine.modal.close(dialog?, value?)  Vitrine.modal.top()
+// Events on the dialog: "vitrine:open", "vitrine:close" (detail: the return value).
 (function (w, d) {
   "use strict";
-  var K = w.SiteKit;
-  if (!K) return;
+  var V = w.Vitrine, K = V && V.core;
+  if (!K) return; // vitrine-core.js first
   var stack = [];
 
   function get(x) { return typeof x === "string" ? d.getElementById(x) : x; }
@@ -31,7 +33,7 @@
     var st = { dlg: dlg, opener: opener || d.activeElement, back: null, closing: false };
     stack.push(st);
     K.lock();
-    dlg.classList.add("kit-modal");
+    dlg.classList.add("vitrine-modal");
     dlg.removeAttribute("data-state");
     dlg.showModal();
     // Laid out in its closed look first, then moved to the open one: the entry transition.
@@ -40,7 +42,7 @@
     if (dlg.getAttribute("data-history") !== "off") st.back = K.backEntry(function () { close(dlg, undefined, true); });
     var first = dlg.querySelector("[autofocus], [data-modal-focus]");
     if (first) K.focus(first);
-    dlg.dispatchEvent(new CustomEvent("kit:open"));
+    dlg.dispatchEvent(new CustomEvent("vitrine:open"));
     return true;
   }
 
@@ -60,7 +62,7 @@
       if (dlg.open) dlg.close(value === undefined ? "" : String(value));
     }
     function onEnd(e) { if (e.target === dlg) finish(); }
-    var ms = K.reduced() ? K.ms("--kit-dur-fast", 160) : K.ms("--kit-dur-out", 200);
+    var ms = K.reduced() ? K.ms("--vitrine-dur-fast", 160) : K.ms("--vitrine-dur-out", 200);
     if (getComputedStyle(dlg).transitionDuration.split(",").every(function (t) { return parseFloat(t) === 0; })) finish();
     else {
       dlg.addEventListener("transitionend", onEnd);
@@ -68,7 +70,7 @@
     }
   }
 
-  // Whatever closed it (the kit, a form's method="dialog", the browser on its own): the lock, the
+  // Whatever closed it (Vitrine, a form's method="dialog", the browser on its own): the lock, the
   // history entry and the focus are put back.
   function closed(dlg) {
     var st = state(dlg);
@@ -81,12 +83,12 @@
       var top = stack.length ? stack[stack.length - 1].dlg : null;
       if (top) K.focus(top);
     }
-    dlg.dispatchEvent(new CustomEvent("kit:close", { detail: dlg.returnValue }));
+    dlg.dispatchEvent(new CustomEvent("vitrine:close", { detail: dlg.returnValue }));
   }
 
   function wire(dlg) {
-    if (dlg._kitModal) return;
-    dlg._kitModal = true;
+    if (dlg._vitrineModal) return;
+    dlg._vitrineModal = true;
     dlg.addEventListener("cancel", function (e) {
       e.preventDefault();
       if (allows(dlg, "esc")) close(dlg);
@@ -128,7 +130,7 @@
     }
   });
 
-  K.modal = {
+  V.modal = {
     open: open,
     close: close,
     top: function () { return stack.length ? stack[stack.length - 1].dlg : null; }

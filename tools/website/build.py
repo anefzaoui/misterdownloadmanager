@@ -36,7 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import barcode  # noqa: E402
 import contributors  # noqa: E402  (tools/contributors.py: the people the site thanks)
-import kit  # noqa: E402  (tools/website/kit.py: the lightbox and dialogs, website/kit/)
+import vitrine  # noqa: E402  (tools/website/vitrine.py: the lightbox and dialogs, website/vitrine/)
 import sitei18n  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -628,12 +628,13 @@ def head(path: str, title: str, desc: str, *, jsonld: list | None = None, og_typ
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="alternate" type="application/atom+xml" title="{NAME} news" href="/news.xml">
-  <link rel="stylesheet" href="/kit/kit.css">
+  <link rel="stylesheet" href="/vitrine/vitrine.css">
+  <link rel="stylesheet" href="/vitrine/vitrine-modal.css">
   <link rel="stylesheet" href="/styles.css">
   {THEME_SCRIPT}
-  <script src="/kit/core.js" defer></script>
-  <script src="/kit/modal.js" defer></script>
-  <script src="/kit/lightbox.js" defer></script>
+  <script src="/vitrine/vitrine-core.js" defer></script>
+  <script src="/vitrine/vitrine-modal.js" defer></script>
+  <script src="/vitrine/vitrine.js" defer></script>
   <script src="/main.js" defer></script>{ld}{extra}"""
 
 
@@ -835,8 +836,8 @@ def shot_html(attrs: str, lazy: bool, link: bool = False) -> str:
     it loads), lazy below the first one, and its night version beside it, the site's theme
     choosing which shows (.for-light / .for-dark, as on the home page: they follow the system's
     choice and the header's switch alike; a hidden lazy picture isn't fetched). A figure's picture
-    (`link`) is a link to its file, so it opens big with no script as well; the lightbox (website/
-    kit/) opens it over the page instead."""
+    (`link`) is a link to its file, so it opens big with no script as well; the lightbox (Vitrine,
+    website/vitrine/) opens it over the page instead."""
     a = dict(re.findall(r'(\w[\w-]*)="([^"]*)"', attrs))
     src = a.get("src", "")
     m = re.match(r"/help/images/([\w./-]+)$", src)
@@ -1920,9 +1921,9 @@ def copy_static() -> None:
     for item in WEB.iterdir():
         if item.name in ("content",) or item.suffix == ".html":
             continue
-        if item.name == "kit":
-            # The site kit's scripts and stylesheet; its README, kit.json and check stay home.
-            shutil.copytree(item, OUT / item.name, ignore=shutil.ignore_patterns("*.md", "*.json", "*.mjs"))
+        if item.name == "vitrine":
+            # Vitrine's scripts and stylesheets; its lock file stays home.
+            shutil.copytree(item, OUT / item.name, ignore=shutil.ignore_patterns("*.json"))
         elif item.is_dir():
             shutil.copytree(item, OUT / item.name)
         else:
@@ -1943,11 +1944,11 @@ def copy_static() -> None:
 
 
 def bust_caches() -> None:
-    """Every page asks for /styles.css, /main.js, /bench.js and the kit's files by their content
+    """Every page asks for /styles.css, /main.js, /bench.js and Vitrine's files by their content
     hash, so a browser never pairs a new page with an old cached stylesheet."""
     import hashlib
     tags = {}
-    for name in ("styles.css", "main.js", "bench.js") + tuple(f"kit/{n}" for n in kit.FILES):
+    for name in ("styles.css", "main.js", "bench.js") + tuple(f"vitrine/{n}" for n in vitrine.FILES):
         tags[name] = hashlib.sha256((OUT / name).read_bytes()).hexdigest()[:10]
     for page in OUT.rglob("*.html"):
         text = page.read_text("utf-8")
@@ -1966,12 +1967,12 @@ def finish(available: dict[str, list[str]]) -> None:
 
 
 def main() -> None:
-    # The lightbox and dialogs (website/kit/) are the master copy other sites sync from: a file
-    # changed without a new version and kit.json is refused here.
-    bad = kit.problems(kit.KIT)
+    # The lightbox and dialogs are Vitrine (anefzaoui/vitrine, anefzaoui/vitrine-modal), vendored in
+    # website/vitrine/ at the commits vitrine.lock.json pins: an edited copy is refused here.
+    bad = vitrine.problems()
     if bad:
-        sys.exit("website/kit/ doesn't match kit.json (bump VERSION in tools/website/kit.py, then run "
-                 "`python tools/website/kit.py stamp`):\n  " + "\n  ".join(bad))
+        sys.exit("website/vitrine/ doesn't match vitrine.lock.json (change Vitrine upstream, then "
+                 "`python tools/website/vitrine.py fetch`):\n  " + "\n  ".join(bad))
     STATS.update(repo_stats())
     load_crew()
     copy_static()
