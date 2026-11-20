@@ -740,6 +740,9 @@ These ship in the next version.
 - ✅ The command line's add accepts `--private` (or `-p`) to add downloads flagged as private, and
   the MCP server's add_download tool accepts `private: true` (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line's resume accepts `--checksum`, `--dns`, and `--adapter`, matching get's
+  options for verifying finished downloads, custom DNS resolvers, and network adapter routing (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
   interface language followed the system in tests too

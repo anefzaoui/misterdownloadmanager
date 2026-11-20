@@ -352,6 +352,21 @@ enum Cmd {
         /// up in the shell's history; "-" reads it from standard input instead.
         #[arg(long = "cookie", alias = "cookies")]
         cookie: Option<String>,
+        /// The finished file must have this hash: hex MD5 / SHA-1 / SHA-256 / SHA-512 / CRC32,
+        /// optionally named ("sha256:…").
+        #[arg(long, value_parser = parse_checksum)]
+        checksum: Option<mdm_engine::verify::Hash>,
+        /// The DNS that looks the names up: "system" (the default); a service and how to ask it,
+        /// "cloudflare-https", "quad9-tls", "google-plain", "adguard-https", "nextdns-tls"; DNS
+        /// servers' addresses, "9.9.9.9,149.112.112.112"; or a DNS-over-HTTPS address,
+        /// "https://dns.example/dns-query". No falling back to the system's DNS.
+        #[arg(long, default_value = "system", value_parser = parse_dns)]
+        dns: mdm_engine::DnsChoice,
+        /// The network adapter every connection goes through (#35): its name ("Ethernet",
+        /// "wg0") or one of its addresses. When it isn't there or has no address, nothing is
+        /// sent and the download fails.
+        #[arg(long)]
+        adapter: Option<String>,
         /// Continue from the address itself, never through a debrid account (see `get`).
         #[arg(long)]
         direct: bool,
@@ -1496,16 +1511,25 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             referer,
             user_agent,
             cookie,
+            checksum,
+            dns,
+            adapter,
             direct,
         } => {
+            let base_opts = Options {
+                checksum,
+                dns,
+                route: adapter.map_or(mdm_engine::Route::Any, |a| {
+                    mdm_engine::net::route_for(&a, &mdm_engine::net::adapters())
+                }),
+                ..opts(connections)
+            };
             // Through the account its address goes through (#44): the link a service gave
             // expires, and the service gives a new one.
             let opts = match mdm_engine::state::ResumeState::load(&state) {
-                Ok(saved) => {
-                    through_account(accounts, &saved.url, direct, opts(connections), json).await?
-                }
+                Ok(saved) => through_account(accounts, &saved.url, direct, base_opts, json).await?,
                 // Download::resume says what is wrong with it.
-                Err(_) => opts(connections),
+                Err(_) => base_opts,
             };
             let headers = build_headers(&headers, referer, user_agent, cookie)?;
             let dl = Download::resume(state, headers, opts)?;
@@ -2576,6 +2600,31 @@ mod tests {
             } if referer.as_deref() == Some("https://example.test/source")
                 && user_agent.as_deref() == Some("MyAgent/2.0")
                 && cookie.as_deref() == Some("-")
+        ));
+    }
+
+    #[test]
+    fn resume_command_parses_checksum_dns_and_adapter() {
+        let cli = Cli::try_parse_from([
+            NAME,
+            "resume",
+            "test.mdm.json",
+            "--checksum",
+            "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "--dns",
+            "cloudflare-https",
+            "--adapter",
+            "Ethernet",
+        ])
+        .unwrap();
+        assert!(matches!(
+            cli.cmd,
+            Cmd::Resume {
+                checksum: Some(_),
+                dns: mdm_engine::DnsChoice { .. },
+                adapter: Some(ref a),
+                ..
+            } if a == "Ethernet"
         ));
     }
 
