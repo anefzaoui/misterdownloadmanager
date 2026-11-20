@@ -110,7 +110,13 @@ impl FtpServer {
         });
         let sh = shared.clone();
         let task = tokio::spawn(async move {
-            while let Ok((sock, _)) = listener.accept().await {
+            loop {
+                // A connection dropped before it was taken (an error on Windows) mustn't end
+                // the server (#1558's tests met it through the SOCKS proxy).
+                let Ok((sock, _)) = listener.accept().await else {
+                    tokio::time::sleep(Duration::from_millis(5)).await;
+                    continue;
+                };
                 let n = sh.sessions.fetch_add(1, Ordering::SeqCst) + 1;
                 let slow = sh
                     .config

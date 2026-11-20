@@ -468,10 +468,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ବ୍ରାଉଜର୍‌ରେ ଛାଡ଼ି ଦିଆଯାଇଥିବା ଠିକଣାଗୁଡ଼ିକ
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	ଆଡଭାନ୍ସଡ୍ / SOCKS...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -599,6 +595,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	ଅନ୍ୟ ଏକ ପ୍ରୋଗ୍ରାମ କମ୍ପ୍ୟୁଟରର ୱେକ୍ ଆଲାର୍ମ ସେଟ୍ କରିଛି
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	{ms} ମିଲିସେକେଣ୍ଡରେ ଉତ୍ତର ଦେଲା। ଇଣ୍ଟରନେଟ୍ {ip} ଦେଖୁଛି।
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -2083,6 +2083,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ଡାଉନଲୋଡ୍ HTTP ପ୍ରକ୍ସି ମାଧ୍ୟମରେ ଯାଏ ନାହିଁ। ସେଗୁଡ଼ିକୁ ପ୍ରକ୍ସି ମାଧ୍ୟମରେ ପଠାଇବା ପାଇଁ SOCKS5 ବା SOCKS4 ବାଛନ୍ତୁ।
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2732,6 +2736,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ଖୋଜନ୍ତୁ
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	ପ୍ରକ୍ସି ମାଧ୍ୟମରେ ସାଇଟ୍ ନାମ ଖୋଜନ୍ତୁ
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3236,6 +3244,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	କୌଣସି ଠିକଣା ନାହିଁ
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	20 ସେକେଣ୍ଡ ମଧ୍ୟରେ କୌଣସି ଉତ୍ତର ମିଳିଲା ନାହିଁ।
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -4232,10 +4244,10 @@
 #. text in the Options window
 #, machine
 	Service:	ସେବା:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	ପ୍ରଥମେ Options → Proxy / Socks ରେ ଏକ socks5:// ପ୍ରକ୍ସି ସେଟ୍ କରନ୍ତୁ
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	ପ୍ରଥମେ Options → Proxy / Socks (Manual, Type SOCKS5) ରେ ଏକ SOCKS5 ପ୍ରକ୍ସି ସେଟ୍ କରନ୍ତୁ
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ସର୍ଭର ଦ୍ୱାରା ପ୍ରଦତ୍ତ ଫାଇଲ୍ ସୃଷ୍ଟି ତାରିଖ ସେଟ୍ କରନ୍ତୁ
@@ -5190,6 +5202,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	ସିଷ୍ଟମର DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	ପରୀକ୍ଷା ପୃଷ୍ଠାଟି ଏହା ଦେଖିଥିବା ଠିକଣା କହିଲା ନାହିଁ।
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5611,6 +5627,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ଦୁଇଟି ମାଗଣା ସହାୟକ ଏହାକୁ କାର୍ଯ୍ୟକ୍ଷମ କରନ୍ତି। ସେଗୁଡ଼ିକୁ ବର୍ତ୍ତମାନ ପାଆନ୍ତୁ, ଏବଂ ଯେତେବେଳେ ଆପଣ ଏକ ଭିଡିଓ ପାଆନ୍ତି, ଏହାକୁ ସେଭ୍ କରିବା ଗୋଟିଏ କ୍ଲିକ୍ ଦୂରରେ ଅଛି।
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	ପ୍ରକାର
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5782,9 +5802,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ଏହି ଟୋରେଣ୍ଟ ପାଇଁ ସେଗୁଡ଼ିକୁ ବ୍ୟବହାର କରିବେ କି? ଯାହା ମେଳ ଖାଉଛି ତାହା ରଖାଯିବ, ବାକି ସବୁ ବଦଳାଯିବ।
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	ନିମ୍ନଲିଖିତ ପ୍ରୋଟୋକଲ୍‌ଗୁଡ଼ିକ ପାଇଁ ଏହି ପ୍ରକ୍ସି ବ୍ୟବହାର କରନ୍ତୁ:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine

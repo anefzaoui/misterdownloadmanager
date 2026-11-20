@@ -468,10 +468,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Adrese prepuštene pregledaču
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	Napredno / SOCKS...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -599,6 +595,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	Drugi program je podesio alarm za buđenje računara
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	Odgovor je stigao za {ms} ms. Internet vidi {ip}.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -2088,6 +2088,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP preuzimanja ne idu preko HTTP proksija. Izaberite SOCKS5 ili SOCKS4 da biste ih poslali preko proksija.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2741,6 +2745,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Potražite
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	Potražite imena sajtova preko proksija
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3245,6 +3253,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Još nema adresa
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	Nema odgovora u roku od 20 sekundi.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -4241,10 +4253,10 @@
 #. text in the Options window
 #, machine
 	Service:	Usluga:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	Prvo podesite socks5:// proksi u Opcije → Proksi / Socks
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Prvo podesite SOCKS5 proksi u Opcijama → Proksi / SOCKS (Ručno, Tip SOCKS5)
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Podesi datum kreiranja datoteke kako je obezbedio server
@@ -5199,6 +5211,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	Sistemski DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	Test stranica nije navela adresu koju je videla.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5620,6 +5636,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Dva besplatna pomoćna programa omogućavaju to. Preuzmite ih sada i čuvanje video-zapisa biće udaljeno samo jedan klik kada pronađete neki.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	Tip
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5791,9 +5811,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Koristiti ih za ovaj torrent? Ono što se podudara se zadržava, ostalo se zamenjuje.
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	Koristi ovaj proksi za sledeće protokole:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine

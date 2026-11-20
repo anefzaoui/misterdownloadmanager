@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ SOCKS5 and SOCKS4 as a real choice in Options → Proxy / Socks: a **Type** (HTTP, HTTPS,
+  SOCKS5, SOCKS4), site names looked up through the proxy (on by default), a SOCKS5 login, Get
+  System reading Windows' SOCKS proxy, a **Test** button; every connection follows it: downloads
+  and FTP, video pages and galleries, MDM's own downloads and the update check, a proxy script's
+  SOCKS answers, and torrents when asked
+  ([#1558](https://github.com/anefzaoui/misterdownloadmanager/issues/1558))
 - ✅ 7z and RAR archives are extracted with the 7-Zip another archiver brings: PeaZip's and
   NanaZip's command line are found by themselves on Windows, and **Options → Archives → Use
   another program...** takes any other 7-Zip command line program (a portable copy), checked

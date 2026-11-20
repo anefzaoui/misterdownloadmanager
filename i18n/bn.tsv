@@ -439,10 +439,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ব্রাউজারে রেখে দেওয়া ঠিকানা
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	অ্যাডভান্সড / SOCKS...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -562,6 +558,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	অন্য একটি প্রোগ্রাম কম্পিউটারের ওয়েক অ্যালার্ম সেট করেছে
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	{ms} মিলিসেকেন্ডে উত্তর দিয়েছে। ইন্টারনেট {ip} দেখছে।
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -1950,6 +1950,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ডাউনলোডগুলো HTTP প্রক্সির মাধ্যমে যায় না। সেগুলোকে প্রক্সির মাধ্যমে পাঠাতে SOCKS5 বা SOCKS4 বেছে নিন।
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2567,6 +2571,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	খুঁজুন
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	প্রক্সির মাধ্যমে সাইটের নামগুলো দেখুন
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3983,9 +3991,10 @@
 #. text in the Options window
 #, machine
 	Service:	পরিষেবা:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
-	Set a socks5:// proxy in Options → Proxy / Socks first	প্রথমে বিকল্প → প্রক্সি / সক্স-এ একটি socks5:// প্রক্সি সেট করুন
+#, machine
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	প্রথমে বিকল্প → প্রক্সি / সক্স (ম্যানুয়াল, টাইপ SOCKS5)-এ একটি SOCKS5 প্রক্সি সেট করুন
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	সার্ভার-প্রদত্ত ফাইল তৈরির তারিখ সেট করুন
@@ -4860,6 +4869,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	সিস্টেমের DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	পরীক্ষার পেজটি যে ঠিকানাটি দেখেছিল, তা বলেনি।
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5253,6 +5266,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	দুটি বিনামূল্যে সহায়ক এটিকে কাজ করে তোলে। সেগুলোকে এখনই পান, এবং একটি ভিডিও খুঁজে পেলে সেটি সংরক্ষণ করা এক ক্লিকেই সম্ভব।
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	টাইপ
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5418,9 +5435,6 @@
 	Use the token	টোকেন ব্যবহার করুন
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	এই টরেন্টের জন্য এগুলো ব্যবহার করবেন? যেগুলো মেলে সেগুলো রাখা হবে, বাকিগুলো প্রতিস্থাপন করা হবে।
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	নিম্নলিখিত প্রোটোকলগুলোর জন্য এই প্রক্সি ব্যবহার করুন:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine

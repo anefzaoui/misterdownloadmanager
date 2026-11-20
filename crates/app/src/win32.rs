@@ -5753,27 +5753,15 @@ fn reg_dword_in(
     (rc == 0).then_some(value)
 }
 
-/// Windows' manual proxy (Settings → Network → Proxy), as (host, port), when it is on.
-/// `ProxyServer` is "host:port" or "http=host:port;https=…": the http (else first) entry.
-pub fn system_proxy() -> Option<(String, String)> {
+/// Windows' manual proxy (Settings → Network → Proxy), its `ProxyServer` value as written
+/// (`host:port`, or `http=host:port;https=…;socks=…`), when it is on. Read by
+/// `settings::parse_system_proxy`.
+pub fn system_proxy() -> Option<String> {
     const KEY: &str = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
     if reg_dword(KEY, "ProxyEnable")? == 0 {
         return None;
     }
-    let server = reg_string(KEY, "ProxyServer")?;
-    let entries: Vec<&str> = server.split(';').map(str::trim).collect();
-    let pick = entries
-        .iter()
-        .find_map(|e| e.strip_prefix("http="))
-        .or_else(|| entries.iter().find(|e| !e.contains('=')).copied())
-        .or_else(|| {
-            entries
-                .first()
-                .and_then(|e| e.split_once('='))
-                .map(|(_, v)| v)
-        })?;
-    let (host, port) = pick.rsplit_once(':')?;
-    Some((host.to_owned(), port.to_owned()))
+    reg_string(KEY, "ProxyServer")
 }
 
 /// Windows' "Use setup script" (Settings → Network → Proxy; Internet Options' "Use automatic
