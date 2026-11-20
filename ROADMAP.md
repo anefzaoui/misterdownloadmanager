@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Deleting a download keeps its file unless **Also delete the files from disk** is ticked in
+  that very question: the box starts unticked every time (only **Shift+Delete** and **Remove
+  with files** tick it, once), it says how many finished files go with it, a question turned
+  off only takes downloads off the list, and deleting files always asks
+  ([#1563](https://github.com/anefzaoui/misterdownloadmanager/issues/1563))
 - ✅ 7z and RAR archives are extracted with the 7-Zip another archiver brings: PeaZip's and
   NanaZip's command line are found by themselves on Windows, and **Options → Archives → Use
   another program...** takes any other 7-Zip command line program (a portable copy), checked
