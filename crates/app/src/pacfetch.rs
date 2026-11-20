@@ -104,6 +104,53 @@ fn system_script_address() -> Option<String> {
     None
 }
 
+/// Fetch the script at `address` now and keep it, waiting for it (20 s at most): for a process
+/// that runs one command and has no time to wait for [`refresh`] (the command line, #1556).
+/// None when it can't be had (said on standard error): the system's settings are used then,
+/// as in the app.
+pub fn fetch_now(address: &str) -> Option<Arc<str>> {
+    let address = address.trim().to_owned();
+    if address.is_empty() {
+        return None;
+    }
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .ok()?;
+    match rt.block_on(fetch(&address)) {
+        Ok(text) => {
+            let script: Arc<str> = Arc::from(text.as_str());
+            SCRIPTS
+                .lock()
+                .unwrap()
+                .get_or_insert_with(HashMap::new)
+                .insert(address, script.clone());
+            Some(script)
+        }
+        Err(why) => {
+            eprintln!(
+                "The automatic proxy configuration script {address} couldn't be fetched ({why}): the system's proxy settings are used"
+            );
+            None
+        }
+    }
+}
+
+/// The system's automatic configuration script read and fetched now ([`fetch_now`]), for "Use
+/// system settings" in a process that doesn't watch it ([`watch_system`] is the app's).
+pub fn system_now() {
+    let address = system_script_address();
+    {
+        let mut system = SYSTEM.lock().unwrap();
+        system.address.clone_from(&address);
+        system.read = Some(Instant::now());
+    }
+    if let Some(address) = address {
+        fetch_now(&address);
+        SYSTEM.lock().unwrap().fetched = Some(Instant::now());
+    }
+}
+
 /// Fetch the script at `address` (again), in the background.
 pub fn refresh(address: &str, rt: &tokio::runtime::Handle) {
     let address = address.trim().to_owned();
