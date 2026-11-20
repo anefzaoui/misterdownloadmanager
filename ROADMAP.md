@@ -1680,6 +1680,9 @@ These ship in the next version.
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
   download has asked for it
+- ✅ LuluStream: a video's link (its watch page or player, on `lulustream.com`, `luluvdo.com` or
+  `lplaygo.com`) downloads the video, in the best quality its download page lists; a download
+  taken from the browser whose link expired asks the video's page for a fresh one
 
 ## Being worked on
 

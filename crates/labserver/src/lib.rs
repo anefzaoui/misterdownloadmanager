@@ -11,6 +11,7 @@ pub mod ftp;
 mod github;
 pub mod growth;
 mod h264;
+pub mod lulustream;
 pub mod mediafire;
 mod pages;
 pub mod rapidgator;
