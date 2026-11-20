@@ -202,19 +202,42 @@ fn open_lock(dir: &Path, name: &str) -> std::io::Result<File> {
         .open(dir.join(name))
 }
 
+/// A lock taken on a lock file, let go when dropped: unlocked first (`flock(LOCK_UN)`,
+/// `UnlockFile`), then closed. Closing alone isn't enough on Linux and macOS: their locks belong
+/// to the open file, which every process started meanwhile shares for a moment (a child holds a
+/// copy of each descriptor from the moment it is created until it runs its program), so a lock
+/// let go only by closing could outlive its holder there for that moment, and a switch tried
+/// right then (as the last download using a helper ends) found it taken. Unlocking ends it for
+/// every copy at once.
+pub(crate) struct Locked(File);
+
+impl Locked {
+    /// A copy of its file handle (a child process's inherited copy, in tests).
+    #[cfg(test)]
+    fn copy(&self) -> File {
+        self.0.try_clone().unwrap()
+    }
+}
+
+impl Drop for Locked {
+    fn drop(&mut self) {
+        let _ = self.0.unlock();
+    }
+}
+
 /// The lock a run of a helper holds (shared) while it uses it, and the switch takes alone.
 const IN_USE: &str = ".in-use";
 /// The lock an install holds while it downloads and unpacks a version.
 const INSTALLING: &str = ".installing";
 
 /// A helper's folder held for an install: one at a time, in this copy of MDM or another.
-pub(crate) struct Installing(#[allow(dead_code)] File);
+pub(crate) struct Installing(#[allow(dead_code)] Locked);
 
 /// Take `root`'s install lock, or say another install has it.
 pub(crate) fn installing(root: &Path, tool: &str) -> Result<Installing, Error> {
     let f = lock_file(root, INSTALLING)?;
     match f.try_lock() {
-        Ok(()) => Ok(Installing(f)),
+        Ok(()) => Ok(Installing(Locked(f))),
         Err(std::fs::TryLockError::WouldBlock) => Err(Error::Busy(tool.to_owned())),
         Err(std::fs::TryLockError::Error(e)) => Err(e.into()),
     }
@@ -225,7 +248,7 @@ pub(crate) fn installing(root: &Path, tool: &str) -> Result<Installing, Error> {
 /// to at once, as the last run using it ends ([`apply_staged`]).
 #[derive(Default)]
 pub struct Hold {
-    held: Vec<(PathBuf, File)>,
+    held: Vec<(PathBuf, Locked)>,
 }
 
 impl Hold {
@@ -241,7 +264,7 @@ impl Hold {
             {
                 // Waits only while a switch writes `current.json` (a moment).
                 if f.lock_shared().is_ok() {
-                    hold.held.push((root, f));
+                    hold.held.push((root, Locked(f)));
                 }
             }
         }
@@ -293,7 +316,7 @@ impl Hold {
 impl Drop for Hold {
     fn drop(&mut self) {
         for (root, f) in std::mem::take(&mut self.held) {
-            drop(f); // unlocked as it closes
+            drop(f); // unlocked, then closed
             if root.join("staged.json").exists() {
                 // Switched here (a moment: two small files written), even as the process ends
                 // (the command line's last download); the oldest version's folder goes on a
@@ -327,7 +350,10 @@ pub fn in_use(root: &Path) -> bool {
         return false;
     };
     match f.try_lock() {
-        Ok(()) => false,
+        Ok(()) => {
+            drop(Locked(f));
+            false
+        }
         Err(_) => true,
     }
 }
@@ -362,6 +388,7 @@ fn settle_tidy(root: &Path, new: Installed, tidy: Tidy) -> Result<Settled, Error
     let lock = lock_file(root, IN_USE)?;
     match lock.try_lock() {
         Ok(()) => {
+            let lock = Locked(lock);
             let keep = crate::switch_current(root, &new)?;
             let _ = std::fs::remove_file(root.join("staged.json"));
             // New runs take the new version from now on; the older folders go after.
@@ -526,10 +553,9 @@ pub fn read(dir: &Path) -> State {
 /// Change the update state under its lock (copies of MDM may change it at once) and write it.
 /// Returns it as written.
 pub fn change(dir: &Path, f: impl FnOnce(&mut State)) -> State {
-    let lock = open_lock(&dir.join(".locks"), "updates").ok();
-    if let Some(l) = &lock {
-        let _ = l.lock();
-    }
+    let lock = open_lock(&dir.join(".locks"), "updates")
+        .ok()
+        .and_then(|l| l.lock().is_ok().then_some(Locked(l)));
     let mut state = read(dir);
     f(&mut state);
     match serde_json::to_vec_pretty(&state) {
@@ -1125,6 +1151,50 @@ mod tests {
         assert_eq!(previous_in(&root).unwrap().version, "2026.02.01");
         assert!(!root.join("2026.01.01").exists(), "the oldest goes");
         assert!(root.join("2026.02.01").is_dir(), "the previous stays");
+    }
+
+    /// #1565 (macOS CI): a lock is let go by unlocking it, not only by closing it. A process
+    /// started while a download held yt-dlp holds a copy of that lock's file handle for a moment
+    /// (until it runs its program; here, a copy left open); with the lock let go only by closing,
+    /// that copy kept it, so the switch as the download ended found yt-dlp in use and left the
+    /// new version waiting. Likewise an install's lock: another install must not find it taken.
+    #[test]
+    fn a_copy_of_a_lock_left_open_elsewhere_holds_nothing() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let root = Tool::YtDlp.root(d);
+        let one = fake_current(d, Tool::YtDlp, "2026.01.01");
+        let job = Hold::of([one.exe.as_path()]);
+        let inherited = job.held[0].1.copy();
+        let folder = root.join("2026.02.01");
+        std::fs::create_dir_all(&folder).unwrap();
+        std::fs::write(folder.join("prog"), b"two").unwrap();
+        let two = Installed {
+            version: "2026.02.01".into(),
+            exe: folder.join("prog"),
+        };
+        let installing_copy = {
+            let lock = installing(&root, "yt-dlp").unwrap();
+            let copy = lock.0.copy();
+            assert_eq!(
+                settle(&root, two.clone()).unwrap(),
+                Settled::Staged(two.clone())
+            );
+            copy
+        };
+        // The install's copy still open: another install goes ahead all the same.
+        assert!(
+            installing(&root, "yt-dlp").is_ok(),
+            "the install lock is free"
+        );
+        assert_eq!(
+            job.release(),
+            vec![two.clone()],
+            "switched as the run ended"
+        );
+        assert_eq!(current_in(&root), Some(two));
+        assert!(!in_use(&root));
+        drop((inherited, installing_copy));
     }
 
     /// Go back: the previous version is used again, the newer one kept, and automatic updates
