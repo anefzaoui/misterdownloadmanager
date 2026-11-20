@@ -2836,6 +2836,143 @@ mod tests {
         leecher.stop().await;
     }
 
+    /// Unticked files are not made in the download's folder: the pieces they share with the
+    /// ticked one are kept in a parts file, and a file ticked later gets its bytes from there.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn unticked_files_stay_out_of_the_folder_until_ticked() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        let a: Vec<u8> = (0..300_001u32).map(|i| (i % 251) as u8).collect();
+        let b: Vec<u8> = (0..120_003u32).map(|i| (i % 13) as u8).collect();
+        let c: Vec<u8> = b"a small file that shares the last piece of b.bin".to_vec();
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        std::fs::write(src.join("b.bin"), &b).unwrap();
+        std::fs::write(src.join("c.txt"), &c).unwrap();
+        let torrent = make_torrent(&src).await;
+
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let meta = seeder
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while seeder.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        let addr = seeder.listen_addr().expect("seeder listens");
+        let index = |name: &str| meta.files.iter().position(|f| f.path.ends_with(name));
+        let (ia, ib, ic) = (
+            index("a.bin").unwrap(),
+            index("b.bin").unwrap(),
+            index("c.txt").unwrap(),
+        );
+
+        // The leecher, as the app runs it: only the files MDM hands over are opened.
+        let mut config = offline(&tmp.path().join("s2"));
+        config.require_authorization = true;
+        let session = config.state_dir.join("session");
+        let leecher = Torrents::start(config).await.unwrap();
+        let out = meta.folder_in(&tmp.path().join("got"));
+        std::fs::create_dir_all(&out).unwrap();
+        let make = |i: usize| {
+            let path = out.join(&meta.files[i].path);
+            authorized_storage::PreparedFile {
+                index: i,
+                file: std::fs::OpenOptions::new()
+                    .read(true)
+                    .write(true)
+                    .create(true)
+                    .truncate(false)
+                    .open(&path)
+                    .unwrap(),
+                path,
+            }
+        };
+        authorized_storage::authorize_parted(
+            &session,
+            &meta.info_hash,
+            &out,
+            authorized_storage::Prepared {
+                files: vec![make(ib)],
+                parted: vec![ia, ic],
+            },
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        let h2 = leecher
+            .add(&torrent, &out, Some(vec![ib]), vec![addr], false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(30);
+        loop {
+            let s = leecher.stats(&h2).unwrap();
+            if s.phase == Phase::Finished {
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline, "no transfer: {s:?}");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        assert_eq!(std::fs::read(out.join(&meta.files[ib].path)).unwrap(), b);
+        let mut there: Vec<_> = std::fs::read_dir(&out)
+            .unwrap()
+            .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+            .collect();
+        there.sort();
+        assert_eq!(there, ["b.bin"], "only the ticked file is in the folder");
+        let parts = session.join(format!("{h2}.parts"));
+        assert!(parts.join(ia.to_string()).is_file(), "a.bin's shared piece");
+        assert!(parts.join(ic.to_string()).is_file(), "c.txt's shared piece");
+        assert!(authorized_storage::is_parted(&session, &h2, ic));
+
+        // c.txt ticked: made now, the torrent opened again on it, its bytes from the parts.
+        authorized_storage::authorize_parted(
+            &session,
+            &meta.info_hash,
+            &out,
+            authorized_storage::Prepared {
+                files: vec![make(ib), make(ic)],
+                parted: vec![ia],
+            },
+            Arc::new(|| Err(std::io::ErrorKind::PermissionDenied.into())),
+        );
+        leecher
+            .choose(&h2, &[ib, ic].into_iter().collect())
+            .await
+            .unwrap();
+        leecher.readd(&h2, &torrent, false).await.unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(30);
+        loop {
+            let s = leecher.stats(&h2).unwrap();
+            if s.phase == Phase::Finished {
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline, "not finished: {s:?}");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        assert_eq!(std::fs::read(out.join(&meta.files[ic].path)).unwrap(), c);
+        assert!(!parts.join(ic.to_string()).exists(), "moved into c.txt");
+        assert!(!out.join(&meta.files[ia].path).exists());
+        assert!(!authorized_storage::is_parted(&session, &h2, ic));
+
+        leecher.remove(&h2, false).await.unwrap();
+        authorized_storage::remove_parts(&session, &h2).unwrap();
+        assert!(!parts.exists());
+        authorized_storage::forget(&session, &h2);
+        seeder.stop().await;
+        leecher.stop().await;
+    }
+
     /// #965: download directly into a shared folder, recheck there after restart,
     /// and remove the torrent's files without removing unrelated files or the root.
     #[tokio::test(flavor = "multi_thread", worker_threads = 4)]

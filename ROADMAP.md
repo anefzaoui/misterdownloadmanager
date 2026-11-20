@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Torrents: unticked files are no longer made in the download's folder; the pieces they share
+  with ticked files are kept in a parts file of MDM's own, and a file ticked later gets them
 - ✅ 7z and RAR archives are extracted with the 7-Zip another archiver brings: PeaZip's and
   NanaZip's command line are found by themselves on Windows, and **Options → Archives → Use
   another program...** takes any other 7-Zip command line program (a portable copy), checked

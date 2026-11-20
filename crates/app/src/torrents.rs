@@ -698,9 +698,28 @@ impl Host {
                             })?;
                         return Ok(Done::Chosen);
                     }
-                    t.choose(hash, &files.into_iter().collect())
+                    // A file ticked now that was kept in a parts file has no file yet: it is
+                    // made (checked as at Start), and the torrent opened again on it, its
+                    // pieces kept; what the parts file held goes into it.
+                    let session = state_dir().map(|d| d.join("session"));
+                    let reopen = session.as_ref().is_some_and(|s| {
+                        files
+                            .iter()
+                            .any(|i| mdm_torrent::authorized_storage::is_parted(s, hash, *i))
+                    });
+                    if reopen {
+                        prepare_storage(self, spec, dest, protected).await?;
+                    }
+                    t.choose(hash, &files.iter().copied().collect())
                         .await
                         .map_err(err)?;
+                    if reopen {
+                        let bytes = read_kept(hash).await?;
+                        t.readd(hash, &bytes, false).await.map_err(|e| {
+                            revoke_grant(hash);
+                            err(e)
+                        })?;
+                    }
                     if pause {
                         if t.stats(hash).is_ok_and(|s| s.phase == Phase::Finished) {
                             t.remove(hash, false).await.map_err(err)?;
@@ -1248,6 +1267,12 @@ async fn forget_torrent(
                 }
             }
         }
+        // The parts of the pieces its unticked files shared: MDM's own, gone with it.
+        if let Err(e) =
+            mdm_torrent::authorized_storage::remove_parts(&data.join("session"), &spec.hash)
+        {
+            tracing::warn!("torrent {}: its parts files stayed: {e}", spec.hash);
+        }
         // Keep the metadata and rename mapping if deletion failed, for recovery.
         if let Some(file) = file {
             match std::fs::remove_file(file) {
@@ -1405,40 +1430,49 @@ async fn prepare_storage_as(
             spec.folder.clone(),
             dest.to_owned(),
         );
+        let wanted = spec.files.clone();
         let result = tokio::task::spawn_blocking(move || {
-            owner2.prepare_consented(&data2, &folder2, &dest2, fresh)
+            owner2.prepare_for(&data2, &folder2, &dest2, fresh, wanted.as_deref())
         })
         .await
         .map_err(|e| e.to_string())?;
         match result {
-            Ok(files) => {
-                let (owner, folder, dest, ledger) = (
+            Ok(prepared) => {
+                let (owner, folder, dest, ledger, wanted) = (
                     owner.clone(),
                     spec.folder.clone(),
                     dest.to_owned(),
                     data.clone(),
+                    spec.files.clone(),
                 );
-                let now = crate::torrent_ownership::identities(&files);
+                let now = crate::torrent_ownership::identities(&prepared.files);
                 let swapped = held()
                     .lock()
                     .unwrap()
                     .insert(spec.hash.clone(), now.clone())
                     .is_some_and(|was| crate::torrent_ownership::swapped(&was, &now));
                 let hash = spec.hash.clone();
-                mdm_torrent::authorized_storage::authorize(
+                mdm_torrent::authorized_storage::authorize_parted(
                     &data.join("session"),
                     &spec.hash,
                     &spec.folder,
-                    files,
+                    prepared,
                     Arc::new(move || {
-                        // A later init (files chosen, re-added) takes new handles: they are
-                        // what the engine holds from then on.
-                        let files = owner.prepare(&ledger, &folder, &dest)?;
-                        held()
-                            .lock()
-                            .unwrap()
-                            .insert(hash.clone(), crate::torrent_ownership::identities(&files));
-                        Ok(files)
+                        // A later init (re-added, restarted after an error) takes new handles:
+                        // they are what the engine holds from then on. Files ticked since are
+                        // prepared again before (`Act::Choose`), with a grant of their own.
+                        let prepared = owner.prepare_for(
+                            &ledger,
+                            &folder,
+                            &dest,
+                            Vec::new(),
+                            wanted.as_deref(),
+                        )?;
+                        held().lock().unwrap().insert(
+                            hash.clone(),
+                            crate::torrent_ownership::identities(&prepared.files),
+                        );
+                        Ok(prepared)
                     }),
                 );
                 return Ok(swapped);
