@@ -1678,7 +1678,7 @@ These ship in the next version.
   [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Screen readers name more of **Options → Connection**: the exceptions list is
   "Exceptions" instead of unnamed, and each of the two **Download limits** boxes says what
-  it counts ("Download no more than this many MBytes", "every this many hours") instead of
+  it counts ("Download limit: MBytes", "Download limit: every how many hours") instead of
   only its number; the same two boxes on the **Scheduler**'s limits page are named too
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))

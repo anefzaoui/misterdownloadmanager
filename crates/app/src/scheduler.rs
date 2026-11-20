@@ -1209,8 +1209,8 @@ impl Scheduler {
                 text(p, x, baseline, s, c);
             },
         );
-        // Named as in Options → Connection: the sentence's words are painted, not exposed
-        // (#1407).
+        // Named as Options → Connection's are, from the constants beside the sentence they
+        // share (quota.rs): its words are painted, not exposed (#1407).
         let mb_box = winui::number_field(
             ui,
             boxes[0],
@@ -1220,11 +1220,7 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
-        winui::name(
-            &mb_box,
-            // i18n: a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
-            crate::i18n::t("Download no more than this many MBytes"),
-        );
+        winui::name(&mb_box, crate::i18n::t(crate::quota::LIMITS_MB_NAME));
         let hours_box = winui::number_field(
             ui,
             boxes[1],
@@ -1234,11 +1230,7 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
-        winui::name(
-            &hours_box,
-            // i18n: a11y name of the second Download limits box, where "every {n} hours" puts its {n}
-            crate::i18n::t("every this many hours"),
-        );
+        winui::name(&hours_box, crate::i18n::t(crate::quota::LIMITS_HOURS_NAME));
         winui::checkbox_light(
             ui,
             o + vec2(239.0, 127.0),
