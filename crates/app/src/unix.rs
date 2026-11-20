@@ -5090,7 +5090,10 @@ mod startup_tests {
             );
         }
         assert_eq!(state("", exe, false), StartupState::Stale);
-        assert_eq!(state("[Desktop Entry]\nExec=\n", exe, false), StartupState::Stale);
+        assert_eq!(
+            state("[Desktop Entry]\nExec=\n", exe, false),
+            StartupState::Stale
+        );
     }
 
     /// The program named through a link (/usr/bin to /opt) is this one all the same.
@@ -5129,7 +5132,11 @@ mod startup_tests {
             StartupState::Off
         );
         assert_eq!(
-            state(&format!("{on}X-MATE-Autostart-enabled = False\n"), exe, false),
+            state(
+                &format!("{on}X-MATE-Autostart-enabled = False\n"),
+                exe,
+                false
+            ),
             StartupState::Off
         );
         assert_eq!(
@@ -5137,7 +5144,11 @@ mod startup_tests {
             StartupState::Ours
         );
         assert_eq!(
-            state(&format!("{on}\n[Desktop Action x]\nHidden=true\n"), exe, false),
+            state(
+                &format!("{on}\n[Desktop Action x]\nHidden=true\n"),
+                exe,
+                false
+            ),
             StartupState::Ours
         );
     }
