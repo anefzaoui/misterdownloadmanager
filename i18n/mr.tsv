@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	एका अज्ञात साइटला {n} दुवे लिंक ग्रॅबरकडे पाठवायचे आहेत.|एका अज्ञात साइटला {n} दुवे लिंक ग्रॅबरकडे पाठवायचे आहेत.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	आणि {n} इतर फाइल.|आणि {n} इतर फाइल्स.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -292,6 +297,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	एकल-फाईल टोरेंट स्वतःचे नाव कायम ठेवतो
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	टॉरंट फाइलचा फोल्डर त्याच्या गंतव्यस्थानाबाहेरील ठिकाणाकडे निर्देश करतो
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -578,6 +587,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	आणखी एक DNS...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	दुसऱ्या डाउनलोडने आधीच या टॉरंटचे गंतव्यस्थान वापरले आहे
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	दुसऱ्या डाउनलोडने आधीच {file} वापरली आहे. वेगळे गंतव्यस्थान निवडा.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
@@ -963,6 +980,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	चेक केल्यास, विंडो बंद केल्यावर MDM चालू राहते: उपलब्ध असल्यास ते सूचना क्षेत्रात लपते किंवा अन्यथा टास्कबारमध्ये मिनिमाइज होते आणि डाउनलोड सुरू राहतात; अनचेक केल्यास, बंद केल्यावर MDM बंद होते
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	निवडल्यास, ब्राउझरच्या खाजगी विंडोमधील डाउनलोड सूचीमध्ये जतन केले जातात आणि MDM रीस्टार्ट झाल्यावरही तिथेच राहतात; निवड रद्द केल्यास, ते फक्त मेमरीमध्ये ठेवले जातात आणि MDM बंद झाल्यावर नाहीसे होतात. त्यांच्या कुकीज कधीही जतन केल्या जात नाहीत
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -1128,6 +1149,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	काँगो
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	uTP द्वारे देखील कनेक्ट करा (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1202,6 +1227,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	{name} काढता आले नाही: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	या टॉरंटसाठी फोल्डर तयार करा
 #. window title in a dialog box
 #, machine
 	Create folder	फोल्डर तयार करा
@@ -2514,6 +2543,10 @@
 #, machine
 	KBytes/sec	KB/सेकंद
 #. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	खाजगी-विंडो डाउनलोड सूचीमध्ये ठेवा
+#. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
 	Keep running when closing the window	विंडो बंद करताना चालू ठेवा
@@ -2789,6 +2822,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	मॅन्युअल प्रॉक्सी/SOCKS कॉन्फिगरेशन
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	अनेक पीअर्स फक्त uTP वापरतात. त्याशिवाय, MDM त्यांच्यापर्यंत पोहोचू शकत नाही.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2863,6 +2900,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM ते करू शकले नाही.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM ने या फाइल्स तयार केल्या नाहीत. टॉरंट सुरू केल्यास त्यांचा आकार बदलू शकतो आणि त्यांतील मजकूर बदलू शकतो; यात तुकडे शेअर करणाऱ्या अनटिक केलेल्या फाइल्सचाही समावेश आहे. या टॉरंटसाठी त्यांचा वापर करायचा आहे का?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -3150,6 +3191,11 @@
 #. button: create a new item
 #, machine
 	New	नवीन
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	ब्राउझरकडून नवीन पत्ता ({host}): त्यावरून पुढे जात आहे
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3400,6 +3446,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	बंद
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	प्रॉक्सी सुरू असताना बंद: uTP UDP द्वारे जाते, जे SOCKS5 प्रॉक्सी वाहून नेत नाही
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	बंद: पूर्ण झालेला टॉरंट कोणत्याही डाउनलोडप्रमाणे थांबतो.
@@ -3750,6 +3800,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	पूर्वावलोकन अजून उपलब्ध नाही
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	खाजगी विंडोमधील डाउनलोड व्हिडिओ साइट्ससाठी पर्यायांमधील कुकीज वापरत नाहीत. पृष्ठ खाजगी विंडोमध्ये उघडा, तिथे साइन इन करा आणि त्या विंडोतील डाउनलोड व्हिडिओ बटण पुन्हा वापरा.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3864,6 +3918,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	पुन्हा तपासणी अयशस्वी झाली: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	रेकॉर्डिंग सुरू आहे...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4076,6 +4135,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	यात जतन केले
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	जतन करत आहे...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4575,6 +4639,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	थांबवा
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	थांबवा आणि जतन करा
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	यावेळी डाउनलोड थांबवा
@@ -4837,6 +4905,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	डेटा प्राप्त करताना कनेक्शन गमावले
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	गंतव्यस्थान सतत बदलत आहे. त्यातील फाइल्समधील बदल थांबवा आणि टॉरंट पुन्हा सुरू करण्याचा प्रयत्न करा.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4935,6 +5007,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	फाइल्स निवडता आल्या नाहीत: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	फाइल्स ठेवल्या गेल्या कारण या जुन्या डाउनलोडमध्ये मालकीचा कोणताही रेकॉर्ड नाही
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4969,6 +5045,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	नेटवर्क अडॅप्टर {adapter} कनेक्ट केलेले नाही
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	आउटपुट फोल्डर अवैध आहे
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4999,6 +5079,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	अहवाल तुमच्या क्लिपबोर्डवर आहे: तो इश्यूवरील टिप्पणीमध्ये पेस्ट करा.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	जतन केलेली .torrent फाइल या डाउनलोडशी जुळत नाही
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	जतन केलेली .torrent फाइल गहाळ आहे किंवा वाचता येत नाही. तिचा मेटाडेटा परत मिळवण्यासाठी टॉरंट पुन्हा जोडा; तिच्या विद्यमान फाइल्स ठेवा.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5119,6 +5207,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	टॉरेंट आता उपलब्ध नाही
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	टॉरंटच्या मालकीच्या नोंदीत असुरक्षित पथ आहे
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	टॉरंटच्या मालकीची नोंद त्याच्या फाइल सूचीशी जुळत नाही
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	टॉरंटच्या मालकीची नोंद अवैध आहे
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	विद्यमान फाइल्स वापरण्याची परवानगी नाकारल्यामुळे टॉरंट सुरू केला नाही.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5263,6 +5368,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	यासाठी ffmpeg आवश्यक आहे
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	हा पर्याय थेट BitTorrent डाउनलोडसाठी उपलब्ध आहे
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5294,9 +5403,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	हे टॉरेंट आधीच डाउनलोड सूचीमध्ये आहे
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	हा टॉरंट व्यस्त आहे. तो पुन्हा जोडण्यापूर्वी त्याची सध्याची क्रिया पूर्ण होण्याची प्रतीक्षा करा.
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	हे टॉरंट सूचीमध्ये नाही
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	हा टॉरंट सुरू करण्यापूर्वी {file} वापरण्याची परवानगी आवश्यक आहे.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	हा टॉरंटचे गंतव्य फोल्डर इतर फाइल्ससोबत शेअर केलेले आहे
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5627,6 +5748,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	स्वयंचलित कॉन्फिगरेशन स्क्रिप्ट वापरा
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	विद्यमान टॉरंट फाइल्स वापरा
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV मोडमध्ये FTP वापरा
@@ -5634,6 +5758,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM ची स्वतःची प्रत वापरा
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	माझी yt-dlp कॉन्फिग फाइल वापरा
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5689,6 +5817,10 @@
 #. label in the Options window
 #, machine
 	UserName	वापरकर्तानाव
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP इनकमिंग कनेक्शनसाठी पोर्ट वापरते: इनकमिंग कनेक्शन स्वीकारा सुरू करा
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5782,6 +5914,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	प्रतीक्षा करत आहे
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	ब्राउझरकडून नवीन पत्त्याची प्रतीक्षा करत आहे
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5968,6 +6104,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube ला त्याच्या व्हिडिओ गुणवत्तेची यादी करण्यासाठी JavaScript रनटाइमची आवश्यकता आहे: Node.js किंवा Deno स्थापित करा, नंतर ते पुन्हा शोधा
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp स्वतःच्या कॉन्फिग फाइल्सही वाचते (Windows वर %APPDATA%\\yt-dlp\\config.txt, Linux आणि macOS वर ~/.config/yt-dlp/config). MDM ने निवडलेले फोल्डर, नाव आणि गुणवत्ता यांनाच प्राधान्य मिळते; मात्र तिथले व्हिडिओ वगळणारे किंवा फिल्टर करणारे पर्यायही लागू होतात.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6120,6 +6260,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: फाइलचा चेकसम ({algorithm}) जुळतो
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM ने या फाइल्स तयार केल्या नसल्यामुळे किंवा दुसरा डाउनलोड त्यांचा वापर करत असल्यामुळे त्या डिस्कवरच राहिल्या:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6423,6 +6567,10 @@ extension	Added to MDM	MDM मध्ये जोडले
 #, machine
 extension	Added to the queue	रांगेत जोडले
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	सर्व
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6453,9 +6601,41 @@ extension	Button settings...	बटण सेटिंग्ज...
 #, machine
 extension	can't be saved	जतन करता येत नाही
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	Mister Download Manager पर्यंत पोहोचता येत नाही
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	{server} वरील Mister Download Manager पर्यंत पोहोचता येत नाही
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	हा कोणता व्हिडिओ आहे ते कळत नाही: त्याचे स्वतःचे पृष्ठ उघडून तिथे प्रयत्न करा
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	रद्द करा
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	ते चालू असल्याची आणि हा ब्राउझर त्याचे प्रमाणपत्र स्वीकारत असल्याची खात्री करा (सेटिंग्ज → डाउनलोड पाठवा → ते उघडा).
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	साफ करा
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	पूर्ण झालेले साफ करा
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	पूर्ण झालेले डाउनलोड साफ करायचे आहेत?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	कनेक्ट केले
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6466,13 +6646,52 @@ extension	Connected to Mister Download Manager	Mister Download Manager शी �
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} शी कनेक्ट केले
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	कनेक्ट केले · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	{file} कॉपी केले. ते फोल्डर, चॅट किंवा मेसेजमध्ये पेस्ट करा.
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	फाइल कॉपी करा
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	दुवा कॉपी करा
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	शोधता आले नाही
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	हटवा
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	फाइल हटवा...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	फाइल हटवायची आहे?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	पूर्ण झाले
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	डाउनलोड करा
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	पुन्हा डाउनलोड करा
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6502,7 +6721,20 @@ extension	Download with Mister Download Manager	Mister Download Manager सह �
 #, machine
 extension	Download {what}	{what} डाउनलोड करा
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	{file} पुन्हा डाउनलोड करत आहे
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	डाउनलोड करत आहे: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	डाउनलोड्स
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	{site} वरील डाउनलोड ब्राउझरमध्येच होतील
@@ -6518,6 +6750,23 @@ extension	Drag the dots to move it along the edge	कडा बाजूने �
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	त्याचा https:// पत्ता एंटर करा.
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	अयशस्वी
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	अयशस्वी: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	फाइल हटवली किंवा हलवली
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	पूर्ण झालेले डाउनलोड साफ केले
 #. text in the browser extension
 #. button: forget / unpair this server
 #, machine
@@ -6571,6 +6820,10 @@ extension	It's smaller than the minimum size in Options → File types.	तो �
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	त्याचा पत्ता पर्याय → फाइल प्रकार, ब्राउझरसाठी सोडलेले पत्ते यामध्ये आहे.
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	त्याची फाइल जिथे जतन केली होती तिथे आता नाही (हलवली किंवा हटवली).
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	त्याची साइट पर्याय → फाइल प्रकार, ब्राउझरसाठी सोडलेल्या साइट्समध्ये आहे.
@@ -6579,14 +6832,31 @@ extension	Its site is in Options → File types, sites left to the browser.	त�
 #, machine
 extension	Its type isn't in Options → File types.	त्याचा प्रकार पर्याय → फाइल प्रकारांमध्ये नाही.
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	आत्ताच
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	पर्यायांमधील नियमानुसार ब्राउझरकडे सोडले
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	ब्राउझरसाठी सोडले: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	दुवा कॉपी केला
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	थेट
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	डाउनलोड शोधत आहे...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6608,6 +6878,10 @@ extension	Media on this page	या पृष्ठावरील मीडि�
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager ने वेळेत उत्तर दिले नाही. पुन्हा प्रयत्न करा.
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager वेळेत सुरू झाले नाही
@@ -6620,6 +6894,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager इतर व्हिडिओंमध्ये व्यस्त आहे
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager व्यस्त आहे. पुन्हा प्रयत्न करत आहे...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager स्थापित केलेले नाही किंवा सुरू झाले नाही
@@ -6627,6 +6906,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager स्थापित केलेले नाही, किंवा त्याचे ब्राउझर एकत्रीकरण सेट केलेले नाही
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager चालू नाही
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager चालू नाही.
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6639,6 +6926,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager नंतर या ब्राउझरच्या समान प्रॉक्सीद्वारे डाउनलोड करते. हे बंद असताना, एक्स्टेंशन ब्राउझरची प्रॉक्सी वाचत नाही.
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	अधिक क्रिया
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	{file} साठी अधिक क्रिया
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6653,10 +6948,18 @@ extension	Most compatible	सर्वाधिक सुसंगत
 #, machine
 extension	Never on {site}	{site} वर कधीही दाखवू नका
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site} वरील डाउनलोड कधीही घेऊ नका
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	कोणत्याही डाउनलोडच्या नावात किंवा पत्त्यात “{words}” नाही.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	अद्याप डाउनलोड नाहीत
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6666,13 +6969,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	येथे डाउनलोड करण्यासाठी व्हिडिओ नाही
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	कनेक्ट केलेले नाही
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	पोहोचले नाही. या ब्राउझरमध्ये एकदा त्याचा पत्ता उघडा आणि त्याचे प्रमाणपत्र स्वीकारा, नंतर पुन्हा प्रयत्न करा.
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	काहीही जुळत नाही
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	या साइटवर बंद
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	उघडा
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6681,6 +6996,10 @@ extension	Open it	ते उघडा
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	त्याचा पत्ता एकदा उघडा आणि त्याचे प्रमाणपत्र स्वीकारा, नंतर त्याच्या 'पर्याय', 'रिमोट', 'डिव्हाइस पेअर करा' (किंवा misterdownloadmanager-cli pair) मधून कोड एंटर करा.
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	त्याचे पेज उघडा
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6693,6 +7012,14 @@ extension	Open post	पोस्ट उघडा
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	डाउनलोड करण्यासाठी पोस्ट उघडा
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	{file} उघडा
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	Mister Download Manager मधील पर्याय
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6711,9 +7038,30 @@ extension	Pair	पेअर करा
 #, machine
 extension	Pairing code	पेअरिंग कोड
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	विराम द्या
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	आधी विराम द्या.
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	{file} ला विराम द्या
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	विराम दिला
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	विरामित: डाउनलोड ब्राउझरमध्येच राहतात
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	पॉपअप विभाग
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6727,9 +7075,29 @@ extension	Protected	संरक्षित
 #, machine
 extension	Protected video	संरक्षित व्हिडिओ
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	सूचीमधून काढा
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	पुन्हा सुरू करा
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	{file} पुन्हा सुरू करा
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	पुन्हा प्रयत्न करा
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	सुरू आहे
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	डाउनलोड शोधा
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6744,13 +7112,52 @@ extension	Send downloads to	डाउनलोड्स येथे पाठ�
 #, machine
 extension	Sending to MDM...	MDM ला पाठवत आहे...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	{server} वर पाठवत आहे
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ला पाठवले
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	सेटिंग्ज
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	शेअर करा...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	दाखवा
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	सर्व डाउनलोड दाखवा
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	फोल्डरमध्ये दाखवा
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	{file} फोल्डरमध्ये दाखवा
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	तुमचे डाउनलोड येथे पाहण्यासाठी ते सुरू करा.
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	Mister Download Manager सुरू करा
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	सुरू करत आहे...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6759,6 +7166,18 @@ extension	Support MDM	MDM ला सपोर्ट करा
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	या ब्राउझरमधील डाउनलोड घ्या
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	हे डाउनलोडवर आता करता येणार नाही.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	कृती अयशस्वी झाली. पुन्हा प्रयत्न करा.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	तो डाउनलोड आता सूचीमध्ये नाही.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6776,6 +7195,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	शेवटचे डाउनलोड ब्राउझरसाठी सोडले होते.
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	{total} पैकी नवीनतम {shown}. Mister Download Manager ते सर्व सूचीबद्ध करते.
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	{count} पूर्ण झालेले डाउनलोड सूचीतून काढले जातील. त्यांच्या फाइल्स जिथे आहेत तिथेच राहतील.
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	ही {server} वरील Mister Download Manager ची डाउनलोड आहेत. त्यांच्या फाइल्स तिथे उघडा.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	हा ब्राउझर पर्याय → सामान्य मध्ये निवडलेला नाही.
@@ -6788,17 +7220,34 @@ extension	This computer	हे संगणक
 #, machine
 extension	This download's details were too large to hand over	या डाउनलोडचे तपशील हस्तांतरित करण्यासाठी खूप मोठे होते
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	हे वेबपेज नाही: येथे काहीही करता येणार नाही.
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	हे पृष्ठ
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	या पृष्ठाचा प्लेअर व्हिडिओ तुकड्यांमध्ये स्ट्रीम करतो, त्यामुळे यादीत दाखवण्यासाठी कोणतीही फाईल नाही. व्हिडिओवर पॉइंटर नेऊन त्याचे «व्हिडिओ डाउनलोड करा» बटण वापरा.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	ही प्रणाली ते करू शकत नाही.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	ही आवृत्ती अद्याप तिच्या डाउनलोडची यादी येथे दाखवू शकत नाही.
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	चालू करा
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	पूर्ववत करा
+extension	Update Mister Download Manager	Mister Download Manager अपडेट करा
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6816,6 +7265,14 @@ extension	Video	व्हिडिओ
 #, machine
 extension	Wait a moment, then try again.	एक क्षण थांबा, नंतर पुन्हा प्रयत्न करा.
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	प्रतीक्षा करत आहे
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	तुम्ही Mister Download Manager वापरून डाउनलोड केलेल्या फाइल्स येथे दिसतात.
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	पृष्ठ पूर्ण स्क्रीनमध्ये असताना, त्याच्या व्हिडिओंवर डाउनलोड व्हिडिओ बटण दिसत नाही
@@ -6823,6 +7280,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	चुकीचा कोड.
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	{count} डाउनलोड सुरू आहेत
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{size} पैकी {done}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	{file} हटवले
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	{file} सूचीतून काढली
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} तुमच्या संगणकावरून हटवली जाईल आणि डाउनलोड सूचीतून काढले जाईल. ही कृती पूर्ववत करता येणार नाही.
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	{time} बाकी
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

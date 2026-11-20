@@ -56,6 +56,8 @@ function fakeApi({
   pageLinks = ["https://x/1.zip", "https://x/2.zip"],
   // tabs.query's answer for the active tab of the window last used (#607).
   activeTab,
+  // runtime.connectNative (#1496): a port to the host, answered as sendNativeMessage answers.
+  nativePort = false,
 }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
@@ -174,6 +176,7 @@ function fakeApi({
       onInstalled: event("installed"),
       onStartup: event("startup"),
       onMessage: event("message"),
+      onConnect: event("connect"),
       id: "ours",
       getURL: (p) => `chrome-extension://ours/${p}`,
     },
@@ -226,6 +229,21 @@ function fakeApi({
     // The browser's language: German here.
     i18n: { getMessage: (key) => ({ menu: "Mit Mister Download Manager herunterladen" })[key] ?? "" },
   };
+  if (nativePort) {
+    api.runtime.connectNative = (name) => {
+      calls.push(["port-open"]);
+      const heard = [];
+      const ended = [];
+      return {
+        onMessage: { addListener: (f) => heard.push(f) },
+        onDisconnect: { addListener: (f) => ended.push(f) },
+        postMessage: (m) => {
+          api.runtime.sendNativeMessage(name, m).then((r) => setTimeout(() => heard.forEach((f) => f(JSON.parse(JSON.stringify(r)))), 1));
+        },
+        disconnect: () => calls.push(["port-closed"]),
+      };
+    };
+  }
   if (safari) delete api.downloads;
   if (!firefox && !safari) api.declarativeNetRequest = { getSessionRules: async () => [], updateSessionRules: async (r) => calls.push(["dnr", r]) };
   if (appName) api.runtime.getBrowserInfo = async () => ({ name: appName, vendor: "Mozilla", version: "1.0" });
@@ -311,7 +329,9 @@ function load(api, firefox, extra = {}) {
 const settle = () => new Promise((r) => setTimeout(r, 30));
 // The messages to the host about downloads, and apart, the notices of downloads the extension
 // left to the browser by Options (#208).
-const natives = (calls) => calls.filter((c) => c[0] === "native" && !c[2].declined).map((c) => c[2]);
+// The list's questions (#1496: the toolbar button's count, asked after a download is handed
+// over) are apart too.
+const natives = (calls) => calls.filter((c) => c[0] === "native" && !c[2].declined && !c[2].recent).map((c) => c[2]);
 const notices = (calls) => calls.filter((c) => c[0] === "native" && c[2].declined).map((c) => c[2].declined);
 const steps = (calls) => calls.filter((c) => ["pause", "cancel", "erase", "resume", "removeFile"].includes(c[0])).map((c) => c[0]);
 let passed = 0;
@@ -3299,6 +3319,14 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     const text = readText(`../../extension/${file}`);
     for (const [, key] of text.matchAll(/(?:t\(|data-i18n=)"((?:menu|status|popup|video)_\w+)"/g)) assert.ok(english[key], `${file}: ${key}`);
   }
+  // The popup's (#1496): every key named in them, however it is passed on, and those its row
+  // buttons make by adding "_named".
+  for (const file of ["popup.html", "popup.js", "popup-ui.js", "popup-downloads.js"]) {
+    const text = readText(`../../extension/${file}`);
+    for (const [, key] of text.matchAll(/"((?:popup|status)_[a-z0-9_]+)"/g)) assert.ok(english[key], `${file}: ${key}`);
+    for (const [, key] of text.matchAll(/data-i18n(?:-label|-placeholder)?="(\w+)"/g)) assert.ok(english[key], `${file}: ${key}`);
+  }
+  for (const b of ["popup_act_folder", "popup_act_pause", "popup_act_resume", "popup_act_more"]) assert.ok(english[`${b}_named`], `${b}_named`);
   for (const why of ["not_installed", "forbidden", "not_running", "host_failed", "too_large", "update_app"]) {
     assert.ok(english[`status_${why}`], `status_${why}`);
   }
@@ -4894,6 +4922,264 @@ const MP4 = (() => {
   assert.equal(named("https://www.douyin.com/?recommend=1"), null);
   assert.equal(named("https://www.douyin.com/jingxuan?modal_id=12"), null);
   ok("#1092: Douyin's posts named; what the tab played asked only after a look-up found nothing");
+}
+
+// ---- #1496: the popup's Downloads tab and the toolbar button's count ------------------------
+
+// The popup's shared pieces (popup-ui.js) in English: what a row says, which buttons it has, a
+// name cut in its middle.
+{
+  const en = JSON.parse(readText("../../extension/_locales/en/messages.json"));
+  const getMessage = (key, subs = []) => {
+    const m = en[key];
+    if (!m) return "";
+    let text = m.message;
+    for (const [name, p] of Object.entries(m.placeholders || {})) text = text.replaceAll(`$${name}$`, subs[Number(p.content.slice(1)) - 1] ?? "");
+    return text;
+  };
+  const ctx = { chrome: { i18n: { getMessage, getUILanguage: () => "en-US" } }, console: quietConsole, URL };
+  vm.runInNewContext(readText("../../extension/popup-ui.js"), ctx);
+  const MB = 2 ** 20;
+  const now = Date.UTC(2026, 10, 19, 12, 0, 0);
+  const st = (d) => JSON.parse(JSON.stringify(ctx.statusOf(d, now, "en-US")));
+  assert.deepEqual(st({ status: "Downloading", size: 48 * MB, downloaded: 12 * MB, speed: 2 * MB, left: 42 }), {
+    text: "12 MB of 48 MB · 2 MB/s · 0:42 left",
+    tone: "",
+    bar: 0.25,
+    busy: false,
+  });
+  // No size: how much came, a bar that can't measure; another MDM's row without `left`: from its speed.
+  assert.deepEqual(st({ status: "Downloading", downloaded: 5 * MB, speed: MB }), { text: "5 MB · 1 MB/s", tone: "", bar: null, busy: true });
+  assert.equal(st({ status: "Downloading", size: 10 * MB, downloaded: 4 * MB, speed: MB }).text, "4 MB of 10 MB · 1 MB/s · 0:06 left");
+  assert.equal(st({ status: "Downloading", downloaded: 0, speed: 0 }).text, "Starting...");
+  assert.equal(st({ status: "Stopped", size: 40 * MB, downloaded: 10 * MB }).text, "Paused · 25% · 10 MB of 40 MB");
+  assert.equal(st({ status: "Queued", size: 2 ** 30, downloaded: 0 }).text, "Waiting · 1 GB");
+  const done = (ago) => st({ status: "Complete", size: 48.7 * MB, downloaded: 48.7 * MB, exists: true, finished: (now - ago) / 1000 });
+  assert.deepEqual(done(10e3), { text: "48.7 MB · Done", tone: "ok" });
+  assert.deepEqual(done(2 * 3600e3), { text: "48.7 MB · 2 hours ago", tone: "" });
+  assert.equal(done(26 * 3600e3).text, "48.7 MB · yesterday");
+  assert.deepEqual(st({ status: "Complete", size: 1, exists: false }), { text: "File deleted or moved", tone: "muted" });
+  assert.deepEqual(st({ status: "Error", error: "the server refused the connection" }), { text: "Failed: the server refused the connection", tone: "bad" });
+  assert.deepEqual(st({ status: "Error" }), { text: "Failed", tone: "bad" });
+  // The buttons: this computer's file, another MDM's (nothing that needs the file here), running, gone, failed.
+  const on = (a) => Object.entries(a).filter(([, v]) => v).map(([k]) => k).sort();
+  const d = { status: "Complete", exists: true, url: "https://files.example.com/a.zip", redownload: true };
+  assert.deepEqual(on(ctx.actionsOf(d, { local: true, share: true })), ["again", "copyFile", "copyLink", "del", "folder", "open", "remove", "share"]);
+  assert.deepEqual(on(ctx.actionsOf(d, { local: true, share: false })), ["again", "copyFile", "copyLink", "del", "folder", "open", "remove"], "no share sheet (Linux)");
+  assert.deepEqual(on(ctx.actionsOf(d, { local: false, share: true })), ["copyLink", "remove"], "another MDM's: nothing that needs the file here");
+  assert.deepEqual(on(ctx.actionsOf({ ...d, status: "Downloading", redownload: false }, { local: true })), ["copyLink", "folder", "pause"]);
+  assert.deepEqual(on(ctx.actionsOf({ ...d, exists: false }, { local: true, share: true })), ["again", "copyLink", "folder", "remove"]);
+  assert.deepEqual(on(ctx.actionsOf({ ...d, status: "Error", redownload: false }, { local: false })), ["copyLink", "remove", "resume"]);
+  assert.ok(!ctx.actionsOf({ ...d, url: "javascript:alert(1)" }).copyLink, "only a web, FTP or magnet address is copied");
+  // A long name keeps its start and its extension.
+  const fits = (n) => (text) => Array.from(text).length <= n;
+  const long = "HushGram-automated-release-workflow (4).zip";
+  const cut = ctx.middleCut(long, fits(24));
+  assert.ok(Array.from(cut).length <= 24 && cut.startsWith("HushGram") && cut.endsWith("(4).zip") && cut.includes("…"), cut);
+  assert.equal(ctx.middleCut("short.zip", fits(24)), "short.zip");
+  assert.ok(ctx.middleCut("abcdefghijklmnopqrstuvwxyz", fits(10)).length <= 10);
+  // Sizes and speeds in the browser's language.
+  assert.equal(ctx.sizeText(1536, "en-US"), "1.5 kB");
+  assert.equal(ctx.speedText(3 * MB, "de"), "3 MB/s");
+  assert.equal(ctx.clockText(3725), "1:02:05");
+  assert.equal(ctx.actWhyText("missing"), "Its file is no longer where it was saved (moved or deleted).");
+  assert.equal(ctx.actWhyText("odd"), "That didn't work. Try again.");
+  ok("#1496 the popup's rows: status lines, buttons, cut names");
+}
+
+// Another MDM's list cut to the popup's view as the app cuts its own (mdm_ipc RecentAnswer::of,
+// its test recent_view_filters_counts_and_limits: the same downloads, the same answers).
+{
+  const { api } = fakeApi({ firefox: false });
+  const ctx = load(api, false);
+  const row = (id, file, status) => ({ id, file, url: `https://files.example.com/${file}`, status });
+  const all = [
+    row(1, "Report final.pdf", "Complete"),
+    row(2, "report draft.docx", "Error"),
+    row(3, "holiday.mp4", "Downloading"),
+    row(4, "report-2.zip", "Downloading"),
+    row(5, "notes.txt", "Stopped"),
+    row(6, "report 3.pdf", "Complete"),
+  ];
+  const view = (filter, search, limit) => JSON.parse(JSON.stringify(ctx.recentView(all, { filter, search, limit }, 9)));
+  const ids = (v) => v.downloads.map((x) => x.id);
+  const every = view("all", "", 50);
+  assert.deepEqual(ids(every), [6, 5, 4, 3, 2, 1]);
+  assert.deepEqual(every.counts, { all: 6, running: 2, done: 2, failed: 1 });
+  assert.deepEqual([every.running, every.speed], [2, 9]);
+  const reports = view("done", "REPORT", 50);
+  assert.deepEqual(ids(reports), [6, 1]);
+  assert.deepEqual(reports.counts, { all: 4, running: 1, done: 2, failed: 1 });
+  assert.equal(reports.running, 2);
+  assert.deepEqual(ids(view("all", "report files.example", 50)), [6, 4, 2, 1]);
+  assert.deepEqual(ids(view("all", "report mp4", 50)), []);
+  assert.deepEqual(ids(view("running", "", 50)), [4, 3]);
+  assert.deepEqual(ids(view("failed", "", 50)), [2]);
+  assert.deepEqual(ids(view("paused", "", 2)), [6, 5]);
+  assert.deepEqual(ids(view("all", "", 0)), []);
+  const many = Array.from({ length: 500 }, (_, i) => row(i + 1, "a.bin", "Complete"));
+  const capped = ctx.recentView(many, { filter: "all", search: "", limit: 10000 });
+  assert.deepEqual([capped.downloads.length, capped.downloads[0].id], [200, 500]);
+  // The same cases as the app's own test.
+  const rust = readText("../../crates/ipc/src/api.rs");
+  assert.ok(rust.includes('row(4, "report-2.zip", "Downloading")') && rust.includes('ask("done", "REPORT", 50)'), "the app's test has the same cases");
+  ok("#1496 another MDM's list: the same view as the app's");
+}
+
+// A popup's port (as popup-downloads.js opens it): what it is sent, and what it can do.
+function popupPort(sender = { id: "ours", url: "chrome-extension://ours/popup.html" }) {
+  const posted = [];
+  const heard = [];
+  const ended = [];
+  return {
+    posted,
+    port: {
+      name: "recent",
+      sender,
+      onMessage: { addListener: (f) => heard.push(f) },
+      onDisconnect: { addListener: (f) => ended.push(f) },
+      postMessage: (m) => posted.push(JSON.parse(JSON.stringify(m))),
+    },
+    send: (m) => heard.forEach((f) => f(m)),
+    close: () => ended.forEach((f) => f()),
+  };
+}
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const until = async (what, ms, check) => {
+  const end = Date.now() + ms;
+  for (;;) {
+    const got = await check();
+    if (got) return got;
+    if (Date.now() > end) throw new Error(`waited for ${what}`);
+    await wait(20);
+  }
+};
+
+// This computer's MDM: one native port for the list (not a helper per question), the file type
+// icons sent once, the toolbar button's count while something runs, the buttons' messages; a
+// page's script can't ask; the port closes once nothing runs and the popup is closed.
+{
+  let running = 2;
+  const list = (m) => ({
+    downloads: m.recent.limit
+      ? [{ id: 3, file: "a.zip", url: "https://files.example.com/a.zip", path: "C:\\dl\\a.zip", status: "Complete", size: 5, downloaded: 5, speed: 0, exists: true, icon: "zip" }]
+      : [],
+    counts: { all: 1, running: 0, done: 1, failed: 0 },
+    running,
+    speed: 0,
+    icons: m.recent.have.includes("zip") ? {} : { zip: "data:image/png;base64,iVBORw0KGgo=" },
+    share: true,
+  });
+  const reply = (m) => (m.recent ? { ok: true, recent: list(m) } : m.downloadAct ? { ok: true, act: { done: true } } : { ok: true });
+  const { api, calls, listeners } = fakeApi({ firefox: false, reply, nativePort: true });
+  load(api, false);
+  await settle();
+  const badges = () => calls.filter((c) => c[0] === "badge").map((c) => c[1]);
+  const recents = () => calls.filter((c) => c[0] === "native" && c[2].recent).map((c) => c[2].recent);
+  // A download handed over: the count is watched.
+  listeners.determining({ id: 70, url: "https://x/big.zip", filename: "big.zip" }, () => {});
+  await until("the count", 3000, () => badges().includes("2"));
+  assert.equal(recents()[0].limit, 0, "the badge asks for counts only");
+  // The popup's port: the list, the icons once.
+  const p = popupPort();
+  listeners.connect(p.port);
+  p.send({ type: "ask", ask: { filter: "done", search: "a", limit: 60, px: 48 } });
+  await until("the popup's list", 3000, () => p.posted.length);
+  const first = p.posted[0];
+  assert.deepEqual([first.type, first.ok, first.remote, first.list.downloads[0].file, first.px], ["list", true, null, "a.zip", 48]);
+  assert.equal(first.icons.zip, "data:image/png;base64,iVBORw0KGgo=");
+  const asked = recents().at(-1);
+  assert.deepEqual([asked.filter, asked.search, asked.limit, asked.px], ["done", "a", 60, 48]);
+  await until("the second answer", 3000, () => p.posted.length >= 2);
+  assert.deepEqual(p.posted[1].icons, {}, "an icon is sent once");
+  assert.deepEqual(recents().at(-1).have, ["zip"], "the app is told which icons are here");
+  assert.equal(calls.filter((c) => c[0] === "port-open").length, 1, "one helper for all the questions");
+  // A page's script can't open that port.
+  const page = popupPort({ id: "ours", url: "https://evil.test/", tab: { id: 4 } });
+  listeners.connect(page.port);
+  page.send({ type: "ask", ask: { limit: 60 } });
+  // The buttons.
+  assert.deepEqual(await popupAsk(listeners, { type: "download-act", act: "folder", id: 3 }), { ok: true, why: null });
+  assert.deepEqual(calls.filter((c) => c[0] === "native" && c[2].downloadAct).map((c) => c[2].downloadAct), [{ act: "folder", id: 3 }]);
+  await wait(1100);
+  assert.equal(page.posted.length, 0, "never answered");
+  // Nothing runs any more, and the popup closes: the count goes, the helper's port closes.
+  running = 0;
+  p.close();
+  await until("the count gone", 6000, () => badges().at(-1) === "");
+  await until("the port closed", 6000, () => calls.some((c) => c[0] === "port-closed"));
+  ok("#1496 this computer's list: one port, icons once, the count, the buttons; never for a page");
+}
+
+// MDM not running, an older helper (which refuses the question), a button that can't: said so,
+// and the browser still counts as connected.
+{
+  const replies = [{ ok: false, appState: "off" }, { ok: false, why: "refused", error: "not an http(s) or ftp(s) URL" }];
+  const reply = (m) => (m.recent ? replies[0] : m.downloadAct ? { ok: false, act: { done: false, why: "missing" } } : { ok: true });
+  const { api, store, listeners } = fakeApi({ firefox: false, reply, nativePort: true });
+  load(api, false);
+  await settle();
+  const p = popupPort();
+  listeners.connect(p.port);
+  await until("the popup's word", 3000, () => p.posted.length);
+  assert.deepEqual([p.posted[0].ok, p.posted[0].appState, p.posted[0].why], [false, "off", null]);
+  replies.shift();
+  await until("an older helper's word", 3000, () => p.posted.some((x) => x.appState === "old"));
+  assert.equal(store.status && store.status.why, null, "still connected");
+  assert.deepEqual(await popupAsk(listeners, { type: "download-act", act: "copy-file", id: 3 }), { ok: false, why: "missing" });
+  p.close();
+  ok("#1496 MDM not running, an older helper, a button refused: said, still connected");
+}
+
+// Another MDM (#157): its remote control's list cut to the view, no icons, nothing that needs
+// the file here; pause, resume and remove go to its API.
+{
+  const { api, listeners } = fakeApi({ firefox: false, nativePort: true });
+  await api.storage.local.set({ remote: { url: "https://srv.test:8463/", token: "tok" }, remotes: [{ url: "https://srv.test:8463/", token: "tok" }] });
+  served["https://srv.test:8463/api/list"] = {
+    body: JSON.stringify({
+      downloads: [
+        { id: 1, file: "old.iso", url: "https://files.example.com/old.iso", path: "", status: "Complete", size: 9, downloaded: 9, speed: 0 },
+        { id: 2, file: "new.zip", url: "https://files.example.com/new.zip", path: "", status: "Downloading", size: 9, downloaded: 3, speed: 3 },
+      ],
+      speed: 3,
+    }),
+  };
+  let acted = null;
+  served["https://srv.test:8463/api/act"] = (opts) => {
+    acted = JSON.parse(opts.body);
+    return { body: JSON.stringify({ done: acted.ids, skipped: [] }) };
+  };
+  load(api, false);
+  await settle();
+  const p = popupPort();
+  listeners.connect(p.port);
+  p.send({ type: "ask", ask: { filter: "all", search: "", limit: 60, px: 24 } });
+  await until("the server's list", 3000, () => p.posted.length);
+  const got = p.posted.at(-1);
+  assert.deepEqual([got.ok, got.remote, got.list.downloads.map((d) => d.id), got.list.share], [true, "https://srv.test:8463/", [2, 1], false]);
+  const listCall = fetched.filter((f) => f[0] === "https://srv.test:8463/api/list");
+  assert.ok(listCall.length && listCall.every((f) => f[1] === "omit"), "no cookies to the server");
+  assert.deepEqual(await popupAsk(listeners, { type: "download-act", act: "pause", id: 2 }), { ok: true });
+  assert.deepEqual(acted, { action: "pause", ids: [2] });
+  assert.deepEqual(await popupAsk(listeners, { type: "download-act", act: "resume", id: 2 }), { ok: true });
+  assert.deepEqual(acted, { action: "start", ids: [2] });
+  assert.deepEqual(await popupAsk(listeners, { type: "download-act", act: "open", id: 1 }), { ok: false, why: "unsupported" });
+  assert.deepEqual(await popupAsk(listeners, { type: "download-act", act: "delete", id: 1 }), { ok: false, why: "unsupported" });
+  p.close();
+  delete served["https://srv.test:8463/api/list"];
+  delete served["https://srv.test:8463/api/act"];
+  ok("#1496 another MDM's list: its view, no icons, only what its remote control does");
+}
+
+// The permissions don't grow for the list: the popup copies a link and asks the app for the rest.
+{
+  const before = { chrome: ["downloads", "contextMenus", "nativeMessaging", "cookies", "storage", "webRequest", "scripting", "declarativeNetRequestWithHostAccess", "proxy"], firefox: ["downloads", "contextMenus", "nativeMessaging", "cookies", "storage", "webRequest", "webRequestBlocking", "scripting"] };
+  assert.deepEqual(JSON.parse(readText("../../extension/manifest.json")).permissions, before.chrome);
+  assert.deepEqual(JSON.parse(readText("../../extension/manifest.firefox.json")).permissions, before.firefox);
+  const pack = readText("./pack.ps1");
+  for (const f of ["popup-ui.js", "popup-downloads.js"]) assert.ok(pack.includes(`"${f}"`), `pack.ps1 copies ${f}`);
+  ok("#1496 no new permissions; the popup's new scripts are packed");
 }
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 

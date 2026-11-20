@@ -92,9 +92,6 @@
       }
     }
   },
-  "popup_undo": {
-    "message": "撤销"
-  },
   "popup_excluded": {
     "message": "来自 $site$ 的下载任务将由浏览器处理",
     "placeholders": {
@@ -343,5 +340,412 @@
   },
   "popup_remote_forget": {
     "message": "忘记"
+  },
+  "popup_gear": {
+    "message": "在 Mister Download Manager 中设置选项"
+  },
+  "popup_tabs": {
+    "message": "弹出窗口部分"
+  },
+  "popup_tab_downloads": {
+    "message": "下载"
+  },
+  "popup_tab_page": {
+    "message": "此页面"
+  },
+  "popup_tab_settings": {
+    "message": "设置"
+  },
+  "popup_conn": {
+    "message": "已连接 · $version$",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "0.5.2"
+      }
+    }
+  },
+  "popup_conn_plain": {
+    "message": "已连接"
+  },
+  "popup_conn_off": {
+    "message": "未连接"
+  },
+  "popup_conn_paused": {
+    "message": "已暂停"
+  },
+  "popup_conn_update": {
+    "message": "更新 Mister Download Manager"
+  },
+  "popup_conn_remote": {
+    "message": "正在发送到 $server$",
+    "placeholders": {
+      "server": {
+        "content": "$1",
+        "example": "192.168.1.10:8463"
+      }
+    }
+  },
+  "popup_cancel": {
+    "message": "取消"
+  },
+  "popup_page_none": {
+    "message": "这不是网页：此处无事可做。"
+  },
+  "popup_exclude_by_rule": {
+    "message": "根据“选项”中的规则，已留给浏览器处理"
+  },
+  "popup_dl_search": {
+    "message": "搜索下载"
+  },
+  "popup_dl_filters": {
+    "message": "显示"
+  },
+  "popup_dl_all": {
+    "message": "所有"
+  },
+  "popup_dl_running": {
+    "message": "正在运行"
+  },
+  "popup_dl_done_filter": {
+    "message": "已完成"
+  },
+  "popup_dl_failed_filter": {
+    "message": "失败"
+  },
+  "popup_dl_clear": {
+    "message": "清除已完成"
+  },
+  "popup_dl_running_count": {
+    "message": "正在下载 $count$ 个",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "popup_dl_remote": {
+    "message": "这些是 $server$ 上的 Mister Download Manager 的下载。请在那里打开其文件。",
+    "placeholders": {
+      "server": {
+        "content": "$1",
+        "example": "192.168.1.10:8463"
+      }
+    }
+  },
+  "popup_dl_more": {
+    "message": "显示 $total$ 个中的最新 $shown$ 个。Mister Download Manager 列出所有下载。",
+    "placeholders": {
+      "shown": {
+        "content": "$1",
+        "example": "60"
+      },
+      "total": {
+        "content": "$2",
+        "example": "245"
+      }
+    }
+  },
+  "popup_dl_of": {
+    "message": "$done$ / $size$",
+    "placeholders": {
+      "done": {
+        "content": "$1",
+        "example": "12.3 MB"
+      },
+      "size": {
+        "content": "$2",
+        "example": "48.7 MB"
+      }
+    }
+  },
+  "popup_dl_left": {
+    "message": "剩余 $time$",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "0:42"
+      }
+    }
+  },
+  "popup_dl_starting": {
+    "message": "正在启动..."
+  },
+  "popup_dl_paused": {
+    "message": "已暂停"
+  },
+  "popup_dl_waiting": {
+    "message": "正在等待"
+  },
+  "popup_dl_done": {
+    "message": "已完成"
+  },
+  "popup_dl_just_now": {
+    "message": "刚刚"
+  },
+  "popup_dl_failed": {
+    "message": "失败"
+  },
+  "popup_dl_failed_why": {
+    "message": "失败：$why$",
+    "placeholders": {
+      "why": {
+        "content": "$1",
+        "example": "the server refused the connection"
+      }
+    }
+  },
+  "popup_dl_gone": {
+    "message": "文件已删除或移动"
+  },
+  "popup_dl_loading": {
+    "message": "正在查找下载..."
+  },
+  "popup_dl_none": {
+    "message": "暂无下载"
+  },
+  "popup_dl_none_text": {
+    "message": "您使用 Mister Download Manager 下载的内容将显示在此处。"
+  },
+  "popup_dl_no_match": {
+    "message": "无匹配项"
+  },
+  "popup_dl_no_match_text": {
+    "message": "没有下载任务的名称或地址包含“$words$”。",
+    "placeholders": {
+      "words": {
+        "content": "$1",
+        "example": "report"
+      }
+    }
+  },
+  "popup_dl_show_all": {
+    "message": "显示所有下载"
+  },
+  "popup_list_off": {
+    "message": "Mister Download Manager 未运行"
+  },
+  "popup_list_off_text": {
+    "message": "启动它以在此处查看您的下载。"
+  },
+  "popup_list_start": {
+    "message": "启动 Mister Download Manager"
+  },
+  "popup_list_old": {
+    "message": "更新 Mister Download Manager"
+  },
+  "popup_list_old_text": {
+    "message": "此版本尚无法在此处列出其下载。"
+  },
+  "popup_list_busy": {
+    "message": "Mister Download Manager 正忙。正在重试..."
+  },
+  "popup_list_unreached": {
+    "message": "无法连接到 Mister Download Manager"
+  },
+  "popup_list_remote_unreachable": {
+    "message": "无法连接到 Mister Download Manager（服务器：$server$）",
+    "placeholders": {
+      "server": {
+        "content": "$1",
+        "example": "192.168.1.10:8463"
+      }
+    }
+  },
+  "popup_list_remote_unreachable_text": {
+    "message": "请检查它是否正在运行，以及此浏览器是否接受其证书（设置 → 发送下载到 → 打开它）。",
+    "placeholders": {
+      "server": {
+        "content": "$1",
+        "example": "192.168.1.10:8463"
+      }
+    }
+  },
+  "popup_act_open": {
+    "message": "打开"
+  },
+  "popup_act_open_named": {
+    "message": "打开 $file$",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_act_folder": {
+    "message": "在文件夹中显示"
+  },
+  "popup_act_folder_named": {
+    "message": "在文件夹中显示 $file$",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_act_copy_file": {
+    "message": "复制文件"
+  },
+  "popup_act_share": {
+    "message": "共享..."
+  },
+  "popup_act_copy_link": {
+    "message": "复制链接"
+  },
+  "popup_act_pause": {
+    "message": "暂停"
+  },
+  "popup_act_pause_named": {
+    "message": "暂停 $file$",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_act_resume": {
+    "message": "恢复"
+  },
+  "popup_act_resume_named": {
+    "message": "恢复 $file$",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_act_again": {
+    "message": "重新下载"
+  },
+  "popup_act_remove": {
+    "message": "从列表中移除"
+  },
+  "popup_act_delete": {
+    "message": "删除文件..."
+  },
+  "popup_act_more": {
+    "message": "更多操作"
+  },
+  "popup_act_more_named": {
+    "message": "$file$ 的更多操作",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_ask_delete_title": {
+    "message": "删除文件？"
+  },
+  "popup_ask_delete": {
+    "message": "$file$ 将从您的计算机中删除，并从列表中移除下载。此操作无法撤消。",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_ask_delete_ok": {
+    "message": "删除"
+  },
+  "popup_ask_clear_title": {
+    "message": "清除已完成的下载？"
+  },
+  "popup_ask_clear": {
+    "message": "$count$ 个已完成的下载将从列表中移除。其文件保留在原位。",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "8"
+      }
+    }
+  },
+  "popup_ask_clear_ok": {
+    "message": "清除"
+  },
+  "popup_said_file": {
+    "message": "已复制 $file$。请将其粘贴到文件夹、聊天或消息中。",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_said_link": {
+    "message": "链接已复制"
+  },
+  "popup_said_removed": {
+    "message": "$file$ 已从列表中移除",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_said_deleted": {
+    "message": "$file$ 已删除",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_said_again": {
+    "message": "正在重新下载 $file$",
+    "placeholders": {
+      "file": {
+        "content": "$1",
+        "example": "report.pdf"
+      }
+    }
+  },
+  "popup_said_cleared": {
+    "message": "已清除已完成的下载"
+  },
+  "popup_act_gone": {
+    "message": "该下载已不在列表中。"
+  },
+  "popup_act_missing": {
+    "message": "其文件已不在保存位置（已移动或删除）。"
+  },
+  "popup_act_running": {
+    "message": "请先暂停。"
+  },
+  "popup_act_cant": {
+    "message": "当前无法对该下载执行此操作。"
+  },
+  "popup_act_unsupported": {
+    "message": "此系统无法执行此操作。"
+  },
+  "popup_act_off": {
+    "message": "Mister Download Manager 未运行。"
+  },
+  "popup_act_busy": {
+    "message": "Mister Download Manager 未及时响应。请重试。"
+  },
+  "popup_act_failed": {
+    "message": "操作失败。请重试。"
+  },
+  "status_running": {
+    "message": "正在下载：$count$",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "popup_dl_open_remote": {
+    "message": "打开其页面"
   }
 }

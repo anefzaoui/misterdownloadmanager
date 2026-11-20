@@ -572,6 +572,13 @@ These ship in the next version.
 - ✅ A video download, look-up, playlist or gallery finishes when yt-dlp (or gallery-dl) does:
   a program it started that still held its output open kept the download running at its last
   progress ([#1521](https://github.com/anefzaoui/misterdownloadmanager/issues/1521))
+- ✅ The browser add-on's popup lists MDM's newest downloads, live while it is open: the system's
+  own icon for each file type, its progress, speed and time left, search and filters (running,
+  done, failed), and on each one **Open**, **Show in folder**, **Pause** / **Resume**, **Copy
+  file** (to paste the file itself into a folder, a chat or an upload box), **Share** (Windows'
+  and macOS's share sheet), **Copy link**, **Download again**, **Remove from list** and **Delete
+  file**; the toolbar button counts the running ones. The popup has tabs now: **Downloads**,
+  **This page** and **Settings** ([#1496](https://github.com/anefzaoui/misterdownloadmanager/issues/1496))
 - ✅ macOS crash and freeze reports: the release's symbols are found (by the program's name, or
   by its id when the report has no name for it) and carry unwinding tables and inlined calls, so
   no frame is skipped; a freeze says how much the window's thread ran and how many pages MDM read

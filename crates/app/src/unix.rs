@@ -5445,3 +5445,271 @@ pub fn keep_awake(reason: Option<&str>) -> bool {
     }
     true
 }
+
+// ---- a downloaded file handed to other programs (#1496, fileclip.rs) ---------------------------
+
+/// The clipboard's contents for files, as Linux file managers copy them: `x-special/gnome-copied-files`
+/// ("copy", then each file's URI: GNOME's Files, Nemo, Caja, Thunar and PCManFM paste it),
+/// `text/uri-list` (KDE's Dolphin, a browser's upload box, chats; lines ending in CRLF, as RFC
+/// 2483 has them) and the paths as text. None when a path isn't a full one.
+#[cfg(target_os = "linux")]
+pub fn copied_files(paths: &[&Path]) -> Option<(String, String, String)> {
+    let uris = paths
+        .iter()
+        .map(|p| url::Url::from_file_path(p).ok().map(String::from))
+        .collect::<Option<Vec<String>>>()?;
+    if uris.is_empty() {
+        return None;
+    }
+    let gnome = format!("copy\n{}", uris.join("\n"));
+    let uri_list = uris.iter().map(|u| format!("{u}\r\n")).collect();
+    let text = paths
+        .iter()
+        .map(|p| p.display().to_string())
+        .collect::<Vec<_>>()
+        .join("\n");
+    Some((gnome, uri_list, text))
+}
+
+/// Put `paths` on the clipboard as a file manager's Copy does (#1496), [`copied_files`]. X11
+/// keeps no copy: the program that copied answers each paste, so a thread of MDM's owns the
+/// clipboard and answers until another program takes it (the thread then ends). Over XWayland
+/// in a Wayland session too: the compositor hands it to Wayland programs. Without an X11
+/// display (a Wayland session with no XWayland) it can't be done this way.
+#[cfg(target_os = "linux")]
+pub fn copy_files(paths: &[&Path]) -> Result<(), crate::fileclip::Refused> {
+    use crate::fileclip::Refused;
+    if std::env::var_os("DISPLAY").is_none() {
+        return Err(Refused::Unsupported);
+    }
+    let Some(contents) = copied_files(paths) else {
+        return Err(Refused::Failed("not a full path".into()));
+    };
+    let (tx, rx) = std::sync::mpsc::channel();
+    std::thread::Builder::new()
+        .name("clipboard (files)".into())
+        .spawn(move || {
+            if let Err(e) = serve_copied_files(&contents, &tx) {
+                // Before it owned the clipboard: said to the caller; after: logged.
+                let _ = tx.send(Err(e.to_string()));
+                tracing::debug!("clipboard (files): {e}");
+            }
+        })
+        .map_err(|e| Refused::Failed(e.to_string()))?;
+    match rx.recv_timeout(std::time::Duration::from_secs(3)) {
+        Ok(Ok(())) => Ok(()),
+        Ok(Err(e)) => Err(Refused::Failed(e)),
+        Err(_) => Err(Refused::Failed("the X server didn't answer".into())),
+    }
+}
+
+/// Own X11's CLIPBOARD with `contents` ([`copied_files`]) and answer every paste until another
+/// program owns it. `said` hears once whether it became the owner.
+#[cfg(target_os = "linux")]
+fn serve_copied_files(
+    (gnome, uri_list, text): &(String, String, String),
+    said: &std::sync::mpsc::Sender<Result<(), String>>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::Event;
+    use x11rb::protocol::xproto::{
+        AtomEnum, ConnectionExt, CreateWindowAux, EventMask, PropMode, SELECTION_NOTIFY_EVENT,
+        SelectionNotifyEvent, WindowClass,
+    };
+    use x11rb::wrapper::ConnectionExt as _;
+    let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+    let root = conn.setup().roots[screen].root;
+    let atom = |name: &str| -> Result<u32, Box<dyn std::error::Error>> {
+        Ok(conn.intern_atom(false, name.as_bytes())?.reply()?.atom)
+    };
+    let clipboard = atom("CLIPBOARD")?;
+    let targets = atom("TARGETS")?;
+    let timestamp = atom("TIMESTAMP")?;
+    let utf8 = atom("UTF8_STRING")?;
+    let gnome_files = atom("x-special/gnome-copied-files")?;
+    let uris = atom("text/uri-list")?;
+    let stamp = atom("MDM_CLIPBOARD_TIME")?;
+    let window = conn.generate_id()?;
+    conn.create_window(
+        x11rb::COPY_DEPTH_FROM_PARENT,
+        window,
+        root,
+        0,
+        0,
+        1,
+        1,
+        0,
+        WindowClass::INPUT_ONLY,
+        x11rb::COPY_FROM_PARENT,
+        &CreateWindowAux::new().event_mask(EventMask::PROPERTY_CHANGE),
+    )?;
+    // The server's time, which owning a selection is asked with (ICCCM: never CurrentTime): a
+    // property changed on our window says it.
+    conn.change_property8(PropMode::APPEND, window, stamp, AtomEnum::STRING, b"")?;
+    conn.flush()?;
+    let time = loop {
+        if let Event::PropertyNotify(e) = conn.wait_for_event()?
+            && e.window == window
+        {
+            break e.time;
+        }
+    };
+    conn.set_selection_owner(window, clipboard, time)?;
+    if conn.get_selection_owner(clipboard)?.reply()?.owner != window {
+        return Err("another program kept the clipboard".into());
+    }
+    let _ = said.send(Ok(()));
+    let offered = [
+        targets,
+        timestamp,
+        gnome_files,
+        uris,
+        utf8,
+        AtomEnum::STRING.into(),
+    ];
+    loop {
+        match conn.wait_for_event()? {
+            Event::SelectionRequest(req) if req.selection == clipboard => {
+                // An old client names no property: the target's name is used (ICCCM).
+                let property = if req.property == x11rb::NONE {
+                    req.target
+                } else {
+                    req.property
+                };
+                let mut answered = true;
+                if req.target == targets {
+                    conn.change_property32(
+                        PropMode::REPLACE,
+                        req.requestor,
+                        property,
+                        AtomEnum::ATOM,
+                        &offered,
+                    )?;
+                } else if req.target == timestamp {
+                    conn.change_property32(
+                        PropMode::REPLACE,
+                        req.requestor,
+                        property,
+                        AtomEnum::INTEGER,
+                        &[time],
+                    )?;
+                } else if req.target == gnome_files {
+                    conn.change_property8(
+                        PropMode::REPLACE,
+                        req.requestor,
+                        property,
+                        gnome_files,
+                        gnome.as_bytes(),
+                    )?;
+                } else if req.target == uris {
+                    conn.change_property8(
+                        PropMode::REPLACE,
+                        req.requestor,
+                        property,
+                        uris,
+                        uri_list.as_bytes(),
+                    )?;
+                } else if req.target == utf8 || req.target == u32::from(AtomEnum::STRING) {
+                    conn.change_property8(
+                        PropMode::REPLACE,
+                        req.requestor,
+                        property,
+                        req.target,
+                        text.as_bytes(),
+                    )?;
+                } else {
+                    answered = false;
+                }
+                let notify = SelectionNotifyEvent {
+                    response_type: SELECTION_NOTIFY_EVENT,
+                    sequence: 0,
+                    time: req.time,
+                    requestor: req.requestor,
+                    selection: req.selection,
+                    target: req.target,
+                    property: if answered { property } else { x11rb::NONE },
+                };
+                conn.send_event(false, req.requestor, EventMask::NO_EVENT, notify)?;
+                conn.flush()?;
+            }
+            // Another program copied something: ours is done.
+            Event::SelectionClear(e) if e.selection == clipboard => return Ok(()),
+            _ => {}
+        }
+    }
+}
+
+/// macOS's share sheet for the file at `path` (#1496): AppKit's sharing service picker, shown
+/// from a window of MDM's own at the pointer (1×1, transparent: the picker needs a view to
+/// stand by). On the main thread (the app answers the browser there). The window stays, hidden
+/// behind the picker, until the next share.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn share_file(path: &Path) -> Result<(), String> {
+    use objc2::rc::Retained;
+    use objc2::runtime::AnyObject;
+    use objc2::{AllocAnyThread as _, MainThreadMarker, MainThreadOnly as _};
+    use objc2_app_kit::{
+        NSApplication, NSBackingStoreType, NSColor, NSEvent, NSSharingServicePicker, NSWindow,
+        NSWindowStyleMask,
+    };
+    use objc2_foundation::{NSArray, NSPoint, NSRect, NSRectEdge, NSSize, NSString, NSURL};
+    thread_local! {
+        static ANCHOR: std::cell::RefCell<Option<Retained<NSWindow>>> =
+            const { std::cell::RefCell::new(None) };
+    }
+    let mtm = MainThreadMarker::new().ok_or("not on the main thread")?;
+    let url = NSURL::fileURLWithPath(&NSString::from_str(&path.to_string_lossy()));
+    let item: Retained<AnyObject> = Retained::into_super(Retained::into_super(url));
+    let items = NSArray::from_retained_slice(&[item]);
+    let at = NSEvent::mouseLocation();
+    let rect = NSRect::new(NSPoint::new(at.x, at.y), NSSize::new(1.0, 1.0));
+    // SAFETY: a borderless window of our own, kept in ANCHOR (not released when closed: the
+    // Retained owns it); the picker gets an array of NSURLs, as it takes.
+    unsafe {
+        let window = NSWindow::initWithContentRect_styleMask_backing_defer(
+            NSWindow::alloc(mtm),
+            rect,
+            NSWindowStyleMask::Borderless,
+            NSBackingStoreType::Buffered,
+            false,
+        );
+        window.setReleasedWhenClosed(false);
+        window.setOpaque(false);
+        window.setBackgroundColor(Some(&NSColor::clearColor()));
+        window.setIgnoresMouseEvents(true);
+        window.orderFrontRegardless();
+        #[allow(deprecated)] // activate() needs macOS 14; this one works on every version.
+        NSApplication::sharedApplication(mtm).activateIgnoringOtherApps(true);
+        let view = window.contentView().ok_or("no view for the share sheet")?;
+        let picker = NSSharingServicePicker::initWithItems(NSSharingServicePicker::alloc(), &items);
+        picker.showRelativeToRect_ofView_preferredEdge(view.bounds(), &view, NSRectEdge::MinY);
+        ANCHOR.with(|a| {
+            if let Some(old) = a.borrow_mut().replace(window) {
+                old.close();
+            }
+        });
+    }
+    Ok(())
+}
+
+#[cfg(all(test, target_os = "linux"))]
+mod fileclip_tests {
+    /// What a paste reads (#1496): GNOME's list with "copy", the URI list with CRLF, the paths.
+    #[test]
+    fn copied_files_are_offered_as_file_managers_read_them() {
+        let a = std::path::Path::new("/home/user/Downloads/a report.pdf");
+        let b = std::path::Path::new("/tmp/b.zip");
+        let (gnome, uris, text) = super::copied_files(&[a, b]).unwrap();
+        assert_eq!(
+            gnome,
+            "copy\nfile:///home/user/Downloads/a%20report.pdf\nfile:///tmp/b.zip"
+        );
+        assert_eq!(
+            uris,
+            "file:///home/user/Downloads/a%20report.pdf\r\nfile:///tmp/b.zip\r\n"
+        );
+        assert_eq!(text, "/home/user/Downloads/a report.pdf\n/tmp/b.zip");
+        assert!(super::copied_files(&[std::path::Path::new("relative.zip")]).is_none());
+    }
+}

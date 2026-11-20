@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	เว็บไซต์ที่ไม่รู้จักต้องการส่ง {n} ลิงก์ไปยังตัวรวบรวมลิงก์
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	และอีก {n} ไฟล์
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -292,6 +297,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	ทอร์เรนต์แบบไฟล์เดียวจะคงชื่อเดิมไว้
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	โฟลเดอร์ของไฟล์ทอร์เรนต์ชี้ไปที่ตำแหน่งภายนอกปลายทาง
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -578,6 +587,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS อื่น...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	รายการดาวน์โหลดอื่นอ้างสิทธิ์ปลายทางของทอร์เรนต์นี้แล้ว
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	รายการดาวน์โหลดอื่นอ้างสิทธิ์ {file} แล้ว เลือกปลายทางอื่น
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
@@ -963,6 +980,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	เมื่อเลือกตัวเลือกนี้ การปิดหน้าต่างจะทำให้ MDM ยังคงทำงานอยู่ โดยซ่อนในพื้นที่แจ้งเตือนเมื่อทำได้ หรือย่อลงไปที่แถบงานหากทำไม่ได้ และดาวน์โหลดต่อไป; หากไม่เลือก การปิดหน้าต่างจะปิด MDM
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	หากเลือกไว้ รายการดาวน์โหลดจากหน้าต่างส่วนตัวของเบราว์เซอร์จะถูกบันทึกในรายการและยังคงอยู่เมื่อ MDM เริ่มทำงานใหม่ หากไม่ได้เลือกไว้ รายการดาวน์โหลดจะถูกเก็บไว้ในหน่วยความจำเท่านั้นและจะหายไปเมื่อ MDM ปิดลง คุกกี้ของรายการดาวน์โหลดจะไม่ถูกบันทึก
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -1123,6 +1144,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	คองโก
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	เชื่อมต่อผ่าน uTP ด้วย (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1197,6 +1222,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	ไม่สามารถแตกไฟล์ {name}: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	สร้างโฟลเดอร์สำหรับทอร์เรนต์นี้
 #. window title in a dialog box
 #, machine
 	Create folder	สร้างโฟลเดอร์
@@ -2509,6 +2538,10 @@
 #, machine
 	KBytes/sec	กิโลไบต์/วินาที
 #. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	เก็บรายการดาวน์โหลดจากหน้าต่างส่วนตัวไว้ในรายการ
+#. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
 	Keep running when closing the window	เปิดโปรแกรมทิ้งไว้เมื่อปิดหน้าต่าง
@@ -2784,6 +2817,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	การกำหนดค่าพร็อกซี/SOCKS ด้วยตนเอง
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	เพียร์จำนวนมากใช้ uTP เท่านั้น หากไม่ใช้ uTP MDM จะไม่สามารถเชื่อมต่อกับเพียร์เหล่านั้นได้
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2858,6 +2895,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM ไม่สามารถทำได้
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM ไม่ได้สร้างไฟล์เหล่านี้ การเริ่มทอร์เรนต์สามารถปรับขนาดและแทนที่เนื้อหาของไฟล์เหล่านี้ได้ รวมถึงไฟล์ที่ไม่ได้เลือกซึ่งใช้ชิ้นส่วนร่วมกัน ต้องการใช้ไฟล์เหล่านี้สำหรับทอร์เรนต์นี้หรือไม่
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -3145,6 +3186,11 @@
 #. button: create a new item
 #, machine
 	New	สร้าง
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	ที่อยู่ใหม่จากเบราว์เซอร์ ({host}): ดำเนินการต่อจากที่อยู่นั้น
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3395,6 +3441,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	ปิด
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	ปิดเมื่อใช้พร็อกซี: uTP ทำงานผ่าน UDP ซึ่งพร็อกซี SOCKS5 ไม่รองรับ
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	ปิด: ทอร์เรนต์ที่เสร็จสมบูรณ์จะหยุดลง เช่นเดียวกับการดาวน์โหลดอื่น ๆ
@@ -3745,6 +3795,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	ยังไม่สามารถดูตัวอย่างได้
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	รายการดาวน์โหลดจากหน้าต่างส่วนตัวไม่ใช้คุกกี้สำหรับเว็บไซต์วิดีโอจากการตั้งค่า เปิดหน้าในหน้าต่างส่วนตัว ลงชื่อเข้าใช้ที่นั่น และใช้ปุ่ม ดาวน์โหลดวิดีโอ อีกครั้ง
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3859,6 +3913,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	การตรวจสอบซ้ำล้มเหลว: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	กำลังบันทึก...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4071,6 +4130,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	บันทึกใน
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	กำลังบันทึก...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4570,6 +4634,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	หยุด
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	หยุดและบันทึก
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	หยุดดาวน์โหลดเมื่อ
@@ -4832,6 +4900,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	การเชื่อมต่อขาดหายไประหว่างรับข้อมูล
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	ปลายทางมีการเปลี่ยนแปลงตลอดเวลา หยุดการเปลี่ยนแปลงไฟล์และลองเริ่มทอร์เรนต์อีกครั้ง
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4930,6 +5002,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	ไม่สามารถเลือกไฟล์ได้: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	ไฟล์ถูกเก็บไว้เนื่องจากรายการดาวน์โหลดเก่านี้ไม่มีบันทึกการเป็นเจ้าของ
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4964,6 +5040,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	อะแดปเตอร์เครือข่าย {adapter} ไม่ได้เชื่อมต่อ
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	โฟลเดอร์ปลายทางไม่ถูกต้อง
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4994,6 +5074,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	รายงานอยู่ในคลิปบอร์ดแล้ว: วางลงในความคิดเห็นของปัญหา
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	ไฟล์ .torrent ที่บันทึกไว้ไม่ตรงกับรายการดาวน์โหลดนี้
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	ไฟล์ .torrent ที่บันทึกไว้หายไปหรือไม่สามารถอ่านได้ เพิ่มทอร์เรนต์อีกครั้งเพื่อกู้คืนข้อมูลเมตา เก็บไฟล์ที่มีอยู่
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5114,6 +5202,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	ไม่มีทอร์เรนต์นี้แล้ว
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	บันทึกการเป็นเจ้าของทอร์เรนต์มีเส้นทางที่ไม่ปลอดภัย
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	บันทึกการเป็นเจ้าของทอร์เรนต์ไม่ตรงกับรายการไฟล์
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	บันทึกการเป็นเจ้าของทอร์เรนต์ไม่ถูกต้อง
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	ทอร์เรนต์ไม่ได้เริ่มทำงานเนื่องจากถูกปฏิเสธการอนุญาตให้ใช้ไฟล์ที่มีอยู่
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5258,6 +5363,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ต้องใช้ ffmpeg
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	ตัวเลือกนี้ใช้ได้สำหรับการดาวน์โหลด BitTorrent โดยตรง
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5289,9 +5398,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ทอร์เรนต์นี้อยู่ในรายการดาวน์โหลดแล้ว
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	ทอร์เรนต์นี้ไม่ว่าง โปรดรอให้การดำเนินการปัจจุบันเสร็จสิ้นก่อนที่จะเพิ่มอีกครั้ง
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	ทอร์เรนต์นี้ไม่อยู่ในรายการ
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	ทอร์เรนต์นี้ต้องได้รับอนุญาตให้ใช้ {file} ก่อนจึงจะสามารถเริ่มทำงานได้
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	ทอร์เรนต์นี้ใช้โฟลเดอร์ปลายทางร่วมกัน
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5622,6 +5743,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	ใช้สคริปต์การกำหนดค่าอัตโนมัติ
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	ใช้ไฟล์ทอร์เรนต์ที่มีอยู่
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	ใช้ FTP ในโหมด PASV
@@ -5629,6 +5753,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	ใช้สำเนาของ MDM เอง
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	ใช้ไฟล์การกำหนดค่า yt-dlp ของฉัน
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5684,6 +5812,10 @@
 #. label in the Options window
 #, machine
 	UserName	ชื่อผู้ใช้
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP ใช้พอร์ตสำหรับการเชื่อมต่อขาเข้า: เปิด อนุญาตการเชื่อมต่อขาเข้า
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5777,6 +5909,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	กำลังรอ
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	กำลังรอที่อยู่ใหม่จากเบราว์เซอร์
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5963,6 +6099,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube ต้องใช้รันไทม์ JavaScript เพื่อแสดงคุณภาพวิดีโอ: ติดตั้ง Node.js หรือ Deno แล้วลองค้นหาอีกครั้ง
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp ยังอ่านไฟล์การกำหนดค่าของตัวเองด้วย (บน Windows %APPDATA%\\yt-dlp\\config.txt, บน Linux และ macOS ~/.config/yt-dlp/config) สิ่งที่ MDM เลือกส่วนใหญ่ เช่น โฟลเดอร์ ชื่อ และคุณภาพ ยังคงมีผล แต่ตัวเลือกที่ข้ามหรือกรองวิดีโอที่นั่นก็มีผลเช่นกัน
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6115,6 +6255,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: ไฟล์ตรงกับผลรวมตรวจสอบ ({algorithm})
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: ไฟล์เหล่านี้ยังคงอยู่ในดิสก์ เนื่องจาก MDM ไม่ได้สร้างไฟล์เหล่านี้หรือรายการดาวน์โหลดอื่นใช้ไฟล์เหล่านี้:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6418,6 +6562,10 @@ extension	Added to MDM	เพิ่มไปยัง MDM แล้ว
 #, machine
 extension	Added to the queue	เพิ่มลงในคิวแล้ว
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	ทั้งหมด
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6448,9 +6596,41 @@ extension	Button settings...	การตั้งค่าปุ่ม...
 #, machine
 extension	can't be saved	บันทึกไม่ได้
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	ไม่สามารถเข้าถึง Mister Download Manager ได้
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	ไม่สามารถเข้าถึง Mister Download Manager ที่ {server} ได้
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	ไม่สามารถระบุได้ว่าเป็นวิดีโอใด: เปิดหน้าของวิดีโอนั้นแล้วลองอีกครั้งที่นั่น
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	ยกเลิก
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	ตรวจสอบว่าโปรแกรมกำลังทำงานอยู่ และเบราว์เซอร์นี้ยอมรับใบรับรอง (การตั้งค่า → ส่งการดาวน์โหลดไปที่ → เปิด)
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	ล้าง
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	ล้างรายการที่เสร็จแล้ว
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	ต้องการล้างรายการดาวน์โหลดที่เสร็จแล้วหรือไม่
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	เชื่อมต่อแล้ว
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6461,13 +6641,52 @@ extension	Connected to Mister Download Manager	เชื่อมต่อกั
 #, machine
 extension	Connected to Mister Download Manager {version}	เชื่อมต่อกับ Mister Download Manager {version} แล้ว
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	เชื่อมต่อแล้ว · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	คัดลอก {file} แล้ว วางลงในโฟลเดอร์ แชท หรือข้อความ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	คัดลอกไฟล์
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	คัดลอกลิงก์
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	ค้นหาไม่สำเร็จ
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	ลบ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	ลบไฟล์...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	ต้องการลบไฟล์หรือไม่
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	เสร็จแล้ว
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ดาวน์โหลด
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	ดาวน์โหลดอีกครั้ง
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6497,7 +6716,20 @@ extension	Download with Mister Download Manager	ดาวน์โหลดด�
 #, machine
 extension	Download {what}	ดาวน์โหลด {what}
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	กำลังดาวน์โหลด {file} อีกครั้ง
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	กำลังดาวน์โหลด: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	รายการดาวน์โหลด
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	การดาวน์โหลดจาก {site} จะยังคงอยู่ในเบราว์เซอร์
@@ -6513,6 +6745,23 @@ extension	Drag the dots to move it along the edge	ลากจุดเพื่
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	ป้อนที่อยู่ https:// ของเครื่อง
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	ล้มเหลว
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	ล้มเหลว: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	ไฟล์ถูกลบหรือย้าย
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	ล้างรายการดาวน์โหลดที่เสร็จแล้วแล้ว
 #. text in the browser extension
 #. button: forget / unpair this server
 #, machine
@@ -6566,6 +6815,10 @@ extension	It's smaller than the minimum size in Options → File types.	มี�
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	ที่อยู่ของไฟล์อยู่ใน ตัวเลือก → ชนิดไฟล์, ที่อยู่ที่เหลือสำหรับเบราว์เซอร์
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	ไฟล์ไม่อยู่ในตำแหน่งที่บันทึกไว้แล้ว (ถูกย้ายหรือลบ)
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	ไซต์ของไฟล์อยู่ใน ตัวเลือก → ชนิดไฟล์, ไซต์ที่เหลือสำหรับเบราว์เซอร์
@@ -6574,14 +6827,31 @@ extension	Its site is in Options → File types, sites left to the browser.	ไ�
 #, machine
 extension	Its type isn't in Options → File types.	ชนิดของไฟล์ไม่อยู่ใน ตัวเลือก → ชนิดไฟล์
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	เมื่อสักครู่
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	เบราว์เซอร์จัดการเองตามกฎในการตั้งค่า
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	เหลือไว้ให้เบราว์เซอร์: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	คัดลอกลิงก์แล้ว
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	สด
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	กำลังค้นหารายการดาวน์โหลด...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6603,6 +6873,10 @@ extension	Media on this page	สื่อในหน้านี้
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager ไม่ตอบกลับทันเวลา ลองอีกครั้ง
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager ไม่เริ่มทำงานทันเวลา
@@ -6615,6 +6889,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager กำลังยุ่งกับวิดีโออื่น
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager ไม่ว่าง กำลังลองอีกครั้ง...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ไม่ได้ติดตั้งหรือไม่ได้เริ่มทำงาน
@@ -6622,6 +6901,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ไม่ได้ติดตั้ง หรือไม่ได้ตั้งค่าการรวมเบราว์เซอร์
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager ไม่ได้กำลังทำงาน
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager ไม่ได้กำลังทำงาน
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6634,6 +6921,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager จะดาวน์โหลดผ่านพร็อกซีเดียวกับเบราว์เซอร์นี้ ขณะที่ปิดอยู่ ส่วนขยายจะไม่สามารถอ่านพร็อกซีของเบราว์เซอร์ได้
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	การดำเนินการเพิ่มเติม
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	การดำเนินการเพิ่มเติมสำหรับ {file}
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6648,10 +6943,18 @@ extension	Most compatible	เข้ากันได้มากที่สุ
 #, machine
 extension	Never on {site}	ไม่แสดงบน {site}
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	ห้ามดาวน์โหลดจาก {site} อีก
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	ไม่มีชื่อหรือที่อยู่ของรายการดาวน์โหลดใดมี “{words}”
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	ยังไม่มีรายการดาวน์โหลด
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6661,13 +6964,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	ไม่มีวิดีโอให้ดาวน์โหลดที่นี่
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	ไม่ได้เชื่อมต่อ
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	ไม่สามารถเข้าถึงได้ เปิดที่อยู่ของเครื่องในเบราว์เซอร์นี้หนึ่งครั้งและยอมรับใบรับรอง จากนั้นลองอีกครั้ง
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	ไม่ตรงกัน
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	ปิดใช้งานบนไซต์นี้
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	เปิด
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6676,6 +6991,10 @@ extension	Open it	เปิด
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	เปิดที่อยู่ของเครื่องหนึ่งครั้งและยอมรับใบรับรอง จากนั้นป้อนรหัสจากตัวเลือก ระยะไกล จับคู่อุปกรณ์ (หรือ misterdownloadmanager-cli pair)
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	เปิดหน้า
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6688,6 +7007,14 @@ extension	Open post	เปิดโพสต์
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	เปิดโพสต์เพื่อดาวน์โหลด
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	เปิด {file}
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	ตัวเลือกใน Mister Download Manager
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6706,9 +7033,30 @@ extension	Pair	จับคู่
 #, machine
 extension	Pairing code	รหัสจับคู่
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	หยุดชั่วคราว
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	หยุดชั่วคราวก่อน
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	หยุด {file} ชั่วคราว
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	หยุดชั่วคราวแล้ว
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	หยุดชั่วคราว: การดาวน์โหลดจะยังคงอยู่ในเบราว์เซอร์
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	ส่วนต่าง ๆ ของป๊อปอัป
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6722,9 +7070,29 @@ extension	Protected	ป้องกัน
 #, machine
 extension	Protected video	วิดีโอที่มีการป้องกัน
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	นำออกจากรายการ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	ดำเนินการต่อ
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	ดำเนินการต่อ {file}
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	ลองใหม่
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	กำลังทำงาน
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	ค้นหารายการดาวน์โหลด
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6739,13 +7107,52 @@ extension	Send downloads to	ส่งการดาวน์โหลดไป�
 #, machine
 extension	Sending to MDM...	กำลังส่งไปยัง MDM...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	กำลังส่งไปยัง {server}
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	ส่งไปยัง Mister Download Manager
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	การตั้งค่า
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	แชร์...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	แสดง
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	แสดงรายการดาวน์โหลดทั้งหมด
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	แสดงในโฟลเดอร์
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	แสดง {file} ในโฟลเดอร์
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	เริ่มแอปเพื่อดูรายการดาวน์โหลดที่นี่
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	เริ่ม Mister Download Manager
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	กำลังเริ่มต้น...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6754,6 +7161,18 @@ extension	Support MDM	สนับสนุน MDM
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	รับการดาวน์โหลดจากเบราว์เซอร์นี้
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	ไม่สามารถดำเนินการกับรายการดาวน์โหลดนี้ได้ในขณะนี้
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	ไม่สำเร็จ ลองอีกครั้ง
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	รายการดาวน์โหลดนั้นไม่อยู่ในรายการแล้ว
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6771,6 +7190,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	การดาวน์โหลดครั้งล่าสุดถูกปล่อยไว้ให้เบราว์เซอร์
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	แสดง {shown} รายการล่าสุดจากทั้งหมด {total} รายการ ดูรายการทั้งหมดได้ใน Mister Download Manager
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	รายการดาวน์โหลดที่เสร็จแล้ว {count} รายการจะถูกนำออกจากรายการ ไฟล์จะยังคงอยู่ในตำแหน่งเดิม
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	นี่คือรายการดาวน์โหลดของ Mister Download Manager ที่ {server} เปิดไฟล์ที่นั่น
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	เบราว์เซอร์นี้ไม่ได้ถูกเลือกใน ตัวเลือก → ทั่วไป
@@ -6783,17 +7215,34 @@ extension	This computer	คอมพิวเตอร์เครื่อง�
 #, machine
 extension	This download's details were too large to hand over	รายละเอียดการดาวน์โหลดนี้มีขนาดใหญ่เกินกว่าที่จะส่งมอบได้
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	นี่ไม่ใช่หน้าเว็บ: ไม่มีอะไรให้ทำที่นี่
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	หน้านี้
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	เครื่องเล่นของหน้านี้สตรีมวิดีโอเป็นชิ้นส่วน จึงไม่มีไฟล์ให้แสดงในรายการ ชี้ไปที่วิดีโอแล้วใช้ปุ่ม "ดาวน์โหลดวิดีโอ" ของวิดีโอนั้น
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	ระบบนี้ไม่สามารถทำได้
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	เวอร์ชันนี้ยังไม่สามารถแสดงรายการดาวน์โหลดที่นี่ได้
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	เปิดใช้งาน
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	เลิกทำ
+extension	Update Mister Download Manager	อัปเดต Mister Download Manager
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6811,6 +7260,14 @@ extension	Video	วิดีโอ
 #, machine
 extension	Wait a moment, then try again.	รอสักครู่แล้วลองอีกครั้ง
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	กำลังรอ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	รายการที่ดาวน์โหลดด้วย Mister Download Manager จะแสดงที่นี่
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	ขณะที่หน้าเว็บแสดงผลแบบเต็มหน้าจอ วิดีโอจะไม่แสดงปุ่มดาวน์โหลดวิดีโอ
@@ -6818,6 +7275,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	รหัสผิด
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	กำลังดาวน์โหลด {count} รายการ
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{done} จาก {size}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	ลบ {file} แล้ว
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	นำ {file} ออกจากรายการแล้ว
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} จะถูกลบออกจากคอมพิวเตอร์ และรายการดาวน์โหลดจะถูกนำออกจากรายการ การดำเนินการนี้ไม่สามารถย้อนกลับได้
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	เหลือ {time}
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

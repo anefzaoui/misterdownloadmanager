@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	അജ്ഞാതമായ ഒരു സൈറ്റ് {n} ലിങ്ക് ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.|അജ്ഞാതമായ ഒരു സൈറ്റ് {n} ലിങ്കുകൾ ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	കൂടാതെ {n} മറ്റ് ഫയൽ.|കൂടാതെ {n} മറ്റ് ഫയലുകൾ.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -292,6 +297,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	ഒറ്റ-ഫയൽ ടോറന്റ് അതിന്റെ പേര് നിലനിർത്തുന്നു
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	ടോറന്റ് ഫയലിന്റെ ഫോൾഡർ അതിന്റെ ലക്ഷ്യസ്ഥാനത്തിന് പുറത്തേക്ക് പോകുന്നു
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -578,6 +587,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	മറ്റൊരു DNS...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	മറ്റൊരു ഡൗൺലോഡ് ഈ ടോറന്റിന്റെ ലക്ഷ്യസ്ഥാനം ഇതിനകം ക്ലെയിം ചെയ്യുന്നു
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	മറ്റൊരു ഡൗൺലോഡ് ഇതിനകം {file} ഉപയോഗിക്കുന്നു. മറ്റൊരു ലക്ഷ്യസ്ഥാനം തിരഞ്ഞെടുക്കുക.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
@@ -963,6 +980,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	ഈ ഓപ്ഷൻ തിരഞ്ഞെടുക്കുകയാണെങ്കിൽ, വിൻഡോ അടയ്ക്കുമ്പോൾ MDM പ്രവർത്തിക്കുന്നത് തുടരും: ഇത് നോട്ടിഫിക്കേഷൻ ഏരിയയിൽ മറഞ്ഞിരിക്കും (ലഭ്യമെങ്കിൽ), അല്ലെങ്കിൽ ടാസ്ക്ബാറിലേക്ക് ചെറുതാക്കും, ഡൗൺലോഡുകൾ തുടരും. തിരഞ്ഞെടുത്തില്ലെങ്കിൽ, വിൻഡോ അടയ്ക്കുമ്പോൾ MDM പൂർണ്ണമായി അടയ്ക്കും.
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	തിരഞ്ഞെടുത്താൽ, ബ്രൗസറിന്റെ സ്വകാര്യ വിൻഡോയിൽ നിന്നുള്ള ഡൗൺലോഡുകൾ ലിസ്റ്റിൽ സംരക്ഷിക്കപ്പെടുകയും MDM പുനരാരംഭിച്ചാലും അവിടെത്തന്നെ നിലനിൽക്കുകയും ചെയ്യും; തിരഞ്ഞെടുക്കാതിരുന്നാൽ, അവ മെമ്മറിയിൽ മാത്രം സൂക്ഷിക്കുകയും MDM അടയ്ക്കുമ്പോൾ ഇല്ലാതാകുകയും ചെയ്യും. അവയുടെ കുക്കികൾ ഒരിക്കലും സംരക്ഷിക്കപ്പെടില്ല
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -1123,6 +1144,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	കോംഗോ
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	uTP വഴിയും കണക്റ്റുചെയ്യുക (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1197,6 +1222,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	{name} എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യാനായില്ല: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	ഈ ടോറന്റിനായി ഫോൾഡർ സൃഷ്ടിക്കുക
 #. window title in a dialog box
 #, machine
 	Create folder	ഫോൾഡർ സൃഷ്ടിക്കുക
@@ -2509,6 +2538,10 @@
 #, machine
 	KBytes/sec	KBytes/സെക്കൻഡ്
 #. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	സ്വകാര്യ വിൻഡോ ഡൗൺലോഡുകൾ ലിസ്റ്റിൽ സൂക്ഷിക്കുക
+#. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
 	Keep running when closing the window	വിൻഡോ അടയ്ക്കുമ്പോഴും പ്രവർത്തനം തുടരുക
@@ -2784,6 +2817,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	മാനുവൽ പ്രോക്സി/SOCKS കോൺഫിഗറേഷൻ
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	പല പിയറുകളും uTP മാത്രമാണ് ഉപയോഗിക്കുന്നത്. ഇത് ഇല്ലെങ്കിൽ, MDM-ന് അവയുമായി ബന്ധപ്പെടാനാകില്ല.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2858,6 +2895,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM-ന് അത് ചെയ്യാൻ കഴിഞ്ഞില്ല.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM ഈ ഫയലുകൾ സൃഷ്ടിച്ചിട്ടില്ല. ടോറന്റ് ആരംഭിക്കുന്നത് അവയുടെ വലുപ്പം മാറ്റുകയും ഉള്ളടക്കം മാറ്റിയെഴുതുകയും ചെയ്യാം; ടിക്ക് ചെയ്യാത്തതും പീസുകൾ പങ്കിടുന്നതുമായ ഫയലുകൾ ഉൾപ്പെടെ. ഈ ടോറന്റിനായി ഇവ ഉപയോഗിക്കണോ?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -3145,6 +3186,11 @@
 #. button: create a new item
 #, machine
 	New	പുതിയത്
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	ബ്രൗസറിൽ നിന്നുള്ള പുതിയ വിലാസം ({host}): അതിൽ നിന്ന് തുടരുന്നു
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3395,6 +3441,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	ഓഫ്
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	പ്രോക്സി ഓണായിരിക്കുമ്പോൾ ലഭ്യമല്ല: uTP UDP വഴിയാണ് പോകുന്നത്; SOCKS5 പ്രോക്സിക്ക് അത് കൈമാറാനാകില്ല
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	ഓഫ്: പൂർത്തിയാക്കിയ ടോറന്റ്, ഏതൊരു ഡൗൺലോഡ് പോലെയും നിർത്തുന്നു.
@@ -3745,6 +3795,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	പ്രിവ്യൂ ഇതുവരെ ലഭ്യമല്ല
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	സ്വകാര്യ വിൻഡോയിലെ ഡൗൺലോഡുകൾ ഓപ്ഷനുകളിലെ വീഡിയോ സൈറ്റുകൾക്കുള്ള കുക്കികൾ ഉപയോഗിക്കുന്നില്ല. പേജ് സ്വകാര്യ വിൻഡോയിൽ തുറന്ന് അവിടെ സൈൻ ഇൻ ചെയ്ത ശേഷം, ആ വിൻഡോയിലെ ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ വീണ്ടും ഉപയോഗിക്കുക.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3859,6 +3913,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	വീണ്ടും പരിശോധിക്കുന്നത് പരാജയപ്പെട്ടു: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	റെക്കോർഡ് ചെയ്യുന്നു...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4071,6 +4130,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	സംരക്ഷിച്ച സ്ഥലം
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	സംരക്ഷിക്കുന്നു...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4570,6 +4634,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	നിർത്തുക
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	നിർത്തി സംരക്ഷിക്കുക
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ഡൗൺലോഡ് നിർത്തുക
@@ -4832,6 +4900,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	ഡാറ്റ സ്വീകരിക്കുന്നതിനിടെ കണക്ഷൻ നഷ്ടപ്പെട്ടു
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	ലക്ഷ്യസ്ഥാനം മാറിക്കൊണ്ടിരിക്കുന്നു. അതിന്റെ ഫയലുകളിലെ മാറ്റങ്ങൾ നിർത്തി ടോറന്റ് വീണ്ടും ആരംഭിക്കാൻ ശ്രമിക്കുക.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4930,6 +5002,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	ഫയലുകൾ തിരഞ്ഞെടുക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	ഈ പഴയ ഡൗൺലോഡിന് ഉടമസ്ഥാവകാശ രേഖയില്ലാത്തതിനാൽ ഫയലുകൾ സൂക്ഷിച്ചു
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4964,6 +5040,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	{adapter} എന്ന നെറ്റ്‌വർക്ക് അഡാപ്റ്റർ കണക്റ്റ് ചെയ്തിട്ടില്ല
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	ഔട്ട്പുട്ട് ഫോൾഡർ അസാധുവാണ്
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4994,6 +5074,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	റിപ്പോർട്ട് നിങ്ങളുടെ ക്ലിപ്പ്ബോർഡിലുണ്ട്: അത് പ്രശ്നത്തെക്കുറിച്ചുള്ള ഒരു കമന്റിൽ പേസ്റ്റ് ചെയ്യുക.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	സംരക്ഷിച്ച .torrent ഫയൽ ഈ ഡൗൺലോഡുമായി പൊരുത്തപ്പെടുന്നില്ല
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	സംരക്ഷിച്ച .torrent ഫയൽ കാണാനില്ല അല്ലെങ്കിൽ വായിക്കാനാകുന്നില്ല. മെറ്റാഡാറ്റ വീണ്ടെടുക്കാൻ ടോറന്റ് വീണ്ടും ചേർക്കുക; നിലവിലുള്ള ഫയലുകൾ സൂക്ഷിക്കുക.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5114,6 +5202,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	ടോറന്റ് ഇനി അവിടെയില്ല
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	ടോറന്റ് ഉടമസ്ഥാവകാശ രേഖയിൽ സുരക്ഷിതമല്ലാത്ത പാതയുണ്ട്
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	ടോറന്റ് ഉടമസ്ഥാവകാശ രേഖ അതിന്റെ ഫയൽ ലിസ്റ്റുമായി പൊരുത്തപ്പെടുന്നില്ല
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	ടോറന്റ് ഉടമസ്ഥാവകാശ രേഖ അസാധുവാണ്
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	നിലവിലുള്ള ഫയലുകൾ ഉപയോഗിക്കാനുള്ള അനുമതി നിരസിച്ചതിനാൽ ടോറന്റ് ആരംഭിച്ചില്ല.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5258,6 +5363,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ഇതിന് ffmpeg ആവശ്യമാണ്
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	നേരിട്ടുള്ള BitTorrent ഡൗൺലോഡുകൾക്ക് ഈ ഓപ്ഷൻ ലഭ്യമാണ്
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5289,9 +5398,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ഈ ടോറന്റ് ഇതിനകം ഡൗൺലോഡ് ലിസ്റ്റിലുണ്ട്
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	ഈ ടോറന്റ് മറ്റൊരു പ്രവർത്തനത്തിലാണ്. നിലവിലെ പ്രവർത്തനം പൂർത്തിയാകുന്നതുവരെ കാത്തിരുന്ന ശേഷം വീണ്ടും ചേർക്കുക.
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	ഈ ടോറൻ്റ് ലിസ്റ്റിൽ ഇല്ല
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	ഈ ടോറന്റ് ആരംഭിക്കുന്നതിന് മുമ്പ് {file} ഉപയോഗിക്കാനുള്ള അനുമതി ആവശ്യമാണ്.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	ഈ ടോറന്റ് മറ്റുള്ളവയുമായി ലക്ഷ്യസ്ഥാന ഫോൾഡർ പങ്കിടുന്നു
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5622,6 +5743,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	ഓട്ടോമാറ്റിക് കോൺഫിഗറേഷൻ സ്ക്രിപ്റ്റ് ഉപയോഗിക്കുക
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	നിലവിലുള്ള ടോറന്റ് ഫയലുകൾ ഉപയോഗിക്കുക
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV മോഡിൽ FTP ഉപയോഗിക്കുക
@@ -5629,6 +5753,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM-ന്റെ സ്വന്തം പകർപ്പ് ഉപയോഗിക്കുക
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	എന്റെ yt-dlp കോൺഫിഗറേഷൻ ഫയൽ ഉപയോഗിക്കുക
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5684,6 +5812,10 @@
 #. label in the Options window
 #, machine
 	UserName	ഉപയോക്തൃനാമം
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP ഇൻകമിംഗ് കണക്ഷനുകൾക്കുള്ള പോർട്ട് ഉപയോഗിക്കുന്നു: ഇൻകമിംഗ് കണക്ഷനുകൾ സ്വീകരിക്കുന്നത് ഓണാക്കുക
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5777,6 +5909,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	കാത്തിരിക്കുന്നു
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	ബ്രൗസറിൽ നിന്നുള്ള പുതിയ വിലാസത്തിനായി കാത്തിരിക്കുന്നു
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5959,6 +6095,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube-ന് അതിന്റെ വീഡിയോ നിലവാരം ലിസ്റ്റ് ചെയ്യാൻ ഒരു JavaScript റൺടൈം ആവശ്യമാണ്: Node.js അല്ലെങ്കിൽ Deno ഇൻസ്റ്റാൾ ചെയ്യുക, തുടർന്ന് വീണ്ടും തിരയുക
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp അതിന്റെ സ്വന്തം കോൺഫിഗറേഷൻ ഫയലുകളും വായിക്കുന്നു (Windows-ൽ %APPDATA%\\yt-dlp\\config.txt, Linux-ലും macOS-ലും ~/.config/yt-dlp/config). MDM തിരഞ്ഞെടുക്കുന്ന മിക്ക കാര്യങ്ങൾക്കും—ഫോൾഡർ, പേര്, ഗുണമേന്മ എന്നിവയ്ക്ക്—മുൻഗണന തുടരും; എന്നാൽ വീഡിയോകൾ ഒഴിവാക്കുകയോ ഫിൽട്ടർ ചെയ്യുകയോ ചെയ്യുന്ന ഓപ്ഷനുകളും അവിടെ ബാധകമാണ്.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6111,6 +6251,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: ഫയൽ അതിന്റെ ചെക്ക്സം ({algorithm}) മായി പൊരുത്തപ്പെടുന്നു
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM സൃഷ്ടിക്കാത്തതിനാലോ മറ്റൊരു ഡൗൺലോഡ് ഉപയോഗിക്കുന്നതിനാലോ ഈ ഫയലുകൾ ഡിസ്കിൽ തുടർന്നു:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6414,6 +6558,10 @@ extension	Added to MDM	MDM-ലേക്ക് ചേർത്തു
 #, machine
 extension	Added to the queue	ക്യൂവിലേക്ക് ചേർത്തു
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	എല്ലാം
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6444,9 +6592,41 @@ extension	Button settings...	ബട്ടൺ ക്രമീകരണങ്ങ�
 #, machine
 extension	can't be saved	സംരക്ഷിക്കാൻ കഴിയില്ല
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	Mister Download Manager എത്തിച്ചേരാനാകുന്നില്ല
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	Mister Download Manager നെ {server} എന്നതിൽ ബന്ധപ്പെടാനായില്ല
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	ഇത് ഏത് വീഡിയോ ആണെന്ന് അറിയാൻ കഴിയുന്നില്ല: അതിന്റെ സ്വന്തം പേജ് തുറന്ന് അവിടെ ശ്രമിക്കുക
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	റദ്ദാക്കുക
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	ഇത് പ്രവർത്തിക്കുന്നുണ്ടെന്നും ഈ ബ്രൗസർ അതിന്റെ സർട്ടിഫിക്കറ്റ് സ്വീകരിക്കുന്നുണ്ടെന്നും ഉറപ്പാക്കുക (ക്രമീകരണങ്ങൾ → ഡൗൺലോഡുകൾ ഇതിലേക്ക് അയയ്ക്കുക → ഇത് തുറക്കുക).
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	മായ്ക്കുക
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	പൂർത്തിയായവ മായ്ക്കുക
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	പൂർത്തിയായ ഡൗൺലോഡുകൾ നീക്കം ചെയ്യണോ?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	ബന്ധിപ്പിച്ചു
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6457,13 +6637,52 @@ extension	Connected to Mister Download Manager	Mister Download Manager എന്
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} എന്നതുമായി ബന്ധിപ്പിച്ചു
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	ബന്ധിപ്പിച്ചു · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	{file} പകർത്തി. ഒരു ഫോൾഡറിലോ ചാറ്റിലോ സന്ദേശത്തിലോ ഒട്ടിക്കുക.
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	ഫയൽ പകർത്തുക
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	ലിങ്ക് പകർത്തുക
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	തിരയാൻ കഴിഞ്ഞില്ല
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	ഇല്ലാതാക്കുക
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	ഫയൽ ഇല്ലാതാക്കുക...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	ഫയൽ ഇല്ലാതാക്കണോ?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	പൂർത്തിയായി
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ഡൗൺലോഡ് ചെയ്യുക
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6493,7 +6712,20 @@ extension	Download with Mister Download Manager	Mister Download Manager ഉപ�
 #, machine
 extension	Download {what}	{what} ഡൗൺലോഡ് ചെയ്യുക
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	{file} വീണ്ടും ഡൗൺലോഡ് ചെയ്യുന്നു
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	ഡൗൺലോഡ് ചെയ്യുന്നു: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	ഡൗൺലോഡുകൾ
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	{site} എന്നതിൽ നിന്നുള്ള ഡൗൺലോഡുകൾ ബ്രൗസറിൽ തുടരും
@@ -6509,6 +6741,23 @@ extension	Drag the dots to move it along the edge	അരികിലൂടെ �
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	അതിൻ്റെ https:// വിലാസം നൽകുക.
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	പരാജയപ്പെട്ടു
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	പരാജയപ്പെട്ടു: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	ഫയൽ ഇല്ലാതാക്കുകയോ നീക്കുകയോ ചെയ്തു
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	പൂർത്തിയായ ഡൗൺലോഡുകൾ മായ്ച്ചു
 #. text in the browser extension
 #. button: forget / unpair this server
 #, machine
@@ -6562,6 +6811,10 @@ extension	It's smaller than the minimum size in Options → File types.	ഓപ�
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	ഓപ്ഷനുകൾ → ഫയൽ തരങ്ങൾ, ബ്രൗസറിനായി വിട്ട വിലാസങ്ങൾ എന്നിവയിൽ ഇതിന്റെ വിലാസമുണ്ട്.
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	അതിന്റെ ഫയൽ സംരക്ഷിച്ച സ്ഥലത്ത് ഇപ്പോൾ ഇല്ല (നീക്കുകയോ ഇല്ലാതാക്കുകയോ ചെയ്തു).
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	ഓപ്ഷനുകൾ → ഫയൽ തരങ്ങൾ, ബ്രൗസറിനായി വിട്ട സൈറ്റുകൾ എന്നിവയിൽ ഇതിന്റെ സൈറ്റുണ്ട്.
@@ -6570,14 +6823,31 @@ extension	Its site is in Options → File types, sites left to the browser.	ഓ�
 #, machine
 extension	Its type isn't in Options → File types.	ഓപ്ഷനുകൾ → ഫയൽ തരങ്ങൾ എന്നതിൽ ഇതിന്റെ തരം ഇല്ല.
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	ഇപ്പോൾ
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	ഓപ്ഷനുകളിലെ ഒരു നിയമം കാരണം ബ്രൗസറിന് വിട്ടുനൽകി
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	ബ്രൗസറിനായി വിട്ടു: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	ലിങ്ക് പകർത്തി
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	തത്സമയം
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	ഡൗൺലോഡുകൾക്കായി തിരയുന്നു...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6599,6 +6869,10 @@ extension	Media on this page	ഈ പേജിലെ മീഡിയ
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager സമയത്തിന് മറുപടി നൽകിയില്ല. വീണ്ടും ശ്രമിക്കുക.
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager കൃത്യസമയത്ത് ആരംഭിച്ചില്ല
@@ -6611,6 +6885,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager മറ്റ് വീഡിയോകളിൽ തിരക്കിലാണ്
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager തിരക്കിലാണ്. വീണ്ടും ശ്രമിക്കുന്നു...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല അല്ലെങ്കിൽ ആരംഭിച്ചില്ല
@@ -6618,6 +6897,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല, അല്ലെങ്കിൽ അതിന്റെ ബ്രൗസർ സംയോജനം സജ്ജീകരിച്ചിട്ടില്ല
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager പ്രവർത്തിക്കുന്നില്ല
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager പ്രവർത്തിക്കുന്നില്ല.
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6630,6 +6917,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager ഈ ബ്രൗസറിന്റെ അതേ പ്രോക്സി വഴി ഡൗൺലോഡ് ചെയ്യുന്നു. ഇത് ഓഫായിരിക്കുമ്പോൾ, എക്സ്റ്റൻഷൻ ബ്രൗസറിന്റെ പ്രോക്സി വായിക്കില്ല.
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	കൂടുതൽ പ്രവർത്തനങ്ങൾ
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	{file} എന്നതിനായുള്ള കൂടുതൽ പ്രവർത്തനങ്ങൾ
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6644,10 +6939,18 @@ extension	Most compatible	ഏറ്റവും അനുയോജ്യം
 #, machine
 extension	Never on {site}	{site} എന്നതിൽ ഒരിക്കലും വേണ്ട
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site} ൽ നിന്നുള്ള ഡൗൺലോഡുകൾ ഇനി എടുക്കരുത്
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	ഒരു ഡൗൺലോഡിന്റെ പേരിനോ വിലാസത്തിനോ “{words}” ഇല്ല.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	ഇതുവരെ ഡൗൺലോഡുകളൊന്നും ഇല്ല
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6657,13 +6960,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	ഇവിടെ ഡൗൺലോഡ് ചെയ്യാൻ വീഡിയോ ഒന്നുമില്ല
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	ബന്ധിപ്പിച്ചിട്ടില്ല
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	എത്തിച്ചേർന്നില്ല. ഈ ബ്രൗസറിൽ അതിൻ്റെ വിലാസം ഒരിക്കൽ തുറന്ന് അതിൻ്റെ സർട്ടിഫിക്കറ്റ് സ്വീകരിക്കുക, തുടർന്ന് വീണ്ടും ശ്രമിക്കുക.
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	ഒന്നും പൊരുത്തപ്പെടുന്നില്ല
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	ഈ സൈറ്റിൽ ഓഫ് ആണ്
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	തുറക്കുക
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6672,6 +6987,10 @@ extension	Open it	തുറക്കുക
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	അതിൻ്റെ വിലാസം ഒരിക്കൽ തുറന്ന് അതിൻ്റെ സർട്ടിഫിക്കറ്റ് സ്വീകരിക്കുക, തുടർന്ന് അതിൻ്റെ ഓപ്ഷനുകൾ, റിമോട്ട്, ഒരു ഉപകരണം ജോടിയാക്കുക (അല്ലെങ്കിൽ misterdownloadmanager-cli pair) എന്നിവയിൽ നിന്ന് ഒരു കോഡ് നൽകുക.
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	അതിൻ്റെ പേജ് തുറക്കുക
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6684,6 +7003,14 @@ extension	Open post	പോസ്റ്റ് തുറക്കുക
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	ഡൗൺലോഡ് ചെയ്യാൻ പോസ്റ്റ് തുറക്കുക
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	{file} തുറക്കുക
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	Mister Download Manager ഓപ്ഷനുകൾ
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6702,9 +7029,30 @@ extension	Pair	ജോടിയാക്കുക
 #, machine
 extension	Pairing code	ജോടിയാക്കൽ കോഡ്
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	താൽക്കാലികമായി നിർത്തുക
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	ആദ്യം താൽക്കാലികമായി നിർത്തുക.
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	{file} താൽക്കാലികമായി നിർത്തുക
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	താൽക്കാലികമായി നിർത്തി
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	താൽക്കാലികമായി നിർത്തി: ഡൗൺലോഡുകൾ ബ്രൗസറിൽ തുടരും
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	പോപ്പ്അപ്പ് വിഭാഗങ്ങൾ
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6718,9 +7066,29 @@ extension	Protected	പരിരക്ഷിതം
 #, machine
 extension	Protected video	സംരക്ഷിത വീഡിയോ
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യുക
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	പുനരാരംഭിക്കുക
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	{file} പുനരാരംഭിക്കുക
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	വീണ്ടും ശ്രമിക്കുക
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	പ്രവർത്തിക്കുന്നു
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	ഡൗൺലോഡുകൾ തിരയുക
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6735,13 +7103,52 @@ extension	Send downloads to	ഡൗൺലോഡുകൾ ഇതിലേക്ക
 #, machine
 extension	Sending to MDM...	MDM-ലേക്ക് അയക്കുന്നു...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	{server}-ലേക്ക് അയയ്ക്കുന്നു
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ലേക്ക് അയച്ചു
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	ക്രമീകരണങ്ങൾ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	പങ്കിടുക...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	കാണിക്കുക
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	എല്ലാ ഡൗൺലോഡുകളും കാണിക്കുക
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	ഫോൾഡറിൽ കാണിക്കുക
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	{file} ഫോൾഡറിൽ കാണിക്കുക
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	നിങ്ങളുടെ ഡൗൺലോഡുകൾ ഇവിടെ കാണാൻ ഇത് ആരംഭിക്കുക.
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	Mister Download Manager ആരംഭിക്കുക
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	ആരംഭിക്കുന്നു...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6750,6 +7157,18 @@ extension	Support MDM	MDM-നെ പിന്തുണയ്ക്കുക
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	ഈ ബ്രൗസറിൽ നിന്ന് ഡൗൺലോഡുകൾ എടുക്കുക
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	ഈ ഡൗൺലോഡിൽ ഇപ്പോൾ അത് ചെയ്യാൻ കഴിയില്ല.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	അത് പ്രവർത്തിച്ചില്ല. വീണ്ടും ശ്രമിക്കുക.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	ആ ഡൗൺലോഡ് ഇനി ലിസ്റ്റിലില്ല.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6767,6 +7186,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	അവസാനത്തെ ഡൗൺലോഡ് ബ്രൗസറിനായി വിട്ടു.
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	{total}-ൽ {shown} എണ്ണം പുതിയത്. Mister Download Manager അവയെല്ലാം ലിസ്റ്റ് ചെയ്യുന്നു.
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	{count} പൂർത്തിയായ ഡൗൺലോഡുകൾ ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യും. അവയുടെ ഫയലുകൾ അവയുടെ സ്ഥാനത്ത് തന്നെ തുടരും.
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	ഇവ {server}-ലെ Mister Download Manager-ന്റെ ഡൗൺലോഡുകളാണ്. അവിടെ അവയുടെ ഫയലുകൾ തുറക്കുക.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	ഓപ്ഷനുകൾ → പൊതുവായത് എന്നതിൽ ഈ ബ്രൗസർ ടിക്ക് ചെയ്തിട്ടില്ല.
@@ -6779,17 +7211,34 @@ extension	This computer	ഈ കമ്പ്യൂട്ടർ
 #, machine
 extension	This download's details were too large to hand over	ഈ ഡൗൺലോഡിന്റെ വിശദാംശങ്ങൾ കൈമാറാൻ കഴിയാത്തത്ര വലുതായിരുന്നു
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	ഇതൊരു വെബ് പേജല്ല: ഇവിടെ ഒന്നും ചെയ്യാനില്ല.
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	ഈ പേജ്
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	ഈ പേജിലെ പ്ലെയർ വീഡിയോ കഷണങ്ങളായി സ്ട്രീം ചെയ്യുന്നു, അതിനാൽ പട്ടികയിൽ കാണിക്കാൻ ഫയൽ ഒന്നുമില്ല. വീഡിയോയിലേക്ക് പോയിന്റ് ചെയ്ത് അതിന്റെ «വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക» ബട്ടൺ ഉപയോഗിക്കുക.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	ഈ സിസ്റ്റത്തിന് അത് ചെയ്യാൻ കഴിയില്ല.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	ഈ പതിപ്പിന് അതിൻ്റെ ഡൗൺലോഡുകൾ ഇവിടെ ലിസ്റ്റ് ചെയ്യാൻ ഇതുവരെ കഴിഞ്ഞിട്ടില്ല.
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	ഓൺ ചെയ്യുക
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	പഴയപടിയാക്കുക
+extension	Update Mister Download Manager	Mister Download Manager അപ്ഡേറ്റ് ചെയ്യുക
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6807,6 +7256,14 @@ extension	Video	വീഡിയോ
 #, machine
 extension	Wait a moment, then try again.	ഒരു നിമിഷം കാത്തിരിക്കുക, തുടർന്ന് വീണ്ടും ശ്രമിക്കുക.
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	കാത്തിരിക്കുന്നു
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	Mister Download Manager ഉപയോഗിച്ച് നിങ്ങൾ ഡൗൺലോഡ് ചെയ്യുന്നത് ഇവിടെ കാണിക്കും.
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	പേജ് ഫുൾ സ്ക്രീനിൽ ആയിരിക്കുമ്പോൾ, അതിലെ വീഡിയോകളിൽ ഡൗൺലോഡ് വീഡിയോ ബട്ടൺ കാണിക്കില്ല
@@ -6814,6 +7271,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	തെറ്റായ കോഡ്.
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	ഇപ്പോൾ {count} ഡൗൺലോഡ് ചെയ്യുന്നു
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{size}-ൽ {done}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	{file} ഇല്ലാതാക്കി
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	{file} ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്തു
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} നിങ്ങളുടെ കമ്പ്യൂട്ടറിൽ നിന്ന് ഇല്ലാതാക്കുകയും ഡൗൺലോഡ് ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യുകയും ചെയ്യും. ഇത് പഴയപടിയാക്കാൻ കഴിയില്ല.
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	{time} ശേഷിക്കുന്നു
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

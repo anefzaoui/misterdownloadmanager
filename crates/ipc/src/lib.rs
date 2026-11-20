@@ -170,7 +170,68 @@ pub struct Command {
     /// sites again (a pattern of the user's own that covers it stays).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub include_site: Option<String>,
+    /// From the browser's toolbar button (#1496, its native host asks): the newest downloads its
+    /// popup lists, answered with an [`api::RecentAnswer`] whatever the automation API's switch,
+    /// never for a paired device.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recent: Option<RecentAsk>,
+    /// That list's buttons: act on one download (open it, show it in its folder, copy its file,
+    /// share it, pause, resume…), answered with an [`api::RecentActAnswer`].
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recent_act: Option<RecentAct>,
 }
+
+/// The browser popup's list of downloads ([`Command::recent`], #1496): which ones, and the file
+/// type icons it lacks.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct RecentAsk {
+    /// One of [`RECENT_FILTERS`]: every download, those running, complete, or failed.
+    pub filter: String,
+    /// Words to find in the file's name or its address (case doesn't matter); empty: all.
+    pub search: String,
+    /// The most downloads answered, newest first (at most [`RECENT_MAX`]); 0: none, only the
+    /// counts (the toolbar button's count of running downloads).
+    pub limit: usize,
+    /// The file type icons the popup has already (their keys): not sent again.
+    pub have: Vec<String>,
+    /// The icons' side in pixels (the popup's size for them at the screen's scale), 16 to 64.
+    pub px: u32,
+}
+
+/// [`RecentAsk::filter`]'s values.
+pub const RECENT_FILTERS: [&str; 4] = ["all", "running", "done", "failed"];
+
+/// The most downloads one [`RecentAsk`] is answered with.
+pub const RECENT_MAX: usize = 200;
+
+/// One of the browser popup's buttons on a download ([`Command::recent_act`], #1496).
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct RecentAct {
+    /// One of [`RECENT_ACTS`].
+    pub act: String,
+    /// The download (its `id` in the list); none for `clear-done`.
+    pub id: u64,
+}
+
+/// [`RecentAct::act`]'s values: open the file; show it selected in its folder; put the file on
+/// the clipboard (to paste in a folder, a chat, an upload box); the system's share sheet
+/// (Windows, macOS); stop it (resumable); resume it; download it again from the start; take it
+/// off the list (its file kept); take it off the list and delete its file; take every complete
+/// download off the list (their files kept).
+pub const RECENT_ACTS: [&str; 10] = [
+    "open",
+    "folder",
+    "copy-file",
+    "share",
+    "pause",
+    "resume",
+    "redownload",
+    "remove",
+    "delete",
+    "clear-done",
+];
 
 /// The most parts a page's links come in ([`LinksPart`]): 256 messages of up to 1 MB each.
 pub const MAX_LINK_PARTS: u32 = 256;
@@ -261,6 +322,8 @@ impl Command {
             || self.video_lookup.is_some()
             || self.video_poll.is_some()
             || self.video_pick.is_some()
+            || self.recent.is_some()
+            || self.recent_act.is_some()
             // An add's expected checksum is read before it is added: a bad one is answered,
             // not dropped while the add goes on.
             || (self.url.is_some() && self.checksum.is_some())

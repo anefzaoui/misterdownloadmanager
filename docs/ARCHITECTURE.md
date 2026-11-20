@@ -173,6 +173,19 @@ referrer and cookies and its place (`mdm_ipc::LinksPart`); the host hands each o
 and the app keeps them (`linkparts.rs`) until the last is in, then opens Link grabber with the
 whole list.
 
+The toolbar button's popup lists MDM's newest downloads (#1496). While it is open,
+`background.js` keeps one native port to the host (`connectNative`: one helper process, not one
+per question) and asks every second `{"recent": …}`; the host asks the running app
+(`mdm_ipc::RecentAsk`), which answers with `mdm_ipc::api::RecentAnswer`: the newest downloads
+that match the search and the filter, the counts of each filter, and the system's icons for the
+file types the popup lacks (`fileicons.rs`, PNG `data:` addresses, each type once per size), the
+whole within 512 KB. The popup's buttons send `{"downloadAct": …}` (`mdm_ipc::RecentAct`): the
+app opens the file or its folder, puts the file on the clipboard or opens the share sheet
+(`fileclip.rs`, each system's own calls in `win32.rs` and `unix.rs`). Neither question starts the
+app. The toolbar button's count of running downloads comes from the same answers, watched while
+any runs. With downloads sent to another MDM, the list is its remote control's (`api/list`), cut
+to the same view in `background.js`.
+
 The host serves only MDM's own extension. Its IDs are in one place, `mdm_ipc::extension`
 (`crates/ipc/src/extension.rs`): the unpacked copy's (`UNPACKED_ID`, from the manifest's public
 key), the Chrome Web Store's (`STORE_ID`, signed with the store's own key: `pack.ps1` leaves the

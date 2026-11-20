@@ -1468,6 +1468,9 @@ pub struct App {
     cnl: crate::cnl::Cnl,
     /// Free space where downloads go, and when it was last looked up (`free_space`).
     free_space: std::sync::Arc<std::sync::Mutex<(Option<Instant>, Option<u64>)>>,
+    /// Whether finished downloads' files are still where they were saved, for the browser
+    /// popup's list and the automation API's (#1496).
+    on_disk: crate::recent::OnDisk,
     /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
     /// the downloads stopped because it changed, to start again when it allows.
     netwatch: crate::netwatch::NetWatch,
@@ -2213,6 +2216,7 @@ impl App {
             remote_torrents: Vec::new(),
             cnl,
             free_space: Default::default(),
+            on_disk: Default::default(),
             netwatch: Default::default(),
             debrid: Default::default(),
             debrid_from: 0,
@@ -7115,13 +7119,25 @@ impl App {
     /// A paired device's command (the remote control, #141) is answered while Options → Remote
     /// is on, whatever the automation API's switch: it may list, add and act, nothing else.
     fn answer(&mut self, cmd: &ipc::Command, ctx: &egui::Context) -> String {
-        use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
+        use ipc::api::{ApiAnswer, ErrorAnswer, ListAnswer, line};
         // The browser's quality menu (its native host asks): whatever the automation API's
         // switch, and never for a paired device.
         if !cmd.remote
             && (cmd.video_lookup.is_some() || cmd.video_poll.is_some() || cmd.video_pick.is_some())
         {
             return line(&self.quality_menu(cmd));
+        }
+        // The browser popup's list and its buttons (#1496, its native host asks): whatever the
+        // automation API's switch, and never for a paired device.
+        if !cmd.remote
+            && let Some(ask) = &cmd.recent
+        {
+            return line(&self.recent_answer(ask));
+        }
+        if !cmd.remote
+            && let Some(act) = &cmd.recent_act
+        {
+            return line(&self.recent_act(act));
         }
         if cmd.pair && !cmd.remote {
             return self.pair_answer();
@@ -7184,33 +7200,14 @@ impl App {
         }
         match cmd.query.as_deref() {
             Some("list") => {
+                // A paired device sees no folder of the computer's (nor whether a file is
+                // there), nor a password in an address.
                 let downloads = self
                     .items
                     .iter()
-                    .map(|i| DownloadInfo {
-                        id: i.id,
-                        file: i.file_name.clone(),
-                        // A paired device sees no folder of the computer's, nor a password in
-                        // an address.
-                        url: if cmd.remote {
-                            let mut u = i.url.clone();
-                            let _ = u.set_password(None);
-                            u.to_string()
-                        } else {
-                            i.url.to_string()
-                        },
-                        path: if cmd.remote {
-                            String::new()
-                        } else {
-                            i.dest.to_string_lossy().into_owned()
-                        },
-                        status: format!("{:?}", i.status),
-                        size: i.size,
-                        downloaded: i.downloaded,
-                        speed: if i.live.is_some() { i.rate() as u64 } else { 0 },
-                        added: i.added.clone(),
-                        category: i.category.key().into_owned(),
-                        error: i.error.clone().filter(|_| i.status == Status::Error),
+                    .map(|i| {
+                        let seen = (!cmd.remote).then(|| self.on_disk.last(&i.dest)).flatten();
+                        crate::recent::info(i, cmd.remote, seen)
                     })
                     .collect();
                 let speed: f64 = self
@@ -7247,6 +7244,141 @@ impl App {
                 error: format!("unknown query {other:?}"),
                 code: None,
             }),
+        }
+    }
+
+    /// The browser popup's list (#1496): the newest downloads for its search and filter, whether
+    /// the finished ones answered still have their file (looked at off this thread, a few
+    /// seconds old at most: [`crate::recent::OnDisk`]), and the system's icons of their types
+    /// the popup lacks (looked up off this thread too: one missing now comes with a later
+    /// answer). Within a native message's room ([`ipc::api::RECENT_BUDGET`]).
+    fn recent_answer(&mut self, ask: &ipc::RecentAsk) -> ipc::api::RecentAnswer {
+        let rows = self
+            .items
+            .iter()
+            .map(|i| ipc::api::DownloadInfo {
+                icon: Some(crate::recent::icon_key(i)),
+                ..crate::recent::info(i, false, None)
+            })
+            .collect();
+        let speed: f64 = self
+            .items
+            .iter()
+            .filter(|i| i.live.is_some())
+            .map(|i| i.rate())
+            .sum();
+        let mut answer = ipc::api::RecentAnswer::of(rows, ask, speed as u64);
+        let finished: Vec<(usize, PathBuf)> = answer
+            .downloads
+            .iter()
+            .enumerate()
+            .filter(|(_, d)| d.status == "Complete")
+            .filter_map(|(at, d)| {
+                let i = self.items.iter().find(|i| i.id == d.id)?;
+                Some((at, i.dest.clone()))
+            })
+            .collect();
+        let paths: Vec<&std::path::Path> = finished.iter().map(|(_, p)| p.as_path()).collect();
+        let seen = self.on_disk.there_all(&paths, &self.rt);
+        for ((at, _), there) in finished.iter().zip(seen) {
+            answer.downloads[*at].exists = there;
+        }
+        let px = ask.px.clamp(16, 64);
+        let keys: std::collections::BTreeSet<String> = answer
+            .downloads
+            .iter()
+            .filter_map(|d| d.icon.clone())
+            .filter(|k| !ask.have.contains(k))
+            .collect();
+        for key in keys {
+            let what = crate::recent::icon_what(&key);
+            if let Some(url) = crate::fileicons::data_url(&what, px) {
+                answer.icons.insert(key, url);
+            }
+        }
+        answer.share = crate::fileclip::CAN_SHARE;
+        answer.fit(ipc::api::RECENT_BUDGET);
+        answer
+    }
+
+    /// One of the browser popup's buttons on a download (#1496). Opening the file, its folder,
+    /// the share sheet and a download started again pass on the right to come to the front
+    /// that the browser's native host gave MDM, so what opens isn't left behind the browser.
+    fn recent_act(&mut self, a: &ipc::RecentAct) -> ipc::api::RecentActAnswer {
+        use crate::fileclip::Refused;
+        use ipc::api::{RecentActAnswer as Answer, recent_why as why};
+        if a.act == "clear-done" {
+            // Every finished download off the list, their files kept (as Remove).
+            let ids: Vec<u64> = self
+                .items
+                .iter()
+                .filter(|i| i.status == Status::Complete && i.live.is_none())
+                .map(|i| i.id)
+                .collect();
+            return match self.act("remove", &ids) {
+                Ok(_) => Answer::done(),
+                Err(_) => Answer::not(why::FAILED),
+            };
+        }
+        let Some(item) = self.items.iter().find(|i| i.id == a.id) else {
+            return Answer::not(why::GONE);
+        };
+        let (dest, moved_away) = (item.dest.clone(), item.moved_away);
+        let (complete, live) = (item.status == Status::Complete, item.live.is_some());
+        // As last seen (the popup asked a moment ago); looked at now if never.
+        let missing = || match self.on_disk.last(&dest) {
+            Some(there) => !there,
+            None => !dest.exists(),
+        };
+        let handed = |done: Result<(), Refused>| match done {
+            Ok(()) => Answer::done(),
+            Err(Refused::Unsupported) => Answer::not(why::UNSUPPORTED),
+            Err(Refused::Failed(_)) => Answer::not(why::FAILED),
+        };
+        match a.act.as_str() {
+            "open" | "copy-file" | "share" if !complete => Answer::not(why::CANT),
+            "share" if !crate::fileclip::CAN_SHARE => Answer::not(why::UNSUPPORTED),
+            "open" | "copy-file" | "share" if missing() => Answer::not(why::MISSING),
+            // An off-screen run (the tests) opens nothing on the person's screen: it logs.
+            "open" | "folder" if crate::offscreen() => {
+                tracing::info!("{} (off-screen, not opened): {}", a.act, dest.display());
+                Answer::done()
+            }
+            "open" => {
+                crate::recent::pass_foreground();
+                crate::dialogs::open_download_in_front(&dest, moved_away);
+                Answer::done()
+            }
+            "folder" => {
+                crate::recent::pass_foreground();
+                crate::dialogs::show_download_in_folder(&dest, moved_away);
+                Answer::done()
+            }
+            "copy-file" => handed(crate::fileclip::copy_file(&dest)),
+            "share" => {
+                crate::recent::pass_foreground();
+                handed(crate::fileclip::share(&dest))
+            }
+            "redownload" if live => Answer::not(why::RUNNING),
+            "redownload" if !self.can_redownload(a.id) => Answer::not(why::CANT),
+            "redownload" => {
+                crate::recent::pass_foreground();
+                self.redownload(a.id);
+                Answer::done()
+            }
+            act @ ("pause" | "resume" | "remove" | "delete") => {
+                let action = if act == "resume" { "start" } else { act };
+                match self.act(action, &[a.id]) {
+                    Ok(r) if r.done.contains(&a.id) => Answer::done(),
+                    Ok(r) => match r.skipped.first().map(|s| s.why.as_str()) {
+                        Some("no such download") => Answer::not(why::GONE),
+                        Some(w) if w.starts_with("running") => Answer::not(why::RUNNING),
+                        _ => Answer::not(why::CANT),
+                    },
+                    Err(_) => Answer::not(why::UNKNOWN),
+                }
+            }
+            _ => Answer::not(why::UNKNOWN),
         }
     }
 

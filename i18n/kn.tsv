@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	ಅಪರಿಚಿತ ಸೈಟ್ ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ {n} ಲಿಂಕ್ ಕಳುಹಿಸಲು ಬಯಸುತ್ತದೆ.|ಅಪರಿಚಿತ ಸೈಟ್ ಲಿಂಕ್ ಗ್ರ್ಯಾಬರ್‌ಗೆ {n} ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಲು ಬಯಸುತ್ತದೆ.
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	ಮತ್ತು {n} ಇತರ ಫೈಲ್.|ಮತ್ತು {n} ಇತರ ಫೈಲ್‌ಗಳು.
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -292,6 +297,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	ಏಕ-ಫೈಲ್ ಟೊರೆಂಟ್ ತನ್ನ ಹೆಸರನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	ಟೊರೆಂಟ್ ಫೈಲ್‌ನ ಫೋಲ್ಡರ್ ಅದರ ಗಮ್ಯಸ್ಥಾನದ ಹೊರಗೆ ಸೂಚಿಸುತ್ತದೆ
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -578,6 +587,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	ಇನ್ನೊಂದು DNS...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	ಈ ಟೊರೆಂಟ್‌ನ ಗಮ್ಯಸ್ಥಾನವನ್ನು ಇನ್ನೊಂದು ಡೌನ್‌ಲೋಡ್ ಈಗಾಗಲೇ ಕ್ಲೈಮ್ ಮಾಡಿದೆ
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	ಇನ್ನೊಂದು ಡೌನ್‌ಲೋಡ್ ಈಗಾಗಲೇ {file} ಅನ್ನು ಕ್ಲೈಮ್ ಮಾಡಿದೆ. ಬೇರೆ ಗಮ್ಯಸ್ಥಾನವನ್ನು ಆಯ್ಕೆಮಾಡಿ.
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
@@ -963,6 +980,10 @@
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	ಪರಿಶೀಲಿಸಿದಾಗ, ವಿಂಡೋವನ್ನು ಮುಚ್ಚಿದರೂ MDM ಚಾಲನೆಯಲ್ಲಿರುತ್ತದೆ: ಲಭ್ಯವಿದ್ದಾಗ ಅಧಿಸೂಚನೆ ಪ್ರದೇಶದಲ್ಲಿ ಮರೆಯಾಗುತ್ತದೆ, ಇಲ್ಲದಿದ್ದರೆ ಟಾಸ್ಕ್‌ಬಾರ್‌ಗೆ ಚಿಕ್ಕದಾಗುತ್ತದೆ ಮತ್ತು ಡೌನ್‌ಲೋಡ್‌ಗಳು ಮುಂದುವರಿಯುತ್ತವೆ; ಪರಿಶೀಲಿಸದಿದ್ದಾಗ, ಮುಚ್ಚಿದಾಗ MDM ನಿಲ್ಲುತ್ತದೆ
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	ಪರಿಶೀಲಿಸಿದಾಗ, ಬ್ರೌಸರ್‌ನ ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಪಟ್ಟಿಯಲ್ಲಿ ಉಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು MDM ಮರುಪ್ರಾರಂಭಿಸಿದಾಗಲೂ ಅವು ಇರುತ್ತವೆ; ಪರಿಶೀಲಿಸದಿದ್ದಾಗ, ಅವುಗಳನ್ನು ಮೆಮೊರಿಯಲ್ಲಿ ಮಾತ್ರ ಇರಿಸಲಾಗುತ್ತದೆ ಮತ್ತು MDM ಮುಚ್ಚಿದಾಗ ಅವು ಹೋಗುತ್ತವೆ. ಅವುಗಳ ಕುಕೀಗಳನ್ನು ಎಂದಿಗೂ ಉಳಿಸಲಾಗುವುದಿಲ್ಲ
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -1123,6 +1144,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	ಕಾಂಗೋ
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	uTP ಮೂಲಕವೂ ಸಂಪರ್ಕಿಸಿ (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1197,6 +1222,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	{name} ಅನ್ನು ಹೊರತೆಗೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {why}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	ಈ ಟೊರೆಂಟ್‌ಗಾಗಿ ಫೋಲ್ಡರ್ ರಚಿಸಿ
 #. window title in a dialog box
 #, machine
 	Create folder	ಫೋಲ್ಡರ್ ರಚಿಸಿ
@@ -2279,6 +2308,10 @@
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	ಅದನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗದಿದ್ದರೆ, ಸಿಸ್ಟಮ್‌ನ DNS ಬಳಸಿ
+#. text in extension.rs
+#. under "macOS keeps Mister Download Manager out of …'s folder" (Test browser integration, the browser extension's window): how to allow it. The quoted words and System Settings → Privacy & Security → Full Disk Access are macOS's own: use Apple's words in this language, or keep the English ones when unsure
+#, machine
+	If macOS asks whether it may access data from other apps, allow it. Or turn on Mister Download Manager in System Settings → Privacy & Security → Full Disk Access. Then press Set it up.	macOS ಇತರ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಂದ ಡೇಟಾವನ್ನು ಪ್ರವೇಶಿಸಬಹುದೇ ಎಂದು ಕೇಳಿದರೆ, ಅನುಮತಿಸಿ. ಅಥವಾ ಸಿಸ್ಟಮ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ಗೌಪ್ಯತೆ ಮತ್ತು ಭದ್ರತೆ → ಪೂರ್ಣ ಡಿಸ್ಕ್ ಪ್ರವೇಶದಲ್ಲಿ Mister Download Manager ಅನ್ನು ಆನ್ ಮಾಡಿ. ನಂತರ &ಸೆಟ್ ಅಪ್ ಮಾಡಿ ಒತ್ತಿರಿ.
 #. text in errors.rs
 #. what to do when a helper's server couldn't be reached; {proxy} = the Options tab Proxy / Socks; {name} = yt-dlp, ffmpeg or gallery-dl; {helpers} and {other} = the buttons Helpers and Use another program
 #. {name} = a file name (keep the braces as they are)
@@ -2508,6 +2541,10 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/ಸೆಕೆಂಡ್
+#. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	ಖಾಸಗಿ ವಿಂಡೋ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಪಟ್ಟಿಯಲ್ಲಿ ಇರಿಸಿ
 #. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
@@ -2784,6 +2821,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	ಹಸ್ತಚಾಲಿತ ಪ್ರಾಕ್ಸಿ/SOCKS ಕಾನ್ಫಿಗರೇಶನ್
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	ಅನೇಕ ಪೀರ್‌ಗಳು uTP ಅನ್ನು ಮಾತ್ರ ತೆಗೆದುಕೊಳ್ಳುತ್ತವೆ. ಅದು ಇಲ್ಲದೆ, MDM ಅವುಗಳನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2858,6 +2899,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM ಅದನ್ನು ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM ಈ ಫೈಲ್‌ಗಳನ್ನು ರಚಿಸಿಲ್ಲ. ಟೊರೆಂಟ್ ಪ್ರಾರಂಭಿಸಿದರೆ ಅವುಗಳ ಗಾತ್ರ ಬದಲಾಗಬಹುದು ಮತ್ತು ಅವುಗಳ ವಿಷಯ ಬದಲಾಗಬಹುದು; ತುಣುಕುಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳುವ ಆಯ್ಕೆಮಾಡದ ಫೈಲ್‌ಗಳೂ ಇದರಲ್ಲಿ ಸೇರಿವೆ. ಈ ಟೊರೆಂಟ್‌ಗಾಗಿ ಈ ಫೈಲ್‌ಗಳನ್ನು ಬಳಸಬೇಕೇ?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -3145,6 +3190,11 @@
 #. button: create a new item
 #, machine
 	New	ಹೊಸ
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	ಬ್ರೌಸರ್‌ನಿಂದ ಹೊಸ ವಿಳಾಸ ({host}): ಅದನ್ನು ಬಳಸಿಕೊಂಡು ಮುಂದುವರಿಸಲಾಗುತ್ತಿದೆ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3395,6 +3445,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	ಆಫ್
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	ಪ್ರಾಕ್ಸಿಯೊಂದಿಗೆ ಆಫ್: uTP UDP ಮೂಲಕ ಹೋಗುತ್ತದೆ, ಅದನ್ನು SOCKS5 ಪ್ರಾಕ್ಸಿ ಸಾಗಿಸುವುದಿಲ್ಲ
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	ಆಫ್: ಪೂರ್ಣಗೊಂಡ ಟೊರೆಂಟ್ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ನಂತೆ ನಿಲ್ಲುತ್ತದೆ.
@@ -3745,6 +3799,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	ಪೂರ್ವವೀಕ್ಷಣೆ ಇನ್ನೂ ಲಭ್ಯವಿಲ್ಲ
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ಮಾಡಿದ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಆಯ್ಕೆಗಳಲ್ಲಿ ಹೊಂದಿಸಿರುವ ವೀಡಿಯೊ ಸೈಟ್‌ಗಳ ಕುಕೀಗಳನ್ನು ಬಳಸುವುದಿಲ್ಲ. ಪುಟವನ್ನು ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ, ಅಲ್ಲಿ ಸೈನ್ ಇನ್ ಮಾಡಿ ಮತ್ತು ಆ ವಿಂಡೋದಲ್ಲಿರುವ ಡೌನ್‌ಲೋಡ್ ವೀಡಿಯೊ ಬಟನ್ ಅನ್ನು ಮತ್ತೆ ಬಳಸಿ.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3859,6 +3917,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	ಮರುಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	ರೆಕಾರ್ಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4071,6 +4134,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	ಇದರಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	ಉಳಿಸಲಾಗುತ್ತಿದೆ...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4570,6 +4638,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	ನಿಲ್ಲಿಸಿ
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	ನಿಲ್ಲಿಸಿ ಮತ್ತು ಉಳಿಸಿ
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ಈ ಸಮಯಕ್ಕೆ ಡೌನ್‌ಲೋಡ್ ನಿಲ್ಲಿಸಿ
@@ -4832,6 +4904,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	ಡೇಟಾವನ್ನು ಸ್ವೀಕರಿಸುವಾಗ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	ಗಮ್ಯಸ್ಥಾನವು ಬದಲಾಗುತ್ತಲೇ ಇದೆ. ಅದರ ಫೈಲ್‌ಗಳಿಗೆ ಬದಲಾವಣೆಗಳನ್ನು ನಿಲ್ಲಿಸಿ ಮತ್ತು ಟೊರೆಂಟ್ ಅನ್ನು ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಲು ಪ್ರಯತ್ನಿಸಿ.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4930,6 +5006,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	ಫೈಲ್‌ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	ಈ ಹಳೆಯ ಡೌನ್‌ಲೋಡ್‌ಗೆ ಮಾಲೀಕತ್ವದ ದಾಖಲೆ ಇಲ್ಲದ ಕಾರಣ ಫೈಲ್‌ಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳಲಾಗಿದೆ
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4964,6 +5044,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ {adapter} ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	ಔಟ್‌ಪುಟ್ ಫೋಲ್ಡರ್ ಅಮಾನ್ಯವಾಗಿದೆ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4994,6 +5078,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	ವರದಿಯು ನಿಮ್ಮ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿದೆ: ಅದನ್ನು ಸಮಸ್ಯೆಯ ಕುರಿತ ಕಾಮೆಂಟ್‌ನಲ್ಲಿ ಅಂಟಿಸಿ.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	ಉಳಿಸಿದ .torrent ಫೈಲ್ ಈ ಡೌನ್‌ಲೋಡ್‌ಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	ಉಳಿಸಿದ .torrent ಫೈಲ್ ಕಾಣೆಯಾಗಿದೆ ಅಥವಾ ಓದಲಾಗುವುದಿಲ್ಲ. ಅದರ ಮೆಟಾಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು ಟೊರೆಂಟ್ ಅನ್ನು ಮತ್ತೆ ಸೇರಿಸಿ; ಅದರ ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಫೈಲ್‌ಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳಿ.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5114,6 +5206,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	ಟೊರೆಂಟ್ ಇನ್ನು ಮುಂದೆ ಇಲ್ಲ
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	ಟೊರೆಂಟ್ ಮಾಲೀಕತ್ವದ ದಾಖಲೆಯಲ್ಲಿ ಅಸುರಕ್ಷಿತ ಮಾರ್ಗವಿದೆ
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	ಟೊರೆಂಟ್ ಮಾಲೀಕತ್ವದ ದಾಖಲೆ ಅದರ ಫೈಲ್ ಪಟ್ಟಿಗೆ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	ಟೊರೆಂಟ್ ಮಾಲೀಕತ್ವದ ದಾಖಲೆ ಅಮಾನ್ಯವಾಗಿದೆ
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಫೈಲ್‌ಗಳನ್ನು ಬಳಸಲು ಅನುಮತಿ ನಿರಾಕರಿಸಿದ್ದರಿಂದ ಟೊರೆಂಟ್ ಪ್ರಾರಂಭಿಸಲಾಗಿಲ್ಲ.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5258,6 +5367,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ಇದಕ್ಕೆ ffmpeg ಬೇಕು
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	ಈ ಆಯ್ಕೆಯು ನೇರ BitTorrent ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗೆ ಲಭ್ಯವಿದೆ
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5289,9 +5402,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ಈ ಟೊರೆಂಟ್ ಈಗಾಗಲೇ ಡೌನ್‌ಲೋಡ್ ಪಟ್ಟಿಯಲ್ಲಿದೆ
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	ಈ ಟೊರೆಂಟ್ ಕಾರ್ಯನಿರತವಾಗಿದೆ. ಅದನ್ನು ಮತ್ತೆ ಸೇರಿಸುವ ಮೊದಲು ಅದರ ಪ್ರಸ್ತುತ ಕಾರ್ಯಾಚರಣೆ ಮುಗಿಯಲು ನಿರೀಕ್ಷಿಸಿ.
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	ಈ ಟೊರೆಂಟ್ ಪಟ್ಟಿಯಲ್ಲಿಲ್ಲ
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	ಈ ಟೊರೆಂಟ್ ಪ್ರಾರಂಭವಾಗುವ ಮೊದಲು {file} ಅನ್ನು ಬಳಸಲು ಅನುಮತಿ ಬೇಕು.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	ಈ ಟೊರೆಂಟ್ ತನ್ನ ಗಮ್ಯಸ್ಥಾನ ಫೋಲ್ಡರ್ ಅನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5622,6 +5747,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	ಸ್ವಯಂಚಾಲಿತ ಕಾನ್ಫಿಗರೇಶನ್ ಸ್ಕ್ರಿಪ್ಟ್ ಬಳಸಿ
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಟೊರೆಂಟ್ ಫೈಲ್‌ಗಳನ್ನು ಬಳಸಿ
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV ಮೋಡ್‌ನಲ್ಲಿ FTP ಬಳಸಿ
@@ -5629,6 +5757,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM ನ ಸ್ವಂತ ನಕಲನ್ನು ಬಳಸಿ
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	ನನ್ನ yt-dlp ಕಾನ್ಫಿಗರ್ ಫೈಲ್ ಬಳಸಿ
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5684,6 +5816,10 @@
 #. label in the Options window
 #, machine
 	UserName	ಬಳಕೆದಾರಹೆಸರು
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP ಒಳಬರುವ ಸಂಪರ್ಕಗಳಿಗಾಗಿ ಪೋರ್ಟ್ ಅನ್ನು ಬಳಸುತ್ತದೆ: ಒಳಬರುವ ಸಂಪರ್ಕಗಳನ್ನು ಸ್ವೀಕರಿಸಿ ಆನ್ ಮಾಡಿ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5777,6 +5913,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	ಕಾಯಲಾಗುತ್ತಿದೆ
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	ಬ್ರೌಸರ್‌ನಿಂದ ಹೊಸ ವಿಳಾಸಕ್ಕಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5963,6 +6103,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube ತನ್ನ ವೀಡಿಯೊ ಗುಣಮಟ್ಟಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಲು JavaScript ರನ್‌ಟೈಮ್ ಅಗತ್ಯವಿದೆ: Node.js ಅಥವಾ Deno ಅನ್ನು ಸ್ಥಾಪಿಸಿ, ನಂತರ ಅದನ್ನು ಮತ್ತೆ ಹುಡುಕಿ
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp ತನ್ನದೇ ಆದ ಕಾನ್ಫಿಗರ್ ಫೈಲ್‌ಗಳನ್ನು ಸಹ ಓದುತ್ತದೆ (Windows ನಲ್ಲಿ %APPDATA%\\yt-dlp\\config.txt, Linux ಮತ್ತು macOS ನಲ್ಲಿ ~/.config/yt-dlp/config). ಫೋಲ್ಡರ್, ಹೆಸರು ಮತ್ತು ಗುಣಮಟ್ಟ ಸೇರಿದಂತೆ MDM ಆಯ್ಕೆಮಾಡುವ ಹೆಚ್ಚಿನ ಸೆಟ್ಟಿಂಗ್‌ಗಳೇ ಅನ್ವಯಿಸುತ್ತವೆ; ಆದರೆ ವೀಡಿಯೊಗಳನ್ನು ಬಿಟ್ಟುಬಿಡುವ ಅಥವಾ ಫಿಲ್ಟರ್ ಮಾಡುವ ಆಯ್ಕೆಗಳೂ ಅನ್ವಯಿಸುತ್ತವೆ.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6115,6 +6259,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: ಫೈಲ್‌ನ ಚೆಕ್‌ಸಮ್ ({algorithm}) ಹೊಂದಿಕೆಯಾಗುತ್ತದೆ
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: MDM ಈ ಫೈಲ್‌ಗಳನ್ನು ರಚಿಸದ ಕಾರಣ ಅಥವಾ ಇನ್ನೊಂದು ಡೌನ್‌ಲೋಡ್ ಅವುಗಳನ್ನು ಬಳಸುತ್ತಿರುವ ಕಾರಣ, ಈ ಫೈಲ್‌ಗಳು ಡಿಸ್ಕ್‌ನಲ್ಲೇ ಉಳಿದಿವೆ:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6418,6 +6566,10 @@ extension	Added to MDM	MDM ಗೆ ಸೇರಿಸಲಾಗಿದೆ
 #, machine
 extension	Added to the queue	ಕ್ಯೂಗೆ ಸೇರಿಸಲಾಗಿದೆ
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	ಎಲ್ಲಾ
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6448,9 +6600,41 @@ extension	Button settings...	ಬಟನ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳ�
 #, machine
 extension	can't be saved	ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	Mister Download Manager ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	{server} ನಲ್ಲಿರುವ Mister Download Manager ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	ಇದು ಯಾವ ವೀಡಿಯೊ ಎಂದು ತಿಳಿಯುತ್ತಿಲ್ಲ: ಅದರ ಸ್ವಂತ ಪುಟವನ್ನು ತೆರೆದು ಅಲ್ಲಿ ಪ್ರಯತ್ನಿಸಿ
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	ರದ್ದುಮಾಡಿ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	ಇದು ಚಾಲನೆಯಲ್ಲಿದೆ ಮತ್ತು ಈ ಬ್ರೌಸರ್ ಅದರ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಸ್ವೀಕರಿಸುತ್ತದೆ ಎಂದು ಪರಿಶೀಲಿಸಿ (ಸೆಟ್ಟಿಂಗ್‌ಗಳು → ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಇಲ್ಲಿಗೆ ಕಳುಹಿಸಿ → ಅದನ್ನು ತೆರೆಯಿರಿ).
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	ತೆರವುಗೊಳಿಸಿ
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	ಪೂರ್ಣಗೊಂಡವುಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	ಪೂರ್ಣಗೊಂಡ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಪಟ್ಟಿಯಿಂದ ತೆರವುಗೊಳಿಸಬೇಕೇ?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	ಸಂಪರ್ಕಿಸಲಾಗಿದೆ
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6461,13 +6645,52 @@ extension	Connected to Mister Download Manager	Mister Download Manager ಗೆ �
 #, machine
 extension	Connected to Mister Download Manager {version}	Mister Download Manager {version} ಗೆ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	ಸಂಪರ್ಕಿಸಲಾಗಿದೆ · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	{file} ಅನ್ನು ನಕಲಿಸಲಾಗಿದೆ. ಅದನ್ನು ಫೋಲ್ಡರ್, ಚಾಟ್ ಅಥವಾ ಸಂದೇಶಕ್ಕೆ ಅಂಟಿಸಿ.
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	ಫೈಲ್ ನಕಲಿಸಿ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	ಲಿಂಕ್ ನಕಲಿಸಿ
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	ಹುಡುಕಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	ಅಳಿಸಿ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	ಫೈಲ್ ಅಳಿಸಿ...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	ಫೈಲ್ ಅಳಿಸಬೇಕೇ?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	ಮುಗಿದಿದೆ
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	ಮತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6497,7 +6720,20 @@ extension	Download with Mister Download Manager	Mister Download Manager ನೊ�
 #, machine
 extension	Download {what}	{what} ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	{file} ಅನ್ನು ಮತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ: {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	ಡೌನ್‌ಲೋಡ್‌ಗಳು
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	{site} ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಬ್ರೌಸರ್‌ನಲ್ಲೇ ಉಳಿಯುತ್ತವೆ
@@ -6513,6 +6749,23 @@ extension	Drag the dots to move it along the edge	ಅಂಚಿನಲ್ಲಿ �
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	ಅದರ https:// ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ.
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	ವಿಫಲವಾಗಿದೆ
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	ವಿಫಲವಾಗಿದೆ: {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	ಫೈಲ್ ಅಳಿಸಲಾಗಿದೆ ಅಥವಾ ಸರಿಸಲಾಗಿದೆ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	ಪೂರ್ಣಗೊಂಡ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ
 #. text in the browser extension
 #. button: forget / unpair this server
 #, machine
@@ -6566,6 +6819,10 @@ extension	It's smaller than the minimum size in Options → File types.	ಇದ�
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	ಅದರ ವಿಳಾಸವು ಆಯ್ಕೆಗಳು → ಫೈಲ್ ಪ್ರಕಾರಗಳು, ಬ್ರೌಸರ್‌ಗೆ ಬಿಟ್ಟ ವಿಳಾಸಗಳಲ್ಲಿದೆ.
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	ಅದರ ಫೈಲ್ ಅನ್ನು ಉಳಿಸಿದ ಸ್ಥಳದಲ್ಲಿಲ್ಲ (ಸರಿಸಲಾಗಿದೆ ಅಥವಾ ಅಳಿಸಲಾಗಿದೆ).
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	ಅದರ ಸೈಟ್ ಆಯ್ಕೆಗಳು → ಫೈಲ್ ಪ್ರಕಾರಗಳು, ಬ್ರೌಸರ್‌ಗೆ ಬಿಟ್ಟ ಸೈಟ್‌ಗಳಲ್ಲಿದೆ.
@@ -6574,14 +6831,31 @@ extension	Its site is in Options → File types, sites left to the browser.	ಅ�
 #, machine
 extension	Its type isn't in Options → File types.	ಅದರ ಪ್ರಕಾರವು ಆಯ್ಕೆಗಳು → ಫೈಲ್ ಪ್ರಕಾರಗಳಲ್ಲಿಲ್ಲ.
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	ಈಗಷ್ಟೇ
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	ಆಯ್ಕೆಗಳಲ್ಲಿನ ನಿಯಮದಿಂದ ಬ್ರೌಸರ್‌ಗೆ ಬಿಡಲಾಗಿದೆ
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	ಬ್ರೌಸರ್‌ಗೆ ಬಿಡಲಾಗಿದೆ: {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	ಲಿಂಕ್ ನಕಲಿಸಲಾಗಿದೆ
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ಲೈವ್
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6603,6 +6877,10 @@ extension	Media on this page	ಈ ಪುಟದಲ್ಲಿರುವ ಮಾಧ್�
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager ಸಮಯಕ್ಕೆ ಉತ್ತರಿಸಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager ಸಮಯಕ್ಕೆ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ
@@ -6615,6 +6893,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager ಇತರ ವೀಡಿಯೊಗಳಲ್ಲಿ ನಿರತವಾಗಿದೆ
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager ಕಾರ್ಯನಿರತವಾಗಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ ಅಥವಾ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ
@@ -6622,6 +6905,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ, ಅಥವಾ ಅದರ ಬ್ರೌಸರ್ ಏಕೀಕರಣವನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager ಚಾಲನೆಯಲ್ಲಿಲ್ಲ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager ಚಾಲನೆಯಲ್ಲಿಲ್ಲ.
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6634,6 +6925,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager ನಂತರ ಈ ಬ್ರೌಸರ್‌ನಂತೆಯೇ ಅದೇ ಪ್ರಾಕ್ಸಿ ಮೂಲಕ ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ. ಇದು ಆಫ್ ಆಗಿರುವಾಗ, ವಿಸ್ತರಣೆಯು ಬ್ರೌಸರ್‌ನ ಪ್ರಾಕ್ಸಿಯನ್ನು ಓದುವುದಿಲ್ಲ.
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	ಹೆಚ್ಚಿನ ಕ್ರಿಯೆಗಳು
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	{file} ಗಾಗಿ ಹೆಚ್ಚಿನ ಕ್ರಿಯೆಗಳು
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6648,10 +6947,18 @@ extension	Most compatible	ಹೆಚ್ಚು ಹೊಂದಾಣಿಕೆಯಾ�
 #, machine
 extension	Never on {site}	{site} ನಲ್ಲಿ ಎಂದಿಗೂ ಬೇಡ
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	{site} ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಎಂದಿಗೂ ತೆಗೆದುಕೊಳ್ಳಬೇಡಿ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ನ ಹೆಸರು ಅಥವಾ ವಿಳಾಸದಲ್ಲಿ “{words}” ಇಲ್ಲ.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	ಇನ್ನೂ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಲ್ಲ
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6661,13 +6968,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	ಇಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ವೀಡಿಯೊ ಇಲ್ಲ
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	ತಲುಪಿಲ್ಲ. ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಅದರ ವಿಳಾಸವನ್ನು ಒಮ್ಮೆ ತೆರೆಯಿರಿ ಮತ್ತು ಅದರ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಸ್ವೀಕರಿಸಿ, ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	ಯಾವುದೂ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	ಈ ಸೈಟ್‌ನಲ್ಲಿ ಆಫ್ ಆಗಿದೆ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	ತೆರೆಯಿರಿ
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6676,6 +6995,10 @@ extension	Open it	ಅದನ್ನು ತೆರೆಯಿರಿ
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	ಅದರ ವಿಳಾಸವನ್ನು ಒಮ್ಮೆ ತೆರೆಯಿರಿ ಮತ್ತು ಅದರ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಸ್ವೀಕರಿಸಿ, ನಂತರ ಅದರ ಆಯ್ಕೆಗಳು, ರಿಮೋಟ್, ಸಾಧನವನ್ನು ಜೋಡಿಸಿ (ಅಥವಾ misterdownloadmanager-cli pair) ನಿಂದ ಕೋಡ್ ಅನ್ನು ನಮೂದಿಸಿ.
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	ಅದರ ಪುಟವನ್ನು ತೆರೆಯಿರಿ
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6688,6 +7011,14 @@ extension	Open post	ಪೋಸ್ಟ್ ತೆರೆಯಿರಿ
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಪೋಸ್ಟ್ ತೆರೆಯಿರಿ
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	{file} ತೆರೆಯಿರಿ
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	Mister Download Manager ನಲ್ಲಿ ಆಯ್ಕೆಗಳು
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6706,9 +7037,30 @@ extension	Pair	ಜೋಡಿಸಿ
 #, machine
 extension	Pairing code	ಜೋಡಿಸುವ ಕೋಡ್
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	ವಿರಾಮಗೊಳಿಸಿ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	ಮೊದಲು ಅದನ್ನು ವಿರಾಮಗೊಳಿಸಿ.
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	{file} ವಿರಾಮಗೊಳಿಸಿ
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ: ಡೌನ್‌ಲೋಡ್‌ಗಳು ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಉಳಿಯುತ್ತವೆ
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	ಪಾಪ್‌ಅಪ್ ವಿಭಾಗಗಳು
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6722,9 +7074,29 @@ extension	Protected	ರಕ್ಷಿಸಲಾಗಿದೆ
 #, machine
 extension	Protected video	ರಕ್ಷಿತ ವೀಡಿಯೊ
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಿ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	ಮರುಪ್ರಾರಂಭಿಸಿ
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	{file} ಮರುಪ್ರಾರಂಭಿಸಿ
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	ಚಾಲನೆಯಲ್ಲಿದೆ
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಹುಡುಕಿ
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6739,13 +7111,52 @@ extension	Send downloads to	ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಇ
 #, machine
 extension	Sending to MDM...	MDM ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	{server} ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	ಸೆಟ್ಟಿಂಗ್‌ಗಳು
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	ಹಂಚಿಕೊಳ್ಳಿ...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	ತೋರಿಸಿ
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	ಎಲ್ಲಾ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ತೋರಿಸಿ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ತೋರಿಸಿ
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	{file} ಅನ್ನು ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ತೋರಿಸಿ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	ನಿಮ್ಮ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಇಲ್ಲಿ ನೋಡಲು ಅದನ್ನು ಪ್ರಾರಂಭಿಸಿ.
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	Mister Download Manager ಪ್ರಾರಂಭಿಸಿ
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	ಪ್ರಾರಂಭಿಸಲಾಗುತ್ತಿದೆ...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6754,6 +7165,18 @@ extension	Support MDM	MDM ಅನ್ನು ಬೆಂಬಲಿಸಿ
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	ಈ ಬ್ರೌಸರ್‌ನಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	ಈ ಡೌನ್‌ಲೋಡ್‌ಗೆ ಈಗ ಅದನ್ನು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	ಅದು ಕೆಲಸ ಮಾಡಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	ಆ ಡೌನ್‌ಲೋಡ್ ಇನ್ನು ಪಟ್ಟಿಯಲ್ಲಿಲ್ಲ.
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6771,6 +7194,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	ಕೊನೆಯ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಬ್ರೌಸರ್‌ಗೆ ಬಿಡಲಾಗಿದೆ.
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	{total} ರಲ್ಲಿ ಹೊಸ {shown}. Mister Download Manager ಎಲ್ಲವನ್ನೂ ಪಟ್ಟಿ ಮಾಡುತ್ತದೆ.
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	{count} ಪೂರ್ಣಗೊಂಡ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಬೇಕೇ? ಅವುಗಳ ಫೈಲ್‌ಗಳು ಅವು ಇರುವಲ್ಲೇ ಇರುತ್ತವೆ.
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	ಇವು {server} ನಲ್ಲಿರುವ Mister Download Manager ನ ಡೌನ್‌ಲೋಡ್‌ಗಳು. ಅವುಗಳ ಫೈಲ್‌ಗಳನ್ನು ಅಲ್ಲಿ ತೆರೆಯಿರಿ.
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	ಈ ಬ್ರೌಸರ್ ಅನ್ನು ಆಯ್ಕೆಗಳು → ಸಾಮಾನ್ಯದಲ್ಲಿ ಗುರುತಿಸಲಾಗಿಲ್ಲ.
@@ -6783,17 +7219,34 @@ extension	This computer	ಈ ಕಂಪ್ಯೂಟರ್
 #, machine
 extension	This download's details were too large to hand over	ಈ ಡೌನ್‌ಲೋಡ್‌ನ ವಿವರಗಳು ಹಸ್ತಾಂತರಿಸಲು ತುಂಬಾ ದೊಡ್ಡದಾಗಿದೆ
 #. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	ಇದು ವೆಬ್ ಪುಟವಲ್ಲ: ಇಲ್ಲಿ ಏನೂ ಮಾಡಲು ಇಲ್ಲ.
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	ಈ ಪುಟ
+#. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	ಈ ಪುಟದ ಪ್ಲೇಯರ್ ವೀಡಿಯೊವನ್ನು ತುಂಡುಗಳಲ್ಲಿ ಸ್ಟ್ರೀಮ್ ಮಾಡುತ್ತದೆ, ಆದ್ದರಿಂದ ಪಟ್ಟಿ ಮಾಡಲು ಯಾವುದೇ ಫೈಲ್ ಇಲ್ಲ. ವೀಡಿಯೊದ ಮೇಲೆ ಪಾಯಿಂಟರ್ ಇರಿಸಿ ಅದರ «ವೀಡಿಯೊ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ» ಬಟನ್ ಬಳಸಿ.
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	ಈ ಸಿಸ್ಟಮ್ ಅದನ್ನು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	ಈ ಆವೃತ್ತಿಯು ತನ್ನ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಇಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.
 #. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	ಆನ್ ಮಾಡಿ
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	ಮತ್ತೆ ಸೇರಿಸಿ
+extension	Update Mister Download Manager	Mister Download Manager ನವೀಕರಿಸಿ
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6811,6 +7264,14 @@ extension	Video	ವೀಡಿಯೊ
 #, machine
 extension	Wait a moment, then try again.	ಒಂದು ಕ್ಷಣ ನಿರೀಕ್ಷಿಸಿ, ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	ಕಾಯಲಾಗುತ್ತಿದೆ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	Mister Download Manager ನೊಂದಿಗೆ ನೀವು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವುದು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ.
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	ಪುಟವು ಪೂರ್ಣ ಪರದೆಯಲ್ಲಿರುವಾಗ, ಅದರ ವೀಡಿಯೊಗಳು ಡೌನ್‌ಲೋಡ್ ವೀಡಿಯೊ ಬಟನ್ ಅನ್ನು ತೋರಿಸುವುದಿಲ್ಲ
@@ -6818,6 +7279,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	ತಪ್ಪಾದ ಕೋಡ್.
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	{count} ಈಗ ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{size} ರಲ್ಲಿ {done}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	{file} ಅಳಿಸಲಾಗಿದೆ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	{file} ಅನ್ನು ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} ಅನ್ನು ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಿಂದ ಅಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	{time} ಉಳಿದಿದೆ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

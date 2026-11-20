@@ -108,12 +108,32 @@ A page with a PDF viewer of its own (its own page numbers, zoom and buttons, whi
 
 ## The toolbar button
 
-The extension's button shows whether the browser reaches MDM. A red **!** means it doesn't; click the button to see why, and **How to fix it** opens the matching section of [The browser and MDM aren't connected](browser-help.md). The button also:
+The extension's button shows whether the browser reaches MDM. A red **!** means it doesn't; click the button to see why, and **How to fix it** opens the matching section of [The browser and MDM aren't connected](browser-help.md). While MDM downloads, the button shows how many downloads are running, in blue; **II** means taking downloads is paused. Its popup says under MDM's name whether it is connected, and to which version; the gear opens MDM's **Options**. It has three tabs:
 
-- **Take downloads from this browser**: untick it to pause, and every download stays with the browser until you tick it again.
-- **Never take downloads from** the current site: adds it to MDM's excluded sites. The popup then says **Downloads from** the site **stay with the browser**, with **Undo** to take it off the list again; it says the same whenever you open it on that site.
-- **Open Mister Download Manager** and **Options...**.
-- **Media on this page**: what the page has loaded that MDM can download (see below).
+- **Downloads**: MDM's newest downloads (see [Recent downloads](#recent-downloads), below).
+- **This page**: **Media on this page**, what the page has loaded that MDM can download (see below), and **Never take downloads from** the current site, a switch: on, the site goes on MDM's excluded sites and the popup says **Downloads from** the site **stay with the browser**, whenever you open it there; off takes it off the list again. A site that a pattern of your own in Options excludes (`*.example.com`) shows the switch on, and greyed: Options holds it.
+- **Settings**: **Take downloads from this browser** (off pauses: every download stays with the browser until you turn it on again), the browser's proxy (see below), **Hide the download button in full screen**, **Send downloads to** (this computer or another MDM, see [Remote control](remote-control.md)), **Options...** and **Open Mister Download Manager**.
+
+### Recent downloads
+
+**Downloads** lists MDM's newest downloads, newest first, and keeps them up to date while the popup is open: each with your system's own icon for its file type (as Explorer, Finder or your file manager shows it), its size and what it is doing. A running download shows a progress bar, its speed and the time left; a finished one when it finished; a failed one why; a finished one whose file was deleted or moved since says so. The search box finds downloads by any words of their name or address, and **All**, **Running**, **Done** and **Failed** show only those (each with how many there are). The popup shows the newest 60 that match; MDM's own window lists them all.
+
+Point at a download (or reach it with the keyboard) for **Show in folder** and **Pause** or **Resume**. Click a finished file's name to open it. Its **⋯** menu has the rest:
+
+- **Open**, **Show in folder**: as in MDM; the program or folder opens in front of the browser.
+- **Copy file**: the file itself goes on the clipboard, as your file manager's Copy puts it. Paste it into a folder, a chat, an e-mail, or a web page's upload box (browsers take pasted files).
+- **Share...**: your system's share sheet with the file (Windows 10 and 11, macOS), at any size. Linux has no standard share sheet, so Share isn't offered there: use **Copy file** or **Show in folder**.
+- **Copy link**: the download's address.
+- **Download again**: from the start (a file; videos and torrents have their own way in MDM).
+- **Remove from list** (the file stays) and **Delete file...**, which asks first: the file is deleted from your computer, which can't be undone.
+
+**Clear finished** takes every finished download off the list; their files stay where they are. When MDM isn't running, the tab says so, with a button to start it.
+
+A popup can't drag a file out of the browser into another program or a web page (browsers don't let an add-on's popup carry a real file on a drag), so **Copy file** and **Show in folder** do that job.
+
+When downloads go to another MDM (a server), the list is that server's: **Pause**, **Resume**, **Remove from list** and **Copy link** work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.
+
+On Linux, **Copy file** works in X11 sessions and in Wayland sessions with XWayland (GNOME, KDE and most others have it): MDM keeps the file on the clipboard until something else is copied.
 
 ## A VPN or proxy extension
 

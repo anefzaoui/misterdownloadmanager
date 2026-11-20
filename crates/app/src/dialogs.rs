@@ -3563,6 +3563,22 @@ fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
     }
 }
 
+/// [`open_download`] for the browser popup's list (#1496): on Windows, the window showing the
+/// file is brought in front of the browser (`win32::open_file_in_front`); elsewhere as
+/// [`open_download`].
+pub fn open_download_in_front(path: &Path, moved_away: bool) {
+    let path = path.to_owned();
+    crate::launch::spawn("open file", move || {
+        hand_over(&path, moved_away, |p| {
+            #[cfg(windows)]
+            let opened = crate::win32::open_file_in_front(p);
+            #[cfg(not(windows))]
+            let opened = open_file_platform(p);
+            opened.map_err(|e| e.to_string())
+        });
+    });
+}
+
 /// [`open_download`], waited for: true when the file was handed to the system. For a thread
 /// other than the window's (Download complete asks it through `launch::Asked`: whether it
 /// failed decides whether the box stays open).

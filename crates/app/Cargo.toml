@@ -88,7 +88,12 @@ raw-window-handle = "0.6"
 # (win32.rs `text_rasterizer`): its COM interfaces, which windows-sys doesn't have. The windows
 # 0.62 wgpu-hal already builds. DXGI: the graphics drivers' versions, read before Direct3D 12 starts
 # (win32.rs `graphics_drivers`, #1205; wgpu-hal builds it too).
-windows = { version = "0.62", default-features = false, features = ["Win32_Graphics_DirectWrite", "Win32_Graphics_Dxgi"] }
+# The share sheet for a downloaded file from the browser popup's list (win32.rs `share_file`,
+# #1496): DataTransferManager through its desktop interop, a StorageFile for the path; with its
+# companions for WinRT's collections and asynchronous calls (already in the tree through it).
+windows = { version = "0.62", default-features = false, features = ["std", "Win32_Graphics_DirectWrite", "Win32_Graphics_Dxgi", "Win32_Foundation", "Win32_UI_Shell", "Foundation", "Foundation_Collections", "ApplicationModel_DataTransfer", "Storage", "Storage_Streams"] }
+windows-collections = { version = "0.3.2", default-features = false, features = ["std"] }
+windows-future = { version = "0.3.2", default-features = false, features = ["std"] }
 
 # The notification-area icon and its menu (tray.rs).
 [target.'cfg(not(target_os = "linux"))'.dependencies]
@@ -125,8 +130,10 @@ raw-window-handle = "0.6"
 # Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.
 objc2 = "0.6.5"
 # .torrent files and magnet links Finder hands over as Apple events (unix.rs open_events, #698).
-objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation", "NSAppleEventDescriptor", "NSAppleEventManager", "NSNotification", "NSURL"] }
-objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation"] }
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation", "NSAppleEventDescriptor", "NSAppleEventManager", "NSNotification", "NSURL", "NSArray"] }
+# The share sheet for a downloaded file from the browser popup's list (unix.rs share_file, #1496):
+# the sharing service picker, from a window of MDM's own at the pointer.
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation", "NSSharingService", "NSWindow", "NSView", "NSResponder", "NSEvent", "NSColor", "NSApplication"] }
 # View → Draw with → Metal (#206, renderer.rs): eframe's wgpu renderer with wgpu's Metal backend
 # only; OpenGL stays eframe's glow, and the default. egui-wgpu's fix for windows that jitter while
 # they are resized (Core Animation presenting with the resize), as upstream egui turns it on.

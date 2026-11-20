@@ -24,6 +24,14 @@
 //!   handed over as one list. A list longer than a message may be (`mdm_ipc::MAX_MESSAGE`, 1 MB)
 //!   comes in parts, each with `"linksPart": {batch, index, count}` and the page's context, each
 //!   handed over as it comes; the app puts them back together (crates/app/src/linkparts.rs).
+//! - The toolbar button's list of downloads (#1496): `{"recent": {filter, search, limit, have,
+//!   px}}` asks the running app for its newest downloads (`mdm_ipc::RecentAsk`), answered
+//!   `{"ok": true, "recent": {…}}` (`mdm_ipc::api::RecentAnswer`: the downloads, the counts, the
+//!   file type icons the popup lacks); `{"downloadAct": {act, id}}` acts on one (open it, show
+//!   it in its folder, copy its file, share it, pause, resume, remove, delete…), answered
+//!   `{"ok": true, "act": {done, why}}`. Neither starts the app: without one running, or with
+//!   one older than the list, the answer says so in `appState` (`off`, `old`, `busy`), never
+//!   in a `why` that would mark the browser as not connected.
 //! - `misterdownloadmanager-nmhost --register` / `--unregister`: writes / removes the host
 //!   manifests (Chromium's names the extension's origin, Firefox's its add-on ID). Windows: beside
 //!   this exe, with the per-user (HKCU) registry entries the browsers look up; with `--all-users`
@@ -163,6 +171,11 @@ struct Message {
     /// asked for it (#900), sent again with it and each of its pieces. An older extension sends
     /// none: the page is the stream's Referer then, as before.
     fetched_with: FetchedWith,
+    /// The toolbar button's list of downloads (#1496): the newest the running app has. Under
+    /// its own key, with no `url`: an older host refuses it without effect.
+    recent: Option<mdm_ipc::RecentAsk>,
+    /// That list's buttons: one download acted on.
+    download_act: Option<mdm_ipc::RecentAct>,
 }
 
 /// The headers the browser sent with a stream (`Message::fetched_with`): its Referer and Origin.
@@ -297,6 +310,17 @@ struct Reply {
     /// Compact (the round button over every video). An older host doesn't say: Full.
     #[serde(skip_serializing_if = "Option::is_none")]
     compact: Option<bool>,
+    /// For `recent` (#1496): the app's list.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    recent: Option<mdm_ipc::api::RecentAnswer>,
+    /// For `downloadAct`: what the app did.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    act: Option<mdm_ipc::api::RecentActAnswer>,
+    /// For `recent` and `downloadAct` when the app didn't answer them: `off` (no app running:
+    /// neither starts one), `old` (an app older than the list, which knows neither), `busy`
+    /// (it didn't answer in time).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    app_state: Option<&'static str>,
 }
 
 impl Reply {
@@ -401,6 +425,14 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
     if let Some(n) = &m.declined {
         log_left(browser, &n.site, &n.name, notice_reason(&n.why), m.private);
         return Reply::done();
+    }
+    // The toolbar button's list of downloads and its buttons (#1496): asked of a running app
+    // only.
+    if let Some(ask) = &m.recent {
+        return recent_list(ask);
+    }
+    if let Some(act) = &m.download_act {
+        return recent_act(act, browser);
     }
     // The video button's quality menu: asked of a running app only, answered in `lookup`.
     if let Some(ask) = menu_ask(&m) {
@@ -843,6 +875,138 @@ fn menu_answer(
     }
 }
 
+/// The longest search the toolbar button's list sends on (#1496), in characters.
+const SEARCH_MAX: usize = 200;
+/// The most icon keys it says it has, and the longest key (an extension is at most 16).
+const HAVE_MAX: usize = 512;
+const KEY_MAX: usize = 40;
+
+/// The toolbar button's question as the app gets it: its search, limit and icon size within
+/// bounds. `startup` too, as the quality menu's commands say it: an older app, which knows no
+/// list, takes the command for its startup entry's and opens nothing (a bare command would
+/// bring its window up).
+fn recent_command(ask: &mdm_ipc::RecentAsk) -> mdm_ipc::Command {
+    let have = ask
+        .have
+        .iter()
+        .filter(|k| !k.is_empty() && k.len() <= KEY_MAX)
+        .take(HAVE_MAX)
+        .cloned()
+        .collect();
+    mdm_ipc::Command {
+        recent: Some(mdm_ipc::RecentAsk {
+            filter: mdm_ipc::RECENT_FILTERS
+                .into_iter()
+                .find(|f| *f == ask.filter)
+                .unwrap_or("all")
+                .to_owned(),
+            search: ask.search.trim().chars().take(SEARCH_MAX).collect(),
+            limit: ask.limit.min(mdm_ipc::RECENT_MAX),
+            have,
+            px: ask.px.clamp(16, 64),
+        }),
+        startup: true,
+        ..Default::default()
+    }
+}
+
+/// What a question to the app that wasn't answered with what it asked means for the popup:
+/// no app (`off`), an older one (`old`: it answered `ok`, or something else it can't mean), or
+/// one that didn't answer in time (`busy`).
+fn app_state(got: &Result<String, mdm_ipc::SendError>) -> &'static str {
+    match got {
+        Err(mdm_ipc::SendError::NotRunning(_)) => "off",
+        Ok(line) if line.trim() == "timeout" => "busy",
+        _ => "old",
+    }
+}
+
+/// The reply for a question the app didn't answer: not `ok`, with the app's state, and no `why`
+/// (the extension takes a `why` for the browser not reaching MDM).
+fn unanswered(state: &'static str) -> Reply {
+    Reply {
+        app_state: Some(state),
+        ..Default::default()
+    }
+}
+
+/// The toolbar button's list of downloads (#1496), asked of the running app.
+fn recent_list(ask: &mdm_ipc::RecentAsk) -> Reply {
+    recent_reply(mdm_ipc::request_checked(&recent_command(ask)))
+}
+
+/// [`recent_list`]'s reply for the app's answer `got`.
+fn recent_reply(got: Result<String, mdm_ipc::SendError>) -> Reply {
+    if let Ok(line) = &got
+        && line.starts_with('{')
+        && let Ok(answer) = serde_json::from_str::<mdm_ipc::api::RecentAnswer>(line)
+        && serde_json::from_str::<mdm_ipc::api::ErrorAnswer>(line).is_err()
+    {
+        return Reply {
+            ok: true,
+            recent: Some(answer),
+            ..Default::default()
+        };
+    }
+    unanswered(app_state(&got))
+}
+
+/// The toolbar button's list: one download acted on, by the running app. Opening the file,
+/// its folder or the share sheet, and a download started again (its progress window), bring a
+/// window up: the app may bring it to the front, as in `deliver` (Windows only: Linux and
+/// macOS have no foreground lock for a host to lift).
+fn recent_act(act: &mdm_ipc::RecentAct, browser: &str) -> Reply {
+    if !mdm_ipc::RECENT_ACTS.contains(&act.act.as_str()) {
+        return Reply::failed(
+            "refused",
+            format!("unknown action {:?}", clean(&act.act, 32)),
+        );
+    }
+    #[cfg(windows)]
+    if matches!(act.act.as_str(), "open" | "folder" | "share" | "redownload")
+        && let Some(pid) = mdm_ipc::app_pid()
+    {
+        win32::allow_foreground(pid);
+    }
+    let cmd = mdm_ipc::Command {
+        recent_act: Some(act.clone()),
+        startup: true,
+        ..Default::default()
+    };
+    let reply = act_reply(mdm_ipc::request_checked(&cmd));
+    let how = match &reply.act {
+        Some(a) if a.done => "done".to_owned(),
+        Some(a) => format!("not done ({})", a.why.as_deref().unwrap_or("?")),
+        None => format!("unanswered ({})", reply.app_state.unwrap_or("?")),
+    };
+    let browser = if browser.is_empty() {
+        "a browser"
+    } else {
+        browser
+    };
+    log_line(&format!(
+        "browser integration: {browser}'s download list: {} download {}: {how}",
+        act.act, act.id
+    ));
+    reply
+}
+
+/// [`recent_act`]'s reply for the app's answer `got`.
+fn act_reply(got: Result<String, mdm_ipc::SendError>) -> Reply {
+    if let Ok(line) = &got
+        && line.starts_with('{')
+        && let Ok(answer) = serde_json::from_str::<mdm_ipc::api::RecentActAnswer>(line)
+        && serde_json::from_str::<mdm_ipc::api::ErrorAnswer>(line).is_err()
+    {
+        return Reply {
+            ok: answer.done,
+            act: Some(answer),
+            ..Default::default()
+        };
+    }
+    unanswered(app_state(&got))
+}
+
 /// The log line for a look-up the quality menu asked for: the video's site (not its address,
 /// which may carry a signed link's keys) and how it went. A private window's site is left out,
 /// as in [`left_line`]: the log outlives the window.
@@ -1167,7 +1331,14 @@ fn serve() -> io::Result<()> {
             Ok(m) => {
                 // This browser has the extension: the app stops offering it (extension.rs).
                 mdm_ipc::extension::mark_seen(browser(&m), m.v.as_deref().unwrap_or_default());
-                answer(m, &mdm_ipc::capture::CaptureRules::load())
+                // The popup's list asks every second while it is open (#1496) and needs no rules:
+                // not read for it (they are in downloads.json, with the whole list).
+                let rules = if m.recent.is_some() || m.download_act.is_some() {
+                    mdm_ipc::capture::CaptureRules::default()
+                } else {
+                    mdm_ipc::capture::CaptureRules::load()
+                };
+                answer(m, &rules)
             }
             Err(e) => Reply::failed("refused", e.to_string()),
         };
@@ -1630,6 +1801,99 @@ fn downloadable(url: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The toolbar button's list (#1496): the question within bounds, as the app reads it, and
+    /// never one that would bring an older app's window up.
+    #[test]
+    fn the_download_lists_question_is_bounded() {
+        let ask: Message = serde_json::from_str(&format!(
+            r#"{{"recent": {{"filter": "sideways", "search": "  {}  ", "limit": 100000, "have": ["zip", "", "{}"], "px": 400}}}}"#,
+            "é".repeat(300),
+            "k".repeat(41)
+        ))
+        .unwrap();
+        let cmd = recent_command(ask.recent.as_ref().unwrap());
+        let r = cmd.recent.as_ref().unwrap();
+        assert_eq!(r.filter, "all");
+        assert_eq!(r.search.chars().count(), SEARCH_MAX);
+        assert_eq!(r.limit, mdm_ipc::RECENT_MAX);
+        assert_eq!(r.have, ["zip"]);
+        assert_eq!(r.px, 64);
+        assert!(cmd.startup && cmd.wants_reply());
+        let small = recent_command(&mdm_ipc::RecentAsk {
+            filter: "failed".into(),
+            px: 1,
+            ..Default::default()
+        });
+        assert_eq!(small.recent.as_ref().unwrap().filter, "failed");
+        assert_eq!(small.recent.unwrap().px, 16);
+    }
+
+    /// The app's answers to the list and its buttons, and what their absence means: never a
+    /// `why` (the extension would take the browser for not connected), the app's state instead.
+    #[test]
+    fn the_download_lists_answers() {
+        use mdm_ipc::SendError;
+        let list = r#"{"downloads":[{"id":3,"file":"a.zip","url":"https://x/a.zip","path":"C:\\d\\a.zip","status":"Complete","size":5,"downloaded":5,"speed":0,"added":null,"category":"Compressed","exists":true,"icon":"zip"}],"counts":{"all":1,"running":0,"done":1,"failed":0},"running":0,"speed":0,"icons":{"zip":"data:image/png;base64,AA=="},"share":true}"#;
+        let r = recent_reply(Ok(list.into()));
+        assert!(r.ok && r.app_state.is_none() && r.why.is_none());
+        let json = serde_json::to_value(&r).unwrap();
+        assert_eq!(json["recent"]["downloads"][0]["exists"], true);
+        assert_eq!(json["recent"]["icons"]["zip"], "data:image/png;base64,AA==");
+        assert_eq!(json["recent"]["share"], true);
+        for (got, state) in [
+            (Err(SendError::NotRunning("x".into())), "off"),
+            (Ok("ok".to_owned()), "old"),
+            (Ok("timeout".to_owned()), "busy"),
+            (Ok("denied".to_owned()), "old"),
+            (
+                Ok(r#"{"error":"the automation API is off","code":"api-off"}"#.to_owned()),
+                "old",
+            ),
+        ] {
+            let r = recent_reply(got);
+            assert!(!r.ok && r.why.is_none() && r.recent.is_none());
+            assert_eq!(r.app_state, Some(state));
+            let r = act_reply(match state {
+                "off" => Err(SendError::NotRunning("x".into())),
+                "busy" => Ok("timeout".into()),
+                _ => Ok("ok".into()),
+            });
+            assert_eq!((r.ok, r.app_state), (false, Some(state)));
+        }
+        let done = act_reply(Ok(r#"{"done":true}"#.into()));
+        assert!(done.ok && done.act.as_ref().unwrap().done);
+        let missing = act_reply(Ok(r#"{"done":false,"why":"missing"}"#.into()));
+        assert!(!missing.ok && missing.app_state.is_none() && missing.why.is_none());
+        assert_eq!(missing.act.unwrap().why.as_deref(), Some("missing"));
+        // An action the list doesn't have is refused here, the app never asked.
+        let odd = recent_act(
+            &mdm_ipc::RecentAct {
+                act: "format-disk".into(),
+                id: 1,
+            },
+            "Chrome",
+        );
+        assert_eq!(odd.why, Some("refused"));
+    }
+
+    /// The messages reach the list's code, not the download path (which would refuse them for
+    /// having no address).
+    #[test]
+    fn the_download_lists_messages_are_read() {
+        let m: Message =
+            serde_json::from_str(r#"{"downloadAct": {"act": "open", "id": 7}, "v": "0.5.0"}"#)
+                .unwrap();
+        assert_eq!(
+            m.download_act,
+            Some(mdm_ipc::RecentAct {
+                act: "open".into(),
+                id: 7
+            })
+        );
+        let m: Message = serde_json::from_str(r#"{"recent": {"limit": 5}}"#).unwrap();
+        assert_eq!(m.recent.unwrap().limit, 5);
+    }
 
     /// Safari's copy of the helper, inside the app's extension, finds the app it opens.
     #[test]

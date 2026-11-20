@@ -74,6 +74,8 @@ async function native(message, ms = HOST_WAIT) {
   const sent = await stamped(message);
   try {
     const reply = (await withTimeout(ext.runtime.sendNativeMessage(HOST, sent), ms)) || {};
+    // A download handed over: the toolbar button counts it while it runs (#1496).
+    if (reply.ok && typeof message.url === "string" && message.url) watchRecent();
     if (reply.version) {
       await noteStatus(older(reply.version, VERSION) ? "update-app" : null, reply.version);
       // The answer to `rules` also says whether the app looks videos up for the button.
@@ -217,6 +219,292 @@ async function remoteOff() {
   return { ok: true };
 }
 
+// ---- the popup's Downloads tab and the toolbar button's count (#1496) ------------------------
+
+// While the popup is open, its Downloads tab gets MDM's newest downloads every second through a
+// port of its own ("recent"): from this computer's MDM over one native port (one helper process
+// for as long as it is open, not one per question; Safari, which has none, asks one message at
+// a time), or from another MDM's remote control (#157), whose list is cut to the same view here
+// (`recentView`). The toolbar button counts this computer's running downloads: watched every few
+// seconds while any runs (an open native port keeps the background alive in Chromium), and no
+// longer once none does. A download handed over starts the watch, as does the popup.
+const RECENT_EVERY = 1000;
+const BADGE_EVERY = 3000;
+// How long one answer through the native port may take (the app answers within 3 s, or says it
+// is busy).
+const RECENT_WAIT = 6000;
+// The most rows the popup asks for (the app's limit is mdm_ipc::RECENT_MAX).
+const RECENT_MAX = 200;
+
+let nativePort = null;
+// Resolvers of the port's questions, in the order asked: the helper answers each in turn.
+let hostWaiting = [];
+// The popup's ports, each with what it asks: {port, ask, sent: icon keys it has}.
+const recentPorts = new Set();
+let recentTimer = null;
+let recentBusy = false;
+// The file type icons, by key, at `iconPx` pixels (the popup's size for them on this screen).
+let icons = new Map();
+let iconPx = 0;
+// Downloads running in this computer's MDM, as last heard (the toolbar button's count).
+let runningNow = 0;
+
+// One question to the helper through the native port, opened when needed; never throws.
+function hostAsk(message) {
+  if (SAFARI || !ext.runtime.connectNative) return nativeQuietly(message);
+  return new Promise(async (resolve) => {
+    if (!nativePort) {
+      try {
+        nativePort = ext.runtime.connectNative(HOST);
+      } catch (e) {
+        resolve({ ok: false, why: hostProblem(e) });
+        return;
+      }
+      const port = nativePort;
+      port.onMessage.addListener((reply) => {
+        const next = hostWaiting.shift();
+        if (next) next(reply || {});
+      });
+      port.onDisconnect.addListener(() => {
+        const e = ext.runtime.lastError || port.error;
+        if (nativePort === port) nativePort = null;
+        const why = e ? hostProblem(e) : "not-running";
+        for (const r of hostWaiting.splice(0)) r({ ok: false, why });
+      });
+    }
+    let done = false;
+    const timer = setTimeout(() => {
+      if (done) return;
+      done = true;
+      // A helper that stopped answering: started again for the next question.
+      const i = hostWaiting.indexOf(finish);
+      if (i >= 0) hostWaiting.splice(i, 1);
+      closeHostPort();
+      resolve({ ok: false, why: "not-running" });
+    }, RECENT_WAIT);
+    const finish = (reply) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve(reply);
+    };
+    hostWaiting.push(finish);
+    try {
+      nativePort.postMessage(await stamped(message));
+    } catch (e) {
+      finish({ ok: false, why: hostProblem(e) });
+    }
+  });
+}
+
+// One message to the helper, by itself (Safari), with nothing noted of the browser's status: the
+// list's answers carry no version (`native` would take the browser for connected to an app that
+// needs no update), and say whether the app runs in their own words.
+async function nativeQuietly(message) {
+  try {
+    return (await withTimeout(ext.runtime.sendNativeMessage(HOST, await stamped(message)), RECENT_WAIT)) || {};
+  } catch (e) {
+    return { ok: false, why: hostProblem(e) };
+  }
+}
+
+function closeHostPort() {
+  const port = nativePort;
+  nativePort = null;
+  for (const r of hostWaiting.splice(0)) r({ ok: false, why: "not-running" });
+  try {
+    if (port) port.disconnect();
+  } catch {
+    // Already gone.
+  }
+}
+
+// A download's place in the popup's filters (mdm_ipc::api::recent_filter).
+function recentFilterOf(status) {
+  return { Downloading: "running", Complete: "done", Error: "failed" }[status] || null;
+}
+
+// The popup's view of a whole list (another MDM's, whose remote control lists every download):
+// the same as the app's (mdm_ipc::api::RecentAnswer::of; a test keeps them alike): every word
+// of the search in the file's name or its address, the filter, newest first, the limit; the
+// counts of each filter for the search, the running ones whatever the search.
+function recentView(downloads, ask, speed = 0) {
+  const list = Array.isArray(downloads) ? downloads : [];
+  const words = String(ask.search || "").toLowerCase().split(/\s+/).filter(Boolean);
+  const found = (d) => {
+    const file = String(d.file || "").toLowerCase();
+    const url = String(d.url || "").toLowerCase();
+    return words.every((w) => file.includes(w) || url.includes(w));
+  };
+  const running = list.filter((d) => recentFilterOf(d.status) === "running").length;
+  const matching = list.filter(found);
+  const counts = { all: matching.length, running: 0, done: 0, failed: 0 };
+  for (const d of matching) {
+    const f = recentFilterOf(d.status);
+    if (f) counts[f]++;
+  }
+  const filter = ["running", "done", "failed"].includes(ask.filter) ? ask.filter : null;
+  const rows = (filter ? matching.filter((d) => recentFilterOf(d.status) === filter) : matching)
+    .slice()
+    .sort((a, b) => b.id - a.id)
+    .slice(0, Math.max(0, Math.min(Number(ask.limit) || 0, RECENT_MAX)));
+  return { downloads: rows, counts, running, speed, icons: {}, share: false };
+}
+
+// The question as the helper takes it: within bounds, with the icons already here.
+function recentQuestion(ask) {
+  const px = Math.min(64, Math.max(16, Math.round(Number(ask.px) || 24)));
+  if (px !== iconPx) {
+    icons = new Map();
+    iconPx = px;
+  }
+  return {
+    filter: ["all", "running", "done", "failed"].includes(ask.filter) ? ask.filter : "all",
+    search: String(ask.search || "").slice(0, 200),
+    limit: Math.max(0, Math.min(Number(ask.limit) || 0, RECENT_MAX)),
+    have: [...icons.keys()],
+    px,
+  };
+}
+
+// A GET of the remote control's API (its list); {status, body} as remoteCall.
+async function remoteGet(base, path, token) {
+  try {
+    const r = await withTimeout(
+      fetch(new URL(path, base), {
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: "omit",
+        cache: "no-store",
+        redirect: "error",
+      }),
+      15000,
+    );
+    let json = null;
+    try {
+      json = await r.json();
+    } catch {
+      json = null;
+    }
+    return { status: r.status, body: json };
+  } catch {
+    return { status: 0, body: null };
+  }
+}
+
+// The popup's list for `ask`: {ok, list, remote} or {ok: false, appState, why, remote}.
+async function recentList(ask) {
+  const target = await remoteTarget();
+  if (target) {
+    const r = await remoteGet(target.url, "api/list", target.token);
+    if (r.status === 200 && r.body && Array.isArray(r.body.downloads)) {
+      return { ok: true, remote: target.url, list: recentView(r.body.downloads, ask, r.body.speed || 0) };
+    }
+    return { ok: false, remote: target.url, why: r.status === 401 ? "not-paired" : "unreachable" };
+  }
+  const reply = await hostAsk({ recent: recentQuestion(ask) });
+  if (reply.ok && reply.recent) {
+    // Answered: the helper and the app are there (an update the app needs is still said).
+    const { why } = await readStatus();
+    if (why && why !== "update-app") await noteStatus(null);
+    for (const [key, url] of Object.entries(reply.recent.icons || {})) {
+      if (typeof url === "string" && /^data:image\/(png|svg\+xml);base64,/.test(url)) icons.set(key, url);
+    }
+    await noteRunning(Number(reply.recent.running) || 0);
+    return { ok: true, remote: null, list: reply.recent };
+  }
+  // Not answered: MDM not running (`off`), older than the list (`old`: an older helper refuses
+  // the question), busy, or not reached (`why`).
+  const old = reply.why === "refused";
+  if (reply.why && !old) await noteStatus(reply.why);
+  await noteRunning(0);
+  return { ok: false, remote: null, appState: reply.appState || (old ? "old" : null), why: old ? null : reply.why || null };
+}
+
+// Ask again now, then every RECENT_EVERY while a popup is open, every BADGE_EVERY while this
+// computer's MDM runs a download; else the watch ends (and the helper with it).
+function watchRecent(now = true) {
+  if (recentTimer) clearTimeout(recentTimer);
+  recentTimer = setTimeout(recentTick, now ? 0 : recentPorts.size ? RECENT_EVERY : BADGE_EVERY);
+}
+
+async function recentTick() {
+  recentTimer = null;
+  if (recentBusy) return watchRecent(false);
+  recentBusy = true;
+  try {
+    if (recentPorts.size) {
+      for (const p of [...recentPorts]) {
+        const got = await recentList(p.ask);
+        if (!recentPorts.has(p)) continue;
+        const fresh = {};
+        for (const [k, v] of icons) {
+          if (!p.sent.has(k)) {
+            fresh[k] = v;
+            p.sent.add(k);
+          }
+        }
+        try {
+          p.port.postMessage({ type: "list", ...got, icons: fresh, px: iconPx });
+        } catch {
+          recentPorts.delete(p);
+        }
+      }
+    } else if (!(await remoteTarget())) {
+      await recentList({ limit: 0 });
+    }
+  } finally {
+    recentBusy = false;
+  }
+  if (recentPorts.size || (runningNow > 0 && !(await remoteTarget()))) watchRecent(false);
+  else closeHostPort();
+}
+
+// One of the popup's buttons on a download: here, or on the other MDM (what its remote control
+// takes: pause, start, remove).
+async function recentAct(act, id) {
+  const target = await remoteTarget();
+  let reply;
+  if (target) {
+    const action = { pause: "pause", resume: "start", remove: "remove" }[act];
+    if (!action) return { ok: false, why: "unsupported" };
+    const r = await remoteCall(target.url, "api/act", { action, ids: [id] }, target.token);
+    const done = r.status === 200 && r.body && Array.isArray(r.body.done) && r.body.done.includes(id);
+    reply = done ? { ok: true } : { ok: false, why: r.status === 0 ? "unreachable" : "cant" };
+  } else {
+    const r = await hostAsk({ downloadAct: { act, id: Number(id) || 0 } });
+    reply = r.act ? { ok: Boolean(r.act.done), why: r.act.why || null } : { ok: false, why: r.appState || r.why || "failed" };
+  }
+  watchRecent();
+  return reply;
+}
+
+// The toolbar button's count, kept for the browser's next start of this script (storage.session:
+// memory only, gone with the browser), where the watch goes on while it is above 0.
+async function noteRunning(n) {
+  if (n === runningNow) return;
+  runningNow = n;
+  await showStatus();
+  if (ext.storage.session) await ext.storage.session.set({ running: n }).catch(() => {});
+}
+
+ext.runtime.onConnect.addListener((port) => {
+  const sender = port.sender || {};
+  // Only the popup (or its page in a tab of its own): never a page's script.
+  if (port.name !== "recent" || sender.id !== ext.runtime.id || !String(sender.url || "").startsWith(ext.runtime.getURL(""))) return;
+  const p = { port, ask: { filter: "all", search: "", limit: 60, px: 24 }, sent: new Set() };
+  recentPorts.add(p);
+  port.onMessage.addListener((m) => {
+    if (!m || m.type !== "ask") return;
+    p.ask = { ...p.ask, ...(m.ask || {}) };
+    watchRecent();
+  });
+  port.onDisconnect.addListener(() => {
+    recentPorts.delete(p);
+    if (!recentPorts.size) watchRecent(false);
+  });
+  watchRecent();
+});
+
 // a < b, both "x.y.z".
 // Is version `a` an older release than `b`? Only the first two numbers count: the store can publish
 // a bug-fix add-on before its app is out, and nothing it offers needs that app.
@@ -260,13 +548,19 @@ async function noteLookup(on) {
   await ext.storage.local.set({ status });
 }
 
+// The badge: "!" while MDM can't be reached, "II" while paused, else how many downloads run in
+// this computer's MDM (#1496), in MDM's blue.
 async function showStatus() {
-  const why = (await remoteTarget()) ? null : (await readStatus()).why;
+  const remote = await remoteTarget();
+  const why = remote ? null : (await readStatus()).why;
   const { paused } = await ext.storage.local.get({ paused: false });
+  const running = !remote && !why && !paused && runningNow > 0 ? (runningNow > 99 ? "99+" : String(runningNow)) : "";
   try {
-    await action.setBadgeBackgroundColor({ color: why ? "#C42B1C" : "#6B6B6B" });
-    await action.setBadgeText({ text: why && why !== "update-app" ? "!" : paused ? "II" : "" });
-    await action.setTitle({ title: why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : t("status_connected") });
+    await action.setBadgeBackgroundColor({ color: why ? "#C42B1C" : running ? "#0078D4" : "#6B6B6B" });
+    if (action.setBadgeTextColor) await action.setBadgeTextColor({ color: "#FFFFFF" }).catch(() => {});
+    await action.setBadgeText({ text: why && why !== "update-app" ? "!" : paused ? "II" : running });
+    const title = why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : t("status_connected");
+    await action.setTitle({ title: running ? `${title}\n${t("status_running", running)}` : title });
   } catch {
     // No toolbar button (a browser without one): the popup and the help page still say it.
   }
@@ -2888,6 +3182,8 @@ ext.runtime.onInstalled.addListener(async (details) => {
 ext.runtime.onStartup.addListener(() => {
   refreshRules();
   showStatus();
+  // Downloads MDM runs from before the browser started: counted at once.
+  watchRecent();
 });
 
 // A match pattern's host and path as a test (`*://*.youtube.com/*`).
@@ -3329,6 +3625,8 @@ async function popupMessage(m) {
     return { excluded: undo || Boolean(r && siteListed(r, host)), undo };
   }
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
+  // The Downloads tab's buttons on a download (#1496).
+  if (m.type === "download-act" && typeof m.act === "string" && Number.isInteger(m.id)) return recentAct(m.act, m.id);
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };
   // The media the popup's tab loaded (#38), and one of them handed to the app.
   if (m.type === "media" && Number.isInteger(m.tab)) {
@@ -3361,5 +3659,12 @@ ext.runtime.onMessage.addListener((m, sender, sendResponse) => {
 });
 
 showStatus();
+// This script started again while MDM ran downloads (the browser stops it when idle): counted on.
+if (ext.storage.session) {
+  ext.storage.session
+    .get({ running: 0 })
+    .then((v) => (Number(v.running) > 0 ? ((runningNow = Number(v.running)), watchRecent()) : null))
+    .catch(() => {});
+}
 // Rules kept from before, else asked now (a first start, storage cleared).
 storedRules().then((r) => (r ? syncOpenedRule() : refreshRules()));
