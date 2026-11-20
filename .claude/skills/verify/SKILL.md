@@ -47,6 +47,7 @@ Pick what the diff touches:
 | Linux or macOS code, fonts, the desktop | the Linux test machine (`tools/lab/linux-vm/vm.ps1`, its guest scripts `build.sh`, `restart-lab.sh`, `shots.sh`); macOS builds only on GitHub's runners |
 | videos, live streams | a local stream (ffmpeg to HLS, a local http server) through the real yt-dlp and ffmpeg |
 | the website | `python tools/website/build.py --serve`, checked at phone width and desktop |
+| the website's lightbox or dialogs (`website/vitrine/`) | they are Vitrine: change them upstream ([anefzaoui/vitrine](https://github.com/anefzaoui/vitrine), [anefzaoui/vitrine-modal](https://github.com/anefzaoui/vitrine-modal)), where `node test/e2e.mjs` runs them in Chromium and Firefox; then `python tools/website/vitrine.py fetch --lightbox=<sha> --modal=<sha>` and the built site in both browsers |
 
 Write down what you ran and what you saw: commands, numbers, log lines, before and after.
 
