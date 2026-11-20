@@ -13,7 +13,7 @@
 //!   its version's folder.
 //! - **The switch** to the new version happens only while no download, look-up or other run of MDM
 //!   (of any copy of MDM on this computer) is using that helper: a run holds the helper's
-//!   `.in-use` file locked, shared ([`Hold`]), and the switch takes it alone. While it can't, the
+//!   `.locks/<tool>.in-use` file locked, shared ([`Hold`]), and the switch takes it alone. While it can't, the
 //!   new version waits in `staged.json` and is switched to the moment the last run using the helper
 //!   ends. The previous version is kept to go back to (`previous.json`, [`go_back`]); older ones
 //!   are removed at the switch.
@@ -183,14 +183,23 @@ pub(crate) fn kept(root: &Path, version: &str) -> Option<Installed> {
 
 // ---- Locks -------------------------------------------------------------------------------------
 
-fn lock_file(root: &Path, name: &str) -> std::io::Result<File> {
-    std::fs::create_dir_all(root)?;
+/// The lock file `kind` of the tool whose folder is `root`: `<tools>/.locks/<tool><kind>`, beside
+/// the tools' folders, never in them (a folder made only for a lock would pass for an install).
+fn lock_file(root: &Path, kind: &str) -> std::io::Result<File> {
+    let name = root.file_name().unwrap_or_default().to_string_lossy();
+    let locks = root.parent().unwrap_or(root).join(".locks");
+    open_lock(&locks, &format!("{name}{kind}"))
+}
+
+/// `dir/name`, made if need be, opened to be locked.
+fn open_lock(dir: &Path, name: &str) -> std::io::Result<File> {
+    std::fs::create_dir_all(dir)?;
     std::fs::OpenOptions::new()
         .read(true)
         .write(true)
         .create(true)
         .truncate(false)
-        .open(root.join(name))
+        .open(dir.join(name))
 }
 
 /// The lock a run of a helper holds (shared) while it uses it, and the switch takes alone.
@@ -517,7 +526,7 @@ pub fn read(dir: &Path) -> State {
 /// Change the update state under its lock (copies of MDM may change it at once) and write it.
 /// Returns it as written.
 pub fn change(dir: &Path, f: impl FnOnce(&mut State)) -> State {
-    let lock = lock_file(dir, ".updates.lock").ok();
+    let lock = open_lock(&dir.join(".locks"), "updates").ok();
     if let Some(l) = &lock {
         let _ = l.lock();
     }
