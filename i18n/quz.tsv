@@ -468,10 +468,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Wamp'uqman saqisqa URLkuna
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	Aswan allin / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -599,6 +595,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	Huk ruwana wakichiyqa ñawpaqtaña kay antañiqiqpa rikch'arichiy pachanpaq huk rikch'arichiyta churanña
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	{ms} ms ukhupi kutichirqan. Internetqa {ip}ta rikun.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -2088,6 +2088,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP uraykachiykunaqa mana HTTP proxywan purinchu. SOCKS5 utaq SOCKS4 akllay proxywan kachaypaq.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2737,6 +2741,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Maskay
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	Proxywan web khipukunapa sutinkunata maskay
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3241,6 +3249,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Manaraqmi mayqin direccionpas kanchu
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	20 segundos ukhupi mana kutichirqanchu.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -4237,10 +4249,10 @@
 #. text in the Options window
 #, machine
 	Service:	Qhatu:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	Ñawpaqtaqa Opciones → Proxy / Socks nisqapi huk socks5:// proxyta churay
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Ñawpaqta Options → Proxy / Socks (Manual, Type SOCKS5) nisqapi SOCKS5 proxyta churay
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Willañiqi kamay p'unchawta sirwiqpa qusqan hina churaq
@@ -5195,6 +5207,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	Sistemapa DNS nisqan
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	Prueba p'anqaqa rik'usqan direccionta mana willarqanchu.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5616,6 +5632,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Iskay mana qullqiyuq yanapaqkunaqa llamk'achinku. Kunan chaskiy, hinaspa huk videota tarispaqa huk kutilla ñit'iywanmi waqaychayta atinki.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	Imayna
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5787,9 +5807,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Kay torrentpaq chaykunata llamk'achiy? Imachus tupaqqa waqaychasqa kachkan, wakintaq hukman t'ikrasqa.
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	Kay proxyta kay protokolkunapaq llamk'achiy:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine

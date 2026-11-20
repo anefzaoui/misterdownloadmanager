@@ -45,6 +45,10 @@
 #. {n} = a number (keep the braces as they are)
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?
 #. count in a dialog box
+#. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+#. {n} = a number (keep the braces as they are)
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	This also deletes {n} finished file.|This also deletes {n} finished files.
+#. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
 @plural	and {n} more|and {n} more	and {n} more|and {n} more
@@ -358,9 +362,6 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 	Addresses left to the browser	Addresses left to the browser
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-	Advanced / Socks...	Advanced / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 	Advanced browser integration is on	Advanced browser integration is on
@@ -456,6 +457,9 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 	Another program has set the computer's wake alarm	Another program has set the computer's wake alarm
 #. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+	Answered in {ms} ms. The internet sees {ip}.	Answered in {ms} ms. The internet sees {ip}.
+#. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Answered in {ms} ms: {ip}
 #. text in countries.rs
@@ -516,6 +520,7 @@
 #. the trailing ... means it is still going on: keep it
 	Asking the service...	Asking the service...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 	Asking...	Asking...
@@ -790,7 +795,8 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 	Choose the profile's folder	Choose the profile's folder
-#. text in helpers.rs
+#. text in helpers.rs; text in the Options window
+#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 	Choose {name}	Choose {name}
 #. text in countries.rs
@@ -1440,6 +1446,9 @@
 #. button in the Find window
 #. verb: button that starts the search
 	Find	Find
+#. text in the Options window
+#. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
+	Find 7-Zip automatically	Find 7-Zip automatically
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Find a download	Find a download
 #. message or event log entry in the main window; window title in the Find window
@@ -1554,6 +1563,9 @@
 	From:	From:
 #. checkbox in the Options window
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 	Full	Full
@@ -2040,6 +2052,9 @@
 	Look links up when they arrive (name, size, online)	Look links up when they arrive (name, size, online)
 #. text in the Add torrent window; button in the Download video window
 	Look up	Look up
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+	Look up site names through the proxy	Look up site names through the proxy
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 	Look up the new address first	Look up the new address first
@@ -2412,6 +2427,9 @@
 	No	No
 #. text in a dialog box
 	No addresses yet	No addresses yet
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+	No answer within 20 seconds.	No answer within 20 seconds.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	No browser MDM can connect to was found
@@ -3148,9 +3166,9 @@
 	Service	Service
 #. text in the Options window
 	Service:	Service:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
-	Set a socks5:// proxy in Options → Proxy / Socks first	Set a socks5:// proxy in Options → Proxy / Socks first
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first
 #. checkbox in the Options window
 	Set file creation date as provided by the server	Set file creation date as provided by the server
 #. button in extension.rs; button in the Options window
@@ -3571,6 +3589,9 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	That is more than 100,000 files: make the range smaller	That is more than 100,000 files: make the range smaller
+#. text in the Options window
+#. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
+	That isn't 7-Zip's command line program (7z.exe).	That isn't 7-Zip's command line program (7z.exe).
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 	the .torrent file kept for it is gone	the .torrent file kept for it is gone
@@ -3858,6 +3879,9 @@
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 	The system's DNS	The system's DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+	The test page didn't say the address it saw.	The test page didn't say the address it saw.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 	The time is a round trip, measured as this download's own connections opened.	The time is a round trip, measured as this download's own connections opened.
@@ -4171,6 +4195,9 @@
 	Tuvalu	Tuvalu
 #. text in helpers.rs
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+	Type	Type
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 	Type a feed's address above and click Add feed.	Type a feed's address above and click Add feed.
@@ -4262,8 +4289,9 @@
 	Uruguay	Uruguay
 #. text in the Options window
 	Use advanced browser integration	Use advanced browser integration
-#. text in errors.rs; button in helpers.rs
+#. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 	Use another program...	Use another program...
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
@@ -4298,8 +4326,6 @@
 	Use the token	Use the token
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	Use them for this torrent? What matches it is kept, the rest replaced.
-#. label in the Options window
-	Use this proxy for the following protocols:	Use this proxy for the following protocols:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 	Use this rule	Use this rule

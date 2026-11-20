@@ -451,10 +451,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ᎤᎾᏙᏢᏒᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	ᎦᎸᎳᏗᏢ / SOCKS...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -1916,6 +1912,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP downloads ᎥᏝ HTTP proxy ᏱᏓᎬᏔᎠ. SOCKS5 ᎠᎴ SOCKS4 ᎢᏳᏍᏗ ᏕᎪᏏ proxy ᎢᏳᏩᏂᏐᏗ.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2548,6 +2548,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ᎢᏗᏴᏍᏗ
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	site names ᏕᎪᏏ proxy ᎢᏳᏩᏂᏐᏗ
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3039,6 +3043,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	ᎪᏢᏒᎢ ᎢᏗᏢ ᏂᎨᏒᎾ
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	ᎥᏝ ᏱᏚᎾᏗ answer ᏱᏚᎾᏗ 20 seconds ᎢᏳᏩᏂᏐᏗ.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -4017,10 +4025,10 @@
 #. text in the Options window
 #, machine
 	Service:	ᏗᏂᏍᏕᎵᏍᎩ:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	ᎢᎬᏱ ᏕᎦᏅᏍᏓᏗᏍᎩ socks5:// ᎯᎠ ᏗᏓᏚᎪᏗ ᎯᎠ ᏗᏓᏚᎪᏗ → ᏗᏓᏚᎪᏗ / Socks
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Set SOCKS5 proxy ᎢᏳᏩᏂᏐᏗ Options → Proxy / Socks (Manual, Type SOCKS5) ᎢᎬᏱ
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ᏗᏟᎶᏍᏔᏅᎯ ᎤᏓᎴᏅᏔᏅᎯ ᎢᎪᎯᏓᏍᏗ ᏗᎦᏃᏍᏓᏁᎯ ᎤᏓᏁᎸᎯ
@@ -4946,6 +4954,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	System ᎤᏤᎵ DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	test page ᎥᏝ ᏱᏚᎾᏗ say ᏱᏚᎾᏗ address ᎾᏍᎩ saw ᏱᏚᎾᏗ.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5498,9 +5510,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ᏗᏙᏓᎸᏍᏗ ᎯᎠ ᎢᏗᏟᏴᏔᏅᎯ? ᎾᏍᎩ ᎢᏳᏍᏗ ᏗᏙᏓᎸᏍᏗ ᎨᏒ ᏗᎦᏘᏍᏗ ᎨᏒ, ᏅᏩᏓᎴ ᏗᏙᏓᎸᏍᏗ ᎨᏒ ᏗᏓᏁᏟᏴᏍᏗ ᎨᏒ.
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	ᎬᏔᏅᎢ ᎯᎠ proxy ᎯᎠ ᎢᏗᏴᏍᏗ ᏗᏙᎳᏤᏗ:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
