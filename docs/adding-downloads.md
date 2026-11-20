@@ -50,8 +50,9 @@ password is not written to the resume file next to the download: MDM gives it ag
 resumes.
 
 **Connections.** Passive mode is used by default. **Options → Proxy / Socks → Use FTP in PASV
-mode** switches it off for servers that only take active connections. FTP connects to the
-server directly, not through the HTTP proxy.
+mode** switches it off for servers that only take active connections. FTP goes through a SOCKS
+proxy set in **Options → Proxy / Socks** (passive then, always; `ftps://` can't go through one
+yet), and connects to the server directly when the proxy is an HTTP one.
 
 Browsers no longer download `ftp://` links themselves. Right-click one and choose **Download with
 Mister Download Manager**, or copy it and use **Add URL**.

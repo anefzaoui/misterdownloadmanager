@@ -574,6 +574,12 @@ These ship in the next version.
   with files** tick it, once), it says how many finished files go with it, a question turned
   off only takes downloads off the list, and deleting files always asks
   ([#1563](https://github.com/anefzaoui/misterdownloadmanager/issues/1563))
+- ✅ SOCKS5 and SOCKS4 as a real choice in Options → Proxy / Socks: a **Type** (HTTP, HTTPS,
+  SOCKS5, SOCKS4), site names looked up through the proxy (on by default), a SOCKS5 login, Get
+  System reading Windows' SOCKS proxy, a **Test** button; every connection follows it: downloads
+  and FTP, video pages and galleries, MDM's own downloads and the update check, a proxy script's
+  SOCKS answers, and torrents when asked
+  ([#1558](https://github.com/anefzaoui/misterdownloadmanager/issues/1558))
 - ✅ 7z and RAR archives are extracted with the 7-Zip another archiver brings: PeaZip's and
   NanaZip's command line are found by themselves on Windows, and **Options → Archives → Use
   another program...** takes any other 7-Zip command line program (a portable copy), checked
@@ -583,6 +589,10 @@ These ship in the next version.
   video's page for every yt-dlp run, "Use system settings" follows Windows' setup script (a
   proxy program's PAC mode), and a manual proxy chosen with no protocol ticked gets http and
   https ticked ([#1448](https://github.com/anefzaoui/misterdownloadmanager/issues/1448))
+- ✅ Website: screenshots open over the page in [Vitrine](https://github.com/anefzaoui/vitrine), growing out of their
+  place and back: arrows, keys and swipes through a group, zoom by click, double tap, pinch or
+  wheel, Back and Escape to close, the focus and the page kept where they were, right to left,
+  light and dark, reduced motion; the language picker opens and closes the same way
 - ✅ A video download, look-up, playlist or gallery finishes when yt-dlp (or gallery-dl) does:
   a program it started that still held its output open kept the download running at its last
   progress ([#1521](https://github.com/anefzaoui/misterdownloadmanager/issues/1521))

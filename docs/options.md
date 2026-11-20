@@ -89,9 +89,25 @@ More in [Connections and speed](connections-and-speed.md).
 
 - **No proxy/socks** — connect directly. This is the default.
 - **Use system settings** — use the system's proxy: Windows' or macOS' settings, or on Linux the `https_proxy`, `http_proxy` and `all_proxy` variables of your session.
-- **Use automatic configuration script** — the proxy auto-config (PAC) script your network gives: type its address (`http://…/proxy.pac`, or a file). MDM fetches it and asks it which proxy each download goes through (`PROXY`, `SOCKS` or `DIRECT`), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.
-- **Manual proxy/socks configuration** — type the proxy's address, **Port**, and a **UserName** and **Password** if it needs them, then tick the protocols it is for (**http**, **https**). For a SOCKS proxy, write the address as `socks5://host`.
-- **Get System** — fill in the manual fields from Windows' proxy settings (on Windows).
+- **Use automatic configuration script** — the proxy auto-config (PAC) script your network gives: type its address (`http://…/proxy.pac`, or a file). MDM fetches it and asks it which proxy each download goes through (`PROXY`, `HTTPS`, `SOCKS`, `SOCKS5`, `SOCKS4` or `DIRECT`), as browsers do. Through a `SOCKS` or `SOCKS5` answer, the proxy looks the site's name up, as in browsers. Until the script has been fetched, or if it can't be, MDM uses the system's settings.
+- **Manual proxy/socks configuration** — your own proxy:
+  - **Proxy server address** and **Port**: its name or IP address (`127.0.0.1`) and port (`1080`).
+  - **Type**: what the proxy speaks. **HTTP** (the usual web proxy), **HTTPS** (a web proxy reached over an encrypted connection), **SOCKS5** or **SOCKS4**.
+  - **UserName** and **Password**, if it needs them (HTTP, HTTPS and SOCKS5; SOCKS4 has no login, so they are greyed).
+  - For an HTTP or HTTPS proxy, tick the protocols it is for (**http**, **https**). FTP downloads never go through an HTTP proxy: its **ftp** box stays greyed and says so.
+  - A SOCKS proxy carries every connection: web downloads, FTP, video pages and galleries (yt-dlp and gallery-dl), MDM's own downloads and the update check, and torrents if you ask (below). It has no protocol boxes; instead, **Look up site names through the proxy** (on by default) has the proxy turn the sites' names into addresses, so your own DNS never sees which sites you visit (`socks5h`, `socks4a`). Untick it only for a proxy that can't look names up; MDM then looks them up with the DNS chosen under [Connection](#connection) and hands the proxy the address.
+  - FTP through a SOCKS proxy always uses passive mode (the proxy can't pass the server's connections back), so **Use FTP in PASV mode** shows ticked and greyed. `ftps://` addresses (TLS from the first byte) can't go through a SOCKS proxy yet; `ftpes://` (TLS after connecting) can.
+  - Torrents use a SOCKS5 proxy only when **Use the proxy** is on in Torrent settings (see [Torrents and your security](torrent-security.md)). A SOCKS4 or HTTP proxy doesn't carry them.
+  - An address written the older way, `socks5://host` (or `socks5h://`, `socks4://`, `http://`), still works: Options shows it as its **Type** with the host alone.
+- **Get System** — fill in the manual fields from Windows' proxy settings (on Windows): its HTTP proxy when it has one, else its SOCKS one (as **SOCKS5**: Windows doesn't say which version; choose **SOCKS4** if yours speaks only that).
+- **Test** — one request through what the page says now (its proxy, with the DNS and network adapter Options have), to Cloudflare's `one.one.one.one`, which answers with the address it saw. The line beside the button says how long it took and the address the internet sees (the proxy's, when it carries your connections), or why it failed: the proxy can't be reached, refused the login, or couldn't reach the site. Nothing else is sent.
+
+  **Which do I pick?**
+  - A VPN app usually needs nothing here: it carries all the computer's traffic. To make sure MDM never goes around it, choose its **Network adapter** below. Some VPN apps also offer a SOCKS5 proxy of their own (in their settings, with its own login): **SOCKS5**, its address, port and login.
+  - Tor (Tor Browser or the Tor service): **SOCKS5**, `127.0.0.1`, port `9150` (Tor Browser) or `9050` (the service), **Look up site names through the proxy** ticked. Tor carries no torrents well; leave **Use the proxy** off in Torrent settings.
+  - An SSH tunnel, `ssh -D 1080 you@server`: **SOCKS5**, `127.0.0.1`, port `1080`.
+  - Clash, v2rayN and similar proxy programs: their mixed port takes both, usually `127.0.0.1:7890` (**HTTP** or **SOCKS5**); v2rayN also has a SOCKS port, often `10808`. Or turn on their system proxy and choose **Use system settings**.
+  - A proxy your workplace or school gives: usually an **HTTP** one, or a script (**Use automatic configuration script**). Ask which.
 - **Use proxy/socks from a browser's request…** — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you switch on **Send downloads through this browser's proxy or VPN extension** in the extension's toolbar popup (Firefox asks you once; Chrome, Edge, Brave, Opera and Vivaldi ask nothing more: see [A VPN or proxy extension](browser-integration.md#a-vpn-or-proxy-extension)).
   - A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under **Network adapter**.
   - In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome and the other Chromium browsers, it sees the browser's proxy settings: the server for the download's scheme (honouring their bypass list) or their proxy auto-config script.
@@ -103,7 +119,7 @@ More in [Connections and speed](connections-and-speed.md).
   - Not held to the adapter yet, so they don't start while one is chosen: `ftps://` (implicit TLS; `ftp://` with TLS is fine).
   - Connections to this computer itself (`localhost`) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.
   - On macOS a VPN that reconnects may get a new interface (`utun5` instead of `utun4`): pick it again.
-- **Use FTP in PASV mode** — on by default: for FTP downloads MDM opens the data connections itself (passive mode), which works through routers and firewalls. Turn it off only for a server that needs active mode (the server connects back to you). FTP never goes through the proxy above, so its **ftp** box stays greyed. See [FTP and FTPS](adding-downloads.md#ftp-and-ftps).
+- **Use FTP in PASV mode** — on by default: for FTP downloads MDM opens the data connections itself (passive mode), which works through routers and firewalls. Turn it off only for a server that needs active mode (the server connects back to you). FTP goes through a SOCKS proxy above (always passive then), never through an HTTP one. See [FTP and FTPS](adding-downloads.md#ftp-and-ftps).
 
 ## Sites Logins
 

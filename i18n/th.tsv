@@ -468,10 +468,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ที่อยู่ที่จะให้เบราว์เซอร์ดาวน์โหลด
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	ขั้นสูง / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -599,6 +595,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	โปรแกรมอื่นได้ตั้งค่าการปลุกคอมพิวเตอร์แล้ว
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	ตอบกลับใน {ms} มิลลิวินาที อินเทอร์เน็ตเห็น {ip}
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -2083,6 +2083,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	การดาวน์โหลด FTP ไม่ผ่านพร็อกซี HTTP เลือก SOCKS5 หรือ SOCKS4 เพื่อส่งผ่านพร็อกซี
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2732,6 +2736,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ค้นหา
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	ค้นหาชื่อเว็บไซต์ผ่านพร็อกซี
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3236,6 +3244,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	ยังไม่มีที่อยู่
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	ไม่มีการตอบกลับภายใน 20 วินาที
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -4232,10 +4244,10 @@
 #. text in the Options window
 #, machine
 	Service:	บริการ:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	ตั้งค่าพร็อกซี socks5:// ในตัวเลือก → พร็อกซี / Socks ก่อน
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	ตั้งค่าพร็อกซี SOCKS5 ในตัวเลือก → พร็อกซี / SOCKS (กำหนดเอง, ประเภท SOCKS5) ก่อน
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	ตั้งค่าวันที่สร้างไฟล์ตามที่เซิร์ฟเวอร์ให้มา
@@ -5190,6 +5202,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	DNS ของระบบ
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	หน้าทดสอบไม่ได้ระบุที่อยู่ที่เห็น
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5611,6 +5627,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ตัวช่วยฟรีสองตัวทำให้ใช้งานได้ ดาวน์โหลดตอนนี้ แล้วบันทึกวิดีโอได้ในคลิกเดียวเมื่อพบวิดีโอ
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	ประเภท
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5782,9 +5802,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ต้องการใช้กับทอร์เรนต์นี้หรือไม่ สิ่งที่ตรงกันจะถูกเก็บไว้ ส่วนที่เหลือจะถูกแทนที่
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	ใช้พร็อกซีนี้สำหรับโปรโตคอลต่อไปนี้:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine

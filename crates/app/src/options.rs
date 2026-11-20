@@ -8,7 +8,7 @@ use crate::dialogs::{Outcome, window};
 use crate::icons::Icon;
 use crate::model::Category;
 use crate::regional::DateOrder;
-use crate::settings::{self, Settings};
+use crate::settings::{self, ProxyKind, Settings};
 // Pages are laid out in English pixels: `fill` makes each one where it is on screen, `text`
 // starts at an English pen, and a widget given a screen rect (from `r`) turns it back into its
 // English rect (`winui::rect` both ways) before laying out its inside.
@@ -233,6 +233,8 @@ pub struct OptionsDialog {
     hatch_zip: Option<std::path::PathBuf>,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
     adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
+    /// Proxy / Socks → Test (#1558): the answer, shared with its thread (None while it runs).
+    proxy_test: Option<TestSlot>,
     /// Remote (#141): the running remote control (its state, paired devices, pairing), the
     /// port as typed, and the paired devices list's scroll and selection.
     remote: Option<mdm_remote::Remote>,
@@ -328,6 +330,7 @@ impl OptionsDialog {
     ) -> Self {
         let mut s = settings.clone();
         let from = s.clone();
+        strip_proxy_scheme(&mut s);
         tick_manual_protocols(&mut s);
         OptionsDialog {
             from,
@@ -353,6 +356,7 @@ impl OptionsDialog {
             not_7zip: false,
             hatch_zip: crate::extractq::hatch_zip(),
             adapters: None,
+            proxy_test: None,
             remote: None,
             port: settings.remote_port.to_string(),
             device_rows: Default::default(),
@@ -1743,13 +1747,14 @@ impl OptionsDialog {
             false,
         )
         .clicked()
-            && let Some((host, port)) = system_proxy()
+            && let Some(found) = system_proxy()
         {
             s.proxy_mode = 3;
-            s.proxy_host = host;
-            s.proxy_port = port;
-            s.proxy_http = true;
-            s.proxy_https = true;
+            s.proxy_kind = found.kind;
+            s.proxy_host = found.host;
+            s.proxy_port = found.port;
+            s.proxy_http = found.http;
+            s.proxy_https = found.https;
         }
         winui::checkbox_light(
             ui,
@@ -1830,6 +1835,10 @@ impl OptionsDialog {
             LIGHT_PAGE(),
         );
         let manual = s.proxy_mode == 3;
+        // Manual → Type (#1558): what the proxy speaks. An address typed with its scheme says
+        // it instead, as the engine reads it (`Settings::manual_proxy`).
+        let kind = s.manual_proxy().map_or(s.proxy_kind, |(kind, _, _)| kind);
+        let login = manual && kind.has_login();
         disabled_label(
             &p,
             o.x + 30.0,
@@ -1839,8 +1848,8 @@ impl OptionsDialog {
             false,
         );
         disabled_label(&p, o.x + 172.0, o.y + 278.0, "Port", manual, false);
-        disabled_label(&p, o.x + 229.0, o.y + 278.0, "UserName", manual, false);
-        disabled_label(&p, o.x + 313.0, o.y + 278.0, "Password", manual, false);
+        disabled_label(&p, o.x + 229.0, o.y + 278.0, "UserName", login, false);
+        disabled_label(&p, o.x + 313.0, o.y + 278.0, "Password", login, false);
         winui::edit_light_on(
             ui,
             r(o, 30.0, 286.0, 137.0, 24.0),
@@ -1858,56 +1867,167 @@ impl OptionsDialog {
             manual,
             LIGHT_PAGE(),
         );
+        // SOCKS4 has no login: the boxes keep what was typed, greyed.
         winui::edit_light_on(
             ui,
             r(o, 229.0, 286.0, 78.0, 24.0),
             &mut s.proxy_user,
-            manual,
+            login,
             false,
             LIGHT_PAGE(),
         );
-        password(
+        password(ui, r(o, 312.0, 286.0, 83.0, 24.0), &mut s.proxy_pass, login);
+        // i18n: Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+        disabled_label(&p, o.x + 30.0, o.y + 333.0, "Type", manual, false);
+        let type_x = (30.0 + winui::text_width(&p, crate::i18n::t("Type")) + 6.0).max(64.0);
+        let labels: Vec<&str> = ProxyKind::ALL.iter().map(|k| k.label()).collect();
+        let at = ProxyKind::ALL.iter().position(|k| *k == kind).unwrap_or(0);
+        if let Some(i) = winui::combo_light(
             ui,
-            r(o, 312.0, 286.0, 83.0, 24.0),
-            &mut s.proxy_pass,
+            r(o, type_x, 318.0, 82.0, 21.0),
+            &labels,
+            at,
             manual,
-        );
-        disabled_label(
-            &p,
-            o.x + 30.0,
-            o.y + 326.0,
-            "Use this proxy for the following protocols:",
-            manual,
-            false,
-        );
-        winui::checkbox_light(ui, o + vec2(30.0, 334.0), &mut s.proxy_http, "http", manual);
-        winui::checkbox_light(
-            ui,
-            o + vec2(97.0, 334.0),
-            &mut s.proxy_https,
-            "https",
-            manual,
-        );
-        // FTP connects to its servers directly, never through an HTTP proxy: the ftp box
-        // stays greyed (D-021).
-        winui::checkbox_light(ui, o + vec2(174.0, 334.0), &mut s.proxy_ftp, "ftp", false);
-        // Socks settings: with the proxy work in M10.
-        winui::button_light(
-            ui,
-            r(o, 235.0, 339.0, 159.0, 21.0),
-            "Advanced / Socks...",
-            ButtonKind::Disabled,
-            false,
-        );
+            "opt-proxy-type",
+        ) {
+            choose_proxy_kind(s, ProxyKind::ALL[i]);
+        }
+        let after = type_x + 82.0 + 12.0;
+        if kind.is_socks() {
+            // socks5h / socks4a: the proxy looks the site's name up, so this computer's DNS
+            // never sees it (on by default).
+            let mut remote = s
+                .manual_proxy()
+                .map_or(s.proxy_remote_dns, |(_, remote, _)| remote);
+            let was = remote;
+            winui::checkbox_light_until(
+                ui,
+                o + vec2(after, 322.0),
+                &mut remote,
+                // i18n: Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+                "Look up site names through the proxy",
+                manual,
+                Some(o.x + 395.0),
+            );
+            if remote != was {
+                // A scheme typed in the address goes into Type first, then the box says.
+                strip_proxy_scheme(s);
+                s.proxy_remote_dns = remote;
+            }
+        } else {
+            winui::checkbox_light(
+                ui,
+                o + vec2(after, 322.0),
+                &mut s.proxy_http,
+                "http",
+                manual,
+            );
+            let https_x = winui::checkbox_caption_end(&p, after, "http") + 12.0;
+            winui::checkbox_light(
+                ui,
+                o + vec2(https_x, 322.0),
+                &mut s.proxy_https,
+                "https",
+                manual,
+            );
+            // FTP never goes through an HTTP proxy (its servers aren't web servers); a SOCKS
+            // one carries it (#1558). The box stays greyed and says so.
+            let ftp_x = winui::checkbox_caption_end(&p, https_x, "https") + 12.0;
+            let mut ftp = false;
+            let ftp_box = winui::checkbox_light(ui, o + vec2(ftp_x, 322.0), &mut ftp, "ftp", false);
+            winui::why_disabled(
+                ftp_box,
+                true,
+                // i18n: Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+                "FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.",
+            );
+        }
+        self.proxy_test_row(ui, o);
+        let s = &mut self.s;
         winui::etched_h(&p, o.x + 21.0, o.y + 447.0, 381.0);
+        // FTP through a SOCKS proxy is always passive: the proxy can't take the server's
+        // connection back to this computer (#1558). The box shows it, greyed; the setting stays.
+        let socks_ftp = manual && kind.is_socks();
+        let mut passive = s.ftp_passive || socks_ftp;
         winui::checkbox_light(
             ui,
             o + vec2(27.0, 453.0),
-            &mut s.ftp_passive,
+            &mut passive,
             "Use FTP in PASV mode",
-            true,
+            !socks_ftp,
         );
+        if !socks_ftp {
+            s.ftp_passive = passive;
+        }
         self.adapter_row(ui, o);
+    }
+
+    /// Proxy / Socks → Test (#1558): one request through what the page says now (its proxy, the
+    /// DNS and network adapter Options have), on a thread of its own; the line after it says
+    /// whether it answered and the address the internet sees.
+    fn proxy_test_row(&mut self, ui: &mut Ui, o: Pos2) {
+        let p = ui.painter().clone();
+        let running = self
+            .proxy_test
+            .as_ref()
+            .is_some_and(|t| t.lock().unwrap().is_none());
+        let kind = if running {
+            ButtonKind::Disabled
+        } else {
+            ButtonKind::Normal
+        };
+        let w = winui::button_fit_width(&p, "Test", 73.0, 150.0);
+        if winui::button_light(ui, r(o, 30.0, 345.0, w, 21.0), "Test", kind, false).clicked() {
+            let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
+            self.proxy_test = Some(slot.clone());
+            let adapters = self
+                .adapters
+                .as_ref()
+                .map(|(_, a)| a.clone())
+                .unwrap_or_else(crate::netwatch::adapters);
+            let opts = mdm_engine::Options {
+                dns: self.s.dns(),
+                route: mdm_engine::net::route_for(&self.s.net_adapter, &adapters),
+                ..mdm_tools::net(self.s.proxy())
+            };
+            let ctx = ui.ctx().clone();
+            std::thread::spawn(move || {
+                let line = match proxy_probe(&opts) {
+                    Ok((took, ip)) => (
+                        crate::i18n::fmt(
+                            // i18n: Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+                            crate::i18n::t("Answered in {ms} ms. The internet sees {ip}."),
+                            &[
+                                ("ms", &crate::i18n::integer(took.as_millis() as u64)),
+                                ("ip", &ip),
+                            ],
+                        ),
+                        true,
+                    ),
+                    Err(why) => (why, false),
+                };
+                *slot.lock().unwrap() = Some(line);
+                ctx.request_repaint();
+            });
+        }
+        let status = self.proxy_test.as_ref().map(|t| {
+            t.lock().unwrap().clone().unwrap_or_else(|| {
+                // i18n: Options → Proxy / Socks: Test is running
+                (crate::i18n::t("Asking...").to_owned(), true)
+            })
+        });
+        if let Some((line, ok)) = status {
+            let color = if ok {
+                LIGHT_TEXT()
+            } else {
+                crate::theme::colors().error_strong
+            };
+            let x = o.x + 30.0 + w + 8.0;
+            let (rect, cut) = winui::label_into(&p, x, o.y + 360.0, &line, color, o.x + 400.0, x);
+            if cut {
+                winui::full_on_hover(ui, rect, "proxy-test", &line);
+            }
+        }
     }
 
     /// Proxy / Socks → Network adapter (#35): the adapter every connection goes through (a VPN's),
@@ -4160,12 +4280,95 @@ fn tick_manual_protocols(s: &mut Settings) {
     }
 }
 
-/// Proxy / Socks → Get System: Windows' own proxy (host, port), if one is set.
-fn system_proxy() -> Option<(String, String)> {
+/// Proxy / Socks → Get System: Windows' own proxy, if one is set (its HTTP one, else its SOCKS
+/// one, #1558).
+fn system_proxy() -> Option<crate::settings::SystemProxy> {
     #[cfg(windows)]
-    return crate::win32::system_proxy();
+    return crate::win32::system_proxy().and_then(|v| crate::settings::parse_system_proxy(&v));
+    // Linux and macOS: their desktops' proxy settings aren't read yet; Use system settings
+    // reads the environment's (and macOS' settings) instead.
     #[cfg(not(windows))]
     None
+}
+
+/// Where Proxy / Socks → Test asks: Cloudflare's trace page answers with the address it saw
+/// (`ip=…`), and nothing more is sent than that request.
+const PROXY_PROBE: &str = "https://one.one.one.one/cdn-cgi/trace";
+
+/// One request through `opts`' proxy, DNS and adapter (#1558): how long it took and the address
+/// the server saw, or why it failed (with the proxy's own words: refused, a login it wants).
+fn proxy_probe(opts: &mdm_engine::Options) -> Result<(std::time::Duration, String), String> {
+    let url = url::Url::parse(PROXY_PROBE).map_err(|e| e.to_string())?;
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .map_err(|e| e.to_string())?;
+    rt.block_on(async {
+        let client = mdm_engine::http_client(opts, &url).map_err(|e| e.to_string())?;
+        let start = std::time::Instant::now();
+        let answer = tokio::time::timeout(std::time::Duration::from_secs(20), async {
+            client
+                .get(url.clone())
+                .send()
+                .await?
+                .error_for_status()?
+                .text()
+                .await
+        })
+        .await
+        // i18n: Options → Proxy / Socks: Test got no answer in time
+        .map_err(|_| crate::i18n::t("No answer within 20 seconds.").to_owned())?
+        .map_err(|e| error_chain(&e))?;
+        let took = start.elapsed();
+        let ip = answer
+            .lines()
+            .find_map(|l| l.strip_prefix("ip="))
+            .map(str::trim)
+            .filter(|ip| !ip.is_empty())
+            .ok_or_else(|| {
+                // i18n: Options → Proxy / Socks: Test's server answered without saying the address it saw
+                crate::i18n::t("The test page didn't say the address it saw.").to_owned()
+            })?;
+        Ok((took, ip.to_owned()))
+    })
+}
+
+/// What went wrong, as specifically as the error says: its innermost cause ("SOCKS error:
+/// credentials not accepted"); reqwest's own line names only the request.
+fn error_chain(e: &dyn std::error::Error) -> String {
+    let mut last = e.to_string();
+    let mut cause = e.source();
+    while let Some(c) = cause {
+        last = c.to_string();
+        cause = c.source();
+    }
+    last
+}
+
+/// Proxy / Socks → Manual → Type chosen (#1558). An address typed with its scheme
+/// (`socks5://host`) loses it, so the address and Type never say two things.
+fn choose_proxy_kind(s: &mut Settings, kind: ProxyKind) {
+    strip_proxy_scheme(s);
+    s.proxy_kind = kind;
+    tick_manual_protocols(s);
+}
+
+/// An address typed with a proxy's scheme (`socks5://host`, as the docs said before Type): the
+/// scheme moves into Type and "Look up site names through the proxy", the address keeps the
+/// host. Done when Options opens, so the page shows what the address says.
+fn strip_proxy_scheme(s: &mut Settings) {
+    let host = s.proxy_host.trim();
+    if let Some((kind, remote)) = host
+        .split_once("://")
+        .and_then(|(scheme, _)| ProxyKind::from_scheme(scheme))
+    {
+        let rest = host.split_once("://").map(|(_, r)| r).unwrap_or_default();
+        s.proxy_host = rest.trim_end_matches('/').to_owned();
+        s.proxy_kind = kind;
+        if kind.is_socks() {
+            s.proxy_remote_dns = remote;
+        }
+    }
 }
 
 pub fn play_sound(file: &str) {
@@ -5415,6 +5618,52 @@ mod tests {
         assert!(
             !other.proxy_http && !other.proxy_https,
             "not Manual: as it is"
+        );
+    }
+
+    /// #1558: an address typed the old way (`socks5://host`) opens as Type SOCKS5 with the host
+    /// alone (names looked up here, as it worked); socks5h with them through the proxy. The
+    /// change is the dialog's: OK saves it. Choosing a type drops a scheme left in the address.
+    #[test]
+    fn an_old_socks_address_opens_as_its_type() {
+        let s = Settings {
+            proxy_mode: 3,
+            proxy_host: "socks5://127.0.0.1".into(),
+            proxy_port: "1080".into(),
+            ..Settings::default()
+        };
+        let dialog = OptionsDialog::new(&s, std::path::Path::new("."), Vec::new());
+        assert_eq!(
+            (
+                dialog.s.proxy_kind,
+                dialog.s.proxy_remote_dns,
+                dialog.s.proxy_host.as_str()
+            ),
+            (ProxyKind::Socks5, false, "127.0.0.1")
+        );
+        assert_eq!(dialog.s.proxy(), s.proxy(), "the same proxy as before");
+        assert_eq!(dialog.from.proxy_host, "socks5://127.0.0.1");
+        let mut t = Settings {
+            proxy_host: "socks5h://tor.local/".into(),
+            ..s.clone()
+        };
+        strip_proxy_scheme(&mut t);
+        assert_eq!(
+            (t.proxy_remote_dns, t.proxy_host.as_str()),
+            (true, "tor.local")
+        );
+        t.proxy_host = "socks4://10.0.0.1".into();
+        choose_proxy_kind(&mut t, ProxyKind::Http);
+        assert_eq!(
+            (t.proxy_kind, t.proxy_host.as_str()),
+            (ProxyKind::Http, "10.0.0.1")
+        );
+        // A host with no scheme is left as typed.
+        t.proxy_host = "proxy.corp".into();
+        strip_proxy_scheme(&mut t);
+        assert_eq!(
+            (t.proxy_kind, t.proxy_host.as_str()),
+            (ProxyKind::Http, "proxy.corp")
         );
     }
 

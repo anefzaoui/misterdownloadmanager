@@ -468,10 +468,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ബ്രൗസറിനായി മാറ്റിവെച്ച വിലാസങ്ങൾ
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	വിപുലമായ / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -599,6 +595,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	മറ്റൊരു പ്രോഗ്രാം കമ്പ്യൂട്ടറിന്റെ വേക്ക് അലാറം സജ്ജീകരിച്ചിട്ടുണ്ട്
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	{ms} മില്ലിസെക്കൻഡിൽ മറുപടി ലഭിച്ചു. ഇന്റർനെറ്റ് {ip} കാണുന്നു.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -2083,6 +2083,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ഡൗൺലോഡുകൾ HTTP പ്രോക്സി വഴി പോകില്ല. പ്രോക്സി വഴി അയയ്ക്കാൻ SOCKS5 അല്ലെങ്കിൽ SOCKS4 തിരഞ്ഞെടുക്കുക.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2732,6 +2736,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	തിരയുക
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	പ്രോക്സി വഴി സൈറ്റ് പേരുകൾ കണ്ടെത്തുക
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3236,6 +3244,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	വിലാസങ്ങളൊന്നും ഇതുവരെയില്ല
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	20 സെക്കൻഡിനുള്ളിൽ മറുപടി ലഭിച്ചില്ല.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -4232,10 +4244,10 @@
 #. text in the Options window
 #, machine
 	Service:	സേവനം:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	ഓപ്ഷനുകൾ → പ്രോക്സി / സോക്സ് എന്നതിൽ ആദ്യം ഒരു socks5:// പ്രോക്സി സജ്ജീകരിക്കുക
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	ഓപ്ഷനുകൾ → പ്രോക്സി / സോക്സ് (മാനുവൽ, ടൈപ്പ് SOCKS5) എന്നതിൽ ആദ്യം ഒരു SOCKS5 പ്രോക്സി സജ്ജീകരിക്കുക
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	സെർവർ നൽകിയ ഫയൽ നിർമ്മാണ തീയതി സജ്ജമാക്കുക
@@ -5190,6 +5202,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	സിസ്റ്റത്തിന്റെ DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	ടെസ്റ്റ് പേജ് കണ്ട വിലാസം പറഞ്ഞില്ല.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5611,6 +5627,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	രണ്ട് സൗജന്യ സഹായ പ്രോഗ്രാമുകൾ ഇത് പ്രവർത്തിപ്പിക്കുന്നു. അവ ഇപ്പോൾ നേടൂ; ഒരു വീഡിയോ കണ്ടെത്തുമ്പോൾ അത് സംരക്ഷിക്കാൻ ഒറ്റ ക്ലിക്ക് മതി.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	തരം
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5782,9 +5802,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ഈ ടോറൻ്റിനായി അവ ഉപയോഗിക്കണോ? പൊരുത്തപ്പെടുന്നവ നിലനിർത്തും, ബാക്കിയുള്ളവ മാറ്റിസ്ഥാപിക്കും.
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	ഇനിപ്പറയുന്ന പ്രോട്ടോക്കോളുകൾക്കായി ഈ പ്രോക്സി ഉപയോഗിക്കുക:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
