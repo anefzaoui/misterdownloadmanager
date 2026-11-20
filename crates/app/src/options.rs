@@ -777,7 +777,7 @@ impl OptionsDialog {
         // Adding browsers and the browser menu editor are the extension's settings (M8): shown as
         // IDM has them, not yet available.
         let off = |ui: &mut Ui, rc: Rect, label: &str| {
-            winui::button_light(ui, rc, label, ButtonKind::Disabled, false);
+            winui::button_light(ui, rc, label, ButtonKind::Disabled, false)
         };
         // Both as wide as their labels in this language (#192), within the group box.
         let [test_at, add_at] = winui::button_row(
@@ -847,7 +847,8 @@ impl OptionsDialog {
             winui::full_on_hover(ui, rect, ("general-right", 419), label);
         }
         // i18n: verb: edit the item
-        off(ui, r(o, 289.0, 406.0, 103.0, 21.0), "Edit...");
+        let menu_edit = off(ui, r(o, 289.0, 406.0, 103.0, 21.0), "Edit...");
+        winui::name(&menu_edit, label);
         // The download button over videos in the browsers (our own panel, Sub::Panels).
         let label = crate::i18n::t("Customize MDM Download panels in browsers");
         let panels_at = fit_right("Edit...");
@@ -861,16 +862,16 @@ impl OptionsDialog {
         if cut {
             winui::full_on_hover(ui, rect, ("general-right", 452), label);
         }
-        if winui::button_light(
+        let panels_edit = winui::button_light(
             ui,
             r(o, panels_at.0, 438.0, panels_at.1, 21.0),
             // i18n: verb: edit the item
             "Edit...",
             ButtonKind::Normal,
             false,
-        )
-        .clicked()
-        {
+        );
+        winui::name(&panels_edit, label);
+        if panels_edit.clicked() {
             self.sub = Some(Sub::Panels(
                 self.s.video_panel,
                 self.s.video_panel_compact,

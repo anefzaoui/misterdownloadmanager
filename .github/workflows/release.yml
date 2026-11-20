@@ -37,7 +37,7 @@ jobs:
       - name: IP-to-country table
         run: python3 tools/geo/build.py --release
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: geo-data
           path: crates/geo/data/*
@@ -180,7 +180,7 @@ jobs:
           if ($LASTEXITCODE) { throw "symbols failed" }
 
       # x64's under the name it always had ("windows"), the others' with their processor.
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ matrix.arch == 'x64' && 'windows' || format('windows-{0}', matrix.arch) }}
           path: target/dist/*
@@ -269,12 +269,12 @@ jobs:
           EXTENSION_ID: ejoleppdfgjdndddcjoehopknmlglojp
         run: ./tools/release/node_modules/.bin/chrome-webstore-upload --source target/extension/mdm-chrome-store.zip
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: chrome-web-store
           path: target/store/*
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: extension
           path: target/dist/*
@@ -355,7 +355,7 @@ jobs:
         run: python3 tools/installer/smoke.py target/release ${{ matrix.arch }}
 
       # x64's under the name it always had ("linux"), ARM64's with its processor.
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ matrix.arch == 'x64' && 'linux' || format('linux-{0}', matrix.arch) }}
           path: target/dist/*
@@ -390,7 +390,7 @@ jobs:
           GH_TOKEN: ${{ github.token }} # downloads the build's helpers signed in (fetch_release.py)
         run: bash tools/installer/build-macos.sh
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: macos
           path: target/dist/*

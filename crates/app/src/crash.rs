@@ -124,6 +124,9 @@ pub fn start(data: &Path, session: Session, at_login: bool) {
     let _ = UI_THREAD.set(crate::win32::thread_id());
     #[cfg(unix)]
     let _ = UI_THREAD.set(crate::unix::thread_id());
+    // macOS: the window thread's use is asked for by its Mach port instead ([`usage`]).
+    #[cfg(target_os = "macos")]
+    crate::unix::remember_window_thread();
     let Some(exe) = std::env::current_exe().ok() else {
         return;
     };
@@ -721,26 +724,22 @@ fn watchdog(at_login: bool) {
         // normal frame is over long before: the thread isn't asked about each one).
         let long = now.saturating_sub(from) >= freeze_after;
         let busy = seen.filter(|_| long).and_then(|(_, at, before)| {
-            let (before, after) = (before?, usage(ui)?);
-            Some(Busy {
-                wall_ms: now.saturating_sub(at),
-                cpu_ms: after.cpu_ms.saturating_sub(before.cpu_ms),
-                faults: before
-                    .faults
-                    .zip(after.faults)
-                    .map(|(b, a)| a.saturating_sub(b)),
-            })
+            Some(busy_between(before?, usage(ui)?, now.saturating_sub(at)))
         });
         let told = |b: Busy| {
+            let pageins = b
+                .pageins
+                .map(|n| format!(", {n} page-ins"))
+                .unwrap_or_default();
             tracing::warn!(
-                "the window thread ran {} of {} ms meanwhile ({} page faults)",
+                "the window thread ran {} of {} ms meanwhile ({} page faults{pageins})",
                 b.cpu_ms,
                 b.wall_ms,
                 b.faults.map_or("unknown".to_owned(), |n| n.to_string())
             );
         };
         // Every window hidden and the window thread barely running: nobody sees the stall, and
-        // the computer has the thread (#1126). Unknown use (macOS) isn't taken for idle.
+        // the computer has the thread (#1126). Unknown use isn't taken for idle.
         let hidden_idle =
             HIDDEN.load(Ordering::Acquire) && busy.is_some_and(|b| idle(b.cpu_ms, b.wall_ms));
         let asked = ASKED.load(Ordering::Acquire).saturating_sub(1);
@@ -793,23 +792,39 @@ fn watchdog(at_login: bool) {
     }
 }
 
-/// A thread's processor time so far and the page faults counted so far (see `Busy::faults`).
+/// A thread's processor time so far and the page faults and page-ins counted so far (see
+/// `Busy::faults` and `Busy::pageins`).
 #[derive(Clone, Copy, Debug)]
 pub struct Usage {
     pub cpu_ms: u64,
     pub faults: Option<u64>,
+    pub pageins: Option<u64>,
 }
 
-/// The window thread's use so far. None on macOS: the dump can't name the window thread there
-/// (`thread_id` is 0), so its use isn't measured either.
-fn usage(ui_thread: u32) -> Option<Usage> {
-    if ui_thread == 0 {
-        return None;
+/// What the window thread used between two readings `wall_ms` apart.
+fn busy_between(before: Usage, after: Usage, wall_ms: u64) -> Busy {
+    let since = |b: Option<u64>, a: Option<u64>| b.zip(a).map(|(b, a)| a.saturating_sub(b));
+    Busy {
+        wall_ms,
+        cpu_ms: after.cpu_ms.saturating_sub(before.cpu_ms),
+        faults: since(before.faults, after.faults),
+        pageins: since(before.pageins, after.pageins),
     }
+}
+
+/// The window thread's use so far: by its id on Windows and Linux; on macOS, where the dump
+/// can't name it (`thread_id` is 0), by the Mach port remembered at [`start`] (#1515).
+fn usage(ui_thread: u32) -> Option<Usage> {
     #[cfg(windows)]
-    return crate::win32::thread_usage(ui_thread);
-    #[cfg(unix)]
+    return (ui_thread != 0)
+        .then(|| crate::win32::thread_usage(ui_thread))
+        .flatten();
+    #[cfg(target_os = "macos")]
     return crate::unix::thread_usage(ui_thread);
+    #[cfg(all(unix, not(target_os = "macos")))]
+    return (ui_thread != 0)
+        .then(|| crate::unix::thread_usage(ui_thread))
+        .flatten();
 }
 
 /// The session's description for the monitor.
@@ -1117,6 +1132,60 @@ mod watchdog_tests {
         });
         assert!(panicked.is_err());
         assert_eq!(dialogs_open(), 0, "closed by the panic too");
+    }
+
+    /// #1515: a macOS freeze said nothing of the window thread's use, the dump's thread ids
+    /// being the monitor's there. Two readings of the thread (by its Mach port, unix.rs) make
+    /// the report's "ran X of Y s" line, with the page-ins of the whole of MDM meanwhile.
+    #[test]
+    fn two_readings_of_the_window_thread_make_the_reports_lines() {
+        let before = Usage {
+            cpu_ms: 61_250,
+            faults: Some(480_000),
+            pageins: Some(9_100),
+        };
+        let after = Usage {
+            cpu_ms: 61_330,
+            faults: Some(483_100),
+            pageins: Some(9_912),
+        };
+        let busy = busy_between(before, after, 8_000);
+        assert_eq!(
+            busy,
+            Busy {
+                wall_ms: 8_000,
+                cpu_ms: 80,
+                faults: Some(3_100),
+                pageins: Some(812),
+            }
+        );
+        let freeze = Freeze {
+            ui_thread: 0,
+            main: true,
+            seconds: 8,
+            busy: Some(busy),
+            step: "the torrents".to_owned(),
+        };
+        let input = mdm_crash::report::Input {
+            kind: Some(mdm_crash::protocol::Kind::Freeze),
+            notes: mdm_crash::protocol::Notes {
+                freeze: Some(freeze),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        let t = mdm_crash::report::text(&input, None);
+        assert!(t.contains("Its thread ran 0.1 of 8.0 s."), "{t}");
+        assert!(
+            t.contains("812 page-ins during the freeze (pages of MDM read from disk"),
+            "{t}"
+        );
+        // A reading without them (Windows, Linux) leaves them unknown, not 0.
+        let none = Usage {
+            pageins: None,
+            ..after
+        };
+        assert_eq!(busy_between(before, none, 8_000).pageins, None);
     }
 
     /// Every step has its label, and the store reads back as the same step.

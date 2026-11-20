@@ -576,6 +576,10 @@ These ship in the next version.
   and macOS's share sheet), **Copy link**, **Download again**, **Remove from list** and **Delete
   file**; the toolbar button counts the running ones. The popup has tabs now: **Downloads**,
   **This page** and **Settings** ([#1496](https://github.com/anefzaoui/misterdownloadmanager/issues/1496))
+- ✅ macOS crash and freeze reports: the release's symbols are found (by the program's name, or
+  by its id when the report has no name for it) and carry unwinding tables and inlined calls, so
+  no frame is skipped; a freeze says how much the window's thread ran and how many pages MDM read
+  from disk meanwhile ([#1515](https://github.com/anefzaoui/misterdownloadmanager/issues/1515))
 - ✅ Alt+click on a link behind a site's bot check (Cloudflare's "Just a moment...") opens it in
   the tab, so the browser passes the check and keeps the file: Chromium browsers and Safari saved
   the check's page instead ([#1494](https://github.com/anefzaoui/misterdownloadmanager/issues/1494))
@@ -621,6 +625,10 @@ These ship in the next version.
   its first 256 KB block was written (some 15 s at 128 kbit/s, longer at lower bitrates); Stop and
   save before that block keeps nothing yet and leaves the download stopped to resume
   ([#1450](https://github.com/anefzaoui/misterdownloadmanager/pull/1450))
+- ✅ Tests: the live recording checks that failed now and then (most runs on Linux) wait until
+  enough is recorded for what they check, instead of saving at the first block: a recording that
+  short is within the second an MP4 may lose and still count as whole, so whether the MP4 was
+  judged short depended on when the save came
 - ✅ Download video: a video's own file (Kwai's MP4) is offered and downloaded when its server
   doesn't say it is a video, instead of "No video this can download on that page"; the button's
   click downloads such a file at once
@@ -1662,6 +1670,16 @@ These ship in the next version.
 - ✅ How a change is verified, written down: a `verify` skill (`.claude/skills/verify`) for
   running a change for real before it's merged, and REVIEW.md, what to check by what a pull
   request touches; every pull request says what was verified and what wasn't
+- ✅ Screen readers name the buttons a glyph or a shared word hid: "+" is "Add category",
+  "..." is "Browse", Options' two "Edit..." buttons take their captions ("Customize MDM
+  menu items in context menu of browsers", "Customize MDM Download panels in browsers"),
+  and the remembered folder field is "Category folder", not the checkbox's caption
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
+  pieces') no longer fail now and then on a busy computer: the test server times such a link from
+  its first request, not from the look-up that gave it, so a slow start can't kill it before the
+  download has asked for it
 
 ## Being worked on
 

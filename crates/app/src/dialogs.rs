@@ -1690,7 +1690,9 @@ impl FileInfo {
                 }
                 let category_was_open = self.category_open;
                 // "+": a new category (the app's category window).
-                if winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+").clicked() {
+                let new_category = winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+");
+                winui::name(&new_category, crate::i18n::t("Add category"));
+                if new_category.clicked() {
                     self.new_category = true;
                 }
 
@@ -1752,7 +1754,9 @@ impl FileInfo {
                     }
                 }
                 // "...": the system's Save dialog, its folder and file name (#1088).
-                if winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...").clicked() {
+                let browse = winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...");
+                winui::name(&browse, crate::i18n::t("Browse"));
+                if browse.clicked() {
                     let dest = self.dest();
                     let dir = dest.parent().map(Path::to_path_buf).unwrap_or_default();
                     let name = dest
@@ -1806,7 +1810,10 @@ impl FileInfo {
                     .trim_end_matches('\\')
                 );
                 let folder_rc = r(o, 104.0, 112.0, 348.0, 23.0);
-                winui::edit(ui, folder_rc, &mut folder, false, false);
+                // Read-only, and not a password box: bool::default() for both flags.
+                let folder_resp =
+                    winui::edit(ui, folder_rc, &mut folder, bool::default(), bool::default());
+                winui::name(&folder_resp, crate::i18n::t("Category folder"));
                 // Greyed as IDM shows it, and still copyable.
                 winui::copyable(ui, folder_rc, "remembered-folder", &folder, false);
 

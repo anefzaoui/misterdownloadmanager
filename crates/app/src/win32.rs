@@ -7255,6 +7255,8 @@ pub fn thread_usage(tid: u32) -> Option<crate::crash::Usage> {
         Some(crate::crash::Usage {
             cpu_ms: ms(kernel) + ms(user),
             faults,
+            // Windows counts no page-ins per process here (macOS's, unix.rs).
+            pageins: None,
         })
     }
 }

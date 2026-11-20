@@ -3158,13 +3158,191 @@ pub fn thread_usage(tid: u32) -> Option<crate::crash::Usage> {
     Some(crate::crash::Usage {
         cpu_ms: (utime + stime) * 1000 / hz,
         faults: Some(majflt),
+        pageins: None,
     })
 }
 
-/// macOS: not measured, since the window thread has no id there (`thread_id` is 0).
-#[cfg(not(target_os = "linux"))]
+/// The window thread's Mach port (macOS): the dump can't name the thread (`thread_id` is 0), so
+/// its use is asked of the kernel by this port instead ([`thread_usage`], #1515).
+#[cfg(target_os = "macos")]
+static WINDOW_THREAD: std::sync::OnceLock<libc::mach_port_t> = std::sync::OnceLock::new();
+
+/// Remember the calling thread as the window thread (crash.rs, at start, on that thread). macOS
+/// only: elsewhere the thread's id ([`thread_id`]) is enough.
+#[cfg(target_os = "macos")]
+pub fn remember_window_thread() {
+    let _ = WINDOW_THREAD.set(this_thread_port());
+}
+
+/// The calling thread's Mach port. Not a new reference: the process's own name for the thread,
+/// valid as long as the thread lives (the window thread is the main thread: as long as MDM).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn this_thread_port() -> libc::mach_port_t {
+    // SAFETY: plain queries about the calling thread.
+    unsafe { libc::pthread_mach_thread_np(libc::pthread_self()) }
+}
+
+/// The window thread's processor time so far, with the whole of MDM's page faults and page-ins
+/// (pages read from disk) so far (crash.rs's freeze notes). `_tid` is 0 on macOS: the thread is
+/// the one [`remember_window_thread`] saw. None before that, or when the kernel doesn't answer.
+#[cfg(target_os = "macos")]
+pub fn thread_usage(_tid: u32) -> Option<crate::crash::Usage> {
+    port_usage(*WINDOW_THREAD.get()?)
+}
+
+/// Thread `port`'s use so far: `thread_info(THREAD_BASIC_INFO)` for its time, and the task's
+/// `task_info(TASK_EVENTS_INFO)` for the faults (those only when it answers).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn port_usage(port: libc::mach_port_t) -> Option<crate::crash::Usage> {
+    // SAFETY: an all-integer C struct, filled by the kernel below.
+    let mut info: libc::thread_basic_info = unsafe { std::mem::zeroed() };
+    let mut count = libc::THREAD_BASIC_INFO_COUNT;
+    // SAFETY: `info` is a thread_basic_info and `count` its size in integers, as thread_info asks;
+    // it writes no more than `count` integers.
+    let kr = unsafe {
+        libc::thread_info(
+            port,
+            libc::THREAD_BASIC_INFO as libc::thread_flavor_t,
+            (&raw mut info).cast(),
+            &mut count,
+        )
+    };
+    if kr != libc::KERN_SUCCESS {
+        return None;
+    }
+    Some(mach_usage(&info, task_events()))
+}
+
+/// The task's `task_events_info` (<mach/task_info.h>; the libc crate doesn't carry it).
+#[cfg(target_os = "macos")]
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+struct TaskEventsInfo {
+    faults: libc::integer_t,
+    pageins: libc::integer_t,
+    cow_faults: libc::integer_t,
+    messages_sent: libc::integer_t,
+    messages_received: libc::integer_t,
+    syscalls_mach: libc::integer_t,
+    syscalls_unix: libc::integer_t,
+    csw: libc::integer_t,
+}
+
+/// <mach/task_info.h>'s TASK_EVENTS_INFO flavor.
+#[cfg(target_os = "macos")]
+const TASK_EVENTS_INFO: libc::task_flavor_t = 2;
+
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+unsafe extern "C" {
+    /// MDM's own task port, which <mach/mach_init.h>'s `mach_task_self()` reads (libc's copy is
+    /// deprecated for the mach2 crate, which MDM doesn't otherwise need).
+    static mach_task_self_: libc::mach_port_t;
+}
+
+/// MDM's own page faults and page-ins so far.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn task_events() -> Option<TaskEventsInfo> {
+    let mut events = TaskEventsInfo::default();
+    let mut count = (size_of::<TaskEventsInfo>() / size_of::<libc::natural_t>())
+        as libc::mach_msg_type_number_t;
+    // SAFETY: `events` is a task_events_info and `count` its size in integers, as task_info asks;
+    // the task is MDM's own, its port set by the system before MDM runs.
+    let kr = unsafe {
+        libc::task_info(
+            mach_task_self_,
+            TASK_EVENTS_INFO,
+            (&raw mut events).cast(),
+            &mut count,
+        )
+    };
+    (kr == libc::KERN_SUCCESS).then_some(events)
+}
+
+/// A thread's basic info and the task's events as [`crate::crash::Usage`]: user + system time
+/// in ms, the task's faults and page-ins (the kernel's counters are 32-bit: read as unsigned).
+#[cfg(target_os = "macos")]
+fn mach_usage(
+    info: &libc::thread_basic_info,
+    events: Option<TaskEventsInfo>,
+) -> crate::crash::Usage {
+    let ms = |t: libc::time_value_t| {
+        t.seconds.max(0) as u64 * 1000 + t.microseconds.max(0) as u64 / 1000
+    };
+    crate::crash::Usage {
+        cpu_ms: ms(info.user_time) + ms(info.system_time),
+        faults: events.map(|e| e.faults as u32 as u64),
+        pageins: events.map(|e| e.pageins as u32 as u64),
+    }
+}
+
+/// Other systems: not measured.
+#[cfg(not(any(target_os = "linux", target_os = "macos")))]
 pub fn thread_usage(_tid: u32) -> Option<crate::crash::Usage> {
     None
+}
+
+#[cfg(all(test, target_os = "macos"))]
+mod mach_usage_tests {
+    use super::*;
+
+    /// The kernel's answer as the freeze report reads it: user + system time in ms, the task's
+    /// faults and page-ins; a counter past 2^31 read as unsigned, not negative.
+    #[test]
+    #[allow(unsafe_code)]
+    fn a_threads_basic_info_is_its_time_in_ms() {
+        // SAFETY: an all-integer C struct.
+        let mut info: libc::thread_basic_info = unsafe { std::mem::zeroed() };
+        info.user_time = libc::time_value_t {
+            seconds: 2,
+            microseconds: 250_000,
+        };
+        info.system_time = libc::time_value_t {
+            seconds: 0,
+            microseconds: 40_999,
+        };
+        let events = TaskEventsInfo {
+            faults: 51_000,
+            pageins: -2,
+            ..Default::default()
+        };
+        let u = mach_usage(&info, Some(events));
+        assert_eq!(u.cpu_ms, 2_290);
+        assert_eq!(u.faults, Some(51_000));
+        assert_eq!(u.pageins, Some(u32::MAX as u64 - 1));
+        let u = mach_usage(&info, None);
+        assert_eq!((u.faults, u.pageins), (None, None));
+    }
+
+    /// The real kernel: a thread that runs gets its time counted (however busy the machine,
+    /// within a generous 20 s), one that sleeps doesn't.
+    #[test]
+    fn the_kernel_counts_a_running_thread() {
+        let port = this_thread_port();
+        let before = port_usage(port).expect("thread_info answers");
+        assert!(
+            before.faults.is_some() && before.pageins.is_some(),
+            "task_info answers"
+        );
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(20);
+        let mut n = 0u64;
+        while port_usage(port).unwrap().cpu_ms < before.cpu_ms + 200 {
+            assert!(
+                std::time::Instant::now() < until,
+                "200 ms of running never counted"
+            );
+            for _ in 0..100_000 {
+                n = std::hint::black_box(n.wrapping_add(1));
+            }
+        }
+        let before = port_usage(port).unwrap();
+        std::thread::sleep(std::time::Duration::from_millis(300));
+        let slept = port_usage(port).unwrap().cpu_ms - before.cpu_ms;
+        assert!(slept < 100, "ran {slept} ms of a 300 ms sleep");
+    }
 }
 
 /// While the window is hidden (#72): glibc hands the heap's free pages back to the system

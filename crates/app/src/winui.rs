@@ -328,6 +328,13 @@ fn caption_for(ctx: &egui::Context, control: Rect) -> Option<String> {
     Some(s.trim_end_matches(':').trim().replace('&', ""))
 }
 
+/// A control's name for screen readers, when its visible text isn't one ("+", "...", a label
+/// another control shares like "Edit..."): a reader says `name` instead.
+pub fn name(resp: &Response, name: &str) {
+    resp.ctx
+        .accesskit_node_builder(resp.id, |node| node.set_label(name.to_owned()));
+}
+
 /// A text box's or drop-down's name for screen readers, from its caption ([`caption_for`]).
 fn name_from_caption(resp: &Response) {
     if let Some(name) = caption_for(&resp.ctx, resp.rect) {
