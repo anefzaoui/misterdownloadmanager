@@ -1359,6 +1359,42 @@ pub fn own_route() -> mdm_engine::Route {
     OWN_ROUTE.read().unwrap().clone()
 }
 
+/// The command line's network (#1556): Options → Proxy / Socks (the proxy and the network
+/// adapter), Connection → DNS and Torrent settings' proxy, read from the settings as a command
+/// starts (the defaults when there are none yet: the system's proxy). An automatic configuration
+/// script, Options' or the system's for "Use system settings", is fetched first: the app has it
+/// fetched by the time it downloads, and a command downloads at once.
+pub fn cli_net() -> mdm_cli::Net {
+    let s = crate::store::settings_only().unwrap_or_default();
+    // The script is fetched through the chosen adapter, as the app fetches it.
+    share_route(mdm_engine::net::route_for(
+        &s.net_adapter,
+        &mdm_engine::net::adapters(),
+    ));
+    if s.proxy_mode == 2 {
+        crate::pacfetch::fetch_now(&s.proxy_script);
+    } else if s.follows_system() {
+        crate::pacfetch::system_now();
+    }
+    s.cli_net()
+}
+
+impl Settings {
+    /// [`cli_net`] from these settings, the scripts already fetched.
+    pub fn cli_net(&self) -> mdm_cli::Net {
+        mdm_cli::Net {
+            proxy: self.proxy(),
+            dns: self.dns(),
+            adapter: self.net_adapter.trim().to_owned(),
+            torrent_proxy: match (self.torrent_proxy, self.socks5_proxy()) {
+                (false, _) => mdm_cli::TorrentProxy::Off,
+                (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
+                (true, None) => mdm_cli::TorrentProxy::Missing,
+            },
+        }
+    }
+}
+
 /// How MDM downloads its own files: its engine, as itself, through the user's proxy, DNS and
 /// network adapter.
 pub fn own_net() -> mdm_engine::Options {
@@ -1663,6 +1699,39 @@ mod tests {
         let old: Settings = serde_json::from_str(r#"{"video_chapters":true}"#).unwrap();
         assert!(!old.ytdlp_config);
         assert!(!Settings::default().ytdlp_config);
+    }
+
+    /// #1556: the command line gets the app's proxy, DNS, adapter and torrent proxy, as the
+    /// settings give them to the app's downloads.
+    #[test]
+    fn the_command_line_gets_the_apps_network() {
+        let mut s = Settings {
+            proxy_from_browser: false,
+            proxy_mode: 3,
+            proxy_host: "socks5://127.0.0.1".into(),
+            proxy_port: "1080".into(),
+            net_adapter: " wg0 ".into(),
+            dns_mode: 2,
+            dns_provider: "quad9".into(),
+            ..Settings::default()
+        };
+        let net = s.cli_net();
+        assert_eq!(net.proxy, s.proxy());
+        assert_eq!(net.dns, s.dns());
+        assert_eq!(net.adapter, "wg0");
+        assert_eq!(net.torrent_proxy, mdm_cli::TorrentProxy::Off);
+        s.torrent_proxy = true;
+        assert_eq!(
+            s.cli_net().torrent_proxy,
+            mdm_cli::TorrentProxy::Through("socks5://127.0.0.1:1080".into())
+        );
+        s.proxy_host = "http://127.0.0.1".into();
+        assert_eq!(s.cli_net().torrent_proxy, mdm_cli::TorrentProxy::Missing);
+        // No settings yet: the system's proxy, as the app has it.
+        assert_eq!(
+            Settings::default().cli_net().proxy,
+            mdm_engine::Proxy::System
+        );
     }
 
     /// #1558: Manual's Type gives the address its scheme; a SOCKS proxy carries http and https

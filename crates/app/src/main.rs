@@ -361,8 +361,9 @@ fn main() -> std::process::ExitCode {
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
         win32::cli_console(cli.launcher);
-        // Downloads go through the debrid accounts of Options → Accounts (#44).
-        return mdm_cli::main_with(cli.args, Some(&debrid::CliAccounts));
+        // Downloads go through the debrid accounts of Options → Accounts (#44), and Options'
+        // proxy, DNS and network adapter (#1556).
+        return mdm_cli::main_with(cli.args, Some(&debrid::CliAccounts), settings::cli_net());
     }
     // The Windows uninstaller, when the user chose to remove the data too: MDM's sign-ins leave
     // the system's keychain with it (#44).
