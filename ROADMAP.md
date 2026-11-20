@@ -819,6 +819,12 @@ These ship in the next version.
 - ✅ macOS: no more **The window stopped responding** report while a file dialog is open: the
   time its window thread spends in a system Open or Save dialog isn't counted
   ([#1192](https://github.com/anefzaoui/misterdownloadmanager/issues/1192))
+- ✅ macOS: no more **The window stopped responding** report while the window's thread is in
+  macOS's own event loop (waiting, drawing a hidden window, a menu, a window drag): only the time
+  it spends in MDM's code counts
+  ([#1314](https://github.com/anefzaoui/misterdownloadmanager/issues/1314),
+  [#1349](https://github.com/anefzaoui/misterdownloadmanager/issues/1349),
+  [#1369](https://github.com/anefzaoui/misterdownloadmanager/issues/1369))
 - ✅ The speed limit shows where the speed does: the progress window's Transfer rate names the
   limit holding the download back (its own, the Speed Limiter's, or the one for all downloads),
   the list's Transfer rate says it in its tip, and the status bar and the tray's tip say while the

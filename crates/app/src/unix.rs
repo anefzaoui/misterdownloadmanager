@@ -3167,6 +3167,94 @@ pub fn thread_usage(_tid: u32) -> Option<crate::crash::Usage> {
     None
 }
 
+/// macOS: tells the freeze watchdog when the window thread (the main thread, whose run loop
+/// AppKit runs) is in the system's event loop rather than in MDM's code (crash.rs `loop_seen`,
+/// `loop_waits`; #1314, #1349, #1369). Two observers of the main run loop in its common modes,
+/// which in an AppKit app hold the default, the modal panel and the event tracking modes ("Run
+/// Loop Modes", Apple's Threading Programming Guide), so AppKit's own loops (menus, window drags,
+/// live resizes, modal panels) are seen too. Observers of one stage run "in increasing order" of
+/// their `order` (CFRunLoopObserverCreate): every stage but the wait is told first of its
+/// observers, and the wait's start last of the `kCFRunLoopBeforeWaiting` ones (after winit's,
+/// which runs eframe's frames there: crash.rs adds these after it). False when they couldn't be
+/// made.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn watch_run_loop() -> bool {
+    use objc2_core_foundation::{
+        CFIndex, CFRunLoop, CFRunLoopActivity, CFRunLoopObserver, kCFRunLoopCommonModes,
+    };
+    use std::ffi::c_void;
+
+    unsafe extern "C-unwind" fn waits(
+        _: *mut CFRunLoopObserver,
+        _: CFRunLoopActivity,
+        _: *mut c_void,
+    ) {
+        crate::crash::loop_waits();
+    }
+    unsafe extern "C-unwind" fn seen(
+        _: *mut CFRunLoopObserver,
+        activity: CFRunLoopActivity,
+        _: *mut c_void,
+    ) {
+        if activity.contains(CFRunLoopActivity::AfterWaiting) {
+            crate::crash::loop_woke();
+        }
+        crate::crash::loop_seen();
+    }
+
+    let Some(main) = CFRunLoop::main() else {
+        return false;
+    };
+    // SAFETY: the default allocator (None), repeating observers whose callouts only store
+    // atomics and take no context (CF reads none from a null context pointer).
+    let (before, after) = unsafe {
+        (
+            CFRunLoopObserver::new(
+                None,
+                CFRunLoopActivity::BeforeWaiting.0,
+                true,
+                CFIndex::MAX,
+                Some(waits),
+                std::ptr::null_mut(),
+            ),
+            CFRunLoopObserver::new(
+                None,
+                (CFRunLoopActivity::Entry
+                    | CFRunLoopActivity::BeforeTimers
+                    | CFRunLoopActivity::BeforeSources
+                    | CFRunLoopActivity::AfterWaiting
+                    | CFRunLoopActivity::Exit)
+                    .0,
+                true,
+                CFIndex::MIN,
+                Some(seen),
+                std::ptr::null_mut(),
+            ),
+        )
+    };
+    let (Some(before), Some(after)) = (before, after) else {
+        return false;
+    };
+    // SAFETY: a constant Core Foundation exports, read once.
+    let common = unsafe { kCFRunLoopCommonModes };
+    // The run loop keeps the observers (it retains them) for the rest of MDM's run.
+    main.add_observer(Some(&before), common);
+    main.add_observer(Some(&after), common);
+    true
+}
+
+/// macOS: the mode the window thread's run loop runs in now, for the freeze watchdog's log
+/// (crash.rs `loop_mode`); None when it runs none. Asked from the watchdog's thread: Core
+/// Foundation's run loop functions may be called from any thread (Apple's Threading Programming
+/// Guide, "Thread Safety and Run Loop Objects").
+#[cfg(target_os = "macos")]
+pub fn main_loop_mode() -> Option<String> {
+    objc2_core_foundation::CFRunLoop::main()?
+        .current_mode()
+        .map(|mode| mode.to_string())
+}
+
 /// While the window is hidden (#72): glibc hands the heap's free pages back to the system
 /// (`malloc_trim`); it keeps them otherwise. Other systems: nothing to do here, since macOS and
 /// non-glibc allocators return free pages by themselves, and neither has a working set to trim

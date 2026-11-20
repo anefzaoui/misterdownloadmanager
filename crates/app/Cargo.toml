@@ -127,6 +127,9 @@ objc2 = "0.6.5"
 # .torrent files and magnet links Finder hands over as Apple events (unix.rs open_events, #698).
 objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation", "NSAppleEventDescriptor", "NSAppleEventManager", "NSNotification", "NSURL"] }
 objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation"] }
+# The window thread's waits in its run loop, told to the freeze watchdog (unix.rs watch_run_loop,
+# #1314); already in the tree through objc2-app-kit and winit.
+objc2-core-foundation = { version = "0.3.2", default-features = false, features = ["std", "CFRunLoop", "CFString"] }
 # View → Draw with → Metal (#206, renderer.rs): eframe's wgpu renderer with wgpu's Metal backend
 # only; OpenGL stays eframe's glow, and the default. egui-wgpu's fix for windows that jitter while
 # they are resized (Core Animation presenting with the resize), as upstream egui turns it on.
