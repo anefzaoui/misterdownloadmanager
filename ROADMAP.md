@@ -1680,6 +1680,10 @@ These ship in the next version.
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
   download has asked for it
+- ✅ No more **The window stopped responding** report while MDM's window is minimized to the
+  taskbar and its thread waits on the computer: as in the notification area, logged, and reported
+  only if it lasts past a minute, if MDM's thread is busy, or if MDM is asked for something
+  meanwhile and doesn't answer ([#1481](https://github.com/anefzaoui/misterdownloadmanager/issues/1481))
 - ✅ LuluStream: a video's link (its watch page or player, on `lulustream.com`, `luluvdo.com` or
   `lplaygo.com`) downloads the video, in the best quality its download page lists; a download
   taken from the browser whose link expired asks the video's page for a fresh one

@@ -227,6 +227,12 @@ fn show_watchdog(data: &Path) {
 /// a freeze or the window answers again, with how long after the stall began it reported one
 /// (None: not reported).
 fn hidden_stall(what: &str, ask: Option<Duration>) -> (Option<Duration>, Option<String>) {
+    out_of_sight_stall(&format!("hidden-{what}"), ask)
+}
+
+/// [`hidden_stall`] for any of the crash tests that put the window out of sight first:
+/// `hidden-<what>` (the notification area) or `minimized-<what>` (the taskbar, #1481).
+fn out_of_sight_stall(test: &str, ask: Option<Duration>) -> (Option<Duration>, Option<String>) {
     let dir = tempfile::tempdir().unwrap();
     let data = dir.path();
     let mut app = start(data);
@@ -237,7 +243,7 @@ fn hidden_stall(what: &str, ask: Option<Duration>) -> (Option<Duration>, Option<
             let l = log(data);
             l.contains("window opened: main") && l.contains("crash reports on")
         });
-        second_launch(data, &["/show", &format!("crash-test:hidden-{what}")]);
+        second_launch(data, &["/show", &format!("crash-test:{test}")]);
         wait_until(&mut app, data, "the stall", wait, || {
             log(data).contains("crash test: the window thread")
         });
@@ -320,6 +326,40 @@ fn a_hidden_window_busy_is_reported() {
 #[ignore = "opens the app's windows (off-screen): needs OpenGL or Direct3D; run with --ignored"]
 fn a_hidden_stall_is_reported_once_a_window_is_asked_for() {
     let (reported, _) = hidden_stall("stall:40", Some(Duration::from_secs(15)));
+    let seen = reported.expect("asked for, the stall is a freeze");
+    assert!(
+        seen >= Duration::from_secs(22) && seen < Duration::from_secs(30),
+        "reported {seen:?} after the stall began (asked at 15 s)"
+    );
+}
+
+/// #1481, #1309: minimized to the taskbar (not the notification area), the window thread waits
+/// 12 s running nothing: nothing of MDM's is on screen, so it is the computer's as when hidden:
+/// logged, not reported, and it answers again.
+#[test]
+#[ignore = "opens the app's windows (off-screen): needs OpenGL or Direct3D; run with --ignored"]
+fn a_minimized_window_kept_waiting_is_logged_not_reported() {
+    let (reported, report) = out_of_sight_stall("minimized-stall:12", None);
+    assert_eq!(reported, None, "reported: {report:?}");
+    assert!(report.is_none());
+}
+
+/// The same minimized window busy for 12 s is a freeze, minimized or not.
+#[test]
+#[ignore = "opens the app's windows (off-screen): needs OpenGL or Direct3D; run with --ignored"]
+fn a_minimized_window_busy_is_reported() {
+    let (reported, report) = out_of_sight_stall("minimized-spin:12", None);
+    let seen = reported.expect("a busy minimized window is a freeze");
+    assert!(seen < Duration::from_secs(12), "reported {seen:?} in");
+    let report = report.unwrap();
+    assert!(report.contains("Its thread ran all along"), "{report}");
+}
+
+/// Kept waiting while minimized, but asked for a window 15 s in: reported 8 s after the ask.
+#[test]
+#[ignore = "opens the app's windows (off-screen): needs OpenGL or Direct3D; run with --ignored"]
+fn a_minimized_stall_is_reported_once_a_window_is_asked_for() {
+    let (reported, _) = out_of_sight_stall("minimized-stall:40", Some(Duration::from_secs(15)));
     let seen = reported.expect("asked for, the stall is a freeze");
     assert!(
         seen >= Duration::from_secs(22) && seen < Duration::from_secs(30),

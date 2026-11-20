@@ -3215,14 +3215,21 @@ impl App {
     /// command does. Unknown names do nothing.
     fn show_named(&mut self, name: &str, ctx: &egui::Context) {
         // MDM_CRASH_TEST=1 only (crash.rs): a stall in a later tick of the window hidden in the
-        // notification area (#1126), which this hides rather than shows.
+        // notification area (#1126), which this hides rather than shows; or of the window
+        // minimized to the taskbar (#1481), which this minimizes (as its title bar's button does).
         if crate::crash::testing()
             && let Some(test) = name.strip_prefix("crash-test:")
-            && test.starts_with("hidden-")
         {
-            self.hide_to_tray(ctx);
-            crate::crash::test(test);
-            return;
+            if test.starts_with("hidden-") {
+                self.hide_to_tray(ctx);
+                crate::crash::test(test);
+                return;
+            }
+            if test.starts_with("minimized-") {
+                crate::dialogs::minimize(ctx, self.main_hwnd);
+                crate::crash::test(test);
+                return;
+            }
         }
         self.show_window(ctx);
         let first = self.items.first().map(|i| i.id);
@@ -12783,6 +12790,21 @@ fn alt_alone_released(events: &[egui::Event], down: &mut bool, alone: &mut bool)
     released
 }
 
+/// Whether the main window is minimized now (to the taskbar, the Dock, the window list). egui's
+/// window state says so on Windows and X11, read afresh each frame. macOS's isn't read again
+/// while running (egui#3494) and keeps the last minimize MDM asked for, even after a click on the
+/// Dock brought the window back: AppKit is asked instead. Wayland tells no program its window is
+/// minimized (xdg-shell has no such state): false there, as egui says.
+fn main_minimized(ctx: &egui::Context) -> bool {
+    #[cfg(target_os = "macos")]
+    {
+        let _ = ctx;
+        crate::unix::macos_window_miniaturized(crate::MAIN_TITLE).unwrap_or(false)
+    }
+    #[cfg(not(target_os = "macos"))]
+    ctx.input(|i| i.viewport().minimized == Some(true))
+}
+
 impl eframe::App for App {
     /// What comes in from outside (a second launch, the browser's native host, the automation
     /// API) is handled here, which runs at every frame: `ui` doesn't run while the main window
@@ -12808,9 +12830,12 @@ impl App {
         // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
         // that hangs is reported too, minimized or not (#202).
         crate::crash::logic_begin();
-        // Whether a stall now could be seen: every window of MDM's hidden (the main window in
-        // the notification area, no other window open) is felt by nobody (#1126).
-        crate::crash::hidden(self.hidden && ctx.input(|i| i.raw.viewports.len() <= 1));
+        // Whether a stall now could be seen: every window of MDM's out of sight (the main window
+        // in the notification area or minimized to the taskbar, no other window open) is felt by
+        // nobody (#1126, #1481).
+        let windows = ctx.input(|i| i.raw.viewports.len());
+        let minimized = !self.hidden && windows <= 1 && main_minimized(ctx);
+        crate::crash::hidden(crate::crash::out_of_sight(self.hidden, minimized, windows));
         crate::crash::armed();
         crate::crash::step(crate::crash::Step::Commands);
         let mut handled = false;

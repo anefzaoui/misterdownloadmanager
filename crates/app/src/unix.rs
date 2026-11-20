@@ -3847,6 +3847,52 @@ pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
     }
 }
 
+/// macOS: whether MDM's titled window named `title` is miniaturized into the Dock now (None: no
+/// such window). egui reads it only as the window opens (egui#3494); the freeze watchdog asks at
+/// each frame's logic whether anything of MDM's is on screen (#1481).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2_foundation::NSString;
+    let want = NSString::from_str(&crate::i18n::os_text(title));
+    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and reads the matching
+    // titled window's `isMiniaturized`, changing nothing.
+    unsafe {
+        let cls = AnyClass::get(c"NSApplication")?;
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return None;
+        }
+        let windows: *mut AnyObject = msg_send![app, windows];
+        if windows.is_null() {
+            return None;
+        }
+        let count: usize = msg_send![windows, count];
+        for i in 0..count {
+            let win: *mut AnyObject = msg_send![windows, objectAtIndex: i];
+            if win.is_null() {
+                continue;
+            }
+            let style: usize = msg_send![win, styleMask];
+            if (style & 1) == 0 {
+                continue;
+            }
+            let win_title: *mut AnyObject = msg_send![win, title];
+            if win_title.is_null() {
+                continue;
+            }
+            let same: Bool = msg_send![win_title, isEqualToString: &*want];
+            if same.as_bool() {
+                let mini: Bool = msg_send![win, isMiniaturized];
+                return Some(mini.as_bool());
+            }
+        }
+        None
+    }
+}
+
 /// macOS: brings MDM and its windows to the topmost foreground in front of all other apps when
 /// woken from the menu bar icon or the global hotkey (#558).
 #[cfg(target_os = "macos")]
