@@ -381,9 +381,6 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 	Addresses left to the browser	Indirizzi lasciati al browser
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-	Advanced / Socks...	Avanzate / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 	Advanced browser integration is on	L'integrazione avanzata del browser è attiva
@@ -484,6 +481,10 @@
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 	Another program has set the computer's wake alarm	Un altro programma ha già impostato la sveglia di riattivazione del computer
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	Risposta ricevuta in {ms} ms. Internet vede {ip}.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Risposta in {ms} ms: {ip}
@@ -1631,6 +1632,10 @@
 	From:	Da:
 #. checkbox in the Options window
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	I download FTP non passano attraverso un proxy HTTP. Scegli SOCKS5 o SOCKS4 per inviarli tramite il proxy.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2137,6 +2142,10 @@
 	Look links up when they arrive (name, size, online)	Analizza i collegamenti all'arrivo (nome, dimensione, online)
 #. text in the Add torrent window; button in the Download video window
 	Look up	Cerca
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	Analizza i nomi dei siti tramite il proxy
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 	Look up the new address first	Prima cerca il nuovo indirizzo
@@ -2528,6 +2537,10 @@
 	No	No
 #. text in a dialog box
 	No addresses yet	Ancora nessun indirizzo
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	Nessuna risposta entro 20 secondi.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	Non è stato trovato nessun browser a cui MDM possa connettersi
@@ -3284,9 +3297,10 @@
 	Service	Servizio
 #. text in the Options window
 	Service:	Servizio:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
-	Set a socks5:// proxy in Options → Proxy / Socks first	Prima imposta un proxy socks5:// in Opzioni → Proxy / Socks
+#, machine
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Prima imposta un proxy SOCKS5 in Opzioni → Proxy / Socks (Manuale, Tipo SOCKS5)
 #. checkbox in the Options window
 	Set file creation date as provided by the server	Imposta la data di creazione del file fornita dal server
 #. button in extension.rs; button in the Options window
@@ -4045,6 +4059,10 @@
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 	The system's DNS	DNS di sistema
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	La pagina di prova non ha indicato l'indirizzo che ha visto.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 	The time is a round trip, measured as this download's own connections opened.	Il tempo è quello di andata e ritorno, misurato all'apertura delle connessioni di questo download.
@@ -4381,6 +4399,10 @@
 	Tuvalu	Tuvalu
 #. text in helpers.rs
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Servono due programmi di supporto gratuiti. Scaricali ora: quando troverai un video, basterà un clic per salvarlo.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	Tipo
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 	Type a feed's address above and click Add feed.	Digita l'indirizzo di un feed qui sopra e fai clic su Aggiungi feed.
@@ -4511,8 +4533,6 @@
 	Use the token	Usa il token
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	Usarli per questo torrent? Le parti corrispondenti vengono mantenute, il resto viene sostituito.
-#. label in the Options window
-	Use this proxy for the following protocols:	Usa questo proxy per i seguenti protocolli:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 	Use this rule	Usa questa regola

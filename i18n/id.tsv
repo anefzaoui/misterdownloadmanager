@@ -368,9 +368,6 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 	Addresses left to the browser	Alamat yang diserahkan ke browser
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-	Advanced / Socks...	Lanjutan / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 	Advanced browser integration is on	Integrasi browser tingkat lanjut aktif
@@ -471,6 +468,10 @@
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 	Another program has set the computer's wake alarm	Program lain telah menyetel alarm bangun komputer
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	Dijawab dalam {ms} md. Internet melihat {ip}.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Dijawab dalam {ms} ms: {ip}
@@ -1593,6 +1594,10 @@
 	From:	Dari:
 #. checkbox in the Options window
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	Unduhan FTP tidak melewati proxy HTTP. Pilih SOCKS5 atau SOCKS4 untuk mengirimnya melalui proxy.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2088,6 +2093,10 @@
 	Look links up when they arrive (name, size, online)	Periksa tautan saat diterima (nama, ukuran, online)
 #. text in the Add torrent window; button in the Download video window
 	Look up	Cari
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	Cari nama situs melalui proxy
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 	Look up the new address first	Cari alamat baru terlebih dahulu
@@ -2471,6 +2480,10 @@
 	No	Tidak
 #. text in a dialog box
 	No addresses yet	Belum ada alamat
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	Tidak ada jawaban dalam 20 detik.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	Tidak ada browser yang dapat dihubungkan oleh MDM yang ditemukan
@@ -3218,9 +3231,10 @@
 	Service	Layanan
 #. text in the Options window
 	Service:	Layanan:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
-	Set a socks5:// proxy in Options → Proxy / Socks first	Atur proksi socks5:// di Opsi → Proksi / Socks terlebih dahulu
+#, machine
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Atur proxy SOCKS5 di Opsi → Proxy / Socks (Manual, Tipe SOCKS5) terlebih dahulu
 #. checkbox in the Options window
 	Set file creation date as provided by the server	Atur tanggal pembuatan file seperti yang disediakan oleh server
 #. button in extension.rs; button in the Options window
@@ -3961,6 +3975,10 @@
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 	The system's DNS	DNS sistem
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	Halaman uji tidak menyebutkan alamat yang dilihatnya.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 	The time is a round trip, measured as this download's own connections opened.	Waktu adalah perjalanan pulang-pergi, diukur saat koneksi unduhan ini dibuka.
@@ -4285,6 +4303,10 @@
 	Tuvalu	Tuvalu
 #. text in helpers.rs
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Dua pembantu gratis membuatnya berfungsi. Dapatkan sekarang, dan menyimpan video hanya dengan satu klik saat Anda menemukannya.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	Tipe
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 	Type a feed's address above and click Add feed.	Ketik alamat umpan di atas dan klik Tambahkan umpan.
@@ -4414,8 +4436,6 @@
 	Use the token	Gunakan token
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	Gunakan untuk torrent ini? Yang cocok akan disimpan, sisanya diganti.
-#. label in the Options window
-	Use this proxy for the following protocols:	Gunakan proxy ini untuk protokol berikut:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 	Use this rule	Gunakan aturan ini

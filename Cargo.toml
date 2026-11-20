@@ -119,6 +119,8 @@ reqwest = { version = "0.13.5", default-features = false, features = ["rustls", 
 # FTP and FTPS (crates/engine/src/ftp.rs), with TLS through the rustls and platform verifier
 # reqwest uses. "deprecated" is what enables implicit FTPS (ftps://, port 990).
 suppaftp = { version = "12.2.1", default-features = false, features = ["tokio-rustls-aws-lc-rs", "deprecated"] }
+# FTP through a SOCKS proxy (#1558); already in the tree through librqbit and wreq.
+tokio-socks = "0.5.3"
 rustls = { version = "0.23.46", default-features = false, features = ["aws-lc-rs", "std", "tls12", "logging"] }
 rustls-platform-verifier = "0.7.1"
 # Custom DNS (#36): plain DNS, DNS over TLS and over HTTPS, with aws-lc-rs (no ring) and the

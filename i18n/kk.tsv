@@ -468,10 +468,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Браузерге қалдырылған мекенжайлар
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	Кеңейтілген / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -599,6 +595,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	Басқа бағдарлама компьютердің ояту дабылын орнатты
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	{ms} мс ішінде жауап берілді. Интернет {ip} мекенжайын көреді.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -2083,6 +2083,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP жүктеп алулары HTTP прокси арқылы өтпейді. Оларды прокси арқылы жіберу үшін SOCKS5 немесе SOCKS4 таңдаңыз.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2736,6 +2740,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Іздеу
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	Сайт атауларын прокси арқылы іздеу
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3240,6 +3248,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Әзірге мекенжайлар жоқ
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	20 секунд ішінде жауап алынбады.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -4236,10 +4248,10 @@
 #. text in the Options window
 #, machine
 	Service:	Қызмет:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	Алдымен Параметрлер → Прокси / Socks бөлімінде socks5:// проксиін орнатыңыз
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Алдымен Параметрлер → Прокси / SOCKS (Қолмен, Түрі SOCKS5) бөлімінде SOCKS5 проксиін орнатыңыз
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Файл жасалған күнді сервер бергендей орнату
@@ -5194,6 +5206,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	Жүйенің DNS сервері
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	Сынақ беті көрген мекенжайды көрсетпеді.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5615,6 +5631,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Екі тегін көмекші оның жұмыс істеуіне мүмкіндік береді. Оларды қазір жүктеп алыңыз, сонда бейнені тапқан кезде оны бір рет басып сақтай аласыз.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	Түрі
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5786,9 +5806,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Оларды осы торрент үшін пайдаланасыз ба? Сәйкес келетіні сақталып, қалғаны ауыстырылады.
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	Келесі хаттамалар үшін осы проксиді пайдалану:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine

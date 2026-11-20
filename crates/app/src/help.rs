@@ -226,25 +226,26 @@ async fn latest() -> Result<Found, String> {
         web: var("MDM_UPDATE_WEB", mdm_tools::github::WEB),
         raw: var("MDM_UPDATE_RAW", mdm_tools::github::RAW),
     };
-    let net = crate::settings::own_net();
-    // The chosen DNS and network adapter, as downloads have them (#36, #35).
-    let builder = |url: &str| {
-        mdm_engine::net::client_builder(&net.dns, &net.route, url)
-            .map(|b| {
-                b.user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
-                    .timeout(Duration::from_secs(20))
-            })
-            .map_err(|e| e.to_string())
+    // Options' proxy, DNS and network adapter, as MDM's own downloads have them (#36, #35,
+    // #1558: a SOCKS proxy too), within 20 s a step.
+    let net = mdm_engine::Options {
+        connect_timeout: Duration::from_secs(20),
+        read_timeout: Duration::from_secs(20),
+        ..crate::settings::own_net()
     };
-    let client = builder(&sources.feed)?.build().map_err(|e| e.to_string())?;
+    let client_for = |url: &str, follow: bool| -> Result<reqwest::Client, String> {
+        let url = url::Url::parse(url).map_err(|e| e.to_string())?;
+        if follow {
+            mdm_engine::http_client(&net, &url)
+        } else {
+            mdm_engine::hop_client(&net, &url)
+        }
+        .map_err(|e| e.to_string())
+    };
+    let client = client_for(&sources.feed, true)?;
     // GitHub's pages are read without following their redirects: where `releases/latest` sends
     // MDM is the answer (mdm_tools::github::latest_tag).
-    let pages = |url: &str| {
-        builder(url)?
-            .redirect(reqwest::redirect::Policy::none())
-            .build()
-            .map_err(|e| e.to_string())
-    };
+    let pages = |url: &str| client_for(url, false);
     let install = mdm_tools::update::Install::detect();
     fetch(&client, &pages, &sources, VERSION, install).await
 }
