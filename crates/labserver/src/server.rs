@@ -15,6 +15,9 @@
 //!   to `URL` (cross-host redirects, credential scoping); with `ttl_ms` the target gets
 //!   `expires=<unix ms>` and answers 403 after it (signed CDN links); with `uses` it is a link of
 //!   its own that answers 403 after N requests (a link that expires however slow the machine)
+//! - `GET /gen/…?lasts_ms=N&link=ID` — a signed link timed from its first request: every address
+//!   with this `link` answers 403 once N ms have passed since the first of them was asked (a
+//!   look-up's addresses expire together, however late the download starts)
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
@@ -267,6 +270,8 @@ pub(crate) struct Shared {
     used_once: Mutex<HashSet<String>>,
     /// Requests each signed link with `uses` has served (path and query).
     link_uses: Mutex<HashMap<String, u64>>,
+    /// The first request of each link with `lasts_ms` (its `link`, else path and query), unix ms.
+    link_first: Mutex<HashMap<String, u64>>,
     conn_reqs: Mutex<HashMap<SocketAddr, u64>>,
     /// Each client's `max_conns` slots in use.
     active: Mutex<HashMap<IpAddr, Vec<Arc<SlotUse>>>>,
@@ -408,6 +413,7 @@ impl LabServer {
             seq: AtomicU64::new(0),
             used_once: Mutex::default(),
             link_uses: Mutex::default(),
+            link_first: Mutex::default(),
             conn_reqs: Mutex::default(),
             active: Mutex::default(),
             log: Mutex::default(),
@@ -737,6 +743,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
     uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
                    with a link= of its own)
+    lasts_ms=N     403 once N ms have passed since this link's first request: every address with
+                   the same link=ID expires together (a look-up's), timed from the first of them
+                   asked, however late (without link=: this path and query's own)
     movie=MS       the file starts as an MP4 movie of MS ms does (an ftyp, a moov saying its
                    length and tracks, a mdat's header over the rest), for a reader of its header
                    (#1092); with tracks=av|v|a (default av: a picture and a sound) and height=PX
@@ -1388,6 +1397,10 @@ struct FileQuery {
     expires: Option<u64>,
     /// The requests a signed link serves (`link` tells the links apart).
     uses: Option<u64>,
+    /// How long a signed link lasts from its first request, ms (`link` makes its addresses one).
+    lasts_ms: Option<u64>,
+    /// `link`: which signed link this address is part of.
+    link: Option<String>,
     cd: Option<String>,
     cdstar: Option<String>,
     /// `cdraw`: the whole `Content-Disposition` value, sent as given (#1427).
@@ -1482,7 +1495,18 @@ pub(crate) async fn serve(
         *n += 1;
         *n > uses
     });
-    if used_up || q.expires.is_some_and(|t| unix_ms() > t) {
+    // Timed from the link's first request, not from when it was made: a download's first request
+    // may come late on a busy computer, and a link that is dead before it is asked tests nothing.
+    let lapsed = q.lasts_ms.is_some_and(|lasts| {
+        let key = match &q.link {
+            Some(link) => format!("link:{link}"),
+            None => format!("{}?{query}", entry.path),
+        };
+        let mut first = shared.link_first.lock().unwrap();
+        let at = *first.entry(key).or_insert_with(unix_ms);
+        unix_ms() > at + lasts
+    });
+    if used_up || lapsed || q.expires.is_some_and(|t| unix_ms() > t) {
         shared.record(entry, 403, "expired");
         return (StatusCode::FORBIDDEN, "link expired\n").into_response();
     }
@@ -1905,6 +1929,8 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
         seed: 0,
         expires: None,
         uses: None,
+        lasts_ms: None,
+        link: None,
         cd: None,
         cdstar: None,
         cd_raw: None,
@@ -1929,8 +1955,12 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
                 out.expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?)
             }
             "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
+            "lasts_ms" => {
+                out.lasts_ms = Some(v.parse().map_err(|_| format!("invalid lasts_ms `{v}`\n"))?)
+            }
+            "link" => out.link = Some(v),
             // A page's own keys for a server's program (`script`): they change nothing here.
-            "link" | "id" | "file" | "filename" | "token" => {}
+            "id" | "file" | "filename" | "token" => {}
             // A CloudFront signed address's own keys (#1087): they change nothing here.
             "Expires" | "Signature" | "Key-Pair-Id" | "Policy" => {}
             "type" => out.content_type = name(&k, v)?,
