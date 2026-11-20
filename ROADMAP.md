@@ -578,6 +578,11 @@ These ship in the next version.
   **Check for updates**, **Update** and **Go back to** the previous version, and a switch to turn
   it off; the command line has `update-helpers`
   ([#1544](https://github.com/anefzaoui/misterdownloadmanager/issues/1544))
+- ✅ Deleting a download keeps its file unless **Also delete the files from disk** is ticked in
+  that very question: the box starts unticked every time (only **Shift+Delete** and **Remove
+  with files** tick it, once), it says how many finished files go with it, a question turned
+  off only takes downloads off the list, and deleting files always asks
+  ([#1563](https://github.com/anefzaoui/misterdownloadmanager/issues/1563))
 - ✅ The command line's downloads, look-ups, helper installs and torrents go through Options →
   Proxy / Socks (and its network adapter and DNS) as the app's do, with a `--proxy` switch for
   one run ([#1556](https://github.com/anefzaoui/misterdownloadmanager/issues/1556))

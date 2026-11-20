@@ -232,11 +232,14 @@ pub struct Settings {
     pub complete_snoozed_until: Option<i64>,
     /// List right-click → On Double click: Open (true) or Properties (IDM default).
     pub double_click_open: bool,
-    /// Ask before deleting downloads ("Don't show this dialog again" clears it).
+    /// Ask before deleting downloads ("Don't show this dialog again" clears it). Off, Delete only
+    /// takes downloads off the list: deleting files from the disk always asks (#1563).
+    ///
+    /// Its "Also delete the files from disk" is never remembered: it starts unticked, or ticked
+    /// for one Shift+Delete. Lists before #1563 saved the last answer as `delete_files_too`,
+    /// which made every later delete (and, with this off, one never asked) take the finished
+    /// files too; that key is no longer read, and goes with the next save.
     pub confirm_delete: bool,
-    /// The confirmation's "Also delete the files from disk", as last answered (IDM keeps it):
-    /// its first state next time, and what happens when it no longer asks.
-    pub delete_files_too: bool,
     /// Categories pane frame width (IDM: 143, frame x 6..149); dragged with the splitter.
     pub categories_width: u32,
     /// The main window as last left: position and size (x, y, width, height, in points at 100 %
@@ -586,7 +589,6 @@ impl Default for Settings {
             complete_snoozed_until: None,
             double_click_open: false,
             confirm_delete: true,
-            delete_files_too: false,
             categories_width: 143,
             window: None,
             window_maximized: false,
@@ -1465,6 +1467,23 @@ mod tests {
         assert_eq!(s.category_dir(Category::Video, downloads), chosen);
         assert_ne!(s.category_dir(Category::Music, downloads), chosen);
         assert!(!s.keep_category_dir(Category::Video, chosen, downloads));
+    }
+
+    /// #1563: a list from 0.5.2 that remembered "Also delete the files from disk" ticked (and
+    /// the question turned off) loads as before otherwise, and its next save drops the tick.
+    #[test]
+    fn a_remembered_files_tick_is_dropped() {
+        let old: super::Settings = serde_json::from_value(serde_json::json!({
+            "confirm_delete": false,
+            "delete_files_too": true,
+            "max_connections": 3,
+        }))
+        .unwrap();
+        assert!(!old.confirm_delete);
+        assert_eq!(old.max_connections, 3, "the rest is read as before");
+        let saved = serde_json::to_value(&old).unwrap();
+        assert!(saved.get("delete_files_too").is_none(), "{saved}");
+        assert!(saved.get("confirm_delete").is_some());
     }
 
     /// #1278: the video button's size is Full unless Compact was chosen, kept across a save,
