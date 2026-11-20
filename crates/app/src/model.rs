@@ -860,6 +860,10 @@ pub struct VideoSpec {
     /// title) is shortened instead.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub named: bool,
+    /// The chapter files yt-dlp wrote when this download was split (paths as yt-dlp saved them).
+    /// Used to delete exactly the files this split produced, never unrelated files in the folder.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub chapter_files: Vec<PathBuf>,
 }
 
 /// A running download and its speed measurement.
@@ -1269,6 +1273,11 @@ impl Item {
                             .collect();
                     }
                     self.side_files = done.side_files;
+                    if let Some(v) = self.video.as_mut() {
+                        if !done.chapter_files.is_empty() {
+                            v.chapter_files = done.chapter_files;
+                        }
+                    }
                 }
                 // A gallery's files (#58), already marked by its job as the video's are.
                 if status == Status::Complete
@@ -1761,6 +1770,7 @@ mod file_address_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
         });
         i
     }
@@ -1948,6 +1958,7 @@ mod tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
         });
         it
     }

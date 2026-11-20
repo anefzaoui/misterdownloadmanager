@@ -53,6 +53,9 @@ pub struct Progress {
     /// are; the engine's `fetch` keeps a whole one). Deleting the download with its files
     /// removes them.
     pub merge_failed: Option<Vec<PathBuf>>,
+    /// The chapter files yt-dlp wrote when split-chapters was used: exact paths, collected from
+    /// `MDMF` lines after `--split-chapters`. Empty when the download was not split.
+    pub chapter_files: Vec<PathBuf>,
 }
 
 /// A subtitle language the site wouldn't give (#68).
@@ -248,18 +251,37 @@ fn chapter_args(chapters: bool, ffmpeg: bool, converted: bool) -> Vec<String> {
 
 /// Split video into multiple files based on internal chapters: `--split-chapters` on yt-dlp's run,
 /// with ffmpeg, without re-encoding (stream copy via ffmpeg `-c copy`), naming each chapter
-/// as `<filename> - <chapter name>.<ext>`.
+/// as `<filename> <NN> - <chapter name>.<ext>` (zero-padded chapter number, then the title),
+/// or `<filename> Chapter <NN>.<ext>` when the chapter has no title.
 fn split_chapter_args(split: bool, ffmpeg: bool, folder: &Path, stem: &str) -> Vec<String> {
-    if split && ffmpeg {
-        let template = folder.join(format!("{} - %(section_title)s.%(ext)s", template_text(stem)));
-        vec![
-            "--split-chapters".into(),
-            "-o".into(),
-            format!("chapter:{}", template.to_string_lossy()),
-        ]
-    } else {
-        Vec::new()
+    if !split || !ffmpeg {
+        return Vec::new();
     }
+    // yt-dlp's conditional syntax `%(field&if_true|if_false)s`:
+    //   if section_title is non-empty → "<stem> %(section_number)02d - %(section_title)s"
+    //   if section_title is empty     → "<stem> Chapter %(section_number)02d"
+    let stem_esc = template_text(stem);
+    let chapter_template = format!(
+        "chapter:{stem_esc} %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
+    );
+    let mut args = vec![
+        "--split-chapters".into(),
+        "-P".into(),
+        format!("chapter:{}", folder.to_string_lossy()),
+        "-o".into(),
+        chapter_template,
+    ];
+    // Limit chapter filenames so they don't exceed Windows' path limit (259 UTF-16 units).
+    // The chapter file name is "<stem> - <chapter title>.<ext>"; trim the whole name to leave
+    // room for the folder, its separator, and a minimal name.
+    let folder_len = folder.to_string_lossy().encode_utf16().count();
+    // 259 - folder - path separator - at least 20 for the name itself.
+    if let Some(room) = (259usize).checked_sub(folder_len + 1) {
+        if room >= 20 {
+            args.extend(["--trim-filenames".into(), room.min(230).to_string()]);
+        }
+    }
+    args
 }
 
 /// The subtitle files saved beside `video` (`<stem>.<lang>.<srt|vtt…>`, as yt-dlp names them).
@@ -590,14 +612,6 @@ pub fn own_files(dir: &Path, stem: &str, outputs: bool) -> Vec<PathBuf> {
             {
                 return true;
             }
-            if outputs {
-                let chapter_prefix = format!("{} - ", stem.to_lowercase());
-                if let Some(rest) = name.strip_prefix(&chapter_prefix) {
-                    if let Some((_, ext)) = rest.rsplit_once('.') {
-                        return MEDIA.contains(&ext);
-                    }
-                }
-            }
             false
         })
         .map(|e| e.path())
@@ -670,9 +684,9 @@ impl Cookies {
 
 /// How one run of yt-dlp ended.
 enum Attempt {
-    /// The video saved, the subtitles that didn't come with it, and the quality yt-dlp chose
-    /// (`137+251 1920x1080`).
-    Done(PathBuf, Vec<SubProblem>, Option<String>),
+    /// The video saved, the subtitles that didn't come with it, the quality yt-dlp chose
+    /// (`137+251 1920x1080`), and the chapter files (empty when not split).
+    Done(PathBuf, Vec<SubProblem>, Option<String>, Vec<PathBuf>),
     Stopped,
     /// `rerouted`: links were moved to other servers for this run.
     Failed {
@@ -778,7 +792,7 @@ fn supervise(
             &cookies,
         ) {
             Attempt::Stopped => return,
-            Attempt::Done(f, problems, quality) => {
+            Attempt::Done(f, problems, quality, chapter_files) => {
                 end(child);
                 // Which way it worked (#686): the browser's cookies are the usual way, unsaid.
                 if cookies.without.get() && proc::has_cookies(browser) {
@@ -807,6 +821,7 @@ fn supervise(
                 if p.state != State::Stopped {
                     p.speed = 0.0;
                     p.side_files = side;
+                    p.chapter_files = chapter_files;
                     p.sub_problems = problems;
                     if let Some(len) = size {
                         p.total = Some(len);
@@ -1105,8 +1120,8 @@ impl Meter {
 /// How one yt-dlp run on the looked-up page ended.
 struct Ran {
     status: std::io::Result<std::process::ExitStatus>,
-    /// Where it said it saved the file (`MDMF`).
-    saved: Option<PathBuf>,
+    /// Where it said it saved the file(s) (`MDMF`): one per chapter when split, one otherwise.
+    saved: Vec<PathBuf>,
     /// The quality it chose (`MDMQ`).
     quality: Option<String>,
     warnings: Vec<String>,
@@ -1144,7 +1159,7 @@ fn run(
             Err(e) => return Err(e.to_string()),
         }
     };
-    let mut saved = None;
+    let mut saved: Vec<PathBuf> = Vec::new();
     let mut quality = None;
     progress.lock().unwrap().merging = None;
     // The merge's file, once yt-dlp says it's next; watched until the reading ends.
@@ -1166,7 +1181,7 @@ fn run(
             let text = String::from_utf8_lossy(&buf);
             let line = text.trim_end_matches(['\r', '\n']);
             if let Some(rest) = line.strip_prefix("MDMF ") {
-                saved = Some(PathBuf::from(rest.trim()));
+                saved.push(PathBuf::from(rest.trim()));
                 // Merged and moved: done joining.
                 *merged.lock().unwrap() = None;
                 progress.lock().unwrap().merging = None;
@@ -1539,7 +1554,8 @@ fn attempt(
         Err(e) => return failed(e, rerouted),
     };
     let quality = ran.quality.clone();
-    let video = match (&ran.status, ran.saved) {
+    let chapter_files = ran.saved.clone();
+    let video = match (&ran.status, ran.saved.into_iter().last()) {
         // `--ignore-errors` (subtitles asked) lets yt-dlp end well with no file: the file
         // itself is the proof.
         (Ok(s), Some(f)) if s.success() && f.is_file() => f,
@@ -1572,7 +1588,7 @@ fn attempt(
     };
     let refused = subtitle_failures(&ran.warnings);
     if refused.is_empty() {
-        return Attempt::Done(video, Vec::new(), quality);
+        return Attempt::Done(video, Vec::new(), quality, chapter_files);
     }
     for (code, why) in &refused {
         note(
@@ -1593,7 +1609,7 @@ fn attempt(
             format!("Asking for the subtitles again in {} s", delay.as_secs()),
         );
         if !pause(delay, progress) {
-            return Attempt::Done(video, Vec::new(), quality);
+            return Attempt::Done(video, Vec::new(), quality, chapter_files.clone());
         }
         let codes: Vec<String> = refused.iter().map(|(c, _)| c.clone()).collect();
         match run(
@@ -1607,7 +1623,7 @@ fn attempt(
             Ok(Some(again)) if again.status.as_ref().is_ok_and(|s| s.success()) => {
                 still = subtitle_failures(&again.warnings);
             }
-            Ok(None) => return Attempt::Done(video, Vec::new(), quality.clone()),
+            Ok(None) => return Attempt::Done(video, Vec::new(), quality.clone(), chapter_files.clone()),
             _ => {}
         }
     }
@@ -1638,7 +1654,7 @@ fn attempt(
             }
         }
     }
-    Attempt::Done(video, problems, quality)
+    Attempt::Done(video, problems, quality, chapter_files)
 }
 
 /// Move `info`'s links off servers that can't be reached (and off `dead`, the ones an earlier run
@@ -2110,6 +2126,7 @@ impl VideoJob {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
         }));
         let child: Child = Arc::new(Mutex::new(None));
         let current = Arc::new(crate::streams::Current::new(
@@ -2237,7 +2254,6 @@ mod tests {
             "Clip.pt-BR.vtt",
             "Clip.fr.srt",
             "Clip.fi.vtt",
-            "Clip - Chapter 1.mp4",
         ];
         let others = [
             "Clip.final.mp4",
@@ -2501,6 +2517,7 @@ mod tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
         };
         // `MDMQ …` as yt-dlp prints it before it downloads; every other line is an `MDMP` one's.
         lines
@@ -2919,9 +2936,15 @@ mod tests {
         let folder = Path::new("/downloads");
         let args = split_chapter_args(true, true, folder, "Clip");
         assert_eq!(args[0], "--split-chapters");
-        assert_eq!(args[1], "-o");
-        let expected_template = folder.join("Clip - %(section_title)s.%(ext)s");
-        assert_eq!(args[2], format!("chapter:{}", expected_template.to_string_lossy()));
+        assert_eq!(args[1], "-P");
+        assert_eq!(args[2], format!("chapter:{}", folder.to_string_lossy()));
+        assert_eq!(args[3], "-o");
+        assert_eq!(
+            args[4],
+            "chapter:Clip %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
+        );
+        // Also trims filenames (folder is short enough to leave room).
+        assert!(args.contains(&"--trim-filenames".to_owned()));
         assert!(split_chapter_args(false, true, folder, "Clip").is_empty());
         assert!(split_chapter_args(true, false, folder, "Clip").is_empty());
     }

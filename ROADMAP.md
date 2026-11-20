@@ -1242,6 +1242,7 @@ These ship in a later version, when they're ready.
 ### Being built
 
 - 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review
+- 🔄 **Split into chapters** in the Download video window: split a video into numbered chapter files (`<filename> <NN> - <chapter name>.<ext>`) without re-encoding using ffmpeg stream copy; deleting the download with its files removes exactly the chapter files this run produced ([#1204](https://github.com/anefzaoui/misterdownloadmanager/pull/1204)): in review
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
   Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
