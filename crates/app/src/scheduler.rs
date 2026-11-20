@@ -1222,6 +1222,7 @@ impl Scheduler {
         );
         winui::name(
             &mb_box,
+            // i18n: a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
             crate::i18n::t("Download no more than this many MBytes"),
         );
         let hours_box = winui::number_field(
@@ -1233,7 +1234,11 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
-        winui::name(&hours_box, crate::i18n::t("every this many hours"));
+        winui::name(
+            &hours_box,
+            // i18n: a11y name of the second Download limits box, where "every {n} hours" puts its {n}
+            crate::i18n::t("every this many hours"),
+        );
         winui::checkbox_light(
             ui,
             o + vec2(239.0, 127.0),
