@@ -275,18 +275,18 @@ fn chapter_args(chapters: bool, ffmpeg: bool, converted: bool) -> Vec<String> {
 
 /// Split video into multiple files based on internal chapters: `--split-chapters` on yt-dlp's run,
 /// with ffmpeg, without re-encoding (stream copy via ffmpeg `-c copy`), naming each chapter
-/// as `<filename> <NN> - <chapter name>.<ext>` (zero-padded chapter number, then the title),
-/// or `<filename> Chapter <NN>.<ext>` when the chapter has no title.
+/// as `<filename> - <NN> - <chapter name>.<ext>` (zero-padded chapter number, then the title),
+/// or `<filename> - Chapter <NN>.<ext>` when the chapter has no title.
 fn split_chapter_args(split: bool, ffmpeg: bool, folder: &Path, stem: &str) -> Vec<String> {
     if !split || !ffmpeg {
         return Vec::new();
     }
     // yt-dlp's conditional syntax `%(field&if_true|if_false)s`:
-    //   if section_title is non-empty → "<stem> %(section_number)02d - %(section_title)s"
-    //   if section_title is empty     → "<stem> Chapter %(section_number)02d"
+    //   if section_title is non-empty → "<stem> - %(section_number)02d - %(section_title)s"
+    //   if section_title is empty     → "<stem> - Chapter %(section_number)02d"
     let stem_esc = template_text(stem);
     let chapter_template = format!(
-        "chapter:{stem_esc} %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
+        "chapter:{stem_esc} - %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
     );
     let mut args = vec![
         "--split-chapters".into(),
@@ -3726,7 +3726,7 @@ mod tests {
         assert_eq!(args[3], "-o");
         assert_eq!(
             args[4],
-            "chapter:Clip %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
+            "chapter:Clip - %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
         );
         // Also trims filenames (folder is short enough to leave room).
         assert!(args.contains(&"--trim-filenames".to_owned()));
