@@ -2605,27 +2605,34 @@ mod tests {
 
     #[test]
     fn resume_command_parses_checksum_dns_and_adapter() {
+        let sha256_str = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+        let expected_checksum = parse_checksum(sha256_str).unwrap();
+        let expected_dns = parse_dns("cloudflare-https").unwrap();
         let cli = Cli::try_parse_from([
             NAME,
             "resume",
             "test.mdm.json",
             "--checksum",
-            "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            sha256_str,
             "--dns",
             "cloudflare-https",
             "--adapter",
             "Ethernet",
         ])
         .unwrap();
-        assert!(matches!(
-            cli.cmd,
+        match cli.cmd {
             Cmd::Resume {
-                checksum: Some(_),
-                dns: mdm_engine::DnsChoice { .. },
-                adapter: Some(ref a),
+                checksum: Some(checksum),
+                dns,
+                adapter: Some(adapter),
                 ..
-            } if a == "Ethernet"
-        ));
+            } => {
+                assert_eq!(adapter, "Ethernet");
+                assert_eq!(dns, expected_dns);
+                assert_eq!(checksum, expected_checksum);
+            }
+            _ => panic!("expected Cmd::Resume with checksum, dns, and adapter"),
+        }
     }
 
     #[test]
