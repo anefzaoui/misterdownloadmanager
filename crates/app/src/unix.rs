@@ -122,7 +122,17 @@ pub fn remove_owned_torrent_file(path: &Path, expected: [u64; 5]) -> std::io::Re
 pub fn program() -> Option<PathBuf> {
     std::env::var_os("APPIMAGE")
         .map(PathBuf::from)
-        .or_else(|| std::env::current_exe().ok())
+        .or_else(|| std::env::current_exe().ok().map(present))
+}
+
+/// A running program's path as it is on disk now: Linux says `<path> (deleted)` once an upgrade
+/// replaced the file while it ran (dpkg, rpm and pacman write the new one in its place), and an
+/// entry or a registration naming that would start nothing (#1484).
+fn present(exe: PathBuf) -> PathBuf {
+    match exe.to_str().and_then(|s| s.strip_suffix(DELETED)) {
+        Some(was) if !exe.exists() => PathBuf::from(was),
+        _ => exe,
+    }
 }
 
 /// Run a tool quietly, without waiting for it.
@@ -505,10 +515,118 @@ pub fn display_lost() {
     }
 }
 
+/// Whether MDM starts with the session: its startup entry is there, on, and starts this very
+/// program (#1484). An entry turned off in the desktop's own startup settings (Cinnamon's,
+/// GNOME's, KDE's), one naming a program that is gone (a copy replaced by an upgrade while it
+/// ran, an AppImage moved) or another copy of MDM's isn't this one starting: Options says off,
+/// and ticking it writes the entry for this program.
 pub fn run_at_startup() -> bool {
-    startup_file().is_some_and(|f| f.is_file())
+    let (Some(file), Some(exe)) = (startup_file(), program()) else {
+        return false;
+    };
+    let Ok(text) = std::fs::read_to_string(&file) else {
+        return false;
+    };
+    matches!(
+        startup_state(&text, &exe, cfg!(target_os = "macos"), resolve_program),
+        StartupState::Ours | StartupState::Outdated
+    )
 }
 
+/// What a startup entry does for this program ([`startup_state`]).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum StartupState {
+    /// It starts this program in the notification area (`/startup`).
+    Ours,
+    /// It starts this program, but was written before #226, without `/startup`.
+    Outdated,
+    /// Turned off in the desktop's own startup settings: `Hidden=true`, or
+    /// `X-GNOME-Autostart-enabled=false` (and the other desktops' `X-…-Autostart-enabled`).
+    Off,
+    /// It names no program, or one that isn't there any more: this program's path as it was
+    /// before an upgrade replaced it while it ran (`… (deleted)`), an AppImage since moved or
+    /// deleted. Nothing starts.
+    Stale,
+    /// Another copy of MDM that is still there (an AppImage elsewhere): not this one's to rewrite.
+    Other,
+}
+
+/// What the startup entry `text` does for the program `exe` (`resolve`: a program's path as
+/// the system finds it, links followed; None when there is none).
+fn startup_state(
+    text: &str,
+    exe: &Path,
+    macos: bool,
+    resolve: impl Fn(&str) -> Option<PathBuf>,
+) -> StartupState {
+    if !macos && autostart_off(text) {
+        return StartupState::Off;
+    }
+    let Some(program) = entry_program(text, macos) else {
+        return StartupState::Stale;
+    };
+    if program.ends_with(DELETED) {
+        return StartupState::Stale;
+    }
+    let Some(found) = resolve(&program) else {
+        return StartupState::Stale;
+    };
+    let this = resolve(&exe.to_string_lossy()).unwrap_or_else(|| exe.to_path_buf());
+    if found != this {
+        StartupState::Other
+    } else if text.contains(mdm_ipc::STARTUP) {
+        StartupState::Ours
+    } else {
+        StartupState::Outdated
+    }
+}
+
+/// Whether an XDG autostart entry is turned off: `Hidden=true` (the specification's "deleted"),
+/// or an `X-<desktop>-Autostart-enabled=false`, which GNOME's, Cinnamon's and MATE's startup
+/// settings write when its switch is turned off. Only the `[Desktop Entry]` group counts.
+fn autostart_off(text: &str) -> bool {
+    let mut group = "";
+    for line in text.lines().map(str::trim) {
+        if let Some(name) = line.strip_prefix('[').and_then(|l| l.strip_suffix(']')) {
+            group = name;
+            continue;
+        }
+        if group != "Desktop Entry" {
+            continue;
+        }
+        let Some((key, value)) = line.split_once('=') else {
+            continue;
+        };
+        let (key, value) = (key.trim(), value.trim());
+        let enabled_key = key.starts_with("X-") && key.ends_with("-Autostart-enabled");
+        if (key == "Hidden" && value.eq_ignore_ascii_case("true"))
+            || (enabled_key && value.eq_ignore_ascii_case("false"))
+        {
+            return true;
+        }
+    }
+    false
+}
+
+/// What Linux adds to a running program's path once the file was replaced or removed (an
+/// upgrade by the package manager while MDM ran): `/proc/self/exe` then reads `<path> (deleted)`.
+const DELETED: &str = " (deleted)";
+
+/// A startup entry's program as the system finds it: an absolute path with its links followed,
+/// or a bare name looked up in `PATH`. None: there is no such program.
+fn resolve_program(program: &str) -> Option<PathBuf> {
+    let path = Path::new(program);
+    if path.is_absolute() {
+        return std::fs::canonicalize(path).ok().filter(|p| p.is_file());
+    }
+    if program.contains('/') || program.is_empty() {
+        return None;
+    }
+    std::env::split_paths(&std::env::var_os("PATH")?)
+        .map(|dir| dir.join(program))
+        .find(|p| p.is_file())
+        .and_then(|p| std::fs::canonicalize(p).ok())
+}
 /// The startup entry for the program `exe`: started with the session, MDM waits in the
 /// notification area (`/startup`, #226). A LaunchAgent on macOS, an XDG autostart entry on
 /// Linux.
@@ -546,13 +664,6 @@ fn startup_entry(exe: &Path, macos: bool) -> String {
              X-GNOME-Autostart-enabled=true\n"
         )
     }
-}
-
-/// A startup entry written before #226 for the program `exe`: it names that program but passes
-/// no `/startup`. Another copy's entry (an AppImage elsewhere) is not this one's to rewrite.
-fn startup_outdated(text: &str, exe: &Path, macos: bool) -> bool {
-    !text.contains(mdm_ipc::STARTUP)
-        && entry_program(text, macos).is_some_and(|p| Path::new(&p) == exe)
 }
 
 /// The program a startup entry starts: a LaunchAgent's first argument, an autostart entry's
@@ -599,8 +710,11 @@ pub fn set_run_at_startup(on: bool) {
     let _ = std::fs::write(&file, text);
 }
 
-/// The startup entry written again with its argument when it was written without (by versions
-/// before 0.5.0) for this very program (#226).
+/// The startup entry written again for this program, at each start: one written without its
+/// argument (by versions before 0.5.0) for this very program (#226), and one that names a
+/// program no longer there, which starts nothing (#1484): the path this program had before an
+/// upgrade replaced it while it ran, an AppImage moved since. One turned off in the desktop's
+/// startup settings stays off, and another copy's that is still there stays that copy's.
 pub fn update_run_at_startup() {
     let (Some(file), Some(exe)) = (startup_file(), program()) else {
         return;
@@ -608,12 +722,22 @@ pub fn update_run_at_startup() {
     let Ok(text) = std::fs::read_to_string(&file) else {
         return;
     };
-    if startup_outdated(&text, &exe, cfg!(target_os = "macos")) {
-        tracing::info!("startup entry written again, to start in the notification area");
-        set_run_at_startup(true);
+    match startup_state(&text, &exe, cfg!(target_os = "macos"), resolve_program) {
+        StartupState::Outdated => {
+            tracing::info!("startup entry written again, to start in the notification area");
+            set_run_at_startup(true);
+        }
+        StartupState::Stale => {
+            tracing::info!(
+                "startup entry written again: it named a program that is no longer there ({})",
+                entry_program(&text, cfg!(target_os = "macos")).unwrap_or_default()
+            );
+            set_run_at_startup(true);
+        }
+        StartupState::Off => tracing::info!("startup entry turned off in the desktop's settings"),
+        StartupState::Ours | StartupState::Other => {}
     }
 }
-
 /// The browsers' helper program (crates/nmhost), beside this one.
 const HOST: &str = "misterdownloadmanager-nmhost";
 /// The manifest it writes in each browser's folder.
@@ -3847,6 +3971,52 @@ pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
     }
 }
 
+/// macOS: whether MDM's titled window named `title` is miniaturized into the Dock now (None: no
+/// such window). egui reads it only as the window opens (egui#3494); the freeze watchdog asks at
+/// each frame's logic whether anything of MDM's is on screen (#1481).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2_foundation::NSString;
+    let want = NSString::from_str(&crate::i18n::os_text(title));
+    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and reads the matching
+    // titled window's `isMiniaturized`, changing nothing.
+    unsafe {
+        let cls = AnyClass::get(c"NSApplication")?;
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if app.is_null() {
+            return None;
+        }
+        let windows: *mut AnyObject = msg_send![app, windows];
+        if windows.is_null() {
+            return None;
+        }
+        let count: usize = msg_send![windows, count];
+        for i in 0..count {
+            let win: *mut AnyObject = msg_send![windows, objectAtIndex: i];
+            if win.is_null() {
+                continue;
+            }
+            let style: usize = msg_send![win, styleMask];
+            if (style & 1) == 0 {
+                continue;
+            }
+            let win_title: *mut AnyObject = msg_send![win, title];
+            if win_title.is_null() {
+                continue;
+            }
+            let same: Bool = msg_send![win_title, isEqualToString: &*want];
+            if same.as_bool() {
+                let mini: Bool = msg_send![win, isMiniaturized];
+                return Some(mini.as_bool());
+            }
+        }
+        None
+    }
+}
+
 /// macOS: brings MDM and its windows to the topmost foreground in front of all other apps when
 /// woken from the menu bar icon or the global hotkey (#558).
 #[cfg(target_os = "macos")]
@@ -4886,8 +5056,8 @@ mod host_copy_tests {
 
 #[cfg(test)]
 mod startup_tests {
-    use super::{entry_program, startup_entry, startup_outdated};
-    use std::path::Path;
+    use super::{DELETED, StartupState, entry_program, present, startup_entry, startup_state};
+    use std::path::{Path, PathBuf};
 
     /// The entries versions before 0.5.0 wrote: the program alone.
     fn old_entry(exe: &str, macos: bool) -> String {
@@ -4899,6 +5069,11 @@ mod startup_tests {
         } else {
             format!("[Desktop Entry]\nType=Application\nExec=\"{exe}\"\nTerminal=false\n")
         }
+    }
+
+    /// What an entry does for `exe` on a system where every program named is there, as named.
+    fn state(text: &str, exe: &str, macos: bool) -> StartupState {
+        startup_state(text, Path::new(exe), macos, |p| Some(PathBuf::from(p)))
     }
 
     /// The autostart entry and the LaunchAgent start MDM with `/startup` (#226), and name the
@@ -4915,7 +5090,7 @@ mod startup_tests {
                 let text = startup_entry(Path::new(exe), macos);
                 assert!(text.contains("/startup"), "{text}");
                 assert_eq!(entry_program(&text, macos).as_deref(), Some(exe), "{text}");
-                assert!(!startup_outdated(&text, Path::new(exe), macos));
+                assert_eq!(state(&text, exe, macos), StartupState::Ours, "{text}");
             }
         }
         let desktop = startup_entry(Path::new("/opt/mdm/misterdownloadmanager"), false);
@@ -4931,21 +5106,118 @@ mod startup_tests {
     fn old_startup_entries_are_rewritten() {
         let exe = "/home/ana/Apps/Mister Download Manager.AppImage";
         for macos in [false, true] {
-            assert!(startup_outdated(
-                &old_entry(exe, macos),
-                Path::new(exe),
-                macos
-            ));
-            assert!(!startup_outdated(
-                &old_entry("/elsewhere/mdm.AppImage", macos),
-                Path::new(exe),
-                macos
-            ));
+            assert_eq!(
+                state(&old_entry(exe, macos), exe, macos),
+                StartupState::Outdated
+            );
+            assert_eq!(
+                state(&old_entry("/elsewhere/mdm.AppImage", macos), exe, macos),
+                StartupState::Other
+            );
         }
-        assert!(!startup_outdated("", Path::new(exe), false));
+    }
+
+    /// #1484: an entry that starts nothing isn't "on". One naming the path this program had
+    /// before an upgrade replaced it while it ran, or a program that's gone, is stale (written
+    /// again at the next start, or when Options turns it on); so is one naming no program.
+    #[test]
+    fn an_entry_naming_a_program_that_is_gone_is_stale() {
+        let exe = "/usr/bin/misterdownloadmanager";
+        let replaced = format!("{exe}{DELETED}");
+        let text = startup_entry(Path::new(&replaced), false);
+        assert_eq!(state(&text, exe, false), StartupState::Stale, "{text}");
+        let moved = "/home/ana/Apps/MDM-0.5.1.AppImage";
+        let gone = |p: &str| (p != moved).then(|| PathBuf::from(p));
+        for macos in [false, true] {
+            let text = startup_entry(Path::new(moved), macos);
+            assert_eq!(
+                startup_state(&text, Path::new(exe), macos, gone),
+                StartupState::Stale
+            );
+        }
+        assert_eq!(state("", exe, false), StartupState::Stale);
+        assert_eq!(
+            state("[Desktop Entry]\nExec=\n", exe, false),
+            StartupState::Stale
+        );
+    }
+
+    /// The program named through a link (/usr/bin to /opt) is this one all the same.
+    #[test]
+    fn a_link_to_this_program_is_this_program() {
+        let exe = "/opt/mdm/misterdownloadmanager";
+        let text = startup_entry(Path::new("/usr/bin/misterdownloadmanager"), false);
+        let links = |p: &str| {
+            Some(PathBuf::from(if p == "/usr/bin/misterdownloadmanager" {
+                exe
+            } else {
+                p
+            }))
+        };
+        assert_eq!(
+            startup_state(&text, Path::new(exe), false, links),
+            StartupState::Ours
+        );
+    }
+
+    /// #1484: an entry turned off in the desktop's startup settings (Cinnamon's and GNOME's
+    /// switch writes X-GNOME-Autostart-enabled=false; Hidden=true is the specification's own) is
+    /// off, whatever it starts; only the [Desktop Entry] group counts.
+    #[test]
+    fn an_entry_turned_off_in_the_desktops_settings_is_off() {
+        let exe = "/usr/bin/misterdownloadmanager";
+        let on = startup_entry(Path::new(exe), false);
+        assert!(on.contains("X-GNOME-Autostart-enabled=true"));
+        let off = on.replace(
+            "X-GNOME-Autostart-enabled=true",
+            "X-GNOME-Autostart-enabled=false",
+        );
+        assert_eq!(state(&off, exe, false), StartupState::Off);
+        assert_eq!(
+            state(&format!("{on}Hidden=true\n"), exe, false),
+            StartupState::Off
+        );
+        assert_eq!(
+            state(
+                &format!("{on}X-MATE-Autostart-enabled = False\n"),
+                exe,
+                false
+            ),
+            StartupState::Off
+        );
+        assert_eq!(
+            state(&format!("{on}Hidden=false\n"), exe, false),
+            StartupState::Ours
+        );
+        assert_eq!(
+            state(
+                &format!("{on}\n[Desktop Action x]\nHidden=true\n"),
+                exe,
+                false
+            ),
+            StartupState::Ours
+        );
+    }
+
+    /// The running program's path without Linux's " (deleted)", which an upgrade adds to it
+    /// while it runs: the new file is where the old one was.
+    #[test]
+    fn a_replaced_programs_path_is_where_its_new_file_is() {
+        assert_eq!(
+            present(PathBuf::from(format!("/nowhere/mdm-test-program{DELETED}"))),
+            PathBuf::from("/nowhere/mdm-test-program")
+        );
+        assert_eq!(
+            present(PathBuf::from("/usr/bin/misterdownloadmanager")),
+            PathBuf::from("/usr/bin/misterdownloadmanager")
+        );
+        // A file that really is named so stays as it is.
+        let dir = tempfile::tempdir().unwrap();
+        let named = dir.path().join(format!("odd{DELETED}"));
+        std::fs::write(&named, b"").unwrap();
+        assert_eq!(present(named.clone()), named);
     }
 }
-
 // Sign-in secrets in the system's keychain (#44, secrets.rs). Linux: the Secret Service
 // (GNOME Keyring, KeePassXC, KDE's wallet in its Secret Service mode) over D-Bus, its default
 // collection only, and only while it is unlocked: MDM never unlocks it nor answers a prompt

@@ -205,6 +205,17 @@ opt-level = 3
 [profile.dev.package."*"]
 debug = "line-tables-only"
 
+# The crash monitor's stack walker (rust-minidump's, through framehop) works out a frozen
+# thread's frames from the registers the dump caught, which can be anything mid-instruction: it
+# adds to them as a release build does, wrapping, and a frame that leads nowhere ends the walk.
+# Debug builds check that arithmetic and panicked instead ("attempt to add with overflow" in
+# pe-unwind-info), so a freeze test's report was never written (the busy minimized window's,
+# #1481). Release builds never checked it.
+[profile.dev.package.pe-unwind-info]
+overflow-checks = false
+[profile.dev.package.framehop]
+overflow-checks = false
+
 # storytold's egui fork (as storytold/craft-libs, D-003) plus MDM's commits on anefzaoui/egui
 # (branch mdm-start-hidden, on mdm-wgpu, on mdm-accesskit-windows): every window created hidden
 # gets an AccessKit adapter, with OpenGL (glow) and with Direct3D (wgpu, #89), so screen readers
