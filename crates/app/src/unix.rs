@@ -3234,6 +3234,14 @@ struct TaskEventsInfo {
 #[cfg(target_os = "macos")]
 const TASK_EVENTS_INFO: libc::task_flavor_t = 2;
 
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+unsafe extern "C" {
+    /// MDM's own task port, which <mach/mach_init.h>'s `mach_task_self()` reads (libc's copy is
+    /// deprecated for the mach2 crate, which MDM doesn't otherwise need).
+    static mach_task_self_: libc::mach_port_t;
+}
+
 /// MDM's own page faults and page-ins so far.
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
@@ -3242,10 +3250,10 @@ fn task_events() -> Option<TaskEventsInfo> {
     let mut count = (size_of::<TaskEventsInfo>() / size_of::<libc::natural_t>())
         as libc::mach_msg_type_number_t;
     // SAFETY: `events` is a task_events_info and `count` its size in integers, as task_info asks;
-    // the task is MDM's own.
+    // the task is MDM's own, its port set by the system before MDM runs.
     let kr = unsafe {
         libc::task_info(
-            libc::mach_task_self(),
+            mach_task_self_,
             TASK_EVENTS_INFO,
             (&raw mut events).cast(),
             &mut count,
@@ -3284,6 +3292,7 @@ mod mach_usage_tests {
     /// The kernel's answer as the freeze report reads it: user + system time in ms, the task's
     /// faults and page-ins; a counter past 2^31 read as unsigned, not negative.
     #[test]
+    #[allow(unsafe_code)]
     fn a_threads_basic_info_is_its_time_in_ms() {
         // SAFETY: an all-integer C struct.
         let mut info: libc::thread_basic_info = unsafe { std::mem::zeroed() };
