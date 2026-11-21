@@ -6498,7 +6498,7 @@ impl App {
             let dir = self
                 .settings
                 .category_dir(Category::Torrents, &self.downloads);
-            self.add_remote_torrent(magnet, dir, Category::Torrents, true, None);
+            self.add_remote_torrent(magnet, dir, Category::Torrents, true, None, None, None);
             self.show_window(ctx);
             return;
         }
@@ -6539,6 +6539,8 @@ impl App {
 
     /// A torrent through the debrid account (#44): a row whose files come over HTTP once the
     /// service has them, into `dir` (a torrent of several files in a folder of its own there).
+    /// `files`: the paths ticked in Add torrent (None: all), `size` theirs when known.
+    #[allow(clippy::too_many_arguments)]
     fn add_remote_torrent(
         &mut self,
         magnet: url::Url,
@@ -6546,6 +6548,8 @@ impl App {
         category: Category,
         start_now: bool,
         renamed: Option<String>,
+        files: Option<Vec<String>>,
+        size: Option<u64>,
     ) {
         let Some((account, service)) = self.torrent_account() else {
             return;
@@ -6569,13 +6573,20 @@ impl App {
             target,
             category,
             String::new(),
-            None,
+            size,
             None,
             Default::default(),
             crate::i18n::mark("from a magnet link"),
         );
         if let Some(item) = self.item(id) {
             item.preexisting_folder = preexisting;
+            if let Some(f) = &files {
+                item.note(crate::i18n::fmt(
+                    // i18n: event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+                    crate::i18n::t("Only the {files} file(s) ticked in Add torrent"),
+                    &[("files", &f.len().to_string())],
+                ));
+            }
             item.note(crate::i18n::fmt(
                 // i18n: event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
                 crate::i18n::t(
@@ -6588,6 +6599,7 @@ impl App {
                 transfer: None,
                 folder: dir,
                 renamed,
+                files,
             });
         }
         self.selection.set(id);
@@ -6624,6 +6636,7 @@ impl App {
                 transfer: spec.transfer.clone(),
                 folder: spec.folder.clone(),
                 renamed: spec.renamed.clone(),
+                files: spec.files.clone(),
                 net,
                 poll: std::time::Duration::from_secs(5),
             },
@@ -6646,7 +6659,7 @@ impl App {
     }
 
     /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
-    /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files. The
+    /// (#44): the .torrent's magnet link (its hash, name and trackers) and the files ticked. The
     /// download added, if one was (not when the debrid account takes it).
     fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) -> Option<u64> {
         let meta = &add.meta;
@@ -6704,12 +6717,17 @@ impl App {
                 mdm_torrent::magnet_link(&meta.torrent).and_then(|m| url::Url::parse(&m).ok())
         {
             let renamed = crate::torrent_rename::renamed_target(meta);
+            // Only the files ticked go to the service's list of files to download, matched
+            // there by path (each service numbers them its own way).
+            let (files, size) = crate::torrents::remote_choice(meta, add.files.as_deref());
             self.add_remote_torrent(
                 magnet,
                 add.dir.clone(),
                 add.category,
                 add.start_now,
                 renamed,
+                files,
+                Some(size).filter(|s| *s > 0),
             );
             return None;
         }

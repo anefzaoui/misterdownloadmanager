@@ -573,6 +573,11 @@ These ship in the next version.
   pieces they share with ticked files are kept in a parts file of MDM's own, and a file ticked
   later, while the torrent downloads or once it has finished, is made then and gets them from
   there ([#1567](https://github.com/anefzaoui/misterdownloadmanager/pull/1567))
+- ✅ Torrents through a debrid account: only the files ticked in Add torrent are downloaded
+  (Real-Debrid's `selectFiles` gets their ids; every service's files are matched by path), the
+  choice kept in the list, the download's size theirs; a ticked file the service doesn't list
+  stops the download with its name rather than taking every file
+  ([#1640](https://github.com/anefzaoui/misterdownloadmanager/issues/1640))
 - ✅ Downloads from servers that keep several copies of a file, each with its own version tag
   and date (ModelScope's), go on with all their connections when the copies carry the same
   checksum of the whole file, checked on every part, instead of stopping with "the file changed
