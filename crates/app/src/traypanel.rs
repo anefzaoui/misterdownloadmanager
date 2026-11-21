@@ -175,7 +175,7 @@ impl Panel {
         });
         if styled {
             crate::chrome::show_popup(ctx, vid);
-            ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Focus);
+            crate::dialogs::focus(ctx, vid);
         }
         // Closed once it loses the focus it had (a click elsewhere, the taskbar's included). Not
         // in an off-screen test copy, whose windows are kept from the foreground (win32.rs).

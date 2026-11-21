@@ -160,6 +160,60 @@ pub fn files_from_bytes(torrent: &[u8]) -> Result<Vec<FileEntry>, TorrentError> 
     Ok(entries)
 }
 
+/// librqbit's saved piece map of a torrent, in its session folder: one bit a piece, the first
+/// piece in the first byte's highest bit, set once the piece is checked. It is written while the
+/// torrent is in the session and stays there when the session stops; removing the torrent from
+/// the session removes it.
+pub fn piece_map_file(session_dir: &Path, hash: &str) -> PathBuf {
+    session_dir.join(format!("{}.bitv", hash.to_ascii_lowercase()))
+}
+
+/// What each of a saved torrent's files (as [`files_from_bytes`] lists them, padding included)
+/// has of the pieces its piece map (`map`, from [`piece_map_file`]) says are there: the numbers
+/// the session shows ([`Stats::file_done`]), for a torrent out of it. None: not a torrent, or a
+/// map too short for it.
+pub fn file_done_from_map(torrent: &[u8], map: &[u8]) -> Option<Vec<u64>> {
+    check_bytes(torrent).ok()?;
+    let meta = librqbit::torrent_from_bytes(torrent).ok()?;
+    let info = meta.info.data.validate().ok()?;
+    let sizes: Vec<u64> = info.iter_file_details().map(|f| f.len).collect();
+    file_done_of(&sizes, info.lengths().default_piece_length().into(), map)
+}
+
+/// [`file_done_from_map`]'s count, for files of `sizes` laid end to end in pieces of
+/// `piece_length` bytes (the last one shorter): each file has the bytes of each piece it shares
+/// that the map has, as librqbit counts them (`size_of_piece_in_file`). None: no piece size, or a
+/// map with fewer bits than the torrent has pieces.
+pub fn file_done_of(sizes: &[u64], piece_length: u64, map: &[u8]) -> Option<Vec<u64>> {
+    if piece_length == 0 {
+        return None;
+    }
+    let total: u64 = sizes.iter().sum();
+    if (map.len() as u64).saturating_mul(8) < total.div_ceil(piece_length) {
+        return None;
+    }
+    let have = |p: u64| map[(p / 8) as usize] & (0x80 >> (p % 8)) != 0;
+    let mut start = 0;
+    Some(
+        sizes
+            .iter()
+            .map(|&len| {
+                let end = start + len;
+                let first = start / piece_length;
+                let done = (first..end.div_ceil(piece_length))
+                    .filter(|&p| have(p))
+                    .map(|p| {
+                        let piece = p * piece_length;
+                        (piece + piece_length).min(end) - piece.max(start)
+                    })
+                    .sum();
+                start = end;
+                done
+            })
+            .collect(),
+    )
+}
+
 /// Replace `path` with `bytes` through `tmp`, which is flushed to the disk before it takes
 /// `path`'s place (#1357): a crash or a power cut then leaves the old file or the new one, never
 /// an empty one (a rename can reach the disk before the data it names). Only off the window's
@@ -1935,6 +1989,120 @@ mod tests {
         ));
         assert!(Source::magnet("https://x/y.torrent").is_none());
         assert!(Source::magnet("magnet").is_none());
+    }
+
+    /// A piece map with `have` set, of `pieces` bits, as librqbit writes it.
+    fn map_of(pieces: usize, have: &[usize]) -> Vec<u8> {
+        let mut map = vec![0u8; pieces.div_ceil(8)];
+        for &p in have {
+            map[p / 8] |= 0x80 >> (p % 8);
+        }
+        map
+    }
+
+    /// #1624: each file has its share of each piece there, pieces across two files counted in
+    /// both, the last piece shorter.
+    #[test]
+    fn file_done_counts_each_file_s_share_of_the_pieces_there() {
+        // Pieces of 10: a = 0..25 (pieces 0-2), b = 25..30 (piece 2), c = 30..47 (3-4, the
+        // last one 7 bytes), an empty file at 47.
+        let sizes = [25, 5, 17, 0];
+        assert_eq!(
+            file_done_of(&sizes, 10, &map_of(5, &[0, 1, 2, 3, 4])),
+            Some(vec![25, 5, 17, 0])
+        );
+        assert_eq!(
+            file_done_of(&sizes, 10, &map_of(5, &[])),
+            Some(vec![0, 0, 0, 0])
+        );
+        // Piece 2 is a's last 5 bytes and all of b; the last piece is c's last 7.
+        assert_eq!(
+            file_done_of(&sizes, 10, &map_of(5, &[2, 4])),
+            Some(vec![5, 5, 7, 0])
+        );
+        assert_eq!(
+            file_done_of(&sizes, 10, &map_of(5, &[1])),
+            Some(vec![10, 0, 0, 0])
+        );
+        // An empty file in the middle of a piece has none of it.
+        assert_eq!(
+            file_done_of(&[5, 0, 5], 10, &map_of(1, &[0])),
+            Some(vec![5, 0, 5])
+        );
+    }
+
+    /// A big file with one piece there has that piece, whatever its length on disk.
+    #[test]
+    fn file_done_of_a_big_file_with_one_piece() {
+        let piece = 16 * 1024;
+        let sizes = [64 * 1024, 1024 * 1024];
+        let have: Vec<usize> = (0..4).chain([4 + 30]).collect();
+        assert_eq!(
+            file_done_of(&sizes, piece, &map_of(68, &have)),
+            Some(vec![64 * 1024, piece])
+        );
+    }
+
+    /// A map that can't be this torrent's, or no piece size: nothing is said.
+    #[test]
+    fn file_done_of_needs_a_bit_for_each_piece() {
+        // 47 bytes in pieces of 10: 5 pieces, one byte of map.
+        assert_eq!(file_done_of(&[47], 10, &[]), None);
+        assert!(file_done_of(&[47], 10, &[0xff]).is_some());
+        // 90 bytes: 9 pieces, two bytes.
+        assert_eq!(file_done_of(&[90], 10, &[0xff]), None);
+        assert_eq!(file_done_of(&[90], 10, &[0xff, 0x80]), Some(vec![90]));
+        assert_eq!(file_done_of(&[47], 0, &[0xff]), None);
+        assert_eq!(file_done_from_map(b"not a torrent", &[0xff]), None);
+    }
+
+    /// #1624: out of the session, the saved piece map gives each file what the session showed
+    /// for it, a full-length file with few good pieces included.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn the_saved_piece_map_gives_the_session_s_file_numbers() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        let a: Vec<u8> = (0..40 * 1024u32).map(|i| (i % 251) as u8).collect();
+        let b: Vec<u8> = (0..100 * 1024u32).map(|i| (i % 239) as u8).collect();
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        std::fs::write(src.join("b.bin"), &b).unwrap();
+        let torrent = make_torrent(&src).await;
+        let order: Vec<u64> = files_from_bytes(&torrent)
+            .unwrap()
+            .iter()
+            .map(|f| f.size)
+            .collect();
+        // The copy: the first file whole, the second at its full length (as the engine makes
+        // a file) with only its first 20 KiB.
+        let out = tmp.path().join("out").join("set");
+        std::fs::create_dir_all(&out).unwrap();
+        let entries = files_from_bytes(&torrent).unwrap();
+        for (i, f) in entries.iter().enumerate() {
+            let data = if f.path.ends_with("a.bin") { &a } else { &b };
+            let mut kept = data.clone();
+            if i == entries.len() - 1 {
+                kept[20 * 1024..].fill(0);
+            }
+            std::fs::write(out.join(&f.path), &kept).unwrap();
+        }
+        let state = tmp.path().join("state");
+        let t = Torrents::start(offline(&state)).await.unwrap();
+        let hash = t.add(&torrent, &out, None, Vec::new(), true).await.unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(30);
+        while t.stats(&hash).unwrap().phase == Phase::Checking {
+            assert!(std::time::Instant::now() < deadline, "never checked");
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        let seen = t.stats(&hash).unwrap().file_done;
+        t.stop().await;
+        assert!(
+            seen[entries.len() - 1] < order[entries.len() - 1],
+            "{seen:?}"
+        );
+        assert!(seen[0] > 0, "{seen:?}");
+        let map = std::fs::read(piece_map_file(&state.join("session"), &hash)).unwrap();
+        assert_eq!(file_done_from_map(&torrent, &map), Some(seen));
     }
 
     /// A torrent of `dir`'s files, made by librqbit.
