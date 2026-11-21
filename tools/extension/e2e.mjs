@@ -46,8 +46,10 @@
 // browser sent, #900), played (a feed whose page names no video: the file and the stream the tab
 // played for each video, found by its length, downloaded by MDM; never the next video, #1092),
 // qualities (the button's menu: a stream's qualities looked up by MDM, with their sizes; the one
-// picked downloads with its progress window only, MDM's main window hidden), page (the menu on a
-// real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
+// picked downloads with its progress window only, MDM's main window hidden), qualitiesDialog
+// (the stream's 360p row opens Download video with it selected; Cancel adds nothing, Download Now
+// adds it; #1114), page (the menu on a real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK
+// downloaded: off by default), video (shown,
 // clicked, dragged, kept; "never on the site" in the last browser; the button's clicks go through
 // its menu's "Open in…" to the Download video window, as in csp, hls, streams, sniffed and
 // inplace), panelOptions (the button follows Options in an open tab: off, on, its size, the site
@@ -1099,6 +1101,48 @@ foreach ($w in $A::RootElement.FindAll([System.Windows.Automation.TreeScope]::Ch
   if ($b -and $b.Current.IsEnabled) { $b.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke(); 'PRESSED'; break }
 }`;
   return /PRESSED/.test(spawnSync("powershell", ["-NoProfile", "-Command", script], { encoding: "utf8" }).stdout);
+}
+
+function videoSelectedQuality(pid, quality) {
+  if (!WIN) throw new Skip(NO_UIA);
+  const script = `
+Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes
+$A = [System.Windows.Automation.AutomationElement]
+$pid_ = New-Object System.Windows.Automation.PropertyCondition($A::ProcessIdProperty, ${pid})
+$edit = New-Object System.Windows.Automation.AndCondition(
+  (New-Object System.Windows.Automation.PropertyCondition($A::ControlTypeProperty, [System.Windows.Automation.ControlType]::Edit)),
+  (New-Object System.Windows.Automation.PropertyCondition($A::NameProperty, 'Page address')))
+foreach ($w in $A::RootElement.FindAll([System.Windows.Automation.TreeScope]::Children, $pid_)) {
+  if (-not $w.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $edit)) { continue }
+  foreach ($e in $w.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)) {
+    if ($e.Current.Name -match '(^|\\D)${quality}p(\\D|$)') {
+      try { if ($e.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Current.IsSelected) { 'SELECTED ' + $e.Current.Name; break } } catch { }
+    }
+  }
+}`;
+  const out = spawnSync("powershell", ["-NoProfile", "-Command", script], { encoding: "utf8" }).stdout;
+  const m = /^SELECTED (.*)$/m.exec(out);
+  return m ? m[1].trim() : null;
+}
+
+function videoCancel(pid) {
+  if (!WIN) throw new Skip(NO_UIA);
+  const script = `
+Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes
+$A = [System.Windows.Automation.AutomationElement]
+$pid_ = New-Object System.Windows.Automation.PropertyCondition($A::ProcessIdProperty, ${pid})
+$edit = New-Object System.Windows.Automation.AndCondition(
+  (New-Object System.Windows.Automation.PropertyCondition($A::ControlTypeProperty, [System.Windows.Automation.ControlType]::Edit)),
+  (New-Object System.Windows.Automation.PropertyCondition($A::NameProperty, 'Page address')))
+$cancel = New-Object System.Windows.Automation.AndCondition(
+  (New-Object System.Windows.Automation.PropertyCondition($A::ControlTypeProperty, [System.Windows.Automation.ControlType]::Button)),
+  (New-Object System.Windows.Automation.PropertyCondition($A::NameProperty, 'Cancel')))
+foreach ($w in $A::RootElement.FindAll([System.Windows.Automation.TreeScope]::Children, $pid_)) {
+  if (-not $w.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $edit)) { continue }
+  $b = $w.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cancel)
+  if ($b) { $b.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke(); 'CANCELLED'; break }
+}`;
+  return /CANCELLED/.test(spawnSync("powershell", ["-NoProfile", "-Command", script], { encoding: "utf8" }).stdout);
 }
 
 // Whether the Download video window's "Download Now" is enabled: yt-dlp looked the address up
@@ -3467,6 +3511,81 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     } finally {
       // The next case starts MDM as usual.
       await stopApp();
+    }
+  },
+
+  // #1114: picking 360p in the browser's qualities menu opens the real Download video window
+  // with that choice already selected; Cancel adds nothing, while Download Now adds that job.
+  async qualitiesDialog(t) {
+    if (t.kind !== "chromium" && t.kind !== "firefox") throw new Skip("real Chrome or Firefox only");
+    if (!WIN) throw new Skip(NO_UIA);
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    if (!ffmpeg) throw new Skip("no ffmpeg (E2E_FFMPEG or PATH)");
+    const settingsFile = path.join(data, "downloads.json");
+    await stopApp();
+    const settings = JSON.parse(fs.readFileSync(settingsFile, "utf8"));
+    const originalShowStartDialog = settings.settings.show_start_dialog;
+    settings.settings.show_start_dialog = true;
+    fs.writeFileSync(settingsFile, JSON.stringify(settings));
+    try {
+      await startApp();
+      const pid = appPid();
+      // This isolated harness shares one app data folder across browser cases. Remove only its
+      // earlier local HLS jobs so Download Now cannot stop at the duplicate-download question.
+      const earlierHls = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}/hls/`)).map((d) => d.id);
+      if (earlierHls.length) await ipc({ action: "delete", ids: earlierHls });
+      if ((await mdmList()).some((d) => d.url.startsWith(`${LAB}/hls/`))) throw new Error("could not clear earlier local HLS jobs");
+      const handoff = async (pageQuery, title) => {
+        await t.session.navigate(`${LAB}/page?hls=1&case=${pageQuery}`);
+        if (await until("the stream player", 15000, () => t.session.evaluate("document.body.dataset.stream || ''")) !== "done") throw new Error("the stream player did not start");
+        const v = await rect(t.session, "#player");
+        const beforeHover = lookupsLogged().length;
+        if (!(await hover(t.session, v))) throw new Error("no button over the stream's player");
+        // Hovering the video itself is not the lookup trigger; clickArrow moves to the pill and
+        // opens its menu before the delayed lookup can make the button fade.
+        await clickArrow(t.session);
+        const menu = await until("the qualities menu", 60000, async () => {
+          const p = await t.session.picks("row");
+          return p && !p.busy && p.rows.length ? p : null;
+        });
+        const lookupAt = lookupsLogged().length;
+        if (lookupAt !== beforeHover + 1) throw new Error(`opening the qualities menu caused ${lookupAt - beforeHover} lookups, expected one`);
+        if (lookupsLogged().length !== lookupAt) throw new Error("opening the menu caused another lookup beyond the hover lookup");
+        const row = menu.rows.find((r) => r.kind === "video" && /\b360p\b/.test(r.name));
+        if (!row) throw new Error(`no 360p video row in the browser menu: ${JSON.stringify(menu.rows.map((r) => r.name))}`);
+        const jobsBefore = new Set((await mdmList()).map((d) => d.id));
+        await t.session.mouse(row.x, row.y, "click");
+        await until(`${title}: native Download video window`, 15000, () => appWindows(pid).includes(VIDEO_WINDOW));
+        const address = await until("the native window's Page address", 15000, () => videoAddress(pid));
+        if (address !== `${LAB}/hls/master.m3u8`) throw new Error(`the dialog address is ${address}, not the clicked stream manifest`);
+        await until("Download Now ready", 45000, () => videoReady(pid));
+        const selected = await until("the browser-picked 360p selected in the native dialog", 5000, () => videoSelectedQuality(pid, 360));
+        if (!/360p/.test(selected)) throw new Error(`the dialog selected ${selected}, not the browser's 360p row`);
+        if (lookupsLogged().length !== lookupAt) throw new Error("opening the native dialog caused another qualities lookup");
+        return { lookupAt, jobsBefore };
+      };
+
+      const first = await handoff("dialog-cancel", "first hand-off");
+      await sleep(1000);
+      if ((await mdmList()).some((d) => !first.jobsBefore.has(d.id))) throw new Error("a job was added while the native dialog was open");
+      if (!videoCancel(pid)) throw new Error("the native dialog's Cancel button was not available");
+      await until("the cancelled Download video window to close", 5000, () => !appWindows(pid).includes(VIDEO_WINDOW));
+      if ((await mdmList()).some((d) => !first.jobsBefore.has(d.id))) throw new Error("Cancel added a download job");
+      if (lookupsLogged().length !== first.lookupAt) throw new Error("Cancel caused another qualities lookup");
+
+      // A new page instance gets its own lookup and hand-off after the first dialog was cancelled.
+      const second = await handoff("dialog-download", "second hand-off");
+      if ((await mdmList()).some((d) => !second.jobsBefore.has(d.id))) throw new Error("a job appeared before Download Now in the second dialog");
+      if (!videoDownloadNow(pid)) throw new Error('the native "Download Now" button was not available');
+      const item = await until("the confirmed browser-picked 360p job", 15000, async () => (await mdmList()).find((d) => !second.jobsBefore.has(d.id)));
+      if (item.url !== `${LAB}/hls/master.m3u8`) throw new Error(`the confirmed job uses ${item.url}`);
+      if (lookupsLogged().length !== second.lookupAt) throw new Error("confirming the cached choice caused another qualities lookup");
+      return `${t.name}: browser menu picked 360p; Cancel added no job; new-page hand-off picked 360p and Download Now added ${item.file}`;
+    } finally {
+      await stopApp();
+      const latest = JSON.parse(fs.readFileSync(settingsFile, "utf8"));
+      latest.settings.show_start_dialog = originalShowStartDialog;
+      fs.writeFileSync(settingsFile, JSON.stringify(latest));
     }
   },
 
