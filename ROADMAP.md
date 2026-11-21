@@ -1769,7 +1769,8 @@ These ship in the next version.
   taken from the browser whose link expired asks the video's page for a fresh one
 - ✅ Luna: a window that isn't the active one has Windows XP's title bar buttons, half-faded
   into the paler bar (a mid blue, Close a dusty rose) with a crisp pale edge and solid white
-  symbols, instead of greyish buttons with faint symbols
+  symbols, instead of greyish buttons with faint symbols; and XP's symbols in every state
+  (Minimize a short thick bar low in the button, a thick-topped Maximize and Restore, a thick X)
   ([#1612](https://github.com/anefzaoui/misterdownloadmanager/issues/1612))
 
 ## Being worked on

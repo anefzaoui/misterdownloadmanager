@@ -6633,6 +6633,72 @@ pub mod caption {
                 CaptionButton::ToTray => to_tray_glyph_sized(p, c, s, rtl(), size),
             }
         }
+
+        /// Windows XP's own glyph (Luna, #1612) on a 21-pixel tile whose edge's top-left pixel
+        /// is `at`, as XP's pixels sit on it: Minimize a short thick bar low and to the left,
+        /// Maximize a box with a thick top, Restore two of them, Close a thick X; all whole
+        /// pixels, so crisp (rounded to the screen's at other scales). False for our own button,
+        /// which keeps [`Self::glyph`].
+        fn xp_glyph(self, ui: &Ui, p: &Painter, at: Pos2, ink: Color32, maximized: bool) -> bool {
+            use egui::emath::GuiRounding;
+            // (left, top, right, bottom) in the tile's pixels, right and bottom excluded.
+            type Spans = &'static [(u8, u8, u8, u8)];
+            const MINIMIZE: Spans = &[(5, 13, 12, 16)];
+            const MAXIMIZE: Spans = &[
+                (5, 5, 16, 8),
+                (5, 8, 6, 15),
+                (15, 8, 16, 15),
+                (5, 15, 16, 16),
+            ];
+            // The window behind (its thick top, its right side) and the one in front.
+            const RESTORE: Spans = &[
+                (8, 5, 15, 7),
+                (14, 7, 15, 12),
+                (13, 11, 14, 12),
+                (5, 8, 12, 10),
+                (5, 10, 6, 14),
+                (11, 10, 12, 14),
+                (5, 14, 12, 15),
+            ];
+            const CLOSE: Spans = &[
+                // Its tips joined to the next row: egui leaves out a rect a pixel square.
+                (6, 5, 7, 7),
+                (14, 5, 15, 7),
+                (5, 6, 8, 7),
+                (13, 6, 16, 7),
+                (6, 7, 9, 8),
+                (12, 7, 15, 8),
+                (7, 8, 10, 9),
+                (11, 8, 14, 9),
+                (8, 9, 13, 10),
+                (9, 10, 12, 11),
+                (8, 11, 13, 12),
+                (7, 12, 10, 13),
+                (11, 12, 14, 13),
+                (6, 13, 9, 14),
+                (12, 13, 15, 14),
+                (5, 14, 8, 15),
+                (13, 14, 16, 15),
+                (6, 14, 7, 16),
+                (14, 14, 15, 16),
+            ];
+            let spans = match self {
+                CaptionButton::Minimize => MINIMIZE,
+                CaptionButton::Maximize if maximized => RESTORE,
+                CaptionButton::Maximize => MAXIMIZE,
+                CaptionButton::Close => CLOSE,
+                CaptionButton::ToTray => return false,
+            };
+            let ppp = ui.ctx().pixels_per_point();
+            for &(l, t, r, b) in spans {
+                let rc = Rect::from_min_max(
+                    at + vec2(l.into(), t.into()),
+                    at + vec2(r.into(), b.into()),
+                );
+                p.rect_filled(rc.round_to_pixels(ppp), 0.0, ink);
+            }
+            true
+        }
     }
 
     /// Windows keeps the window's own title bar in UI Automation (its "TitleBar", built from the
@@ -6889,7 +6955,15 @@ pub mod caption {
                 let shadow = Color32::from_black_alpha(110);
                 b.glyph(ui, p, at + vec2(1.0, 1.0), shadow, maximized, size, width);
             }
-            b.glyph(ui, p, at, ink, maximized, size, width);
+            // Windows XP's own glyphs, placed from the tile's edge (its first whole pixel).
+            let ppp = ui.ctx().pixels_per_point();
+            let edge = pos2(
+                (tile.min.x * ppp).ceil() / ppp,
+                (tile.min.y * ppp).ceil() / ppp,
+            );
+            if era != Shine::Luna || !b.xp_glyph(ui, p, edge, ink, maximized) {
+                b.glyph(ui, p, at, ink, maximized, size, width);
+            }
         }
         show_focus(ui, resp, tile);
     }

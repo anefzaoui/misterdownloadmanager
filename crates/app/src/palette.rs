@@ -545,7 +545,8 @@ pub enum CaptionLook {
     /// colour under the pointer (Close red), their glyph then the bar's.
     Breeze,
     /// Windows XP: a shaded bar, the title in bold with a shadow, square buttons with a light
-    /// edge (Close always red).
+    /// edge and XP's own symbols (Close always red; while the window isn't the active one,
+    /// `caption.button.inactive` and the other inactive roles where the theme sets them).
     Luna,
     /// Windows 7: a glassy bar, the title on a soft glow, glossy buttons hung from the bar's
     /// top (Close wider and red).
