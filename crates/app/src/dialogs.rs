@@ -4692,7 +4692,11 @@ mod tests {
             }
         }
         // The one in `focus` itself, for Linux and macOS.
-        assert_eq!(found.len(), 1, "Focus sent outside dialogs::focus: {found:?}");
+        assert_eq!(
+            found.len(),
+            1,
+            "Focus sent outside dialogs::focus: {found:?}"
+        );
         assert!(found[0].contains("dialogs.rs"), "{found:?}");
     }
 
