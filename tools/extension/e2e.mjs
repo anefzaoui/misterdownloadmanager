@@ -3070,8 +3070,11 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     };
     const first = await hover(t.session, v);
     if (!first) throw new Error("no button over the player");
-    await until("the player's top bar", 3000, () => t.session.evaluate(`getComputedStyle(document.getElementById("player-feedback").parentElement).opacity === "1"`));
-    await sleep(700);
+    await until("the player's top bar", 5000, () => t.session.evaluate(`getComputedStyle(document.getElementById("player-feedback").parentElement).opacity === "1"`));
+    // The pointer moves on a little over the video (the button fades 1.5 s after it rests, #480),
+    // and the button has had its time (400 ms) to look again at the spot it took.
+    await t.session.mouse(mid[0] + 3, mid[1] + 2);
+    await sleep(600);
     const b = await look("shown");
     if (!b) throw new Error("the button went as the player's bars showed");
     if (covered) throw new Error(`the button covers the player's feedback button: ${seen.join("; ")}`);
