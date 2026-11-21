@@ -9,9 +9,9 @@
 //! The real write or flush still runs, after the wait. The real flush runs once the writes are
 //! let go (#1626): by then the modelled disk has written what waited, and holding the writes
 //! while the machine's own disk writes it all again counted it twice. On a CI runner whose disk
-//! was busy, that real flush took 6.5 s for 50 MB and stopped the transfer for 6 s, a stall of
-//! the runner's disk, not of the one modelled here. Where the system's own flush holds the
-//! writes (NTFS), it still does so by itself.
+//! was busy, that real flush took seconds and the transfer stood still for 6 s, a stall of the
+//! runner's disk, not of the one modelled here. Where the system's own flush holds the writes
+//! (NTFS), it still does so by itself.
 
 use std::sync::{Arc, Mutex, MutexGuard, RwLock};
 use std::time::{Duration, Instant};
