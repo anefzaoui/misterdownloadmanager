@@ -3671,6 +3671,8 @@ mod tests {
     /// (a warning); one that can is written.
     #[tokio::test]
     async fn a_piece_map_written_back_or_given_up() {
+        // The warning shows with `--nocapture`.
+        let _ = tracing_subscriber::fmt().with_test_writer().try_init();
         let tmp = tempfile::tempdir().unwrap();
         let map = tmp.path().join("x.bitv");
         assert!(put_piece_map_tries(&map, &[0xf0], 3, Duration::from_millis(1)).await);
