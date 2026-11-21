@@ -573,6 +573,11 @@ These ship in the next version.
   pieces they share with ticked files are kept in a parts file of MDM's own, and a file ticked
   later, while the torrent downloads or once it has finished, is made then and gets them from
   there ([#1567](https://github.com/anefzaoui/misterdownloadmanager/pull/1567))
+- ✅ Windows: Simplified Chinese drawn with a Chinese font on every Windows, no longer as boxes
+  where Microsoft YaHei's usual file is missing (Windows 7's `msyh.ttf`, DengXian, SimSun and
+  SimHei are looked for too, a Chinese font must have its language's own characters, the Chinese
+  fonts come before the Japanese ones for every Chinese character, a font per character), and
+  the log names the font ([#1605](https://github.com/anefzaoui/misterdownloadmanager/issues/1605))
 - ✅ Private-window downloads stay in the list by default (Options → General → Keep
   private-window downloads in the list is on for every list that never chose, their cookies
   still never saved): each is marked with a mask before its status, whose tip says whether the
