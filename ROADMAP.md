@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The Download video button on Bilibili stays on one corner, clear of the player's feedback
+  button, and can be clicked: it looks for a page's controls under the whole of the spot it would
+  take, not only its middle and corners ([#1582](https://github.com/anefzaoui/misterdownloadmanager/issues/1582))
 - ✅ MDM keeps its own yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself: a check a few
   seconds after it starts and then while it runs (yt-dlp and gallery-dl at most every 6 hours,
   Deno daily, ffmpeg weekly, remembered across starts), each new version checked as its first

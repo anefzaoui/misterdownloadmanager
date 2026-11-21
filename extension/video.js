@@ -1601,6 +1601,22 @@ button:focus-visible { outline: none; }
     return { r, w, h, roomX: Math.max(0, r.width - w - 2 * INSET), roomY: Math.max(0, r.height - h - 2 * INSET) };
   }
 
+  // The points of a spot (a viewport rectangle, the button's size) where the page is asked what
+  // lies under it: across the whole of it, `step` apart at most, on three lines (its top, its
+  // middle and its bottom, `inset` inside its edges). Its middle and four corners alone missed a
+  // control under one end of it (#1582: Bilibili's feedback button at the player's top right,
+  // under the button's end and between its corners), so the button covered it there.
+  function probes(b, step = 12, inset = 3) {
+    const ix = Math.min(inset, Math.max(0, b.right - b.left) / 2);
+    const iy = Math.min(inset, Math.max(0, b.bottom - b.top) / 2);
+    const w = Math.max(0, b.right - b.left - 2 * ix);
+    const h = Math.max(0, b.bottom - b.top - 2 * iy);
+    const across = Math.max(2, Math.min(32, Math.ceil(w / step)) + 1);
+    const xs = Array.from({ length: across }, (_, i) => b.left + ix + (w * i) / (across - 1));
+    const ys = [b.top + iy, b.top + iy + h / 2, b.bottom - iy];
+    return ys.flatMap((y) => xs.map((x) => [x, y]));
+  }
+
   // Is a control of the page under this spot (a viewport rectangle)? What counts is something
   // on top of the video that the user clicks and that is much smaller than the video: a button,
   // a small link, a watch-later or menu button on a preview (#421); a link or layer over the
@@ -1608,17 +1624,14 @@ button:focus-visible { outline: none; }
   function onControl(b, video, videoRect) {
     const area = (x) => Math.max(0, x.width) * Math.max(0, x.height);
     const small = (el) => area(el.getBoundingClientRect()) < area(videoRect) / 5;
-    const points = [
-      [(b.left + b.right) / 2, (b.top + b.bottom) / 2],
-      [b.left + 4, b.top + 4],
-      [b.right - 4, b.top + 4],
-      [b.left + 4, b.bottom - 4],
-      [b.right - 4, b.bottom - 4],
-    ];
-    for (const [x, y] of points) {
+    // Each element judged once, however many of the points it lies under.
+    const judged = new Set();
+    for (const [x, y] of probes(b)) {
       for (const el of document.elementsFromPoint(x, y)) {
         if (el === root) continue;
         if (el === video || el.contains(video)) break;
+        if (judged.has(el)) continue;
+        judged.add(el);
         const control = el.closest("button, [role=button], a[href], input, select, [onclick]");
         if (control && !control.contains(video) && small(control)) return true;
         if (small(el) && getComputedStyle(el).cursor === "pointer") return true;

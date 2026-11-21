@@ -3034,6 +3034,34 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   assert.equal(pointerTarget(next, null, false), next);
   assert.equal(pointerTarget(null, mine, false), null);
   assert.ok(fn("look").includes("pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen)"), "look: kept on its video while its menu is open");
+  // #1582: where the page is asked what lies under a spot the button would take (onControl).
+  // Bilibili's player keeps a feedback button (54 x 24) at its top right, 12 px from its edge, in
+  // view while the pointer moves over the player: on a 1550 px wide player the button's default
+  // spot (155 x 32, 8 px in) covers its glyph, yet the spot's middle and four corners all miss
+  // it. Every point the page is asked at lies inside the spot, and any control of 14 x 14 px or
+  // more under any part of it lies under one of them.
+  const probes = make(["probes"], "probes");
+  const inside = (p, r) => p[0] >= r.left && p[0] <= r.right && p[1] >= r.top && p[1] <= r.bottom;
+  const hits = (pts, r) => pts.some((p) => inside(p, r));
+  const spotAt = { left: 1387, top: 8, right: 1542, bottom: 40 };
+  const feedback = { left: 1484, top: 18, right: 1538, bottom: 42 };
+  const fivePoints = [[1464.5, 24], [1391, 12], [1538, 12], [1391, 36], [1538, 36]];
+  assert.ok(!fivePoints.some((p) => p[0] > feedback.left && p[0] < feedback.right && p[1] > feedback.top && p[1] < feedback.bottom), "the middle and corners alone miss Bilibili's feedback button (the miss #1582 saw)");
+  assert.ok(hits(probes(spotAt), feedback), "the points find Bilibili's feedback button under the button's end");
+  for (const box of [spotAt, { left: 8, top: 8, right: 44, bottom: 40 }, { left: 100, top: 300, right: 399, bottom: 334 }, { left: 5, top: 5, right: 5, bottom: 5 }]) {
+    const pts = probes(box);
+    assert.ok(pts.length >= 6 && pts.length <= 3 * 33, `a bounded number of points (${pts.length})`);
+    assert.ok(pts.every((p) => Number.isFinite(p[0]) && Number.isFinite(p[1]) && inside(p, box)), "every point inside the spot");
+    for (let x = box.left - 13; x <= box.right; x += 1) {
+      for (let y = box.top - 13; y <= box.bottom; y += 1) {
+        const c = { left: x, top: y, right: x + 14, bottom: y + 14 };
+        // Overlapping the spot by 14 px both ways (a smaller box can't fit inside it): found.
+        const over = Math.min(c.right, box.right) - Math.max(c.left, box.left) >= 14 && Math.min(c.bottom, box.bottom) - Math.max(c.top, box.top) >= 14;
+        if (over) assert.ok(hits(pts, c), `a 14 px control at ${x},${y} under the spot ${JSON.stringify(box)}`);
+      }
+    }
+  }
+  assert.ok(fn("onControl").includes("for (const [x, y] of probes(b))"), "onControl asks at every point of probes");
   // #1271: where the background asks the page's player what the click's video is (the window's
   // message): its middle while it has a box on the screen; a hover preview the page stopped as
   // the pointer went to the button (taken out, or hidden in a container of no size) is at the
