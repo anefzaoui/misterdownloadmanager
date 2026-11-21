@@ -22,6 +22,8 @@ Browser integration has two parts: a small helper program that the browser talks
 
 Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/): click **Add to Firefox**. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's **Add Mister Download Manager to your browser** window opens that page for you.)
 
+For developers, Firefox can also load the add-on by hand: in `about:debugging`, **This Firefox → Load Temporary Add-on...**, choose `mdm-firefox.xpi`, which comes with MDM: in the `extension` folder where it is installed on Windows (as below), in `/usr/share/misterdownloadmanager` from the Linux packages. Firefox keeps that copy only until it restarts, and it doesn't update itself; its toolbar button's popup says so. The add-on from addons.mozilla.org is the one to use.
+
 ### Chrome, Edge, Brave, Opera and Vivaldi
 
 Install the extension from its page in the Chrome Web Store, [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp): click **Add to Chrome**. In Edge the button is **Get**: Edge first asks to **Allow extensions from other stores** (click **Allow**), then **Add extension**. The browser keeps it updated. MDM's **Add Mister Download Manager to your browser** window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.

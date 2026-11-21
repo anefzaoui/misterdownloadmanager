@@ -6728,6 +6728,14 @@ column	Upload speed	Velocidad de subida
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	Es una lista de videos: elíjalos en Mister Download Manager
 #. text in the browser extension
+#. link after popup_by_hand_firefox in the toolbar button's popup: opens the add-on's page on addons.mozilla.org (Firefox's add-ons store), whose copy Firefox keeps and updates; keep addons.mozilla.org as it is
+#, machine
+extension	Add it from addons.mozilla.org	Agrégalo desde addons.mozilla.org
+#. text in the browser extension
+#. link after popup_by_hand in the toolbar button's popup: opens the extension's page in the Chrome Web Store, whose copy the browser keeps up to date; keep the name Chrome Web Store as it is
+#, machine
+extension	Add it from the Chrome Web Store	Agrégalo desde Chrome Web Store
+#. text in the browser extension
 #. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
 #, machine
 extension	Added to MDM	Agregado a MDM
@@ -7383,6 +7391,14 @@ extension	This browser isn't ticked in Options → General.	Este navegador no es
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine
 extension	This computer	Esta computadora
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the extension was loaded by hand (Load unpacked, with Developer mode on) in Chrome, Edge, Brave, Opera or Vivaldi; followed by the link popup_store_chrome
+#, machine
+extension	This copy was loaded by hand and won't update itself.	Esta copia se cargó manualmente y no se actualizará sola.
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the add-on was loaded by hand in Firefox (Load Temporary Add-on, in about:debugging); followed by the link popup_store_firefox; the browser here is Firefox (or Zen, LibreWolf)
+#, machine
+extension	This copy was loaded by hand: it won't update itself, and the browser removes it when it restarts.	Esta copia se cargó manualmente: no se actualizará sola y el navegador la eliminará al reiniciarse.
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
