@@ -4922,6 +4922,8 @@ for (const here of [true, false]) {
     ["video", () => send({ type: "video", src: "https://cdn.test/v/clip.mp4", url: film, title: "A film" }, page), [["api/add", film]]],
     ["download", () => (listeners.determining({ id: 91, url: "https://dl.test/f.zip", filename: "f.zip" }, () => {}), settle()), [["api/add", "https://dl.test/f.zip"]]],
     ["menu link", () => listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://dl.test/g.zip", pageUrl: film }, tab), [["api/add", "https://dl.test/g.zip"]]],
+    ["menu all links", () => listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab), [["api/add", "https://x/1.zip"], ["api/add", "https://x/2.zip"]]],
+    ["menu selected links", () => listeners.menu({ menuItemId: "mdm-selected", pageUrl: film }, tab), [["api/add", "https://x/1.zip"], ["api/add", "https://x/2.zip"]]],
     ["menu player", () => listeners.menu({ menuItemId: "mdm-link", mediaType: "video", srcUrl: "blob:https://tube.test/1", frameId: 0, pageUrl: film }, tab), [["api/add", film]]],
     ["menu stream", () => listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://cdn.test/s/a.m3u8", pageUrl: film }, tab), [["api/add", film]]],
   ];
@@ -4953,7 +4955,7 @@ for (const here of [true, false]) {
   }
   // Only the kinds a download is may become one there, and nothing else calls the remote's
   // api/add.
-  assert.ok(/const REMOTE_ADD = new Set\(\["file", "video"\]\);/.test(code), "the whitelist");
+  assert.ok(/const REMOTE_ADD = new Set\(\["file", "video", "links"\]\);/.test(code), "the whitelist");
   assert.equal((code.match(/"api\/add"/g) || []).length, 1, "api/add sent from one place");
   assert.equal((code.match(/remoteSend\(/g) || []).length, 2, "remoteSend called from `download` only");
   ok(`another MDM: only downloads reach its api/add, the button's question never (${here ? "an MDM here too" : "no MDM here"})`);
@@ -4972,10 +4974,12 @@ for (const here of [true, false]) {
   await send({ type: "video", src: "https://cdn.test/v/clip.mp4", url: film, title: "A film" });
   listeners.determining({ id: 92, url: "https://dl.test/f.zip", filename: "f.zip" }, () => {});
   await settle();
+  await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+  await settle();
   const sent = natives(calls);
   assert.deepEqual(
-    sent.map((m) => [m.panel ? "panel" : m.video ? "video" : "file", m.url]),
-    [["panel", film], ["video", film], ["file", "https://dl.test/f.zip"]],
+    sent.map((m) => [m.panel ? "panel" : m.video ? "video" : m.links ? "links" : "file", m.url || m.links]),
+    [["panel", film], ["video", film], ["file", "https://dl.test/f.zip"], ["links", ["https://x/1.zip", "https://x/2.zip"]]],
   );
   assert.deepEqual(fetched.slice(from).filter(([u]) => /\/api\//.test(u)), [], "nothing to any remote control");
   ok("this computer: the button's question, Download video and a download go to its MDM");

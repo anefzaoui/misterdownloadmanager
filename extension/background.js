@@ -93,17 +93,31 @@ async function native(message, ms = HOST_WAIT) {
 //  - "file": a download handed over (`handOff`: the browser's own, a link page.js held, the
 //    right-click menu's link, a file in the popup's media list);
 //  - "video": Download video asked for (the button's click, the right-click menu over a player
-//    or on a stream's manifest, a stream in the popup's media list).
-const REMOTE_ADD = new Set(["file", "video"]);
+//    or on a stream's manifest, a stream in the popup's media list);
+//  - "links": Download all links / Download selected links from a page's right-click menu.
+const REMOTE_ADD = new Set(["file", "video", "links"]);
 
 // A download (`kind`, one of REMOTE_ADD) for MDM: to the other MDM when one is chosen, else to
 // this computer's. Never throws.
 async function download(kind, message) {
-  if (REMOTE_ADD.has(kind) && typeof message.url === "string" && message.url) {
+  if (REMOTE_ADD.has(kind)) {
     const target = await remoteTarget();
-    if (target) return remoteSend(target, message);
+    if (target) {
+      const urls = kind === "links" ? (Array.isArray(message.links) ? message.links : []) : [message.url];
+      let anyOk = false;
+      for (const url of urls) {
+        if (typeof url === "string" && url) {
+          const res = await remoteSend(target, { ...message, url });
+          if (res.ok) anyOk = true;
+          else if (res.why === "refused" && !(await remoteTarget())) {
+            return { ok: false, why: "refused" };
+          }
+        }
+      }
+      return anyOk ? { ok: true } : { ok: false, why: "refused" };
+    }
   }
-  const reply = await native(message);
+  const reply = kind === "links" ? await sendLinks(message) : await native(message);
   // A download handed over: the toolbar button counts it while it runs (#1496).
   if (reply.ok) watchRecent();
   return reply;
@@ -3457,7 +3471,7 @@ async function menuClicked(info, tab) {
     const found = await tabImages(tab.id, info.menuItemId === "mdm-selected" ? info.frameId || 0 : null);
     const images = found.images.filter((i) => !i.link && !listed.has(i.url)).map((i) => i.url);
     if (!links.length && !images.length) return;
-    const reply = await sendLinks({ links: [...links, ...images], ...(images.length ? { pageImages: images } : {}), referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
+    const reply = await download("links", { links: [...links, ...images], ...(images.length ? { pageImages: images } : {}), referrer: info.pageUrl, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
     // Sent, but a link longer than a whole message was left out: the help page says so.
     if (!reply.ok || reply.left) explain(reply.ok ? "too-large" : reply.why);
   }
