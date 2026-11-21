@@ -2799,14 +2799,17 @@ impl VideoJob {
             choose,
             current: current.clone(),
         });
-        // MDM's own yt-dlp, ffmpeg and Deno, held for the whole download (#1544): none is switched
-        // to a new version between its runs.
-        let deno = crate::tools_dir()
+        // MDM's own yt-dlp, ffmpeg and JavaScript runtime, held for the whole download (#1544): none
+        // is switched to a new version (nor its old Deno removed, #1570) between its runs.
+        let runtime = crate::tools_dir()
             .as_deref()
-            .and_then(crate::deno::installed)
-            .map(|d| d.exe);
-        let hold =
-            crate::autoupdate::Hold::of([Some(exe), ffmpeg, deno.as_deref()].into_iter().flatten());
+            .and_then(crate::jsruntime::own)
+            .map(|r| r.exe);
+        let hold = crate::autoupdate::Hold::of(
+            [Some(exe), ffmpeg, runtime.as_deref()]
+                .into_iter()
+                .flatten(),
+        );
         {
             let (progress, child, recorder) = (progress.clone(), child.clone(), recorder.clone());
             let (exe, url) = (exe.to_owned(), url.to_owned());

@@ -424,6 +424,9 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 	All the uploader's	كل ما رفعه الناشر
+#. text in helpers.rs
+#, machine
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	ثلاثتها مفتوحة المصدر. يحصل MDM عليها من إصداراتها الرسمية باستخدام أداة التنزيل الخاصة به ويتحقق من توقيع كل ملف قبل تشغيله. حوالي 140 ميغابايت، مرة واحدة.
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 #, machine
@@ -561,6 +564,7 @@
 #. the trailing ... means it is still going on: keep it
 	Asking the service...	يتم سؤال الخدمة...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 	Asking...	قيد السؤال...
@@ -840,6 +844,9 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	اختر ملف .torrent
+#. text in helpers.rs
+#, machine
+	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	اختيار وقت تشغيل JavaScript (Node.js أو Deno أو QuickJS أو Bun)
 #. text in langpick.rs
 	Choose a language	اختيار لغة
 #. text in langpick.rs
@@ -847,7 +854,8 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 	Choose the profile's folder	اختر مجلد ملف التعريف
-#. text in helpers.rs
+#. text in helpers.rs; text in the Options window
+#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 	Choose {name}	اختيار {name}
 #. text in countries.rs
@@ -1240,16 +1248,15 @@
 #. message or event log entry in the main window
 	Downloading again from the start	قيد التنزيل مرة أخرى من البداية
 #. text in the Download video window
-#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Downloading and verifying Deno (about 40 MB)...	قيد تنزيل Deno والتحقق منه (حوالي 40 ميغابايت)...
-#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying ffmpeg (about 80 MB)...	قيد تنزيل ffmpeg والتحقق منه (حوالي 80 ميغابايت)...
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying gallery-dl...	قيد تنزيل gallery-dl والتحقق منه...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying Node.js (40 to 60 MB)...	قيد تنزيل Node.js والتحقق منه (من 40 إلى 60 ميغابايت)...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Downloading and verifying yt-dlp...	قيد تنزيل yt-dlp والتحقق منه...
@@ -1266,7 +1273,7 @@
 #, machine
 	Downloading the update... {percent}%	قيد تنزيل التحديث... {percent}%
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 	Downloading {name} ({n} of {total})... {percent}	قيد تنزيل {name} ({n} من {total})... {percent}
 #. text in the download list; text in the Options window
@@ -1544,6 +1551,7 @@
 #. button in the Find window
 #. verb: button that starts the search
 	Find	بحث
+#. text in the Options window
 #. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
 #, machine
 	Find 7-Zip automatically	البحث عن 7-Zip تلقائيًا
@@ -1900,10 +1908,6 @@
 #. in the "7-Zip needed" window, under why
 	Install 7-Zip (free), then right-click the download and choose Extract.	ثبت 7-Zip (مجاني)، ثم انقر بزر الماوس الأيمن فوق التنزيل واختر استخراج.
 #. text in the Download video window
-#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
-#, machine
-	Install Deno	تثبيت Deno
-#. text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	تثبيت ffmpeg
 #. button in gallerydlg.rs
@@ -1912,6 +1916,10 @@
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 	Install it by hand	تثبيته يدويا
+#. text in the Download video window
+#. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+#, machine
+	Install Node.js	تثبيت Node.js
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
@@ -2016,9 +2024,9 @@
 #. a country's name (where a download's server is)
 	Japan	اليابان
 #. text in helpers.rs
-#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+#. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
 #, machine
-	JavaScript runtime (Deno)	وقت تشغيل JavaScript (Deno)
+	JavaScript runtime (for YouTube)	وقت تشغيل JavaScript (لـ YouTube)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Jersey	جيرزي
@@ -2037,7 +2045,7 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 	KBytes/sec	كيلوبايت/ثانية
 #. text in helpers.rs
-#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
 #, machine
 	Keep MDM's helpers up to date automatically	إبقاء البرامج المساعدة لـ MDM محدثة تلقائيا
 #. text in the Options window
@@ -2342,13 +2350,13 @@
 #, machine
 	MDM does not answer. Trying again...	MDM لا يستجيب. تتم المحاولة مرة أخرى...
 #. text in helpers.rs
-#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
-#, machine
-	MDM has no copy for this system: install Deno or Node.js	لا تتوفر نسخة من MDM لهذا النظام: ثبت Deno أو Node.js
-#. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install it, or use another program	لا يوفر MDM نسخة لهذا النظام: ثبته، أو استخدم برنامجا آخر
+#. text in helpers.rs
+#. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install Node.js or Deno, or use another program	لا تتوفر نسخة من MDM لهذا النظام: ثبت Node.js أو Deno، أو استخدم برنامجا آخر
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -2681,6 +2689,10 @@
 	No video this can download on that page	لا يوجد فيديو يمكن تنزيله في هذه الصفحة
 #. message or event log entry in the main window
 	No web addresses were found in {file}.	لم يتم العثور على عناوين ويب في {file}.
+#. text in helpers.rs
+#. helper name and what it does (Node.js and YouTube are names)
+#, machine
+	Node.js: unlocks YouTube's qualities	Node.js: يتيح مستويات جودة YouTube
 #. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 	None	لا شيء
@@ -3827,6 +3839,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	That is more than 100,000 files: make the range smaller	هذا أكثر من 100,000 ملف: اجعل النطاق أصغر
+#. text in the Options window
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	هذا ليس برنامج سطر الأوامر الخاص بـ 7-Zip (‏7z.exe).
@@ -4355,6 +4368,9 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	this {site} link is a web page, not the file: open it in your browser and download from there	رابط {site} هذا هو صفحة ويب، وليس الملف: افتحه في مستعرضك ونزل منه
+#. text in helpers.rs
+#, machine
+	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	ثلاثة مساعدين مجانيين يجعلون الأمر يعمل. احصل عليهم الآن، وسيكون حفظ الفيديو على بعد نقرة واحدة عندما تجد واحدا.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 	through a proxy	عبر وكيل
@@ -4614,8 +4630,9 @@
 	Uruguay	أوروغواي
 #. text in the Options window
 	Use advanced browser integration	استخدام الربط المتقدم بالمستعرض
-#. text in errors.rs; button in helpers.rs
+#. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 	Use another program...	استخدام برنامج آخر...
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
@@ -4904,12 +4921,11 @@
 #. {version} = a version number (keep the braces as they are)
 	Your own program: {path} ({version})	البرنامج الخاص بك: {path} ({version})
 #. text in helpers.rs
-#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
-#, machine
-	Your system's, nothing to download: {path}	نسخة نظامك، لا شيء للتنزيل: {path}
-#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 	Your system's: {path}	نسخة نظامك: {path}
+#. text in helpers.rs
+#, machine
+	YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.	يجعل YouTube أداة yt-dlp تشغل جزءا من JavaScript قبل أن تسرد مقاطعه، ولا يوجد على هذا الكمبيوتر ما يشغله. Node.js يقوم بذلك.
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
@@ -5107,7 +5123,7 @@
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{name}  ({files}, {size})	{name} ({files}، {size})
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = yt-dlp, ffmpeg or Node.js; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 	{name} could not be downloaded: {error}	تعذر تنزيل {name}: {error}
 #. text in extracting archives (a download's log, the Archive password window)
@@ -5115,7 +5131,7 @@
 #. {name} = a file name (keep the braces as they are)
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} هو أرشيف 7z أو RAR. يستخرج MDM هذه الملفات باستخدام 7-Zip، وهو غير مثبت.
 #. text in errors.rs
-#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} قيد التنزيل بالفعل: حاول مرة أخرى بعد قليل
@@ -5177,6 +5193,22 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (الحد: {limit})
+#. text in helpers.rs
+#. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
+#, machine
+	{runtime}, MDM's earlier copy: Node.js takes its place at the next update	{runtime}، نسخة MDM السابقة: يحل Node.js محلها في التحديث القادم
+#. text in helpers.rs
+#. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
+#, machine
+	{runtime}, Mister Download Manager's own copy	{runtime}، نسخة Mister Download Manager الخاصة
+#. text in helpers.rs
+#. Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
+#, machine
+	{runtime}, your own program: {path}	{runtime}، البرنامج الخاص بك: {path}
+#. text in helpers.rs
+#. Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
+#, machine
+	{runtime}, your system's, nothing to download: {path}	{runtime}، نسخة نظامك، لا شيء للتنزيل: {path}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 	{service} asks to slow down; MDM will try again in a minute	تطلب {service} التباطؤ؛ سيعاود MDM المحاولة في دقيقة

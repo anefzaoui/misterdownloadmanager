@@ -569,6 +569,14 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ YouTube's JavaScript runtime: MDM installs Node.js (its newest LTS, from nodejs.org, its
+  checksum list checked against Node.js's releasers' signing keys) instead of Deno, for Windows
+  (x64, ARM64, 32-bit), macOS and Linux (x64, ARM64), kept up to date with the other helpers; a
+  runtime already on the computer (Deno, Node.js 22 or newer, QuickJS, Bun) comes first, and
+  **Use another program...** in Helpers picks any of them; the first start offers Node.js only
+  when none is found; the Deno an earlier version installed gives way to Node.js and is removed;
+  the command line's `install-js-runtime` (`install-deno` still works)
+  ([#1570](https://github.com/anefzaoui/misterdownloadmanager/issues/1570))
 - ✅ MDM keeps its own yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself: a check a few
   seconds after it starts and then while it runs (yt-dlp and gallery-dl at most every 6 hours,
   Deno daily, ffmpeg weekly, remembered across starts), each new version checked as its first
