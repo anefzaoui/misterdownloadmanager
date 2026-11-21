@@ -573,6 +573,11 @@ These ship in the next version.
   pieces they share with ticked files are kept in a parts file of MDM's own, and a file ticked
   later, while the torrent downloads or once it has finished, is made then and gets them from
   there ([#1567](https://github.com/anefzaoui/misterdownloadmanager/pull/1567))
+- ✅ Torrents through a debrid account: only the files ticked in Add torrent are downloaded
+  (Real-Debrid's `selectFiles` gets their ids; every service's files are matched by path), the
+  choice kept in the list, the download's size theirs; a ticked file the service doesn't list
+  stops the download with its name rather than taking every file
+  ([#1640](https://github.com/anefzaoui/misterdownloadmanager/issues/1640))
 - ✅ Windows: Simplified Chinese drawn with a Chinese font on every Windows, no longer as boxes
   where Microsoft YaHei's usual file is missing (Windows 7's `msyh.ttf`, DengXian, SimSun and
   SimHei are looked for too, a Chinese font must have its language's own characters, the Chinese

@@ -662,6 +662,10 @@ pub struct RemoteSpec {
     /// Custom file or folder name chosen in Add torrent (#517), when renamed from the torrent's own.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub renamed: Option<String>,
+    /// The files ticked in Add torrent, by their path in the torrent (`/`-separated); the
+    /// service downloads only those. None (and lists saved before it): all of them.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub files: Option<Vec<String>>,
 }
 
 /// A gallery download's choice (#58).
@@ -2257,6 +2261,26 @@ mod size_tests {
 
 #[cfg(test)]
 mod tests {
+    /// A debrid torrent's ticked files are kept with the list; a list saved before them (no
+    /// `files`) means all of them.
+    #[test]
+    fn a_debrid_torrents_ticked_files_are_saved_and_older_lists_mean_all() {
+        let old: super::RemoteSpec =
+            serde_json::from_str(r#"{"account":7,"transfer":"RDT2","folder":"C:/dl"}"#).unwrap();
+        assert_eq!(old.files, None);
+        let spec = super::RemoteSpec {
+            account: 7,
+            files: Some(vec!["extras/notes.txt".into()]),
+            ..Default::default()
+        };
+        let text = serde_json::to_string(&spec).unwrap();
+        assert_eq!(
+            serde_json::from_str::<super::RemoteSpec>(&text).unwrap(),
+            spec
+        );
+        assert!(!serde_json::to_string(&old).unwrap().contains("files"));
+    }
+
     /// #1262: a failure's reason goes to the log without the queries of the addresses in it.
     #[test]
     fn a_failure_is_logged_without_tokens() {

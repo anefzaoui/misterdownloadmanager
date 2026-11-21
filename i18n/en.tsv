@@ -2710,6 +2710,9 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 	Only the first {n} videos are listed.	Only the first {n} videos are listed.
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+	Only the {files} file(s) ticked in Add torrent	Only the {files} file(s) ticked in Add torrent
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
@@ -4902,6 +4905,9 @@
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} can't get this torrent: nobody shares it, or its link can't be read
 #. text in errors.rs
 	{service} can't reach this file host right now; MDM will try again later	{service} can't reach this file host right now; MDM will try again later
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 	{service} is not responding; try again later	{service} is not responding; try again later

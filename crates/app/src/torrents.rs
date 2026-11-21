@@ -1961,9 +1961,76 @@ pub fn dest_for(
     }
 }
 
+/// A torrent through a debrid account (#44): the files ticked in Add torrent, `files` (indexes
+/// into `meta.files`), as the service is given them: their paths in the torrent, `/`-separated,
+/// padding files left out (None: all of them); and their total size.
+pub fn remote_choice(
+    meta: &mdm_torrent::Meta,
+    files: Option<&[usize]>,
+) -> (Option<Vec<String>>, u64) {
+    let ticked: Vec<&mdm_torrent::FileEntry> = meta
+        .files
+        .iter()
+        .enumerate()
+        .filter(|(i, f)| !f.padding && files.is_none_or(|c| c.contains(i)))
+        .map(|(_, f)| f)
+        .collect();
+    let size = ticked.iter().map(|f| f.size).sum();
+    if ticked.len() == meta.files.iter().filter(|f| !f.padding).count() {
+        return (None, size);
+    }
+    let paths = ticked
+        .iter()
+        .map(|f| {
+            f.path
+                .components()
+                .map(|c| c.as_os_str().to_string_lossy())
+                .collect::<Vec<_>>()
+                .join("/")
+        })
+        .collect();
+    (Some(paths), size)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_debrid_torrent_is_given_the_ticked_files_paths_and_size() {
+        let file = |p: &str, size, padding| mdm_torrent::FileEntry {
+            path: p.split('/').collect(),
+            size,
+            padding,
+        };
+        let meta = mdm_torrent::Meta {
+            name: "Lab Show".into(),
+            info_hash: "h".into(),
+            files: vec![
+                file("video.mkv", 2 << 20, false),
+                file(".pad/100", 100, true),
+                file("extras/notes.txt", 64 << 10, false),
+            ],
+            piece_length: 1 << 18,
+            torrent: Vec::new(),
+            peers: Vec::new(),
+        };
+        // All ticked (or the dialog's None): all, and no padding in the size.
+        assert_eq!(remote_choice(&meta, None), (None, (2 << 20) + (64 << 10)));
+        assert_eq!(
+            remote_choice(&meta, Some(&[0, 2])),
+            (None, (2 << 20) + (64 << 10))
+        );
+        assert_eq!(
+            remote_choice(&meta, Some(&[2])),
+            (Some(vec!["extras/notes.txt".to_owned()]), 64 << 10)
+        );
+        // A padding file's index never counts.
+        assert_eq!(
+            remote_choice(&meta, Some(&[0, 1])),
+            (Some(vec!["video.mkv".to_owned()]), 2 << 20)
+        );
+    }
 
     fn a_spec() -> TorrentSpec {
         TorrentSpec {
