@@ -573,6 +573,9 @@ These ship in the next version.
   pieces they share with ticked files are kept in a parts file of MDM's own, and a file ticked
   later, while the torrent downloads or once it has finished, is made then and gets them from
   there ([#1567](https://github.com/anefzaoui/misterdownloadmanager/pull/1567))
+- ✅ Torrents: a torrent added again while it downloads (a file ticked, trackers added, its
+  folder moved) keeps every piece it has, not only those of librqbit's last saved piece map
+  ([#1623](https://github.com/anefzaoui/misterdownloadmanager/issues/1623))
 - ✅ Downloads from servers that keep several copies of a file, each with its own version tag
   and date (ModelScope's), go on with all their connections when the copies carry the same
   checksum of the whole file, checked on every part, instead of stopping with "the file changed
