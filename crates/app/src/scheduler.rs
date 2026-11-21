@@ -1216,8 +1216,12 @@ impl Scheduler {
                 text(p, x, baseline, s, c);
             },
         );
-        // Named as Options → Connection's are, from the constants beside the sentence they
-        // share (quota.rs): its words are painted, not exposed (#1407).
+        // Named as Options → Connection's are, from the sentence they share (quota.rs):
+        // its words are painted, not exposed (#1407).
+        let names = winui::sentence_names(
+            crate::i18n::t(crate::quota::LIMITS_SENTENCE),
+            &["mb", "hours"],
+        );
         let mb_box = winui::number_field(
             ui,
             boxes[0],
@@ -1227,7 +1231,7 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
-        winui::name(&mb_box, crate::i18n::t(crate::quota::LIMITS_MB_NAME));
+        winui::name(&mb_box, &names[0]);
         let hours_box = winui::number_field(
             ui,
             boxes[1],
@@ -1237,7 +1241,7 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
-        winui::name(&hours_box, crate::i18n::t(crate::quota::LIMITS_HOURS_NAME));
+        winui::name(&hours_box, &names[1]);
         winui::checkbox_light(
             ui,
             o + vec2(239.0, 127.0),

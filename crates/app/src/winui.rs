@@ -304,7 +304,7 @@ fn caption_key(ctx: &egui::Context) -> egui::Id {
 
 fn note_caption(p: &Painter, s: &str, drawn: Rect) {
     let s = s.trim();
-    if s.is_empty() || s.chars().count() > 80 {
+    if s.is_empty() || s.chars().count() > 140 {
         return;
     }
     let ctx = p.ctx();
@@ -4627,8 +4627,9 @@ pub fn checkbox_light_until(
     } else {
         LIGHT_DISABLED()
     };
-    text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
+    let drawn = text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
+        note_caption(&p, caption, drawn);
         resp.on_hover_text(caption)
     } else {
         resp
@@ -5120,8 +5121,9 @@ pub fn radio_light_until(
     } else {
         LIGHT_DISABLED()
     };
-    text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
+    let drawn = text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
+        note_caption(&p, caption, drawn);
         resp.on_hover_text(caption)
     } else {
         resp
@@ -9203,5 +9205,24 @@ example.org"; // values typed in, not texts to translate
         assert_eq!(texts.last().unwrap().2, "c");
         assert_eq!(texts.last().unwrap().1, 364.0);
         assert!(rects[1].min.x > 170.0);
+    }
+
+    #[test]
+    fn caption_for_keeps_whole_long_caption() {
+        let ctx = egui::Context::default();
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            let p = ui.painter();
+            let long_caption =
+                "Anzahl der Wiederholungsversuche für jede Datei, wenn der Download fehlgeschlagen ist:";
+            let drawn = Rect::from_min_size(pos2(10.0, 10.0), vec2(100.0, 20.0));
+            note_caption(p, long_caption, drawn);
+            let control_rect = Rect::from_min_size(pos2(120.0, 10.0), vec2(50.0, 20.0));
+            let name = caption_for(ui.ctx(), control_rect);
+            assert_eq!(
+                name,
+                Some("Anzahl der Wiederholungsversuche für jede Datei, wenn der Download fehlgeschlagen ist".to_owned())
+            );
+        });
+        out.textures_delta.clear();
     }
 }

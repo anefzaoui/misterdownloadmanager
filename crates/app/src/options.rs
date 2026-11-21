@@ -1672,11 +1672,15 @@ impl OptionsDialog {
         );
         // The sentence's words are painted, not exposed: each box is named as its part of it
         // reads, or a screen reader says only "edit, 200" (#1407).
+        let names = winui::sentence_names(
+            crate::i18n::t(crate::quota::LIMITS_SENTENCE),
+            &["mb", "hours"],
+        );
         let mb_box = winui::number_field(ui, boxes[0], &mut self.mb, 1, 999_999, on, LIGHT_PAGE());
-        winui::name(&mb_box, crate::i18n::t(crate::quota::LIMITS_MB_NAME));
+        winui::name(&mb_box, &names[0]);
         let hours_box =
             winui::number_field(ui, boxes[1], &mut self.hours, 1, 999, on, LIGHT_PAGE());
-        winui::name(&hours_box, crate::i18n::t(crate::quota::LIMITS_HOURS_NAME));
+        winui::name(&hours_box, &names[1]);
         winui::checkbox_light(
             ui,
             o + vec2(37.0, 376.0),
