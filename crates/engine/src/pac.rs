@@ -22,7 +22,7 @@ use url::Url;
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Route {
     Direct,
-    /// A proxy address: `http://host:port`, `https://…` or `socks5://…`.
+    /// A proxy address: `http://host:port`, `https://…`, `socks5h://…` or `socks4://…`.
     Proxy(String),
 }
 
@@ -85,7 +85,9 @@ pub fn parse(answer: &str) -> Vec<Route> {
                 ("DIRECT", _) => Some(Route::Direct),
                 ("PROXY" | "HTTP", Some(a)) => Some(Route::Proxy(format!("http://{a}"))),
                 ("HTTPS", Some(a)) => Some(Route::Proxy(format!("https://{a}"))),
-                ("SOCKS" | "SOCKS5", Some(a)) => Some(Route::Proxy(format!("socks5://{a}"))),
+                // A SOCKS5 proxy looks the site's name up, as browsers have it (#1558):
+                // this computer's DNS never sees it.
+                ("SOCKS" | "SOCKS5", Some(a)) => Some(Route::Proxy(format!("socks5h://{a}"))),
                 ("SOCKS4", Some(a)) => Some(Route::Proxy(format!("socks4://{a}"))),
                 _ => None,
             }
@@ -274,8 +276,15 @@ mod tests {
             parse("PROXY proxy.corp:8080; SOCKS s.corp:1080; DIRECT"),
             vec![
                 Route::Proxy("http://proxy.corp:8080".into()),
-                Route::Proxy("socks5://s.corp:1080".into()),
+                Route::Proxy("socks5h://s.corp:1080".into()),
                 Route::Direct
+            ]
+        );
+        assert_eq!(
+            parse("SOCKS5 s.corp:1080; SOCKS4 old.corp:1080"),
+            vec![
+                Route::Proxy("socks5h://s.corp:1080".into()),
+                Route::Proxy("socks4://old.corp:1080".into()),
             ]
         );
         assert_eq!(parse(""), vec![Route::Direct]);

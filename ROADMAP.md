@@ -571,6 +571,29 @@ These ship in the next version.
 
 - ✅ Torrents: unticked files are no longer made in the download's folder; the pieces they share
   with ticked files are kept in a parts file of MDM's own, and a file ticked later gets them
+- ✅ MDM keeps its own yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself: a check a few
+  seconds after it starts and then while it runs (yt-dlp and gallery-dl at most every 6 hours,
+  Deno daily, ffmpeg weekly, remembered across starts), each new version checked as its first
+  install was and switched to only once no download is using it, the previous one kept to go
+  back to. A video or gallery that fails in a way that usually means its helper is out of date
+  has MDM look for a newer one at once and try again with it. Helpers says how each stands, with
+  **Check for updates**, **Update** and **Go back to** the previous version, and a switch to turn
+  it off; the command line has `update-helpers`
+  ([#1544](https://github.com/anefzaoui/misterdownloadmanager/issues/1544))
+- ✅ Deleting a download keeps its file unless **Also delete the files from disk** is ticked in
+  that very question: the box starts unticked every time (only **Shift+Delete** and **Remove
+  with files** tick it, once), it says how many finished files go with it, a question turned
+  off only takes downloads off the list, and deleting files always asks
+  ([#1563](https://github.com/anefzaoui/misterdownloadmanager/issues/1563))
+- ✅ The command line's downloads, look-ups, helper installs and torrents go through Options →
+  Proxy / Socks (and its network adapter and DNS) as the app's do, with a `--proxy` switch for
+  one run ([#1556](https://github.com/anefzaoui/misterdownloadmanager/issues/1556))
+- ✅ SOCKS5 and SOCKS4 as a real choice in Options → Proxy / Socks: a **Type** (HTTP, HTTPS,
+  SOCKS5, SOCKS4), site names looked up through the proxy (on by default), a SOCKS5 login, Get
+  System reading Windows' SOCKS proxy, a **Test** button; every connection follows it: downloads
+  and FTP, video pages and galleries, MDM's own downloads and the update check, a proxy script's
+  SOCKS answers, and torrents when asked
+  ([#1558](https://github.com/anefzaoui/misterdownloadmanager/issues/1558))
 - ✅ 7z and RAR archives are extracted with the 7-Zip another archiver brings: PeaZip's and
   NanaZip's command line are found by themselves on Windows, and **Options → Archives → Use
   another program...** takes any other 7-Zip command line program (a portable copy), checked
@@ -580,6 +603,10 @@ These ship in the next version.
   video's page for every yt-dlp run, "Use system settings" follows Windows' setup script (a
   proxy program's PAC mode), and a manual proxy chosen with no protocol ticked gets http and
   https ticked ([#1448](https://github.com/anefzaoui/misterdownloadmanager/issues/1448))
+- ✅ Website: screenshots open over the page in [Vitrine](https://github.com/anefzaoui/vitrine), growing out of their
+  place and back: arrows, keys and swipes through a group, zoom by click, double tap, pinch or
+  wheel, Back and Escape to close, the focus and the page kept where they were, right to left,
+  light and dark, reduced motion; the language picker opens and closes the same way
 - ✅ A video download, look-up, playlist or gallery finishes when yt-dlp (or gallery-dl) does:
   a program it started that still held its output open kept the download running at its last
   progress ([#1521](https://github.com/anefzaoui/misterdownloadmanager/issues/1521))
@@ -1690,6 +1717,12 @@ These ship in the next version.
   and the remembered folder field is "Category folder", not the checkbox's caption
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers name more of **Options → Connection**: the exceptions list is
+  "Exceptions" instead of unnamed, and each of the two **Download limits** boxes says what
+  it counts ("Download limit: MBytes", "Download limit: every how many hours") instead of
+  only its number; the same two boxes on the **Scheduler**'s limits page are named too
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
@@ -1702,6 +1735,9 @@ These ship in the next version.
   taskbar and its thread waits on the computer: as in the notification area, logged, and reported
   only if it lasts past a minute, if MDM's thread is busy, or if MDM is asked for something
   meanwhile and doesn't answer ([#1481](https://github.com/anefzaoui/misterdownloadmanager/issues/1481))
+- ✅ LuluStream: a video's link (its watch page or player, on `lulustream.com`, `luluvdo.com` or
+  `lplaygo.com`) downloads the video, in the best quality its download page lists; a download
+  taken from the browser whose link expired asks the video's page for a fresh one
 
 ## Being worked on
 

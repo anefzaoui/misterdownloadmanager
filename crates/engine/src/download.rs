@@ -3643,8 +3643,24 @@ async fn get(
     let mut looked = false;
     // Redirects between a site's own hosts followed here (`get_policy`).
     let mut party_hops = 0;
+    // A site's form to post with the next request only (`PageSays::Form`: LuluStream's), and how
+    // many times one was: a site that answers with its form again didn't take it this time
+    // (LuluStream's "Security error", about a post in three), and it is posted once more, up to
+    // `MAX_FORM_POSTS`; those posts don't count as a page's redirects.
+    let mut form: Option<Bytes> = None;
+    let mut posts = 0;
     loop {
-        let req = build(client, url.clone(), post, &headers, site_agent);
+        let req = match form.take() {
+            Some(body) => {
+                let mut with_type = headers.clone();
+                with_type.insert(
+                    header::CONTENT_TYPE,
+                    HeaderValue::from_static("application/x-www-form-urlencoded"),
+                );
+                build(client, url.clone(), Some(&body), &with_type, site_agent)
+            }
+            None => build(client, url.clone(), post, &headers, site_agent),
+        };
         let asked = std::time::Instant::now();
         let resp = cancellable(cancel, async { Ok(req.send().await?) }).await?;
         let took = asked.elapsed();
@@ -3738,6 +3754,23 @@ async fn get(
             }
             match sites::read_page(&from, &page) {
                 PageSays::Next(next) => (Duration::ZERO, next),
+                // Posted, its answer read as a page (the file's link, a refusal, the form again).
+                PageSays::Form { action, body } if posts < MAX_FORM_POSTS => {
+                    if posts > 0 {
+                        // The form again: posted once more, not a page's redirect.
+                        hops -= 1;
+                    }
+                    posts += 1;
+                    form = Some(Bytes::from(body));
+                    (Duration::ZERO, action)
+                }
+                // Still the form after its last post: the site didn't take it this time, said in
+                // its name where it has one (`sites::form_refused`).
+                PageSays::Form { .. } => {
+                    return Err(
+                        sites::form_refused(&from).map_or(Error::GotWebPage, Error::Refused)
+                    );
+                }
                 PageSays::Refused(r) => match sites::second_look(&from).filter(|_| !looked) {
                     Some(look) => {
                         looked = true;
@@ -3785,6 +3818,10 @@ async fn get(
 
 /// Most redirects in a row that pages make themselves (`get`).
 const MAX_PAGE_REDIRECTS: usize = 5;
+/// Most times a site's form is posted in one look (`get`, `PageSays::Form`): a site that answers
+/// with the form again now and then (LuluStream's, about a post in three) gives the file within
+/// a few; one that never takes it is a web page after these.
+const MAX_FORM_POSTS: usize = 5;
 /// How much of a web page is read to find its redirect.
 const PAGE_PEEK: usize = 256 << 10;
 /// The longest wait a page asks for before it leads on that is kept.

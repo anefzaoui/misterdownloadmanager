@@ -1209,7 +1209,9 @@ impl Scheduler {
                 text(p, x, baseline, s, c);
             },
         );
-        winui::number_field(
+        // Named as Options → Connection's are, from the constants beside the sentence they
+        // share (quota.rs): its words are painted, not exposed (#1407).
+        let mb_box = winui::number_field(
             ui,
             boxes[0],
             &mut self.limits_mb,
@@ -1218,7 +1220,8 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
-        winui::number_field(
+        winui::name(&mb_box, crate::i18n::t(crate::quota::LIMITS_MB_NAME));
+        let hours_box = winui::number_field(
             ui,
             boxes[1],
             &mut self.limits_hours,
@@ -1227,6 +1230,7 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
+        winui::name(&hours_box, crate::i18n::t(crate::quota::LIMITS_HOURS_NAME));
         winui::checkbox_light(
             ui,
             o + vec2(239.0, 127.0),

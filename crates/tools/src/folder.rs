@@ -21,7 +21,9 @@
 
 use std::path::{Component, Path};
 
-use crate::{Error, Installed, make_current};
+#[cfg(test)]
+use crate::make_current;
+use crate::{Error, Installed};
 
 /// Whether this system installs the folder build.
 pub(crate) const BUILD: bool = cfg!(any(windows, target_os = "macos"));
@@ -54,8 +56,21 @@ pub(crate) fn one_file_build(exe: &Path) -> bool {
 /// (`dir/yt-dlp/<version>/`; beside a folder of that name already there, the one-file build it
 /// replaces), macOS's mark taken off the files just unpacked, and make it current. Unpacked to
 /// one side first, so a failure leaves what was installed.
-#[cfg_attr(not(any(windows, target_os = "macos")), allow(dead_code))]
+#[cfg(test)]
 pub(crate) fn put_folder(
+    dir: &Path,
+    version: &str,
+    zip: &[u8],
+    from: &str,
+) -> Result<Installed, Error> {
+    let placed = place_folder(dir, version, zip, from)?;
+    make_current(&dir.join("yt-dlp"), placed)
+}
+
+/// [`put_folder`] without making it current: `autoupdate::settle` does, now or once the runs
+/// using yt-dlp end.
+#[cfg_attr(not(any(windows, target_os = "macos")), allow(dead_code))]
+pub(crate) fn place_folder(
     dir: &Path,
     version: &str,
     zip: &[u8],
@@ -101,13 +116,10 @@ pub(crate) fn put_folder(
             return Err(e);
         }
     };
-    make_current(
-        &root,
-        Installed {
-            version: version.to_owned(),
-            exe: folder.join(PROGRAM),
-        },
-    )
+    Ok(Installed {
+        version: version.to_owned(),
+        exe: folder.join(PROGRAM),
+    })
 }
 
 /// Unpack `zip` into `dest`, keeping the files' permissions. An entry that would land outside

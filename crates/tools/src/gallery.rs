@@ -175,20 +175,47 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::GalleryDl) {
         return Ok(mine);
     }
+    install_with(dir, net, progress, None).await?;
+    own(dir).ok_or_else(|| Error::Missing("gallery-dl after its install".into()))
+}
+
+/// [`install_latest`] for `autoupdate`: the newest release, installed when it is newer than the
+/// version in use and than `floor` (a version the person went back from), switched to now or once
+/// the runs using gallery-dl end.
+pub(crate) async fn install_with(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&crate::update::Progress>,
+    floor: Option<&str>,
+) -> Result<crate::autoupdate::Got, Error> {
     let Some(asset) = asset() else {
         return Err(Error::Missing(
             "build for this system: install gallery-dl with the system's packages (Homebrew, pip) and choose it in Helpers".into(),
         ));
     };
+    let root = dir.join("gallery-dl");
+    let _installing = crate::autoupdate::installing(&root, "gallery-dl")?;
     let client = crate::client(net, RELEASES)?;
     let body = crate::get_bytes(&client, RELEASES).await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
     let version = release.tag_name.trim_start_matches('v').to_owned();
-    if let Some(current) = own(dir)
-        && !crate::newer(&version, &current.version)
+    let none = || crate::autoupdate::Got {
+        latest: version.clone(),
+        settled: None,
+    };
+    if own(dir).is_some_and(|current| !crate::newer(&version, &current.version))
+        || floor.is_some_and(|f| !crate::newer(&version, f))
     {
-        return Ok(current); // never the same again, never older
+        return Ok(none()); // never the same again, never older
+    }
+    // Already here (staged, or kept after going back): switched to, not downloaded again.
+    if let Some(here) = crate::autoupdate::kept(&root, &version) {
+        let settled = Some(crate::autoupdate::settle(&root, here)?);
+        return Ok(crate::autoupdate::Got {
+            latest: version,
+            settled,
+        });
     }
     let url = |name: &str| {
         release
@@ -208,7 +235,6 @@ pub async fn install_latest(
     let expected = crate::sum_for(&sums, asset)
         .ok_or_else(|| Error::Missing(format!("checksum for {asset}")))?;
     let exe_url = url(asset)?;
-    let root = dir.join("gallery-dl");
     std::fs::create_dir_all(&root)?;
     // Named by its checksum: one release's cut-off download resumes, never another's.
     let download = root.join(format!(
@@ -221,7 +247,13 @@ pub async fn install_latest(
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }
-    crate::put(dir, "gallery-dl", &version, asset, &program, &exe_url)
+    let placed = crate::place(dir, "gallery-dl", &version, asset, &program, &exe_url)?;
+    tracing::info!("gallery-dl {version} verified and installed");
+    let settled = Some(crate::autoupdate::settle(&root, placed)?);
+    Ok(crate::autoupdate::Got {
+        latest: version,
+        settled,
+    })
 }
 
 /// Whether gallery-dl has a way to read `url` (a gallery, a user's page, a post…). Asked
@@ -582,8 +614,11 @@ impl GalleryJob {
         let (sh, ch, folder) = (shared.clone(), child.clone(), folder.to_owned());
         let (cur, helper) = (current.clone(), on_helper.clone());
         let (tool, url) = (tool.clone(), url.to_owned());
+        // MDM's own gallery-dl, held for the whole download (#1544).
+        let hold = crate::autoupdate::Hold::of([tool.exe.as_path()]);
         std::thread::spawn(move || {
             let _cookies = cookies;
+            let _hold = hold;
             if let Some(engine) = engine {
                 let by_engine = ByEngine {
                     engine,

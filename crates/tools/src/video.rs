@@ -2799,12 +2799,21 @@ impl VideoJob {
             choose,
             current: current.clone(),
         });
+        // MDM's own yt-dlp, ffmpeg and Deno, held for the whole download (#1544): none is switched
+        // to a new version between its runs.
+        let deno = crate::tools_dir()
+            .as_deref()
+            .and_then(crate::deno::installed)
+            .map(|d| d.exe);
+        let hold =
+            crate::autoupdate::Hold::of([Some(exe), ffmpeg, deno.as_deref()].into_iter().flatten());
         {
             let (progress, child, recorder) = (progress.clone(), child.clone(), recorder.clone());
             let (exe, url) = (exe.to_owned(), url.to_owned());
             std::thread::spawn(move || {
-                // The cookie file lives as long as the run.
+                // The cookie file lives as long as the run, and so do the helpers held.
                 let _cookies = cookies;
+                let _hold = hold;
                 // A panic in here must not leave the download "running" forever.
                 let run = std::panic::AssertUnwindSafe(|| {
                     supervise(

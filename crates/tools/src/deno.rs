@@ -11,7 +11,7 @@
 
 use std::path::{Path, PathBuf};
 
-use crate::{Error, Installed, github, make_current, mark_downloaded, newer, sum_for};
+use crate::{Error, Installed, github, mark_downloaded, newer, sum_for};
 
 /// Deno's latest release on GitHub's API.
 const RELEASES: &str = "https://api.github.com/repos/denoland/deno/releases/latest";
@@ -100,13 +100,27 @@ pub async fn install_latest(
     net: &mdm_engine::Options,
     progress: Option<&crate::update::Progress>,
 ) -> Result<Installed, Error> {
+    install_with(dir, net, progress, None).await?;
+    installed(dir).ok_or_else(|| Error::Missing("Deno after its install".into()))
+}
+
+/// [`install_latest`] for `autoupdate`: the newest release, installed when it is newer than the
+/// version in use and than `floor` (a version the person went back from), switched to now or once
+/// the runs using Deno end.
+pub(crate) async fn install_with(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&crate::update::Progress>,
+    floor: Option<&str>,
+) -> Result<crate::autoupdate::Got, Error> {
     let asset = asset().ok_or_else(|| Error::Missing("Deno build for this system".into()))?;
+    let _installing = crate::autoupdate::installing(&dir.join("deno"), "Deno")?;
     // From GitHub's API, else (its rate limit) github.com's pages (#1337): the same files,
     // checked the same way.
     let names = [sums_name(asset), asset.to_owned()];
     let names: Vec<&str> = names.iter().map(String::as_str).collect();
     let release = github::latest_release(net, RELEASES, github::WEB, REPO, &names).await?;
-    install_release(dir, net, progress, asset, &release).await
+    install_release(dir, net, progress, asset, &release, floor).await
 }
 
 /// [`install_latest`] from `release`, its zip `asset`.
@@ -116,13 +130,27 @@ async fn install_release(
     progress: Option<&crate::update::Progress>,
     asset: &str,
     release: &github::Latest,
-) -> Result<Installed, Error> {
+    floor: Option<&str>,
+) -> Result<crate::autoupdate::Got, Error> {
     let sums = sums_name(asset);
     let version = version_of(&release.tag).to_owned();
-    if let Some(current) = installed(dir)
-        && !newer(&version, &current.version)
+    let root = dir.join("deno");
+    if installed(dir).is_some_and(|current| !newer(&version, &current.version))
+        || floor.is_some_and(|f| !newer(&version, f))
     {
-        return Ok(current); // never the same again, never older
+        // never the same again, never older
+        return Ok(crate::autoupdate::Got {
+            latest: version,
+            settled: None,
+        });
+    }
+    // Already here (staged, or kept after going back): switched to, not downloaded again.
+    if let Some(here) = crate::autoupdate::kept(&root, &version) {
+        let settled = Some(crate::autoupdate::settle(&root, here)?);
+        return Ok(crate::autoupdate::Got {
+            latest: version,
+            settled,
+        });
     }
     let url = |name: &str| {
         release
@@ -145,7 +173,6 @@ async fn install_release(
         return Err(Error::BadChecksum);
     }
     let zip_url = url(asset)?;
-    let root = dir.join("deno");
     std::fs::create_dir_all(&root)?;
     // Named by its checksum: one release's cut-off download resumes, never another's.
     let zip_path = root.join(format!("deno-{}.zip", hex::encode(&expected[..8])));
@@ -154,7 +181,17 @@ async fn install_release(
     let _ = std::fs::remove_file(&zip_path);
     let exe = res?;
     tracing::info!("Deno {version} verified and installed: {}", exe.display());
-    make_current(&root, Installed { version, exe })
+    let settled = Some(crate::autoupdate::settle(
+        &root,
+        Installed {
+            version: version.clone(),
+            exe,
+        },
+    )?);
+    Ok(crate::autoupdate::Got {
+        latest: version,
+        settled,
+    })
 }
 
 /// Unpack the zip's one program (`deno.exe`, `deno`, at its top) into `root/<version>/`.
@@ -317,7 +354,7 @@ mod tests {
         let exe = root.join("2.9.8").join(program());
         std::fs::create_dir_all(exe.parent().unwrap()).unwrap();
         std::fs::write(&exe, b"deno").unwrap();
-        let now = make_current(
+        let now = crate::make_current(
             &root,
             Installed {
                 version: "2.9.8".into(),
@@ -374,12 +411,25 @@ mod tests {
         };
         let dir = tempfile::tempdir().unwrap();
         // A digest that disagrees with the checksum file: refused before downloading.
-        let wrong = install_release(dir.path(), &net, None, asset, &release(&"0".repeat(64))).await;
+        let wrong = install_release(
+            dir.path(),
+            &net,
+            None,
+            asset,
+            &release(&"0".repeat(64)),
+            None,
+        )
+        .await;
         assert!(matches!(wrong, Err(Error::BadChecksum)), "{wrong:?}");
         assert_eq!(installed(dir.path()), None);
-        let got = install_release(dir.path(), &net, None, asset, &release(&sum))
+        let got = match install_release(dir.path(), &net, None, asset, &release(&sum), None)
             .await
-            .unwrap();
+            .unwrap()
+            .settled
+        {
+            Some(crate::autoupdate::Settled::Switched(i)) => i,
+            other => panic!("{other:?}"),
+        };
         assert_eq!(got.version, "2.9.8");
         assert_eq!(got.exe, dir.path().join("deno").join("2.9.8").join(&name));
         assert_eq!(
@@ -402,7 +452,7 @@ mod tests {
         std::fs::write(files.path().join(asset), b"not the listed zip").unwrap();
         let mut newer_one = release(&sum);
         newer_one.tag = "v2.9.9".into();
-        let bad = install_release(dir.path(), &net, None, asset, &newer_one).await;
+        let bad = install_release(dir.path(), &net, None, asset, &newer_one, None).await;
         assert!(matches!(bad, Err(Error::BadChecksum)), "{bad:?}");
         assert_eq!(installed(dir.path()), Some(got));
     }

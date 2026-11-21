@@ -45,6 +45,10 @@
 #. {n} = a number (keep the braces as they are)
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?
 #. count in a dialog box
+#. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+#. {n} = a number (keep the braces as they are)
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	This also deletes {n} finished file.|This also deletes {n} finished files.
+#. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
 @plural	and {n} more|and {n} more	and {n} more|and {n} more
@@ -358,9 +362,6 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 	Addresses left to the browser	Addresses left to the browser
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-	Advanced / Socks...	Advanced / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 	Advanced browser integration is on	Advanced browser integration is on
@@ -456,6 +457,9 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 	Another program has set the computer's wake alarm	Another program has set the computer's wake alarm
 #. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+	Answered in {ms} ms. The internet sees {ip}.	Answered in {ms} ms. The internet sees {ip}.
+#. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Answered in {ms} ms: {ip}
 #. text in countries.rs
@@ -516,6 +520,7 @@
 #. the trailing ... means it is still going on: keep it
 	Asking the service...	Asking the service...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 	Asking...	Asking...
@@ -723,7 +728,8 @@
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 	Check feeds every	Check feeds every
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 	Check for updates	Check for updates
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. check box in the update window: look for a new version every time MDM starts
@@ -746,7 +752,8 @@
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 	Checking every piece again	Checking every piece again
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 	Checking for updates...	Checking for updates...
 #. text in gallerydlg.rs
@@ -921,10 +928,17 @@
 #. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 	could not reach {host} ({cause})	could not reach {host} ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+	Couldn't check for updates: MDM tries again later	Couldn't check for updates: MDM tries again later
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 	Couldn't extract {name}: {why}	Couldn't extract {name}: {why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+	Couldn't look for a newer {name}: {error}	Couldn't look for a newer {name}: {error}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 	Create a folder for this torrent	Create a folder for this torrent
@@ -1103,6 +1117,12 @@
 	Download Later	Download Later
 #. window title in a dialog box
 	Download later	Download later
+#. text in the Scheduler's download limits
+#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
+	Download limit: every how many hours	Download limit: every how many hours
+#. text in the Scheduler's download limits
+#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
+	Download limit: MBytes	Download limit: MBytes
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 	Download limits	Download limits
@@ -1178,6 +1198,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	Downloading the update... {percent}
+#. text in helpers.rs
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+	Downloading the update... {percent}%	Downloading the update... {percent}%
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -1558,6 +1581,9 @@
 	From:	From:
 #. checkbox in the Options window
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 	Full	Full
@@ -1609,6 +1635,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Gibraltar	Gibraltar
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+	Go back to {version}	Go back to {version}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	Goes on after the download finishes
@@ -1898,6 +1928,9 @@
 	Kazakhstan	Kazakhstan
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 	KBytes/sec	KBytes/sec
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+	Keep MDM's helpers up to date automatically	Keep MDM's helpers up to date automatically
 #. text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 	Keep private-window downloads in the list	Keep private-window downloads in the list
@@ -2044,6 +2077,9 @@
 	Look links up when they arrive (name, size, online)	Look links up when they arrive (name, size, online)
 #. text in the Add torrent window; button in the Download video window
 	Look up	Look up
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+	Look up site names through the proxy	Look up site names through the proxy
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 	Look up the new address first	Look up the new address first
@@ -2416,6 +2452,9 @@
 	No	No
 #. text in a dialog box
 	No addresses yet	No addresses yet
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+	No answer within 20 seconds.	No answer within 20 seconds.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 	No browser MDM can connect to was found	No browser MDM can connect to was found
@@ -2462,6 +2501,10 @@
 	No mail app opened.	No mail app opened.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	No mail app: the message is copied, paste it in your mail.	No mail app: the message is copied, paste it in your mail.
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+	No newer {name} than this one	No newer {name} than this one
 #. text in errors.rs
 	no peer sent the torrent's file list in time	no peer sent the torrent's file list in time
 #. text in the Add torrent window
@@ -3152,9 +3195,9 @@
 	Service	Service
 #. text in the Options window
 	Service:	Service:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
-	Set a socks5:// proxy in Options → Proxy / Socks first	Set a socks5:// proxy in Options → Proxy / Socks first
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first
 #. checkbox in the Options window
 	Set file creation date as provided by the server	Set file creation date as provided by the server
 #. button in extension.rs; button in the Options window
@@ -3862,6 +3905,9 @@
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 	The system's DNS	The system's DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+	The test page didn't say the address it saw.	The test page didn't say the address it saw.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 	The time is a round trip, measured as this download's own connections opened.	The time is a round trip, measured as this download's own connections opened.
@@ -4174,6 +4220,9 @@
 	Tuvalu	Tuvalu
 #. text in helpers.rs
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+	Type	Type
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 	Type a feed's address above and click Add feed.	Type a feed's address above and click Add feed.
@@ -4249,12 +4298,25 @@
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 	Up	Up
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+	Up to date	Up to date
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 	Up to {height}p	Up to {height}p
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+	Update	Update
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 	Update now	Update now
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+	Updated by you	Updated by you
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+	Updated to {version}	Updated to {version}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 	Updates could not be checked: {error}	Updates could not be checked: {error}
@@ -4302,8 +4364,6 @@
 	Use the token	Use the token
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	Use them for this torrent? What matches it is kept, the rest replaced.
-#. label in the Options window
-	Use this proxy for the following protocols:	Use this proxy for the following protocols:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 	Use this rule	Use this rule
@@ -4358,6 +4418,14 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	Version {version} ({commit})	Version {version} ({commit})
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+	Version {version} available	Version {version} available
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+	Version {version} is ready: used once its downloads end	Version {version} is ready: used once its downloads end
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
@@ -4719,6 +4787,10 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+	{name} is being downloaded already: try again in a moment	{name} is being downloaded already: try again in a moment
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4727,11 +4799,19 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 	{name} isn't offered as {how}.	{name} isn't offered as {how}.
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+	{name} {version} is in: trying again with it	{name} {version} is in: trying again with it
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} is too old: MDM needs {oldest} or newer
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} may be out of date for this site: looking for a newer version
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 	{name}: {error}	{name}: {error}
@@ -4804,6 +4884,10 @@
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 	{service}: {message}	{service}: {message}
+#. text in errors.rs
+#. a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+	{site} didn't give the file this time: try again in a moment	{site} didn't give the file this time: try again in a moment
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)

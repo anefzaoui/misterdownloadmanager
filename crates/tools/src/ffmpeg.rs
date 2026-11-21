@@ -11,7 +11,7 @@ use std::path::{Path, PathBuf};
 use serde::Deserialize;
 
 use crate::github::{self, Api};
-use crate::{Error, Installed, make_current, mark_downloaded, newer, sum_for};
+use crate::{Error, Installed, mark_downloaded, newer, sum_for};
 
 /// BtbN's newest releases. Not `releases/latest`: BtbN publishes a dated build each day
 /// (`autobuild-…`) and then remakes its `latest` release with simpler names, and meanwhile
@@ -174,6 +174,20 @@ pub async fn install_latest(
     if let Some(mine) = crate::chosen::chosen(dir, crate::chosen::Helper::Ffmpeg) {
         return Ok(mine);
     }
+    install_with(dir, net, progress, None).await?;
+    own(dir).ok_or_else(|| Error::Missing("ffmpeg after its install".into()))
+}
+
+/// [`install_latest`] for `autoupdate`: the newest build, installed when it is newer than the
+/// version in use and than `floor` (a version the person went back from), switched to now or once
+/// the runs using ffmpeg end.
+pub(crate) async fn install_with(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&crate::update::Progress>,
+    floor: Option<&str>,
+) -> Result<crate::autoupdate::Got, Error> {
+    use crate::autoupdate::Got;
     let Some(build) = build() else {
         return Err(Error::Missing(if cfg!(windows) {
             "ffmpeg build for this processor (choose your own ffmpeg in Helpers)".into()
@@ -181,9 +195,19 @@ pub async fn install_latest(
             "ffmpeg build for this system (install ffmpeg)".into()
         }));
     };
+    let root = dir.join("ffmpeg");
+    let _installing = crate::autoupdate::installing(&root, "ffmpeg")?;
     // GitHub's API, else (its rate limit) the `latest` release's files on github.com (#1337).
     let client = crate::client(net, RELEASES)?;
-    let up_to_date = |version: &str| own(dir).filter(|c| !newer(version, &c.version));
+    // Never the same again, never older, never at or below `floor`.
+    let up_to_date = |version: &str| {
+        (own(dir).is_some_and(|c| !newer(version, &c.version))
+            || floor.is_some_and(|f| !newer(version, f)))
+        .then(|| Got {
+            latest: version.to_owned(),
+            settled: None,
+        })
+    };
     let (name, url, version, sums, digest) = match github::api_get(&client, RELEASES).await? {
         Api::Answer(body) => {
             let mut releases: Vec<Release> =
@@ -207,8 +231,8 @@ pub async fn install_latest(
                 .filter(char::is_ascii_digit)
                 .collect();
             let version = format!("{line}.{date}");
-            if let Some(current) = up_to_date(&version) {
-                return Ok(current);
+            if let Some(none) = up_to_date(&version) {
+                return Ok(none);
             }
             let sums = release
                 .assets
@@ -238,8 +262,8 @@ pub async fn install_latest(
                 sums,
             }) => {
                 tracing::info!("ffmpeg: {name} ({version}), from github.com's pages");
-                if let Some(current) = up_to_date(&version) {
-                    return Ok(current);
+                if let Some(none) = up_to_date(&version) {
+                    return Ok(none);
                 }
                 // GitHub's own digest of the file is the API's only: the checksum list checks it.
                 (name, url, version, sums, None)
@@ -258,8 +282,15 @@ pub async fn install_latest(
         return Err(Error::BadChecksum);
     }
 
+    // Already here (staged, or kept after going back): switched to, not downloaded again.
+    if let Some(here) = crate::autoupdate::kept(&root, &version) {
+        let settled = Some(crate::autoupdate::settle(&root, here)?);
+        return Ok(Got {
+            latest: version,
+            settled,
+        });
+    }
     // Download to a file beside the install (about 80 MB), checked against the checksum.
-    let root = dir.join("ffmpeg");
     std::fs::create_dir_all(&root)?;
     // Named by its checksum: one release's cut-off download resumes, never another's.
     let zip_path = root.join(format!("ffmpeg-{}.zip", hex::encode(&expected[..8])));
@@ -267,7 +298,18 @@ pub async fn install_latest(
     let res = unpack(&zip_path, &root, &version, &url);
     let _ = std::fs::remove_file(&zip_path);
     let exe = res?;
-    make_current(&root, Installed { version, exe })
+    tracing::info!("ffmpeg {version} verified and installed");
+    let settled = Some(crate::autoupdate::settle(
+        &root,
+        Installed {
+            version: version.clone(),
+            exe,
+        },
+    )?);
+    Ok(Got {
+        latest: version,
+        settled,
+    })
 }
 
 /// Unpack the zip's `bin/` (ffmpeg.exe, ffprobe.exe and their DLLs) into `root/<version>/`.

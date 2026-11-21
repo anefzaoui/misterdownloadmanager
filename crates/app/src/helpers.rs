@@ -467,13 +467,17 @@ impl Helpers {
 
 // ---- Video helpers: MDM's own copies or the person's (#51) ------------------------------------
 
+use mdm_tools::autoupdate::{Settled, Tool};
 use mdm_tools::chosen::Helper;
 
 /// Helpers (Download video from a page or a gallery → Helpers...): for yt-dlp, ffmpeg and
 /// gallery-dl (#58), where MDM takes it from (its own copy, or a program of the person's), and the
 /// way to choose another: one copy of each for every program that uses them (#51). Then the
 /// JavaScript runtime yt-dlp needs for YouTube (#1448, #1470): the computer's own (Node.js, Deno),
-/// else Deno, MDM's own copy, downloaded and checked here.
+/// else Deno, MDM's own copy, downloaded and checked here. MDM's own copies are kept up to date
+/// (#1544, `mdm_tools::autoupdate`): each row says how its copy stands, with Update and Go back to
+/// the previous version; Check for updates checks them all, and the switch below turns the
+/// automatic updates off.
 pub struct Programs {
     dir: Option<std::path::PathBuf>,
     /// The helpers as found (read again after each change, not every frame: it reads files).
@@ -482,6 +486,12 @@ pub struct Programs {
     /// `found`.
     deno: Option<mdm_tools::Installed>,
     runtime: Option<std::path::PathBuf>,
+    /// MDM's own copy of each tool (`Tool::ALL`'s order) as its updates stand, read with `found`.
+    own: [Own; 4],
+    /// The update state (`<tools>/updates.json`), read with `found`.
+    updates: mdm_tools::autoupdate::State,
+    /// `autoupdate::generation()` when they were read: read again when it moves.
+    seen: u64,
     /// A chosen program being checked (`--version`), and what it answered.
     checking: Option<(Helper, Answer)>,
     /// MDM's own yt-dlp or gallery-dl being downloaded in place of the system's (#452, #571),
@@ -489,10 +499,34 @@ pub struct Programs {
     installing: Option<(Helper, Answer)>,
     /// MDM's own Deno being downloaded, and how that went.
     installing_deno: Option<Answer>,
+    /// Check for updates, an Update or a Go back under way, and how it went.
+    updating: Option<Answer>,
     error: Option<String>,
 }
 
+/// MDM's own copy of a tool, as its updates stand.
+#[derive(Default)]
+struct Own {
+    /// The version in use, the one kept to go back to (older), and a newer one waiting for the
+    /// downloads using the tool to end.
+    current: Option<mdm_tools::Installed>,
+    previous: Option<mdm_tools::Installed>,
+    staged: Option<mdm_tools::Installed>,
+}
+
 const HELPERS: [Helper; 3] = [Helper::YtDlp, Helper::Ffmpeg, Helper::GalleryDl];
+
+/// The tool a helper row is.
+fn tool_of(h: Helper) -> Tool {
+    match h {
+        Helper::YtDlp => Tool::YtDlp,
+        Helper::Ffmpeg => Tool::Ffmpeg,
+        Helper::GalleryDl => Tool::GalleryDl,
+    }
+}
+
+/// How long "Updated to …" is said after an update.
+const UPDATED_SHOWN: i64 = 3 * 24 * 3600;
 
 /// A check's answer, once it has one (Err: why the program wasn't taken, in words).
 type Answer = Arc<Mutex<Option<Result<(), String>>>>;
@@ -504,9 +538,13 @@ impl Programs {
             found: [None, None, None],
             deno: None,
             runtime: None,
+            own: Default::default(),
+            updates: Default::default(),
+            seen: 0,
             checking: None,
             installing: None,
             installing_deno: None,
+            updating: None,
             error: None,
         };
         p.look();
@@ -517,6 +555,7 @@ impl Programs {
         let Some(dir) = self.dir.as_deref() else {
             return;
         };
+        self.seen = mdm_tools::autoupdate::generation();
         self.found = [
             mdm_tools::installed(dir),
             mdm_tools::ffmpeg::installed(dir),
@@ -524,6 +563,26 @@ impl Programs {
         ];
         self.deno = mdm_tools::deno::installed(dir);
         self.runtime = mdm_tools::proc::system_js_runtime();
+        self.updates = mdm_tools::autoupdate::read(dir);
+        for t in Tool::ALL {
+            use mdm_tools::autoupdate as au;
+            let root = t.root(dir);
+            let current = au::own(dir, t);
+            let newer_than_current = |i: &mdm_tools::Installed, older: bool| {
+                current.as_ref().is_some_and(|c| {
+                    if older {
+                        mdm_tools::autoupdate::is_newer(&c.version, &i.version)
+                    } else {
+                        mdm_tools::autoupdate::is_newer(&i.version, &c.version)
+                    }
+                })
+            };
+            self.own[t as usize] = Own {
+                previous: au::previous_in(&root).filter(|p| newer_than_current(p, true)),
+                staged: au::staged_in(&root).filter(|s| newer_than_current(s, false)),
+                current,
+            };
+        }
     }
 
     /// MDM's own Deno (#1448): downloaded and checked against its release's checksums, from then
@@ -577,6 +636,69 @@ impl Programs {
         self.error = None;
     }
 
+    /// Check for updates (`tools`: every own copy) or one row's Update, now, in the background:
+    /// each newer version checked as its first install was. It goes on if the window is closed.
+    fn update(
+        &mut self,
+        tools: Vec<Tool>,
+        dir: std::path::PathBuf,
+        rt: &tokio::runtime::Handle,
+        ctx: &egui::Context,
+    ) {
+        let slot: Answer = Arc::new(Mutex::new(None));
+        let (out, wake) = (slot.clone(), ctx.clone());
+        let net = crate::settings::own_net();
+        rt.spawn(async move {
+            let mut failed = None;
+            for t in tools {
+                let now = mdm_tools::autoupdate::unix_now();
+                let res = mdm_tools::autoupdate::check(
+                    &dir,
+                    t,
+                    &net,
+                    mdm_tools::autoupdate::Why::Asked,
+                    now,
+                )
+                .await;
+                wake.request_repaint();
+                if let Err(e) = res {
+                    failed.get_or_insert_with(|| {
+                        // i18n: Helpers: an update check failed; {name} = yt-dlp, ffmpeg, gallery-dl or deno, {error} = why
+                        crate::i18n::fmt(
+                            crate::i18n::t("{name}: {error}"),
+                            &[("name", t.name()), ("error", &crate::errors::tools(&e))],
+                        )
+                    });
+                }
+            }
+            *out.lock().unwrap() = Some(failed.map_or(Ok(()), Err));
+            wake.request_repaint();
+        });
+        self.updating = Some(slot);
+        self.error = None;
+    }
+
+    /// Go back to the previous version of `t`, off the window's thread (a switch removes older
+    /// folders).
+    fn go_back(&mut self, t: Tool, dir: std::path::PathBuf, ctx: &egui::Context) {
+        let slot: Answer = Arc::new(Mutex::new(None));
+        let (out, wake) = (slot.clone(), ctx.clone());
+        std::thread::spawn(move || {
+            let res = mdm_tools::autoupdate::go_back(&dir, t);
+            match &res {
+                Ok(Settled::Switched(i)) => tracing::info!("{} back to {}", t.name(), i.version),
+                Ok(Settled::Staged(i)) => {
+                    tracing::info!("{} back to {} once its downloads end", t.name(), i.version)
+                }
+                Err(e) => tracing::warn!("{}: going back failed: {e}", t.name()),
+            }
+            *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
+            wake.request_repaint();
+        });
+        self.updating = Some(slot);
+        self.error = None;
+    }
+
     /// Open until Close.
     pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<()> {
         let answered = self
@@ -606,6 +728,22 @@ impl Programs {
             self.installing_deno = None;
             self.look();
         }
+        let updated = self
+            .updating
+            .as_ref()
+            .and_then(|slot| slot.lock().unwrap().take());
+        if let Some(res) = updated {
+            self.error = res.err();
+            self.updating = None;
+            self.look();
+        }
+        // An update under way (here or by itself), or done since: the rows follow it.
+        if mdm_tools::autoupdate::generation() != self.seen {
+            self.look();
+        }
+        if self.any_update_running() || self.updating.is_some() {
+            ctx.request_repaint_after(std::time::Duration::from_millis(250));
+        }
         for h in HELPERS {
             if let Some(path) = winui::picked(ctx, &format!("helper-{}", h.name()))
                 && let Some(dir) = self.dir.clone()
@@ -628,11 +766,69 @@ impl Programs {
             "video-helpers",
             // i18n: window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
             "Helpers",
-            [500.0, 370.0],
+            [500.0, 402.0],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o, rt),
         )
+    }
+
+    /// How MDM's own copy of `t` stands, for its row's first line: an update under way, one
+    /// waiting, one done lately, one found, up to date. None before its first check.
+    fn update_status(&self, tool: Tool) -> Option<String> {
+        use crate::i18n::{fmt, t};
+        let own = &self.own[tool as usize];
+        let current = own.current.as_ref()?;
+        if let Some(p) = self
+            .dir
+            .as_deref()
+            .and_then(|d| mdm_tools::autoupdate::checking(d, tool))
+        {
+            return Some(match p.fraction() {
+                Some(f) => fmt(
+                    // i18n: Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+                    t("Downloading the update... {percent}%"),
+                    &[("percent", &format!("{:.0}", f * 100.0))],
+                ),
+                // i18n: Helpers: MDM is asking whether a newer version of a helper exists
+                None => t("Checking for updates...").to_owned(),
+            });
+        }
+        if let Some(s) = &own.staged {
+            return Some(fmt(
+                // i18n: Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+                t("Version {version} is ready: used once its downloads end"),
+                &[("version", &s.version)],
+            ));
+        }
+        let state = self.updates.of(tool);
+        let now = mdm_tools::autoupdate::unix_now();
+        if let Some(u) = &state.updated
+            && u.to == current.version
+            && (0..UPDATED_SHOWN).contains(&(now - u.at))
+        {
+            return Some(fmt(
+                // i18n: Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+                t("Updated to {version}"),
+                &[("version", &u.to)],
+            ));
+        }
+        if state.failed.is_some() {
+            // i18n: Helpers: the last update check failed (no network...); MDM checks again later by itself
+            return Some(t("Couldn't check for updates: MDM tries again later").to_owned());
+        }
+        match &state.latest {
+            Some(latest) if mdm_tools::autoupdate::is_newer(latest, &current.version) => {
+                Some(fmt(
+                    // i18n: Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+                    t("Version {version} available"),
+                    &[("version", latest)],
+                ))
+            }
+            // i18n: Helpers: MDM's own copy of a helper is the newest version
+            Some(_) => Some(t("Up to date").to_owned()),
+            None => None,
+        }
     }
 
     fn body(&mut self, ui: &mut Ui, o: Pos2, rt: &tokio::runtime::Handle) -> Outcome<()> {
@@ -730,6 +926,16 @@ impl Programs {
                 o.x + 486.0,
                 ("helper", k),
             );
+            // Its updates: MDM's own copy's, or the person's to make (#1544).
+            let name_end =
+                o.x + 14.0 + winui::text_width_font(&p, winui::tahoma_bold(), h.name()) + 10.0;
+            let updates = if found.is_some_and(|i| mine || i.is_system()) {
+                // i18n: Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+                Some(crate::i18n::t("Updated by you").to_owned())
+            } else {
+                self.update_status(tool_of(h))
+            };
+            self.update_row(ui, &p, o, y, name_end, tool_of(h), updates, rt);
             let busy = self.busy();
             // As wide as their labels in this language (#192), side by side from the left.
             let [other_at, own_at] = winui::button_row_from_left(
@@ -795,21 +1001,72 @@ impl Programs {
             winui::etched_h(&p, o.x + 14.0, o.y + 82.0 + k as f32 * 78.0, 472.0);
         }
         self.runtime_row(ui, &p, o, HELPERS.len(), rt);
+        winui::etched_h(&p, o.x + 14.0, o.y + 8.0 + 4.0 * 78.0 + 4.0, 472.0);
+        // Automatic updates, on unless turned off (#1544).
+        let mut auto = self.updates.auto;
+        let enabled = self.dir.is_some();
+        winui::checkbox(
+            ui,
+            o + egui::vec2(14.0, 332.0),
+            &mut auto,
+            // i18n: Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+            "Keep MDM's helpers up to date automatically",
+            enabled,
+        );
+        if auto != self.updates.auto
+            && let Some(dir) = self.dir.as_deref()
+        {
+            mdm_tools::autoupdate::set_auto(dir, auto);
+            self.updates.auto = auto;
+        }
+        let [check_at, close_at] = winui::button_row(
+            &p,
+            &[("Check for updates", 284.0, 123.0), ("Close", 413.0, 77.0)],
+            6.0,
+            14.0,
+            240.0,
+        )[..] else {
+            unreachable!("two buttons")
+        };
+        let own: Vec<Tool> = Tool::ALL
+            .into_iter()
+            .filter(|t| self.own[*t as usize].current.is_some())
+            .collect();
+        let y = 370.0;
+        // What failed, left of the buttons.
         if let Some(e) = &self.error {
             winui::fit(
                 ui,
                 &p,
                 o.x + 14.0,
-                o.y + 332.0,
+                o.y + y + 15.0,
                 e,
                 winui::ERROR(),
-                o.x + 400.0,
+                o.x + check_at.0 - 8.0,
                 "helper-error",
             );
         }
+        if winui::button(
+            ui,
+            r(o, check_at.0, y, check_at.1, 21.0),
+            // i18n: Helpers: button: look for newer versions of MDM's own helpers now, and install them
+            "Check for updates",
+            if own.is_empty() || self.busy() || self.any_update_running() {
+                ButtonKind::Disabled
+            } else {
+                ButtonKind::Normal
+            },
+            false,
+            None,
+        )
+        .clicked()
+            && let Some(dir) = self.dir.clone()
+        {
+            self.update(own, dir, rt, ui.ctx());
+        }
         let close = winui::button(
             ui,
-            r(o, 413.0, 338.0, 77.0, 21.0),
+            r(o, close_at.0, y, close_at.1, 21.0),
             "Close",
             ButtonKind::Default,
             false,
@@ -822,9 +1079,109 @@ impl Programs {
         }
     }
 
+    /// A row's update status (`status`, after its name, from `from`) and, for MDM's own copy,
+    /// Update and Go back to its previous version, at the row's right end.
+    #[allow(clippy::too_many_arguments)]
+    fn update_row(
+        &mut self,
+        ui: &mut Ui,
+        p: &egui::Painter,
+        o: Pos2,
+        y: f32,
+        from: f32,
+        t: Tool,
+        status: Option<String>,
+        rt: &tokio::runtime::Handle,
+    ) {
+        let own = &self.own[t as usize];
+        let mut right = o.x + 486.0;
+        let mut back = None;
+        if own.current.is_some() {
+            let back_label = own.previous.as_ref().map(|prev| {
+                crate::i18n::fmt(
+                    // i18n: Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+                    crate::i18n::t("Go back to {version}"),
+                    &[("version", &prev.version)],
+                )
+            });
+            // i18n: Helpers: button: check for a newer version of this helper now and install it
+            let update_label = crate::i18n::t("Update");
+            let mut row: Vec<(&str, f32, f32)> = Vec::new();
+            if let Some(l) = &back_label {
+                row.push((l.as_str(), 270.0, 130.0));
+            }
+            row.push((update_label, 406.0, 80.0));
+            let placed = winui::button_row(p, &row, 6.0, from - o.x, 200.0);
+            let busy = self.busy()
+                || self
+                    .dir
+                    .as_deref()
+                    .is_some_and(|d| mdm_tools::autoupdate::checking(d, t).is_some());
+            let kind = if busy {
+                ButtonKind::Disabled
+            } else {
+                ButtonKind::Normal
+            };
+            let mut at = placed.iter();
+            if let Some(l) = &back_label
+                && let Some(&(x, w)) = at.next()
+            {
+                right = right.min(o.x + x - 8.0);
+                if winui::button(ui, r(o, x, y - o.y + 4.0, w, 21.0), l, kind, false, None)
+                    .clicked()
+                {
+                    back = Some(t);
+                }
+            }
+            if let Some(&(x, w)) = at.next() {
+                right = right.min(o.x + x - 8.0);
+                if winui::button(
+                    ui,
+                    r(o, x, y - o.y + 4.0, w, 21.0),
+                    update_label,
+                    kind,
+                    false,
+                    None,
+                )
+                .clicked()
+                    && let Some(dir) = self.dir.clone()
+                {
+                    self.update(vec![t], dir, rt, ui.ctx());
+                }
+            }
+        }
+        if let Some(s) = &status {
+            winui::fit(
+                ui,
+                p,
+                from,
+                y + 16.0,
+                s,
+                winui::MUTED(),
+                right,
+                ("helper-update", t as usize),
+            );
+        }
+        if let (Some(t), Some(dir)) = (back, self.dir.clone()) {
+            self.go_back(t, dir, ui.ctx());
+        }
+    }
+
     /// A check or a download is under way: the buttons wait.
     fn busy(&self) -> bool {
-        self.checking.is_some() || self.installing.is_some() || self.installing_deno.is_some()
+        self.checking.is_some()
+            || self.installing.is_some()
+            || self.installing_deno.is_some()
+            || self.updating.is_some()
+    }
+
+    /// An update check runs in this copy of MDM (the window's, or MDM's own by itself).
+    fn any_update_running(&self) -> bool {
+        self.dir.as_deref().is_some_and(|d| {
+            Tool::ALL
+                .iter()
+                .any(|t| mdm_tools::autoupdate::checking(d, *t).is_some())
+        })
     }
 
     /// The JavaScript runtime's row, the `k`th (#1448, #1470): YouTube makes yt-dlp solve a
@@ -850,27 +1207,42 @@ impl Programs {
             title,
             winui::TEXT(),
         );
-        // What it is for, in one line after its name.
-        let after = winui::text_width_font(p, winui::tahoma_bold(), title) + 8.0;
-        winui::fit(
-            ui,
-            p,
-            o.x + 14.0 + after,
-            y + 16.0,
-            // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
-            crate::i18n::t("lets yt-dlp list all of YouTube's qualities"),
-            winui::MUTED(),
-            o.x + 486.0,
-            ("helper-what", k),
-        );
+        // What it is for, in one line after its name; for MDM's own copy, Update and Go back there
+        // instead, and how its updates stand after its version below (the title is long in some
+        // languages, the room beside it short).
+        let after = winui::text_width_font(p, winui::tahoma_bold(), title) + 10.0;
+        let updates = self
+            .deno
+            .is_some()
+            .then(|| self.update_status(Tool::Deno))
+            .flatten();
+        if self.deno.is_some() {
+            self.update_row(ui, p, o, y, o.x + 14.0 + after, Tool::Deno, None, rt);
+        } else {
+            winui::fit(
+                ui,
+                p,
+                o.x + 14.0 + after,
+                y + 16.0,
+                // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+                crate::i18n::t("lets yt-dlp list all of YouTube's qualities"),
+                winui::MUTED(),
+                o.x + 486.0,
+                ("helper-what", k),
+            );
+        }
         let available = mdm_tools::deno::available();
         let status = if self.installing_deno.is_some() {
             crate::i18n::t("Downloading MDM's own copy...").to_owned()
         } else if let Some(own) = &self.deno {
-            crate::i18n::fmt(
+            let own = crate::i18n::fmt(
                 crate::i18n::t("Mister Download Manager's own copy, version {version}"),
                 &[("version", &own.version)],
-            )
+            );
+            match &updates {
+                Some(u) => format!("{own} · {u}"),
+                None => own,
+            }
         } else if let Some(path) = &self.runtime {
             crate::i18n::fmt(
                 // i18n: Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
@@ -919,5 +1291,63 @@ impl Programs {
         {
             self.install_deno(dir, rt, ui.ctx());
         }
+    }
+}
+
+/// MDM's own helpers kept up to date while it runs (#1544): a few seconds after the start, then
+/// every [`Keeper::EVERY`], the checks that are due (`mdm_tools::autoupdate::run_due`: each tool
+/// at most as often as its own interval, remembered across starts), off the window's thread.
+#[derive(Default)]
+pub struct Keeper {
+    /// When the last round started.
+    last: Option<std::time::Instant>,
+    /// A round is running.
+    running: Arc<std::sync::atomic::AtomicBool>,
+}
+
+impl Keeper {
+    /// How often what is due is looked at.
+    pub const EVERY: std::time::Duration = std::time::Duration::from_secs(15 * 60);
+
+    /// Start a round when one is due: `started` is when MDM started. Off-screen test runs (and
+    /// tests) only when MDM_HELPER_UPDATES=1 says so: their tools folder is a test's.
+    pub fn tick(
+        &mut self,
+        rt: &tokio::runtime::Handle,
+        started: std::time::Instant,
+        ctx: Option<&egui::Context>,
+    ) {
+        use std::sync::atomic::Ordering;
+        let asked = std::env::var_os("MDM_HELPER_UPDATES").is_some_and(|v| v == "1");
+        if (cfg!(test) || crate::offscreen()) && !asked {
+            return;
+        }
+        let first_at = crate::help::CHECK_AFTER_START;
+        let wait = match self.last {
+            None => first_at.saturating_sub(started.elapsed()),
+            Some(at) => Self::EVERY.saturating_sub(at.elapsed()),
+        };
+        if !wait.is_zero() || self.running.load(Ordering::Acquire) {
+            if let Some(ctx) = ctx
+                && !wait.is_zero()
+            {
+                ctx.request_repaint_after(wait);
+            }
+            return;
+        }
+        let Some(dir) = mdm_tools::tools_dir() else {
+            return;
+        };
+        self.last = Some(std::time::Instant::now());
+        self.running.store(true, Ordering::Release);
+        let running = self.running.clone();
+        let net = crate::settings::own_net();
+        rt.spawn(async move {
+            let now = mdm_tools::autoupdate::unix_now();
+            for (tool, found) in mdm_tools::autoupdate::run_due(&dir, &net, now).await {
+                tracing::info!("helper update check: {}: {found:?}", tool.name());
+            }
+            running.store(false, Ordering::Release);
+        });
     }
 }

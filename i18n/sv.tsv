@@ -364,7 +364,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Add browser...	Lägg till webbläsare...
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #, machine
 	Add category	Lägg till kategori
 #. button in rssdlg.rs
@@ -468,10 +468,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	Adresser som lämnas till webbläsaren
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	Avancerat/Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -599,6 +595,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	Ett annat program har ställt in datorns väckningslarm
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	Svarade på {ms} ms. Internet ser {ip}.
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -815,7 +815,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	British Indian Ocean Territory	Brittiska territoriet i Indiska oceanen
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	Bläddra
@@ -918,7 +918,7 @@
 #. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	Kategori
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #. title of the folder picker of the category dialog
 #, machine
 	Category folder	Kategorimapp
@@ -961,7 +961,8 @@
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
 	Check feeds every	Kontrollera flöden var
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 #, machine
 	Check for updates	Sök efter uppdateringar
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -992,7 +993,8 @@
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
 	Checking every piece again	Alla delar kontrollerades igen.
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Söker efter uppdateringar...
@@ -1222,11 +1224,20 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	could not reach {host} ({cause})	kunde inte nå {host} ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+#, machine
+	Couldn't check for updates: MDM tries again later	Kunde inte söka efter uppdateringar: MDM försöker igen senare
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	Kunde inte extrahera {name}: {why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	Couldn't look for a newer {name}: {error}	Kunde inte söka efter en nyare version av {name}: {error}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1574,6 +1585,10 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	Laddar ned uppdateringen... {percent}
+#. text in helpers.rs
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+#, machine
+	Downloading the update... {percent}%	Laddar ned uppdateringen... {percent}%
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -2088,6 +2103,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP-hämtningar går inte via en HTTP-proxy. Välj SOCKS5 eller SOCKS4 för att skicka dem via proxyn.
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2156,6 +2175,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gibraltar	Gibraltar
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Go back to {version}	Gå tillbaka till {version}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2546,6 +2570,10 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KByte/sek
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#, machine
+	Keep MDM's helpers up to date automatically	Håll MDM:s hjälpprogram automatiskt uppdaterade
 #. text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 #, machine
@@ -2741,6 +2769,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Sök
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	Slå upp webbplatsnamn via proxyn
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3245,6 +3277,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	Inga adresser än
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	Inget svar inom 20 sekunder.
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3308,6 +3344,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Ingen e-postapp: meddelandet kopieras, klistra in det i din e-post.
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	No newer {name} than this one	Den här versionen av {name} är den senaste
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	ingen peer skickade torrentens fillista i tid
@@ -4241,10 +4282,10 @@
 #. text in the Options window
 #, machine
 	Service:	Tjänst:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	Ange en socks5://-proxy i Alternativ → Proxy/Socks först
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	Ange en SOCKS5-proxy i Alternativ → Proxy/Socks (Manuell, Typ SOCKS5) först
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	Ange filens skapandedatum som tillhandahålls av servern
@@ -5199,6 +5240,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	Systemets DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	Testsidan angav inte den adress den såg.
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5620,6 +5665,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Två kostnadsfria hjälpprogram får det att fungera. Hämta dem nu, så är det bara ett klick bort att spara en video när du hittar en.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	Typ
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5719,14 +5768,31 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	Flytta upp
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+#, machine
+	Up to date	Uppdaterad
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
 	Up to {height}p	Upp till {height}p
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+#, machine
+	Update	Uppdatera
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
 	Update now	Uppdatera nu
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+#, machine
+	Updated by you	Uppdateras av dig
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Updated to {version}	Uppdaterad till {version}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5791,9 +5857,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Ska de användas för den här torrenten? Det som matchar behålls, resten ersätts.
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	Använd denna proxy för följande protokoll:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
@@ -5868,6 +5931,16 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Version {version} ({commit})	Version {version} ({commit})
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} available	Version {version} finns tillgänglig
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} is ready: used once its downloads end	Version {version} är klar: används när hämtningarna är slut
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 #, machine
@@ -6346,6 +6419,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} är ett 7z- eller RAR-arkiv. MDM packar upp sådana arkiv med 7-Zip, som inte är installerat.
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is being downloaded already: try again in a moment	{name} laddas ned redan: försök igen om en stund
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6356,12 +6434,22 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} erbjuds inte som {how}.
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is in: trying again with it	{name} {version} är installerad: försöker igen med den
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} är för gammal: MDM behöver {oldest} eller senare
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} kan vara inaktuell för den här webbplatsen: söker efter en nyare version
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine

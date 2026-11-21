@@ -341,7 +341,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Add browser...	ব্রাউজার যোগ করুন...
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 	Add category	শ্রেণি যোগ করুন
 #. button in rssdlg.rs
 #. RSS feeds window: button that subscribes to the feed whose address is typed
@@ -439,10 +439,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	ব্রাউজারে রেখে দেওয়া ঠিকানা
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	অ্যাডভান্সড / SOCKS...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -562,6 +558,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	অন্য একটি প্রোগ্রাম কম্পিউটারের ওয়েক অ্যালার্ম সেট করেছে
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	{ms} মিলিসেকেন্ডে উত্তর দিয়েছে। ইন্টারনেট {ip} দেখছে।
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -768,7 +768,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	British Indian Ocean Territory	ব্রিটিশ ভারত মহাসাগরীয় অঞ্চল
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ব্রাউজ করুন
@@ -865,7 +865,7 @@
 #. text in a dialog box; text in the Options window; text in remote.rs
 #. remote control page (on a phone): label of the category choice for a new download
 	Category	শ্রেণি
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #. title of the folder picker of the category dialog
 	Category folder	শ্রেণির ফোল্ডার
 #. text in categories.rs
@@ -905,7 +905,8 @@
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
 	Check feeds every	প্রতি
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 #, machine
 	Check for updates	আপডেটের জন্য পরীক্ষা করুন
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -934,7 +935,8 @@
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
 	Checking every piece again	প্রতিটি অংশ আবার চেক করা হচ্ছে
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	আপডেটের জন্য পরীক্ষা করা হচ্ছে...
@@ -1150,11 +1152,20 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	could not reach {host} ({cause})	{host}-এ পৌঁছানো যায়নি ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+#, machine
+	Couldn't check for updates: MDM tries again later	আপডেট খোঁজা যায়নি: MDM পরে আবার চেষ্টা করবে
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	{name} এক্সট্র্যাক্ট করা যায়নি: {why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	Couldn't look for a newer {name}: {error}	নতুন {name} খোঁজা যায়নি: {error}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1475,6 +1486,10 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	আপডেট ডাউনলোড হচ্ছে... {percent}
+#. text in helpers.rs
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+#, machine
+	Downloading the update... {percent}%	আপডেট ডাউনলোড করা হচ্ছে... {percent}%
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -1950,6 +1965,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ডাউনলোডগুলো HTTP প্রক্সির মাধ্যমে যায় না। সেগুলোকে প্রক্সির মাধ্যমে পাঠাতে SOCKS5 বা SOCKS4 বেছে নিন।
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2015,6 +2034,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gibraltar	জিব্রাল্টার
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Go back to {version}	{version}-এ ফিরে যান
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	ডাউনলোড শেষ হওয়ার পরেও চলতে থাকে
@@ -2381,6 +2405,10 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	কিলোবাইট/সেকেন্ড
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#, machine
+	Keep MDM's helpers up to date automatically	MDM-এর সহায়কগুলো স্বয়ংক্রিয়ভাবে আপ টু ডেট রাখুন
 #. text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 #, machine
@@ -2567,6 +2595,10 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	খুঁজুন
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	প্রক্সির মাধ্যমে সাইটের নামগুলো দেখুন
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
@@ -3110,6 +3142,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	কোনো মেইল অ্যাপ নেই: বার্তাটি কপি করা হয়েছে, আপনার মেইলে পেস্ট করুন।
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	No newer {name} than this one	এর চেয়ে নতুন কোনো {name} নেই
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	সময়মতো কোনো পিয়ার টরেন্টের ফাইল তালিকা পাঠায়নি
@@ -3983,9 +4020,10 @@
 #. text in the Options window
 #, machine
 	Service:	পরিষেবা:
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
-	Set a socks5:// proxy in Options → Proxy / Socks first	প্রথমে বিকল্প → প্রক্সি / সক্স-এ একটি socks5:// প্রক্সি সেট করুন
+#, machine
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	প্রথমে বিকল্প → প্রক্সি / সক্স (ম্যানুয়াল, টাইপ SOCKS5)-এ একটি SOCKS5 প্রক্সি সেট করুন
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	সার্ভার-প্রদত্ত ফাইল তৈরির তারিখ সেট করুন
@@ -4860,6 +4898,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	সিস্টেমের DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	পরীক্ষার পেজটি যে ঠিকানাটি দেখেছিল, তা বলেনি।
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5253,6 +5295,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	দুটি বিনামূল্যে সহায়ক এটিকে কাজ করে তোলে। সেগুলোকে এখনই পান, এবং একটি ভিডিও খুঁজে পেলে সেটি সংরক্ষণ করা এক ক্লিকেই সম্ভব।
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	টাইপ
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5349,14 +5395,31 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	উপরে
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+#, machine
+	Up to date	আপ টু ডেট
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
 	Up to {height}p	{height}p পর্যন্ত
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+#, machine
+	Update	আপডেট করুন
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
 	Update now	এখনই আপডেট করুন
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+#, machine
+	Updated by you	আপনার দ্বারা আপডেট করা হয়েছে
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Updated to {version}	{version}-এ আপডেট করা হয়েছে
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5418,9 +5481,6 @@
 	Use the token	টোকেন ব্যবহার করুন
 #. text in a dialog box
 	Use them for this torrent? What matches it is kept, the rest replaced.	এই টরেন্টের জন্য এগুলো ব্যবহার করবেন? যেগুলো মেলে সেগুলো রাখা হবে, বাকিগুলো প্রতিস্থাপন করা হবে।
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	নিম্নলিখিত প্রোটোকলগুলোর জন্য এই প্রক্সি ব্যবহার করুন:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
@@ -5491,6 +5551,16 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Version {version} ({commit})	সংস্করণ {version} ({commit})
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} available	সংস্করণ {version} উপলব্ধ
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} is ready: used once its downloads end	সংস্করণ {version} প্রস্তুত: এর ডাউনলোড শেষ হলে ব্যবহার করা হবে
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	ভিডিও
@@ -5942,6 +6012,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} একটি 7z বা RAR আর্কাইভ। MDM এগুলো 7-Zip দিয়ে এক্সট্র্যাক্ট করে, কিন্তু 7-Zip ইনস্টল করা নেই।
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is being downloaded already: try again in a moment	{name} ইতোমধ্যে ডাউনলোড করা হচ্ছে: কিছুক্ষণ পর আবার চেষ্টা করুন
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5952,12 +6027,22 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} {how} হিসেবে উপলভ্য নয়।
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is in: trying again with it	{name} {version} এসেছে: এটি দিয়ে আবার চেষ্টা করা হচ্ছে
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} অনেক পুরোনো: MDM-এর {oldest} বা নতুন সংস্করণ প্রয়োজন
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} এই সাইটের জন্য পুরোনো হতে পারে: নতুন সংস্করণ খোঁজা হচ্ছে
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 	{name}: {error}	{name}: {error}

@@ -3,6 +3,7 @@
 
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
 use base64::Engine as _;
@@ -1252,15 +1253,18 @@ enum Pane {
     Toolbar,
     Tree,
     List,
+    /// The menu bar (#1190): Tab from the list reaches it, and Tab again goes on to the toolbar
+    /// (Shift+Tab back to the list), so a reader can walk the window's parts.
+    Bar,
 }
 
 /// Where Tab (Shift+Tab: `back`) takes the keys from `from` (`None`: nothing had them, after a
 /// click on the toolbar or the strip), round; the tree left out while it is hidden.
 fn tab_to(from: Option<Pane>, tree_shown: bool, back: bool) -> Pane {
     let order: &[Pane] = if tree_shown {
-        &[Pane::Toolbar, Pane::Tree, Pane::List]
+        &[Pane::Toolbar, Pane::Tree, Pane::List, Pane::Bar]
     } else {
-        &[Pane::Toolbar, Pane::List]
+        &[Pane::Toolbar, Pane::List, Pane::Bar]
     };
     let n = order.len();
     let at = from.and_then(|p| order.iter().position(|q| *q == p));
@@ -1282,6 +1286,18 @@ enum Branch {
     Queues,
 }
 
+/// A newer helper for a failing download: found and ready, none, or why it couldn't be looked for.
+type HealSlot = Arc<Mutex<Option<Result<Option<mdm_tools::Installed>, String>>>>;
+
+/// A failing download's helper being brought up to date (#1544, [`App::heal_if_outdated`]).
+struct Healing {
+    tool: mdm_tools::autoupdate::Tool,
+    /// The newer version found and ready, none, or why it couldn't be looked for.
+    slot: HealSlot,
+    /// The download's error as it failed, put back when nothing newer is found.
+    error: Option<String>,
+}
+
 pub struct App {
     rt: tokio::runtime::Handle,
     items: Vec<Item>,
@@ -1301,6 +1317,11 @@ pub struct App {
     /// The toolbar has the keys (Tab reaches it, #1190), at button `toolbar_at` (kept when Tab
     /// leaves it, as Windows' toolbars keep theirs).
     toolbar_keys: bool,
+    /// The menu bar has the keys (#1190): the title the keys are on, and the reader is told it
+    /// is what has the focus. Left and Right walk the titles, Down opens the one the keys are on.
+    bar_keys: bool,
+    /// The menu-bar title the keys are on (index into the bar's menus).
+    menubar_at: usize,
     toolbar_at: usize,
     /// The app's context, to reach its windows from anywhere (bring one to the front).
     ui_ctx: egui::Context,
@@ -1617,6 +1638,15 @@ pub struct App {
     queues: Vec<Queue>,
     /// Failure time and count per download, for queue retries.
     failures: HashMap<u64, (Instant, u32)>,
+    /// MDM's own helpers kept up to date while it runs (#1544).
+    keeper: crate::helpers::Keeper,
+    /// Videos and galleries that failed with words meaning their helper is out of date (#1544):
+    /// a newer one being looked for, then the download tried again once ([`Healing`]).
+    healing: HashMap<u64, Healing>,
+    /// The downloads started again after that: a second such failure stands.
+    heal_retry: std::collections::HashSet<u64>,
+    /// The yt-dlp or gallery-dl version each video or gallery last started with.
+    started_with: HashMap<u64, String>,
     /// Stopped by hand while they could have run: a running queue leaves them alone until
     /// they are started again or the queue is started anew (#341).
     stopped_by_hand: std::collections::HashSet<u64>,
@@ -2129,6 +2159,8 @@ impl App {
             ui_ctx: ctx.clone(),
             tree_keys: false,
             toolbar_keys: false,
+            bar_keys: false,
+            menubar_at: 0,
             toolbar_at: 0,
             move_rename_for: None,
             move_many_for: Vec::new(),
@@ -2296,6 +2328,10 @@ impl App {
             last_layout: None,
             queues,
             failures: HashMap::new(),
+            keeper: Default::default(),
+            healing: HashMap::new(),
+            heal_retry: Default::default(),
+            started_with: HashMap::new(),
             stopped_by_hand: Default::default(),
             saved_by_hand: Default::default(),
             clock: None,
@@ -2538,6 +2574,9 @@ impl App {
             },
             icon: file_icon(&it.file_name),
             queued: queued.contains(&it.id),
+            // A progress bar only while the download is in flight: a finished file is whole, and
+            // a bar at 100% on every row would only add words to it (#1190).
+            progress: it.fraction().filter(|frac| *frac < 1.0),
             cells: [
                 it.file_name.clone(),
                 String::new(),
@@ -3398,6 +3437,11 @@ impl App {
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
+            // Remove with files on every download (screenshots: the finished files it counts).
+            "delete-files" => {
+                let all = self.items.iter().map(|i| i.id).collect();
+                self.ask_delete(all, true);
+            }
             // Redownload of the first download, its question answered Yes (checks of a slow disk:
             // the window never waits for its old files to go).
             "redownload" => {
@@ -4332,6 +4376,7 @@ impl App {
     fn stop(&mut self, id: u64) {
         // A video waiting for its place doesn't start.
         self.video_places.unwait(id);
+        self.stop_healing(id);
         if let Some(l) = self.item(id).and_then(|i| i.live.as_ref()) {
             l.dl.cancel();
         }
@@ -4351,6 +4396,7 @@ impl App {
     fn halt(&mut self, id: u64) {
         // A video waiting for its place doesn't start.
         self.video_places.unwait(id);
+        self.stop_healing(id);
         // Every other download stops here as `stop` stops it.
         if let Some(l) = self.item(id).and_then(|i| i.live.as_ref()) {
             let before = l.dl.live_state();
@@ -4513,33 +4559,46 @@ impl App {
         doomed
     }
 
-    /// Delete / Remove / Delete All Completed: asks first (unless "Don't show this dialog
-    /// again" was ticked) whether only the list entries go or the files too; `files` ticks that
-    /// box (Shift+Delete). Running downloads are left alone.
+    /// Delete / Remove / Delete All Completed: asks first whether only the list entries go or
+    /// the files too. The box starts unticked every time; `files` ticks it for this once
+    /// (Shift+Delete, Remove with files). With "Don't show this dialog again" ticked, a plain
+    /// Delete only takes the downloads off the list, never their files; Shift+Delete still asks,
+    /// as nothing leaves the disk unasked (#1563). Running downloads are left alone.
     fn ask_delete(&mut self, ids: Vec<u64>, files: bool) {
         let gone: Vec<&Item> = ids
             .iter()
             .filter_map(|id| self.items.iter().find(|i| i.id == *id && i.live.is_none()))
             .collect();
         let Some(first) = gone.first() else { return };
-        // Shift+Delete ticks "also the files" this once; only a plain Delete's answer is
-        // remembered (else one Shift+Delete made every later Delete erase files).
-        let shift = files;
-        let files = files || self.settings.delete_files_too;
-        if self.settings.confirm_delete {
+        if self.settings.confirm_delete || files {
             let one = gone.len() == 1;
-            let mut ask = dialogs::ConfirmDelete::new(
+            // A finished file goes with a ticked box: the window says how many (#1563).
+            let finished = gone
+                .iter()
+                .filter(|i| i.status == Status::Complete && i.gallery.is_none())
+                .count() as u64;
+            self.confirm_delete = Some(dialogs::ConfirmDelete::new(
                 gone.iter().map(|i| i.id).collect(),
                 first.file_name.clone(),
                 one && first.status != Status::Complete,
                 files,
-            );
-            ask.remember = !shift;
-            self.confirm_delete = Some(ask);
+                finished,
+            ));
         } else {
             let ids: Vec<u64> = gone.into_iter().map(|i| i.id).collect();
-            self.remove_downloads(&ids, files);
+            self.remove_downloads(&ids, false);
         }
+    }
+
+    /// The delete question answered Yes: the downloads go, with their files if its box was
+    /// ticked this time (never remembered, #1563); "Don't show this dialog again" turns the
+    /// question off.
+    fn confirmed_delete(&mut self, ids: &[u64], files: bool, dont_show: bool) {
+        self.remove_downloads(ids, files);
+        if dont_show {
+            self.settings.confirm_delete = false;
+        }
+        self.dirty = true;
     }
 
     fn delete_completed(&mut self) {
@@ -5740,7 +5799,6 @@ impl App {
     /// to is the Video category's folder, the Music category's while a sound-only choice is
     /// chosen (#611; not when the user deleted Music).
     fn video_dialog(&self, page: Option<(&str, mdm_ipc::Command)>) -> crate::videodlg::VideoDialog {
-        crate::videodlg::refresh_ytdlp(&self.rt);
         let dir = self.settings.category_dir(Category::Video, &self.downloads);
         let music = (!Category::Music.deleted())
             .then(|| self.settings.category_dir(Category::Music, &self.downloads));
@@ -5842,7 +5900,6 @@ impl App {
         }
         let now = Instant::now();
         if let Some(ask) = &cmd.video_lookup {
-            crate::videodlg::refresh_ytdlp(&self.rt);
             let Some(tool) = mdm_tools::tools_dir()
                 .as_deref()
                 .and_then(mdm_tools::installed)
@@ -5978,7 +6035,15 @@ impl App {
             return;
         }
         let tools = mdm_tools::tools_dir();
-        let tool = tools.as_deref().and_then(mdm_tools::installed);
+        // Tried again for a newer yt-dlp (#1544): that one, even while other downloads keep the
+        // switch to it waiting.
+        let retry = self.heal_retry.contains(&id);
+        let tool = tools.as_deref().and_then(|d| {
+            retry
+                .then(|| mdm_tools::autoupdate::ready(d, mdm_tools::autoupdate::Tool::YtDlp))
+                .flatten()
+                .or_else(|| mdm_tools::installed(d))
+        });
         let ffmpeg = tools.as_deref().and_then(mdm_tools::ffmpeg::installed);
         let rate = self.helper_starts(id);
         // The engine downloads the streams with what a file from the page gets (#769): Options'
@@ -6065,6 +6130,10 @@ impl App {
                 });
             }
         }
+        // The version it runs with, for a failure that means it is out of date (#1544).
+        if self.items.iter().any(|i| i.id == id && i.live.is_some()) {
+            self.started_with.insert(id, tool.version.clone());
+        }
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
             self.progress
@@ -6103,9 +6172,14 @@ impl App {
 
     /// Start (or start again) a gallery: gallery-dl, installed and verified, or the person's.
     fn start_gallery(&mut self, id: u64, show: bool) {
-        let tool = mdm_tools::tools_dir()
-            .as_deref()
-            .and_then(mdm_tools::gallery::installed);
+        // Tried again for a newer gallery-dl (#1544): that one.
+        let retry = self.heal_retry.contains(&id);
+        let tool = mdm_tools::tools_dir().as_deref().and_then(|d| {
+            retry
+                .then(|| mdm_tools::autoupdate::ready(d, mdm_tools::autoupdate::Tool::GalleryDl))
+                .flatten()
+                .or_else(|| mdm_tools::gallery::installed(d))
+        });
         let rate = self.helper_starts(id);
         // The engine downloads the files gallery-dl lists (#769), as a file from the page would
         // be (Options' connections, proxy, network adapter, DNS, the limit for all downloads),
@@ -6168,6 +6242,10 @@ impl App {
                 item.status = Status::Error;
                 item.error = Some(e.to_string());
             }
+        }
+        // The version it runs with, for a failure that means it is out of date (#1544).
+        if self.items.iter().any(|i| i.id == id && i.live.is_some()) {
+            self.started_with.insert(id, tool.version.clone());
         }
         self.dirty = true;
         if show && !self.progress.iter().any(|p| p.id == id) {
@@ -7857,8 +7935,9 @@ impl App {
 
     fn member_of(&self, i: &Item, now: Instant) -> Member {
         let id = i.id;
-        // A video waiting for its place to start (videoplace.rs) runs, for its queue.
-        if self.video_places.waiting(id) {
+        // A video waiting for its place to start (videoplace.rs) runs, for its queue, and so does
+        // one waiting for a newer helper (#1544).
+        if self.video_places.waiting(id) || self.healing.contains_key(&id) {
             return Member::Running;
         }
         match i.status {
@@ -8606,6 +8685,12 @@ impl App {
             }
             any_live |= i.live.is_some();
         }
+        // A video or gallery whose helper seems out of date: a newer one first (#1544).
+        failed.retain(|id| !self.heal_if_outdated(*id, ctx));
+        failed.extend(self.healed(ctx));
+        for id in &finished {
+            self.heal_retry.remove(id);
+        }
         let now = Instant::now();
         self.check_limits(now);
         if !finished.is_empty() {
@@ -8731,6 +8816,142 @@ impl App {
         }
     }
 
+    /// A video or gallery that just failed with words that usually mean its helper (MDM's own
+    /// yt-dlp or gallery-dl) is out of date (#1544, `mdm_tools::autoupdate::outdated`): a newer one
+    /// is looked for at once, in the background, the download waiting as running meanwhile, its
+    /// log saying so ([`App::healed`] goes on). Once per start: the start that follows fails as
+    /// any other. Returns whether it waits.
+    fn heal_if_outdated(&mut self, id: u64, ctx: &egui::Context) -> bool {
+        use mdm_tools::autoupdate::{self as au, Tool};
+        if self.heal_retry.remove(&id) || self.healing.contains_key(&id) {
+            return false;
+        }
+        let Some(dir) = mdm_tools::tools_dir() else {
+            return false;
+        };
+        let Some(item) = self.items.iter().find(|i| i.id == id) else {
+            return false;
+        };
+        let tool = if item.video.is_some() {
+            Tool::YtDlp
+        } else if item.gallery.is_some() {
+            Tool::GalleryDl
+        } else {
+            return false;
+        };
+        // The helper's own words (English), not the row's translated ones.
+        let said = item
+            .snap
+            .as_ref()
+            .and_then(|s| s.error.clone())
+            .or_else(|| item.error.clone())
+            .unwrap_or_default();
+        if !au::outdated(tool, &said) || !au::read(&dir).auto {
+            return false;
+        }
+        let Some(own) = au::own(&dir, tool) else {
+            return false; // the person's own program, or the system's: theirs to update
+        };
+        let used = self.started_with.get(&id).cloned().unwrap_or(own.version);
+        let slot: HealSlot = Arc::default();
+        let (out, wake) = (slot.clone(), ctx.clone());
+        let net = crate::settings::own_net();
+        let used_now = used.clone();
+        self.rt.spawn(async move {
+            let res = au::heal(&dir, tool, &used_now, &net, au::unix_now()).await;
+            *out.lock().unwrap() = Some(res.map_err(|e| crate::errors::tools(&e)));
+            wake.request_repaint();
+        });
+        let Some(item) = self.item(id) else {
+            return false;
+        };
+        tracing::info!(
+            "download {id}: {} {used} may be out of date for it: looking for a newer one",
+            tool.name()
+        );
+        item.note(crate::i18n::fmt(
+            // i18n: a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+            crate::i18n::t(
+                "{name} {version} may be out of date for this site: looking for a newer version",
+            ),
+            &[("name", tool.name()), ("version", &used)],
+        ));
+        let error = item.error.take();
+        item.status = Status::Downloading;
+        self.healing.insert(id, Healing { tool, slot, error });
+        self.dirty = true;
+        true
+    }
+
+    /// The downloads whose newer helper was looked for (#1544): started again with it when one
+    /// was found, else failed as they did (returned, for the failures' bookkeeping). A download
+    /// stopped or removed meanwhile is left as it is.
+    fn healed(&mut self, ctx: &egui::Context) -> Vec<u64> {
+        let done: Vec<(u64, Result<Option<mdm_tools::Installed>, String>)> = self
+            .healing
+            .iter()
+            .filter_map(|(id, h)| h.slot.lock().unwrap().take().map(|r| (*id, r)))
+            .collect();
+        if !self.healing.is_empty() {
+            ctx.request_repaint_after(Duration::from_millis(250));
+        }
+        let mut failed = Vec::new();
+        for (id, res) in done {
+            let Some(h) = self.healing.remove(&id) else {
+                continue;
+            };
+            let name = h.tool.name();
+            let Some(item) = self.item(id) else {
+                continue;
+            };
+            if item.live.is_some() || item.status != Status::Downloading {
+                continue;
+            }
+            match res {
+                Ok(Some(newer)) => {
+                    item.note(crate::i18n::fmt(
+                        // i18n: a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+                        crate::i18n::t("{name} {version} is in: trying again with it"),
+                        &[("name", name), ("version", &newer.version)],
+                    ));
+                    tracing::info!("download {id}: trying again with {name} {}", newer.version);
+                    self.heal_retry.insert(id);
+                    self.start(id, false);
+                }
+                other => {
+                    item.note(match other {
+                        Err(why) => crate::i18n::fmt(
+                            // i18n: a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+                            crate::i18n::t("Couldn't look for a newer {name}: {error}"),
+                            &[("name", name), ("error", &why)],
+                        ),
+                        _ => crate::i18n::fmt(
+                            // i18n: a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+                            crate::i18n::t("No newer {name} than this one"),
+                            &[("name", name)],
+                        ),
+                    });
+                    item.status = Status::Error;
+                    item.error = h.error;
+                    failed.push(id);
+                }
+            }
+            self.dirty = true;
+        }
+        failed
+    }
+
+    /// Stopped while a newer helper was being looked for (#1544): it stays stopped.
+    fn stop_healing(&mut self, id: u64) {
+        if self.healing.remove(&id).is_some()
+            && let Some(item) = self.item(id)
+            && item.live.is_none()
+        {
+            item.status = Status::Stopped;
+            self.dirty = true;
+        }
+    }
+
     /// A finished download's progress window closes, and Download complete opens for it (`early`:
     /// the download Download File Info started early, which stays quiet).
     fn close_finished(&mut self, id: u64, early: Option<u64>) {
@@ -8775,7 +8996,11 @@ impl App {
         running: &std::collections::HashSet<u64>,
     ) -> crate::finish::Standing {
         use crate::finish::Standing;
-        if i.live.is_some() || i.status == Status::Downloading || self.quota.held.contains(&i.id) {
+        if i.live.is_some()
+            || i.status == Status::Downloading
+            || self.quota.held.contains(&i.id)
+            || self.healing.contains_key(&i.id)
+        {
             return Standing::Pending;
         }
         match i.status {
@@ -9948,6 +10173,7 @@ impl App {
     fn give_keys(&mut self, pane: Pane) {
         self.toolbar_keys = pane == Pane::Toolbar;
         self.tree_keys = pane == Pane::Tree;
+        self.bar_keys = pane == Pane::Bar;
         self.list.set_keys(pane == Pane::List);
     }
 
@@ -10072,39 +10298,80 @@ impl App {
         let typing = ctx
             .memory(|m| m.focused())
             .is_some_and(|id| egui::TextEdit::load_state(&ctx, id).is_some());
-        if self.open_menu.is_none() && self.popup.is_none() && !typing {
-            let labels: Vec<String> = chrome::menus(ui.painter())
-                .iter()
-                .map(|(l, ..)| chrome::menu_letter(l))
-                .collect();
-            let (alt_alone, f10, ctrl_f2, letter) = ctx.input(|i| {
-                let mut letter = None;
-                for e in &i.events {
-                    match e {
-                        egui::Event::Key {
-                            key,
-                            pressed: true,
-                            modifiers,
-                            ..
-                        } if !matches!(key, egui::Key::AltLeft | egui::Key::AltRight) => {
-                            if modifiers.alt && !modifiers.ctrl && !modifiers.command {
-                                letter = Some(key.name().to_lowercase());
-                            }
+        // Alt is read every frame, menu open or shut: it opens the bar, and shuts it again, as
+        // Windows does (SC_KEYMENU toggles).
+        let labels: Vec<String> = chrome::menus(ui.painter())
+            .iter()
+            .map(|(l, ..)| chrome::menu_letter(l))
+            .collect();
+        let (toggled, f10, ctrl_f2, letter) = ctx.input(|i| {
+            let mut letter = None;
+            for e in &i.events {
+                match e {
+                    egui::Event::Key {
+                        key,
+                        pressed: true,
+                        modifiers,
+                        ..
+                    } if !matches!(key, egui::Key::AltLeft | egui::Key::AltRight) => {
+                        if modifiers.alt && !modifiers.ctrl && !modifiers.command {
+                            letter = Some(key.name().to_lowercase());
                         }
-                        // A letter of another script (Cyrillic, Arabic...) typed with Alt.
-                        egui::Event::Text(t) if i.modifiers.alt && !i.modifiers.ctrl => {
-                            letter = Some(t.to_lowercase());
-                        }
-                        _ => {}
                     }
+                    // A letter of another script (Cyrillic, Arabic...) typed with Alt.
+                    egui::Event::Text(t) if i.modifiers.alt && !i.modifiers.ctrl => {
+                        letter = Some(t.to_lowercase());
+                    }
+                    _ => {}
                 }
-                (
-                    alt_alone_released(&i.events, &mut self.alt_down, &mut self.alt_alone),
-                    i.key_pressed(egui::Key::F10) && i.modifiers.is_none(),
-                    i.key_pressed(egui::Key::F2) && i.modifiers.ctrl,
-                    letter,
+            }
+            (
+                alt_alone_released(&i.events, &mut self.alt_down, &mut self.alt_alone),
+                i.key_pressed(egui::Key::F10) && i.modifiers.is_none(),
+                i.key_pressed(egui::Key::F2) && i.modifiers.ctrl,
+                letter,
+            )
+        });
+        // A focus change voids the reading: the Alt an Alt+Tab back is still holding belongs to
+        // that switch, not to the bar. It has to be counted, not timed: the window draws no frame
+        // while it is away, so a whole round trip's events arrive together, once the key is up,
+        // and neither the modifier state nor the system's own key state says anything useful by
+        // then (#1190).
+        let epoch_key = egui::Id::unique("focus-epoch");
+        let press_epoch_key = egui::Id::unique("alt-press-epoch");
+        let focus_changes = ctx.input(|i| {
+            i.events
+                .iter()
+                .filter(|e| matches!(e, egui::Event::WindowFocused(_)))
+                .count() as u64
+        });
+        let epoch = ctx.data_mut(|d| d.get_temp::<u64>(epoch_key).unwrap_or(0)) + focus_changes;
+        ctx.data_mut(|d| d.insert_temp(epoch_key, epoch));
+        let pressed_alt = ctx.input(|i| {
+            i.events.iter().any(|e| {
+                matches!(
+                    e,
+                    egui::Event::Key {
+                        key: egui::Key::AltLeft | egui::Key::AltRight,
+                        pressed: true,
+                        ..
+                    }
                 )
-            });
+            })
+        });
+        if pressed_alt {
+            ctx.data_mut(|d| d.insert_temp(press_epoch_key, epoch));
+        }
+        let stale =
+            ctx.data_mut(|d| d.get_temp::<u64>(press_epoch_key).unwrap_or(u64::MAX)) != epoch;
+        let alt_alone = toggled && !stale;
+        if self.open_menu.is_some() {
+            // Alt again shuts the menu it opened, as in Windows; the pane keeps its keys.
+            if alt_alone {
+                self.open_menu = None;
+                self.alt_alone = false;
+            }
+        } else if self.popup.is_none() && !typing {
             let mut open = None;
             if cfg!(target_os = "macos") {
                 if ctrl_f2 {
@@ -10118,22 +10385,77 @@ impl App {
                 if alt_alone || f10 {
                     open = Some(0);
                 }
-                if let Some(l) = letter {
-                    open = labels.iter().position(|m| *m == l).or(open);
+                if let Some(l) = &letter {
+                    open = labels.iter().position(|m| m == l).or(open);
                 }
             }
             if let Some(i) = open {
                 self.alt_alone = false;
                 self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
                 chrome::start_keyboard(&ctx, &format!("menu-{i}"));
+                // The letter that opened the menu is the menu's own: it must not also pick an
+                // item of it (Alt+T opened Tareas and ran "Abrir archivo torrent...", Alt+A
+                // opened Archivo and ran Delete's) (#1190).
+                if let Some(letter) = &letter {
+                    // The menu's own key for this pass: the pass's keys were taken before this
+                    // ran (chrome::MenuKeys), so the menu is told to leave this one alone
+                    // instead of consuming it here (#1190).
+                    let at = ctx.cumulative_pass_nr();
+                    ctx.data_mut(|d| {
+                        d.insert_temp(
+                            egui::Id::unique("menu-opened-by-letter"),
+                            (letter.clone(), at),
+                        )
+                    });
+                }
             }
         } else {
             self.alt_down = false;
             self.alt_alone = false;
         }
 
+        // The menu bar's own keys while it has them (#1190): Left and Right walk its titles
+        // (egui's focus is not in the bar: its parts keep their keys themselves, as the toolbar
+        // and the list do), Down opens the title the keys are on, as Windows' bars do. Nothing
+        // else is focused to take them (the same `free` the pane cycle reads, below).
+        if self.bar_keys
+            && self.popup.is_none()
+            && self.open_menu.is_none()
+            && ctx.memory(|m| m.focused().is_none())
+        {
+            let titles = chrome::menus(ui.painter()).len();
+            self.menubar_at = self.menubar_at.min(titles.saturating_sub(1));
+            // What a screen reader is to say has the focus: the title the keys are on.
+            winui::keys_with(&ctx, chrome::menubar_title_id(self.menubar_at));
+            let (left, right, down) = ctx.input_mut(|i| {
+                (
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::ArrowLeft),
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::ArrowRight),
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::ArrowDown),
+                )
+            });
+            let (next, before) = if winui::rtl() {
+                (left, right)
+            } else {
+                (right, left)
+            };
+            if titles > 0 && (next || before) {
+                let step = if next { 1 } else { titles - 1 };
+                self.menubar_at = (self.menubar_at + step) % titles;
+                crate::chrome::show_cues(&ctx);
+            }
+            if down {
+                let i = self.menubar_at;
+                self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
+                chrome::start_keyboard(&ctx, &format!("menu-{i}"));
+            }
+        }
+
         // Menu bar and its popups: which menu is open is chrome::menubar_next's to say.
         if let Some(event) = chrome::menu_bar(ui, o, w, self.open_menu) {
+            if event == chrome::MenuBarEvent::Keys {
+                self.give_keys(Pane::Bar);
+            }
             self.open_menu = chrome::menubar_next(self.open_menu, event);
         }
         // A menu opened by Left or Right is drawn in the same pass as the one it replaces (a
@@ -10206,10 +10528,13 @@ impl App {
                     Some(Pane::Tree)
                 } else if self.list.has_keys() {
                     Some(Pane::List)
+                } else if self.bar_keys {
+                    Some(Pane::Bar)
                 } else {
                     None
                 };
-                self.give_keys(tab_to(from, self.show_categories, back));
+                let pane = tab_to(from, self.show_categories, back);
+                self.give_keys(pane);
                 crate::chrome::show_cues(&ctx);
             }
         }
@@ -12019,16 +12344,8 @@ impl App {
                 Outcome::Closed => self.confirm_delete = None,
                 Outcome::Done((files, dont_show)) => {
                     let ids = std::mem::take(&mut d.ids);
-                    let remember = d.remember;
                     self.confirm_delete = None;
-                    self.remove_downloads(&ids, files);
-                    if remember {
-                        self.settings.delete_files_too = files;
-                    }
-                    if dont_show {
-                        self.settings.confirm_delete = false;
-                    }
-                    self.dirty = true;
+                    self.confirmed_delete(&ids, files, dont_show);
                 }
             }
         }
@@ -12904,6 +13221,9 @@ impl App {
         }
         crate::crash::step(crate::crash::Step::Limits);
         self.apply_global_limit();
+        // MDM's own helpers kept up to date (#1544), a server's too (its image doesn't hold them).
+        crate::crash::step(crate::crash::Step::UpdateCheck);
+        self.keeper.tick(&self.rt, self.started, Some(ctx));
         // A server (#157) has no screen, clipboard or tray, and is updated by its image.
         if !self.headless {
             crate::crash::step(crate::crash::Step::UpdateCheck);
@@ -15412,11 +15732,13 @@ mod live_save_tests {
 mod pane_tests {
     use super::{Pane, tab_to};
 
-    /// #1190: Tab goes round the toolbar, the Categories tree and the download list (Shift+Tab
-    /// the other way), the tree left out while it is hidden; from nothing (a click on the
-    /// toolbar), Tab starts at the toolbar and Shift+Tab at the list.
+    /// #1190: Tab goes round the toolbar, the Categories tree, the download list and the menu
+    /// bar (Shift+Tab the other way), the tree left out while it is hidden; from nothing (a click
+    /// on the toolbar), Tab starts at the toolbar and Shift+Tab at the bar (the ring's last).
+    /// The bar is where Tab from the list goes, and Shift+Tab from the toolbar: the way a reader
+    /// reaches the menus at all.
     #[test]
-    fn tab_goes_round_the_toolbar_the_tree_and_the_list() {
+    fn tab_goes_round_the_toolbar_the_tree_the_list_and_the_menu_bar() {
         use Pane::*;
         let round = |from, shown, back| {
             let mut at = from;
@@ -15428,19 +15750,19 @@ mod pane_tests {
             }
             seen
         };
-        assert_eq!(
-            round(Some(List), true, false),
-            [Toolbar, Tree, List, Toolbar]
-        );
-        assert_eq!(round(Some(List), true, true), [Tree, Toolbar, List, Tree]);
-        assert_eq!(
-            round(Some(List), false, false),
-            [Toolbar, List, Toolbar, List]
-        );
+        assert_eq!(round(Some(List), true, false), [Bar, Toolbar, Tree, List]);
+        assert_eq!(round(Some(List), true, true), [Tree, Toolbar, Bar, List]);
+        assert_eq!(round(Some(List), false, false), [Bar, Toolbar, List, Bar]);
         // The tree had the keys as it was hidden: on to the toolbar.
         assert_eq!(tab_to(Some(Tree), false, false), Toolbar);
         assert_eq!(tab_to(None, true, false), Toolbar);
-        assert_eq!(tab_to(None, true, true), List);
+        assert_eq!(tab_to(None, true, true), Bar);
+        // The bar is one step from the list either way: Tab from the list reaches the menus, and
+        // Shift+Tab from the toolbar comes back to them.
+        assert_eq!(tab_to(Some(List), true, false), Bar);
+        assert_eq!(tab_to(Some(Toolbar), true, true), Bar);
+        assert_eq!(tab_to(Some(Bar), true, false), Toolbar);
+        assert_eq!(tab_to(Some(Bar), true, true), List);
     }
 }
 
@@ -16559,5 +16881,137 @@ mod fresh_address_tests {
         );
         assert_eq!(get(&app, 1).url, old);
         assert!(get(&app, 1).private_window);
+    }
+}
+
+/// #1563: "Also delete the files from disk" is never remembered, and nothing leaves the disk
+/// without the question: a list from 0.5.2 that remembered the box ticked, with the question
+/// turned off, deleted finished files with every Delete All Completed.
+#[cfg(test)]
+mod delete_tests {
+    use super::*;
+    use std::path::Path;
+
+    /// An App over `items` with the settings a 0.5.2 list saved: the box remembered ticked, the
+    /// question on or off.
+    fn app_from_052(items: Vec<Item>, confirm: bool) -> std::mem::ManuallyDrop<App> {
+        let rt = Box::leak(Box::new(
+            tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap(),
+        ));
+        let settings: Settings = serde_json::from_value(serde_json::json!({
+            "confirm_delete": confirm,
+            "delete_files_too": true,
+        }))
+        .unwrap();
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings,
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    /// Two finished downloads and a stopped one, each with its file on the disk.
+    fn three(dir: &Path) -> (Vec<Item>, [PathBuf; 3]) {
+        let paths = ["a.bin", "b.bin", "c.bin"].map(|n| dir.join(n));
+        let items = paths
+            .iter()
+            .zip([Status::Complete, Status::Complete, Status::Stopped])
+            .enumerate()
+            .map(|(n, (dest, status))| {
+                std::fs::write(dest, b"finished").unwrap();
+                let name = dest.file_name().unwrap().to_string_lossy().into_owned();
+                let url = url::Url::parse(&format!("http://127.0.0.1:9/{name}")).unwrap();
+                let mut i = Item::new(n as u64 + 1, url, dest.clone(), Category::General);
+                i.status = status;
+                i
+            })
+            .collect();
+        (items, paths)
+    }
+
+    fn ids(app: &App) -> Vec<u64> {
+        app.items.iter().map(|i| i.id).collect()
+    }
+
+    fn asked(app: &App) -> &dialogs::ConfirmDelete {
+        app.confirm_delete.as_ref().expect("the question is shown")
+    }
+
+    #[test]
+    fn without_the_question_deleting_only_takes_rows_off_the_list() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, files) = three(dir.path());
+        let mut app = app_from_052(items, false);
+        let ctx = egui::Context::default();
+        app.run(Cmd::DeleteCompleted, None, &ctx);
+        assert!(app.confirm_delete.is_none(), "not asked");
+        assert_eq!(ids(&app), [3], "the finished rows went");
+        app.run(Cmd::Remove, Some(3), &ctx);
+        assert!(app.confirm_delete.is_none());
+        assert!(app.items.is_empty());
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+        for f in &files {
+            assert!(f.exists(), "{} kept", f.display());
+        }
+    }
+
+    #[test]
+    fn the_box_starts_unticked_and_a_tick_is_not_remembered() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, files) = three(dir.path());
+        let mut app = app_from_052(items, true);
+        let ctx = egui::Context::default();
+        app.run(Cmd::DeleteCompleted, None, &ctx);
+        let ask = asked(&app);
+        assert!(!ask.files, "Delete All Completed starts unticked");
+        assert_eq!((ask.ids.clone(), ask.finished), (vec![1, 2], 2));
+        // Yes with the box ticked this time: those files go.
+        let chosen = app.confirm_delete.take().unwrap().ids;
+        app.confirmed_delete(&chosen, true, false);
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+        assert!(!files[0].exists() && !files[1].exists());
+        // The next Delete starts unticked again.
+        app.run(Cmd::Remove, Some(3), &ctx);
+        assert!(!asked(&app).files, "the tick was not remembered");
+        app.confirm_delete = None;
+        assert!(files[2].exists());
+    }
+
+    #[test]
+    fn remove_with_files_asks_even_without_the_question() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, files) = three(dir.path());
+        let mut app = app_from_052(items, false);
+        let ctx = egui::Context::default();
+        app.selection.set_many(&[1, 2, 3]);
+        app.run(Cmd::RemoveWithFiles, None, &ctx);
+        let ask = asked(&app);
+        assert!(ask.files, "Shift+Delete ticks it, this once");
+        assert_eq!(ask.ids, [1, 2, 3]);
+        assert_eq!(ask.finished, 2, "the window counts the finished files");
+        assert_eq!(app.items.len(), 3, "nothing gone before Yes");
+        app.confirm_delete = None; // No
+        // Its tick is not remembered either: a plain Delete after it asks nothing and keeps
+        // the file.
+        app.selection.set(1);
+        app.run(Cmd::Remove, None, &ctx);
+        assert!(app.confirm_delete.is_none());
+        assert_eq!(ids(&app), [2, 3]);
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+        assert!(files.iter().all(|f| f.exists()));
     }
 }
