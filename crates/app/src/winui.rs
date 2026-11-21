@@ -6641,7 +6641,9 @@ pub mod caption {
         /// which keeps [`Self::glyph`].
         fn xp_glyph(self, ui: &Ui, p: &Painter, at: Pos2, ink: Color32, maximized: bool) -> bool {
             use egui::emath::GuiRounding;
-            // (left, top, right, bottom) in the tile's pixels, right and bottom excluded.
+            // (left, top, right, bottom) in the tile's pixels, right and bottom excluded. None
+            // is a single pixel, which egui leaves out: the X's tips and Restore's corner
+            // overlap their neighbours.
             type Spans = &'static [(u8, u8, u8, u8)];
             const MINIMIZE: Spans = &[(5, 13, 12, 16)];
             const MAXIMIZE: Spans = &[
@@ -6654,14 +6656,13 @@ pub mod caption {
             const RESTORE: Spans = &[
                 (8, 5, 15, 7),
                 (14, 7, 15, 12),
-                (13, 11, 14, 12),
+                (13, 11, 15, 12),
                 (5, 8, 12, 10),
                 (5, 10, 6, 14),
                 (11, 10, 12, 14),
                 (5, 14, 12, 15),
             ];
             const CLOSE: Spans = &[
-                // Its tips joined to the next row: egui leaves out a rect a pixel square.
                 (6, 5, 7, 7),
                 (14, 5, 15, 7),
                 (5, 6, 8, 7),
