@@ -63,7 +63,8 @@
 // off again, #404), recent (the popup's Downloads tab: MDM's downloads with their icons, states and
 // actions, the toolbar button's count, #1496),
 // remote (Send downloads to → Another MDM, #157: paired from the popup, a link downloaded by a
-// headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer).
+// headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer),
+// byhand (the copy loaded here by hand says so in its popup, with its browser's store, #1613).
 //
 // Screenshots for a pull request (Chromium only): E2E_LANG=de (or ar, ...) starts the browser in that
 // language, so the extension shows its _locales text of it; with E2E_SHOTS=<folder> the `qualities`
@@ -612,6 +613,9 @@ async function firefox(bin, profile, dl, page, ready) {
       pref("browser.altClickSave", true),
       // The extension's address, known in advance (its popup opened in a tab).
       pref("extensions.webextensions.uuids", JSON.stringify({ [FIREFOX_ID]: FIREFOX_UUID })),
+      // E2E_COLOR_SCHEME (light or dark): the pages, the extension's popup with them, in those
+      // colours (0 dark, 1 light).
+      ...(process.env.E2E_COLOR_SCHEME ? [pref("layout.css.prefers-color-scheme.content-override", process.env.E2E_COLOR_SCHEME === "dark" ? 0 : 1)] : []),
     ].join("\n"),
   );
   const proc = spawn(bin, ["-headless", "-no-remote", "-profile", profile, "--remote-debugging-port", String(port), "--width=1280", "--height=900"], {
@@ -734,7 +738,16 @@ async function firefox(bin, profile, dl, page, ready) {
           actions: [{ type: "pointer", id: "mouse", actions: [{ type: "pointerMove", x: Math.round(r[0]), y: Math.round(r[1]) }, { type: "pointerDown", button: 0 }, { type: "pointerUp", button: 0 }] }],
         });
       };
-      return { evaluate: ev, click, close: () => bidi.send("browsingContext.close", { context: c }).catch(() => {}) };
+      // A picture of its page cut to the body, as Chromium's (the tab brought to the front first).
+      const shot = async (file) => {
+        await inBrowser(`(() => { const t = [...gBrowser.tabs].find((x) => x.linkedBrowser.currentURI.spec === ${JSON.stringify(url)}); if (t) gBrowser.selectedTab = t; return Boolean(t); })()`);
+        await sleep(300);
+        const r = await ev("JSON.parse(JSON.stringify(document.body.getBoundingClientRect()))");
+        const clip = { type: "box", x: Math.max(0, r.left - r.top), y: 0, width: Math.ceil(r.width + 2 * r.top), height: Math.ceil(r.bottom + r.top) };
+        const { data } = await bidi.send("browsingContext.captureScreenshot", { context: c, clip });
+        fs.writeFileSync(file, Buffer.from(data, "base64"));
+      };
+      return { evaluate: ev, click, shot, close: () => bidi.send("browsingContext.close", { context: c }).catch(() => {}) };
     };
     // An expression in the browser's own window (its chrome scope): its preferences, its console,
     // its permission prompts.
@@ -3383,6 +3396,64 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       await popup.close();
       // Never left listed for the next case.
       if (listed()) await ipc({ include_site: site }).catch(() => {});
+    }
+  },
+
+  // #1613: the extension is loaded by hand here (Load unpacked in Chromium, a temporary add-on in
+  // Firefox), so its popup says it won't update itself, with a link to its browser's store:
+  // management.getSelf() answers "development", with no "management" permission.
+  // E2E_SHOTS: <browser>-<lang>-<scheme>-by-hand.png, the popup as it opens. E2E_BYHAND_BEFORE=1:
+  // only that picture (an older popup in the packed extension), for the "before" pictures.
+  async byhand(t) {
+    if (!t.session.tab || !t.session.base) throw new Skip("the popup in a tab of its own");
+    const shots = process.env.E2E_SHOTS ? path.resolve(process.env.E2E_SHOTS) : "";
+    const lang = process.env.E2E_LANG || "en";
+    const tag = `${t.name}-${lang}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+    const picture = async (p, name) => {
+      if (!shots || !p.shot) return;
+      fs.mkdirSync(shots, { recursive: true });
+      await sleep(350);
+      await p.shot(path.join(shots, `${tag}-${name}.png`));
+    };
+    if (process.env.E2E_BYHAND_BEFORE === "1") {
+      const p = await t.session.tab(`${t.session.base}popup.html`);
+      try {
+        if (p.viewport) await p.viewport(400, 548);
+        await until("the popup", 10000, () => p.evaluate(`document.readyState === "complete" && Boolean(document.getElementById("status-text").textContent)`).catch(() => false));
+        await picture(p, "by-hand-before");
+        return "the popup as packed, pictured";
+      } finally {
+        await p.close();
+      }
+    }
+    const firefox = t.kind === "firefox";
+    const en = JSON.parse(fs.readFileSync(path.join(root, "extension", "_locales", "en", "messages.json"), "utf8"));
+    const want = firefox
+      ? { text: en.popup_by_hand_firefox.message, link: en.popup_store_firefox.message, href: "https://addons.mozilla.org/firefox/addon/mister-download-manager/" }
+      : { text: en.popup_by_hand.message, link: en.popup_store_chrome.message, href: "https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp" };
+    const p = await t.session.tab(`${t.session.base}popup.html`);
+    try {
+      if (p.viewport) await p.viewport(400, 548);
+      const read = `(async () => {
+        const self = await (globalThis.browser ?? chrome).management.getSelf();
+        const bar = document.getElementById("by-hand");
+        const link = document.getElementById("by-hand-store");
+        return JSON.stringify({ installType: self.installType, shown: Boolean(bar && !bar.hidden && bar.offsetHeight > 0), text: document.getElementById("by-hand-text").textContent, link: link.textContent, href: link.href });
+      })()`;
+      const got = JSON.parse(
+        await until("the popup's line for a copy loaded by hand", 10000, async () => {
+          const v = await p.evaluate(read).catch(() => "");
+          return v && JSON.parse(v).shown ? v : "";
+        }),
+      );
+      if (got.installType !== "development") throw new Error(`management.getSelf() says ${got.installType}, not development`);
+      if (got.href !== want.href) throw new Error(`the store link is ${got.href}, not ${want.href}`);
+      if (lang === "en" && (got.text !== want.text || got.link !== want.link)) throw new Error(`the line says ${JSON.stringify([got.text, got.link])}`);
+      if (!got.text || !got.link || /^popup_/.test(got.text) || /^popup_/.test(got.link)) throw new Error(`no text: ${JSON.stringify(got)}`);
+      await picture(p, "by-hand");
+      return `installType ${got.installType}: "${got.text} ${got.link}" -> ${got.href}`;
+    } finally {
+      await p.close();
     }
   },
 

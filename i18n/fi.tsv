@@ -6728,6 +6728,14 @@ column	Upload speed	Lähetysnopeus
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	Videoluettelo: valitse videot sovelluksessa Mister Download Manager
 #. text in the browser extension
+#. link after popup_by_hand_firefox in the toolbar button's popup: opens the add-on's page on addons.mozilla.org (Firefox's add-ons store), whose copy Firefox keeps and updates; keep addons.mozilla.org as it is
+#, machine
+extension	Add it from addons.mozilla.org	Lisää se osoitteesta addons.mozilla.org
+#. text in the browser extension
+#. link after popup_by_hand in the toolbar button's popup: opens the extension's page in the Chrome Web Store, whose copy the browser keeps up to date; keep the name Chrome Web Store as it is
+#, machine
+extension	Add it from the Chrome Web Store	Lisää se Chrome Web Storesta
+#. text in the browser extension
 #. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
 #, machine
 extension	Added to MDM	Lisätty MDM:ään
@@ -7384,6 +7392,14 @@ extension	This browser isn't ticked in Options → General.	Tätä selainta ei o
 #. choice under Send downloads to: the Mister Download Manager on this computer
 #, machine
 extension	This computer	Tämä tietokone
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the extension was loaded by hand (Load unpacked, with Developer mode on) in Chrome, Edge, Brave, Opera or Vivaldi; followed by the link popup_store_chrome
+#, machine
+extension	This copy was loaded by hand and won't update itself.	Tämä kopio ladattiin käsin, eikä se päivity itsestään.
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the add-on was loaded by hand in Firefox (Load Temporary Add-on, in about:debugging); followed by the link popup_store_firefox; the browser here is Firefox (or Zen, LibreWolf)
+#, machine
+extension	This copy was loaded by hand: it won't update itself, and the browser removes it when it restarts.	Tämä kopio ladattiin käsin: se ei päivity itsestään, ja selain poistaa sen uudelleenkäynnistyksen yhteydessä.
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine

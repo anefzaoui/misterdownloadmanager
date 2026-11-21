@@ -573,6 +573,12 @@ These ship in the next version.
   pieces they share with ticked files are kept in a parts file of MDM's own, and a file ticked
   later, while the torrent downloads or once it has finished, is made then and gets them from
   there ([#1567](https://github.com/anefzaoui/misterdownloadmanager/pull/1567))
+- ✅ Downloads from servers that keep several copies of a file, each with its own version tag
+  and date (ModelScope's), go on with all their connections when the copies carry the same
+  checksum of the whole file, checked on every part, instead of stopping with "the file changed
+  on the server" or falling back to one connection; a file is still never made of two versions,
+  and stopped connections no longer say "Connecting..."
+  ([#1577](https://github.com/anefzaoui/misterdownloadmanager/issues/1577))
 - ✅ Torrents: Torrent → Files… shows a file ticked later as far as its pieces are, not 100 %,
   for a torrent out of the session (its saved piece map, as the session counts it)
   ([#1624](https://github.com/anefzaoui/misterdownloadmanager/issues/1624))
@@ -1796,6 +1802,23 @@ These ship in the next version.
 - ✅ LuluStream: a video's link (its watch page or player, on `lulustream.com`, `luluvdo.com` or
   `lplaygo.com`) downloads the video, in the best quality its download page lists; a download
   taken from the browser whose link expired asks the video's page for a fresh one
+- ✅ The browser add-on from its stores first: every release's notes start with **Add to
+  Firefox** and **Add to Chrome, Edge, Brave, Opera, Vivaldi**, the release no longer lists the
+  unsigned Firefox `.xpi` (Firefox drops it at every restart), and a copy loaded by hand says in
+  its popup that it won't update itself, with a link to its browser's store
+  ([#1613](https://github.com/anefzaoui/misterdownloadmanager/discussions/1613))
+- ✅ Tests: the slow-disk test no longer fails when the test machine's own disk is slow to flush:
+  its stand-in disk holds the writes only for the flush it models, no longer for the machine's
+  real flush after it as well ([#1626](https://github.com/anefzaoui/misterdownloadmanager/issues/1626))
+- ✅ Luna: a window that isn't the active one has Windows XP's title bar buttons, half-faded
+  into the paler bar (a mid blue, Close a dusty rose) with a crisp pale edge and solid white
+  symbols, instead of greyish buttons with faint symbols; and XP's symbols in every state
+  (Minimize a short thick bar low in the button, a thick-topped Maximize and Restore, a thick X)
+  ([#1612](https://github.com/anefzaoui/misterdownloadmanager/issues/1612))
+- ✅ Luna, Windows 7 and Mac OS X: the title bar's buttons sit exactly inside their edges, with
+  no sliver of the face outside them; Luna's active bar has XP's brighter light band and rows,
+  and its buttons a pure white edge
+  ([#1612](https://github.com/anefzaoui/misterdownloadmanager/issues/1612))
 
 ## Being worked on
 

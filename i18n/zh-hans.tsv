@@ -515,8 +515,7 @@
 #, machine
 	All the uploader's	上传者提供的所有字幕
 #. text in helpers.rs
-#, machine
-	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	这三个都是开源的。MDM 通过自己的下载器从它们的官方版本获取它们，并在运行前检查每个文件的签名。大约 140 MB，一次性。
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	这三款软件都是开源的。MDM通过自带的下载器从官方发布版本中获取它们，并在运行前检查每个文件的签名。大约140 MB，一次性下载。
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 #, machine
@@ -4379,8 +4378,7 @@
 #. message or event log entry in the main window
 #. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	Sharing stopped: {error}	共享停止：{error}
+	Sharing stopped: {error}	做种停止：{error}
 #. text in the Options window
 #. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
 	Shortcut to show or hide window:	显示或隐藏窗口的快捷键：
@@ -6710,6 +6708,14 @@ column	Upload speed	上传速度
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	视频列表：请在 Mister Download Manager 中选择
 #. text in the browser extension
+#. link after popup_by_hand_firefox in the toolbar button's popup: opens the add-on's page on addons.mozilla.org (Firefox's add-ons store), whose copy Firefox keeps and updates; keep addons.mozilla.org as it is
+#, machine
+extension	Add it from addons.mozilla.org	从 addons.mozilla.org 添加
+#. text in the browser extension
+#. link after popup_by_hand in the toolbar button's popup: opens the extension's page in the Chrome Web Store, whose copy the browser keeps up to date; keep the name Chrome Web Store as it is
+#, machine
+extension	Add it from the Chrome Web Store	从 Chrome 网上应用店添加
+#. text in the browser extension
 #. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
 #, machine
 extension	Added to MDM	已添加到 MDM
@@ -7367,6 +7373,14 @@ extension	This browser isn't ticked in Options → General.	“选项”→“�
 #, machine
 extension	This computer	此电脑
 #. text in the browser extension
+#. one line at the top of the toolbar button's popup when the extension was loaded by hand (Load unpacked, with Developer mode on) in Chrome, Edge, Brave, Opera or Vivaldi; followed by the link popup_store_chrome
+#, machine
+extension	This copy was loaded by hand and won't update itself.	此副本是手动加载的，不会自动更新。
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the add-on was loaded by hand in Firefox (Load Temporary Add-on, in about:debugging); followed by the link popup_store_firefox; the browser here is Firefox (or Zen, LibreWolf)
+#, machine
+extension	This copy was loaded by hand: it won't update itself, and the browser removes it when it restarts.	此副本是手动加载的：它不会自行更新，并且浏览器重启时会将其删除。
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	此下载任务的详细信息过大，无法转交
@@ -7451,8 +7465,7 @@ extension	{file} deleted	{file} 已删除
 extension	{file} removed from the list	{file} 已从列表中移除
 #. text in the browser extension
 #. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
-#, machine
-extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} 将从您的计算机中删除，并从列表中移除下载。此操作无法撤消。
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} 将从您的计算机中删除，并从列表中移除下载。此操作无法撤销。
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
 #. {time} = a time of day (keep the braces as they are)
@@ -7978,8 +7991,7 @@ menu	Metal didn't start here: OpenGL draws	Metal 未能启动：使用 OpenGL �
 menu	Metal draws with a software renderer	Metal 使用软件渲染器绘制
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
-#, machine
-menu	Metro	现代
+menu	Metro	Metro
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
