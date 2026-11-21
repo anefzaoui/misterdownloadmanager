@@ -55,6 +55,11 @@
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Mai este {n} descărcare în așteptare. Doriți să o anulați și pe aceasta?|Mai sunt {n} descărcări în așteptare. Doriți să le anulați și pe acestea?|Mai sunt {n} descărcări în așteptare. Doriți să le anulați și pe acestea?
 #. count in a dialog box
+#. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	Se șterge și {n} fișier finalizat.|Se șterg și {n} fișiere finalizate.|Se șterg și {n} fișiere finalizate.
+#. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -509,6 +514,9 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	Toate subtitrările încărcătorului
+#. text in helpers.rs
+#, machine
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	Toate trei sunt open source. MDM le descarcă din versiunile oficiale cu propriul program de descărcare și verifică semnătura fiecărui fișier înainte de a-l rula. Aproximativ 140 MB, o singură dată.
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 #, machine
@@ -680,6 +688,7 @@
 #, machine
 	Asking the service...	Se solicită serviciului...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1041,6 +1050,9 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Alegeți un fișier .torrent
+#. text in helpers.rs
+#, machine
+	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Alegeți un mediu de rulare JavaScript (Node.js, Deno, QuickJS sau Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	Alegeți o limbă
@@ -1051,7 +1063,8 @@
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 #, machine
 	Choose the profile's folder	Alegeți folderul profilului
-#. text in helpers.rs
+#. text in helpers.rs; text in the Options window
+#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	Alegeți {name}
@@ -1485,6 +1498,14 @@
 #. window title in a dialog box
 #, machine
 	Download later	Descărcați mai târziu
+#. text in the Scheduler's download limits
+#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
+#, machine
+	Download limit: every how many hours	Limită de descărcare: la câte ore
+#. text in the Scheduler's download limits
+#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
+#, machine
+	Download limit: MBytes	Limită de descărcare: MB
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
@@ -1560,11 +1581,6 @@
 #, machine
 	Downloading again from the start	Se descarcă din nou de la început
 #. text in the Download video window
-#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Downloading and verifying Deno (about 40 MB)...	Se descarcă și se verifică Deno (aproximativ 40 MB)...
-#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Se descarcă și se verifică ffmpeg (aproximativ 80 MB)...
@@ -1572,6 +1588,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying gallery-dl...	Se descarcă și se verifică gallery-dl...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying Node.js (40 to 60 MB)...	Se descarcă și se verifică Node.js (40 până la 60 MB)...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1590,7 +1610,7 @@
 #, machine
 	Downloading the update... {percent}%	Se descarcă actualizarea... {percent}%
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
 	Downloading {name} ({n} of {total})... {percent}	Se descarcă {name} ({n} din {total})... {percent}
@@ -1606,6 +1626,10 @@
 #. Windows' Settings → Default apps: what Mister Download Manager is
 #, machine
 	Downloads files, videos and torrents	Descarcă fișiere, videoclipuri și torrente
+#. message or event log entry in the main window
+#. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
+#, machine
+	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Descărcările dintr-o fereastră privată a browserului rămân în lista MDM ca oricare alta, chiar și după repornirea MDM; cookie-urile lor nu sunt salvate niciodată. Pentru a le păstra doar în memorie, debifați {options} → {general} → {checkbox}.
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
@@ -1946,6 +1970,10 @@
 #. verb: button that starts the search
 #, machine
 	Find	Găsiți
+#. text in the Options window
+#. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
+#, machine
+	Find 7-Zip automatically	Găsiți 7-Zip automat
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find a download	Găsiți o descărcare
@@ -2080,6 +2108,14 @@
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
 	from a playlist (yt-dlp)	dintr-o listă de redare (yt-dlp)
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and it is in memory only, gone from the list when MDM closes
+#, machine
+	From a private window: in memory only, gone from the list when MDM closes	Dintr-o fereastră privată: doar în memorie, dispare din listă la închiderea MDM
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and MDM's list keeps it after a restart (Options → General → Keep private-window downloads in the list)
+#, machine
+	From a private window: kept in the list	Din fereastră privată: păstrat în listă
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	dintr-un fișier torrent
@@ -2137,7 +2173,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gambia	Gambia
-#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
@@ -2400,10 +2436,6 @@
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	Instalați 7-Zip (gratuit), apoi faceți clic dreapta pe descărcare și alegeți Extragere.
 #. text in the Download video window
-#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
-#, machine
-	Install Deno	Instalați Deno
-#. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Instalați ffmpeg
@@ -2415,6 +2447,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	Instalați-o manual
+#. text in the Download video window
+#. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+#, machine
+	Install Node.js	Instalați Node.js
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
@@ -2543,9 +2579,9 @@
 #, machine
 	Japan	Japonia
 #. text in helpers.rs
-#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+#. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
 #, machine
-	JavaScript runtime (Deno)	Mediu de execuție JavaScript (Deno)
+	JavaScript runtime (for YouTube)	Mediu de rulare JavaScript (pentru YouTube)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2571,10 +2607,10 @@
 #, machine
 	KBytes/sec	KB/sec
 #. text in helpers.rs
-#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
 #, machine
 	Keep MDM's helpers up to date automatically	Mențineți ajutoarele MDM actualizate automat
-#. text in the Options window
+#. message or event log entry in the main window; text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 #, machine
 	Keep private-window downloads in the list	Păstrați descărcările din fereastra privată în listă
@@ -2776,6 +2812,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Căutați mai întâi noua adresă
+#. text in helpers.rs
+#. Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for a JavaScript runtime on this computer...	Se caută un mediu de rulare JavaScript pe acest computer...
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
@@ -2949,13 +2990,13 @@
 #, machine
 	MDM does not answer. Trying again...	MDM nu răspunde. Se încearcă din nou...
 #. text in helpers.rs
-#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
-#, machine
-	MDM has no copy for this system: install Deno or Node.js	MDM nu are o versiune compatibilă cu acest sistem: instalați Deno sau Node.js
-#. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install it, or use another program	MDM nu are o copie pentru acest sistem: instalați-o sau utilizați un alt program
+#. text in helpers.rs
+#. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM nu are o copie pentru acest sistem: instalați Node.js sau Deno ori utilizați un alt program
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3380,6 +3421,10 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Nu au fost găsite adrese web în {file}.
+#. text in helpers.rs
+#. helper name and what it does (Node.js and YouTube are names)
+#, machine
+	Node.js: unlocks YouTube's qualities	Node.js: deblochează opțiunile de calitate video de pe YouTube
 #. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -3652,7 +3697,7 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Open with...	Deschidere cu...
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
 	Options	Opțiuni
@@ -3844,6 +3889,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Previzualizarea nu este încă disponibilă
+#. message or event log entry in the main window
+#. title of the notice shown once, the first time a download comes from a browser's private (incognito) window
+#, machine
+	Private-window downloads	Descărcări din ferestre private
 #. text in the Download video window
 #. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
 #, machine
@@ -4849,6 +4898,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	That is more than 100,000 files: make the range smaller	Sunt mai mult de 100.000 de fișiere: micșorați intervalul
+#. text in the Options window
+#. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
+#, machine
+	That isn't 7-Zip's command line program (7z.exe).	Acesta nu este programul de linie de comandă al 7-Zip (7z.exe).
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -5479,6 +5532,9 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	this {site} link is a web page, not the file: open it in your browser and download from there	acest link {site} este o pagină web, nu fișierul: deschideți-l în browserul dvs. și descărcați de acolo
+#. text in helpers.rs
+#, machine
+	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	Trei programe auxiliare gratuite fac posibilă descărcarea videoclipurilor. Obțineți-le acum, iar când găsiți un videoclip, îl veți putea salva cu un singur clic.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5806,8 +5862,9 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Utilizați integrarea avansată a browserului
-#. text in errors.rs; button in helpers.rs
+#. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	Utilizați alt program...
@@ -6169,13 +6226,12 @@
 #, machine
 	Your own program: {path} ({version})	Propriul program: {path} ({version})
 #. text in helpers.rs
-#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
-#, machine
-	Your system's, nothing to download: {path}	Al sistemului dvs., nu este nimic de descărcat: {path}
-#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	Al sistemului dvs.: {path}
+#. text in helpers.rs
+#, machine
+	YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.	YouTube face ca yt-dlp să ruleze o bucată de cod JavaScript înainte de a afișa videoclipurile, iar acest computer nu are niciun program cu care să o ruleze. Node.js poate face acest lucru.
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
@@ -6409,7 +6465,7 @@
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = yt-dlp, ffmpeg or Node.js; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} nu a putut fi descărcat: {error}
@@ -6419,7 +6475,7 @@
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} este o arhivă 7z sau RAR. MDM extrage astfel de arhive cu 7-Zip, care nu este instalat.
 #. text in errors.rs
-#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} se descarcă deja: încercați din nou într-un moment
@@ -6488,6 +6544,22 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (limită: {limit})
+#. text in helpers.rs
+#. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
+#, machine
+	{runtime}, MDM's earlier copy: Node.js takes its place at the next update	{runtime}, copia anterioară a MDM: Node.js îi va lua locul la următoarea actualizare
+#. text in helpers.rs
+#. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
+#, machine
+	{runtime}, Mister Download Manager's own copy	{runtime}, copia proprie a aplicației Mister Download Manager
+#. text in helpers.rs
+#. Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
+#, machine
+	{runtime}, your own program: {path}	{runtime}, programul dvs. propriu: {path}
+#. text in helpers.rs
+#. Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
+#, machine
+	{runtime}, your system's, nothing to download: {path}	{runtime}, din sistemul dvs., fără a fi necesară descărcarea: {path}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6545,6 +6617,11 @@
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
 	{service}: {message}	{service}: {message}
+#. text in errors.rs
+#. a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} didn't give the file this time: try again in a moment	{site} nu a furnizat fișierul de data aceasta: încercați din nou peste puțin timp
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

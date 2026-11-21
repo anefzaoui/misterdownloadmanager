@@ -76,6 +76,7 @@ mod torrentfiles;
 mod torrents;
 mod transfer;
 mod tray;
+mod traypanel;
 #[cfg(unix)]
 mod unix;
 mod update;

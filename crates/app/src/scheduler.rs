@@ -992,9 +992,15 @@ impl Scheduler {
                 text(p, x, baseline, s, LIGHT_TEXT());
             },
         );
+        // The sentence's words are painted, not exposed: the box is named as its part of it
+        // reads (#1407).
+        let names = winui::sentence_names(
+            crate::i18n::t("Download {files} files at the same time"),
+            &["files"],
+        );
         let f = &mut self.forms[self.selected];
         // A spin box: the number and its arrows, one control.
-        winui::spin_box(
+        let files = winui::spin_box(
             ui,
             boxes[0],
             &mut f.files_at_once,
@@ -1003,6 +1009,7 @@ impl Scheduler {
             true,
             "files-at-once",
         );
+        winui::name(&files, &names[0]);
 
         // The queue's files: File Name, Size, Status, Time left.
         let list = r(o, 229.0, 82.0, 396.0, 294.0 + DY);

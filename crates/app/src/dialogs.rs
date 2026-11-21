@@ -2752,7 +2752,13 @@ impl SpeedSettings {
                         winui::text(p, x, baseline, s, black);
                     },
                 );
-                winui::number_field(
+                // The sentence's words are painted, not exposed: the box is named as its part
+                // of it reads (#1407).
+                let names = winui::sentence_names(
+                    crate::i18n::t("Maximum download speed for one file {kb} KBytes/sec"),
+                    &["kb"],
+                );
+                let kb = winui::number_field(
                     ui,
                     kb_box[0],
                     &mut self.kb,
@@ -2761,6 +2767,7 @@ impl SpeedSettings {
                     true,
                     winui::LIGHT_BG(),
                 );
+                winui::name(&kb, &names[0]);
                 let note = crate::i18n::t(
                     "Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n\"resume\" feature.",
                 );

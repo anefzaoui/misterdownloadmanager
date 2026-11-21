@@ -565,6 +565,14 @@ mod session_end_tests {
     }
 }
 
+/// The system's double-click time (Control Panel → Mouse): a tray icon's double click is two
+/// clicks within it (#1365).
+pub fn double_click_time() -> std::time::Duration {
+    use windows_sys::Win32::UI::Input::KeyboardAndMouse::GetDoubleClickTime;
+    // SAFETY: a plain query with no arguments.
+    std::time::Duration::from_millis(u64::from(unsafe { GetDoubleClickTime() }))
+}
+
 /// This process's top-level window with exactly `title`; the main window by its handle.
 pub(crate) fn find_own_window(title: &str) -> Option<HWND> {
     let known = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed);

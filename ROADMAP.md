@@ -569,6 +569,17 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Windows: Simplified Chinese drawn with a Chinese font on every Windows, no longer as boxes
+  where Microsoft YaHei's usual file is missing (Windows 7's `msyh.ttf`, DengXian, SimSun and
+  SimHei are looked for too, a Chinese font must have its language's own characters, the Chinese
+  fonts come before the Japanese ones for every Chinese character, a font per character), and
+  the log names the font ([#1605](https://github.com/anefzaoui/misterdownloadmanager/issues/1605))
+- ✅ Private-window downloads stay in the list by default (Options → General → Keep
+  private-window downloads in the list is on for every list that never chose, their cookies
+  still never saved): each is marked with a mask before its status, whose tip says whether the
+  list keeps it, the first one brings a notice saying so and where to turn it off, and the log
+  notes each one without its name or address
+  ([#1581](https://github.com/anefzaoui/misterdownloadmanager/issues/1581))
 - ✅ YouTube's JavaScript runtime: MDM installs Node.js (its newest LTS, from nodejs.org, its
   checksum list checked against Node.js's releasers' signing keys) instead of Deno, for Windows
   (x64, ARM64, 32-bit), macOS and Linux (x64, ARM64), kept up to date with the other helpers; a
@@ -685,6 +696,9 @@ These ship in the next version.
   its first 256 KB block was written (some 15 s at 128 kbit/s, longer at lower bitrates); Stop and
   save before that block keeps nothing yet and leaves the download stopped to resume
   ([#1450](https://github.com/anefzaoui/misterdownloadmanager/pull/1450))
+- ✅ Tests: the Node.js check of an older release passes on 32-bit Windows too: it listed a
+  release older than the 64-bit builds take but not 32-bit Windows' own oldest (Node.js has no
+  newer 32-bit build), so there it was a refused downgrade rather than nothing offered
 - ✅ Tests: the live recording checks that failed now and then (most runs on Linux) wait until
   enough is recorded for what they check, instead of saving at the first block: a recording that
   short is within the second an MP4 may lose and still count as whole, so whether the MP4 was
@@ -1689,7 +1703,8 @@ These ship in the next version.
   kept aside and a new one begins, the download list's torrents are added again from MDM's own
   copies and find their pieces on disk; MDM's own rewrite of the list reaches the disk before it
   replaces the old one ([#1357](https://github.com/anefzaoui/misterdownloadmanager/issues/1357))
-- ✅ **Options → General → Keep private-window downloads in the list** (off by default): a private
+- ✅ **Options → General → Keep private-window downloads in the list** (on by default since
+  [#1581](https://github.com/anefzaoui/misterdownloadmanager/issues/1581)): a private
   window's downloads are saved like any other and survive MDM closing or restarting, still apart
   from normal windows' downloads (a saved private-window mark; their cookies never saved); a
   private window's video never falls back to Cookies for video sites, after a restart either
@@ -1745,6 +1760,13 @@ These ship in the next version.
   only its number; the same two boxes on the **Scheduler**'s limits page are named too
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers name the lists and number boxes that still had none (#1407): the
+  **Accounts**, **Sites Logins** and **Paired devices** lists in Options say what they hold,
+  and the number boxes inside sentences — a queue's **Download N files at the same time**
+  and the Speed Limiter's **KBytes/sec** — are named by the words around them in the
+  translated sentence, in every language
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@abivan100-stack](https://github.com/abivan100-stack))
 - ✅ Screen readers read the **Get ready for video downloads** window: its headline, each
   helper's name and description, the status line under the bar and the advice under it
   were painted text a reader never saw (the same banner wherever it heads a window); the
@@ -1779,6 +1801,7 @@ These ship in a later version, when they're ready.
 
 ### Being built
 
+- 🔄 **The tray icon's downloads panel**: a click on the icon shows what is downloading, with the progress window's Pause/Resume (Stop and save for a recording) and Cancel for each download and a button for the main window; a double click opens the window; **Options → General → Show downloads when the notification area icon is clicked** (ticked in a new copy, unticked in one set up before it) ([#1365](https://github.com/anefzaoui/misterdownloadmanager/issues/1365)): draft, in review
 - 🔄 **Add torrent**: choose whether a multi-file torrent gets an outer folder, with shared-destination ownership and deletion safeguards ([discussion #965](https://github.com/anefzaoui/misterdownloadmanager/discussions/965), [PR #1121](https://github.com/anefzaoui/misterdownloadmanager/pull/1121)): in review
 - 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
