@@ -10,6 +10,7 @@ const readText = (url) => readFileSync(url instanceof URL ? url : new URL(url, i
 
 const code = readText("../../extension/background.js");
 const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
+const enMessages = JSON.parse(readText("../../extension/_locales/en/messages.json"));
 
 // A fake extension API; `firefox` picks which download event exists. `reply` is the app's
 // answer to a download; `types` its Options -> File types when the rules are asked (`host: false`:
@@ -225,7 +226,7 @@ function fakeApi({
     action: {
       setBadgeText: async (b) => calls.push(["badge", b.text]),
       setBadgeBackgroundColor: async () => {},
-      setTitle: async () => {},
+      setTitle: async (t) => calls.push(["title", t.title]),
     },
     contextMenus: {
       create: (item, done) => {
@@ -236,7 +237,18 @@ function fakeApi({
       onClicked: event("menu"),
     },
     // The browser's language: German here.
-    i18n: { getMessage: (key) => ({ menu: "Mit Mister Download Manager herunterladen" })[key] ?? "" },
+    i18n: {
+      getMessage: (key, subs = []) => {
+        if (key === "menu") return "Mit Mister Download Manager herunterladen";
+        const m = enMessages[key];
+        if (!m) return "";
+        let text = m.message;
+        for (const [name, p] of Object.entries(m.placeholders || {})) {
+          text = text.replaceAll(`$${name}$`, subs[Number(p.content.slice(1)) - 1] ?? "");
+        }
+        return text;
+      },
+    },
   };
   if (nativePort) {
     api.runtime.connectNative = (name) => {
@@ -4983,6 +4995,114 @@ for (const here of [true, false]) {
   );
   assert.deepEqual(fetched.slice(from).filter(([u]) => /\/api\//.test(u)), [], "nothing to any remote control");
   ok("this computer: the button's question, Download video and a download go to its MDM");
+}
+// Another MDM: remote links capped, filtered, notice reported, early stop on unreachable, 401 unpair, and file without url.
+{
+  const film = "https://tube.test/watch?v=1";
+  const tab = { id: 5, index: 2, url: film, title: "A film - Tube", incognito: false };
+  const R = "https://server-test.test:8463/";
+
+  // 1. List over the cap: 105 capturable files + 5 non-matching links = 110 total.
+  // Exactly 100 links sent, 10 left out, and the notice reports the cut.
+  {
+    const manyLinks = [];
+    for (let i = 0; i < 105; i++) manyLinks.push(`https://x/file${i}.zip`);
+    manyLinks.push("https://x/page.html", "https://x/about", "https://x/contact", "https://x/home.php", "https://x/index");
+    const { api, calls, listeners, store } = fakeApi({ firefox: false, pageLinks: manyLinks, tabs: { 5: tab } });
+    load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    served[`${R}api/add`] = { status: 200, body: JSON.stringify({ ok: true }) };
+    const from = fetched.length;
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    const adds = fetched.slice(from).filter(([u]) => u.includes("api/add"));
+    assert.equal(adds.length, 100, "capped at 100 remote links");
+    assert.equal(store.status.notice, "Sent 100 links, 10 left out");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "99+"), "badge shows 99+");
+    // Nice to have: cookies not read for remote MDM
+    assert.equal(calls.filter((c) => c[0] === "cookies").length, 0, "cookies omitted for remote links");
+  }
+
+  // 2. Server that refuses some links: partial result.
+  {
+    const fourLinks = ["https://x/a.zip", "https://x/b.zip", "https://x/c.zip", "https://x/d.zip"];
+    const { api, calls, listeners, store } = fakeApi({ firefox: false, pageLinks: fourLinks, tabs: { 5: tab } });
+    load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    served[`${R}api/add`] = (opts) => {
+      const b = JSON.parse(opts.body);
+      if (b.url.endsWith("b.zip") || b.url.endsWith("d.zip")) {
+        return { status: 400, body: JSON.stringify({ error: "duplicate" }) };
+      }
+      return { status: 200, body: JSON.stringify({ ok: true }) };
+    };
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    assert.equal(store.status.notice, "Sent 2 links (2 refused)");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "2"), "badge shows 2 sent");
+  }
+
+  // 3. Unreachable server (status 0): stops on the very first link and reports unreachable.
+  {
+    const tenLinks = [];
+    for (let i = 0; i < 10; i++) tenLinks.push(`https://x/item${i}.zip`);
+    const { api, calls, listeners, store } = fakeApi({ firefox: false, pageLinks: tenLinks, tabs: { 5: tab } });
+    load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    served[`${R}api/add`] = () => { throw new TypeError("Failed to fetch"); };
+    const from = fetched.length;
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    const adds = fetched.slice(from).filter(([u]) => u.includes("api/add"));
+    assert.equal(adds.length, 1, "stops immediately on first status 0");
+    assert.equal(store.status.why, "unreachable");
+    assert.equal(store.status.notice, "Server not reached");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "!"), "badge shows !");
+  }
+
+  // 4. 401 unpair halfway through list: stops loop and unpairs.
+  {
+    const fiveLinks = ["https://x/1.zip", "https://x/2.zip", "https://x/3.zip", "https://x/4.zip", "https://x/5.zip"];
+    const { api, listeners, store } = fakeApi({ firefox: false, pageLinks: fiveLinks, tabs: { 5: tab } });
+    load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    let callsCount = 0;
+    served[`${R}api/add`] = () => {
+      callsCount++;
+      if (callsCount === 1) return { status: 200, body: JSON.stringify({ ok: true }) };
+      return { status: 401, body: JSON.stringify({ error: "unauthorized" }) };
+    };
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    assert.equal(callsCount, 2, "stops on 401 at second link");
+    assert.equal(store.remote, null, "active server cleared on 401");
+  }
+
+  // 5. File message without a url with a server chosen goes to this computer's MDM.
+  {
+    const { api, calls, store } = fakeApi({ firefox: false, tabs: { 5: tab } });
+    const ctx = load(api, false);
+    await settle();
+    store.remotes = [{ url: R, token: "token-test" }];
+    store.remote = { url: R, token: "token-test" };
+    const from = fetched.length;
+    await ctx.download("file", { file: true });
+    await settle();
+    assert.equal(fetched.slice(from).filter(([u]) => u.includes("api/add")).length, 0, "nothing to remote");
+    const nativeFiles = natives(calls).filter((m) => m.file);
+    assert.equal(nativeFiles.length, 1, "sent to this computer's MDM");
+  }
+
+  delete served[`${R}api/add`];
+  ok("another MDM: remote links capped, filtered, notice reported, early stop on unreachable, 401 unpair, and file without url");
 }
 // Safari has no downloads API: the extension still starts, and a link page.js holds (a file type
 // Options lists) is offered to the app as a browser's download is; the app taking it is told to
