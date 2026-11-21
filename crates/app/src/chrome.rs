@@ -239,13 +239,26 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
         egui::Sense::hover(),
     );
     winui::expose(&bar, egui::Role::MenuBar, "", true, None);
+    // A screen reader can move its focus to the bar (and to the title the keys are on, below):
+    // the caller then gives the bar the keys, and Tab goes on from it (#1190).
+    if winui::focus_target(ui.ctx(), bar.id) {
+        hit = Some(MenuBarEvent::Keys);
+    }
     let titles_ui = ui.new_child(egui::UiBuilder::new().accessibility_parent(bar.id));
     let released = ui.input(|x| x.pointer.any_released());
     for (i, (label, x, w, tx)) in menus(&p).iter().enumerate() {
         // From the leading edge: the first menu at the right in RTL.
         let rc = winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H)));
-        let resp = titles_ui.interact(rc, egui::Id::unique(("menubar", i)), winui::pointer_only());
-        winui::expose(&resp, egui::Role::MenuItem, &plain(label).0, true, None);
+        let resp = titles_ui.interact(rc, menubar_title_id(i), winui::pointer_only());
+        // Its name carries the key that opens it ("Ver Alt+V", each language's own letter): the
+        // Windows adapter does not pass AccessKit's access key on to UI Automation, so a reader
+        // hears only what the name holds (#1190).
+        let (shown_name, letter_at) = plain(label);
+        let said = match letter_at.and_then(|at| shown_name.chars().nth(at)) {
+            Some(c) => format!("{shown_name} Alt+{}", c.to_uppercase().collect::<String>()),
+            None => shown_name.clone(),
+        };
+        winui::expose(&resp, egui::Role::MenuItem, &said, true, None);
         ui.ctx().accesskit_node_builder(resp.id, |n| {
             n.set_has_popup(egui::accesskit::HasPopup::Menu);
             n.set_expanded(open == Some(i));
@@ -290,6 +303,12 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     hit
 }
 
+/// A menu-bar title's widget id (#1190): the Tab stop of its own, and what the app focuses when
+/// the bar takes the keys.
+pub fn menubar_title_id(i: usize) -> egui::Id {
+    egui::Id::unique(("menubar", i))
+}
+
 /// The menu-bar title under `pos` (main-window coordinates), as [`menu_bar`] lays them out at
 /// `o`: the first menu at the right in RTL.
 pub fn menubar_title_at(p: &egui::Painter, o: Pos2, pos: Pos2) -> Option<usize> {
@@ -314,6 +333,8 @@ pub enum MenuBarEvent {
     Chosen,
     /// Left or Right, or the keyboard (Alt, F10, an access letter), opened menu `i`.
     Open(usize),
+    /// A screen reader moved its focus to the bar: it takes the keys (Tab goes on from it).
+    Keys,
 }
 
 /// The menu bar's open menu after `event` (`open`: the one open before it).
@@ -345,6 +366,8 @@ pub fn menubar_next(open: Option<usize>, event: MenuBarEvent) -> Option<usize> {
         }
         | MenuBarEvent::Chosen => None,
         MenuBarEvent::Open(i) => Some(i),
+        // The bar took the keys: no menu of it opens or shuts by that alone.
+        MenuBarEvent::Keys => open,
     }
 }
 
@@ -539,10 +562,13 @@ fn mirror_for_screen_readers<C>(
                 MenuEntry::Sep => continue,
             };
             let (t, _) = plain(crate::i18n::tc("menu", label));
+            // Its shortcut is said with its name ("Add new download Ctrl+N"), spelled as the
+            // menu draws it in its own column, where a reader cannot reach it (#1190).
             let t = match e {
-                MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) if hint(c).is_some() => {
-                    without_shortcut(&t).to_owned()
-                }
+                MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => match hint(c) {
+                    Some(keys) => format!("{} {}", without_shortcut(&t), key_label(keys)),
+                    None => t,
+                },
                 _ => t,
             };
             let item = items.interact(
@@ -817,6 +843,21 @@ fn keyboard<C: Clone>(
         });
         keys.into_iter().map(Press::Key).collect()
     };
+    // The letter that opened this menu (this pass) is the menu's own: it must not also pick an
+    // item of it — Alt+T opened Tareas and ran "Abrir archivo torrent...", Alt+A opened Archivo
+    // and ran the Delete item's (#1190). The pass's keys are taken before the window's own code
+    // runs (MenuKeys), so the app marks that letter where it opens the menu.
+    if let Some(letter) = ctx
+        .data_mut(|d| d.remove_temp::<(String, u64)>(egui::Id::unique("menu-opened-by-letter")))
+        .filter(|(_, at)| *at == ctx.cumulative_pass_nr())
+        .map(|(letter, _)| letter)
+    {
+        // egui-winit sends a typed letter as both, its key and its text, so both go.
+        keys.retain(|press| !match press {
+            Press::Key(k) => k.name().to_lowercase() == letter,
+            Press::Text(t) => t.to_lowercase() == letter,
+        });
+    }
     // Pressed in the menu's own windows: popup_level noted them as those windows drew.
     keys.extend(
         ctx.data_mut(|d| d.remove_temp::<Vec<egui::Key>>(sub_key.with("window-keys")))
@@ -1657,10 +1698,18 @@ fn popup_level<C: Clone>(
                 MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => hint(c),
                 _ => None,
             };
-            let t = if keys.is_some() {
-                without_shortcut(&t).to_owned()
+            // Its shortcut is said with its name ("Add new download Ctrl+N"), spelled as the menu
+            // draws it in its own column (#1190). Only an item that has a shortcut drops it from
+            // the text drawn: a translation without one may end in its own access letter
+            // ("Tell a friend (&F)"), which cutting would take away with the underline it needs.
+            let t_visual: &str = if keys.is_some() {
+                without_shortcut(&t)
             } else {
-                t
+                &t
+            };
+            let t_accessibility = match keys {
+                Some(keys) => format!("{} {}", t_visual, key_label(keys)),
+                None => t.clone(),
             };
             // The entry's node: a menu item (a check or radio item when it is one), its name,
             // whether it can be used, and for a submenu that it opens one.
@@ -1674,7 +1723,7 @@ fn popup_level<C: Clone>(
                 MenuEntry::Item(..) if checked => (egui::Role::MenuItemCheckBox, Some(true)),
                 _ => (egui::Role::MenuItem, None),
             };
-            winui::expose(&item, role, &t, enabled, on);
+            winui::expose(&item, role, &t_accessibility, enabled, on);
             if let MenuEntry::Sub(..) = e {
                 let open = open_sub == Some(i);
                 ui.ctx().accesskit_node_builder(item.id, |n| {
@@ -1704,7 +1753,14 @@ fn popup_level<C: Clone>(
                 }
                 _ => {}
             }
-            let drawn = text_font(&painter, winui::segoe(), o.x + 38.0, y + 14.0, &t, color);
+            let drawn = text_font(
+                &painter,
+                winui::segoe(),
+                o.x + 38.0,
+                y + 14.0,
+                t_visual,
+                color,
+            );
             // The shortcut at the trailing edge, in the menu's quieter ink.
             if let Some(k) = keys {
                 winui::text_right(
@@ -1719,7 +1775,7 @@ fn popup_level<C: Clone>(
             if let Some(m) = mn
                 && cues(ctx)
             {
-                let (x0, x1) = winui::char_span(&painter, &winui::segoe(), &t, m, drawn);
+                let (x0, x1) = winui::char_span(&painter, &winui::segoe(), t_visual, m, drawn);
                 fill(&painter, x0, y + 16.0, x1, y + 16.0, color);
             }
             // The check box column: x 12..21 from the leading edge (the glyphs keep their
@@ -1965,6 +2021,9 @@ pub fn toolbar(
             ui.ctx().accesskit_node_builder(resp.id, |n| {
                 n.set_has_popup(HasPopup::Menu);
                 n.add_action(Action::Expand);
+                // Its menu is shut: without a state, UI Automation calls the node a leaf and a
+                // reader then never says the button holds more than itself (#1190).
+                n.set_expanded(false);
             });
             if ui.input(|inp| inp.has_accesskit_action_request(resp.id, Action::Expand)) {
                 event = Some(ToolbarEvent::Drop(i, pos2(winui::mx(x), o.y + 85.0)));
