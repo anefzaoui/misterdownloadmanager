@@ -24,7 +24,7 @@ CHROME = {
     "fil": "fil", "fr": "fr", "gu": "gu", "he": "he", "hi": "hi", "hr": "hr", "hu": "hu",
     "id": "id", "it": "it", "ja": "ja", "kn": "kn", "ko": "ko", "lt": "lt", "lv": "lv",
     "ml": "ml", "mr": "mr", "ms": "ms", "nb": "no", "nl": "nl", "pl": "pl", "pt": "pt_PT",
-    "pt-br": "pt_BR", "ro": "ro", "ru": "ru", "sk": "sk", "sl": "sl", "sr": "sr", "sv": "sv",
+    "pt-br": "pt_BR", "ro": "ro", "ru": "ru", "si": "si", "sk": "sk", "sl": "sl", "sr": "sr", "sv": "sv",
     "ta": "ta", "te": "te", "th": "th", "tr": "tr", "uk": "uk", "vi": "vi",
     "zh-hans": "zh_CN", "zh-hant": "zh_TW",
 }
