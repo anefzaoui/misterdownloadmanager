@@ -684,11 +684,26 @@ impl Host {
                 Ok(Done::Reannounced)
             }
             Act::Choose { files, pause } => {
-                if let Some(t) = self.get() {
+                // A file ticked now whose bytes are in a parts file (or kept in one by the
+                // running storage) has no file yet: it must be made and get them, even on a
+                // finished torrent whose session stopped while idle, so the session is started
+                // for it. Otherwise a stopped session only keeps the choice (Resume uses it).
+                let reopen = chosen_with_parts(
+                    state_dir().map(|d| d.join("session")).as_deref(),
+                    hash,
+                    &files,
+                );
+                let running = match self.get() {
+                    Some(t) => Some(t),
+                    None if reopen => Some(self.session(known).await?),
+                    None => None,
+                };
+                if let Some(t) = running {
                     if !t.has(hash) {
                         let bytes = read_kept(hash).await?;
-                        // Added, it opens every file at its paths, ticked or not: the same
-                        // check and hand-over as Start, before it is added.
+                        // Its ticked files are made (or checked) and handed over as at Start,
+                        // before it is added; a ticked file's bytes in a parts file go into it
+                        // as the engine opens it.
                         prepare_storage(self, spec, dest, protected).await?;
                         t.add(&bytes, &spec.folder, Some(files.clone()), Vec::new(), pause)
                             .await
@@ -698,15 +713,9 @@ impl Host {
                             })?;
                         return Ok(Done::Chosen);
                     }
-                    // A file ticked now that was kept in a parts file has no file yet: it is
-                    // made (checked as at Start), and the torrent opened again on it, its
-                    // pieces kept; what the parts file held goes into it.
-                    let session = state_dir().map(|d| d.join("session"));
-                    let reopen = session.as_ref().is_some_and(|s| {
-                        files
-                            .iter()
-                            .any(|i| mdm_torrent::authorized_storage::is_parted(s, hash, *i))
-                    });
+                    // In the session: librqbit doesn't open its files again when the choice
+                    // changes, so the file is made (checked as at Start) and the torrent opened
+                    // again on it, its pieces kept; what the parts file held goes into it.
                     if reopen {
                         prepare_storage(self, spec, dest, protected).await?;
                     }
@@ -1330,6 +1339,17 @@ pub struct ShareJob {
     pub spec: TorrentSpec,
     pub dest: PathBuf,
     pub claims: Arc<Vec<(u64, Vec<PathBuf>)>>,
+}
+
+/// Whether one of the files ticked now (`files`) has its bytes in a parts file under `session`
+/// (the torrents' session folder), or is kept in one by the running storage: it has no file
+/// yet, and ticking it must make it.
+fn chosen_with_parts(session: Option<&Path>, hash: &str, files: &[usize]) -> bool {
+    session.is_some_and(|s| {
+        files
+            .iter()
+            .any(|i| mdm_torrent::authorized_storage::has_parts(s, hash, *i))
+    })
 }
 
 /// The engine may not open a torrent's files on the grant it was given for another folder or
@@ -2229,6 +2249,23 @@ mod tests {
             }
         }
         session.stop().await;
+    }
+
+    /// A file ticked on a torrent out of the session (finished, its session stopped while
+    /// idle, or after MDM starts again) whose bytes are in a parts file needs the session: its
+    /// parts file on the disk says so.
+    #[test]
+    fn a_ticked_file_with_bytes_in_parts_needs_the_session() {
+        let tmp = tempfile::tempdir().unwrap();
+        let session = tmp.path().join("session");
+        let hash = "ab".repeat(20);
+        let parts = session.join(format!("{hash}.parts"));
+        std::fs::create_dir_all(&parts).unwrap();
+        std::fs::write(parts.join("3"), b"shared piece").unwrap();
+        assert!(chosen_with_parts(Some(&session), &hash, &[0, 3]));
+        assert!(!chosen_with_parts(Some(&session), &hash, &[0, 1]));
+        assert!(!chosen_with_parts(Some(&session), &"cd".repeat(20), &[3]));
+        assert!(!chosen_with_parts(None, &hash, &[3]));
     }
 
     /// #357: the ratio the list and the General tab share, and the seeding limit's.

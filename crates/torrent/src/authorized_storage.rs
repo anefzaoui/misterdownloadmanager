@@ -111,6 +111,15 @@ pub fn is_parted(session: &Path, hash: &str, index: usize) -> bool {
         .is_some_and(|p| p.contains(&index))
 }
 
+/// Whether file `index` of the torrent has bytes kept for it in a parts file, or is kept in one
+/// by its running storage: ticking it needs the torrent in the session, opened on a file the app
+/// makes. Read from the disk too, so it holds for a torrent out of the session (finished, the
+/// session stopped while idle) and after MDM starts again.
+pub fn has_parts(session: &Path, hash: &str, index: usize) -> bool {
+    is_parted(session, hash, index)
+        || parts_dir(session, hash).is_some_and(|d| d.join(index.to_string()).is_file())
+}
+
 /// The torrent's parts files, under the session's folder (None: not an info hash).
 fn parts_dir(session: &Path, hash: &str) -> Option<PathBuf> {
     (hash.len() == 40 && hash.bytes().all(|c| c.is_ascii_hexdigit()))
@@ -156,6 +165,40 @@ impl Parts {
     /// long file, never shared with a ticked one).
     fn map(&self, offset: u64, n: u64) -> Option<u64> {
         map_offset(self.len, self.piece, offset, n)
+    }
+
+    /// What the parts file holds at `offset` of the file; zeros for what it doesn't (never
+    /// written, or the middle of a long file). A piece read so fails its hash and counts as
+    /// missing, and an error here would make librqbit's check skip the rest of the file, the
+    /// last piece it shares with the next file among them.
+    fn read(&self, offset: u64, buf: &mut [u8]) -> io::Result<()> {
+        buf.fill(0);
+        let Some(at) = self.map(offset, buf.len() as u64) else {
+            return Ok(());
+        };
+        let file = match self.open(false) {
+            Ok(f) => f,
+            Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(()),
+            Err(e) => return Err(e),
+        };
+        let mut done = 0;
+        while done < buf.len() {
+            #[cfg(windows)]
+            let n = {
+                use std::os::windows::fs::FileExt;
+                file.seek_read(&mut buf[done..], at + done as u64)?
+            };
+            #[cfg(unix)]
+            let n = {
+                use std::os::unix::fs::FileExt;
+                file.read_at(&mut buf[done..], at + done as u64)?
+            };
+            if n == 0 {
+                break;
+            }
+            done += n;
+        }
+        Ok(())
     }
 
     fn open(&self, create: bool) -> io::Result<Arc<File>> {
@@ -368,13 +411,7 @@ impl TorrentStorage for Storage {
                 buf.fill(0);
                 return Ok(());
             }
-            Some(Slot::Parts(p)) => {
-                let at = p
-                    .map(offset, buf.len() as u64)
-                    .ok_or_else(|| io::Error::from(io::ErrorKind::UnexpectedEof))?;
-                let file = p.open(false)?;
-                return Ok(read_at(&file, at, buf)?);
-            }
+            Some(Slot::Parts(p)) => return Ok(p.read(offset, buf)?),
             _ => {}
         }
         self.with_file(file_id, || (), |file| read_at(file, offset, buf))
@@ -459,6 +496,26 @@ mod tests {
         // Two pieces or less: all of it, where it is.
         assert_eq!(map_offset(8, 4, 5, 3), Some(5));
         assert_eq!(map_offset(3, 4, 0, 3), Some(0));
+    }
+
+    #[test]
+    fn what_parts_dont_hold_reads_as_zeros() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("p");
+        // A 40-byte file of 4-byte pieces, nothing written yet: no parts file at all.
+        let p = Parts::new(path.clone(), 40, 4);
+        let mut buf = [9u8; 4];
+        p.read(0, &mut buf).unwrap();
+        assert_eq!(buf, [0; 4]);
+        // Its last piece written: kept at 4.
+        std::fs::write(&path, b"\0\0\0\0TAIL").unwrap();
+        let p = Parts::new(path, 40, 4);
+        p.read(36, &mut buf).unwrap();
+        assert_eq!(&buf, b"TAIL");
+        // The middle is never kept, and isn't an error: librqbit's check goes on to the end.
+        let mut buf = [9u8; 4];
+        p.read(20, &mut buf).unwrap();
+        assert_eq!(buf, [0; 4]);
     }
 
     #[test]
