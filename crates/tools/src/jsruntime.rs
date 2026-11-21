@@ -8,13 +8,17 @@
 //!    idea of choosing your own runtime is YairDies', #1541);
 //! 2. one already on the computer, in yt-dlp's order (`proc::system_js_runtimes`), once it has
 //!    answered with a version yt-dlp can use (Deno 2.3, Node.js 22, Bun 1.2.11 or newer; QuickJS
-//!    once it runs);
+//!    once it runs) and, for Node.js, one its project still supports ([`node_end_of_life`]: past
+//!    its end of life MDM's own, kept up to date, is used instead). The trade-off: a supported
+//!    Node.js of the computer's is used as it is, updated by whoever installed it;
 //! 3. MDM's own Node.js (`node`), downloaded and checked against Node.js's signed checksums;
 //! 4. MDM's own Deno, which earlier versions of MDM installed: used until its Node.js is in
 //!    place, then removed ([`retire_deno`]). A Deno the person installed is never touched.
 
+use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 use std::sync::Mutex;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::Duration;
 
 use crate::{Error, Installed};
@@ -129,30 +133,45 @@ pub struct Runtime {
 }
 
 impl Runtime {
-    /// What yt-dlp is told: only this one, whatever else it would find itself.
-    pub fn args(&self) -> Vec<String> {
-        vec![
-            "--no-js-runtimes".to_owned(),
-            "--js-runtimes".to_owned(),
-            format!("{}:{}", self.kind.ytdlp_name(), self.exe.display()),
-        ]
+    /// What yt-dlp is told: only this one, whatever else it would find itself. The path is
+    /// passed as it is, not as text (a name that isn't valid Unicode stays whole).
+    pub fn args(&self) -> Vec<OsString> {
+        let mut named = OsString::from(format!("{}:", self.kind.ytdlp_name()));
+        named.push(self.exe.as_os_str());
+        vec!["--no-js-runtimes".into(), "--js-runtimes".into(), named]
     }
 }
 
 /// A program asked ([`ask`]), as what, and its answer ([`ask_now`]'s).
 type Asked = (PathBuf, Kind, Option<Option<String>>);
 
-/// Ask `exe` (a `kind`) for its version, once a session for each program (a program updated
-/// meanwhile keeps the version it said). Err: it didn't answer as that runtime, or is too old.
-pub fn ask(kind: Kind, exe: &Path) -> Result<Option<String>, Error> {
-    static ASKED: Mutex<Vec<Asked>> = Mutex::new(Vec::new());
-    let known = ASKED
+/// The answers of the programs asked this session ([`ask`]).
+static ASKED: Mutex<Vec<Asked>> = Mutex::new(Vec::new());
+
+/// How many programs were asked for their version ([`ask_now`]): tests check a window asks none
+/// on its own thread.
+static PROBES: AtomicU64 = AtomicU64::new(0);
+
+/// [`PROBES`]' count.
+pub fn probes() -> u64 {
+    PROBES.load(Ordering::Relaxed)
+}
+
+/// `exe`'s answer as `kind`, if it was asked this session.
+fn asked(kind: Kind, exe: &Path) -> Option<Option<Option<String>>> {
+    ASKED
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner)
         .iter()
         .find(|(p, k, _)| p == exe && *k == kind)
-        .map(|(_, _, v)| v.clone());
-    let answer = match known {
+        .map(|(_, _, v)| v.clone())
+}
+
+/// Ask `exe` (a `kind`) for its version, once a session for each program (a program updated
+/// meanwhile keeps the version it said). Err: it didn't answer as that runtime, is too old for
+/// yt-dlp, or (Node.js) is past its end of life. Runs the program: never on a window's thread.
+pub fn ask(kind: Kind, exe: &Path) -> Result<Option<String>, Error> {
+    let answer = match asked(kind, exe) {
         Some(a) => a,
         None => {
             let a = ask_now(kind, exe);
@@ -163,6 +182,12 @@ pub fn ask(kind: Kind, exe: &Path) -> Result<Option<String>, Error> {
             a
         }
     };
+    judge(kind, answer, today())
+}
+
+/// Whether a computer's runtime that answered `answer` (as [`ask_now`] gives it) is one to use
+/// on `day` (days since 1970).
+fn judge(kind: Kind, answer: Option<Option<String>>, day: u64) -> Result<Option<String>, Error> {
     let Some(version) = answer else {
         return Err(Error::NotTheProgram(kind.label()));
     };
@@ -175,12 +200,61 @@ pub fn ask(kind: Kind, exe: &Path) -> Result<Option<String>, Error> {
             oldest,
         });
     }
+    if kind == Kind::Node
+        && let Some(v) = &version
+        && let Some(next) = node_end_of_life(v, day)
+    {
+        return Err(Error::TooOld {
+            name: kind.label(),
+            version: v.clone(),
+            oldest: next,
+        });
+    }
     Ok(version)
+}
+
+/// Days since 1970, today.
+fn today() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |d| d.as_secs() / 86_400)
+}
+
+/// Days since 1970 of a date.
+const fn days(y: i64, m: i64, d: i64) -> u64 {
+    // Howard Hinnant's days_from_civil.
+    let y = if m <= 2 { y - 1 } else { y };
+    let era = y.div_euclid(400);
+    let yoe = y - era * 400;
+    let doy = (153 * (if m > 2 { m - 3 } else { m + 9 }) + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    (era * 146_097 + doe - 719_468) as u64
+}
+
+/// When each Node.js major line reaches its end of life (nodejs.org's release schedule, as of
+/// this MDM release): even lines are long-term supported for 30 months, odd ones for 8. Past it,
+/// a computer's Node.js of that line is passed over (MDM's own, kept to a supported release, is
+/// used); the line to move to is returned, for the message. A line not listed (newer than this
+/// MDM) is taken as supported.
+fn node_end_of_life(version: &str, day: u64) -> Option<&'static str> {
+    let major: u64 = version.split('.').next()?.parse().ok()?;
+    let (end, next) = match major {
+        0..22 => return None, // too old for yt-dlp already (Kind::oldest)
+        22 => (days(2027, 4, 30), "24.0.0"),
+        23 => (days(2025, 6, 1), "24.0.0"),
+        24 => (days(2028, 4, 30), "26.0.0"),
+        25 => (days(2026, 6, 1), "26.0.0"),
+        26 => (days(2029, 4, 30), "28.0.0"),
+        27 => (days(2027, 6, 1), "28.0.0"),
+        _ => return None,
+    };
+    (day >= end).then_some(next)
 }
 
 /// [`ask`], not remembered: `Some(version)` when it answered as `kind` (QuickJS: when it ran a
 /// line of JavaScript, its version not known).
 fn ask_now(kind: Kind, exe: &Path) -> Option<Option<String>> {
+    PROBES.fetch_add(1, Ordering::Relaxed);
     let mut cmd = std::process::Command::new(exe);
     match kind {
         Kind::QuickJs => cmd.args(["-e", "print('mdm-js-ok')"]),
@@ -271,23 +345,50 @@ pub fn system(ytdlp: Option<&Path>) -> Option<Runtime> {
 }
 
 /// MDM's own runtime in the tools folder `dir`: its Node.js, else the Deno an earlier version
-/// installed.
+/// installed; either only in a version yt-dlp can use ([`old_enough`]).
 pub fn own(dir: &Path) -> Option<Runtime> {
-    let of = |kind, i: Installed| Runtime {
-        kind,
-        exe: i.exe,
-        version: Some(i.version),
-        from: Origin::Own,
+    let of = |kind, i: Installed| {
+        let usable = old_enough(kind, &i.version);
+        usable.then_some(Runtime {
+            kind,
+            exe: i.exe,
+            version: Some(i.version),
+            from: Origin::Own,
+        })
     };
     crate::node::installed(dir)
-        .map(|i| of(Kind::Node, i))
-        .or_else(|| crate::deno::installed(dir).map(|i| of(Kind::Deno, i)))
+        .and_then(|i| of(Kind::Node, i))
+        .or_else(|| crate::deno::installed(dir).and_then(|i| of(Kind::Deno, i)))
 }
 
 /// The runtime yt-dlp at `ytdlp` uses, in the order this module's header gives; `dir`: the
-/// tools folder (none: the computer's own only).
+/// tools folder (none: the computer's own only). May run the computer's runtimes ([`ask`]):
+/// never on a window's thread ([`current_now`] is).
 pub fn current(dir: Option<&Path>, ytdlp: Option<&Path>) -> Option<Runtime> {
     pick(dir.and_then(chosen), || system(ytdlp), || dir.and_then(own))
+}
+
+/// [`current`] when it can be told without running any program (a runtime chosen, none on the
+/// computer, or every one there already asked this session): `Some(answer)`. None: a program
+/// would have to be asked first; ask [`current`] off the window's thread.
+pub fn current_now(dir: Option<&Path>, ytdlp: Option<&Path>) -> Option<Option<Runtime>> {
+    if let Some(c) = dir.and_then(chosen) {
+        return Some(Some(c));
+    }
+    for (kind, exe) in crate::proc::system_js_runtimes(ytdlp) {
+        match judge(kind, asked(kind, &exe)?, today()) {
+            Ok(version) => {
+                return Some(Some(Runtime {
+                    kind,
+                    exe,
+                    version,
+                    from: Origin::System,
+                }));
+            }
+            Err(_) => continue,
+        }
+    }
+    Some(dir.and_then(own))
 }
 
 /// [`current`] from what was found: `chosen`, `system`, `own`, in that order.
@@ -322,6 +423,10 @@ pub async fn install_latest(
 /// Deno. Left for later (the next start or check) while one does.
 pub fn retire_deno(dir: &Path) -> bool {
     if crate::node::installed(dir).is_none() {
+        return false;
+    }
+    // The person chose that very Deno as their runtime (Use another program...): theirs now.
+    if chosen(dir).is_some_and(|c| c.exe.starts_with(dir.join("deno"))) {
         return false;
     }
     crate::deno::remove_own(dir)
@@ -402,9 +507,9 @@ mod tests {
         assert_eq!(
             r.args(),
             [
-                "--no-js-runtimes".to_owned(),
-                "--js-runtimes".to_owned(),
-                format!("node:{}", r.exe.display())
+                OsString::from("--no-js-runtimes"),
+                OsString::from("--js-runtimes"),
+                OsString::from(format!("node:{}", r.exe.display()))
             ]
         );
     }
@@ -469,6 +574,126 @@ mod tests {
             first_usable(found, |_, _| Err(Error::NotTheProgram("x"))),
             None
         );
+    }
+
+    /// A computer's Node.js past its line's end of life is passed over for MDM's own; one still
+    /// supported, or of a line newer than this MDM knows, is used.
+    #[test]
+    fn node_past_its_end_of_life_is_passed_over() {
+        assert_eq!(days(1970, 1, 1), 0);
+        assert_eq!(days(2026, 11, 1), 20_758);
+        let nov_2026 = days(2026, 11, 1);
+        let v = |s: &str| Some(Some(s.to_owned()));
+        assert_eq!(
+            judge(Kind::Node, v("24.19.0"), nov_2026)
+                .unwrap()
+                .as_deref(),
+            Some("24.19.0")
+        );
+        assert_eq!(
+            judge(Kind::Node, v("22.23.5"), nov_2026)
+                .unwrap()
+                .as_deref(),
+            Some("22.23.5")
+        );
+        assert!(judge(Kind::Node, v("22.23.5"), days(2027, 5, 1)).is_err());
+        assert!(matches!(
+            judge(Kind::Node, v("25.9.0"), nov_2026),
+            Err(Error::TooOld {
+                oldest: "26.0.0",
+                ..
+            })
+        ));
+        assert!(
+            judge(Kind::Node, v("20.18.1"), nov_2026).is_err(),
+            "too old for yt-dlp"
+        );
+        assert!(judge(Kind::Node, v("30.1.0"), nov_2026).is_ok());
+        assert!(judge(Kind::Node, None, nov_2026).is_err(), "didn't answer");
+        // Deno has no such schedule here.
+        assert!(judge(Kind::Deno, v("2.5.6"), days(2035, 1, 1)).is_ok());
+    }
+
+    /// MDM's own copy counts only in a version yt-dlp can use.
+    #[test]
+    fn mdms_own_copy_too_old_is_not_used() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path().join("node");
+        let exe = root
+            .join("20.18.1")
+            .join(format!("node{}", std::env::consts::EXE_SUFFIX));
+        std::fs::create_dir_all(exe.parent().unwrap()).unwrap();
+        std::fs::write(&exe, b"x").unwrap();
+        crate::make_current(
+            &root,
+            Installed {
+                version: "20.18.1".into(),
+                exe,
+            },
+        )
+        .unwrap();
+        assert_eq!(own(dir.path()), None);
+    }
+
+    /// A Deno MDM installed that the person then chose as their runtime stays.
+    #[test]
+    fn a_chosen_deno_in_mdms_folder_is_not_removed() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let put = |tool: &str, version: &str, program: &str| {
+            let root = d.join(tool);
+            let exe = root
+                .join(version)
+                .join(format!("{program}{}", std::env::consts::EXE_SUFFIX));
+            std::fs::create_dir_all(exe.parent().unwrap()).unwrap();
+            std::fs::write(&exe, b"x").unwrap();
+            crate::make_current(
+                &root,
+                Installed {
+                    version: version.into(),
+                    exe,
+                },
+            )
+            .unwrap()
+        };
+        let deno = put("deno", "2.5.0", "deno");
+        put("node", "26.13.1", "node");
+        crate::chosen::choose_runtime(
+            d,
+            crate::chosen::ChosenRuntime {
+                kind: "deno".into(),
+                version: "2.5.0".into(),
+                exe: deno.exe.clone(),
+            },
+        )
+        .unwrap();
+        assert!(!retire_deno(d));
+        assert!(deno.exe.is_file());
+        forget(d).unwrap();
+        assert!(retire_deno(d));
+        assert!(!deno.exe.exists());
+    }
+
+    /// Told without running anything: a chosen runtime, or MDM's own when the computer has no
+    /// runtime the folders show.
+    #[test]
+    fn the_runtime_is_told_without_asking_when_it_can() {
+        let dir = tempfile::tempdir().unwrap();
+        let before = probes();
+        let mine = dir.path().join("mine-node");
+        std::fs::write(&mine, b"x").unwrap();
+        crate::chosen::choose_runtime(
+            dir.path(),
+            crate::chosen::ChosenRuntime {
+                kind: "node".into(),
+                version: "24.11.0".into(),
+                exe: mine.clone(),
+            },
+        )
+        .unwrap();
+        let now = current_now(Some(dir.path()), None).unwrap().unwrap();
+        assert_eq!((now.exe, now.from), (mine, Origin::Chosen));
+        assert_eq!(probes(), before);
     }
 
     /// MDM's own: its Node.js, else the Deno an earlier version installed; once Node.js is in

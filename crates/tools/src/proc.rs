@@ -1138,8 +1138,16 @@ pub fn system_js_runtimes(ytdlp: Option<&Path>) -> Vec<(crate::jsruntime::Kind, 
 /// The arguments that tell the yt-dlp at `exe` of its JavaScript runtime (`jsruntime::current`:
 /// the person's choice, the computer's own, MDM's own), when there is one. Read at each run, so
 /// the one Helpers just installed or chose is used from the next look-up on.
-fn js_runtime_found(exe: &Path) -> Option<Vec<String>> {
-    crate::jsruntime::current(crate::tools_dir().as_deref(), Some(exe)).map(|r| r.args())
+fn js_runtime_found(exe: &Path) -> Option<Vec<std::ffi::OsString>> {
+    let dir = crate::tools_dir();
+    // This crate's tests build yt-dlp's commands by the hundred, in parallel: they don't run
+    // the test computer's own Node.js or Deno for it (what they'd find depends on that
+    // computer; `jsruntime`'s own tests check the choice), only what is known without asking.
+    #[cfg(test)]
+    let found = crate::jsruntime::current_now(dir.as_deref(), Some(exe)).flatten();
+    #[cfg(not(test))]
+    let found = crate::jsruntime::current(dir.as_deref(), Some(exe));
+    found.map(|r| r.args())
 }
 
 /// The first yt-dlp that has `--js-runtimes` (2025.11.12, when YouTube came to need a
@@ -1197,17 +1205,18 @@ fn takes_js_runtimes(exe: &Path) -> bool {
 
 /// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it and knows how to
 /// hear it ([`takes_js_runtimes`]). Said in MDM's log each time it changes.
-fn js_runtime_args(exe: &Path) -> Vec<String> {
+fn js_runtime_args(exe: &Path) -> Vec<std::ffi::OsString> {
     let args = js_runtime_found(exe).unwrap_or_default();
     if args.is_empty() || !takes_js_runtimes(exe) {
         return Vec::new();
     }
-    static SAID: Mutex<Vec<String>> = Mutex::new(Vec::new());
+    static SAID: Mutex<Vec<std::ffi::OsString>> = Mutex::new(Vec::new());
     let mut said = SAID
         .lock()
         .unwrap_or_else(std::sync::PoisonError::into_inner);
     if *said != args {
-        tracing::info!("yt-dlp's JavaScript runtime: {}", args.join(" "));
+        let shown: Vec<_> = args.iter().map(|a| a.to_string_lossy()).collect();
+        tracing::info!("yt-dlp's JavaScript runtime: {}", shown.join(" "));
         said.clone_from(&args);
     }
     args
@@ -2160,9 +2169,17 @@ mod tests {
         );
     }
 
+    /// Held by the tests that set the settings' proxy, or build commands assuming there is none:
+    /// it is one setting for the whole program, and the tests run at the same time.
+    static GLOBAL_PROXY: Mutex<()> = Mutex::new(());
+
     /// #363, the wiring: the setting reaches a real command line.
     #[test]
     fn yt_dlp_runs_through_the_settings_proxy() {
+        // The settings' proxy is global (`set_proxy`): one test sets it, others assume none.
+        let _proxy = GLOBAL_PROXY
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         use mdm_engine::Proxy;
         let url = "https://www.youtube.com/watch?v=x";
         let exe = std::path::Path::new("yt-dlp");
@@ -2829,6 +2846,10 @@ foreach ($d in $env:PATH.Split(';')) {
 
     #[test]
     fn fixed_arguments_come_last_and_the_url_after_the_separator() {
+        // The settings' proxy is global (`set_proxy`): one test sets it, others assume none.
+        let _proxy = GLOBAL_PROXY
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         let cmd = ytdlp(
             Path::new("yt-dlp"),
             &["--user".into()],
@@ -2920,6 +2941,10 @@ foreach ($d in $env:PATH.Split(';')) {
     /// it tries a format with there, and Windows refused it.
     #[test]
     fn the_helpers_commands_start_in_the_helpers_folder() {
+        // The settings' proxy is global (`set_proxy`): one test sets it, others assume none.
+        let _proxy = GLOBAL_PROXY
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         let dir = crate::workdir::folders()
             .dir
             .clone()

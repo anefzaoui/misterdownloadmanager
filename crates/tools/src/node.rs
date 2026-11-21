@@ -63,7 +63,16 @@ pub struct Build {
     platform: &'static str,
     /// The archive's extension.
     ext: &'static str,
+    /// The oldest release taken for it ([`OLDEST`]).
+    oldest: &'static str,
 }
+
+/// The oldest Node.js release MDM installs, whatever nodejs.org's list says (the list itself isn't
+/// signed; each release's checksums are, older ones too): the newest LTS line when this MDM was
+/// made (26, "Lithium"). 32-bit Windows: 22, the newest line still built for it (supported until
+/// April 2027).
+const OLDEST: &str = "26.0.0";
+const OLDEST_WIN_X86: &str = "22.0.0";
 
 /// Node.js's build for this system and processor; None where nodejs.org has none MDM takes
 /// (other processors; Linux with musl isn't told apart yet, and gets the glibc build).
@@ -88,10 +97,16 @@ fn build_for(os: &str, arch: &str) -> Option<Build> {
         ("linux", "aarch64") => ("linux-arm64", "linux-arm64", "tar.gz"),
         _ => return None,
     };
+    let oldest = if platform == "win-x86" {
+        OLDEST_WIN_X86
+    } else {
+        OLDEST
+    };
     Some(Build {
         listed,
         platform,
         ext,
+        oldest,
     })
 }
 
@@ -124,7 +139,9 @@ struct Listed {
 }
 
 /// The newest LTS release in `index` (nodejs.org's `index.json`, newest first) with a `build`:
-/// its version, without the `v` (`26.13.1`). A version that isn't plain numbers is passed over.
+/// its version, without the `v` (`26.13.1`). A version that isn't plain numbers is passed over,
+/// and so is one older than the build's oldest ([`OLDEST`]): the list isn't signed, so it can't
+/// steer MDM to an old (signed) release.
 fn newest_lts(index: &[u8], build: &Build) -> Result<String, Error> {
     let list: Vec<Listed> =
         serde_json::from_slice(index).map_err(|e| Error::BadRelease(format!("index.json: {e}")))?;
@@ -137,7 +154,8 @@ fn newest_lts(index: &[u8], build: &Build) -> Result<String, Error> {
         let Some(v) = r.version.strip_prefix('v') else {
             continue;
         };
-        if !lts || !plain_version(v) || !r.files.iter().any(|f| f == build.listed) {
+        let recent = v == build.oldest || newer(v, build.oldest);
+        if !lts || !plain_version(v) || !recent || !r.files.iter().any(|f| f == build.listed) {
             continue;
         }
         if best.as_deref().is_none_or(|b| newer(v, b)) {
@@ -163,7 +181,7 @@ fn program() -> String {
 
 /// MDM's own Node.js in the tools folder `dir` (`dir/node/current.json`), if any and still there.
 pub fn installed(dir: &Path) -> Option<Installed> {
-    crate::autoupdate::current_in(&dir.join("node"))
+    crate::autoupdate::current_in(&dir.join("node")).filter(|i| i.exe.starts_with(dir.join("node")))
 }
 
 /// Install Node.js's newest LTS release into `dir` unless the installed one is as new, the archive
@@ -439,6 +457,13 @@ mod tests {
             )
             .is_some()
         );
+        // An old release, however listed, is never picked: a list naming only 18 or 24 for
+        // 64-bit Windows offers nothing; 32-bit Windows takes nothing older than 22.
+        let old =
+            br#"[{"version":"v18.20.8","lts":"Hydrogen","files":["win-x64-zip","win-x86-zip"]},
+                       {"version":"v24.22.3","lts":"Krypton","files":["win-x64-zip"]}]"#;
+        assert!(newest_lts(old, &win).is_err());
+        assert!(newest_lts(old, &x86).is_err());
         // Not a list, or none with this build.
         assert!(newest_lts(b"<html>", &win).is_err());
         assert!(
@@ -449,9 +474,9 @@ mod tests {
             .is_err()
         );
         // A version that could be a path is never picked.
-        let odd = br#"[{"version":"v1.2.3/../x","lts":"A","files":["win-x64-zip"]},
-                       {"version":"v20.1.0","lts":"Iron","files":["win-x64-zip"]}]"#;
-        assert_eq!(newest_lts(odd, &win).unwrap(), "20.1.0");
+        let odd = br#"[{"version":"v99.2.3/../x","lts":"A","files":["win-x64-zip"]},
+                       {"version":"v26.1.0","lts":"Lithium","files":["win-x64-zip"]}]"#;
+        assert_eq!(newest_lts(odd, &win).unwrap(), "26.1.0");
     }
 
     #[test]
@@ -669,10 +694,9 @@ mod tests {
             ),
         )
         .unwrap();
-        let older = install_from(dir.path(), &net, None, None, &source(good))
-            .await
-            .unwrap();
-        assert!(older.settled.is_none());
+        // An older LTS listed: below the oldest MDM takes, so nothing is offered at all.
+        let older = install_from(dir.path(), &net, None, None, &source(good)).await;
+        assert!(matches!(older, Err(Error::Missing(_))), "{older:?}");
         assert_eq!(installed(dir.path()), Some(got));
     }
 }

@@ -39,8 +39,54 @@ pub struct Helpers {
     /// Once Yes was pressed.
     job: Option<Job>,
     /// Node.js is offered too: the computer has no JavaScript runtime yt-dlp can use, and MDM
-    /// has a Node.js for it. Decided when the window opens, so its layout doesn't move.
+    /// has a Node.js for it. What can be told without running anything when the window opens
+    /// (`jsruntime::current_now`); when a runtime on the computer must first be asked for its
+    /// version, that is done off the window's thread ([`RuntimeProbe`]) and the section comes
+    /// (or not) when it answers, before Yes.
     node: bool,
+    /// The runtime lookup waiting for an answer.
+    probe: RuntimeProbe,
+}
+
+/// A look for the JavaScript runtime yt-dlp would use (`jsruntime::current`), which may run the
+/// computer's runtimes (`--version`, up to 20 s each): on a thread of its own, started from a
+/// window's `show` (never when the window is made), its answer read back on a later frame.
+#[derive(Default)]
+struct RuntimeProbe {
+    /// It needs doing.
+    wanted: bool,
+    /// Its answer, once there.
+    slot: Option<Arc<Mutex<Option<Option<mdm_tools::jsruntime::Runtime>>>>>,
+}
+
+impl RuntimeProbe {
+    /// Start it, if wanted and not started yet.
+    fn start(
+        &mut self,
+        dir: Option<std::path::PathBuf>,
+        ytdlp: Option<std::path::PathBuf>,
+        ctx: &egui::Context,
+    ) {
+        if !self.wanted || self.slot.is_some() {
+            return;
+        }
+        let slot = Arc::new(Mutex::new(None));
+        let (out, wake) = (slot.clone(), ctx.clone());
+        std::thread::spawn(move || {
+            let found = mdm_tools::jsruntime::current(dir.as_deref(), ytdlp.as_deref());
+            *out.lock().unwrap() = Some(found);
+            wake.request_repaint();
+        });
+        self.slot = Some(slot);
+    }
+
+    /// Its answer, once (then it is done).
+    fn answer(&mut self) -> Option<Option<mdm_tools::jsruntime::Runtime>> {
+        let found = self.slot.as_ref()?.lock().unwrap().take()?;
+        self.wanted = false;
+        self.slot = None;
+        Some(found)
+    }
 }
 
 /// Whether to offer the helpers at this start: never asked, and one of them is missing (ffmpeg
@@ -54,17 +100,31 @@ pub fn worth_asking() -> bool {
 }
 
 impl Helpers {
+    /// Runs no program: a runtime that must be asked is asked from `show`, off its thread.
     pub fn new() -> Self {
-        let dir = mdm_tools::tools_dir();
+        Self::with_dir(mdm_tools::tools_dir())
+    }
+
+    /// [`Helpers::new`] for the tools folder `dir`.
+    fn with_dir(dir: Option<std::path::PathBuf>) -> Self {
+        let mut probe = RuntimeProbe::default();
         let node = mdm_tools::jsruntime::available()
             && dir.as_deref().is_some_and(|d| {
                 let ytdlp = mdm_tools::installed(d).map(|i| i.exe);
-                mdm_tools::jsruntime::current(Some(d), ytdlp.as_deref()).is_none()
+                match mdm_tools::jsruntime::current_now(Some(d), ytdlp.as_deref()) {
+                    Some(found) => found.is_none(),
+                    // A runtime is there, to be asked: none offered until it answers.
+                    None => {
+                        probe.wanted = true;
+                        false
+                    }
+                }
             });
         Helpers {
             dir,
             job: None,
             node,
+            probe,
         }
     }
 
@@ -139,6 +199,19 @@ impl Helpers {
     /// Open while shown (after Yes too, with the downloads' progress); Closed on Not now, Close
     /// or the window's X.
     pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<()> {
+        // The computer's runtime, asked off this thread: Node.js offered if none will do (only
+        // before Yes, so the downloads' list stays as it was shown).
+        let ytdlp = self
+            .dir
+            .as_deref()
+            .and_then(mdm_tools::installed)
+            .map(|i| i.exe);
+        self.probe.start(self.dir.clone(), ytdlp, ctx);
+        if let Some(found) = self.probe.answer()
+            && self.job.is_none()
+        {
+            self.node = mdm_tools::jsruntime::available() && found.is_none();
+        }
         let (running, failed) = match &self.job {
             Some(job) => {
                 let s = job.state.lock().unwrap();
@@ -536,8 +609,10 @@ pub struct Programs {
     dir: Option<std::path::PathBuf>,
     /// The helpers as found (read again after each change, not every frame: it reads files).
     found: [Option<mdm_tools::Installed>; 3],
-    /// The JavaScript runtime yt-dlp uses (`jsruntime::current`), read with `found`.
+    /// The JavaScript runtime yt-dlp uses (`jsruntime::current`), read with `found`: at once when
+    /// that runs nothing (`current_now`), else from `probe`, off the window's thread.
     runtime: Option<mdm_tools::jsruntime::Runtime>,
+    probe: RuntimeProbe,
     /// MDM's own copy of each tool (`Tool::ALL`'s order) as its updates stand, read with `found`.
     own: [Own; 4],
     /// The update state (`<tools>/updates.json`), read with `found`.
@@ -587,8 +662,14 @@ type Answer = Arc<Mutex<Option<Result<(), String>>>>;
 
 impl Programs {
     pub fn new() -> Self {
+        Self::with_dir(mdm_tools::tools_dir())
+    }
+
+    /// [`Programs::new`] for the tools folder `dir`; runs no program (the runtime, when the
+    /// computer's must be asked, is asked from `show`, off the window's thread).
+    fn with_dir(dir: Option<std::path::PathBuf>) -> Self {
         let mut p = Programs {
-            dir: mdm_tools::tools_dir(),
+            dir,
             found: [None, None, None],
             runtime: None,
             own: Default::default(),
@@ -600,6 +681,7 @@ impl Programs {
             checking_runtime: None,
             updating: None,
             error: None,
+            probe: RuntimeProbe::default(),
         };
         p.look();
         p
@@ -616,7 +698,19 @@ impl Programs {
             mdm_tools::gallery::installed(dir),
         ];
         let ytdlp = self.found[0].as_ref().map(|i| i.exe.as_path());
-        self.runtime = mdm_tools::jsruntime::current(Some(dir), ytdlp);
+        match mdm_tools::jsruntime::current_now(Some(dir), ytdlp) {
+            Some(found) => {
+                self.runtime = found;
+                self.probe = RuntimeProbe::default();
+            }
+            // Asked from `show`, off the window's thread; the row says it is looking meanwhile.
+            None => {
+                self.probe = RuntimeProbe {
+                    wanted: true,
+                    slot: None,
+                };
+            }
+        }
         self.updates = mdm_tools::autoupdate::read(dir);
         for t in Tool::ALL {
             use mdm_tools::autoupdate as au;
@@ -756,6 +850,12 @@ impl Programs {
 
     /// Open until Close.
     pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<()> {
+        // The runtime, when the computer's must be asked: off this thread.
+        let ytdlp = self.found[0].as_ref().map(|i| i.exe.clone());
+        self.probe.start(self.dir.clone(), ytdlp, ctx);
+        if let Some(found) = self.probe.answer() {
+            self.runtime = found;
+        }
         let answered = self
             .checking
             .as_ref()
@@ -1323,8 +1423,12 @@ impl Programs {
             Some(v) => format!("{} {v}", r.kind.label()),
             None => r.kind.label().to_owned(),
         };
+        let looking = self.probe.wanted;
         let status = if self.installing_runtime.is_some() {
             crate::i18n::t("Downloading MDM's own copy...").to_owned()
+        } else if looking {
+            // i18n: Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
+            crate::i18n::t("Looking for a JavaScript runtime on this computer...").to_owned()
         } else if self.checking_runtime.is_some() {
             crate::i18n::t("Checking the program...").to_owned()
         } else if let Some(r) = &runtime {
@@ -1385,7 +1489,7 @@ impl Programs {
                 && runtime
                     .as_ref()
                     .is_none_or(|r| r.from == Origin::Own && r.kind != Kind::Node));
-        let busy = self.busy();
+        let busy = self.busy() || looking;
         let [other_at, own_at] = winui::button_row_from_left(
             p,
             &[
@@ -1440,8 +1544,10 @@ impl Programs {
                     .err()
                     .map(|e| crate::errors::tools(&e));
                 self.look();
-                // Nothing found once the choice is gone: MDM's own is downloaded.
-                if self.runtime.is_none() && available {
+                // Nothing found once the choice is gone: MDM's own is downloaded (once the
+                // computer's runtimes, if they must be asked, have answered: Use MDM's own copy
+                // again then).
+                if self.runtime.is_none() && !self.probe.wanted && available {
                     self.install_runtime(dir, rt, ui.ctx());
                 }
             } else {
@@ -1506,5 +1612,30 @@ impl Keeper {
             }
             running.store(false, Ordering::Release);
         });
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Opening the first start's window or Helpers runs no program on the window's thread: a
+    /// runtime on the computer that must be asked for its version is asked from `show`, on a
+    /// thread of its own. (A runtime chosen in the tools folder, the one case told at once, is
+    /// read from its file.)
+    #[test]
+    fn opening_the_helpers_windows_runs_no_program() {
+        let dir = tempfile::tempdir().unwrap();
+        let tools = dir.path().join("tools");
+        std::fs::create_dir_all(&tools).unwrap();
+        let before = mdm_tools::jsruntime::probes();
+        let first = Helpers::with_dir(Some(tools.clone()));
+        let helpers = Programs::with_dir(Some(tools.clone()));
+        assert_eq!(mdm_tools::jsruntime::probes(), before);
+        // Whatever this computer has, it is either known now or left to the probe.
+        assert!(first.probe.slot.is_none() && helpers.probe.slot.is_none());
+        if helpers.probe.wanted {
+            assert_eq!(helpers.runtime, None);
+        }
     }
 }
