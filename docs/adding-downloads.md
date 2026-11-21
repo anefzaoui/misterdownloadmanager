@@ -29,7 +29,8 @@ same progress window.
 - `ftps://` — implicit FTPS, port 990 unless the address gives another.
 
 The server's certificate is checked against Windows' (or the system's) trusted certificates, as
-for `https://`. A Linux system without them (a minimal install without the `ca-certificates`
+for `https://`, and against Mozilla's, the ones Firefox carries, where the system lacks the root
+a server's certificate comes from (an older Windows that hasn't fetched it yet). A Linux system without them (a minimal install without the `ca-certificates`
 package) still downloads over plain HTTP and FTP; each secure download then fails at once, saying
 to install that package.
 

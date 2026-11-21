@@ -64,8 +64,8 @@ pub fn whole_seconds(length: Option<f64>) -> Option<u32> {
 enum Tool {
     YtDlp,
     Ffmpeg,
-    /// The JavaScript runtime YouTube needs (#1448, #1470).
-    Deno,
+    /// The JavaScript runtime YouTube needs (#1448, #1470): MDM's own Node.js (#1570).
+    JsRuntime,
 }
 
 impl Tool {
@@ -74,7 +74,7 @@ impl Tool {
         match self {
             Tool::YtDlp => "yt-dlp",
             Tool::Ffmpeg => "ffmpeg",
-            Tool::Deno => "Deno",
+            Tool::JsRuntime => "Node.js",
         }
     }
 }
@@ -424,7 +424,7 @@ impl VideoDialog {
                 }
                 // With a JavaScript runtime YouTube lists its qualities: the page is looked up
                 // again (#1448).
-                Ok(_) if tool == Tool::Deno => self.auto_look = true,
+                Ok(_) if tool == Tool::JsRuntime => self.auto_look = true,
                 // With ffmpeg the qualities that need merging appear.
                 Ok(_) if tool == Tool::Ffmpeg => {
                     if let Some((v, _)) = self.video.take() {
@@ -595,7 +595,7 @@ impl VideoDialog {
             let res = match tool {
                 Tool::YtDlp => mdm_tools::install_latest(&dir, &net, None).await,
                 Tool::Ffmpeg => mdm_tools::ffmpeg::install_latest(&dir, &net, None).await,
-                Tool::Deno => mdm_tools::deno::install_latest(&dir, &net, None).await,
+                Tool::JsRuntime => mdm_tools::jsruntime::install_latest(&dir, &net, None).await,
             };
             let name = tool.name();
             // What failed and what to do (#816): wrapped in the empty list below.
@@ -699,22 +699,22 @@ impl VideoDialog {
                     "Video lookups use yt-dlp (about 23 MB, checked against its signature).",
                 ),
             )),
-            // #1448, #1470: YouTube said yt-dlp had no JavaScript runtime, and MDM has a Deno of
-            // its own to offer for this system (looked up again once it is installed). Before
-            // ffmpeg: the line says what's missing is the runtime, and without one YouTube may
-            // list nothing ffmpeg could join.
+            // #1448, #1470, #1570: YouTube said yt-dlp had no JavaScript runtime, and MDM has a
+            // Node.js of its own to offer for this system (looked up again once it is installed).
+            // Before ffmpeg: the line says what's missing is the runtime, and without one YouTube
+            // may list nothing ffmpeg could join.
             (Some(_), _)
                 if runtime_note
-                    && mdm_tools::deno::available()
+                    && mdm_tools::jsruntime::available()
                     && dir
                         .as_deref()
-                        .and_then(mdm_tools::deno::installed)
+                        .and_then(mdm_tools::node::installed)
                         .is_none() =>
             {
                 Some((
-                    Tool::Deno,
-                    // i18n: button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
-                    crate::i18n::mark("Install Deno"),
+                    Tool::JsRuntime,
+                    // i18n: button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+                    crate::i18n::mark("Install Node.js"),
                     js_runtime_note(),
                 ))
             }
@@ -768,8 +768,10 @@ impl VideoDialog {
             let msg = match t {
                 Tool::YtDlp => crate::i18n::t("Downloading and verifying yt-dlp..."),
                 Tool::Ffmpeg => crate::i18n::t("Downloading and verifying ffmpeg (about 80 MB)..."),
-                // i18n: in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
-                Tool::Deno => crate::i18n::t("Downloading and verifying Deno (about 40 MB)..."),
+                // i18n: in Download video: MDM downloads Node.js (a program's name) and checks it against its signed checksums
+                Tool::JsRuntime => {
+                    crate::i18n::t("Downloading and verifying Node.js (40 to 60 MB)...")
+                }
             };
             text(&p, o.x + 31.0, line_y, msg, winui::TEXT());
         } else if self.lookup.is_some() {

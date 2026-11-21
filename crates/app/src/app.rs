@@ -1517,6 +1517,9 @@ pub struct App {
     last_find: Option<crate::find::Query>,
     /// A message with OK: its window title and message: "Cannot find …", an export that failed…
     notice: Option<(&'static str, String)>,
+    /// The first private-window download came (#1581): the notice saying they are kept, and
+    /// where to turn that off, waits for the message window to be free (`App::private_added`).
+    private_notice: bool,
     file_confirmation: Option<dialogs::Confirmation>,
     /// The list files Import is reading, beside the window (#805).
     importing: crate::transfer::Importing,
@@ -2264,6 +2267,7 @@ impl App {
             find: None,
             last_find: None,
             notice: None,
+            private_notice: false,
             file_confirmation: None,
             importing: Default::default(),
             save_failed: None,
@@ -2629,6 +2633,10 @@ impl App {
                 .then(|| self.limit_of(it, running))
                 .flatten()
                 .map(model::Limit::tip),
+            // A private window's (#1581): marked, and whether the list keeps it.
+            private: it
+                .private_mark(self.settings.keep_private_downloads)
+                .map(|m| m.tip().to_owned()),
         }
     }
 
@@ -2946,10 +2954,58 @@ impl App {
         // The page it was started from (#607), whole: Refresh download address opens it.
         item.page = context.page_url.clone().filter(|p| !p.is_empty());
         item.private_window = context.private;
+        let private = context.private;
         item.context = context;
         self.items.push(item);
         self.dirty = true;
+        if private {
+            self.private_added(id);
+        }
         id
+    }
+
+    /// Download `id` came from a private (incognito) window (#1581): one line in the log, with
+    /// neither its name nor its address, saying whether the list keeps it; and the first time
+    /// one comes, a notice that they are kept and where that is turned off (once: the flag is
+    /// saved with the settings). Unticked, the user chose it in Options: no notice.
+    fn private_added(&mut self, id: u64) {
+        let kept = self.settings.keep_private_downloads;
+        tracing::info!(
+            "download {id} from a private window: {}",
+            if kept { "kept" } else { "memory only" }
+        );
+        if !self.settings.private_notice_shown {
+            self.settings.private_notice_shown = true;
+            // A server (#157) has no screen to say it on.
+            self.private_notice = kept && !self.headless;
+        }
+    }
+
+    /// The first private-window download's notice (#1581, [`Self::private_added`]): shown
+    /// once the message window is free.
+    fn show_private_notice(&mut self) {
+        if !self.private_notice || self.notice.is_some() {
+            return;
+        }
+        self.private_notice = false;
+        self.notice = Some((
+            // i18n: title of the notice shown once, the first time a download comes from a browser's private (incognito) window
+            crate::i18n::mark("Private-window downloads"),
+            crate::i18n::fmt(
+                // i18n: the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
+                crate::i18n::t(
+                    "Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.",
+                ),
+                &[
+                    ("options", crate::i18n::t("Options")),
+                    ("general", crate::i18n::t("General")),
+                    (
+                        "checkbox",
+                        crate::i18n::t("Keep private-window downloads in the list"),
+                    ),
+                ],
+            ),
+        ));
     }
 
     /// Download `id` skips the debrid accounts, or goes through them again (#44).
@@ -13219,6 +13275,7 @@ impl App {
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));
         }
+        self.show_private_notice();
         crate::crash::step(crate::crash::Step::Limits);
         self.apply_global_limit();
         // MDM's own helpers kept up to date (#1544), a server's too (its image doesn't hold them).
@@ -16881,6 +16938,60 @@ mod fresh_address_tests {
         );
         assert_eq!(get(&app, 1).url, old);
         assert!(get(&app, 1).private_window);
+    }
+
+    /// #1581: a private window's download is marked in the list (kept, by default), and the
+    /// first one brings the notice that says so, once: the flag is saved with the settings.
+    #[test]
+    fn a_private_windows_download_is_marked_and_noticed_once() {
+        let rt = runtime();
+        let ctx = egui::Context::default();
+        let private = |n: u32| ipc::Command {
+            private: true,
+            ..browser(&format!("http://127.0.0.1:9/p{n}/data.bin"), SIZE, 9)
+        };
+        let mut app = app_with(rt, vec![]);
+        assert!(app.settings.keep_private_downloads && !app.settings.private_notice_shown);
+        app.handle_command(browser("http://127.0.0.1:9/n/data.bin", SIZE, 9), &ctx);
+        assert!(
+            !app.private_notice && !app.settings.private_notice_shown,
+            "a normal one"
+        );
+        app.handle_command(private(1), &ctx);
+        assert_eq!(app.items.len(), 2);
+        assert!(app.settings.private_notice_shown && app.private_notice);
+        app.show_private_notice();
+        assert!(!app.private_notice);
+        let (title, text) = app.notice.take().expect("the notice");
+        assert_eq!(title, "Private-window downloads");
+        assert!(
+            text.contains("Keep private-window downloads in the list"),
+            "{text}"
+        );
+        // The second one: no notice again.
+        app.handle_command(private(2), &ctx);
+        assert!(!app.private_notice);
+        app.show_private_notice();
+        assert!(app.notice.is_none());
+        // The rows' marks: none on the normal one, kept on the private ones.
+        let none = std::collections::HashSet::new();
+        let marks: Vec<Option<String>> = app
+            .items
+            .iter()
+            .map(|i| app.row(i, &none, 0).private)
+            .collect();
+        let kept = Some(model::PrivateMark::Kept.tip().to_owned());
+        assert_eq!(marks, [None, kept.clone(), kept]);
+        // Unticked: in memory only, said so, and no notice (the user chose it in Options).
+        let mut app = app_with(rt, vec![]);
+        app.settings.keep_private_downloads = false;
+        app.handle_command(private(3), &ctx);
+        assert!(!app.private_notice);
+        let it = &app.items[0];
+        assert_eq!(
+            app.row(it, &none, 0).private.as_deref(),
+            Some(model::PrivateMark::MemoryOnly.tip())
+        );
     }
 }
 

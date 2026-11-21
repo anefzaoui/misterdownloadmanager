@@ -310,8 +310,17 @@ pub struct Settings {
     pub close_to_tray: bool,
     /// General: a private (incognito) window's downloads are written to the saved list like any
     /// other, so they survive MDM closing or restarting (their cookies stay in memory, as every
-    /// download's do). Off by default: they live in memory only, as the browser keeps them.
+    /// download's do); unticked, they live in memory only, as the browser keeps them. On by
+    /// default (#1581: a finished download that left the list a day later looked lost). Saved
+    /// as `keep_private_list`: the lists before #1581 saved `keep_private_downloads: false`,
+    /// the default then, unticked and never looked at alike, so a list that has no
+    /// `keep_private_list` (every list before it) gets the new default, and a choice made from
+    /// then on is kept.
+    #[serde(rename = "keep_private_list")]
     pub keep_private_downloads: bool,
+    /// The first private-window download has come (#1581): the notice that says they are kept,
+    /// and where to turn that off, was shown, once (`App::private_added`).
+    pub private_notice_shown: bool,
     /// General (#558): global keyboard shortcut to show or hide the main window (e.g. `Cmd+U`,
     /// `Shift+Cmd+M`, `Ctrl+Alt+D`); empty when none is set.
     #[serde(default)]
@@ -614,7 +623,8 @@ impl Default for Settings {
             clipboard_autostart: true,
             minimize_to_tray: true,
             close_to_tray: true,
-            keep_private_downloads: false,
+            keep_private_downloads: true,
+            private_notice_shown: false,
             show_hide_hotkey: String::new(),
             mv2_extensions: true,
             advanced_integration: true,
@@ -1597,6 +1607,41 @@ mod tests {
             assert_eq!(r.takes_torrents(), on);
             assert_eq!(r.capture_min_kb, 7);
         }
+    }
+
+    /// #1581: private-window downloads are kept in the list by default, for a new list and for
+    /// every list that never chose (before #1581 the unticked default was saved as
+    /// `keep_private_downloads: false`, which says nothing); a choice saved since is kept.
+    #[test]
+    fn private_window_downloads_are_kept_unless_the_user_unticked_it() {
+        let read = |json: serde_json::Value| serde_json::from_value::<Settings>(json).unwrap();
+        assert!(Settings::default().keep_private_downloads, "on by default");
+        assert!(!Settings::default().private_notice_shown);
+        // A list from 0.5.2 or before (no such key) and one from a build between #1364 and
+        // #1581 (its saved default): on.
+        assert!(read(serde_json::json!({})).keep_private_downloads);
+        assert!(read(serde_json::json!({"keep_private_downloads": false})).keep_private_downloads);
+        assert!(read(serde_json::json!({"keep_private_downloads": true})).keep_private_downloads);
+        // Unticked (or ticked) since: as chosen, through a save and a read again.
+        for on in [false, true] {
+            let s = Settings {
+                keep_private_downloads: on,
+                ..Settings::default()
+            };
+            let saved = serde_json::to_value(&s).unwrap();
+            assert_eq!(saved["keep_private_list"], on);
+            assert!(saved.get("keep_private_downloads").is_none());
+            assert_eq!(read(saved).keep_private_downloads, on);
+            // Even beside the old key an earlier build left in the file.
+            let both = serde_json::json!({"keep_private_list": on, "keep_private_downloads": !on});
+            assert_eq!(read(both).keep_private_downloads, on);
+        }
+        // The notice's flag is kept once set.
+        let s = Settings {
+            private_notice_shown: true,
+            ..Settings::default()
+        };
+        assert!(read(serde_json::to_value(&s).unwrap()).private_notice_shown);
     }
 
     /// #1058: Torrent settings' switch is settled once, as the user chose it.

@@ -622,6 +622,7 @@
 #, machine
 	Asking the service...	ᎠᏎᏍᏙᏗ ᏓᏓᏛᏛᏂ...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -968,7 +969,8 @@
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 #, machine
 	Choose the profile's folder	ᎢᏯᏍᎦᏅᏅ ᎤᏙᏢᏒ ᎤᏤᎵᎦ ᏗᏟᎶᏍᏔᏅ
-#. text in helpers.rs
+#. text in helpers.rs; text in the Options window
+#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	{name} ᎭᏑᏰᏍ
@@ -1410,11 +1412,6 @@
 #, machine
 	Downloading again from the start	ᏗᏗᏍᎪᏗᏱ ᎢᎬᏱ ᎢᎬᏱ
 #. text in the Download video window
-#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Downloading and verifying Deno (about 40 MB)...	ᎠᎾᏛᏗ ᎠᎴ ᎠᎾᏙᎴᎰᏍᎬ Deno (40 MB ᎢᏴ)...
-#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ᎠᎾᏛᏗ ᎠᎴ ᎠᎾᏙᎴᎰᏍᎬ ffmpeg (80 MB ᎢᏴ)...
@@ -1436,7 +1433,7 @@
 #, machine
 	Downloading the update... {percent}	ᎠᏓᏁᏟᏴᏍᏗ ᏓᎩᎶᏔᏅ... {percent}
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
 	Downloading {name} ({n} of {total})... {percent}	ᎠᎾᏕᎳᎰᏍᏗ {name} ({n} ᎤᎾᏓᏑᏴ {total})... {percent}
@@ -1969,7 +1966,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gambia	ᎦᎻᏈᎠ
-#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
@@ -2228,10 +2225,6 @@
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (ᎠᏕᎳ ᏂᎨᏒᎾ) ᎭᏓᏁᏟᏴᏏ, ᎿᏉᏃ ᎦᏁᎦ-ᎦᎶᎯᏍᏗ ᎭᏓᏁᏟᏴᏏ ᎠᎴ ᎭᏑᏰᏍᏓ ᎦᏄᎪᏫᏍᏗ.
 #. text in the Download video window
-#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
-#, machine
-	Install Deno	Deno ᎢᎬᎾᏗᏍᏗ ᎦᏙᎬᎢ
-#. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ᎦᏴᏍᏗ
@@ -2370,10 +2363,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Japan	ᏣᏩᏂᏏ
-#. text in helpers.rs
-#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
-#, machine
-	JavaScript runtime (Deno)	JavaScript ᎢᎬᎾᏗᏍᏗ ᎦᏙᎬᎢ (Deno)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2399,10 +2388,10 @@
 #, machine
 	KBytes/sec	KB/ᎠᏏᎬᏅ
 #. text in helpers.rs
-#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
 #, machine
 	Keep MDM's helpers up to date automatically	MDM ᎤᏩᏒ ᏗᏍᏕᎵᏍᎩ ᏂᎪᎯᎸ ᏂᏓᏙᏢᏍᎬᎢ
-#. text in the Options window
+#. message or event log entry in the main window; text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 #, machine
 	Keep private-window downloads in the list	ᎤᏕᎵᏛ-መስᎥᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎦᎴᏴᏔᏅ
@@ -2777,10 +2766,6 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	MDM does not answer. Trying again...	MDM ᎥᏝ ᎢᏗᏢ. ᎢᏗᏢ ᎢᏗᏢ...
-#. text in helpers.rs
-#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
-#, machine
-	MDM has no copy for this system: install Deno or Node.js	MDM ᎥᏝ ᏱᏚᎾᏗᏔᏅ ᏗᎦᎪᏔᏅᎢ: Deno ᎢᎬᎾᏗᏍᏗ ᎦᏙᎬᎢ Node.js ᎢᎬᎾᏗᏍᏗ ᎦᏙᎬᎢ
 #. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
@@ -3481,7 +3466,7 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Open with...	ᎤᏍᏚᎢᏍᏗ...
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
 	Options	ᏗᏟᎶᏍᏔᏅ
@@ -5631,8 +5616,9 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	ᎬᏔᏅᎢ ᎦᎸᎳᏗᏢ ᎢᏗᏴᏍᏗ ᎦᎷᎩ ᏗᏙᎳᏤᏗ
-#. text in errors.rs; button in helpers.rs
+#. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	ᏅᏩᏓᎴ ᎢᎬᎾᎯᏍᏗᏍᎩ ᎭᏚᎢᏍᏓ...
@@ -5994,10 +5980,6 @@
 #, machine
 	Your own program: {path} ({version})	ᏂᎯ ᎢᎬᎾᎯᏍᏗᏍᎩ: {path} ({version})
 #. text in helpers.rs
-#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
-#, machine
-	Your system's, nothing to download: {path}	ᏣᏤᎵ ᎢᏗᏴᏔᏅᎢ, ᎥᏝ ᎪᎱᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᏱᎩ: {path}
-#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	ᏂᎯ ᎢᎬᎾᎯᏍᏗᏍᎩ: {path}
@@ -6234,7 +6216,7 @@
 #, machine
 	{name}  ({files}, {size})	{name}  ({files}, {size})
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = yt-dlp, ffmpeg or Node.js; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ᎥᏝ ᏰᎵ ᏯᏕᎳᎰᏍᏗ: {error}
@@ -6244,7 +6226,7 @@
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 7z ᎠᎴ RAR ᏗᎪᏪᎵ ᏚᏓᏟᎶᏔᏅᎢ. MDM ᎾᏍᎩ ᎦᏄᎪᏫᏍᎪᎢ 7-Zip ᎤᏅᏗᏍᎬᎢ, ᎾᏍᎩᏃ ᎥᏝ ᏱᏚᏔᏅ.
 #. text in errors.rs
-#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} ᎿᏉ ᏕᎦᏁᏟᏴᏍᎪᎢ: ᏔᎵᏁ ᎭᏢᎾ

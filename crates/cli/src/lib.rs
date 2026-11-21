@@ -151,10 +151,14 @@ enum Cmd {
         #[arg(long, value_parser = parse_proxy)]
         proxy: Option<Proxy>,
     },
-    /// Install (or update) Deno, the JavaScript runtime yt-dlp needs for YouTube's qualities:
-    /// Deno's official build, checked against its release's SHA-256 (64-bit Windows, Linux and
-    /// macOS). yt-dlp is told of it from then on.
-    InstallDeno {
+    /// Install (or update) MDM's own JavaScript runtime, which yt-dlp needs for YouTube's
+    /// qualities: Node.js's newest LTS official build, checked against its release's checksums
+    /// signed by Node.js's releasers (Windows, Linux and macOS). A runtime already on the
+    /// computer (Deno, Node.js 22 or newer, QuickJS, Bun) or one chosen in Helpers is still used
+    /// first. The Deno earlier versions of MDM installed is removed once Node.js is in place.
+    /// `install-deno` is its earlier name.
+    #[command(alias = "install-deno")]
+    InstallJsRuntime {
         /// The proxy for this run, instead of the app's Options → Proxy / Socks: "none", "system"
         /// (the HTTPS_PROXY / HTTP_PROXY / ALL_PROXY variables, else the system's settings), or
         /// an address: http://host:port, https://, socks5://, socks5h:// (the proxy looks the
@@ -164,7 +168,7 @@ enum Cmd {
         #[arg(long, value_parser = parse_proxy)]
         proxy: Option<Proxy>,
     },
-    /// Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Deno) for newer versions now and
+    /// Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Node.js) for newer versions now and
     /// install them, each checked as its first install was, and print their versions. A helper a
     /// download is using is switched to its new version once that download ends. Programs you
     /// chose in Helpers, and the system's, are yours to update.
@@ -451,6 +455,22 @@ enum Cmd {
         /// up in the shell's history; "-" reads it from standard input instead.
         #[arg(long = "cookie", alias = "cookies")]
         cookie: Option<String>,
+        /// The finished file must have this hash: hex MD5 / SHA-1 / SHA-256 / SHA-512 / CRC32,
+        /// optionally named ("sha256:…").
+        #[arg(long, value_parser = parse_checksum)]
+        checksum: Option<mdm_engine::verify::Hash>,
+        /// The DNS that looks the names up, instead of the app's Options → Connection → DNS:
+        /// "system"; a service and how to ask it, "cloudflare-https", "quad9-tls",
+        /// "google-plain", "adguard-https", "nextdns-tls"; DNS servers' addresses,
+        /// "9.9.9.9,149.112.112.112"; or a DNS-over-HTTPS address,
+        /// "https://dns.example/dns-query". No falling back to the system's DNS.
+        #[arg(long, value_parser = parse_dns)]
+        dns: Option<mdm_engine::DnsChoice>,
+        /// The network adapter every connection goes through (#35): its name ("Ethernet",
+        /// "wg0") or one of its addresses. When it isn't there or has no address, nothing is
+        /// sent and the download fails.
+        #[arg(long)]
+        adapter: Option<String>,
         /// Continue from the address itself, never through a debrid account (see `get`).
         #[arg(long)]
         direct: bool,
@@ -916,6 +936,12 @@ impl Conn {
                 dns,
                 adapter,
                 ..
+            }
+            | Cmd::Resume {
+                proxy,
+                dns,
+                adapter,
+                ..
             } => (proxy, dns.as_ref(), adapter.as_deref()),
             Cmd::GalleryGet { proxy, adapter, .. } | Cmd::VideoGet { proxy, adapter, .. } => {
                 (proxy, None, adapter.as_deref())
@@ -923,11 +949,10 @@ impl Conn {
             Cmd::VideoInfo { proxy, .. }
             | Cmd::PlaylistInfo { proxy, .. }
             | Cmd::PlaylistGet { proxy, .. }
-            | Cmd::Resume { proxy, .. }
             | Cmd::InstallYtdlp { proxy }
             | Cmd::InstallFfmpeg { proxy }
             | Cmd::InstallGalleryDl { proxy }
-            | Cmd::InstallDeno { proxy }
+            | Cmd::InstallJsRuntime { proxy }
             | Cmd::UpdateHelpers { proxy } => (proxy, None, None),
             _ => (&None, None, None),
         };
@@ -1098,7 +1123,7 @@ fn runs_helpers(cmd: &Cmd) -> bool {
             | Cmd::UpdateHelpers { .. }
             | Cmd::InstallFfmpeg { .. }
             | Cmd::InstallGalleryDl { .. }
-            | Cmd::InstallDeno { .. }
+            | Cmd::InstallJsRuntime { .. }
             | Cmd::GalleryGet { .. }
             | Cmd::VideoInfo { .. }
             | Cmd::PlaylistInfo { .. }
@@ -1194,17 +1219,36 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             }
             Ok(())
         }
-        Cmd::InstallDeno { .. } => {
+        Cmd::InstallJsRuntime { .. } => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
-            let i = mdm_tools::deno::install_latest(&dir, &own_net(), None).await?;
+            let i = mdm_tools::jsruntime::install_latest(&dir, &own_net(), None).await?;
+            // What yt-dlp uses: the one just installed, unless one was chosen or found first.
+            let used = mdm_tools::jsruntime::current(Some(dir.as_path()), None);
             if json {
-                emit(json!({ "tool": "deno", "version": i.version, "path": i.exe }));
+                emit(json!({
+                    "tool": "node",
+                    "version": i.version,
+                    "path": i.exe,
+                    "used": used.as_ref().map(|r| json!({
+                        "runtime": r.kind.ytdlp_name(),
+                        "version": r.version,
+                        "path": r.exe,
+                    })),
+                }));
             } else {
                 println!(
-                    "Deno {} verified and installed: {}",
+                    "Node.js {} verified and installed: {}",
                     i.version,
                     i.exe.display()
                 );
+                if let Some(r) = used.filter(|r| r.exe != i.exe) {
+                    println!(
+                        "yt-dlp uses {} {}, found first: {}",
+                        r.kind.label(),
+                        r.version.as_deref().unwrap_or(""),
+                        r.exe.display()
+                    );
+                }
             }
             Ok(())
         }
@@ -1844,17 +1888,20 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             referer,
             user_agent,
             cookie,
+            checksum,
             direct,
             ..
         } => {
+            let base_opts = Options {
+                checksum,
+                ..opts(connections)
+            };
             // Through the account its address goes through (#44): the link a service gave
             // expires, and the service gives a new one.
             let opts = match mdm_engine::state::ResumeState::load(&state) {
-                Ok(saved) => {
-                    through_account(accounts, &saved.url, direct, opts(connections), json).await?
-                }
+                Ok(saved) => through_account(accounts, &saved.url, direct, base_opts, json).await?,
                 // Download::resume says what is wrong with it.
-                Err(_) => opts(connections),
+                Err(_) => base_opts,
             };
             let headers = build_headers(&headers, referer, user_agent, cookie)?;
             let dl = Download::resume(state, headers, opts)?;
@@ -2479,6 +2526,40 @@ mod tests {
             "{:?}",
             c.route
         );
+        let c = Conn::of(&cmd(&["resume", "file.mdm.json"]), &net);
+        assert_eq!(
+            (c.proxy, c.dns, c.route),
+            (net.proxy.clone(), net.dns.clone(), mdm_engine::Route::Any)
+        );
+        let c = Conn::of(
+            &cmd(&[
+                "resume",
+                "file.mdm.json",
+                "--proxy",
+                "none",
+                "--dns",
+                "system",
+            ]),
+            &net,
+        );
+        assert_eq!(
+            (c.proxy, c.dns),
+            (Proxy::None, mdm_engine::DnsChoice::default())
+        );
+        let c = Conn::of(
+            &cmd(&[
+                "resume",
+                "file.mdm.json",
+                "--adapter",
+                "no-such-adapter-1556",
+            ]),
+            &net,
+        );
+        assert!(
+            matches!(c.route, mdm_engine::Route::Down { .. }),
+            "{:?}",
+            c.route
+        );
     }
 
     /// #1240: `video-get --quality` takes a height as people write it.
@@ -3030,6 +3111,38 @@ mod tests {
                 && user_agent.as_deref() == Some("MyAgent/2.0")
                 && cookie.as_deref() == Some("-")
         ));
+    }
+
+    #[test]
+    fn resume_command_parses_checksum_dns_and_adapter() {
+        let sha256_str = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+        let expected_checksum = parse_checksum(sha256_str).unwrap();
+        let expected_dns = parse_dns("cloudflare-https").unwrap();
+        let cli = Cli::try_parse_from([
+            NAME,
+            "resume",
+            "test.mdm.json",
+            "--checksum",
+            sha256_str,
+            "--dns",
+            "cloudflare-https",
+            "--adapter",
+            "Ethernet",
+        ])
+        .unwrap();
+        match cli.cmd {
+            Cmd::Resume {
+                checksum: Some(checksum),
+                dns: Some(dns),
+                adapter: Some(adapter),
+                ..
+            } => {
+                assert_eq!(adapter, "Ethernet");
+                assert_eq!(dns, expected_dns);
+                assert_eq!(checksum, expected_checksum);
+            }
+            _ => panic!("expected Cmd::Resume with checksum, dns, and adapter"),
+        }
     }
 
     #[test]

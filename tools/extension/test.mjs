@@ -3034,6 +3034,34 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   assert.equal(pointerTarget(next, null, false), next);
   assert.equal(pointerTarget(null, mine, false), null);
   assert.ok(fn("look").includes("pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen)"), "look: kept on its video while its menu is open");
+  // #1582: where the page is asked what lies under a spot the button would take (onControl).
+  // Bilibili's player keeps a feedback button (54 x 24) at its top right, 12 px from its edge, in
+  // view while the pointer moves over the player: on a 1550 px wide player the button's default
+  // spot (155 x 32, 8 px in) covers its glyph, yet the spot's middle and four corners all miss
+  // it. Every point the page is asked at lies inside the spot, and any control of 14 x 14 px or
+  // more under any part of it lies under one of them.
+  const probes = make(["probes"], "probes");
+  const inside = (p, r) => p[0] >= r.left && p[0] <= r.right && p[1] >= r.top && p[1] <= r.bottom;
+  const hits = (pts, r) => pts.some((p) => inside(p, r));
+  const spotAt = { left: 1387, top: 8, right: 1542, bottom: 40 };
+  const feedback = { left: 1484, top: 18, right: 1538, bottom: 42 };
+  const fivePoints = [[1464.5, 24], [1391, 12], [1538, 12], [1391, 36], [1538, 36]];
+  assert.ok(!fivePoints.some((p) => p[0] > feedback.left && p[0] < feedback.right && p[1] > feedback.top && p[1] < feedback.bottom), "the middle and corners alone miss Bilibili's feedback button (the miss #1582 saw)");
+  assert.ok(hits(probes(spotAt), feedback), "the points find Bilibili's feedback button under the button's end");
+  for (const box of [spotAt, { left: 8, top: 8, right: 44, bottom: 40 }, { left: 100, top: 300, right: 399, bottom: 334 }, { left: 5, top: 5, right: 5, bottom: 5 }]) {
+    const pts = probes(box);
+    assert.ok(pts.length >= 6 && pts.length <= 3 * 33, `a bounded number of points (${pts.length})`);
+    assert.ok(pts.every((p) => Number.isFinite(p[0]) && Number.isFinite(p[1]) && inside(p, box)), "every point inside the spot");
+    for (let x = box.left - 13; x <= box.right; x += 1) {
+      for (let y = box.top - 13; y <= box.bottom; y += 1) {
+        const c = { left: x, top: y, right: x + 14, bottom: y + 14 };
+        // Overlapping the spot by 14 px both ways (a smaller box can't fit inside it): found.
+        const over = Math.min(c.right, box.right) - Math.max(c.left, box.left) >= 14 && Math.min(c.bottom, box.bottom) - Math.max(c.top, box.top) >= 14;
+        if (over) assert.ok(hits(pts, c), `a 14 px control at ${x},${y} under the spot ${JSON.stringify(box)}`);
+      }
+    }
+  }
+  assert.ok(fn("onControl").includes("for (const [x, y] of probes(b))"), "onControl asks at every point of probes");
   // #1271: where the background asks the page's player what the click's video is (the window's
   // message): its middle while it has a box on the screen; a hover preview the page stopped as
   // the pointer went to the button (taken out, or hidden in a container of no size) is at the
@@ -4458,6 +4486,129 @@ ok("#1345 Chromium: Telegram Web's service-worker downloads stay in the browser"
   assert.deepEqual(store.remote, { url: "https://server-a.test:8463/", token: "token-a-new" });
 
   ok("another MDM: multiple servers, migration, switching, forget, and 401 pruning");
+}
+// Another MDM chosen (#157): only a download becomes one there (its api/add), each once; every
+// other message is this computer's MDM's or nobody's, and no remote call. The video button's
+// "may it show here" went to api/add too: pointing at videos added the page to the other MDM's
+// list every few seconds. With and without an MDM on this computer to ask.
+for (const here of [true, false]) {
+  const clock = { t: Date.now() };
+  class FakeDate extends Date {
+    static now() {
+      return clock.t;
+    }
+  }
+  const film = "https://tube.test/watch?v=1";
+  const tab = { id: 5, index: 2, url: film, title: "A film - Tube", incognito: false };
+  const { api, calls, listeners, store } = fakeApi({ firefox: false, host: here, tabs: { 5: tab } });
+  load(api, false, { Date: FakeDate });
+  await settle();
+  const R = "https://server.test:8463/";
+  store.remotes = [{ url: R, token: "k" }];
+  store.remote = { url: R, token: "k" };
+  served = {
+    [`${R}api/add`]: { status: 200, body: JSON.stringify({ ok: true }) },
+    [`${R}api/act`]: { status: 200, body: JSON.stringify({ done: [4] }) },
+  };
+  // What reached the other MDM since `from`: [path, what was sent].
+  const remoteCalls = (from) =>
+    fetched.slice(from).filter(([u]) => u.startsWith(R)).map(([u]) => {
+      const path = u.slice(R.length);
+      const opts = ((served[u] && served[u].calls) || []).shift();
+      const body = opts ? JSON.parse(opts.body) : null;
+      return [path, path === "api/add" ? body.url : body];
+    });
+  const page = { id: "ours", frameId: 0, url: film, tab };
+  const popup = { id: "ours", url: "chrome-extension://ours/popup.html" };
+  const send = (m, sender) => new Promise((r) => listeners.message(m, sender, (v) => r(JSON.parse(JSON.stringify(v ?? null)))));
+  const table = [
+    // The video button: its question, its menu's look-ups, its other buttons; none a download.
+    ["panel", () => send({ type: "panel" }, page), []],
+    ["video-lookup", () => send({ type: "video-lookup", src: "https://cdn.test/v/clip.mp4", url: film }, page), []],
+    ["video-poll", () => send({ type: "video-poll", token: "t1" }, page), []],
+    ["video-pick", () => send({ type: "video-pick", token: "t1", choice: 0 }, page), []],
+    ["video-played", () => send({ type: "video-played", played: { duration: 60 } }, page), []],
+    ["show-download", () => send({ type: "show-download", address: "https://cdn.test/v/clip.mp4" }, page), []],
+    ["show-site", () => send({ type: "show-site" }, page), []],
+    ["options", () => send({ type: "options" }, page), []],
+    ["get-mdm", () => send({ type: "get-mdm" }, page), []],
+    ["open-post", () => send({ type: "open-post", url: "https://tube.test/p/1" }, page), []],
+    ["rules", () => send({ type: "rules" }, page), []],
+    ["bypass", () => send({ type: "bypass", url: "https://x.test/a.zip" }, page), []],
+    ["drive-frame-pointer", () => send({ type: "drive-frame-pointer" }, page), []],
+    // The popup's: its state, its switches, its media list; a download's button goes to the
+    // other MDM's own api/act.
+    ["state", () => send({ type: "state" }, popup), []],
+    ["pause", () => send({ type: "pause", paused: false }, popup), []],
+    ["exclude-site", () => send({ type: "exclude-site", host: "tube.test" }, popup), []],
+    ["include-site", () => send({ type: "include-site", host: "tube.test" }, popup), []],
+    ["site-excluded", () => send({ type: "site-excluded", host: "tube.test" }, popup), []],
+    ["open-app", () => send({ type: "open-app" }, popup), []],
+    ["open-options", () => send({ type: "open-options" }, popup), []],
+    ["media", () => send({ type: "media", tab: 5 }, popup), []],
+    ["download-act", () => send({ type: "download-act", act: "pause", id: 4 }, popup), [["api/act", { action: "pause", ids: [4] }]]],
+    // Downloads: the button's click (Download video), the browser's own download, the right-click
+    // menu's link, its player and a stream's manifest. Each one api/add, of its address.
+    ["video", () => send({ type: "video", src: "https://cdn.test/v/clip.mp4", url: film, title: "A film" }, page), [["api/add", film]]],
+    ["download", () => (listeners.determining({ id: 91, url: "https://dl.test/f.zip", filename: "f.zip" }, () => {}), settle()), [["api/add", "https://dl.test/f.zip"]]],
+    ["menu link", () => listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://dl.test/g.zip", pageUrl: film }, tab), [["api/add", "https://dl.test/g.zip"]]],
+    ["menu player", () => listeners.menu({ menuItemId: "mdm-link", mediaType: "video", srcUrl: "blob:https://tube.test/1", frameId: 0, pageUrl: film }, tab), [["api/add", film]]],
+    ["menu stream", () => listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://cdn.test/s/a.m3u8", pageUrl: film }, tab), [["api/add", film]]],
+  ];
+  for (const [kind, act, want] of table) {
+    const from = fetched.length;
+    await act();
+    await settle();
+    assert.deepEqual(remoteCalls(from), want, `${kind}, ${here ? "an MDM here too" : "no MDM here"}`);
+  }
+  // Regression: pointing at videos for a while (the page asks again every few seconds, each
+  // answer kept PANEL_KEEP_MS) never adds anything to the other MDM; the button shows, as this
+  // computer's Options say, or as they are at first when there's no MDM here to ask.
+  clock.t += 6000;
+  const from = fetched.length;
+  const asked = natives(calls).filter((m) => m.panel).length;
+  for (let i = 0; i < 5; i++) {
+    assert.deepEqual(await send({ type: "panel" }, page), { on: true, compact: false });
+    clock.t += 6000;
+  }
+  assert.deepEqual(remoteCalls(from), [], "the panel question never reaches the other MDM");
+  assert.equal(natives(calls).filter((m) => m.panel).length - asked, here ? 5 : 0, "asked of this computer's MDM, when there is one");
+  // A site this computer's Options keep the button off: off with another MDM chosen too.
+  if (here) {
+    const off = fakeApi({ firefox: false, panelOn: false });
+    load(off.api, false);
+    await settle();
+    Object.assign(off.store, { remotes: [{ url: R, token: "k" }], remote: { url: R, token: "k" } });
+    assert.deepEqual(await new Promise((r) => off.listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v))))), { on: false, compact: false });
+  }
+  // Only the kinds a download is may become one there, and nothing else calls the remote's
+  // api/add.
+  assert.ok(/const REMOTE_ADD = new Set\(\["file", "video"\]\);/.test(code), "the whitelist");
+  assert.equal((code.match(/"api\/add"/g) || []).length, 1, "api/add sent from one place");
+  assert.equal((code.match(/remoteSend\(/g) || []).length, 2, "remoteSend called from `download` only");
+  ok(`another MDM: only downloads reach its api/add, the button's question never (${here ? "an MDM here too" : "no MDM here"})`);
+}
+// Back to this computer: the same downloads and questions as before, all to its MDM.
+{
+  const film = "https://tube.test/watch?v=1";
+  const tab = { id: 5, index: 2, url: film, title: "A film - Tube", incognito: false };
+  const { api, calls, listeners } = fakeApi({ firefox: false, tabs: { 5: tab } });
+  load(api, false);
+  await settle();
+  const from = fetched.length;
+  const page = { id: "ours", frameId: 0, url: film, tab };
+  const send = (m) => new Promise((r) => listeners.message(m, page, r));
+  await send({ type: "panel" });
+  await send({ type: "video", src: "https://cdn.test/v/clip.mp4", url: film, title: "A film" });
+  listeners.determining({ id: 92, url: "https://dl.test/f.zip", filename: "f.zip" }, () => {});
+  await settle();
+  const sent = natives(calls);
+  assert.deepEqual(
+    sent.map((m) => [m.panel ? "panel" : m.video ? "video" : "file", m.url]),
+    [["panel", film], ["video", film], ["file", "https://dl.test/f.zip"]],
+  );
+  assert.deepEqual(fetched.slice(from).filter(([u]) => /\/api\//.test(u)), [], "nothing to any remote control");
+  ok("this computer: the button's question, Download video and a download go to its MDM");
 }
 // Safari has no downloads API: the extension still starts, and a link page.js holds (a file type
 // Options lists) is offered to the app as a browser's download is; the app taking it is told to

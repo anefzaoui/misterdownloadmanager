@@ -374,7 +374,7 @@ pub fn tools(e: &mdm_tools::Error) -> String {
             &[("name", name), ("version", version), ("oldest", oldest)],
         ),
         E::Busy(name) => fmt(
-            // i18n: error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+            // i18n: error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
             t("{name} is being downloaded already: try again in a moment"),
             &[("name", name)],
         ),
