@@ -108,9 +108,11 @@ proptest = "1.12.0"
 # bot check refused MDM's own connection is asked once more the way a browser connects (its TLS
 # handshake, HTTP/2 settings and header order), on BoringSSL. Builds BoringSSL from source:
 # CMake, a C/C++ compiler, libclang and, on Windows, NASM.
-wreq = { version = "=0.16.3", default-features = false, features = ["webpki-roots", "tokio-rt", "socks", "stream", "gzip", "brotli", "zstd", "deflate"] }
+wreq = { git = "https://github.com/0x676e67/wreq", rev = "cd76bcdf1307153de289d34e072528bdf0510a3b", default-features = false, features = ["webpki-roots", "tokio-rt", "socks", "stream", "gzip", "brotli", "zstd", "deflate"] }
 # emulation-compression: the profile's own Accept-Encoding, in Chrome's place and words (#1494).
-wreq-util = { version = "=0.2.1", default-features = false, features = ["emulation", "emulation-compression"] }
+# emulation-chromium-pki: Chrome 152 to 154 send Chromium's Trust Anchor IDs (without it, an empty
+# extension); it also builds in wreq's chromium-roots, unused here (cert_store is MDM's own).
+wreq-util = { git = "https://github.com/0x676e67/wreq-util", rev = "917d2581d6761a94db66466caa6c2eb4d4cdbd43", default-features = false, features = ["emulation", "emulation-compression", "emulation-chromium-pki"] }
 # Its trusted certificates: Mozilla's (as wreq's own default) and the system's, which MDM's own
 # connection trusts too (an antivirus's or a company's HTTPS inspection adds its own there).
 rustls-native-certs = "0.8.5"
@@ -243,6 +245,12 @@ overflow-checks = false
 # mdm-gl-context-errors, #1448).
 # craft-libs can take the same commits to share one egui again.
 [patch.crates-io]
+# Experiment (exp/wreq-git, not for merging): wreq, wreq-util and BoringSSL's bindings (btls)
+# from git, at the revisions wreq-util's main branch pins (its [patch.crates-io]), for Chrome 150
+# to 154's TLS handshake (ML-DSA and GREASE signature algorithms, Trust Anchor IDs).
+wreq = { git = "https://github.com/0x676e67/wreq", rev = "cd76bcdf1307153de289d34e072528bdf0510a3b" }
+btls = { git = "https://github.com/0x676e67/btls", rev = "129887582a538b8f4dcf371d15c953335312ca37" }
+btls-sys = { git = "https://github.com/0x676e67/btls", rev = "129887582a538b8f4dcf371d15c953335312ca37" }
 # librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), and a
 # magnet lookup's progress counted (#92), and every socket bound to one address (`bind_ip`,
 # #143), and every HTTP client of a session built through MDM's TLS setup (`configure_http_client`:

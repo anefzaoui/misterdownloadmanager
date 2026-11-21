@@ -801,7 +801,7 @@ mod tests {
         );
         assert!(profile_of(safari).contains("MacOS"));
         assert!(
-            profile_of(newer).contains("Chrome149"),
+            profile_of(newer).contains("Chrome154"),
             "{}",
             profile_of(newer)
         );
