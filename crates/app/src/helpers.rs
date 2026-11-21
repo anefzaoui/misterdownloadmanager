@@ -1,7 +1,9 @@
 //! The first start's offer of the video helpers (user request 2026-11-01): yt-dlp finds a page's
-//! video, ffmpeg joins its picture and sound. Both are asked for once, explained, and downloaded
-//! on Yes (through MDM's own engine, checked against their publishers' signed checksums: see
-//! mdm_tools); Not now leaves them to Tasks → Download video from a page, which offers them again.
+//! video, ffmpeg joins its picture and sound, and, only where the computer has no JavaScript
+//! runtime, Node.js solves YouTube's challenges (#1570; YairDies' idea, #1541). They are asked for
+//! once, explained, and downloaded on Yes (through MDM's own engine, checked against their
+//! publishers' signed checksums: see mdm_tools); Not now leaves them to Tasks → Download video
+//! from a page, which offers them again.
 
 use std::sync::Arc;
 use std::sync::Mutex;
@@ -36,6 +38,55 @@ pub struct Helpers {
     dir: Option<std::path::PathBuf>,
     /// Once Yes was pressed.
     job: Option<Job>,
+    /// Node.js is offered too: the computer has no JavaScript runtime yt-dlp can use, and MDM
+    /// has a Node.js for it. What can be told without running anything when the window opens
+    /// (`jsruntime::current_now`); when a runtime on the computer must first be asked for its
+    /// version, that is done off the window's thread ([`RuntimeProbe`]) and the section comes
+    /// (or not) when it answers, before Yes.
+    node: bool,
+    /// The runtime lookup waiting for an answer.
+    probe: RuntimeProbe,
+}
+
+/// A look for the JavaScript runtime yt-dlp would use (`jsruntime::current`), which may run the
+/// computer's runtimes (`--version`, up to 20 s each): on a thread of its own, started from a
+/// window's `show` (never when the window is made), its answer read back on a later frame.
+#[derive(Default)]
+struct RuntimeProbe {
+    /// It needs doing.
+    wanted: bool,
+    /// Its answer, once there.
+    slot: Option<Arc<Mutex<Option<Option<mdm_tools::jsruntime::Runtime>>>>>,
+}
+
+impl RuntimeProbe {
+    /// Start it, if wanted and not started yet.
+    fn start(
+        &mut self,
+        dir: Option<std::path::PathBuf>,
+        ytdlp: Option<std::path::PathBuf>,
+        ctx: &egui::Context,
+    ) {
+        if !self.wanted || self.slot.is_some() {
+            return;
+        }
+        let slot = Arc::new(Mutex::new(None));
+        let (out, wake) = (slot.clone(), ctx.clone());
+        std::thread::spawn(move || {
+            let found = mdm_tools::jsruntime::current(dir.as_deref(), ytdlp.as_deref());
+            *out.lock().unwrap() = Some(found);
+            wake.request_repaint();
+        });
+        self.slot = Some(slot);
+    }
+
+    /// Its answer, once (then it is done).
+    fn answer(&mut self) -> Option<Option<mdm_tools::jsruntime::Runtime>> {
+        let found = self.slot.as_ref()?.lock().unwrap().take()?;
+        self.wanted = false;
+        self.slot = None;
+        Some(found)
+    }
 }
 
 /// Whether to offer the helpers at this start: never asked, and one of them is missing (ffmpeg
@@ -49,10 +100,31 @@ pub fn worth_asking() -> bool {
 }
 
 impl Helpers {
+    /// Runs no program: a runtime that must be asked is asked from `show`, off its thread.
     pub fn new() -> Self {
+        Self::with_dir(mdm_tools::tools_dir())
+    }
+
+    /// [`Helpers::new`] for the tools folder `dir`.
+    fn with_dir(dir: Option<std::path::PathBuf>) -> Self {
+        let mut probe = RuntimeProbe::default();
+        let node = mdm_tools::jsruntime::available()
+            && dir.as_deref().is_some_and(|d| {
+                let ytdlp = mdm_tools::installed(d).map(|i| i.exe);
+                match mdm_tools::jsruntime::current_now(Some(d), ytdlp.as_deref()) {
+                    Some(found) => found.is_none(),
+                    // A runtime is there, to be asked: none offered until it answers.
+                    None => {
+                        probe.wanted = true;
+                        false
+                    }
+                }
+            });
         Helpers {
-            dir: mdm_tools::tools_dir(),
+            dir,
             job: None,
+            node,
+            probe,
         }
     }
 
@@ -69,6 +141,9 @@ impl Helpers {
         // ffmpeg: MDM's own on Windows (it has no build elsewhere, where the system's is used).
         if cfg!(windows) && mdm_tools::ffmpeg::installed(&dir).is_none() {
             list.push("ffmpeg");
+        }
+        if self.node && mdm_tools::node::installed(&dir).is_none() {
+            list.push("Node.js");
         }
         let job = Job {
             progress: Arc::default(),
@@ -87,6 +162,8 @@ impl Helpers {
                 state.lock().unwrap().current = Some((name, k + 1, total));
                 let res = if name == "ffmpeg" {
                     mdm_tools::ffmpeg::install_latest(&dir, &net, Some(&progress)).await
+                } else if name == "Node.js" {
+                    mdm_tools::jsruntime::install_latest(&dir, &net, Some(&progress)).await
                 } else {
                     mdm_tools::install_latest(&dir, &net, Some(&progress)).await
                 };
@@ -113,9 +190,28 @@ impl Helpers {
         self.job = Some(job);
     }
 
+    /// How much taller the sections are than with yt-dlp's and ffmpeg's alone (one more for
+    /// Node.js).
+    fn rows_extra(&self) -> f32 {
+        if self.node { 72.0 } else { 0.0 }
+    }
+
     /// Open while shown (after Yes too, with the downloads' progress); Closed on Not now, Close
     /// or the window's X.
     pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<()> {
+        // The computer's runtime, asked off this thread: Node.js offered if none will do (only
+        // before Yes, so the downloads' list stays as it was shown).
+        let ytdlp = self
+            .dir
+            .as_deref()
+            .and_then(mdm_tools::installed)
+            .map(|i| i.exe);
+        self.probe.start(self.dir.clone(), ytdlp, ctx);
+        if let Some(found) = self.probe.answer()
+            && self.job.is_none()
+        {
+            self.node = mdm_tools::jsruntime::available() && found.is_none();
+        }
         let (running, failed) = match &self.job {
             Some(job) => {
                 let s = job.state.lock().unwrap();
@@ -130,7 +226,8 @@ impl Helpers {
         // A long translation's subline makes the banner taller (winui::banner).
         let extra = crate::dialogs::grow_extra(ctx, "helpers-banner")
             + crate::dialogs::grow_extra(ctx, "helpers-error")
-            + crate::dialogs::grow_extra(ctx, "helpers-advice");
+            + crate::dialogs::grow_extra(ctx, "helpers-advice")
+            + self.rows_extra();
         window(
             ctx,
             "helpers",
@@ -169,6 +266,8 @@ impl Helpers {
         let p = ui.painter().clone();
         let (ink, muted) = (winui::TEXT(), winui::MUTED());
         let w = 520.0;
+        // Everything under the sections moves down by the ones added (Node.js).
+        let shift = self.rows_extra();
         // The banner: MDM's own logo, what this is for, in one line, and why now.
         let extra = winui::banner(
             ui,
@@ -178,9 +277,15 @@ impl Helpers {
             "helpers-banner",
             // i18n: the headline of the first start's helpers window
             crate::i18n::t("Download videos from YouTube and 1,000+ sites"),
-            crate::i18n::t(
-                "Two free helpers make it work. Get them now, and saving a video is one click away when you find one.",
-            ),
+            if self.node {
+                crate::i18n::t(
+                    "Three free helpers make it work. Get them now, and saving a video is one click away when you find one.",
+                )
+            } else {
+                crate::i18n::t(
+                    "Two free helpers make it work. Get them now, and saving a video is one click away when you find one.",
+                )
+            },
         );
         // Everything below it moves down with a taller banner.
         let o = o + egui::vec2(0.0, extra);
@@ -190,7 +295,7 @@ impl Helpers {
             .as_deref()
             .and_then(mdm_tools::ffmpeg::installed)
             .is_some();
-        let rows: [(Icon, &str, String); 3] = [
+        let mut rows: Vec<(Icon, &str, String)> = vec![
             (
                 Icon::HelperVideo,
                 // i18n: helper name and what it does (yt-dlp is a program's name)
@@ -216,21 +321,38 @@ impl Helpers {
                     .to_owned()
                 },
             ),
-            (
-                Icon::HelperChecked,
-                // i18n: a promise in the helpers window: the helpers are free, official and checked
-                "Free, official and checked",
+        ];
+        if self.node {
+            rows.push((
+                Icon::HelperScript,
+                // i18n: helper name and what it does (Node.js and YouTube are names)
+                "Node.js: unlocks YouTube's qualities",
+                crate::i18n::t(
+                    "YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.",
+                )
+                .to_owned(),
+            ));
+        }
+        rows.push((
+            Icon::HelperChecked,
+            // i18n: a promise in the helpers window: the helpers are free, official and checked
+            "Free, official and checked",
+            (if self.node {
+                crate::i18n::t(
+                    "All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.",
+                )
+            } else {
                 crate::i18n::t(
                     "Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.",
                 )
-                .to_owned(),
-            ),
-        ];
+            })
+            .to_owned(),
+        ));
         for (k, (icon, name, what)) in rows.iter().enumerate() {
             let y = 100.0 + k as f32 * 72.0;
             icon.image(true)
                 .paint_at(ui, r(o, 22.0, y + 2.0, 32.0, 32.0));
-            winui::text_font(
+            let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
                 o.x + 68.0,
@@ -238,7 +360,10 @@ impl Helpers {
                 crate::i18n::t(name),
                 ink,
             );
-            winui::paragraph(
+            // Painted text a screen reader couldn't see before (#1407).
+            winui::readable(ui, name_rc, ("helpers-name", k), crate::i18n::t(name));
+            winui::readable_paragraph(
+                ui,
                 &p,
                 o.x + 68.0,
                 o.y + y + 29.0,
@@ -246,11 +371,12 @@ impl Helpers {
                 muted,
                 o.x + w - 18.0,
                 14.0,
+                ("helpers-what", k),
             );
         }
 
-        // After Yes: one bar for both, centred under the last section, and what it is doing.
-        let mut y = 322.0;
+        // After Yes: one bar for all, centred under the last section, and what it is doing.
+        let mut y = 322.0 + shift;
         if let Some(job) = &self.job {
             let st = job.state.lock().unwrap();
             let f = job.progress.fraction().unwrap_or(0.0);
@@ -258,7 +384,7 @@ impl Helpers {
                 (
                     st.ready.len() as f32 / (st.ready.len() + 1) as f32,
                     crate::i18n::fmt(
-                        // i18n: {name} = yt-dlp or ffmpeg; {error} = why
+                        // i18n: {name} = yt-dlp, ffmpeg or Node.js; {error} = why
                         crate::i18n::t("{name} could not be downloaded: {error}"),
                         &[("name", name), ("error", error)],
                     ),
@@ -300,7 +426,7 @@ impl Helpers {
                 (
                     ((k - 1) as f32 + f) / total as f32,
                     crate::i18n::fmt(
-                        // i18n: {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+                        // i18n: {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
                         crate::i18n::t("Downloading {name} ({n} of {total})... {percent}"),
                         &[
                             ("name", name),
@@ -316,20 +442,26 @@ impl Helpers {
             };
             drop(st);
             let bar_w = 320.0;
-            winui::meter(&p, r(o, (w - bar_w) / 2.0, 312.0, bar_w, 8.0), fraction);
+            winui::meter(
+                &p,
+                r(o, (w - bar_w) / 2.0, 312.0 + shift, bar_w, 8.0),
+                fraction,
+            );
             let room = w - 40.0;
             let mut more = 0.0;
             if failed && winui::text_width(&p, &line) > room {
                 // A failure is read whole (#816): wrapped, the window growing by its lines past
                 // the first.
-                let n = winui::paragraph(
+                let n = winui::readable_paragraph(
+                    ui,
                     &p,
                     o.x + 20.0,
-                    o.y + 340.0,
+                    o.y + 340.0 + shift,
                     &line,
                     color,
                     o.x + w - 20.0,
                     16.0,
+                    ("helpers", "status"),
                 );
                 more = 16.0 * n.saturating_sub(1) as f32;
             } else {
@@ -340,10 +472,12 @@ impl Helpers {
                     &p,
                     winui::tahoma(),
                     (o.x + (w - tw) / 2.0).round(),
-                    o.y + 340.0,
+                    o.y + 340.0 + shift,
                     &shown,
                     color,
                 );
+                // Whole for a screen reader too, even when the window cut it (#1407).
+                winui::readable(ui, rc, ("helpers", "status"), &line);
                 if shown != line {
                     winui::full_on_hover(ui, rc, "helpers-status", &line);
                 }
@@ -375,7 +509,8 @@ impl Helpers {
             crate::i18n::t("Not now? Get them later from Tasks → Download video from a page.")
         };
         // Wrapped: the window grows by the lines past the first.
-        let lines = winui::paragraph(
+        let lines = winui::readable_paragraph(
+            ui,
             &p,
             o.x + 16.0,
             o.y + y + 20.0,
@@ -383,6 +518,7 @@ impl Helpers {
             muted,
             o.x + w - 16.0,
             16.0,
+            ("helpers", "later"),
         );
         crate::dialogs::grow_px(
             ui.ctx(),
@@ -422,6 +558,11 @@ impl Helpers {
                 false,
                 None,
             );
+            // The window opens with the focus on its default button: a screen reader says it,
+            // not just the title (#1407).
+            if ui.memory(|m| m.focused().is_none()) {
+                yes.request_focus();
+            }
             if yes.clicked() || winui::enter_pressed(ui) {
                 *answer = Some(true);
             } else if not_now.clicked() {
@@ -458,6 +599,11 @@ impl Helpers {
                 false,
                 None,
             );
+            // When Yes goes away its focus goes with it: Close takes it, so the reader lands
+            // somewhere (#1407).
+            if ui.memory(|m| m.focused().is_none()) {
+                close.request_focus();
+            }
             if close.clicked() || winui::enter_pressed(ui) {
                 *answer = Some(false);
             }
@@ -473,8 +619,9 @@ use mdm_tools::chosen::Helper;
 /// Helpers (Download video from a page or a gallery → Helpers...): for yt-dlp, ffmpeg and
 /// gallery-dl (#58), where MDM takes it from (its own copy, or a program of the person's), and the
 /// way to choose another: one copy of each for every program that uses them (#51). Then the
-/// JavaScript runtime yt-dlp needs for YouTube (#1448, #1470): the computer's own (Node.js, Deno),
-/// else Deno, MDM's own copy, downloaded and checked here. MDM's own copies are kept up to date
+/// JavaScript runtime yt-dlp needs for YouTube (#1448, #1470, #1570): one the person chose, else
+/// the computer's own (Deno, Node.js, QuickJS, Bun), else Node.js, MDM's own copy, downloaded and
+/// checked here (`mdm_tools::jsruntime`). MDM's own copies are kept up to date
 /// (#1544, `mdm_tools::autoupdate`): each row says how its copy stands, with Update and Go back to
 /// the previous version; Check for updates checks them all, and the switch below turns the
 /// automatic updates off.
@@ -482,10 +629,10 @@ pub struct Programs {
     dir: Option<std::path::PathBuf>,
     /// The helpers as found (read again after each change, not every frame: it reads files).
     found: [Option<mdm_tools::Installed>; 3],
-    /// MDM's own Deno, and the computer's own runtime (`proc::system_js_runtime`), read with
-    /// `found`.
-    deno: Option<mdm_tools::Installed>,
-    runtime: Option<std::path::PathBuf>,
+    /// The JavaScript runtime yt-dlp uses (`jsruntime::current`), read with `found`: at once when
+    /// that runs nothing (`current_now`), else from `probe`, off the window's thread.
+    runtime: Option<mdm_tools::jsruntime::Runtime>,
+    probe: RuntimeProbe,
     /// MDM's own copy of each tool (`Tool::ALL`'s order) as its updates stand, read with `found`.
     own: [Own; 4],
     /// The update state (`<tools>/updates.json`), read with `found`.
@@ -497,8 +644,10 @@ pub struct Programs {
     /// MDM's own yt-dlp or gallery-dl being downloaded in place of the system's (#452, #571),
     /// and how that went.
     installing: Option<(Helper, Answer)>,
-    /// MDM's own Deno being downloaded, and how that went.
-    installing_deno: Option<Answer>,
+    /// MDM's own Node.js being downloaded, and how that went.
+    installing_runtime: Option<Answer>,
+    /// A runtime just chosen being checked, and what it answered.
+    checking_runtime: Option<Answer>,
     /// Check for updates, an Update or a Go back under way, and how it went.
     updating: Option<Answer>,
     error: Option<String>,
@@ -533,19 +682,26 @@ type Answer = Arc<Mutex<Option<Result<(), String>>>>;
 
 impl Programs {
     pub fn new() -> Self {
+        Self::with_dir(mdm_tools::tools_dir())
+    }
+
+    /// [`Programs::new`] for the tools folder `dir`; runs no program (the runtime, when the
+    /// computer's must be asked, is asked from `show`, off the window's thread).
+    fn with_dir(dir: Option<std::path::PathBuf>) -> Self {
         let mut p = Programs {
-            dir: mdm_tools::tools_dir(),
+            dir,
             found: [None, None, None],
-            deno: None,
             runtime: None,
             own: Default::default(),
             updates: Default::default(),
             seen: 0,
             checking: None,
             installing: None,
-            installing_deno: None,
+            installing_runtime: None,
+            checking_runtime: None,
             updating: None,
             error: None,
+            probe: RuntimeProbe::default(),
         };
         p.look();
         p
@@ -561,8 +717,20 @@ impl Programs {
             mdm_tools::ffmpeg::installed(dir),
             mdm_tools::gallery::installed(dir),
         ];
-        self.deno = mdm_tools::deno::installed(dir);
-        self.runtime = mdm_tools::proc::system_js_runtime();
+        let ytdlp = self.found[0].as_ref().map(|i| i.exe.as_path());
+        match mdm_tools::jsruntime::current_now(Some(dir), ytdlp) {
+            Some(found) => {
+                self.runtime = found;
+                self.probe = RuntimeProbe::default();
+            }
+            // Asked from `show`, off the window's thread; the row says it is looking meanwhile.
+            None => {
+                self.probe = RuntimeProbe {
+                    wanted: true,
+                    slot: None,
+                };
+            }
+        }
         self.updates = mdm_tools::autoupdate::read(dir);
         for t in Tool::ALL {
             use mdm_tools::autoupdate as au;
@@ -585,9 +753,10 @@ impl Programs {
         }
     }
 
-    /// MDM's own Deno (#1448): downloaded and checked against its release's checksums, from then
-    /// on the runtime yt-dlp is told of (`mdm_tools::proc`). It goes on if the window is closed.
-    fn install_deno(
+    /// MDM's own Node.js (#1570): downloaded and checked against its release's signed checksums,
+    /// from then on the runtime yt-dlp is told of when the computer has none (`mdm_tools::jsruntime`).
+    /// It goes on if the window is closed.
+    fn install_runtime(
         &mut self,
         dir: std::path::PathBuf,
         rt: &tokio::runtime::Handle,
@@ -597,14 +766,14 @@ impl Programs {
         let (out, wake) = (slot.clone(), ctx.clone());
         let net = crate::settings::own_net();
         rt.spawn(async move {
-            let res = mdm_tools::deno::install_latest(&dir, &net, None).await;
+            let res = mdm_tools::jsruntime::install_latest(&dir, &net, None).await;
             if let Err(e) = &res {
-                tracing::warn!("Deno download failed: {e}");
+                tracing::warn!("Node.js download failed: {e}");
             }
             *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
             wake.request_repaint();
         });
-        self.installing_deno = Some(slot);
+        self.installing_runtime = Some(slot);
         self.error = None;
     }
 
@@ -663,7 +832,7 @@ impl Programs {
                 wake.request_repaint();
                 if let Err(e) = res {
                     failed.get_or_insert_with(|| {
-                        // i18n: Helpers: an update check failed; {name} = yt-dlp, ffmpeg, gallery-dl or deno, {error} = why
+                        // i18n: Helpers: an update check failed; {name} = yt-dlp, ffmpeg, gallery-dl or node, {error} = why
                         crate::i18n::fmt(
                             crate::i18n::t("{name}: {error}"),
                             &[("name", t.name()), ("error", &crate::errors::tools(&e))],
@@ -701,6 +870,12 @@ impl Programs {
 
     /// Open until Close.
     pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<()> {
+        // The runtime, when the computer's must be asked: off this thread.
+        let ytdlp = self.found[0].as_ref().map(|i| i.exe.clone());
+        self.probe.start(self.dir.clone(), ytdlp, ctx);
+        if let Some(found) = self.probe.answer() {
+            self.runtime = found;
+        }
         let answered = self
             .checking
             .as_ref()
@@ -719,14 +894,32 @@ impl Programs {
             self.installing = None;
             self.look();
         }
-        let deno = self
-            .installing_deno
-            .as_ref()
-            .and_then(|slot| slot.lock().unwrap().take());
-        if let Some(res) = deno {
+        let mut runtime_done = None;
+        for slot in [&mut self.installing_runtime, &mut self.checking_runtime] {
+            let res = slot.as_ref().and_then(|a| a.lock().unwrap().take());
+            if let Some(res) = res {
+                *slot = None;
+                runtime_done = Some(res);
+            }
+        }
+        if let Some(res) = runtime_done {
             self.error = res.err();
-            self.installing_deno = None;
             self.look();
+        }
+        if let Some(path) = winui::picked(ctx, "helper-js-runtime")
+            && let Some(dir) = self.dir.clone()
+        {
+            let slot: Answer = Arc::new(Mutex::new(None));
+            let (out, wake) = (slot.clone(), ctx.clone());
+            std::thread::spawn(move || {
+                let res = mdm_tools::jsruntime::choose(&dir, &path)
+                    .map(|_| ())
+                    .map_err(|e| crate::errors::tools(&e));
+                *out.lock().unwrap() = Some(res);
+                wake.request_repaint();
+            });
+            self.checking_runtime = Some(slot);
+            self.error = None;
         }
         let updated = self
             .updating
@@ -1009,7 +1202,7 @@ impl Programs {
             ui,
             o + egui::vec2(14.0, 332.0),
             &mut auto,
-            // i18n: Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+            // i18n: Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
             "Keep MDM's helpers up to date automatically",
             enabled,
         );
@@ -1028,9 +1221,16 @@ impl Programs {
         )[..] else {
             unreachable!("two buttons")
         };
+        // MDM's earlier Deno counts as its runtime's own copy: its update brings Node.js (#1570).
+        let earlier_deno = self.runtime.as_ref().is_some_and(|r| {
+            r.from == mdm_tools::jsruntime::Origin::Own
+                && r.kind == mdm_tools::jsruntime::Kind::Deno
+        });
         let own: Vec<Tool> = Tool::ALL
             .into_iter()
-            .filter(|t| self.own[*t as usize].current.is_some())
+            .filter(|t| {
+                self.own[*t as usize].current.is_some() || (*t == Tool::Node && earlier_deno)
+            })
             .collect();
         let y = 370.0;
         // What failed, left of the buttons.
@@ -1171,7 +1371,8 @@ impl Programs {
     fn busy(&self) -> bool {
         self.checking.is_some()
             || self.installing.is_some()
-            || self.installing_deno.is_some()
+            || self.installing_runtime.is_some()
+            || self.checking_runtime.is_some()
             || self.updating.is_some()
     }
 
@@ -1184,10 +1385,12 @@ impl Programs {
         })
     }
 
-    /// The JavaScript runtime's row, the `k`th (#1448, #1470): YouTube makes yt-dlp solve a
+    /// The JavaScript runtime's row, the `k`th (#1448, #1470, #1570): YouTube makes yt-dlp solve a
     /// JavaScript challenge, and without a runtime its look-ups are slow, list few qualities or
-    /// fail. The computer's own (Node.js, Deno) is said and used; else MDM's own Deno, which
-    /// "Use MDM's own copy" downloads (where Deno builds one for this system and processor).
+    /// fail. It says which runtime yt-dlp uses and where it comes from: one the person chose
+    /// (**Use another program...**, any runtime yt-dlp supports: YairDies' idea, #1541), the
+    /// computer's own, or MDM's own Node.js, which **Use MDM's own copy** downloads where the
+    /// computer has none (and which replaces the Deno earlier versions of MDM installed).
     fn runtime_row(
         &mut self,
         ui: &mut Ui,
@@ -1196,9 +1399,10 @@ impl Programs {
         k: usize,
         rt: &tokio::runtime::Handle,
     ) {
+        use mdm_tools::jsruntime::{Kind, Origin};
         let y = o.y + 8.0 + k as f32 * 78.0;
-        // i18n: Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
-        let title = crate::i18n::t("JavaScript runtime (Deno)");
+        // i18n: Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
+        let title = crate::i18n::t("JavaScript runtime (for YouTube)");
         winui::text_font(
             p,
             winui::tahoma_bold(),
@@ -1207,17 +1411,18 @@ impl Programs {
             title,
             winui::TEXT(),
         );
+        let runtime = self.runtime.clone();
+        // MDM's own Node.js, the one in use.
+        let own_node = runtime
+            .as_ref()
+            .is_some_and(|r| r.from == Origin::Own && r.kind == Kind::Node);
         // What it is for, in one line after its name; for MDM's own copy, Update and Go back there
         // instead, and how its updates stand after its version below (the title is long in some
         // languages, the room beside it short).
         let after = winui::text_width_font(p, winui::tahoma_bold(), title) + 10.0;
-        let updates = self
-            .deno
-            .is_some()
-            .then(|| self.update_status(Tool::Deno))
-            .flatten();
-        if self.deno.is_some() {
-            self.update_row(ui, p, o, y, o.x + 14.0 + after, Tool::Deno, None, rt);
+        let updates = own_node.then(|| self.update_status(Tool::Node)).flatten();
+        if own_node {
+            self.update_row(ui, p, o, y, o.x + 14.0 + after, Tool::Node, None, rt);
         } else {
             winui::fit(
                 ui,
@@ -1231,29 +1436,60 @@ impl Programs {
                 ("helper-what", k),
             );
         }
-        let available = mdm_tools::deno::available();
-        let status = if self.installing_deno.is_some() {
+        let available = mdm_tools::jsruntime::available();
+        let path_of =
+            |r: &mdm_tools::jsruntime::Runtime| crate::i18n::ltr(&r.exe.display().to_string());
+        let named = |r: &mdm_tools::jsruntime::Runtime| match &r.version {
+            Some(v) => format!("{} {v}", r.kind.label()),
+            None => r.kind.label().to_owned(),
+        };
+        let looking = self.probe.wanted;
+        let status = if self.installing_runtime.is_some() {
             crate::i18n::t("Downloading MDM's own copy...").to_owned()
-        } else if let Some(own) = &self.deno {
-            let own = crate::i18n::fmt(
-                crate::i18n::t("Mister Download Manager's own copy, version {version}"),
-                &[("version", &own.version)],
-            );
-            match &updates {
-                Some(u) => format!("{own} · {u}"),
-                None => own,
+        } else if looking {
+            // i18n: Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
+            crate::i18n::t("Looking for a JavaScript runtime on this computer...").to_owned()
+        } else if self.checking_runtime.is_some() {
+            crate::i18n::t("Checking the program...").to_owned()
+        } else if let Some(r) = &runtime {
+            match (r.from, r.kind) {
+                (Origin::Chosen, _) => crate::i18n::fmt(
+                    // i18n: Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
+                    crate::i18n::t("{runtime}, your own program: {path}"),
+                    &[("runtime", &named(r)), ("path", &path_of(r))],
+                ),
+                (Origin::System, _) => crate::i18n::fmt(
+                    // i18n: Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
+                    crate::i18n::t("{runtime}, your system's, nothing to download: {path}"),
+                    &[("runtime", &named(r)), ("path", &path_of(r))],
+                ),
+                (Origin::Own, Kind::Node) => {
+                    let own = crate::i18n::fmt(
+                        // i18n: Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
+                        crate::i18n::t("{runtime}, Mister Download Manager's own copy"),
+                        &[("runtime", &named(r))],
+                    );
+                    match &updates {
+                        Some(u) => format!("{own} · {u}"),
+                        None => own,
+                    }
+                }
+                (Origin::Own, _) => crate::i18n::fmt(
+                    // i18n: Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
+                    crate::i18n::t(
+                        "{runtime}, MDM's earlier copy: Node.js takes its place at the next update",
+                    ),
+                    &[("runtime", &named(r))],
+                ),
             }
-        } else if let Some(path) = &self.runtime {
-            crate::i18n::fmt(
-                // i18n: Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
-                crate::i18n::t("Your system's, nothing to download: {path}"),
-                &[("path", &crate::i18n::ltr(&path.display().to_string()))],
-            )
         } else if available {
             crate::i18n::t("Not installed yet").to_owned()
         } else {
-            // i18n: Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
-            crate::i18n::t("MDM has no copy for this system: install Deno or Node.js").to_owned()
+            // i18n: Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
+            crate::i18n::t(
+                "MDM has no copy for this system: install Node.js or Deno, or use another program",
+            )
+            .to_owned()
         };
         winui::fit(
             ui,
@@ -1265,20 +1501,54 @@ impl Programs {
             o.x + 486.0,
             ("helper", k),
         );
-        let [own_at] = winui::button_row_from_left(
+        let chosen = runtime.as_ref().is_some_and(|r| r.from == Origin::Chosen);
+        // MDM's own copy, when it is what the button would bring: back from a chosen runtime,
+        // or downloaded where the computer has none (or only MDM's earlier Deno).
+        let own_possible = chosen
+            || (available
+                && runtime
+                    .as_ref()
+                    .is_none_or(|r| r.from == Origin::Own && r.kind != Kind::Node));
+        let busy = self.busy() || looking;
+        let [other_at, own_at] = winui::button_row_from_left(
             p,
-            &[("Use MDM's own copy", 14.0, 180.0)],
+            &[
+                ("Use another program...", 14.0, 180.0),
+                ("Use MDM's own copy", 202.0, 180.0),
+            ],
             8.0,
             486.0,
             260.0,
         )[..] else {
-            unreachable!("one button")
+            unreachable!("two buttons")
         };
+        if winui::button(
+            ui,
+            r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
+            "Use another program...",
+            if busy {
+                ButtonKind::Disabled
+            } else {
+                ButtonKind::Normal
+            },
+            false,
+            None,
+        )
+        .clicked()
+        {
+            // i18n: file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
+            let title =
+                crate::i18n::t("Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)")
+                    .to_owned();
+            winui::start_pick(ui.ctx(), "helper-js-runtime", move || {
+                crate::winui::file_dialog(&title).pick_file()
+            });
+        }
         if winui::button(
             ui,
             r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
             "Use MDM's own copy",
-            if available && self.deno.is_none() && !self.busy() {
+            if own_possible && !busy {
                 ButtonKind::Normal
             } else {
                 ButtonKind::Disabled
@@ -1289,7 +1559,20 @@ impl Programs {
         .clicked()
             && let Some(dir) = self.dir.clone()
         {
-            self.install_deno(dir, rt, ui.ctx());
+            if chosen {
+                self.error = mdm_tools::jsruntime::forget(&dir)
+                    .err()
+                    .map(|e| crate::errors::tools(&e));
+                self.look();
+                // Nothing found once the choice is gone: MDM's own is downloaded (once the
+                // computer's runtimes, if they must be asked, have answered: Use MDM's own copy
+                // again then).
+                if self.runtime.is_none() && !self.probe.wanted && available {
+                    self.install_runtime(dir, rt, ui.ctx());
+                }
+            } else {
+                self.install_runtime(dir, rt, ui.ctx());
+            }
         }
     }
 }
@@ -1349,5 +1632,30 @@ impl Keeper {
             }
             running.store(false, Ordering::Release);
         });
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Opening the first start's window or Helpers runs no program on the window's thread: a
+    /// runtime on the computer that must be asked for its version is asked from `show`, on a
+    /// thread of its own. (A runtime chosen in the tools folder, the one case told at once, is
+    /// read from its file.)
+    #[test]
+    fn opening_the_helpers_windows_runs_no_program() {
+        let dir = tempfile::tempdir().unwrap();
+        let tools = dir.path().join("tools");
+        std::fs::create_dir_all(&tools).unwrap();
+        let before = mdm_tools::jsruntime::probes();
+        let first = Helpers::with_dir(Some(tools.clone()));
+        let helpers = Programs::with_dir(Some(tools.clone()));
+        assert_eq!(mdm_tools::jsruntime::probes(), before);
+        // Whatever this computer has, it is either known now or left to the probe.
+        assert!(first.probe.slot.is_none() && helpers.probe.slot.is_none());
+        if helpers.probe.wanted {
+            assert_eq!(helpers.runtime, None);
+        }
     }
 }

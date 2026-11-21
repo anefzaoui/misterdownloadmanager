@@ -4761,6 +4761,7 @@ dependencies = [
  "unicode-segmentation",
  "url",
  "webpki-root-certs",
+ "webpki-roots",
  "windows-sys 0.61.2",
  "wreq",
  "wreq-util",
@@ -4883,6 +4884,7 @@ dependencies = [
  "base64 0.23.1",
  "bytes",
  "craft-atomic",
+ "flate2",
  "futures",
  "hex",
  "mdm-engine",
@@ -4894,6 +4896,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "tar",
  "tempfile",
  "thiserror 2.0.21",
  "tokio",
@@ -9360,9 +9363,9 @@ dependencies = [
 
 [[package]]
 name = "webpki-roots"
-version = "1.0.11"
+version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f5f280bbb2b287bc8e7de7e3852945a0ff50d1bbcb5ed42b6c7a568c546df171"
+checksum = "7265c9301c16a8711c992c2d8da90ee77ef54b1ed51482d6dfeb00dc756b1297"
 dependencies = [
  "rustls-pki-types",
 ]

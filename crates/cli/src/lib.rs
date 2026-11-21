@@ -151,10 +151,14 @@ enum Cmd {
         #[arg(long, value_parser = parse_proxy)]
         proxy: Option<Proxy>,
     },
-    /// Install (or update) Deno, the JavaScript runtime yt-dlp needs for YouTube's qualities:
-    /// Deno's official build, checked against its release's SHA-256 (64-bit Windows, Linux and
-    /// macOS). yt-dlp is told of it from then on.
-    InstallDeno {
+    /// Install (or update) MDM's own JavaScript runtime, which yt-dlp needs for YouTube's
+    /// qualities: Node.js's newest LTS official build, checked against its release's checksums
+    /// signed by Node.js's releasers (Windows, Linux and macOS). A runtime already on the
+    /// computer (Deno, Node.js 22 or newer, QuickJS, Bun) or one chosen in Helpers is still used
+    /// first. The Deno earlier versions of MDM installed is removed once Node.js is in place.
+    /// `install-deno` is its earlier name.
+    #[command(alias = "install-deno")]
+    InstallJsRuntime {
         /// The proxy for this run, instead of the app's Options → Proxy / Socks: "none", "system"
         /// (the HTTPS_PROXY / HTTP_PROXY / ALL_PROXY variables, else the system's settings), or
         /// an address: http://host:port, https://, socks5://, socks5h:// (the proxy looks the
@@ -164,7 +168,7 @@ enum Cmd {
         #[arg(long, value_parser = parse_proxy)]
         proxy: Option<Proxy>,
     },
-    /// Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Deno) for newer versions now and
+    /// Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Node.js) for newer versions now and
     /// install them, each checked as its first install was, and print their versions. A helper a
     /// download is using is switched to its new version once that download ends. Programs you
     /// chose in Helpers, and the system's, are yours to update.
@@ -948,7 +952,7 @@ impl Conn {
             | Cmd::InstallYtdlp { proxy }
             | Cmd::InstallFfmpeg { proxy }
             | Cmd::InstallGalleryDl { proxy }
-            | Cmd::InstallDeno { proxy }
+            | Cmd::InstallJsRuntime { proxy }
             | Cmd::UpdateHelpers { proxy } => (proxy, None, None),
             _ => (&None, None, None),
         };
@@ -1119,7 +1123,7 @@ fn runs_helpers(cmd: &Cmd) -> bool {
             | Cmd::UpdateHelpers { .. }
             | Cmd::InstallFfmpeg { .. }
             | Cmd::InstallGalleryDl { .. }
-            | Cmd::InstallDeno { .. }
+            | Cmd::InstallJsRuntime { .. }
             | Cmd::GalleryGet { .. }
             | Cmd::VideoInfo { .. }
             | Cmd::PlaylistInfo { .. }
@@ -1215,17 +1219,36 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             }
             Ok(())
         }
-        Cmd::InstallDeno { .. } => {
+        Cmd::InstallJsRuntime { .. } => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
-            let i = mdm_tools::deno::install_latest(&dir, &own_net(), None).await?;
+            let i = mdm_tools::jsruntime::install_latest(&dir, &own_net(), None).await?;
+            // What yt-dlp uses: the one just installed, unless one was chosen or found first.
+            let used = mdm_tools::jsruntime::current(Some(dir.as_path()), None);
             if json {
-                emit(json!({ "tool": "deno", "version": i.version, "path": i.exe }));
+                emit(json!({
+                    "tool": "node",
+                    "version": i.version,
+                    "path": i.exe,
+                    "used": used.as_ref().map(|r| json!({
+                        "runtime": r.kind.ytdlp_name(),
+                        "version": r.version,
+                        "path": r.exe,
+                    })),
+                }));
             } else {
                 println!(
-                    "Deno {} verified and installed: {}",
+                    "Node.js {} verified and installed: {}",
                     i.version,
                     i.exe.display()
                 );
+                if let Some(r) = used.filter(|r| r.exe != i.exe) {
+                    println!(
+                        "yt-dlp uses {} {}, found first: {}",
+                        r.kind.label(),
+                        r.version.as_deref().unwrap_or(""),
+                        r.exe.display()
+                    );
+                }
             }
             Ok(())
         }

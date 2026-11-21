@@ -12,13 +12,15 @@ publish.workspace = true
 default = ["browser-connection"]
 # The browser-like connection for sites whose bot check refuses MDM's own (#668,
 # src/browserlike.rs). Without it a bot check's refusal stands (the browser takes the download).
-browser-connection = ["dep:wreq", "dep:wreq-util", "dep:rustls-native-certs", "dep:webpki-root-certs"]
+browser-connection = ["dep:wreq", "dep:wreq-util", "dep:rustls-native-certs"]
 
 [dependencies]
 wreq = { workspace = true, optional = true }
 wreq-util = { workspace = true, optional = true }
 rustls-native-certs = { workspace = true, optional = true }
-webpki-root-certs = { workspace = true, optional = true }
+webpki-root-certs.workspace = true
+# Mozilla's name constraints, which webpki-root-certs' plain certificates don't carry (tls.rs).
+webpki-roots.workspace = true
 bytes.workspace = true
 craft-atomic.workspace = true
 serde_json.workspace = true

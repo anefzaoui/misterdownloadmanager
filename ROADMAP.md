@@ -569,6 +569,24 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Private-window downloads stay in the list by default (Options → General → Keep
+  private-window downloads in the list is on for every list that never chose, their cookies
+  still never saved): each is marked with a mask before its status, whose tip says whether the
+  list keeps it, the first one brings a notice saying so and where to turn it off, and the log
+  notes each one without its name or address
+  ([#1581](https://github.com/anefzaoui/misterdownloadmanager/issues/1581))
+- ✅ YouTube's JavaScript runtime: MDM installs Node.js (its newest LTS, from nodejs.org, its
+  checksum list checked against Node.js's releasers' signing keys) instead of Deno, for Windows
+  (x64, ARM64, 32-bit), macOS and Linux (x64, ARM64), kept up to date with the other helpers; a
+  runtime already on the computer (Deno, Node.js 22 or newer, QuickJS, Bun) comes first, and
+  **Use another program...** in Helpers picks any of them; the first start offers Node.js only
+  when none is found; the Deno an earlier version installed gives way to Node.js and is removed;
+  the command line's `install-js-runtime` (`install-deno` still works)
+  ([#1570](https://github.com/anefzaoui/misterdownloadmanager/issues/1570))
+- ✅ HTTPS certificates are also checked against Mozilla's trusted roots (Firefox's) where the
+  system's own don't complete the chain, so an older Windows that hasn't fetched Let's Encrypt's
+  roots downloads from the sites Firefox opens; the system's own certificates stay trusted
+  ([#1546](https://github.com/anefzaoui/misterdownloadmanager/issues/1546))
 - ✅ macOS: file names in Sinhala show their letters on every Mac: its Sinhala font is used by
   name, as Khmer's and Lao's are, where the system's own choice could be a downloaded font MDM
   couldn't find ([#1592](https://github.com/anefzaoui/misterdownloadmanager/issues/1592))
@@ -1677,7 +1695,8 @@ These ship in the next version.
   kept aside and a new one begins, the download list's torrents are added again from MDM's own
   copies and find their pieces on disk; MDM's own rewrite of the list reaches the disk before it
   replaces the old one ([#1357](https://github.com/anefzaoui/misterdownloadmanager/issues/1357))
-- ✅ **Options → General → Keep private-window downloads in the list** (off by default): a private
+- ✅ **Options → General → Keep private-window downloads in the list** (on by default since
+  [#1581](https://github.com/anefzaoui/misterdownloadmanager/issues/1581)): a private
   window's downloads are saved like any other and survive MDM closing or restarting, still apart
   from normal windows' downloads (a saved private-window mark; their cookies never saved); a
   private window's video never falls back to Cookies for video sites, after a restart either
@@ -1731,6 +1750,13 @@ These ship in the next version.
   "Exceptions" instead of unnamed, and each of the two **Download limits** boxes says what
   it counts ("Download limit: MBytes", "Download limit: every how many hours") instead of
   only its number; the same two boxes on the **Scheduler**'s limits page are named too
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers read the **Get ready for video downloads** window: its headline, each
+  helper's name and description, the status line under the bar and the advice under it
+  were painted text a reader never saw (the same banner wherever it heads a window); the
+  window now opens with the focus on its default button, **Yes, download them
+  (recommended)**, instead of on the frame, and **Close** takes it when Yes goes away
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH

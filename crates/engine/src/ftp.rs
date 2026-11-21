@@ -552,23 +552,19 @@ fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
 }
 
 /// MDM's own TLS client configuration (FTPS, DNS over TLS and HTTPS): the system's verifier, as
-/// reqwest uses for HTTPS, with `extra` certificates also trusted (the tests' own CA). On a
-/// system without certificates, one that refuses every server, saying why (#264): the DNS
-/// setting that holds it may still use plain DNS, and FTP stays plain FTP.
+/// reqwest uses for HTTPS, with Mozilla's roots besides (`tls::mozilla_roots`, #1546) and
+/// `extra` certificates also trusted (the tests' own CA). On a system without certificates, one
+/// that refuses every server, saying why (#264): the DNS setting that holds it may still use
+/// plain DNS, and FTP stays plain FTP.
 pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, rustls::Error> {
     use rustls_platform_verifier::Verifier;
     if extra.is_empty() && !crate::tls::system_has_roots() {
         return Ok(crate::tls::no_roots_config());
     }
     let provider = crate::tls::provider();
-    let verifier = if extra.is_empty() {
-        Verifier::new(provider.clone())
-    } else {
-        Verifier::new_with_extra_roots(
-            extra.iter().map(|c| CertificateDer::from(c.clone())),
-            provider.clone(),
-        )
-    }?;
+    let extra = extra.iter().map(|c| CertificateDer::from(c.clone()));
+    let verifier =
+        Verifier::new_with_extra_roots(crate::tls::mozilla_roots().chain(extra), provider.clone())?;
     Ok(rustls::ClientConfig::builder_with_provider(provider)
         .with_safe_default_protocol_versions()?
         .dangerous()

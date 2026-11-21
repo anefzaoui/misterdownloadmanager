@@ -116,6 +116,12 @@ If your antivirus quarantined MDM, restore it and add an exception for its folde
 
 A minimal Linux system (often with the AppImage, the tar.gz or a build from source) may have no CA certificates, which MDM needs to check a secure server. Plain `http://` and `ftp://` downloads still work; each `https://` or `ftps://` one stops at once saying the computer has no certificates to check the server with. Install the `ca-certificates` package (`sudo apt install ca-certificates`, `sudo dnf install ca-certificates`), then resume the download. The .deb and .rpm bring it.
 
+## HTTPS downloads fail with "not trusted" or "unknown issuer"
+
+MDM checks a secure server's certificate the way your browser does: with your system's trusted certificates (Windows', macOS's, or the Linux CA bundle), and with Mozilla's, the ones Firefox carries. On Windows, Mozilla's are used only when Windows' own don't complete the chain; on macOS and Linux they are added to the system's. A Windows 10 or 11 that hasn't been updated for a while fetches the roots it trusts from Windows Update only when a site first needs one, and behind a proxy that can fail: MDM then goes by Firefox's list, so such a site still downloads. One consequence: a root you removed from the system's store, or marked as not trusted, is still trusted by MDM when Mozilla's list has it, as Firefox trusts it.
+
+If a site still says *not trusted (self-signed or from an unknown issuer)*, its certificate isn't from an issuer any browser trusts. On a company or school network, a proxy or an antivirus that inspects HTTPS shows its own certificate instead of the site's: MDM trusts it when it is installed in the system's store, as Edge and Chrome do (Firefox has its own setting for it). Opening the site in Edge (on Windows) shows the same certificate MDM sees.
+
 ## Where your data is
 
 - Installed or the plain zip: `%APPDATA%\misterdownloadmanager`. The list and settings are in `downloads.json`.

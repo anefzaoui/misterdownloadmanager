@@ -96,7 +96,7 @@ When MDM takes a download, the browser's own copy is cancelled and removed from 
 3. ![Download complete, with Open, Open with..., Open folder and Close](images/help/catch-complete.webp)
    *Download complete: Open the file, or Open folder.*
 
-Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes, unless you tick **Options → General → Keep private-window downloads in the list**: then they are saved like any other and survive a restart (their cookies are never saved).
+Downloads from a private window use that window's cookies, never the normal ones, and are kept in MDM's list like any other, so they are still there after a restart (their cookies are never saved). A small mask before a download's status marks it as a private window's; its tip says whether the list keeps it. To keep them in memory only, as the browser keeps its private history, untick **Options → General → Keep private-window downloads in the list**: then they are gone from the list when MDM closes.
 
 Files MDM downloads from the browser are marked as coming from the internet, as the browser marks its own: Windows checks a program with SmartScreen before it runs and Office opens a document in Protected View. Like the browser, MDM leaves the mark out when Windows' Group Policy **Do not preserve zone information in file attachments** is on; [Options → Save to](options.md#save-to) can turn it off for MDM alone.
 

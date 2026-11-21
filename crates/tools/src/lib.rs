@@ -10,13 +10,18 @@ pub mod autoupdate;
 pub mod bgutil;
 pub mod chosen;
 pub mod declared;
-// Deno, the JavaScript runtime yt-dlp needs for YouTube (#1448, #1470).
+// The Deno earlier versions of MDM installed for YouTube (#1448, #1470), until its Node.js is in
+// place (#1570).
 pub mod deno;
 pub mod ffmpeg;
 mod folder;
 pub mod gallery;
 pub mod github;
+// Which JavaScript runtime yt-dlp uses for YouTube (#1570).
+pub mod jsruntime;
 pub mod manifest;
+// Node.js, the JavaScript runtime MDM installs when the computer has none (#1570).
+pub mod node;
 mod openpgp;
 pub mod pages;
 pub mod pieces;

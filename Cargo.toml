@@ -115,6 +115,7 @@ wreq-util = { version = "=0.2.1", default-features = false, features = ["emulati
 # connection trusts too (an antivirus's or a company's HTTPS inspection adds its own there).
 rustls-native-certs = "0.8.5"
 webpki-root-certs = "1.0.11"
+webpki-roots = "1.0.12"
 reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "stream", "system-proxy", "socks"] }
 # FTP and FTPS (crates/engine/src/ftp.rs), with TLS through the rustls and platform verifier
 # reqwest uses. "deprecated" is what enables implicit FTPS (ftps://, port 990).
