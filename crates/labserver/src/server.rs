@@ -750,6 +750,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     type=MIME      that Content-Type instead (none: no Content-Type at all)
     Expires= Signature= Key-Pair-Id= Policy=   ignored: a CloudFront signed address's own keys
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
+    from=UNIXMS    403 before that time (a YouTube stream before the ad played ahead of its
+                   video would end: yt-dlp's available_at, #1655)
     uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
                    with a link= of its own)
     lasts_ms=N     403 once N ms have passed since this link's first request: every address with
@@ -1417,6 +1419,8 @@ struct FileQuery {
     seed: u64,
     /// A signed link's end, unix ms.
     expires: Option<u64>,
+    /// When a link starts being served, unix ms: 403 before it (#1655).
+    from: Option<u64>,
     /// The requests a signed link serves (`link` tells the links apart).
     uses: Option<u64>,
     /// How long a signed link lasts from its first request, ms (`link` makes its addresses one).
@@ -1531,6 +1535,10 @@ pub(crate) async fn serve(
     if used_up || lapsed || q.expires.is_some_and(|t| unix_ms() > t) {
         shared.record(entry, 403, "expired");
         return (StatusCode::FORBIDDEN, "link expired\n").into_response();
+    }
+    if q.from.is_some_and(|t| unix_ms() < t) {
+        shared.record(entry, 403, "too early");
+        return StatusCode::FORBIDDEN.into_response();
     }
     let f = shared.faults().overridden_by(&q.faults);
 
@@ -1960,6 +1968,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
     let mut out = FileQuery {
         seed: 0,
         expires: None,
+        from: None,
         uses: None,
         lasts_ms: None,
         link: None,
@@ -1986,6 +1995,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             "expires" => {
                 out.expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?)
             }
+            "from" => out.from = Some(v.parse().map_err(|_| format!("invalid from `{v}`\n"))?),
             "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
             "lasts_ms" => {
                 out.lasts_ms = Some(v.parse().map_err(|_| format!("invalid lasts_ms `{v}`\n"))?)

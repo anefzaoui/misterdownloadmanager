@@ -261,6 +261,22 @@ fn fake_ytdlp() -> ExitCode {
             return ExitCode::FAILURE;
         }
         let chosen = choice(&info, &selector, &template);
+        // #1655: streams served only from a few seconds after the choice, as YouTube's after the
+        // ad it plays ahead of the video (yt-dlp's `available_at`): `"available_at": "soon"` and
+        // `from=SOON` in their addresses become that time, counted from now, however long the
+        // look-up took.
+        let soon = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs()
+            + 5;
+        let chosen = chosen
+            .to_string()
+            .replace(
+                "\"available_at\":\"soon\"",
+                &format!("\"available_at\":{soon}"),
+            )
+            .replace("from=SOON", &format!("from={}", soon * 1000));
         println!("MDMJ {chosen}");
         return ExitCode::SUCCESS;
     }
@@ -1727,6 +1743,48 @@ fn engine_checks(me: &Path) {
             .filter_map(Result::ok)
             .all(|e| !e.file_name().to_string_lossy().contains(".mdm.")),
         "no part file or state left"
+    );
+
+    // #1655: YouTube's streams are refused (403) until the ad played ahead of the video would
+    // end, yt-dlp's `available_at`: the engine waits for it before its first request, says so,
+    // and the download comes down (it failed at once before). The fake's choice makes "soon"
+    // 5 s after it.
+    let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
+    let mut early: serde_json::Value = serde_json::from_str(&page(
+        "/gen/3M/v.mp4?seed=1&from=SOON",
+        "/gen/1M/a.m4a?seed=2&from=SOON",
+        "https",
+    ))
+    .unwrap();
+    for f in early["formats"].as_array_mut().unwrap() {
+        f["available_at"] = "soon".into();
+    }
+    std::fs::write(tools.path().join("page.json"), early.to_string()).unwrap();
+    let job = start(tools.path(), out.path(), 4);
+    let (p, _) = wait(&job);
+    let log = log_of(&p);
+    assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
+    assert!(
+        std::fs::read(out.path().join("Talk.mp4")).unwrap() == expected(),
+        "the streams merged"
+    );
+    assert!(
+        log.iter()
+            .any(|t| t.starts_with("Waiting ") && t.contains("as the site requires")),
+        "the wait said: {log:?}"
+    );
+    rt.block_on(lab.settled());
+    let streams: Vec<_> = lab
+        .log()
+        .into_iter()
+        .filter(|e| e.query.as_deref().is_some_and(|q| q.contains("from=")))
+        .collect();
+    assert!(!streams.is_empty());
+    // The lab answers 403 before `from`: none means none was asked for before its time.
+    assert!(
+        streams.iter().all(|e| e.status != 403),
+        "a stream asked for before its time: {:?}",
+        streams.iter().map(|e| e.status).collect::<Vec<_>>()
     );
 
     // #1240: the chosen height isn't offered (a reroute left it out): the engine downloads the

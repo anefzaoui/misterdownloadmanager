@@ -1384,6 +1384,9 @@ These ship in the next version.
   (as many as a file's connections), AES-128 pieces decrypted, expired pieces' addresses asked of
   yt-dlp again ([#531](https://github.com/anefzaoui/misterdownloadmanager/issues/531), part of
   [#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
+- ✅ YouTube videos with an ad before them come down through MDM's own downloader: it waits, as
+  yt-dlp does, until YouTube serves their streams (403 before then)
+  ([#1655](https://github.com/anefzaoui/misterdownloadmanager/issues/1655))
 - ✅ Image galleries through MDM's own downloader: gallery-dl lists the pictures, MDM brings
   them in 4 at a time under the speed limits, gallery-dl fetches only what is left
   ([#769](https://github.com/anefzaoui/misterdownloadmanager/issues/769))
