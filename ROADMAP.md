@@ -576,6 +576,10 @@ These ship in the next version.
 - ✅ Torrents: a torrent added again while it downloads (a file ticked, trackers added, its
   folder moved) keeps every piece it has, not only those of librqbit's last saved piece map
   ([#1623](https://github.com/anefzaoui/misterdownloadmanager/issues/1623))
+- ✅ Torrents: while a torrent is added again with its pieces kept (a file ticked, trackers
+  added), its progress stays what it had, not 0.00 % while the session checks a sample of
+  them; the log says when its piece map can't be written back
+  ([#1648](https://github.com/anefzaoui/misterdownloadmanager/issues/1648))
 - ✅ Downloads from servers that keep several copies of a file, each with its own version tag
   and date (ModelScope's), go on with all their connections when the copies carry the same
   checksum of the whole file, checked on every part, instead of stopping with "the file changed

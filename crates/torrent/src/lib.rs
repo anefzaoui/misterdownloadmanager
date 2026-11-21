@@ -668,9 +668,62 @@ pub struct Torrents {
     /// Torrents waiting for their check to end before they pause ([`Torrents::pause`]); a Start
     /// meanwhile takes the pause back ([`Torrents::resume`]).
     pause_after_check: Arc<std::sync::Mutex<std::collections::HashSet<String>>>,
+    /// Torrents being added again with their pieces kept ([`Torrents::readd`]): they read as
+    /// before until the session has them back. Shared with `watch`'s thread.
+    readding: Arc<Readding>,
 }
 
 pub(crate) type Handle = Arc<librqbit::ManagedTorrent>;
+
+/// Torrents taken out of the session and added again with their pieces kept (a file ticked,
+/// Add trackers), by info hash (lowercase), and how they read before. Meanwhile librqbit has
+/// nothing to say of one (out of the session), then counts the bytes it checks of a sample of
+/// the pieces kept, from 0, without its files' progress: the list read 0.00 % for a moment
+/// (#1648). So until it is back and checked, the window reads it as before.
+type Readding = std::sync::Mutex<std::collections::HashMap<String, Before>>;
+
+/// A torrent as it read before a re-add ([`Readding`]).
+struct Before {
+    stats: Stats,
+    chosen: Option<Vec<usize>>,
+    /// The handle taken out of the session: its metadata (the files the progress window lists)
+    /// stays; its state, files and piece map went with the delete.
+    handle: Handle,
+    swarm: Option<Swarm>,
+    /// Added again: once librqbit has checked it, its numbers are its own again. Not before:
+    /// it reads Paused before it leaves the session.
+    back: bool,
+}
+
+impl Before {
+    /// Its numbers meanwhile: being checked (librqbit checks the pieces kept), nothing moving,
+    /// as much as it had.
+    fn stats(&self) -> Stats {
+        Stats {
+            phase: Phase::Checking,
+            checked: None,
+            down_speed: 0.0,
+            up_speed: 0.0,
+            peers_live: 0,
+            ..self.stats.clone()
+        }
+    }
+}
+
+/// What the window reads of `hash` when librqbit says `now`: as before while it is re-added
+/// ([`Readding`]); librqbit's own once it is back and checked, which ends the re-add.
+fn held(readding: &Readding, hash: &str, now: Stats) -> Stats {
+    let mut r = readding.lock().unwrap();
+    let key = hash.to_ascii_lowercase();
+    match r.get(&key) {
+        Some(b) if b.back && now.phase != Phase::Checking => {
+            r.remove(&key);
+            now
+        }
+        Some(b) => b.stats(),
+        None => now,
+    }
+}
 
 type Checks = std::sync::Mutex<std::collections::HashMap<String, (u64, std::time::Instant)>>;
 
@@ -1014,12 +1067,18 @@ impl Torrents {
         }
         let api = Api::new(session.clone(), None);
         let checks: Arc<Checks> = Default::default();
+        let readding: Arc<Readding> = Default::default();
         // The first reading here, so the torrents restored are known from the start.
-        let first = read_all(&session, &api, &checks, &HashSet::new());
+        let first = read_all(&session, &api, &checks, &readding, &HashSet::new());
         let watch = {
-            let (session, api, checks) = (session.clone(), api.clone(), checks.clone());
+            let (session, api, checks, readding) = (
+                session.clone(),
+                api.clone(),
+                checks.clone(),
+                readding.clone(),
+            );
             watch::Watch::start(first, watch::EVERY, move |wanted| {
-                read_all(&session, &api, &checks, wanted)
+                read_all(&session, &api, &checks, &readding, wanted)
             })
         };
         Ok(Torrents {
@@ -1031,6 +1090,7 @@ impl Torrents {
             checks,
             watch,
             pause_after_check: Default::default(),
+            readding,
         })
     }
 
@@ -1173,7 +1233,7 @@ impl Torrents {
         let seen = id(hash)
             .ok()
             .and_then(|i| self.session.get(i))
-            .map(|h| read_one(&h, hash, &self.checks));
+            .map(|h| read_one(&h, hash, &self.checks, &self.readding));
         self.watch.put(hash, seen);
     }
 
@@ -1339,6 +1399,13 @@ impl Torrents {
         recheck: bool,
     ) -> Result<(), TorrentError> {
         let res = self.readd_now(hash, torrent, recheck).await;
+        if res.is_err() {
+            // Not back (or never out): it reads as librqbit says.
+            self.readding
+                .lock()
+                .unwrap()
+                .remove(&hash.to_ascii_lowercase());
+        }
         self.refresh(hash);
         res
     }
@@ -1372,6 +1439,21 @@ impl Torrents {
         } else {
             self.piece_map_now(hash, &h).await
         };
+        // Its pieces kept, it reads as now (paused, every piece it has) until it is back; a
+        // Recheck counts its check from 0, which is what it shows.
+        if !recheck {
+            let before = Before {
+                stats: stats_of(&h, hash, &self.checks),
+                chosen: files.clone(),
+                handle: h.clone(),
+                swarm: self.watch.get(hash).and_then(|s| s.swarm.clone()),
+                back: false,
+            };
+            self.readding
+                .lock()
+                .unwrap()
+                .insert(hash.to_ascii_lowercase(), before);
+        }
         drop(h);
         self.session
             .delete(id(hash)?, false)
@@ -1389,6 +1471,14 @@ impl Torrents {
             }
         } else if let Some(bits) = kept {
             put_piece_map(&map, &bits).await;
+        }
+        if let Some(b) = self
+            .readding
+            .lock()
+            .unwrap()
+            .get_mut(&hash.to_ascii_lowercase())
+        {
+            b.back = true;
         }
         self.add(torrent, &folder, files, peers, paused).await?;
         if let Some((down, up)) = limits {
@@ -1415,6 +1505,10 @@ impl Torrents {
 
     /// Take it out of the session; the files stay unless `delete_files`.
     pub async fn remove(&self, hash: &str, delete_files: bool) -> Result<(), TorrentError> {
+        self.readding
+            .lock()
+            .unwrap()
+            .remove(&hash.to_ascii_lowercase());
         let res = self
             .session
             .delete(id(hash)?, delete_files)
@@ -1669,14 +1763,29 @@ fn peers_of(api: &Api, i: TorrentIdOrHash) -> Vec<Peer> {
 
 /// Write a piece map back where librqbit has just removed it, for the torrent added again to
 /// find. On Windows the old file can stay, delete-pending, until librqbit's writer lets go of
-/// it, and the name can't be made again until then: it is tried for up to five seconds.
+/// it, and the name can't be made again until then: it is tried for up to five seconds. Given
+/// up, the pieces it held are only fetched again, but the log says so (#1648).
 async fn put_piece_map(map: &Path, bits: &[u8]) {
-    for _ in 0..50 {
-        if std::fs::write(map, bits).is_ok() {
-            return;
+    put_piece_map_tries(map, bits, 50, Duration::from_millis(100)).await;
+}
+
+async fn put_piece_map_tries(map: &Path, bits: &[u8], tries: u32, apart: Duration) -> bool {
+    let mut last = None;
+    for i in 0..tries {
+        match std::fs::write(map, bits) {
+            Ok(()) => return true,
+            Err(e) => last = Some(e),
         }
-        tokio::time::sleep(Duration::from_millis(100)).await;
+        if i + 1 < tries {
+            tokio::time::sleep(apart).await;
+        }
     }
+    tracing::warn!(
+        "torrents: can't write the piece map back to {} ({}); its pieces will be fetched again",
+        map.display(),
+        last.map_or_else(|| "not tried".to_owned(), |e| e.to_string())
+    );
+    false
 }
 
 fn pieces_of(api: &Api, i: TorrentIdOrHash) -> Vec<bool> {
@@ -1688,9 +1797,9 @@ fn pieces_of(api: &Api, i: TorrentIdOrHash) -> Vec<bool> {
 
 /// One torrent read now, for the window's [`Torrents::seen`] (its details only when wanted, by
 /// [`read_all`]). Waits as [`stats_of`] does.
-fn read_one(h: &Handle, hash: &str, checks: &Checks) -> watch::Seen {
+fn read_one(h: &Handle, hash: &str, checks: &Checks, readding: &Readding) -> watch::Seen {
     watch::Seen {
-        stats: stats_of(h, hash, checks),
+        stats: held(readding, hash, stats_of(h, hash, checks)),
         chosen: h.only_files(),
         handle: Some(h.clone()),
         swarm: None,
@@ -1704,15 +1813,17 @@ fn read_all(
     session: &Session,
     api: &Api,
     checks: &Checks,
+    readding: &Readding,
     wanted: &HashSet<String>,
 ) -> std::collections::HashMap<String, Arc<watch::Seen>> {
     let all: Vec<(String, Handle)> = session.with_torrents(|all| {
         all.map(|(_, h)| (h.info_hash().as_string(), h.clone()))
             .collect()
     });
-    all.into_iter()
+    let mut out: std::collections::HashMap<String, watch::Seen> = all
+        .into_iter()
         .map(|(hash, h)| {
-            let mut seen = read_one(&h, &hash, checks);
+            let mut seen = read_one(&h, &hash, checks, readding);
             if wanted.contains(&hash) {
                 let i = TorrentIdOrHash::Hash(h.info_hash());
                 seen.swarm = Some(Swarm {
@@ -1721,9 +1832,32 @@ fn read_all(
                     pieces: pieces_of(api, i),
                 });
             }
-            (hash, Arc::new(seen))
+            (hash, seen)
         })
-        .collect()
+        .collect();
+    // Being re-added (still there after `read_one`): out of the session, it reads as before;
+    // back but still checked, its pieces too (librqbit has none to show until checked).
+    for (hash, b) in readding.lock().unwrap().iter() {
+        match out.get_mut(hash) {
+            Some(seen) => {
+                if b.swarm.is_some() {
+                    seen.swarm = b.swarm.clone();
+                }
+            }
+            None => {
+                out.insert(
+                    hash.clone(),
+                    watch::Seen {
+                        stats: b.stats(),
+                        chosen: b.chosen.clone(),
+                        handle: Some(b.handle.clone()),
+                        swarm: b.swarm.clone(),
+                    },
+                );
+            }
+        }
+    }
+    out.into_iter().map(|(h, s)| (h, Arc::new(s))).collect()
 }
 
 #[cfg(test)]
@@ -3415,6 +3549,138 @@ mod tests {
 
         seeder.stop().await;
         leecher.stop().await;
+    }
+
+    /// #1648: while it is added again with its pieces kept (a file ticked while it downloads),
+    /// what the window reads never drops below what it had: not out of the session between the
+    /// delete and the add, not 0 % while librqbit checks a sample of the pieces kept.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn readd_reads_what_it_had_meanwhile() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        let a: Vec<u8> = (0..1_000_003u32).map(|i| (i % 251) as u8).collect();
+        let b: Vec<u8> = (0..200_001u32).map(|i| (i % 13) as u8).collect();
+        std::fs::write(src.join("a.bin"), &a).unwrap();
+        std::fs::write(src.join("b.bin"), &b).unwrap();
+        let torrent = make_torrent(&src).await;
+
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let meta = seeder
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while seeder.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        let addr = seeder.listen_addr().expect("seeder listens");
+
+        let leecher = Torrents::start(offline(&tmp.path().join("s2")))
+            .await
+            .unwrap();
+        let out = meta.folder_in(&tmp.path().join("got"));
+        std::fs::create_dir_all(&out).unwrap();
+        leecher.set_download_limit(Some(64 * 1024));
+        let h2 = leecher
+            .add(&torrent, &out, None, vec![addr], false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(60);
+        let before = loop {
+            let s = leecher.stats(&h2).unwrap();
+            assert_ne!(s.phase, Phase::Finished, "never seen halfway: {s:?}");
+            if s.phase == Phase::Downloading && s.done >= s.total / 4 {
+                break s;
+            }
+            assert!(std::time::Instant::now() < deadline, "too slow: {s:?}");
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        };
+
+        // The window's reading, every 2 ms, from just before the re-add until it downloads
+        // again.
+        let over = std::sync::atomic::AtomicBool::new(false);
+        let sample = async {
+            let mut seen = Vec::new();
+            while !over.load(std::sync::atomic::Ordering::SeqCst) {
+                seen.push(leecher.seen(&h2));
+                tokio::time::sleep(Duration::from_millis(2)).await;
+            }
+            seen
+        };
+        let readd = async {
+            leecher.readd(&h2, &torrent, false).await.unwrap();
+            let deadline = std::time::Instant::now() + Duration::from_secs(30);
+            loop {
+                let s = leecher.stats(&h2).unwrap();
+                if matches!(s.phase, Phase::Downloading | Phase::Finished) {
+                    break;
+                }
+                assert!(std::time::Instant::now() < deadline, "never resumed: {s:?}");
+                tokio::time::sleep(Duration::from_millis(20)).await;
+            }
+            // And a reading of the watch's own after that.
+            tokio::time::sleep(watch::EVERY * 2).await;
+            over.store(true, std::sync::atomic::Ordering::SeqCst);
+        };
+        let (seen, ()) = tokio::join!(sample, readd);
+        assert!(seen.len() > 20, "too few readings: {}", seen.len());
+        // Never less than the reading before it (the watch's readings lag librqbit's by up to
+        // one, so not against `before` itself).
+        let (mut done, mut files) = (0, 0);
+        for (i, s) in seen.iter().enumerate() {
+            let s = s
+                .as_ref()
+                .unwrap_or_else(|| panic!("reading {i}: out of the session"));
+            let in_files: u64 = s.file_done.iter().sum();
+            assert!(
+                s.done >= done && in_files >= files,
+                "reading {i}: {} of {} (files {in_files}), {done} (files {files}) before: {s:?}",
+                s.done,
+                s.total,
+            );
+            assert_eq!(s.total, before.total, "reading {i}: {s:?}");
+            (done, files) = (s.done, in_files);
+        }
+        let last = seen.last().unwrap().as_ref().unwrap();
+        assert!(
+            matches!(last.phase, Phase::Downloading | Phase::Finished),
+            "its own numbers again: {last:?}"
+        );
+        assert!(
+            leecher.readding.lock().unwrap().is_empty(),
+            "the re-add is over"
+        );
+
+        seeder.stop().await;
+        leecher.stop().await;
+    }
+
+    /// #1648: a piece map that can't be written back is given up after its tries, and said
+    /// (a warning); one that can is written.
+    #[tokio::test]
+    async fn a_piece_map_written_back_or_given_up() {
+        let tmp = tempfile::tempdir().unwrap();
+        let map = tmp.path().join("x.bitv");
+        assert!(put_piece_map_tries(&map, &[0xf0], 3, Duration::from_millis(1)).await);
+        assert_eq!(std::fs::read(&map).unwrap(), [0xf0]);
+        // Its folder is a file: never writable.
+        let blocked = map.join("y.bitv");
+        let at = std::time::Instant::now();
+        assert!(!put_piece_map_tries(&blocked, &[0xf0], 3, Duration::from_millis(1)).await);
+        assert!(at.elapsed() < Duration::from_secs(5));
+        assert!(!blocked.exists());
     }
 
     /// A finished torrent taken out of the session, the session started again (the app stops
