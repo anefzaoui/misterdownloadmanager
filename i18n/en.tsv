@@ -3640,7 +3640,7 @@
 #. the trailing ... means it is still going on: keep it
 	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...	The best qualities, MP3, Opus and FLAC need ffmpeg, which MDM has no copy of for 32-bit Windows: choose your own with Helpers...
 #. text in the Download video window
-#. in Download video, on macOS and Linux (no button: the system installs it)
+#. in Download video and the browser quality menu, on macOS and Linux (the system installs ffmpeg)
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
@@ -3835,6 +3835,8 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?
+#. text in the Download video window
+	The selected quality is no longer available. Choose another quality.	The selected quality is no longer available. Choose another quality.
 #. text in errors.rs
 	the server answered {status}	the server answered {status}
 #. text in errors.rs
@@ -5461,6 +5463,9 @@ extension	These are the downloads of the Mister Download Manager at {server}. Op
 #. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 extension	This browser isn't ticked in Options → General.	This browser isn't ticked in Options → General.
+#. text in the browser extension
+#. browser video download could not use the confirmed lookup; ask the user to select again instead of silently changing the format
+extension	This choice expired. Choose a quality again.	This choice expired. Choose a quality again.
 #. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 extension	This computer	This computer

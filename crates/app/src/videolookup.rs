@@ -452,12 +452,29 @@ fn menu_choice(c: &Choice) -> VideoChoice {
 
 /// What the menu says with video `v`'s choices, as the Download video window says it (#852:
 /// YouTube looked up without a JavaScript runtime), with its help page in MDM's language.
-fn notice(v: &Video) -> Option<VideoNotice> {
-    v.needs_js_runtime.then(|| VideoNotice {
-        text: crate::videodlg::js_runtime_note().to_owned(),
+fn notice(v: &Video, merge: bool) -> Option<VideoNotice> {
+    let mut notes = Vec::new();
+    if v.needs_js_runtime {
+        notes.push(crate::videodlg::js_runtime_note());
+    }
+    if !merge && mdm_tools::resolve::needs_merging(v) {
+        notes.push(crate::videodlg::ffmpeg_note());
+    }
+    if notes.is_empty() {
+        return None;
+    }
+    Some(VideoNotice {
+        text: notes.join(" "),
         // i18n: link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
         link: crate::i18n::t("How to install one").to_owned(),
-        url: crate::help::page_url(crate::videodlg::JS_RUNTIME_HELP, crate::i18n::code()),
+        url: crate::help::page_url(
+            if v.needs_js_runtime {
+                crate::videodlg::JS_RUNTIME_HELP
+            } else {
+                "video.md#yt-dlp-and-ffmpeg"
+            },
+            crate::i18n::code(),
+        ),
     })
 }
 
@@ -467,14 +484,14 @@ fn answer(token: &str, s: &Search) -> VideoLookupAnswer {
     match &*lock(&s.found) {
         Found::Looking => VideoLookupAnswer::pending(token),
         Found::Video(v, choices) if choices.is_empty() => VideoLookupAnswer {
-            notice: notice(v),
+            notice: notice(v, s.merge),
             ..VideoLookupAnswer::failed(lookup::NO_CHOICES, None)
         },
         Found::Video(v, choices) => VideoLookupAnswer {
             token: Some(token.to_owned()),
             title: Some(cut(title_of(v, &s.address, &s.context), TITLE_MAX)),
             choices: choices.iter().take(CHOICES).map(menu_choice).collect(),
-            notice: notice(v),
+            notice: notice(v, s.merge),
             ..VideoLookupAnswer::of(lookup::READY)
         },
         Found::List => VideoLookupAnswer::of(lookup::LIST),
@@ -639,6 +656,21 @@ pub fn run(job: Job, exe: PathBuf, rt: tokio::runtime::Handle) -> std::io::Resul
 mod tests {
     use super::*;
     use mdm_ipc::{Command, VideoLookup, VideoPick};
+
+    #[test]
+    fn missing_ffmpeg_explains_why_only_audio_is_offered() {
+        let mut video = mdm_tools::resolve::parse(
+            br#"{"title":"A film","formats":[
+            {"format_id":"video","ext":"mp4","height":720,"vcodec":"avc1","acodec":"none"},
+            {"format_id":"audio","ext":"m4a","vcodec":"none","acodec":"mp4a"}] }"#,
+        )
+        .unwrap();
+        assert!(notice(&video, false).unwrap().text.contains("ffmpeg"));
+        assert!(notice(&video, true).is_none());
+        video.needs_js_runtime = true;
+        let both = notice(&video, false).unwrap();
+        assert!(both.text.contains("ffmpeg") && both.text.contains("JavaScript runtime"));
+    }
 
     /// A stream's manifest as yt-dlp sees it (named after its address) with two variants and
     /// German subtitles.

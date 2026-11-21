@@ -78,6 +78,7 @@
     video_failed_lookup: "Could not look it up",
     video_tab_video: "Video",
     video_tab_audio: "Audio",
+    video_choice_expired: "This choice expired. Choose a quality again.",
   };
   // Sizes as the browser's language writes them.
   const lang = ext.i18n.getUILanguage?.() || undefined;
@@ -303,7 +304,8 @@
     const state = s && typeof s === "object" && typeof s.state === "string" ? s.state : "";
     // A choice taken: downloading, in the queue, or handed to the app, which didn't say in time
     // what became of it ("sent": it will download it; the window would download it again).
-    if (state === "started" || state === "sent") return { act: "flash", kind: "ok", text: t("video_added") };
+    if (state === "started") return { act: "flash", kind: "ok", text: t("video_added") };
+    if (state === "sent") return { act: "flash", kind: "ok", text: t("video_sent") };
     if (state === "queued") return { act: "flash", kind: "ok", text: t("video_queued") };
     if (!picked) {
       if (state === "pending") return { act: "follow" };
@@ -2006,6 +2008,7 @@ button:focus-visible { outline: none; }
       const j = { video, src: video.currentSrc || "", href: location.href, asked: { src: d.src, title, url: d.url, at: d.at }, row, toWindow };
       const c = { v: video, d, key: lookKey(d) };
       let l = lookOf(c);
+      if (row && (!l || l.picked || l.state !== "ready" || !row.token || row.token !== l.token)) return setStatus({ state: "warn", text: t("video_choice_expired") }, 9000);
       setStatus({ state: "sending", text: t("video_sending") });
       // What the tab played for it (#1092) goes to the window too: the page has nothing.
       if (toWindow) return await useWindow(l && l.played ? playedJob(j, l) : j);
@@ -2022,8 +2025,9 @@ button:focus-visible { outline: none; }
       if (a.act !== "offer" && l.post && l.state === "failed") return showFlash({ kind: "warn", text: t("video_open_post") }, l);
       if (a.act !== "offer") return await useWindow(playedJob(j, l));
       const choices = l.choices;
-      const i = row && Number.isInteger(row.choice) ? row.choice : choices.indexOf(bestOf(l));
-      return await pick(j, l, Math.max(0, i));
+      const i = row ? row.choice : choices.indexOf(bestOf(l));
+      if (!Number.isInteger(i) || i < 0 || i >= Math.min(choices.length, 100)) return setStatus({ state: "warn", text: t("video_choice_expired") }, 9000);
+      return await pick(j, l, i);
     } finally {
       busy = false;
     }
@@ -2036,18 +2040,25 @@ button:focus-visible { outline: none; }
     return { ...j, asked: { ...j.asked, ...(l.file ? { src: l.played } : {}), played: l.played } };
   }
 
-  // A quality the look-up offered: MDM downloads it (its own choice of it, with what it looked the
-  // video up with) without its window. Only the token and the quality's number go.
+  // A quality the look-up offered: MDM downloads it without opening the browser's window.
   async function pick(j, l, i) {
-    if (!l.token || l.picked || !(i >= 0 && i < Math.min(l.choices.length, 100))) return useWindow(playedJob(j, l));
+    if (!l.token || l.picked || !(i >= 0 && i < Math.min(l.choices.length, 100))) return;
     l.picked = true;
-    const s = replyState(await send({ type: "video-pick", token: l.token, choice: i }));
-    if (!s) return endStatus(true);
-    // Downloading, queued, or handed to the app ("sent"): green, with "Show". Anything else (the
-    // look-up forgotten, another window's, an older app): the window.
+    const reply = await within(send({ type: "video-pick", token: l.token, choice: i }), LOOKUP_MS);
+    if (!reply || reply.late || reply.fallback || (reply.ok === false && !reply.lookup && !reply.gone)) {
+      l.picked = false;
+      return setStatus({ state: "err", text: t("video_no_answer") });
+    }
+    const s = replyState(reply);
+    if (!s) { l.picked = false; return endStatus(true); }
     const a = lookupAction(s, t, true);
-    if (a.act === "flash") return showFlash(a, l, qualityName(l.choices[i], t));
-    return useWindow(playedJob(j, l));
+    if (a.act === "flash") {
+      if (s.state === "busy") l.picked = false;
+      return showFlash(a, l, qualityName(l.choices[i], t));
+    }
+    // Explicit picks fail closed when the lookup expired or the app cannot honor the selection.
+    if (s.state === "busy") l.picked = false;
+    setStatus({ state: "warn", text: s.state === "busy" ? t("video_busy") : t("video_choice_expired") }, 9000);
   }
 
   // What a look-up or a choice came to, on the button: green with "Show", grey "off" with "Turn
@@ -2076,7 +2087,7 @@ button:focus-visible { outline: none; }
     if (r.ok) {
       lastShow = r.show || "";
       return direct
-        ? setStatus({ state: "sent", text: t("video_added"), sub: words, acts: lastShow ? [["show", t("video_show")]] : [] }, 6000)
+        ? setStatus({ state: "sent", text: t("video_sent"), sub: words, acts: lastShow ? [["show", t("video_show")]] : [] }, 6000)
         : setStatus({ state: "sent", text: t("video_sent") }, 2600);
     }
     if (r.why === "options") return offStatus();
@@ -2222,7 +2233,7 @@ button:focus-visible { outline: none; }
     b.type = "button";
     b.setAttribute("role", "menuitem");
     b.className = "top sel";
-    if (Number.isInteger(choice) && choice >= 0) b.dataset.choice = String(choice);
+    if (Number.isInteger(choice) && choice >= 0) { b.dataset.choice = String(choice); b.dataset.token = (lookOf(video ? describeNow(video) : null) || {}).token || ""; }
     else b.dataset.row = file ? "file" : "best";
     const mi = span("mi", "");
     mi.append(arrowIcon.cloneNode(true));
@@ -2242,6 +2253,7 @@ button:focus-visible { outline: none; }
     b.type = "button";
     b.setAttribute("role", "menuitem");
     b.dataset.choice = String(choice);
+    b.dataset.token = (lookOf(video ? describeNow(video) : null) || {}).token || "";
     const { q, f } = lineWords(c, t);
     const fs = span("f", f);
     if (best) fs.append(span("best", t("video_best")));
@@ -2280,6 +2292,8 @@ button:focus-visible { outline: none; }
     const back = menu.contains(shadow.activeElement);
     menuOpen = false;
     menu.classList.remove("open");
+    menu.setAttribute("role", "menu");
+    menu.setAttribute("aria-label", idleLabel);
     more.setAttribute("aria-expanded", "false");
     // The keyboard's focus back on its button, not lost with the menu.
     if (back) more.focus();
@@ -2288,7 +2302,7 @@ button:focus-visible { outline: none; }
   // An item of the menu, clicked or by key.
   function runItem(b) {
     if (!b) return;
-    if (b.dataset.choice !== undefined) return download({ choice: Number(b.dataset.choice) });
+    if (b.dataset.choice !== undefined) return download({ choice: Number(b.dataset.choice), token: b.dataset.token });
     if (b.dataset.row !== undefined) return download();
     run(b.dataset.act);
   }

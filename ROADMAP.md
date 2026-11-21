@@ -1410,9 +1410,12 @@ These ship in the next version.
 - ✅ Linux and macOS: the system's yt-dlp is used when MDM has none of its own, and Helpers can
   switch to MDM's copy ([#452](https://github.com/anefzaoui/misterdownloadmanager/issues/452))
 - ✅ The Download video button lists the video's qualities, with their sizes, in a menu on the page,
-  video and audio in their own tabs: the one picked downloads at once with only its progress window,
-  MDM's main window staying where it is; "Open in Mister Download Manager…" keeps the Download video
-  window. A stream the page plays (HLS) is listed at once, the same video asked again within 10
+  video and audio in their own tabs. Picking a quality follows **Show start download dialog**:
+  when enabled, Download video opens with that quality selected for confirmation; when disabled,
+  the choice starts or enters the main queue according to Options. A hidden main window stays
+  hidden. "Open in Mister Download Manager…" keeps the Download video window
+  ([#1114](https://github.com/anefzaoui/misterdownloadmanager/pull/1114)).
+  A stream the page plays (HLS) is listed at once, the same video asked again within 10
   minutes opens at once, and the pick starts without looking the video up a second time
   ([#449](https://github.com/anefzaoui/misterdownloadmanager/pull/449))
 - ✅ Picking a video quality already in the list (the menu over a video, the Download video window)
