@@ -19,27 +19,11 @@ fn main() {
     if windows && std::env::var("CARGO_CFG_TARGET_ENV").as_deref() == Ok("msvc") {
         println!("cargo:rustc-link-arg-bins=/SUBSYSTEM:WINDOWS,5.02");
     }
-    // The icon and version info are for a Windows program only (not one built on Windows for
-    // Linux or macOS); winresource builds on Windows only.
-    #[cfg(windows)]
-    if windows {
-        println!("cargo:rerun-if-changed=assets/icons/app/mdm.ico");
-        let mut res = winresource::WindowsResource::new();
-        res.set_icon("assets/icons/app/mdm.ico")
-            .set("ProductName", "Mister Download Manager")
-            .set("FileDescription", "Mister Download Manager")
-            .set("CompanyName", "Ahmed Nefzaoui")
-            .set(
-                "LegalCopyright",
-                "Copyright (C) 2026 Ahmed Nefzaoui. GPL-3.0-or-later.",
-            );
-        if let Err(e) = res.compile() {
-            // A missing resource compiler must not break the build; the window still sets
-            // its icon at runtime.
-            println!("cargo:warning=exe icon not embedded: {e}");
-        }
-    }
+    // The icon and version info, for a Windows program only.
+    version_info("Mister Download Manager", Some("assets/icons/app/mdm.ico"));
 }
+
+include!("../../tools/build/version_info.rs");
 
 /// Embed every translation catalog, `i18n/<locale>.tsv` at the repository root (craft-i18n's
 /// format; D-019), packed for `i18n::catalogs` to unpack once at start (#25):

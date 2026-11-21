@@ -23,5 +23,9 @@ chrono.workspace = true
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
 
+[target.'cfg(windows)'.build-dependencies]
+# Embeds the version info (build.rs).
+winresource = "0.1"
+
 [lints]
 workspace = true

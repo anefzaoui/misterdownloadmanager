@@ -43,5 +43,9 @@ ctrlc = "3.5"
 name = "launcher"
 harness = false
 
+[target.'cfg(windows)'.build-dependencies]
+# Embeds the version info (build.rs).
+winresource = "0.1"
+
 [lints]
 workspace = true
