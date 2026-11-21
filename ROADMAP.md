@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Torrents: unticked files are no longer made in the download's folder; the parts of the
+  pieces they share with ticked files are kept in a parts file of MDM's own, and a file ticked
+  later, while the torrent downloads or once it has finished, is made then and gets them from
+  there ([#1567](https://github.com/anefzaoui/misterdownloadmanager/pull/1567))
 - ✅ Windows: Simplified Chinese drawn with a Chinese font on every Windows, no longer as boxes
   where Microsoft YaHei's usual file is missing (Windows 7's `msyh.ttf`, DengXian, SimSun and
   SimHei are looked for too, a Chinese font must have its language's own characters, the Chinese
