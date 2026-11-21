@@ -518,9 +518,6 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	Alle vom Uploader
-#. text in helpers.rs
-#, machine
-	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	Alle drei sind Open Source. MDM bezieht sie aus den offiziellen Releases der jeweiligen Projekte mit einem eigenen Downloader und prüft die Signatur jeder Datei, bevor sie ausgeführt wird. Etwa 140 MB, einmalig.
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 #, machine
@@ -692,7 +689,6 @@
 #, machine
 	Asking the service...	Dienst wird angefragt...
 #. text in the Options window
-#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1057,9 +1053,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Wählen Sie eine .torrent-Datei
-#. text in helpers.rs
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
 #, machine
-	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	JavaScript-Laufzeitumgebung auswählen (Node.js, Deno, QuickJS oder Bun)
+	Choose a font file	Wählen Sie eine Schriftartdatei
 #. text in langpick.rs
 #, machine
 	Choose a language	Sprache auswählen
@@ -1070,8 +1068,7 @@
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 #, machine
 	Choose the profile's folder	Ordner des Profils auswählen
-#. text in helpers.rs; text in the Options window
-#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
+#. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	{name} auswählen
@@ -1588,6 +1585,11 @@
 #, machine
 	Downloading again from the start	Erneut von vorne herunterladen
 #. text in the Download video window
+#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying Deno (about 40 MB)...	Deno wird heruntergeladen und überprüft (ca. 40 MB)...
+#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg wird heruntergeladen und überprüft (ca. 80 MB)...
@@ -1595,10 +1597,6 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying gallery-dl...	gallery-dl wird heruntergeladen und geprüft...
-#. text in the Download video window
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Downloading and verifying Node.js (40 to 60 MB)...	Node.js wird heruntergeladen und überprüft (40 bis 60 MB)...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1617,7 +1615,7 @@
 #, machine
 	Downloading the update... {percent}%	Update wird heruntergeladen... {percent}%
 #. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
 	Downloading {name} ({n} of {total})... {percent}	Lade {name} ({n} von {total}) herunter... {percent}
@@ -1977,7 +1975,6 @@
 #. verb: button that starts the search
 #, machine
 	Find	Suchen
-#. text in the Options window
 #. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
 #, machine
 	Find 7-Zip automatically	7-Zip automatisch suchen
@@ -2032,6 +2029,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	Ordner:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Schriftartdateien
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -2439,6 +2440,10 @@
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	Installieren Sie 7-Zip (kostenlos), klicken Sie dann mit der rechten Maustaste auf den Download und wählen Sie „Extrahieren“.
 #. text in the Download video window
+#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
+#, machine
+	Install Deno	Deno installieren
+#. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg installieren
@@ -2450,10 +2455,6 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	Manuell installieren
-#. text in the Download video window
-#. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
-#, machine
-	Install Node.js	Node.js installieren
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
@@ -2582,9 +2583,9 @@
 #, machine
 	Japan	Japan
 #. text in helpers.rs
-#. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
+#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
 #, machine
-	JavaScript runtime (for YouTube)	JavaScript-Laufzeitumgebung (für YouTube)
+	JavaScript runtime (Deno)	JavaScript-Laufzeitumgebung (Deno)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2610,7 +2611,7 @@
 #, machine
 	KBytes/sec	KByte/Sek.
 #. text in helpers.rs
-#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
 #, machine
 	Keep MDM's helpers up to date automatically	MDM-Hilfsprogramme automatisch auf dem neuesten Stand halten
 #. message or event log entry in the main window; text in the Options window
@@ -2816,11 +2817,6 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Zuerst die neue Adresse nachschlagen
-#. text in helpers.rs
-#. Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Looking for a JavaScript runtime on this computer...	Suche nach einer JavaScript-Laufzeitumgebung auf diesem Computer...
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
@@ -2994,13 +2990,13 @@
 #, machine
 	MDM does not answer. Trying again...	MDM antwortet nicht. Erneuter Versuch...
 #. text in helpers.rs
+#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
+#, machine
+	MDM has no copy for this system: install Deno or Node.js	MDM hat keine Kopie für dieses System: Installieren Sie Deno oder Node.js
+#. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install it, or use another program	MDM hat keine Kopie für dieses System: Installieren Sie es oder verwenden Sie ein anderes Programm
-#. text in helpers.rs
-#. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
-#, machine
-	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM hat keine Kopie für dieses System: Installieren Sie Node.js oder Deno, oder verwenden Sie ein anderes Programm
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3428,10 +3424,6 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Es wurden keine Webadressen in {file} gefunden.
-#. text in helpers.rs
-#. helper name and what it does (Node.js and YouTube are names)
-#, machine
-	Node.js: unlocks YouTube's qualities	Node.js: schaltet die Qualitätsstufen von YouTube frei
 #. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -4906,7 +4898,6 @@
 #. why Batch download's OK is greyed
 #, machine
 	That is more than 100,000 files: make the range smaller	Das sind mehr als 100.000 Dateien: Verkleinern Sie den Bereich
-#. text in the Options window
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	Das ist nicht das Kommandozeilenprogramm von 7-Zip (7z.exe).
@@ -5422,6 +5413,10 @@
 #, machine
 	This device's name	Name dieses Geräts
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Diese Datei kann nicht als Schriftart verwendet werden.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5539,9 +5534,6 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	this {site} link is a web page, not the file: open it in your browser and download from there	Dieser {site}-Link ist eine Webseite, nicht die Datei: Öffnen Sie ihn in Ihrem Browser und laden Sie ihn von dort herunter
-#. text in helpers.rs
-#, machine
-	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	Drei kostenlose Helfer machen es möglich. Holen Sie sie jetzt, und das Speichern eines Videos ist nur einen Klick entfernt, wenn Sie eines finden.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5869,9 +5861,8 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Erweiterte Browserintegration verwenden
-#. text in errors.rs; button in helpers.rs; text in the Options window
+#. text in errors.rs; button in helpers.rs
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
-#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	Anderes Programm verwenden...
@@ -6232,12 +6223,13 @@
 #, machine
 	Your own program: {path} ({version})	Eigenes Programm: {path} ({version})
 #. text in helpers.rs
+#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
+#, machine
+	Your system's, nothing to download: {path}	Ihr System, nichts zum Herunterladen: {path}
+#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	Ihr System: {path}
-#. text in helpers.rs
-#, machine
-	YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.	YouTube lässt yt-dlp ein Stück JavaScript ausführen, bevor es seine Videos auflistet, und auf diesem Computer gibt es nichts, womit es ausgeführt werden kann. Node.js erledigt das.
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
@@ -6471,7 +6463,7 @@
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
 #. text in helpers.rs
-#. {name} = yt-dlp, ffmpeg or Node.js; {error} = why
+#. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} konnte nicht heruntergeladen werden: {error}
@@ -6481,7 +6473,7 @@
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} ist ein 7z- oder RAR-Archiv. MDM entpackt solche Archive mit 7-Zip, das nicht installiert ist.
 #. text in errors.rs
-#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} wird bereits heruntergeladen: Versuchen Sie es in einem Moment erneut
@@ -6550,22 +6542,6 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (Limit: {limit})
-#. text in helpers.rs
-#. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
-#, machine
-	{runtime}, MDM's earlier copy: Node.js takes its place at the next update	{runtime}, frühere Kopie von MDM: Node.js ersetzt sie beim nächsten Update
-#. text in helpers.rs
-#. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
-#, machine
-	{runtime}, Mister Download Manager's own copy	{runtime}, eigene Kopie von Mister Download Manager
-#. text in helpers.rs
-#. Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
-#, machine
-	{runtime}, your own program: {path}	{runtime}, eigenes Programm: {path}
-#. text in helpers.rs
-#. Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
-#, machine
-	{runtime}, your system's, nothing to download: {path}	{runtime}, von Ihrem System, nichts zum Herunterladen: {path}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -7636,6 +7612,11 @@ menu	&Download Now	Jetzt &herunterladen
 #, machine
 menu	&Exit	&Beenden
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	S&chriftart
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7714,6 +7695,11 @@ menu	&Stop All	Alle &stoppen
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	Download &stoppen
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	S&ystemschriftart
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -7860,6 +7846,12 @@ menu	C&ustomize URL List...	URL-Liste an&passen...
 #, machine
 menu	Check for &updates...	Nach &Updates suchen...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	W&ählen Sie eine Schriftartdatei...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Klassisch
@@ -7948,10 +7940,6 @@ menu	Find Next (F3)	Weitersuchen (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	Erste und letzte Teile zuerst
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Schriftart
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

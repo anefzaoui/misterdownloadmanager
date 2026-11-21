@@ -357,6 +357,16 @@ pub fn segoe() -> FontId {
     }
 }
 
+/// The computer's own interface font (Segoe UI on Windows), whatever View → Font chose: the
+/// "System font" menu item is drawn in it, so it stays readable when a chosen file isn't
+/// (#1489).
+pub fn system_font() -> FontId {
+    FontId::new(
+        crate::theme::font_size(crate::theme::metrics().font_ui),
+        FontFamily::Name("system-ui".into()),
+    )
+}
+
 /// Arial Bold −13: the Categories close "x".
 pub fn arial_bold() -> FontId {
     FontId::new(

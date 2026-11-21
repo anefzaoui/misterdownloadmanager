@@ -8522,14 +8522,23 @@ fn classic_char(c: char, rtl: bool) -> bool {
     ) || crate::theme::cjk_script(c).is_some()
 }
 
-/// The font file of a family `theme.rs` sets up (Segoe UI leads the two built-in ones).
-fn classic_font_file(family: &egui::FontFamily) -> Option<&'static str> {
+/// The font file of a family `theme.rs` sets up (the interface's own, View → Font's too, leads
+/// the regular families; Segoe UI is the computer's own).
+fn classic_font_file(family: &egui::FontFamily) -> Option<std::path::PathBuf> {
+    // View → Font (#1489): the chosen file leads the regular families (`theme::fonts`), so
+    // DirectWrite draws its letters too. The bold families keep their own faces, and
+    // `system-ui` is always the computer's own font (the way back from a damaged file).
+    let chosen = || crate::theme::chosen_ui_font();
+    let font = |name: &str| crate::theme::font_dir().join(name);
     match family {
-        egui::FontFamily::Proportional | egui::FontFamily::Monospace => Some("segoeui.ttf"),
+        egui::FontFamily::Proportional | egui::FontFamily::Monospace => {
+            Some(chosen().unwrap_or_else(|| font("segoeui.ttf")))
+        }
         egui::FontFamily::Name(name) => match &**name {
-            "tahoma" => Some("tahoma.ttf"),
-            "tahoma-bold" => Some("tahomabd.ttf"),
-            "arial-bold" => Some("arialbd.ttf"),
+            "tahoma" => Some(chosen().unwrap_or_else(|| font("tahoma.ttf"))),
+            "tahoma-bold" => Some(font("tahomabd.ttf")),
+            "arial-bold" => Some(font("arialbd.ttf")),
+            "system-ui" => Some(font("segoeui.ttf")),
             _ => None,
         },
     }
@@ -8559,7 +8568,7 @@ mod classic_text {
         factory: IDWriteFactory2,
         dir: PathBuf,
         /// The font files opened so far; `None` for one DirectWrite can't use.
-        faces: HashMap<&'static str, Option<IDWriteFontFace>>,
+        faces: HashMap<PathBuf, Option<IDWriteFontFace>>,
     }
 
     // SAFETY: DirectWrite's shared factory and the objects it makes are free-threaded
@@ -8578,14 +8587,16 @@ mod classic_text {
             })
         }
 
-        fn face(&mut self, file: &'static str) -> Option<IDWriteFontFace> {
-            let (factory, dir) = (&self.factory, &self.dir);
+        fn face(&mut self, file: &std::path::Path) -> Option<IDWriteFontFace> {
+            let factory = self.factory.clone();
+            let full = file.to_path_buf();
             self.faces
-                .entry(file)
+                .entry(full.clone())
                 .or_insert_with(|| {
-                    let full = dir.join(file);
                     // A .ttc holds a collection: the face egui draws with too (#1483).
-                    let collection = file.to_ascii_lowercase().ends_with(".ttc");
+                    let collection = full
+                        .extension()
+                        .is_some_and(|e| e.eq_ignore_ascii_case("ttc"));
                     let index = if collection {
                         crate::theme::font_face_index(&full)
                     } else {
@@ -8622,12 +8633,15 @@ mod classic_text {
             family: &egui::FontFamily,
             ch: char,
         ) -> Option<(IDWriteFontFace, u16, DWRITE_FONT_METRICS)> {
-            let files: Vec<&'static str> = if crate::theme::cjk_script(ch).is_some() {
+            let files: Vec<PathBuf> = if crate::theme::cjk_script(ch).is_some() {
                 crate::theme::cjk_font_files(ch)
+                    .into_iter()
+                    .map(|file| self.dir.join(file))
+                    .collect()
             } else {
                 super::classic_font_file(family).into_iter().collect()
             };
-            for file in files {
+            for file in &files {
                 let Some(face) = self.face(file) else {
                     continue;
                 };
