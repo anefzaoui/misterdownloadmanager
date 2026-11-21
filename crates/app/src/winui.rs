@@ -6756,7 +6756,8 @@ pub mod caption {
 
     /// An era theme's caption button (#45) in its place `rc`: a shaded tile with an edge, its
     /// own face at rest (Close red; Mac OS X's graphite until the pointer is on it), lighter
-    /// under the pointer and darker pressed, faded while greyed or the window inactive; the
+    /// under the pointer and darker pressed, faded while greyed or the window inactive (or the
+    /// theme's own inactive face, edge and glyph: `caption.button.inactive` and the others); the
     /// glyph light on it (Windows 7's with a shadow), or Mac OS X's dark one shown only under
     /// the pointer. There, our Hide button is a plain picture in the bar, as a toolbar's.
     fn era_button(
@@ -6806,7 +6807,19 @@ pub mod caption {
         } else {
             Rect::from_center_size(at, size)
         };
-        let base = if close && (era != Shine::Aqua || hover || pressed) {
+        // While the window isn't the active one, the theme's own faces for it where it has them
+        // (Windows XP: the buttons and Close half-faded into the bar, their edge and glyph
+        // still crisp), else the button's own faded into the bar, as a greyed one's.
+        let inactive = enabled && !active;
+        let own = if close {
+            c.caption_close_inactive
+        } else {
+            c.caption_button_inactive
+        };
+        let own = (inactive && own.a() > 0).then_some(own);
+        let base = if let Some(own) = own {
+            own
+        } else if close && (era != Shine::Aqua || hover || pressed) {
             CLOSE_HOVER()
         } else {
             CAPTION_BUTTON()
@@ -6818,7 +6831,7 @@ pub mod caption {
         } else {
             base
         };
-        let base = if enabled && active {
+        let base = if (enabled && active) || own.is_some() {
             base
         } else {
             mix(base, bar, 0.55)
@@ -6840,6 +6853,7 @@ pub mod caption {
         };
         fill_shaded_corners(p, tile, top, bottom, &stops);
         let edge = match era {
+            _ if !active && c.caption_edge_inactive.a() > 0 => c.caption_edge_inactive,
             Shine::Luna => c.gloss.gamma_multiply(0.9),
             Shine::Aero => shade(bar, -0.35),
             Shine::Aqua => shade(base, -0.2),
@@ -6863,8 +6877,11 @@ pub mod caption {
                 b.glyph(ui, p, at, CAPTION_INK(), maximized, size, width);
             }
         } else {
+            let glyph = c.caption_glyph_inactive;
             let ink = if enabled && active {
                 CLOSE_INK()
+            } else if inactive && glyph.a() > 0 {
+                glyph
             } else {
                 CLOSE_INK().gamma_multiply(0.7)
             };

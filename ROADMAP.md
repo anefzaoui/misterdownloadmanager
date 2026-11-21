@@ -1767,6 +1767,10 @@ These ship in the next version.
 - ✅ LuluStream: a video's link (its watch page or player, on `lulustream.com`, `luluvdo.com` or
   `lplaygo.com`) downloads the video, in the best quality its download page lists; a download
   taken from the browser whose link expired asks the video's page for a fresh one
+- ✅ Luna: a window that isn't the active one has Windows XP's title bar buttons, half-faded
+  into the paler bar (a mid blue, Close a dusty rose) with a crisp pale edge and solid white
+  symbols, instead of greyish buttons with faint symbols
+  ([#1612](https://github.com/anefzaoui/misterdownloadmanager/issues/1612))
 
 ## Being worked on
 
