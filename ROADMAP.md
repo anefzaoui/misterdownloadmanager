@@ -696,6 +696,9 @@ These ship in the next version.
   its first 256 KB block was written (some 15 s at 128 kbit/s, longer at lower bitrates); Stop and
   save before that block keeps nothing yet and leaves the download stopped to resume
   ([#1450](https://github.com/anefzaoui/misterdownloadmanager/pull/1450))
+- ✅ Tests: the Node.js check of an older release passes on 32-bit Windows too: it listed a
+  release older than the 64-bit builds take but not 32-bit Windows' own oldest (Node.js has no
+  newer 32-bit build), so there it was a refused downgrade rather than nothing offered
 - ✅ Tests: the live recording checks that failed now and then (most runs on Linux) wait until
   enough is recorded for what they check, instead of saving at the first block: a recording that
   short is within the second an MP4 may lose and still count as whole, so whether the MP4 was
