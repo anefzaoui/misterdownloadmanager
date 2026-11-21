@@ -347,7 +347,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Add browser...	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ...
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #, machine
 	Add category	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
 #. button in rssdlg.rs
@@ -753,7 +753,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	British Indian Ocean Territory	ᏈᏗᏍ ᎢᏂᏗᎠᏂ ᎣᏏᎠᏂ ᎢᎬᎾᏕᎾ
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ᏗᏯᏛᎯᏍᏗ
@@ -848,7 +848,7 @@
 #. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	ᏗᏓᏟᏌᏅᎢ
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #. title of the folder picker of the category dialog
 #, machine
 	Category folder	ᎨᏏᎨᏫ ᏗᏓᏟᎶᏍᏗ
@@ -891,7 +891,8 @@
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
 	Check feeds every	ᏂᏓᏙᏓᏈᏒ ᏗᎦᎴᏴᏔᏅ ᏓᏓᏁᏟᏴᏏ
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 #, machine
 	Check for updates	ᏗᎦᏃᏍᏓᏅᎢ ᏚᎾᏓᏁᏟᏴᏒᎢ
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -913,7 +914,8 @@
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
 	Checking every piece again	ᏂᎦᎥ ᎦᏅᎯᏓ ᏔᎵᏁ ᏚᎾᏓᏟᏌᏅ
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	ᏓᎦᏃᏍᏓᏅᎢ ᏚᎾᏓᏁᏟᏴᏒᎢ...
@@ -1470,6 +1472,10 @@
 #, machine
 	Drag the file into a folder or an app	ᏙᎾᏏᏔ ᎠᏰᎵ ᎢᏗᏢ ᏗᎪᏪᎵ ᏗᏟᏴᏍᏗᏱ ᎠᎴ ᎢᏗᏢ ᎢᏓᏟᏴᏍᏗᏱ
 #. message or event log entry in the main window
+#. a download's note: its file was dragged out of the download list and moved to that folder
+#, machine
+	Dragged out of the list and moved to {folder}	ᎠᏰᎳᏛᎢ ᏗᎦᎴᏴᏔᏅ ᎠᎴ {folder} ᏗᎦᎴᏴᏔᏅ
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	ᏗᎦᏛᏗ ᏚᎾᏓᏟᎶᏍᏗ
@@ -1519,6 +1525,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ᎦᎴᏴᏔᏅ
+#. text in the Download video window
+#. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
+#, machine
+	Embed chapters	ᏗᎪᏪᎵ ᎠᏯᏙᎯ
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -1643,6 +1653,14 @@
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
 	Extract archives when their download completes	ᎠᏍᏚᎢᏍᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎣᏂᏱ ᎢᏗᎦᎴᏴᏔᏅᎯ
+#. text in the Options window
+#. Options → Archives check box, greyed: HatchZip (a program's name, hatchzip.dev its site) isn't installed
+#, machine
+	Extract in place with HatchZip (hatchzip.dev, not installed)	HatchZip (hatchzip.dev, ᎥᏝ ᏱᏚᎾᏗᏔᏂ) ᎢᎬᏱᏗᏢ ᏕᎦᎴᏴᏔᏅ
+#. text in the Options window
+#. Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
+#, machine
+	Extract in place with HatchZip: only the files need room	HatchZip ᎢᎬᏱᏗᏢ ᏕᎦᎴᏴᏔᏅ: ᏗᎦᎴᏴᏔᏅᎯᏉ ᎤᎾᏚᎵᎭ ᎦᎸᎳᏗᏢ
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1789,6 +1807,11 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	ᎤᏍᏆᏛ
+#. text in a download's progress window
+#. a download's status: every byte is in, the file is being written out and given its name
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Finishing...	ᎠᎧᎵᎢᏍᏗ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1916,6 +1939,10 @@
 #. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP downloads ᎥᏝ HTTP proxy ᏱᏓᎬᏔᎠ. SOCKS5 ᎠᎴ SOCKS4 ᎢᏳᏍᏗ ᏕᎪᏏ proxy ᎢᏳᏩᏂᏐᏗ.
+#. text in the Options window
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#, machine
+	Full	ᎠᎧᎵᎢ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1980,6 +2007,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gibraltar	ᏥᏆᎵᏓ
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Go back to {version}	{version} ᎢᏗᏢ ᏔᎵᏁ ᏫᎶᎯ
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2035,6 +2067,10 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: HatchZip (a program's name) extracted the archive in place, removing it as it went
+#, machine
+	HatchZip extracted it in place: the archive was removed as its files came out	HatchZip ᎢᎬᏱᏗᏢ ᏚᎦᎴᏴᏔᏅ: ᏗᎦᎴᏴᏔᏅᎯ ᏚᎾᏗᏔᏅ
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2101,6 +2137,11 @@
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
 	How to fix it	ᎢᏳᏍᏗ ᎢᏯᏛᏁᏗ
+#. text in the Download video window; text in videolookup.rs
+#. link after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#. link in the browser's video menu, after the note that YouTube needs a JavaScript runtime: opens the help page that says how to install Node.js or Deno
+#, machine
+	How to install one	ᎢᏳᏍᏗ ᎢᏳᎾᏗᏔᏂ
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -2357,6 +2398,14 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/ᎠᏏᎬᏅ
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#, machine
+	Keep MDM's helpers up to date automatically	MDM ᎤᏩᏒ ᏗᏍᏕᎵᏍᎩ ᏂᎪᎯᎸ ᏂᏓᏙᏢᏍᎬᎢ
+#. text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	ᎤᏕᎵᏛ-መስᎥᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎦᎴᏴᏔᏅ
 #. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
@@ -2637,6 +2686,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	ᎪᏪᎵ Proxy/SOCKS ᏚᏙᏢᎢ
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	ᎤᏂᏣᏘ ᏗᎦᎴᏴᏔᏅᎯ uTP ᎢᎬᏱᏗᏢ ᎤᎾᏚᎵᎭ. ᎢᏳᏃ ᎥᏝ ᏱᏚᎾᏗᏔᏂ, MDM ᎥᏝ ᏱᏚᎾᏗᏔᏂ.
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2711,6 +2764,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM ᎥᏝ ᎢᏗᏢ ᎢᏗᏢ.
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM ᎥᏝ ᏱᏚᎾᏗᏔᏂ ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ. ᏗᎦᎴᏴᏔᏅᎯ ᎤᎾᎴᏅᏗᏍᏗ ᏗᎦᎴᏴᏔᏅᎯ ᎤᎾᏓᏁᏟᏴᏍᏗ ᎠᎴ ᎤᎾᏓᏁᏟᏴᏍᏗ ᎤᎾᏓᏁᏟᏴᏍᏗ, ᎾᏍᏉ ᎥᏝ ᏱᏚᎾᏗᏔᏂ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ. ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᎢᏳᏍᏗ ᎢᏳᎾᏗᏔᏂ?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -2998,6 +3055,11 @@
 #. button: create a new item
 #, machine
 	New	ᎢᏤ
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	ᎢᏤ ᏗᏓᎴᏂᏍᏗ ᏗᎦᎴᏴᏔᏅᎯ ({host}): ᎾᎿ ᎢᏗᏢ ᏫᎶᎯ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3110,6 +3172,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	ᎢᏗᏬᏂᎯᏍᏗ ᎢᏗᎬᏔᏅᎯ ᏂᎨᏒᎾ: ᎧᏃᎮᏛ ᎠᏕᎳᎰᏒᎯ, ᏣᏤᎵ ᎢᏗᏬᏂᎯᏍᏗᏱ ᏫᎦᎾᏄᎪᎢ.
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	No newer {name} than this one	ᎥᏝ ᎢᏤ {name} ᏱᏚᎾᏗᏔᏂ ᎯᎠ ᎢᏗᏢ
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	ᎥᏝ ᎩᎶ ᎢᏗᏟᏴᏔᏅᎯ ᎤᎾᎵᎪᏅᎯ ᏱᏭᏅᏒ ᎢᏗᏟᏴᏔᏅᎯ ᎤᎾᏤᎵ ᎢᏗᏟᏴᏔᏅᎯ ᎤᎾᏓᏎᏍᏗ ᎨᏒ ᎢᏳᎵᏍᏔᏅᎯ
@@ -3252,6 +3319,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	ᎠᎦᏘᎴᎢ
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	ᏗᏓᎴᏂᏍᏗ ᏗᎦᎴᏴᏔᏅᎯ: uTP UDP ᎢᏗᏢ ᏫᎶᎯ, ᎾᏍᎩ SOCKS5 ᏗᏓᎴᏂᏍᏗ ᎥᏝ ᏱᏚᎾᏗᏔᏂ
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	ᎠᎴᏅᏗᏍᎬᎢ: ᎤᏍᏆᏛ torrent ᎠᎴᏅᏗᏍᎬᎢ, ᎾᏍᎩᏯ ᏂᎦᎥ ᏗᏗᏍᎪᎸᏔᏅᎢ.
@@ -3602,6 +3673,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	ᎢᎬᏱᏱ ᏗᎪᏩᏛᏗ ᏂᎨᏒᎾ
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	ᎤᏕᎵᏛ-መስᎥᎦᎴᏴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏗᏔᏂ Cookies ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ. ᎤᏕᎵᏛ-መስᎥᎦᎴᏴᏔᏅᎯ ᎢᏗᏢ ᏫᎶᎯ, ᎾᎿ ᏫᎶᎯ, ᎠᎴ ᎾᎿ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏔᎵᏁ ᏫᎶᎯ.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3716,6 +3791,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	ᏔᎵᏁ ᏚᎾᏓᏟᏌᏅ ᎤᏓᏍᏔᏅ: {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	ᏗᎪᏪᎵᏍᏗ...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -3928,6 +4008,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	ᏕᏣᏍᏆᏂᎪᏙᏗ
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	ᏗᎦᎴᏴᏔᏅᎯ...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4427,6 +4512,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	ᎤᏃᎴ
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	ᏗᎦᎴᏴᏔᏅᎯ ᎠᎴ ᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ᏗᏗᏍᎪᏗ ᎤᎾᎴᏅᏗ
@@ -4689,6 +4778,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	ᎢᎬᎾᏕᏏᏗ ᎤᎵᏓᏍᏔᏅ ᎢᎬᎾᏕᏏᏗ ᎢᎬᎾᏕᏏᏗ ᎢᎬᎾᏕᏏᏗ
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	ᏗᎦᎴᏴᏔᏅᎯ ᏂᎪᎯᎸ ᏂᏓᏙᏢᏍᎬᎢ. ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏔᎵᏁ ᏫᎶᎯ.
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4787,6 +4880,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	ᏗᎦᏙᎯ ᎥᏝ ᏱᏚᎾᏓᏟᏌᏅ: {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4821,6 +4918,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	ᎠᎦᎾᏕᎾ ᎠᏓමුᏍᏗ {adapter} ᎥᏝ ᎠᏓමුᏛ
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏗᏔᏂ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4851,6 +4952,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	ᏗᏟᎶᏍᏔᏅᎯ ᎢᏥᏃᏗᏱ ᎢᏥᎧᏃᏗᏱ: ᎾᎿᎢ ᎢᏥᏅᏍᏗᏱ ᎾᏍᎩ ᎤᎾᏕᏯᏔᏛᎢ.
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	ᏗᎦᎴᏴᏔᏅᎯ .torrent ᏗᎦᎴᏴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏗᏔᏂ ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	ᏗᎦᎴᏴᏔᏅᎯ .torrent ᏗᎦᎴᏴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏗᏔᏂ ᎠᎴ ᎥᏝ ᏱᏚᎾᏗᏔᏂ. ᏗᎦᎴᏴᏔᏅᎯ ᏔᎵᏁ ᏫᎶᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ; ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -4882,6 +4991,11 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	ᎤᎾᏓᏅᏏᏍᎩ ᎤᏓᎴᎩ ᎠᏑᏴᏔ ᎤᏙᏢᏒ ᎤᏓᏅᏒ ({detail})
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ {sent} ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ {size} (ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ, ᎠᎴ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ): Alt+click ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
@@ -4970,6 +5084,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	ᎾᏍᎩ torrent ᎥᏝ ᎿᏉ ᏱᏚᎾᏙᏢᏒ
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏗᏔᏂ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏗᏔᏂ
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	ᏗᎦᎴᏴᏔᏅᎯ ᎥᏝ ᏱᏚᎾᏗᏔᏂ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5114,6 +5245,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ᎯᎠ ffmpeg ᎤᏚᎵᎭ
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ BitTorrent ᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5145,9 +5280,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	ᎯᎠ torrent ᎿᏉ ᏚᎾᏙᏢᏒ ᏗᎦᏁᏟᏴᏍᏗ ᎤᎾᏙᏢᏒ
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ. ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏔᎵᏁ ᏫᎶᎯ.
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	ᎯᎠ ᎢᏗᏟᏴᏔᏅᎯ ᎥᏝ ᎢᏗᏟᏴᏔᏅᎯ ᎤᎾᏓᏎᏍᏗ ᎨᏒ ᏱᎩ
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ {file} ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ.
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5445,14 +5592,31 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	ᎦᎸᎳᏗ
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+#, machine
+	Up to date	ᏂᎪᎯᎸ ᏂᏓᏙᏢᏍᎬᎢ
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
 	Up to {height}p	ᎤᏓᎷᎸ {height}p
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+#, machine
+	Update	ᏂᏓᏙᏢᏍᎬᎢ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
 	Update now	ᎪᎯ ᎢᎦ ᎢᏥᏁᏟᏴᏏ
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+#, machine
+	Updated by you	ᏂᏓᏙᏢᏍᎬᎢ
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Updated to {version}	ᏂᏓᏙᏢᏍᎬᎢ {version}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5478,6 +5642,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	ᎬᏔᏅᎢ ᎦᏟᏐᏗ ᏗᏙᎳᏤᏗ ᏗᎪᏪᎵ
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	ᎬᏔᏅᎢ FTP PASV ᎢᏯᏓᏛᏁᏗ
@@ -5485,6 +5652,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM ᎤᏤᎵᎦ ᎭᏚᎢᏍᏓ
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	ᎠᏆᏤᎵ yt-dlp ᏗᏟᎶᏍᏙᏗ ᎢᏗᏴᏓ
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5537,6 +5708,10 @@
 #. label in the Options window
 #, machine
 	UserName	ᎬᏔᏅᎢ ᏚᏙᎥᎢ
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP ᏕᎦᎸᏫᏍᏓᏁᎰ ᏗᎦᎷᏤᏗ ᎦᎶᎯᏍᏗᏱ: ᏕᎯᏍᏚᎢᏓ ᏗᎦᎷᏤᏗ ᎦᎶᎯᏍᏗᏱ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5580,6 +5755,16 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Version {version} ({commit})	ᎢᏯᏓᏛᏁᏗ {version} ({commit})
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} available	ᏗᏟᎶᏍᏙᏗ {version} ᎢᎦᎢ ᎢᎬᏔᏅᎯ
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} is ready: used once its downloads end	ᏗᏟᎶᏍᏙᏗ {version} ᎾᎿ ᎡᏙᎭ: ᎢᏳᏃ ᏧᎾᏠᎯᏍᏗ ᎤᎵᏍᏆᏗᏒᎭ ᎿᏉ ᏓᏰᏔᏅᎯ
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 #, machine
@@ -5630,6 +5815,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	ᎠᎦᏘᏗ
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	ᎠᏓᏅᏖᏍᎬᎢ ᎢᏤ ᏗᎦᏁᏟᏴᏍᏗ ᏗᎦᎷᏤᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎢᏗᏴᏓ
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5816,6 +6005,10 @@
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube ᎤᏚᎳ JavaScript ᏗᏟᎶᏍᏔᏅᎯ ᏗᏟᎶᏍᏔᏅᎯ ᎢᏳᎢ: ᎯᎪᏍᏓ Node.js ᎠᎴ Deno, ᎠᎴ ᏔᎵᏁ ᎯᎪᎵᏰᏓ
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp ᎾᏍᏉ ᏕᎦᎪᎵᏰᎰ ᎤᏩᏒ ᏗᏟᎶᏍᏙᏗ ᎢᏗᏴᏓ (Windows ᎾᎿ %APPDATA%\\yt-dlp\\config.txt, Linux ᎠᎴ macOS ᎾᎿ ~/.config/yt-dlp/config). ᎤᏟᏃᏂ MDM ᎤᏓᏑᏰᏛ, ᎾᏍᎩ ᏗᏓᏁᏟᏴᏍᏗ, ᏚᏙᎥᎢ ᎠᎴ ᎣᏍᏛ ᎨᏒᎢ, ᎠᏎᏃ ᎾᎿ ᏗᏟᎶᏍᏙᏗ ᏗᎦᎴᏴᏍᏗ ᎠᎴ ᏗᎦᎴᏴᏍᏗ ᏗᏟᎶᏍᏙᏗ ᎾᏍᏉ ᏕᎦᎸᏫᏍᏓᏁᎰ.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -5968,6 +6161,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}: ᎪᏪᎵ ᏚᏓᎾᏫᏛᎭ ᎤᎾᏙᎴᎰᏒᎯ ({algorithm})
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}: ᎯᎠ ᏗᏓᏁᏟᏴᏍᏗ ᏕᎨᏙᎲᎩ ᏗᏟᎶᏍᏙᏗ ᎾᎿ, ᏅᏗᎦᎵᏍᏙᏗᏍᎬᎩ MDM ᎥᏝ ᏱᏚᏬᏢᏁᎢ ᎠᎴ ᏅᏩᏓᎴ ᏗᎦᏁᏟᏴᏍᏗ ᏕᎦᎸᏫᏍᏓᏁᎰ:
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6046,6 +6243,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 7z ᎠᎴ RAR ᏗᎪᏪᎵ ᏚᏓᏟᎶᏔᏅᎢ. MDM ᎾᏍᎩ ᎦᏄᎪᏫᏍᎪᎢ 7-Zip ᎤᏅᏗᏍᎬᎢ, ᎾᏍᎩᏃ ᎥᏝ ᏱᏚᏔᏅ.
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is being downloaded already: try again in a moment	{name} ᎿᏉ ᏕᎦᏁᏟᏴᏍᎪᎢ: ᏔᎵᏁ ᎭᏢᎾ
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6056,12 +6258,22 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} ᎥᏝ {how} ᎢᎬᏁᏗ ᎨᏒ.
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is in: trying again with it	{name} {version} ᎿᏉ ᎡᏙᎭ: ᏔᎵᏁ ᏕᎦᏁᏟᏴᏍᎪᎢ
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} ᎤᏪᏘᏳ: MDM {oldest} ᎠᎴ ᎢᏤᎢᏳᏍᏗ ᎤᏚᎵᎭ
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} ᎾᏍᎩ ᎢᏳᏍᏗ ᎤᏓᎴᏅᏛ ᏱᎩ: ᎢᏤ ᏗᏟᎶᏍᏙᏗ ᎢᎦᎢ ᎢᎬᏔᏅᎯ ᏕᎦᏁᏟᏴᏍᎪᎢ
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
@@ -6271,6 +6483,10 @@ extension	Added to MDM	MDM ᎭᏫᏂᏗᏢ ᏗᏓᎴᏔᏅᎢ
 #, machine
 extension	Added to the queue	ᏚᎾᏓᏁᎸᎢ ᏗᎪᏪᎵ
 #. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	ᏂᎦᏗᏳ
+#. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -6301,9 +6517,21 @@ extension	Button settings...	ปุ่ม ᏗᏓᏟᎶᏍᏗ ᏗᏙᏢᏍᏔᏅ�
 #, machine
 extension	can't be saved	ᎥᏝ ᏗᏓᎴᏔᏅᎢ
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	ᎥᏝ ᏰᎵ ᏱᎦᎷᏤᏗ Mister Download Manager
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	ᎥᏝ ᏰᎵ ᏱᎦᎷᏤᏗ Mister Download Manager ᎾᎿ {server}
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	ᎥᏝ ᏲᏒᎦ ᎦᏙ ᎤᏍᏗ ᏫᏗᎣ ᎾᏍᎩ: ᎤᏩᏒ ᎤᏤᎵ ᎪᏪᎵ ᎠᏍᏚᎢᏍᏗ ᎠᎴ ᎾᎿ ᏂᏑᎵᎪᎦ
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	ᎠᎦᏔᎲᏍᏙᏗ
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
 #, machine
@@ -6358,6 +6586,11 @@ extension	Could not look it up	ᎥᏝ ᎢᏗᏴᏔᏅᎢ
 #. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
 #, machine
 extension	Delete	Delete
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	ᎠᏍᏆᏂᎪᏛᎢ...
 #. text in the browser extension
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
 #, machine

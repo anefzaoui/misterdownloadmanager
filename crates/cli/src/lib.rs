@@ -164,6 +164,16 @@ enum Cmd {
         #[arg(long, value_parser = parse_proxy)]
         proxy: Option<Proxy>,
     },
+    /// Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Deno) for newer versions now and
+    /// install them, each checked as its first install was, and print their versions. A helper a
+    /// download is using is switched to its new version once that download ends. Programs you
+    /// chose in Helpers, and the system's, are yours to update.
+    UpdateHelpers {
+        /// The proxy for this run, instead of the app's Options → Proxy / Socks (as for the
+        /// install commands).
+        #[arg(long, value_parser = parse_proxy)]
+        proxy: Option<Proxy>,
+    },
     /// Download an image gallery's files with gallery-dl (needs `install-gallery-dl`).
     GalleryGet {
         /// The gallery's address (a Wikimedia Commons category, a Flickr album, ...).
@@ -512,6 +522,81 @@ async fn through_account(
 }
 
 /// One JSON line on stdout (`--json`).
+/// `update-helpers`: each of MDM's own helpers checked now and updated, one line (or JSON object)
+/// each. Fails when a check failed (the others are still checked).
+async fn update_helpers(json: bool) -> anyhow::Result<()> {
+    use mdm_tools::autoupdate::{Checked, Tool, Why};
+    let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
+    let net = own_net();
+    let mut failed = 0;
+    for tool in Tool::ALL {
+        let name = tool.name();
+        let got = mdm_tools::autoupdate::check(
+            &dir,
+            tool,
+            &net,
+            Why::Asked,
+            mdm_tools::autoupdate::unix_now(),
+        )
+        .await;
+        let (status, version, line) = match &got {
+            Ok(Checked::NotOurs) => (
+                "not-ours",
+                None,
+                format!(
+                    "{name}: not MDM's own copy (yours or the system's to update, or not installed)"
+                ),
+            ),
+            Ok(Checked::UpToDate { now, .. }) => (
+                "up-to-date",
+                Some(now.version.clone()),
+                format!("{name} {}: up to date", now.version),
+            ),
+            Ok(Checked::Updated { from, now }) => (
+                "updated",
+                Some(now.version.clone()),
+                format!("{name} {from} -> {}: verified and installed", now.version),
+            ),
+            Ok(Checked::Ready { now, ready }) => (
+                "ready",
+                Some(ready.version.clone()),
+                format!(
+                    "{name} {} -> {}: verified, used once the downloads using {name} end",
+                    now.version, ready.version
+                ),
+            ),
+            Ok(Checked::Skipped { now, latest }) => (
+                "skipped",
+                Some(now.version.clone()),
+                format!(
+                    "{name} {}: {latest} left out (you went back from it)",
+                    now.version
+                ),
+            ),
+            Ok(Checked::Busy | Checked::NotDue) => {
+                ("busy", None, format!("{name}: being updated already"))
+            }
+            Err(e) => {
+                failed += 1;
+                ("failed", None, format!("{name}: couldn't check: {e}"))
+            }
+        };
+        if json {
+            let mut v = json!({ "tool": name, "status": status, "version": version });
+            if let Err(e) = &got {
+                v["error"] = json!(e.to_string());
+            }
+            emit(v);
+        } else {
+            println!("{line}");
+        }
+    }
+    if failed > 0 {
+        anyhow::bail!("{failed} helper check(s) failed");
+    }
+    Ok(())
+}
+
 fn emit(v: serde_json::Value) {
     let mut out = std::io::stdout().lock();
     let _ = writeln!(out, "{v}");
@@ -848,7 +933,8 @@ impl Conn {
             | Cmd::InstallYtdlp { proxy }
             | Cmd::InstallFfmpeg { proxy }
             | Cmd::InstallGalleryDl { proxy }
-            | Cmd::InstallDeno { proxy } => (proxy, None, None),
+            | Cmd::InstallDeno { proxy }
+            | Cmd::UpdateHelpers { proxy } => (proxy, None, None),
             _ => (&None, None, None),
         };
         let adapter = adapter.unwrap_or(net.adapter.as_str()).trim();
@@ -1015,6 +1101,7 @@ fn runs_helpers(cmd: &Cmd) -> bool {
     matches!(
         cmd,
         Cmd::InstallYtdlp { .. }
+            | Cmd::UpdateHelpers { .. }
             | Cmd::InstallFfmpeg { .. }
             | Cmd::InstallGalleryDl { .. }
             | Cmd::InstallDeno { .. }
@@ -1127,6 +1214,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             }
             Ok(())
         }
+        Cmd::UpdateHelpers { .. } => update_helpers(json).await,
         Cmd::InstallGalleryDl { .. } => {
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let i = mdm_tools::gallery::install_latest(&dir, &own_net(), None).await?;

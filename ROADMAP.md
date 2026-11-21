@@ -569,6 +569,15 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ MDM keeps its own yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself: a check a few
+  seconds after it starts and then while it runs (yt-dlp and gallery-dl at most every 6 hours,
+  Deno daily, ffmpeg weekly, remembered across starts), each new version checked as its first
+  install was and switched to only once no download is using it, the previous one kept to go
+  back to. A video or gallery that fails in a way that usually means its helper is out of date
+  has MDM look for a newer one at once and try again with it. Helpers says how each stands, with
+  **Check for updates**, **Update** and **Go back to** the previous version, and a switch to turn
+  it off; the command line has `update-helpers`
+  ([#1544](https://github.com/anefzaoui/misterdownloadmanager/issues/1544))
 - ✅ Deleting a download keeps its file unless **Also delete the files from disk** is ticked in
   that very question: the box starts unticked every time (only **Shift+Delete** and **Remove
   with files** tick it, once), it says how many finished files go with it, a question turned

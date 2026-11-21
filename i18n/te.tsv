@@ -364,7 +364,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Add browser...	బ్రౌజర్‌ను జోడించు...
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #, machine
 	Add category	వర్గాన్ని జోడించు
 #. button in rssdlg.rs
@@ -815,7 +815,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	British Indian Ocean Territory	బ్రిటిష్ హిందూ మహాసముద్ర ప్రాంతం
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	బ్రౌజ్ చేయండి
@@ -918,7 +918,7 @@
 #. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	వర్గం
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #. title of the folder picker of the category dialog
 #, machine
 	Category folder	కేటగిరీ ఫోల్డర్
@@ -961,7 +961,8 @@
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
 	Check feeds every	ప్రతి
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 #, machine
 	Check for updates	అప్‌డేట్‌ల కోసం తనిఖీ చేయండి
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -992,7 +993,8 @@
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
 	Checking every piece again	ప్రతి భాగాన్ని మళ్లీ తనిఖీ చేస్తోంది
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	అప్‌డేట్‌ల కోసం తనిఖీ చేస్తోంది...
@@ -1222,11 +1224,20 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	could not reach {host} ({cause})	{host} చేరుకోలేకపోయింది ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+#, machine
+	Couldn't check for updates: MDM tries again later	నవీకరణల కోసం తనిఖీ చేయలేకపోయింది: MDM తర్వాత మళ్లీ ప్రయత్నిస్తుంది
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	{name}ను సంగ్రహించలేకపోయింది: {why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	Couldn't look for a newer {name}: {error}	కొత్త {name}ను కనుగొనలేకపోయింది: {error}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1574,6 +1585,10 @@
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
 	Downloading the update... {percent}	అప్‌డేట్‌ను డౌన్‌లోడ్ చేస్తోంది... {percent}
+#. text in helpers.rs
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+#, machine
+	Downloading the update... {percent}%	నవీకరణను డౌన్‌లోడ్ చేస్తోంది... {percent}%
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -2160,6 +2175,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gibraltar	జిబ్రాల్టర్
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Go back to {version}	{version}కి తిరిగి వెళ్ళు
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2546,6 +2566,10 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	కిలోబైట్లు/సెకను
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#, machine
+	Keep MDM's helpers up to date automatically	MDM సహాయకాలను స్వయంచాలకంగా నవీకరించండి
 #. text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 #, machine
@@ -3316,6 +3340,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	మెయిల్ యాప్ లేదు: సందేశం కాపీ చేయబడింది, మీ మెయిల్‌లో పేస్ట్ చేయండి.
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	No newer {name} than this one	దీని కంటే కొత్త {name} లేదు
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	టొరెంట్ ఫైల్ జాబితాను ఏ పీర్ కూడా సమయానికి పంపలేదు
@@ -5735,14 +5764,31 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	పైకి
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+#, machine
+	Up to date	తాజాగా ఉంది
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
 	Up to {height}p	{height}p వరకు
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+#, machine
+	Update	నవీకరించండి
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
 	Update now	ఇప్పుడే అప్‌డేట్ చేయండి
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+#, machine
+	Updated by you	మీరు నవీకరించినది
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Updated to {version}	{version}కి నవీకరించబడింది
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5881,6 +5927,16 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Version {version} ({commit})	వెర్షన్ {version} ({commit})
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} available	వెర్షన్ {version} అందుబాటులో ఉంది
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} is ready: used once its downloads end	వెర్షన్ {version} సిద్ధంగా ఉంది: దాని డౌన్‌లోడ్‌లు ముగిసిన తర్వాత ఉపయోగించబడుతుంది
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 #, machine
@@ -6359,6 +6415,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} అనేది 7z లేదా RAR ఆర్కైవ్. MDM వాటిని 7-Zipతో సంగ్రహిస్తుంది, కానీ 7-Zip ఇన్‌స్టాల్ చేయబడలేదు.
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is being downloaded already: try again in a moment	{name} ఇప్పటికే డౌన్‌లోడ్ అవుతోంది: కొద్దిసేపట్లో మళ్లీ ప్రయత్నించండి
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6369,12 +6430,22 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} {how}గా అందుబాటులో లేదు.
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is in: trying again with it	{name} {version} ఉంది: దానితో మళ్లీ ప్రయత్నిస్తోంది
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} చాలా పాతది: MDMకి {oldest} లేదా కొత్తది అవసరం
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} ఈ సైట్ కోసం పాతది కావచ్చు: కొత్త వెర్షన్ కోసం చూస్తోంది
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine

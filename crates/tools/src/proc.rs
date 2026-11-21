@@ -1392,6 +1392,9 @@ pub struct Spawned {
     name: String,
     #[cfg(windows)]
     job: Option<win32job::Job>,
+    /// MDM's own helpers it runs (its program, the ffmpeg and Deno it is given), not switched to
+    /// a new version while it runs (#1544). Last: let go once it has ended.
+    _hold: crate::autoupdate::Hold,
 }
 
 impl Spawned {
@@ -1526,6 +1529,8 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         use std::os::unix::process::CommandExt;
         cmd.process_group(0);
     }
+    // The helpers it runs, held before it starts (#1544).
+    let hold = crate::autoupdate::Hold::of_command(&cmd);
     // Under the lock: `end_all` either came first (nothing starts) or finds it to end.
     #[cfg_attr(not(unix), allow(unused_mut))]
     let mut running = RUNNING.lock().unwrap_or_else(|e| e.into_inner());
@@ -1578,6 +1583,7 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         name: name.to_owned(),
         #[cfg(windows)]
         job,
+        _hold: hold,
     })
 }
 

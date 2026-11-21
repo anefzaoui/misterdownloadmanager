@@ -728,7 +728,8 @@
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 	Check feeds every	Check feeds every
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 	Check for updates	Check for updates
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. check box in the update window: look for a new version every time MDM starts
@@ -751,7 +752,8 @@
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 	Checking every piece again	Checking every piece again
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 	Checking for updates...	Checking for updates...
 #. text in gallerydlg.rs
@@ -926,10 +928,17 @@
 #. a helper (yt-dlp, ffmpeg) couldn't be downloaded: its server ({host}) couldn't be reached, for the system's reason {cause}
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 	could not reach {host} ({cause})	could not reach {host} ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+	Couldn't check for updates: MDM tries again later	Couldn't check for updates: MDM tries again later
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 	Couldn't extract {name}: {why}	Couldn't extract {name}: {why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+	Couldn't look for a newer {name}: {error}	Couldn't look for a newer {name}: {error}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 	Create a folder for this torrent	Create a folder for this torrent
@@ -1183,6 +1192,9 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	Downloading the update... {percent}
+#. text in helpers.rs
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+	Downloading the update... {percent}%	Downloading the update... {percent}%
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -1617,6 +1629,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Gibraltar	Gibraltar
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+	Go back to {version}	Go back to {version}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	Goes on after the download finishes
@@ -1906,6 +1922,9 @@
 	Kazakhstan	Kazakhstan
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 	KBytes/sec	KBytes/sec
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+	Keep MDM's helpers up to date automatically	Keep MDM's helpers up to date automatically
 #. text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 	Keep private-window downloads in the list	Keep private-window downloads in the list
@@ -2476,6 +2495,10 @@
 	No mail app opened.	No mail app opened.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	No mail app: the message is copied, paste it in your mail.	No mail app: the message is copied, paste it in your mail.
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+	No newer {name} than this one	No newer {name} than this one
 #. text in errors.rs
 	no peer sent the torrent's file list in time	no peer sent the torrent's file list in time
 #. text in the Add torrent window
@@ -4273,12 +4296,25 @@
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 	Up	Up
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+	Up to date	Up to date
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 	Up to {height}p	Up to {height}p
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+	Update	Update
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 	Update now	Update now
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+	Updated by you	Updated by you
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+	Updated to {version}	Updated to {version}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 	Updates could not be checked: {error}	Updates could not be checked: {error}
@@ -4380,6 +4416,14 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	Version {version} ({commit})	Version {version} ({commit})
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+	Version {version} available	Version {version} available
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+	Version {version} is ready: used once its downloads end	Version {version} is ready: used once its downloads end
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 	Video	Video
@@ -4741,6 +4785,10 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+	{name} is being downloaded already: try again in a moment	{name} is being downloaded already: try again in a moment
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4749,11 +4797,19 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 	{name} isn't offered as {how}.	{name} isn't offered as {how}.
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+	{name} {version} is in: trying again with it	{name} {version} is in: trying again with it
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} is too old: MDM needs {oldest} or newer
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} may be out of date for this site: looking for a newer version
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 	{name}: {error}	{name}: {error}
