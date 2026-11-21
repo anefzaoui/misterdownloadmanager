@@ -934,5 +934,85 @@
   "popup_dl_open_remote": {
     "message": "Open its page",
     "description": "button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page"
+  },
+  "status_links_sent": {
+    "message": "Sent $count$ links",
+    "description": "the toolbar button's status: links sent to another MDM",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Sent $sent$ links, $left$ left out",
+    "description": "the toolbar button's status: links sent to another MDM, some left out by cap or filter",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Sent $sent$ links ($refused$ refused)",
+    "description": "the toolbar button's status: some links refused by another MDM",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Sent $sent$ links ($refused$ refused, $left$ left out)",
+    "description": "the toolbar button's status: some links refused and some left out",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "$count$ links refused",
+    "description": "the toolbar button's status: all links refused by another MDM",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "No capturable links ($left$ left out)",
+    "description": "the toolbar button's status: no links matched capturable file types",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server not reached",
+    "description": "the toolbar button's status when the paired server does not answer"
   }
 }

@@ -5301,6 +5301,9 @@ extension	Never on {site}	Never on {site}
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Never take downloads from {site}	Never take downloads from {site}
 #. text in the browser extension
+#. the toolbar button's status: no links matched capturable file types
+extension	No capturable links ({left} left out)	No capturable links ({left} left out)
+#. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
 extension	No download's name or address has “{words}”.	No download's name or address has “{words}”.
 #. text in the browser extension
@@ -5427,6 +5430,22 @@ extension	Sending to {server}	Sending to {server}
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Sent to Mister Download Manager
 #. text in the browser extension
+#. the toolbar button's status: links sent to another MDM
+#. {count} = a number (keep the braces as they are)
+extension	Sent {count} links	Sent {count} links
+#. text in the browser extension
+#. the toolbar button's status: some links refused by another MDM
+extension	Sent {sent} links ({refused} refused)	Sent {sent} links ({refused} refused)
+#. text in the browser extension
+#. the toolbar button's status: some links refused and some left out
+extension	Sent {sent} links ({refused} refused, {left} left out)	Sent {sent} links ({refused} refused, {left} left out)
+#. text in the browser extension
+#. the toolbar button's status: links sent to another MDM, some left out by cap or filter
+extension	Sent {sent} links, {left} left out	Sent {sent} links, {left} left out
+#. text in the browser extension
+#. the toolbar button's status when the paired server does not answer
+extension	Server not reached	Server not reached
+#. text in the browser extension
 #. tab in the toolbar button's popup: the extension's settings; noun, short
 extension	Settings	Settings
 #. text in the browser extension
@@ -5552,6 +5571,10 @@ extension	Wrong code.	Wrong code.
 #. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
 #. {count} = a number (keep the braces as they are)
 extension	{count} downloading now	{count} downloading now
+#. text in the browser extension
+#. the toolbar button's status: all links refused by another MDM
+#. {count} = a number (keep the braces as they are)
+extension	{count} links refused	{count} links refused
 #. text in the browser extension
 #. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)

@@ -747,5 +747,78 @@
   },
   "popup_dl_open_remote": {
     "message": "Otwórz jego stronę"
+  },
+  "status_links_sent": {
+    "message": "Sent $count$ links",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "status_links_cut": {
+    "message": "Sent $sent$ links, $left$ left out",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "100"
+      },
+      "left": {
+        "content": "$2",
+        "example": "20"
+      }
+    }
+  },
+  "status_links_partial": {
+    "message": "Sent $sent$ links ($refused$ refused)",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      }
+    }
+  },
+  "status_links_partial_cut": {
+    "message": "Sent $sent$ links ($refused$ refused, $left$ left out)",
+    "placeholders": {
+      "sent": {
+        "content": "$1",
+        "example": "5"
+      },
+      "refused": {
+        "content": "$2",
+        "example": "2"
+      },
+      "left": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "status_links_refused": {
+    "message": "$count$ links refused",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "status_links_none": {
+    "message": "No capturable links ($left$ left out)",
+    "placeholders": {
+      "left": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "status_unreachable": {
+    "message": "Server not reached"
   }
 }
