@@ -4857,9 +4857,7 @@ impl App {
         crate::crash::hidden(false);
         ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
         ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(false));
-        if !crate::offscreen() {
-            ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
-        }
+        crate::dialogs::focus(ctx, egui::ViewportId::ROOT);
         ctx.request_repaint();
     }
 
@@ -13326,6 +13324,9 @@ impl eframe::App for App {
         // MDM's own work: not counted as the graphics API's time to its first frame (#280).
         crate::renderer::own_work_begin();
         self.tick(ctx);
+        // The windows asked to the front that show now (dialogs::focus).
+        #[cfg(windows)]
+        crate::dialogs::focus_pending(ctx);
         crate::renderer::own_work_end();
     }
 

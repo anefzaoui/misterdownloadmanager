@@ -9436,6 +9436,16 @@ pub fn pass_foreground() {
     }
 }
 
+/// Let the process `pid` (the running copy of MDM, from a second launch) come to the front
+/// now: this process's right to the foreground, if it has one, passed on.
+pub fn allow_foreground(pid: u32) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::AllowSetForegroundWindow;
+    // SAFETY: a plain call; it fails harmlessly when this process has no right to pass on.
+    unsafe {
+        AllowSetForegroundWindow(pid);
+    }
+}
+
 /// The `CF_HDROP` block for `paths` (`DROPFILES`, shellapi.h): its 20-byte header (where the
 /// list starts, a point, whether it is a non-client drop, wide characters), then each path in
 /// UTF-16 ending with a null, then one more null.
@@ -9915,6 +9925,39 @@ fn bring_forward(hwnd: HWND) -> bool {
         }
         GetForegroundWindow() == hwnd
     }
+}
+
+/// Our window titled `title` brought to the foreground (`dialogs::focus`, #1645): by
+/// [`bring_forward`], with no made-up input (winit's way, a Left Alt press and release sent to
+/// the whole system, set off other programs' Alt hotkeys). Refused, its taskbar button flashes
+/// until it is clicked, as Windows has a program in the background ask for the user's eye. None
+/// while there is no such window on the screen yet (ask again in a later frame); else whether it
+/// is the foreground window now.
+pub fn bring_own_forward(title: &str) -> Option<bool> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        FLASHW_TIMERNOFG, FLASHW_TRAY, FLASHWINFO, FlashWindowEx, GetForegroundWindow,
+        IsWindowVisible,
+    };
+    let hwnd = find_own_window(title)?;
+    // SAFETY: plain queries about our own window.
+    let (visible, foreground) =
+        unsafe { (IsWindowVisible(hwnd) != 0, GetForegroundWindow() == hwnd) };
+    if !visible {
+        return None;
+    }
+    if foreground || bring_forward(hwnd) {
+        return Some(true);
+    }
+    let flash = FLASHWINFO {
+        cbSize: size_of::<FLASHWINFO>() as u32,
+        hwnd,
+        dwFlags: FLASHW_TRAY | FLASHW_TIMERNOFG,
+        uCount: 0,
+        dwTimeout: 0,
+    };
+    // SAFETY: a filled structure about our own window, read for the call only.
+    unsafe { FlashWindowEx(&flash) };
+    Some(false)
 }
 
 /// Open the file at `path` with its program and bring the window showing it in front (#1496:
