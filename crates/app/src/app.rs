@@ -3417,6 +3417,8 @@ impl App {
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
             // The first download's: Add trackers (a torrent), its right-click menu.
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
+            // The first download's Torrent → Files... (a torrent).
+            "torrent-files" if first.is_some() => self.run(Cmd::TorrentFiles, first, ctx),
             // rss:rules opens it on its Download rules tab.
             "rss" => self.run(Cmd::RssFeeds(tab == "rules"), None, ctx),
             // menu:torrent opens it with its Torrent submenu open. A number (menu:3) is the
