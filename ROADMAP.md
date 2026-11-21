@@ -1737,6 +1737,19 @@ These ship in the next version.
   only its number; the same two boxes on the **Scheduler**'s limits page are named too
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ A torrent session picks a port it can really have (#1589): the pick was once made by
+  asking UDP for a number and probing TCP on it, and on Windows the UDP allocator's numbers
+  can run through a range the system has taken from TCP (Hyper-V's, WSL's) — every probe
+  failed, and the session fell back to its saved port, taken for UDP, listening on TCP alone
+  without uTP, silently. The TCP probe was also blind to a port another session held — the
+  socket library the engine binds through sets address reuse on every TCP socket, and
+  reuse, where both sockets set it (Windows and Linux alike), lets a bind take a port
+  another of MDM's sessions is listening on — so two sessions could
+  pick the same port, the second's uTP left off. Picked from the TCP side now, read back,
+  probed with a plain bind, UDP probed on it; and a session that still loses uTP (the port
+  taken in the moment before the binds) is started again on another port, at most three
+  times, before TCP alone is kept, said in MDM's own log; the torrent port test that met the
+  race says what it guards
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the

@@ -763,27 +763,60 @@ const PORT_TRIES: usize = 20;
 /// for TCP and UDP: the session before it, stopped, may still be letting its uTP socket go.
 const PORT_WAIT: Duration = Duration::from_secs(2);
 
-/// `port` on the listener `l`'s address (0: one the system gives for UDP), when it is free for
-/// TCP and UDP alike, tried as librqbit binds them (`librqbit::listen`: the TCP listener, then
-/// librqbit-utp's socket on the same number) and let go of at once for it.
-fn free_for_both(l: &ListenerOptions, port: u16) -> Option<u16> {
-    use librqbit_dualstack_sockets::{BindOpts, TcpListener, UdpSocket};
-    // librqbit's own address: every IPv4 address for an IPv4-only session on every address.
-    let ip = match l.listen_addr.ip() {
+/// How many times a session whose uTP lost the port picked for it is started again on another
+/// (#1589): between the pick and librqbit's own binds (its TCP listener, then uTP's socket on
+/// the same number) another program can take the port for UDP, and librqbit then keeps TCP
+/// alone, without uTP, silently for the session's whole run.
+const UTP_TRIES: usize = 3;
+
+/// The address the session's listeners bind on: the listener's own, with every IPv4 address for
+/// an IPv4-only session on every one.
+fn listener_ip(l: &ListenerOptions) -> std::net::IpAddr {
+    match l.listen_addr.ip() {
         std::net::IpAddr::V6(v6) if l.ipv4_only && v6.is_unspecified() => {
             std::net::IpAddr::V4(Ipv4Addr::UNSPECIFIED)
         }
         ip => ip,
-    };
+    }
+}
+
+/// `port` on the listener `l`'s address (0: one the system gives for TCP, read back), when it is
+/// free for TCP and UDP alike, tried as librqbit binds them (`librqbit::listen`: the TCP
+/// listener, then librqbit-utp's socket on the same number) and let go of at once for it. A
+/// system-given port is asked of the TCP side (#1589): the TCP allocator never hands out a
+/// port TCP itself can't bind, while on Windows the UDP allocator's picks can run through a
+/// range the system has taken from TCP (Hyper-V's, WSL's — `netsh int ipv4 show
+/// excludedportrange`, and those move as they start and stop), where every TCP probe would
+/// fail and a whole run of [`PORT_TRIES`] picks through one would find nothing. The TCP
+/// probe is a plain bind, without the address reuse librqbit's own listeners take
+/// (`librqbit-dualstack-sockets` sets it on every TCP socket, and where both sockets set
+/// it — Windows and Linux alike — a bind takes a port another of MDM's sessions, bound the
+/// same way, is listening on): a port a parallel session holds then probes as taken, not
+/// free — two sessions would otherwise pick the same one and the second's uTP would be
+/// left off for its whole run, its log the only word of it (#1589).
+fn free_for_both(l: &ListenerOptions, port: u16) -> Option<u16> {
+    use librqbit_dualstack_sockets::{BindOpts, UdpSocket};
     // Without the adapter's device: a port free without it is free with it.
-    let udp = UdpSocket::bind_udp((ip, port).into(), BindOpts::default()).ok()?;
-    let port = udp.bind_addr().port();
-    let tcp = BindOpts {
-        request_dualstack: !l.ipv4_only,
-        ..BindOpts::default()
-    };
-    TcpListener::bind_tcp((ip, port).into(), tcp).ok()?;
+    let ip = listener_ip(l);
+    if port != 0 {
+        let udp = UdpSocket::bind_udp((ip, port).into(), BindOpts::default()).ok()?;
+        let port = udp.bind_addr().port();
+        std::net::TcpListener::bind((ip, port)).ok()?;
+        return Some(port);
+    }
+    let port = std::net::TcpListener::bind((ip, port))
+        .ok()?
+        .local_addr()
+        .ok()?
+        .port();
+    UdpSocket::bind_udp((ip, port).into(), BindOpts::default()).ok()?;
     Some(port)
+}
+
+/// Whether the session's uTP holds UDP on `port`: a plain bind there fails when it does (the
+/// tests' own checks rely on the same). `ip`: the listener's address, as [`listener_ip`].
+fn utp_holds(ip: std::net::IpAddr, port: u16) -> bool {
+    std::net::UdpSocket::bind((ip, port)).is_err()
 }
 
 /// A port the listener `l` can have for TCP and uTP (UDP) alike (#1384). librqbit binds TCP
@@ -791,8 +824,8 @@ fn free_for_both(l: &ListenerOptions, port: u16) -> Option<u16> {
 /// is taken for UDP (another program's socket: TCP and UDP ports are handed out apart; a range
 /// Windows keeps for UDP only), it goes on without uTP for the whole session, saying so in its
 /// log only, and the peers that take only uTP are never reached. `l`'s own port when that is free
-/// for both; else (or with port 0) one the system gives for UDP that TCP has free too. None when
-/// none was found.
+/// for both; else (or with port 0) one the system gives for TCP, read back, that UDP has free
+/// too (#1589). None when none was found.
 fn port_for_both(l: &ListenerOptions) -> Option<u16> {
     let asked = l.listen_addr.port();
     if asked != 0
@@ -940,18 +973,61 @@ impl Torrents {
             },
             (None, None) => for_both(0).unwrap_or(0),
         };
-        let session = match Session::new_with_opts(output.clone(), opts(port)).await {
-            // The port picked taken since (another program has it now): any other one. A port
-            // set in Torrent settings is kept, and its error says why.
-            Err(e) if cfg.port.is_none() && port != 0 => {
-                tracing::warn!("torrents: can't listen on port {port} ({e:#}); taking another one");
-                Session::new_with_opts(output, opts(for_both(0).unwrap_or(0))).await
+        // The session, with its uTP made sure of (#1589): a port free for both when it was
+        // picked can be taken for UDP in the moment before librqbit binds it — a parallel
+        // session's own pick does, in a test run full of them — and librqbit then keeps TCP
+        // alone, without uTP, silently for the session's whole run. (It can't be held until
+        // then: librqbit binds its own UDP, and a socket of ours kept past that would take the
+        // port from uTP itself.) A session that lost uTP that way is started again on another
+        // port, at most UTP_TRIES times, before TCP alone is kept, said here too. A port set in
+        // Torrent settings is kept as asked for (warned above): TCP alone while UDP can't have
+        // it, not retried away.
+        let mut port = port;
+        let mut session = None;
+        for try_ in 0..UTP_TRIES {
+            match Session::new_with_opts(output.clone(), opts(port)).await {
+                // The port picked taken since (another program has it now): any other one.
+                Err(e) if cfg.port.is_none() && try_ + 1 < UTP_TRIES && port != 0 => {
+                    tracing::warn!(
+                        "torrents: can't listen on port {port} ({e:#}); taking another one"
+                    );
+                    port = for_both(0).unwrap_or(0);
+                }
+                // With its causes: "error starting listeners: error binding: …" says why (an
+                // adapter's address gone, #143).
+                Err(e) => return Err(engine(format!("{e:#}"))),
+                Ok(started) => {
+                    // uTP up: UDP on the port the session listens on is taken (by uTP itself).
+                    let up = cfg
+                        .port
+                        .is_none()
+                        .then(|| with_utp(port))
+                        .flatten()
+                        .zip(started.listen_addr())
+                        .map(|(l, a)| utp_holds(listener_ip(&l), a.port()))
+                        .unwrap_or(true);
+                    if up || try_ + 1 == UTP_TRIES {
+                        if !up {
+                            tracing::warn!(
+                                "torrents: another program took every port picked; TCP alone this session"
+                            );
+                        }
+                        session = Some(started);
+                        break;
+                    } else {
+                        tracing::warn!(
+                            "torrents: another program took port {port} for uTP; taking another one"
+                        );
+                        started.stop().await;
+                        port = for_both(0).unwrap_or(0);
+                    }
+                }
             }
-            started => started,
         }
-        // With its causes: "error starting listeners: error binding: …" says why (an adapter's
-        // address gone, #143).
-        .map_err(|e| engine(format!("{e:#}")))?;
+        // Every try either kept a session or returned: the last one keeps.
+        let Some(session) = session else {
+            unreachable!("the last try starts a session or returns its error")
+        };
         log_network(&session, saved_nodes, listening && cfg.utp);
         if let (true, None, Some(addr)) = (listening, cfg.port, session.listen_addr())
             && saved != Some(addr.port())
@@ -2646,6 +2722,13 @@ mod tests {
     /// only, uTP left off for the session: the saved one is left for one free for both, whose
     /// UDP the session then holds. Before, CI runners' sessions met a UDP port taken now and
     /// then and never reached a peer on uTP.
+    /// #1589: the port the session moves to was once picked by asking UDP for a number and
+    /// probing TCP on it, and on Windows the UDP allocator's numbers can run through a range
+    /// the system has taken from TCP (Hyper-V's, WSL's, which move as they start and stop) —
+    /// every probe failed, and the choice fell back to this test's saved port, taken for UDP:
+    /// "the port taken for UDP was kept", once in a full run. Picked from the TCP side now
+    /// (`free_for_both`), and a session that still loses uTP is started again on another port
+    /// (`UTP_TRIES`), so the port this test reads is one uTP really holds.
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn a_port_taken_for_udp_is_left_for_one_free_for_both() {
         let tmp = tempfile::tempdir().unwrap();
@@ -2669,6 +2752,33 @@ mod tests {
         );
         t.stop().await;
         drop(taken);
+    }
+
+    /// #1589: the TCP probe once bound with the address reuse the socket library sets, as
+    /// librqbit's own listeners do — and reuse, where both sockets set it, lets a bind take a
+    /// port another of MDM's sessions is listening on. A port a parallel session held probed
+    /// as free, and two sessions could take the same number, the second's uTP left off for
+    /// its whole run. The plain bind the probe is now refuses it.
+    #[tokio::test]
+    async fn a_port_another_program_listens_on_is_not_free() {
+        use librqbit_dualstack_sockets::{BindOpts, TcpListener};
+        let l = ListenerOptions {
+            mode: ListenerMode::TcpAndUtp,
+            listen_addr: (std::net::IpAddr::V4(Ipv4Addr::LOCALHOST), 0).into(),
+            ipv4_only: true,
+            ..Default::default()
+        };
+        // Held as a parallel session holds it: through the socket library, with the reuse.
+        let held = TcpListener::bind_tcp(
+            (std::net::IpAddr::V4(Ipv4Addr::LOCALHOST), 0).into(),
+            BindOpts {
+                reuseport: true,
+                ..BindOpts::default()
+            },
+        )
+        .unwrap();
+        let port = held.bind_addr().port();
+        assert_eq!(free_for_both(&l, port), None);
     }
 
     /// #650: the DHT starts from several public routers, not librqbit's two alone; a test's
