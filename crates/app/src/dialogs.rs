@@ -513,6 +513,7 @@ fn dialog_window<T>(
     crate::crash::window(id);
     let out = ctx.show_viewport_immediate(vid, builder, |ui, _| {
         keyboard_to_click(ui.ctx());
+        crate::winui::name_window(ui, title);
         // Painted in the pass that closes it too (see close_requested).
         let close = close_requested(ui);
         let out = egui::CentralPanel::no_frame()

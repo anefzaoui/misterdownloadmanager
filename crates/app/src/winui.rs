@@ -5085,6 +5085,19 @@ pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug,
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
 }
 
+/// The window's own node in the accessibility tree carries the window's title: egui leaves the
+/// root Window node unnamed, so a screen reader met `[frame] ''` where it looks for the window's
+/// name (#1407). The title is passed in, not read back from the OS window — on X11 winit's
+/// `Window::title()` is a stub that returns `""`. Call once a frame on each window's root ui.
+pub fn name_window(ui: &Ui, title: &str) {
+    if title.is_empty() {
+        return;
+    }
+    let resp = ui.interact(ui.max_rect(), egui::accesskit_root_id(), Sense::hover());
+    let title = title.to_owned();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::Role::Window, true, &title));
+}
+
 /// A [`paragraph`] a screen reader can read too: its lines painted, then a [`readable`] Label
 /// node over them, for text that was only painted (#1407). Returns the line count, like
 /// [`paragraph`].

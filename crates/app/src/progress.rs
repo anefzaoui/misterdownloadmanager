@@ -598,6 +598,7 @@ impl Progress {
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
         let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
             crate::dialogs::keyboard_to_click(ui.ctx());
+            winui::name_window(ui, &title_now);
             // Painted in the pass that closes it too (see dialogs::close_requested).
             let close = crate::dialogs::close_requested(ui);
             if !close && minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true))

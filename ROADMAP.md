@@ -1759,6 +1759,12 @@ These ship in the next version.
   (recommended)**, instead of on the frame, and **Close** takes it when Yes goes away
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers name every window's frame: the tree showed "[frame] ''" where a reader
+  looks for the window's title, so the main window, every dialog, the menus, the progress
+  window and the drop target all said nothing; each frame now carries the window's own
+  title
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
