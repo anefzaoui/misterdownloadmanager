@@ -3374,7 +3374,7 @@ pub fn focus(ctx: &egui::Context, viewport: ViewportId) {
         let until = std::time::Instant::now() + FOCUS_WAIT;
         ctx.data_mut(|d| {
             let asked = d.get_temp_mut_or_default::<Vec<(ViewportId, std::time::Instant)>>(
-                egui::Id::new(FOCUS_ASKED),
+                egui::Id::unique(FOCUS_ASKED),
             );
             if !asked.iter().any(|(v, _)| *v == viewport) {
                 asked.push((viewport, until));
@@ -3402,7 +3402,7 @@ const FOCUS_WAIT: std::time::Duration = std::time::Duration::from_secs(3);
 /// in the next frame until their time is up. Called at every frame (`App::logic`).
 #[cfg(windows)]
 pub fn focus_pending(ctx: &egui::Context) {
-    let key = egui::Id::new(FOCUS_ASKED);
+    let key = egui::Id::unique(FOCUS_ASKED);
     let asked = ctx.data(|d| d.get_temp::<Vec<(ViewportId, std::time::Instant)>>(key));
     let Some(asked) = asked.filter(|a| !a.is_empty()) else {
         return;
@@ -3424,7 +3424,7 @@ pub fn focus_pending(ctx: &egui::Context) {
                 "a window asked to the front stays behind (Windows refused it): its button flashes"
             ),
             None if now < until => left.push((viewport, until)),
-            None => {}
+            None => tracing::info!("a window asked to the front didn't show in time"),
         }
     }
     if !left.is_empty() {
@@ -4705,7 +4705,7 @@ mod tests {
         let vid = ViewportId::from_hash_of("focus-test");
         let asked = |ctx: &egui::Context| {
             ctx.data(|d| {
-                d.get_temp::<Vec<(ViewportId, std::time::Instant)>>(egui::Id::new(FOCUS_ASKED))
+                d.get_temp::<Vec<(ViewportId, std::time::Instant)>>(egui::Id::unique(FOCUS_ASKED))
             })
             .unwrap_or_default()
         };
@@ -4717,7 +4717,7 @@ mod tests {
         assert_eq!(asked(&ctx).len(), 1);
         ctx.data_mut(|d| {
             d.insert_temp(
-                egui::Id::new(FOCUS_ASKED),
+                egui::Id::unique(FOCUS_ASKED),
                 vec![(vid, std::time::Instant::now())],
             )
         });
