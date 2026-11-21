@@ -1810,6 +1810,9 @@ These ship in the next version.
   no sliver of the face outside them; Luna's active bar has XP's brighter light band and rows,
   and its buttons a pure white edge
   ([#1612](https://github.com/anefzaoui/misterdownloadmanager/issues/1612))
+- ✅ Dialogs show their file icons while the main window is minimized, and the log no longer
+  fills with `Failed to find texture` / `Missing texture` lines, with OpenGL and Direct3D
+  ([#1639](https://github.com/anefzaoui/misterdownloadmanager/issues/1639))
 
 ## Being worked on
 
