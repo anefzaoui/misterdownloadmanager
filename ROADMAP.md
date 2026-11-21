@@ -576,6 +576,12 @@ These ship in the next version.
 - ✅ Torrents: a torrent added again while it downloads (a file ticked, trackers added, its
   folder moved) keeps every piece it has, not only those of librqbit's last saved piece map
   ([#1623](https://github.com/anefzaoui/misterdownloadmanager/issues/1623))
+- ✅ Downloads from servers that keep several copies of a file, each with its own version tag
+  and date (ModelScope's), go on with all their connections when the copies carry the same
+  checksum of the whole file, checked on every part, instead of stopping with "the file changed
+  on the server" or falling back to one connection; a file is still never made of two versions,
+  and stopped connections no longer say "Connecting..."
+  ([#1577](https://github.com/anefzaoui/misterdownloadmanager/issues/1577))
 - ✅ Windows: Simplified Chinese drawn with a Chinese font on every Windows, no longer as boxes
   where Microsoft YaHei's usual file is missing (Windows 7's `msyh.ttf`, DengXian, SimSun and
   SimHei are looked for too, a Chinese font must have its language's own characters, the Chinese

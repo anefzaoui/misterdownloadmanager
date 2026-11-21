@@ -773,6 +773,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    instead of the waiting page: a one-time link asked a second time (#1460)
     html_chunked=1 with html=1 or html_after=N: the page chunked, without a Content-Length
     node=N        another server's copy of the same file: its own ETag and date
+    nodes=N        a CDN in front of N copies (as node=): request n gets copy (n-1) mod N
+    digest=1       x-oss-hash-crc64ecma on every answer: the file's version, the same on every
+                   copy (a stand-in value, not the bytes' CRC; etag_change_every changes it)
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -1675,8 +1678,12 @@ pub(crate) async fn serve(
         Some("none") => None,
         _ => Some(format!("\"{seed:x}-{size:x}-{generation}\"")),
     };
-    // Another server's copy (`node`): its own ETag and date.
-    let node = f.node.unwrap_or(0);
+    // Another server's copy (`node`): its own ETag and date. Behind a CDN of several copies
+    // (`nodes`), the copy is the node's this request landed on.
+    let node = match f.nodes.filter(|k| *k > 1) {
+        Some(k) => (n - 1) % k,
+        None => f.node.unwrap_or(0),
+    };
     let etag = etag.map(|e| match node {
         0 => e,
         n => format!("{}-n{n}\"", e.trim_end_matches('"')),
@@ -1739,6 +1746,12 @@ pub(crate) async fn serve(
     }
     if let Some(etag) = &etag {
         builder = builder.header(header::ETAG, etag);
+    }
+    // The whole file's digest, whatever the range and the copy: the file's version (a stand-in
+    // for its CRC-64), not a hash of the bytes.
+    if f.digest == Some(true) {
+        let crc = seed.rotate_left(17) ^ size.wrapping_mul(0x9E37_79B9_7F4A_7C15) ^ generation;
+        builder = builder.header("x-oss-hash-crc64ecma", crc.to_string());
     }
     if status == StatusCode::PARTIAL_CONTENT {
         builder = builder.header(
