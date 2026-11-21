@@ -254,10 +254,13 @@ pub fn banner(
     let bold = tahoma_title();
     let shown = ellipsize(p, &bold, headline, w - 18.0 - 80.0);
     let drawn = text_font(p, bold, o.x + 80.0, o.y + 36.0, &shown, TEXT());
+    // The banner's words reach a screen reader too: they were only painted before (#1407).
+    readable(ui, drawn, (key, "headline"), headline);
     if shown != headline {
         full_on_hover(ui, drawn, (key, "headline"), headline);
     }
-    let lines = paragraph(
+    let lines = readable_paragraph(
+        ui,
         p,
         o.x + 80.0,
         o.y + 57.0,
@@ -265,6 +268,7 @@ pub fn banner(
         MUTED(),
         o.x + w - 18.0,
         14.0,
+        (key, "subline"),
     );
     // As planned, two lines: the second one's baseline at 71, then 13 px of descent and margin.
     let need = 57.0 + 14.0 * (lines.max(2) as f32 - 1.0) + 13.0;
@@ -5079,6 +5083,30 @@ pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug,
     let resp = ui.interact(rc, widget_id(ui, ("readable", salt)), Sense::hover());
     let text = text.to_owned();
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+}
+
+/// A [`paragraph`] a screen reader can read too: its lines painted, then a [`readable`] Label
+/// node over them, for text that was only painted (#1407). Returns the line count, like
+/// [`paragraph`].
+#[allow(clippy::too_many_arguments)]
+pub fn readable_paragraph(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> usize {
+    let lines = paragraph(p, x, baseline, s, color, right, line_h);
+    let rc = rect(Rect::from_min_max(
+        pos2(x, baseline - 12.0),
+        pos2(right, baseline + line_h * (lines as f32 - 1.0) + 4.0),
+    ));
+    readable(ui, rc, salt, s);
+    lines
 }
 
 pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on: Option<bool>) {

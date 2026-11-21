@@ -352,7 +352,7 @@ impl Helpers {
             let y = 100.0 + k as f32 * 72.0;
             icon.image(true)
                 .paint_at(ui, r(o, 22.0, y + 2.0, 32.0, 32.0));
-            winui::text_font(
+            let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
                 o.x + 68.0,
@@ -360,7 +360,10 @@ impl Helpers {
                 crate::i18n::t(name),
                 ink,
             );
-            winui::paragraph(
+            // Painted text a screen reader couldn't see before (#1407).
+            winui::readable(ui, name_rc, ("helpers-name", k), crate::i18n::t(name));
+            winui::readable_paragraph(
+                ui,
                 &p,
                 o.x + 68.0,
                 o.y + y + 29.0,
@@ -368,6 +371,7 @@ impl Helpers {
                 muted,
                 o.x + w - 18.0,
                 14.0,
+                ("helpers-what", k),
             );
         }
 
@@ -448,7 +452,8 @@ impl Helpers {
             if failed && winui::text_width(&p, &line) > room {
                 // A failure is read whole (#816): wrapped, the window growing by its lines past
                 // the first.
-                let n = winui::paragraph(
+                let n = winui::readable_paragraph(
+                    ui,
                     &p,
                     o.x + 20.0,
                     o.y + 340.0 + shift,
@@ -456,6 +461,7 @@ impl Helpers {
                     color,
                     o.x + w - 20.0,
                     16.0,
+                    ("helpers", "status"),
                 );
                 more = 16.0 * n.saturating_sub(1) as f32;
             } else {
@@ -470,6 +476,8 @@ impl Helpers {
                     &shown,
                     color,
                 );
+                // Whole for a screen reader too, even when the window cut it (#1407).
+                winui::readable(ui, rc, ("helpers", "status"), &line);
                 if shown != line {
                     winui::full_on_hover(ui, rc, "helpers-status", &line);
                 }
@@ -501,7 +509,8 @@ impl Helpers {
             crate::i18n::t("Not now? Get them later from Tasks → Download video from a page.")
         };
         // Wrapped: the window grows by the lines past the first.
-        let lines = winui::paragraph(
+        let lines = winui::readable_paragraph(
+            ui,
             &p,
             o.x + 16.0,
             o.y + y + 20.0,
@@ -509,6 +518,7 @@ impl Helpers {
             muted,
             o.x + w - 16.0,
             16.0,
+            ("helpers", "later"),
         );
         crate::dialogs::grow_px(
             ui.ctx(),
@@ -548,6 +558,11 @@ impl Helpers {
                 false,
                 None,
             );
+            // The window opens with the focus on its default button: a screen reader says it,
+            // not just the title (#1407).
+            if ui.memory(|m| m.focused().is_none()) {
+                yes.request_focus();
+            }
             if yes.clicked() || winui::enter_pressed(ui) {
                 *answer = Some(true);
             } else if not_now.clicked() {
@@ -584,6 +599,11 @@ impl Helpers {
                 false,
                 None,
             );
+            // When Yes goes away its focus goes with it: Close takes it, so the reader lands
+            // somewhere (#1407).
+            if ui.memory(|m| m.focused().is_none()) {
+                close.request_focus();
+            }
             if close.clicked() || winui::enter_pressed(ui) {
                 *answer = Some(false);
             }

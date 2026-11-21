@@ -1127,10 +1127,46 @@ fn size_after(
     }
 }
 
+/// A private (incognito) window's download in the list (#1581, [`Item::private_mark`]).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PrivateMark {
+    /// Saved in the list: still there after MDM restarts.
+    Kept,
+    /// In memory only: gone when MDM closes.
+    MemoryOnly,
+}
+
+impl PrivateMark {
+    /// What the mark's tip says (and a screen reader, of the row).
+    pub fn tip(self) -> &'static str {
+        match self {
+            // i18n: tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and MDM's list keeps it after a restart (Options → General → Keep private-window downloads in the list)
+            PrivateMark::Kept => crate::i18n::t("From a private window: kept in the list"),
+            // i18n: tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and it is in memory only, gone from the list when MDM closes
+            PrivateMark::MemoryOnly => crate::i18n::t(
+                "From a private window: in memory only, gone from the list when MDM closes",
+            ),
+        }
+    }
+}
+
 impl Item {
     /// Made from a private window's download, in this session or one before it.
     pub fn is_private_window(&self) -> bool {
         self.private_window || self.context.private
+    }
+
+    /// The list's mark for a private window's download (#1581), with whether the list keeps it:
+    /// one read back from an earlier session is saved already; one of this session is saved
+    /// while Options → General → "Keep private-window downloads in the list" (`keep`) is on.
+    pub fn private_mark(&self, keep: bool) -> Option<PrivateMark> {
+        if !self.is_private_window() {
+            None
+        } else if keep || !self.context.private {
+            Some(PrivateMark::Kept)
+        } else {
+            Some(PrivateMark::MemoryOnly)
+        }
     }
 
     /// Add an app-side event (added, started, stopped …) to the log.
@@ -2041,6 +2077,27 @@ pub fn time(secs: f64) -> String {
         0..60 => format!("{s} sec"), // not translated: English path
         60..3600 => format!("{} min {} sec", s / 60, s % 60), // not translated: English path
         _ => format!("{} hour(s) {} min", s / 3600, (s % 3600) / 60), // not translated: English path
+    }
+}
+
+#[cfg(test)]
+mod private_mark_tests {
+    use super::*;
+
+    /// #1581: the list's mark, and what it says: a normal row has none; this session's private
+    /// row is kept as the option says; one read back from an earlier session was kept already.
+    #[test]
+    fn a_private_rows_mark_says_whether_it_is_kept() {
+        let url: Url = "https://files.example.com/a.zip".parse().unwrap();
+        let mut i = Item::new(1, url, PathBuf::from("a.zip"), Category::Compressed);
+        assert_eq!((i.private_mark(true), i.private_mark(false)), (None, None));
+        (i.private_window, i.context.private) = (true, true);
+        assert_eq!(i.private_mark(true), Some(PrivateMark::Kept));
+        assert_eq!(i.private_mark(false), Some(PrivateMark::MemoryOnly));
+        let reloaded: Item = serde_json::from_str(&serde_json::to_string(&i).unwrap()).unwrap();
+        assert!(!reloaded.context.private);
+        assert_eq!(reloaded.private_mark(false), Some(PrivateMark::Kept));
+        assert_ne!(PrivateMark::Kept.tip(), PrivateMark::MemoryOnly.tip());
     }
 }
 
