@@ -93,15 +93,15 @@ async fn held(lab: &LabServer) -> Vec<String> {
     serde_json::from_slice(&body).unwrap()
 }
 
-/// What each fake Real-Debrid torrent was sent in `selectFiles`.
-async fn rd_selected(lab: &LabServer) -> std::collections::HashMap<String, String> {
-    let body = reqwest::get(lab.url("/_debrid/rd-selected"))
-        .await
-        .unwrap()
-        .bytes()
+/// What the fake Real-Debrid torrent `id` was sent in `selectFiles` (plain text), if anything.
+async fn rd_selected(lab: &LabServer, id: &str) -> Option<String> {
+    let r = reqwest::get(lab.url(&format!("/_debrid/rd-selected/{id}")))
         .await
         .unwrap();
-    serde_json::from_slice(&body).unwrap()
+    if r.status() == reqwest::StatusCode::NOT_FOUND {
+        return None;
+    }
+    Some(r.error_for_status().unwrap().text().await.unwrap())
 }
 
 /// Every file under `dir`, relative, `/`-separated.
@@ -162,10 +162,7 @@ async fn a_magnet_through_each_service_comes_down_as_files() {
             "{service:?}: {log:?}"
         );
         if service == ServiceKind::RealDebrid {
-            assert_eq!(
-                rd_selected(&lab).await.get(&id).map(String::as_str),
-                Some("all")
-            );
+            assert_eq!(rd_selected(&lab, &id).await.as_deref(), Some("all"));
         }
     }
 }
@@ -212,7 +209,7 @@ async fn only_the_files_ticked_in_add_torrent_come_down() {
             assert!(!held(&lab).await.contains(&id), "{service:?}: removed");
             if service == ServiceKind::RealDebrid {
                 assert_eq!(
-                    rd_selected(&lab).await.get(&id).map(String::as_str),
+                    rd_selected(&lab, &id).await.as_deref(),
                     Some(rd_id),
                     "Real-Debrid asked for the ticked file only"
                 );
@@ -248,7 +245,7 @@ async fn a_ticked_file_the_service_doesnt_list_fails_rather_than_taking_all() {
         assert!(tree(dir.path()).is_empty(), "{service:?}: nothing written");
         if service == ServiceKind::RealDebrid {
             let id = t.transfer().expect("sent");
-            assert_eq!(rd_selected(&lab).await.get(&id), None, "nothing selected");
+            assert_eq!(rd_selected(&lab, &id).await, None, "nothing selected");
         }
     }
 }

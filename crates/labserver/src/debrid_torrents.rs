@@ -12,7 +12,7 @@
 //!   unrestricted as any link; Premiumize's are the lab's own direct links (`/gen/…`).
 //! - `GET /_debrid/torrents` lists what the accounts still hold (a test checks the cleanup).
 //! - Real-Debrid's `selectFiles` takes `all` or the files' ids (comma-separated): only those are
-//!   fetched and linked; `GET /_debrid/rd-selected` shows what each torrent was sent.
+//!   fetched and linked; `GET /_debrid/rd-selected/{id}` shows what a torrent was sent.
 
 use std::collections::HashMap;
 use std::sync::Mutex;
@@ -36,7 +36,7 @@ struct Torrent {
 
 static TORRENTS: Mutex<Option<HashMap<String, Torrent>>> = Mutex::new(None);
 /// Real-Debrid's `selectFiles` as sent (`all` or the ids), by torrent id: kept after the torrent
-/// is deleted, for the tests (`GET /_debrid/rd-selected`).
+/// is deleted, for the tests (`GET /_debrid/rd-selected/{id}`).
 static RD_SELECTED: Mutex<Option<HashMap<String, String>>> = Mutex::new(None);
 static NEXT: Mutex<u64> = Mutex::new(1);
 
@@ -158,11 +158,18 @@ pub async fn held() -> Response {
     axum::Json(json!(ids)).into_response()
 }
 
-/// `GET /_debrid/rd-selected`: what each fake Real-Debrid torrent was sent in `selectFiles`
-/// (`{"RDT2": "all", "RDT3": "1"}`).
-pub async fn rd_selected() -> Response {
-    let all = RD_SELECTED.lock().unwrap().clone().unwrap_or_default();
-    axum::Json(json!(all)).into_response()
+/// `GET /_debrid/rd-selected/{id}`: what that fake Real-Debrid torrent was sent in
+/// `selectFiles`, as plain text (`all`, `1`, `1,3`); 404 when it was sent nothing.
+pub async fn rd_selected(Path(id): Path<String>) -> Response {
+    let sent = RD_SELECTED
+        .lock()
+        .unwrap()
+        .as_ref()
+        .and_then(|m| m.get(&id).cloned());
+    match sent {
+        Some(s) => s.into_response(),
+        None => StatusCode::NOT_FOUND.into_response(),
+    }
 }
 
 // ---- Real-Debrid -----------------------------------------------------------------------------

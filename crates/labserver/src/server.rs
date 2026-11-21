@@ -594,7 +594,7 @@ impl LabServer {
             )
             .route("/_debrid/torrents", get(crate::debrid_torrents::held))
             .route(
-                "/_debrid/rd-selected",
+                "/_debrid/rd-selected/{id}",
                 get(crate::debrid_torrents::rd_selected),
             )
             // RSS feeds for the app's RSS tests (#39, `feeds`).
