@@ -455,12 +455,13 @@ enum Cmd {
         /// optionally named ("sha256:…").
         #[arg(long, value_parser = parse_checksum)]
         checksum: Option<mdm_engine::verify::Hash>,
-        /// The DNS that looks the names up: "system" (the default); a service and how to ask it,
-        /// "cloudflare-https", "quad9-tls", "google-plain", "adguard-https", "nextdns-tls"; DNS
-        /// servers' addresses, "9.9.9.9,149.112.112.112"; or a DNS-over-HTTPS address,
+        /// The DNS that looks the names up, instead of the app's Options → Connection → DNS:
+        /// "system"; a service and how to ask it, "cloudflare-https", "quad9-tls",
+        /// "google-plain", "adguard-https", "nextdns-tls"; DNS servers' addresses,
+        /// "9.9.9.9,149.112.112.112"; or a DNS-over-HTTPS address,
         /// "https://dns.example/dns-query". No falling back to the system's DNS.
-        #[arg(long, default_value = "system", value_parser = parse_dns)]
-        dns: mdm_engine::DnsChoice,
+        #[arg(long, value_parser = parse_dns)]
+        dns: Option<mdm_engine::DnsChoice>,
         /// The network adapter every connection goes through (#35): its name ("Ethernet",
         /// "wg0") or one of its addresses. When it isn't there or has no address, nothing is
         /// sent and the download fails.
@@ -931,6 +932,12 @@ impl Conn {
                 dns,
                 adapter,
                 ..
+            }
+            | Cmd::Resume {
+                proxy,
+                dns,
+                adapter,
+                ..
             } => (proxy, dns.as_ref(), adapter.as_deref()),
             Cmd::GalleryGet { proxy, adapter, .. } | Cmd::VideoGet { proxy, adapter, .. } => {
                 (proxy, None, adapter.as_deref())
@@ -938,7 +945,6 @@ impl Conn {
             Cmd::VideoInfo { proxy, .. }
             | Cmd::PlaylistInfo { proxy, .. }
             | Cmd::PlaylistGet { proxy, .. }
-            | Cmd::Resume { proxy, .. }
             | Cmd::InstallYtdlp { proxy }
             | Cmd::InstallFfmpeg { proxy }
             | Cmd::InstallGalleryDl { proxy }
@@ -1860,17 +1866,11 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             user_agent,
             cookie,
             checksum,
-            dns,
-            adapter,
             direct,
             ..
         } => {
             let base_opts = Options {
                 checksum,
-                dns,
-                route: adapter.map_or(mdm_engine::Route::Any, |a| {
-                    mdm_engine::net::route_for(&a, &mdm_engine::net::adapters())
-                }),
                 ..opts(connections)
             };
             // Through the account its address goes through (#44): the link a service gave
@@ -2503,6 +2503,40 @@ mod tests {
             "{:?}",
             c.route
         );
+        let c = Conn::of(&cmd(&["resume", "file.mdm.json"]), &net);
+        assert_eq!(
+            (c.proxy, c.dns, c.route),
+            (net.proxy.clone(), net.dns.clone(), mdm_engine::Route::Any)
+        );
+        let c = Conn::of(
+            &cmd(&[
+                "resume",
+                "file.mdm.json",
+                "--proxy",
+                "none",
+                "--dns",
+                "system",
+            ]),
+            &net,
+        );
+        assert_eq!(
+            (c.proxy, c.dns),
+            (Proxy::None, mdm_engine::DnsChoice::default())
+        );
+        let c = Conn::of(
+            &cmd(&[
+                "resume",
+                "file.mdm.json",
+                "--adapter",
+                "no-such-adapter-1556",
+            ]),
+            &net,
+        );
+        assert!(
+            matches!(c.route, mdm_engine::Route::Down { .. }),
+            "{:?}",
+            c.route
+        );
     }
 
     /// #1240: `video-get --quality` takes a height as people write it.
@@ -3076,7 +3110,7 @@ mod tests {
         match cli.cmd {
             Cmd::Resume {
                 checksum: Some(checksum),
-                dns,
+                dns: Some(dns),
                 adapter: Some(adapter),
                 ..
             } => {
