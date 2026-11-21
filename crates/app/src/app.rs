@@ -367,6 +367,8 @@ struct LeftoverSearch {
     /// The parts its failed merge kept, by name (yt-dlp names some, `Talk.faud-English.mp4`, as
     /// no other leftover is named), in its folder and named after its stem.
     kept: Vec<PathBuf>,
+    /// Exact chapter file paths recorded when this download was split.
+    chapter_files: Vec<PathBuf>,
 }
 
 impl LeftoverSearch {
@@ -399,6 +401,10 @@ impl LeftoverSearch {
             })
             .cloned()
             .collect();
+        let chapter_files = item.video.iter()
+            .flat_map(|v| &v.chapter_files)
+            .cloned()
+            .collect();
         Some(LeftoverSearch {
             dir: dir.to_owned(),
             stem,
@@ -406,6 +412,7 @@ impl LeftoverSearch {
             named,
             others: others.iter().map(|o| low(&o.dest)).collect(),
             kept,
+            chapter_files,
         })
     }
 
@@ -416,6 +423,12 @@ impl LeftoverSearch {
         for p in self.kept {
             if p.is_file() && !found.iter().any(|f| low(f) == low(&p)) {
                 found.push(p);
+            }
+        }
+        // Add exact chapter files this split produced (never the broad pattern).
+        for p in &self.chapter_files {
+            if p.is_file() && !found.iter().any(|f| low(f) == low(p)) {
+                found.push(p.clone());
             }
         }
         found
@@ -5808,6 +5821,7 @@ impl App {
         }
         .with_subs(self.settings.video_subs.clone())
         .with_chapters(self.settings.video_chapters)
+        .with_split_chapters(self.settings.video_split_chapters)
         .with_music_folder(music)
     }
 
@@ -5848,6 +5862,7 @@ impl App {
                 subs: add.subs,
                 parts: Vec::new(),
                 named: add.named,
+                chapter_files: Vec::new(),
                 duration: add.duration,
             });
             // The quality menu's look-up goes with this new download only, started now and while
@@ -5983,6 +5998,7 @@ impl App {
                     subs: Default::default(),
                     parts: Vec::new(),
                     named: false,
+                    chapter_files: Vec::new(),
                     duration: None,
                 });
                 item.number_at_start = true;
@@ -12697,6 +12713,11 @@ impl App {
                         crate::settings::share_video_settings(&self.settings);
                         self.dirty = true;
                     }
+                    if self.settings.video_split_chapters != v.split_chapters() {
+                        self.settings.video_split_chapters = v.split_chapters();
+                        crate::settings::share_video_settings(&self.settings);
+                        self.dirty = true;
+                    }
                     self.video_dlg = None;
                     match out {
                         crate::videodlg::VideoOut::One(add) => {
@@ -13852,6 +13873,7 @@ mod same_name_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
         });
         let items = [row(1, &d.join("Master.webm"), Status::Stopped, 9), video];
@@ -14190,6 +14212,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
         });
         assert!(is_same(&item, &page(), None, None, SELECTOR));
@@ -14218,6 +14241,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
         });
         item.page = Some(TAB.into());
@@ -14335,6 +14359,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
         });
         item.page = Some(TAB.into());
@@ -14411,6 +14436,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(30),
         });
         item.page = Some(FEED.into());
@@ -14580,6 +14606,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
         });
         i
@@ -15892,6 +15919,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
         });
         let mut app = app_with(vec![
@@ -16005,6 +16033,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
         });
         let mut app = app_with(vec![gone]);
@@ -17013,5 +17042,40 @@ mod delete_tests {
         assert_eq!(ids(&app), [2, 3]);
         assert!(app.deleter.finish(Duration::from_secs(10)));
         assert!(files.iter().all(|f| f.exists()));
+    }
+
+    #[test]
+    fn delete_with_files_leaves_unrelated_files_beside_split_video() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let main_video = d.join("Song.mp4");
+        let chapter_1 = d.join("Song - 01 - Intro.mp4");
+        let user_file = d.join("Song - Live.mp4");
+        std::fs::write(&main_video, b"main").unwrap();
+        std::fs::write(&chapter_1, b"ch1").unwrap();
+        std::fs::write(&user_file, b"user").unwrap();
+
+        let url = url::Url::parse("https://example.com/watch?v=song").unwrap();
+        let mut item = Item::new(1, url, main_video.clone(), Category::General);
+        item.status = Status::Complete;
+        item.video = Some(crate::model::VideoSpec {
+            selector: "best".into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            chapter_files: vec![chapter_1.clone()],
+            duration: None,
+        });
+
+        let mut app = app_from_052(vec![item], false);
+        let ctx = egui::Context::default();
+        app.run(Cmd::RemoveWithFiles, Some(1), &ctx);
+        let chosen = app.confirm_delete.take().unwrap().ids;
+        app.confirmed_delete(&chosen, true, false);
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+
+        assert!(!main_video.exists(), "main video deleted");
+        assert!(!chapter_1.exists(), "chapter file deleted");
+        assert!(user_file.exists(), "Song - Live.mp4 must survive deletion");
     }
 }

@@ -132,6 +132,8 @@ pub struct VideoDialog {
     embed: bool,
     /// Embed chapters (#827; settings.video_chapters).
     chapters: bool,
+    /// Split into chapters (settings.video_split_chapters).
+    split_chapters: bool,
     /// The last video's choice (settings.video_subs), applied to each video looked up.
     pref: Subs,
     /// The clipboard's page address, read off the window's thread (#661).
@@ -139,7 +141,8 @@ pub struct VideoDialog {
 }
 
 /// The top of the window's bottom row of buttons (Helpers..., Download Now, Later, Cancel),
-/// under Embed chapters.
+/// under Embed chapters (and Split into chapters, which wraps to y + 19 when translated captions
+/// leave no room on the same row).
 const BUTTONS_Y: f32 = 389.0;
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
@@ -210,6 +213,7 @@ impl VideoDialog {
             sub_pick: 0,
             embed: false,
             chapters: true,
+            split_chapters: false,
             pref: Subs::default(),
             clip: Default::default(),
         }
@@ -218,6 +222,12 @@ impl VideoDialog {
     /// Embed chapters ticked or not (settings.video_chapters, #827).
     pub fn with_chapters(mut self, on: bool) -> Self {
         self.chapters = on;
+        self
+    }
+
+    /// Split into chapters ticked or not (settings.video_split_chapters).
+    pub fn with_split_chapters(mut self, on: bool) -> Self {
+        self.split_chapters = on;
         self
     }
 
@@ -1172,7 +1182,7 @@ impl VideoDialog {
             // i18n: why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
             "This needs ffmpeg",
         );
-        winui::why_disabled(
+        let _ = winui::why_disabled(
             resp,
             ffmpeg && converts,
             // i18n: why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
@@ -1181,11 +1191,48 @@ impl VideoDialog {
         if can {
             self.chapters = on;
         }
+
+        let can_split = ffmpeg;
+        let mut split_on = self.split_chapters && can_split;
+        let p = ui.painter().clone();
+        // "Split into chapters" follows "Embed chapters" on the same row in English.
+        // In translated UIs the "Embed chapters" caption may be wider, leaving too little
+        // room on the row; wrap to the next row when that happens (y + 19).
+        let split_min_room = 16.0 + winui::text_width(&p, crate::i18n::t("Split into chapters")) + 5.0;
+        let split_x = winui::checkbox_caption_end(&p, o.x + bx, "Embed chapters") + 16.0;
+        let (split_x, split_y) = if split_x + split_min_room <= o.x + 489.0 {
+            (split_x, o.y + 350.0)
+        } else {
+            (o.x + bx, o.y + 369.0)
+        };
+        let split_resp = winui::checkbox_until(
+            ui,
+            pos2(split_x, split_y),
+            &mut split_on,
+            // i18n: checkbox in Download video: split the video into multiple files based on its chapters
+            "Split into chapters",
+            can_split,
+            Some(o.x + 489.0),
+        );
+        winui::why_disabled(
+            split_resp,
+            !ffmpeg,
+            // i18n: why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
+            "This needs ffmpeg",
+        );
+        if can_split {
+            self.split_chapters = split_on;
+        }
     }
 
     /// Embed chapters' tick, for the settings (`video_chapters`).
     pub fn chapters(&self) -> bool {
         self.chapters
+    }
+
+    /// Split into chapters' tick, for the settings (`video_split_chapters`).
+    pub fn split_chapters(&self) -> bool {
+        self.split_chapters
     }
 
     /// Subtitles (#68): a language the video has, from the uploader or the site's automatic
@@ -1747,6 +1794,7 @@ mod tests {
                 subs: Default::default(),
                 parts: vec![],
                 named: false,
+                chapter_files: vec![],
                 duration: None,
             });
             item.private_window = private;

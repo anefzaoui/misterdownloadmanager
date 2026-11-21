@@ -525,6 +525,7 @@ mod tests {
                     subs: Default::default(),
                     parts: Vec::new(),
                     named: false,
+                    chapter_files: Vec::new(),
                     duration: None,
                 });
                 i

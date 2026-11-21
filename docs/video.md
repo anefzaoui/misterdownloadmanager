@@ -151,6 +151,14 @@ Many videos are split into chapters on their page: YouTube's list under the play
 - They go into a video (MP4, MKV, WebM) and into the sound as the site has it (**Audio only, original**), not into an MP3, Opus or FLAC file.
 - The command line (`video-get`) puts them in too, whenever ffmpeg is there.
 
+With **Split into chapters** ticked beside **Embed chapters**, the video is also split into individual chapter files (`<filename> - <NN> - <chapter name>.<ext>`, or `<filename> - <NN>.<ext>` when untitled). The whole video is kept too.
+
+- It needs ffmpeg, and stays as you leave it for the next video.
+- Splitting uses stream copy without re-encoding, so it runs losslessly and near-instantly. Each cut lands on a keyframe, so a chapter can start a second or a few early (yt-dlp's `--force-keyframes-at-cuts` makes it exact, but re-encodes, so MDM does not turn it on by default).
+- A video without chapters or with a single chapter is saved as a single file without splitting.
+- The command line's `video-get` and `playlist-get` support it via `--split-chapters`.
+- Deleting the download along with its files cleans up its split chapter files too, while preserving unrelated files in the same folder.
+
 ## Playlists and channels
 
 Paste the address of a playlist (`youtube.com/playlist?list=…`) or a channel's videos (`youtube.com/@name/videos`) and click **Look up**. Instead of one video's qualities, the window lists the list's videos, each with its length.
