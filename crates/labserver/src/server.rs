@@ -279,6 +279,8 @@ pub(crate) struct Shared {
     on_log: Option<LogSink>,
     /// The fake Drive's virus-scan pages' `uuid`s handed out (`drive`).
     pub(crate) drive_uuids: Mutex<HashSet<String>>,
+    /// The fake LuluStream's form posts, per video code (`lulustream`).
+    pub(crate) lulu_posts: Mutex<HashMap<String, u32>>,
     files: Option<std::path::PathBuf>,
     /// Over HTTPS: each connection's ClientHello, browser-like or not (`LogEntry::browser_tls`),
     /// by the client's address.
@@ -419,6 +421,7 @@ impl LabServer {
             log: Mutex::default(),
             on_log: cfg.on_log,
             drive_uuids: Mutex::default(),
+            lulu_posts: Mutex::default(),
             files: cfg.files,
             browser_tls: Mutex::default(),
             link_free: Mutex::new(Instant::now()),
@@ -939,8 +942,9 @@ RAPIDGATOR  a fake one for the engine's tests, on Rapidgator's host names (resol
 
 LULUSTREAM  a fake one for the engine's tests, on LuluStream's host names (resolve lplaygo.com,
     lulustream.com and s1.lulu-files.test to this server); hand-made pages (src/lulustream.rs)
-  codes: <lab|fla|cap|bad><size>t<TTL s> padded with z to 12, e.g. lab2mt600zzz (fla: its form
-    is taken on its third post only; cap: it wants a captcha; bad: it never takes the post)
+  codes: <lab|fla|exp|cap|bad><size>t<TTL s> padded with z to 12, e.g. lab2mt600zzz (fla: its
+    form is taken on its third post only; exp: only its first post's link lasts TTL s; cap:
+    it wants a captcha; bad: it never takes the post)
   lplaygo.com, lulustream.com  /CODE, /e/CODE: a player; /d/CODE: links to /d/CODE_n and
                             /d/CODE_h on lulustream.com; /d/CODE_MODE: a form (op, id, mode, hash)
                             which, posted back, answers with the file's link lasting TTL s

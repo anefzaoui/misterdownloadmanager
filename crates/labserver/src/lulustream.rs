@@ -7,11 +7,13 @@
 //!
 //! A code says what it is ([`code`]): the file's size, how long its link lasts, and how the form
 //! behaves (`lab`: as the site's; `fla`: it takes the post on the third try only, as the real
-//! site's "Security error" now and then; `cap`: it wants a captcha; `bad`: it never takes it).
+//! site's "Security error" now and then; `exp`: its first post's link lasts the code's time, its
+//! next ones' ten minutes, for a link that expires during a download; `cap`: it wants a captcha; `bad`: it never
+//! takes it). Posts are counted per code in the server's own state, so each `LabServer` starts
+//! again.
 
-use std::collections::HashMap;
 use std::net::SocketAddr;
-use std::sync::{Arc, Mutex, OnceLock};
+use std::sync::Arc;
 
 use axum::body::HttpBody;
 use axum::http::{HeaderMap, Method, StatusCode, Uri, header};
@@ -36,6 +38,8 @@ pub enum Form {
     Plain,
     /// It answers its first two posts with the form again, and takes the third.
     Flaky,
+    /// Its first post's link lasts the code's time only, the next ones' ten minutes.
+    Expiring,
     /// It wants a captcha (`data-sitekey`).
     Captcha,
     /// It never takes the post: its answer is the form again.
@@ -48,6 +52,7 @@ pub fn code(form: Form, size: &str, ttl_s: u64) -> String {
     let kind = match form {
         Form::Plain => "lab",
         Form::Flaky => "fla",
+        Form::Expiring => "exp",
         Form::Captcha => "cap",
         Form::Refusing => "bad",
     };
@@ -64,6 +69,7 @@ fn parse(code: &str) -> Option<(Form, String, u64)> {
     let form = match code.get(..3)? {
         "lab" => Form::Plain,
         "fla" => Form::Flaky,
+        "exp" => Form::Expiring,
         "cap" => Form::Captcha,
         "bad" => Form::Refusing,
         _ => return None,
@@ -95,9 +101,8 @@ fn hash_ok(code: &str, hash: &str) -> bool {
 }
 
 /// How many times `code`'s form has been posted to this server, this one counted.
-fn nth_post(code: &str) -> u32 {
-    static POSTS: OnceLock<Mutex<HashMap<String, u32>>> = OnceLock::new();
-    let mut posts = POSTS.get_or_init(Default::default).lock().unwrap();
+fn nth_post(shared: &Shared, code: &str) -> u32 {
+    let mut posts = shared.lulu_posts.lock().unwrap();
     let n = posts.entry(code.to_owned()).or_insert(0);
     *n += 1;
     *n
@@ -144,6 +149,7 @@ pub(crate) async fn handle(
                 return page(StatusCode::NOT_FOUND, NOT_FOUND, shared, entry);
             };
             if method == Method::POST {
+                let nth = nth_post(&shared, code);
                 let fields: Vec<(String, String)> =
                     serde_urlencoded::from_bytes(body).unwrap_or_default();
                 let field = |n: &str| fields.iter().find(|(k, _)| k == n).map(|(_, v)| v.as_str());
@@ -151,15 +157,19 @@ pub(crate) async fn handle(
                     .get(header::CONTENT_TYPE)
                     .and_then(|v| v.to_str().ok())
                     .is_some_and(|t| t.starts_with("application/x-www-form-urlencoded"));
-                let taken = matches!(form, Form::Plain | Form::Flaky)
+                let taken = matches!(form, Form::Plain | Form::Flaky | Form::Expiring)
                     && form_typed
                     && field("op") == Some("download_orig")
                     && field("id") == Some(code)
                     && field("mode") == Some(mode)
                     && field("hash").is_some_and(|h| hash_ok(code, h))
-                    && (form != Form::Flaky || nth_post(code) > 2);
+                    && (form != Form::Flaky || nth > 2);
                 if taken {
-                    let until = unix_ms() + ttl * 1000;
+                    let life = match form {
+                        Form::Expiring if nth > 1 => 600,
+                        _ => ttl,
+                    };
+                    let until = unix_ms() + life * 1000;
                     let link = format!(
                         "http://{FILES}:{port}/v/01/{code}_{mode}/Lab%20video.mp4?t={until}"
                     );

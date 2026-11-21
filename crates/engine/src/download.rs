@@ -3764,8 +3764,13 @@ async fn get(
                     form = Some(Bytes::from(body));
                     (Duration::ZERO, action)
                 }
-                // Still the form after its last post: the site doesn't take it.
-                PageSays::Form { .. } => return Err(Error::GotWebPage),
+                // Still the form after its last post: the site didn't take it this time, said in
+                // its name where it has one (`sites::form_refused`).
+                PageSays::Form { .. } => {
+                    return Err(
+                        sites::form_refused(&from).map_or(Error::GotWebPage, Error::Refused)
+                    );
+                }
                 PageSays::Refused(r) => match sites::second_look(&from).filter(|_| !looked) {
                     Some(look) => {
                         looked = true;

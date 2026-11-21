@@ -170,6 +170,14 @@ pub(crate) fn origin(url: &Url, pages: &[Url]) -> Option<Url> {
     })
 }
 
+/// The site still answered its form with the form after the last post: it didn't give the file
+/// this time (`sites::form_refused`).
+pub(crate) fn form_refused(at: &Url) -> Option<Refusal> {
+    is_site(at).then(|| Refusal::NotTaken {
+        site: NAME.to_owned(),
+    })
+}
+
 /// What the site's page `page`, answered 200 at `at`, says:
 /// 1. a download page: its best quality's page among those it lists;
 /// 2. a quality's page with its form: the form, to post (a captcha's: refused, needs the browser);
@@ -496,6 +504,17 @@ mod tests {
             ),
             None
         );
+    }
+
+    #[test]
+    fn a_form_never_taken_is_refused_in_its_name() {
+        assert_eq!(
+            form_refused(&url("https://lplaygo.com/d/xmgvk2758mtu_h")),
+            Some(Refusal::NotTaken {
+                site: NAME.to_owned()
+            })
+        );
+        assert_eq!(form_refused(&url("https://example.com/d/x_h")), None);
     }
 
     #[test]

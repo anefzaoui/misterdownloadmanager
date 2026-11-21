@@ -7,7 +7,7 @@ use std::time::Duration;
 
 use mdm_engine::{Destination, Download, Error, Options, Refusal, Request};
 use mdm_labserver::lulustream::{self, Form};
-use mdm_labserver::{Config, LabServer, LogEntry, content};
+use mdm_labserver::{Config, Faults, LabServer, LogEntry, content};
 
 async fn server() -> LabServer {
     LabServer::start(Config::default()).await.unwrap()
@@ -132,14 +132,20 @@ async fn a_form_not_taken_at_first_is_posted_again() {
     assert_eq!(posts, 3);
 }
 
-/// A site that never takes its form: posted a few times, then a web page instead of the file,
-/// nothing saved.
+/// A site that never takes its form: posted a few times, then refused in the site's name (try
+/// again in a moment), nothing saved.
 #[tokio::test]
-async fn a_form_never_taken_is_a_web_page() {
+async fn a_form_never_taken_is_refused_in_the_sites_name() {
     let s = server().await;
     let code = lulustream::code(Form::Refusing, "64K", 600);
     let (dir, out) = download(at(&s, lulustream::SITE, &format!("/{code}"))).await;
-    assert!(matches!(out, Err(Error::GotWebPage)), "{out:?}");
+    assert!(
+        matches!(
+            &out,
+            Err(Error::Refused(Refusal::NotTaken { site })) if site == "LuluStream"
+        ),
+        "{out:?}"
+    );
     assert!(std::fs::read_dir(dir.path()).unwrap().next().is_none());
     let posts = log(&s)
         .await
@@ -147,4 +153,49 @@ async fn a_form_never_taken_is_a_web_page() {
         .filter(|e| e.method == "POST")
         .count();
     assert_eq!(posts, 5);
+}
+
+/// The link the form's answer gives expires during the download (it lasts a second here; the
+/// real one, a while): the file server refuses it, and the video's link is asked again, its pages
+/// and form, for a fresh one, which the download goes on from to the end, byte for byte.
+#[tokio::test]
+async fn a_link_that_expires_mid_download_is_asked_for_again() {
+    let s = LabServer::start(Config {
+        faults: Faults::parse("rate=1M&drop_after=384K").unwrap(),
+        ..Config::default()
+    })
+    .await
+    .unwrap();
+    let code = lulustream::code(Form::Expiring, "3M", 1);
+    let dir = tempfile::tempdir().unwrap();
+    let out = Download::start(
+        Request {
+            url: at(&s, lulustream::SITE, &format!("/{code}")),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        Options {
+            max_connections: 2,
+            ..opts()
+        },
+    )
+    .wait()
+    .await
+    .unwrap_or_else(|e| panic!("{e}"));
+    assert_eq!(out.path, dir.path().join(lulustream::FILE_NAME));
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; 3 << 20];
+    content::fill(lulustream::seed(&code), 0, &mut want);
+    assert!(data == want, "content mismatch");
+    let log = log(&s).await;
+    assert!(
+        log.iter()
+            .any(|e| on(e, lulustream::FILES) && e.status == 403),
+        "the link expired during the download"
+    );
+    let posts = log.iter().filter(|e| e.method == "POST").count();
+    assert!(
+        (2..=4).contains(&posts),
+        "the form posted again for a fresh link, not over and over: {posts}"
+    );
 }

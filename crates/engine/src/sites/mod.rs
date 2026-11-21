@@ -28,6 +28,9 @@ pub enum Refusal {
     Folder,
     /// A site's link is a web page that needs a browser (`site`, its name), not the file (#346).
     NeedsBrowser { site: String },
+    /// A site kept answering its download form with the form again (`site`, its name): it didn't
+    /// give the file this time, and asking again in a moment usually does (LuluStream's).
+    NotTaken { site: String },
     /// A service account's refusal to unlock the link (#44, `crate::unlock`).
     Service {
         service: String,
@@ -56,6 +59,10 @@ impl std::fmt::Display for Refusal {
             Refusal::NeedsBrowser { site } => write!(
                 f,
                 "this {site} link is a web page, not the file: open it in your browser and download from there"
+            ),
+            Refusal::NotTaken { site } => write!(
+                f,
+                "{site} didn't give the file this time: try again in a moment"
             ),
             Refusal::Service { service, fault } => write!(f, "{service}: {fault}"),
         }
@@ -87,6 +94,13 @@ pub(crate) fn not_a_file(url: &Url) -> Option<Refusal> {
 /// file (a Drive viewer link → its download address). None: ask `url` itself.
 pub(crate) fn rewrite(url: &Url) -> Option<Url> {
     gdrive::rewrite(url).or_else(|| lulustream::rewrite(url))
+}
+
+/// The refusal when the site at `at` still answers its form with the form after its last post
+/// (`PageSays::Form`, `download::MAX_FORM_POSTS`). None: the page is just a web page
+/// (`Error::GotWebPage`).
+pub(crate) fn form_refused(at: &Url) -> Option<Refusal> {
+    lulustream::form_refused(at)
 }
 
 /// What the web page `page` (its first `PAGE_PEEK` bytes), answered 200 at `at`, says.
