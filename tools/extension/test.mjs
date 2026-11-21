@@ -5020,7 +5020,8 @@ for (const here of [true, false]) {
     const adds = fetched.slice(from).filter(([u]) => u.includes("api/add"));
     assert.equal(adds.length, 100, "capped at 100 remote links");
     assert.equal(store.status.notice, "Sent 100 links, 10 left out");
-    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "99+"), "badge shows 99+");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge count left out on remote send");
+    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Sent 100 links, 10 left out"), "title shows notice");
     // Nice to have: cookies not read for remote MDM
     assert.equal(calls.filter((c) => c[0] === "cookies").length, 0, "cookies omitted for remote links");
   }
@@ -5043,7 +5044,8 @@ for (const here of [true, false]) {
     await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
     await settle();
     assert.equal(store.status.notice, "Sent 2 links (2 refused)");
-    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "2"), "badge shows 2 sent");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge count left out on partial send");
+    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Sent 2 links (2 refused)"), "title shows notice");
   }
 
   // 3. Unreachable server (status 0): stops on the very first link and reports unreachable.
@@ -5051,7 +5053,7 @@ for (const here of [true, false]) {
     const tenLinks = [];
     for (let i = 0; i < 10; i++) tenLinks.push(`https://x/item${i}.zip`);
     const { api, calls, listeners, store } = fakeApi({ firefox: false, pageLinks: tenLinks, tabs: { 5: tab } });
-    load(api, false);
+    const ctx = load(api, false);
     await settle();
     store.remotes = [{ url: R, token: "token-test" }];
     store.remote = { url: R, token: "token-test" };
@@ -5064,6 +5066,22 @@ for (const here of [true, false]) {
     assert.equal(store.status.why, "unreachable");
     assert.equal(store.status.notice, "Server not reached");
     assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "!"), "badge shows !");
+
+    // A later send that works (single or batch) clears "unreachable" and the "!" badge
+    served[`${R}api/add`] = { status: 200, body: JSON.stringify({ ok: true }) };
+    await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
+    await settle();
+    assert.equal(store.status.why, null, "unreachable cleared by later successful send");
+    assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge ! cleared");
+
+    // Expired notice (after 10s) dropped by showStatus
+    await ctx.noteLinksNotice({ sent: 5, refused: 0, leftOut: 0 });
+    const s = await ctx.readStatus();
+    s.at = Date.now() - 11000;
+    store.status.at = Date.now() - 11000;
+    await ctx.showStatus();
+    await settle();
+    assert.equal(store.status.notice, "", "notice dropped after 10s");
   }
 
   // 4. 401 unpair halfway through list: stops loop and unpairs.
@@ -5099,6 +5117,13 @@ for (const here of [true, false]) {
     assert.equal(fetched.slice(from).filter(([u]) => u.includes("api/add")).length, 0, "nothing to remote");
     const nativeFiles = natives(calls).filter((m) => m.file);
     assert.equal(nativeFiles.length, 1, "sent to this computer's MDM");
+
+    // Notice dropped at next download
+    await ctx.noteLinksNotice({ sent: 10, refused: 0, leftOut: 0 });
+    assert.equal(store.status.notice, "Sent 10 links");
+    await ctx.download("file", { file: true });
+    await settle();
+    assert.equal(store.status.notice, "", "notice dropped at next download");
   }
 
   delete served[`${R}api/add`];

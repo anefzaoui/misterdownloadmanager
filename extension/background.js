@@ -113,17 +113,22 @@ async function noteLinksNotice(result) {
   const notice = formatLinksNotice(result);
   result.notice = notice;
   const now = await readStatus();
-  status = { ...now, why: result.why === "unreachable" ? "unreachable" : null, notice, at: Date.now() };
+  const failed = result.why === "unreachable" || (result.sent === 0 && result.refused > 0);
+  const why = result.why === "unreachable" ? "unreachable" : (result.sent > 0 ? null : now.why);
+  status = { ...now, why, notice, at: Date.now() };
   await ext.storage.local.set({ status });
-  const badgeText = result.why === "unreachable" ? "!" : (result.sent > 0 ? (result.sent > 99 ? "99+" : String(result.sent)) : (result.refused > 0 ? "!" : ""));
-  const badgeColor = result.why === "unreachable" || result.sent === 0 ? "#C42B1C" : (result.refused > 0 ? "#E8A200" : "#0078D4");
   try {
-    if (badgeText) {
-      await action.setBadgeBackgroundColor({ color: badgeColor });
+    if (failed) {
+      await action.setBadgeBackgroundColor({ color: "#C42B1C" });
       if (action.setBadgeTextColor) await action.setBadgeTextColor({ color: "#FFFFFF" }).catch(() => {});
-      await action.setBadgeText({ text: badgeText });
+      await action.setBadgeText({ text: "!" });
+    } else {
+      await action.setBadgeText({ text: "" });
     }
     if (notice) await action.setTitle({ title: notice });
+    setTimeout(() => {
+      showStatus().catch(() => {});
+    }, 10000);
   } catch {
     // No toolbar button in this environment
   }
@@ -132,6 +137,11 @@ async function noteLinksNotice(result) {
 // A download (`kind`, one of REMOTE_ADD) for MDM: to the other MDM when one is chosen, else to
 // this computer's. Never throws.
 async function download(kind, message) {
+  const prev = await readStatus();
+  if (prev && prev.notice) {
+    status = { ...prev, notice: "" };
+    await ext.storage.local.set({ status });
+  }
   const isSingle = (kind === "file" || kind === "video") && typeof message.url === "string" && Boolean(message.url);
   const isLinks = kind === "links" && Array.isArray(message.links) && message.links.length > 0;
   if (isSingle || isLinks) {
@@ -168,7 +178,22 @@ async function download(kind, message) {
       let unreachable = false;
       for (const url of toSend) {
         const res = await remoteSend(target, { ...message, url });
-        if (isSingle) return res;
+        if (isSingle) {
+          if (res.ok) {
+            const s = await readStatus();
+            if (s && s.why) {
+              status = { ...s, why: null };
+              await ext.storage.local.set({ status });
+              await showStatus();
+            }
+          } else if (res.why === "unreachable") {
+            const s = await readStatus();
+            status = { ...s, why: "unreachable" };
+            await ext.storage.local.set({ status });
+            await showStatus();
+          }
+          return res;
+        }
         if (res.ok) {
           sent++;
         } else if (res.why === "unreachable") {
@@ -244,7 +269,15 @@ async function remoteCall(base, path, body, token) {
 // A download handed to the other MDM: its address only (a site's sign-in stays in this browser).
 async function remoteSend(target, message) {
   const r = await remoteCall(target.url, "api/add", { url: message.url, start: true }, target.token);
-  if (r.status === 200 && r.body && !r.body.error) return { ok: true };
+  if (r.status === 200 && r.body && !r.body.error) {
+    const s = await readStatus();
+    if (s && s.why) {
+      status = { ...s, why: null };
+      await ext.storage.local.set({ status });
+      await showStatus();
+    }
+    return { ok: true };
+  }
   if (r.status === 401) {
     const list = await readRemotes();
     const updated = list.filter((item) => !(item.url === target.url && item.token === target.token));
@@ -657,6 +690,13 @@ async function noteLookup(on) {
 async function showStatus() {
   const remote = await remoteTarget();
   const s = await readStatus();
+  const NOTICE_TTL_MS = 10000;
+  const isFreshNotice = Boolean(s.notice && s.at && Date.now() - s.at < NOTICE_TTL_MS);
+  if (s.notice && !isFreshNotice) {
+    status = { ...s, notice: "" };
+    await ext.storage.local.set({ status });
+    s.notice = "";
+  }
   const why = remote ? (s.why === "unreachable" ? "unreachable" : null) : s.why;
   const { paused } = await ext.storage.local.get({ paused: false });
   const running = !remote && !why && !paused && runningNow > 0 ? (runningNow > 99 ? "99+" : String(runningNow)) : "";
@@ -664,7 +704,8 @@ async function showStatus() {
     await action.setBadgeBackgroundColor({ color: why ? "#C42B1C" : running ? "#0078D4" : "#6B6B6B" });
     if (action.setBadgeTextColor) await action.setBadgeTextColor({ color: "#FFFFFF" }).catch(() => {});
     await action.setBadgeText({ text: why && why !== "update-app" ? "!" : paused ? "II" : running });
-    const title = why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : (s.notice || (remote ? t("status_remote", remote.url) : t("status_connected")));
+    const notice = isFreshNotice ? s.notice : "";
+    const title = why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : (notice || (remote ? t("status_remote", remote.url) : t("status_connected")));
     await action.setTitle({ title: running ? `${title}\n${t("status_running", running)}` : title });
   } catch {
     // No toolbar button (a browser without one): the popup and the help page still say it.
