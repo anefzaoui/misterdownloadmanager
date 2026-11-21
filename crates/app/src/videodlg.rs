@@ -149,34 +149,6 @@ type Tools = (
     Option<mdm_tools::Installed>,
 );
 
-/// Keep yt-dlp current: video sites change often and an old yt-dlp is the usual reason a page
-/// stops working. Once per session, when the video window opens and yt-dlp is installed, the
-/// newest release is fetched in the background (mdm_tools::install_latest: signed by yt-dlp's
-/// developers, never older, switched atomically, the previous version kept). Quiet: a failure
-/// leaves the installed version in use. A system copy is left to its package manager. MDM's own
-/// Deno (#1448) is kept current the same way, after yt-dlp: it runs YouTube's scripts.
-pub fn refresh_ytdlp(rt: &tokio::runtime::Handle) {
-    use std::sync::atomic::{AtomicBool, Ordering};
-    static DONE: AtomicBool = AtomicBool::new(false);
-    let Some(dir) = mdm_tools::tools_dir() else {
-        return;
-    };
-    let ytdlp = mdm_tools::refreshable(&dir);
-    let deno = mdm_tools::deno::installed(&dir).is_some();
-    if !(ytdlp || deno) || DONE.swap(true, Ordering::SeqCst) {
-        return;
-    }
-    rt.spawn(async move {
-        let net = crate::settings::own_net();
-        if ytdlp && let Err(e) = mdm_tools::install_latest(&dir, &net, None).await {
-            eprintln!("yt-dlp update check: {e}"); // not translated: a log line
-        }
-        if deno && let Err(e) = mdm_tools::deno::install_latest(&dir, &net, None).await {
-            tracing::warn!("Deno update check: {e}");
-        }
-    });
-}
-
 fn tools() -> Tools {
     let dir = mdm_tools::tools_dir();
     let ytdlp = dir.as_deref().and_then(mdm_tools::installed);

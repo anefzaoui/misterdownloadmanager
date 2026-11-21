@@ -368,6 +368,11 @@ pub fn tools(e: &mdm_tools::Error) -> String {
             t("{name} {version} is too old: MDM needs {oldest} or newer"),
             &[("name", name), ("version", version), ("oldest", oldest)],
         ),
+        E::Busy(name) => fmt(
+            // i18n: error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+            t("{name} is being downloaded already: try again in a moment"),
+            &[("name", name)],
+        ),
     }
 }
 

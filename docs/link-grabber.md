@@ -82,6 +82,8 @@ MDM itself extracts zip archives (AES-encrypted and Deflate64 ones too), tar, ta
 
 **Options → Archives** says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the **7-Zip needed** window says so, with a **Get 7-Zip** button. On Linux, install your distribution's `7zip` (or `p7zip`) package: MDM finds `7zz`, `7z` or `7za` on its own.
 
+Another archiver built on 7-Zip does as well, so there is no need for a second copy. On Windows MDM finds the 7-Zip that **PeaZip** brings with it (`PeaZip\res\bin\7z\7z.exe` in Program Files) and **NanaZip**'s command line (`NanaZipC.exe`) by itself, after 7-Zip's own folders. For any other, such as a portable copy or one installed for your user only, press **Use another program...** in **Options → Archives** and choose its 7-Zip command line program: `7z.exe`, `7za.exe` or `7zz`, not the archiver's own window. MDM runs it once to see that it answers as 7-Zip, then uses it for 7z and RAR archives, with the same arguments as always. **Find 7-Zip automatically** goes back to the one MDM finds, which is also used if the chosen program is removed.
+
 ### In place, with HatchZip
 
 [HatchZip](https://hatchzip.dev) is another free extractor (MIT or Apache-2.0), optional. MDM uses its command line program, `hatchzip`, when it is on the PATH (its installers and packages put it there; the desktop app alone isn't enough):

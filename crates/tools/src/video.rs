@@ -11,7 +11,6 @@
 //! them, saves the subtitles and the metadata as after its own download. What the engine can't
 //! download (a live stream, RTMP…) yt-dlp downloads itself, as before.
 
-use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Condvar, Mutex};
 use std::time::{Duration, Instant};
@@ -1697,8 +1696,10 @@ struct Ran {
 /// Run yt-dlp with `ours` on the page looked up into `file`, following its progress with
 /// `meter` (a live stream's, by its recording's size). None: stopped before or while it ran, or
 /// `recorder` was saving before it started.
+#[allow(clippy::too_many_arguments)]
 fn run(
     exe: &Path,
+    url: &str,
     ours: &[String],
     file: &Path,
     progress: &Mutex<Progress>,
@@ -1727,7 +1728,7 @@ fn run(
             return Ok(None);
         }
         let spawned =
-            proc::ytdlp_info(exe, &[], ours, file).and_then(|cmd| proc::spawn(cmd, "yt-dlp"));
+            proc::ytdlp_info(exe, &[], ours, file, url).and_then(|cmd| proc::spawn(cmd, "yt-dlp"));
         match spawned {
             Ok(mut s) => {
                 let out = s.child.stdout.take().expect("piped");
@@ -1750,15 +1751,11 @@ fn run(
         }
         // Every line to the end, read as bytes (#79): a line that isn't UTF-8 (a title in a
         // legacy code page) used to end the reading there, while yt-dlp went on; it is read
-        // leniently now, and the saved file is also found by its name (`attempt`).
-        let mut reader = BufReader::new(stdout);
-        let mut buf = Vec::new();
-        loop {
-            buf.clear();
-            match reader.read_until(b'\n', &mut buf) {
-                Ok(0) | Err(_) => break,
-                Ok(_) => {}
-            }
+        // leniently now, and the saved file is also found by its name (`attempt`). The end is
+        // yt-dlp's (#1521): what it started may hold its output open long after it ended, and
+        // the download waited for that, shown running with its last progress.
+        let mut output = proc::Output::read(stdout, MAX_LINE);
+        while let Some(buf) = output.next_line(|| proc::ended(child)) {
             let text = String::from_utf8_lossy(&buf);
             let line = text.trim_end_matches(['\r', '\n']);
             if let Some(rest) = line.strip_prefix("MDMF ") {
@@ -1784,6 +1781,14 @@ fn run(
                 *merged.lock().unwrap() = Some(merge_file(Path::new(rest.trim())));
                 progress.lock().unwrap().merging = Some(None);
             }
+        }
+        if output.held_open() {
+            proc::note_held_open("yt-dlp");
+            note(
+                progress,
+                "yt-dlp ended, but a program it started kept its output open: not waited for"
+                    .into(),
+            );
         }
         read_all.store(true, std::sync::atomic::Ordering::Relaxed);
     });
@@ -2182,7 +2187,7 @@ fn attempt(
     {
         return Attempt::Blocked(e);
     }
-    let ran = match run(exe, ours, &file, progress, child, meter, recorder) {
+    let ran = match run(exe, url, ours, &file, progress, child, meter, recorder) {
         Ok(Some(r)) => r,
         Ok(None) if recorder.saving() => return Attempt::Save(None),
         Ok(None) => return Attempt::Stopped,
@@ -2256,6 +2261,7 @@ fn attempt(
         let codes: Vec<String> = refused.iter().map(|(c, _)| c.clone()).collect();
         match run(
             exe,
+            url,
             &cookies.args(&r.args(&codes)),
             &file,
             progress,
@@ -2324,10 +2330,15 @@ fn moved(
 
 /// yt-dlp's choice (`-O "%()j"` after its format selection) on the page looked up into `file`,
 /// with `args` (the choice's `-f`, `-o`, merge and conversion, the browser's context).
-fn choose(exe: &Path, args: &[String], file: &Path) -> Result<serde_json::Value, String> {
+fn choose(
+    exe: &Path,
+    url: &str,
+    args: &[String],
+    file: &Path,
+) -> Result<serde_json::Value, String> {
     let mut ours = args.to_vec();
     ours.extend(["-O".into(), CHOICE.into()]);
-    let cmd = proc::ytdlp_info(exe, &[], &ours, file).map_err(|e| e.to_string())?;
+    let cmd = proc::ytdlp_info(exe, &[], &ours, file, url).map_err(|e| e.to_string())?;
     let out = proc::output(cmd, "yt-dlp", Duration::from_secs(90)).map_err(|e| e.to_string())?;
     String::from_utf8_lossy(&out)
         .lines()
@@ -2408,7 +2419,7 @@ impl ByEngine {
             None => self.choose.clone(),
         };
         let choose_args = cookies.args(&args);
-        let chosen = match choose(exe, &choose_args, file) {
+        let chosen = match choose(exe, url, &choose_args, file) {
             Ok(c) => c,
             Err(e) => return Engined::Failed(e),
         };
@@ -2477,7 +2488,7 @@ fn relink(
     std::fs::write(&file, info.to_string())
         .map_err(|e| format!("Cannot write the video information: {e}"))?;
     let _cleanup = Remove(file.clone());
-    let chosen = choose(exe, &with_selector(choose_args, id), &file)?;
+    let chosen = choose(exe, url, &with_selector(choose_args, id), &file)?;
     crate::streams::format_of(&chosen, id)
         .cloned()
         .ok_or_else(|| format!("the page no longer offers format {id}"))
@@ -2573,6 +2584,9 @@ const MERGE: &str = "post_process:MDMM %(filepath)s";
 /// The quality yt-dlp chose, before it downloads: `MDMQ <format id> <resolution>` (the log names
 /// it when it isn't the one asked for, #94).
 const QUALITY: &str = "video:MDMQ %(format_id)s %(resolution)s";
+
+/// The longest line of yt-dlp's read as one ([`proc::Output`]); its lines are a path at most.
+const MAX_LINE: usize = 1024 * 1024;
 
 impl VideoJob {
     /// Download `url` in format `selector` to `dir/<stem>.<ext>`; when yt-dlp downloads it by
@@ -2785,12 +2799,21 @@ impl VideoJob {
             choose,
             current: current.clone(),
         });
+        // MDM's own yt-dlp, ffmpeg and Deno, held for the whole download (#1544): none is switched
+        // to a new version between its runs.
+        let deno = crate::tools_dir()
+            .as_deref()
+            .and_then(crate::deno::installed)
+            .map(|d| d.exe);
+        let hold =
+            crate::autoupdate::Hold::of([Some(exe), ffmpeg, deno.as_deref()].into_iter().flatten());
         {
             let (progress, child, recorder) = (progress.clone(), child.clone(), recorder.clone());
             let (exe, url) = (exe.to_owned(), url.to_owned());
             std::thread::spawn(move || {
-                // The cookie file lives as long as the run.
+                // The cookie file lives as long as the run, and so do the helpers held.
                 let _cookies = cookies;
+                let _hold = hold;
                 // A panic in here must not leave the download "running" forever.
                 let run = std::panic::AssertUnwindSafe(|| {
                     supervise(

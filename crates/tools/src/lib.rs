@@ -2,8 +2,11 @@
 //! (`yt-dlp -U`): we fetch a release from its GitHub page, verify its `SHA2-256SUMS` against
 //! yt-dlp's OpenPGP signing key (pinned in `keys/yt-dlp.asc`), verify the program against that
 //! list, install it next to earlier versions (`tools/yt-dlp/<version>/`), switch to it
-//! atomically, never downgrade, and keep the previous version for rollback.
+//! atomically, never downgrade, and keep the previous version for rollback. MDM keeps its own
+//! copies up to date by itself (`autoupdate`, #1544).
 
+// Keeping MDM's own helpers up to date (#1544).
+pub mod autoupdate;
 pub mod bgutil;
 pub mod chosen;
 pub mod declared;
@@ -82,6 +85,9 @@ pub enum Error {
     /// The chosen network adapter is down or can't reach the server (#35).
     #[error(transparent)]
     Adapter(#[from] mdm_engine::NetError),
+    /// Another install of the same helper is under way (here or in another copy of MDM).
+    #[error("{0} is being installed or updated already")]
+    Busy(String),
 }
 
 impl Error {
@@ -332,7 +338,8 @@ pub fn refreshable(dir: &Path) -> bool {
 /// Install the latest yt-dlp release into `dir` unless the installed one is as new, the program
 /// downloaded with MDM's engine (`net`), counted into `progress`. Returns what is installed
 /// afterwards. A system copy doesn't count as installed here: this is the way to get MDM's own
-/// instead (Helpers), and MDM's own then wins ([`installed`]).
+/// instead (Helpers), and MDM's own then wins ([`installed`]). A version newer than the one in use
+/// while a run uses it waits for that run to end (`autoupdate`).
 pub async fn install_latest(
     dir: &Path,
     net: &mdm_engine::Options,
@@ -342,26 +349,86 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::YtDlp) {
         return Ok(mine);
     }
+    install_with(dir, net, progress, None).await?;
+    own_ytdlp(dir).ok_or_else(|| Error::Missing("yt-dlp after its install".into()))
+}
+
+/// [`install_latest`] for `autoupdate`: the newest release, installed when it is newer than the
+/// version in use and than `floor` (a version the person went back from), switched to now or once
+/// the runs using yt-dlp end.
+pub(crate) async fn install_with(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&update::Progress>,
+    floor: Option<&str>,
+) -> Result<autoupdate::Got, Error> {
+    install_from(
+        dir,
+        net,
+        progress,
+        floor,
+        &Source {
+            api: RELEASES,
+            web: github::WEB,
+            signed: signed_by_ytdlp,
+        },
+    )
+    .await
+}
+
+/// Where yt-dlp's releases come from: GitHub's API and pages, and the key their checksum lists
+/// are signed with. Always yt-dlp's own outside this crate's tests.
+pub(crate) struct Source<'a> {
+    pub api: &'a str,
+    pub web: &'a str,
+    pub signed: fn(&[u8], &[u8]) -> bool,
+}
+
+/// [`install_with`] from `source`.
+pub(crate) async fn install_from(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&update::Progress>,
+    floor: Option<&str>,
+    source: &Source<'_>,
+) -> Result<autoupdate::Got, Error> {
     let asset =
         ytdlp_asset().ok_or_else(|| Error::Missing("yt-dlp build for this system".into()))?;
+    let root = dir.join("yt-dlp");
+    let _installing = autoupdate::installing(&root, "yt-dlp")?;
     // From GitHub's API, else (its rate limit) github.com's pages: the same files either way,
     // checked the same way below.
     let [sums_name, sig_name] = YTDLP_SUMS;
     let release = github::latest_release(
         net,
-        RELEASES,
-        github::WEB,
+        source.api,
+        source.web,
         YTDLP_REPO,
         &[sums_name, sig_name, asset],
     )
     .await?;
+    let latest = release.tag.clone();
+    let none = || autoupdate::Got {
+        latest: release.tag.clone(),
+        settled: None,
+    };
     if let Some(current) = own_ytdlp(dir)
         && !newer(&release.tag, &current.version)
         // The same release again only as the folder build, in place of the one-file one that
         // earlier versions of MDM installed on Windows (#1053).
         && !(folder::BUILD && folder::one_file_build(&current.exe))
     {
-        return Ok(current); // never the same again, never older
+        return Ok(none()); // never the same again, never older
+    }
+    if floor.is_some_and(|f| !newer(&release.tag, f)) {
+        return Ok(none());
+    }
+    // Already here (staged, or kept after going back): switched to, not downloaded again.
+    if let Some(here) = autoupdate::kept(&root, &release.tag)
+        && !(folder::BUILD && folder::one_file_build(&here.exe))
+    {
+        let settled = Some(autoupdate::settle(&root, here)?);
+        return Ok(autoupdate::Got { latest, settled });
     }
     let url = |name: &str| {
         release
@@ -373,11 +440,10 @@ pub async fn install_latest(
     };
     let sums_url = url(sums_name)?;
     let client = client(net, &sums_url)?;
-    let sums = signed_list(&client, &sums_url, &url(sig_name)?, signed_by_ytdlp).await?;
+    let sums = signed_list(&client, &sums_url, &url(sig_name)?, source.signed).await?;
     let expected =
         sum_for(&sums, asset).ok_or_else(|| Error::Missing(format!("checksum for {asset}")))?;
     let exe_url = url(asset)?;
-    let root = dir.join("yt-dlp");
     std::fs::create_dir_all(&root)?;
     // Named by its checksum: one release's cut-off download resumes, never another's.
     let download = root.join(format!("yt-dlp-{}.download", hex::encode(&expected[..8])));
@@ -388,14 +454,33 @@ pub async fn install_latest(
         return Err(Error::BadChecksum);
     }
     #[cfg(any(windows, target_os = "macos"))]
-    return folder::put_folder(dir, &release.tag, &program, &exe_url);
+    let placed = folder::place_folder(dir, &release.tag, &program, &exe_url)?;
     #[cfg(not(any(windows, target_os = "macos")))]
-    put(dir, "yt-dlp", &release.tag, asset, &program, &exe_url)
+    let placed = place(dir, "yt-dlp", &release.tag, asset, &program, &exe_url)?;
+    tracing::info!("yt-dlp {} verified and installed", release.tag);
+    let settled = Some(autoupdate::settle(&root, placed)?);
+    Ok(autoupdate::Got { latest, settled })
 }
 
 /// Install verified `program` as `version` of `tool` (`dir/<tool>/<version>/<asset>`) and make it
 /// current (atomically), keeping the previous version for rollback and removing older ones.
+#[cfg(test)]
 pub(crate) fn put(
+    dir: &Path,
+    tool: &str,
+    version: &str,
+    asset: &str,
+    program: &[u8],
+    from: &str,
+) -> Result<Installed, Error> {
+    let placed = place(dir, tool, version, asset, program, from)?;
+    make_current(&dir.join(tool), placed)
+}
+
+/// Install verified `program` as `version` of `tool` (`dir/<tool>/<version>/<asset>`), beside
+/// the current one: [`autoupdate::settle`] makes it current.
+#[cfg_attr(any(windows, target_os = "macos"), allow(dead_code))]
+pub(crate) fn place(
     dir: &Path,
     tool: &str,
     version: &str,
@@ -417,24 +502,42 @@ pub(crate) fn put(
         use std::os::unix::fs::PermissionsExt;
         std::fs::set_permissions(&exe, std::fs::Permissions::from_mode(0o755))?;
     }
-    make_current(
-        &root,
-        Installed {
-            version: version.to_owned(),
-            exe,
-        },
-    )
+    Ok(Installed {
+        version: version.to_owned(),
+        exe,
+    })
 }
 
 /// Make `now` (installed in a folder of `root`, `root/<version>/` mostly) the current version of a
-/// tool: `current.json` switched atomically, the previous version kept for rollback, older ones
-/// removed.
+/// tool: `current.json` switched atomically, the previous version kept for rollback (and named in
+/// `previous.json`), older ones removed. Only while no run uses the tool: `autoupdate::settle`.
+#[cfg(test)]
 pub(crate) fn make_current(root: &Path, now: Installed) -> Result<Installed, Error> {
+    let keep = switch_current(root, &now)?;
+    remove_others(root, &keep);
+    Ok(now)
+}
+
+/// [`make_current`]'s switch: `current.json` and `previous.json` written. Returns the folders to
+/// keep (the new version's and the previous one's).
+pub(crate) fn switch_current(root: &Path, now: &Installed) -> Result<Vec<String>, Error> {
+    let now = now.clone();
     let previous = std::fs::read(root.join("current.json"))
         .ok()
-        .and_then(|t| serde_json::from_slice::<Installed>(&t).ok());
+        .and_then(|t| serde_json::from_slice::<Installed>(&t).ok())
+        .filter(|p| *p != now);
     let json = serde_json::to_vec_pretty(&now).map_err(std::io::Error::other)?;
     craft_atomic::atomic_write(&root.join("current.json"), &json)?;
+    match &previous {
+        Some(p) => {
+            let json = serde_json::to_vec_pretty(p).map_err(std::io::Error::other)?;
+            craft_atomic::atomic_write(&root.join("previous.json"), &json)?;
+        }
+        None => {
+            // The same version again (the folder build in place of the one-file one): the
+            // previous one named stays.
+        }
+    }
     // Keep the new and the previous version's folders; older ones go. A version's folder is the
     // one its program is in, under `root` (its version's name, unless that was taken: `folder`).
     let folder_of = |i: &Installed| {
@@ -445,11 +548,18 @@ pub(crate) fn make_current(root: &Path, now: Installed) -> Result<Installed, Err
             .map(|c| c.as_os_str().to_string_lossy().into_owned())
             .unwrap_or_else(|| i.version.clone())
     };
-    let keep: Vec<String> = [Some(&now), previous.as_ref()]
+    let named = std::fs::read(root.join("previous.json"))
+        .ok()
+        .and_then(|t| serde_json::from_slice::<Installed>(&t).ok());
+    Ok([Some(&now), previous.as_ref().or(named.as_ref())]
         .into_iter()
         .flatten()
         .map(folder_of)
-        .collect();
+        .collect())
+}
+
+/// [`make_current`]'s tidying: every folder of `root` but those in `keep` removed.
+pub(crate) fn remove_others(root: &Path, keep: &[String]) {
     if let Ok(entries) = std::fs::read_dir(root) {
         for e in entries.flatten() {
             let name = e.file_name().to_string_lossy().into_owned();
@@ -458,7 +568,6 @@ pub(crate) fn make_current(root: &Path, now: Installed) -> Result<Installed, Err
             }
         }
     }
-    Ok(now)
 }
 
 /// Mark-of-the-Web: the program came from the internet (Windows checks it like a browser

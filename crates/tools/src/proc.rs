@@ -495,10 +495,41 @@ fn proxy_given(proxy: &mdm_engine::Proxy, url: Option<&url::Url>) -> ProxyGiven 
     }
 }
 
+/// The scheme (`http`, `https`) of `url` that Options' manual proxy, set with an address, isn't
+/// ticked for: a helper's run for it goes straight to the site.
+fn manual_skips(proxy: &mdm_engine::Proxy, url: Option<&url::Url>) -> Option<&'static str> {
+    let mdm_engine::Proxy::Manual {
+        url: address,
+        http,
+        https,
+        ..
+    } = proxy
+    else {
+        return None;
+    };
+    let https_page = url.is_none_or(|u| u.scheme() == "https");
+    let ticked = if https_page { *https } else { *http };
+    (!ticked && !address.trim().is_empty()).then_some(if https_page { "https" } else { "http" })
+}
+
 /// Give `helper` the proxy for `url`: returns the arguments to pass (before `--`).
 fn through_proxy(cmd: &mut Command, url: Option<&str>) -> Vec<String> {
     let page = url.and_then(|u| url::Url::parse(u).ok());
-    match proxy_given(&PROXY.read().unwrap(), page.as_ref()) {
+    let proxy = PROXY.read().unwrap().clone();
+    // Said in MDM's log once for each setting (#1448: it went straight to YouTube unsaid).
+    if let Some(scheme) = manual_skips(&proxy, page.as_ref()) {
+        static SAID: Mutex<Option<mdm_engine::Proxy>> = Mutex::new(None);
+        let mut said = SAID
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        if said.as_ref() != Some(&proxy) {
+            tracing::info!(
+                "Options → Proxy / Socks: the manual proxy isn't ticked for {scheme}, so yt-dlp and gallery-dl go straight to {scheme} addresses"
+            );
+            *said = Some(proxy.clone());
+        }
+    }
+    match proxy_given(&proxy, page.as_ref()) {
         ProxyGiven::Nothing => Vec::new(),
         ProxyGiven::Argument(p) => vec!["--proxy".into(), p],
         ProxyGiven::Environment(p) => {
@@ -1262,15 +1293,18 @@ pub fn ytdlp(
 }
 
 /// `yt-dlp` working from a looked-up page (`-J` output, maybe edited) instead of an address:
-/// the same layers, then `--load-info-json` and the file.
+/// the same layers, then `--load-info-json` and the file. `url` is the page's address, which
+/// the proxy is chosen for as for its look-up ([`through_proxy`]; #1448: Options' automatic
+/// configuration script was asked about no address, and yt-dlp's download went around it).
 pub fn ytdlp_info(
     exe: &Path,
     user: &[String],
     ours: &[String],
     info: &Path,
+    url: &str,
 ) -> Result<Command, ProcError> {
     let mut cmd = helper_command(exe);
-    let route = through_adapter(&mut cmd, Helper::YtDlp, None)?;
+    let route = through_adapter(&mut cmd, Helper::YtDlp, Some(url))?;
     let own_config = USER_CONFIG.load(Ordering::Relaxed);
     cmd.args(config_args(own_config));
     layers(&mut cmd, user, ours)?;
@@ -1358,6 +1392,9 @@ pub struct Spawned {
     name: String,
     #[cfg(windows)]
     job: Option<win32job::Job>,
+    /// MDM's own helpers it runs (its program, the ffmpeg and Deno it is given), not switched to
+    /// a new version while it runs (#1544). Last: let go once it has ended.
+    _hold: crate::autoupdate::Hold,
 }
 
 impl Spawned {
@@ -1492,6 +1529,8 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         use std::os::unix::process::CommandExt;
         cmd.process_group(0);
     }
+    // The helpers it runs, held before it starts (#1544).
+    let hold = crate::autoupdate::Hold::of_command(&cmd);
     // Under the lock: `end_all` either came first (nothing starts) or finds it to end.
     #[cfg_attr(not(unix), allow(unused_mut))]
     let mut running = RUNNING.lock().unwrap_or_else(|e| e.into_inner());
@@ -1544,6 +1583,7 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
         name: name.to_owned(),
         #[cfg(windows)]
         job,
+        _hold: hold,
     })
 }
 
@@ -1571,41 +1611,178 @@ pub fn output_said(
     to_the_end(cmd, name, timeout).map(|(out, s)| (out, s.tail()))
 }
 
+/// How long a helper's output is still read once the helper itself has ended (#1521). What it
+/// started (yt-dlp's ffmpeg, a one-file build's own process) can hold that output open after it:
+/// a reading that waited for the output's end waited for as long as that process ran, the
+/// download over but shown running. Its last lines come well within this, even on a busy
+/// computer.
+pub const AFTER_END: Duration = Duration::from_secs(2);
+
+/// How often a reading asks whether the helper has ended ([`Output::next_line`]).
+const ASK_EVERY: Duration = Duration::from_millis(100);
+
+/// A helper's stdout, read a line at a time on a thread of its own (#1521): the reading ends
+/// when every process holding the output has closed it, or [`AFTER_END`] after the helper
+/// itself ended, whichever comes first. A line is given as it came, bytes (#79: not always
+/// UTF-8), its `\n` kept, at most `max_line` bytes at a time (the rest of a longer one comes
+/// next).
+///
+/// The reading thread ends with the output: once the helper's job (Windows) or process group
+/// (Linux, macOS) is ended ([`Spawned::kill`]), with whatever held it.
+pub struct Output {
+    lines: std::sync::mpsc::Receiver<Vec<u8>>,
+    /// When the helper was first seen ended, and when it was last asked.
+    ended: Option<Instant>,
+    asked: Option<Instant>,
+    held_open: bool,
+}
+
+impl Output {
+    /// Start reading `out`.
+    pub fn read(out: impl Read + Send + 'static, max_line: usize) -> Output {
+        // A few lines ahead at most: a helper that writes faster than it is read waits, as it
+        // did on the pipe.
+        let (tx, lines) = std::sync::mpsc::sync_channel(64);
+        std::thread::spawn(move || {
+            let mut reader = BufReader::new(out);
+            loop {
+                let mut line = Vec::new();
+                match (&mut reader)
+                    .take(max_line as u64)
+                    .read_until(b'\n', &mut line)
+                {
+                    Ok(0) | Err(_) => break,
+                    Ok(_) => {}
+                }
+                // Nobody reads any more.
+                if tx.send(line).is_err() {
+                    break;
+                }
+            }
+        });
+        Output {
+            lines,
+            ended: None,
+            asked: None,
+            held_open: false,
+        }
+    }
+
+    /// The next line, `None` at the end. `ended` says whether the helper has ended (asked every
+    /// [`ASK_EVERY`] at most, until it says so): from then on lines are taken for [`AFTER_END`]
+    /// more, then the reading ends even if the output is still open ([`Output::held_open`]).
+    pub fn next_line(&mut self, mut ended: impl FnMut() -> bool) -> Option<Vec<u8>> {
+        use std::sync::mpsc::RecvTimeoutError;
+        loop {
+            let now = Instant::now();
+            if self.ended.is_none() && self.asked.is_none_or(|at| now >= at + ASK_EVERY) {
+                self.asked = Some(now);
+                if ended() {
+                    self.ended = Some(now);
+                }
+            }
+            let wait = match self.ended {
+                None => ASK_EVERY,
+                Some(at) => match (at + AFTER_END).checked_duration_since(now) {
+                    Some(left) if !left.is_zero() => left,
+                    _ => {
+                        self.held_open = true;
+                        return None;
+                    }
+                },
+            };
+            match self.lines.recv_timeout(wait) {
+                Ok(line) => return Some(line),
+                Err(RecvTimeoutError::Disconnected) => return None,
+                Err(RecvTimeoutError::Timeout) => {}
+            }
+        }
+    }
+
+    /// The reading ended with the output still open [`AFTER_END`] after the helper ended:
+    /// something it started holds it.
+    pub fn held_open(&self) -> bool {
+        self.held_open
+    }
+}
+
+/// Whether the helper in `slot` has ended, or isn't there any more (stopped). For
+/// [`Output::next_line`]; the lock is held only to look.
+pub fn ended(slot: &Mutex<Option<Spawned>>) -> bool {
+    slot.lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .as_mut()
+        .is_none_or(|s| !matches!(s.child.try_wait(), Ok(None)))
+}
+
+/// MDM's log, when a helper's output was still open [`AFTER_END`] after it ended (#1521).
+pub fn note_held_open(name: &str) {
+    tracing::warn!(
+        "{name} ended, but something it started kept its output open; its output was read for {} s more (#1521)",
+        AFTER_END.as_secs()
+    );
+}
+
+/// How a helper run to the end ([`to_the_end`]) ended.
+enum Ended {
+    Exited(std::process::ExitStatus),
+    /// Past its time.
+    Late,
+    Unknown(std::io::Error),
+}
+
+/// Whether `child` has ended, or run past `deadline`.
+fn ended_by(child: &mut Child, deadline: Instant) -> Option<Ended> {
+    match child.try_wait() {
+        Ok(Some(status)) => Some(Ended::Exited(status)),
+        Ok(None) if Instant::now() >= deadline => Some(Ended::Late),
+        Ok(None) => None,
+        Err(e) => Some(Ended::Unknown(e)),
+    }
+}
+
 /// Run `cmd` to the end within `timeout` (killed on timeout): its stdout, and the helper, its
-/// stderr read to the end, when it ended well.
+/// stderr read to the end, when it ended well. Its stdout is read to its end, or for
+/// [`AFTER_END`] after the helper ended (#1521: what it started may hold it open).
 fn to_the_end(
     cmd: Command,
     name: &str,
     timeout: Duration,
 ) -> Result<(Vec<u8>, Spawned), ProcError> {
     let mut s = spawn(cmd, name)?;
-    let mut out = s.child.stdout.take().expect("piped");
-    let reader = std::thread::spawn(move || {
-        let mut buf = Vec::new();
-        let _ = out.read_to_end(&mut buf);
-        buf
-    });
+    let mut output = Output::read(s.child.stdout.take().expect("piped"), 64 * 1024);
     let deadline = Instant::now() + timeout;
-    loop {
-        match s.child.try_wait() {
-            Ok(Some(status)) => {
-                let stdout = reader.join().unwrap_or_default();
-                return if status.success() {
-                    s.settle();
-                    Ok((stdout, s))
-                } else {
-                    // `failure` waits for the stderr reader's last lines.
-                    Err(s.failure())
-                };
-            }
-            Ok(None) if Instant::now() >= deadline => {
-                s.kill();
-                let _ = s.child.wait();
-                return Err(ProcError::Timeout(name.to_owned()));
-            }
-            Ok(None) => std::thread::sleep(Duration::from_millis(50)),
-            Err(e) => return Err(ProcError::Start(name.to_owned(), e)),
+    let mut stdout = Vec::new();
+    let mut end = None;
+    while let Some(chunk) = output.next_line(|| {
+        end = end.take().or_else(|| ended_by(&mut s.child, deadline));
+        end.is_some()
+    }) {
+        stdout.extend(chunk);
+    }
+    if output.held_open() && matches!(end, Some(Ended::Exited(_))) {
+        note_held_open(name);
+    }
+    // Its output closed before it ended: waited for, within its time.
+    let end = loop {
+        if let Some(end) = end.take().or_else(|| ended_by(&mut s.child, deadline)) {
+            break end;
         }
+        std::thread::sleep(Duration::from_millis(50));
+    };
+    match end {
+        Ended::Exited(status) if status.success() => {
+            s.settle();
+            Ok((stdout, s))
+        }
+        // `failure` waits for the stderr reader's last lines.
+        Ended::Exited(_) => Err(s.failure()),
+        Ended::Late => {
+            s.kill();
+            let _ = s.child.wait();
+            Err(ProcError::Timeout(name.to_owned()))
+        }
+        Ended::Unknown(e) => Err(ProcError::Start(name.to_owned(), e)),
     }
 }
 
@@ -1959,6 +2136,21 @@ mod tests {
             ProxyGiven::Nothing,
             "https unticked: this https page isn't covered"
         );
+        // #1448: and that is said (MDM's log), for the scheme left out only.
+        assert_eq!(
+            manual_skips(&manual(None, true, false), Some(&youtube)),
+            Some("https")
+        );
+        assert_eq!(
+            manual_skips(&manual(None, true, true), Some(&youtube)),
+            None
+        );
+        let plain = url::Url::parse("http://videos.test/v").unwrap();
+        assert_eq!(
+            manual_skips(&manual(None, false, true), Some(&plain)),
+            Some("http")
+        );
+        assert_eq!(manual_skips(&Proxy::None, Some(&youtube)), None);
         // A login: in the environment, encoded, never an argument.
         assert_eq!(
             proxy_given(&manual(Some(("u@me", "p:ss")), true, true), Some(&youtube)),
@@ -2011,6 +2203,24 @@ mod tests {
             proxied(&cmd).as_deref(),
             Some("http://me:secret@127.0.0.1:10808/")
         );
+        // #1448: a run from the looked-up page (the download, the choice of formats) asks the
+        // automatic configuration script about the page, as its look-up did: it went straight
+        // to the site when the script was asked about no address.
+        set_proxy(Proxy::Pac {
+            script: std::sync::Arc::from(
+                "function FindProxyForURL(u,h){return h=='www.youtube.com'?'PROXY 10.0.0.1:3128':'DIRECT';}",
+            ),
+        });
+        let info = std::path::Path::new("/info.json");
+        for args in [
+            args_of(&ytdlp(exe, &[], &["-J".into()], url).unwrap()),
+            args_of(&ytdlp_info(exe, &[], &[], info, url).unwrap()),
+        ] {
+            let at = args.iter().position(|a| a == "--proxy").expect("--proxy");
+            assert_eq!(args[at + 1], "http://10.0.0.1:3128");
+        }
+        let elsewhere = args_of(&ytdlp_info(exe, &[], &[], info, "https://other.test/v").unwrap());
+        assert!(!elsewhere.iter().any(|a| a == "--proxy"), "DIRECT for it");
         set_proxy(Proxy::None);
         let none = args_of(&ytdlp(exe, &[], &["-J".into()], url).unwrap());
         assert!(!none.iter().any(|a| a == "--proxy"));
@@ -2742,7 +2952,7 @@ foreach ($d in $env:PATH.Split(';')) {
         };
         let built = [
             ytdlp(exe, &[], &["-J".into()], "https://x.test/v").unwrap(),
-            ytdlp_info(exe, &[], &[], Path::new("/info.json")).unwrap(),
+            ytdlp_info(exe, &[], &[], Path::new("/info.json"), "https://x.test/v").unwrap(),
             gallery_dl(&tool, &[], "https://x.test/g").unwrap(),
         ];
         for cmd in &built {
@@ -2815,6 +3025,51 @@ foreach ($d in $env:PATH.Split(';')) {
     }
 
     /// #1301: the same on Linux and macOS, where `yt_dlp_linux` is a launcher whose child
+    /// #1521: a helper's output is read to its end while the helper runs, and once the helper
+    /// has ended, for [`AFTER_END`] more at most: an output something else still holds open
+    /// ends the reading then, said; one closed ends it at once.
+    #[test]
+    fn an_output_held_open_is_read_only_a_while_after_the_end() {
+        use std::io::Write;
+        // Held open: its writer kept.
+        let (reader, mut writer) = std::io::pipe().unwrap();
+        writer.write_all(b"one\ntwo\n").unwrap();
+        let mut output = Output::read(reader, 1024);
+        let running = || false;
+        assert_eq!(output.next_line(running).as_deref(), Some(&b"one\n"[..]));
+        assert_eq!(output.next_line(running).as_deref(), Some(&b"two\n"[..]));
+        // Lines written after the end, within the time, still come.
+        writer.write_all(b"last\n").unwrap();
+        let start = Instant::now();
+        assert_eq!(output.next_line(|| true).as_deref(), Some(&b"last\n"[..]));
+        assert_eq!(output.next_line(|| true), None);
+        let waited = start.elapsed();
+        assert!(output.held_open());
+        assert!(
+            waited >= AFTER_END && waited < AFTER_END * 5,
+            "read for {waited:?} after the end"
+        );
+        drop(writer);
+        // Closed: the end, at once and not said, whether the helper is seen ended or not.
+        let (reader, mut writer) = std::io::pipe().unwrap();
+        writer.write_all(b"only").unwrap();
+        drop(writer);
+        let mut output = Output::read(reader, 1024);
+        let start = Instant::now();
+        assert_eq!(output.next_line(running).as_deref(), Some(&b"only"[..]));
+        assert_eq!(output.next_line(running), None);
+        assert!(!output.held_open());
+        assert!(start.elapsed() < AFTER_END, "{:?}", start.elapsed());
+        // A line longer than the most read at once comes in pieces.
+        let mut output = Output::read(std::io::Cursor::new(b"abcdefgh\n".to_vec()), 4);
+        let mut pieces = Vec::new();
+        while let Some(piece) = output.next_line(running) {
+            pieces.push(piece);
+        }
+        assert_eq!(pieces, [&b"abcd"[..], b"efgh", b"\n"]);
+    }
+
+    /// #1301: killing a helper (Stop, MDM's end) ends what it started too, as Windows' job
     /// downloads: a shell script starts a child that writes a line every second for a minute,
     /// holding the helper's stderr. Killed, the stderr closes long before the child's minute
     /// (its process group ended with the script), and the file stops growing.

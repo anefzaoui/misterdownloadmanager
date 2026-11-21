@@ -27,3 +27,11 @@ reason, then `_youtube_login_hint`; and `networking`'s `HTTPError`), for the sam
 
 - `bot-check.stderr`: YouTube's "Sign in to confirm you’re not a bot" (its curly apostrophe);
 - `api-403.stderr`: YouTube's player API refusing the look-up.
+
+Run on 2026-11-20 with yt-dlp **2025.06.30** (its Windows folder build), a release old enough that
+YouTube no longer serves the players it asks as, for the same public video (#1544: what an
+out-of-date yt-dlp says):
+
+    yt-dlp --ignore-config --no-cache-dir --no-update -f "bv*+ba/b" -s --no-playlist https://www.youtube.com/watch?v=jNQXAC9IVRw
+
+- `outdated-client.stderr`: its last two lines.

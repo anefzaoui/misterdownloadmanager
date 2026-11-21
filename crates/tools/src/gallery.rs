@@ -18,7 +18,6 @@
 //! itself, as before.
 
 use std::collections::HashSet;
-use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, SystemTime};
@@ -176,20 +175,47 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::GalleryDl) {
         return Ok(mine);
     }
+    install_with(dir, net, progress, None).await?;
+    own(dir).ok_or_else(|| Error::Missing("gallery-dl after its install".into()))
+}
+
+/// [`install_latest`] for `autoupdate`: the newest release, installed when it is newer than the
+/// version in use and than `floor` (a version the person went back from), switched to now or once
+/// the runs using gallery-dl end.
+pub(crate) async fn install_with(
+    dir: &Path,
+    net: &mdm_engine::Options,
+    progress: Option<&crate::update::Progress>,
+    floor: Option<&str>,
+) -> Result<crate::autoupdate::Got, Error> {
     let Some(asset) = asset() else {
         return Err(Error::Missing(
             "build for this system: install gallery-dl with the system's packages (Homebrew, pip) and choose it in Helpers".into(),
         ));
     };
+    let root = dir.join("gallery-dl");
+    let _installing = crate::autoupdate::installing(&root, "gallery-dl")?;
     let client = crate::client(net, RELEASES)?;
     let body = crate::get_bytes(&client, RELEASES).await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
     let version = release.tag_name.trim_start_matches('v').to_owned();
-    if let Some(current) = own(dir)
-        && !crate::newer(&version, &current.version)
+    let none = || crate::autoupdate::Got {
+        latest: version.clone(),
+        settled: None,
+    };
+    if own(dir).is_some_and(|current| !crate::newer(&version, &current.version))
+        || floor.is_some_and(|f| !crate::newer(&version, f))
     {
-        return Ok(current); // never the same again, never older
+        return Ok(none()); // never the same again, never older
+    }
+    // Already here (staged, or kept after going back): switched to, not downloaded again.
+    if let Some(here) = crate::autoupdate::kept(&root, &version) {
+        let settled = Some(crate::autoupdate::settle(&root, here)?);
+        return Ok(crate::autoupdate::Got {
+            latest: version,
+            settled,
+        });
     }
     let url = |name: &str| {
         release
@@ -209,7 +235,6 @@ pub async fn install_latest(
     let expected = crate::sum_for(&sums, asset)
         .ok_or_else(|| Error::Missing(format!("checksum for {asset}")))?;
     let exe_url = url(asset)?;
-    let root = dir.join("gallery-dl");
     std::fs::create_dir_all(&root)?;
     // Named by its checksum: one release's cut-off download resumes, never another's.
     let download = root.join(format!(
@@ -222,7 +247,13 @@ pub async fn install_latest(
     if Sha256::digest(&program).as_slice() != expected {
         return Err(Error::BadChecksum);
     }
-    crate::put(dir, "gallery-dl", &version, asset, &program, &exe_url)
+    let placed = crate::place(dir, "gallery-dl", &version, asset, &program, &exe_url)?;
+    tracing::info!("gallery-dl {version} verified and installed");
+    let settled = Some(crate::autoupdate::settle(&root, placed)?);
+    Ok(crate::autoupdate::Got {
+        latest: version,
+        settled,
+    })
 }
 
 /// Whether gallery-dl has a way to read `url` (a gallery, a user's page, a post…). Asked
@@ -353,17 +384,15 @@ impl ByEngine<'_> {
             }
         };
         let mut files: Vec<(url::Url, PathBuf)> = Vec::new();
-        let mut reader = BufReader::new(stdout);
-        let mut buf = Vec::new();
-        loop {
-            buf.clear();
-            match std::io::Read::take(&mut reader, 64 * 1024).read_until(b'\n', &mut buf) {
-                Ok(0) | Err(_) => break,
-                Ok(_) => {}
-            }
+        // To gallery-dl's end (#1521: not to that of whatever it started).
+        let mut output = proc::Output::read(stdout, MAX_LINE);
+        while let Some(buf) = output.next_line(|| proc::ended(child)) {
             if let Some(f) = listed(&String::from_utf8_lossy(&buf), self.folder) {
                 files.push(f);
             }
+        }
+        if output.held_open() {
+            proc::note_held_open("gallery-dl");
         }
         // Its end, and its words if it listed nothing.
         let failure = {
@@ -585,8 +614,11 @@ impl GalleryJob {
         let (sh, ch, folder) = (shared.clone(), child.clone(), folder.to_owned());
         let (cur, helper) = (current.clone(), on_helper.clone());
         let (tool, url) = (tool.clone(), url.to_owned());
+        // MDM's own gallery-dl, held for the whole download (#1544).
+        let hold = crate::autoupdate::Hold::of([tool.exe.as_path()]);
         std::thread::spawn(move || {
             let _cookies = cookies;
+            let _hold = hold;
             if let Some(engine) = engine {
                 let by_engine = ByEngine {
                     engine,
@@ -622,7 +654,12 @@ impl GalleryJob {
                     }
                 }
             };
-            read(stdout, &sh);
+            // To gallery-dl's end (#1521: not to that of whatever it started).
+            let mut output = proc::Output::read(stdout, MAX_LINE);
+            read(|| output.next_line(|| proc::ended(&ch)), &sh);
+            if output.held_open() {
+                proc::note_held_open("gallery-dl");
+            }
             finish(&sh, &ch, folder, saved.as_ref());
         });
         Ok(GalleryJob {
@@ -737,18 +774,14 @@ fn parse_line(line: &str) -> Option<Line> {
     p.is_absolute().then(|| Line::Saved(p.to_owned()))
 }
 
-/// Count gallery-dl's files as it prints them. Lines are read whole but kept short: a path is
-/// at most a few thousand bytes, and a longer line is no path.
-fn read(stdout: impl std::io::Read, shared: &Mutex<Shared>) {
+/// The longest piece of a gallery-dl line read as one ([`proc::Output`]): a path is at most a
+/// few thousand bytes, and a longer line is no path.
+const MAX_LINE: usize = 64 * 1024;
+
+/// Count gallery-dl's files as it prints them (`next`: its next line, [`MAX_LINE`] at most).
+fn read(mut next: impl FnMut() -> Option<Vec<u8>>, shared: &Mutex<Shared>) {
     let started = Instant::now();
-    let mut reader = BufReader::new(stdout);
-    let mut buf = Vec::new();
-    loop {
-        buf.clear();
-        match std::io::Read::take(&mut reader, 64 * 1024).read_until(b'\n', &mut buf) {
-            Ok(0) | Err(_) => return,
-            Ok(_) => {}
-        }
+    while let Some(buf) = next() {
         let text = String::from_utf8_lossy(&buf);
         let Some(line) = parse_line(&text) else {
             continue;
@@ -840,6 +873,12 @@ fn finish(
 mod tests {
     use super::*;
 
+    /// `text` read as gallery-dl's output is ([`proc::Output`]).
+    fn read_text(text: impl Into<Vec<u8>>, shared: &Mutex<Shared>) {
+        let mut output = proc::Output::read(std::io::Cursor::new(text.into()), MAX_LINE);
+        read(|| output.next_line(|| false), shared);
+    }
+
     /// A gallery whose files are all there already (every file MDM's engine saved comes back so,
     /// #769) is read in time linear in its files: each line's path is told from those listed at
     /// once, not searched for among them, with the lock `progress` waits on held.
@@ -857,7 +896,7 @@ mod tests {
         };
         mdm_labserver::growth::assert_linear(2_000, lines, |text| {
             let shared = Mutex::new(Shared::default());
-            read(&text[..], &shared);
+            read_text(text, &shared);
             let sh = shared.into_inner().unwrap();
             assert_eq!(sh.there as usize, sh.known.len());
             sh.known.len()
@@ -875,7 +914,7 @@ mod tests {
             saved.display(),
             saved.display()
         );
-        read(text.as_bytes(), &shared);
+        read_text(text, &shared);
         let sh = shared.into_inner().unwrap();
         assert_eq!((sh.there, sh.saved), (3, 2));
         assert_eq!(
@@ -1090,7 +1129,7 @@ mod tests {
         text.push_str(&"x".repeat(200_000));
         text.push('\n');
         let shared = Mutex::new(Shared::default());
-        read(text.as_bytes(), &shared);
+        read_text(text, &shared);
         let sh = shared.lock().unwrap();
         assert_eq!((sh.saved, sh.there), (5000, 5000));
         assert_eq!(sh.progress.downloaded, 5_000_000);

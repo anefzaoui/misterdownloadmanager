@@ -32,6 +32,21 @@ resumes, and uses your proxy settings:
 
 Both are kept in a `tools` folder in MDM's data folder. For YouTube, yt-dlp also needs a JavaScript runtime, which MDM can download too: see [A JavaScript runtime for YouTube](#javascript-runtime).
 
+### Keeping them up to date {#helper-updates}
+
+Sites change all the time, and a newer yt-dlp is usually what makes a page that stopped working download again. So MDM keeps its own copies of yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself:
+
+- **When:** a few seconds after MDM starts, then again while it runs: yt-dlp and gallery-dl at most every 6 hours, Deno once a day, ffmpeg once a week. MDM remembers when it last asked, so starting it many times doesn't ask again.
+- **How:** each new version is downloaded and checked exactly as the first install was (yt-dlp's and gallery-dl's signed checksum lists, ffmpeg's and Deno's published checksums), never an older one, and installed beside the one in use.
+- **When it switches:** only while no download, look-up or other run is using that helper. A video downloading when the new yt-dlp arrives finishes with the one it started with; the new one is used from the moment the last download using it ends.
+- **The previous version stays**, so you can go back to it. Older ones are removed.
+- **A video that fails** with an error that usually means yt-dlp is out of date for the site (*Unable to extract*, *Unsupported URL*, YouTube's *Sign in to confirm you're not a bot*, *HTTP Error 403*, a failed signature or *n challenge*, *Requested format is not available*), or a gallery whose gallery-dl reports an unexpected error: MDM looks for a newer version at once, installs it if there is one, and tries that download again with it, once. Its log says so. If there is none, the error stands as before.
+- **A check that fails** (no connection, GitHub busy) is tried again an hour later. It is written in MDM's log, never shown as an error.
+
+In **Helpers...**, each of MDM's own copies says how it stands: *Up to date*, *Version X available*, *Updated to X*, or *Version X is ready: used once its downloads end*. **Update** gets the newest version of that one now, **Go back to X** uses the previous version again (automatic updates then wait for a version newer than the one you left; **Update** brings it back), and **Check for updates** checks them all. Untick **Keep MDM's helpers up to date automatically** to update only when you ask. Programs you chose with **Use another program...**, and your system's copies, say *Updated by you*: MDM leaves them to you.
+
+On the command line, `update-helpers` checks and updates them all and prints their versions ([Command line](command-line.md)).
+
 ### Use your own copies
 
 On Linux and macOS, MDM finds yt-dlp, ffmpeg and gallery-dl on your `PATH` and in the usual package-manager folders, including Homebrew's. A program you selected yourself takes priority, followed by MDM's own installed copy. The system copy is used when neither is present, and your package manager keeps it up to date: MDM never downloads over it on its own. If your distribution's yt-dlp is old, **Use MDM's own copy** in Helpers downloads MDM's, which keeps itself current and is used from then on.
@@ -45,7 +60,7 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 
 YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: **Deno**, **Node.js** or **Bun**. Without one, a look-up is slow, the list is short (sometimes only the sound and a low quality) or it fails with *Requested format is not available*, and MDM says so: *YouTube needs a JavaScript runtime to list its video qualities*. Other sites don't need one.
 
-The quickest way is MDM's own copy of Deno: click **Install Deno** beside that message, or, in **Helpers...**, **Use MDM's own copy** in the **JavaScript runtime (Deno)** row. MDM downloads Deno's official build for your system and processor (about 40 MB; 64-bit Windows, Linux and macOS, x64 and ARM64) from its GitHub releases with its own downloader, checks it against the SHA-256 checksum the release publishes before it uses it, keeps it in the `tools` folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's: once a session, in the background, never an older version. The video is looked up again by itself once Deno is in.
+The quickest way is MDM's own copy of Deno: click **Install Deno** beside that message, or, in **Helpers...**, **Use MDM's own copy** in the **JavaScript runtime (Deno)** row. MDM downloads Deno's official build for your system and processor (about 40 MB; 64-bit Windows, Linux and macOS, x64 and ARM64) from its GitHub releases with its own downloader, checks it against the SHA-256 checksum the release publishes before it uses it, keeps it in the `tools` folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's ([Keeping them up to date](#helper-updates)). The video is looked up again by itself once Deno is in.
 
 Already have Node.js or Deno? Then nothing needs downloading: Helpers says *Your system's, nothing to download* in that row, and yt-dlp uses it. MDM finds Deno, Node.js (also one installed with nvm), QuickJS and Bun by itself. If you'd rather install one yourself, either works; then look the video up again. If MDM still says so, the new program's folder isn't on the `PATH` MDM started with (Windows' installers add it for programs started after them): quit MDM (**Tasks → Exit**) and start it again.
 
@@ -228,7 +243,7 @@ Some sites, YouTube among them, send each viewer to a nearby video server, somet
 - Hover over the download's **Status**, or open its progress window, to read yt-dlp's message.
 - **No video this can download on that page** means yt-dlp found nothing on the page. Check that the address is the video's own page.
 - **This video needs you to be signed in**, or the site wants you signed in: see [Sites that want you signed in](#sites-that-want-you-signed-in).
-- Sites change often, and a newer yt-dlp usually fixes it. MDM doesn't update yt-dlp on its own yet. To get the newest one: quit MDM (**Tasks → Exit**), delete the `tools\yt-dlp` folder in MDM's data folder (`%APPDATA%\misterdownloadmanager`, or the `data` folder of a portable copy), start MDM, open the video window and click **Install yt-dlp**.
+- Sites change often, and a newer yt-dlp usually fixes it. MDM keeps its own yt-dlp up to date by itself, and when a download fails in a way that usually means yt-dlp is out of date, it looks for a newer one at once and tries again ([Keeping them up to date](#helper-updates)). To check right now: **Helpers...** → **Check for updates**. If you chose your own yt-dlp in Helpers, update it yourself (`yt-dlp -U`, or your package manager).
 - **The path is too long for Windows** (or **the file name is too long**) means the folder and the file name together, with the files saved beside the video while it downloads, are longer than the system allows: 259 characters on Windows unless long paths are turned on there, 255 a name (255 bytes on Linux and macOS). MDM shortens a title by itself, so this comes from a name you typed or a very deep **Save to** folder: add the video again with a shorter name, or a folder nearer the top of the drive.
 - Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's [Media on this page](browser-integration.md#media-on-this-page) shows such a stream as **Protected** and doesn't send it.
 - A page whose video the window can't find: play the video in your browser, then use the extension's [Media on this page](browser-integration.md#media-on-this-page) to send the stream the page loaded.

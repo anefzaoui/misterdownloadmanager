@@ -322,6 +322,9 @@ Stamp Ink caps at width 70%, 900 weight, a 2.5px rule plus a 1.5px outline offse
 ### Language Dialog
 A Lift sheet, 12px corners, with an ink title band; a grid of flag, native name (isolated with `bdi`) and English name; the current language ringed in ink on Paper Grey. It slides up 14px over .28s on a navy backdrop.
 
+### Screenshot Viewer (lightbox)
+A screenshot opened big (the home page's window and tour, every help picture): Vitrine's lightbox ([anefzaoui/vitrine](https://github.com/anefzaoui/vitrine), vendored in `website/vitrine/`, themed in `styles.css` by its `--vitrine-` properties). The navy depot behind it in both themes (Board Deep Dark at 94% over a 20px blur of the page, 98.5% and no blur with reduced motion or transparency), so the page falls away and day and night screenshots both read; on-board white for the count (650 weight, tabular figures), the caption and the round 44px controls (10% white, 20% on hover), the focus ring in Link Blue Dark; the picture with its 8px screenshot corners, at its real size and never larger. It flies out of its place and back in 280ms on the label's curve; reduced motion fades it. The Language Dialog is a Vitrine modal ([anefzaoui/vitrine-modal](https://github.com/anefzaoui/vitrine-modal)).
+
 ### Coming Sticker (in transit)
 What is in the source but not in a download yet: a paper sticker, ink text, a 1.5px **dashed** ink rule just inside its edge (in transit, like the race's dashed lane before the file moves), a clock icon, "Coming with version 0.5" and a fine line naming the current release. Three sizes from one builder (`build.py coming_banner`): on a page (Sheet shadow, on the board), on a section (Paper Grey, inside prose), on a tile (a 12px tag). Never green: nothing is delivered yet. One setting (`UPCOMING`) shows or removes them all.
 

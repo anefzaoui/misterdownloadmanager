@@ -59,6 +59,7 @@ windows-sys = { version = "0.61.2", features = [
     "Win32_Media_Audio",
     "Win32_NetworkManagement_IpHelper",
     "Win32_NetworkManagement_Ndis",
+    "Win32_Networking_WinHttp",
     "Win32_Networking_WinSock",
     "Win32_Security_Credentials",
     "Win32_Security_Cryptography",
@@ -118,6 +119,8 @@ reqwest = { version = "0.13.5", default-features = false, features = ["rustls", 
 # FTP and FTPS (crates/engine/src/ftp.rs), with TLS through the rustls and platform verifier
 # reqwest uses. "deprecated" is what enables implicit FTPS (ftps://, port 990).
 suppaftp = { version = "12.2.1", default-features = false, features = ["tokio-rustls-aws-lc-rs", "deprecated"] }
+# FTP through a SOCKS proxy (#1558); already in the tree through librqbit and wreq.
+tokio-socks = "0.5.3"
 rustls = { version = "0.23.46", default-features = false, features = ["aws-lc-rs", "std", "tls12", "logging"] }
 rustls-platform-verifier = "0.7.1"
 # Custom DNS (#36): plain DNS, DNS over TLS and over HTTPS, with aws-lc-rs (no ring) and the
@@ -204,6 +207,17 @@ opt-level = 3
 # info, for stepping through them in a debugger.
 [profile.dev.package."*"]
 debug = "line-tables-only"
+
+# The crash monitor's stack walker (rust-minidump's, through framehop) works out a frozen
+# thread's frames from the registers the dump caught, which can be anything mid-instruction: it
+# adds to them as a release build does, wrapping, and a frame that leads nowhere ends the walk.
+# Debug builds check that arithmetic and panicked instead ("attempt to add with overflow" in
+# pe-unwind-info), so a freeze test's report was never written (the busy minimized window's,
+# #1481). Release builds never checked it.
+[profile.dev.package.pe-unwind-info]
+overflow-checks = false
+[profile.dev.package.framehop]
+overflow-checks = false
 
 # storytold's egui fork (as storytold/craft-libs, D-003) plus MDM's commits on anefzaoui/egui
 # (branch mdm-start-hidden, on mdm-wgpu, on mdm-accesskit-windows): every window created hidden

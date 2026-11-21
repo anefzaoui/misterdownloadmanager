@@ -1432,7 +1432,7 @@ impl TorrentSettings {
                     proxy,
                     !can_proxy,
                     // i18n: why "Use the proxy" is greyed in Torrent settings
-                    "Set a socks5:// proxy in Options → Proxy / Socks first",
+                    "Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first",
                 );
                 winui::fit(
                     ui,

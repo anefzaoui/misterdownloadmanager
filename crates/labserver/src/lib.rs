@@ -15,6 +15,7 @@ pub mod mediafire;
 mod pages;
 pub mod rapidgator;
 mod server;
+pub mod socks;
 mod streams;
 
 pub use faults::Faults;
