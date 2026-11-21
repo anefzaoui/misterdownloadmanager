@@ -47,15 +47,33 @@ pub fn system_has_roots() -> bool {
 /// time a site needs one, and behind a proxy that often fails: Let's Encrypt's ISRG Root X1 and
 /// X2 on an old Windows 10) refused such sites with "unknown issuer" while Firefox opened them.
 ///
-/// How the system's verifier (rustls-platform-verifier) takes them, so nothing the system decides
-/// is lost: on Windows they are asked only when Windows' own chain ends in a root it doesn't
-/// trust or know, and the chain is then checked by Windows again, with the same revocation check
-/// and the system's distrusted certificates still refused; on macOS they are anchors beside the
-/// system's, in the same trust evaluation; on Linux they join the system's CA bundle (usually
-/// Mozilla's list too) in one store. The system's own roots stay trusted, so an antivirus's or a
-/// company's HTTPS inspection keeps working.
+/// How the system's verifier (rustls-platform-verifier) takes them: on Windows they are asked
+/// only when Windows' own chain ends in a root it doesn't have or doesn't trust, and that chain
+/// is then built and checked by Windows again with them (its policy, the same revocation check);
+/// on macOS they are anchors beside the system's, in the same trust evaluation; on Linux they join
+/// the system's CA bundle (usually Mozilla's list too) in one store. So the system's own roots
+/// stay trusted (an antivirus's or a company's HTTPS inspection keeps working), and a root Mozilla
+/// has is trusted even where the system's store lacks it or was told not to trust it.
+///
+/// A root Mozilla trusts only for some names (its name constraints: webpki-roots carries them,
+/// the plain certificates here don't) is left out, so it is never trusted for more than Mozilla
+/// trusts it ([`name_constrained`]).
 pub fn mozilla_roots() -> impl Iterator<Item = CertificateDer<'static>> {
-    webpki_root_certs::TLS_SERVER_ROOT_CERTS.iter().cloned()
+    webpki_root_certs::TLS_SERVER_ROOT_CERTS
+        .iter()
+        .filter(|c| !name_constrained(c))
+        .cloned()
+}
+
+/// Whether Mozilla's list limits the root certificate `cert` to some names: a webpki-roots
+/// anchor with name constraints whose subject and public key are both `cert`'s.
+fn name_constrained(cert: &[u8]) -> bool {
+    let has = |part: &[u8]| !part.is_empty() && cert.windows(part.len()).any(|w| w == part);
+    webpki_roots::TLS_SERVER_ROOTS.iter().any(|a| {
+        a.name_constraints.is_some()
+            && has(a.subject.as_ref())
+            && has(a.subject_public_key_info.as_ref())
+    })
 }
 
 /// [`mozilla_roots`] as reqwest takes them, made once.
@@ -442,8 +460,14 @@ mod tests {
     fn the_fallback_is_mozillas_list_and_the_system_takes_it() {
         let all = webpki_root_certs::TLS_SERVER_ROOT_CERTS.len();
         assert!(all > 100, "{all}");
-        assert_eq!(mozilla_roots().count(), all);
-        assert_eq!(mozilla_certificates().len(), all);
+        // The two crates are the same list (their versions go together).
+        assert_eq!(webpki_roots::TLS_SERVER_ROOTS.len(), all);
+        let constrained = webpki_roots::TLS_SERVER_ROOTS
+            .iter()
+            .filter(|a| a.name_constraints.is_some())
+            .count();
+        assert_eq!(mozilla_roots().count(), all - constrained);
+        assert_eq!(mozilla_certificates().len(), all - constrained);
         for name in [&b"ISRG Root X1"[..], b"ISRG Root X2"] {
             assert!(
                 mozilla_roots().any(|c| c.windows(name.len()).any(|w| w == name)),
@@ -455,6 +479,43 @@ mod tests {
             .build()
             .expect("the system's verifier takes Mozilla's roots");
         crate::ftp::client_config(&[]).expect("so does MDM's own TLS configuration");
+    }
+
+    /// A root Mozilla trusts only for some names is left out of the fallback: its plain
+    /// certificate would be trusted for every name. Mozilla's list has one today, TUBITAK's,
+    /// limited to `.tr`.
+    #[test]
+    fn name_constrained_roots_are_left_out() {
+        let tubitak = &b"TUBITAK Kamu SM SSL Kok Sertifikasi - Surum 1"[..];
+        let has = |c: &[u8], s: &[u8]| c.windows(s.len()).any(|w| w == s);
+        let constrained: Vec<_> = webpki_roots::TLS_SERVER_ROOTS
+            .iter()
+            .filter(|a| a.name_constraints.is_some())
+            .collect();
+        assert!(!constrained.is_empty());
+        assert!(constrained.iter().any(|a| has(a.subject.as_ref(), tubitak)));
+        assert!(
+            webpki_root_certs::TLS_SERVER_ROOT_CERTS
+                .iter()
+                .any(|c| has(c, tubitak)),
+            "the plain list has it"
+        );
+        assert!(
+            mozilla_roots().all(|c| !has(&c, tubitak)),
+            "the fallback doesn't"
+        );
+        // Each constrained anchor is exactly one certificate of the plain list, left out.
+        for a in &constrained {
+            let matching = webpki_root_certs::TLS_SERVER_ROOT_CERTS
+                .iter()
+                .filter(|c| {
+                    has(c, a.subject.as_ref()) && has(c, a.subject_public_key_info.as_ref())
+                })
+                .count();
+            assert_eq!(matching, 1);
+        }
+        // An unconstrained root stays.
+        assert!(mozilla_roots().any(|c| has(&c, b"ISRG Root X1")));
     }
 
     #[test]

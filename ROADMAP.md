@@ -570,8 +570,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ HTTPS certificates are also checked against Mozilla's trusted roots (Firefox's) where the
-  system lacks one, so an older Windows that hasn't fetched Let's Encrypt's roots downloads from
-  the sites Firefox opens; the system's own certificates, its checks and its refusals stay
+  system's own don't complete the chain, so an older Windows that hasn't fetched Let's Encrypt's
+  roots downloads from the sites Firefox opens; the system's own certificates stay trusted
   ([#1546](https://github.com/anefzaoui/misterdownloadmanager/issues/1546))
 - ✅ MDM keeps its own yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself: a check a few
   seconds after it starts and then while it runs (yt-dlp and gallery-dl at most every 6 hours,
