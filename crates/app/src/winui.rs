@@ -6641,9 +6641,7 @@ pub mod caption {
         /// which keeps [`Self::glyph`].
         fn xp_glyph(self, ui: &Ui, p: &Painter, at: Pos2, ink: Color32, maximized: bool) -> bool {
             use egui::emath::GuiRounding;
-            // (left, top, right, bottom) in the tile's pixels, right and bottom excluded. None
-            // is a single pixel, which egui leaves out: the X's tips and Restore's corner
-            // overlap their neighbours.
+            // (left, top, right, bottom) in the tile's pixels, right and bottom excluded.
             type Spans = &'static [(u8, u8, u8, u8)];
             const MINIMIZE: Spans = &[(5, 13, 12, 16)];
             const MAXIMIZE: Spans = &[
@@ -6656,15 +6654,15 @@ pub mod caption {
             const RESTORE: Spans = &[
                 (8, 5, 15, 7),
                 (14, 7, 15, 12),
-                (13, 11, 15, 12),
+                (13, 11, 14, 12),
                 (5, 8, 12, 10),
                 (5, 10, 6, 14),
                 (11, 10, 12, 14),
                 (5, 14, 12, 15),
             ];
             const CLOSE: Spans = &[
-                (6, 5, 7, 7),
-                (14, 5, 15, 7),
+                (6, 5, 7, 6),
+                (14, 5, 15, 6),
                 (5, 6, 8, 7),
                 (13, 6, 16, 7),
                 (6, 7, 9, 8),
@@ -6680,8 +6678,8 @@ pub mod caption {
                 (12, 13, 15, 14),
                 (5, 14, 8, 15),
                 (13, 14, 16, 15),
-                (6, 14, 7, 16),
-                (14, 14, 15, 16),
+                (6, 15, 7, 16),
+                (14, 15, 15, 16),
             ];
             let spans = match self {
                 CaptionButton::Minimize => MINIMIZE,
@@ -6690,14 +6688,18 @@ pub mod caption {
                 CaptionButton::Close => CLOSE,
                 CaptionButton::ToTray => return false,
             };
+            // One mesh of whole-pixel quads: no feathering, so no soft or doubled edges, and a
+            // single pixel (the X's tips) is drawn too.
             let ppp = ui.ctx().pixels_per_point();
+            let mut mesh = egui::Mesh::default();
             for &(l, t, r, b) in spans {
                 let rc = Rect::from_min_max(
                     at + vec2(l.into(), t.into()),
                     at + vec2(r.into(), b.into()),
                 );
-                p.rect_filled(rc.round_to_pixels(ppp), 0.0, ink);
+                mesh.add_colored_rect(rc.round_to_pixels(ppp), ink);
             }
+            p.add(egui::Shape::mesh(mesh));
             true
         }
     }
