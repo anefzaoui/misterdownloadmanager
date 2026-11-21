@@ -578,6 +578,9 @@ These ship in the next version.
   choice kept in the list, the download's size theirs; a ticked file the service doesn't list
   stops the download with its name rather than taking every file
   ([#1640](https://github.com/anefzaoui/misterdownloadmanager/issues/1640))
+- ✅ Torrents: a torrent added again while it downloads (a file ticked, trackers added, its
+  folder moved) keeps every piece it has, not only those of librqbit's last saved piece map
+  ([#1623](https://github.com/anefzaoui/misterdownloadmanager/issues/1623))
 - ✅ Downloads from servers that keep several copies of a file, each with its own version tag
   and date (ModelScope's), go on with all their connections when the copies carry the same
   checksum of the whole file, checked on every part, instead of stopping with "the file changed
