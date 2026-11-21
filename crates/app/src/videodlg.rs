@@ -141,7 +141,8 @@ pub struct VideoDialog {
 }
 
 /// The top of the window's bottom row of buttons (Helpers..., Download Now, Later, Cancel),
-/// under Embed chapters.
+/// under Embed chapters (and Split into chapters, which wraps to y + 19 when translated captions
+/// leave no room on the same row).
 const BUTTONS_Y: f32 = 389.0;
 
 /// What is installed in the tools folder: (folder, yt-dlp, ffmpeg).
@@ -1193,10 +1194,20 @@ impl VideoDialog {
 
         let can_split = ffmpeg;
         let mut split_on = self.split_chapters && can_split;
-        let split_x = winui::checkbox_caption_end(&ui.painter(), o.x + bx, "Embed chapters") + 16.0;
+        let p = ui.painter().clone();
+        // "Split into chapters" follows "Embed chapters" on the same row in English.
+        // In translated UIs the "Embed chapters" caption may be wider, leaving too little
+        // room on the row; wrap to the next row when that happens (y + 19).
+        let split_min_room = 16.0 + winui::text_width(&p, crate::i18n::t("Split into chapters")) + 5.0;
+        let split_x = winui::checkbox_caption_end(&p, o.x + bx, "Embed chapters") + 16.0;
+        let (split_x, split_y) = if split_x + split_min_room <= o.x + 489.0 {
+            (split_x, o.y + 350.0)
+        } else {
+            (o.x + bx, o.y + 369.0)
+        };
         let split_resp = winui::checkbox_until(
             ui,
-            pos2(split_x, o.y + 350.0),
+            pos2(split_x, split_y),
             &mut split_on,
             // i18n: checkbox in Download video: split the video into multiple files based on its chapters
             "Split into chapters",
