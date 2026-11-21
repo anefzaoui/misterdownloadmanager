@@ -59,7 +59,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{CLEARANCE, Faults, challenge_page, every, has_cookie, parse_flag};
-use crate::{debrid, drive, mediafire, pages, rapidgator, streams};
+use crate::{debrid, drive, lulustream, mediafire, pages, rapidgator, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -279,6 +279,8 @@ pub(crate) struct Shared {
     on_log: Option<LogSink>,
     /// The fake Drive's virus-scan pages' `uuid`s handed out (`drive`).
     pub(crate) drive_uuids: Mutex<HashSet<String>>,
+    /// The fake LuluStream's form posts, per video code (`lulustream`).
+    pub(crate) lulu_posts: Mutex<HashMap<String, u32>>,
     files: Option<std::path::PathBuf>,
     /// Over HTTPS: each connection's ClientHello, browser-like or not (`LogEntry::browser_tls`),
     /// by the client's address.
@@ -419,6 +421,7 @@ impl LabServer {
             log: Mutex::default(),
             on_log: cfg.on_log,
             drive_uuids: Mutex::default(),
+            lulu_posts: Mutex::default(),
             files: cfg.files,
             browser_tls: Mutex::default(),
             link_free: Mutex::new(Instant::now()),
@@ -700,13 +703,15 @@ impl Drop for LabServer {
 
 /// Every address the routes don't have, by its Host header: MediaFire's host names go to the fake
 /// MediaFire (`mediafire`), Rapidgator's to the fake Rapidgator (`rapidgator`), the rest to the
-/// fake Google Drive (`drive`, which answers 404 for any host but Google's).
+/// fake Google Drive (`drive`, which answers 404 for any host but Google's). LuluStream's go to
+/// the fake LuluStream (`lulustream`), with the request's body (its form's POST).
 async fn by_host(
     State(shared): State<Arc<Shared>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     method: Method,
     uri: Uri,
     headers: HeaderMap,
+    body: Bytes,
 ) -> Response {
     let host = header_str(&headers, header::HOST)
         .unwrap_or_default()
@@ -719,6 +724,10 @@ async fn by_host(
     if rapidgator::HOSTS.contains(&name) {
         let (name, port) = (name.to_owned(), port.to_owned());
         return rapidgator::handle(shared, peer, method, uri, headers, &name, &port).await;
+    }
+    if lulustream::HOSTS.contains(&name) {
+        let (name, port) = (name.to_owned(), port.to_owned());
+        return lulustream::handle(shared, peer, method, uri, headers, &body, &name, &port).await;
     }
     drive::handle(State(shared), ConnectInfo(peer), method, uri, headers).await
 }
@@ -930,6 +939,16 @@ RAPIDGATOR  a fake one for the engine's tests, on Rapidgator's host names (resol
                             302 to it; without, a free account's page (no link)
   s118.rapidgator.net       /download/<expiry unix ms>-<n>-ID (file params and faults as /gen):
                             the file until then, 404 Not Found after
+
+LULUSTREAM  a fake one for the engine's tests, on LuluStream's host names (resolve lplaygo.com,
+    lulustream.com and s1.lulu-files.test to this server); hand-made pages (src/lulustream.rs)
+  codes: <lab|fla|exp|cap|bad><size>t<TTL s> padded with z to 12, e.g. lab2mt600zzz (fla: its
+    form is taken on its third post only; exp: only its first post's link lasts TTL s; cap:
+    it wants a captcha; bad: it never takes the post)
+  lplaygo.com, lulustream.com  /CODE, /e/CODE: a player; /d/CODE: links to /d/CODE_n and
+                            /d/CODE_h on lulustream.com; /d/CODE_MODE: a form (op, id, mode, hash)
+                            which, posted back, answers with the file's link lasting TTL s
+  s1.lulu-files.test        /v/01/CODE_MODE/NAME?t=<expiry unix ms>: the file until then, 403 after
 
 HTTPS  --tls serves all of it over HTTPS as localhost, its certificate from a test CA made at start
   (written next to the log, or printed); --tls-cert picks a faulty one (a connection's fault,

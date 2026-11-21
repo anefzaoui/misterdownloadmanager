@@ -62,20 +62,14 @@ async function stamped(message) {
   return { ...message, userAgent: navigator.userAgent, brands, v: VERSION };
 }
 
-// Every message says which browser and extension version it comes from (the app keeps each
-// browser's status, and the rules depend on the browser). Never throws: failures come back as
-// `{ok: false, why}`.
+// A message to this computer's MDM, through its host: only ever this computer's, whatever "Send
+// downloads to" says (a download for another MDM goes through `download`). Every message says
+// which browser and extension version it comes from (the app keeps each browser's status, and
+// the rules depend on the browser). Never throws: failures come back as `{ok: false, why}`.
 async function native(message, ms = HOST_WAIT) {
-  // A download for another MDM (a server, #157): sent there, not to this computer's.
-  if (typeof message.url === "string" && message.url) {
-    const target = await remoteTarget();
-    if (target) return remoteSend(target, message);
-  }
   const sent = await stamped(message);
   try {
     const reply = (await withTimeout(ext.runtime.sendNativeMessage(HOST, sent), ms)) || {};
-    // A download handed over: the toolbar button counts it while it runs (#1496).
-    if (reply.ok && typeof message.url === "string" && message.url) watchRecent();
     if (reply.version) {
       await noteStatus(older(reply.version, VERSION) ? "update-app" : null, reply.version);
       // The answer to `rules` also says whether the app looks videos up for the button.
@@ -89,6 +83,30 @@ async function native(message, ms = HOST_WAIT) {
     if (!(await remoteTarget())) await noteStatus(why);
     return { ok: false, why, error: String((e && e.message) || e) };
   }
+}
+
+// The kinds of message that are a download, and only these, go to another MDM when one is
+// chosen (#157: its remote control's api/add, which adds the address to its list). A whitelist:
+// any other message (the video button's "may it show here", the rules, a look-up, a setting, a
+// window to open) is for this computer's MDM, never a download there. Pointing at videos added
+// the page to the other MDM's list every few seconds while the button's question went there too.
+//  - "file": a download handed over (`handOff`: the browser's own, a link page.js held, the
+//    right-click menu's link, a file in the popup's media list);
+//  - "video": Download video asked for (the button's click, the right-click menu over a player
+//    or on a stream's manifest, a stream in the popup's media list).
+const REMOTE_ADD = new Set(["file", "video"]);
+
+// A download (`kind`, one of REMOTE_ADD) for MDM: to the other MDM when one is chosen, else to
+// this computer's. Never throws.
+async function download(kind, message) {
+  if (REMOTE_ADD.has(kind) && typeof message.url === "string" && message.url) {
+    const target = await remoteTarget();
+    if (target) return remoteSend(target, message);
+  }
+  const reply = await native(message);
+  // A download handed over: the toolbar button counts it while it runs (#1496).
+  if (reply.ok) watchRecent();
+  return reply;
 }
 
 // ---- another MDM (#157): a server's, through its remote control ------------------------------
@@ -2004,7 +2022,7 @@ async function mediaDownload(tabId, url) {
   const page = frame && /^https?:/i.test(frame) ? frame : tab.url || "";
   const ctx = { incognito: Boolean(tab.incognito), storeId: tab.cookieStoreId };
   if (isStream(it)) {
-    return native({
+    return download("video", {
       video: true,
       // Asked for: whether the button over videos shows on this site doesn't matter.
       explicit: true,
@@ -2402,7 +2420,7 @@ async function handOff(d) {
     // Through the browser's proxy too (#42): the one its own request for the file took.
     ...(await browserProxy(d.finalUrl || d.url, d.incognito)),
   };
-  return native(message);
+  return download("file", message);
 }
 
 // Telegram Web (web.telegram.org: its K and A apps) downloads a file through its own service
@@ -3114,7 +3132,7 @@ async function menuClicked(info, tab) {
     // The manifest's own cookies (its server may not be the page's), as the media list sends.
     if (url && MANIFEST.test(url)) {
       await mediaBack;
-      const reply = await native({ video: true, explicit: true, url: info.pageUrl, src: url, title, ...(await streamContext(tab && tab.id, url, { incognito, storeId })), private: incognito });
+      const reply = await download("video", { video: true, explicit: true, url: info.pageUrl, src: url, title, ...(await streamContext(tab && tab.id, url, { incognito, storeId })), private: incognito });
       if (!reply.ok && reply.why !== "options") explain(reply.why);
       return;
     }
@@ -3127,7 +3145,7 @@ async function menuClicked(info, tab) {
       const page = info.frameUrl || info.pageUrl;
       await mediaBack;
       const src = await streamFor({ tab, frameId: info.frameId || 0 });
-      const reply = await native({
+      const reply = await download("video", {
         video: true,
         explicit: true,
         url: page,
@@ -3250,7 +3268,11 @@ async function panelOn(page, top) {
   if (panelCache.get(site)?.hidden) return { on: false, compact: false };
   const kept = panelCache.get(key);
   if (kept) return { on: kept.on, compact: kept.compact };
-  const reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
+  // Always this computer's MDM's Options: a question, never a download (`download`). With another
+  // MDM chosen and none here to ask, the button shows, as Options have it at first: the other
+  // MDM's remote control adds and lists downloads, it has no Options to ask.
+  let reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
+  if (!reply.ok && reply.why && (await remoteTarget())) reply = { ok: true };
   const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact) };
   if (reply.ok || !reply.why) panelCache.set(key, { ...answer, at: Date.now() });
   return answer;
@@ -3532,7 +3554,7 @@ async function pageMessage(m, sender) {
     const direct = Boolean(m.direct) && Boolean(v.file) && v.file === v.src;
     // A file a player fetched in ranges (#1092) as one it plays itself.
     const loaded = direct && playedItem(tab.id, v.src);
-    const reply = await native({
+    const reply = await download("video", {
       video: true,
       url: v.own,
       ...(v.src ? { src: v.src } : {}),

@@ -743,6 +743,19 @@ const MACOS_FALLBACK_FONTS: &[FallbackFont] = &[
         ranges: &[(0x1200, 0x139F), (0x2D80, 0x2DDF), (0xAB00, 0xAB2F)],
         files: &["Supplemental/Kefa.ttc", "Kefa.ttc"],
     },
+    // Sinhala by name, not left to the system's cascade ([`SystemFallback`]): that is asked with
+    // a sample of the script, whose first letter (U+0D81) macOS's Sinhala fonts lack. On a Mac
+    // that has a font with it (November India, one macOS downloads on demand) the cascade names
+    // that font, which isn't among the installed ones it is then looked up in, and Sinhala names
+    // were boxes (#1592).
+    FallbackFont {
+        key: "sinhala",
+        ranges: &[(0x0D80, 0x0DFF)],
+        files: &[
+            "Supplemental/Sinhala Sangam MN.ttc",
+            "Supplemental/Sinhala MN.ttc",
+        ],
+    },
     // Armenian, Hebrew and the Arabic script (Persian, Urdu: #533) too: the system font (SF)
     // has none of them, and Windows' Segoe UI, which has them, isn't there. The same font an
     // Arabic or Persian interface loads ([`SCRIPT_FONTS`]).
@@ -976,8 +989,8 @@ impl egui::FontProvider for ScriptFallback {
 
 /// Windows and macOS: the system's own font for a letter neither the interface's fonts nor
 /// [`ScriptFallback`]'s lists have (#1125): a script the lists don't name (Syriac, Thaana,
-/// Mongolian, N'Ko, Tifinagh...), or a letter the font they name lacks (Myanmar and Sinhala
-/// aren't in macOS's Arial Unicode). The system chooses as it does for its own apps
+/// Mongolian, N'Ko, Tifinagh...), or a letter the font they name lacks (Myanmar isn't in
+/// macOS's Arial Unicode). The system chooses as it does for its own apps
 /// (DirectWrite's font fallback, CoreText's cascade), among every font installed, through
 /// fontique; the font's file is mapped, not read into memory. Asked last, so the lists keep
 /// their faces (a Chinese interface's Chinese glyphs). Made the first time a letter needs it:
@@ -1968,8 +1981,9 @@ mod glyph_tests {
         assert_eq!(found(&fonts).len(), 2);
     }
 
-    /// macOS (#1125): what Arial Unicode, the list's font for these blocks, lacks comes from the
-    /// system's cascade (Myanmar, Sinhala), as does a script no list names (Mongolian, Yi).
+    /// macOS (#1125): what Arial Unicode, the list's font for its blocks, lacks comes from the
+    /// system's cascade (Myanmar), as does a script no list names (Mongolian, Yi). Sinhala has a
+    /// font for every letter too: from the list ([`sinhala_names_get_a_font_on_macos`]).
     #[cfg(target_os = "macos")]
     #[test]
     fn macos_finds_what_arial_unicode_lacks() {
@@ -1989,8 +2003,24 @@ mod glyph_tests {
             NAMES[2],
             NAMES[3],
         ] {
-            assert!(fonts.has_glyphs(&id, text), "no font for {script}: {text}");
+            // Which fonts were found says where a failure comes from: the list's
+            // (`fallback:…`) or the system's (`system:<family>…`).
+            assert!(
+                fonts.has_glyphs(&id, text),
+                "no font for {script}: {text}; found {:?}",
+                font_names(&fonts)
+            );
         }
+    }
+
+    /// The fonts found on demand so far, by name, in the order they were found.
+    #[cfg(target_os = "macos")]
+    fn font_names(fonts: &egui::epaint::text::Fonts) -> Vec<String> {
+        fonts
+            .discovered_fonts()
+            .iter()
+            .map(|f| f.name.clone())
+            .collect()
     }
 
     /// Names in the Arabic script (a Persian file name, #533), Hebrew and Armenian, under an
@@ -2021,6 +2051,43 @@ mod glyph_tests {
                 );
             }
         }
+    }
+
+    /// A Sinhala file name on macOS: the list names macOS's Sinhala font for every letter of the
+    /// block, before Arial Unicode (which has none of them). Left to the system's cascade, they
+    /// were boxes on a Mac with a downloaded font that has U+0D81 (`MACOS_FALLBACK_FONTS` says
+    /// why). Checked on every system (the table is data); the font itself in the macOS test below.
+    const SINHALA: &str = "\u{0DC3}\u{0DD2}\u{0D82}\u{0DC4}\u{0DBD}";
+
+    #[test]
+    fn macos_names_its_sinhala_font() {
+        for c in ('\u{0D80}'..='\u{0DFF}').chain(SINHALA.chars()) {
+            let font = super::fallback_entry(super::MACOS_FALLBACK_FONTS, c)
+                .unwrap_or_else(|| panic!("no macOS font for U+{:04X}", c as u32));
+            assert_eq!(font.key, "sinhala", "U+{:04X}", c as u32);
+        }
+        // Its neighbours keep theirs: Malayalam before it, Thai after.
+        for c in ['\u{0D7F}', '\u{0E01}'] {
+            let key = super::fallback_entry(super::MACOS_FALLBACK_FONTS, c).map(|f| f.key);
+            assert_ne!(key, Some("sinhala"), "U+{:04X}", c as u32);
+        }
+    }
+
+    /// Drawn with the list's font alone, the system's cascade not asked.
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn sinhala_names_get_a_font_on_macos() {
+        use egui::epaint::text::{Fonts, TextOptions};
+        use egui::{FontFamily, FontId};
+        let mut fonts = Fonts::new(TextOptions::default(), egui::FontDefinitions::default())
+            .with_font_providers(vec![std::sync::Arc::new(super::ScriptFallback)]);
+        let id = FontId::new(13.0, FontFamily::Proportional);
+        assert!(
+            fonts.has_glyphs(&id, SINHALA),
+            "no font for {SINHALA}; found {:?}",
+            font_names(&fonts)
+        );
+        assert_eq!(font_names(&fonts), ["fallback:sinhala"]);
     }
 
     /// The same names drawn with macOS's own fonts: the fallback finds a file that is there and

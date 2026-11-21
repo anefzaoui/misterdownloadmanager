@@ -573,6 +573,15 @@ These ship in the next version.
   system's own don't complete the chain, so an older Windows that hasn't fetched Let's Encrypt's
   roots downloads from the sites Firefox opens; the system's own certificates stay trusted
   ([#1546](https://github.com/anefzaoui/misterdownloadmanager/issues/1546))
+- ✅ macOS: file names in Sinhala show their letters on every Mac: its Sinhala font is used by
+  name, as Khmer's and Lao's are, where the system's own choice could be a downloaded font MDM
+  couldn't find ([#1592](https://github.com/anefzaoui/misterdownloadmanager/issues/1592))
+- ✅ With the browser add-on sending downloads to another MDM, pointing at videos no longer adds
+  the page to that MDM's list: only real downloads go there (a list of the message kinds that
+  may, nothing else), and the video button asks this computer's MDM whether to show
+- ✅ The Download video button on Bilibili stays on one corner, clear of the player's feedback
+  button, and can be clicked: it looks for a page's controls under the whole of the spot it would
+  take, not only its middle and corners ([#1582](https://github.com/anefzaoui/misterdownloadmanager/issues/1582))
 - ✅ MDM keeps its own yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself: a check a few
   seconds after it starts and then while it runs (yt-dlp and gallery-dl at most every 6 hours,
   Deno daily, ffmpeg weekly, remembered across starts), each new version checked as its first
@@ -782,6 +791,9 @@ These ship in the next version.
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The command line's add accepts `--private` (or `-p`) to add downloads flagged as private, and
   the MCP server's add_download tool accepts `private: true` (thanks to
+  [@abdul-karim-mia](https://github.com/abdul-karim-mia))
+- ✅ The command line's resume accepts `--checksum`, `--dns`, and `--adapter`, matching get's
+  options for verifying finished downloads, custom DNS resolvers, and network adapter routing (thanks to
   [@abdul-karim-mia](https://github.com/abdul-karim-mia))
 - ✅ The tests run in English whatever Windows' display language is: a Chinese, German or
   Arabic Windows ran 27 of `mdm-app`'s tests red on code CI's English runner passed, as the
@@ -1719,6 +1731,12 @@ These ship in the next version.
   and the remembered folder field is "Category folder", not the checkbox's caption
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers name more of **Options → Connection**: the exceptions list is
+  "Exceptions" instead of unnamed, and each of the two **Download limits** boxes says what
+  it counts ("Download limit: MBytes", "Download limit: every how many hours") instead of
+  only its number; the same two boxes on the **Scheduler**'s limits page are named too
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
@@ -1731,6 +1749,9 @@ These ship in the next version.
   taskbar and its thread waits on the computer: as in the notification area, logged, and reported
   only if it lasts past a minute, if MDM's thread is busy, or if MDM is asked for something
   meanwhile and doesn't answer ([#1481](https://github.com/anefzaoui/misterdownloadmanager/issues/1481))
+- ✅ LuluStream: a video's link (its watch page or player, on `lulustream.com`, `luluvdo.com` or
+  `lplaygo.com`) downloads the video, in the best quality its download page lists; a download
+  taken from the browser whose link expired asks the video's page for a fresh one
 
 ## Being worked on
 

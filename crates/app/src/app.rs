@@ -1253,15 +1253,18 @@ enum Pane {
     Toolbar,
     Tree,
     List,
+    /// The menu bar (#1190): Tab from the list reaches it, and Tab again goes on to the toolbar
+    /// (Shift+Tab back to the list), so a reader can walk the window's parts.
+    Bar,
 }
 
 /// Where Tab (Shift+Tab: `back`) takes the keys from `from` (`None`: nothing had them, after a
 /// click on the toolbar or the strip), round; the tree left out while it is hidden.
 fn tab_to(from: Option<Pane>, tree_shown: bool, back: bool) -> Pane {
     let order: &[Pane] = if tree_shown {
-        &[Pane::Toolbar, Pane::Tree, Pane::List]
+        &[Pane::Toolbar, Pane::Tree, Pane::List, Pane::Bar]
     } else {
-        &[Pane::Toolbar, Pane::List]
+        &[Pane::Toolbar, Pane::List, Pane::Bar]
     };
     let n = order.len();
     let at = from.and_then(|p| order.iter().position(|q| *q == p));
@@ -1314,6 +1317,11 @@ pub struct App {
     /// The toolbar has the keys (Tab reaches it, #1190), at button `toolbar_at` (kept when Tab
     /// leaves it, as Windows' toolbars keep theirs).
     toolbar_keys: bool,
+    /// The menu bar has the keys (#1190): the title the keys are on, and the reader is told it
+    /// is what has the focus. Left and Right walk the titles, Down opens the one the keys are on.
+    bar_keys: bool,
+    /// The menu-bar title the keys are on (index into the bar's menus).
+    menubar_at: usize,
     toolbar_at: usize,
     /// The app's context, to reach its windows from anywhere (bring one to the front).
     ui_ctx: egui::Context,
@@ -2151,6 +2159,8 @@ impl App {
             ui_ctx: ctx.clone(),
             tree_keys: false,
             toolbar_keys: false,
+            bar_keys: false,
+            menubar_at: 0,
             toolbar_at: 0,
             move_rename_for: None,
             move_many_for: Vec::new(),
@@ -2564,6 +2574,9 @@ impl App {
             },
             icon: file_icon(&it.file_name),
             queued: queued.contains(&it.id),
+            // A progress bar only while the download is in flight: a finished file is whole, and
+            // a bar at 100% on every row would only add words to it (#1190).
+            progress: it.fraction().filter(|frac| *frac < 1.0),
             cells: [
                 it.file_name.clone(),
                 String::new(),
@@ -10160,6 +10173,7 @@ impl App {
     fn give_keys(&mut self, pane: Pane) {
         self.toolbar_keys = pane == Pane::Toolbar;
         self.tree_keys = pane == Pane::Tree;
+        self.bar_keys = pane == Pane::Bar;
         self.list.set_keys(pane == Pane::List);
     }
 
@@ -10284,39 +10298,80 @@ impl App {
         let typing = ctx
             .memory(|m| m.focused())
             .is_some_and(|id| egui::TextEdit::load_state(&ctx, id).is_some());
-        if self.open_menu.is_none() && self.popup.is_none() && !typing {
-            let labels: Vec<String> = chrome::menus(ui.painter())
-                .iter()
-                .map(|(l, ..)| chrome::menu_letter(l))
-                .collect();
-            let (alt_alone, f10, ctrl_f2, letter) = ctx.input(|i| {
-                let mut letter = None;
-                for e in &i.events {
-                    match e {
-                        egui::Event::Key {
-                            key,
-                            pressed: true,
-                            modifiers,
-                            ..
-                        } if !matches!(key, egui::Key::AltLeft | egui::Key::AltRight) => {
-                            if modifiers.alt && !modifiers.ctrl && !modifiers.command {
-                                letter = Some(key.name().to_lowercase());
-                            }
+        // Alt is read every frame, menu open or shut: it opens the bar, and shuts it again, as
+        // Windows does (SC_KEYMENU toggles).
+        let labels: Vec<String> = chrome::menus(ui.painter())
+            .iter()
+            .map(|(l, ..)| chrome::menu_letter(l))
+            .collect();
+        let (toggled, f10, ctrl_f2, letter) = ctx.input(|i| {
+            let mut letter = None;
+            for e in &i.events {
+                match e {
+                    egui::Event::Key {
+                        key,
+                        pressed: true,
+                        modifiers,
+                        ..
+                    } if !matches!(key, egui::Key::AltLeft | egui::Key::AltRight) => {
+                        if modifiers.alt && !modifiers.ctrl && !modifiers.command {
+                            letter = Some(key.name().to_lowercase());
                         }
-                        // A letter of another script (Cyrillic, Arabic...) typed with Alt.
-                        egui::Event::Text(t) if i.modifiers.alt && !i.modifiers.ctrl => {
-                            letter = Some(t.to_lowercase());
-                        }
-                        _ => {}
                     }
+                    // A letter of another script (Cyrillic, Arabic...) typed with Alt.
+                    egui::Event::Text(t) if i.modifiers.alt && !i.modifiers.ctrl => {
+                        letter = Some(t.to_lowercase());
+                    }
+                    _ => {}
                 }
-                (
-                    alt_alone_released(&i.events, &mut self.alt_down, &mut self.alt_alone),
-                    i.key_pressed(egui::Key::F10) && i.modifiers.is_none(),
-                    i.key_pressed(egui::Key::F2) && i.modifiers.ctrl,
-                    letter,
+            }
+            (
+                alt_alone_released(&i.events, &mut self.alt_down, &mut self.alt_alone),
+                i.key_pressed(egui::Key::F10) && i.modifiers.is_none(),
+                i.key_pressed(egui::Key::F2) && i.modifiers.ctrl,
+                letter,
+            )
+        });
+        // A focus change voids the reading: the Alt an Alt+Tab back is still holding belongs to
+        // that switch, not to the bar. It has to be counted, not timed: the window draws no frame
+        // while it is away, so a whole round trip's events arrive together, once the key is up,
+        // and neither the modifier state nor the system's own key state says anything useful by
+        // then (#1190).
+        let epoch_key = egui::Id::unique("focus-epoch");
+        let press_epoch_key = egui::Id::unique("alt-press-epoch");
+        let focus_changes = ctx.input(|i| {
+            i.events
+                .iter()
+                .filter(|e| matches!(e, egui::Event::WindowFocused(_)))
+                .count() as u64
+        });
+        let epoch = ctx.data_mut(|d| d.get_temp::<u64>(epoch_key).unwrap_or(0)) + focus_changes;
+        ctx.data_mut(|d| d.insert_temp(epoch_key, epoch));
+        let pressed_alt = ctx.input(|i| {
+            i.events.iter().any(|e| {
+                matches!(
+                    e,
+                    egui::Event::Key {
+                        key: egui::Key::AltLeft | egui::Key::AltRight,
+                        pressed: true,
+                        ..
+                    }
                 )
-            });
+            })
+        });
+        if pressed_alt {
+            ctx.data_mut(|d| d.insert_temp(press_epoch_key, epoch));
+        }
+        let stale =
+            ctx.data_mut(|d| d.get_temp::<u64>(press_epoch_key).unwrap_or(u64::MAX)) != epoch;
+        let alt_alone = toggled && !stale;
+        if self.open_menu.is_some() {
+            // Alt again shuts the menu it opened, as in Windows; the pane keeps its keys.
+            if alt_alone {
+                self.open_menu = None;
+                self.alt_alone = false;
+            }
+        } else if self.popup.is_none() && !typing {
             let mut open = None;
             if cfg!(target_os = "macos") {
                 if ctrl_f2 {
@@ -10330,22 +10385,77 @@ impl App {
                 if alt_alone || f10 {
                     open = Some(0);
                 }
-                if let Some(l) = letter {
-                    open = labels.iter().position(|m| *m == l).or(open);
+                if let Some(l) = &letter {
+                    open = labels.iter().position(|m| m == l).or(open);
                 }
             }
             if let Some(i) = open {
                 self.alt_alone = false;
                 self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
                 chrome::start_keyboard(&ctx, &format!("menu-{i}"));
+                // The letter that opened the menu is the menu's own: it must not also pick an
+                // item of it (Alt+T opened Tareas and ran "Abrir archivo torrent...", Alt+A
+                // opened Archivo and ran Delete's) (#1190).
+                if let Some(letter) = &letter {
+                    // The menu's own key for this pass: the pass's keys were taken before this
+                    // ran (chrome::MenuKeys), so the menu is told to leave this one alone
+                    // instead of consuming it here (#1190).
+                    let at = ctx.cumulative_pass_nr();
+                    ctx.data_mut(|d| {
+                        d.insert_temp(
+                            egui::Id::unique("menu-opened-by-letter"),
+                            (letter.clone(), at),
+                        )
+                    });
+                }
             }
         } else {
             self.alt_down = false;
             self.alt_alone = false;
         }
 
+        // The menu bar's own keys while it has them (#1190): Left and Right walk its titles
+        // (egui's focus is not in the bar: its parts keep their keys themselves, as the toolbar
+        // and the list do), Down opens the title the keys are on, as Windows' bars do. Nothing
+        // else is focused to take them (the same `free` the pane cycle reads, below).
+        if self.bar_keys
+            && self.popup.is_none()
+            && self.open_menu.is_none()
+            && ctx.memory(|m| m.focused().is_none())
+        {
+            let titles = chrome::menus(ui.painter()).len();
+            self.menubar_at = self.menubar_at.min(titles.saturating_sub(1));
+            // What a screen reader is to say has the focus: the title the keys are on.
+            winui::keys_with(&ctx, chrome::menubar_title_id(self.menubar_at));
+            let (left, right, down) = ctx.input_mut(|i| {
+                (
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::ArrowLeft),
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::ArrowRight),
+                    i.consume_key(egui::Modifiers::NONE, egui::Key::ArrowDown),
+                )
+            });
+            let (next, before) = if winui::rtl() {
+                (left, right)
+            } else {
+                (right, left)
+            };
+            if titles > 0 && (next || before) {
+                let step = if next { 1 } else { titles - 1 };
+                self.menubar_at = (self.menubar_at + step) % titles;
+                crate::chrome::show_cues(&ctx);
+            }
+            if down {
+                let i = self.menubar_at;
+                self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
+                chrome::start_keyboard(&ctx, &format!("menu-{i}"));
+            }
+        }
+
         // Menu bar and its popups: which menu is open is chrome::menubar_next's to say.
         if let Some(event) = chrome::menu_bar(ui, o, w, self.open_menu) {
+            if event == chrome::MenuBarEvent::Keys {
+                self.give_keys(Pane::Bar);
+            }
             self.open_menu = chrome::menubar_next(self.open_menu, event);
         }
         // A menu opened by Left or Right is drawn in the same pass as the one it replaces (a
@@ -10418,10 +10528,13 @@ impl App {
                     Some(Pane::Tree)
                 } else if self.list.has_keys() {
                     Some(Pane::List)
+                } else if self.bar_keys {
+                    Some(Pane::Bar)
                 } else {
                     None
                 };
-                self.give_keys(tab_to(from, self.show_categories, back));
+                let pane = tab_to(from, self.show_categories, back);
+                self.give_keys(pane);
                 crate::chrome::show_cues(&ctx);
             }
         }
@@ -15619,11 +15732,13 @@ mod live_save_tests {
 mod pane_tests {
     use super::{Pane, tab_to};
 
-    /// #1190: Tab goes round the toolbar, the Categories tree and the download list (Shift+Tab
-    /// the other way), the tree left out while it is hidden; from nothing (a click on the
-    /// toolbar), Tab starts at the toolbar and Shift+Tab at the list.
+    /// #1190: Tab goes round the toolbar, the Categories tree, the download list and the menu
+    /// bar (Shift+Tab the other way), the tree left out while it is hidden; from nothing (a click
+    /// on the toolbar), Tab starts at the toolbar and Shift+Tab at the bar (the ring's last).
+    /// The bar is where Tab from the list goes, and Shift+Tab from the toolbar: the way a reader
+    /// reaches the menus at all.
     #[test]
-    fn tab_goes_round_the_toolbar_the_tree_and_the_list() {
+    fn tab_goes_round_the_toolbar_the_tree_the_list_and_the_menu_bar() {
         use Pane::*;
         let round = |from, shown, back| {
             let mut at = from;
@@ -15635,19 +15750,19 @@ mod pane_tests {
             }
             seen
         };
-        assert_eq!(
-            round(Some(List), true, false),
-            [Toolbar, Tree, List, Toolbar]
-        );
-        assert_eq!(round(Some(List), true, true), [Tree, Toolbar, List, Tree]);
-        assert_eq!(
-            round(Some(List), false, false),
-            [Toolbar, List, Toolbar, List]
-        );
+        assert_eq!(round(Some(List), true, false), [Bar, Toolbar, Tree, List]);
+        assert_eq!(round(Some(List), true, true), [Tree, Toolbar, Bar, List]);
+        assert_eq!(round(Some(List), false, false), [Bar, Toolbar, List, Bar]);
         // The tree had the keys as it was hidden: on to the toolbar.
         assert_eq!(tab_to(Some(Tree), false, false), Toolbar);
         assert_eq!(tab_to(None, true, false), Toolbar);
-        assert_eq!(tab_to(None, true, true), List);
+        assert_eq!(tab_to(None, true, true), Bar);
+        // The bar is one step from the list either way: Tab from the list reaches the menus, and
+        // Shift+Tab from the toolbar comes back to them.
+        assert_eq!(tab_to(Some(List), true, false), Bar);
+        assert_eq!(tab_to(Some(Toolbar), true, true), Bar);
+        assert_eq!(tab_to(Some(Bar), true, false), Toolbar);
+        assert_eq!(tab_to(Some(Bar), true, true), List);
     }
 }
 

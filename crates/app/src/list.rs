@@ -404,6 +404,9 @@ pub struct Row {
     /// The speed limit holding the download back (#1191), said by the Transfer rate cell's tip:
     /// the column is too narrow for it beside the speed.
     pub rate_tip: Option<String>,
+    /// How far the download is, 0..=1, when the model knows (a file with a known size): a screen
+    /// reader gets it as the row's own progress bar (#1190).
+    pub progress: Option<f64>,
 }
 
 #[derive(Default)]
@@ -1012,6 +1015,24 @@ pub fn show(
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
             expose_row(idx, row, picked);
+            // The download's progress as a progress bar of its own (#1190): UI Automation reads
+            // it through the RangeValue pattern, so a reader's own progress reporting — its beeps
+            // and percentages — follows it without anyone moving the focus. Unnamed on purpose: a
+            // name would be read in place of the value.
+            if let Some(frac) = row.progress {
+                let bar = row_id(idx).with("progress");
+                let bar_rc = screen(Rect::from_min_size(
+                    pos2(cl, top),
+                    egui::vec2(rr - cl, row_h()),
+                ));
+                rows_ui.interact(bar_rc, bar, egui::Sense::hover());
+                ui.ctx().accesskit_node_builder(bar, |n| {
+                    n.set_role(egui::Role::ProgressIndicator);
+                    n.set_min_numeric_value(0.0);
+                    n.set_max_numeric_value(100.0);
+                    n.set_numeric_value(frac.clamp(0.0, 1.0) * 100.0);
+                });
+            }
             let sel = picked && st.focused;
             // The focused row's dotted outline only once the keyboard is in use, as every
             // control's focus (winui::keyboard_in_use).
@@ -1815,6 +1836,7 @@ mod tests {
             cells,
             status_whole: None,
             rate_tip: None,
+            progress: None,
         }
     }
 
@@ -2062,6 +2084,7 @@ mod tests {
                 }),
                 status_whole: None,
                 rate_tip: None,
+                progress: None,
             })
             .collect();
         let mut icons = ShellIcons;
