@@ -247,7 +247,7 @@ pub fn set_chapters(on: bool) {
     CHAPTERS.store(on, std::sync::atomic::Ordering::Relaxed);
 }
 
-/// Download video's Split into chapters: on unless the app says otherwise ([`set_split_chapters`]).
+/// Download video's Split into chapters: off unless the app says otherwise ([`set_split_chapters`]).
 static SPLIT_CHAPTERS: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 
 /// Whether the videos started from now on are split into chapters (the app's setting, shared as it
@@ -273,39 +273,56 @@ fn chapter_args(chapters: bool, ffmpeg: bool, converted: bool) -> Vec<String> {
     }
 }
 
+/// Remaining byte room for a chapter title within the file system's limits.
+fn chapter_title_room(folder: &Path, stem: &str) -> usize {
+    let limits = mdm_engine::naming::Limits::here();
+    let folder_len = limits.len(&folder.to_string_lossy());
+    let stem_len = limits.len(stem);
+    // " - 00" (5) + ".%(ext)s" (6)
+    let base = stem_len + 11;
+    let path_room = limits.path.saturating_sub(folder_len + 1 + base);
+    let name_room = limits.name.saturating_sub(base);
+    path_room.min(name_room).clamp(10, 200)
+}
+
+/// Strip `--split-chapters` and its `-P` / `-o` chapter templates from `args`.
+fn strip_split_chapters(args: &mut Vec<String>) {
+    if let Some(pos) = args.iter().position(|a| a == "--split-chapters") {
+        args.remove(pos);
+    }
+    let mut i = 0;
+    while i < args.len() {
+        if (args[i] == "-P" || args[i] == "-o")
+            && i + 1 < args.len()
+            && args[i + 1].starts_with("chapter:")
+        {
+            args.remove(i);
+            args.remove(i);
+        } else {
+            i += 1;
+        }
+    }
+}
+
 /// Split video into multiple files based on internal chapters: `--split-chapters` on yt-dlp's run,
-/// with ffmpeg, without re-encoding (stream copy via ffmpeg `-c copy`), naming each chapter
-/// as `<filename> - <NN> - <chapter name>.<ext>` (zero-padded chapter number, then the title),
-/// or `<filename> - Chapter <NN>.<ext>` when the chapter has no title.
+/// with ffmpeg, without re-encoding, naming each chapter as `<filename> - <NN> - <chapter name>.<ext>`
+/// (zero-padded chapter number, then the title), or `<filename> - <NN>.<ext>` when untitled.
 fn split_chapter_args(split: bool, ffmpeg: bool, folder: &Path, stem: &str) -> Vec<String> {
     if !split || !ffmpeg {
         return Vec::new();
     }
-    // yt-dlp's conditional syntax `%(field&if_true|if_false)s`:
-    //   if section_title is non-empty → "<stem> - %(section_number)02d - %(section_title)s"
-    //   if section_title is empty     → "<stem> - Chapter %(section_number)02d"
     let stem_esc = template_text(stem);
+    let room = chapter_title_room(folder, stem);
     let chapter_template = format!(
-        "chapter:{stem_esc} - %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
+        "chapter:{stem_esc} - %(section_number)02d%(section_title& - {{}}|).{room}B.%(ext)s"
     );
-    let mut args = vec![
+    vec![
         "--split-chapters".into(),
         "-P".into(),
         format!("chapter:{}", folder.to_string_lossy()),
         "-o".into(),
         chapter_template,
-    ];
-    // Limit chapter filenames so they don't exceed Windows' path limit (259 UTF-16 units).
-    // The chapter file name is "<stem> - <chapter title>.<ext>"; trim the whole name to leave
-    // room for the folder, its separator, and a minimal name.
-    let folder_len = folder.to_string_lossy().encode_utf16().count();
-    // 259 - folder - path separator - at least 20 for the name itself.
-    if let Some(room) = (259usize).checked_sub(folder_len + 1) {
-        if room >= 20 {
-            args.extend(["--trim-filenames".into(), room.min(230).to_string()]);
-        }
-    }
-    args
+    ]
 }
 
 /// The subtitle files saved beside `video` (`<stem>.<lang>.<srt|vtt…>`, as yt-dlp names them).
@@ -630,13 +647,8 @@ pub fn own_files(dir: &Path, stem: &str, outputs: bool) -> Vec<PathBuf> {
         .filter(|e| e.file_type().is_ok_and(|t| t.is_file()))
         .filter(|e| {
             let name = e.file_name().to_string_lossy().to_lowercase();
-            if name
-                .strip_prefix(&prefix)
+            name.strip_prefix(&prefix)
                 .is_some_and(|rest| yt_dlp_leftover(rest, outputs))
-            {
-                return true;
-            }
-            false
         })
         .map(|e| e.path())
         .collect()
@@ -1741,8 +1753,10 @@ impl Meter {
 /// How one yt-dlp run on the looked-up page ended.
 struct Ran {
     status: std::io::Result<std::process::ExitStatus>,
-    /// Where it said it saved the file(s) (`MDMF`): one per chapter when split, one otherwise.
+    /// Where it said it saved the file (`MDMF`).
     saved: Vec<PathBuf>,
+    /// The chapter files yt-dlp wrote (`MDMC`), when split.
+    chapters: Vec<PathBuf>,
     /// The quality it chose (`MDMQ`).
     quality: Option<String>,
     warnings: Vec<String>,
@@ -1798,6 +1812,7 @@ fn run(
         }
     };
     let mut saved: Vec<PathBuf> = Vec::new();
+    let mut chapters: Vec<PathBuf> = Vec::new();
     let mut quality = None;
     progress.lock().unwrap().merging = None;
     // The merge's file, once yt-dlp says it's next; watched until the reading ends.
@@ -1822,6 +1837,23 @@ fn run(
                 // Merged and moved: done joining.
                 *merged.lock().unwrap() = None;
                 progress.lock().unwrap().merging = None;
+            } else if let Some(rest) = line.strip_prefix("MDMC ") {
+                if let Ok(paths) = serde_json::from_str::<Vec<String>>(rest.trim()) {
+                    if let Some((dir, stem)) = template_of(ours) {
+                        let prefix = format!("{stem} - ");
+                        for p in paths {
+                            let path = PathBuf::from(p);
+                            if path.parent() == Some(&dir)
+                                && path
+                                    .file_name()
+                                    .and_then(|n| n.to_str())
+                                    .is_some_and(|n| n.starts_with(&prefix))
+                            {
+                                chapters.push(path);
+                            }
+                        }
+                    }
+                }
             } else if let Some(rest) = line.strip_prefix("MDMQ ") {
                 if let Some(m) = meter.as_deref_mut() {
                     m.quality(rest);
@@ -1884,6 +1916,7 @@ fn run(
     Ok(Some(Ran {
         status,
         saved,
+        chapters,
         quality,
         warnings,
         failure,
@@ -2191,7 +2224,12 @@ fn attempt(
             && crate::youtube::is_youtube(url)
             && !crate::youtube::signed_in_only(&info),
     );
-    let (ours, browser) = (&cookies.args(ours)[..], &cookies.args(browser)[..]);
+    let (mut ours, browser) = (cookies.args(ours), cookies.args(browser));
+    let chapters_count = info.get("chapters").and_then(|c| c.as_array()).map_or(0, |a| a.len());
+    if chapters_count < 2 {
+        strip_split_chapters(&mut ours);
+    }
+    let (ours, browser) = (&ours[..], &browser[..]);
     let changed = moved(&mut info, dead, reroute);
     for (gone, alt) in &changed.swaps {
         note(
@@ -2261,7 +2299,7 @@ fn attempt(
         return Attempt::Save(ran.saved.last().cloned());
     }
     let quality = ran.quality.clone();
-    let chapter_files = ran.saved.clone();
+    let chapter_files = ran.chapters;
     let video = match (&ran.status, ran.saved.into_iter().last()) {
         // `--ignore-errors` (subtitles asked) lets yt-dlp end well with no file: the file
         // itself is the proof.
@@ -2638,6 +2676,8 @@ pub fn limit_args(rate: Option<u64>) -> Vec<String> {
 const PROGRESS: &str = "download:MDMP %(progress.downloaded_bytes)s %(progress.total_bytes)s %(progress.total_bytes_estimate)s %(progress.speed)s %(info.format_id)s";
 /// The final file: `MDMF <path>`.
 const FINAL: &str = "after_move:MDMF %(filepath)s";
+/// The chapter files yt-dlp wrote (`MDMC <json list of paths>`): empty list when not split.
+const CHAPTER_FILES: &str = "after_move:MDMC %(chapters.:.filepath)j";
 /// Every stream is in, the file they make is next (`MDMM <path>`): printed before yt-dlp's
 /// post-processing, its merge first (#736).
 const MERGE: &str = "post_process:MDMM %(filepath)s";
@@ -2747,6 +2787,8 @@ impl VideoJob {
             PROGRESS.into(),
             "--print".into(),
             FINAL.into(),
+            "--print".into(),
+            CHAPTER_FILES.into(),
             "--print".into(),
             QUALITY.into(),
             "--print".into(),
@@ -3039,6 +3081,7 @@ mod tests {
             "Clip.fi.vtt",
         ];
         let others = [
+            "Clip - Live.mp4",
             "Clip.final.mp4",
             "Clip.full.mkv",
             "Clip.f1.jpg",
@@ -3724,12 +3767,12 @@ mod tests {
         assert_eq!(args[1], "-P");
         assert_eq!(args[2], format!("chapter:{}", folder.to_string_lossy()));
         assert_eq!(args[3], "-o");
+        let room = chapter_title_room(folder, "Clip");
         assert_eq!(
             args[4],
-            "chapter:Clip - %(section_title&%(section_number)02d - %(section_title)s|Chapter %(section_number)02d)s.%(ext)s"
+            format!("chapter:Clip - %(section_number)02d%(section_title& - {{}}|).{room}B.%(ext)s")
         );
-        // Also trims filenames (folder is short enough to leave room).
-        assert!(args.contains(&"--trim-filenames".to_owned()));
+        assert!(!args.contains(&"--trim-filenames".to_owned()));
         assert!(split_chapter_args(false, true, folder, "Clip").is_empty());
         assert!(split_chapter_args(true, false, folder, "Clip").is_empty());
     }

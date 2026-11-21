@@ -1209,7 +1209,7 @@ impl VideoDialog {
             // i18n: why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
             "This needs ffmpeg",
         );
-        let resp = winui::why_disabled(
+        let _ = winui::why_disabled(
             resp,
             ffmpeg && converts,
             // i18n: why "Embed chapters" is greyed in Download video: the choice is a sound converted to MP3, Opus or FLAC, which MDM saves without chapters
@@ -1221,7 +1221,7 @@ impl VideoDialog {
 
         let can_split = ffmpeg;
         let mut split_on = self.split_chapters && can_split;
-        let split_x = resp.rect.max.x + 16.0;
+        let split_x = winui::checkbox_caption_end(&ui.painter(), o.x + bx, "Embed chapters") + 16.0;
         let split_resp = winui::checkbox_until(
             ui,
             pos2(split_x, o.y + 350.0),
@@ -1811,6 +1811,7 @@ mod tests {
                 subs: Default::default(),
                 parts: vec![],
                 named: false,
+                chapter_files: vec![],
                 duration: None,
             });
             item.private_window = private;

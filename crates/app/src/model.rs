@@ -2094,6 +2094,7 @@ mod file_address_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
             recorded: 0,
             recording: false,
         };
@@ -2543,6 +2544,7 @@ mod helper_connection_tests {
             helper: None,
             merging: None,
             merge_failed: None,
+            chapter_files: Vec::new(),
             recorded: 0,
             recording: false,
         }

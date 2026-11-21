@@ -11677,7 +11677,6 @@ impl App {
     }
 
     /// IDM looks for a new version once a week; so do we (off: the switch in Check for updates). Found: the
-    /// IDM looks for a new version once a week; so do we (off: the switch in Check for updates). Found: the
     /// update window says so; otherwise nothing shows.
     /// The automatic update check: a few seconds after every start, then once a day while MDM
     /// runs (it was at most once a week). A new version's window comes to the front, as apps
@@ -13932,6 +13931,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
         });
         item.page = Some(TAB.into());
@@ -14049,6 +14049,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
         });
         item.page = Some(TAB.into());
@@ -14125,6 +14126,7 @@ mod duplicate_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(30),
         });
         item.page = Some(FEED.into());
@@ -15605,6 +15607,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
         });
         let mut app = app_with(vec![
@@ -15718,6 +15721,7 @@ mod start_disk_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: Some(754),
         });
         let mut app = app_with(vec![gone]);
@@ -16726,5 +16730,40 @@ mod delete_tests {
         assert_eq!(ids(&app), [2, 3]);
         assert!(app.deleter.finish(Duration::from_secs(10)));
         assert!(files.iter().all(|f| f.exists()));
+    }
+
+    #[test]
+    fn delete_with_files_leaves_unrelated_files_beside_split_video() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let main_video = d.join("Song.mp4");
+        let chapter_1 = d.join("Song - 01 - Intro.mp4");
+        let user_file = d.join("Song - Live.mp4");
+        std::fs::write(&main_video, b"main").unwrap();
+        std::fs::write(&chapter_1, b"ch1").unwrap();
+        std::fs::write(&user_file, b"user").unwrap();
+
+        let url = url::Url::parse("https://example.com/watch?v=song").unwrap();
+        let mut item = Item::new(1, url, main_video.clone(), Category::General);
+        item.status = Status::Complete;
+        item.video = Some(crate::model::VideoSpec {
+            selector: "best".into(),
+            subs: Default::default(),
+            parts: Vec::new(),
+            named: false,
+            chapter_files: vec![chapter_1.clone()],
+            duration: None,
+        });
+
+        let mut app = app_from_052(vec![item], false);
+        let ctx = egui::Context::default();
+        app.run(Cmd::RemoveWithFiles, Some(1), &ctx);
+        let chosen = app.confirm_delete.take().unwrap().ids;
+        app.confirmed_delete(&chosen, true, false);
+        assert!(app.deleter.finish(Duration::from_secs(10)));
+
+        assert!(!main_video.exists(), "main video deleted");
+        assert!(!chapter_1.exists(), "chapter file deleted");
+        assert!(user_file.exists(), "Song - Live.mp4 must survive deletion");
     }
 }
