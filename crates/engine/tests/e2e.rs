@@ -2376,20 +2376,26 @@ async fn a_slow_disk_does_not_stop_the_transfer() {
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");
-    let flushes = disk.stats().flushes;
+    let stats = disk.stats();
+    let (flushes, holds) = (stats.flushes, stats.holds);
     eprintln!(
-        "disk behind: {} shed, every byte in {:?}, longest quiet {:?}, flushes {flushes:?}",
+        "disk behind: {} shed, every byte in {:?}, longest quiet {:?}, flushes {flushes:?}, \
+         writes held {holds:?}",
         behind.shed, behind.received, behind.quiet
     );
     // Measured: none shed, at most 11 ms without a byte (until the last sixteenth, which may
     // wait for the disk with the rest of its connection's memory). One flush during the
-    // transfer, then none until the end: a second one right after the first, expected by the
-    // seconds since it rather than the bytes, held the writes for 3 s on GitHub's macOS runners
-    // and nothing arrived for 1.2 to 1.5 s of it (`Synced::expected`).
+    // transfer, then the last one once every byte is in: a second one right after the first,
+    // expected by the seconds since it rather than the bytes, held the writes for 3 s on
+    // GitHub's macOS runners and nothing arrived for 1.2 to 1.5 s of it (`Synced::expected`).
+    // The flush during the transfer holds the writes 0.7 to 0.95 s (the 35 to 45 MiB the disk
+    // still has to write), on GitHub's Linux runners as here; the machine's own flush after it
+    // took 0.01 to 0.3 s there, and once about 6.5 s (#1626): it held the writes too then, and
+    // nothing arrived for 6 s, a stall of the runner's disk, not of the disk modelled here.
     assert_eq!(behind.shed, 0, "connections shed for the disk's pace");
     assert!(
         behind.quiet < std::time::Duration::from_millis(1200),
-        "nothing arrived for {:?} (flushes: {flushes:?})",
+        "nothing arrived for {:?} (flushes: {flushes:?}, writes held {holds:?})",
         behind.quiet
     );
 }
