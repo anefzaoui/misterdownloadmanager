@@ -52,11 +52,12 @@ lab_stop() {
 # ---- MDM's own list and settings: the language chosen, light or dark (`follow`: as the system
 # says), every category's folder under the run's own, nothing reaching out (no update check; the
 # torrent engine neither listens nor uses the DHT, UPnP or local discovery), no first-start offers.
-mdm_settings() { # <data dir> <downloads dir> <light|dark|follow> [extra settings, JSON members]
+# [list] is more of the list's file, JSON members beside "settings" ("columns": the list's columns).
+mdm_settings() { # <data dir> <downloads dir> <light|dark|follow> [extra settings] [list]
   mkdir -p "$1" "$2"
-  python3 - "$1" "$2" "$3" "${4:-}" <<'PY'
+  python3 - "$1" "$2" "$3" "${4:-}" "${5:-}" <<'PY'
 import json, sys
-data, dl, mode, extra = sys.argv[1:5]
+data, dl, mode, extra, top = sys.argv[1:6]
 cats = ["General", "Compressed", "Documents", "Music", "Programs", "Video", "Torrents"]
 dirs = [[c, dl + ("" if c == "General" else f"/{c}")] for c in cats]
 s = dict(language="en", language_asked=True, helpers_asked=True, extension_never_ask=True,
@@ -65,7 +66,10 @@ s = dict(language="en", language_asked=True, helpers_asked=True, extension_never
          torrent_stop_idle=True, category_dirs=dirs)
 if extra:
     s.update(json.loads("{" + extra + "}"))
-json.dump({"next_id": 1, "items": [], "version": 2, "settings": s}, open(f"{data}/downloads.json", "w"))
+d = {"next_id": 1, "items": [], "version": 2, "settings": s}
+if top:
+    d.update(json.loads("{" + top + "}"))
+json.dump(d, open(f"{data}/downloads.json", "w"))
 PY
 }
 

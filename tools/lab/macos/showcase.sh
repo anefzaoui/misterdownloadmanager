@@ -45,6 +45,8 @@ lab_start "$LABSRV" || { log "no lab server"; exit 1; }
 WIN_W=1180; WIN_H=640
 WIN_X=$(( (SW - WIN_W) / 2 )); WIN_Y=$(( (SH - WIN_H) / 2 - 40 ))
 extra="\"show_complete\":false,\"show_progress\":false,\"window\":[$WIN_X,$WIN_Y,$WIN_W,$WIN_H]"
+# File Name wide enough for the whole names (crates/app/src/list.rs: DEFAULT_WIDTHS, DEFAULT_ORDER).
+columns='"columns":{"order":[9,0,1,2,3,4,5,12,10,11,6,8,7],"widths":[260,20,75,132,75,95,65,200,145,62,64,92,100],"visible":[true,true,true,true,true,true,true,true,true,true,true,true,true],"sort":null,"status_fits":true}'
 
 # A list that looks used: finished files, one still coming in (rate-limited per connection: 1M
 # over 8 connections is about 8 MB/s, so the progress window shows its 8 connections and the
@@ -60,25 +62,27 @@ fill_list() {
   done
 }
 
-# The menu bar item: the right of the menu bar, then its menu, which a right click opens (a left
-# click shows the main window, as Windows' notification-area icon does).
+# The menu bar item: the right of the menu bar; the panel of what's downloading that a click on it
+# shows (#1365); its menu (right click, or System Events' "show menu"). Each from the screen's top
+# right, as macOS draws them there.
 menu_bar_item() { # <dir>
-  local x y w h
+  local x y w h before area
   read -r x y w h < <(menu_item_bounds)
   if [ -z "${h:-}" ]; then log "no menu bar item"; mt windows >"$1/windows-all.txt"; return; fi
   log "menu bar item at $x,$y ${w}x$h"
   screen "$1/menu-bar.png" "$((SW - 560)),0,560,$((y + h + 2))"
-  mt click $((x + w / 2)) $((y + h / 2)) right; sleep 1.5
-  mt windows >"$1/windows-menu-bar.txt"
-  # The menu: below the item, as wide and tall as macOS draws it (its window in the list).
-  local menu
-  menu=$(mt windows | awk -F'\t' -v x="$x" '$3 >= 100 && $5 < 60 && $4 > x - 400 && $4 < x + 60 && $7 > 40 {print $4, $5, $6, $7; exit}')
-  if [ -n "$menu" ]; then
-    read -r mx my mw mh <<< "$menu"
-    screen "$1/menu-bar-menu.png" "$((mx - 24)),0,$((mw + 48)),$((my + mh + 24))"
-  else
-    screen "$1/menu-bar-menu.png" "$((x - 300)),0,420,420"
-  fi
+  area="$((x - 560)),0,$((SW - x + 560)),620"
+  [ "$((x - 560))" -lt 0 ] && area="0,0,$SW,620"
+  mt click $((x + w / 2)) $((y + h / 2)); sleep 2
+  mt windows >"$1/windows-after-click.txt"
+  screen "$1/menu-bar-panel.png" "$area"
+  mt key 53; sleep 1
+  osascript -e "tell application \"System Events\" to tell (first process whose unix id is $PID) to perform action \"AXShowMenu\" of menu bar item 1 of menu bar 2"     >"$1/menu-bar-axshowmenu.txt" 2>&1 &
+  sleep 2
+  screen "$1/menu-bar-menu.png" "$area"
+  mt key 53; sleep 1
+  mt click $((x + w / 2)) $((y + h / 2)) right; sleep 2
+  screen "$1/menu-bar-menu-right.png" "$area"
   mt key 53; sleep 1; park
 }
 
@@ -87,19 +91,18 @@ for mode in light dark; do
   log "---- $mode"
   appearance "$mode"
   DATA="$WORK/data-$mode"; rm -rf "$DATA" "$WORK/Downloads"
-  mdm_settings "$DATA" "$WORK/Downloads" follow "$extra"
+  mdm_settings "$DATA" "$WORK/Downloads" follow "$extra" "$columns"
   mdm_start "$dir/mdm.log" || { mt windows >"$dir/windows.txt"; screen "$dir/screen-no-window.png"; continue; }
   fill_list
   sleep 25
   park; sleep 1
   screen "$dir/screen-main.png"
   shoot "$MAIN" "$dir/main.png"
-  [ "$mode" = light ] && menu_bar_item "$dir"
   # View → Theme open (MDM's own menus: the main window and the menus, from the screen).
   read -r x y w h < <(bounds "$MAIN")
   mdm /show menu:3:theme; sleep 2
   read -r ux uy uw uh < <(menus_union "$x" "$y" "$w" "$h")
-  screen "$dir/menu-theme.png" "$ux,$uy,$uw,$uh"
+  if [ -n "${uh:-}" ]; then screen "$dir/menu-theme.png" "$ux,$uy,$uw,$uh"; else mt windows >"$dir/windows-menu.txt"; log "menu-theme: main window at '$x $y $w $h'"; fi
   mt key 53; sleep 0.5; mt key 53; sleep 1
   # The windows, by name, each closed (Escape) before the next; the progress window last, as
   # it stays for the screen with it and for the themes.
@@ -127,6 +130,7 @@ for mode in light dark; do
   done
   mdm /show progress; sleep 1; park
   screen "$dir/screen-end.png"
+  [ "$mode" = light ] && menu_bar_item "$dir"
   mt windows "$PID" >"$dir/windows-end.txt"
   mdm_exit; echo "exit after /exit: $EXIT_SECONDS s ($mode, progress window open)" >>"$OUT/runner.txt"
 done
@@ -137,7 +141,7 @@ done
 rdir="$OUT/recording"; mkdir -p "$rdir"
 appearance light
 DATA="$WORK/data-rec"; rm -rf "$DATA" "$WORK/Downloads"
-mdm_settings "$DATA" "$WORK/Downloads" follow "$extra"
+mdm_settings "$DATA" "$WORK/Downloads" follow "$extra" "$columns"
 if mdm_start "$rdir/mdm.log"; then
   fill_list; sleep 20; park
   log "recording"

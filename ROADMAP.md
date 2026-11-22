@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ macOS checked for real on GitHub's Macs (Apple Silicon and Intel): a workflow builds MDM there,
+  runs a download to its end and checks the file, the automation API, the command line, the
+  windows and quitting, takes pictures of every window in light, dark and the style themes and a
+  screen recording, and installs the release's .dmg files as a person does and checks them, so a
+  change can be verified on macOS before it's merged
 - ✅ Tests: the checks of a DNS that never answers ask one on this computer, not an address
   nobody has: on a network that answers every DNS question itself (a transparent DNS proxy) that
   address answered, and one check failed while another passed for the wrong reason
