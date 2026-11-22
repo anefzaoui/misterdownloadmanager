@@ -22,30 +22,32 @@ mactool_build() {
 mt() { "$MACTOOL" "$@"; }
 
 # ---- The lab server: neutral addresses (downloads.example, a reserved name, pointed at
-# 127.0.0.1 in /etc/hosts; port 80 when it can bind it), else 127.0.0.1:8199. Sets BASE, LAB_PID.
+# 127.0.0.1 in /etc/hosts, on port 80, which only root may open here: the runner's sudo asks no
+# password), else 127.0.0.1:8199. Sets BASE.
 lab_start() { # <labserver program>
-  local srv=$1 port host
-  host=127.0.0.1; port=8199
+  local srv=$1 port=8199 host=127.0.0.1 code
+  LAB_PROG=$srv; LAB_ROOT=""
   if sudo -n true 2>/dev/null; then
     grep -q 'downloads\.example' /etc/hosts || echo '127.0.0.1 downloads.example' | sudo tee -a /etc/hosts >/dev/null
     sudo dscacheutil -flushcache 2>/dev/null; sudo killall -HUP mDNSResponder 2>/dev/null
-    host=downloads.example; port=80
+    sudo -n "$srv" --bind 127.0.0.1:80 >"$WORK/labserver.log" 2>&1 &
+    sleep 1.5
+    code=$(curl -s -o /dev/null -w '%{http_code}' "http://downloads.example/gen/1K/check.bin")
+    if [ "$code" = 200 ]; then host=downloads.example; port=80; LAB_ROOT=1; fi
   fi
-  "$srv" --bind "127.0.0.1:$port" >"$WORK/labserver.log" 2>&1 &
-  LAB_PID=$!
-  sleep 1
-  if ! kill -0 "$LAB_PID" 2>/dev/null; then
-    log "lab server: port $port refused, 8199 instead"; port=8199
+  if [ "$port" != 80 ]; then
     "$srv" --bind "127.0.0.1:$port" >"$WORK/labserver.log" 2>&1 &
-    LAB_PID=$!; sleep 1
+    sleep 1
   fi
   BASE="http://$host"; [ "$port" = 80 ] || BASE="http://$host:$port"
-  local code
   code=$(curl -s -o /dev/null -w '%{http_code}' "$BASE/gen/1K/check.bin")
   log "lab server at $BASE answers $code"
   [ "$code" = 200 ]
 }
-lab_stop() { [ -n "${LAB_PID:-}" ] && kill "$LAB_PID" 2>/dev/null; LAB_PID=""; }
+lab_stop() {
+  if [ -n "${LAB_ROOT:-}" ]; then sudo -n pkill -f "^$LAB_PROG --bind"; else pkill -f "^$LAB_PROG --bind"; fi 2>/dev/null
+  LAB_ROOT=""
+}
 
 # ---- MDM's own list and settings: the language chosen, light or dark (`follow`: as the system
 # says), every category's folder under the run's own, nothing reaching out (no update check; the
@@ -101,6 +103,13 @@ opened() {
 }
 # A window's bounds "x y w h" (points).
 bounds() { mt windows "$PID" | awk -F'\t' -v id="$1" '$1 == id {print $4, $5, $6, $7}'; }
+# The windows of ours that are menus (MDM's own, drawn above the others): their union "x y w h".
+menus_union() { # <x y w h of the window they belong to>
+  mt windows "$PID" | awk -F'\t' -v x0="$1" -v y0="$2" -v w0="$3" -v h0="$4" '
+    BEGIN {l = x0; t = y0; r = x0 + w0; b = y0 + h0}
+    $3 > 0 && $3 < 20 {if ($4 < l) l = $4; if ($5 < t) t = $5; if ($4 + $6 > r) r = $4 + $6; if ($5 + $7 > b) b = $5 + $7}
+    END {print l, t, r - l, b - t}'
+}
 # A window alone, at the display's own pixels: <id> <file> (no shadow) and <file>-shadow.png
 # (macOS's shadow, on transparency).
 shoot() {
@@ -118,14 +127,19 @@ px = b[at:]
 print(len({px[i:i + 3] for i in range(0, len(px) - 3, 4 * 97)}))' "$WORK/colours.bmp"
   rm -f "$WORK/colours.bmp"
 }
-# The whole screen.
-screen() { screencapture -x "$1"; echo "  $(basename "$1")"; }
-park() { mt move "${PARK_X:-1900}" "${PARK_Y:-700}" 2>/dev/null; }
+# The whole screen, or a part of it: <file> [x,y,w,h].
+screen() {
+  if [ -n "${2:-}" ]; then screencapture -x -R "$2" "$1"; else screencapture -x -m "$1"; fi
+  echo "  $(basename "$1") $(sips -g pixelWidth -g pixelHeight "$1" | awk '/pixel/ {printf "%s ", $2}')"
+}
+park() { mt move "${PARK_X:-1000}" "${PARK_Y:-500}" 2>/dev/null; }
+# Our dialog in front closed as Escape closes it (MDM in front first).
+escape() { mt activate "$PID" >/dev/null; sleep 0.3; mt key 53; sleep 0.8; }
 
 # ---- Quitting as a person does (/exit, Tasks → Exit: a signal reads as a crash to its monitor),
 # timed; one that doesn't quit in 30 s is recorded (#1651) and then stopped. Sets EXIT_SECONDS.
 mdm_exit() {
-  local t0 i
+  local t0 i code
   t0=$(perl -MTime::HiRes=time -e 'printf "%.0f", time*1000')
   mdm /exit
   for i in $(seq 300); do kill -0 "$PID" 2>/dev/null || break; sleep 0.1; done
@@ -136,7 +150,9 @@ mdm_exit() {
     kill "$PID" 2>/dev/null; sleep 2; kill -9 "$PID" 2>/dev/null
     return 1
   fi
-  wait "$PID" 2>/dev/null; local code=$?
+  code=0; wait "$PID" 2>/dev/null || code=$?
+  # 127: not this shell's child (started through `open`), its code unknown.
+  [ "$code" = 127 ] && code="unknown"
   log "MDM quit $EXIT_SECONDS s after /exit, exit code $code"
   return 0
 }
@@ -147,6 +163,69 @@ appearance() {
   osascript -e "tell application \"System Events\" to tell appearance preferences to set dark mode to $v" 2>/dev/null \
     || mt appearance "$1"
   sleep 2
+}
+
+# ---- The runner's screen: 1024x768 at one pixel a point, black. The sharpest it can be made:
+# a virtual display of <w>x<h> points at two pixels a point (vdisplay.m, HiDPI as on a Retina
+# Mac), else the runner's own display at <w>x<h> (one pixel a point). Sets SW, SH (points), SCALE.
+display_setup() { # <w> <h>
+  local w=$1 h=$2
+  if [ -z "${MDM_NO_VDISPLAY:-}" ] && clang -fobjc-arc -framework Foundation -framework CoreGraphics \
+       -o "$WORK/vdisplay" "$here/vdisplay.m" 2>"$WORK/vdisplay-build.txt"; then
+    "$WORK/vdisplay" "$w" "$h" >"$WORK/vdisplay.txt" 2>&1 &
+    VDISPLAY_PID=$!
+    for _ in $(seq 40); do
+      grep -q '^ready' "$WORK/vdisplay.txt" && break
+      kill -0 "$VDISPLAY_PID" 2>/dev/null || break
+      sleep 0.5
+    done
+    log "virtual display: $(tr '\n' ' ' <"$WORK/vdisplay.txt")"
+  else
+    log "no virtual display: $(tail -3 "$WORK/vdisplay-build.txt" 2>/dev/null)"
+  fi
+  sleep 3
+  read -r SW SH SCALE < <(main_display)
+  if [ "${SCALE:-1}" != 2 ] || [ "$SW" != "$w" ]; then
+    log "no HiDPI display (${SW}x$SH at $SCALE): the runner's own at ${w}x$h"
+    display_restore; sleep 2
+    mt mode "$w" "$h" "$w"; sleep 3
+    read -r SW SH SCALE < <(main_display)
+  fi
+  PARK_X=$((SW - 2)); PARK_Y=$((SH / 2))
+  log "screen ${SW}x${SH} points at $SCALE pixels a point"
+}
+# The main display (the one with the menu bar): "w h scale".
+main_display() {
+  mt displays | awk '/^display/ && /main=true/ {
+      for (i = 1; i <= NF; i++) {
+        if ($i ~ /^now=/) split(substr($i, 5), p, "x")
+        if ($i ~ /^pixels=/) split(substr($i, 8), q, "x")
+      }
+      printf "%d %d %d\n", p[1], p[2], q[1] / p[1]; exit }'
+}
+display_restore() { [ -n "${VDISPLAY_PID:-}" ] && kill "$VDISPLAY_PID" 2>/dev/null; VDISPLAY_PID=""; }
+
+# A wallpaper of macOS's own instead of the runner's black: $MDM_WALLPAPER, else the first of the
+# system's pictures named after a macOS version, newest first.
+wallpaper() {
+  local pic="${MDM_WALLPAPER:-}" name
+  if [ -z "$pic" ]; then
+    for name in Tahoe Sequoia Sonoma Ventura Monterey; do
+      pic=$(ls -d "/System/Library/Desktop Pictures/$name"*.heic 2>/dev/null | head -1)
+      [ -n "$pic" ] && break
+    done
+  fi
+  [ -n "$pic" ] || { log "wallpaper: none of macOS's found"; return 0; }
+  osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$pic\"" >/dev/null 2>&1
+  log "wallpaper: $pic"
+  sleep 2
+}
+
+# ---- The menu bar item (the status item: MDM's icon where Windows has its notification area):
+# its bounds "x y w h", from System Events (accessibility).
+menu_item_bounds() {
+  osascript -e "tell application \"System Events\" to tell (first process whose unix id is $PID) to get {position, size} of menu bar item 1 of menu bar 2" 2>/dev/null \
+    | tr -d ' ' | awk -F, 'NF == 4 {print $1, $2, $3, $4}'
 }
 
 # ---- The runner's desktop for pictures: no Dock (hidden until pointed at), no desktop icons, no

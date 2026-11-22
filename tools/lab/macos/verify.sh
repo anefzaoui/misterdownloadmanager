@@ -82,6 +82,7 @@ else
 fi
 
 # ---- The command line's own download (no window).
+mkdir -p "$WORK/cli"
 if cli --json get "$BASE/gen/64M/cli-64M.bin" -o "$WORK/cli" >"$OUT/cli-get.jsonl" 2>&1 \
    && [ "$(sha "$WORK/cli/cli-64M.bin")" = "$(curl -s "$BASE/gen/64M/cli-64M.bin" | shasum -a 256 | awk '{print $1}')" ]; then
   check PASS "--cli get downloaded 64 MB and its SHA-256 matches ($(tail -1 "$OUT/cli-get.jsonl"))"

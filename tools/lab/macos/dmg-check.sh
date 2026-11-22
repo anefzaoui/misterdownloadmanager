@@ -57,17 +57,6 @@ for p in misterdownloadmanager-cli misterdownloadmanager-nmhost misterdownloadma
   [ -x "$app/Contents/MacOS/$p" ] && note "$p: $(file -b "$app/Contents/MacOS/$p" | head -1)"
 done
 
-# ---- The Safari extension: registered with the system once the app is.
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$app" 2>/dev/null
-ls "$app/Contents/PlugIns" >"$OUT/plugins.txt" 2>&1
-sleep 2
-pluginkit -mAvvv -p com.apple.Safari.web-extension >"$OUT/pluginkit.txt" 2>&1
-if grep -q "anefzaoui" "$OUT/pluginkit.txt"; then
-  check PASS "Safari's extension is registered ($(grep -m1 anefzaoui "$OUT/pluginkit.txt" | xargs))"
-else
-  check FAIL "Safari's extension is registered (PlugIns: $(tr '\n' ' ' <"$OUT/plugins.txt"))"
-fi
-
 # ---- Started as a double click starts it (Launch Services), with its own data folder.
 DATA="$WORK/data"; DL="$WORK/Downloads"
 mdm_settings "$DATA" "$DL" follow '"show_complete":false'
@@ -129,8 +118,25 @@ if [ -n "$MAIN" ]; then
   if mdm_exit; then check PASS "/exit quit MDM in $EXIT_SECONDS s"; else check FAIL "/exit quit MDM: $EXIT_SECONDS"; fi
 fi
 
+# ---- The Safari extension: registered with the system once the app is.
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$app" 2>/dev/null
+ls "$app/Contents/PlugIns" >"$OUT/plugins.txt" 2>&1
+sleep 2
+{
+  echo "== Safari's web extensions"; pluginkit -mAvvv -p com.apple.Safari.web-extension
+  echo "== every extension of MDM's"; pluginkit -mAvvv | grep -i -B2 -A8 anefzaoui
+  echo "== added by hand (pluginkit -a)"; pluginkit -a "$app/Contents/PlugIns/"*.appex; sleep 2
+  pluginkit -mAvvv -p com.apple.Safari.web-extension
+  echo "== the extension's signature"; codesign -dvvv --entitlements - "$app/Contents/PlugIns/"*.appex
+} >"$OUT/pluginkit.txt" 2>&1
+if grep -q "anefzaoui" "$OUT/pluginkit.txt" && pluginkit -mAvvv -p com.apple.Safari.web-extension | grep -q anefzaoui; then
+  check PASS "Safari's extension is registered ($(grep -m1 anefzaoui "$OUT/pluginkit.txt" | xargs))"
+else
+  check FAIL "Safari's extension is registered (PlugIns: $(tr '\n' ' ' <"$OUT/plugins.txt"))"
+fi
+
 # ---- What the system logged about it, and any crash report.
-log show --last 10m --style compact --predicate 'process == "misterdownloadmanager" AND messageType >= 16' >"$OUT/system-log.txt" 2>&1
+/usr/bin/log show --last 10m --style compact --predicate 'process == "misterdownloadmanager" AND messageType >= 16' >"$OUT/system-log.txt" 2>&1
 ls ~/Library/Logs/DiagnosticReports 2>/dev/null | grep -i misterdownload >"$OUT/crash-reports.txt" && {
   note "crash reports: $(tr '\n' ' ' <"$OUT/crash-reports.txt")"
   cp ~/Library/Logs/DiagnosticReports/*misterdownload* "$OUT/" 2>/dev/null
