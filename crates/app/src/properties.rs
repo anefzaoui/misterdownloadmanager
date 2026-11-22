@@ -22,6 +22,7 @@ pub struct Changes {
     pub move_to: Option<PathBuf>,
     /// "Through …" changed (#44): downloaded directly (true) or through the account again.
     pub direct: Option<bool>,
+    pub mirrors: Vec<mdm_engine::Mirror>,
 }
 
 pub struct Properties {
@@ -40,12 +41,18 @@ pub struct Properties {
     route: crate::debrid::Route,
     direct: bool,
     files_requested: bool,
+    mirrors: Vec<mdm_engine::Mirror>,
+    mirror_edit: String,
 }
 
 impl Properties {
     pub fn new(item: &Item, route: crate::debrid::Route) -> Self {
         let (login, password) = item.login.clone().unwrap_or_default();
         let stream = *item.file_address() != item.url;
+        let state = mdm_engine::state::state_path(&item.dest);
+        let mirrors = mdm_engine::state::ResumeState::load(&state)
+            .map(|s| s.mirrors)
+            .unwrap_or_default();
         Properties {
             id: item.id,
             address: item.file_address().to_string(),
@@ -59,6 +66,8 @@ impl Properties {
             route,
             direct: item.direct,
             files_requested: false,
+            mirrors,
+            mirror_edit: String::new(),
         }
     }
 
@@ -85,7 +94,7 @@ impl Properties {
             ctx,
             &format!("properties-{}", self.id),
             "File Properties",
-            [477.0, 420.0],
+            [477.0, 520.0],
             false,
             LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, item),
@@ -105,6 +114,7 @@ impl Properties {
                     address,
                     move_to: self.move_to.take(),
                     direct: (self.direct != item.direct).then_some(self.direct),
+                    mirrors: self.mirrors.clone(),
                 })
             }
             Outcome::Closed => Outcome::Closed,
@@ -117,10 +127,7 @@ impl Properties {
     /// magnet link or .torrent file (#904), which are shown read only. The same answer decides
     /// the field and OK's check, so a field that can't be edited never holds OK back.
     fn address_editable(&self, item: &Item) -> bool {
-        item.status != Status::Complete
-            && item.live.is_none()
-            && !self.stream
-            && item.torrent.is_none()
+        item.status != Status::Complete && !self.stream && item.torrent.is_none()
     }
 
     /// OK closes the window: the address, when it can be replaced, is one MDM downloads.
@@ -133,8 +140,8 @@ impl Properties {
         let p = ui.painter().clone();
         let complete = item.status == Status::Complete;
         let running = item.live.is_some();
-        // The address can be replaced while the download isn't finished or running.
         let editable = !complete && !running;
+        // The address can be replaced while the download isn't finished or running.
         // A running video's stream changes (the next one, a new address): followed.
         if self.stream || item.video.is_some() && running {
             let now = item.file_address();
@@ -451,6 +458,59 @@ impl Properties {
             );
             if cut {
                 winui::full_on_hover(ui, rect, "props-result", &result);
+            }
+        }
+        text(
+            &p,
+            o.x + 11.0,
+            o.y + 445.0,
+            crate::i18n::t("Mirrors:"),
+            LIGHT_TEXT(),
+        );
+        winui::edit_light(
+            ui,
+            r(o, col, 430.0, 467.0 - col - 88.0, 23.0),
+            &mut self.mirror_edit,
+            true,
+            false,
+        );
+        if winui::button_light(
+            ui,
+            r(o, 467.0 - 82.0, 430.0, 82.0, 23.0),
+            "Add",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked()
+            && let Ok(url) = url::Url::parse(self.mirror_edit.trim())
+        {
+            let mut mirror = mdm_engine::Mirror::new(url);
+            mirror.status = mdm_engine::MirrorStatus::Untested;
+            if !self.mirrors.iter().any(|m| m.url == mirror.url) {
+                self.mirrors.push(mirror);
+            }
+            self.mirror_edit.clear();
+        }
+        if let Some((i, mirror)) = self.mirrors.iter().enumerate().find(|(_, m)| m.enabled) {
+            let host = mirror.url.host_str().unwrap_or("?");
+            let status = match mirror.status {
+                mdm_engine::MirrorStatus::Untested => "untested",
+                mdm_engine::MirrorStatus::Ok => "ok",
+                mdm_engine::MirrorStatus::Failed => "failed",
+                mdm_engine::MirrorStatus::SizeMismatch => "size-mismatch",
+                mdm_engine::MirrorStatus::NoRange => "no Range",
+                mdm_engine::MirrorStatus::Disabled => "disabled",
+            };
+            fit(ui, 11.0, 465.0, &format!("{host}: {status}"));
+            let remove = winui::button_light(
+                ui,
+                r(o, 467.0 - 82.0, 463.0, 82.0, 21.0),
+                "Remove",
+                ButtonKind::Normal,
+                false,
+            );
+            if remove.clicked() {
+                self.mirrors.remove(i);
             }
         }
         // As wide as its label in this language (#192), into the room before OK.

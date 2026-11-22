@@ -180,6 +180,8 @@ mod tests {
             start: 0,
             end: 100,
             cursor: done,
+            mirror: None,
+            retries: 0,
         }];
         s
     }

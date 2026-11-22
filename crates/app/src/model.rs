@@ -773,6 +773,8 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
             ConnStatus::Connecting
         },
         speed: p.speed as u64,
+        mirror_host: None,
+        mirror_limit: 0,
     });
     let engine = p.engine.unwrap_or_default();
     let segments = if engine.segments.is_empty() {
@@ -781,6 +783,8 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
                 start: 0,
                 cursor: downloaded.min(t),
                 end: t,
+                mirror_host: None,
+                retries: 0,
             }]
         })
         .unwrap_or_default()
@@ -2693,6 +2697,8 @@ mod helper_connection_tests {
             downloaded: 100,
             status: ConnStatus::Receiving,
             speed: 10,
+            mirror_host: None,
+            mirror_limit: 0,
         };
         p.helper = None;
         p.engine = Some(mdm_tools::streams::View {

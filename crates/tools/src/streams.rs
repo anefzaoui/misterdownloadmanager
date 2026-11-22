@@ -535,18 +535,24 @@ fn segments(sizes: &[Option<u64>], at: usize, now: &[SegmentView]) -> Vec<Segmen
                 start: offset,
                 cursor: offset + len,
                 end: offset + len,
+                mirror_host: None,
+                retries: 0,
             });
         } else if i == at {
             out.extend(now.iter().map(|s| SegmentView {
                 start: offset + s.start,
                 cursor: offset + s.cursor,
                 end: offset + s.end,
+                mirror_host: s.mirror_host.clone(),
+                retries: s.retries,
             }));
         } else if len > 0 {
             out.push(SegmentView {
                 start: offset,
                 cursor: offset,
                 end: offset + len,
+                mirror_host: None,
+                retries: 0,
             });
         }
         offset += len;
@@ -1061,11 +1067,15 @@ mod tests {
                 start: 0,
                 cursor: 25,
                 end: 50,
+                mirror_host: None,
+                retries: 0,
             },
             SegmentView {
                 start: 50,
                 cursor: 60,
                 end: 100,
+                mirror_host: None,
+                retries: 0,
             },
         ];
         let map = segments(&sizes, 0, &now);
@@ -1075,7 +1085,9 @@ mod tests {
             SegmentView {
                 start: 100,
                 cursor: 100,
-                end: 150
+                end: 150,
+                mirror_host: None,
+                retries: 0,
             }
         );
         // The sound under way: the video whole before it.
@@ -1085,7 +1097,9 @@ mod tests {
             SegmentView {
                 start: 0,
                 cursor: 100,
-                end: 100
+                end: 100,
+                mirror_host: None,
+                retries: 0,
             }
         );
         assert_eq!(
@@ -1093,7 +1107,9 @@ mod tests {
             SegmentView {
                 start: 100,
                 cursor: 125,
-                end: 150
+                end: 150,
+                mirror_host: None,
+                retries: 0,
             }
         );
     }

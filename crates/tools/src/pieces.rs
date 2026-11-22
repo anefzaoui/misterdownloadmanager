@@ -392,6 +392,8 @@ impl Shared {
                     start,
                     cursor: start + ((end - start) as f64 * frac) as u64,
                     end,
+                    mirror_host: None,
+                    retries: 0,
                 }
             })
             .collect()
@@ -541,6 +543,8 @@ pub async fn download(
             downloaded: 0,
             status: ConnStatus::Connecting,
             speed: 0,
+            mirror_host: None,
+            mirror_limit: 0,
         })
         .collect();
     if browser.is_some() {

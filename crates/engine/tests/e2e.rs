@@ -1590,6 +1590,8 @@ async fn resume_rejects_a_changed_mirror_of_the_same_size() {
         start: 0,
         cursor: 64 << 10,
         end: saved.size,
+        mirror: None,
+        retries: 0,
     }];
     let mut bytes = vec![0; saved.size as usize];
     content::fill(11, 0, &mut bytes[..64 << 10]);

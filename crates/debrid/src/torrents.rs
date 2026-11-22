@@ -601,6 +601,8 @@ impl RemoteTorrent {
                         start: 0,
                         cursor: downloaded.min(t),
                         end: t,
+                        mirror_host: None,
+                        retries: 0,
                     }]
                 })
                 .unwrap_or_default(),

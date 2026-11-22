@@ -3558,6 +3558,7 @@ impl App {
                         address: Some(url),
                         move_to: None,
                         direct: None,
+                        mirrors: Vec::new(),
                     };
                     self.apply_properties(c);
                 }
@@ -5340,6 +5341,11 @@ impl App {
         item.description = c.description;
         item.login = c.login;
         item.set_referer(c.referer);
+        if let Some(live) = item.live.as_ref()
+            && let crate::model::Job::File(dl) = &live.dl
+        {
+            dl.set_mirrors(c.mirrors.clone());
+        }
         let rerouted = c.direct.is_some();
         // "Through …" changed (#44): the next start goes the new way. The service's link is
         // dropped from the resume state: directly, it continues from the host's own address;
@@ -5366,16 +5372,19 @@ impl App {
                 crate::i18n::t("Address changed to {host}"),
                 &[("host", &crate::i18n::ltr(url.host_str().unwrap_or("?")))],
             ));
-            take_address(item, url);
+            take_address(item, url.clone());
+            if let Some(live) = item.live.as_ref()
+                && let crate::model::Job::File(dl) = &live.dl
+            {
+                dl.set_primary_url(url);
+            }
         }
         // Moved into the folder it is already in: nothing to do (it became "a (1).zip").
         let move_to = c
             .move_to
             .filter(|dir| item.dest.parent() != Some(dir.as_path()))
             .map(|dir| mdm_engine::naming::destination(&dir, &item.file_name));
-        if rerouted || readdressed.is_some() {
-            self.rewrite_state(c.id, rerouted, readdressed);
-        }
+        self.rewrite_state(c.id, rerouted, readdressed, c.mirrors);
         self.dirty = true;
         if let Some(target) = move_to {
             self.start_move(c.id, target);
@@ -5387,7 +5396,13 @@ impl App {
     /// #44: the service's link dropped), from `readdressed` (Refresh download address). The size
     /// and validators still have to match as it resumes. Its next start waits for it on its own
     /// task.
-    fn rewrite_state(&mut self, id: u64, rerouted: bool, readdressed: Option<url::Url>) {
+    fn rewrite_state(
+        &mut self,
+        id: u64,
+        rerouted: bool,
+        readdressed: Option<url::Url>,
+        mirrors: Vec<mdm_engine::Mirror>,
+    ) {
         let Some(place) = self
             .items
             .iter()
@@ -5404,8 +5419,10 @@ impl App {
                 }
                 if let Some(url) = readdressed {
                     saved.final_url = url.clone();
-                    saved.url = url;
+                    saved.url = url.clone();
+                    saved.primary_url = Some(url);
                 }
+                saved.mirrors = mirrors;
                 let _ = saved.write(&state);
             }
         });
@@ -5461,7 +5478,11 @@ impl App {
             item.direct = true;
         }
         take_address(item, url.clone());
-        self.rewrite_state(id, false, Some(url.clone()));
+        let mirrors =
+            mdm_engine::state::ResumeState::load(&mdm_engine::state::state_path(&item.dest))
+                .map(|s| s.mirrors)
+                .unwrap_or_default();
+        self.rewrite_state(id, false, Some(url.clone()), mirrors);
         if let Some(item) = self.items.iter().find(|i| i.id == id) {
             for p in self.properties.iter_mut().filter(|p| p.id == id) {
                 p.readdressed(item);
@@ -16022,6 +16043,8 @@ mod start_disk_tests {
             start: 0,
             cursor: done,
             end: 100,
+            mirror: None,
+            retries: 0,
         }];
         s
     }
@@ -16619,6 +16642,7 @@ mod start_disk_tests {
             address: Some(new.clone()),
             move_to: None,
             direct: None,
+            mirrors: Vec::new(),
         });
         assert!(at.elapsed() < AT_ONCE, "the window doesn't wait");
         assert_eq!(get(&app, 1).url, new);
