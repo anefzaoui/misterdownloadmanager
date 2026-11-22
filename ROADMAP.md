@@ -1980,6 +1980,10 @@ These ship in a later version, when they're ready.
   XWayland stays the default unless X11's windows would be scaled up (#624); Vulkan as the
   default renderer (below)
 - 🔄 The Safari extension (in 0.5.2): still to check in Safari itself, signed with a Developer ID
+- 🔄 **An Android app** on MDM's own engine and interface, landing in three parts
+  ([PR #1259](https://github.com/anefzaoui/misterdownloadmanager/pull/1259)): the shared crates
+  building for Android, the desktop unchanged (in review); the app itself, MDM's interface in a
+  phone layout with its downloads kept running in the background; then its build and releases
 
 ### Bugs being looked into
 
