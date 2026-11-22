@@ -1091,8 +1091,25 @@ impl Scheduler {
             o + vec2(623.0, 106.0),
         )));
         for &(title, x0, x1) in &cols {
+            // Cut to its own column, as the cells ("File NaSize" on narrow columns).
+            let col = hp.with_clip_rect(
+                winui::rect(Rect::from_min_max(
+                    pos2(o.x + x0, o.y + 83.0),
+                    pos2(o.x + x1 - 1.0, o.y + 106.0),
+                ))
+                .intersect(hp.clip_rect()),
+            );
             let title = crate::i18n::t(title);
-            text(&hp, o.x + x0 + 6.0, o.y + 99.0, title, LIGHT_TEXT());
+            winui::fit(
+                ui,
+                &col,
+                o.x + x0 + 6.0,
+                o.y + 99.0,
+                title,
+                LIGHT_TEXT(),
+                o.x + x1 - 3.0,
+                ("sched-title", x0 as i32),
+            );
             winui::header_divider(&hp, o.x + x1, o.y + 83.0, o.y + 106.0, winui::HEADER_LINE());
         }
         // The rows: the shared row list under the header (its frame on the list's).
@@ -1126,10 +1143,14 @@ impl Scheduler {
             |ui, clip, k, row, look| {
                 let item = rows[k];
                 let top = row.top();
-                // Picked with Ctrl / Shift: drawn as selected too.
+                // Painted as selected exactly when picked: Ctrl / Shift picks drawn as selected
+                // too, and the focused row dropped with Ctrl-click drawn as not.
                 if marked.contains(&item.id) && !look.selected {
                     clip.rect_filled(winui::rect(row), 0.0, winui::ROW_SELECTED());
                     look.ink = winui::SELECTION_TEXT();
+                } else if look.selected && !marked.contains(&item.id) {
+                    clip.rect_filled(winui::rect(row), 0.0, winui::FIELD());
+                    look.ink = winui::TEXT();
                 }
                 fill(clip, row.left(), top + 16.0, row.right(), top + 16.0, grid);
                 look.name = [
