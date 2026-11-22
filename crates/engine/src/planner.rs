@@ -31,6 +31,10 @@ pub struct Segment {
     /// Exclusive end; moves down when the segment is split.
     pub end: u64,
     pub worker: Option<WorkerId>,
+    /// Whole segment source: mirror index 0 is primary, 1+ is a mirror.
+    pub mirror: Option<usize>,
+    /// Consecutive retries for this segment's current source.
+    pub retries: u32,
     /// The worker has received data for this assignment (it can no longer be preempted).
     pub receiving: bool,
     /// When the current worker got it.
@@ -49,6 +53,10 @@ pub struct SavedSegment {
     pub start: u64,
     pub cursor: u64,
     pub end: u64,
+    #[serde(default)]
+    pub mirror: Option<usize>,
+    #[serde(default)]
+    pub retries: u32,
 }
 
 /// Bytes `[from, to)` for a worker to fetch. `to` may later shrink (see [`Planner::claim`]).
@@ -56,6 +64,7 @@ pub struct SavedSegment {
 pub struct Assignment {
     pub from: u64,
     pub to: u64,
+    pub mirror: Option<usize>,
     /// Bytes of this segment directly before `from` that are already on disk (resumed or
     /// taken-over segments; 0 for a fresh split). The worker re-fetches a few of them to check
     /// the file did not change (IDM's resume overlap check).
@@ -127,6 +136,8 @@ impl Planner {
                 reserved: s.cursor,
                 end: s.end,
                 worker: None,
+                mirror: s.mirror,
+                retries: s.retries,
                 receiving: false,
                 given_at: None,
             })
@@ -146,6 +157,8 @@ impl Planner {
                 start: s.start,
                 cursor: s.cursor,
                 end: s.end,
+                mirror: s.mirror,
+                retries: s.retries,
             })
             .collect()
     }
@@ -182,6 +195,16 @@ impl Planner {
     /// Next work for free worker `w`. `after` is the end of the segment it just finished, if any.
     /// `None` means there is nothing worth splitting: the worker should stop.
     pub fn assign(&mut self, w: WorkerId, after: Option<u64>) -> Option<Assignment> {
+        self.assign_mirror(w, after, None)
+    }
+
+    /// Assign work, choosing a source mirror for an unfinished segment.
+    pub fn assign_mirror(
+        &mut self,
+        w: WorkerId,
+        after: Option<u64>,
+        mirror: Option<usize>,
+    ) -> Option<Assignment> {
         self.release(w);
 
         // 1. An unassigned, unfinished segment — prefer the one continuing where `w` stopped.
@@ -192,6 +215,9 @@ impl Planner {
             .position(|s| open(s) && Some(s.start) == after)
             .or_else(|| self.segs.iter().position(open));
         if let Some(i) = pick {
+            if mirror.is_some() {
+                self.segs[i].mirror = mirror;
+            }
             return Some(self.give(i, w, None));
         }
 
@@ -206,6 +232,9 @@ impl Planner {
             })
         {
             let pre = self.segs[i].worker;
+            if mirror.is_some() {
+                self.segs[i].mirror = mirror;
+            }
             return Some(self.give(i, w, pre));
         }
 
@@ -225,11 +254,15 @@ impl Planner {
             mid = aligned;
         }
         let end = seg.end;
+        let source = seg.mirror;
         self.segs[i].end = mid;
-        self.segs.insert(i + 1, fresh(mid, end, Some(w)));
+        let mut upper = fresh(mid, end, Some(w));
+        upper.mirror = source;
+        self.segs.insert(i + 1, upper);
         Some(Assignment {
             from: mid,
             to: end,
+            mirror: source,
             written: 0,
             preempted: None,
         })
@@ -279,6 +312,22 @@ impl Planner {
             s.worker = None;
             s.reserved = s.cursor;
             s.receiving = false;
+        }
+    }
+
+    /// Requeue a failed segment and count the retry against its current mirror.
+    pub fn fail(&mut self, w: WorkerId, max_retries: u32) -> (Option<usize>, u32) {
+        if let Some(s) = self.segs.iter_mut().find(|s| s.worker == Some(w)) {
+            s.retries = s.retries.saturating_add(1);
+            if s.retries >= max_retries {
+                s.mirror = None;
+            }
+            s.worker = None;
+            s.reserved = s.cursor;
+            s.receiving = false;
+            (s.mirror, s.retries)
+        } else {
+            (None, 0)
         }
     }
 
@@ -333,6 +382,7 @@ impl Planner {
         Assignment {
             from: s.cursor,
             to: s.end,
+            mirror: s.mirror,
             written: s.cursor - s.start,
             preempted,
         }
@@ -346,6 +396,8 @@ fn fresh(start: u64, end: u64, worker: Option<WorkerId>) -> Segment {
         reserved: start,
         end,
         worker,
+        mirror: None,
+        retries: 0,
         receiving: false,
         given_at: worker.map(|_| std::time::Instant::now()),
     }

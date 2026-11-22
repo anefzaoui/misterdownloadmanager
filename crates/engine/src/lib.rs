@@ -27,13 +27,14 @@ pub mod verify;
 
 pub use dns::{Dns, DnsChoice, DnsError};
 pub use download::{
-    Destination, Download, Error, Event, FileHook, KeptAnswer, NetKind, Options, Outcome,
-    ProbeInfo, Proxy, Request, Snapshot, fetch, hop_client, http_client, page_links, page_videos,
-    probe, probe_kept, supported,
+    Destination, Download, Error, Event, FileHook, KeptAnswer, MirrorProbeError, NetKind, Options,
+    Outcome, ProbeInfo, Proxy, Request, Snapshot, fetch, hop_client, http_client, page_links,
+    page_videos, probe, probe_kept, probe_mirror, supported,
 };
 pub use html::{DeclaredVideo, DeclaredVideos};
 pub use net::{NetError, Route};
 pub use server::Server;
 pub use sites::Refusal;
+pub use state::{Mirror, MirrorStatus};
 pub use tls::CertProblem;
 pub use unlock::{ServiceFault, Unlocked, Unlocker};

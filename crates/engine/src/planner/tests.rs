@@ -3,6 +3,36 @@ use proptest::prelude::*;
 
 const MB: u64 = 1 << 20;
 
+#[test]
+fn adding_a_mirror_keeps_finished_segments() {
+    let mut p = Planner::new(4 * MB, MB);
+    p.assign_mirror(0, None, Some(0)).unwrap();
+    assert_eq!(p.claim(0, 0, MB), Claim::Granted(MB));
+    assert_eq!(p.commit(0, MB), None);
+    p.release(0);
+    p.assign_mirror(1, None, Some(1)).unwrap();
+    let saved = p.save();
+    assert_eq!(saved[0].cursor, MB);
+    assert_eq!(saved[0].mirror, Some(1));
+    assert!(saved.iter().all(|s| s.cursor >= s.start));
+}
+
+#[test]
+fn mirror_failure_requeues_with_bounded_retries() {
+    let mut p = Planner::new(MB, MB);
+    p.assign_mirror(0, None, Some(1)).unwrap();
+    let (_, retries) = p.fail(0, 3);
+    assert_eq!(retries, 1);
+    assert!(p.segments()[0].worker.is_none());
+    p.assign_mirror(0, None, Some(2)).unwrap();
+    let (_, retries) = p.fail(0, 3);
+    assert_eq!(retries, 2);
+    p.assign_mirror(0, None, Some(2)).unwrap();
+    let (_, retries) = p.fail(0, 3);
+    assert_eq!(retries, 3);
+    assert_eq!(p.segments()[0].mirror, None);
+}
+
 fn check_invariants(p: &Planner) {
     let mut expect = 0;
     let mut workers = std::collections::HashSet::new();
@@ -29,6 +59,7 @@ fn first_worker_gets_whole_file_second_splits_in_half() {
         Some(Assignment {
             from: 0,
             to: 100 * MB,
+            mirror: None,
             written: 0,
             preempted: None
         })
@@ -38,6 +69,7 @@ fn first_worker_gets_whole_file_second_splits_in_half() {
         Some(Assignment {
             from: 50 * MB,
             to: 100 * MB,
+            mirror: None,
             written: 0,
             preempted: None
         })
@@ -92,6 +124,7 @@ fn finished_worker_takes_over_next_segment_not_yet_receiving() {
         Assignment {
             from: a1.from,
             to: a1.to,
+            mirror: None,
             written: 0,
             preempted: Some(1)
         }
@@ -201,7 +234,13 @@ fn save_resume_round_trip() {
 
 #[test]
 fn resume_rejects_bad_state() {
-    let s = |start, cursor, end| SavedSegment { start, cursor, end };
+    let s = |start, cursor, end| SavedSegment {
+        start,
+        cursor,
+        end,
+        mirror: None,
+        retries: 0,
+    };
     assert!(Planner::resume(10, 1, &[s(0, 0, 5)]).is_err(), "short");
     assert!(
         Planner::resume(10, 1, &[s(0, 0, 5), s(6, 6, 10)]).is_err(),

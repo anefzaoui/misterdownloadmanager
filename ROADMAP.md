@@ -14,6 +14,8 @@ Everything below ships together, in version 0.5.0.
 
 ### Done
 
+- ✅ Per-task multi-mirror sources: primary URL and persisted mirrors, Range/size checks,
+  bounded failover, segment source/retry views, and per-mirror status in File Properties.
 - ✅ Menus on compositors that animate windows (Hyprland): no border and no slide-in, and going from
   title to title moves one window, so nothing fades; the reporter confirmed it
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277))

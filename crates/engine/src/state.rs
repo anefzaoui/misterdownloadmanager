@@ -14,11 +14,61 @@ use crate::planner::SavedSegment;
 
 const VERSION: u32 = 1;
 
+/// One additional source for a download, kept with its resume state.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Mirror {
+    pub url: Url,
+    #[serde(default)]
+    pub enabled: bool,
+    #[serde(default)]
+    pub status: MirrorStatus,
+    #[serde(default)]
+    pub speed_limit: Option<u64>,
+    #[serde(skip)]
+    pub referer: Option<String>,
+    #[serde(skip)]
+    pub cookie: Option<String>,
+    #[serde(skip)]
+    pub user_agent: Option<String>,
+}
+
+impl Mirror {
+    pub fn new(url: Url) -> Self {
+        Mirror {
+            url,
+            enabled: true,
+            status: MirrorStatus::Untested,
+            speed_limit: None,
+            referer: None,
+            cookie: None,
+            user_agent: None,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MirrorStatus {
+    #[default]
+    Untested,
+    Ok,
+    Failed,
+    SizeMismatch,
+    NoRange,
+    Disabled,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ResumeState {
     pub version: u32,
     /// The URL the user asked for.
     pub url: Url,
+    /// The primary URL in the mirror model. Legacy states migrate this from `url`.
+    #[serde(default)]
+    pub primary_url: Option<Url>,
+    /// Additional verified sources for this task.
+    #[serde(default)]
+    pub mirrors: Vec<Mirror>,
     /// The URL after redirects; segments are fetched from here.
     pub final_url: Url,
     /// The finished file's path (the part file is `naming::part_path(dest)`).
@@ -61,7 +111,9 @@ impl ResumeState {
     pub fn new(url: Url, final_url: Url, dest: PathBuf, size: u64, validators: Validators) -> Self {
         ResumeState {
             version: VERSION,
+            primary_url: Some(url.clone()),
             url,
+            mirrors: Vec::new(),
             final_url,
             dest,
             size,
@@ -92,6 +144,9 @@ impl ResumeState {
                 path.display(),
                 s.version
             ));
+        }
+        if s.primary_url.is_none() {
+            s.primary_url = Some(s.url.clone());
         }
         Ok(s)
     }
@@ -326,6 +381,28 @@ mod tests {
     }
 
     #[test]
+    fn legacy_state_migrates_to_primary_url_with_no_mirrors() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("legacy.mdm.json");
+        let url: Url = "http://example.test/a.bin".parse().unwrap();
+        let state = ResumeState::new(
+            url.clone(),
+            url.clone(),
+            dir.path().join("a.bin"),
+            100,
+            Validators::default(),
+        );
+        let mut json = serde_json::to_value(&state).unwrap();
+        let obj = json.as_object_mut().unwrap();
+        obj.remove("primary_url");
+        obj.remove("mirrors");
+        std::fs::write(&path, serde_json::to_vec(&json).unwrap()).unwrap();
+        let loaded = ResumeState::load(&path).unwrap();
+        assert_eq!(loaded.primary_url, Some(url));
+        assert!(loaded.mirrors.is_empty());
+    }
+
+    #[test]
     fn save_load_round_trip() {
         let dir = tempfile::tempdir().unwrap();
         let dest = dir.path().join("a.bin");
@@ -338,11 +415,15 @@ mod tests {
                 start: 0,
                 cursor: 10,
                 end: 50,
+                mirror: None,
+                retries: 0,
             },
             SavedSegment {
                 start: 50,
                 cursor: 60,
                 end: 100,
+                mirror: None,
+                retries: 0,
             },
         ];
         s.save(&state_path(&dest), segs, &part).unwrap();

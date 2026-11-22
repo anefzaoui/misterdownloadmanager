@@ -12,7 +12,7 @@ use std::collections::HashSet;
 use std::fs::File;
 use std::io;
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicU8, Ordering};
+use std::sync::atomic::{AtomicU8, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
@@ -88,6 +88,9 @@ pub const MAX_CONNECTIONS_UNLOCKED: u32 = 128;
 
 #[derive(Clone, Debug)]
 pub struct Options {
+    /// Additional sources for this task. Mirrored sources are used only after a same-file
+    /// Range probe has confirmed their size and range support.
+    pub mirrors: Vec<crate::state::Mirror>,
     /// Max simultaneous connections. IDM's default is 8 (notes/ENGINE.md §4). Read through
     /// [`Options::connections`], which keeps it in `1..=MAX_CONNECTIONS_UNLOCKED`.
     pub max_connections: u32,
@@ -270,6 +273,7 @@ pub fn supported(url: &Url) -> bool {
 impl Default for Options {
     fn default() -> Self {
         Options {
+            mirrors: Vec::new(),
             max_connections: 8,
             min_split: 12 * 1024,
             connect_timeout: Duration::from_secs(30),
@@ -845,6 +849,10 @@ pub struct ConnView {
     pub status: ConnStatus,
     /// Bytes/s over the current response (0 while not receiving).
     pub speed: u64,
+    /// Host of the mirror/source currently serving this connection.
+    pub mirror_host: Option<String>,
+    /// The effective per-connection/mirror limit, bytes/s (0 = unlimited).
+    pub mirror_limit: u64,
 }
 
 impl ConnView {
@@ -862,11 +870,13 @@ impl ConnView {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SegmentView {
     pub start: u64,
     pub cursor: u64,
     pub end: u64,
+    pub mirror_host: Option<String>,
+    pub retries: u32,
 }
 
 /// A point-in-time view for progress displays.
@@ -906,7 +916,7 @@ pub struct Event {
 }
 
 /// Events kept per download.
-pub const EVENTS: usize = 50;
+pub const EVENTS: usize = 1000;
 
 /// What a quick look at a URL tells before downloading (for "Download File Info").
 #[derive(Clone, Debug)]
@@ -920,6 +930,92 @@ pub struct ProbeInfo {
     /// The answer was a web page (HTML the server didn't name as a file of its own): Link
     /// grabber reads an address given on its own for its links ([`page_links`], #705).
     pub web_page: bool,
+}
+
+/// Why a mirror could not be used for this task.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum MirrorProbeError {
+    UnknownSize,
+    SizeMismatch { expected: u64, actual: u64 },
+    NoRange,
+    Request(String),
+}
+
+/// Verify that `url` is a ranged copy of a task of `expected_size`.
+/// ETag and Last-Modified are intentionally optional; only size and Range support decide use.
+pub async fn probe_mirror(
+    url: &Url,
+    expected_size: u64,
+    headers: HeaderMap,
+) -> Result<crate::state::Mirror, MirrorProbeError> {
+    if expected_size == 0 {
+        return Err(MirrorProbeError::UnknownSize);
+    }
+    let client = reqwest::Client::new();
+    let mut req = client.head(url.clone()).headers(headers.clone());
+    req = req.header(header::RANGE, "bytes=0-0");
+    let head = match req.send().await {
+        Ok(r) => r,
+        Err(e) => return Err(MirrorProbeError::Request(e.to_string())),
+    };
+    let head_status = head.status();
+    let head_range = head
+        .headers()
+        .get(header::CONTENT_RANGE)
+        .and_then(|v| v.to_str().ok())
+        .and_then(parse_content_range_total);
+    let head_len = head.content_length();
+    let actual = head_range.or(head_len).filter(|n| *n > 0);
+    drop(head);
+
+    if matches!(
+        head_status,
+        StatusCode::METHOD_NOT_ALLOWED | StatusCode::NOT_IMPLEMENTED
+    ) || actual.is_none()
+    {
+        let range = client
+            .get(url.clone())
+            .headers(headers)
+            .header(header::RANGE, "bytes=0-0")
+            .send()
+            .await
+            .map_err(|e| MirrorProbeError::Request(e.to_string()))?;
+        if range.status() != StatusCode::PARTIAL_CONTENT {
+            return Err(MirrorProbeError::NoRange);
+        }
+        let actual = range
+            .headers()
+            .get(header::CONTENT_RANGE)
+            .and_then(|v| v.to_str().ok())
+            .and_then(parse_content_range_total)
+            .ok_or(MirrorProbeError::UnknownSize)?;
+        drop(range);
+        if actual != expected_size {
+            return Err(MirrorProbeError::SizeMismatch {
+                expected: expected_size,
+                actual,
+            });
+        }
+    } else if head_status != StatusCode::PARTIAL_CONTENT {
+        return Err(MirrorProbeError::NoRange);
+    } else if actual != Some(expected_size) {
+        return Err(MirrorProbeError::SizeMismatch {
+            expected: expected_size,
+            actual: actual.unwrap_or(0),
+        });
+    }
+
+    let mut mirror = crate::state::Mirror::new(url.clone());
+    mirror.status = crate::state::MirrorStatus::Ok;
+    Ok(mirror)
+}
+
+fn parse_content_range_total(value: &str) -> Option<u64> {
+    value.rsplit_once('/').and_then(|(_, total)| {
+        (!total.eq("*"))
+            .then(|| total.parse::<u64>().ok())
+            .flatten()
+    })
 }
 
 /// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name, through
@@ -1400,6 +1496,9 @@ impl Download {
                 at_service: None,
                 finishing: None,
             }),
+            primary_url: Mutex::new(None),
+            mirrors: Mutex::new(Vec::new()),
+            next_mirror: AtomicUsize::new(0),
             seen: Default::default(),
             planner: Mutex::new(None),
             limiter: Limiter::new(None),
@@ -1434,6 +1533,20 @@ impl Download {
 
     pub fn speed_limit(&self) -> Option<u64> {
         self.shared.limiter.get()
+    }
+
+    /// Replace the primary source while keeping every finished segment.
+    pub fn set_primary_url(&self, url: Url) {
+        *self.shared.primary_url.lock().unwrap() = Some(url.clone());
+        self.shared.view.lock().unwrap().url = url;
+        self.shared
+            .event("Primary URL changed; unfinished segments keep their progress");
+    }
+
+    /// Update the mirror list while this download runs.
+    pub fn set_mirrors(&self, mirrors: Vec<crate::state::Mirror>) {
+        *self.shared.mirrors.lock().unwrap() = mirrors;
+        self.shared.event("Mirror list updated");
     }
 
     pub async fn wait(self) -> Result<Outcome, Error> {
@@ -1513,6 +1626,9 @@ pub async fn fetch(
 
 struct Shared {
     view: Mutex<Snapshot>,
+    primary_url: Mutex<Option<Url>>,
+    mirrors: Mutex<Vec<crate::state::Mirror>>,
+    next_mirror: AtomicUsize,
     /// What the download's client learnt of its server (#140); the look's when it went on
     /// from the look's answer.
     seen: std::sync::OnceLock<Arc<crate::server::ServerSeen>>,
@@ -1538,6 +1654,52 @@ struct Shared {
 }
 
 impl Shared {
+    fn mark_mirror_failed(&self, index: usize) {
+        if index == 0 {
+            return;
+        }
+        let mut mirrors = self.mirrors.lock().unwrap();
+        if let Some(m) = mirrors.get_mut(index - 1) {
+            m.status = crate::state::MirrorStatus::Failed;
+            m.enabled = false;
+        }
+    }
+    fn choose_mirror(&self) -> Option<usize> {
+        let mirrors = self.mirrors.lock().unwrap();
+        let mut enabled: Vec<usize> = vec![0];
+        enabled.extend(
+            mirrors
+                .iter()
+                .enumerate()
+                .filter_map(|(i, m)| {
+                    (m.enabled && m.status == crate::state::MirrorStatus::Ok).then_some(i + 1)
+                })
+                .collect::<Vec<_>>(),
+        );
+        let n = self.next_mirror.fetch_add(1, Ordering::Relaxed);
+        Some(enabled[n % enabled.len()])
+    }
+    fn mirror_host(&self, index: usize) -> Option<String> {
+        if index == 0 {
+            if let Some(host) = self
+                .primary_url
+                .lock()
+                .unwrap()
+                .as_ref()
+                .and_then(|u| u.host_str().map(str::to_owned))
+            {
+                return Some(host);
+            }
+            return self.view.lock().unwrap().url.host_str().map(str::to_owned);
+        }
+        self.mirrors
+            .lock()
+            .unwrap()
+            .get(index.saturating_sub(1))
+            .filter(|m| m.enabled)
+            .and_then(|m| m.url.host_str().map(str::to_owned))
+    }
+
     /// Stopped while downloading to `dest` (#1328): the connections are closing, and the download
     /// says so at once; what they received and the resume state are written after, and the
     /// place is held for that long (`naming::settling`).
@@ -1560,10 +1722,15 @@ impl Shared {
             s.segments = p
                 .segments()
                 .iter()
-                .map(|g| SegmentView {
-                    start: g.start,
-                    cursor: g.cursor,
-                    end: g.end,
+                .map(|g| {
+                    let host = g.mirror.and_then(|i| self.mirror_host(i));
+                    SegmentView {
+                        start: g.start,
+                        cursor: g.cursor,
+                        end: g.end,
+                        mirror_host: host,
+                        retries: g.retries,
+                    }
                 })
                 .collect();
         }
@@ -1612,6 +1779,8 @@ impl Shared {
                     downloaded: 0,
                     status: ConnStatus::Connecting,
                     speed: 0,
+                    mirror_host: None,
+                    mirror_limit: 0,
                 });
                 v.connections.len() - 1
             }
@@ -1791,6 +1960,39 @@ impl Head {
 impl Ctx {
     fn target(&self) -> Target {
         self.target.lock().unwrap().clone()
+    }
+
+    fn target_for(&self, mirror: Option<usize>) -> Target {
+        let mut target = self.target();
+        let Some(index) = mirror else {
+            return target;
+        };
+        if index == 0 {
+            if let Some(url) = self.shared.primary_url.lock().unwrap().clone() {
+                target.url = url;
+            }
+            return target;
+        }
+        let Some(m) = self.shared.mirrors.lock().unwrap().get(index - 1).cloned() else {
+            return target;
+        };
+        target.url = m.url.clone();
+        if let Some(referer) = m.referer
+            && let Ok(v) = HeaderValue::from_str(&referer)
+        {
+            target.headers.insert(header::REFERER, v);
+        }
+        if let Some(cookie) = m.cookie
+            && let Ok(v) = HeaderValue::from_str(&cookie)
+        {
+            target.headers.insert(header::COOKIE, v);
+        }
+        if let Some(agent) = m.user_agent
+            && let Ok(v) = HeaderValue::from_str(&agent)
+        {
+            target.headers.insert(header::USER_AGENT, v);
+        }
+        target
     }
 
     /// After `generation`'s address answered as a dead link: ask the original address for
@@ -4221,15 +4423,32 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
         if ctx.cancel.is_cancelled() {
             return Err(Error::Cancelled);
         }
-        let Some(a) = ctx.shared.with_planner(|p| p.assign(id, after.take())) else {
+        let mirror = ctx.shared.choose_mirror();
+        let Some(a) = ctx
+            .shared
+            .with_planner(|p| p.assign_mirror(id, after.take(), mirror))
+        else {
             ctx.shared.conn(id, ConnView::finish);
             return Ok(());
         };
+        let mirror_host = mirror.and_then(|i| ctx.shared.mirror_host(i));
+        let mirror_limit = mirror
+            .and_then(|i| {
+                ctx.shared
+                    .mirrors
+                    .lock()
+                    .unwrap()
+                    .get(i.saturating_sub(1))
+                    .and_then(|m| m.speed_limit)
+            })
+            .unwrap_or(0);
         ctx.shared.conn(id, |c| {
             c.status = ConnStatus::Connecting;
             c.speed = 0;
+            c.mirror_host = mirror_host;
+            c.mirror_limit = mirror_limit;
         });
-        let target = ctx.target();
+        let target = ctx.target_for(mirror);
 
         // The server ignores ranges: only the probe's plain GET can bring data. While it
         // still streams it takes this segment over as it gets there; once it has stopped,
@@ -4285,7 +4504,20 @@ async fn worker(ctx: Arc<Ctx>, id: WorkerId, mut first: Option<Body>) -> Result<
                 };
             }
             Err(e) => {
-                ctx.shared.with_planner(|p| p.release(id));
+                let (failed_mirror, retries) = ctx
+                    .shared
+                    .with_planner(|p| p.fail(id, ctx.opts.max_retries));
+                if retries >= ctx.opts.max_retries
+                    && let Some(index) = failed_mirror
+                {
+                    ctx.shared.mark_mirror_failed(index);
+                    if index != 0 {
+                        ctx.shared.event(format!(
+                            "Mirror {}: stopped after {retries} failed retries",
+                            index
+                        ));
+                    }
+                }
                 if e.is_fatal() {
                     // What stopped the download shows on the connection that met it, not
                     // "Connecting..." (#1577).

@@ -2517,6 +2517,22 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
                 &[("host", &crate::i18n::ltr(host))],
             ),
         };
+        let mut info = info;
+        if let Some(host) = c.mirror_host.as_deref() {
+            if !info.is_empty() {
+                info.push_str(" · ");
+            }
+            info.push_str(host);
+        }
+        if c.mirror_limit > 0 {
+            if !info.is_empty() {
+                info.push_str(" · ");
+            }
+            info.push_str(&crate::i18n::fmt(
+                crate::i18n::t("{size}/s"),
+                &[("size", &size3(c.mirror_limit))],
+            ));
+        }
         // The Info column ends at the scrollbar.
         let (rect, cut) = winui::text_fit(
             &clip,
