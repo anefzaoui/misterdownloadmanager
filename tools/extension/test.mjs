@@ -2291,6 +2291,24 @@ function samplePage(html) {
   ok("#1458: Kwai's player: its page named, its own MP4 the click's download");
 }
 
+// A video that hasn't played has no stream yet: the button takes the one its page wrote for the
+// player (video.js bestPageStream), the best quality its address names, escaped "\/" undone.
+{
+  const source = readText("../../extension/video.js");
+  const at = source.indexOf("  function bestPageStream(");
+  const bestPageStream = new Function(`${source.slice(at, source.indexOf("\n  }\n", at) + 4)}\nreturn bestPageStream;`)();
+  const html = `<script>var cfg={"hls":{"360":"https:\\/\\/cdn.example.com\\/v\\/abc_360p.m3u8?t=1\\u0026e=2",
+    "1080":"https:\\/\\/cdn.example.com\\/v\\/abc_1080p.m3u8?t=1\\u0026e=2","720":"https://cdn.example.com/v/abc_720p.m3u8"}}</script>`;
+  assert.equal(bestPageStream(html), "https://cdn.example.com/v/abc_1080p.m3u8?t=1&e=2", "the 1080p one, unescaped");
+  assert.equal(
+    bestPageStream(`<video data-src="https://cdn.example.com/master.m3u8?a=1&amp;b=2"></video>`),
+    "https://cdn.example.com/master.m3u8?a=1&b=2",
+    "no quality named: the first, &amp; undone",
+  );
+  assert.equal(bestPageStream("<p>no video here, just video.mp4</p>"), "", "none");
+  ok("a stream the page wrote is found before the video plays");
+}
+
 // What the resolvers build is a form yt-dlp's extractors read (their _VALID_URL, yt-dlp
 // 2026.08.19), so the app's lookup finds the one video.
 {
