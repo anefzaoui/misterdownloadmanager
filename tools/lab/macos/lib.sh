@@ -222,10 +222,14 @@ wallpaper() {
 }
 
 # ---- The menu bar item (the status item: MDM's icon where Windows has its notification area):
-# its bounds "x y w h", from System Events (accessibility).
+# its bounds "x y w h", from System Events (accessibility), else from the window list (its window,
+# MDM's, in the status items' layer; macOS 26 keeps it out of the app's own list).
 menu_item_bounds() {
-  osascript -e "tell application \"System Events\" to tell (first process whose unix id is $PID) to get {position, size} of menu bar item 1 of menu bar 2" 2>/dev/null \
-    | tr -d ' ' | awk -F, 'NF == 4 {print $1, $2, $3, $4}'
+  local b
+  b=$(osascript -e "tell application \"System Events\" to tell (first process whose unix id is $PID) to get {position, size} of menu bar item 1 of menu bar 2" 2>/dev/null \
+    | tr -d ' ' | awk -F, 'NF == 4 {print $1, $2, $3, $4}')
+  [ -n "$b" ] || b=$(mt windows "$PID" | awk -F'\t' '$3 == 25 {print $4, $5, $6, $7; exit}')
+  echo "$b"
 }
 
 # ---- The runner's desktop for pictures: no Dock (hidden until pointed at), no desktop icons, no

@@ -60,14 +60,15 @@ fill_list() {
   done
 }
 
-# The menu bar item: the right of the menu bar, then its menu opened with a click.
+# The menu bar item: the right of the menu bar, then its menu, which a right click opens (a left
+# click shows the main window, as Windows' notification-area icon does).
 menu_bar_item() { # <dir>
   local x y w h
   read -r x y w h < <(menu_item_bounds)
   if [ -z "${h:-}" ]; then log "no menu bar item"; mt windows >"$1/windows-all.txt"; return; fi
   log "menu bar item at $x,$y ${w}x$h"
   screen "$1/menu-bar.png" "$((SW - 560)),0,560,$((y + h + 2))"
-  mt click $((x + w / 2)) $((y + h / 2)); sleep 1.5
+  mt click $((x + w / 2)) $((y + h / 2)) right; sleep 1.5
   mt windows >"$1/windows-menu-bar.txt"
   # The menu: below the item, as wide and tall as macOS draws it (its window in the list).
   local menu

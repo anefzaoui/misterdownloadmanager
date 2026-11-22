@@ -12,7 +12,8 @@
 #   checked: dmg-check.sh.
 #
 # Run by hand (Actions → macOS showcase → Run workflow) or by a push to a macos-showcase/**
-# branch. Never on other pushes or pull requests. No secret is used; the token reads only.
+# branch (macos-showcase/dmg*: with this commit's .dmg files). Never on other pushes or pull
+# requests. No secret is used; the token reads only.
 name: macOS showcase
 
 on:
@@ -50,7 +51,7 @@ env:
 
 jobs:
   app:
-    if: inputs.jobs != 'dmg'
+    if: inputs.jobs != 'dmg' && !startsWith(github.ref, 'refs/heads/macos-showcase/dmg')
     name: app (${{ matrix.arch }})
     strategy:
       fail-fast: false
@@ -103,7 +104,7 @@ jobs:
 
   # This commit's .dmg files, built as release.yml builds them (both processors on Apple Silicon).
   dmg-build:
-    if: inputs.dmg_from_commit && (inputs.jobs == 'all' || inputs.jobs == 'dmg')
+    if: (inputs.dmg_from_commit && (inputs.jobs == 'all' || inputs.jobs == 'dmg')) || startsWith(github.ref, 'refs/heads/macos-showcase/dmg')
     runs-on: macos-latest
     timeout-minutes: 120
     steps:
@@ -131,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(inputs.dmg_from_commit && '[{"runner":"macos-latest","arch":"arm64","source":"release"},{"runner":"macos-15-intel","arch":"x86_64","source":"release"},{"runner":"macos-latest","arch":"arm64","source":"built"},{"runner":"macos-15-intel","arch":"x86_64","source":"built"}]' || '[{"runner":"macos-latest","arch":"arm64","source":"release"},{"runner":"macos-15-intel","arch":"x86_64","source":"release"}]') }}
+        include: ${{ fromJSON((inputs.dmg_from_commit || startsWith(github.ref, 'refs/heads/macos-showcase/dmg')) && '[{"runner":"macos-latest","arch":"arm64","source":"release"},{"runner":"macos-15-intel","arch":"x86_64","source":"release"},{"runner":"macos-latest","arch":"arm64","source":"built"},{"runner":"macos-15-intel","arch":"x86_64","source":"built"}]' || '[{"runner":"macos-latest","arch":"arm64","source":"release"},{"runner":"macos-15-intel","arch":"x86_64","source":"release"}]') }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
     steps:
