@@ -324,6 +324,15 @@ impl Made {
         }
         window_thread(self.analysis.as_ref()?, self.notes.freeze.as_ref()?)
     }
+
+    /// A crash's crashing thread, as its dump has it (the app reads where it crashed: #1659).
+    pub fn crashed_thread(&self) -> Option<&Thread> {
+        if self.kind != Kind::Crash {
+            return None;
+        }
+        let a = self.analysis.as_ref()?;
+        a.thread(a.requesting?)
+    }
 }
 
 /// Read `dump` (none for an exit nothing caught), write the report beside it in `data`'s crashes
@@ -749,6 +758,7 @@ pub fn scrub(text: &str, home: Option<&Path>) -> String {
 mod tests {
     use super::*;
     use crate::protocol::{Freeze, Panic, Session};
+    use std::path::PathBuf;
 
     fn frame(f: &str) -> Frame {
         Frame {
@@ -820,6 +830,43 @@ mod tests {
         assert!(!t.contains("Someone"));
         // The watchdog's thread is listed among the others.
         assert!(t.contains("-- Thread watchdog (2) --"));
+    }
+
+    #[test]
+    fn a_crash_names_the_crashed_thread() {
+        let a = Analysis {
+            requesting: Some(3),
+            threads: vec![
+                Thread {
+                    id: 1,
+                    name: Some("main".into()),
+                    frames: vec![frame("main_loop")],
+                },
+                Thread {
+                    id: 3,
+                    name: Some("crashing_worker".into()),
+                    frames: vec![frame("driver_call")],
+                },
+            ],
+            ..Default::default()
+        };
+        let made = Made {
+            kind: Kind::Crash,
+            text: String::new(),
+            signature: String::new(),
+            path: PathBuf::new(),
+            dump: None,
+            analysis: Some(a),
+            notes: Notes::default(),
+        };
+        assert_eq!(made.crashed_thread().map(|t| t.id), Some(3));
+        assert_eq!(made.frozen_window_thread(), None);
+
+        let freeze = Made {
+            kind: Kind::Freeze,
+            ..made
+        };
+        assert_eq!(freeze.crashed_thread(), None);
     }
 
     /// What drew, and why, is in the report's head, before the stack and the log: a report cut

@@ -249,6 +249,7 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
         let stores: Vec<PathBuf> = store.iter().cloned().collect();
         let made = report::make(dump.as_deref(), kind, notes.clone(), &data, &stores);
         note_gl_freeze(&made);
+        note_gl_crash(&made);
         let missing = made
             .analysis
             .as_ref()
@@ -291,6 +292,7 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
                 Ok(()) => {
                     let made = report::make(dump.as_deref(), kind, notes, &data, &stores);
                     note_gl_freeze(&made);
+                    note_gl_crash(&made);
                     set(&shared, &ctx, |s| s.made = Some(made));
                 }
                 Err(e) => {
@@ -334,6 +336,27 @@ fn note_gl_freeze(made: &Made) {
     if let Some(module) = crate::renderer::gl_driver_frame(modules, testing) {
         let seconds = made.notes.freeze.as_ref().map_or(0, |f| f.seconds);
         crate::renderer::remember_gl_froze(&module, seconds);
+    }
+}
+
+/// A crash while OpenGL drew, its crashing thread inside OpenGL's driver (#1659): remembered,
+/// so the app's next start draws another way (renderer.rs; Windows only). Read from the stack's
+/// modules, which need no symbols.
+fn note_gl_crash(made: &Made) {
+    let drew_gl = made
+        .notes
+        .session
+        .as_ref()
+        .is_some_and(|s| s.renderer.starts_with("OpenGL"));
+    let Some(thread) = made.crashed_thread().filter(|_| drew_gl) else {
+        return;
+    };
+    let modules = thread.frames.iter().map(|f| f.module.as_deref());
+    // MDM_TEST_GL_CRASH=1 (off-screen test copies): the app's crash stands for a driver's.
+    let testing =
+        crate::offscreen() && std::env::var_os("MDM_TEST_GL_CRASH").is_some_and(|v| v == "1");
+    if let Some(module) = crate::renderer::gl_driver_frame(modules, testing) {
+        crate::renderer::remember_gl_crashed(&module);
     }
 }
 

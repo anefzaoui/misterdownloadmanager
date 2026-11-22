@@ -530,18 +530,21 @@ pub enum Why {
     TooOld,
     /// The window froze inside OpenGL's driver ([`gl_driver_frame`], #847).
     FrozeInDriver,
+    /// MDM crashed inside OpenGL's driver ([`gl_driver_frame`], #1659).
+    CrashedInDriver,
     /// Anything else (the log has eframe's error).
     Other,
 }
 
 impl Why {
-    const ALL: [Why; 7] = [
+    const ALL: [Why; 8] = [
         Why::NoAdapter,
         Why::NoFirstFrame,
         Why::EndedEarly,
         Why::LostTwice,
         Why::TooOld,
         Why::FrozeInDriver,
+        Why::CrashedInDriver,
         Why::Other,
     ];
 
@@ -554,6 +557,7 @@ impl Why {
             Why::LostTwice => "lost-twice",
             Why::TooOld => "too-old",
             Why::FrozeInDriver => "froze-in-driver",
+            Why::CrashedInDriver => "crashed-in-driver",
             Why::Other => "other",
         }
     }
@@ -810,7 +814,10 @@ fn drew_again() {
         return;
     };
     let name = way.name();
-    if matches!(f.why, Why::FrozeInDriver | Why::LostTwice) {
+    if matches!(
+        f.why,
+        Why::FrozeInDriver | Why::CrashedInDriver | Why::LostTwice
+    ) {
         if f.drew.is_none() {
             f.drew = Some(unix_now());
             let _ = std::fs::write(&failed, f.text());
@@ -1035,7 +1042,9 @@ fn day(secs: u64) -> String {
 pub fn wait(why: Why, tries: u32) -> Option<u64> {
     let (first, most) = match why {
         Why::NoFirstFrame | Why::EndedEarly | Why::LostTwice => (7 * DAY, 90 * DAY),
-        Why::NoAdapter | Why::Other | Why::FrozeInDriver => (30 * DAY, 180 * DAY),
+        Why::NoAdapter | Why::Other | Why::FrozeInDriver | Why::CrashedInDriver => {
+            (30 * DAY, 180 * DAY)
+        }
         Why::TooOld => return None,
     };
     let doubled = first.saturating_mul(1u64 << tries.saturating_sub(1).min(16));
@@ -1282,6 +1291,18 @@ pub fn remember_gl_froze(module: &str, seconds: u64) {
     let details = format!("the window froze for {seconds} s inside {module} as OpenGL drew");
     tracing::warn!("OpenGL can't draw MDM here: {details}; passed over from the next start");
     remember_failure(Way::OpenGl, Why::FrozeInDriver, &details);
+}
+
+/// MDM crashed inside OpenGL's driver (the crash report's window read it from the crash's
+/// stack, [`gl_driver_frame`]): remembered, so the next starts draw with the system's API on its
+/// software renderer when the card has none (#1659). Windows only ([`WATCH_GL`]).
+pub fn remember_gl_crashed(module: &str) {
+    if !WATCH_GL {
+        return;
+    }
+    let details = format!("crashed inside {module} as OpenGL drew");
+    tracing::warn!("OpenGL can't draw MDM here: {details}; passed over from the next start");
+    remember_failure(Way::OpenGl, Why::CrashedInDriver, &details);
 }
 
 /// `MDM_TEST_GL_STALL=1` (off-screen test copies): once, a few seconds after the first frame
@@ -2600,6 +2621,7 @@ mod tests {
             ),
             (at(&["ntdll.dll", "nvoglv64.dll", mdm]), "nvoglv64.dll"),
             (at(&["kernelbase.dll", "IG9ICD64.DLL", mdm]), "IG9ICD64.DLL"),
+            (at(&["ig9icd64.dll", "ntdll.dll"]), "ig9icd64.dll"),
         ] {
             assert_eq!(gl_driver_frame(stack, false).as_deref(), Some(driver));
         }
@@ -2882,6 +2904,7 @@ mod tests {
             (Why::NoAdapter, Some(30 * DAY)),
             (Why::Other, Some(30 * DAY)),
             (Why::FrozeInDriver, Some(30 * DAY)),
+            (Why::CrashedInDriver, Some(30 * DAY)),
             (Why::TooOld, None),
         ] {
             assert_eq!(wait(why, 1), first, "{why:?}");
@@ -2910,6 +2933,8 @@ mod tests {
         assert_eq!(waits, [7, 14, 28, 56, 90, 90, 90, 90]);
         assert_eq!(wait(Why::FrozeInDriver, 3), Some(120 * DAY));
         assert_eq!(wait(Why::FrozeInDriver, 9), Some(180 * DAY));
+        assert_eq!(wait(Why::CrashedInDriver, 3), Some(120 * DAY));
+        assert_eq!(wait(Why::CrashedInDriver, 9), Some(180 * DAY));
         assert_eq!(wait(Why::NoFirstFrame, u32::MAX), Some(90 * DAY));
         let twice = failed(Why::NoFirstFrame, t0, 2);
         assert!(pass(verdict(&twice, t0 + 13 * DAY, None)));
