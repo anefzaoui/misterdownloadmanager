@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	ᏂᎦᏔᎲᎾ ས་ᏚᏓᏢᏒᎢ ᎤᏚᎵᎭ {n} ᎠᏕᎳᏗᏗᏍᏙᏗ ᎦᏟᏐᏗᏱ ᎦᏟᏐᏗᏍᎩ.|ᏂᎦᏔᎲᎾ ས་ᏚᏓᏢᏒᎢ ᎤᏚᎵᎭ {n} ᎠᏕᎳᏗᏗᏍᏙᏗ ᎦᏟᏐᏗᏱ ᎦᏟᏐᏗᏍᎩ.
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	ᎠᎴ {n} ᎢᏐᎢ|ᎠᎴ {n} ᎢᏐᎢ
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -54,6 +59,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	ᎠᏏᏴᏫ {n} ᎨᏒᎢ ᎠᎦᏘᏴᎢ. ᎾᏍᏉ ᎾᏍᎩᏍᎪ ᎠᏲᏍᏗᏍᎪᎢ?|ᎠᏂᏏᏴᏫ {n} ᎨᏒᎢ ᎠᏂᎦᏘᏴᎢ. ᎾᏍᏉ ᎾᏍᎩᏍᎪ ᎠᏲᏍᏗᏍᎪᎢ?
+#. count in a dialog box
+#. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	ᎯᎠ {n} ᎤᏍᏆᏛᎯ Ꮧ फाइल ᎾᏍᏉ ᏚᏓᎴᏔᏅ.|ᎯᎠ {n} ᎤᏍᏆᏛᎯ Ꮧ फाइल ᎾᏍᏉ ᏚᏓᎴᏔᏅ.
 #. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
@@ -308,6 +318,7 @@
 #, machine
 	about {ms} ms ({reach})	ᎾᏍᎩ {ms} ms ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -810,7 +821,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	ᎧᎾᏓ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ᎠᎦᏘᎴᎢ
@@ -989,7 +1000,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ᎢᏳᏟᎶᏛ:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1158,7 +1169,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	ᎢᎦ, ᎠᎴᏅᏙᏗ, ᏑᏕᏘᏴᏛ
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	Debrid ᏗᏂᏍᏕᎵᏍᎩ ᎠᏎᏍᏙᏗ
 #. text in the Scheduler window
@@ -1338,6 +1349,10 @@
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
 	Download in order	ᎠᏓᎴᏂᏍᎬᎢ ᏗᎦᏁᏟᏴᏍᏗ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the remedy from the failure's sentence, for a file whose checksum didn't match. The sentence is the cell's hover tip
+#, machine
+	Download it again	ᏔᎴᏅ 다시 받으세요
 #. button in a dialog box
 #, machine
 	Download Later	ᏗᏗᏍᎪᏗᏱ ᎣᏂ
@@ -1360,6 +1375,10 @@
 #. window title: the download button the extension shows over videos
 #, machine
 	Download panels	ᎠᏰᎵ ᏗᏓᏟᎶᏍᏗ ᏗᎦᏃᏍᏙᏗ
+#. window title in the Options window
+#. window title: Options → Downloads → Edit... (the progress window's settings)
+#, machine
+	Download progress dialog	ᏔᎴᏅ 진행 상황 대화 상자
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -1445,8 +1464,9 @@
 #. title of the window that sums up downloads added together (a playlist, a batch) once all are done
 #, machine
 	Downloads complete	ᏗᎦᎴᏴᏔᏅᎢ ᎤᏍᏆᏛᎯ
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	ᏂᎦᏛ downloads Ꭲ presently
 #. text in a dialog box
@@ -3428,7 +3448,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	ᎤᏍᏚᎢᏓ magnet links ᎠᎴ .torrent ᏗᎪᏪᎵ Mister Download Manager ᎢᏗᏙᎯ
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	ᎤᏍᏚᎢᏓ Mister Download Manager
 #. text in extension.rs
@@ -5227,6 +5248,7 @@
 	This name is reserved by Windows	ᎯᎠ ᏚᏙᎥ Windows ᎤᏤᎵ ᎠᏍᏆᏂᎪᏔᏅ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ᎯᎠ ffmpeg ᎤᏚᎵᎭ
@@ -5682,7 +5704,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	ᏴᏫ ᏚᏙᎥ:
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	ᎬᏔᏅᎢ ᏚᏙᎥᎢ ᎠᎴ ᏗᏍᎦᎶᏗ ᏗᏙᎳᏤᏗ/ᏗᏙᎳᏤᏗ
 #. text in the Options window
@@ -6097,7 +6119,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} ᎤᎾᏓᏟᏍᏔᏅ. ᎢᏗᏢᏗᏍᏗ MDM ᎪᎯ ᎨᏒ.
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -6295,6 +6317,18 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (ᏂᎦᏗᏳ ᎢᏳᎢ: {limit})
+#. text in helpers.rs
+#. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
+#, machine
+	{runtime}, Mister Download Manager's own copy	{runtime}, Mister Download Manager ᎤᏤᎵᎦ
+#. text in helpers.rs
+#. Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
+#, machine
+	{runtime}, your own program: {path}	{runtime}, ᎢᏝᏅᎢ ᎢᏨᏒ ᎢᏣᏓᏁᎸᎯ: {path}
+#. text in helpers.rs
+#. Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
+#, machine
+	{runtime}, your system's, nothing to download: {path}	{runtime}, ᎢᏨᏒ ᎢᏣᏓᏁᎸᎯ, ᎥᏝ ᎪᎱᏍᏗ ᏗᏩᏛᏗ ᏱᎩ: {path}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6309,6 +6343,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ᎥᏝ ᏰᎵ ᎯᎠ ᏗᎪᏪᎵ ᏗᎦᎾᏢᏗ ᏫᎦᎷᎩ ᏰᎵ ᏱᎩ ᎪᎯ; MDM ᎣᏂ ᏙᏓᏳᎪᎵᏰᏏ.
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} ᎥᏝ {file} ᏯᏂᏃᎯᎵᏙ, ᎾᏍᎩ ᎯᎠ ᎢᏯᏓᏁᎸᎯ ᎨᏒ ᏗᎧᏃᎯᎵᏙᏗ ᎨᏒᎢ: ᎥᏝ ᎪᎱᏍᏗ ᏗᏩᏛᏗ ᏱᎩ. ᏔᎵᏁ ᏗᎧᏃᎯᎵᏙᏗ ᎨᏒ ᎢᏣᏓᏁᎸᎯ ᎨᏒᎢ, ᎠᎴ ᎯᎠ ᎾᏍᎩ ᎢᏣᏓᏁᎸᎯ ᎨᏒ ᎥᏝ ᎢᏣᏓᏁᎸᎯ ᏱᎩ.
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6352,6 +6390,11 @@
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
 	{service}: {message}	{service}: {message}
+#. text in errors.rs
+#. a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} didn't give the file this time: try again in a moment	{site} ᎥᏝ ᎯᎠ ᎢᏯᏓᏁᎸᎯ ᏱᎩ: ᏔᎵᏁ ᎢᏣᏓᏁᎸᎯ ᎨᏒᎢ.
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6594,6 +6637,11 @@ extension	Done	ᎤᏍᏆᏛᎯ
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ᎠᏠᏯᏍᏗ
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	ᏗᎧᏃᎯᎵᏙᏗ ᎨᏒ ᎢᏣᏓᏁᎸᎯ ᎨᏒᎢ...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine
@@ -7470,6 +7518,11 @@ menu	&Undo	ᏔᎵᏁ &ᏂᎦᎵᏍᏔᏅᏗ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Video downloads	&ᏗᏟᎶᏍᏔᏅ ᏗᎦᏁᏟᏴᏗ
+#. menu command in the main window
+#. View → Window system: Wayland's own windows (the name of a Linux display system, usually kept as is)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Wayland	&ᏩᏱᎳᏂ
 #. menu command in the main window
 #. View menu: submenu choosing the window system MDM's windows use on Linux (X11 through XWayland, or Wayland)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation

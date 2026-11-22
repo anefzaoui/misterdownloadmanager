@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	ଏକ ଅଜ୍ଞାତ ସାଇଟ୍ ଲିଙ୍କ୍ ଗ୍ରାବର୍‌କୁ {n}ଟି ଲିଙ୍କ୍ ପଠାଇବାକୁ ଚାହୁଁଛି।|ଏକ ଅଜ୍ଞାତ ସାଇଟ୍ ଲିଙ୍କ୍ ଗ୍ରାବର୍‌କୁ {n}ଟି ଲିଙ୍କ୍ ପଠାଇବାକୁ ଚାହୁଁଛି।
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	ଏବଂ ଆଉ {n}ଟି|ଏବଂ ଆଉ {n}ଟି
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -278,6 +283,14 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ଏକ NextDNS ବିନ୍ୟାସ ID ହେଉଛି ଛଅଟି ଅକ୍ଷର ଏବଂ ଅଙ୍କ (0-9, a-f)।
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	ଭିଡିଓର ଅଧ୍ୟାୟ ଓ ସବ୍‌ଟାଇଟଲ୍ ବିନା ଏକ ଅଂଶ ସେଭ୍ କରାଯାଇଛି
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	ଏକ ପ୍ଲେଲିଷ୍ଟର ଭିଡିଓଗୁଡ଼ିକ ସମ୍ପୂର୍ଣ୍ଣ ଭାବରେ ଡାଉନଲୋଡ୍ ହୋଇଛି
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -322,6 +335,7 @@
 #, machine
 	about {ms} ms ({reach})	ପ୍ରାୟ {ms} ମିଲିସେକେଣ୍ଡ ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -888,7 +902,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	କାନାଡା
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ବାତିଲ୍‍ କରନ୍ତୁ
@@ -986,6 +1000,10 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	ଆପଣଙ୍କ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ, ତାପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ, କିମ୍ବା ପରେ ଭିଡିଓ ୱିଣ୍ଡୋରୁ ସେଗୁଡ଼ିକୁ ପାଆନ୍ତୁ।
+#. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	ଚିହ୍ନିତ ଥିଲେ, MDM ଆଇକନ୍‌ରେ କ୍ଲିକ୍ କରିବା ଦ୍ୱାରା କ’ଣ ଡାଉନଲୋଡ୍ ହେଉଛି, ପଜ୍ ଓ ବାତିଲ୍ ସହିତ ଦେଖାଯାଏ ଏବଂ ଡବଲ୍ କ୍ଲିକ୍ କରିବା ଦ୍ୱାରା ୱିଣ୍ଡୋ ଖୋଲିଥାଏ; ଅଚିହ୍ନିତ ଥିଲେ, କ୍ଲିକ୍ କରିବା ଦ୍ୱାରା ୱିଣ୍ଡୋ ଦେଖାଯାଏ ବା ଲୁଚିଯାଏ
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -1096,7 +1114,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ଘଣ୍ଟା:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1303,7 +1321,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	ଦିନ, ମାସ, ବର୍ଷ
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	ଡେବ୍ରିଡ୍ ସେବା ଆକାଉଣ୍ଟ୍
 #. text in the Scheduler window
@@ -1493,14 +1511,6 @@
 #. window title in a dialog box
 #, machine
 	Download later	ପରେ ଡାଉନଲୋଡ୍ କରନ୍ତୁ
-#. text in the Scheduler's download limits
-#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
-#, machine
-	Download limit: every how many hours	ଡାଉନଲୋଡ୍ ସୀମା: ପ୍ରତି କେତେ ଘଣ୍ଟାରେ
-#. text in the Scheduler's download limits
-#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
-#, machine
-	Download limit: MBytes	ଡାଉନଲୋଡ୍ ସୀମା: MBytes
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
@@ -1625,8 +1635,9 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ବ୍ରାଉଜର୍‌ର ପ୍ରାଇଭେଟ୍ ୱିଣ୍ଡୋରୁ ଆସିଥିବା ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକ MDM ର ତାଲିକାରେ ଅନ୍ୟ ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକ ପରି ରହେ, MDM ପୁନଃ ଆରମ୍ଭ ହେବା ପରେ ମଧ୍ୟ; ସେଗୁଡ଼ିକର କୁକିଜ୍ କେବେ ସେଭ୍ ହୁଏ ନାହିଁ। ସେଗୁଡ଼ିକୁ କେବଳ ମେମୋରୀରେ ରଖିବାକୁ, {options} → {general} → {checkbox} ଅନଟିକ୍ କରନ୍ତୁ।
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	ପ୍ରଗତିରେ ଥିବା ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକ
 #. text in a dialog box
@@ -1793,6 +1804,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	ସବୁକିଛି ସାଧାରଣ ଆକାରରେ (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	ଠିକ୍ କଟ୍, ପୁଣି ଏନ୍‌କୋଡ୍ ହୋଇଛି
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1877,6 +1892,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	ଫାରୋ ଦ୍ୱୀପପୁଞ୍ଜ
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	ଶୀଘ୍ର: ଷ୍ଟ୍ରିମ୍‌ଗୁଡ଼ିକ ଯେପରି ଅଛି ସେହିପରି କପି କରାଯାଏ, ତେଣୁ ଅଂଶଟି 'ଆରମ୍ଭ'ରୁ ଟିକିଏ ପୂର୍ବରୁ ଆରମ୍ଭ ହୋଇପାରେ
 #. text in the Scheduler window
 #, machine
 	February	ଫେବୃଆରୀ
@@ -2128,6 +2147,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	କମାଣ୍ଡ୍ ଲାଇନ୍ ରୁ
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	{from} ରୁ {to} ପର୍ଯ୍ୟନ୍ତ
 #. text in the Batch download window
 #, machine
 	From:	ଠାରୁ:
@@ -3336,6 +3359,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	କ୍ଲିପ୍‌ବୋର୍ଡରେ କୌଣସି ଡାଉନଲୋଡ୍ ଲିଙ୍କ୍ ମିଳିଲା ନାହିଁ। http, https, ftp କିମ୍ବା ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍ ଥିବା ଏକ ଟେକ୍ସଟ୍ କପି କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	କୌଣସି ଡାଉନଲୋଡ୍ ଚାଲୁ ନାହିଁ
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3610,6 +3637,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	କେବଳ ସମାପ୍ତ ହୋଇଥିବା କିମ୍ବା ଏପର୍ଯ୍ୟନ୍ତ ଆରମ୍ଭ ହୋଇନଥିବା ଡାଉନଲୋଡ୍‌କୁ ଘୁଞ୍ଚାଯାଇପାରିବ। ପ୍ରଥମେ ଏହାକୁ ବନ୍ଦ କରି ସମାପ୍ତ କରନ୍ତୁ।
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	କେବଳ ଏକ ଅଂଶ
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3627,6 +3658,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	କେବଳ ପ୍ରଥମ {n}ଟି ଭିଡିଓ ତାଲିକାଭୁକ୍ତ ହୋଇଛି।
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	Add torrent ରେ ଚିହ୍ନିତ କେବଳ {files} ଫାଇଲ୍
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	କେବଳ ମୁଁ କମ୍ପ୍ୟୁଟର୍ ବ୍ୟବହାର କରୁଥିବାବେଳେ
@@ -3651,7 +3686,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager ସହିତ ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍ ଏବଂ .torrent ଫାଇଲ୍ ଖୋଲନ୍ତୁ
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	Mister Download Manager ଖୋଲନ୍ତୁ
 #. text in extension.rs
@@ -3761,6 +3797,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	ପାରାଗୁଏ
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	ଅଂଶ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	ପାସୱାର୍ଡ
@@ -3957,6 +3997,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ଧାଡ଼ିଗୁଡ଼ିକ
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	ଶୀଘ୍ର କଟ୍, କିଫ୍ରେମ୍‌ରେ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -4415,6 +4459,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	ଡାଉନଲୋଡ୍ ଆରମ୍ଭ ହେଲେ ଡାଉନଲୋଡ୍ ପ୍ରଗତି ଡାଇଲଗ୍ ଦେଖାନ୍ତୁ
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	ନୋଟିଫିକେସନ୍ ଏରିଆ ଆଇକନ୍‌ରେ କ୍ଲିକ୍ କଲେ ଡାଉନଲୋଡ୍ ଦେଖାନ୍ତୁ
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4707,6 +4755,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ଆରମ୍ଭ ହେଉଛି...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	From ଓ To ସମୟରେ ସଠିକ୍ ଭାବେ ଆରମ୍ଭ ଓ ଶେଷ ହୁଏ: ffmpeg ଏହି ଅଂଶକୁ ପୁନଃ ଏନ୍‌କୋଡ୍ କରେ, ଯାହା ପାଇଁ ଅଧିକ ସମୟ ଲାଗେ
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4894,6 +4946,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	ତାହା 7-Zip ର କମାଣ୍ଡ ଲାଇନ୍ ପ୍ରୋଗ୍ରାମ୍ (7z.exe) ନୁହେଁ।
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	ତାହା ସମ୍ପୂର୍ଣ୍ଣ ଭିଡିଓ: From ବା To ପରିବର୍ତ୍ତନ କରନ୍ତୁ, କିମ୍ବା Only a part ଅଚିହ୍ନିତ କରନ୍ତୁ
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -5216,6 +5272,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	ସେବା କହୁନାହିଁ ଯେ ଏହା ପ୍ରିମିୟମ୍ କି ନୁହେଁ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	ସାଇଟ୍ ଏହି ଭିଡିଓର ଅବଧି କହୁନାହିଁ
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5458,6 +5518,7 @@
 	This name is reserved by Windows	ଏହି ନାମଟି Windows ଦ୍ୱାରା ସଂରକ୍ଷିତ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ଏଥିପାଇଁ ffmpeg ଆବଶ୍ୟକ
@@ -5561,6 +5622,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	ଯାହା ନାହିଁ ତାହା ଇନ୍‌ଷ୍ଟଲ୍ କରିବା ପାଇଁ: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	To ଭିଡିଓର ଶେଷ ପରେ ଅଛି
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	To, From ପରେ ଆସିବା ଆବଶ୍ୟକ
 #. text in the Batch download window
 #, machine
 	To:	ଏଥିପାଇଁ:
@@ -5748,6 +5817,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	ଧାଡ଼ିର ନାମ ଟାଇପ୍ କରନ୍ତୁ
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	ସମୟକୁ 1:30 ବା 1:02:03 ଭାବରେ ଟାଇପ୍ କରନ୍ତୁ
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5920,7 +5993,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	ବ୍ୟବହାରକାରୀ ନାମ:
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	ସର୍ଭର୍/ସାଇଟ୍‌ଗୁଡ଼ିକ ପାଇଁ ଉପଭୋକ୍ତା ନାମ ଏବଂ ପାସୱାର୍ଡ଼
 #. text in the Options window
@@ -6338,7 +6411,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} ଯୋଡ଼ାଯାଇଛି। ଏହା ବର୍ତ୍ତମାନ MDM କୁ ନିୟନ୍ତ୍ରଣ କରିପାରିବ।
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -6566,6 +6639,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ବର୍ତ୍ତମାନ ଏହି ଫାଇଲ୍ ହୋଷ୍ଟ୍ ପାଖରେ ପହଞ୍ଚି ପାରୁନାହିଁ; MDM ପରେ ପୁଣି ଚେଷ୍ଟା କରିବ
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} ରେ {file} ତାଲିକାଭୁକ୍ତ ନାହିଁ, ଯାହା Add torrent ରେ ବଛାଯାଇଥିଲା: କିଛି ଡାଉନଲୋଡ୍ ହୋଇନାହିଁ। ସମସ୍ତ ଫାଇଲ୍ ସହିତ ବା ଏହି ଫାଇଲ୍ ବିନା ଟରେଣ୍ଟକୁ ପୁଣି ଯୋଡ଼ନ୍ତୁ
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6856,6 +6933,11 @@ extension	Done	ସମାପ୍ତ
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ଡାଉନଲୋଡ୍ କରନ୍ତୁ
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	ଏଠାରୁ ଏକ ଅଂଶ ଡାଉନଲୋଡ୍ କରନ୍ତୁ...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine

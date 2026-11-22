@@ -1080,8 +1080,9 @@ pub fn sentence_pieces<'a>(template: &'a str, slots: &[&str]) -> Vec<Vec<Piece<'
 /// sentence, in the sentence's own order — "Download {files} files at the same time" names
 /// its box "Download files at the same time", so a reader says what a box's number is,
 /// whatever language the sentence is translated into (a box first on its line is named by the
-/// words after it, as the Japanese catalog runs it). A sentence holds one box on a line
-/// today; where a line had two, the words between them would join both their names. A box
+/// words after it, as the Japanese catalog runs it). Where a line holds two boxes ("from
+/// {from} to {to}", #1662), the words between them name the box after them: the first is
+/// "from", the second "to" (a first box with no words before it keeps the ones after it). A box
 /// with no words around it takes the sentence's own words, its placeholders dropped: a
 /// slot's id is code, not a language. Any leftover `{...}` (a placeholder the caller didn't
 /// name a slot) and the `&` of a keyboard letter drop out of a name, as they do out of a
@@ -1123,7 +1124,13 @@ pub fn sentence_names(template: &str, slots: &[&str]) -> Vec<String> {
                             }
                         }
                         Piece::Slot(s) if s == *slot => seen = true,
-                        Piece::Slot(_) if seen => past = true,
+                        Piece::Slot(_) if seen && !past => {
+                            past = true;
+                            // The words up to the next box are that box's own.
+                            if !before.is_empty() {
+                                after.clear();
+                            }
+                        }
                         Piece::Slot(_) => before.clear(),
                         _ => {}
                     }
@@ -3881,6 +3888,58 @@ fn number_text(
 /// The number in a [`number_field`], brought into `min..=max` (empty: `min`).
 pub fn number_in(value: &str, min: u64, max: u64) -> u64 {
     value.parse::<u64>().unwrap_or(min).clamp(min, max)
+}
+
+/// A time typed in a box (a video's part, #1662): `h:mm:ss`, `m:ss` or seconds
+/// ([`mdm_tools::part::parse_time`]), digits and colons only; Up / Down step it by a second,
+/// Page Up / Down by ten, within `0..=max` (the video's length, when known). Left, a time it can
+/// read is written as the window shows times (`hours`: `0:01:30` beside a video of an hour or
+/// more) and brought within `max`. `ok`: the caller's word on it (it may be fine alone and wrong
+/// beside another box, an end before the start): its frame is red while it isn't, as a number
+/// box's out of range.
+pub fn time_field(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    max: Option<u32>,
+    hours: bool,
+    enabled: bool,
+    ok: bool,
+) -> Response {
+    edit_frame(ui.painter(), rc, enabled);
+    let resp = field_text(ui, rc, value, enabled);
+    value.retain(|c| c.is_ascii_digit() || c == ':');
+    value.truncate(10);
+    let max = max.unwrap_or(u32::MAX);
+    if resp.has_focus() {
+        keep_keys(ui, &resp, false, true, false);
+        let step: i64 = if take_key(ui, egui::Key::ArrowUp) {
+            1
+        } else if take_key(ui, egui::Key::ArrowDown) {
+            -1
+        } else if take_key(ui, egui::Key::PageUp) {
+            10
+        } else if take_key(ui, egui::Key::PageDown) {
+            -10
+        } else {
+            0
+        };
+        if step != 0 {
+            let now = i64::from(mdm_tools::part::parse_time(value).unwrap_or(0));
+            let next = (now + step).clamp(0, i64::from(max)) as u32;
+            *value = mdm_tools::part::clock(next, hours);
+        }
+    }
+    if resp.lost_focus()
+        && let Some(t) = mdm_tools::part::parse_time(value)
+    {
+        *value = mdm_tools::part::clock(t.min(max), hours);
+    }
+    if enabled && !ok {
+        error_frame(ui.painter(), rc);
+    }
+    edit_focus_line(ui, &resp, rc);
+    resp
 }
 
 /// [`edit_light`] on a surface `parent` (a disabled edit shows it: `#f9f9f9` on a tab page).
@@ -9058,6 +9117,11 @@ example.org"; // values typed in, not texts to translate
         assert_eq!(
             sentence_names("{hours} h: {mb} MB", &["mb", "hours"]),
             vec!["h: MB".to_owned(), "h:".to_owned()]
+        );
+        // #1662: two boxes, each after its own words: the words between them are the second's.
+        assert_eq!(
+            sentence_names("from {from} to {to}", &["from", "to"]),
+            vec!["from".to_owned(), "to".to_owned()]
         );
         // A box alone on its line takes the sentence's own words, placeholders dropped; a
         // sentence of nothing but the box names it with nothing.

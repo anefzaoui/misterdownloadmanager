@@ -970,6 +970,14 @@ const ok = (what) => {
   assert.equal(own.url, "https://tube.test/watch?v=abc123", "the video's own page");
   assert.equal(own.referrer, "https://blog.test/post");
   assert.equal(own.cookies, "sid=1");
+  // #1662: "Download a part from here...": the second the player was at goes with it, as a whole
+  // number of seconds; anything else doesn't.
+  assert.equal((await ask({ type: "video", url: "https://tube.test/watch?v=abc123", part: 95 })).ok, true);
+  assert.equal(natives(calls).filter((m) => m.video).at(-1).part, 95, "the part's start goes to the app");
+  for (const part of [-1, 1.5, "95", null]) {
+    await ask({ type: "video", url: "https://tube.test/watch?v=abc123", part });
+    assert.equal(natives(calls).filter((m) => m.video).at(-1).part, undefined, `no part from ${JSON.stringify(part)}`);
+  }
   // Another site's address is not the page's: ignored, as any message content was before.
   assert.equal((await ask({ type: "video", url: "https://evil.test/watch?v=abc123" })).ok, true);
   assert.equal(
@@ -3212,7 +3220,7 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   assert.ok(/const IDLE_MS = 1500;/.test(source), "fades 1.5 s after the pointer rests");
   // Its texts: English's, kept as the fallback too.
   const english = JSON.parse(readText("../../extension/_locales/en/messages.json"));
-  for (const key of ["video_looking", "video_all_qualities", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
+  for (const key of ["video_looking", "video_all_qualities", "video_part", "video_no_choices", "video_playlist", "video_no_ytdlp", "video_too_long", "video_busy", "video_queued", "video_failed_lookup",
     "video_off", "video_drm", "video_cant_save", "video_open_post", "video_open_post_button", "video_drag_dots", "video_tip_best", "video_sending", "video_added", "video_show",
     "video_no_answer", "video_get_mdm", "video_retry", "video_turn_on", "video_download_best", "video_best", "video_original", "video_compatible"]) {
     assert.ok(english[key], key);

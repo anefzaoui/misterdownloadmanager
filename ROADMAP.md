@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Download only a part of a video or a sound, from one time to another, cut quickly at the
+  keyframes or exactly (encoded again), from the Download video window and the browser add-on's
+  menu over a video ([#1662](https://github.com/anefzaoui/misterdownloadmanager/issues/1662))
 - ✅ A file that changes on the server during a download's very first requests is reported as a
   changed file, by the whole file's checksum the server sends, instead of the download quietly
   going on with one connection ([#1646](https://github.com/anefzaoui/misterdownloadmanager/issues/1646))

@@ -11,6 +11,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	يريد موقع غير معروف إرسال {n} رابط إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابط إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابطين إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} روابط إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابطا إلى ملتقط الروابط.|يريد موقع غير معروف إرسال {n} رابط إلى ملتقط الروابط.
+#. count in traypanel.rs
 #. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -240,6 +241,14 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	معرف ضبط NextDNS هو ستة أحرف وأرقام (0-9، a-f).
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	يحفظ جزء دون فصول الفيديو وعناوينه الفرعية
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	يتم تنزيل مقاطع فيديو قائمة التشغيل بالكامل
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	اسم ملف تعريف أو مجلده. اتركه فارغا لاستخدام آخر ملف تعريف. إذا كان المستعرض مبنيا على Chromium وغير مدرج (Helium، Thorium...)، فاختر Chromium ثم مجلد ملف التعريف الخاص به.
@@ -275,6 +284,7 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 	about {ms} ms ({reach})	حوالي {ms} مللي ثانية ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -721,7 +731,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	كندا
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 	Cancel	إلغاء
 #. text in errors.rs
@@ -795,9 +805,10 @@
 	Check the proxy in Options → {proxy}, or download {name} yourself and choose it in {helpers} → {other}.	تحقق من الوكيل في الخيارات ← {proxy}، أو نزل {name} بنفسك واختره في {helpers} ← {other}.
 #. text in helpers.rs
 	Check your connection, then try again, or get them later from the video window.	تحقق من اتصالك، ثم حاول مرة أخرى، أو احصل عليها لاحقا من نافذة الفيديو.
+#. text in the Options window
 #. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
 #, machine
-	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	عند التحديد، تعرض النقرة على أيقونة MDM ما يجري تنزيله مع الإيقاف المؤقت والإلغاء، وتفتح النقرة المزدوجة النافذة؛ وعند عدم التحديد، تُظهر النقرة النافذة أو تخفيها
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	عند تحديد هذا الخيار، تعرض النقرة على أيقونة MDM ما يجري تنزيله، مع خياري «إيقاف مؤقت» و«إلغاء»، وتفتح النقرة المزدوجة النافذة؛ وعند إلغاء تحديده، تعرض النقرة الواحدة النافذة أو تخفيها
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -889,7 +900,7 @@
 	Clipboard	الحافظة
 #. text in the Options window
 	Clock:	الساعة:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1055,7 +1066,7 @@
 #. text in the Options window
 #. a date's order: day first (30/10/2026)
 	Day, month, year	اليوم، الشهر، السنة
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 	Debrid service accounts	حسابات خدمة Debrid
 #. text in the Scheduler window
 	December	ديسمبر
@@ -1197,14 +1208,6 @@
 	Download Later	تنزيل لاحقا
 #. window title in a dialog box
 	Download later	تنزيل لاحقا
-#. text in the Scheduler's download limits
-#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
-#, machine
-	Download limit: every how many hours	حد التنزيل: كل كم ساعة
-#. text in the Scheduler's download limits
-#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
-#, machine
-	Download limit: MBytes	حد التنزيل: ميغابايت
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 	Download limits	حدود التنزيل
@@ -1306,8 +1309,9 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	تبقى التنزيلات من نافذة خاصة في المستعرض في قائمة MDM كأي تنزيل آخر، حتى بعد إعادة تشغيل MDM؛ ولا تحفظ ملفات تعريف الارتباط الخاصة بها أبدا. للاحتفاظ بها في الذاكرة فقط، ألغ تحديد {options} ← {general} ← {checkbox}.
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 	Downloads in progress	التنزيلات الجارية
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
@@ -1437,6 +1441,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	كل شيء بحجمه الطبيعي (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	قص دقيق، معاد ترميزه
 #. text in the Options window
 #. label before an example date and time written the chosen way
 	Example:	مثال:
@@ -1503,6 +1511,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Faroe Islands	جزر فارو
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	سريع: تنسخ التدفقات كما هي، لذلك قد يبدأ الجزء قبل «من» بقليل
 #. text in the Scheduler window
 	February	فبراير
 #. text in rssdlg.rs
@@ -1699,6 +1711,10 @@
 	from the browser	من المستعرض
 #. message or event log entry in the main window
 	from the command line	من سطر الأوامر
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	من {from} إلى {to}
 #. text in the Batch download window
 	From:	من:
 #. checkbox in the Options window
@@ -2662,6 +2678,7 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	لم يتم العثور على روابط تنزيل في الحافظة. انسخ نصا يحتوي على روابط http أو https أو ftp أو روابط مغناطيسية، ثم حاول مرة أخرى.
+#. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
 	No downloads are running	لا توجد تنزيلات جارية
@@ -2875,6 +2892,10 @@
 	Only a finished download, or one not started yet, can be moved	لا يمكن نقل سوى تنزيل مكتمل، أو تنزيل لم يبدأ بعد
 #. message or event log entry in the main window
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	لا يمكن نقل سوى تنزيل مكتمل، أو تنزيل لم يبدأ بعد. أوقفه وأكمله أولا.
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	جزء فقط
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 	Only an administrator can allow this	يمكن للمسؤول فقط السماح بذلك
@@ -2889,6 +2910,10 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 	Only the first {n} videos are listed.	تم إدراج أول {n} مقاطع فيديو فقط.
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	فقط {files} ملفا تم تحديده في «إضافة تورنت»
 #. checkbox in a dialog box
 	Only while I'm using the computer	فقط أثناء استخدامي للكمبيوتر
 #. button in a dialog box; text in a dialog box; button in a download's Properties window; button in torrentfiles.rs
@@ -2909,7 +2934,8 @@
 	Open in browser	فتح في المستعرض
 #. checkbox in the Add torrent window
 	Open magnet links and .torrent files with Mister Download Manager	فتح روابط مغناطيسية وملفات .torrent باستخدام Mister Download Manager
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 	Open Mister Download Manager	فتح Mister Download Manager
 #. text in extension.rs
 #. step 2 of turning on the Safari extension; Cmd is the Command key
@@ -2999,6 +3025,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Paraguay	باراغواي
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	الجزء
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	كلمة المرور
 #. text in the Link grabber window; text in the Options window
@@ -3149,6 +3179,10 @@
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	قوائم الانتظار
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	قص سريع، عند الإطارات الرئيسية
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 	Read on this computer only, and sent only to the video's site.	القراءة على هذا الكمبيوتر فقط، والإرسال إلى موقع الفيديو فقط.
@@ -3506,6 +3540,7 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	إظهار مربع حوار تقدم التنزيل عند بدء التنزيل
+#. text in the Options window
 #. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
 #, machine
 	Show downloads when the notification area icon is clicked	إظهار التنزيلات عند النقر على أيقونة منطقة الإعلامات
@@ -3740,6 +3775,10 @@
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 	Starting...	قيد البدء...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	يبدأ وينتهي الجزء بالضبط عند «من» و«إلى»: يعيد ffmpeg ترميز الجزء، مما يستغرق وقتا أطول
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 	State	الحالة
@@ -3885,6 +3924,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	هذا ليس برنامج سطر أوامر 7-Zip (7z.exe).
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	هذا هو الفيديو بأكمله: غير «من» أو «إلى»، أو ألغ تحديد «جزء فقط»
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 	the .torrent file kept for it is gone	ملف التورنت المحفوظ له مفقود
@@ -4143,6 +4186,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	لا تذكر الخدمة ما إذا كان الحساب مميزا
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	لا يذكر الموقع مدة هذا الفيديو
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4355,6 +4402,7 @@
 	This name is reserved by Windows	هذا الاسم محجوز بواسطة Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	يتطلب هذا ffmpeg
 #. text in the Add torrent window
@@ -4439,6 +4487,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	لتثبيت ما هو مفقود: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	وقت «إلى» بعد نهاية الفيديو
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	يجب أن يأتي وقت «إلى» بعد وقت «من»
 #. text in the Batch download window
 	To:	إلى:
 #. text in the Scheduler window
@@ -4587,6 +4643,10 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	Type the queue's name	اكتب اسم قائمة الانتظار
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	اكتب الأوقات كـ 1:30 أو 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -4723,7 +4783,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	اسم المستخدم:
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 	User names and passwords for servers/sites	أسماء المستخدمين وكلمات المرور للخوادم/المواقع
 #. text in the Options window
 	User-Agent for manually added downloads:	User-Agent للتنزيلات المضافة يدويا:
@@ -5062,7 +5122,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	تم إقران {device}. يمكنه التحكم في MDM الآن.
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5261,6 +5321,10 @@
 	{service} can't get this torrent: nobody shares it, or its link can't be read	لا يمكن لـ {service} الحصول على هذا التورنت: لا أحد يشاركه، أو لا يمكن قراءة رابطه
 #. text in errors.rs
 	{service} can't reach this file host right now; MDM will try again later	لا يمكن لـ {service} الوصول إلى موقع الاستضافة هذا الآن؛ سيعاود MDM المحاولة لاحقا
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	لا يدرج {service} الملف {file} المحدد في «إضافة تورنت»: لم يتم تنزيل أي شيء. أضف التورنت مرة أخرى بكل ملفاته، أو دون هذا الملف
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 	{service} is not responding; try again later	لا تستجيب {service}؛ حاول مرة أخرى لاحقا
@@ -5515,6 +5579,11 @@ extension	Done	تم
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 extension	Download	تنزيل
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	تنزيل جزء من هنا...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine

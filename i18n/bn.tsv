@@ -11,6 +11,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	একটি অজানা সাইট লিংক গ্র্যাবাবে {n}টি লিংক পাঠাতে চায়।|একটি অজানা সাইট লিংক গ্র্যাবাবে {n}টি লিংক পাঠাতে চায়।
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	আরও {n}টি|আরও {n}টি
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -257,6 +262,14 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS কনফিগারেশন আইডিতে ছয়টি অক্ষর ও সংখ্যা থাকতে হবে (0-9, a-f)।
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	ভিডিওর অধ্যায় ও সাবটাইটেল ছাড়া একটি অংশ সংরক্ষণ করা হয়েছে
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	একটি প্লেলিস্টের ভিডিওগুলো সম্পূর্ণ ডাউনলোড করা হয়
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -300,6 +313,7 @@
 #, machine
 	about {ms} ms ({reach})	প্রায় {ms} ms ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -840,7 +854,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	কানাডা
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	বাতিল করুন
@@ -928,6 +942,10 @@
 	Check the proxy in Options → {proxy}, or download {name} yourself and choose it in {helpers} → {other}.	বিকল্প → {proxy}-এ প্রক্সি পরীক্ষা করুন, অথবা {name} নিজে ডাউনলোড করে {helpers} → {other}-এ বেছে নিন।
 #. text in helpers.rs
 	Check your connection, then try again, or get them later from the video window.	আপনার সংযোগ পরীক্ষা করুন, তারপর আবার চেষ্টা করুন, অথবা পরে ভিডিও উইন্ডো থেকে সেগুলো পান।
+#. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	টিক দেওয়া থাকলে, MDM-এর আইকনে ক্লিক করলে বিরতি দিন ও বাতিল করুন বোতামসহ কী ডাউনলোড হচ্ছে তা দেখায় এবং ডাবল ক্লিক করলে উইন্ডোটি খোলে; টিক না দেওয়া থাকলে, ক্লিক করলে উইন্ডোটি দেখায় বা লুকায়
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -1034,7 +1052,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ঘড়ি:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1233,7 +1251,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	দিন, মাস, বছর
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	ডিব্রিড পরিষেবা অ্যাকাউন্ট
 #. text in the Scheduler window
@@ -1407,14 +1425,6 @@
 	Download Later	পরে ডাউনলোড করুন
 #. window title in a dialog box
 	Download later	পরে ডাউনলোড করুন
-#. text in the Scheduler's download limits
-#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
-#, machine
-	Download limit: every how many hours	ডাউনলোড সীমা: কত ঘণ্টা পরপর
-#. text in the Scheduler's download limits
-#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
-#, machine
-	Download limit: MBytes	ডাউনলোড সীমা: MB
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
@@ -1529,8 +1539,9 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ব্রাউজারের প্রাইভেট উইন্ডো থেকে ডাউনলোডগুলো MDM-এর তালিকায় অন্য ডাউনলোডগুলোর মতোই থাকে, MDM পুনরায় চালু হওয়ার পরেও; সেগুলোর কুকিজ কখনো সংরক্ষণ করা হয় না। সেগুলোকে শুধু মেমরিতে রাখতে, {options} → {general} → {checkbox}-এর টিক তুলে দিন।
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 	Downloads in progress	চলমান ডাউনলোড
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
@@ -1683,6 +1694,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	সবকিছু স্বাভাবিক আকারে (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	সঠিক কাট, আবার এনকোড করা হয়েছে
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1759,6 +1774,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	ফারো দ্বীপপুঞ্জ
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	দ্রুত: স্ট্রিমগুলো যেমন আছে তেমনই কপি করা হয়, তাই অংশটি শুরু হওয়ার সময় থেকে একটু আগে শুরু হতে পারে
 #. text in the Scheduler window
 #, machine
 	February	ফেব্রুয়ারি
@@ -1995,6 +2014,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	কমান্ড লাইন থেকে
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	{from} থেকে {to} পর্যন্ত
 #. text in the Batch download window
 #, machine
 	From:	থেকে:
@@ -3150,6 +3173,10 @@
 	No day is ticked: the queue will not start	কোনো দিন টিক করা হয়নি: সারি শুরু হবে না
 #. message or event log entry in the main window
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ক্লিপবোর্ডে কোনো ডাউনলোড লিংক পাওয়া যায়নি। http, https, ftp বা ম্যাগনেট লিংক সহ একটি টেক্সট কপি করুন এবং আবার চেষ্টা করুন।
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	কোনো ডাউনলোড চলছে না
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3407,6 +3434,10 @@
 	Only a finished download, or one not started yet, can be moved	শুধুমাত্র একটি সম্পূর্ণ ডাউনলোড, অথবা যেটি এখনো শুরু হয়নি, সেটি সরানো যেতে পারে
 #. message or event log entry in the main window
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	শুধুমাত্র একটি সম্পূর্ণ ডাউনলোড, অথবা যেটি এখনো শুরু হয়নি, সেটি সরানো যেতে পারে। প্রথমে এটি থামান এবং শেষ করুন।
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	শুধুমাত্র একটি অংশ
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3423,6 +3454,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	শুধুমাত্র প্রথম {n}টি ভিডিও তালিকাভুক্ত করা হয়েছে।
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	অ্যাড টরেন্ট-এ টিক দেওয়া শুধু {files}টি ফাইল
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	শুধুমাত্র যখন আমি কম্পিউটার ব্যবহার করছি
@@ -3445,7 +3480,8 @@
 	Open in browser	ব্রাউজারে খুলুন
 #. checkbox in the Add torrent window
 	Open magnet links and .torrent files with Mister Download Manager	Mister Download Manager দিয়ে ম্যাগনেট লিংক এবং .torrent ফাইল খুলুন
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 	Open Mister Download Manager	Mister Download Manager খুলুন
 #. text in extension.rs
 #. step 2 of turning on the Safari extension; Cmd is the Command key
@@ -3549,6 +3585,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	প্যারাগুয়ে
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	অংশ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	পাসওয়ার্ড
@@ -3732,6 +3772,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	সারি
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	দ্রুত কাট, কীফ্রেমগুলোতে
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -4154,6 +4198,10 @@
 	Show download complete dialog	ডাউনলোড সম্পূর্ণ হলে ডায়ালগ দেখান
 #. checkbox in the Options window
 	Show download progress dialog when a download starts	ডাউনলোড শুরু হলে ডাউনলোড প্রোগ্রেস ডায়ালগ দেখান
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	নোটিফিকেশন এলাকার আইকনে ক্লিক করলে ডাউনলোডগুলো দেখান
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 	Show in list	তালিকায় দেখান
@@ -4425,6 +4473,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	শুরু হচ্ছে...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	ঠিক From এবং To-তে শুরু ও শেষ হয়: ffmpeg অংশটি আবার এনকোড করে, যা বেশি সময় নেয়
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4596,6 +4648,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	এটি 7-Zip-এর কমান্ড লাইন প্রোগ্রাম (7z.exe) নয়।
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	এটি পুরো ভিডিও: From বা To পরিবর্তন করুন, অথবা Only a part থেকে টিক তুলে দিন
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -4895,6 +4951,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	পরিষেবাটি প্রিমিয়াম কিনা তা বলে না
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	সাইটটি বলছে না এই ভিডিওটি কত দীর্ঘ
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	সাইটটি ফাইলের পরিবর্তে একটি ওয়েব পেজ পাঠিয়েছে (একটি অপেক্ষার পেজ, একটি ক্যাপচা বা একটি সাইন-ইন): আপনার ব্রাউজারে লিংকটি খুলুন, সেখানে শেষ করুন এবং ডাউনলোডটি MDM-এ ফিরে আসবে
@@ -5115,6 +5175,7 @@
 	This name is reserved by Windows	এই নামটি Windows নিজের জন্য রেখেছে
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	এর জন্য ffmpeg প্রয়োজন
@@ -5213,6 +5274,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	যা অনুপস্থিত আছে তা ইনস্টল করতে: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	To ভিডিওর শেষের পরে
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	To অবশ্যই From-এর পরে আসতে হবে
 #. text in the Batch download window
 #, machine
 	To:	প্রাপক:
@@ -5388,6 +5457,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	সারিটির নাম টাইপ করুন
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	সময়গুলো 1:30 বা 1:02:03 হিসাবে টাইপ করুন
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5557,7 +5630,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	ব্যবহারকারীর নাম:
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 	User names and passwords for servers/sites	সার্ভার/সাইটগুলোর জন্য ব্যবহারকারীর নাম এবং পাসওয়ার্ড
 #. text in the Options window
 #, machine
@@ -5952,7 +6025,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} যুক্ত করা হয়েছে। এটি এখন MDM নিয়ন্ত্রণ করতে পারে।
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -6169,6 +6242,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} এই ফাইল হোস্টের সাথে এই মুহূর্তে যোগাযোগ করতে পারছে না; MDM পরে আবার চেষ্টা করবে
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service}-এর তালিকায় অ্যাড টরেন্ট-এ বেছে নেওয়া {file} নেই: কিছুই ডাউনলোড হয়নি। সব ফাইলসহ, অথবা এই ফাইলটি ছাড়া টরেন্টটি আবার যোগ করুন
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6440,6 +6517,11 @@ extension	Done	সম্পূর্ণ হয়েছে
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ডাউনলোড করুন
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	এখান থেকে একটি অংশ ডাউনলোড করুন...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine

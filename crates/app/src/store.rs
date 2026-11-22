@@ -526,6 +526,7 @@ mod tests {
                     parts: Vec::new(),
                     named: false,
                     duration: None,
+                    part: None,
                 });
                 i
             })

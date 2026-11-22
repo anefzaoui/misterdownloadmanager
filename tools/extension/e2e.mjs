@@ -64,7 +64,9 @@
 // actions, the toolbar button's count, #1496),
 // remote (Send downloads to → Another MDM, #157: paired from the popup, a link downloaded by a
 // headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer),
-// byhand (the copy loaded here by hand says so in its popup, with its browser's store, #1613).
+// byhand (the copy loaded here by hand says so in its popup, with its browser's store, #1613),
+// part (the button's menu's "Download a part from here...": the Download video window, its part
+// starting where the player is, #1662).
 //
 // Screenshots for a pull request (Chromium only): E2E_LANG=de (or ar, ...) starts the browser in that
 // language, so the extension shows its _locales text of it; with E2E_SHOTS=<folder> the `qualities`
@@ -282,6 +284,7 @@ const PICKS = (reveal = "") => `function () {
       }
       return out; })(),
     open: { text: open.textContent, ...at(open) },
+    part: (() => { const e = m.querySelector('[data-act="part"]'); return e ? { text: e.textContent, ...at(e) } : null; })(),
   });
 }`;
 // Where the button's arrow (its menu) is.
@@ -3933,6 +3936,52 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms; a pass over the button asked nothing, resting on it asked ${restMs} ms later, once`;
     } finally {
       // The next case starts MDM as usual.
+      await stopApp();
+    }
+  },
+
+  // #1662: the button's menu has "Download a part from here..." under "All qualities and
+  // subtitles...": it opens the app's Download video window for the video, its part starting at
+  // the second the player is at (the app says so in its log).
+  async part(t) {
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    if (!WIN) throw new Skip(NO_UIA);
+    await stopApp();
+    fs.rmSync(path.join(data, "ipc.json"), { force: true });
+    spawn(appExe, ["/startup"], { env: process.env, stdio: "ignore", detached: false });
+    try {
+      await until("the test instance, in the notification area", 20000, () => mdmList().then(() => true, () => false));
+      const pid = appPid();
+      appWindows(pid, VIDEO_WINDOW);
+      await t.session.navigate(`${LAB}/page?hls=1`);
+      const state = await until("the stream player", 15000, () => t.session.evaluate("document.body.dataset.stream || ''"));
+      if (state !== "done") throw new Error(`the page's player: ${state}`);
+      // The player a few seconds in, paused there.
+      const second = await until("the player at 3 s", 15000, () =>
+        t.session.evaluate('(() => { const v = document.querySelector("#player"); v.pause(); v.currentTime = 3.6; return v.currentTime >= 3 ? Math.floor(v.currentTime) : 0; })()'));
+      const v = await rect(t.session, "#player");
+      if (!(await hover(t.session, v))) throw new Error("no button over the stream's player");
+      await clickArrow(t.session);
+      const m = await until("the menu, its look-up ended", 60000, async () => {
+        const p = await t.session.picks("open");
+        return p && !p.busy ? p : null;
+      });
+      if (!m.part || !m.part.text) throw new Error(`no "Download a part from here..." in the menu (${m.open.text})`);
+      if (m.part.y <= m.open.y) throw new Error("the part's line isn't under All qualities and subtitles...");
+      const logged = () => {
+        try {
+          return fs.readFileSync(path.join(data, "logs", "mdm.log"), "utf8").split(/\r?\n/).filter((l) => l.includes("Download video, a part from"));
+        } catch {
+          return [];
+        }
+      };
+      const before = logged().length;
+      await t.session.mouse(m.part.x, m.part.y, "click");
+      await until("the Download video window", 15000, () => appWindows(pid).includes(VIDEO_WINDOW));
+      const line = await until("the part's start in MDM's log", 10000, () => logged().slice(before)[0]);
+      if (!line.endsWith(`a part from ${second} s`)) throw new Error(`MDM got ${line}, not the player's ${second} s`);
+      return `"${m.part.text}" under "${m.open.text}": the Download video window, its part from ${second} s (the player's)`;
+    } finally {
       await stopApp();
     }
   },

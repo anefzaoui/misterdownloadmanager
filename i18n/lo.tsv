@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	ເວັບໄຊທ໌ທີ່ບໍ່ຮູ້ຈັກຕ້ອງການສົ່ງ {n} ລິ້ງໄປທີ່ Link grabber.
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	ແລະອີກ {n} ລາຍການ
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -278,6 +283,14 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ID ການຕັ້ງຄ່າ NextDNS ແມ່ນຫົກຕົວອັກສອນ ແລະ ຕົວເລກ (0-9, a-f).
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	ພາກສ່ວນຖືກບັນທຶກໂດຍບໍ່ມີບົດ ແລະ ຄຳບັນຍາຍຂອງວິດີໂອ
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	ວິດີໂອຂອງລາຍການຫຼິ້ນຖືກດາວໂຫຼດທັງໝົດ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -322,6 +335,7 @@
 #, machine
 	about {ms} ms ({reach})	ປະມານ {ms} ມິນລິວິນາທີ ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -888,7 +902,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	ການາດາ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ຍົກເລີກ
@@ -986,6 +1000,10 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	ກວດສອບການເຊື່ອມຕໍ່ຂອງທ່ານ, ແລ້ວລອງໃໝ່ອີກຄັ້ງ, ຫຼືເອົາພວກມັນພາຍຫຼັງຈາກໜ້າຕ່າງວິດີໂອ.
+#. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	ຖ້າເລືອກ, ການຄລິກໃສ່ໄອຄອນຂອງ MDM ຈະສະແດງສິ່ງທີ່ກຳລັງດາວໂຫຼດ, ພ້ອມດ້ວຍຢຸດຊົ່ວຄາວ ແລະ ຍົກເລີກ, ແລະ ການຄລິກສອງຄັ້ງຈະເປີດໜ້າຕ່າງ; ຖ້າບໍ່ເລືອກ, ການຄລິກຈະສະແດງ ຫຼື ເຊື່ອງໜ້າຕ່າງ
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -1096,7 +1114,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ໂມງ:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1303,7 +1321,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	ວັນ, ເດືອນ, ປີ
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	ບັນຊີບໍລິການ Debrid
 #. text in the Scheduler window
@@ -1493,14 +1511,6 @@
 #. window title in a dialog box
 #, machine
 	Download later	ດາວໂຫຼດພາຍຫຼັງ
-#. text in the Scheduler's download limits
-#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
-#, machine
-	Download limit: every how many hours	ຈຳກັດການດາວໂຫຼດ: ທຸກໆຈັກຊົ່ວໂມງ
-#. text in the Scheduler's download limits
-#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
-#, machine
-	Download limit: MBytes	ຈຳກັດການດາວໂຫຼດ: MBytes
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
@@ -1625,8 +1635,9 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ການດາວໂຫຼດຈາກໜ້າຕ່າງສ່ວນຕົວຂອງບຣາວເຊີຍັງຄົງຢູ່ໃນລາຍການ MDM ຄືກັບລາຍການອື່ນ ແມ່ນແຕ່ຫຼັງຈາກເລີ່ມ MDM ໃໝ່; ຄຸກກີ້ຂອງລາຍການເຫຼົ່ານີ້ຈະບໍ່ຖືກບັນທຶກ. ເພື່ອເກັບລາຍການເຫຼົ່ານີ້ໄວ້ໃນໜ່ວຍຄວາມຈຳເທົ່ານັ້ນ, ໃຫ້ຍົກເລີກການເລືອກ {options} → {general} → {checkbox}.
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	ກຳລັງດາວໂຫຼດ
 #. text in a dialog box
@@ -1793,6 +1804,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	ທຸກຢ່າງໃນຂະໜາດປົກກະຕິ (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	ຕັດໃຫ້ຊັດເຈນ, ຖືກເຂົ້າລະຫັດໃໝ່
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1877,6 +1892,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	ໝູ່ເກາະແຟໂຣ
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	ໄວ: ສະຕຣີມຖືກສຳເນົາຕາມທີ່ເປັນຢູ່, ດັ່ງນັ້ນພາກສ່ວນອາດຈະເລີ່ມຕົ້ນກ່ອນ From ເລັກນ້ອຍ
 #. text in the Scheduler window
 #, machine
 	February	ເດືອນກຸມພາ
@@ -2128,6 +2147,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	ຈາກເສັ້ນຄຳສັ່ງ
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	ຈາກ {from} ຫາ {to}
 #. text in the Batch download window
 #, machine
 	From:	ຈາກ:
@@ -3336,6 +3359,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ບໍ່ພົບລິ້ງດາວໂຫຼດໃນຄລິບບອດ. ກະລຸນາສຳເນົາຂໍ້ຄວາມທີ່ມີລິ້ງ http, https, ftp ຫຼື magnet, ແລ້ວລອງໃໝ່ອີກຄັ້ງ.
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	ບໍ່ມີການດາວໂຫຼດໃດໆກຳລັງເຮັດວຽກ
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3610,6 +3637,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ສາມາດຍ້າຍໄດ້ສະເພາະການດາວໂຫຼດທີ່ສຳເລັດແລ້ວ, ຫຼືຍັງບໍ່ໄດ້ເລີ່ມເທົ່ານັ້ນ. ຢຸດມັນ ແລະເຮັດໃຫ້ມັນສຳເລັດກ່ອນ.
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	ສະເພາະບາງສ່ວນ
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3627,6 +3658,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	ມີພຽງແຕ່ {n} ວິດີໂອທຳອິດເທົ່ານັ້ນທີ່ຖືກລາຍການ.
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	ສະເພາະ {files} ໄຟລ໌ທີ່ເລືອກໃນ Add torrent
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ສະເພາະເວລາທີ່ຂ້ອຍກຳລັງໃຊ້ຄອມພິວເຕີ
@@ -3651,7 +3686,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	ເປີດລິ້ງ magnet ແລະ ໄຟລ໌ .torrent ດ້ວຍ Mister Download Manager
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	ເປີດ Mister Download Manager
 #. text in extension.rs
@@ -3761,6 +3797,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	ປາຣາກວາຍ
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	ພາກສ່ວນ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	ລະຫັດຜ່ານ
@@ -3957,6 +3997,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ຄິວ
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	ຕັດໄວ, ທີ່ keyframes
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -4415,6 +4459,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	ສະແດງກ່ອງໂຕ້ຕອບຄວາມຄືບໜ້າການດາວໂຫຼດເມື່ອການດາວໂຫຼດເລີ່ມຕົ້ນ
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	ສະແດງການດາວໂຫຼດເມື່ອຄລິກໄອຄອນພື້ນທີ່ແຈ້ງເຕືອນ
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4707,6 +4755,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ກຳລັງເລີ່ມຕົ້ນ...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	ເລີ່ມຕົ້ນ ແລະ ສິ້ນສຸດຢ່າງຊັດເຈນທີ່ From ແລະ To: ffmpeg ເຂົ້າລະຫັດພາກສ່ວນອີກຄັ້ງ, ເຊິ່ງໃຊ້ເວລາດົນກວ່າ
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4894,6 +4946,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	ນັ້ນບໍ່ແມ່ນໂປຣແກຣມຄຳສັ່ງຂອງ 7-Zip (7z.exe).
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	ນັ້ນຄືວິດີໂອທັງໝົດ: ປ່ຽນ From ຫຼື To, ຫຼືບໍ່ເລືອກ Only a part
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -5216,6 +5272,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	ບໍລິການບໍ່ໄດ້ລະບຸວ່າບັນຊີເປັນພຣີມຽມຫຼືບໍ່
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	ເວັບໄຊທ໌ບໍ່ໄດ້ບອກວ່າວິດີໂອນີ້ຍາວເທົ່າໃດ
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5458,6 +5518,7 @@
 	This name is reserved by Windows	ຊື່ນີ້ຖືກສະຫງວນໄວ້ໂດຍ Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ອັນນີ້ຕ້ອງການ ffmpeg
@@ -5561,6 +5622,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	ເພື່ອຕິດຕັ້ງສິ່ງທີ່ຂາດຫາຍໄປ: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	To ແມ່ນເກີນກວ່າຈຸດສິ້ນສຸດຂອງວິດີໂອ
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	To ຕ້ອງມາຫຼັງ From
 #. text in the Batch download window
 #, machine
 	To:	ເຖິງ:
@@ -5748,6 +5817,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	ພິມຊື່ຄິວ
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	ພິມເວລາເປັນ 1:30 ຫຼື 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5920,7 +5993,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	ຊື່ຜູ້ໃຊ້:
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	ຊື່ຜູ້ໃຊ້ ແລະລະຫັດຜ່ານສຳລັບເຊີບເວີ/ເວັບໄຊ
 #. text in the Options window
@@ -6338,7 +6411,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} ຖືກຈັບຄູ່ແລ້ວ. ມັນສາມາດຄວບຄຸມ MDM ໄດ້ແລ້ວ.
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -6566,6 +6639,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ບໍ່ສາມາດເຂົ້າເຖິງໂຮສໄຟລ໌ນີ້ໄດ້ໃນຕອນນີ້; MDM ຈະລອງໃໝ່ພາຍຫຼັງ
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} ບໍ່ໄດ້ລະບຸ {file}, ທີ່ເລືອກໃນ Add torrent: ບໍ່ມີຫຍັງຖືກດາວໂຫຼດ. ເພີ່ມ torrent ອີກຄັ້ງພ້ອມໄຟລ໌ທັງໝົດ, ຫຼືບໍ່ມີໄຟລ໌ນີ້
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6856,6 +6933,11 @@ extension	Done	ສຳເລັດແລ້ວ
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ດາວໂຫຼດ
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	ດາວໂຫຼດບາງສ່ວນຈາກນີ້...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine

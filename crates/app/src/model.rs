@@ -948,6 +948,10 @@ pub struct VideoSpec {
     /// (`same_video`). None in a list saved before it, for a live stream or a length not said.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub duration: Option<u32>,
+    /// Only this part of it (#1662): its times and its cut; none for the whole video (and in a
+    /// list saved before parts).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub part: Option<mdm_tools::part::Part>,
 }
 
 /// A running download and its speed measurement.
@@ -2125,6 +2129,7 @@ mod file_address_tests {
             parts: Vec::new(),
             named: false,
             duration: None,
+            part: None,
         });
         i
     }
@@ -2365,6 +2370,7 @@ mod tests {
             parts: Vec::new(),
             named: false,
             duration: None,
+            part: None,
         });
         it
     }

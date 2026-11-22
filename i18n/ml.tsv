@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	അജ്ഞാതമായ ഒരു സൈറ്റ് {n} ലിങ്ക് ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.|അജ്ഞാതമായ ഒരു സൈറ്റ് {n} ലിങ്കുകൾ ലിങ്ക് ഗ്രാബറിലേക്ക് അയയ്ക്കാൻ ആഗ്രഹിക്കുന്നു.
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	കൂടുതൽ {n} എണ്ണം|കൂടുതൽ {n} എണ്ണം
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -278,6 +283,14 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ഒരു NextDNS കോൺഫിഗറേഷൻ ഐഡിയിൽ ആറ് അക്ഷരങ്ങളോ അക്കങ്ങളോ (0-9, a-f) ഉണ്ടായിരിക്കണം.
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	വീഡിയോയുടെ അധ്യായങ്ങളും സബ്‌ടൈറ്റിലുകളും ഇല്ലാതെ ഒരു ഭാഗം സംരക്ഷിച്ചു
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	പ്ലേലിസ്റ്റിലെ വീഡിയോകൾ മുഴുവനായാണ് ഡൗൺലോഡ് ചെയ്യുന്നത്
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -322,6 +335,7 @@
 #, machine
 	about {ms} ms ({reach})	ഏകദേശം {ms} ms ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -888,7 +902,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	കാനഡ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	റദ്ദാക്കുക
@@ -986,6 +1000,10 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	നിങ്ങളുടെ കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ പിന്നീട് വീഡിയോ വിൻഡോയിൽ നിന്ന് അവ നേടുക.
+#. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	തിരഞ്ഞെടുത്താൽ, MDM ഐക്കണിൽ ക്ലിക്കുചെയ്യുമ്പോൾ ഡൗൺലോഡ് ചെയ്യുന്നവയും താൽക്കാലികമായി നിർത്താനും റദ്ദാക്കാനുമുള്ള ഓപ്ഷനുകളും കാണിക്കും; ഇരട്ട ക്ലിക്കിൽ വിൻഡോ തുറക്കും. തിരഞ്ഞെടുത്തില്ലെങ്കിൽ, ക്ലിക്കുചെയ്യുമ്പോൾ വിൻഡോ കാണിക്കുകയോ മറയ്ക്കുകയോ ചെയ്യും
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -1096,7 +1114,7 @@
 #. text in the Options window
 #, machine
 	Clock:	ക്ലോക്ക്:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1303,7 +1321,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	ദിവസം, മാസം, വർഷം
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	ഡെബ്രിഡ് സേവന അക്കൗണ്ടുകൾ
 #. text in the Scheduler window
@@ -1493,14 +1511,6 @@
 #. window title in a dialog box
 #, machine
 	Download later	പിന്നീട് ഡൗൺലോഡ് ചെയ്യുക
-#. text in the Scheduler's download limits
-#. a11y name of the second Download limits box, where "every {n} hours" puts its {n}
-#, machine
-	Download limit: every how many hours	ഡൗൺലോഡ് പരിധി: എത്ര മണിക്കൂറിലൊരിക്കൽ
-#. text in the Scheduler's download limits
-#. a11y name of the first Download limits box, where "Download no more than {n} MBytes" puts its {n}
-#, machine
-	Download limit: MBytes	ഡൗൺലോഡ് പരിധി: MBytes
 #. window title in a dialog box; text in the Options window; checkbox in the Options window; text in the Scheduler window
 #. the Scheduler's page (and checkbox) that caps how much is downloaded in a time
 #, machine
@@ -1625,8 +1635,9 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ഒരു ബ്രൗസറിന്റെ സ്വകാര്യ വിൻഡോയിൽ നിന്നുള്ള ഡൗൺലോഡുകൾ MDM-ന്റെ ലിസ്റ്റിൽ മറ്റേതൊരു ഡൗൺലോഡും പോലെ നിലനിൽക്കും, MDM പുനരാരംഭിച്ച ശേഷവും; അവയുടെ കുക്കികൾ ഒരിക്കലും സംരക്ഷിക്കപ്പെടുന്നില്ല. അവ മെമ്മറിയിൽ മാത്രം സൂക്ഷിക്കാൻ, {options} → {general} → {checkbox} എന്നതിലെ ടിക്ക് നീക്കുക.
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	പുരോഗമിക്കുന്ന ഡൗൺലോഡുകൾ
 #. text in a dialog box
@@ -1793,6 +1804,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	എല്ലാം സാധാരണ വലുപ്പത്തിൽ (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	കൃത്യമായ കട്ട്, വീണ്ടും എൻകോഡ് ചെയ്തു
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1877,6 +1892,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	ഫറോ ദ്വീപുകൾ
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	വേഗതയേറിയത്: സ്ട്രീമുകൾ അതുപോലെ പകർത്തുന്നു, അതിനാൽ ഭാഗം 'മുതൽ' എന്നതിനും അല്പം മുമ്പേ ആരംഭിച്ചേക്കാം
 #. text in the Scheduler window
 #, machine
 	February	ഫെബ്രുവരി
@@ -2128,6 +2147,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	കമാൻഡ് ലൈനിൽ നിന്ന്
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	{from} മുതൽ {to} വരെ
 #. text in the Batch download window
 #, machine
 	From:	മുതൽ:
@@ -3336,6 +3359,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ക്ലിപ്പ്ബോർഡിൽ ഡൗൺലോഡ് ലിങ്കുകളൊന്നും കണ്ടെത്തിയില്ല. http, https, ftp അല്ലെങ്കിൽ മാഗ്നറ്റ് ലിങ്കുകളുള്ള ഒരു ടെക്സ്റ്റ് പകർത്തി വീണ്ടും ശ്രമിക്കുക.
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	ഡൗൺലോഡുകളൊന്നും പ്രവർത്തിക്കുന്നില്ല
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3610,6 +3637,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	പൂർത്തിയാക്കിയ ഡൗൺലോഡ് അല്ലെങ്കിൽ ഇതുവരെ ആരംഭിക്കാത്ത ഡൗൺലോഡ് മാത്രമേ നീക്കാൻ കഴിയൂ. ആദ്യം അത് നിർത്തി പൂർത്തിയാക്കുക.
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	ഒരു ഭാഗം മാത്രം
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3627,6 +3658,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	ആദ്യത്തെ {n} വീഡിയോകൾ മാത്രമാണ് ലിസ്റ്റ് ചെയ്തിരിക്കുന്നത്.
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	ആഡ് ടോറന്റിൽ തിരഞ്ഞെടുത്ത {files} ഫയലുകൾ മാത്രം
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ഞാൻ കമ്പ്യൂട്ടർ ഉപയോഗിക്കുമ്പോൾ മാത്രം
@@ -3651,7 +3686,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	മാഗ്നറ്റ് ലിങ്കുകളും .torrent ഫയലുകളും Mister Download Manager ഉപയോഗിച്ച് തുറക്കുക
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	Mister Download Manager തുറക്കുക
 #. text in extension.rs
@@ -3761,6 +3797,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	പരാഗ്വേ
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	ഭാഗം
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	പാസ്‌വേഡ്
@@ -3957,6 +3997,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ക്യൂകൾ
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	കീഫ്രെയിമുകളിൽ വേഗത്തിലുള്ള കട്ട്
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -4415,6 +4459,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	ഒരു ഡൗൺലോഡ് ആരംഭിക്കുമ്പോൾ ഡൗൺലോഡ് പുരോഗതി ഡയലോഗ് കാണിക്കുക
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	അറിയിപ്പ് ഏരിയ ഐക്കണിൽ ക്ലിക്കുചെയ്യുമ്പോൾ ഡൗൺലോഡുകൾ കാണിക്കുക
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4707,6 +4755,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ആരംഭിക്കുന്നു...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	‘മുതൽ’, ‘വരെ’ എന്നീ സമയങ്ങളിൽ കൃത്യമായി ആരംഭിക്കുകയും അവസാനിക്കുകയും ചെയ്യുന്നു: ffmpeg ഭാഗം വീണ്ടും എൻകോഡ് ചെയ്യുന്നതിനാൽ കൂടുതൽ സമയമെടുക്കും
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4894,6 +4946,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	അത് 7-Zip-ന്റെ കമാൻഡ് ലൈൻ പ്രോഗ്രാം (7z.exe) അല്ല.
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	അത് മുഴുവൻ വീഡിയോയാണ്: ‘മുതൽ’ അല്ലെങ്കിൽ ‘വരെ’ മാറ്റുക, അല്ലെങ്കിൽ ‘ഒരു ഭാഗം മാത്രം’ എന്നതിലെ ടിക്ക് മാറ്റുക
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -5216,6 +5272,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	അക്കൗണ്ട് പ്രീമിയമാണോ എന്ന് സേവനം പറയുന്നില്ല
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	ഈ വീഡിയോയുടെ ദൈർഘ്യം സൈറ്റ് പറയുന്നില്ല
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5458,6 +5518,7 @@
 	This name is reserved by Windows	ഈ പേര് Windows റിസർവ് ചെയ്തിട്ടുള്ളതാണ്
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ഇതിന് ffmpeg ആവശ്യമാണ്
@@ -5561,6 +5622,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	ഇല്ലാത്തവ ഇൻസ്റ്റാൾ ചെയ്യാൻ: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	‘വരെ’ എന്ന സമയം വീഡിയോയുടെ അവസാനത്തിനപ്പുറമാണ്
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	‘വരെ’ എന്ന സമയം ‘മുതൽ’ എന്ന സമയത്തിന് ശേഷമായിരിക്കണം
 #. text in the Batch download window
 #, machine
 	To:	ലേക്ക്:
@@ -5748,6 +5817,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	ക്യൂവിന്റെ പേര് ടൈപ്പ് ചെയ്യുക
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	സമയങ്ങൾ 1:30 അല്ലെങ്കിൽ 1:02:03 എന്ന രീതിയിൽ ടൈപ്പ് ചെയ്യുക
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5920,7 +5993,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	ഉപയോക്തൃനാമം:
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	സെർവറുകൾ/സൈറ്റുകൾക്കായുള്ള ഉപയോക്തൃനാമങ്ങളും പാസ്‌വേഡുകളും
 #. text in the Options window
@@ -6334,7 +6407,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} ജോടിയാക്കി. ഇതിന് ഇപ്പോൾ MDM നിയന്ത്രിക്കാൻ കഴിയും.
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -6562,6 +6635,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service}-ന് ഇപ്പോൾ ഈ ഫയൽ ഹോസ്റ്റിൽ എത്താനാകില്ല; MDM പിന്നീട് വീണ്ടും ശ്രമിക്കും
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	ആഡ് ടോറന്റിൽ തിരഞ്ഞെടുത്ത {file} എന്ന ഫയൽ {service} ലിസ്റ്റ് ചെയ്യുന്നില്ല: ഒന്നും ഡൗൺലോഡ് ചെയ്തില്ല. എല്ലാ ഫയലുകളോടെയും ഈ ഫയൽ ഒഴിവാക്കിയും ടോറന്റ് വീണ്ടും ചേർക്കുക
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6852,6 +6929,11 @@ extension	Done	പൂർത്തിയായി
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ഡൗൺലോഡ് ചെയ്യുക
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	ഇവിടെ നിന്ന് ഒരു ഭാഗം ഡൗൺലോഡ് ചെയ്യുക...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine
