@@ -1281,15 +1281,43 @@ button:focus-visible { outline: none; }
     }
     return "";
   }
-  // The stream a page wrote into itself for its player (`html`): an .m3u8 address, often with
-  // "\/" for "/". Of several, the one whose address names the highest quality (1080p,
-  // 1920x1080), else the first. "": none.
+  // The stream a page wrote into itself for its player (`html`): an .m3u8 or .mpd address, often
+  // with "\/" for "/". Of several: a master list (it lists every quality), else the one of the
+  // highest quality its address or its entry names ("1080p": …, {label: "1080p", file: …},
+  // 1920x1080, FHD), else the first. "": none.
   function bestPageStream(html) {
-    const found = (String(html).match(/https?:\\?\/\\?\/[^"'\s<>]+?\.m3u8[^"'\s<>]*/gi) || []).map((u) =>
-      u.replace(/\\\//g, "/").replace(/\\u0026/gi, "&").replace(/&amp;/g, "&"),
-    );
-    const height = (u) => Number((/(\d{3,4})p(?![a-z0-9])/i.exec(u) || /\d{3,4}x(\d{3,4})/i.exec(u) || [])[1] || 0);
-    return found.reduce((a, b) => (height(b) > height(a) ? b : a), found[0] || "");
+    const text = String(html);
+    const marks = [...text.matchAll(/https?:\\?\/\\?\/[^"'\s<>]+?\.(?:m3u8|mpd)[^"'\s<>]*/gi)];
+    const found = marks.map((m, i) => {
+      const end = m.index + m[0].length;
+      // Its own entry: the words between it and the links beside it, not past a { or }.
+      const before = text.slice(Math.max(i ? marks[i - 1].index + marks[i - 1][0].length : 0, m.index - 80), m.index);
+      const after = text.slice(end, Math.min(i + 1 < marks.length ? marks[i + 1].index : text.length, end + 80));
+      const url = m[0].replace(/\\\//g, "/").replace(/\\u0026/gi, "&").replace(/&amp;/g, "&");
+      const entry = `${before.split(/[{}]/).pop()} ${after.split(/[{}]/)[0]}`;
+      return { url, height: streamHeight(url) || streamHeight(entry, true) };
+    });
+    const master = found.find((f) => /master/i.test(f.url) && !f.height);
+    if (master) return master.url;
+    return found.reduce((a, b) => (b.height > a.height ? b : a), found[0] || { url: "" }).url;
+  }
+  // The picture height `s` names (an address: 720p, 1280x720; an entry's words, `words`, also
+  // "720": …, quality: 720, FHD). 0: none.
+  function streamHeight(s, words = false) {
+    const m =
+      /(\d{3,4})p(?![a-z0-9])/i.exec(s) ||
+      /\d{3,4}x(\d{3,4})/i.exec(s) ||
+      (words && (/["'](\d{3,4})["']\s*:/.exec(s) || /(?:quality|label|height|res(?:olution)?)\W{0,3}(\d{3,4})(?!\d)/i.exec(s)));
+    if (m) return Number(m[1]);
+    if (!words) return 0;
+    return /\b(?:4k|uhd)\b/i.test(s) ? 2160 : /\b(?:2k|qhd)\b/i.test(s) ? 1440 : /\b(?:fhd|full\s?hd)\b/i.test(s) ? 1080 : 0;
+  }
+  // The same stream in 1080p, when its address names a lower quality (…_720p.m3u8 → …_1080p):
+  // pages often write only the quality the player starts with. "": none to try.
+  function higherStream(url) {
+    const m = /(\d{3,4})p(?![a-z0-9])/i.exec(url);
+    const h = m ? Number(m[1]) : 0;
+    return h >= 240 && h < 1080 ? url.slice(0, m.index) + "1080" + url.slice(m.index + m[1].length) : "";
   }
   // The stream the page wrote for its video, before it plays (bestPageStream). Only on a page with
   // one video worth a button: on a feed the page's first stream may be another video's. Kept a
@@ -1377,7 +1405,9 @@ button:focus-visible { outline: none; }
       return { r, s };
     };
     l.done = (async () => {
-      const { r, s: found } = await lookUp({}, l.at + LOOKUP_MS);
+      // The page's stream (nothing names the video): its 1080p first, when there may be one.
+      const { r, s: found } =
+        (asked.src && asked.src === c.d.page && (await higherLook(c.d.page, lookUp))) || (await lookUp({}, l.at + LOOKUP_MS));
       if (r && r.show) l.show = String(r.show);
       if (r && r.post) l.post = String(r.post);
       let s = found;
@@ -1453,8 +1483,16 @@ button:focus-visible { outline: none; }
   // The stream its page wrote for a video (`pageStream`), looked up as its `src`: its qualities.
   // Null unless that found some.
   async function pageLook(url, lookUp) {
-    const { r, s } = await lookUp({ src: url }, Date.now() + LOOKUP_MS);
+    const { r, s } = (await higherLook(url, lookUp)) || (await lookUp({ src: url }, Date.now() + LOOKUP_MS));
     return s && s.state === "ready" ? { ...s, ...(r && r.show ? { show: String(r.show) } : {}) } : null;
+  }
+  // The look-up ({r, s}) of `url`'s 1080p (higherStream), when there is one and it found qualities;
+  // else null (the address was a guess: no such stream).
+  async function higherLook(url, lookUp) {
+    const up = higherStream(url);
+    if (!up) return null;
+    const got = await lookUp({ src: up }, Date.now() + LOOKUP_MS);
+    return got.s && got.s.state === "ready" && Array.isArray(got.s.choices) && got.s.choices.length ? got : null;
   }
 
   // The look-up starts once the button stayed a moment over the same video.

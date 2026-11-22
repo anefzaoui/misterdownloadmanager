@@ -2295,8 +2295,29 @@ function samplePage(html) {
 // player (video.js bestPageStream), the best quality its address names, escaped "\/" undone.
 {
   const source = readText("../../extension/video.js");
-  const at = source.indexOf("  function bestPageStream(");
-  const bestPageStream = new Function(`${source.slice(at, source.indexOf("\n  }\n", at) + 4)}\nreturn bestPageStream;`)();
+  const cut = (name) => {
+    const at = source.indexOf(`  function ${name}(`);
+    return source.slice(at, source.indexOf("\n  }\n", at) + 4);
+  };
+  const [bestPageStream, higherStream] = new Function(
+    `${cut("bestPageStream")}${cut("streamHeight")}${cut("higherStream")}\nreturn [bestPageStream, higherStream];`,
+  )();
+  // The quality named beside the link, not in it; a master list (every quality) over them all.
+  assert.equal(
+    bestPageStream(`sources:[{label:"720p",file:"https://cdn.example.com/a/v1.m3u8"},{label:"1080p",file:"https://cdn.example.com/a/v2.m3u8"},{label:"480p",file:"https://cdn.example.com/a/v3.m3u8"}]`),
+    "https://cdn.example.com/a/v2.m3u8",
+    "the entry labelled 1080p",
+  );
+  assert.equal(bestPageStream(`{"720":"https://c.example.com/x/7.m3u8","1080":"https://c.example.com/x/9.m3u8"}`), "https://c.example.com/x/9.m3u8", "keyed by height");
+  assert.equal(
+    bestPageStream(`{"hd":"https://c.example.com/v_720p.m3u8","hls":"https://c.example.com/v/master.m3u8"}`),
+    "https://c.example.com/v/master.m3u8",
+    "a master list lists them all",
+  );
+  // Only the starting quality written: its 1080p is tried first.
+  assert.equal(higherStream("https://c.example.com/v/abc_720p.m3u8?t=1"), "https://c.example.com/v/abc_1080p.m3u8?t=1");
+  assert.equal(higherStream("https://c.example.com/v/abc_1080p.m3u8"), "", "already 1080p");
+  assert.equal(higherStream("https://c.example.com/v/master.m3u8"), "", "no quality named");
   const html = `<script>var cfg={"hls":{"360":"https:\\/\\/cdn.example.com\\/v\\/abc_360p.m3u8?t=1\\u0026e=2",
     "1080":"https:\\/\\/cdn.example.com\\/v\\/abc_1080p.m3u8?t=1\\u0026e=2","720":"https://cdn.example.com/v/abc_720p.m3u8"}}</script>`;
   assert.equal(bestPageStream(html), "https://cdn.example.com/v/abc_1080p.m3u8?t=1&e=2", "the 1080p one, unescaped");
