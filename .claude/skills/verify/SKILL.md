@@ -57,16 +57,23 @@ Nobody here has a Mac; GitHub's macOS runners are the Mac. The **macOS showcase*
 (`.github/workflows/macos-showcase.yml`, scripts in `tools/lab/macos/`) builds a commit on Apple
 Silicon (`macos-latest`) and Intel (`macos-15-intel`) and runs it there as a person would: its
 own data folder and download folder, the lab server at `http://downloads.example`, windows opened
-with `/show`, pictures taken with `screencapture`. Start it for a pull request (any branch or
-commit works the same) with:
+with `/show`, pictures taken with `screencapture`. A run builds only the commit it runs on; to
+check a pull request, push its head commit to a branch of its own and the push starts it:
 
 ```
-gh workflow run macos-showcase.yml -f ref=refs/pull/<n>/head -f jobs=verify
+git push origin <head sha>:refs/heads/macos-showcase/pr-<n>
+gh run list --workflow macos-showcase.yml --branch macos-showcase/pr-<n>
 gh run watch <run id>; gh run download <run id> -n macos-arm64 -n macos-x86_64
+git push origin --delete macos-showcase/pr-<n>          # when done
 ```
 
-`jobs=verify` (about 12 minutes on Apple Silicon, 20 on Intel) starts MDM, runs a 200 MB
-download over 8 connections to its end and checks its SHA-256 against the server's, asks the
+Never give it a ref of other code to build on `main` (it has no such input on purpose): a run on
+`main` shares main's caches, and an outside contributor's code there could plant something in
+them that main's builds would read. On its own branch it can't: main never reads that branch's
+caches. By hand on a branch: `gh workflow run macos-showcase.yml --ref <branch> -f jobs=verify`.
+
+A push runs everything. `jobs=verify` (about 12 minutes on Apple Silicon, 20 on Intel) starts
+MDM, runs a 200 MB download over 8 connections to its end and checks its SHA-256 against the server's, asks the
 automation API about it, checks `--cli get` the same way, takes the main and progress windows
 (`verify/*.png`), keeps MDM's log (`verify/logs/`) and quits with `/exit`, timed, twice (main
 window only; a dialog open and the main window minimized, #1651). `verify/verify.txt` has a
