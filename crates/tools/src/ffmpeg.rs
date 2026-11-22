@@ -152,6 +152,10 @@ fn date_digits(http: &str) -> Option<String> {
 /// `ffmpeg(.exe)`; yt-dlp is given its folder.
 pub fn installed(dir: &Path) -> Option<Installed> {
     let own = crate::chosen::chosen(dir, crate::chosen::Helper::Ffmpeg).or_else(|| own(dir));
+    // Android: the APK's own (android.rs); none can be downloaded and run there.
+    #[cfg(target_os = "android")]
+    return own.or_else(crate::android::ffmpeg);
+    #[cfg(not(target_os = "android"))]
     own.or_else(|| crate::system::installed("ffmpeg"))
 }
 
