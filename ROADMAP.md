@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Website and help: what to do when an antivirus flags MDM (why it happens, how to check your
+  copy against the release's checksums, where to report the false alarm), linked from the README
 - ✅ Download only a part of a video or a sound, from one time to another, cut quickly at the
   keyframes or exactly (encoded again), from the Download video window and the browser add-on's
   menu over a video ([#1662](https://github.com/anefzaoui/misterdownloadmanager/issues/1662))
