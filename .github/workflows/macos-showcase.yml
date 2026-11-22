@@ -140,20 +140,24 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: The release's .dmg
-        if: matrix.source == 'release'
+      # The release's .dmg (source: release), and in every case its symbols zip: the HTTPS
+      # download's file, from github.com as a browser gets it (a redirect to GitHub's storage),
+      # checked against the copy gh brought. The built .dmg is checked by MDM's own engine, so
+      # the HTTPS file needn't come from the same build.
+      - name: The release's files
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.release }}
+          SOURCE: ${{ matrix.source }}
+          ARCH: ${{ matrix.arch }}
         run: |
           tag=${TAG:-$(gh release view -R "$GITHUB_REPOSITORY" --json tagName -q .tagName)}
-          mkdir -p "$RUNNER_TEMP/dmg"
-          gh release download "$tag" -R "$GITHUB_REPOSITORY" -D "$RUNNER_TEMP/dmg" \
-            -p "*-macos-${{ matrix.arch }}-experimental.dmg" -p "*-symbols-macos-${{ matrix.arch }}.zip"
-          ls -l "$RUNNER_TEMP/dmg"
-          # The HTTPS download's file: the release's symbols zip, from github.com as a browser
-          # gets it (a redirect to GitHub's storage), checked against the copy gh brought.
-          zip=$(ls "$RUNNER_TEMP/dmg"/*-symbols-*.zip)
+          mkdir -p "$RUNNER_TEMP/dmg" "$RUNNER_TEMP/https"
+          gh release download "$tag" -R "$GITHUB_REPOSITORY" -D "$RUNNER_TEMP/https" -p "*-symbols-macos-$ARCH.zip"
+          if [ "$SOURCE" = release ]; then
+            gh release download "$tag" -R "$GITHUB_REPOSITORY" -D "$RUNNER_TEMP/dmg" -p "*-macos-$ARCH-experimental.dmg"
+          fi
+          zip=$(ls "$RUNNER_TEMP/https"/*-symbols-*.zip)
           echo "HTTPS_URL=https://github.com/$GITHUB_REPOSITORY/releases/download/$tag/$(basename "$zip")" >> "$GITHUB_ENV"
           echo "HTTPS_SHA=$(shasum -a 256 "$zip" | awk '{print $1}')" >> "$GITHUB_ENV"
 
@@ -164,8 +168,10 @@ jobs:
           path: ${{ runner.temp }}/dmg
 
       - name: Install, start, download, quit
+        env:
+          ARCH: ${{ matrix.arch }}
         run: |
-          dmg=$(ls "$RUNNER_TEMP"/dmg/*-macos-${{ matrix.arch }}-*.dmg)
+          dmg=$(ls "$RUNNER_TEMP"/dmg/*-macos-"$ARCH"-*.dmg)
           bash tools/lab/macos/dmg-check.sh "$dmg" "$RUNNER_TEMP/out" "${HTTPS_URL:-}" "${HTTPS_SHA:-}"
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

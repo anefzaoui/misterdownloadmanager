@@ -124,12 +124,11 @@ ls "$app/Contents/PlugIns" >"$OUT/plugins.txt" 2>&1
 sleep 2
 {
   echo "== Safari's web extensions"; pluginkit -mAvvv -p com.apple.Safari.web-extension
-  echo "== every extension of MDM's"; pluginkit -mAvvv | grep -i -B2 -A8 anefzaoui
-  echo "== added by hand (pluginkit -a)"; pluginkit -a "$app/Contents/PlugIns/"*.appex; sleep 2
-  pluginkit -mAvvv -p com.apple.Safari.web-extension
   echo "== the extension's signature"; codesign -dvvv --entitlements - "$app/Contents/PlugIns/"*.appex
 } >"$OUT/pluginkit.txt" 2>&1
-if grep -q "anefzaoui" "$OUT/pluginkit.txt" && pluginkit -mAvvv -p com.apple.Safari.web-extension | grep -q anefzaoui; then
+# Decided from that one listing (a second query taken right after re-adding it by hand once found
+# none for a moment: a check's race, not the app's).
+if sed -n '1,/^ *(/p' "$OUT/pluginkit.txt" | grep -q "anefzaoui"; then
   check PASS "Safari's extension is registered ($(grep -m1 anefzaoui "$OUT/pluginkit.txt" | xargs))"
 else
   check FAIL "Safari's extension is registered (PlugIns: $(tr '\n' ' ' <"$OUT/plugins.txt"))"
