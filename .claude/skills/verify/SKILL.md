@@ -57,14 +57,15 @@ Nobody here has a Mac; GitHub's macOS runners are the Mac. The **macOS showcase*
 (`.github/workflows/macos-showcase.yml`, scripts in `tools/lab/macos/`) builds a commit on Apple
 Silicon (`macos-latest`) and Intel (`macos-15-intel`) and runs it there as a person would: its
 own data folder and download folder, the lab server at `http://downloads.example`, windows opened
-with `/show`, pictures taken with `screencapture`. Start it for a pull request with:
+with `/show`, pictures taken with `screencapture`. Start it for a pull request (any branch or
+commit works the same) with:
 
 ```
 gh workflow run macos-showcase.yml -f ref=refs/pull/<n>/head -f jobs=verify
 gh run watch <run id>; gh run download <run id> -n macos-arm64 -n macos-x86_64
 ```
 
-`jobs=verify` (about 15 minutes on Apple Silicon, 25 on Intel) starts MDM, runs a 200 MB
+`jobs=verify` (about 12 minutes on Apple Silicon, 20 on Intel) starts MDM, runs a 200 MB
 download over 8 connections to its end and checks its SHA-256 against the server's, asks the
 automation API about it, checks `--cli get` the same way, takes the main and progress windows
 (`verify/*.png`), keeps MDM's log (`verify/logs/`) and quits with `/exit`, timed, twice (main
@@ -73,12 +74,14 @@ window only; a dialog open and the main window minimized, #1651). `verify/verify
 `jobs=all` (or `showcase`): light and dark, every style theme, Options, the menu bar item and a
 recording, under `showcase/`. `jobs=dmg` installs the latest release's `.dmg` files and checks
 them (`dmg_from_commit=true`: this commit's too, as the release builds them). To try changes to
-the scripts themselves, push them to a `macos-showcase/<name>` branch: that runs everything.
+the scripts themselves, push them to a `macos-showcase/<name>` branch: that runs everything
+(`macos-showcase/dmg<name>`: the `.dmg` jobs only, with the commit's own).
 
 The PR then says `Verified: macOS runner (Apple Silicon, Intel; run <link>)`. What a runner can't
 show stays under `Not verified:` — a real GPU (runners draw with Apple's software OpenGL), a
 Retina panel (the showcase's HiDPI screen is a virtual display), Gatekeeper's first-start
-question (an unsigned app is started with its quarantine removed), Safari itself.
+question (an unsigned app is started with its quarantine removed), Safari itself, and the menu bar
+item's panel and menu (a click posted there opens neither on a runner).
 
 ## 3. Screenshots
 

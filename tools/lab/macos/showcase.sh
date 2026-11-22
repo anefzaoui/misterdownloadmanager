@@ -62,28 +62,15 @@ fill_list() {
   done
 }
 
-# The menu bar item: the right of the menu bar; the panel of what's downloading that a click on it
-# shows (#1365); its menu (right click, or System Events' "show menu"). Each from the screen's top
-# right, as macOS draws them there.
+# The menu bar item (MDM's icon where Windows has its notification area), from the right of the
+# menu bar. Its panel and menu aren't taken: on the runners a click posted there (left, right, or
+# System Events' "show menu") opens neither, three rounds of tries in a row.
 menu_bar_item() { # <dir>
-  local x y w h before area
+  local x y w h
   read -r x y w h < <(menu_item_bounds)
   if [ -z "${h:-}" ]; then log "no menu bar item"; mt windows >"$1/windows-all.txt"; return; fi
   log "menu bar item at $x,$y ${w}x$h"
   screen "$1/menu-bar.png" "$((SW - 560)),0,560,$((y + h + 2))"
-  area="$((x - 560)),0,$((SW - x + 560)),620"
-  [ "$((x - 560))" -lt 0 ] && area="0,0,$SW,620"
-  mt click $((x + w / 2)) $((y + h / 2)); sleep 2
-  mt windows >"$1/windows-after-click.txt"
-  screen "$1/menu-bar-panel.png" "$area"
-  mt key 53; sleep 1
-  osascript -e "tell application \"System Events\" to tell (first process whose unix id is $PID) to perform action \"AXShowMenu\" of menu bar item 1 of menu bar 2"     >"$1/menu-bar-axshowmenu.txt" 2>&1 &
-  sleep 2
-  screen "$1/menu-bar-menu.png" "$area"
-  mt key 53; sleep 1
-  mt click $((x + w / 2)) $((y + h / 2)) right; sleep 2
-  screen "$1/menu-bar-menu-right.png" "$area"
-  mt key 53; sleep 1; park
 }
 
 for mode in light dark; do
@@ -98,9 +85,11 @@ for mode in light dark; do
   park; sleep 1
   screen "$dir/screen-main.png"
   shoot "$MAIN" "$dir/main.png"
+  # (Early, while MDM has little to do: System Events asks MDM itself where its item is.)
+  [ "$mode" = light ] && menu_bar_item "$dir"
   # View → Theme open (MDM's own menus: the main window and the menus, from the screen).
-  read -r x y w h < <(bounds "$MAIN")
   mdm /show menu:3:theme; sleep 2
+  read -r x y w h < <(bounds "$MAIN")
   read -r ux uy uw uh < <(menus_union "$x" "$y" "$w" "$h")
   if [ -n "${uh:-}" ]; then screen "$dir/menu-theme.png" "$ux,$uy,$uw,$uh"; else mt windows >"$dir/windows-menu.txt"; log "menu-theme: main window at '$x $y $w $h'"; fi
   mt key 53; sleep 0.5; mt key 53; sleep 1
@@ -130,7 +119,6 @@ for mode in light dark; do
   done
   mdm /show progress; sleep 1; park
   screen "$dir/screen-end.png"
-  [ "$mode" = light ] && menu_bar_item "$dir"
   mt windows "$PID" >"$dir/windows-end.txt"
   mdm_exit; echo "exit after /exit: $EXIT_SECONDS s ($mode, progress window open)" >>"$OUT/runner.txt"
 done
