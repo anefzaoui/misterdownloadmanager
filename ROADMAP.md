@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Source-tree tooling only: an optional, experimental FlixCloud playlist bridge in
+  `tools/video`, with setup instructions and isolated tests. Not native app or extension
+  support, and not bundled into the installer.
 - ✅ A file that changes on the server during a download's very first requests is reported as a
   changed file, by the whole file's checksum the server sends, instead of the download quietly
   going on with one connection ([#1646](https://github.com/anefzaoui/misterdownloadmanager/issues/1646))
