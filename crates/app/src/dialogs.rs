@@ -3918,10 +3918,10 @@ pub fn preview_torrent(dest: &Path) {
 
 /// A second name for the part file, the finished file's own (`<folder>\.mdm-preview\<name>`): the
 /// same data, growing with it, that a player shows by its real name. None where the drive has no
-/// hard links (FAT32, exFAT) or the name is taken by a link a player still holds.
-/// shortcut: old links go only at the next Preview from that folder; clear them as a download ends.
+/// hard links (FAT32, exFAT) or the name is taken by a link a player still holds. The app
+/// removes it as the download ends or goes ([`clear_preview_link`]), and at start-up.
 fn preview_link(part: &Path, file: &Path) -> Option<PathBuf> {
-    let dir = part.parent()?.join(".mdm-preview");
+    let dir = part.parent()?.join(PREVIEW_DIR);
     // Earlier previews' links (one a player still has open stays until the next time).
     if let Ok(old) = std::fs::read_dir(&dir) {
         for e in old.flatten() {
@@ -3932,6 +3932,25 @@ fn preview_link(part: &Path, file: &Path) -> Option<PathBuf> {
     let link = dir.join(file.file_name()?);
     std::fs::hard_link(part, &link).ok()?;
     Some(link)
+}
+
+/// The hidden folder of Preview's links, beside the downloads.
+const PREVIEW_DIR: &str = ".mdm-preview";
+
+/// Remove the preview link made for `file` (its folder too, once empty). One a player still
+/// holds open on Windows stays, and goes at the next start-up.
+pub fn clear_preview_link(file: &Path) {
+    let (Some(dir), Some(name)) = (file.parent(), file.file_name()) else {
+        return;
+    };
+    let dir = dir.join(PREVIEW_DIR);
+    let _ = std::fs::remove_file(dir.join(name));
+    let _ = std::fs::remove_dir(&dir);
+}
+
+/// Remove every preview link in `folder` (start-up: what a crash left).
+pub fn clear_preview_links(folder: &Path) {
+    let _ = std::fs::remove_dir_all(folder.join(PREVIEW_DIR));
 }
 
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a

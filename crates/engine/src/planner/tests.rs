@@ -47,6 +47,64 @@ fn sequential_takes_the_next_chunk_from_the_front() {
     assert!(w > 10);
 }
 
+/// #1682: Preview asked once 8 connections each own an eighth of the file and are halfway
+/// through it. The ones past the front stop at their next block, and every free connection
+/// then works at the start, before any byte past it.
+#[test]
+fn sequential_mid_download_moves_connections_to_the_front() {
+    let mut p = Planner::new(128 * MB, 16 * 1024);
+    for w in 0..8 {
+        p.assign(w, None).unwrap();
+    }
+    for w in 0..8 {
+        let at = p
+            .segments()
+            .iter()
+            .find(|s| s.worker == Some(w))
+            .unwrap()
+            .start;
+        assert_eq!(p.claim(w, at, 8 * MB), Claim::Granted(8 * MB));
+        p.commit(w, at + 8 * MB);
+    }
+    p.set_sequential(true);
+    check_invariants(&p);
+    // The front window: 8 connections' 4 MB chunks past the first missing byte (8 MB).
+    let window = 8 * MB + 8 * 4 * MB;
+    for s in p.segments() {
+        if s.worker.is_some() && s.reserved > window {
+            assert!(s.end - s.reserved <= 4096, "{s:?} keeps going");
+        }
+    }
+    // Each cut connection, done with its block, takes the earliest work left: first chunks
+    // split off at the front, then the earliest unassigned rest.
+    let cut: Vec<_> = p
+        .segments()
+        .iter()
+        .filter(|s| s.worker.is_some() && s.reserved > window)
+        .map(|s| (s.worker.unwrap(), s.reserved, s.end))
+        .collect();
+    assert!(cut.len() >= 4);
+    let mut froms = Vec::new();
+    for (w, at, end) in cut {
+        // Its last block arrives, and it ends there.
+        assert_eq!(p.claim(w, at, MB), Claim::Granted(end - at));
+        assert_eq!(p.commit(w, end), Some(end));
+        let a = p.assign(w, Some(end)).unwrap();
+        assert!(
+            !p.segments()
+                .iter()
+                .any(|s| s.worker.is_none() && s.cursor < s.end && s.cursor < a.from),
+            "{w} sent to {} MB past work left before it: {:?}",
+            a.from / MB,
+            p.segments()
+        );
+        froms.push(a.from);
+        check_invariants(&p);
+    }
+    // Not where it was (past 48 MB): the first ones work inside the front.
+    assert!(froms[0] < window && froms[1] < window, "{froms:?}");
+}
+
 #[test]
 fn first_worker_gets_whole_file_second_splits_in_half() {
     let mut p = Planner::new(100 * MB, MB);

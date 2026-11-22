@@ -84,8 +84,8 @@ pub struct Planner {
     min_split: u64,
     /// How long a connection may wait for its first byte before a free one takes its segment.
     preempt_after: std::time::Duration,
-    /// Download from the start onward (Preview): a split takes the next `SEQ_CHUNK` after the
-    /// first segment that has room, not the upper half of the largest.
+    /// Download from the start onward (Preview): a free connection takes the next `SEQ_CHUNK`
+    /// after the first segment that has room, not the upper half of the largest.
     sequential: bool,
     /// Sorted by `start`, contiguous, covering `[0, size)`.
     segs: Vec<Segment>,
@@ -108,9 +108,37 @@ impl Planner {
         }
     }
 
-    /// Fetch the file from its start onward, so it can be played while it downloads.
+    /// Fetch the file from its start onward, so it can be played while it downloads. Turned on
+    /// mid-download, the connections far from the first missing byte stop where they are (their
+    /// rest left unassigned) and, free, take the chunks at the start: the head fills first.
     pub fn set_sequential(&mut self, on: bool) {
         self.sequential = on;
+        if !on {
+            return;
+        }
+        let chunk = SEQ_CHUNK.max(self.min_split);
+        let Some(front) = self
+            .segs
+            .iter()
+            .find(|s| s.unclaimed() > 0)
+            .map(|s| s.reserved)
+        else {
+            return;
+        };
+        // Room at the front for every connection's chunk; the ones past it move there.
+        let window = front + self.active_workers() as u64 * chunk;
+        let mut i = 0;
+        while i < self.segs.len() {
+            let s = self.segs[i];
+            // Cut at the next block past what is claimed: the bytes on their way are kept.
+            let cut = (s.reserved / ALIGN + 1) * ALIGN;
+            if s.worker.is_some() && s.reserved > window && cut < s.end {
+                self.segs[i].end = cut;
+                self.segs.insert(i + 1, fresh(cut, s.end, None));
+                i += 1;
+            }
+            i += 1;
+        }
     }
 
     /// A pending connection is only taken over after waiting this long (about two of the
@@ -197,6 +225,31 @@ impl Planner {
     pub fn assign(&mut self, w: WorkerId, after: Option<u64>) -> Option<Assignment> {
         self.release(w);
 
+        // Sequential (Preview): whichever begins nearer the start, an unassigned segment or the
+        // next chunk after the first segment with room for two; near the end, where neither is
+        // left, the usual rules finish the file.
+        if self.sequential {
+            let chunk = SEQ_CHUNK.max(self.min_split);
+            let open = self
+                .segs
+                .iter()
+                .position(|s| s.worker.is_none() && s.unclaimed() > 0);
+            let split = self
+                .segs
+                .iter()
+                .position(|s| s.worker.is_some() && s.unclaimed() >= 2 * chunk);
+            match (open, split) {
+                (Some(o), Some(sp)) if self.segs[o].cursor > self.segs[sp].reserved + chunk => {
+                    return Some(self.split_at(sp, self.segs[sp].reserved + chunk, w));
+                }
+                (Some(o), _) => return Some(self.give(o, w, None)),
+                (None, Some(sp)) => {
+                    return Some(self.split_at(sp, self.segs[sp].reserved + chunk, w));
+                }
+                (None, None) => {}
+            }
+        }
+
         // 1. An unassigned, unfinished segment — prefer the one continuing where `w` stopped.
         let open = |s: &Segment| s.worker.is_none() && s.unclaimed() > 0;
         let pick = self
@@ -222,26 +275,6 @@ impl Planner {
             return Some(self.give(i, w, pre));
         }
 
-        // 3'. Sequential: the next chunk after the first segment with room for two; near the
-        //     end, where none has, the usual rule finishes the file.
-        if self.sequential
-            && let Some(i) = self
-                .segs
-                .iter()
-                .position(|s| s.unclaimed() >= 2 * SEQ_CHUNK.max(self.min_split))
-        {
-            let mid = self.segs[i].reserved + SEQ_CHUNK.max(self.min_split);
-            let end = self.segs[i].end;
-            self.segs[i].end = mid;
-            self.segs.insert(i + 1, fresh(mid, end, Some(w)));
-            return Some(Assignment {
-                from: mid,
-                to: end,
-                written: 0,
-                preempted: None,
-            });
-        }
-
         // 3. Split the largest remaining segment in half.
         let (i, seg) = self
             .segs
@@ -257,15 +290,20 @@ impl Planner {
         if aligned >= seg.reserved + self.min_split {
             mid = aligned;
         }
-        let end = seg.end;
+        Some(self.split_at(i, mid, w))
+    }
+
+    /// Segment `i` ends at `mid`; `w` takes the rest.
+    fn split_at(&mut self, i: usize, mid: u64, w: WorkerId) -> Assignment {
+        let end = self.segs[i].end;
         self.segs[i].end = mid;
         self.segs.insert(i + 1, fresh(mid, end, Some(w)));
-        Some(Assignment {
+        Assignment {
             from: mid,
             to: end,
             written: 0,
             preempted: None,
-        })
+        }
     }
 
     /// How many bytes worker `w` may still fetch from `at` before its segment ends (the end

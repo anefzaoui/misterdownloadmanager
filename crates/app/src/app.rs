@@ -1655,6 +1655,11 @@ pub struct App {
     healing: HashMap<u64, Healing>,
     /// The downloads started again after that: a second such failure stands.
     heal_retry: std::collections::HashSet<u64>,
+    /// Preview (#1682): each download whose preview link is out, under the file name it was
+    /// made for; the link goes once the download finishes, is renamed, moved or removed.
+    previews: Vec<(u64, PathBuf)>,
+    /// Torrents Preview switched to Download in order: switched back once they finish.
+    preview_order: Vec<u64>,
     /// The yt-dlp or gallery-dl version each video or gallery last started with.
     started_with: HashMap<u64, String>,
     /// Stopped by hand while they could have run: a running queue leaves them alone until
@@ -2153,6 +2158,18 @@ impl App {
             .filter(|i| i.status == Status::Complete && i.rename_on_complete.is_some())
             .map(|i| i.id)
             .collect();
+        // Preview links a crash or a player holding them left behind (#1682): the next Preview
+        // makes a fresh one.
+        let folders: std::collections::HashSet<PathBuf> = items
+            .iter()
+            .flat_map(|i| [Some(i.dest.clone()), i.dest.parent().map(|p| p.to_owned())])
+            .flatten()
+            .collect();
+        std::thread::spawn(move || {
+            for f in folders {
+                dialogs::clear_preview_links(&f);
+            }
+        });
         App {
             rt,
             items,
@@ -2344,6 +2361,8 @@ impl App {
             keeper: Default::default(),
             healing: HashMap::new(),
             heal_retry: Default::default(),
+            previews: Vec::new(),
+            preview_order: Vec::new(),
             started_with: HashMap::new(),
             stopped_by_hand: Default::default(),
             saved_by_hand: Default::default(),
@@ -5835,6 +5854,48 @@ impl App {
     }
 
     /// Retry queued deferred torrent renames once `torrent_host` is free, and apply finished ones.
+    /// Preview's leftovers (#1682): a download's preview link goes once it finishes, is renamed
+    /// or moved (its file is no longer the one previewed) or is removed, so a removed download's
+    /// data isn't kept on the disk by the link; a torrent's Download in order, that Preview
+    /// switched on, is switched off again once it finishes.
+    fn poll_previews(&mut self) {
+        if self.previews.is_empty() && self.preview_order.is_empty() {
+            return;
+        }
+        let items = &self.items;
+        let unfinished = |id: u64| {
+            items
+                .iter()
+                .find(|i| i.id == id)
+                .filter(|i| i.status != Status::Complete)
+        };
+        self.previews.retain(|(id, file)| {
+            if unfinished(*id).is_some_and(|i| preview_file(i) == *file) {
+                return true;
+            }
+            dialogs::clear_preview_link(file);
+            false
+        });
+        let mut finished = Vec::new();
+        self.preview_order.retain(|id| {
+            if unfinished(*id).is_some() {
+                return true;
+            }
+            finished.push(*id);
+            false
+        });
+        for id in finished {
+            let in_order = self
+                .items
+                .iter()
+                .find(|i| i.id == id)
+                .and_then(|i| Some(i.torrent.as_ref()?.in_order));
+            if in_order == Some(true) {
+                self.toggle_torrent_order(id, true);
+            }
+        }
+    }
+
     fn poll_deferred_torrent_renames(&mut self) {
         if !self.deferred_torrent_queue.is_empty() {
             let queued = std::mem::take(&mut self.deferred_torrent_queue);
@@ -8580,18 +8641,21 @@ impl App {
                 if let Some((id, dest, in_order)) = torrent {
                     if !in_order {
                         self.toggle_torrent_order(id, true);
+                        self.preview_order.push(id);
                     }
                     dialogs::preview_torrent(&dest);
                 } else if let Some(i) = target.and_then(|id| self.items.iter().find(|i| i.id == id))
                 {
-                    // The engine's own name for the file once it knows it (a server-named one).
-                    let file = i
-                        .live
-                        .as_ref()
-                        .and_then(|l| l.dl.snapshot().file)
-                        .unwrap_or_else(|| i.dest.clone());
+                    let file = preview_file(i);
                     if let Some(l) = &i.live {
                         l.dl.set_sequential();
+                    }
+                    if !self
+                        .previews
+                        .iter()
+                        .any(|(id, f)| *id == i.id && *f == file)
+                    {
+                        self.previews.push((i.id, file.clone()));
                     }
                     dialogs::preview_download(&file);
                 }
@@ -8830,6 +8894,7 @@ impl App {
         self.poll_moves();
         self.poll_dragged_out();
         self.poll_deferred_torrent_renames();
+        self.poll_previews();
         if !self.moving.is_empty()
             || !self.renaming.is_empty()
             || !self.rename_checks.is_empty()
@@ -17312,4 +17377,13 @@ mod delete_tests {
         assert!(app.deleter.finish(Duration::from_secs(10)));
         assert!(files.iter().all(|f| f.exists()));
     }
+}
+
+/// The file a download's Preview opens: the engine's own name for it once it knows it (a
+/// server-named one), else where it is to be saved.
+fn preview_file(i: &Item) -> PathBuf {
+    i.live
+        .as_ref()
+        .and_then(|l| l.dl.snapshot().file)
+        .unwrap_or_else(|| i.dest.clone())
 }
