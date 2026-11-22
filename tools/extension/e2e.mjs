@@ -3528,6 +3528,8 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     settings.settings.show_start_dialog = true;
     fs.writeFileSync(settingsFile, JSON.stringify(settings));
     try {
+      // An existing destination keeps Download Now clear of the separate Create folder question.
+      fs.mkdirSync(path.join(downloads, "Video"), { recursive: true });
       await startApp();
       const pid = appPid();
       // This isolated harness shares one app data folder across browser cases. Remove only its

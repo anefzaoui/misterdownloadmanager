@@ -2929,6 +2929,23 @@ function videoButton({ stored = {} } = {}) {
     const clicked = w.startLook(c2, true);
     assert.notEqual(clicked, early, "the click asks again");
     assert.equal(asked.length, 3);
+    // A delayed hover can fire after the native dialog has taken this lookup's choice.
+    const c3 = { ...c, key: "https://videos.test/watch?v=3 ", d: { ...c.d, url: "https://videos.test/watch?v=3" } };
+    answer = { lookup: { state: "ready", token: "t3", choices: [{}] } };
+    const picked = w.startLook(c3, true);
+    await picked.done;
+    picked.picked = true;
+    const lookupCount = () => asked.filter((m) => m.type === "video-lookup").length;
+    const beforePickedHover = lookupCount();
+    const afterPick = w.restWait(w.REST_MS, () => w.startLook(c3), set, clear);
+    afterPick.rest(v);
+    to(now + w.REST_MS);
+    assert.equal(lookupCount(), beforePickedHover, "a delayed hover after a pick must not request another lookup");
+    assert.equal(w.startLook(c3), picked, "automatic lookups leave the consumed choice alone");
+    const explicit = w.startLook(c3, true);
+    await explicit.done;
+    assert.notEqual(explicit, picked, "a later explicit click can request a fresh token");
+    assert.equal(lookupCount(), beforePickedHover + 1);
     // A private window: neither the button showing nor resting on it asks; the click and the menu do.
     assert.ok(source.includes("const PRIVATE = Boolean(ext.extension?.inIncognitoContext);"), "PRIVATE: the browser's word");
     assert.ok(fn("show").includes("if (!PRIVATE && !usable(looks.get(c.key))) scheduleLook(v);"), "show: not in a private window");

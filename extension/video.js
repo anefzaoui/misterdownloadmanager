@@ -1203,6 +1203,8 @@ button:focus-visible { outline: none; }
   function startLook(c, byUser = false) {
     if (!c || !c.key || c.d.drm || (c.d.src && !STREAM.test(c.d.src))) return null;
     const kept = looks.get(c.key);
+    // A hover finishing after a pick must leave the handoff alone; a new click may refresh it.
+    if (kept?.picked && !byUser) return kept;
     if (usable(kept) && !(byUser && kept.state === "busy")) return kept;
     const og = location.href === landedAt ? document.querySelector('meta[property="og:title"]')?.content : "";
     const asked = { src: c.d.src, title: (og || document.title || "").trim(), url: c.d.url, at: c.d.at };
