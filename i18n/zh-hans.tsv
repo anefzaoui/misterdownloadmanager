@@ -5,44 +5,36 @@
 #. count in a dialog box
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	同时从磁盘中删除 {n} 个文件
 #. count in cnl.rs
 #. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	未知网站要向链接抓取器发送 {n} 个链接。
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	And {n} other file.|And {n} other files.	以及其他 {n} 个文件。
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	确定要从 Mister Download Manager 下载列表中删除这 {n} 个下载任务吗？
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-#, machine
 @plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	已连接到 {n} 个节点，正在获取文件列表...
 #. count in the Add torrent window
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT，{n} 个节点：{peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	已将 {n} 个文件解压到 {folder}
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-#, machine
 @plural	Found {n} peer, connecting...|Found {n} peers, connecting...	已找到 {n} 个节点，正在连接...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
@@ -52,27 +44,22 @@
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	还有 {n} 个下载任务在等待。也要取消吗？
 #. count in a dialog box
 #. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	This also deletes {n} finished file.|This also deletes {n} finished files.	这还会删除 {n} 个已完成的文件。
 #. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	and {n} more|and {n} more	另有 {n} 个
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	and {n} other file|and {n} other files	以及其他 {n} 个文件
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
-#, machine
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} 允许 {n} 个连接
 #. count in rssdlg.rs
 #. {n} = a number (keep the braces as they are)
@@ -80,20 +67,16 @@
 @plural	{n} article|{n} articles	{n} 篇文章
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} byte|{n} bytes	{n} 字节
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} download|{n} downloads	{n} 个下载任务
 #. count in a dialog box
 #. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} download finished|{n} downloads finished	{n} 个下载已完成
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} downloading|{n} downloading	{n} 个下载中
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
@@ -103,18 +86,15 @@
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} failed|{n} failed	其中 {n} 个失败
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} file|{n} files	{n} 个文件
 #. count in the main window
 #. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} file chosen to download|{n} files chosen to download	已选择下载 {n} 个文件
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting
@@ -124,133 +104,102 @@
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	还有 {n} 个文件未能删除。
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} peer|{n} peers	{n} 个节点
 #. count in the Options window
 #. Options → Archives: beside the Archive passwords button: how many are saved
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} saved|{n} saved	已保存 {n} 个
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} selected|{n} selected	{n} 个已选中
 #. count in the Options window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} site added from the file.|{n} sites added from the file.	已从文件添加 {n} 个站点。
 #. count in the Options window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} site saved to the file.|{n} sites saved to the file.	已将 {n} 个站点保存到文件。
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} tracker added|{n} trackers added	已添加 {n} 个 Tracker
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} 个 Tracker：{peers}
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
-#, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} 要向链接抓取器发送 {n} 个链接。
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
-#, machine
 @plural	{title}: {count} video|{title}: {count} videos	{title}：{count} 个视频
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
-#, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}：已列出 {total} 个视频中的 {listed} 个
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
-#, machine
 	"{what}" isn't an IP address.	“{what}”不是 IP 地址。
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Apply	应用(&A)
 #. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Close	关闭(&C)
 #. button in the Scheduler window
 #. verb: delete the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Delete	删除(&D)
 #. text in the Scheduler window
 #. noun: button that opens the help
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Help	帮助(&H)
 #. button in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&New queue	新建队列(&N)
 #. text in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Start now	立即开始(&S)
 #. text in the Options window
 #. under Download panels site exclusions list
-#, machine
 	(separate by spaces; * matches anything)	(用空格分隔；* 匹配任意内容)
 #. text in the Options window
-#, machine
 	(separate names by spaces)	（用空格分隔名称）
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
-#, machine
 	(the Torrents category's folder)	（“种子”类别的文件夹）
 #. text in remote.rs
 #. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
 	.torrent file	.torrent 文件
 #. text in the Options window
 #. a 12-hour clock, with an example
-#, machine
 	12-hour (9:41 PM)	12 小时制（下午 9:41）
 #. text in the Options window
 #. a 24-hour clock, with an example
-#, machine
 	24-hour (21:41)	24 小时制（21:41）
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
-#, machine
 	7-Zip needed	需要 7-Zip
 #. tab in the main window
-#, machine
 	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
-#, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 压缩包由 7-Zip（{path}）解压。
 #. text in the Options window
 #. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
-#, machine
 	7z and RAR archives are extracted by HatchZip ({path}).	7z 和 RAR 压缩包由 HatchZip ({path}) 解压。
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
-#, machine
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z 和 RAR 压缩包需要 7-Zip（7-zip.org），但尚未安装。
 #. text in extracting archives (a download's log, the Archive password window)
-#, machine
 	7z and RAR archives need 7-Zip, which isn't installed	7z 和 RAR 压缩包需要 7-Zip，但尚未安装
 #. text in a download's progress window
-#, machine
 	<< Hide details	<< 隐藏详细信息
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
@@ -258,22 +207,18 @@
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid 服务使用您自己的付费账户下载文件托管站的链接，并为 MDM 提供直链。请仅使用您自己的账户：共享账户或其链接违反服务条款，可能导致账户被暂停。浏览器已开始的下载任务保持不变。
 #. text in a download's progress window
 #. reason shown on the Rename box when the entered name ends with a period
-#, machine
 	A file name cannot end with a dot	文件名不能以句点结尾
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	A file of this torrent can't be saved safely: {name}	此种子中有一个文件无法安全保存：{name}
 #. text in a dialog box
 #. the question about a name typed in Save As, above the file's path; the choices are the duplicate question's (numbered name, overwrite)
-#, machine
 	A file with this name is already there:	同名文件已存在：
 #. message or event log entry in the main window
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	A magnet link's files could not be looked up: {error}	无法查找磁力链接文件：{error}
+	A magnet link's files could not be looked up: {error}	无法获取磁力链接的文件列表：{error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -284,15 +229,12 @@
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	配置文件的名称或其文件夹。留空：使用上次的配置文件。对于未列出的基于 Chromium 的浏览器（Helium、Thorium...），选择 Chromium 及其配置文件文件夹。
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
-#, machine
 	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下载任务通过代理传输：显示的位置和时间来自代理，而非服务器。
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
-#, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	报告已保存。将其发送给 GitHub 上的开发者有助于修复此问题；您可以先在下方查看报告的全部内容。不会自动发送任何内容：“发送”会在浏览器中打开已填写好的报告表单，供您检查后提交。
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
-#, machine
 	A rule adds the new articles whose titles it matches, as they come.	规则会在新文章发布时添加标题匹配的文章。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
@@ -308,18 +250,15 @@
 	A torrent file's folder points outside its destination	某个种子文件的文件夹指向其目标位置之外
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
-#, machine
 	A tracker on this computer or the local network is never contacted: {line}	不会连接本机或本地网络上的 Tracker：{line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	缺少其中一个卷
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	About Mister Download Manager	关于 Mister Download Manager
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
-#, machine
 	about {ms} ms ({reach})	约 {ms} 毫秒（{reach}）
 #. text in the Download video window
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
@@ -336,96 +275,73 @@
 	Accept incoming connections	接受传入连接
 #. text in the Options window
 #. column title: the account's name at the service
-#, machine
 	Account	账户
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
-#, machine
 	Accounts	账户
 #. text in remote.rs
 #. remote control page (on a phone): button: add the download
-#, machine
 	Add	添加
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Add a download (Add URL)	添加下载任务（添加 URL）
 #. message or event log entry in the main window
 #. title of the file dialog of View → Theme → Add a theme file
 #. title of the message when View → Theme → Add a theme file fails
-#, machine
 	Add a theme file	添加主题文件
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
-#, machine
 	Add an account	添加账户
 #. text in the tray icon's menu
-#, machine
 	Add batch download	添加批量下载
 #. message or event log entry in the main window; text in the tray icon's menu
 #. title of the note when Tasks → Add batch download from clipboard finds nothing to download
-#, machine
 	Add batch download from clipboard	从剪贴板批量添加下载
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Add browser...	添加浏览器...
 #. text in categories.rs; text in a dialog box
-#, machine
 	Add category	添加类别
 #. button in rssdlg.rs
 #. RSS feeds window: button that subscribes to the feed whose address is typed
-#, machine
 	Add feed	添加源
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
-#, machine
 	Add many downloads	添加多个下载任务
 #. window title in extension.rs
 #. title of the window that offers the browser extension
-#, machine
 	Add Mister Download Manager to your browser	将 Mister Download Manager 添加到您的浏览器
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
-#, machine
 	Add new download	添加新下载任务
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	添加重复项并覆盖现有文件
 #. text in the Options window
-#, machine
-	Add the duplicate with a numbered file name	添加重复项，文件名加编号
+	Add the duplicate with a numbered file name	添加重复下载，并使用带编号的文件名
 #. text in extension.rs
 #. button in the browser extension's window: open the extension's page in that browser
-#, machine
 	Add the extension	添加扩展
 #. window title in extension.rs
 #. title of the window that shows how to turn on the Safari extension
-#, machine
 	Add the extension to Safari	将扩展添加到 Safari
 #. text in extension.rs
-#, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	添加免费扩展：您在浏览器中下载的文件会出现在这里，视频页面会出现“下载”按钮。
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
-#, machine
 	Add them without starting them	添加但不启动
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
-#, machine
 	Add to queue	添加到队列
 #. text in a dialog box
-#, machine
 	Add to queue:	添加到队列：
 #. message or event log entry in the main window; window title in the Add torrent window
-#, machine
 	Add torrent	添加种子
 #. window title in the Add torrent window
-#, machine
 	Add trackers	添加 Tracker
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
-#, machine
 	Add {n} downloads to the list? Each video gets its own row.	要将 {n} 个下载任务添加到列表吗？每个视频占一行。
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
