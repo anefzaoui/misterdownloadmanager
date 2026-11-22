@@ -181,7 +181,7 @@ pub async fn terminated() {
 // ---- The session's end (Linux: logging out, shutting down; a `kill`; the display going away) ---
 
 /// Linux: why MDM's session ends, as the system says it (Windows: `win32::SessionEnd`; macOS's
-/// logout quits the app through AppKit, which `App`'s drop saves, main.rs).
+/// logout quits the app through AppKit, which `App`'s drop saves, lib.rs).
 #[cfg(target_os = "linux")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SessionEnd {
@@ -244,7 +244,7 @@ fn ask_end(why: SessionEnd) -> bool {
 }
 
 /// Linux: the session's end that was asked for ([`on_session_end`]), for the window's thread to
-/// run at its next frame (main.rs).
+/// run at its next frame (lib.rs).
 #[cfg(target_os = "linux")]
 pub fn session_ending() -> Option<SessionEnd> {
     SessionEnd::of_code(END_ASKED.load(std::sync::atomic::Ordering::Acquire))
@@ -259,7 +259,7 @@ const END_GRACE: std::time::Duration = std::time::Duration::from_secs(10);
 /// Linux: the session's end reaches MDM as a signal: logind's SIGTERM at logout and shutdown (and
 /// a `kill`), SIGHUP and SIGINT from the terminal it was started from. Each is run as Windows'
 /// session end is: `wake` brings the window's next frame, which saves as an Exit saves and ends
-/// MDM (main.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
+/// MDM (lib.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
 /// stays ignored. Ctrl+C once more ends MDM at once, and so does a window that hasn't ended
 /// within [`END_GRACE`]: then each download resumes from its last save, as before. Heard on
 /// `rt`, a signal handler itself only wakes it (tokio's).
@@ -342,7 +342,7 @@ fn wait_for_the_window(wake: &dyn Fn(), grace: Option<std::time::Duration>) {
 static WAKE: std::sync::OnceLock<std::sync::Arc<dyn Fn() + Send + Sync>> =
     std::sync::OnceLock::new();
 
-/// Linux: the process ends now, once the session's end has saved (main.rs), without the
+/// Linux: the process ends now, once the session's end has saved (lib.rs), without the
 /// libraries' exit handlers: with the display gone they would only touch it again, which runs
 /// Xlib's handler (and so the end) once more.
 #[cfg(target_os = "linux")]
@@ -2132,7 +2132,7 @@ fn xwayland_server() -> Result<bool, Box<dyn std::error::Error>> {
 static SAVED_PICK: std::sync::OnceLock<Option<crate::settings::WindowSystemPick>> =
     std::sync::OnceLock::new();
 
-/// Linux: View → Window system's saved choice (#624), for [`window_system`]: main.rs gives it
+/// Linux: View → Window system's saved choice (#624), for [`window_system`]: lib.rs gives it
 /// once the settings are read, before the first window opens.
 #[cfg(target_os = "linux")]
 pub fn set_window_system_pick(saved: Option<crate::settings::WindowSystemPick>) {

@@ -8124,7 +8124,7 @@ pub mod private_clipboard {
         use super::*;
 
         /// #629, #1103: why MDM's reads and writes of the clipboard, egui's copy and paste
-        /// among them, take one lock (main.rs `clipboard_lock`). Opened without a window, as
+        /// among them, take one lock (lib.rs `clipboard_lock`). Opened without a window, as
         /// arboard opens it, the clipboard lets a second thread of the process in while the
         /// first still has it open, and the second's close closes it under the first: a read
         /// still under way then works on data the clipboard has let go of, and the heap is

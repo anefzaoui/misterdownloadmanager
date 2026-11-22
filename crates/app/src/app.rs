@@ -2041,7 +2041,7 @@ impl App {
     /// The close that follows quits whatever Options' "Keep running when closing the window" says
     /// (`tray::on_close`); only closing the window itself follows that setting. As the app goes
     /// (`Drop`: `finish`) the downloads stop where they are and the list and the settings are
-    /// saved, and the crash monitor is told it's a clean exit (main.rs). A headless run stops at
+    /// saved, and the crash monitor is told it's a clean exit (lib.rs). A headless run stops at
     /// its next pass (`wants_exit`). The session's end does the same at once (`end_session`).
     fn quit(&mut self, ctx: &egui::Context) {
         tracing::info!("quitting");
@@ -2060,7 +2060,7 @@ impl App {
         // The look (#45): the chosen theme before anything is drawn.
         crate::theme::select(&crate::theme::startup_id(&loaded.settings.theme), ctx);
         crate::theme::apply(ctx);
-        // The zoom main.rs started at (View → Interface size, #262).
+        // The zoom lib.rs started at (View → Interface size, #262).
         let zoom = crate::scale::startup(loaded.settings.interface_size);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -3833,7 +3833,7 @@ impl App {
             return;
         }
         // The startup entry's (#226) or browser host's (#1333): this start began in the tray
-        // (main.rs), or MDM already ran; either way the window stays where it is.
+        // (lib.rs), or MDM already ran; either way the window stays where it is.
         if cmd.startup || cmd.hidden {
             return;
         }
@@ -12194,7 +12194,7 @@ impl App {
             return;
         }
         // Kept at 100 % interface size (the system's logical pixels), as the window is made
-        // before the zoom applies (main.rs).
+        // before the zoom applies (lib.rs).
         let zoom = ctx.zoom_factor();
         let (outer, inner, maximized, minimized) = ctx.input(|i| {
             let v = i.viewport();
@@ -14301,7 +14301,7 @@ impl App {
         // A lost graphics device is noticed before this frame paints (renderer.rs).
         crate::renderer::frame_begin(ui.ctx());
         // Off-screen test runs: no window of ours may become the foreground one (win32.rs). Linux
-        // and macOS need no such pass: their off-screen windows open inactive (main.rs `quiet`)
+        // and macOS need no such pass: their off-screen windows open inactive (lib.rs `quiet`)
         // and nothing raises them then (dialogs::raise).
         #[cfg(windows)]
         if crate::offscreen() {
@@ -14494,7 +14494,7 @@ impl Drop for App {
 /// How long the session's end may take ([`App::end_session`]): Windows lists a program that
 /// takes 5 s over it as one that keeps the computer from shutting down. Linux's logind gives
 /// 90 s between its SIGTERM and its SIGKILL by default, some desktops less: the same 4 s there.
-/// (macOS: main.rs.)
+/// (macOS: lib.rs.)
 #[cfg(any(windows, target_os = "linux"))]
 const SESSION_END: Duration = Duration::from_millis(4000);
 
@@ -14510,7 +14510,7 @@ impl App {
     /// whose SIGTERM or lost display `unix::on_session_end` and `unix::on_display_lost` hear):
     /// what an Exit does at its end, now, within [`SESSION_END`], on the window's thread between
     /// two frames. Nobody is there to answer a question: nothing is asked. The process ends
-    /// right after (main.rs).
+    /// right after (lib.rs).
     #[cfg(any(windows, target_os = "linux"))]
     pub fn end_session(&mut self) {
         tracing::info!("the session is ending: stopping the downloads and saving the list");

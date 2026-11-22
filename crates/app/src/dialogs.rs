@@ -3519,7 +3519,7 @@ pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
 /// to nothing while it sat behind the main window.
 pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
-    // Off-screen test runs never take the focus (main.rs `offscreen`), as the other paths here.
+    // Off-screen test runs never take the focus (lib.rs `offscreen`), as the other paths here.
     if !crate::offscreen() {
         #[cfg(target_os = "macos")]
         crate::unix::macos_activate_app();
@@ -3537,7 +3537,7 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
 /// to the input of the window in front; a refusal even then flashes its taskbar button, as
 /// Windows means a program in the background to ask. Linux and macOS: winit's focus, which sends
 /// no input (X11 `_NET_ACTIVE_WINDOW`, macOS `activateIgnoringOtherApps`, nothing on Wayland).
-/// Off-screen test runs never take the focus (main.rs `offscreen`).
+/// Off-screen test runs never take the focus (lib.rs `offscreen`).
 pub fn focus(ctx: &egui::Context, viewport: ViewportId) {
     if crate::offscreen() {
         return;
