@@ -1,5 +1,13 @@
 //! Mister Download Manager's app as a library: `main.rs` is the desktop program that runs it.
 
+// Android builds the whole app, but some desktop features have no Android side yet (turning the
+// computer off when downloads end, global hotkeys, the first frame's timing): their code is
+// unused there until the Android app gives them one.
+#![cfg_attr(
+    target_os = "android",
+    allow(dead_code, unused_imports, unused_variables)
+)]
+
 mod app;
 mod archtest;
 mod batch;
@@ -79,8 +87,17 @@ mod torrentdlg;
 mod torrentfiles;
 mod torrents;
 mod transfer;
+#[cfg(not(target_os = "android"))]
+mod tray;
+// Android has no notification-area icon: the app's ongoing notification stands for it there.
+#[cfg(target_os = "android")]
+#[path = "tray/none.rs"]
 mod tray;
 mod traypanel;
+// Android's platform calls (re-exported by unix.rs), also built here for their tests.
+#[cfg(any(target_os = "android", feature = "android-core"))]
+#[cfg_attr(not(target_os = "android"), allow(dead_code))]
+pub mod android;
 #[cfg(unix)]
 mod unix;
 mod update;
@@ -183,6 +200,7 @@ pub fn clipboard_text() -> clipboard::Read {
 /// other error is a read that failed now (another program has the clipboard open, the system
 /// refused) and says nothing of what it holds (#1157). On X11, arboard answers an owner that
 /// doesn't answer in time as having no text: the two can't be told apart there.
+#[cfg(not(target_os = "android"))]
 fn system_clipboard_text() -> clipboard::Read {
     let got = arboard::Clipboard::new().and_then(|mut c| c.get_text());
     match got {
@@ -196,6 +214,13 @@ fn system_clipboard_text() -> clipboard::Read {
             clipboard::Read::Failed
         }
     }
+}
+
+/// Android: arboard has no clipboard there; only the app in front may read it, through Java
+/// (the Android app's part).
+#[cfg(target_os = "android")]
+fn system_clipboard_text() -> clipboard::Read {
+    clipboard::Read::NoText
 }
 
 /// A number that changes whenever the clipboard does, so the watch for copied links
@@ -259,11 +284,15 @@ pub fn copy_text(ctx: &egui::Context, text: String) {
 /// and true).
 pub fn set_clipboard(text: &str) -> bool {
     match write_clipboard(offscreen(), text.to_owned()) {
+        #[cfg(not(target_os = "android"))]
         Some(text) => clipboard_lock().is_some_and(|_lock| {
             arboard::Clipboard::new()
                 .and_then(|mut c| c.set_text(text))
                 .is_ok()
         }),
+        // Android: arboard has no clipboard there (the Android app's part, through Java).
+        #[cfg(target_os = "android")]
+        Some(_) => false,
         None => true,
     }
 }
