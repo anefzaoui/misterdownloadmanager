@@ -44,6 +44,10 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -183,6 +187,10 @@
 #. text in the Options window
 #. a 24-hour clock, with an example
 	24-hour (21:41)	24-hour (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+	7-Zip couldn't test it ({error})	7-Zip couldn't test it ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 	7-Zip needed	7-Zip needed
@@ -254,6 +262,9 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	a volume of it is missing	a volume of it is missing
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+	a volume of it isn't there yet	a volume of it isn't there yet
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	About Mister Download Manager
 #. text in whereis.rs
@@ -844,7 +855,7 @@
 	Clipboard	Clipboard
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -957,6 +968,10 @@
 #. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 	Couldn't look for a newer {name}: {error}	Couldn't look for a newer {name}: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+	Couldn't test {name}: {why}	Couldn't test {name}: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 	Create a folder for this torrent	Create a folder for this torrent
@@ -991,6 +1006,15 @@
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 	Daily	Daily
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+	Damaged	Damaged
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+	Damaged archive	Damaged archive
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	Damaged: its archive test found errors. Right-click → Redownload downloads it again
 #. text in the Options window
 	Date order:	Date order:
 #. page title in the Options window
@@ -1206,6 +1230,10 @@
 #. Video helpers: MDM's own yt-dlp is being downloaded
 #. the trailing ... means it is still going on: keep it
 	Downloading MDM's own copy...	Downloading MDM's own copy...
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	Downloading the damaged parts again ({size})	Downloading the damaged parts again ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	Downloading the update... {percent}
@@ -2379,6 +2407,7 @@
 #. message or event log entry in the main window
 	Move to queue	Move to queue
 #. text in the Scheduler window
+#. tooltip of an icon button in the Scheduler's list of files
 	Move up	Move up
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move without changing the selection	Move without changing the selection
@@ -2625,6 +2654,13 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 	not supported by this service	not supported by this service
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+	Not tested yet: {name} isn't complete ({why})	Not tested yet: {name} isn't complete ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it
 #. text in the Options window
 	Not used: file parts are written next to the file	Not used: file parts are written next to the file
 #. text in a dialog box
@@ -3018,9 +3054,15 @@
 #. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
 #. the trailing ... means it is still going on: keep it
 	Recording...	Recording...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 	Redownload	Redownload
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+	Redownload downloads every volume again from the start.	Redownload downloads every volume again from the start.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+	Redownload downloads it again from the start.	Redownload downloads it again from the start.
 #. text in a download's Properties window
 	Referer:	Referer:
 #. button in rssdlg.rs
@@ -3438,6 +3480,9 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 	Some	Some
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+	some of its volumes are still downloading	some of its volumes are still downloading
 #. text in a dialog box
 	Some of the torrent's files are already in this folder:	Some of the torrent's files are already in this folder:
 #. text in the Options window
@@ -3662,12 +3707,27 @@
 #. button in the Options window
 #. button: asks the chosen DNS for an address, to see it works
 	Test	Test
+#. message or event log entry in the main window
+	Test archive	Test archive
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+	Test archives when their download completes, up to {gb} GB	Test archives when their download completes, up to {gb} GB
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 	Test browser integration	Test browser integration
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Test browser integration...	Test browser integration...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+	Tested again: the archive has no errors now	Tested again: the archive has no errors now
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+	Testing the archive...	Testing the archive...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+	Testing the archive... ({percent})	Testing the archive... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 	Th	Th
@@ -3692,6 +3752,12 @@
 	The archive could not be moved to the Recycle Bin: it was kept	The archive could not be moved to the Recycle Bin: it was kept
 #. text in extracting archives (a download's log, the Archive password window)
 	The archive could not be moved to the Trash: it was kept	The archive could not be moved to the Trash: it was kept
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+	The archive test failed: it is damaged, or not the archive its name says	The archive test failed: it is damaged, or not the archive its name says
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+	The archive test found no errors	The archive test found no errors
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 	The archive was moved to the Recycle Bin	The archive was moved to the Recycle Bin
@@ -3757,6 +3823,10 @@
 	the connection to {host} was cut: a firewall, or a network that blocks it	the connection to {host} was cut: a firewall, or a network that blocks it
 #. text in errors.rs
 	the connection was lost while receiving data	the connection was lost while receiving data
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+	The damaged parts couldn't be downloaded again: {error}	The damaged parts couldn't be downloaded again: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 	The destination keeps changing. Stop changes to its files and try starting the torrent again.	The destination keeps changing. Stop changes to its files and try starting the torrent again.
@@ -4525,6 +4595,10 @@
 	Virgin Islands (U.S.)	Virgin Islands (U.S.)
 #. text in the Options window
 	Virus checking settings	Virus checking settings
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+	volume {n} isn't there yet	volume {n} isn't there yet
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -4873,6 +4947,14 @@
 #. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
 #. {name} = a file name (keep the braces as they are)
 	{name} is being downloaded already: try again in a moment	{name} is being downloaded already: try again in a moment
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+	{name} is damaged: its test found errors in it.	{name} is damaged: its test found errors in it.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+	{name} is damaged: its test found errors in one of its volumes.	{name} is damaged: its test found errors in one of its volumes.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6176,6 +6258,9 @@ menu	Te&xt	Te&xt
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	Tell a &friend
+#. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+menu	Test archive	Test archive
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 menu	The graphics card was lost twice in 10 minutes	The graphics card was lost twice in 10 minutes

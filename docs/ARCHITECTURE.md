@@ -15,7 +15,7 @@ How Mister Download Manager's pieces fit together.
 | `crates/ipc` | `mdm-ipc` | The single-instance channel (a token-protected local socket), the data folder, and the capture rules shared by the app and the host |
 | `crates/debrid` | `mdm-debrid` | Debrid accounts (#44): the services' official APIs (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid) turn a file host's link into a direct one the engine downloads |
 | `crates/cnl` | `mdm-cnl` | Click'n'Load 2 (#37): the listener on 127.0.0.1:9666 that reads a link site's posts into packages for Link grabber, with limits on what it takes |
-| `crates/extract` | `mdm-extract` | Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked |
+| `crates/extract` | `mdm-extract` | Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (`check.rs`, #1661): `7z t`, a ZIP in process without it, and a ZIP's damaged entries placed in the file |
 | `crates/geo` | `mdm-geo` | Where a download's server is (#140): an IP-to-country range table built from DB-IP's Lite data (`tools/geo/build.py`), looked up on this computer only, and the countries' flags |
 | `crates/tools` | `mdm-tools` | Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (`relay.rs`); each runs in a folder it can write, also its TEMP (`workdir.rs`) |
 | `crates/crash` | `mdm-crash` | Crash and freeze reports: the monitor process, out-of-process minidumps, symbolicated stacks, the report's text and the release logs ([crash-reports.md](crash-reports.md)) |
@@ -47,6 +47,13 @@ Download
 
 When every segment is done, the part file is checked against the expected size and renamed into
 place; the file's date can follow the server's.
+
+A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's
+`archtest.rs`) is made a part file again (`repair.rs`): its last resume state, handed back by a
+download asked to keep it (`Options::keep_state`, `Snapshot::kept`), is written back with only the
+damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file
+renamed to its part file. Resuming it is an ordinary resume: `If-Range` with the same validators,
+the overlap check, the digest; a file that changed on the server fails as `FileChanged`.
 
 A download's first request (`get`) follows redirects and the pages that lead on to a file by
 themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module

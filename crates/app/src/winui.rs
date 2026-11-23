@@ -1352,6 +1352,8 @@ impl RowList {
 pub struct RowEvents {
     /// The selection moved to this row (a click, the keys).
     pub picked: Option<usize>,
+    /// A left click on this row (even the one already selected).
+    pub clicked: Option<usize>,
     pub double_clicked: Option<usize>,
     /// Enter on the selected row (not taken: [`take_key`] it to keep it from the dialog).
     pub entered: Option<usize>,
@@ -1648,6 +1650,9 @@ pub fn row_list(
                 // the next mouse move: a screen reader's click moves no mouse.
                 ui.ctx().request_repaint();
             }
+        }
+        if r.clicked() {
+            ev.clicked = Some(i);
         }
         if r.double_clicked() {
             ev.double_clicked = Some(i);

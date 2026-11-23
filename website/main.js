@@ -351,6 +351,37 @@
     });
   }
 
+  // ---- The film: YouTube's player, only once it is asked for -------------------------------
+  // Until a press on play the poster is the site's own picture and nothing comes from YouTube.
+  // Then the link (YouTube's page, for a page without scripts, or a new tab with a modifier key)
+  // gives way to the player from youtube-nocookie.com, playing, in the page's language; its title
+  // is the film's, translated with the page (data-label).
+  each("[data-film]", function (film) {
+    var link = film.querySelector(".film-play");
+    if (!link) return;
+    link.setAttribute("role", "button");
+    function play(e) {
+      if (e.type === "click" && (e.button > 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) return;
+      e.preventDefault();
+      var frame = document.createElement("iframe");
+      frame.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(film.getAttribute("data-film")) +
+        "?autoplay=1&rel=0&playsinline=1&hl=" + encodeURIComponent(root.lang || "en");
+      frame.title = film.getAttribute("data-label") || "";
+      frame.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+      frame.setAttribute("allowfullscreen", "");
+      // YouTube's player refuses to play without knowing which site embeds it.
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      var box = document.createElement("div");
+      box.className = "film-frame";
+      box.appendChild(frame);
+      film.replaceChildren(box);
+      film.setAttribute("data-playing", "");
+      frame.focus();
+    }
+    link.addEventListener("click", play);
+    link.addEventListener("keydown", function (e) { if (e.key === " ") play(e); });
+  });
+
   // ---- The tour: the app one window at a time -----------------------------------------------
   // A tablist of features beside a stage whose panels share one spot and crossfade. While it is
   // on screen it moves on every DWELL ms by itself, the chosen tab's line filling up to show when

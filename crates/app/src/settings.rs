@@ -547,6 +547,13 @@ pub struct Settings {
     /// Into a folder named after the archive: 0 when it holds several things at its top (smart),
     /// 1 always, 2 never.
     pub extract_subfolder: u8,
+    /// Options → Archives (#1661): test a ZIP, 7z or RAR when its download completes (every
+    /// entry read back and checked) before it counts as done. On: a broken archive is found
+    /// then, not when someone opens it much later.
+    pub test_archives: bool,
+    /// ... up to this many GB (a test reads the whole file): a larger one is tested only with
+    /// right-click → Test archive. 4.
+    pub test_archives_gb: u32,
     /// Link grabber: look each link up (name, size, online) when it arrives, as IDM's "Download
     /// all links" does. On.
     pub grabber_check: bool,
@@ -727,6 +734,8 @@ impl Default for Settings {
             extract_in_place: false,
             seven_zip_path: String::new(),
             extract_subfolder: 0,
+            test_archives: true,
+            test_archives_gb: 4,
             grabber_check: true,
             grabber_hide_pages: true,
             cnl_on: false,
@@ -840,6 +849,12 @@ impl Settings {
         list.retain(|p| p != password);
         list.insert(0, password.to_owned());
         self.archive_passwords = list.join("\n");
+    }
+
+    /// The largest archive tested when its download completes, in bytes (Options → Archives,
+    /// at least 1 GB).
+    pub fn test_limit(&self) -> u64 {
+        u64::from(self.test_archives_gb.max(1)) << 30
     }
 
     /// Options → Archives' folder choice, for mdm-extract.

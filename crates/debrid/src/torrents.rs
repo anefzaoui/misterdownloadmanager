@@ -647,6 +647,7 @@ impl RemoteTorrent {
             server,
             at_service,
             finishing: None,
+            kept: None,
         }
     }
 }

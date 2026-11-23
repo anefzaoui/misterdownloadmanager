@@ -77,11 +77,12 @@ Its permissions, and why: *downloads* to see and hand over downloads; *cookies* 
 
 ## This website
 
-misterdownloadmanager.com is a static site. Three companies take part in showing it to you:
+misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:
 
 - **GitHub Pages** hosts it. GitHub receives your IP address and browser details when you visit and may keep them in its server logs for security; see the [GitHub Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement). Download links lead to GitHub Releases.
 - **Cloudflare** sits in front of the site: every request passes through its network, which sees your IP address and browser details, protects the site from attacks and may set a cookie needed for that. See [Cloudflare's privacy policy](https://www.cloudflare.com/privacypolicy/).
 - **Statcounter** counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See [Statcounter's privacy policy](https://statcounter.com/about/legal/#privacy). Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.
+- **YouTube** (Google) plays the home page's film, only once you start it: the player then comes from youtube-nocookie.com, and YouTube sees your IP address and browser details and may store data in your browser, under [Google's privacy policy](https://policies.google.com/privacy). Until then, nothing is loaded from YouTube: the picture you see is served from this site.
 
 The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.
 

@@ -82,6 +82,14 @@ struct DnsEdit {
 /// A test's answer line and whether it worked, filled in by its thread.
 type TestSlot = std::sync::Arc<std::sync::Mutex<Option<(String, bool)>>>;
 
+/// Archives → the archive test (#1661): the check box, its number box and the unit, one line.
+const TEST_SENTENCE: &str =
+    // i18n: Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+    crate::i18n::mark("Test archives when their download completes, up to {gb} GB");
+
+/// The largest limit for the archive test that can be typed, in GB.
+const TEST_GB_MAX: u32 = 1024;
+
 /// Archives → Use another program... (#1525): the program picked, and whether it answered as
 /// 7-Zip's command line, once it has.
 type Checked7zip = std::sync::Arc<std::sync::Mutex<Option<(std::path::PathBuf, bool)>>>;
@@ -239,6 +247,8 @@ pub struct OptionsDialog {
     /// port as typed, and the paired devices list's scroll and selection.
     remote: Option<mdm_remote::Remote>,
     port: String,
+    /// Archives → Test archives ... up to {gb} GB (#1661): the number as typed.
+    test_gb: String,
     device_rows: winui::RowList,
     /// Sites Logins → Cookies for video sites (#229): the browser in the list (an index into
     /// `mdm_tools::proc::cookie_browsers`), kept while Off is chosen.
@@ -359,6 +369,7 @@ impl OptionsDialog {
             proxy_test: None,
             remote: None,
             port: settings.remote_port.to_string(),
+            test_gb: settings.test_archives_gb.to_string(),
             device_rows: Default::default(),
             cookie_browser: cookie_browser_at(settings),
             recording_hotkey: false,
@@ -481,6 +492,12 @@ impl OptionsDialog {
                 s.capture_min_kb = self.min_kb.parse().unwrap_or(0);
                 s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
                 s.remote_port = self.remote_port();
+                s.test_archives_gb = self
+                    .test_gb
+                    .trim()
+                    .parse()
+                    .unwrap_or(s.test_archives_gb)
+                    .clamp(1, TEST_GB_MAX);
                 Outcome::Done(s)
             }
             Outcome::Closed => Outcome::Closed,
@@ -2601,7 +2618,7 @@ impl OptionsDialog {
         );
         let s = &mut self.s;
         // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 92.0, 392.0, 243.0, "Archives");
+        group(ui, o, 16.0, 92.0, 392.0, 259.0, "Archives");
         winui::checkbox_light(
             ui,
             o + vec2(30.0, 110.0),
@@ -2623,10 +2640,12 @@ impl OptionsDialog {
             },
             true,
         );
+        self.test_row(ui, o, 158.0);
+        let s = &mut self.s;
         text(
             &p,
             o.x + 30.0,
-            o.y + 166.0,
+            o.y + 188.0,
             // i18n: Options → Archives: a label before the list of where extracted files go
             crate::i18n::t("What an archive holds goes:"),
             LIGHT_TEXT(),
@@ -2641,7 +2660,7 @@ impl OptionsDialog {
         ];
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 30.0, 173.0, 364.0, 21.0),
+            r(o, 30.0, 195.0, 364.0, 21.0),
             &INTO,
             s.extract_subfolder.min(2) as usize,
             true,
@@ -2652,7 +2671,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 218.0,
+            o.y + 236.0,
             crate::i18n::t(
                 "ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.",
             ),
@@ -2710,7 +2729,7 @@ impl OptionsDialog {
             ui,
             &p,
             o.x + 30.0,
-            o.y + 264.0,
+            o.y + 282.0,
             &rar,
             ink,
             o.x + 400.0,
@@ -2719,7 +2738,7 @@ impl OptionsDialog {
         let has_hatchzip = self.hatch_zip.is_some();
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 284.0),
+            o + vec2(30.0, 300.0),
             &mut s.extract_in_place,
             if has_hatchzip {
                 // i18n: Options → Archives check box: HatchZip (a program's name) removes the archive while extracting it, so only the extracted files need disk space
@@ -2741,7 +2760,7 @@ impl OptionsDialog {
         // i18n: Options → Archives: button: edit the list of passwords tried on encrypted archives
         if winui::button_light(
             ui,
-            r(o, pw_x, 304.0, pw_w, 21.0),
+            r(o, pw_x, 320.0, pw_w, 21.0),
             "Archive passwords...",
             ButtonKind::Normal,
             false,
@@ -2764,7 +2783,7 @@ impl OptionsDialog {
             winui::buttons_to_right(&p, 394.0, 0.0, &[(tool_label, 150.0)], 200.0)[0];
         if winui::button_light(
             ui,
-            r(o, tool_x, 304.0, tool_w, 21.0),
+            r(o, tool_x, 320.0, tool_w, 21.0),
             tool_label,
             if self.checking_7zip.is_some() {
                 ButtonKind::Disabled
@@ -2803,7 +2822,7 @@ impl OptionsDialog {
                 ui,
                 &p,
                 o.x + pw_x + pw_w + 10.0,
-                o.y + 320.0,
+                o.y + 336.0,
                 // i18n: Options → Archives: beside the Archive passwords button: how many are saved
                 &crate::i18n::tn(saved, "{n} saved", "{n} saved"),
                 LIGHT_DISABLED(),
@@ -2812,10 +2831,10 @@ impl OptionsDialog {
             );
         }
         // i18n: Options → Archives: group box title
-        group(ui, o, 16.0, 335.0, 392.0, 128.0, "Link grabber");
+        group(ui, o, 16.0, 351.0, 392.0, 116.0, "Link grabber");
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 353.0),
+            o + vec2(30.0, 367.0),
             &mut s.grabber_check,
             // i18n: Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
             "Look links up when they arrive (name, size, online)",
@@ -2823,14 +2842,14 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 377.0),
+            o + vec2(30.0, 389.0),
             &mut s.grabber_hide_pages,
             "Hide web pages",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(30.0, 401.0),
+            o + vec2(30.0, 411.0),
             &mut s.cnl_on,
             // i18n: Options → Archives → Link grabber check box: Click'n'Load, a link site's button that sends its links to a program on this computer (port 9666, as JDownloader)
             "Accept Click'n'Load from web pages (port 9666)",
@@ -2839,7 +2858,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 30.0,
-            o.y + 429.0,
+            o.y + 435.0,
             crate::i18n::t(
                 "Tasks → Link grabber, or the browser's \"Download all links\": a split\narchive's volumes are one package, the other links of a page another.",
             ),
@@ -2847,6 +2866,64 @@ impl OptionsDialog {
             o.x + 400.0,
             13.0,
         );
+    }
+
+    /// Archives → "Test archives when their download completes, up to {gb} GB" (#1661): the check
+    /// box's caption is the sentence's words before its number box, the unit after it, as the
+    /// translation places them; at `y` (the glyph's top).
+    fn test_row(&mut self, ui: &mut Ui, o: Pos2, y: f32) {
+        let p = ui.painter().clone();
+        let sentence = crate::i18n::t(TEST_SENTENCE);
+        let pieces = winui::sentence_pieces(sentence, &["gb"]);
+        let row = pieces.first().cloned().unwrap_or_default();
+        let at = row.iter().position(|p| *p == winui::Piece::Slot("gb"));
+        let text_of = |pieces: &[winui::Piece]| {
+            pieces
+                .iter()
+                .filter_map(|p| match p {
+                    winui::Piece::Text(t) => Some(*t),
+                    winui::Piece::Slot(_) => None,
+                })
+                .collect::<Vec<_>>()
+                .join(" ")
+        };
+        let (lead, tail) = match at {
+            Some(i) => (text_of(&row[..i]), text_of(&row[i + 1..])),
+            None => (text_of(&row), String::new()),
+        };
+        const BOX_W: f32 = 54.0;
+        let tail_w = winui::text_width(&p, &tail).ceil();
+        // The caption ends before the box, the box and its unit before the group's edge.
+        let room_end = 394.0 - tail_w - 6.0 - BOX_W - 6.0;
+        let box_x = (winui::checkbox_caption_end(&p, 30.0, &lead).ceil() + 6.0).min(room_end + 6.0);
+        winui::checkbox_light_until(
+            ui,
+            o + vec2(30.0, y),
+            &mut self.s.test_archives,
+            &lead,
+            true,
+            Some(o.x + room_end),
+        );
+        let on = self.s.test_archives;
+        let gb = winui::spin_box(
+            ui,
+            r(o, box_x, y - 4.0, BOX_W, 21.0),
+            &mut self.test_gb,
+            1,
+            u64::from(TEST_GB_MAX),
+            on,
+            "opt-test-gb",
+        );
+        winui::name(&gb, &winui::sentence_names(sentence, &["gb"])[0]);
+        if !tail.is_empty() {
+            text(
+                &p,
+                o.x + box_x + BOX_W + 6.0,
+                o.y + y + 10.0,
+                &tail,
+                if on { LIGHT_TEXT() } else { LIGHT_DISABLED() },
+            );
+        }
     }
 
     /// Regional (ours): how dates and times are written in the list and the Scheduler, as the
