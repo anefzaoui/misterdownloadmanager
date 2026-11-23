@@ -511,9 +511,6 @@ main > .sec:last-child { padding-bottom: var(--gap-section); }
 .services-ext .services-note { flex: 1 1 40ch; margin-top: 0; }
 /* Add to Firefox (build.amo_button): a line button with Firefox's logo, on the board or a sheet. */
 .store-btn img { width: 22px; height: 22px; flex: none; }
-/* Add to Firefox and Add to Chrome side by side, wrapping under each other when narrow. */
-.store-btns { display: inline-flex; flex-wrap: wrap; gap: 10px 12px; }
-.prose .store-act { margin-block: 4px 18px; }
 .wb-amo { display: inline-flex; align-items: center; gap: 5px; font-weight: 650; color: var(--link); }
 
 /* ---- Carriers ---------------------------------------------------------------------------------- */
@@ -1388,6 +1385,130 @@ html[lang|="it"] .said-tr[data-same="it"], html[lang|="tr"] .said-tr[data-same="
 @media (max-width: 720px) {
   .make-steps > li, [dir="rtl"] .make-steps > li { padding: 20px 0 0; }
   .make-steps > li::before { position: static; display: block; width: auto; margin-bottom: 8px; text-align: start; font-size: 44px; }
+}
+
+/* ---- Stars and ratings: the stores' (build.py store_score) and our own (rate_sheet, rate.js) ---- */
+
+/* Five stars in ink, filled to a value: the empty row tinted, the filled row over it, cut from the
+   start side (right to left too). Printed like the label, never coloured. */
+.stars { position: relative; display: inline-flex; flex: none; line-height: 0; vertical-align: -.14em; }
+.stars-row { display: flex; gap: .12em; }
+.stars svg { width: 1em; height: 1em; flex: none; fill: color-mix(in srgb, currentColor 24%, transparent); }
+.stars-on { position: absolute; inset-block-start: 0; inset-inline-start: 0; width: var(--fill); overflow: hidden; }
+.stars-on svg { fill: currentColor; }
+
+/* A store's button with its rating and users under it, linked to its listing. */
+.store-btns { display: flex; flex-wrap: wrap; gap: 14px 18px; }
+.store-pick { display: grid; justify-items: start; align-content: start; gap: 9px; }
+.store-score { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px 7px; max-width: 30ch; padding-inline-start: 2px; color: inherit; font-size: 14px; line-height: 1.35; text-decoration: none; font-variant-numeric: tabular-nums; }
+.store-score .stars { font-size: 15px; }
+.store-score b { font-size: 16.5px; font-weight: 800; font-stretch: 86%; }
+.store-score:hover .store-score-fine { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.store-asof { margin-top: 12px; font-size: 14px; line-height: 1.5; }
+.store-asof, .store-score-fine { color: var(--on-board-2); }
+.prose .store-score-fine { color: var(--ink-2); }
+.prose .store-asof { margin-top: -6px; margin-bottom: 18px; color: var(--ink-3); }
+.prose .store-act { margin-block: 4px 18px; }
+.prose .store-score { color: var(--ink); text-decoration: none; }
+
+/* Our own ratings: a labelled sheet in three fields: the average, how people rated (bars, 5 to 1),
+   and the visitor's own pick. */
+.rate-sheet { margin-top: 28px; }
+.rate-body { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.3fr) minmax(0, 1.1fr); }
+.rate-body > * { min-width: 0; margin: 0; padding: 18px clamp(18px, 2.6vw, 28px) 24px; }
+.rate-body > * + * { border-inline-start: 1.5px solid var(--ink); }
+.rate-body .field-name { margin: 0 0 12px; padding: 0; color: var(--ink-3); }
+.rate-avg { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; line-height: .84; }
+.rate-avg [data-rate-avg] { font-size: clamp(68px, 7.4vw, 108px); font-weight: 900; font-stretch: 68%; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.rate-of { font-size: 17px; font-weight: 750; font-stretch: 80%; color: var(--ink-2); }
+.rate-stars-avg { margin-top: 16px; font-size: 25px; }
+.rate-stars-avg .stars-on { transition: width 1.1s cubic-bezier(.16, 1, .3, 1); }
+.rate-count { margin-top: 10px; font-size: 16.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.rate-none { max-width: 20ch; font-size: 19px; font-weight: 800; font-stretch: 84%; line-height: 1.2; }
+
+.rate-bars { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.rate-bars li { display: grid; grid-template-columns: 2.4em minmax(0, 1fr) 3.4em 4.6em; align-items: center; gap: 12px; font-variant-numeric: tabular-nums; }
+.rate-key { display: inline-flex; align-items: center; gap: 4px; font-size: 16.5px; font-weight: 750; }
+.rate-key-star { width: 13px; height: 13px; flex: none; fill: currentColor; }
+.rate-bar { position: relative; height: 12px; overflow: hidden; border-radius: 2px; background: var(--paper-2); box-shadow: inset 0 0 0 1px var(--line); }
+.rate-bar-fill { position: absolute; inset: 0; background: var(--ink); transform: scaleX(var(--share)); transform-origin: left center; transition: transform 1s cubic-bezier(.16, 1, .3, 1); }
+[dir="rtl"] .rate-bar-fill { transform-origin: right center; }
+.rate-bar-n { font-size: 16.5px; font-weight: 650; text-align: end; }
+.rate-you { justify-self: start; padding: 2px 6px; border-radius: 4px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; box-shadow: inset 0 0 0 1.5px var(--ink); visibility: hidden; opacity: 0; transition: opacity .3s ease; }
+.rate-bars li.is-mine .rate-you { visibility: visible; opacity: 1; }
+.rate-bars li.is-mine .rate-key { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+
+/* The pick: a radio group of five stars, drawn in ink line; the visitor's rating filled. */
+.rate-pick { position: relative; min-inline-size: 0; border: 0; }
+.rate-body > .rate-pick { border-inline-start: 1.5px solid var(--ink); }
+.rate-pick > legend { float: inline-start; width: 100%; padding-inline-end: 132px; }
+.rate-pick > legend + * { clear: both; }
+.rate-stars { display: flex; gap: 2px; margin-inline-start: -7px; }
+.rate-star { position: relative; display: grid; place-items: center; width: 50px; height: 50px; border-radius: 8px; cursor: pointer; }
+.rate-star input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.rate-star svg { width: 38px; height: 38px; fill: transparent; stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; transition: fill .2s ease, transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.rate-star::after { content: ""; position: absolute; inset: 6px; border: 2px solid var(--ink); border-radius: 50%; opacity: 0; pointer-events: none; }
+.rate-star:has(input:focus-visible) { outline: 3px solid var(--link); outline-offset: 0; }
+.rate-star.is-preview svg { fill: color-mix(in srgb, var(--ink) 30%, transparent); }
+.rate-star.is-on svg { fill: var(--ink); }
+.rate-star.is-pending svg { fill: color-mix(in srgb, var(--ink) 30%, transparent); }
+.rate-pick.is-sending .rate-stars { pointer-events: none; }
+.rate-word { min-height: 1.35em; margin-top: 4px; font-size: 17px; font-weight: 800; font-stretch: 84%; line-height: 1.35; }
+.rate-hint { max-width: 42ch; margin-top: 8px; font-size: 14px; line-height: 1.5; color: var(--ink-3); }
+.rate-remove { margin-top: 6px; padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; font-size: 14px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; }
+.rate-remove:hover { color: var(--ink); text-decoration-thickness: 2px; }
+.rate-status { min-height: 1.5em; margin-top: 8px; font-size: 14.5px; font-weight: 650; line-height: 1.5; }
+.rate-check:empty { display: none; }
+.rate-check { margin-top: 10px; }
+/* Thank you: a stamp in ink (green is for delivered and the Download action), inked twice round. */
+.rate-stamp {
+  position: absolute; inset-block-start: 14px; inset-inline-end: clamp(14px, 2.4vw, 26px); margin: 0; padding: 6px 11px;
+  border: 2.5px solid var(--ink); border-radius: 6px; outline: 1.5px solid var(--ink); outline-offset: 2px;
+  background: var(--paper); color: var(--ink); font-size: 17px; font-weight: 900; font-stretch: 70%; line-height: 1;
+  letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; rotate: -6deg; opacity: 0; pointer-events: none;
+}
+[dir="rtl"] .rate-stamp { rotate: 6deg; }
+.rate-pick.is-thanked .rate-stamp { opacity: 1; }
+.rate-noscript { display: none; }
+.js-off .rate-noscript { display: block; max-width: 34ch; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+.js-off .rate-pick :is(.rate-stars, .rate-word, .rate-hint) { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The bars and the average's stars fill in once the sheet is in view (rate.js: is-seen). */
+  html:not(.js-off) .rate-sheet:not(.is-seen) .rate-bar-fill { transform: scaleX(0); }
+  html:not(.js-off) .rate-sheet:not(.is-seen) .rate-stars-avg .stars-on { width: 0; }
+  .rate-bars li:nth-child(2) .rate-bar-fill { transition-delay: 50ms; }
+  .rate-bars li:nth-child(3) .rate-bar-fill { transition-delay: 100ms; }
+  .rate-bars li:nth-child(4) .rate-bar-fill { transition-delay: 150ms; }
+  .rate-bars li:nth-child(5) .rate-bar-fill { transition-delay: 200ms; }
+  .rate-star:hover svg, .rate-star.is-target svg { transform: translateY(-3px) scale(1.1); }
+  .rate-star.is-pop svg { animation: rate-pop .52s cubic-bezier(.2, .9, .25, 1.3) calc(var(--i) * 60ms) both; }
+  .rate-star.is-pop::after { animation: rate-ring .62s cubic-bezier(.16, 1, .3, 1) calc(var(--i) * 60ms) both; }
+  .rate-pick.is-sending .rate-star.is-pending svg { animation: rate-wait .9s ease-in-out infinite alternate; }
+  .rate-pick.is-thanked .rate-stamp { animation: rate-stamp .6s cubic-bezier(.16, 1, .3, 1) .28s both; }
+  .rate-bars li.is-mine .rate-you { animation: rate-word .4s cubic-bezier(.16, 1, .3, 1) .5s both; }
+  .rate-word.is-swap { animation: rate-word .24s cubic-bezier(.16, 1, .3, 1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rate-bar-fill, .rate-stars-avg .stars-on, .rate-star svg, .rate-you { transition: none; }
+}
+@keyframes rate-pop { 0% { transform: scale(.62); } 55% { transform: scale(1.24); } 100% { transform: scale(1); } }
+@keyframes rate-ring { 0% { opacity: .55; transform: scale(.45); } 100% { opacity: 0; transform: scale(1.35); } }
+@keyframes rate-wait { from { opacity: 1; } to { opacity: .45; } }
+@keyframes rate-stamp { 0% { opacity: 0; scale: 1.9; } 55% { opacity: 1; scale: .93; } 100% { opacity: 1; scale: 1; } }
+@keyframes rate-word { from { opacity: .2; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 980px) {
+  .rate-body { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .rate-pick { grid-column: 1 / -1; }
+  .rate-body > .rate-pick { border-inline-start: 0; border-top: 1.5px solid var(--ink); }
+}
+@media (max-width: 620px) {
+  .rate-body { grid-template-columns: minmax(0, 1fr); }
+  .rate-body > * + * { border-inline-start: 0; border-top: 1.5px solid var(--ink); }
+  .rate-bars li { grid-template-columns: 2.2em minmax(0, 1fr) 3em 4.4em; gap: 10px; }
+  .rate-star { width: 48px; height: 48px; }
+  .rate-star svg { width: 36px; height: 36px; }
 }
 
 /* ---- Other languages (tools/website/sitei18n.py)------------------------------------------------ */

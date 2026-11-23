@@ -13,7 +13,9 @@ sitemap.xml.
 The repository's stars, forks and open issues are read from GitHub's API while building (with
 GITHUB_TOKEN when set), so visitors' browsers never call GitHub; offline, the numbers are left
 out. Every page carries the Statcounter visit counter; MDM_SITE_NO_STATS=1 leaves it out of a
-local build so previews aren't counted.
+local build so previews aren't counted. The browser stores' users and ratings, and the site's
+own star ratings, are read again too (tallies.py), the last known ones kept in
+website/content/stores.json and ratings.json for a build that can't read them.
 
 Needs: pip install markdown
 """
@@ -38,6 +40,7 @@ import barcode  # noqa: E402
 import contributors  # noqa: E402  (tools/contributors.py: the people the site thanks)
 import vitrine  # noqa: E402  (tools/website/vitrine.py: the lightbox and dialogs, website/vitrine/)
 import sitei18n  # noqa: E402
+import tallies  # noqa: E402  (tools/website/tallies.py: the stores' figures and our own ratings)
 
 ROOT = Path(__file__).resolve().parents[2]
 WEB = ROOT / "website"
@@ -54,6 +57,15 @@ CWS = "https://chromewebstore.google.com/detail/mister-download-manager/ejoleppd
 # The creator's GitHub Sponsors page: the header, the footer and the home page's Support MDM
 # (the app's Help menu and About, the extension's popup and .github/FUNDING.yml point there too).
 SPONSORS = "https://github.com/sponsors/anefzaoui"
+# Our own star ratings (website/ratings/: a Cloudflare Worker, set up as its README.md says): the
+# Worker's address and the site's Turnstile key, both public. Empty until the Worker is deployed:
+# the site then shows no rating widget and gives no rating in its structured data.
+# MDM_RATINGS_API and MDM_TURNSTILE_SITEKEY stand in for them to try a local Worker (`npm run
+# dev`), whose test ratings are then never written to website/content/ratings.json.
+RATINGS_API_LIVE = "https://ratings.misterdownloadmanager.com/api/ratings"
+TURNSTILE_SITEKEY_LIVE = "0x4AAAAAAGPdSmAxeZS1XKuZ"
+RATINGS_API = os.environ.get("MDM_RATINGS_API", RATINGS_API_LIVE)
+TURNSTILE_SITEKEY = os.environ.get("MDM_TURNSTILE_SITEKEY", TURNSTILE_SITEKEY_LIVE)
 NAME = "Mister Download Manager"
 # The next release, as the site announces it. What is in the source but not in a download yet
 # says "Coming with version <this>" (coming_banner(): the feature pages, the Themes page, the
@@ -435,9 +447,78 @@ def cws_button(extra_class: str = "") -> str:
             '<img src="/assets/browsers/chrome.svg" width="22" height="22" alt=""> Add to Chrome</a>')
 
 
+# The stores' users and ratings (tallies.stores(), read at every build; the last known when a
+# store can't be read): {"chrome": {users, rating, ratings, checked}, "firefox": {...}}.
+STORES: dict[str, dict] = {}
+# The site's own ratings (tallies.ratings()): {average, count, distribution, checked}.
+RATINGS: dict = {}
+
+
+def num(value: float, dec: int = 0, plus: bool = False) -> str:
+    """A number for people: kept out of the text to translate (one text for every value) and
+    written the page language's way by main.js (data-num); English digits without scripts."""
+    attrs = f' data-num="{value}"' + (f' data-dec="{dec}"' if dec else "") + (" data-plus" if plus else "")
+    return f'<span class="num" translate="no"{attrs}>{value:,.{dec}f}{"+" if plus else ""}</span>'
+
+
+def floor_figure(n: int, digits: int = 2) -> int:
+    """`n` rounded down to its first `digits` digits (8,353 -> 8,300): what "8,300+" promises."""
+    if n < 10 ** digits:
+        return n
+    step = 10 ** (len(str(n)) - digits)
+    return n // step * step
+
+
+def stars(value: float, cls: str = "") -> str:
+    """Five stars filled to `value` out of 5, in ink: empty ones tinted, the filled ones over them,
+    clipped from the start side (styles.css .stars; right to left too). For the eye only."""
+    one = '<svg viewBox="0 0 24 24"><use href="#i-star"/></svg>'
+    fill = max(0.0, min(100.0, value / 5 * 100))
+    return (f'<span class="stars{" " + cls if cls else ""}" style="--fill: {fill:.1f}%" aria-hidden="true" translate="no">'
+            f'<span class="stars-row">{one * 5}</span><span class="stars-row stars-on">{one * 5}</span></span>')
+
+
+def ratings_count(n: int) -> str:
+    """"65 ratings", the number kept out of the text to translate."""
+    return f'{num(n)} {"rating" if n == 1 else "ratings"}'
+
+
+def store_score(key: str) -> str:
+    """A store's rating and users under its button, linked to its listing: "4.9 · 65 ratings ·
+    200,000+ users" behind the stars, as the store showed them on the day `checked`."""
+    s = STORES.get(key) or {}
+    if not s:
+        return ""
+    href = CWS if key == "chrome" else AMO
+    users = f'{num(floor_figure(s["users"]), plus=True)} {"users" if key == "chrome" else "daily users"}'
+    rating = (f'{stars(s["rating"])}<b>{num(round(s["rating"], 1), 1)}</b><span class="sr-only"> out of 5, </span>'
+              if s["ratings"] else "")
+    return (f'<a class="store-score" href="{href}">{rating}'
+            f'<span class="store-score-fine">{ratings_count(s["ratings"])} · {users}</span></a>')
+
+
+def stores_checked() -> str:
+    """The day the stores' figures shown were read (the older of the two)."""
+    days = sorted(s.get("checked", "") for s in STORES.values() if s.get("checked"))
+    return days[0] if days else ""
+
+
+def store_pick(key: str) -> str:
+    """A store's button with its rating and users under it."""
+    button = cws_button() if key == "chrome" else amo_button()
+    return f'<div class="store-pick">{button}{store_score(key)}</div>'
+
+
+def stores_asof() -> str:
+    day = stores_checked()
+    return (f'<p class="store-asof">Ratings and users as the stores showed them on '
+            f'<time datetime="{day}" translate="no">{day}</time></p>' if day else "")
+
+
 def store_buttons() -> str:
-    """Both stores' buttons side by side: Firefox's, then the Chrome Web Store's."""
-    return f'<span class="store-btns">{amo_button()}{cws_button()}</span>'
+    """Both stores' buttons side by side, each with its rating and users: Firefox's, then the
+    Chrome Web Store's; the day the figures were read under them."""
+    return f'<div class="store-set"><div class="store-btns">{store_pick("firefox")}{store_pick("chrome")}</div>{stores_asof()}</div>'
 
 
 def header(section: str = "") -> str:
@@ -1181,21 +1262,34 @@ def build_contributors() -> None:
 TRENDSHIFT = "https://trendshift.io/repositories/337427"
 SOURCEFORGE = "https://sourceforge.net/projects/mister-download-manager.mirror/files/"
 RELEASE_KEY = f"{REPO}/blob/main/crates/tools/keys/mdm-release.asc"
-# The figures the home page and /press.html show, as each source showed them on FIGURES_CHECKED,
-# rounded down. Read them again where they come from before changing them (and the date): the
-# Chrome Web Store listing (users, rating); the add-ons API, addons.mozilla.org/api/v5/addons/addon/
-# mister-download-manager/ (average_daily_users, ratings); GitHub's releases API, the
+# The figures the home page and /press.html show. The stores' come from tallies.stores() (read at
+# every build: the Chrome Web Store listing; the add-ons API's average_daily_users and ratings),
+# rounded down. The others as each source showed them on FIGURES_CHECKED, rounded down: read them
+# again where they come from before changing them (and the date): GitHub's releases API, the
 # download_count of the app's own files in every release (installers, zips, .dmg, AppImage, .deb,
 # .rpm, .tar.gz: not the checksums, symbols or extensions); Trendshift's page (its placements).
 FIGURES_CHECKED = "2026-11-18"
-FIGURES = [
+FIGURES_FIXED = [
     # (field name, where it comes from, value, its fine print)
-    ("Chrome Web Store", CWS, "50,000+ users", "4.9 out of 5, from 43 ratings"),
-    ("Firefox Add-ons", AMO, "3,800+ daily users", "4.7 out of 5, from 7 ratings"),
     ("GitHub Releases", f"{REPO}/releases", "280,000+ downloads", "of the app, every version together"),
     ("Trendshift", TRENDSHIFT, "#1 in Rust",
      'repository of the day on <time datetime="2026-11-09" translate="no">2026-11-09</time>'),
 ]
+
+
+def store_figure(key: str) -> tuple[str, str, str, str] | None:
+    s = STORES.get(key)
+    if not s:
+        return None
+    name, href, users = (("Chrome Web Store", CWS, "users") if key == "chrome"
+                         else ("Firefox Add-ons", AMO, "daily users"))
+    fine = (f'{num(round(s["rating"], 1), 1)} out of 5, from {ratings_count(s["ratings"])}' if s["ratings"]
+            else "no ratings yet")
+    return name, href, f'{num(floor_figure(s["users"]), plus=True)} {users}', fine
+
+
+def figures() -> list[tuple[str, str, str, str]]:
+    return [f for f in (store_figure("chrome"), store_figure("firefox")) if f] + FIGURES_FIXED
 # Where MDM comes from, for /press.html's "Available on": (name, link, what it is). The official
 # places first; the community's packages are made by volunteers, each checked to install the
 # release's own files (their checksums match SHA256SUMS.txt) when it was added.
@@ -1231,11 +1325,20 @@ def figures_fields() -> str:
     sources' names are names (translate="no": a lone element in its block would still be sent)."""
     return '<dl class="fields figures">' + "".join(
         f'<div><dt translate="no">{name}</dt><dd><a href="{esc(href)}">{value}</a><small>{fine}</small></dd></div>'
-        for name, href, value, fine in FIGURES) + "</dl>"
+        for name, href, value, fine in figures()) + "</dl>"
 
 
 def checked_on(text: str = "Checked on") -> str:
     return f'{text} <time datetime="{FIGURES_CHECKED}" translate="no">{FIGURES_CHECKED}</time>'
+
+
+def figures_dates() -> str:
+    """When the figures were read: the stores' at the last build that could, the others by hand."""
+    day = stores_checked()
+    if not day:
+        return checked_on("Figures checked on")
+    return (f'Store figures as of <time datetime="{day}" translate="no">{day}</time>, '
+            f'the others checked on <time datetime="{FIGURES_CHECKED}" translate="no">{FIGURES_CHECKED}</time>')
 
 
 def said_list() -> str:
@@ -1266,8 +1369,88 @@ def said_list() -> str:
 def signed_sheet() -> str:
     """The home page's proof of delivery: the stores' figures, then what people wrote."""
     return (f'<div class="sheet sheet-labelled signed-sheet"><p class="sheet-band"><b>Proof of delivery</b>'
-            f'<span>{checked_on("Figures checked on")} · quotes exact, linked to their source</span></p>'
+            f'<span>{figures_dates()} · quotes exact, linked to their source</span></p>'
             f'{figures_fields()}{said_list()}</div>')
+
+
+# ---- Our own star ratings: the widget (website/rate.js) and its numbers ---------------------------
+
+def ratings_on() -> bool:
+    """Whether the site takes ratings: the Worker is deployed and the site knows its Turnstile key."""
+    return bool(RATINGS_API and TURNSTILE_SITEKEY)
+
+
+STAR_WORDS = ["Poor", "Fair", "Good", "Very good", "Excellent"]
+
+
+def rate_sheet() -> str:
+    """Visitors rate MDM from one to five stars (<!--@rate-->): the average, how many, how they
+    rated (5 to 1, as bars) and the visitor's own pick, a radio group rate.js sends to the Worker
+    with a Turnstile token; picking again changes the visitor's rating. The numbers are this
+    build's (or the last known), so they show without scripts and match the structured data;
+    rate.js reads them again when the sheet comes near. Nothing without the Worker (ratings_on)."""
+    if not ratings_on():
+        return ""
+    r = RATINGS
+    dist = r.get("distribution") or {}
+    count = int(r.get("count") or 0)
+    avg = float(r.get("average") or 0)
+    top = max([int(dist.get(str(s), 0)) for s in range(1, 6)] + [1])
+    star = '<svg class="rate-key-star" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg>'
+    bars = "".join(
+        f'<li data-stars="{s}"><span class="rate-key" aria-hidden="true"><span translate="no">{s}</span>{star}</span>'
+        f'<span class="sr-only">{s} {"star" if s == 1 else "stars"}:</span>'
+        f'<span class="rate-bar" aria-hidden="true"><span class="rate-bar-fill" style="--share: {int(dist.get(str(s), 0)) / top:.4f}"></span></span>'
+        f'<span class="rate-bar-n">{num(int(dist.get(str(s), 0)))}</span><span class="rate-you">Yours</span></li>'
+        for s in range(5, 0, -1))
+    picks = "".join(
+        f'<label class="rate-star"><input type="radio" name="mdm-rating" value="{s}">'
+        f'<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-star"/></svg>'
+        f'<span class="sr-only">{s} {"star" if s == 1 else "stars"}, {STAR_WORDS[s - 1].lower()}</span></label>'
+        for s in range(1, 6))
+    none = " hidden" if count else ""
+    some = "" if count else " hidden"
+    return f"""<section class="sheet sheet-labelled rate-sheet" id="rate" aria-labelledby="rate-title" data-rate data-api="{esc(RATINGS_API)}" data-sitekey="{esc(TURNSTILE_SITEKEY)}">
+          <h3 class="sheet-band" id="rate-title"><b>Rate it yourself</b><span>Ratings given on this site, one per visitor</span></h3>
+          <div class="rate-body">
+            <div class="rate-score">
+              <p class="field-name">Average</p>
+              <div class="rate-score-in"{some} data-rate-some>
+                <p class="rate-avg"><span data-rate-avg>{num(round(avg, 1), 1)}</span><span class="rate-of">out of 5</span></p>
+                {stars(avg, "rate-stars-avg")}
+                <p class="rate-count" data-rate-count>{ratings_count(count)}</p>
+              </div>
+              <p class="rate-none"{none} data-rate-none>No ratings yet. Yours can be the first.</p>
+            </div>
+            <div class="rate-dist">
+              <p class="field-name" id="rate-dist-title">How people rated it</p>
+              <ol class="rate-bars" role="list" aria-labelledby="rate-dist-title" data-rate-bars>{bars}</ol>
+            </div>
+            <fieldset class="rate-pick" data-rate-pick aria-describedby="rate-hint">
+              <legend class="field-name">Your rating</legend>
+              <p class="rate-noscript">Rating needs JavaScript. The numbers here are from this page's last update.</p>
+              <div class="rate-stars" data-rate-stars>{picks}</div>
+              <p class="rate-word" data-rate-word aria-hidden="true">From one star to five</p>
+              <p class="rate-hint" id="rate-hint">One rating per visitor: pick again any time to change yours.</p>
+              <button type="button" class="rate-remove" data-rate-remove hidden>Remove my rating</button>
+              <p class="rate-status" data-rate-status role="status" aria-live="polite"></p>
+              <div class="rate-check" data-rate-check></div>
+              <p class="rate-stamp" aria-hidden="true">Thank you</p>
+            </fieldset>
+          </div>
+        </section>
+        <script src="/rate.js" defer></script>"""
+
+
+def rating_ld() -> dict | None:
+    """schema.org's AggregateRating for the SoftwareApplication: our own ratings only (never the
+    stores': Google doesn't take ratings gathered on other sites), and only once there is one.
+    The page that carries it shows the same numbers (rate_sheet)."""
+    count = int(RATINGS.get("count") or 0)
+    if not ratings_on() or count < 1:
+        return None
+    return {"@type": "AggregateRating", "ratingValue": round(float(RATINGS["average"]), 1),
+            "ratingCount": count, "bestRating": 5, "worstRating": 1}
 
 
 def press_groups(rows: list[list[str]]) -> str:
@@ -1314,7 +1497,7 @@ def build_press() -> None:
     body = f"""{page_head("Press and mentions", lede, trail, fine)}
     <div class="wrap press-page">
       <section class="sheet sheet-labelled press-sheet" aria-labelledby="figures-title">
-        <h2 class="sheet-band" id="figures-title"><b>In figures</b><span>{checked_on()}, rounded down</span></h2>
+        <h2 class="sheet-band" id="figures-title"><b>In figures</b><span>{figures_dates()}, rounded down</span></h2>
         {figures_fields()}
       </section>
       <section class="sheet sheet-labelled press-sheet" aria-labelledby="articles-title">
@@ -1524,8 +1707,13 @@ def fill(text: str) -> str:
     for k in ("stars", "forks", "issues", "watchers"):
         text = text.replace("{{" + k.upper() + "}}", STATS.get(k, "–"))
     text = text.replace("<!--@split-->", split_button()).replace("<!--@gh-->", gh_pill("btn btn-ghost btn-big gh-big"))
-    text = text.replace("<!--@stores-->", store_buttons()).replace("<!--@amo-->", amo_button())
-    text = text.replace("<!--@cws-->", cws_button())
+    text = text.replace("<!--@stores-->", store_buttons()).replace("<!--@amo-->", store_pick("firefox"))
+    text = text.replace("<!--@cws-->", store_pick("chrome")).replace("<!--@stores-asof-->", stores_asof())
+    # Our own rating in the structured data only where the page shows it (rate_sheet).
+    software_ld = dict(SOFTWARE_LD)
+    if "<!--@rate-->" in text and rating_ld():
+        software_ld["aggregateRating"] = rating_ld()
+    text = text.replace("<!--@rate-->", rate_sheet())
     text = text.replace("{{AMO}}", AMO).replace("{{CWS}}", CWS)
     if "<!--@features-->" in text:
         text = text.replace("<!--@features-->", manifest(feature_list()))
@@ -1533,7 +1721,7 @@ def fill(text: str) -> str:
     text = text.replace("<!--@crew-->", crew_pile()).replace("<!--@signed-->", signed_sheet())
     text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
-            .replace("{{SPONSORS}}", SPONSORS).replace("{{RELEASE_KEY}}", RELEASE_KEY).replace("{{SOURCEFORGE}}", SOURCEFORGE).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
+            .replace("{{SPONSORS}}", SPONSORS).replace("{{RELEASE_KEY}}", RELEASE_KEY).replace("{{SOURCEFORGE}}", SOURCEFORGE).replace("{{SOFTWARE_LD}}", json.dumps(software_ld, ensure_ascii=False, separators=(",", ":"))))
 
 
 def build_templated(name: str, path: str, section: str, priority: str) -> None:
@@ -1918,7 +2106,8 @@ def copy_static() -> None:
     for old in OUT.iterdir():
         shutil.rmtree(old) if old.is_dir() else old.unlink()
     for item in WEB.iterdir():
-        if item.name in ("content",) or item.suffix == ".html":
+        # content/: the pages' sources; ratings/: the ratings Worker, deployed on its own.
+        if item.name in ("content", "ratings") or item.suffix == ".html":
             continue
         if item.name == "vitrine":
             # Vitrine's scripts and stylesheets; its lock file stays home.
@@ -1947,7 +2136,7 @@ def bust_caches() -> None:
     hash, so a browser never pairs a new page with an old cached stylesheet."""
     import hashlib
     tags = {}
-    for name in ("styles.css", "main.js", "bench.js") + tuple(f"vitrine/{n}" for n in vitrine.FILES):
+    for name in ("styles.css", "main.js", "bench.js", "rate.js") + tuple(f"vitrine/{n}" for n in vitrine.FILES):
         tags[name] = hashlib.sha256((OUT / name).read_bytes()).hexdigest()[:10]
     for page in OUT.rglob("*.html"):
         text = page.read_text("utf-8")
@@ -1973,6 +2162,8 @@ def main() -> None:
         sys.exit("website/vitrine/ doesn't match vitrine.lock.json (change Vitrine upstream, then "
                  "`python tools/website/vitrine.py fetch`):\n  " + "\n  ".join(bad))
     STATS.update(repo_stats())
+    STORES.update(tallies.stores())
+    RATINGS.update(tallies.ratings(RATINGS_API, save=RATINGS_API == RATINGS_API_LIVE))
     load_crew()
     copy_static()
     build_templated("index.html", "/", "home", "1.0")
