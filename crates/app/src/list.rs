@@ -1921,6 +1921,7 @@ mod tests {
         assert_eq!(TITLES[ADDED], "Added");
         assert_eq!(TITLES[SOURCE], "Source");
         assert_eq!(TITLES[UPLOAD], "Upload speed");
+        assert_eq!(TITLES[SAVE_TO], "Save To");
         assert_eq!(TITLES[PEERS], "Peers");
         assert_eq!(TITLES[RATIO], "Share ratio");
     }
@@ -1937,6 +1938,36 @@ mod tests {
     }
 
     #[test]
+    fn a_layout_saved_before_save_to_gets_it_last_and_shown() {
+        let mut st = ListState::default();
+        st.apply(Layout {
+            order: DEFAULT_ORDER[..COLS - 1].to_vec(),
+            widths: DEFAULT_WIDTHS[..COLS - 1].to_vec(),
+            visible: vec![true; COLS - 1],
+            sort: None,
+            status_fits: None,
+        });
+        assert_eq!(st.order.last(), Some(&SAVE_TO));
+        assert!(st.visible[SAVE_TO]);
+        assert_eq!(st.widths[SAVE_TO], DEFAULT_WIDTHS[SAVE_TO]);
+    }
+
+    #[test]
+    fn set_columns_rejects_a_bad_order_and_keeps_file_name() {
+        let mut st = ListState::default();
+        let before = st.order.clone();
+        st.set_columns(vec![0, 0, 1], [true; COLS]);
+        assert_eq!(st.order, before, "bad order ignored");
+        let mut order = before.clone();
+        order.reverse();
+        let mut vis = [true; COLS];
+        vis[0] = false;
+        st.set_columns(order.clone(), vis);
+        assert_eq!(st.order, order);
+        assert!(st.visible[0], "File Name stays");
+    }
+
+    #[test]
     fn a_layout_saved_before_the_added_columns_still_loads() {
         let old = Layout {
             order: vec![0, 2, 1, 3, 4, 5, 6, 7],
@@ -1950,7 +1981,9 @@ mod tests {
         // Source first, the three torrent columns after Transfer rate, Added after Last Try Date.
         assert_eq!(
             st.order,
-            [SOURCE, 0, 2, 1, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 2, 1, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert_eq!(st.widths[0], 200.0, "the saved widths stay");
         assert_eq!(st.widths[ADDED], DEFAULT_WIDTHS[ADDED]);
@@ -2052,7 +2085,9 @@ mod tests {
         st.apply(old);
         assert_eq!(
             st.order,
-            [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert!(st.widths[UPLOAD] > 0.0 && st.widths[PEERS] > 0.0 && st.widths[RATIO] > 0.0);
         // None of the torrent columns were in that layout, so all three get their defaults.
@@ -2088,7 +2123,9 @@ mod tests {
         st.apply(old);
         assert_eq!(
             st.order,
-            [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7]
+            [
+                SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO
+            ]
         );
         assert_eq!(
             st.widths[PEERS], 64.0,

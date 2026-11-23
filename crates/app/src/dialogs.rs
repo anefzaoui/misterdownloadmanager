@@ -3423,9 +3423,9 @@ impl Columns {
                     let y = 40.0 + i as f32 * ROW;
                     let row = r(o, 11.0, y, 232.0, ROW);
                     if i == self.selected {
-                        p.rect_filled(row, 0.0, egui::Color32::from_rgb(205, 232, 255));
+                        p.rect_filled(row, 0.0, winui::ROW_SELECTED());
                     }
-                    let id = ui.id().with(("columns-row", slot));
+                    let id = egui::Id::unique(("columns-row", slot));
                     if ui.interact(row, id, egui::Sense::click()).clicked() {
                         self.selected = i;
                     }

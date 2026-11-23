@@ -2697,6 +2697,22 @@ pub fn readonly_file(
     readonly_with_icon(ui, rc, name, true, id, icon)
 }
 
+/// A file name for drawing: the name with the direction of its own letters (an Arabic name reads
+/// right to left, a Latin one left to right) and its extension, ".mp4", apart as left to right,
+/// so the dot stays in front of it at the end of a right-to-left name instead of after it.
+fn file_name_bidi(name: &str) -> String {
+    match name.rfind('.') {
+        Some(dot) if dot > 0 && name[dot..].is_ascii() && name[dot..].len() <= 12 => {
+            format!(
+                "{}{}",
+                crate::i18n::isolate(&name[..dot]),
+                crate::i18n::ltr(&name[dot..])
+            )
+        }
+        _ => crate::i18n::isolate(name),
+    }
+}
+
 fn readonly_with_icon(
     ui: &mut Ui,
     rc: Rect,
@@ -2706,6 +2722,7 @@ fn readonly_with_icon(
     icon: Option<crate::fileicons::Kind>,
 ) -> Response {
     field_frame(ui.painter(), rc, FieldLook::ReadOnly);
+    let is_file = matches!(icon, Some(crate::fileicons::Kind::File(_)));
     let p = ui.painter().clone();
     // From the field's leading edge (an English pen in its English rect).
     let mut e = rect(rc);
@@ -2716,7 +2733,9 @@ fn readonly_with_icon(
     }
     let shown = ellipsize(&p, &tahoma(), value, e.width() - 9.0);
     let cut = shown != value;
-    let shown = if ltr && rtl() {
+    let shown = if is_file {
+        file_name_bidi(&shown)
+    } else if ltr && rtl() {
         crate::i18n::ltr(&shown)
     } else {
         shown
@@ -7387,6 +7406,16 @@ pub mod caption {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// An Arabic name's extension is drawn apart, left to right, so its dot isn't left behind
+    /// after it.
+    #[test]
+    fn a_file_names_extension_is_isolated_left_to_right() {
+        let shown = file_name_bidi("ليه؟.mp4");
+        assert!(shown.ends_with(&crate::i18n::ltr(".mp4")), "{shown:?}");
+        assert!(shown.starts_with(&crate::i18n::isolate("ليه؟")), "{shown:?}");
+        assert_eq!(file_name_bidi("noext"), crate::i18n::isolate("noext"));
+    }
 
     /// #1192: every system dialog `start_pick` shows is counted open while it runs (the freeze
     /// watchdog doesn't take macOS's window thread in it for a frozen window), and closed once

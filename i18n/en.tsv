@@ -19,6 +19,9 @@
 #. {n} = a number (keep the braces as they are)
 @plural	And {n} other file.|And {n} other files.	And {n} other file.|And {n} other files.
 #. count in a dialog box
+#. {n} = a number (keep the braces as they are)
+@plural	Are you sure you want to delete {n} completed download from Mister Download Manager list of downloads?|Are you sure you want to delete all {n} completed downloads from Mister Download Manager list of downloads?	Are you sure you want to delete {n} completed download from Mister Download Manager list of downloads?|Are you sure you want to delete all {n} completed downloads from Mister Download Manager list of downloads?
+#. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?
@@ -821,6 +824,8 @@
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)
 #. text in langpick.rs
 	Choose a language	Choose a language
+#. text in a dialog box
+	Choose the columns to show in the list of downloads	Choose the columns to show in the list of downloads
 #. text in langpick.rs
 	Choose the language Mister Download Manager shows its windows in:	Choose the language Mister Download Manager shows its windows in:
 #. text in the Options window
@@ -877,6 +882,8 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Colombia	Colombia
+#. window title in a dialog box
+	Columns	Columns
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	Comoros
@@ -898,8 +905,9 @@
 	Confirm	Confirm
 #. text in the Options window
 	Confirm before deleting downloads	Confirm before deleting downloads
-#. window title in a dialog box
-	Confirm deletion of downloads	Confirm deletion of downloads
+#. text in a dialog box
+#. title of the question asked before Delete Completed removes every finished download
+	Confirm deletion of completed downloads	Confirm deletion of completed downloads
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Congo	Congo
@@ -2395,7 +2403,8 @@
 	Move a page up / down	Move a page up / down
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Move between the toolbar, the categories and the download list	Move between the toolbar, the categories and the download list
-#. text in the Scheduler window
+#. button in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 	Move down	Move down
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
@@ -2406,7 +2415,8 @@
 	Move to folder	Move to folder
 #. message or event log entry in the main window
 	Move to queue	Move to queue
-#. text in the Scheduler window
+#. button in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
 #. tooltip of an icon button in the Scheduler's list of files
 	Move up	Move up
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3112,6 +3122,9 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Replace asterisk to
+#. button in a dialog box
+#. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+	Reset	Reset
 #. text in crashui.rs
 #. crash report window button: start MDM again
 	Restart MDM	Restart MDM
@@ -5117,9 +5130,12 @@ column	Peers	Peers
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 column	Q	Q
-#. column title in the main window; column title in the download list
+#. column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 column	Queue	Queue
+#. column title in the download list in the download list
+#. column title: the folder the download is saved in
+column	Save To	Save To
 #. column title in the download list in the download list
 #. column title: what a torrent has sent to peers against what it took
 column	Share ratio	Share ratio
@@ -5827,6 +5843,11 @@ menu	&Automatic	&Automatic
 #. View → Text: letters drawn the classic way, hinted to whole pixels (crisp, coarse on a dense screen)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Classic	&Classic
+#. menu command in the main window
+#. header menu: opens the dialog that chooses the list's columns
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+menu	&Columns...	&Columns...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Copy	&Copy
@@ -5878,10 +5899,6 @@ menu	&Remove	&Remove
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Report a problem	&Report a problem
-#. menu command in the main window
-#. header menu: put the columns back as they first were (order, widths, all shown)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-menu	&Reset columns	&Reset columns
 #. menu command in the main window
 #. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation

@@ -17605,8 +17605,14 @@ mod delete_tests {
         let (items, files) = three(dir.path());
         let mut app = app_from_052(items, false);
         let ctx = egui::Context::default();
+        // Delete Completed asks every time, whatever Delete's box says.
         app.run(Cmd::DeleteCompleted, None, &ctx);
-        assert!(app.confirm_delete.is_none(), "not asked");
+        assert!(app.confirm_delete.is_some(), "asked");
+        app.confirm_delete = None; // No
+        assert_eq!(ids(&app).len(), 3, "No keeps everything");
+        app.run(Cmd::DeleteCompleted, None, &ctx);
+        let done = app.confirm_delete.take().unwrap().ids;
+        app.remove_downloads(&done, false); // Yes
         assert_eq!(ids(&app), [3], "the finished rows went");
         app.run(Cmd::Remove, Some(3), &ctx);
         assert!(app.confirm_delete.is_none());
@@ -17637,6 +17643,35 @@ mod delete_tests {
         assert!(!asked(&app).files, "the tick was not remembered");
         app.confirm_delete = None;
         assert!(files[2].exists());
+    }
+
+    #[test]
+    fn double_click_opens_properties_for_finished_and_unfinished_alike() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, _files) = three(dir.path());
+        let mut app = app_from_052(items, true);
+        app.double_click(3);
+        app.double_click(1);
+        let open: Vec<u64> = app.properties.iter().map(|p| p.id).collect();
+        assert_eq!(
+            open,
+            [3, 1],
+            "a Properties window each, never a progress window"
+        );
+        assert!(app.progress.is_empty());
+    }
+
+    #[test]
+    fn the_header_menu_has_one_item_the_columns_dialog() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, _files) = three(dir.path());
+        let app = app_from_052(items, true);
+        let (entries, _) = app.popup_entries(Popup::Columns);
+        assert_eq!(entries.len(), 1);
+        assert!(matches!(
+            entries[0],
+            MenuEntry::Item(_, Cmd::ColumnsDialog, true, _)
+        ));
     }
 
     #[test]
