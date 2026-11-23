@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "코드 서명을 통해 Windows는 프로그램 게시자를 표시하고, 빌드 후 변경되지 않았음을 확인할 수 있습니다. Mister Download Manager(\"MDM\") 릴리스가 서명될 때, 이 프로젝트에서 제공되는 Windows 파일에 서명이 적용됩니다."
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/>개 풀 리퀘스트"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "예. MDM은 다운로드 진행 상황을 기록하므로 연결이 끊기거나, 프로그램이 충돌하거나, 다시 시작한 후에도 중단된 지점부터 계속 다운로드합니다. 다시 시작하기 전에 서버의 파일이 변경되지 않았는지 확인합니다. 다운로드 주소가 만료된 경우 <g1>다운로드 주소 새로 고침</g1>을 사용해 새 주소를 입력하고 기존 데이터를 유지할 수 있습니다. <g2>중단된 다운로드 다시 시작</g2>을 참조하세요."
@@ -229,10 +225,6 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>도움말 → Mister Download Manager 정보</g1>에서 현재 버전을 확인할 수 있습니다."
-  },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>풀 리퀘스트</g1><g2><x3/>명</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1920,7 +1912,7 @@
   },
   "1a5164060895b36a": {
    "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
-   "text": "아카이브 테스트에서 손상을 발견하여 배치할 수 있었던 완료된 파일(ZIP 항목, #1661: 앱의 <x1/>)은 다시 부분 파일(<x2/>)이 됩니다. 다운로드가 보관하도록 요청한 마지막 재개 상태(<x3/>, <x4/>)는 손상된 범위만 가져오도록 다시 기록되며, 각 범위는 겹침 확인을 위해 몇 바이트 일찍 시작하고 파일 이름은 부분 파일로 변경됩니다. 재개는 일반적인 재개입니다: 동일한 유효성 검사기, 겹침 확인, 다이제스트를 사용하는 <x5/>; 서버에서 변경된 파일은 <x6/>로 실패합니다."
+   "text": "아카이브 테스트에서 손상을 발견하여 배치할 수 있었던 완료된 파일(ZIP 항목, #1661: 앱의 <x1/>)은 다시 부분 파일이 됩니다(<x2/>): 보관하도록 요청된 다운로드(<x3/>, <x4/>)가 반환한 마지막 재개 상태는 손상된 범위만 가져오도록 다시 기록되며, 각 범위는 오버랩 확인을 위해 몇 바이트 일찍 시작하고 파일 이름은 부분 파일로 변경됩니다. 재개는 일반적인 재개입니다: 동일한 유효성 검사기, 오버랩 확인, 다이제스트를 사용하는 <x5/>; 서버에서 변경된 파일은 <x6/>로 실패합니다."
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -2220,7 +2212,7 @@
   },
   "1e32ee75ad780ae4": {
    "source": "An archive protected by a password isn't tested, as its files can't be read without it: the log says <g1>Couldn't test photos.zip: it needs a password</g1>. Nor are tar, gz and xz files.",
-   "text": "암호로 보호된 압축 파일은 파일 내용을 읽을 수 없으므로 테스트되지 않습니다. 로그에는 <g1>photos.zip을 테스트할 수 없음: 암호가 필요함</g1>이라고 표시됩니다. tar, gz, xz 파일도 테스트되지 않습니다."
+   "text": "비밀번호로 보호된 압축 파일은 파일 내용을 읽을 수 없으므로 테스트되지 않습니다. 로그에는 <g1>photos.zip을 테스트할 수 없음: 비밀번호가 필요함</g1>이라고 표시됩니다. tar, gz, xz 파일도 테스트되지 않습니다."
   },
   "1e4861cc4f32a384": {
    "source": "<g1>Every text the user sees goes through <x2/></g1> (<x3/>, <x4/>, <x5/>, <x6/>); after adding one, run <x7/>. Data inside a sentence (a file name, an address, a size) goes in through <x8/> or <x9/>, so it reads right in right-to-left languages.",
@@ -2433,10 +2425,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOS에서는 관리자만 절전 모드 해제를 예약할 수 있으므로 옵션이 비활성화됩니다. MDM은 관리자 암호를 요청하지 않습니다. 관리자는 큐가 시작되기 1분 전, 예를 들어 오후 11시에 시작하는 큐라면 매일 오후 10시 59분에 Mac이 깨어나도록 설정할 수 있습니다."
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "버전 <x1/> 이후 GitHub에서 풀 리퀘스트를 보내거나, 이슈를 열거나, 댓글을 남겨주신 모든 분들께 감사드립니다."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3068,7 +3056,7 @@
   },
   "29c62272ce90056c": {
    "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
-   "text": "아카이브 압축 해제(#37): zip, tar, gz, xz는 자체 처리; 7z, RAR은 설치된 7-Zip을 별도 프로그램으로 실행하여 처리; 요청 시 HatchZip을 통해 제자리에서 처리. 아카이브 테스트(<x1/>, #1661): <x2/>, 자체적으로 처리하는 ZIP, 파일에 손상된 ZIP 항목 배치"
+   "text": "아카이브 압축 해제(#37): zip, tar, gz, xz는 처리 중; 7z, RAR은 설치된 7-Zip을 통해 별도 프로그램으로 실행; 요청 시 HatchZip을 통해 제자리에서. 아카이브 테스트(<x1/>, #1661): <x2/>, 자체적으로 처리 중인 ZIP, 파일에 손상된 ZIP 항목 배치"
   },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
@@ -3660,7 +3648,7 @@
   },
   "319a440ac21a4da8": {
    "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
-   "text": "MDM이 손상된 부분을 다시 다운로드했는데도 여전히 손상된 ZIP 파일이거나, <g1>다시 다운로드</g1> 후에도 손상된 7z 또는 RAR 파일은 서버 자체에서 손상되었을 가능성이 높습니다. 해당 사이트에 다른 복사본을 요청하세요."
+   "text": "MDM이 손상된 부분을 다시 다운로드했는데도 여전히 손상된 ZIP 파일이거나, <g1>다시 다운로드</g1> 후에도 손상된 7z 또는 RAR 파일은 서버 자체에서 손상되었을 가능성이 높습니다. 해당 웹사이트에 다른 복사본을 요청하세요."
   },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
@@ -4210,10 +4198,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "<g1>확인</g1>을 클릭하세요."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>이슈</g1><g2><x3/>명</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "<g1>다운로드 → 속도 제한 → 켜기</g1>를 선택합니다."
@@ -4556,7 +4540,7 @@
   },
   "3eaa27ee358ba512": {
    "source": "Last updated 2026-11-23",
-   "text": "최종 업데이트: 2026년 11월 23일"
+   "text": "최종 업데이트: 2026-11-23"
   },
   "3eba7f086afb94a2": {
    "source": "Is it really free?",
@@ -4684,7 +4668,7 @@
   },
   "406a5240307e8845": {
    "source": "Right-click → <g1>Redownload</g1> (or the <g2>Damaged archive</g2> window's <g3>Redownload</g3>) downloads it again from the start.",
-   "text": "마우스 오른쪽 버튼을 클릭하여 <g1>다시 다운로드</g1>를 선택하거나(<g2>손상된 압축 파일</g2> 창에서 <g3>다시 다운로드</g3> 버튼을 클릭) 처음부터 다시 다운로드합니다."
+   "text": "마우스 오른쪽 버튼을 클릭하여 <g1>다시 다운로드</g1>를 선택하거나(<g2>손상된 압축 파일</g2> 창의 <g3>다시 다운로드</g3> 버튼을 클릭) 처음부터 다시 다운로드합니다."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -6130,10 +6114,6 @@
    "source": "A small file",
    "text": "작은 파일"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "감사합니다"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "재생 목록(<x1/>) 또는 채널 동영상(<x2/>) 주소를 붙여넣고 <g3>찾아보기</g3>를 클릭하세요. 이 창에는 단일 동영상의 품질 대신 목록의 동영상들이 각 동영상의 길이와 함께 표시됩니다."
@@ -6265,10 +6245,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 및 Linux; macOS 시험판"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "이 훌륭한 분들 덕분에 가능했습니다"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6428,7 +6404,7 @@
   },
   "5a08cc8b48188788": {
    "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
-   "text": "다운로드가 완료된 압축 파일도 손상될 수 있습니다. 서버에서 잘못된 바이트를 보내거나, 중간에 프록시가 파일의 일부를 손상시켰을 수 있습니다. 이러한 문제는 파일을 열 때, 종종 한참 후에야 드러납니다. 따라서 MDM은 ZIP, 7z, RAR 압축 파일과 분할 압축 파일의 모든 볼륨이 다운로드 완료되면 자동으로 테스트합니다. <g1>옵션 → 압축 파일 → 다운로드 완료 시 압축 파일 테스트</g1>는 기본적으로 4GB까지 활성화되어 있습니다. 테스트는 전체 압축 파일을 읽으므로, 더 큰 파일은 사용자가 직접 요청할 때만 테스트됩니다. 완료된 압축 파일을 마우스 오른쪽 버튼으로 클릭하고 크기에 상관없이 <g2>압축 파일 테스트</g2>를 선택하세요."
+   "text": "완료된 압축 파일도 손상될 수 있습니다. 서버에서 잘못된 바이트를 보내거나, 프록시가 파일의 일부를 손상시켰을 수 있습니다. 이는 파일을 열 때, 종종 한참 후에야 나타납니다. 따라서 MDM은 ZIP, 7z, RAR 압축 파일과 분할 압축 파일의 모든 볼륨이 다운로드 완료되면 테스트합니다. <g1>옵션 → 압축 파일 → 다운로드 완료 시 압축 파일 테스트</g1>는 기본적으로 4GB까지 켜져 있습니다. 테스트는 전체 압축 파일을 읽으므로, 더 큰 파일은 요청할 때만 테스트됩니다. 완료된 압축 파일을 마우스 오른쪽 버튼으로 클릭하고 크기에 관계없이 <g2>압축 파일 테스트</g2>를 선택하세요."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6780,7 +6756,7 @@
   },
   "5ed4e501adf0b774": {
    "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
-   "text": "MDM이 손상된 파일의 위치를 알 수 있는 단일 ZIP 파일은 대신 복구됩니다. 손상된 부분의 바이트만 동일한 서버에서 다시 다운로드되고, 압축 파일은 다시 테스트됩니다. 로그에는 <g1>손상된 부분 다시 다운로드 중 (1.20 MB)</g1>이라고 표시된 다음, <g2>다시 테스트됨: 보관 파일에 오류가 없습니다</g2>라고 표시됩니다. 바이트는 파일의 동일한 버전에서만 가져옵니다. MDM은 다른 다운로드를 재개할 때와 마찬가지로 (파일의 ETag 또는 날짜, <x3/>를 사용하여) 바이트를 요청하고, 각 부분 직전의 바이트를 디스크의 바이트와 비교합니다. 서버에서 변경된 파일은 두 버전을 혼합하는 대신 <g4>서버에서 파일이 변경됨</g4> 메시지와 함께 다운로드를 중지합니다. <g5>다시 다운로드</g5>는 새 파일을 다운로드합니다. 그 후에도 여전히 손상된 압축 파일은 <g6>다시 다운로드</g6>를 제안합니다."
+   "text": "MDM이 손상된 파일의 위치를 알 수 있는 경우, 단일 ZIP 파일은 대신 복구됩니다. 손상된 부분의 바이트만 동일한 서버에서 다시 다운로드되고, 압축 파일은 다시 테스트됩니다. 로그에는 <g1>손상된 부분 다시 다운로드 중 (1.20 MB)</g1>이라고 표시된 다음, <g2>다시 테스트됨: 보관 파일에 오류가 없습니다</g2>라고 표시됩니다. 바이트는 파일의 동일한 버전에서만 가져옵니다. MDM은 다른 다운로드를 재개할 때와 마찬가지로 (파일의 ETag 또는 날짜, <x3/>를 사용하여) 바이트를 요청하고, 각 부분 직전의 바이트를 디스크의 바이트와 비교합니다. 서버에서 변경된 파일은 두 버전을 혼합하는 대신 <g4>서버에서 파일이 변경됨</g4>으로 다운로드를 중지합니다. <g5>다시 다운로드</g5>는 새 파일을 다운로드합니다. 그 후에도 여전히 손상된 압축 파일은 <g6>다시 다운로드</g6>를 제안합니다."
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7232,7 +7208,7 @@
   },
   "64e4c03c8252a3bc": {
    "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
-   "text": "<g1>다운로드 완료 시 최대 4GB 압축 파일 테스트</g1> (기본값: 켜짐) — ZIP, 7z 또는 RAR 압축 파일(분할 압축 파일은 마지막 볼륨이 도착하면)은 다운로드가 완료된 것으로 간주되기 전에 다시 읽고 그 안에 있는 모든 파일이 아래에 명시된 7-Zip으로 확인됩니다(7-Zip이 없는 ZIP 파일은 MDM 자체로 확인). 더 큰 파일은 테스트 시 전체 파일을 읽으므로 자동으로 테스트되지 않습니다. 마우스 오른쪽 버튼 클릭 → <g2>압축 파일 테스트</g2>를 통해 테스트할 수 있습니다. 손상된 ZIP 파일의 손상된 파일은 다시 다운로드되며, 다른 손상된 압축 파일은 <g3>다시 다운로드</g3>를 제안합니다. <g4>압축 파일 테스트</g4>를 참조하세요."
+   "text": "<g1>다운로드 완료 시 최대 4GB 압축 파일 테스트</g1> (기본값: 켜짐) — ZIP, 7z 또는 RAR 압축 파일(분할 압축 파일은 마지막 볼륨이 있을 때)은 다운로드가 완료된 것으로 간주되기 전에 다시 읽고 그 안의 모든 파일이 아래 명시된 7-Zip으로 확인됩니다(7-Zip이 없는 ZIP은 MDM 자체에서 확인). 4GB보다 큰 파일은 테스트 시 전체 파일을 읽으므로 자동으로 테스트되지 않습니다. 마우스 오른쪽 버튼 클릭 → <g2>압축 파일 테스트</g2>를 통해 테스트할 수 있습니다. 손상된 ZIP 파일의 손상된 파일은 다시 다운로드됩니다. 다른 손상된 압축 파일은 <g3>다시 다운로드</g3>를 제안합니다. <g4>압축 파일 테스트</g4>를 참조하세요."
   },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
@@ -7432,7 +7408,7 @@
   },
   "6827e4a6218bda8d": {
    "source": "7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for <g1>Redownload</g1> when damaged, never repaired in part.",
-   "text": "7z 및 RAR 압축 파일은 7-Zip 테스트에서 파일 내 위치를 제공하지 않는 블록에 파일을 보관하며, 분할 압축 파일의 볼륨은 별도의 다운로드입니다. 이러한 파일은 테스트되고, 손상된 경우 <g1>다시 다운로드</g1>를 제안하며, 부분적으로 복구되지 않습니다."
+   "text": "7z 및 RAR 압축 파일은 7-Zip 테스트에서 파일 내 위치를 제공하지 않는 블록에 파일을 보관하며, 분할 압축 파일의 볼륨은 별도의 다운로드입니다. 이러한 파일은 테스트되고, 손상된 경우 <g1>다시 다운로드</g1>가 제안되며, 부분적으로 복구되지 않습니다."
   },
   "6837961868984d5a": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>. To keep only a stretch of it, tick <g4>Only a part</g4>: see <g5>Download only a part</g5>.",
@@ -7948,7 +7924,7 @@
   },
   "6f2c084eea3d616f": {
    "source": "A split archive (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. <g6>Test archive</g6> on a split archive not complete yet says so: <g7>Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)</g7>.",
-   "text": "분할 압축 파일(<x1/>, <x2/>, <x3/>, <x4/>, <x5/>)은 모든 볼륨이 다운로드되면, 그중 마지막으로 완료된 볼륨을 기준으로 첫 번째 볼륨부터 한 번 테스트됩니다. 볼륨은 종종 차례로 완료되며 (한 번에 하나씩 다운로드하는 큐, 파일 사이에 대기해야 하는 호스트), 지금까지 다운로드된 볼륨은 잘린 압축 파일로 읽히므로 자체적으로 테스트되지 않습니다. 아직 완료되지 않은 분할 압축 파일에 대해 <g6>압축 파일 테스트</g6>를 실행하면 <g7>아직 테스트되지 않음: photos.zip.001이 완료되지 않음 (볼륨 3이 아직 없음)</g7>이라고 표시됩니다."
+   "text": "분할 압축 파일(<x1/>, <x2/>, <x3/>, <x4/>, <x5/>)은 모든 볼륨이 다운로드되면, 그중 마지막으로 완료된 볼륨부터 첫 번째 볼륨까지 한 번 테스트됩니다. 볼륨은 종종 하나씩 완료되며(한 번에 하나씩 다운로드하는 큐, 파일 사이에 기다리게 하는 호스트), 지금까지 읽힌 볼륨은 잘린 압축 파일로 읽히므로 자체적으로 테스트되지 않습니다. 아직 완료되지 않은 분할 압축 파일에서 <g6>압축 파일 테스트</g6>를 선택하면 <g7>아직 테스트되지 않음: photos.zip.001이 완료되지 않음 (볼륨 3이 아직 없음)</g7>이라고 표시됩니다."
   },
   "6f2f9063e93137cf": {
    "source": "<g1>Alt</g1> + an underlined letter",
@@ -8336,7 +8312,7 @@
   },
   "7466ed5799362d5d": {
    "source": "The test is 7-Zip's (<x1/>, with the 7-Zip that <g2>Options → Archives</g2> names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.",
-   "text": "테스트는 7-Zip(<x1/>, <g2>옵션 → 압축 파일</g2>에 지정된 7-Zip)을 사용합니다. 압축 파일 내의 모든 파일이 다시 읽히고 확인되며, 아무것도 쓰여지지 않습니다. 7-Zip이 없으면 MDM이 ZIP 압축 파일을 자체적으로 테스트하지만, 7z 및 RAR 압축 파일은 테스트되지 않습니다."
+   "text": "테스트는 7-Zip(<x1/>, <g2>옵션 → 압축 파일</g2>에 명시된 7-Zip)으로 진행됩니다. 압축 파일 내의 모든 파일이 다시 읽히고 확인되며, 아무것도 쓰여지지 않습니다. 7-Zip이 없으면 MDM이 ZIP 압축 파일을 자체적으로 테스트합니다. 7z 및 RAR 압축 파일은 테스트되지 않습니다."
   },
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
@@ -8637,10 +8613,6 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "이러한 서비스 중 하나에 유료 계정이 있어야 합니다. MDM은 계정을 판매하거나 포함하지 않습니다. 계정 또는 링크를 공유하는 것은 서비스 약관을 위반하며 계정이 정지될 수 있습니다."
-  },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>도움을 주신 모든 분</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -10438,10 +10410,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>가속 및 재개</g1><g2>최대 32개 연결로 파일을 분할하고, 마지막 바이트까지 재분할하며, 충돌 후에도 재개합니다.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> GitHub에서 풀 리퀘스트를 보내거나, 문제를 보고하거나, 대화에 참여한 분들. <g2>모두 만나보기</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM이 그리는 제목 표시줄 (창이 활성화되지 않았을 때; 활성화되었을 때처럼 투명함)"
@@ -11362,10 +11330,6 @@
    "source": "Send downloads from your browser",
    "text": "브라우저에서 다운로드 보내기"
   },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/>개 댓글"
-  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "Windows 7의 느낌: 광택 버튼, 유리 같은 제목 표시줄, 광택 녹색 진행률 표시줄."
@@ -12196,7 +12160,7 @@
   },
   "a8abc740d94eb990": {
    "source": "Its archive's test found files in it that don't read back whole (<g1>Testing archives</g1>): hover over <g2>Status</g2> to see which.",
-   "text": "압축 파일 테스트 결과, 파일이 온전히 읽히지 않는 것으로 나타났습니다(<g1>압축 파일 테스트</g1>). <g2>상태</g2>에 마우스를 올리면 어떤 파일인지 확인할 수 있습니다."
+   "text": "압축 파일 테스트 결과 파일이 온전히 읽히지 않는 것으로 나타났습니다(<g1>압축 파일 테스트</g1>): <g2>상태</g2>에 마우스를 올리면 어떤 파일인지 확인할 수 있습니다."
   },
   "a8b65ed9a2e906de": {
    "source": "Choose <g1>Tasks → Show drop target</g1>. A small box with the MDM icon appears and stays on top of other windows.",
@@ -14878,10 +14842,6 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "링크 그래버 및 압축 파일 — Mister Download Manager 도움말"
   },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>댓글</g1><g2><x3/>명</g2>"
-  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "이전/다음 버튼 (회색으로 비활성화된 버튼도 포함: 화면 판독기는 사용 불가라고 알림)"
@@ -15216,7 +15176,7 @@
   },
   "d368fe0c2974cd27": {
    "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
-   "text": "테스트가 끝나면 다운로드가 완료된 것으로 간주됩니다. 그동안 목록에는 <g1>확인 중 45%</g1>로 표시되고, 큐는 테스트를 기다리며, <g2>다운로드 완료</g2> 창, 소리 및 압축 해제는 테스트 후에 진행됩니다."
+   "text": "테스트가 끝나면 다운로드가 완료된 것으로 간주됩니다. 그동안 목록에는 <g1>확인 중 45%</g1>로 표시되고, 큐는 이를 기다리며, <g2>다운로드 완료</g2> 창, 소리, 추출은 테스트 후에 나타납니다."
   },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
@@ -15473,10 +15433,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager와 IDM, 나란히 비교"
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/>개 이슈"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16468,7 +16424,7 @@
   },
   "e624996bba938a48": {
    "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
-   "text": "손상된 압축 파일은 목록에 <g1>손상됨</g1>으로 표시되고, 로그에는 손상된 파일 이름이 나타나며, <g2>손상된 압축 파일</g2> 창에서 <g3>다시 다운로드</g3>를 제안합니다. 이 경우 압축 파일(분할 압축 파일의 모든 볼륨)을 처음부터 다시 다운로드합니다. 자동으로 압축 해제되지 않으며, <g4>추출</g4>을 시도할 수 있습니다."
+   "text": "손상된 압축 파일은 목록에 <g1>손상됨</g1>으로 표시되고, 로그에는 손상된 파일 이름이 나타나며, <g2>손상된 압축 파일</g2> 창에서 <g3>다시 다운로드</g3>를 제안합니다. 이는 압축 파일(분할 압축 파일의 모든 볼륨)을 처음부터 다시 다운로드합니다. 자동으로 추출되지 않으며, <g4>추출</g4>을 시도할 수 있습니다."
   },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
@@ -16513,10 +16469,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "아닙니다. 이 사이트나 GitHub Releases에서 다운로드했다면 바이러스가 아닙니다. 일부 백신 프로그램은 알려진 바이러스가 아니라, 알지 못하는 프로그램을 추정하여 판단합니다…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/>개 풀 리퀘스트"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17786,10 +17738,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>다음 시간 동안 공유한 후 공유 중지: …분</g1> — 또는 모든 실행에서 해당 시간 동안 공유된 후 중지됩니다. 기본적으로 꺼져 있습니다."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/>개 댓글"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "페이지를 열 수 있는 주소 외의 이름"
@@ -17893,10 +17841,6 @@
   "f9a4b5089b7bfcce": {
    "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
    "text": "<g1>모든 페이지는 Markdown으로 제공됩니다.</g1> 각 페이지에는 옆에 Markdown 버전이 있습니다. 주소에서 <x2/> 대신 <x3/>를 사용하거나, <x5/>로 끝나는 주소에는 <x4/>를 사용합니다. 따라서 <g6>/download.html</g6>은 <g7>/download.md</g7>이고, <g8>/help/</g8>는 <g9>/help/index.md</g9>이며, 독일어 홈페이지 <g10>/de/</g10>는 <g11>/de/index.md</g11>입니다. 각 페이지는 <x12/>(<x13/>)에 자체 이름을 지정합니다. 도움말 페이지의 Markdown은 원본이며, 다른 페이지는 각 빌드 시 페이지에서 생성되므로 원본과 달라지지 않습니다."
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/>개 이슈"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18457,6 +18401,82 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "다운로드 주소 또는 파일 이름;"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "각 링크는 고유한 <g1>파일 정보 다운로드</g1> 창을 엽니다. 따라서 여러 창을 나란히 열어 크기를 비교한 후 선택할 수 있습니다. 새 창은 이전 창보다 약간 아래와 옆에 열리며 맨 앞으로 나타납니다. 두 번째 창부터는 제목에 번호가 붙습니다. 예를 들어 <g2>파일 정보 다운로드 (2)</g2>, <g3>(3)</g3> 등으로 표시됩니다. <g4>Esc</g4> 키는 현재 창만 닫습니다. 최대 6개의 창을 동시에 열 수 있습니다. 여러 링크가 함께 전달되면(브라우저가 여러 다운로드를 전달하는 경우) 대기하다가 창을 닫을 때마다 하나씩 열립니다. <g5>취소</g5>를 선택하면 아직 대기 중인 항목을 취소할지 묻습니다. 이미 열려 있는 동일한 링크를 다시 전달하면 해당 창이 맨 앞으로 나타납니다. 일부 창이 열려 있는 상태에서 MDM을 종료하면 해당 다운로드는 <g6>기본 다운로드 대기열</g6>로 이동하며, 이는 <g7>나중에 다운로드</g7>와 동일합니다."
+  },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "이 페이지를 만들 때 GitHub에서 목록을 읽을 수 없었습니다. 모든 기여자는 프로젝트의 <g1>풀 리퀘스트</g1> 및 <g2>이슈</g2>에서 GitHub에 있습니다."
+  },
+  "49b4a645676f1c52": {
+   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
+   "text": "요약: Mister Download Manager 앱과 브라우저 확장 프로그램은 사용자 정보를 수집하지 않습니다. 계정도, 분석도, 원격 측정도, 광고도 없습니다. 이 웹사이트는 Statcounter로 방문 횟수를 집계합니다."
+  },
+  "616c286a43aec83e": {
+   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
+   "text": "<g1>3,800명 이상 일일 사용자</g1><g2>7개 평가에서 5점 만점에 4.7점</g2>"
+  },
+  "84829118b707c58c": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com은 정적 사이트입니다. 세 회사가 사이트 표시를 담당하며, 홈페이지 영상을 재생하면 네 번째 회사가 참여합니다."
+  },
+  "8ccaf02f36376582": {
+   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
+   "text": "<g1>수치로 보는 MDM</g1><g2><x3/>에 확인, 내림</g2>"
+  },
+  "9fe595ed623618bf": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>배송 증명</g1><g2><x3/>에서 확인된 수치 · 인용문은 원문 그대로이며 출처에 연결됨</g2>"
+  },
+  "b3192a3bf72c5c3b": {
+   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
+   "text": "앱과 확장 프로그램은 어린이를 포함한 누구에게서도 개인 정보를 수집하지 않습니다. 웹사이트 방문 횟수 집계 도구는 방문자가 누구인지, 몇 살인지 알 수 없습니다."
+  },
+  "c9da130585eae7fa": {
+   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
+   "text": "이 사이트에는 광고나 다른 추적기가 없습니다. 글꼴과 스크립트는 사이트 자체에서 제공합니다. 라이트 모드 또는 다크 모드 선택은 브라우저의 로컬 저장소에 저장되며 어디로도 전송되지 않습니다."
+  },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> Firefox에 추가</g1><g3><x4/> Chrome에 추가</g3>"
+  },
+  "d325a1b1c8ab0caa": {
+   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
+   "text": "Mister Download Manager, 브라우저 확장 프로그램 및 이 웹사이트의 사용자 데이터 처리 방식: 앱과 확장 프로그램은 데이터를 수집하지 않으며, 웹사이트는 Statcounter로 방문 횟수를 집계합니다."
+  },
+  "d7a59305d1341d4e": {
+   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
+   "text": "앱과 확장 프로그램은 사용자에 관한 개인 정보를 보관하지 않으므로, 당사가 보여주거나 수정하거나 삭제할 정보가 없습니다. 웹사이트 방문 통계는 Statcounter가 보관합니다. 방문 기록을 삭제하려면 방문 날짜와 시간을 적어 문제를 등록하거나 Statcounter에 직접 요청하세요. GitHub에 보내는 데이터(예: 문제)는 GitHub에서 처리하며, GitHub에서 수정하거나 삭제할 수 있습니다."
+  },
+  "f40a78a2a7aa4f18": {
+   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
+   "text": "<g1>50,000명 이상 사용자</g1><g2>43개 평가에서 5점 만점에 4.9점</g2>"
+  },
+  "807205b219bcd9d5": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
+   "text": "<g1>메뉴</g1>(옆의 화살표 또는 단추에 키보드 초점이 있을 때 <g2>↓</g2>): 비디오의 제목, 길이, 사이트; <g3>최고 품질 다운로드</g3>가 먼저 표시되고, 그 아래에 <g4>비디오</g4> 및 <g5>오디오</g5>별로 파일 형식, 코덱, 프레임 속도 또는 비트 전송률, 크기(<x6/> <x7/>, 비디오 다운로드 창에 표시된 대로)가 있는 번호가 매겨진 줄이 하나씩 표시되며, 가장 좋은 품질이 표시되고, 어디서든 재생되는 해상도 옆에는 <g8>최대 호환(H.264 + AAC)</g8>이 표시됩니다(<g9>품질 선택</g9>); <g10>모든 화질 및 자막...</g10>을 선택하면 <g11>페이지에서 비디오 다운로드</g11> 창이 열립니다. 그 다음에는 <g12>이 비디오에서 숨기기</g12>(<g13>Esc</g13>), 사이트에서 <g14>항상 숨기기</g14>(MDM이 사이트를 기억함), MDM의 옵션을 여는 <g15>단추 설정...</g15>이 있습니다. 화살표 키로 이동하고, <g16>Enter</g16>로 선택하며, <g17>Esc</g17>로 닫습니다."
+  },
+  "94d1eda28d7a14bb": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
+   "text": "<g1>브라우저의 MDM 다운로드 패널 사용자 지정 → 편집...</g1> — 웹 페이지 비디오 위에 표시되는 다운로드 버튼에 대한 설정입니다. 이 버튼을 끄거나, <g2>버튼 크기</g2>를 선택할 수 있습니다(<g3>전체</g3>는 공간이 허용하는 한 단어를 표시하고, <g4>축소</g4>는 모든 비디오에 로고, 화살표, ✕만 표시합니다). 또는 버튼이 표시되지 않을 사이트 목록을 지정할 수 있습니다(공백으로 구분하며, <x5/>, <x6/> 또는 <x7/>와 같은 와일드카드를 사용할 수 있습니다). <g8>브라우저 통합</g8>을 참조하세요."
+  },
+  "bf65e2eb8f9aed86": {
+   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
+   "text": "<g1>이동</g1>: 비디오 가장자리를 따라 점을 드래그하여 이동합니다. 드래그하는 동안 가장자리와 스냅되는 지점(모서리 및 중앙)이 표시됩니다. 해당 사이트에서 그 위치에 유지됩니다."
+  },
+  "e2b2bd857e845dd3": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>끄거나, 작게 만들거나, 표시되지 않는 사이트 확인</g1>: <g2>옵션 → 일반 → 브라우저의 MDM 다운로드 패널 사용자 지정 → 편집...</g2>. <g3>버튼 크기</g3>는 설치 시 <g4>전체</g4>(단어가 맞는 곳에 표시) 또는 <g5>작게</g5>(MDM 로고, 화살표 및 <g6>✕</g6>만 모든 비디오에 표시, 작은 비디오처럼)입니다. 클릭 후에도 발생한 일을 단어로 표시합니다. 이미 열려 있는 페이지는 다시 로드하지 않고 몇 초 내에 변경 사항을 따릅니다."
+  },
+  "fb140a625b84ac20": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
+   "text": "알 수 없는 질문이나 작업은 <x1/>로 응답하며, API가 꺼져 있는 동안의 질문도 마찬가지입니다(이 경우 프로그램이 확인할 수 있도록 <x2/>로 응답합니다. 오류 텍스트는 변경될 수 있습니다). 잘못된 토큰은 <x3/>로 응답합니다."
+  },
+  "fdbec569d3b4740e": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "방해가 되지 않습니다. 포인터를 비디오 위로 이동할 때만 표시되며(또는 플레이어가 키보드 포커스를 가질 때; <g1>Tab</g1>을 누르면 버튼으로 이동), 포인터가 멈춘 후 1.5초 후에 사라지고 비디오를 벗어나면 즉시 사라지며, 작은 비디오와 짧은 음소거 루프(애니메이션 그림, 배경)는 제외합니다. 페이지 자체 버튼을 가리지 않습니다. 버튼의 모서리 일부 아래에 버튼이 있는 경우(플레이어의 피드백 또는 설정 버튼, 썸네일의 나중에 보기 버튼) 다음 사용 가능한 모서리를 차지하고 플레이어가 버튼을 표시하고 숨기는 동안 유지되므로, 사용자가 버튼에 접근할 때 제자리에 있습니다. 썸네일 위에 포인터가 있을 때 재생되는 미리보기(YouTube 홈 페이지, 검색, 채널) 위에서는 포인터가 버튼에 도달하면 페이지가 미리보기를 중지합니다. 포인터가 버튼 위에 있는 동안 버튼은 제자리에 있으며, 클릭하면 해당 미리보기 비디오가 다운로드됩니다. 비디오를 재생하거나 일시 중지해도 다시 나타나지 않습니다. 너비가 360픽셀 미만이거나 단어가 맞지 않는 비디오에서는 로고, 화살표 및 <g2>✕</g2>만 표시됩니다. 옵션(아래)에서 <g3>버튼 크기</g3>를 <g4>작게</g4>로 설정하면 모든 비디오에 해당 원형 버튼이 표시됩니다. 전체 화면에서는 플레이어가 허용하는 경우 비디오를 따라가며, 전체 화면으로 전환하면 포인터를 다시 이동할 때까지 방해가 되지 않습니다."
   }
  }
 }

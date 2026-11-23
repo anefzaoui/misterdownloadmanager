@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Podpis cyfrowy pozwala systemowi Windows wyświetlić wydawcę programu i sprawdzić, czy nie został on zmieniony po skompilowaniu. Gdy wydanie Mister Download Manager („MDM”) jest podpisane, jego podpis obejmuje pliki Windows pochodzące z tego projektu:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> żądania ściągnięcia"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Tak. MDM na bieżąco zapisuje postęp pobierania, więc po utracie połączenia, awarii lub ponownym uruchomieniu wznawia je od miejsca, w którym zostało przerwane. Przed wznowieniem sprawdza, czy plik na serwerze się nie zmienił. Gdy adres pobierania wygaśnie, <g1>Odśwież adres pobierania</g1> pozwala podać nowy adres i zachować pobrane dane. Zobacz <g2>Wznawianie przerwanego pobierania</g2>."
@@ -229,10 +225,6 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Pomoc → Informacje o Mister Download Manager</g1> pokazuje posiadaną wersję."
-  },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>Żądania ściągnięcia</g1><g2><x3/> osób</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1920,7 +1912,7 @@
   },
   "1a5164060895b36a": {
    "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
-   "text": "Ukończony plik, którego test archiwum wykrył uszkodzenia, które mógł umieścić (wpisy ZIP, #1661: <x1/> aplikacji), ponownie staje się plikiem częściowym (<x2/>): jego ostatni stan wznowienia, zwrócony przez pobieranie, które poproszono o jego zachowanie (<x3/>, <x4/>), jest zapisywany z pozostawionymi do pobrania tylko uszkodzonymi zakresami, każdy zaczynający się kilka bajtów wcześniej dla sprawdzenia nakładania się, a plik jest zmieniany na plik częściowy. Wznowienie go jest zwykłym wznowieniem: <x5/> z tymi samymi walidatorami, sprawdzeniem nakładania się, skrótem; plik, który zmienił się na serwerze, kończy się niepowodzeniem jako <x6/>."
+   "text": "Ukończony plik, którego test archiwum wykrył uszkodzenia, które mógł umieścić (wpisy ZIP, #1661: <x1/> aplikacji), ponownie staje się plikiem częściowym (<x2/>): jego ostatni stan wznowienia, zwrócony przez pobieranie, które poproszono o jego zachowanie (<x3/>, <x4/>), jest zapisywany z pozostawionymi do pobrania tylko uszkodzonymi zakresami, każdy rozpoczynający się kilka bajtów wcześniej dla sprawdzenia nakładania się, a plik jest zmieniany na plik częściowy. Wznowienie go jest zwykłym wznowieniem: <x5/> z tymi samymi walidatorami, sprawdzeniem nakładania się, skrótem; plik, który zmienił się na serwerze, kończy się niepowodzeniem jako <x6/>."
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -2433,10 +2425,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "W systemie macOS tylko administrator może zaplanować wybudzenie, dlatego opcja jest nieaktywna. MDM nie prosi o hasło administratora. Administrator może ustawić codzienne wybudzanie Maca minutę przed rozpoczęciem kolejki, na przykład o 22:59 dla kolejki rozpoczynającej się o 23:00:"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "Wszystkim, którzy wysłali pull request, zgłosili problem lub skomentowali na GitHubie od wersji <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3068,7 +3056,7 @@
   },
   "29c62272ce90056c": {
    "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
-   "text": "Rozpakowywanie archiwów (#37): zip, tar, gz i xz w trakcie; 7z i RAR za pośrednictwem zainstalowanego 7-Zip, uruchamianego jako osobny program; na miejscu za pośrednictwem HatchZip na żądanie. Testy archiwów (<x1/>, #1661): <x2/>, ZIP w trakcie bez tego, oraz uszkodzone wpisy ZIP umieszczone w pliku"
+   "text": "Rozpakowywanie archiwów (#37): zip, tar, gz i xz w trakcie; 7z i RAR za pomocą zainstalowanego 7-Zip, uruchamianego jako osobny program; na miejscu za pomocą HatchZip na żądanie. Testy archiwów (<x1/>, #1661): <x2/>, ZIP w trakcie bez tego, oraz uszkodzone wpisy ZIP umieszczone w pliku"
   },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
@@ -3660,7 +3648,7 @@
   },
   "319a440ac21a4da8": {
    "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
-   "text": "Plik ZIP, którego uszkodzone części MDM pobrał ponownie, a mimo to nadal jest uszkodzony, lub plik 7z albo RAR, który jest uszkodzony ponownie po <g1>ponownym pobraniu</g1>, jest prawdopodobnie uszkodzony na samym serwerze: poproś witrynę o inną kopię."
+   "text": "Plik ZIP, którego uszkodzone części MDM pobrał ponownie i nadal są uszkodzone, lub plik 7z albo RAR, który jest ponownie uszkodzony po <g1>Ponownym pobraniu</g1>, jest prawdopodobnie uszkodzony na samym serwerze: poproś witrynę o inną kopię."
   },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
@@ -4210,10 +4198,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "Kliknij <g1>OK</g1>."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>Zgłoszenia</g1><g2><x3/> osób</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "Wybierz <g1>Pobrane pliki → Ogranicznik prędkości → Włącz</g1>."
@@ -4684,7 +4668,7 @@
   },
   "406a5240307e8845": {
    "source": "Right-click → <g1>Redownload</g1> (or the <g2>Damaged archive</g2> window's <g3>Redownload</g3>) downloads it again from the start.",
-   "text": "Kliknij prawym przyciskiem myszy → <g1>Pobierz ponownie</g1> (lub <g2>Pobierz ponownie</g2> w oknie <g3>Uszkodzone archiwum</g3>), aby pobrać plik od początku."
+   "text": "Kliknij prawym przyciskiem myszy → <g1>Pobierz ponownie</g1> (lub <g3>Pobierz ponownie</g3> w oknie <g2>Uszkodzone archiwum</g2>), aby pobrać plik od początku."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -6130,10 +6114,6 @@
    "source": "A small file",
    "text": "Mały plik"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "Podziękowania"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Wklej adres listy odtwarzania (<x1/>) lub filmów z kanału (<x2/>) i kliknij <g3>Wyszukaj</g3>. Zamiast jakości jednego filmu, okno wyświetla filmy z listy, każdy z własną długością."
@@ -6265,10 +6245,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 i Linux; macOS do wypróbowania"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "Stworzone dzięki tym wspaniałym ludziom"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6428,7 +6404,7 @@
   },
   "5a08cc8b48188788": {
    "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
-   "text": "Pobrane archiwum może być uszkodzone: serwer wysłał błędne bajty lub serwer proxy po drodze uszkodził część pliku. Ujawnia się to dopiero, gdy ktoś je otworzy, często znacznie później. Dlatego MDM testuje archiwa ZIP, 7z i RAR, także podzielone, gdy wszystkie woluminy zostaną pobrane: opcja <g1>Opcje → Archiwa → Testuj archiwa po zakończeniu pobierania</g1> jest domyślnie włączona dla plików do 4 GB. Test odczytuje całe archiwum, więc większe pliki są testowane tylko na żądanie: kliknij prawym przyciskiem myszy na ukończone archiwum i wybierz <g2>Testuj archiwum</g2>, niezależnie od jego rozmiaru."
+   "text": "Pobrane archiwum może być uszkodzone: serwer wysłał błędne bajty lub serwer proxy po drodze uszkodził część pliku. Ujawnia się to dopiero, gdy ktoś je otworzy, często znacznie później. Dlatego MDM testuje archiwa ZIP, 7z i RAR, także podzielone, gdy wszystkie woluminy zostaną pobrane: opcja <g1>Opcje → Archiwa → Testuj archiwa po zakończeniu pobierania</g1> jest domyślnie włączona, do 4 GB. Test odczytuje całe archiwum, więc większe jest testowane tylko na żądanie: kliknij prawym przyciskiem myszy ukończone archiwum i wybierz <g2>Testuj archiwum</g2>, niezależnie od jego rozmiaru."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6780,7 +6756,7 @@
   },
   "5ed4e501adf0b774": {
    "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
-   "text": "Archiwum ZIP w jednym pliku jest naprawiane, jeśli MDM może określić, gdzie znajdują się w nim uszkodzone pliki: tylko ich bajty są pobierane ponownie z tego samego serwera, a archiwum jest testowane jeszcze raz. W dzienniku pojawia się komunikat <g1>Ponowne pobieranie uszkodzonych części (1.20 MB)</g1>, a następnie <g2>Przetestowano ponownie: archiwum nie zawiera błędów</g2>. Bajty pochodzą tylko z tej samej wersji pliku: MDM żąda ich tak, jak wznawia każde pobieranie (z ETagiem lub datą pliku, <x3/>) i sprawdza bajty tuż przed każdą częścią z tymi na dysku. Plik, który zmienił się na serwerze, przerywa pobieranie z komunikatem <g4>plik zmienił się na serwerze</g4> zamiast mieszać dwie wersje: <g5>Pobierz ponownie</g5> pobiera nową wersję. Archiwum nadal uszkodzone po tym jest oferowane do <g6>Pobierz ponownie</g6>."
+   "text": "Archiwum ZIP w jednym pliku jest naprawiane, jeśli MDM może określić, gdzie znajdują się w nim uszkodzone pliki: tylko ich bajty są pobierane ponownie z tego samego serwera, a archiwum jest ponownie testowane. W dzienniku pojawia się komunikat <g1>Ponowne pobieranie uszkodzonych części (1,20 MB)</g1>, a następnie <g2>Przetestowano ponownie: archiwum nie zawiera błędów</g2>. Bajty pochodzą tylko z tej samej wersji pliku: MDM żąda ich tak, jak wznawia każde pobieranie (z ETagiem lub datą pliku, <x3/>) i sprawdza bajty tuż przed każdą częścią z tymi na dysku. Plik, który zmienił się na serwerze, zatrzymuje pobieranie z komunikatem <g4>plik zmienił się na serwerze</g4> zamiast mieszać dwie wersje: <g5>Pobierz ponownie</g5> pobiera nową wersję. Archiwum nadal uszkodzone po tym jest oferowane do <g6>Pobierz ponownie</g6>."
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7232,7 +7208,7 @@
   },
   "64e4c03c8252a3bc": {
    "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
-   "text": "<g1>Testuj archiwa po zakończeniu pobierania, do 4 GB</g1> (domyślnie włączone) — archiwum ZIP, 7z lub RAR (wieloczęściowe po pobraniu ostatniego woluminu) jest odczytywane, a każdy plik w nim sprawdzany, zanim pobieranie zostanie uznane za zakończone, za pomocą programu 7-Zip (ZIP bez 7-Zip jest sprawdzany przez MDM). Większe archiwum nie jest testowane automatycznie, ponieważ test odczytuje cały plik: kliknij prawym przyciskiem myszy → <g2>Przetestuj archiwum</g2>, aby je przetestować. Uszkodzone pliki w archiwum ZIP są pobierane ponownie; każde inne uszkodzone archiwum jest oferowane do <g3>Pobrania ponownie</g3>. Zobacz <g4>Testowanie archiwów</g4>."
+   "text": "<g1>Testuj archiwa po zakończeniu pobierania, do 4 GB</g1> (domyślnie włączone) — archiwum ZIP, 7z lub RAR (także podzielone, gdy ostatni wolumin jest dostępny) jest odczytywane, a każdy plik w nim sprawdzany, zanim pobieranie zostanie uznane za zakończone, za pomocą programu 7-Zip wymienionego poniżej (ZIP bez 7-Zip przez sam MDM). Większe archiwum nie jest testowane automatycznie, ponieważ test odczytuje cały plik: kliknij prawym przyciskiem myszy → <g2>Przetestuj archiwum</g2>, aby je przetestować. Uszkodzone pliki ZIP są pobierane ponownie; każde inne uszkodzone archiwum jest oferowane do <g3>Pobrania ponownie</g3>. Zobacz <g4>Testowanie archiwów</g4>."
   },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
@@ -7432,7 +7408,7 @@
   },
   "6827e4a6218bda8d": {
    "source": "7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for <g1>Redownload</g1> when damaged, never repaired in part.",
-   "text": "Archiwa 7z i RAR przechowują swoje pliki w blokach, których miejsca w pliku test 7-Zip nie podaje, a woluminy podzielonego archiwum są osobnymi pobraniami: są one testowane i oferowane do <g1>Pobierz ponownie</g1>, gdy są uszkodzone, nigdy nie są naprawiane częściowo."
+   "text": "Archiwa 7z i RAR przechowują swoje pliki w blokach, których miejsca w pliku test 7-Zip nie podaje, a woluminy podzielonego archiwum są osobnymi pobieraniami: są one testowane i oferowane do <g1>Pobierz ponownie</g1>, gdy są uszkodzone, nigdy nie są naprawiane częściowo."
   },
   "6837961868984d5a": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>. To keep only a stretch of it, tick <g4>Only a part</g4>: see <g5>Download only a part</g5>.",
@@ -7948,7 +7924,7 @@
   },
   "6f2c084eea3d616f": {
    "source": "A split archive (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. <g6>Test archive</g6> on a split archive not complete yet says so: <g7>Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)</g7>.",
-   "text": "Podzielone archiwum (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) jest testowane raz, od pierwszego woluminu, gdy wszystkie woluminy zostaną pobrane, niezależnie od tego, który z nich zakończy się ostatni. Jego woluminy często kończą się jeden po drugim (kolejka, która pobiera jeden plik naraz, host, który zmusza do czekania między plikami), a te, które są już w środku, są odczytywane jako skrócone archiwum, więc nie są testowane samodzielnie. <g6>Testuj archiwum</g6> na jeszcze nieukończonym podzielonym archiwum informuje o tym: <g7>Nie przetestowano jeszcze: photos.zip.001 nie jest kompletne (wolumin 3 jeszcze nie jest dostępny)</g7>."
+   "text": "Podzielone archiwum (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) jest testowane raz, od pierwszego woluminu, gdy wszystkie woluminy zostaną pobrane, niezależnie od tego, który z nich zakończy się ostatni. Jego woluminy często kończą się jeden po drugim (kolejka, która pobiera jeden plik naraz, host, który każe czekać między plikami), a te, które już są, są odczytywane jako skrócone archiwum, więc nie są testowane samodzielnie. <g6>Testuj archiwum</g6> na jeszcze nieukończonym podzielonym archiwum informuje o tym: <g7>Nie przetestowano jeszcze: photos.zip.001 nie jest kompletny (wolumin 3 jeszcze nie jest dostępny)</g7>."
   },
   "6f2f9063e93137cf": {
    "source": "<g1>Alt</g1> + an underlined letter",
@@ -8336,7 +8312,7 @@
   },
   "7466ed5799362d5d": {
    "source": "The test is 7-Zip's (<x1/>, with the 7-Zip that <g2>Options → Archives</g2> names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.",
-   "text": "Test jest wykonywany przez 7-Zip (<x1/>, z programem 7-Zip wskazanym w <g2>Opcje → Archiwa</g2>): każdy plik w archiwum jest odczytywany i sprawdzany, nic nie jest zapisywane. Bez 7-Zip MDM samodzielnie testuje archiwa ZIP; archiwa 7z i RAR nie są testowane."
+   "text": "Test jest wykonywany przez 7-Zip (<x1/>, z 7-Zip, który jest wymieniony w <g2>Opcje → Archiwa</g2>): każdy plik w archiwum jest odczytywany i sprawdzany, nic nie jest zapisywane. Bez 7-Zip MDM sam testuje archiwa ZIP; archiwa 7z i RAR nie są testowane."
   },
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
@@ -8637,10 +8613,6 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Potrzebujesz własnego płatnego konta w jednej z tych usług: MDM nie sprzedaje ani nie zawiera konta. Udostępnianie konta lub jego linków narusza warunki usług i może skutkować zawieszeniem konta."
-  },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>Wszyscy, którzy pomogli</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -9904,7 +9876,7 @@
   },
   "89dc61d40cb5073a": {
    "source": "<g1>Also delete the file from disk</g1> removes the files MDM made for the torrent, each recognised by its file index and the time it was created, so a file that took the same name later is never taken for the torrent's. Files that were already there, files another download claims and files you agreed to use stay. MDM creates every ticked file of a torrent itself, empty, before it starts, so they are removed with it. Unticked files aren't made in the folder: the parts of the pieces they share with ticked files are kept in MDM's own torrent data, and go with the torrent; a file ticked later is made then, and gets them. Only empty folders MDM created are removed; existing folders and a shared <g2>Save to</g2> folder stay. A torrent with its own outer folder, added before this version, is deleted the way it always was. An older one-file torrent is deleted by name, from its own folder. Another older torrent (saved without an outer folder) has no record of its files: MDM keeps them and says why, so check and remove them yourself. A filesystem that gives no reliable creation time (FAT and exFAT, some network and Linux filesystems) keeps its files: MDM never deletes what it cannot recognise. Whenever <g3>Also delete the file from disk</g3> leaves files on the disk, MDM lists them. A <g4>Save to</g4> folder that does not exist yet is made, with its parents, when the torrent starts. A torrent added before this version, with its own folder or one file, takes the files already there as its own once, so resuming it or sharing it again does not ask about files MDM itself downloaded.",
-   "text": "<g1>Usuń również plik z dysku</g1> usuwa pliki utworzone przez MDM dla torrenta, każdy rozpoznawany po indeksie pliku i czasie utworzenia, więc plik, który później przyjął tę samą nazwę, nigdy nie jest brany za plik torrenta. Pliki, które już istniały, pliki przypisane do innego pobierania oraz pliki, na których użycie wyraziłeś zgodę, pozostają. MDM tworzy każdy zaznaczony plik torrenta jako pusty, zanim rozpocznie pobieranie, więc są one usuwane razem z nim. Niezaznaczone pliki nie są tworzone w folderze: części kawałków, które współdzielą z zaznaczonymi plikami, są przechowywane we własnych danych torrenta MDM i są usuwane razem z torrentem; plik zaznaczony później jest tworzony wtedy i otrzymuje te części. Usuwane są tylko puste foldery utworzone przez MDM; istniejące foldery i współdzielony folder <g2>Zapisz w</g2> pozostają. Torrent z własnym folderem zewnętrznym, dodany przed tą wersją, jest usuwany w sposób, w jaki zawsze był. Starszy torrent z jednym plikiem jest usuwany według nazwy, z własnego folderu. Inny starszy torrent (zapisany bez folderu zewnętrznego) nie ma zapisu swoich plików: MDM je zachowuje i podaje powód, więc sprawdź i usuń je samodzielnie. System plików, który nie zapewnia wiarygodnego czasu utworzenia (FAT i exFAT, niektóre sieciowe i Linuxowe systemy plików), zachowuje swoje pliki: MDM nigdy nie usuwa tego, czego nie może rozpoznać. Zawsze, gdy <g3>Usuń również plik z dysku</g3> pozostawia pliki na dysku, MDM je wyświetla. Folder <g4>Zapisz w</g4>, który jeszcze nie istnieje, jest tworzony wraz z jego folderami nadrzędnymi, gdy torrent się rozpoczyna. Torrent dodany przed tą wersją, z własnym folderem lub jednym plikiem, raz traktuje już istniejące pliki jako swoje własne, więc wznowienie go lub ponowne udostępnienie nie pyta o pliki pobrane przez sam MDM."
+   "text": "<g1>Usuń również plik z dysku</g1> usuwa pliki utworzone przez MDM dla torrenta, każdy rozpoznawany po indeksie pliku i czasie utworzenia, dzięki czemu plik, który później przyjął tę samą nazwę, nigdy nie jest brany za plik torrenta. Pliki, które już istniały, pliki przypisane do innego pobierania i pliki, których użycie zostało zaakceptowane, pozostają. MDM tworzy każdy zaznaczony plik torrenta jako pusty, zanim rozpocznie pobieranie, więc są one usuwane razem z nim. Niezaznaczone pliki nie są tworzone w folderze: części kawałków, które współdzielą z zaznaczonymi plikami, są przechowywane we własnych danych torrenta MDM i są usuwane razem z torrentem; plik zaznaczony później jest tworzony wtedy i je otrzymuje. Usuwane są tylko puste foldery utworzone przez MDM; istniejące foldery i współdzielony folder <g2>Zapisz w</g2> pozostają. Torrent z własnym zewnętrznym folderem, dodany przed tą wersją, jest usuwany w taki sposób, jak zawsze. Starszy torrent jednoplikowy jest usuwany według nazwy, z własnego folderu. Inny starszy torrent (zapisany bez zewnętrznego folderu) nie ma zapisu swoich plików: MDM je zachowuje i podaje powód, więc sprawdź i usuń je samodzielnie. System plików, który nie zapewnia wiarygodnego czasu utworzenia (FAT i exFAT, niektóre sieciowe i Linuxowe systemy plików), zachowuje swoje pliki: MDM nigdy nie usuwa tego, czego nie może rozpoznać. Zawsze, gdy <g3>Usuń również plik z dysku</g3> pozostawia pliki na dysku, MDM je wyświetla. Folder <g4>Zapisz w</g4>, który jeszcze nie istnieje, jest tworzony wraz z jego folderami nadrzędnymi, gdy torrent się uruchamia. Torrent dodany przed tą wersją, z własnym folderem lub jednym plikiem, traktuje już istniejące pliki jako własne raz, więc wznowienie go lub ponowne udostępnienie nie pyta o pliki pobrane przez sam MDM."
   },
   "89f549746c4017f3": {
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
@@ -10437,10 +10409,6 @@
   "91f7b61e72ddf0bc": {
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Przyspieszanie i wznawianie</g1><g2>Plik dzielony na maksymalnie 32 połączenia, ponownie dzielony aż do ostatniego bajtu i wznawiany po każdej awarii.</g2>"
-  },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> osobom, które wysłały pull request, zgłosiły problem lub dołączyły do rozmowy na GitHubie. <g2>Poznaj ich wszystkich</g2>"
   },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
@@ -11208,7 +11176,7 @@
   },
   "9be0243c13142898": {
    "source": "Last updated 2026-11-23 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Ostatnia aktualizacja: 23.11.2026 · dotyczy aplikacji, rozszerzenia przeglądarki i misterdownloadmanager.com"
+   "text": "Ostatnia aktualizacja: 23.11.2026 · dotyczy aplikacji, rozszerzenia przeglądarki i strony misterdownloadmanager.com"
   },
   "9be7deca7d13f40b": {
    "source": "Keys to force or prevent capture",
@@ -11361,10 +11329,6 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "Wysyłanie pobranych plików z przeglądarki"
-  },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> komentarz"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -13260,7 +13224,7 @@
   },
   "b705e95cb334fc6b": {
    "source": "A download says Damaged",
-   "text": "Pobieranie ma stan „Uszkodzone”"
+   "text": "Pobieranie ma status „Uszkodzone”"
   },
   "b706522e2a61060f": {
    "source": "Theme files you make or download go in MDM's themes folder. <g1>View → Theme → Open themes folder</g1> opens it (and makes it the first time). It is in MDM's data folder:",
@@ -14634,17 +14598,13 @@
    "source": "Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code.",
    "text": "Pokaż nowy kod do sparowania telefonu lub zdalnej przeglądarki ze zdalnym sterowaniem uruchomionej aplikacji: jej adresy internetowe, kod parowania i kod QR."
   },
-  "cb3fee6871e1183d": {
-   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
-   "text": "<g1>0.5.2</g1> <g2>17.1 MB</g2>"
-  },
   "cb4ebdffdae9d416": {
    "source": "<g1>The previous version stays</g1>, so you can go back to it. Older ones are removed.",
    "text": "<g1>Poprzednia wersja pozostaje</g1>, więc możesz do niej wrócić. Starsze wersje są usuwane."
   },
   "cb5b5cded4982e90": {
    "source": "Closing MDM stops a test; the archive is tested again at the next start.",
-   "text": "Zamknięcie MDM przerywa test; archiwum jest testowane ponownie przy następnym uruchomieniu."
+   "text": "Zamknięcie MDM zatrzymuje test; archiwum jest ponownie testowane przy następnym uruchomieniu."
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -14877,10 +14837,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Link grabber i archiwa — pomoc Mister Download Manager"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>Komentarze</g1><g2><x3/> osób</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -15216,7 +15172,7 @@
   },
   "d368fe0c2974cd27": {
    "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
-   "text": "Pobieranie jest uznawane za zakończone po zakończeniu testu. W międzyczasie na liście widnieje <g1>Sprawdzanie 45%</g1>, kolejka czeka na zakończenie testu, a okno <g2>Pobieranie zakończone</g2>, dźwięk i ekstrakcja następują po teście."
+   "text": "Pobieranie jest uznawane za zakończone po zakończeniu testu. W międzyczasie lista pokazuje <g1>Sprawdzanie 45%</g1>, kolejka czeka na zakończenie testu, a okno <g2>Pobieranie zakończone</g2>, dźwięk i ekstrakcja następują po teście."
   },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
@@ -15473,10 +15429,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager i IDM, obok siebie."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> zgłoszenie"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16468,7 +16420,7 @@
   },
   "e624996bba938a48": {
    "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
-   "text": "Uszkodzone archiwum ma status <g1>Uszkodzone</g1> na liście, w dzienniku wymienione są uszkodzone pliki, a okno <g2>Uszkodzone archiwum</g2> oferuje opcję <g3>Pobierz ponownie</g3>: pobiera archiwum (każdy wolumin podzielonego archiwum) ponownie od początku. Nie jest ono automatycznie wyodrębniane; <g4>Wyodrębnij</g4> nadal próbuje to zrobić."
+   "text": "Uszkodzone archiwum ma status <g1>Uszkodzone</g1> na liście, w dzienniku są wymienione uszkodzone pliki, a okno <g2>Uszkodzone archiwum</g2> oferuje <g3>Pobierz ponownie</g3>: pobiera archiwum (każdy wolumin podzielonego archiwum) ponownie od początku. Nie jest ono automatycznie wyodrębniane; <g4>Wyodrębnij</g4> nadal próbuje to zrobić."
   },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
@@ -16513,10 +16465,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Nie, jeśli pochodzi z tej witryny lub wydań GitHub. Niektóre programy antywirusowe oceniają nieznany program na podstawie przypuszczeń, a nie znanych wirusów…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> żądanie ściągnięcia"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17786,10 +17734,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Zatrzymaj udostępnianie po udostępnianiu przez … minut</g1> — lub gdy łączny czas udostępniania osiągnie ten limit. Domyślnie wyłączone."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> komentarze"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "nazwy, oprócz jego adresów, za pomocą których strona może być otwarta"
@@ -17893,10 +17837,6 @@
   "f9a4b5089b7bfcce": {
    "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
    "text": "<g1>Każda strona w Markdown.</g1> Każda strona ma obok siebie wersję Markdown: adres z <x2/> zamiast <x3/> lub <x4/> dla adresu kończącego się na <x5/>. Zatem <g6>/download.html</g6> to <g7>/download.md</g7>, <g8>/help/</g8> to <g9>/help/index.md</g9>, a niemiecka strona główna <g10>/de/</g10> to <g11>/de/index.md</g11>. Każda strona nazywa swoją własną w <x12/> (<x13/>). Markdown stron pomocy jest ich źródłem; pozostałe są tworzone ze strony przy każdej kompilacji, więc nigdy się od niej nie odrywają."
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> zgłoszenia"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18457,6 +18397,82 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "adresów pobierania ani nazw plików;"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "Każdy link otwiera własne okno <g1>Informacje o pliku do pobrania</g1>, więc możesz otworzyć kilka obok siebie, aby porównać rozmiary przed wyborem. Każde nowe okno otwiera się nieco poniżej i obok poprzedniego, a następnie wysuwa się na pierwszy plan; od drugiego okna jego tytuł zawiera numer: <g2>Informacje o pliku do pobrania (2)</g2>, <g3>(3)</g3> i tak dalej. Klawisz <g4>Esc</g4> zamyka tylko aktywne okno. Jednocześnie może być otwartych do sześciu okien: więcej linków przekazanych jednocześnie (przeglądarka przekazująca kilka pobrań) czeka i otwiera się pojedynczo, gdy zamykasz okna; <g5>Anuluj</g5> pyta, czy anulować te, które jeszcze czekają. Ten sam link przekazany ponownie wysuwa jego otwarte okno na pierwszy plan. Jeśli zamkniesz MDM z otwartymi oknami, ich pobrania trafią do <g6>Głównej kolejki pobierania</g6>, tak jak w przypadku <g7>Pobierz później</g7>."
+  },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Nie udało się odczytać listy z GitHub podczas tworzenia tej strony. Wszyscy są tymczasem na GitHub, w <g1>pull requestach</g1> i <g2>issues</g2> projektu."
+  },
+  "49b4a645676f1c52": {
+   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
+   "text": "Wersja skrócona: aplikacja Mister Download Manager i jej rozszerzenie do przeglądarki nie zbierają żadnych danych o Tobie. Bez kont, bez analityki, bez telemetrii, bez reklam. Ta strona internetowa zlicza swoje wizyty za pomocą Statcounter."
+  },
+  "616c286a43aec83e": {
+   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
+   "text": "<g1>Ponad 3800 użytkowników dziennie</g1><g2>4,7 na 5, z 7 ocen</g2>"
+  },
+  "84829118b707c58c": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com to strona statyczna. Trzy firmy uczestniczą w jej wyświetlaniu, a czwarta, jeśli odtworzysz film na stronie głównej:"
+  },
+  "8ccaf02f36376582": {
+   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
+   "text": "<g1>W liczbach</g1><g2>Sprawdzono <x3/>, zaokrąglono w dół</g2>"
+  },
+  "9fe595ed623618bf": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>Dowód dostawy</g1><g2>Dane sprawdzone na <x3/> · cytaty dokładne, z linkami do źródła</g2>"
+  },
+  "b3192a3bf72c5c3b": {
+   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
+   "text": "Aplikacja i rozszerzenie nie zbierają żadnych danych osobowych, także od dzieci. Licznik odwiedzin witryny nie wie, kim jesteś ani ile masz lat."
+  },
+  "c9da130585eae7fa": {
+   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
+   "text": "Witryna nie zawiera reklam ani innych trackerów. Jej czcionki i skrypty są serwowane z samej witryny. Twój wybór trybu jasnego lub ciemnego jest zapamiętywany w lokalnej pamięci przeglądarki i nigdy nie jest nigdzie wysyłany."
+  },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> Dodaj do Firefox</g1><g3><x4/> Dodaj do Chrome</g3>"
+  },
+  "d325a1b1c8ab0caa": {
+   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
+   "text": "Jak Mister Download Manager, jego rozszerzenie przeglądarki i ta witryna przetwarzają Twoje dane: aplikacja i rozszerzenie niczego nie zbierają; witryna zlicza wizyty za pomocą Statcounter."
+  },
+  "d7a59305d1341d4e": {
+   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
+   "text": "Aplikacja i rozszerzenie nie przechowują Twoich danych osobowych, więc nie mamy żadnych danych, które moglibyśmy Ci udostępnić, poprawić lub usunąć. Statystyki odwiedzin witryny przechowuje Statcounter. Aby usunąć zapis wizyty, zgłoś problem z datą i godziną wizyty albo skontaktuj się bezpośrednio ze Statcounter. Danymi wysłanymi do GitHub (na przykład w zgłoszeniu problemu) zarządza GitHub. Można je tam edytować lub usunąć."
+  },
+  "f40a78a2a7aa4f18": {
+   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
+   "text": "<g1>Ponad 50 000 użytkowników</g1><g2>4,9 na 5, z 43 ocen</g2>"
+  },
+  "807205b219bcd9d5": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
+   "text": "<g1>Jego menu</g1> (strzałka obok lub <g2>↓</g2>, gdy przycisk ma fokus klawiatury): tytuł, długość i witryna wideo; najpierw <g3>Pobierz najlepszą jakość</g3>, następnie jedna numerowana linia dla każdej jakości w sekcjach <g4>WIDEO</g4> i <g5>AUDIO</g5>, z typem pliku, kodekiem, liczbą klatek na sekundę lub szybkością transmisji i rozmiarem (<x6/> <x7/>, jak podaje okno Pobierz wideo), najlepsza oznaczona, oraz <g8>Najbardziej zgodny (H.264 + AAC)</g8> obok rozdzielczości tej, która odtwarza się wszędzie (<g9>Wybierz jakość</g9>); <g10>Wszystkie jakości i napisy...</g10>, co otwiera okno <g11>Pobierz wideo ze strony</g11>; następnie <g12>Ukryj na tym wideo</g12> (<g13>Esc</g13>), <g14>Nigdy na</g14> tej witrynie (MDM zapamiętuje witrynę) i <g15>Ustawienia przycisku...</g15>, co otwiera Opcje MDM. Klawisze strzałek poruszają się po menu, <g16>Enter</g16> wybiera, <g17>Esc</g17> zamyka je."
+  },
+  "94d1eda28d7a14bb": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
+   "text": "<g1>Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g1> — przycisk pobierania nad filmami na stronach internetowych: wyłącz go, wybierz <g2>Rozmiar przycisku</g2> (<g3>Pełny</g3>, z tekstem, jeśli się mieści, lub <g4>Kompaktowy</g4>, tylko logo, strzałka i ✕ na każdym filmie) lub utwórz listę witryn, na których nigdy się nie wyświetla (oddziel je spacjami; działają symbole wieloznaczne, takie jak <x5/>, <x6/> lub <x7/>). Zobacz <g8>Integracja z przeglądarką</g8>."
+  },
+  "bf65e2eb8f9aed86": {
+   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
+   "text": "<g1>Przenieś</g1>: przeciągnij go za kropki wzdłuż krawędzi wideo; podczas przeciągania widoczna jest krawędź i miejsca, do których się przyczepia (narożniki i środek). Pozostaje tam na tej stronie."
+  },
+  "e2b2bd857e845dd3": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Wyłącz go, zmniejsz lub zobacz witryny, na których pozostaje wyłączony</g1>: <g2>Opcje → Ogólne → Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g2>. <g3>Rozmiar przycisku</g3> jest <g4>Pełny</g4> po instalacji (jego słowa tam, gdzie pasują) lub <g5>Kompaktowy</g5> (tylko logo MDM, strzałka i <g6>✕</g6>, na każdym wideo, jak na małym); po kliknięciu nadal mówi, co się stało, słowami. Strony już otwarte reagują na zmianę w ciągu kilku sekund, bez przeładowania."
+  },
+  "fb140a625b84ac20": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
+   "text": "Na nieznane pytanie lub działanie zwracana jest odpowiedź <x1/>. Tak samo dzieje się w przypadku pytania, gdy API jest wyłączone (wtedy zwracana jest odpowiedź <x2/>, którą programy mogą sprawdzać; tekst błędu może się zmienić). Na nieprawidłowy token zwracana jest odpowiedź <x3/>."
+  },
+  "fdbec569d3b4740e": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Pozostaje niewidoczny: pojawia się tylko, gdy przesuwasz wskaźnik nad wideo (lub odtwarzacz ma fokus klawiatury; <g1>Tab</g1> przenosi wtedy do przycisku), zanika 1,5 sekundy po zatrzymaniu wskaźnika i natychmiast po opuszczeniu wideo, a pomija małe filmy i krótkie wyciszone pętle (animowane obrazy, tła). Nie zakrywa własnych przycisków strony: gdy jeden leży pod jakąkolwiek częścią jego rogu (przycisk opinii lub ustawień odtwarzacza, przycisk „obejrzyj później” miniatury), zajmuje następny wolny róg i utrzymuje go, gdy odtwarzacz pokazuje i ukrywa swoje przyciski, więc pozostaje na miejscu, gdy do niego sięgasz. Nad podglądem, który odtwarza się, gdy wskaźnik znajduje się na miniaturze (strona główna YouTube, wyszukiwanie, kanał), strona zatrzymuje podgląd, gdy wskaźnik dotrze do przycisku; przycisk pozostaje tam, gdzie był, gdy wskaźnik się na nim znajduje, a kliknięcie pobiera wideo z tego podglądu. Odtwarzanie lub wstrzymywanie wideo nie przywraca go. Na wideo o szerokości poniżej 360 pikseli lub tam, gdzie jego słowa by się nie zmieściły, jest to tylko jego logo, strzałka i <g2>✕</g2>; z <g3>Rozmiar przycisku</g3> ustawionym na <g4>Kompaktowy</g4> w Opcjach (poniżej), jest to ten okrągły przycisk na każdym wideo. W trybie pełnoekranowym podąża za wideo, gdy odtwarzacz na to pozwala, a wejście w tryb pełnoekranowy pozostawia go niewidocznym, dopóki ponownie nie przesuniesz wskaźnika."
   }
  }
 }

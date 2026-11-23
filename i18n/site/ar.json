@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "يسمح توقيع الرمز لنظام Windows بإظهار من نشر البرنامج والتحقق من عدم تغييره بعد إنشائه. عندما يتم توقيع إصدار من Mister Download Manager («MDM»)، يغطي توقيعه ملفات Windows التي تأتي من هذا المشروع:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> طلبات سحب"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "نعم. يكتب MDM بيانات التقدم أثناء التنزيل، لذا يواصل التنزيل من حيث توقف بعد انقطاع الاتصال أو تعطل البرنامج أو إعادة تشغيله. قبل المتابعة، يتحقق من أن الملف على الخادم لم يتغير. إذا انتهت صلاحية عنوان التنزيل، يتيح لك <g1>تحديث عنوان التنزيل</g1> إدخال عنوان جديد ومتابعة التنزيل مع الاحتفاظ بالبيانات. انظر <g2>متابعة تنزيل متوقف</g2>."
@@ -229,10 +225,6 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "تعرض <g1>تعليمات → حول Mister Download Manager</g1> الإصدار المثبت لديك."
-  },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>طلبات السحب</g1><g2><x3/> أشخاص</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1920,7 +1912,7 @@
   },
   "1a5164060895b36a": {
    "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
-   "text": "الملف المكتمل الذي وجد اختبار الأرشيف الخاص به تلفا يمكنه وضعه (مدخلات ZIP، #1661: <x1/> الخاص بالتطبيق) يصبح ملفا جزئيا مرة أخرى (<x2/>): تتم إعادة كتابة آخر حالة متابعة له، التي أعادها تنزيل طلب الاحتفاظ بها (<x3/>، <x4/>)، مع ترك النطاقات التالفة فقط لجلبها، يبدأ كل منها قبل بضعة بايتات للتحقق من التداخل، ويعاد تسمية الملف إلى ملفه الجزئي. متابعته هي متابعة عادية: <x5/> بنفس أدوات التحقق، والتحقق من التداخل، والملخص؛ يفشل الملف الذي تغير على الخادم كـ <x6/>."
+   "text": "الملف المكتمل الذي وجد اختبار الأرشيف الخاص به تلفا يمكنه وضعه (إدخالات ZIP، #1661: <x1/> الخاص بالتطبيق) يصبح ملفا جزئيا مرة أخرى (<x2/>): تتم إعادة كتابة آخر حالة متابعة له، والتي أعادها تنزيل طلب الاحتفاظ به (<x3/>، <x4/>)، مع ترك النطاقات التالفة فقط لجلبها، يبدأ كل منها قبل بضعة بايتات مبكرا لفحص التداخل، ويتم إعادة تسمية الملف إلى ملفه الجزئي. متابعته هي متابعة عادية: <x5/> بنفس أدوات التحقق، وفحص التداخل، والملخص؛ يفشل الملف الذي تغير على الخادم كـ <x6/>."
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -2220,7 +2212,7 @@
   },
   "1e32ee75ad780ae4": {
    "source": "An archive protected by a password isn't tested, as its files can't be read without it: the log says <g1>Couldn't test photos.zip: it needs a password</g1>. Nor are tar, gz and xz files.",
-   "text": "لا يتم اختبار الأرشيف المحمي بكلمة مرور، حيث لا يمكن قراءة ملفاته بدونها: يسجل السجل <g1>تعذر اختبار photos.zip: يحتاج إلى كلمة مرور</g1>. ولا يتم اختبار ملفات tar وgz وxz أيضا."
+   "text": "لا يتم اختبار الأرشيف المحمي بكلمة مرور، حيث لا يمكن قراءة ملفاته بدونها: يسجل السجل <g1>تعذر اختبار photos.zip: يحتاج إلى كلمة مرور</g1>. ولا يتم اختبار ملفات tar وgz وxz."
   },
   "1e4861cc4f32a384": {
    "source": "<g1>Every text the user sees goes through <x2/></g1> (<x3/>, <x4/>, <x5/>, <x6/>); after adding one, run <x7/>. Data inside a sentence (a file name, an address, a size) goes in through <x8/> or <x9/>, so it reads right in right-to-left languages.",
@@ -2433,10 +2425,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "على macOS، لا يستطيع جدولة الإيقاظ إلا مسؤول، لذا يكون الخيار معطلا. لا يطلب MDM كلمة مرور المسؤول. يمكن للمسؤول ضبط جهاز Mac ليستيقظ كل يوم قبل دقيقة من بدء قائمة الانتظار، مثلا عند 10:59 مساء لقائمة انتظار تبدأ عند 11:00 مساء:"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "كل من أرسل طلب سحب، أو فتح مشكلة، أو علق على GitHub منذ الإصدار <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3068,7 +3056,7 @@
   },
   "29c62272ce90056c": {
    "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
-   "text": "استخراج الأرشيفات (#37): zip وtar وgz وxz قيد المعالجة؛ 7z وRAR عبر 7-Zip مثبت، يعمل كبرنامج مستقل؛ في مكانه عبر HatchZip عند الطلب. اختبارات الأرشيف (<x1/>، #1661): <x2/>، ملف ZIP قيد المعالجة بدونه، ومدخلات ZIP التالفة الموضوعة في الملف"
+   "text": "استخراج الأرشيفات (#37): zip وtar وgz وxz قيد المعالجة؛ 7z وRAR عبر 7-Zip مثبت، يعمل كبرنامج مستقل؛ في مكانه عبر HatchZip عند الطلب. اختبارات الأرشيف (<x1/>، #1661): <x2/>، ملف ZIP قيد المعالجة بدونه، وإدخالات ZIP تالفة توضع في الملف"
   },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
@@ -3660,7 +3648,7 @@
   },
   "319a440ac21a4da8": {
    "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
-   "text": "ملف ZIP الذي أعاد MDM تنزيل أجزائه التالفة وما زال تالفا، أو ملف 7z أو RAR الذي تضرر مرة أخرى بعد <g1>إعادة التنزيل</g1>، من المحتمل أن يكون تالفا على الخادم نفسه: اطلب من الموقع نسخة أخرى."
+   "text": "إذا كان ملف ZIP الذي أعاد MDM تنزيل أجزائه التالفة لا يزال تالفا، أو كان ملف 7z أو RAR تالفا مرة أخرى بعد <g1>إعادة التنزيل</g1>، فمن المحتمل أنه تالف على الخادم نفسه: اطلب من الموقع نسخة أخرى."
   },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
@@ -4210,10 +4198,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "انقر على <g1>موافق</g1>."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>المشكلات</g1><g2><x3/> أشخاص</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "اختر <g1>التنزيلات ← محدد السرعة ← تشغيل</g1>."
@@ -4556,7 +4540,7 @@
   },
   "3eaa27ee358ba512": {
    "source": "Last updated 2026-11-23",
-   "text": "آخر تحديث 2026-11-23"
+   "text": "آخر تحديث 23-11-2026"
   },
   "3eba7f086afb94a2": {
    "source": "Is it really free?",
@@ -4684,7 +4668,7 @@
   },
   "406a5240307e8845": {
    "source": "Right-click → <g1>Redownload</g1> (or the <g2>Damaged archive</g2> window's <g3>Redownload</g3>) downloads it again from the start.",
-   "text": "انقر بزر الفأرة الأيمن ← <g1>إعادة التنزيل</g1> (أو <g3>إعادة التنزيل</g3> في نافذة <g2>أرشيف تالف</g2>) لتنزيله مرة أخرى من البداية."
+   "text": "انقر بزر الفأرة الأيمن ← <g1>إعادة التنزيل</g1> (أو <g2>إعادة التنزيل</g2> في نافذة <g3>أرشيف تالف</g3>) لتنزيله مرة أخرى من البداية."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -6130,10 +6114,6 @@
    "source": "A small file",
    "text": "ملف صغير"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "شكر خاص لـ"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "الصق عنوان قائمة تشغيل (<x1/>) أو عنوان مقاطع فيديو قناة (<x2/>)، ثم انقر <g3>بحث</g3>. بدلا من عرض جودات فيديو واحد، تعرض النافذة مقاطع فيديو القائمة، مع مدة كل منها."
@@ -6265,10 +6245,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 و Linux؛ macOS تجريبي"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "أصبح هذا ممكنا بفضل هؤلاء الأشخاص الرائعين"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6428,7 +6404,7 @@
   },
   "5a08cc8b48188788": {
    "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
-   "text": "قد يكون الأرشيف المكتمل تالفا: ربما أرسل الخادم بايتات خاطئة، أو قام وكيل في الطريق بتشويه جزء من الملف. يظهر هذا فقط عندما يفتحه أحدهم، وغالبا ما يكون ذلك بعد فترة طويلة. لذلك، يختبر MDM أرشيفات ZIP و7z وRAR، وكذلك الأرشيفات المقسمة بعد اكتمال كل مجلد، عند انتهاء تنزيلها: يكون خيار <g1>الخيارات ← الأرشيفات ← اختبار الأرشيفات عند اكتمال تنزيلها</g1> قيد التشغيل افتراضيا، حتى 4 جيجابايت. يقرأ الاختبار الأرشيف بأكمله، لذلك يتم اختبار الأرشيفات الأكبر حجما فقط عندما تطلب ذلك: انقر بزر الفأرة الأيمن على أرشيف مكتمل واختر <g2>اختبار الأرشيف</g2>، مهما كان حجمه."
+   "text": "قد يكون الأرشيف المكتمل تالفا: ربما أرسل الخادم بايتات خاطئة، أو قام وكيل في الطريق بتشويه جزء من الملف. لا يظهر هذا إلا عند فتحه، وغالبا ما يكون ذلك بعد فترة طويلة. لذلك، يختبر MDM أرشيفات ZIP و7z وRAR، بما في ذلك المقسمة منها بعد اكتمال كل مجلد، عند انتهاء تنزيلها: <g1>الخيارات ← الأرشيفات ← اختبار الأرشيفات عند اكتمال تنزيلها</g1> مفعلة افتراضيا، حتى 4 جيجابايت. يقرأ الاختبار الأرشيف بأكمله، لذلك يتم اختبار الأرشيف الأكبر حجما فقط عندما تطلب ذلك: انقر بزر الفأرة الأيمن على أرشيف مكتمل واختر <g2>اختبار الأرشيف</g2>، مهما كان حجمه."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6780,7 +6756,7 @@
   },
   "5ed4e501adf0b774": {
    "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
-   "text": "يتم إصلاح أرشيف ZIP في ملف واحد بدلا من ذلك، عندما يتمكن MDM من تحديد مكان ملفاته التالفة فيه: يتم تنزيل بايتاتها فقط مرة أخرى، من نفس الخادم، ويتم اختبار الأرشيف مرة أخرى. يسجل السجل <g1>قيد تنزيل الأجزاء التالفة مرة أخرى (1.20 ميغابايت)</g1>، ثم <g2>تم اختباره مرة أخرى: الأرشيف لا يحتوي على أخطاء الآن</g2>. تأتي البايتات فقط من نفس إصدار الملف: يطلبها MDM كما يستأنف أي تنزيل (مع ETag أو تاريخ الملف، <x3/>)، ويتحقق من البايتات قبل كل جزء مقابل تلك الموجودة على القرص. يتوقف الملف الذي تغير على الخادم عن التنزيل مع <g4>تغير الملف على الخادم</g4> بدلا من خلط إصدارين: <g5>إعادة التنزيل</g5> يقوم بتنزيل الإصدار الجديد. يتم عرض الأرشيف الذي لا يزال تالفا بعد ذلك لـ<g6>إعادة التنزيل</g6>."
+   "text": "يتم إصلاح ملف ZIP في ملف واحد بدلا من ذلك، عندما يتمكن MDM من تحديد مكان ملفاته التالفة فيه: يتم تنزيل بايتاتها فقط مرة أخرى، من نفس الخادم، ويتم اختبار الأرشيف مرة أخرى. يسجل السجل <g1>قيد تنزيل الأجزاء التالفة مرة أخرى (1.20 ميغابايت)</g1>، ثم <g2>تم اختباره مرة أخرى: الأرشيف لا يحتوي على أخطاء الآن</g2>. تأتي البايتات فقط من نفس إصدار الملف: يطلبها MDM كما يستأنف أي تنزيل (مع ETag أو تاريخ الملف، <x3/>)، ويتحقق من البايتات قبل كل جزء مقابل تلك الموجودة على القرص. يتوقف الملف الذي تغير على الخادم عن التنزيل مع <g4>تغير الملف على الخادم</g4> بدلا من خلط إصدارين: <g5>إعادة التنزيل</g5> تنزل الإصدار الجديد. الأرشيف الذي لا يزال تالفا بعد ذلك يتم عرضه لـ <g6>إعادة التنزيل</g6>."
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7232,7 +7208,7 @@
   },
   "64e4c03c8252a3bc": {
    "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
-   "text": "<g1>اختبار الأرشيفات عند اكتمال تنزيلها، حتى 4 جيجابايت</g1> (مفعل افتراضيا) — يعاد قراءة أرشيف ZIP أو 7z أو RAR (أو أرشيف مقسم بعد وصول آخر جزء منه) ويفحص كل ملف فيه قبل اعتبار تنزيله مكتملا، باستخدام 7-Zip المذكور أدناه (أرشيف ZIP بدون 7-Zip بواسطة MDM نفسه). لا يختبر الأرشيف الأكبر حجما تلقائيا، لأن الاختبار يقرأ الملف بأكمله: انقر بزر الفأرة الأيمن → <g2>اختبار الأرشيف</g2> لاختباره. تنزل الملفات التالفة في أرشيف ZIP التالف مرة أخرى؛ ويعرض أي أرشيف تالف آخر لـ<g3>إعادة التنزيل</g3>. انظر <g4>اختبار الأرشيفات</g4>."
+   "text": "<g1>اختبار الأرشيفات عند اكتمال تنزيلها، حتى 4 جيجابايت</g1> (مفعل افتراضيا) — تتم إعادة قراءة أرشيف ZIP أو 7z أو RAR (أرشيف مقسم بعد اكتمال المجلد الأخير منه) ويتم التحقق من كل ملف فيه قبل اعتبار تنزيله منتهيا، وذلك باستخدام 7-Zip المذكور أدناه (أرشيف ZIP بدون 7-Zip يتم اختباره بواسطة MDM نفسه). لا يتم اختبار الأرشيفات الأكبر حجما تلقائيا، حيث أن الاختبار يقرأ الملف بأكمله: انقر بزر الفأرة الأيمن → <g2>اختبار الأرشيف</g2> لاختباره. يتم تنزيل الملفات التالفة في أرشيف ZIP التالف مرة أخرى؛ ويتم عرض أي أرشيف تالف آخر لـ<g3>إعادة التنزيل</g3>. انظر <g4>اختبار الأرشيفات</g4>."
   },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
@@ -7432,7 +7408,7 @@
   },
   "6827e4a6218bda8d": {
    "source": "7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for <g1>Redownload</g1> when damaged, never repaired in part.",
-   "text": "تحتفظ أرشيفات 7z وRAR بملفاتها في كتل لا يعطي اختبار 7-Zip مكانها في الملف، ومجلدات الأرشيف المقسم هي تنزيلات منفصلة: يتم اختبارها، وتقدم لـ<g1>إعادة التنزيل</g1> عند تلفها، ولا يتم إصلاحها جزئيا أبدا."
+   "text": "تحتفظ أرشيفات 7z وRAR بملفاتها في كتل لا يعطي اختبار 7-Zip مكانها في الملف، ومجلدات الأرشيف المقسم هي تنزيلات منفصلة: يتم اختبارها، وتقدم لـ <g1>إعادة التنزيل</g1> عند تلفها، ولا يتم إصلاحها جزئيا أبدا."
   },
   "6837961868984d5a": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>. To keep only a stretch of it, tick <g4>Only a part</g4>: see <g5>Download only a part</g5>.",
@@ -7948,7 +7924,7 @@
   },
   "6f2c084eea3d616f": {
    "source": "A split archive (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. <g6>Test archive</g6> on a split archive not complete yet says so: <g7>Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)</g7>.",
-   "text": "يتم اختبار الأرشيف المقسم (<x1/>، <x2/>، <x3/>، <x4/>، <x5/>) مرة واحدة، من مجلده الأول، عندما يتم تنزيل كل مجلد، أيهما ينتهي أخيرا. غالبا ما تنتهي مجلداته واحدا تلو الآخر (قائمة انتظار تقوم بتنزيل واحد في كل مرة، مضيف يجعلك تنتظر بين الملفات)، وتقرأ المجلدات الموجودة حتى الآن كأرشيف مقطوع، لذلك لا يتم اختبارها بمفردها. <g6>اختبار الأرشيف</g6> على أرشيف مقسم لم يكتمل بعد يقول ذلك: <g7>لم يتم اختباره بعد: photos.zip.001 غير مكتمل (المجلد 3 ليس موجودا بعد)</g7>."
+   "text": "يتم اختبار الأرشيف المقسم (<x1/>، <x2/>، <x3/>، <x4/>، <x5/>) مرة واحدة، من مجلده الأول، عندما يتم تنزيل كل مجلد، أيهما ينتهي أخيرا. غالبا ما تنتهي مجلداته واحدا تلو الآخر (قائمة انتظار تنزل واحدا تلو الآخر، مضيف يجعلك تنتظر بين الملفات)، وتقرأ تلك الموجودة حتى الآن كأرشيف مقطوع، لذلك لا يتم اختبارها بمفردها. <g6>اختبار الأرشيف</g6> على أرشيف مقسم لم يكتمل بعد يقول ذلك: <g7>لم يتم اختباره بعد: photos.zip.001 غير مكتمل (المجلد 3 ليس موجودا بعد)</g7>."
   },
   "6f2f9063e93137cf": {
    "source": "<g1>Alt</g1> + an underlined letter",
@@ -8637,10 +8613,6 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "تحتاج إلى حسابك المدفوع الخاص بك مع إحدى هذه الخدمات: لا يبيع MDM أو يتضمن حسابا. يؤدي مشاركة حساب أو روابطه إلى انتهاك شروط الخدمات وقد يؤدي إلى تعليق الحساب."
-  },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>كل من ساهم</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -10438,10 +10410,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>التسريع والمتابعة</g1><g2>ينقسم الملف إلى 32 اتصالا كحد أقصى، ويعاد تقسيمه حتى آخر بايت، ويستأنف بعد أي عطل.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> الأشخاص الذين أرسلوا طلب سحب، أو أبلغوا عن مشكلة، أو شاركوا في محادثة على GitHub. <g2>تعرف عليهم جميعا</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "شريط عنوان يرسمه MDM، عندما تكون نافذته غير نشطة (شفاف: كما لو كانت نشطة)"
@@ -11208,7 +11176,7 @@
   },
   "9be0243c13142898": {
    "source": "Last updated 2026-11-23 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "آخر تحديث 23-11-2026 · ينطبق على التطبيق وملحق المستعرض وموقع misterdownloadmanager.com"
+   "text": "آخر تحديث 23-11-2026 · ينطبق على التطبيق، وملحق المستعرض، وموقع misterdownloadmanager.com"
   },
   "9be7deca7d13f40b": {
    "source": "Keys to force or prevent capture",
@@ -11361,10 +11329,6 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "إرسال التنزيلات من متصفحك"
-  },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> تعليق"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -14878,10 +14842,6 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "ملتقط الروابط والأرشيفات — تعليمات Mister Download Manager"
   },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>التعليقات</g1><g2><x3/> أشخاص</g2>"
-  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "الزر السابق / التالي (بما في ذلك الأزرار المعطلة: يخبر قارئ الشاشة أنها غير متاحة)"
@@ -15216,7 +15176,7 @@
   },
   "d368fe0c2974cd27": {
    "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
-   "text": "يعتبر التنزيل مكتملا بمجرد انتهاء اختباره. تعرض القائمة <g1>قيد التحقق 45%</g1> في هذه الأثناء، وتنتظر قائمة الانتظار اكتماله، وتأتي نافذة <g2>اكتمل التنزيل</g2> وصوته واستخراجه بعد الاختبار."
+   "text": "يعتبر التنزيل منتهيا بمجرد انتهاء اختباره. تعرض القائمة <g1>قيد التحقق 45%</g1> في هذه الأثناء، وتنتظر قائمة الانتظار الخاصة به، وتأتي نافذة <g2>اكتمل التنزيل</g2> وصوته واستخراجه بعد الاختبار."
   },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
@@ -15473,10 +15433,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager و IDM، جنبا إلى جنب."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> مشكلة"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16468,7 +16424,7 @@
   },
   "e624996bba938a48": {
    "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
-   "text": "يعرض الأرشيف التالف <g1>تالف</g1> في القائمة، ويسمي سجله الملفات التالفة، وتقدم نافذة <g2>أرشيف تالف</g2> خيار <g3>إعادة التنزيل</g3>: يقوم بتنزيل الأرشيف (كل مجلد من الأرشيف المقسم) مرة أخرى من البداية. لا يتم استخراجه تلقائيا؛ لا يزال <g4>استخراج</g4> يحاول ذلك."
+   "text": "يعرض الأرشيف التالف <g1>تالف</g1> في القائمة، ويسمي سجله الملفات التالفة، وتقدم نافذة <g2>أرشيف تالف</g2> <g3>إعادة التنزيل</g3>: يقوم بتنزيل الأرشيف (كل مجلد من الأرشيف المقسم) مرة أخرى من البداية. لا يتم استخراجه تلقائيا؛ <g4>استخراج</g4> لا يزال يحاول ذلك."
   },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
@@ -16513,10 +16469,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "لا، إذا كان من هذا الموقع أو إصدارات GitHub. تحكم بعض برامج مكافحة الفيروسات على برنامج لا تعرفه بتخمين مدروس، وليس بفيروس معروف..."
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> طلب سحب"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17786,10 +17738,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>إيقاف البذر بعد مدة … دقيقة</g1> — أو بمجرد أن يستمر بذره لهذه المدة، عبر جميع مرات تشغيله. متوقف افتراضيا."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> تعليقات"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "أسماء بخلاف عناوينه التي يمكن فتح الصفحة بها"
@@ -17893,10 +17841,6 @@
   "f9a4b5089b7bfcce": {
    "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
    "text": "<g1>كل صفحة بصيغة Markdown.</g1> لكل صفحة نسخة Markdown بجانبها: العنوان مع <x2/> بدلا من <x3/>، أو <x4/> لعنوان ينتهي بـ <x5/>. لذا، <g6>/download.html</g6> هو <g7>/download.md</g7>، و<g8>/help/</g8> هو <g9>/help/index.md</g9>، والصفحة الرئيسية الألمانية <g10>/de/</g10> هي <g11>/de/index.md</g11>. تسمي كل صفحة نسختها الخاصة في <x12/> (<x13/>). Markdown لصفحات التعليمات هو مصدرها؛ أما الصفحات الأخرى فتنشأ من الصفحة عند كل بناء، لذا لا تختلف عنها أبدا."
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> مشكلات"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18457,6 +18401,82 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "عناوين التنزيل أو أسماء الملفات الخاصة بك؛"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "يفتح كل رابط نافذة <g1>معلومات ملف التنزيل</g1> خاصة به، لذا يمكن فتح عدة نوافذ جنبا إلى جنب لمقارنة أحجامها قبل الاختيار. تفتح كل نافذة جديدة أسفل النافذة السابقة وبجانبها قليلا وتأتي إلى المقدمة؛ ومن الثانية فصاعدا، يحمل عنوانها رقمها: <g2>معلومات ملف التنزيل (2)</g2>، <g3>(3)</g3> وهكذا. يغلق مفتاح <g4>Esc</g4> النافذة التي أنت فيها فقط. يمكن فتح ما يصل إلى ست نوافذ في وقت واحد: الروابط الإضافية التي يتم تسليمها معا (مستعرض يمرر عدة تنزيلات) تنتظر، وتفتح واحدة تلو الأخرى عند إغلاق النوافذ؛ يسأل زر <g5>إلغاء</g5> عما إذا كنت تريد إلغاء تلك التي لا تزال تنتظر. يؤدي تسليم نفس الرابط مرة أخرى إلى إحضار نافذته المفتوحة إلى المقدمة. إذا أغلقت MDM مع بقاء بعض النوافذ مفتوحة، فإن تنزيلاتها تنتقل إلى <g6>قائمة انتظار التنزيل الرئيسية</g6>، كما هو الحال مع <g7>تنزيل لاحقا</g7>."
+  },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "تعذر قراءة القائمة من GitHub عند إنشاء هذه الصفحة. الجميع موجودون على GitHub في هذه الأثناء، في <g1>طلبات السحب</g1> و<g2>المشكلات</g2> الخاصة بالمشروع."
+  },
+  "49b4a645676f1c52": {
+   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
+   "text": "باختصار: لا يجمع تطبيق Mister Download Manager وملحقه للمستعرض أي معلومات عنك. لا حسابات ولا تحليلات ولا قياس عن بعد ولا إعلانات. يحصي هذا الموقع زياراته باستخدام Statcounter."
+  },
+  "616c286a43aec83e": {
+   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
+   "text": "<g1>أكثر من 3,800 مستخدم يوميا</g1><g2>4.7 من 5، من 7 تقييمات</g2>"
+  },
+  "84829118b707c58c": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com هو موقع ثابت. تشارك ثلاث شركات في عرضه لك، ورابعة إذا شغلت الفيلم في الصفحة الرئيسية:"
+  },
+  "8ccaf02f36376582": {
+   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
+   "text": "<g1>بالأرقام</g1><g2>تم الفحص في <x3/>، مقربا لأدنى قيمة</g2>"
+  },
+  "9fe595ed623618bf": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>إثبات التسليم</g1><g2>الأرقام مدققة على <x3/> · الاقتباسات دقيقة، مرتبطة بمصدرها</g2>"
+  },
+  "b3192a3bf72c5c3b": {
+   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
+   "text": "لا يجمع التطبيق والإضافة بيانات شخصية من أي شخص، بمن فيهم الأطفال. ولا يعرف عداد زيارات الموقع هويتك أو عمرك."
+  },
+  "c9da130585eae7fa": {
+   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
+   "text": "لا يحتوي الموقع على إعلانات أو أدوات تتبع أخرى. وتقدم الخطوط والنصوص البرمجية من الموقع نفسه. ويحفظ اختيارك للوضع الفاتح أو الداكن في مساحة التخزين المحلية لمستعرضك، ولا يرسل إلى أي جهة."
+  },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> أضف إلى Firefox</g1><g3><x4/> أضف إلى Chrome</g3>"
+  },
+  "d325a1b1c8ab0caa": {
+   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
+   "text": "كيفية تعامل Mister Download Manager وإضافة المستعرض وهذا الموقع مع بياناتك: لا يجمع التطبيق والإضافة أي بيانات؛ ويحصي الموقع الزيارات باستخدام Statcounter."
+  },
+  "d7a59305d1341d4e": {
+   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
+   "text": "لا يحتفظ التطبيق والإضافة بأي بيانات شخصية عنك، لذا لا توجد بيانات يمكننا عرضها أو تصحيحها أو حذفها منهما. يحتفظ Statcounter بإحصاءات زيارات الموقع؛ ولحذف سجلات زياراتك، أنشئ مسألة واذكر تاريخ زيارتك ووقتها، أو تواصل مع Statcounter مباشرة. أما البيانات التي ترسلها إلى GitHub، مثل مسألة، فيتعامل معها GitHub، ويمكنك تعديلها أو حذفها هناك."
+  },
+  "f40a78a2a7aa4f18": {
+   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
+   "text": "<g1>أكثر من 50,000 مستخدم</g1><g2>4.9 من 5، من 43 تقييما</g2>"
+  },
+  "807205b219bcd9d5": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
+   "text": "<g1>قائمته</g1> (السهم بجانبه، أو <g2>↓</g2> عندما يكون الزر في تركيز لوحة المفاتيح): عنوان الفيديو ومدته وموقعه؛ <g3>تنزيل بأفضل جودة</g3> أولا، ثم سطر مرقم واحد لكل جودة تحت <g4>الفيديو</g4> و<g5>الصوت</g5>، مع نوع ملفه، والترميز، ومعدل الإطارات أو معدل البت وحجمه (<x6/> <x7/>، كما يظهر في نافذة تنزيل الفيديو)، مع تحديد الأفضل، و<g8>الأكثر توافقا (H.264 + AAC)</g8> بجانب دقة الفيديو الذي يعمل في كل مكان (<g9>اختر الجودة</g9>)؛ <g10>كل الجودات والترجمات...</g10>، الذي يفتح نافذة <g11>تنزيل الفيديو من صفحة</g11>؛ ثم <g12>إخفاء على هذا الفيديو</g12> (<g13>Esc</g13>)، <g14>لا أبدا على</g14> الموقع (يتذكر MDM الموقع)، و<g15>إعدادات الزر...</g15>، الذي يفتح خيارات MDM. تتحرك مفاتيح الأسهم خلاله، ويختار <g16>Enter</g16>، ويغلقه <g17>Esc</g17>."
+  },
+  "94d1eda28d7a14bb": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
+   "text": "<g1>تخصيص لوحات تنزيل MDM في المستعرضات ← تحرير...</g1> — زر التنزيل الذي يظهر فوق مقاطع الفيديو على صفحات الويب: يمكنك إيقاف تشغيله، أو اختيار <g2>حجم الزر</g2> (<g3>كامل</g3>، تظهر كلماته حيثما تتسع، أو <g4>مدمج</g4>، يظهر الشعار فقط، السهم و✕ على كل فيديو)، أو سرد المواقع التي لا يظهر عليها أبدا (افصلها بمسافات؛ تعمل أحرف البدل مثل <x5/>، <x6/> أو <x7/>). انظر <g8>الربط بالمستعرض</g8>."
+  },
+  "bf65e2eb8f9aed86": {
+   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
+   "text": "<g1>نقله</g1>: اسحبه بنقاطه على طول حافة الفيديو؛ أثناء السحب، تظهر الحافة والنقاط التي يلتصق بها (الزوايا والمنتصف). يبقى هناك في هذا الموقع."
+  },
+  "e2b2bd857e845dd3": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>إيقاف تشغيله، أو تصغيره، أو رؤية المواقع التي يبقى فيها متوقفا</g1>: <g2>الخيارات ← عام ← تخصيص لوحات تنزيل MDM في المستعرضات ← تحرير...</g2>. <g3>حجم الزر</g3> هو <g4>كامل</g4> كما هو مثبت (كلماته حيث تتسع) أو <g5>مدمج</g5> (شعار MDM فقط، السهم و<g6>✕</g6>، على كل فيديو، كما هو الحال على فيديو صغير)؛ بعد النقر، لا يزال يقول ما حدث بالكلمات. الصفحات المفتوحة بالفعل تتبع التغيير في غضون ثوان قليلة، بدون إعادة تحميل."
+  },
+  "fb140a625b84ac20": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
+   "text": "يجاب عن سؤال أو إجراء غير معروف بـ <x1/>، وكذلك عن سؤال عند إيقاف API، حينها تكون الإجابة <x2/> لكي تتمكن البرامج من التحقق؛ فقد يتغير نص الخطأ. ويجاب عن الرمز غير الصحيح بـ <x3/>."
+  },
+  "fdbec569d3b4740e": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "يبقى بعيدا عن الطريق: يظهر فقط أثناء تحريك المؤشر فوق فيديو (أو عندما يكون المشغل في بؤرة لوحة المفاتيح؛ ثم ينتقل <g1>Tab</g1> إلى الزر)، يتلاشى بعد 1.5 ثانية من توقف المؤشر وعلى الفور عندما يغادر الفيديو، ويستبعد مقاطع الفيديو الصغيرة والحلقات القصيرة الصامتة (الصور المتحركة، الخلفيات). لا يغطي أزرار الصفحة الخاصة: عندما يقع أحدها تحت أي جزء من زاويته (زر ملاحظات أو إعدادات المشغل، زر مشاهدة لاحقا للمصغر)، فإنه يأخذ الزاوية الحرة التالية ويحتفظ بها بينما يظهر المشغل ويخفي أزراره، لذا يبقى في مكانه عندما تصل إليه. فوق معاينة تعمل بينما المؤشر على مصغر (الصفحة الرئيسية لـ YouTube، بحث، قناة)، توقف الصفحة المعاينة عندما يصل المؤشر إلى الزر؛ يبقى الزر في مكانه بينما المؤشر عليه، والنقر يقوم بتنزيل فيديو تلك المعاينة. تشغيل الفيديو أو إيقافه مؤقتا لا يعيده. على فيديو أقل من 360 بكسل عرضا، أو حيث لا تتناسب كلماته، يكون فقط شعاره وسهمه و<g2>✕</g2>؛ مع ضبط <g3>حجم الزر</g3> على <g4>مدمج</g4> في الخيارات (أدناه)، يكون هذا الزر الدائري على كل فيديو. في وضع ملء الشاشة يتبع الفيديو عندما يسمح المشغل بذلك، ودخول وضع ملء الشاشة يتركه بعيدا عن الطريق حتى تحرك المؤشر مرة أخرى."
   }
  }
 }

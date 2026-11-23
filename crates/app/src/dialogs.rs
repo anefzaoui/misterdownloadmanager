@@ -75,7 +75,8 @@ pub fn place(ctx: &egui::Context, key: egui::Id, client: [f32; 2]) -> Option<Pos
     let main = main_rect(ctx)?;
     // A fixed-frame dialog's outer size is client + (6, 29) (spec "Conventions").
     let outer = vec2(client[0] + 6.0, client[1] + 29.0);
-    let mut p = (main.center() - outer / 2.0).round();
+    // The second of a kind and the ones after it a step further each (#1741).
+    let mut p = (main.center() + cascade_offset(ctx, key) - outer / 2.0).round();
     if let Some(area) = crate::scale::work_area(ctx, main.center()) {
         let whole = vec2(client[0], client[1]) + crate::scale::frame(ctx);
         p = crate::scale::keep_inside(p, whole, area).round();
@@ -89,6 +90,69 @@ pub fn forget_place(ctx: &egui::Context, key: egui::Id) {
         d.remove::<(Pos2, f32)>(key);
         d.remove::<egui::Rect>(key.with("main-px"));
     });
+}
+
+/// How far each window of a kind opens from the one numbered before it ([`Nth`]), in points: a
+/// title bar and its frame, down and towards the window's far side (left in a right-to-left
+/// interface), as the system cascades windows. Never fully over the one before.
+const CASCADE_STEP: f32 = 28.0;
+
+/// Where window `key` opens from the centre of the main window: its cascade step ([`Nth`],
+/// given by `dialog_window` before it is placed) times [`CASCADE_STEP`]; nothing for the first.
+fn cascade_offset(ctx: &egui::Context, key: egui::Id) -> egui::Vec2 {
+    let k = ctx.data(|d| d.get_temp::<usize>(key.with("cascade")).unwrap_or(0)) as f32;
+    let along = if crate::i18n::rtl() { -1.0 } else { 1.0 };
+    vec2(along * CASCADE_STEP * k, CASCADE_STEP * k)
+}
+
+/// One of several windows of a kind open at once (#1741: a Download File Info for each link),
+/// numbered from 1. The first is the window as it always was, its id and title its own; each
+/// other one's id and title carry its number ("Download File Info (2)"), so that Windows finds
+/// each by its title (`win32::find_own_window`) and a screen reader names them apart. Each opens
+/// [`CASCADE_STEP`] further than the one numbered before it, so that none opens fully over
+/// another. The questions a window asks (Create folder...) carry its number too.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Nth(pub usize);
+
+impl Nth {
+    pub const FIRST: Nth = Nth(1);
+
+    /// The lowest number none of `taken` has: a window closed leaves its number (and its place
+    /// in the cascade) to the next one.
+    pub fn free(taken: impl IntoIterator<Item = Nth>) -> Nth {
+        let taken: std::collections::BTreeSet<usize> = taken.into_iter().map(|n| n.0).collect();
+        Nth((1..).find(|n| !taken.contains(n)).unwrap_or(1))
+    }
+
+    /// The window's id: `base` for the first, `base-n` for the others.
+    pub fn id(self, base: &str) -> String {
+        if self.0 <= 1 {
+            base.to_owned()
+        } else {
+            format!("{base}-{}", self.0)
+        }
+    }
+
+    /// `title` in the interface language, with the number for all but the first.
+    pub fn title(self, title: &str) -> String {
+        let title = crate::i18n::t(title);
+        if self.0 <= 1 {
+            return title.to_owned();
+        }
+        crate::i18n::fmt(
+            // i18n: the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+            crate::i18n::t("{title} ({n})"),
+            &[
+                ("title", title),
+                ("n", &crate::i18n::integer(self.0 as u64)),
+            ],
+        )
+    }
+
+    /// Its steps from the first one's place ([`cascade_offset`]).
+    fn cascade(self) -> usize {
+        self.0.saturating_sub(1)
+    }
 }
 
 /// How many passes after it is shown a window is still kept where [`place`] put it: its new
@@ -148,7 +212,11 @@ fn keep_placed(ctx: &egui::Context, key: egui::Id, title: &str, shown: bool) {
         })
         .collect();
     let main = ctx.data(|d| d.get_temp::<egui::Rect>(key.with("main-px")));
-    let want = main.map_or(at.min, |m| crate::scale::centred_on(m, at.size(), &screens));
+    // Its cascade step (#1741), in pixels at the main window's scale.
+    let step = cascade_offset(ctx, key) * ctx.pixels_per_point();
+    let want = main.map_or(at.min, |m| {
+        crate::scale::centred_on(m.translate(step), at.size(), &screens)
+    });
     let want =
         crate::scale::onto_screens(egui::Rect::from_min_size(want, at.size()), main, &screens)
             .unwrap_or(want);
@@ -345,7 +413,20 @@ pub(crate) fn window_was_gone(ctx: &egui::Context, key: egui::Id) -> bool {
 /// must be on the screen, even while the main window is minimized (Windows hides a window's owned
 /// windows with it, leaving the downloads waiting behind one nobody can see, #440).
 #[cfg(windows)]
-const QUEUE_GATES: [&str; 2] = ["file-info", "duplicate"];
+const QUEUE_GATES: [&str; 1] = ["duplicate"];
+
+/// Whether window `id` is a Download File Info: the first ("file-info") or another one open at
+/// the same time ("file-info-2", #1741).
+fn is_file_info(id: &str) -> bool {
+    id == FILE_INFO
+        || id
+            .strip_prefix(FILE_INFO)
+            .and_then(|n| n.strip_prefix('-'))
+            .is_some_and(|n| !n.is_empty() && n.bytes().all(|b| b.is_ascii_digit()))
+}
+
+/// Download File Info's window id (the first one's; [`Nth::id`] numbers the others).
+pub const FILE_INFO: &str = "file-info";
 
 /// A window that must be on the screen and isn't (hidden, not minimized): shown again after a
 /// moment, however it got that way, directly: winit believes it is still visible and ignores
@@ -383,7 +464,33 @@ pub(crate) fn window<T>(
     bg: egui::Color32,
     body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
-    dialog_window(ctx, id, title, client, minimize, bg, Kind::Plain, body)
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::Plain,
+        Nth::FIRST,
+        body,
+    )
+}
+
+/// [`window`] number `nth` of its kind (#1741): its id and title numbered, a cascade step
+/// further than the one before ([`Nth`]).
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn window_nth<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    nth: Nth,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(ctx, id, title, client, minimize, bg, Kind::Plain, nth, body)
 }
 
 /// A question that must be answered (Yes / No, a countdown): a `window` that stays above the
@@ -399,7 +506,42 @@ pub(crate) fn question<T>(
     bg: egui::Color32,
     body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
-    dialog_window(ctx, id, title, client, minimize, bg, Kind::Question, body)
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::Question,
+        Nth::FIRST,
+        body,
+    )
+}
+
+/// [`question`] asked by window number `nth` of its kind (#1741): numbered as it is.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn question_nth<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    nth: Nth,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::Question,
+        nth,
+        body,
+    )
 }
 
 /// News that must not go unseen (Download complete, as IDM shows it): a `window` shown above
@@ -424,6 +566,7 @@ pub(crate) fn notice<T>(
         minimize,
         bg,
         Kind::Notice { on_top },
+        Nth::FIRST,
         body,
     )
 }
@@ -461,13 +604,18 @@ fn dialog_window<T>(
     minimize: bool,
     bg: egui::Color32,
     kind: Kind,
+    nth: Nth,
     mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
     let modal = kind == Kind::Question;
+    // The window's own id, numbered when it isn't the first of its kind (#1741).
+    let id = nth.id(id);
+    let id = id.as_str();
     let key = egui::Id::unique(("dialog-pos", id));
-    // The title in the interface language (Win32 finds the window by it, so it is used as is
-    // from here on).
-    let title = crate::i18n::t(title);
+    // The title in the interface language, numbered as the id (Win32 finds the window by it, so
+    // it is used as is from here on).
+    let title = nth.title(title);
+    let title = title.as_str();
     // A style theme's title bar is ours (Windows, #45): drawn above the layout, which keeps its
     // size; the frame (win32::thin_frame) gives the caption to the client.
     let drawn = drawn_captions();
@@ -507,6 +655,8 @@ fn dialog_window<T>(
             egui::WindowLevel::Normal
         });
     }
+    // Its place in the cascade (#1741), for `place` and `keep_placed`.
+    ctx.data_mut(|d| d.insert_temp(key.with("cascade"), nth.cascade()));
     if let Some(p) = place(ctx, key, shown) {
         builder = builder.with_position(p);
     }
@@ -605,7 +755,7 @@ fn dialog_window<T>(
     let focused = key.with("focus-sent");
     let takes_focus = modal
         || (cfg!(all(not(windows), not(target_os = "macos")))
-            && matches!(id, "file-info" | "video-page" | "torrent" | "grabber"));
+            && (is_file_info(id) || matches!(id, "video-page" | "torrent" | "grabber")));
     if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
@@ -614,7 +764,7 @@ fn dialog_window<T>(
         }
     }
     #[cfg(windows)]
-    if matches!(out, Outcome::Open) && QUEUE_GATES.contains(&id) {
+    if matches!(out, Outcome::Open) && (is_file_info(id) || QUEUE_GATES.contains(&id)) {
         keep_on_screen(ctx, key, title);
     }
     if !matches!(out, Outcome::Open) {
@@ -1268,6 +1418,9 @@ pub struct FileInfo {
     /// Set on the Save dialog's thread with its answer: whether it replaces a file
     /// (`winui::replaces_picked`).
     picked_replaces: Arc<std::sync::atomic::AtomicBool>,
+    /// Its number among the Download File Info windows open at once (#1741): its window's id,
+    /// title and place in the cascade, and those of the questions it asks. The app gives it.
+    pub nth: Nth,
 }
 
 pub enum Start {
@@ -1360,7 +1513,13 @@ impl FileInfo {
             direct,
             replace: None,
             picked_replaces: Default::default(),
+            nth: Nth::FIRST,
         }
+    }
+
+    /// Its window, to bring it to the front (the same address handed over again, #1741).
+    pub fn viewport(&self) -> ViewportId {
+        dialog_viewport(&self.nth.id(FILE_INFO))
     }
 
     /// Look the address up again as it will now be downloaded: through the debrid account
@@ -1559,6 +1718,11 @@ impl FileInfo {
     ) -> Outcome<Start> {
         let dest = self.dest();
         let typed = self.typed && self.place.own.as_ref() != Some(&dest);
+        let nth = self.nth;
+        let show = move |d: &mut Duplicate, ctx: &egui::Context| {
+            d.nth = nth;
+            show(d, ctx)
+        };
         match ensure_replace_asked(ctx, &mut self.replacing, out, &dest, typed, exists, show) {
             Outcome::Done((start, replace)) => {
                 // A typed name's answer is the one that counts (a Replace? answered in the Save
@@ -1586,7 +1750,7 @@ impl FileInfo {
             .map(Path::to_path_buf)
             .unwrap_or_default();
         let out = self.dialog(ctx, icons);
-        let out = ensure_folder(ctx, &mut self.asking, out, &folder);
+        let out = ensure_folder_for(ctx, &mut self.asking, out, &folder, self.nth);
         let out = self.ask_replace(ctx, out, |d| d.is_file(), Duplicate::show);
         // #394: more downloads wait their turn behind this one (the browser's selected links):
         // Cancel (the button, Escape, the window's ×) asks whether they are cancelled too.
@@ -1596,7 +1760,7 @@ impl FileInfo {
         if self.cancel_ask {
             // The question answers for the dialog: a Start pressed meanwhile waits for it, as
             // with the Create folder question.
-            return match cancel_waiting(ctx, self.waiting) {
+            return match cancel_waiting(ctx, self.waiting, self.nth) {
                 Outcome::Done(all) => {
                     self.cancel_ask = false;
                     self.cancel_all = all;
@@ -1649,13 +1813,18 @@ impl FileInfo {
         );
         let wide = (preview_w - 92.0).max(0.0);
         let cx = (wide / 2.0).floor();
-        window(
+        // Its own names for what opens from it (drop lists, the Save dialog): several may be
+        // open at once (#1741), each with its own.
+        let nth = self.nth;
+        let own = |base: &str| nth.id(base);
+        window_nth(
             ctx,
-            "file-info",
+            FILE_INFO,
             "Download File Info",
             [570.0 + wide, 234.0 + dy],
             true,
             winui::BG(),
+            nth,
             |ui, o| {
                 let p = ui.painter().clone();
                 winui::text_right(
@@ -1744,7 +1913,7 @@ impl FileInfo {
                         .collect();
                     if let Some(i) = winui::drop_list(
                         ui,
-                        "save-as-history",
+                        &own("save-as-history"),
                         save_rc,
                         &shown,
                         crate::i18n::t("No folders yet"),
@@ -1766,7 +1935,7 @@ impl FileInfo {
                         .unwrap_or_default();
                     let title = crate::i18n::t("Save As").to_owned();
                     let replaces = self.picked_replaces.clone();
-                    winui::start_pick(ui.ctx(), "file-info-save-as", move || {
+                    winui::start_pick(ui.ctx(), &own("file-info-save-as"), move || {
                         let picked = winui::save_dialog(&title, &dir, &name).save_file()?;
                         let saved = winui::saved_name(&name, &picked);
                         // On the dialog's thread: it looks at the disk.
@@ -1777,7 +1946,7 @@ impl FileInfo {
                         Some(saved)
                     });
                 }
-                if let Some(path) = winui::picked(ui.ctx(), "file-info-save-as") {
+                if let Some(path) = winui::picked(ui.ctx(), &own("file-info-save-as")) {
                     let replace = self
                         .picked_replaces
                         .load(std::sync::atomic::Ordering::Relaxed);
@@ -1875,7 +2044,7 @@ impl FileInfo {
                         o.y + 193.0 + dy,
                         o.x + 462.0,
                         None,
-                        "file-info",
+                        &own(FILE_INFO),
                     ),
                     Some(Ok(pi)) => {
                         if let Some(server) = &pi.server {
@@ -1886,7 +2055,7 @@ impl FileInfo {
                                 o.y + 193.0 + dy,
                                 o.x + 462.0,
                                 Some(&seen),
-                                "file-info",
+                                &own(FILE_INFO),
                             );
                         }
                     }
@@ -1899,7 +2068,7 @@ impl FileInfo {
                             winui::ERROR(),
                             o.x + 462.0,
                         );
-                        winui::copyable(ui, rect, "file-info-failed", reason, cut);
+                        winui::copyable(ui, rect, own("file-info-failed"), reason, cut);
                     }
                 }
 
@@ -2013,7 +2182,7 @@ impl FileInfo {
                 );
                 // Why the address didn't answer (not found, sign-in needed…): on hover, copyable.
                 if let Some(reason) = reason {
-                    winui::copyable(ui, at, "file-info-error", &reason, true);
+                    winui::copyable(ui, at, own("file-info-error"), &reason, true);
                 }
                 // As wide as its label in this language (#192), around the column's centre, from
                 // 8 px after the group box (it ends at 462) to the window's edge.
@@ -2040,7 +2209,7 @@ impl FileInfo {
                     let labels: Vec<String> = all.iter().map(|c| c.shown()).collect();
                     if let Some(i) = winui::drop_list(
                         ui,
-                        "file-info-category",
+                        &own("file-info-category"),
                         cat_rect,
                         &labels,
                         "",
@@ -2072,15 +2241,18 @@ impl FileInfo {
 
 /// Cancel in Download File Info while more downloads wait their turn behind it (#394): are
 /// those cancelled too? `Done(true)`: yes; `Done(false)`: this one alone is skipped.
-fn cancel_waiting(ctx: &egui::Context, n: usize) -> Outcome<bool> {
-    let extra = grow_extra(ctx, "cancel-waiting");
-    question(
+fn cancel_waiting(ctx: &egui::Context, n: usize, nth: Nth) -> Outcome<bool> {
+    // Its growth kept for its own window (#1741: each Download File Info may ask).
+    let grow = nth.id("cancel-waiting");
+    let extra = grow_extra(ctx, &grow);
+    question_nth(
         ctx,
         "cancel-waiting",
         "Mister Download Manager",
         [374.0, 100.0 + extra],
         false,
         winui::BG(),
+        nth,
         |ui, o| {
             let p = ui.painter().clone();
             let text = crate::i18n::fmt(
@@ -2101,7 +2273,7 @@ fn cancel_waiting(ctx: &egui::Context, n: usize) -> Outcome<bool> {
                 o.x + 362.0,
                 13.0,
             );
-            grow_to(ui.ctx(), "cancel-waiting", lines, 2);
+            grow_to(ui.ctx(), &grow, lines, 2);
             let o = o + vec2(0.0, extra);
             let yes = winui::button(
                 ui,
@@ -3852,6 +4024,8 @@ pub struct Duplicate {
     choice: usize,
     /// About a file on the disk (its path in `name`), not an address in the list.
     file: bool,
+    /// The Download File Info that asks about its file, when several are open (#1741).
+    nth: Nth,
 }
 
 impl Duplicate {
@@ -3860,6 +4034,7 @@ impl Duplicate {
             name,
             choice: DUPLICATE_NUMBERED,
             file: false,
+            nth: Nth::FIRST,
         }
     }
 
@@ -3869,6 +4044,7 @@ impl Duplicate {
             name: display_path(path),
             choice: DUPLICATE_NUMBERED,
             file: true,
+            nth: Nth::FIRST,
         }
     }
 
@@ -3894,13 +4070,14 @@ impl Duplicate {
             )
         };
         let short = 20.0 * (3 - answers) as f32;
-        question(
+        question_nth(
             ctx,
             id,
             title,
             [460.0, 156.0 - short],
             false,
             winui::LIGHT_BG(),
+            self.nth,
             |ui, o| {
                 let p = ui.painter().clone();
                 let ink = winui::LIGHT_TEXT();
@@ -4220,6 +4397,8 @@ pub struct CreateFolder {
     error: Option<String>,
     /// Yes was pressed: the folder is made off the window's thread (#743), its answer to come.
     making: Option<crate::launch::Asked<PathBuf, Result<(), String>>>,
+    /// The window that asks, when several of its kind are open (#1741): numbered as it is.
+    nth: Nth,
 }
 
 impl CreateFolder {
@@ -4228,19 +4407,21 @@ impl CreateFolder {
             folder,
             error: None,
             making: None,
+            nth: Nth::FIRST,
         }
     }
 
     /// `Done` once the folder exists (created on Yes); `Closed` on No, Escape or the close box.
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let folder = self.folder.display().to_string();
-        question(
+        question_nth(
             ctx,
             "create-folder",
             "Create folder",
             [420.0, 128.0],
             false,
             winui::BG(),
+            self.nth,
             |ui, o| {
                 let p = ui.painter().clone();
                 let ink = winui::TEXT();
@@ -4596,7 +4777,18 @@ pub fn ensure_folder<T>(
     out: Outcome<T>,
     folder: &Path,
 ) -> Outcome<T> {
-    ensure_folder_with(ctx, gate, out, folder, |f| f.is_dir())
+    ensure_folder_with(ctx, gate, out, folder, Nth::FIRST, |f| f.is_dir())
+}
+
+/// [`ensure_folder`] for window `nth` of its kind (#1741): its question numbered as it is.
+pub fn ensure_folder_for<T>(
+    ctx: &egui::Context,
+    gate: &mut FolderGate<T>,
+    out: Outcome<T>,
+    folder: &Path,
+    nth: Nth,
+) -> Outcome<T> {
+    ensure_folder_with(ctx, gate, out, folder, nth, |f| f.is_dir())
 }
 
 /// [`ensure_folder`], the folder looked at with `is_dir` (a test's).
@@ -4605,6 +4797,7 @@ fn ensure_folder_with<T>(
     gate: &mut FolderGate<T>,
     out: Outcome<T>,
     folder: &Path,
+    nth: Nth,
     is_dir: impl FnOnce(&Path) -> bool + Send + 'static,
 ) -> Outcome<T> {
     gate.pass(
@@ -4612,7 +4805,12 @@ fn ensure_folder_with<T>(
         out,
         folder,
         || move |f: &PathBuf| f.as_os_str().is_empty() || is_dir(f.as_path()),
-        |there| (!there).then(|| CreateFolder::new(folder.to_owned())),
+        |there| {
+            (!there).then(|| CreateFolder {
+                nth,
+                ..CreateFolder::new(folder.to_owned())
+            })
+        },
         CreateFolder::show,
     )
     .map(|(v, _)| v)
@@ -4664,6 +4862,33 @@ pub fn ensure_replace_asked<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1741: the first Download File Info is the window it always was; the others are
+    /// numbered (their ids and titles, which Windows finds them by), each a cascade step
+    /// further, and a closed one's number goes to the next.
+    #[test]
+    fn several_windows_of_a_kind_are_numbered() {
+        assert_eq!(Nth::FIRST.id(FILE_INFO), "file-info");
+        assert_eq!(Nth(3).id(FILE_INFO), "file-info-3");
+        // (Not a literal in the call: the catalog's extractor would take it for a text.)
+        let title = ["Download File", " Info"].concat();
+        assert_eq!(Nth::FIRST.title(&title), "Download File Info");
+        assert_eq!(Nth(2).title(&title), "Download File Info (2)");
+        assert!(is_file_info("file-info") && is_file_info("file-info-12"));
+        // Its pickers and drop lists are no Download File Info windows.
+        assert!(!is_file_info("file-info-save-as") && !is_file_info("file-info-"));
+        assert_eq!(Nth::free([]), Nth(1));
+        assert_eq!(Nth::free([Nth(1), Nth(2), Nth(3)]), Nth(4));
+        assert_eq!(Nth::free([Nth(1), Nth(3)]), Nth(2));
+        assert_eq!(Nth::free([Nth(2)]), Nth(1));
+        let ctx = egui::Context::default();
+        let key = egui::Id::unique("cascade-test");
+        assert_eq!(cascade_offset(&ctx, key), egui::Vec2::ZERO, "the first");
+        ctx.data_mut(|d| d.insert_temp(key.with("cascade"), Nth(3).cascade()));
+        let step = cascade_offset(&ctx, key);
+        assert_eq!(step.y, 2.0 * CASCADE_STEP);
+        assert_eq!(step.x.abs(), 2.0 * CASCADE_STEP);
+    }
 
     /// Every window comes to the front through `focus` (#1645): egui's `Focus` command, which
     /// winit carries out on Windows with a made-up Alt key press heard by the whole system, is
@@ -4852,7 +5077,7 @@ mod tests {
         let pass = |key: Option<egui::Key>, answer: &std::cell::Cell<Option<Outcome<bool>>>| {
             KEY.with(|k| k.set(key));
             let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
-                answer.set(Some(cancel_waiting(ui.ctx(), 2)));
+                answer.set(Some(cancel_waiting(ui.ctx(), 2, Nth::FIRST)));
             });
             out.textures_delta.clear();
             answer.take()
@@ -5591,13 +5816,25 @@ mod tests {
             let _ = stuck.recv();
             true
         };
-        let first = ensure_folder_with(&ctx, &mut gate, Outcome::Done(7), &folder, is_dir);
+        let first = ensure_folder_with(
+            &ctx,
+            &mut gate,
+            Outcome::Done(7),
+            &folder,
+            Nth::FIRST,
+            is_dir,
+        );
         assert!(matches!(first, Outcome::Open));
         for _ in 0..1000 {
             // A second Start meanwhile changes nothing; nor does a frame without one.
-            let again = ensure_folder_with(&ctx, &mut gate, Outcome::Done(8), &folder, |_| {
-                unreachable!("looked at once")
-            });
+            let again = ensure_folder_with(
+                &ctx,
+                &mut gate,
+                Outcome::Done(8),
+                &folder,
+                Nth::FIRST,
+                |_| unreachable!("looked at once"),
+            );
             assert!(matches!(again, Outcome::Open));
         }
         assert!(
@@ -5608,7 +5845,7 @@ mod tests {
         drop(release);
         let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
         let done = loop {
-            match ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, |_| {
+            match ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, Nth::FIRST, |_| {
                 unreachable!("looked at once")
             }) {
                 Outcome::Done(v) => break Some(v),
@@ -5618,12 +5855,21 @@ mod tests {
         };
         assert_eq!(done, Some(7), "the first Start's");
         // Let go: the next Start is looked at afresh.
-        let next = ensure_folder_with(&ctx, &mut gate, Outcome::Done(9), &folder, |_| true);
+        let next = ensure_folder_with(
+            &ctx,
+            &mut gate,
+            Outcome::Done(9),
+            &folder,
+            Nth::FIRST,
+            |_| true,
+        );
         let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
         let mut next = next;
         while !matches!(next, Outcome::Done(_)) && std::time::Instant::now() < until {
             std::thread::sleep(std::time::Duration::from_millis(2));
-            next = ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, |_| true);
+            next = ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, Nth::FIRST, |_| {
+                true
+            });
         }
         assert!(matches!(next, Outcome::Done(9)));
     }
