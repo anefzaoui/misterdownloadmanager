@@ -100,15 +100,12 @@ On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with Ope
 
 ## My antivirus or VirusTotal flags MDM {#antivirus}
 
-It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: a detection name with `AI`, `ML`, `Gen` or `Heur` in it (such as `Malware.AI.…`, `Gen:…` or `Heur.…`) is such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.
+It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as `Malware.AI`, `Gen:`, `ML` or `Heur` mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.
 
 **Check that your copy is ours:**
 
 1. Download MDM only from [misterdownloadmanager.com](https://misterdownloadmanager.com/download.html) or [GitHub Releases](https://github.com/anefzaoui/misterdownloadmanager/releases).
-2. Get your file's SHA-256 checksum, with the downloaded file's name in place of `<file>`:
-   - Windows, in PowerShell: `Get-FileHash <file>`
-   - Linux: `sha256sum <file>`
-   - macOS: `shasum -a 256 <file>`
+2. Get your file's SHA-256 checksum, with the downloaded file's name in place of `<file>`: on Windows, in PowerShell, `Get-FileHash <file>`; on Linux, `sha256sum <file>`; on macOS, `shasum -a 256 <file>`.
 3. Compare it with the same file's line in that release's `SHA256SUMS.txt` (capital or small letters don't matter). To be sure the list itself is ours, check its signature, `SHA256SUMS.txt.sig`, with MDM's release key: see [Check your download](https://misterdownloadmanager.com/download.html#check-your-download).
 
 If they match, it is the file we published. MDM is open source and built in public: every release is built from the [public source code](https://github.com/anefzaoui/misterdownloadmanager) by GitHub Actions, on GitHub's servers, with [every build's log](https://github.com/anefzaoui/misterdownloadmanager/actions) there to see, so anyone can read what went into it and build it again.
