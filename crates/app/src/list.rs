@@ -1278,7 +1278,7 @@ pub fn show(
         let idx = ((pos.y - body_top + shown_scroll) / row_h()).floor() as usize;
         (idx < rows.len()).then_some(idx)
     };
-    let mods = ui.input(|i| i.modifiers);
+    let mods = click_modifiers(ui);
     if let Some(on_screen) = resp.interact_pointer_pos()
         && let pos = english(on_screen)
         && body.contains(pos)
@@ -1754,9 +1754,62 @@ fn move_column(st: &mut ListState, cols: &[(usize, f32, f32)], col: usize, x: f3
     st.order = shown.into_iter().chain(hidden).collect();
 }
 
+/// Ctrl, Shift and Alt as a click had them: as the primary button went down in this frame, else
+/// as it went up, else as they are now. A slow frame (software rendering, a loaded machine) can
+/// take the key going down, the click and the key going up all at once, and the frame's own
+/// modifiers then miss the key the click was made with (#1734).
+pub(crate) fn click_modifiers(ui: &Ui) -> egui::Modifiers {
+    ui.input(|i| modifiers_of_click(&i.events, i.modifiers))
+}
+
+fn modifiers_of_click(events: &[egui::Event], now: egui::Modifiers) -> egui::Modifiers {
+    let primary = |down: bool| {
+        events.iter().rev().find_map(|e| match e {
+            egui::Event::PointerButton {
+                button: egui::PointerButton::Primary,
+                pressed,
+                modifiers,
+                ..
+            } if *pressed == down => Some(*modifiers),
+            _ => None,
+        })
+    };
+    primary(true).or_else(|| primary(false)).unwrap_or(now)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1734: a slow frame takes Ctrl going down, the click and Ctrl going up at once: the click
+    /// still has its Ctrl.
+    #[test]
+    fn a_click_keeps_the_keys_it_was_made_with() {
+        let click = |pressed, modifiers| egui::Event::PointerButton {
+            pos: Pos2::ZERO,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers,
+        };
+        let (none, ctrl, shift) = (
+            egui::Modifiers::NONE,
+            egui::Modifiers::COMMAND,
+            egui::Modifiers::SHIFT,
+        );
+        assert_eq!(
+            modifiers_of_click(&[click(true, ctrl), click(false, ctrl)], none),
+            ctrl
+        );
+        // Pressed with Shift, which went up before the button: the press's.
+        assert_eq!(
+            modifiers_of_click(&[click(true, shift), click(false, none)], none),
+            shift
+        );
+        // Pressed in an earlier frame: the release's.
+        assert_eq!(modifiers_of_click(&[click(false, shift)], none), shift);
+        // No click in this frame (a key moved the selection): the keys as they are.
+        assert_eq!(modifiers_of_click(&[], ctrl), ctrl);
+    }
 
     #[test]
     fn data_cells_keep_their_own_direction() {

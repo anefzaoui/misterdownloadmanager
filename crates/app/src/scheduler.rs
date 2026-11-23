@@ -1204,7 +1204,7 @@ impl Scheduler {
             },
         );
         // Ctrl-click adds or drops a file, Shift-click picks a run, Ctrl+A picks them all.
-        let mods = ui.input(|i| i.modifiers);
+        let mods = crate::list::click_modifiers(ui);
         if let Some(i) = ev.clicked.or(ev.picked.filter(|_| ev.context.is_none())) {
             let id = rows[i].id;
             if mods.shift {
