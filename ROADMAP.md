@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Website and help: what to do when an antivirus flags MDM (why it happens, how to check your
+  copy against the release's checksums, where to report the false alarm), linked from the README
 - ✅ Website: the home page shows MDM's one-minute film under its first view; YouTube's player
   loads only when the visitor presses play, and the privacy policy says so
 - ✅ The README opens with MDM's film: its picture, under the download buttons, plays it on
