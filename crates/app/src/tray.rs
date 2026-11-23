@@ -11,6 +11,7 @@ use std::sync::{Arc, Mutex};
 
 mod beside;
 mod picture;
+mod running;
 mod watch;
 
 #[cfg(windows)]
@@ -157,6 +158,10 @@ struct Native {
     /// "Downloads in progress": one entry per running download, rebuilt when they change.
     downloads: Submenu,
     download_ids: Arc<Mutex<Vec<(MenuId, u64)>>>,
+    /// The second icon, there while downloads run: its menu lists them by name, and a click on
+    /// one shows its window (IDM's two icons). Made and dropped as the first download starts and
+    /// the last ends.
+    running_icon: std::cell::RefCell<Option<TrayIcon>>,
     /// Every entry with its English text, to translate again when the language changes.
     labels: Vec<(Entry, &'static str)>,
     /// What [`Tray::icon`] last saw and when: the minimize path asks every frame, and the menu
@@ -567,12 +572,18 @@ impl Native {
             )
         };
 
+        // The icons' events say which one they came from.
+        let own_id = tray.id().clone();
         let wake = |tx: &Sender<TrayCmd>, ctx: &egui::Context| (tx.clone(), ctx.clone());
         let (icon_tx, icon_ctx) = wake(&tx, ctx);
         // Windows sends a double click as down, up, double click, up: the last up is part of the
         // double click, not a click of its own (it would open the panel again over the window).
         let doubled: Mutex<Option<std::time::Instant>> = Mutex::new(None);
         TrayIconEvent::set_event_handler(Some(move |e: TrayIconEvent| {
+            // The downloads icon's own menu opens by itself: its clicks are not the app icon's.
+            if *e.id() != own_id {
+                return;
+            }
             let cmd = match e {
                 TrayIconEvent::Click {
                     button: MouseButton::Left,
@@ -636,6 +647,7 @@ impl Native {
             stop_queue,
             downloads,
             download_ids,
+            running_icon: Default::default(),
             labels,
             #[cfg(target_os = "macos")]
             visible_checked: Default::default(),
@@ -697,6 +709,51 @@ impl Native {
             *d = ids;
         }
         self.downloads.set_enabled(!running.is_empty());
+        self.set_running_icon(running);
+    }
+
+    /// The second icon: made with the first running download, its menu the running ones' names
+    /// (a click on one is [`TrayCmd::ShowDownload`], through the menu's event handler), gone with
+    /// the last. Its tip is fixed, so no later change waits for the shell (#747).
+    fn set_running_icon(&self, running: &[(u64, String)]) {
+        let mut held = self.running_icon.borrow_mut();
+        if running.is_empty() {
+            *held = None;
+            return;
+        }
+        let menu = Menu::new();
+        // The same lookup as the first icon's submenu has: both menus' items show a window.
+        for (id, name) in running {
+            let item = MenuItem::new(short(name), true, None);
+            if let Ok(mut d) = self.download_ids.lock() {
+                d.push((item.id().clone(), *id));
+            }
+            menu.append(&item).ok();
+        }
+        if let Some(icon) = held.as_ref() {
+            icon.set_menu(Some(Box::new(menu)));
+            return;
+        }
+        #[cfg(windows)]
+        let px = crate::win32::tray_icon_px().1;
+        #[cfg(not(windows))]
+        let px = picture::fitting();
+        let Ok(icon) = tray_icon::Icon::from_rgba(running::picture(px), px, px) else {
+            return;
+        };
+        let tip = crate::i18n::os_text(crate::i18n::t("Downloads in progress"));
+        let builder = TrayIconBuilder::new()
+            .with_id("mdm-running")
+            .with_menu(Box::new(menu))
+            .with_menu_on_left_click(true)
+            .with_tooltip(tip)
+            .with_icon(icon);
+        #[cfg(not(any(windows, target_os = "macos")))]
+        let builder = builder.with_title(crate::i18n::t("Downloads in progress"));
+        match builder.build() {
+            Ok(icon) => *held = Some(icon),
+            Err(e) => tracing::warn!("downloads icon: not made: {e}"),
+        }
     }
 
     /// The Speed Limiter checks.

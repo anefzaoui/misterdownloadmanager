@@ -7413,7 +7413,10 @@ mod tests {
     fn a_file_names_extension_is_isolated_left_to_right() {
         let shown = file_name_bidi("ليه؟.mp4");
         assert!(shown.ends_with(&crate::i18n::ltr(".mp4")), "{shown:?}");
-        assert!(shown.starts_with(&crate::i18n::isolate("ليه؟")), "{shown:?}");
+        assert!(
+            shown.starts_with(&crate::i18n::isolate("ليه؟")),
+            "{shown:?}"
+        );
         assert_eq!(file_name_bidi("noext"), crate::i18n::isolate("noext"));
     }
 
