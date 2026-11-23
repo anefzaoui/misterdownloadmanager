@@ -2030,6 +2030,7 @@ button:focus-visible { outline: none; }
     if (!attach()) return hide(true);
     lastOver = Date.now();
     pill.classList.remove("faint");
+    clearTimeout(hideTimer);
     root.style.setProperty("display", "block", "important");
     const c = describeNow(v);
     if (!PRIVATE && !usable(looks.get(c.key))) scheduleLook(v);
@@ -2059,10 +2060,15 @@ button:focus-visible { outline: none; }
     cancelAnimationFrame(raf);
     raf = 0;
     const was = video;
-    setTimeout(() => {
+    // Out of the layout once faded, unless it was shown again meanwhile: a show between this
+    // and its frame (the pointer's move landing just after a fullscreen change hid it) adds
+    // "shown" only in its next frame, and this would have taken it away under the pointer.
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
       if (!pill.classList.contains("shown") && video === was) root.style.setProperty("display", "none", "important");
     }, now || reduced ? 0 : 140);
   }
+  let hideTimer = 0;
 
   // What the button sends for `v` (its rectangle `r`): see `download`.
   function describe(v, r) {
@@ -2120,6 +2126,12 @@ button:focus-visible { outline: none; }
     const now = Date.now();
     if (over) lastOver = now;
     const wanted = onButton || menuOpen || Boolean(dragging) || keyboardOn();
+    // Off the video (and not on the button): its early look-up waits no more, as when it went at
+    // once (a pass over a preview asks nothing, #1053); the click and the menu still ask.
+    if (!over && !wanted && lookingFor) {
+      clearTimeout(lookTimer);
+      lookingFor = null;
+    }
     const fade = fadeState(wanted, over, now - lastMove, now - lastOver, IDLE_MS, LEAVE_MS, FAINT_MS);
     if (fade === "gone") return hide();
     pill.classList.toggle("faint", fade === "faint");

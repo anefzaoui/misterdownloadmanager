@@ -106,11 +106,13 @@ export const release = path.join(process.env.CARGO_TARGET_DIR ? path.resolve(pro
 export const exe = (name) => path.join(release, process.platform === "win32" ? `${name}.exe` : name);
 // E2E_WORK: the run's own folder instead (its profiles, the instance's data and downloads).
 const work = process.env.E2E_WORK ? path.resolve(process.env.E2E_WORK) : path.join(root, "target", "e2e");
-const PORT = 8101;
+// E2E_PORT: the lab server's port (8101), and the proxy's the next one: a run beside another
+// worktree's, whose lab holds 8101.
+const PORT = Number(process.env.E2E_PORT) || 8101;
 const LAB = `http://127.0.0.1:${PORT}`;
 // The proxy case (#42): a proxy on 127.0.0.1 that alone knows the name lab.mdm.test (the lab
 // server), standing for a VPN extension's proxy.
-const PROXY_PORT = 8102;
+const PROXY_PORT = PORT + 1;
 const PROXY_HOST = "lab.mdm.test";
 const proxyLog = [];
 // The same proxy as a PAC script (Chromium's case: inline, or by its address on that proxy).

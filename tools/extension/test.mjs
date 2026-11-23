@@ -3361,8 +3361,12 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.ok(/const IDLE_MS = 1500;\s*const LEAVE_MS = 400;\s*const FAINT_MS = 3000;/.test(source), "its times");
     const tick = fn("tick");
     assert.ok(tick.includes("const wanted = onButton || menuOpen || Boolean(dragging) || keyboardOn();"), "tick: wanted while on it, its menu, a drag, the keyboard");
+    assert.ok(/if \(!over && !wanted && lookingFor\) \{\s*clearTimeout\(lookTimer\);\s*lookingFor = null;/.test(tick), "tick: off the video, the early look-up waits no more (#1053's pass asks nothing)");
     assert.ok(tick.includes('if (fade === "gone") return hide();') && tick.includes('pill.classList.toggle("faint", fade === "faint");'), "tick: faint, then gone");
     assert.ok(fn("show").includes('pill.classList.remove("faint");'), "show: whole again as the pointer moves over the video");
+    // A show right after a hide (the pointer's move landing just after a fullscreen change hid it)
+    // isn't taken away by the hide's delayed display: none.
+    assert.ok(fn("show").includes("clearTimeout(hideTimer);") && fn("hide").includes("hideTimer = setTimeout("), "show cancels a hide's pending display: none");
     assert.ok(/\.pill\.shown\.faint \{ opacity: \.3;/.test(source) && /\.pill\.shown\.faint:hover, \.pill\.shown\.faint:focus-within \{ opacity: 1;/.test(source), "faint: whole again under the pointer and the keyboard at once");
     assert.ok(/@media \(prefers-reduced-motion: reduce\) \{\s*\.pill \{ transition: none;/.test(source), "reduced motion: no fade's motion");
     ok("video.js: the button fades to faint, then goes; whole while wanted (#1735's feedback)");
