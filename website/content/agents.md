@@ -21,7 +21,7 @@ The site's [robots.txt](/robots.txt) lets every crawler in, and says so for AI i
 Content-Signal: search=yes, ai-input=yes, ai-train=yes
 ```
 
-Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood. The pictures of the app are its own windows.
+Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.
 
 ## APIs
 

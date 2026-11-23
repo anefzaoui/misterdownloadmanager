@@ -573,6 +573,17 @@ These ship in the next version.
   pages, read again at every build; visitors rate MDM from one to five stars on the site (change
   or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
   that keeps no IP address; only these ratings go into the structured data
+  ([#1784](https://github.com/anefzaoui/misterdownloadmanager/issues/1784))
+- ✅ Website for AI tools and agents: every page in Markdown at its `.md` address, Content Signals in
+  robots.txt (search, AI input and AI training allowed), an API catalog, a server card for MDM's
+  local MCP server, and a page that explains them
+  ([#1785](https://github.com/anefzaoui/misterdownloadmanager/issues/1785),
+  [#1786](https://github.com/anefzaoui/misterdownloadmanager/issues/1786),
+  [#1788](https://github.com/anefzaoui/misterdownloadmanager/issues/1788),
+  [#1789](https://github.com/anefzaoui/misterdownloadmanager/issues/1789))
+- 🔄 Website: `Link` headers on the home page for the API catalog, the sitemap and its Markdown
+  ([#1787](https://github.com/anefzaoui/misterdownloadmanager/issues/1787)); a page asked for with
+  `Accept: text/markdown` answered in Markdown (the Worker is written, not switched on)
 - ✅ The browser add-on's Download video button out of the way: **Automatic** size, the new
   default (round in a feed and over a small player, whole over a big one), faint as the pointer
   rests or leaves before it goes, movable outside the player and kept for each site, with
