@@ -306,6 +306,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Nếu một số tệp trong torrent đã có trong thư mục, MDM sẽ hỏi trước khi sử dụng chúng. Chọn <g1>Có</g1> để dùng các tệp đó cho torrent: MDM kiểm tra chúng, giữ lại những tệp khớp với torrent và tải xuống phần còn lại. Nhờ vậy, bạn có thể tiếp tục lượt tải xuống đã bắt đầu ở nơi khác hoặc chia sẻ các tệp mình đã có. Chọn <g2>Không</g2> (mặc định) để quay lại, chọn thư mục khác và tránh ghi đè lên tệp của bạn."
   },
+  "04347ca0f5af1b11": {
+   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
+   "text": "<g1>API tự động hóa của MDM</g1>, hoàn toàn không có trên trang web này: nó chạy bên trong ứng dụng, trên máy tính của người dùng, tắt cho đến khi họ bật lên, và chỉ trả lời ở đó, với một mã thông báo bí mật. <g2>Tài liệu</g2> và <g3>JSON Schema</g3> của nó."
+  },
   "043f6ef7d8d6d597": {
    "source": "Mister Download Manager is an interesting option for anyone looking for a modern, free and open-source download manager.",
    "text": "Mister Download Manager là một lựa chọn thú vị cho bất kỳ ai đang tìm kiếm một trình quản lý tải xuống hiện đại, miễn phí và mã nguồn mở."
@@ -822,6 +826,10 @@
    "source": "<g1>Cancel</g1> stops the download and closes the window. The download stays in the list and can be resumed.",
    "text": "<g1>Hủy</g1> dừng tải xuống và đóng cửa sổ. Lượt tải xuống vẫn còn trong danh sách và có thể tiếp tục."
   },
+  "0af7f5cd6adffe8b": {
+   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
+   "text": "Mister Download Manager đi kèm với một máy chủ <g1>MCP</g1>, <x2/>, để một trợ lý AI (Claude, Cursor, VS Code và các ứng dụng khác) có thể liệt kê, thêm, tạm dừng, tiếp tục và xóa các lượt tải xuống trong MDM đang chạy của người dùng. Đây là một máy chủ <g3>cục bộ</g3>: trợ lý khởi động nó trên máy tính của người dùng, bên cạnh ứng dụng, và nó chỉ giao tiếp với MDM ở đó. Không có máy chủ MCP nào trên trang web này. <g4>Thẻ máy chủ</g4> của nó mô tả nó, và <g5>Trợ lý AI</g5> nói cách thiết lập nó."
+  },
   "0afe7d2cb5cea1a9": {
    "source": "Portable mode — Mister Download Manager help",
    "text": "Chế độ di động — Trợ giúp Mister Download Manager"
@@ -950,6 +958,10 @@
    "source": "<g1>Proxy auto-config scripts (PAC) run in QuickJS</g1>, a much smaller JavaScript engine, with limits on memory and running time: a script that loops or grows forever now fails, as a broken script does (the download goes on with the default proxy settings), instead of holding it.",
    "text": "<g1>Các tập lệnh cấu hình tự động proxy (PAC) chạy trong QuickJS</g1>, một công cụ JavaScript nhỏ hơn nhiều, với giới hạn về bộ nhớ và thời gian chạy: một tập lệnh lặp hoặc phát triển vô hạn giờ đây sẽ thất bại, giống như một tập lệnh bị hỏng (lượt tải xuống tiếp tục với cài đặt proxy mặc định), thay vì giữ nó."
   },
+  "0c9da169d64e8998": {
+   "source": "MDM's MCP server",
+   "text": "Máy chủ MCP của MDM"
+  },
   "0cd4a41b7875f510": {
    "source": "Options → Archives: extract every archive, or only the packages that ask.",
    "text": "Tùy chọn → Lưu trữ: giải nén mọi tệp lưu trữ, hoặc chỉ các gói yêu cầu."
@@ -1053,6 +1065,10 @@
   "0e703708311ea645": {
    "source": "The thin edge around a country's flag",
    "text": "Đường viền mỏng quanh lá cờ quốc gia"
+  },
+  "0e8cf57250a871ec": {
+   "source": "Read the site",
+   "text": "Đọc trang web"
   },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
@@ -1574,6 +1590,10 @@
    "source": "If it says <g1>the file changed on the server</g1>, the file isn't the one MDM started with. Right-click → <g2>Redownload</g2> to start again from the beginning.",
    "text": "Nếu nó báo <g1>tệp đã thay đổi trên máy chủ</g1>, tệp không phải là tệp MDM đã bắt đầu. Nhấp chuột phải → <g2>Tải xuống lại</g2> để bắt đầu lại từ đầu."
   },
+  "1599478b71f60890": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
+   "text": "Một câu hỏi hoặc hành động không xác định sẽ được trả lời <x1/>, cũng như một câu hỏi khi API đang tắt (khi đó với <x2/>, để các chương trình kiểm tra: văn bản lỗi có thể thay đổi). Một mã thông báo sai sẽ được trả lời <x3/>. Khi MDM đã xử lý số lượng yêu cầu cùng lúc mà nó có thể, nó sẽ trả lời <x4/>: không có gì được thực hiện và dòng đó có thể được gửi lại sau một lát."
+  },
   "15b2bf48d7547b61": {
    "source": "Opened 480, done in 15.9 s<g1><g2>2</g2></g1>",
    "text": "Mở 480 kết nối, hoàn tất trong 15.9 s<g1><g2>2</g2></g1>"
@@ -1698,6 +1718,10 @@
    "source": "<g1>Scheduler and queues</g1><g2>Queues started and stopped by the clock, a few files at a time, the computer off at the end.</g2>",
    "text": "<g1>Bộ lập lịch và hàng đợi</g1><g2>Các hàng đợi được bắt đầu và dừng theo đồng hồ, một vài tệp một lúc, máy tính tắt khi kết thúc.</g2>"
   },
+  "1777ec4563260032": {
+   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
+   "text": "<g1><g2>sitemap.xml</g2></g1>: mọi trang, bằng mọi ngôn ngữ."
+  },
   "17834855ff83a05b": {
    "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> can't ask for that permission at the switch, so the extension has it from the install (Chrome counts it under the access to every site the extension already asks for, so it adds no line to the install prompt and the update asks for nothing new). The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy extension, a policy, the command line): a fixed server for the download's scheme (<x2/>, <x3/>, <x4/>, <x5/>), unless the address is on its bypass list, or its proxy auto-config script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes by its own Options. A QUIC proxy can't be shared.",
    "text": "<g1>Chrome, Edge, Brave, Opera và Vivaldi</g1> không thể hỏi quyền đó khi bật, vì vậy tiện ích có quyền đó ngay từ khi cài đặt (Chrome tính nó vào quyền truy cập mọi trang web mà tiện ích đã yêu cầu, vì vậy nó không thêm dòng nào vào lời nhắc cài đặt và bản cập nhật không yêu cầu gì mới). Nút bật/tắt không hỏi gì. MDM nhận proxy hiệu quả của trình duyệt, bất kể ai đã thiết lập nó (tiện ích VPN hoặc proxy, chính sách, dòng lệnh): một máy chủ cố định cho lược đồ tải xuống (<x2/>, <x3/>, <x4/>, <x5/>), trừ khi địa chỉ nằm trong danh sách bỏ qua của nó, hoặc tập lệnh cấu hình tự động proxy của nó (theo địa chỉ hoặc nội tuyến). Nếu không có proxy, hoặc proxy của hệ thống, không có gì được gửi và MDM sẽ hoạt động theo Tùy chọn của riêng nó. Proxy QUIC không thể chia sẻ."
@@ -1777,6 +1801,10 @@
   "18b71bddc92d0eb7": {
    "source": "<g1>A Linux test machine, scripted</g1> (part of <g2>#164</g2>): <x3/> sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host (<x4/>: hardware, headless start, linked clones; <x5/>: packages, Rust, Node, the browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a quick test profile (<x6/>), and checks pull requests on it: windows shot and compared pixel by pixel (<x7/>, <x8/>, <x9/>), HLS and DASH hand-overs from the Snap Firefox and Google Chrome (<x10/>, <x11/>), the extension's proxy switch (<x12/>), hand-overs and the Scheduler while minimized, torrents without a network, and MDM's start-up time (<x13/>). Every change is now checked on Linux as on Windows. The machine also has copies on KDE Plasma, Cinnamon and XFCE (<x14/>), which get a build copied over instead of making one (<x15/>); a window harness shoots many windows from one running MDM in any language, mode and theme, with real clicks and keys inside the machine (<x16/>, <x17/>); and a store package is checked before it ships (<x18/>, <x19/>).",
    "text": "<g1>Máy kiểm thử Linux, có tập lệnh</g1> (một phần của <g2>#164</g2>): <x3/> thiết lập một máy tính để bàn Ubuntu 24.04 trong VirtualBox từ máy chủ Windows (<x4/>: phần cứng, khởi động không giao diện, bản sao liên kết; <x5/>: gói, Rust, Node, trình duyệt, tự động hóa giao diện người dùng, kho khóa đã mở khóa), xây dựng bất kỳ nhánh hoặc yêu cầu kéo nào ở đó với cấu hình kiểm thử nhanh (<x6/>), và kiểm tra các yêu cầu kéo trên đó: cửa sổ được chụp và so sánh từng pixel (<x7/>, <x8/>, <x9/>), chuyển giao HLS và DASH từ Snap Firefox và Google Chrome (<x10/>, <x11/>), công tắc proxy của tiện ích mở rộng (<x12/>), chuyển giao và Bộ lập lịch khi thu nhỏ, torrent không có mạng, và thời gian khởi động của MDM (<x13/>). Mọi thay đổi giờ đây đều được kiểm tra trên Linux như trên Windows. Máy cũng có các bản sao trên KDE Plasma, Cinnamon và XFCE (<x14/>), được sao chép bản dựng thay vì tạo mới (<x15/>); một bộ khung cửa sổ chụp nhiều cửa sổ từ một MDM đang chạy bằng bất kỳ ngôn ngữ, chế độ và chủ đề nào, với các cú nhấp và phím thực bên trong máy (<x16/>, <x17/>); và một gói cửa hàng được kiểm tra trước khi phát hành (<x18/>, <x19/>)."
+  },
+  "18bc8bff0f9a1963": {
+   "source": "For AI tools that read the website",
+   "text": "Dành cho công cụ AI đọc trang web"
   },
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
@@ -4790,6 +4818,10 @@
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "Bản sao tiện ích mở rộng từ Chrome Web Store không hiển thị nút <g1>Tải xuống video</g1> trên YouTube trước phiên bản 0.5.1. Từ 0.5.1 trở đi thì có. Trình duyệt của bạn tự cập nhật tiện ích mở rộng; để cập nhật sớm hơn, hãy mở trang tiện ích mở rộng của trình duyệt và cập nhật chúng tại đó."
   },
+  "427253cb798cd6a1": {
+   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
+   "text": "<g1>Xếp hạng của các cửa hàng trình duyệt</g1>: điểm xếp hạng, số lượt xếp hạng và người dùng mà <g2>cửa hàng tiện ích bổ sung Firefox</g2> và <g3>Chrome Web Store</g3> hiển thị cho tiện ích mở rộng của MDM, được đọc lại trong mỗi lần xây dựng trang web, cùng với ngày đọc. Chúng chỉ tồn tại dưới dạng văn bản trang."
+  },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
    "text": "<g1>Giải nén khi hoàn tất</g1>: tự động được đánh dấu khi gói chứa một tệp lưu trữ."
@@ -6078,6 +6110,10 @@
    "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
    "text": "Trình lấy liên kết liệt kê các liên kết của một trang theo gói, với tên, kích thước và trạng thái trực tuyến của chúng"
   },
+  "5586e9c27d735100": {
+   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
+   "text": "Cách các trợ lý AI, tác nhân và công cụ tìm kiếm có thể đọc misterdownloadmanager.com: mọi trang ở định dạng Markdown, llms.txt, những gì trang web cho phép, danh mục API của nó, máy chủ MCP riêng của MDM và cách hoạt động của xếp hạng sao trên trang web."
+  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "Tiện ích ghi nhận địa chỉ của các luồng video (danh sách phát HLS và DASH) mà trình phát trên trang tải, lưu trong bộ nhớ cho tab đó, để nút <g1>Tải xuống video</g1> có thể gửi luồng đến MDM. Nút này chỉ đọc trang để tìm trình phát video và âm thanh, rồi đặt nút vào đúng vị trí. Khi bạn nhấp vào nút, tiện ích gửi địa chỉ trang, địa chỉ video, tiêu đề trang, cookie của trang web, trang nhúng trình phát và User-Agent của trình duyệt đến MDM."
@@ -6569,6 +6605,10 @@
   "5cc1a6448e1ca4fc": {
    "source": "Windows 10 and 11",
    "text": "Windows 10 và 11"
+  },
+  "5cc5fcb12af24878": {
+   "source": "<g1>/.well-known/api-catalog</g1> lists them (RFC 9727):",
+   "text": "<g1>/.well-known/api-catalog</g1> liệt kê chúng (RFC 9727):"
   },
   "5cc90886ac3d306a": {
    "source": "The toolbar's top line",
@@ -7338,6 +7378,10 @@
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "Để định tuyến <g1>mọi thứ</g1> qua một mạng khác, hãy dùng VPN cho toàn bộ máy tính."
   },
+  "678b5f7a1583e7d1": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
+   "text": "<g1>Menu của nó</g1> (mũi tên bên cạnh, hoặc <g2>↓</g2> khi nút được chọn bằng bàn phím): tiêu đề, độ dài và trang web của video; các bộ lọc của nó, khi chất lượng khác nhau: <g3>Tất cả</g3>, <g4>Video</g4> (hình ảnh có âm thanh) hoặc <g5>Chỉ âm thanh</g5>, và loại tệp (MP4, WEBM, M4A, MP3...) hoặc codec của hình ảnh (AV1, VP9, H.264), được giữ lại cho trang web; <g6>Tải xuống chất lượng tốt nhất</g6> trước (chất lượng tốt nhất trong số những gì các bộ lọc giữ lại), sau đó là một dòng được đánh số cho mỗi chất lượng dưới <g7>VIDEO</g7> và <g8>ÂM THANH</g8>, với loại tệp, codec, tốc độ khung hình hoặc tốc độ bit và kích thước (<x9/> <x10/>, như cửa sổ Tải xuống video hiển thị), chất lượng tốt nhất được đánh dấu, và <g11>Tương thích nhất (H.264 + AAC)</g11> bên cạnh độ phân giải của chất lượng phát được ở mọi nơi (<g12>Chọn chất lượng</g12>); <g13>Tất cả chất lượng và phụ đề...</g13>, mở cửa sổ <g14>Tải xuống video từ một trang</g14>; sau đó là <g15>Đặt lại nút về vị trí cũ</g15> (sau khi bạn đã di chuyển nó trên trang web), <g16>Ẩn trên video này</g16> (<g17>Esc</g17>), <g18>Không bao giờ trên</g18> trang web (MDM ghi nhớ trang web), và <g19>Cài đặt nút...</g19>, mở Tùy chọn của MDM. Các phím mũi tên di chuyển qua menu, <g20>Enter</g20> chọn, <g21>Esc</g21> đóng menu."
+  },
   "67b09013b9c7d05d": {
    "source": "Yes downloads both helpers in the background, once.",
    "text": "Chọn Có để tải xuống cả 2 công cụ hỗ trợ trong nền, chỉ 1 lần."
@@ -7938,6 +7982,10 @@
    "source": "<g1>A window closed with its title bar's × no longer turns black first</g1> (<g2>#207</g2>): every dialog and the progress window turned black for a moment when closed with the × or Alt+F4, rather than with Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on Windows. The window now keeps its contents until it goes.",
    "text": "<g1>Cửa sổ đóng bằng nút × trên thanh tiêu đề không còn chuyển sang màu đen trước</g1> (<g2>#207</g2>): mọi hộp thoại và cửa sổ tiến trình đều chuyển sang màu đen trong giây lát khi đóng bằng nút × hoặc Alt+F4, thay vì bằng Esc hoặc một trong các nút của nó: từ một đến vài giây trên Linux, vài phần trăm giây trên Windows. Cửa sổ giờ đây giữ nguyên nội dung của nó cho đến khi biến mất."
   },
+  "6f6dde6f363e5240": {
+   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
+   "text": "<g1>Xếp hạng của trang web này</g1>: khách truy cập xếp hạng MDM từ một đến năm sao, có thể thay đổi xếp hạng bằng cách chọn lại, hoặc xóa nó. Bên cạnh các ngôi sao: điểm trung bình, số lượt xếp hạng và số người đã cho mỗi số sao. Chỉ những thông tin này mới được đưa vào dữ liệu có cấu trúc của trang cho các công cụ tìm kiếm."
+  },
   "6f6f84e7ad3660d6": {
    "source": "Numbers and dates",
    "text": "Số và ngày tháng"
@@ -7994,9 +8042,17 @@
    "source": "<g1>Torrents: file names are checked more strictly</g1> (<g2>#40</g2>): a torrent with names the system can't write safely is refused, saying which name, and so are torrents kept from an earlier run.",
    "text": "<g1>Torrent: tên tệp được kiểm tra nghiêm ngặt hơn</g1> (<g2>#40</g2>): một torrent có tên mà hệ thống không thể ghi an toàn sẽ bị từ chối, nêu rõ tên nào, và cả các torrent được giữ từ lần chạy trước đó cũng vậy."
   },
+  "703d892a5281778d": {
+   "source": "What you may do with it",
+   "text": "Những gì bạn có thể làm với nó"
+  },
   "70424cf3215714b2": {
    "source": "A button's text",
    "text": "Văn bản của nút"
+  },
+  "704b09ba9997e7dc": {
+   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
+   "text": "Ngoài máy chủ trong ứng dụng, trang web mô tả nó cho các công cụ AI trong thẻ máy chủ MCP, <g1>/.well-known/mcp/server-card.json</g1>, và có mọi trang ở định dạng Markdown (<x2/> bên cạnh <x3/>), để trợ lý có thể đọc cách thiết lập MDM: xem <g4>Dành cho công cụ và tác nhân AI</g4>. Không có máy chủ MCP trên trang web: máy chủ luôn chạy trên máy tính của bạn, bên cạnh ứng dụng."
   },
   "70950300e88df4b7": {
    "source": "An API for the running app",
@@ -8414,6 +8470,10 @@
    "source": "Download acceleration and crash-safe resume — Mister Download Manager",
    "text": "Tăng tốc tải xuống và tiếp tục an toàn sau sự cố — Mister Download Manager"
   },
+  "7691b6b987bd0ca0": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Nút này không làm vướng víu: nó chỉ hiện ra khi bạn di chuyển con trỏ chuột qua video (hoặc trình phát đang được chọn bằng bàn phím; <g1>Tab</g1> sau đó di chuyển đến nút), mờ đi 1,5 giây sau khi con trỏ dừng lại, hoặc một lát sau khi rời khỏi video, và biến mất sau 3 giây; khi mờ, nó vẫn ở đó để bạn tìm thấy, và chỉ vào nó sẽ làm nó hiện rõ trở lại. Nó không bao giờ mờ đi khi menu của nó đang mở, và với chế độ giảm chuyển động của hệ thống, nó thay đổi mà không có hiệu ứng mờ. Nó bỏ qua các video nhỏ và các đoạn lặp ngắn không tiếng (ảnh động, hình nền). Nó không che các nút riêng của trang: khi một nút nằm dưới bất kỳ phần nào của góc của nó (nút phản hồi hoặc cài đặt của trình phát, nút xem sau của hình thu nhỏ), nó sẽ chiếm góc trống tiếp theo và giữ nguyên vị trí đó trong khi trình phát hiển thị và ẩn các nút của nó, để nó không di chuyển khi bạn chạm vào. Trên một bản xem trước phát khi con trỏ ở trên hình thu nhỏ (trang chủ YouTube, tìm kiếm, kênh), trang sẽ dừng bản xem trước khi con trỏ chạm vào nút; nút vẫn ở vị trí cũ khi con trỏ ở trên đó, và một cú nhấp chuột sẽ tải xuống video của bản xem trước đó. Phát hoặc tạm dừng video không làm nó hiện lại. Khi cài đặt (<g2>Kích thước nút: Tự động</g2> trong Tùy chọn, bên dưới), nó chỉ là logo của MDM, mũi tên và <g3>✕</g3> trên video trong nguồn cấp dữ liệu (Facebook, X, LinkedIn, Instagram, Reddit, trang chủ YouTube và tương tự) và trên trình phát nhỏ, và toàn bộ nút, với chữ, trên trình phát lớn như trang xem; trên video rộng dưới 360 pixel, hoặc nơi chữ không vừa, nó luôn là nút tròn đó. <g4>Đầy đủ</g4> giữ chữ của nó ở bất cứ đâu chúng vừa; <g5>Thu gọn</g5> biến nó thành nút tròn trên mọi video. Ở chế độ toàn màn hình, nó đi theo video khi trình phát cho phép, và khi vào toàn màn hình, nó không làm vướng víu cho đến khi bạn di chuyển con trỏ lần nữa."
+  },
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>Tắt</g1> (mặc định) — yt-dlp chỉ lấy cookie từ tiện ích mở rộng của trình duyệt khi bạn sử dụng nút trên video."
@@ -8525,6 +8585,10 @@
   "7846a58f8fbe7e95": {
    "source": "Translated from Turkish",
    "text": "Dịch từ tiếng Thổ Nhĩ Kỳ"
+  },
+  "784a58b4ccb32fc0": {
+   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
+   "text": "<g1>Tải xuống lại</g1> sẽ tải lại một tệp từ đầu, từng tệp một. Tệp đã hoàn tất vẫn giữ nguyên trong khi bản sao mới đang được tải về, và bản sao mới sẽ thay thế bản cũ, với cùng tên, chỉ khi nó hoàn tất: nếu quá trình tải xuống mới thất bại hoặc bạn dừng nó, bạn vẫn còn tệp của mình. Nếu một chương trình khác đang mở tệp đó vào thời điểm đó (trên Windows), MDM sẽ giữ cả hai, lưu bản sao mới bên cạnh với một số (<x2/>) và thông báo cho bạn. Torrent, video và thư viện hình ảnh không có tính năng này: <g3>Kiểm tra lại tệp</g3> của torrent sẽ tìm và tải các phần bị hỏng, và <g4>Tiếp tục tải xuống</g4> của thư viện đã hoàn tất sẽ tải các tệp còn thiếu."
   },
   "7868f11f6b965f60": {
    "source": "<g1>Windows on ARM</g1> (PCs with a Snapdragon or another ARM processor). On Windows 11 the x64 files run there too, translated by Windows, more slowly. The ARM64 setup installed over the x64 one replaces it; your list and settings stay, as they are kept in your profile, not with the program.",
@@ -9102,6 +9166,10 @@
    "source": "<g1>Downloads</g1>: MDM's newest downloads (see <g2>Recent downloads</g2>, below).",
    "text": "<g1>Tải xuống</g1>: Các lượt tải xuống mới nhất của MDM (xem <g2>Tải xuống gần đây</g2>, bên dưới)."
   },
+  "7fc30b1ddac6d981": {
+   "source": "For AI tools and agents — Mister Download Manager",
+   "text": "Dành cho công cụ và tác nhân AI — Mister Download Manager"
+  },
   "7fc6f4be3515bc1a": {
    "source": "<g1>Help → Check for updates...</g1> — <g2>Check for updates at every start</g2> is in that window.",
    "text": "<g1>Trợ giúp → Kiểm tra bản cập nhật...</g1> — <g2>Kiểm tra bản cập nhật mỗi khi khởi động</g2> nằm trong cửa sổ đó."
@@ -9165,10 +9233,6 @@
   "806bd0646731ef21": {
    "source": "Fields (besides <x1/>)",
    "text": "Các trường (ngoài <x1/>)"
-  },
-  "807205b219bcd9d5": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
-   "text": "<g1>Menu của nút</g1> (mũi tên bên cạnh, hoặc <g2>↓</g2> khi nút được chọn bằng bàn phím): tiêu đề, độ dài và trang web của video; <g3>Tải xuống chất lượng tốt nhất</g3> đầu tiên, sau đó là một dòng được đánh số cho mỗi chất lượng dưới <g4>VIDEO</g4> và <g5>AUDIO</g5>, với loại tệp, codec, tốc độ khung hình hoặc bitrate và kích thước của nó (<x6/> <x7/>, như cửa sổ Tải xuống video hiển thị), chất lượng tốt nhất được đánh dấu, và <g8>Tương thích nhất (H.264 + AAC)</g8> bên cạnh độ phân giải của video phát được ở mọi nơi (<g9>Chọn chất lượng</g9>); <g10>Tất cả chất lượng và phụ đề...</g10>, mở cửa sổ <g11>Tải xuống video từ một trang</g11>; sau đó là <g12>Ẩn trên video này</g12> (<g13>Esc</g13>), <g14>Không bao giờ trên</g14> trang web này (MDM ghi nhớ trang web), và <g15>Cài đặt nút...</g15>, mở Tùy chọn của MDM. Các phím mũi tên di chuyển trong menu, <g16>Enter</g16> chọn, <g17>Esc</g17> đóng menu."
   },
   "808ac1f47da4b1bc": {
    "source": "A download's progress.",
@@ -9754,6 +9818,10 @@
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "Nhấp vào <g1>Cài đặt</g1>, sau đó <g2>Hoàn tất</g2> để khởi động MDM."
   },
+  "888c81b1f49716a1": {
+   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
+   "text": "<g1><g2>Đánh giá MDM</g2></g1> — từ một đến năm sao trên trang chủ hoặc trang tải xuống của trang web; chọn lại để thay đổi đánh giá của bạn, hoặc xóa nó."
+  },
   "888f93dc8f248ae4": {
    "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
    "text": "<g1>Tệp dữ liệu sự cố (<x2/>)</g1> là ảnh chụp trạng thái MDM tại thời điểm đó. Tệp này giúp ích nhiều nhất cho nhà phát triển, nhưng có thể chứa một phần dữ liệu MDM lưu trong bộ nhớ, chẳng hạn như địa chỉ tải xuống, cookie và mật khẩu đã lưu. Tệp chỉ được đính kèm khi bạn chọn <g3>Đính kèm cả dữ liệu sự cố</g3>."
@@ -10061,6 +10129,10 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "Hệ thống"
+  },
+  "8d0ba2eee06a5511": {
+   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>Di chuyển nó</g1>: kéo nó bằng các chấm của nó đến một góc khác hoặc dọc theo cạnh của video, hoặc ra ngoài trình phát, phía trên, phía dưới hoặc bên cạnh nó (đối với một trang web che trình phát của nó hoặc vẽ các điều khiển riêng của nó ở vị trí nút sẽ ở); khi bạn kéo, cạnh và các điểm nó bám vào (các góc và giữa) sẽ hiển thị. Bên ngoài trình phát, nó vẫn ở bên trong trên cạnh đó khi cửa sổ không có chỗ ở đó (trình phát ở đầu cửa sổ, toàn màn hình). Nó vẫn ở nơi bạn đặt nó trên trang web đó; <g2>Đặt lại nút về vị trí cũ</g2> trong menu sẽ đưa nó trở lại, và cửa sổ bật lên của tiện ích bổ sung có <g3>Cài đặt → Nút tải xuống trên video → Đặt lại</g3> cho mọi trang web (cả các bộ lọc của nó)."
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10574,10 +10646,6 @@
    "source": "Where there is no tray",
    "text": "Khi không có khay"
   },
-  "94d1eda28d7a14bb": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
-   "text": "<g1>Tùy chỉnh bảng điều khiển tải xuống MDM trong trình duyệt → Sửa...</g1> — nút tải xuống trên video ở các trang web: tắt nó đi, chọn <g2>Kích thước nút</g2> (<g3>Đầy đủ</g3>, hiển thị chữ nếu vừa, hoặc <g4>Thu gọn</g4>, chỉ hiển thị logo, mũi tên và ✕ trên mỗi video), hoặc liệt kê các trang web không bao giờ hiển thị nút này (phân cách bằng dấu cách; các ký tự đại diện như <x5/>, <x6/> hoặc <x7/> hoạt động). Xem <g8>Tích hợp trình duyệt</g8>."
-  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>Cửa sổ bị treo vài giây khi ghi một tệp tải xuống lớn</g1>: MDM lưu danh sách trên luồng của cửa sổ, nên quá trình lưu phải chờ đĩa. Giờ đây, MDM lưu trên một luồng riêng (các báo cáo sự cố mới đã giúp phát hiện vấn đề này)."
@@ -10693,6 +10761,10 @@
   "96305159e842a657": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45). A theme is a light and a dark palette, metrics, control styles and an icon style (<x1/>):",
    "text": "Mọi màu sắc và kích thước mà một điều khiển được vẽ đều đến từ chủ đề đang hoạt động (#45). Một chủ đề là một bảng màu sáng và tối, các số liệu, kiểu điều khiển và kiểu biểu tượng (<x1/>):"
+  },
+  "9632de50273e0f02": {
+   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
+   "text": "<g1>Xếp hạng sao của trang web</g1>, tại <x2/>, được mô tả trong <g3>OpenAPI</g3>. Bất kỳ ai cũng có thể đọc các con số; việc xếp hạng dành cho các trang của trang web này (bên dưới)."
   },
   "963552ab075ccbdb": {
    "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
@@ -11310,6 +11382,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Bảy lượt tải xuống, mỗi lượt được cả hai ứng dụng chạy ít nhất bảy lần. Thanh biểu thị nửa giữa của các lượt chạy, đường biểu thị giá trị trung vị."
   },
+  "9e42b66c081a9f75": {
+   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
+   "text": "<g1><g2>llms.txt</g2></g1>: Mister Download Manager là gì, trong vài dòng, và các trang chính. <g3><g4>llms-full.txt</g4></g3>: các trang trợ giúp và câu trả lời cho các câu hỏi thường gặp trong một tệp."
+  },
   "9e4744c9b576debc": {
    "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
    "text": "Truy cập một trang web và nhấp vào một liên kết tải xuống, ví dụ tệp ZIP hoặc EXE: MDM sẽ mở <g1>Thông tin tệp tải xuống</g1>. Nhấp vào <g2>Bắt đầu tải xuống</g2>."
@@ -11662,6 +11738,10 @@
    "source": "480 connections against 2.",
    "text": "480 kết nối so với 2."
   },
+  "a2f672d1532ccb2b": {
+   "source": "Star ratings",
+   "text": "Xếp hạng sao"
+  },
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Tìm hiểu về danh sách tải xuống →"
@@ -11925,6 +12005,10 @@
   "a61e186132bdafc0": {
    "source": "If the browser doesn't hand downloads over →",
    "text": "Nếu trình duyệt không chuyển giao tệp tải xuống →"
+  },
+  "a64c37b28be78aa0": {
+   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
+   "text": "Mỗi khách truy cập chỉ được xếp hạng một lần, và không có văn bản tự do. Xếp hạng được kiểm tra bởi Cloudflare Turnstile (một người, không phải một tập lệnh), và một khách truy cập có thể xếp hạng hoặc xóa tối đa tám lần trong mười phút. Dịch vụ xếp hạng giữ lại số sao và một hàm băm đã được thêm muối của địa chỉ IP của khách truy cập, để cùng một khách truy cập thay đổi xếp hạng của họ thay vì thêm một xếp hạng mới; nó không bao giờ giữ lại chính địa chỉ đó. <g1>Chính sách quyền riêng tư</g1> cũng nói như vậy."
   },
   "a656f8bb2618d9d8": {
    "source": "<g1>Choose columns:</g1> right-click any column title and tick the ones you want. <g2>Reset columns</g2> in the same menu puts them back as they first were.",
@@ -13018,6 +13102,10 @@
    "source": "Deleting downloads",
    "text": "Xóa bản tải xuống"
   },
+  "b4b12e00de9fb265": {
+   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
+   "text": "Một lệnh (được trả lời <x1/>) có thể mang theo một <x2/> của riêng bạn: chữ cái, chữ số và <x3/>, tối đa 64 ký tự, khác nhau cho mỗi lệnh. Nếu câu trả lời của nó không quay lại (dòng bị đóng hoặc hết thời gian chờ), hãy gửi lại cùng một dòng với cùng <x4/>: MDM thực hiện một lần, bất kể có bao nhiêu dòng đó đến được, và trả lời <x5/> cho mỗi dòng. Nếu không có <x6/>, mỗi dòng là một lệnh mới. Lần khởi chạy thứ hai của chương trình (<x7/>, <x8/>) tự thực hiện điều này."
+  },
   "b4c6b4d600e8fca1": {
    "source": "The code that draws the windows is optimised for size (the engine stays optimised for speed), and the programs are optimised as a whole.",
    "text": "Mã vẽ cửa sổ được tối ưu hóa về kích thước (công cụ vẫn được tối ưu hóa về tốc độ), và các chương trình được tối ưu hóa tổng thể."
@@ -13714,6 +13802,10 @@
    "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
    "text": "Tải xuống một video. Không có <x1/> hoặc <x2/>, chất lượng tốt nhất, chất lượng mà cửa sổ Tải xuống video bắt đầu: với ffmpeg là hình ảnh tốt nhất với âm thanh tốt nhất được ghép vào (một trang web có hình ảnh và âm thanh tách rời, như Bilibili, cần ffmpeg cho video), nếu không thì là tệp tốt nhất có cả hai. <x3/> (hoặc <x4/>) lấy chiều cao đó, hoặc chiều cao gần nhất bên dưới mà trang cung cấp (nếu không thì là chiều cao gần nhất bên trên), và thông báo như vậy. <x5/> lấy chất lượng tương thích nhất, như <g6>Tương thích nhất (H.264 + AAC)</g6> của cửa sổ: hình ảnh H.264 tốt nhất với âm thanh AAC, trong một tệp MP4 phát được trên mọi trình chỉnh sửa, TV và điện thoại; một trang không có sẽ thông báo như vậy (không có gì được chuyển đổi). <x7/> lấy bộ chọn chất lượng từ <x8/> (<x9/> = tệp đơn tốt nhất; <x10/> = chỉ âm thanh như trang web có, không chuyển đổi; <x11/>, <x12/>, <x13/> hoặc <x14/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x15/> ở tốc độ bit biến đổi tốt nhất; <x16/> = dưới dạng Opus; <x17/> = dưới dạng FLAC, không mất dữ liệu nhưng không tốt hơn âm thanh của trang web; chuyển đổi cần ffmpeg). <x18/>: trình tải xuống riêng của MDM mang mỗi luồng mà yt-dlp tìm thấy qua số lượng kết nối này (mặc định là 8, từ 1 đến 128), một luồng chia nhỏ (HLS, DASH) với số lượng mảnh này cùng một lúc. <x19/> lưu phụ đề bên cạnh: mã ngôn ngữ từ <x20/> (<x21/>), hoặc <x22/> cho mọi ngôn ngữ mà người tải lên đã cung cấp; <x23/> thay vào đó lấy phụ đề tự động của trang web; <x24/> đưa chúng vào video (cần ffmpeg, MP4 hoặc MKV). Với ffmpeg, các chương của video cũng được đưa vào tệp, như <g25>Nhúng chương</g25> của Tải xuống video. <x26/> gửi các kết nối tải xuống, và của yt-dlp (và ffmpeg), qua một bộ điều hợp mạng, như đối với <x27/>; khi nó không được kết nối, không có gì bắt đầu. Khi không có định dạng nào của trang phù hợp, lỗi sẽ liệt kê các định dạng mà nó cung cấp, như <x28/>."
   },
+  "bf1c4ba30d7b2674": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
+   "text": "<g1>Tùy chỉnh bảng điều khiển tải xuống MDM trong trình duyệt → Sửa...</g1> — nút tải xuống trên video trên các trang web: tắt nó đi, chọn <g2>Kích thước nút</g2> (<g3>Tự động</g3>, như đã cài đặt: chỉ logo, mũi tên và ✕ trong nguồn cấp dữ liệu và trên trình phát nhỏ, chữ của nó trên trình phát lớn; <g4>Đầy đủ</g4>, chữ của nó ở bất cứ đâu vừa; hoặc <g5>Thu gọn</g5>, chỉ logo, mũi tên và ✕ trên mọi video), hoặc liệt kê các trang web mà nó không bao giờ hiển thị (phân tách bằng dấu cách; các ký tự đại diện như <x6/>, <x7/> hoặc <x8/> hoạt động). Xem <g9>Tích hợp trình duyệt</g9>."
+  },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
    "text": "MDM hỗ trợ 86 ngôn ngữ, mọi ngôn ngữ hiển thị mà Windows 11 cung cấp, từ tiếng Afrikaans đến tiếng Việt. Với tiếng Ả Rập, tiếng Do Thái, tiếng Ba Tư, tiếng Urdu và tiếng Duy Ngô Nhĩ, toàn bộ cửa sổ sẽ chạy từ phải sang trái."
@@ -13729,10 +13821,6 @@
   "bf425fd0bffea85c": {
    "source": "<g1>HatchZip</g1> is another free extractor (MIT or Apache-2.0), optional. MDM uses its command line program, <x2/>, when it is on the PATH (its installers and packages put it there; the desktop app alone isn't enough):",
    "text": "<g1>HatchZip</g1> là một trình giải nén miễn phí khác (MIT hoặc Apache-2.0), tùy chọn. MDM sử dụng chương trình dòng lệnh của nó, <x2/>, khi nó có trên PATH (các trình cài đặt và gói của nó đặt nó ở đó; chỉ ứng dụng máy tính để bàn thì không đủ):"
-  },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>Di chuyển nó</g1>: kéo nó bằng các chấm của nó dọc theo cạnh của video; khi bạn kéo, cạnh và các điểm nó bám vào (các góc và giữa) sẽ hiển thị. Nó vẫn ở đó trên trang web đó."
   },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
@@ -14050,6 +14138,10 @@
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "Một tệp tải xuống 180 GB giải nén thành 200 GB thường cần 380 GB: tệp lưu trữ và các tệp của nó cùng lúc. Với <g1>HatchZip</g1>, một trình giải nén miễn phí, được cài đặt, hãy chọn <g2>Giải nén tại chỗ bằng HatchZip</g2> trong <g3>Tùy chọn → Lưu trữ</g3>: tệp lưu trữ sẽ thu nhỏ khi các tệp của nó được giải nén, vì vậy chỉ cần hơn 200 GB là đủ. HatchZip kiểm tra xem mọi thứ có vừa không và mật khẩu có đúng không trước khi thay đổi bất cứ điều gì. Nếu nó dừng giữa chừng, các tệp đã giải nén sẽ nằm cạnh tệp lưu trữ và <g4>Giải nén</g4> sẽ tiếp tục."
   },
+  "c45503a700d34859": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Tắt nó, làm nó nhỏ hơn, hoặc xem các trang nó không hiện</g1>: <g2>Tùy chọn → Chung → Tùy chỉnh bảng điều khiển tải xuống MDM trong trình duyệt → Sửa...</g2>. <g3>Kích thước nút</g3> là <g4>Tự động</g4> khi cài đặt (tròn trong nguồn cấp dữ liệu và trên trình phát nhỏ, có chữ trên trình phát lớn), <g5>Đầy đủ</g5> (có chữ ở bất cứ đâu chúng vừa) hoặc <g6>Thu gọn</g6> (chỉ logo của MDM, mũi tên và <g7>✕</g7>, trên mọi video, như trên video nhỏ); sau khi nhấp, nó vẫn hiển thị những gì đã xảy ra bằng chữ. Các trang đã mở sẽ tuân theo thay đổi trong vài giây, mà không cần tải lại."
+  },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
    "text": "WinGet tải xuống trình cài đặt và cài đặt MDM mà không cần trả lời các câu hỏi của trình cài đặt."
@@ -14305,6 +14397,10 @@
   "c7e58bdb0724078c": {
    "source": "Download torrents and magnet links — Mister Download Manager",
    "text": "Tải torrent và liên kết magnet — Mister Download Manager"
+  },
+  "c7eb011b0c201b7e": {
+   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
+   "text": "Hiện tại, yêu cầu một trang với <x1/> vẫn trả về HTML của nó: thay vào đó, hãy đọc địa chỉ <x2/> của nó."
   },
   "c804d97a6c6b59ba": {
    "source": "The page adds a download's address, a magnet link or a <x1/> file from the phone, with a <g2>Category</g2> and <g3>When</g3>: start now, or wait in a queue. It lists every download with its progress, speed and size, pauses and starts each one, and removes it, with its file if you ask. It starts and stops the queues too. The bar at the top shows the total speed and the free space where your downloads go.",
@@ -14766,6 +14862,10 @@
    "source": "AI assistants",
    "text": "Trợ lý AI"
   },
+  "ce26147ce708b51e": {
+   "source": "For AI tools and agents",
+   "text": "Dành cho công cụ và tác nhân AI"
+  },
   "ce3d5af083f413b7": {
    "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
    "text": "Cửa sổ chính: thanh menu, thanh công cụ, các danh mục bên trái và danh sách tải xuống bên phải"
@@ -15217,6 +15317,10 @@
   "d4a71e10d53850e6": {
    "source": "<g1><g2>Catch downloads from your browser</g2></g1> — set up the extension so clicked downloads go to MDM.",
    "text": "<g1><g2>Tải xuống từ trình duyệt của bạn</g2></g1> — thiết lập tiện ích mở rộng để các lượt tải xuống bạn nhấp vào được chuyển sang MDM."
+  },
+  "d4ad3bf9b2a8e7ad": {
+   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
+   "text": "Các công cụ tìm kiếm có thể lập chỉ mục, các công cụ AI có thể sử dụng để trả lời câu hỏi, và nó có thể được dùng để huấn luyện các mô hình AI. Mister Download Manager là phần mềm miễn phí, mã nguồn mở (GPL-3.0); trang web của nó ở đây để được tìm thấy và hiểu rõ."
   },
   "d4c9212e6107e470": {
    "source": "Playlists and channels",
@@ -15970,6 +16074,10 @@
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge và nhiều trình duyệt khác"
   },
+  "e07c144638064536": {
+   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
+   "text": "<g1>robots.txt</g1> của trang web cho phép mọi trình thu thập thông tin truy cập, và nói rõ điều đó cho AI trong <g2>Content Signals</g2>:"
+  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "Đối với tệp <x1/>: <g2>Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g2> được bật trong <g3>Tác vụ → Cài đặt torrent</g3>."
@@ -16118,10 +16226,6 @@
    "source": "The system's DNS looks names up its own way, and Windows may ask over every adapter. To keep the names inside the VPN as well, choose a DNS in <g1>Options → Connection → DNS</g1>: MDM then asks it through the adapter. See <g2>DNS and proxies</g2>.",
    "text": "DNS của hệ thống tra cứu tên theo cách riêng của nó, và Windows có thể hỏi qua mọi bộ điều hợp. Để giữ các tên bên trong VPN, hãy chọn một DNS trong <g1>Tùy chọn → Kết nối → DNS</g1>: MDM sau đó sẽ hỏi nó thông qua bộ điều hợp. Xem <g2>DNS và proxy</g2>."
   },
-  "e2b2bd857e845dd3": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>Tắt nó, làm cho nó nhỏ hơn, hoặc xem các trang mà nó không hiển thị</g1>: <g2>Tùy chọn → Chung → Tùy chỉnh bảng điều khiển tải xuống MDM trong trình duyệt → Sửa...</g2>. <g3>Kích thước nút</g3> là <g4>Đầy đủ</g4> như khi cài đặt (các từ của nó vừa vặn) hoặc <g5>Thu gọn</g5> (chỉ logo của MDM, mũi tên và <g6>✕</g6>, trên mọi video, như trên một video nhỏ); sau khi nhấp, nó vẫn thông báo những gì đã xảy ra bằng lời. Các trang đã mở sẽ theo dõi thay đổi trong vòng vài giây, không cần tải lại."
-  },
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "Cạnh vùng thả khi không hoạt động"
@@ -16253,6 +16357,10 @@
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
    "text": "Có thể nhận trợ giúp ở đâu?"
+  },
+  "e4b94379cc8e1a72": {
+   "source": "APIs",
+   "text": "API"
   },
   "e4cc9bf3454d9b53": {
    "source": "Click <g1>Add URL</g1> and paste a gallery's address. Instead of saving the page as a file, MDM opens <g2>Download a gallery</g2>. When its line reads <g3>gallery-dl can download this gallery's files</g3>, check <g4>Save to</g4> and click <g5>Download Now</g5>, or <g6>Later</g6> to add it without starting.",
@@ -16565,6 +16673,10 @@
   "e88a839b4e8d456b": {
    "source": "<g1>Command line</g1><g2>IDM's command-line switches, a terminal downloader with JSON output, and a local API for other programs.</g2>",
    "text": "<g1>Dòng lệnh</g1><g2>Các tùy chọn dòng lệnh của IDM, trình tải xuống qua terminal với đầu ra JSON và API cục bộ cho các chương trình khác.</g2>"
+  },
+  "e895e3e3d267de25": {
+   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
+   "text": "Trang web này được viết chủ yếu để con người đọc, và cũng để các công cụ AI mà họ dùng để hỏi về trình quản lý tải xuống có thể đọc. Dưới đây là mọi thứ một chương trình có thể đọc và những gì nó có thể làm với thông tin đó."
   },
   "e8a02996d2b8ca17": {
    "source": "<g1>A pasted address</g1> (Add URL, Download video from a page, a playlist): choose your browser in <g2>Options → Sites Logins → Cookies for video sites</g2>. yt-dlp then reads that browser's cookies on this computer for every video it looks up or downloads. When the extension passed the page's own cookies, those are used instead: they are that page's and that session's.",
@@ -17778,6 +17890,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Có gì mới trong phiên bản 0.5.0 <g1>2026-11-08</g1>"
   },
+  "f9a4b5089b7bfcce": {
+   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
+   "text": "<g1>Mọi trang đều có phiên bản Markdown.</g1> Mỗi trang đều có một phiên bản Markdown bên cạnh: địa chỉ với <x2/> thay cho <x3/>, hoặc <x4/> cho địa chỉ kết thúc bằng <x5/>. Ví dụ, <g6>/download.html</g6> là <g7>/download.md</g7>, <g8>/help/</g8> là <g9>/help/index.md</g9>, và trang chủ tiếng Đức <g10>/de/</g10> là <g11>/de/index.md</g11>. Mỗi trang tự đặt tên cho mình trong <x12/> (<x13/>). Các trang trợ giúp có nguồn là Markdown; các trang khác được tạo từ trang đó trong mỗi lần xây dựng, nên chúng luôn khớp với nhau."
+  },
   "f9a8db1326e07676": {
    "source": "<x1/> issues",
    "text": "<x1/> vấn đề"
@@ -17905,10 +18021,6 @@
   "fb0e18326bfc6b12": {
    "source": "Download for Linux",
    "text": "Tải xuống cho Linux"
-  },
-  "fb140a625b84ac20": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
-   "text": "Câu hỏi hoặc hành động không xác định sẽ nhận được phản hồi <x1/>. Câu hỏi khi API đang tắt cũng nhận được phản hồi này (kèm theo <x2/>, để chương trình kiểm tra; nội dung lỗi có thể thay đổi). Mã thông báo không hợp lệ sẽ nhận được phản hồi <x3/>."
   },
   "fb1900915c99672a": {
    "source": "After a cut connection",
@@ -18098,6 +18210,10 @@
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>Không tự động bắt đầu tải xuống từ các trang web sau</g1> — các trang web mà lượt tải xuống của chúng vẫn ở trong trình duyệt, phân cách bằng dấu cách. Một tên bao gồm cả các tên miền phụ của trang web đó (<x2/> bao gồm <x3/> và <x4/>, cũng như <x5/>), <x6/> khớp với bất kỳ thứ gì như trong danh sách Bảng điều khiển tải xuống (<x7/>), và các tệp mà trang của nó liên kết đến trên một máy chủ khác (máy chủ tải xuống hoặc CDN), được xác định bởi trang mà lượt tải xuống đến từ. Một lượt tải xuống không rõ trang sẽ được khớp bằng chính địa chỉ của nó. <g8>Mặc định</g8> sẽ khôi phục danh sách ban đầu."
   },
+  "fd2634470a1624af": {
+   "source": "The home and download pages show two kinds of ratings, never mixed:",
+   "text": "Các trang chủ và trang tải xuống hiển thị hai loại xếp hạng, không bao giờ trộn lẫn:"
+  },
   "fd2f8ecc1dec89a7": {
    "source": "Does it keep uploading after a torrent finishes? — Mister Download Manager",
    "text": "MDM có tiếp tục tải lên sau khi torrent hoàn tất không? — Mister Download Manager"
@@ -18165,10 +18281,6 @@
   "fdb42bc6bffd138a": {
    "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
    "text": "<g1>Cách nó yêu cầu:</g1> gallery-dl và trình tải xuống của MDM yêu cầu các trang web như MDM; MDM tải 4 hình ảnh một lúc, và gallery-dl, đối với những gì còn lại, tối đa một hình ảnh mỗi giây. Máy chủ của Wikimedia từ chối các công cụ yêu cầu quá nhanh hoặc không có tên. gallery-dl không sử dụng tệp cấu hình nào của bạn."
-  },
-  "fdbec569d3b4740e": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "Nó không gây cản trở: nó chỉ hiển thị khi bạn di chuyển con trỏ qua một video (hoặc trình phát có tiêu điểm bàn phím; <g1>Tab</g1> sau đó di chuyển đến nút), mờ dần 1,5 giây sau khi con trỏ dừng và ngay lập tức khi nó rời khỏi video, và bỏ qua các video nhỏ và các vòng lặp ngắn bị tắt tiếng (ảnh động, hình nền). Nó không che các nút riêng của trang: khi một nút nằm dưới bất kỳ phần nào của góc của nó (nút phản hồi hoặc cài đặt của trình phát, nút xem sau của hình thu nhỏ), nó sẽ chiếm góc trống tiếp theo và giữ nguyên vị trí đó trong khi trình phát hiển thị và ẩn các nút của nó, để nó vẫn ở đó khi bạn chạm vào nó. Trên một bản xem trước phát trong khi con trỏ ở trên hình thu nhỏ (trang chủ YouTube, tìm kiếm, kênh), trang sẽ dừng bản xem trước khi con trỏ chạm vào nút; nút vẫn ở vị trí cũ trong khi con trỏ ở trên đó, và một cú nhấp sẽ tải xuống video của bản xem trước đó. Phát hoặc tạm dừng video không làm nó quay lại. Trên một video rộng dưới 360 pixel, hoặc nơi các từ của nó không vừa, nó chỉ là logo, mũi tên và <g2>✕</g2>; với <g3>Kích thước nút</g3> được đặt thành <g4>Thu gọn</g4> trong Tùy chọn (bên dưới), đó là nút tròn đó trên mọi video. Ở chế độ toàn màn hình, nó theo video khi trình phát cho phép, và khi vào chế độ toàn màn hình, nó không gây cản trở cho đến khi bạn di chuyển con trỏ lại."
   },
   "fdc70071f8979731": {
    "source": "Warnings",

@@ -306,6 +306,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Jika beberapa berkas torrent sudah ada di folder, MDM akan bertanya sebelum menggunakannya. <g1>Ya</g1> akan menyimpannya untuk torrent: MDM akan memeriksa berkas-berkas tersebut, menyimpan yang cocok dengan torrent, dan mengunduh sisanya. Ini adalah cara untuk melanjutkan unduhan yang dimulai di tempat lain atau berbagi berkas yang sudah Anda miliki. <g2>Tidak</g2> (standar) akan kembali, sehingga Anda bisa memilih folder lain dan tidak ada berkas Anda yang ditimpa."
   },
+  "04347ca0f5af1b11": {
+   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
+   "text": "<g1>API otomatisasi MDM</g1>, yang sama sekali tidak ada di situs ini: ia berjalan di dalam aplikasi, di komputer pengguna sendiri, mati sampai mereka menyalakannya, dan hanya menjawab di sana, dengan token rahasia. <g2>Dokumentasi</g2> dan <g3>Skema JSON</g3>-nya."
+  },
   "043f6ef7d8d6d597": {
    "source": "Mister Download Manager is an interesting option for anyone looking for a modern, free and open-source download manager.",
    "text": "Mister Download Manager adalah pilihan menarik bagi siapa pun yang mencari pengelola unduhan modern, gratis, dan sumber terbuka."
@@ -822,6 +826,10 @@
    "source": "<g1>Cancel</g1> stops the download and closes the window. The download stays in the list and can be resumed.",
    "text": "<g1>Batal</g1> menghentikan unduhan dan menutup jendela. Unduhan tetap ada dalam daftar dan dapat dilanjutkan."
   },
+  "0af7f5cd6adffe8b": {
+   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
+   "text": "Mister Download Manager dilengkapi dengan server <g1>MCP</g1>, <x2/>, sehingga asisten AI (Claude, Cursor, VS Code, dan lainnya) dapat membuat daftar, menambahkan, menjeda, melanjutkan, dan menghapus unduhan di MDM yang sedang berjalan milik pengguna. Ini adalah server <g3>lokal</g3>: asisten memulainya di komputer pengguna, di samping aplikasi, dan hanya berbicara dengan MDM di sana. Tidak ada server MCP di situs web ini. <g4>Kartu server</g4>-nya menjelaskannya, dan <g5>asisten AI</g5> mengatakan cara mengaturnya."
+  },
   "0afe7d2cb5cea1a9": {
    "source": "Portable mode — Mister Download Manager help",
    "text": "Mode portabel — Bantuan Mister Download Manager"
@@ -950,6 +958,10 @@
    "source": "<g1>Proxy auto-config scripts (PAC) run in QuickJS</g1>, a much smaller JavaScript engine, with limits on memory and running time: a script that loops or grows forever now fails, as a broken script does (the download goes on with the default proxy settings), instead of holding it.",
    "text": "<g1>Skrip konfigurasi otomatis proxy (PAC) berjalan di QuickJS</g1>, mesin JavaScript yang jauh lebih kecil, dengan batasan memori dan waktu berjalan: skrip yang berulang atau tumbuh tanpa henti sekarang gagal, seperti skrip yang rusak (unduhan berlanjut dengan pengaturan proxy default), alih-alih menahannya."
   },
+  "0c9da169d64e8998": {
+   "source": "MDM's MCP server",
+   "text": "Server MCP MDM"
+  },
   "0cd4a41b7875f510": {
    "source": "Options → Archives: extract every archive, or only the packages that ask.",
    "text": "Opsi → Arsip: ekstrak setiap arsip, atau hanya paket yang diminta."
@@ -1053,6 +1065,10 @@
   "0e703708311ea645": {
    "source": "The thin edge around a country's flag",
    "text": "Tepi tipis di sekitar bendera negara"
+  },
+  "0e8cf57250a871ec": {
+   "source": "Read the site",
+   "text": "Membaca situs"
   },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
@@ -1574,6 +1590,10 @@
    "source": "If it says <g1>the file changed on the server</g1>, the file isn't the one MDM started with. Right-click → <g2>Redownload</g2> to start again from the beginning.",
    "text": "Jika tertulis <g1>file berubah di server</g1>, file tersebut bukan yang MDM mulai. Klik kanan → <g2>Unduh ulang</g2> untuk memulai lagi dari awal."
   },
+  "1599478b71f60890": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
+   "text": "Pertanyaan atau tindakan yang tidak dikenal dijawab <x1/>, begitu pula pertanyaan saat API mati (kemudian dengan <x2/>, untuk diperiksa program: teks kesalahan dapat berubah). Token yang salah dijawab <x3/>. Ketika MDM sudah menangani permintaan sebanyak yang diperlukan sekaligus, ia menjawab <x4/>: tidak ada yang dilakukan, dan baris tersebut dapat dikirim lagi beberapa saat kemudian."
+  },
   "15b2bf48d7547b61": {
    "source": "Opened 480, done in 15.9 s<g1><g2>2</g2></g1>",
    "text": "Membuka 480 koneksi, selesai dalam 15.9 dtk<g1><g2>2</g2></g1>"
@@ -1698,6 +1718,10 @@
    "source": "<g1>Scheduler and queues</g1><g2>Queues started and stopped by the clock, a few files at a time, the computer off at the end.</g2>",
    "text": "<g1>Penjadwal dan antrean</g1><g2>Antrean dimulai dan dihentikan sesuai waktu, beberapa file sekaligus, komputer mati di akhir.</g2>"
   },
+  "1777ec4563260032": {
+   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
+   "text": "<g1><g2>sitemap.xml</g2></g1>: setiap halaman, dalam setiap bahasa."
+  },
   "17834855ff83a05b": {
    "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> can't ask for that permission at the switch, so the extension has it from the install (Chrome counts it under the access to every site the extension already asks for, so it adds no line to the install prompt and the update asks for nothing new). The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy extension, a policy, the command line): a fixed server for the download's scheme (<x2/>, <x3/>, <x4/>, <x5/>), unless the address is on its bypass list, or its proxy auto-config script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes by its own Options. A QUIC proxy can't be shared.",
    "text": "<g1>Chrome, Edge, Brave, Opera, dan Vivaldi</g1> tidak dapat meminta izin tersebut saat mengaktifkan, jadi ekstensi memilikinya sejak diinstal (Chrome menghitungnya di bawah akses ke setiap situs yang sudah diminta ekstensi, jadi tidak ada baris yang ditambahkan ke prompt instal dan pembaruan tidak meminta hal baru). Pengaktifan tidak meminta apa pun. MDM mendapatkan proksi efektif browser, siapa pun yang mengaturnya (ekstensi VPN atau proksi, kebijakan, baris perintah): server tetap untuk skema unduhan (<x2/>, <x3/>, <x4/>, <x5/>), kecuali alamatnya ada di daftar bypass-nya, atau skrip konfigurasi otomatis proksi-nya (berdasarkan alamatnya atau sebaris). Tanpa proksi, atau proksi sistem, tidak ada yang dikirim dan MDM mengikuti Opsi-nya sendiri. Proksi QUIC tidak dapat dibagikan."
@@ -1777,6 +1801,10 @@
   "18b71bddc92d0eb7": {
    "source": "<g1>A Linux test machine, scripted</g1> (part of <g2>#164</g2>): <x3/> sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host (<x4/>: hardware, headless start, linked clones; <x5/>: packages, Rust, Node, the browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a quick test profile (<x6/>), and checks pull requests on it: windows shot and compared pixel by pixel (<x7/>, <x8/>, <x9/>), HLS and DASH hand-overs from the Snap Firefox and Google Chrome (<x10/>, <x11/>), the extension's proxy switch (<x12/>), hand-overs and the Scheduler while minimized, torrents without a network, and MDM's start-up time (<x13/>). Every change is now checked on Linux as on Windows. The machine also has copies on KDE Plasma, Cinnamon and XFCE (<x14/>), which get a build copied over instead of making one (<x15/>); a window harness shoots many windows from one running MDM in any language, mode and theme, with real clicks and keys inside the machine (<x16/>, <x17/>); and a store package is checked before it ships (<x18/>, <x19/>).",
    "text": "<g1>Mesin uji Linux, dengan skrip</g1> (bagian dari <g2>#164</g2>): <x3/> menyiapkan desktop Ubuntu 24.04 di VirtualBox dari host Windows (<x4/>: perangkat keras, mulai tanpa kepala, klon tertaut; <x5/>: paket, Rust, Node, peramban, otomatisasi UI, keyring yang tidak terkunci), membangun cabang atau permintaan tarik apa pun di sana dengan profil uji cepat (<x6/>), dan memeriksa permintaan tarik di dalamnya: jendela diambil dan dibandingkan piksel demi piksel (<x7/>, <x8/>, <x9/>), serah terima HLS dan DASH dari Snap Firefox dan Google Chrome (<x10/>, <x11/>), sakelar proksi ekstensi (<x12/>), serah terima dan Penjadwal saat diminimalkan, torrent tanpa jaringan, dan waktu mulai MDM (<x13/>). Setiap perubahan kini diperiksa di Linux seperti di Windows. Mesin ini juga memiliki salinan di KDE Plasma, Cinnamon, dan XFCE (<x14/>), yang mendapatkan salinan build alih-alih membuat satu (<x15/>); harness jendela mengambil banyak jendela dari satu MDM yang berjalan dalam bahasa, mode, dan tema apa pun, dengan klik dan tombol nyata di dalam mesin (<x16/>, <x17/>); dan paket toko diperiksa sebelum dikirim (<x18/>, <x19/>)."
+  },
+  "18bc8bff0f9a1963": {
+   "source": "For AI tools that read the website",
+   "text": "Untuk alat AI yang membaca situs web"
   },
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
@@ -4790,6 +4818,10 @@
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "Salinan ekstensi dari Chrome Web Store tidak menampilkan tombol <g1>Unduh video</g1> di YouTube sebelum versi 0.5.1. Mulai versi 0.5.1, tombol tersebut muncul. Browser Anda memperbarui ekstensi secara otomatis; untuk mendapatkannya lebih cepat, buka halaman ekstensi browser Anda dan perbarui di sana."
   },
+  "427253cb798cd6a1": {
+   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
+   "text": "<g1>Peringkat toko browser sendiri</g1>: peringkat, jumlah peringkat, dan pengguna yang ditampilkan oleh <g2>toko add-on Firefox</g2> dan <g3>Chrome Web Store</g3> untuk ekstensi MDM, dibaca ulang pada setiap pembangunan situs, dengan tanggal pembacaannya. Mereka tetap sebagai teks halaman saja."
+  },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
    "text": "<g1>Ekstrak setelah selesai</g1>: dicentang secara otomatis ketika paket berisi arsip."
@@ -6078,6 +6110,10 @@
    "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
    "text": "Link grabber mencantumkan tautan sebuah halaman dalam paket, dengan nama, ukuran, dan status online-nya"
   },
+  "5586e9c27d735100": {
+   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
+   "text": "Cara asisten AI, agen, dan alat pencarian dapat membaca misterdownloadmanager.com: setiap halaman dalam Markdown, llms.txt, apa yang diizinkan situs, katalog API-nya, server MCP MDM sendiri, dan cara kerja peringkat bintang situs."
+  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "Ekstensi ini mencatat alamat aliran video (daftar putar HLS dan DASH) yang dimuat oleh pemutar halaman, dalam memori untuk tab tersebut, sehingga tombol <g1>Unduh video</g1> dapat meneruskan aliran tersebut. Tombolnya membaca halaman hanya untuk menemukan pemutar video dan suara serta menempatkan dirinya. Mengkliknya akan meneruskan alamat halaman, alamat video, judul halaman, cookie situs, halaman yang menyematkan pemutar, dan User-Agent peramban Anda ke MDM."
@@ -6569,6 +6605,10 @@
   "5cc1a6448e1ca4fc": {
    "source": "Windows 10 and 11",
    "text": "Windows 10 dan 11"
+  },
+  "5cc5fcb12af24878": {
+   "source": "<g1>/.well-known/api-catalog</g1> lists them (RFC 9727):",
+   "text": "<g1>/.well-known/api-catalog</g1> mencantumkannya (RFC 9727):"
   },
   "5cc90886ac3d306a": {
    "source": "The toolbar's top line",
@@ -7338,6 +7378,10 @@
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "Untuk merutekan <g1>semua lalu lintas</g1> melalui jaringan lain, gunakan VPN untuk seluruh komputer."
   },
+  "678b5f7a1583e7d1": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
+   "text": "<g1>Menunya</g1> (panah di sebelahnya, atau <g2>↓</g2> saat tombol memiliki fokus keyboard): judul, durasi, dan situs video; filternya, ketika kualitasnya berbeda: <g3>Semua</g3>, <g4>Video</g4> (gambar dengan suaranya) atau <g5>Audio saja</g5>, dan jenis file (MP4, WEBM, M4A, MP3...) atau codec gambar (AV1, VP9, H.264), disimpan untuk situs; <g6>Unduh terbaik</g6> terlebih dahulu (yang terbaik dari apa yang disimpan filter), lalu satu baris bernomor per kualitas di bawah <g7>VIDEO</g7> dan <g8>AUDIO</g8>, dengan jenis file, codec, kecepatan bingkai atau bitrate dan ukuran (<x9/> <x10/>, seperti yang tertera di jendela Unduh video), yang terbaik ditandai, dan <g11>Paling kompatibel (H.264 + AAC)</g11> di samping resolusi yang diputar di mana saja (<g12>Pilih kualitas</g12>); <g13>Semua kualitas dan subtitel...</g13>, yang membuka jendela <g14>Unduh video dari halaman</g14>; lalu <g15>Kembalikan tombol ke sudut semula</g15> (setelah Anda memindahkannya di situs), <g16>Sembunyikan di video ini</g16> (<g17>Esc</g17>), <g18>Jangan pernah di</g18> situs (MDM mengingat situs), dan <g19>Pengaturan tombol...</g19>, yang membuka Opsi MDM. Tombol panah bergerak melaluinya, <g20>Enter</g20> memilih, <g21>Esc</g21> menutupnya."
+  },
   "67b09013b9c7d05d": {
    "source": "Yes downloads both helpers in the background, once.",
    "text": "Ya akan mengunduh kedua alat bantu di latar belakang, satu kali saja."
@@ -7938,6 +7982,10 @@
    "source": "<g1>A window closed with its title bar's × no longer turns black first</g1> (<g2>#207</g2>): every dialog and the progress window turned black for a moment when closed with the × or Alt+F4, rather than with Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on Windows. The window now keeps its contents until it goes.",
    "text": "<g1>Jendela yang ditutup dengan × di bilah judulnya tidak lagi menjadi hitam terlebih dahulu</g1> (<g2>#207</g2>): setiap dialog dan jendela progres menjadi hitam sesaat ketika ditutup dengan × atau Alt+F4, bukan dengan Esc atau salah satu tombolnya: satu hingga beberapa detik di Linux, beberapa ratus detik di Windows. Jendela kini mempertahankan isinya sampai hilang."
   },
+  "6f6dde6f363e5240": {
+   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
+   "text": "<g1>Peringkat situs ini</g1>: pengunjung memberi peringkat MDM dari satu hingga lima bintang, dapat mengubah peringkat mereka dengan memilih lagi, atau menghapusnya. Di samping bintang: rata-rata, jumlah peringkat, dan berapa banyak yang memberikan setiap jumlah bintang. Hanya ini yang masuk ke data terstruktur halaman untuk mesin pencari."
+  },
   "6f6f84e7ad3660d6": {
    "source": "Numbers and dates",
    "text": "Angka dan tanggal"
@@ -7994,9 +8042,17 @@
    "source": "<g1>Torrents: file names are checked more strictly</g1> (<g2>#40</g2>): a torrent with names the system can't write safely is refused, saying which name, and so are torrents kept from an earlier run.",
    "text": "<g1>Torrent: nama file diperiksa lebih ketat</g1> (<g2>#40</g2>): torrent dengan nama yang tidak dapat ditulis dengan aman oleh sistem ditolak, dengan menyebutkan nama mana, begitu juga torrent yang disimpan dari eksekusi sebelumnya."
   },
+  "703d892a5281778d": {
+   "source": "What you may do with it",
+   "text": "Apa yang dapat Anda lakukan dengannya"
+  },
   "70424cf3215714b2": {
    "source": "A button's text",
    "text": "Teks tombol"
+  },
+  "704b09ba9997e7dc": {
+   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
+   "text": "Terpisah dari server di aplikasi, situs web ini menjelaskannya untuk alat AI dalam kartu server MCP, <g1>/.well-known/mcp/server-card.json</g1>, dan setiap halaman dalam Markdown (<x2/> di samping <x3/>), sehingga asisten dapat membaca cara mengatur MDM: lihat <g4>Untuk alat dan agen AI</g4>. Tidak ada server MCP di situs web: server selalu berjalan di komputer Anda, di samping aplikasi."
   },
   "70950300e88df4b7": {
    "source": "An API for the running app",
@@ -8414,6 +8470,10 @@
    "source": "Download acceleration and crash-safe resume — Mister Download Manager",
    "text": "Akselerasi unduhan dan melanjutkan yang aman dari crash — Mister Download Manager"
   },
+  "7691b6b987bd0ca0": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Tombol ini tidak mengganggu: hanya muncul saat Anda menggerakkan penunjuk di atas video (atau pemutar memiliki fokus keyboard; <g1>Tab</g1> lalu berpindah ke tombol), memudar 1,5 detik setelah penunjuk berhenti, atau sesaat setelah meninggalkan video, dan menghilang 3 detik kemudian; saat memudar, tombol masih ada untuk ditemukan, dan menunjuknya akan mengembalikannya sepenuhnya. Tombol tidak pernah memudar saat menunya terbuka, dan dengan gerakan sistem yang dikurangi, tombol berubah tanpa memudar. Tombol ini tidak muncul di video kecil dan loop singkat yang dibisukan (gambar animasi, latar belakang). Tombol ini tidak menutupi tombol halaman itu sendiri: ketika ada tombol yang terletak di bawah bagian mana pun dari sudutnya (tombol umpan balik atau pengaturan pemutar, tombol tonton nanti pada thumbnail), tombol ini akan mengambil sudut bebas berikutnya dan mempertahankannya saat pemutar menampilkan dan menyembunyikan tombolnya, sehingga tombol tetap di tempatnya saat Anda meraihnya. Di atas pratinjau yang diputar saat penunjuk berada di thumbnail (halaman beranda YouTube, pencarian, saluran), halaman akan menghentikan pratinjau saat penunjuk mencapai tombol; tombol tetap di tempatnya saat penunjuk berada di atasnya, dan klik akan mengunduh video pratinjau tersebut. Memutar atau menjeda video tidak mengembalikannya. Saat diinstal (<g2>Ukuran tombol: Otomatis</g2> di Opsi, di bawah), tombol ini hanya berupa logo, panah, dan <g3>✕</g3> di atas video dalam feed (Facebook, X, LinkedIn, Instagram, Reddit, beranda YouTube, dan sejenisnya) dan di atas pemutar kecil, serta seluruh tombol, dengan tulisannya, di atas pemutar besar seperti halaman tonton; pada video di bawah 360 piksel lebar, atau di mana tulisannya tidak muat, tombol ini selalu berupa tombol bulat itu. <g4>Penuh</g4> mempertahankan tulisannya di mana pun tulisan itu muat; <g5>Ringkas</g5> menjadikannya tombol bulat di setiap video. Dalam mode layar penuh, tombol ini mengikuti video jika pemutar mengizinkannya, dan memasuki layar penuh akan membuatnya tidak mengganggu sampai Anda menggerakkan penunjuk lagi."
+  },
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>Nonaktif</g1> (default) — yt-dlp hanya mendapatkan cookie dari ekstensi browser, saat Anda menggunakan tombol di atas video."
@@ -8525,6 +8585,10 @@
   "7846a58f8fbe7e95": {
    "source": "Translated from Turkish",
    "text": "Diterjemahkan dari bahasa Turki"
+  },
+  "784a58b4ccb32fc0": {
+   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
+   "text": "<g1>Unduh ulang</g1> mengunduh file lagi dari awal, satu unduhan pada satu waktu. File yang sudah selesai tetap ada saat salinan baru masuk, dan salinan baru akan menggantikannya, dengan nama yang sama, hanya setelah selesai: jika unduhan baru gagal atau Anda menghentikannya, Anda tetap memiliki file Anda. Jika program lain membuka file pada saat itu (di Windows), MDM menyimpan keduanya, menyimpan salinan baru di sampingnya dengan nomor (<x2/>) dan memberi tahu Anda. Torrent, video, dan galeri gambar tidak memiliki fitur ini: <g3>Periksa ulang file</g3> pada torrent menemukan dan mengambil bagian-bagian yang rusak, dan <g4>Lanjutkan Unduhan</g4> pada galeri yang sudah selesai mengambil file yang hilang."
   },
   "7868f11f6b965f60": {
    "source": "<g1>Windows on ARM</g1> (PCs with a Snapdragon or another ARM processor). On Windows 11 the x64 files run there too, translated by Windows, more slowly. The ARM64 setup installed over the x64 one replaces it; your list and settings stay, as they are kept in your profile, not with the program.",
@@ -9102,6 +9166,10 @@
    "source": "<g1>Downloads</g1>: MDM's newest downloads (see <g2>Recent downloads</g2>, below).",
    "text": "<g1>Unduhan</g1>: unduhan terbaru MDM (lihat <g2>Unduhan terbaru</g2>, di bawah)."
   },
+  "7fc30b1ddac6d981": {
+   "source": "For AI tools and agents — Mister Download Manager",
+   "text": "Untuk alat dan agen AI — Mister Download Manager"
+  },
   "7fc6f4be3515bc1a": {
    "source": "<g1>Help → Check for updates...</g1> — <g2>Check for updates at every start</g2> is in that window.",
    "text": "<g1>Bantuan → Periksa pembaruan...</g1> — <g2>Periksa pembaruan setiap kali dimulai</g2> ada di jendela itu."
@@ -9165,10 +9233,6 @@
   "806bd0646731ef21": {
    "source": "Fields (besides <x1/>)",
    "text": "Kolom (selain <x1/>)"
-  },
-  "807205b219bcd9d5": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
-   "text": "<g1>Menunya</g1> (panah di sampingnya, atau <g2>↓</g2> saat tombol memiliki fokus keyboard): judul, durasi, dan situs video; <g3>Unduh terbaik</g3> terlebih dahulu, lalu satu baris bernomor per kualitas di bawah <g4>VIDEO</g4> dan <g5>AUDIO</g5>, dengan jenis file, codec, laju bingkai atau bitrate, dan ukurannya (<x6/> <x7/>, seperti yang tertera di jendela Unduh video), yang terbaik ditandai, dan <g8>Paling kompatibel (H.264 + AAC)</g8> di samping resolusi yang dapat diputar di mana saja (<g9>Pilih kualitas</g9>); <g10>Semua kualitas dan subtitel...</g10>, yang membuka jendela <g11>Unduh video dari halaman</g11>; lalu <g12>Sembunyikan di video ini</g12> (<g13>Esc</g13>), <g14>Jangan pernah di</g14> situs ini (MDM mengingat situsnya), dan <g15>Pengaturan tombol...</g15>, yang membuka Opsi MDM. Tombol panah menggerakkan kursor, <g16>Enter</g16> memilih, <g17>Esc</g17> menutupnya."
   },
   "808ac1f47da4b1bc": {
    "source": "A download's progress.",
@@ -9754,6 +9818,10 @@
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "Klik <g1>Instal</g1>, lalu <g2>Selesai</g2> untuk memulai MDM."
   },
+  "888c81b1f49716a1": {
+   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
+   "text": "<g1><g2>Beri nilai MDM</g2></g1> — satu hingga lima bintang di halaman beranda atau unduhan situs web; pilih lagi untuk mengubah nilai Anda, atau hapus."
+  },
   "888f93dc8f248ae4": {
    "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
    "text": "<g1>File data crash (<x2/>)</g1> adalah cuplikan dari apa yang sedang dijalankan MDM saat itu. File ini paling membantu pengembang, tetapi dapat berisi bagian dari data yang tersimpan di memori MDM, seperti alamat unduhan, kuki, dan kata sandi yang tersimpan. File ini hanya dilampirkan jika Anda mencentang <g3>Lampirkan juga data crash</g3>."
@@ -10061,6 +10129,10 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "Harness"
+  },
+  "8d0ba2eee06a5511": {
+   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>Pindahkan</g1>: seret dengan titik-titiknya ke sudut lain atau di sepanjang tepi video, atau di luar pemutar, di atas, di bawah, atau di sampingnya (untuk situs yang menutupi pemutarnya atau menggambar kontrolnya sendiri di tempat tombol seharusnya berada); saat Anda menyeret, tepi dan titik-titik tempat tombol menempel (sudut dan tengah) akan terlihat. Di luar pemutar, tombol tetap berada di dalam pada tepi itu ketika jendela tidak memiliki ruang di sana (pemutar di bagian atas jendela, layar penuh). Tombol tetap di tempat Anda meletakkannya di situs itu; <g2>Kembalikan tombol ke sudut semula</g2> di menu mengembalikannya, dan popup add-on memiliki <g3>Pengaturan → Tombol unduh di atas video → Atur ulang</g3> untuk setiap situs (filternya juga)."
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10574,10 +10646,6 @@
    "source": "Where there is no tray",
    "text": "Jika tidak ada baki"
   },
-  "94d1eda28d7a14bb": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
-   "text": "<g1>Sesuaikan panel Unduhan MDM di peramban → Edit...</g1> — tombol unduh di atas video pada halaman web: matikan, pilih <g2>Ukuran tombol</g2> (<g3>Penuh</g3>, kata-katanya jika muat, atau <g4>Ringkas</g4>, hanya logo, panah, dan ✕ pada setiap video), atau daftar situs tempat tombol tidak pernah muncul (pisahkan dengan spasi; wildcard seperti <x5/>, <x6/>, atau <x7/> berfungsi). Lihat <g8>Integrasi peramban</g8>."
-  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>Jendela membeku selama beberapa detik saat unduhan besar sedang menulis</g1>: MDM menyimpan daftarnya di utas jendela, dan penyimpanan menunggu disk. Sekarang disimpan di utasnya sendiri (laporan kerusakan baru menangkapnya)."
@@ -10693,6 +10761,10 @@
   "96305159e842a657": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45). A theme is a light and a dark palette, metrics, control styles and an icon style (<x1/>):",
    "text": "Setiap warna dan ukuran kontrol digambar berasal dari tema aktif (#45). Sebuah tema adalah palet terang dan gelap, metrik, gaya kontrol, dan gaya ikon (<x1/>):"
+  },
+  "9632de50273e0f02": {
+   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
+   "text": "<g1>Peringkat bintang situs</g1>, di <x2/>, dijelaskan dalam <g3>OpenAPI</g3>. Siapa pun dapat membaca angka-angkanya; pemberian peringkat adalah untuk halaman situs ini (di bawah)."
   },
   "963552ab075ccbdb": {
    "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
@@ -11310,6 +11382,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Tujuh unduhan, masing-masing dijalankan setidaknya tujuh kali oleh kedua aplikasi. Batang menunjukkan paruh tengah dari jalannya, garis menunjukkan median."
   },
+  "9e42b66c081a9f75": {
+   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
+   "text": "<g1><g2>llms.txt</g2></g1>: apa itu Mister Download Manager, dalam beberapa baris, dan halaman-halaman utamanya. <g3><g4>llms-full.txt</g4></g3>: halaman bantuan dan jawaban atas pertanyaan umum dalam satu file."
+  },
   "9e4744c9b576debc": {
    "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
    "text": "Buka halaman web dan klik tautan unduhan, misalnya file ZIP atau EXE: MDM akan membuka <g1>Info File Unduhan</g1>. Klik <g2>Mulai Unduhan</g2>."
@@ -11662,6 +11738,10 @@
    "source": "480 connections against 2.",
    "text": "480 koneksi berbanding 2."
   },
+  "a2f672d1532ccb2b": {
+   "source": "Star ratings",
+   "text": "Peringkat bintang"
+  },
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Pelajari daftar unduhan →"
@@ -11925,6 +12005,10 @@
   "a61e186132bdafc0": {
    "source": "If the browser doesn't hand downloads over →",
    "text": "Jika browser tidak menyerahkan unduhan →"
+  },
+  "a64c37b28be78aa0": {
+   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
+   "text": "Satu peringkat per pengunjung, dan tidak ada teks bebas. Peringkat diperiksa oleh Cloudflare Turnstile (manusia, bukan skrip), dan seorang pengunjung dapat memberi peringkat atau menghapus paling banyak delapan kali dalam sepuluh menit. Layanan peringkat menyimpan bintang dan hash bergaram dari alamat IP pengunjung, sehingga pengunjung yang sama mengubah peringkat mereka alih-alih menambahkan satu; ia tidak pernah menyimpan alamat itu sendiri. <g1>Kebijakan privasi</g1> mengatakan hal yang sama."
   },
   "a656f8bb2618d9d8": {
    "source": "<g1>Choose columns:</g1> right-click any column title and tick the ones you want. <g2>Reset columns</g2> in the same menu puts them back as they first were.",
@@ -13018,6 +13102,10 @@
    "source": "Deleting downloads",
    "text": "Menghapus unduhan"
   },
+  "b4b12e00de9fb265": {
+   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
+   "text": "Perintah (dijawab <x1/>) dapat membawa <x2/> Anda sendiri: huruf, angka, dan <x3/>, paling banyak 64, berbeda untuk setiap perintah. Jika jawabannya tidak kembali (baris ditutup, atau waktu tunggu habis), kirim baris yang sama lagi dengan <x4/> yang sama: MDM melakukannya sekali, berapa pun jumlah baris yang mencapainya, dan menjawab <x5/> untuk setiap baris. Tanpa <x6/>, setiap baris adalah perintah baru. Peluncuran kedua program (<x7/>, <x8/>) melakukan ini dengan sendirinya."
+  },
   "b4c6b4d600e8fca1": {
    "source": "The code that draws the windows is optimised for size (the engine stays optimised for speed), and the programs are optimised as a whole.",
    "text": "Kode yang menggambar jendela dioptimalkan untuk ukuran (mesin tetap dioptimalkan untuk kecepatan), dan program-program dioptimalkan secara keseluruhan."
@@ -13714,6 +13802,10 @@
    "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
    "text": "Mengunduh video. Tanpa <x1/> atau <x2/>, kualitas terbaik, yang dimulai di jendela Unduh video: dengan ffmpeg, gambar terbaik dengan suara terbaik digabungkan (situs yang gambar dan suaranya terpisah, seperti Bilibili, membutuhkan ffmpeg untuk video), jika tidak, file terbaik dengan keduanya. <x3/> (atau <x4/>) mengambil tinggi itu, atau yang terdekat di bawahnya yang ditawarkan halaman (jika tidak, yang terdekat di atas), dan mengatakannya. <x5/> mengambil kualitas yang paling kompatibel, seperti <g6>Paling kompatibel (H.264 + AAC)</g6> di jendela: gambar H.264 terbaik dengan suara AAC, dalam MP4 yang dapat diputar di setiap editor, TV, dan ponsel; halaman tanpa itu mengatakannya (tidak ada yang dikonversi). <x7/> mengambil pemilih kualitas dari <x8/> (<x9/> = file tunggal terbaik; <x10/> = suara saja seperti yang dimiliki situs, tidak dikonversi; <x11/>, <x12/>, <x13/> atau <x14/> = suara sebagai MP3 pada bitrate itu, <x15/> pada bitrate variabel terbaiknya; <x16/> = sebagai Opus; <x17/> = sebagai FLAC, lossless tetapi tidak lebih baik dari suara situs; konversi membutuhkan ffmpeg). <x18/>: pengunduh MDM sendiri membawa setiap aliran yang ditemukan yt-dlp melalui koneksi sebanyak ini (8 secara default, 1 hingga 128), aliran dalam potongan (HLS, DASH) sebanyak ini sekaligus. <x19/> menyimpan subtitle di sampingnya: kode bahasa dari <x20/> (<x21/>), atau <x22/> untuk setiap yang diberikan pengunggah; <x23/> mengambil teks otomatis situs sebagai gantinya; <x24/> memasukkannya ke dalam video (membutuhkan ffmpeg, MP4 atau MKV). Dengan ffmpeg, bab-bab video juga masuk ke dalam file, seperti yang dilakukan <g25>Sematkan bab</g25> di Unduh video. <x26/> mengirim koneksi unduhan, dan yt-dlp (dan ffmpeg), melalui satu adaptor jaringan, seperti untuk <x27/>; ketika tidak terhubung, tidak ada yang dimulai. Ketika tidak ada format halaman yang cocok, kesalahan mencantumkan yang ditawarkannya, seperti yang dilakukan <x28/>."
   },
+  "bf1c4ba30d7b2674": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
+   "text": "<g1>Sesuaikan panel Unduhan MDM di peramban → Edit...</g1> — tombol unduh di atas video pada halaman web: matikan, pilih <g2>Ukuran tombol</g2> (<g3>Otomatis</g3>, seperti saat diinstal: hanya logo, panah, dan ✕ di feed dan di atas pemutar kecil, kata-katanya di atas pemutar besar; <g4>Penuh</g4>, kata-katanya di mana pun muat; atau <g5>Ringkas</g5>, hanya logo, panah, dan ✕ di setiap video), atau daftar situs tempat tombol tidak pernah muncul (pisahkan dengan spasi; wildcard seperti <x6/>, <x7/>, atau <x8/> berfungsi). Lihat <g9>Integrasi peramban</g9>."
+  },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
    "text": "MDM berbicara 86 bahasa, setiap bahasa tampilan yang ditawarkan Windows 11, dari Afrikaans hingga Vietnam. Dalam bahasa Arab, Ibrani, Persia, Urdu, dan Uyghur, seluruh jendela berjalan dari kanan ke kiri."
@@ -13729,10 +13821,6 @@
   "bf425fd0bffea85c": {
    "source": "<g1>HatchZip</g1> is another free extractor (MIT or Apache-2.0), optional. MDM uses its command line program, <x2/>, when it is on the PATH (its installers and packages put it there; the desktop app alone isn't enough):",
    "text": "<g1>HatchZip</g1> adalah ekstraktor gratis lainnya (MIT atau Apache-2.0), opsional. MDM menggunakan program baris perintahnya, <x2/>, saat berada di PATH (penginstal dan paketnya menempatkannya di sana; aplikasi desktop saja tidak cukup):"
-  },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>Pindahkan</g1>: seret dengan titik-titiknya di sepanjang tepi video; saat Anda menyeret, tepi dan titik-titik tempat ia menempel (sudut dan tengah) akan terlihat. Tombol ini akan tetap di sana di situs tersebut."
   },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
@@ -14050,6 +14138,10 @@
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "Unduhan 180 GB yang membongkar menjadi 200 GB biasanya memerlukan 380 GB: arsip dan file-nya sekaligus. Dengan <g1>HatchZip</g1>, sebuah ekstraktor gratis, terinstal, centang <g2>Ekstrak di tempat dengan HatchZip</g2> di <g3>Opsi → Arsip</g3>: arsip akan menyusut saat file-nya keluar, sehingga sedikit di atas 200 GB sudah cukup. HatchZip memeriksa apakah semuanya muat dan kata sandi sudah benar sebelum mengubah apa pun. Jika berhenti di tengah jalan, file-file yang sudah ada tetap berada di samping arsip dan <g4>Ekstrak</g4> akan melanjutkan."
   },
+  "c45503a700d34859": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Matikan, perkecil, atau lihat situs tempat tombol tidak muncul</g1>: <g2>Opsi → Umum → Sesuaikan panel Unduhan MDM di peramban → Edit...</g2>. <g3>Ukuran tombol</g3> adalah <g4>Otomatis</g4> saat diinstal (bulat di feed dan di atas pemutar kecil, dengan tulisannya di atas pemutar besar), <g5>Penuh</g5> (tulisannya di mana pun tulisan itu muat) atau <g6>Ringkas</g6> (hanya logo MDM, panah dan <g7>✕</g7>, di setiap video, seperti pada video kecil); setelah diklik, tombol masih mengatakan apa yang terjadi dalam kata-kata. Halaman yang sudah terbuka akan mengikuti perubahan dalam beberapa detik, tanpa memuat ulang."
+  },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
    "text": "WinGet mengunduh program instalasi dan menginstal MDM tanpa pertanyaan dari program instalasi."
@@ -14305,6 +14397,10 @@
   "c7e58bdb0724078c": {
    "source": "Download torrents and magnet links — Mister Download Manager",
    "text": "Unduh torrent dan tautan magnet — Mister Download Manager"
+  },
+  "c7eb011b0c201b7e": {
+   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
+   "text": "Meminta halaman dengan <x1/> masih mendapatkan HTML-nya untuk saat ini: baca alamat <x2/>-nya sebagai gantinya."
   },
   "c804d97a6c6b59ba": {
    "source": "The page adds a download's address, a magnet link or a <x1/> file from the phone, with a <g2>Category</g2> and <g3>When</g3>: start now, or wait in a queue. It lists every download with its progress, speed and size, pauses and starts each one, and removes it, with its file if you ask. It starts and stops the queues too. The bar at the top shows the total speed and the free space where your downloads go.",
@@ -14766,6 +14862,10 @@
    "source": "AI assistants",
    "text": "Asisten AI"
   },
+  "ce26147ce708b51e": {
+   "source": "For AI tools and agents",
+   "text": "Untuk alat dan agen AI"
+  },
   "ce3d5af083f413b7": {
    "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
    "text": "Jendela utama: bilah menu, bilah alat, kategori di kiri, dan daftar unduhan di kanan"
@@ -15217,6 +15317,10 @@
   "d4a71e10d53850e6": {
    "source": "<g1><g2>Catch downloads from your browser</g2></g1> — set up the extension so clicked downloads go to MDM.",
    "text": "<g1><g2>Tangkap unduhan dari peramban Anda</g2></g1> — siapkan ekstensi agar unduhan yang diklik masuk ke MDM."
+  },
+  "d4ad3bf9b2a8e7ad": {
+   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
+   "text": "Mesin pencari dapat mengindeksnya, alat AI dapat menggunakannya untuk menjawab pertanyaan, dan dapat digunakan untuk melatih model AI. Mister Download Manager adalah perangkat lunak sumber terbuka gratis (GPL-3.0); situsnya ada di sini untuk ditemukan dan dipahami."
   },
   "d4c9212e6107e470": {
    "source": "Playlists and channels",
@@ -15970,6 +16074,10 @@
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge, dan lainnya"
   },
+  "e07c144638064536": {
+   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
+   "text": "<g1>robots.txt</g1> situs ini mengizinkan setiap perayap masuk, dan mengatakannya untuk AI di <g2>Content Signals</g2>:"
+  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "Untuk file <x1/>: <g2>Buka tautan magnet dan file .torrent dengan Mister Download Manager</g2> diaktifkan di <g3>Tugas → Pengaturan torrent</g3>."
@@ -16118,10 +16226,6 @@
    "source": "The system's DNS looks names up its own way, and Windows may ask over every adapter. To keep the names inside the VPN as well, choose a DNS in <g1>Options → Connection → DNS</g1>: MDM then asks it through the adapter. See <g2>DNS and proxies</g2>.",
    "text": "DNS sistem mencari nama dengan caranya sendiri, dan Windows mungkin bertanya melalui setiap adaptor. Untuk menjaga nama tetap di dalam VPN juga, pilih DNS di <g1>Opsi → Koneksi → DNS</g1>: MDM kemudian akan menanyakannya melalui adaptor. Lihat <g2>DNS dan proksi</g2>."
   },
-  "e2b2bd857e845dd3": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>Matikan, perkecil, atau lihat situs tempat tombol tidak muncul</g1>: <g2>Opsi → Umum → Sesuaikan panel Unduhan MDM di peramban → Edit...</g2>. <g3>Ukuran tombol</g3> adalah <g4>Penuh</g4> saat terinstal (kata-katanya di tempat yang sesuai) atau <g5>Ringkas</g5> (hanya logo MDM, panah, dan <g6>✕</g6>, di setiap video, seperti pada video kecil); setelah diklik, tombol masih mengatakan apa yang terjadi dalam kata-kata. Halaman yang sudah terbuka mengikuti perubahan dalam beberapa detik, tanpa memuat ulang."
-  },
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "Tepi target seret saat tidak aktif"
@@ -16253,6 +16357,10 @@
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
    "text": "Di mana saya bisa mendapatkan bantuan?"
+  },
+  "e4b94379cc8e1a72": {
+   "source": "APIs",
+   "text": "API"
   },
   "e4cc9bf3454d9b53": {
    "source": "Click <g1>Add URL</g1> and paste a gallery's address. Instead of saving the page as a file, MDM opens <g2>Download a gallery</g2>. When its line reads <g3>gallery-dl can download this gallery's files</g3>, check <g4>Save to</g4> and click <g5>Download Now</g5>, or <g6>Later</g6> to add it without starting.",
@@ -16565,6 +16673,10 @@
   "e88a839b4e8d456b": {
    "source": "<g1>Command line</g1><g2>IDM's command-line switches, a terminal downloader with JSON output, and a local API for other programs.</g2>",
    "text": "<g1>Baris perintah</g1><g2>Sakelar baris perintah IDM, pengunduh terminal dengan keluaran JSON, dan API lokal untuk program lain.</g2>"
+  },
+  "e895e3e3d267de25": {
+   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
+   "text": "Situs ini ditulis agar dapat dibaca oleh manusia terlebih dahulu, dan juga oleh alat AI yang mereka gunakan untuk bertanya tentang pengelola unduhan. Berikut adalah semua yang dapat dibaca oleh program, dan apa yang dapat dilakukannya."
   },
   "e8a02996d2b8ca17": {
    "source": "<g1>A pasted address</g1> (Add URL, Download video from a page, a playlist): choose your browser in <g2>Options → Sites Logins → Cookies for video sites</g2>. yt-dlp then reads that browser's cookies on this computer for every video it looks up or downloads. When the extension passed the page's own cookies, those are used instead: they are that page's and that session's.",
@@ -17778,6 +17890,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Apa yang baru di versi 0.5.0 <g1>2026-11-08</g1>"
   },
+  "f9a4b5089b7bfcce": {
+   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
+   "text": "<g1>Setiap halaman dalam Markdown.</g1> Setiap halaman memiliki versi Markdown di sampingnya: alamat dengan <x2/> menggantikan <x3/>, atau <x4/> untuk alamat yang diakhiri dengan <x5/>. Jadi <g6>/download.html</g6> adalah <g7>/download.md</g7>, <g8>/help/</g8> adalah <g9>/help/index.md</g9>, dan halaman utama bahasa Jerman <g10>/de/</g10> adalah <g11>/de/index.md</g11>. Setiap halaman menamai dirinya sendiri dalam <x12/> (<x13/>). Markdown halaman bantuan adalah sumbernya; yang lain dibuat dari halaman pada setiap pembangunan, sehingga tidak pernah menyimpang darinya."
+  },
   "f9a8db1326e07676": {
    "source": "<x1/> issues",
    "text": "<x1/> masalah"
@@ -17905,10 +18021,6 @@
   "fb0e18326bfc6b12": {
    "source": "Download for Linux",
    "text": "Unduh untuk Linux"
-  },
-  "fb140a625b84ac20": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
-   "text": "Pertanyaan atau tindakan yang tidak diketahui dijawab <x1/>, begitu juga pertanyaan saat API mati (kemudian dengan <x2/>, untuk program untuk memeriksa: teks kesalahan dapat berubah). Token yang salah dijawab <x3/>."
   },
   "fb1900915c99672a": {
    "source": "After a cut connection",
@@ -18098,6 +18210,10 @@
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>Jangan mulai mengunduh secara otomatis dari situs berikut</g1> — situs yang unduhannya tetap di peramban, dipisahkan oleh spasi. Sebuah nama mencakup subdomain situs juga (<x2/> mencakup <x3/> dan <x4/>, begitu juga <x5/>), <x6/> cocok dengan apa pun seperti dalam daftar panel Unduhan (<x7/>), dan file yang ditautkan oleh halaman-halamannya di server lain (server unduhan atau CDN), diberitahukan oleh halaman asal unduhan. Unduhan tanpa halaman yang diketahui dicocokkan dengan alamatnya sendiri. <g8>Default</g8> mengembalikan daftar asli."
   },
+  "fd2634470a1624af": {
+   "source": "The home and download pages show two kinds of ratings, never mixed:",
+   "text": "Halaman utama dan unduhan menunjukkan dua jenis peringkat, tidak pernah dicampur:"
+  },
   "fd2f8ecc1dec89a7": {
    "source": "Does it keep uploading after a torrent finishes? — Mister Download Manager",
    "text": "Apakah MDM terus mengunggah setelah torrent selesai? — Mister Download Manager"
@@ -18165,10 +18281,6 @@
   "fdb42bc6bffd138a": {
    "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
    "text": "<g1>Cara bertanya:</g1> gallery-dl dan pengunduh MDM bertanya ke situs sebagai MDM; MDM mengunduh 4 gambar sekaligus, dan gallery-dl, untuk sisanya, paling banyak satu per detik. Server Wikimedia menolak alat yang bertanya terlalu cepat atau tanpa nama. gallery-dl tidak menggunakan file konfigurasi Anda."
-  },
-  "fdbec569d3b4740e": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "Tombol ini tidak mengganggu: hanya muncul saat Anda menggerakkan penunjuk di atas video (atau pemutar memiliki fokus keyboard; <g1>Tab</g1> kemudian bergerak ke tombol), memudar 1,5 detik setelah penunjuk berhenti dan segera saat meninggalkan video, serta tidak muncul pada video kecil dan putaran pendek yang dibisukan (gambar animasi, latar belakang). Tombol ini tidak menutupi tombol halaman itu sendiri: ketika salah satu terletak di bawah bagian mana pun dari sudutnya (tombol umpan balik atau pengaturan pemutar, tombol tonton nanti thumbnail), tombol ini mengambil sudut bebas berikutnya dan mempertahankannya saat pemutar menampilkan dan menyembunyikan tombolnya, sehingga tetap di tempatnya saat Anda meraihnya. Di atas pratinjau yang diputar saat penunjuk berada di thumbnail (halaman beranda YouTube, pencarian, saluran), halaman menghentikan pratinjau saat penunjuk mencapai tombol; tombol tetap di tempatnya saat penunjuk berada di atasnya, dan klik mengunduh video pratinjau tersebut. Memutar atau menjeda video tidak mengembalikannya. Pada video di bawah 360 piksel lebar, atau di mana kata-katanya tidak muat, itu hanya logo, panah, dan <g2>✕</g2>; dengan <g3>Ukuran tombol</g3> diatur ke <g4>Ringkas</g4> di Opsi (di bawah), itu adalah tombol bulat itu di setiap video. Dalam layar penuh, tombol ini mengikuti video saat pemutar mengizinkannya, dan memasuki layar penuh membuatnya tidak mengganggu sampai Anda menggerakkan penunjuk lagi."
   },
   "fdc70071f8979731": {
    "source": "Warnings",

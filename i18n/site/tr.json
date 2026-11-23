@@ -306,6 +306,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Torrentin bazı dosyaları klasörde zaten varsa MDM, bunları kullanmadan önce sorar. <g1>Evet</g1> seçeneği dosyaları torrent için kullanır: MDM dosyaları denetler, torrentle eşleşenleri tutar ve geri kalanını indirir. Böylece başka bir yerde başlatılmış indirmeye devam edebilir veya elinizdeki dosyaları paylaşabilirsiniz. <g2>Hayır</g2> (varsayılan) seçeneği önceki ekrana döner. Böylece başka bir klasör seçebilir ve mevcut dosyalarınızın üzerine yazılmasını önleyebilirsiniz."
   },
+  "04347ca0f5af1b11": {
+   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
+   "text": "<g1>MDM'nin otomasyon API'si</g1>, bu sitede hiç yoktur: uygulamanın içinde, kullanıcının kendi bilgisayarında çalışır, kullanıcı açana kadar kapalıdır ve yalnızca orada, gizli bir jetonla yanıt verir. Bunun <g2>belgeleri</g2> ve <g3>JSON Şeması</g3>."
+  },
   "043f6ef7d8d6d597": {
    "source": "Mister Download Manager is an interesting option for anyone looking for a modern, free and open-source download manager.",
    "text": "Mister Download Manager, modern, ücretsiz ve açık kaynaklı bir indirme yöneticisi arayan herkes için ilginç bir seçenek."
@@ -822,6 +826,10 @@
    "source": "<g1>Cancel</g1> stops the download and closes the window. The download stays in the list and can be resumed.",
    "text": "<g1>İptal</g1> indirmeyi durdurur ve pencereyi kapatır. İndirme listede kalır ve sürdürülebilir."
   },
+  "0af7f5cd6adffe8b": {
+   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
+   "text": "Mister Download Manager, bir <g1>MCP</g1> sunucusu, <x2/> ile birlikte gelir, böylece bir yapay zeka asistanı (Claude, Cursor, VS Code ve diğerleri) kullanıcının çalışan MDM'sindeki indirmeleri listeleyebilir, ekleyebilir, duraklatabilir, devam ettirebilir ve kaldırabilir. Bu <g3>yerel</g3> bir sunucudur: asistan onu kullanıcının bilgisayarında, uygulamanın yanında başlatır ve yalnızca oradaki MDM ile konuşur. Bu web sitesinde bir MCP sunucusu yoktur. <g4>Sunucu kartı</g4> onu açıklar ve <g5>Yapay zeka asistanları</g5> nasıl kurulacağını söyler."
+  },
   "0afe7d2cb5cea1a9": {
    "source": "Portable mode — Mister Download Manager help",
    "text": "Taşınabilir mod — Mister Download Manager yardım"
@@ -950,6 +958,10 @@
    "source": "<g1>Proxy auto-config scripts (PAC) run in QuickJS</g1>, a much smaller JavaScript engine, with limits on memory and running time: a script that loops or grows forever now fails, as a broken script does (the download goes on with the default proxy settings), instead of holding it.",
    "text": "<g1>Proxy otomatik yapılandırma betikleri (PAC), çok daha küçük bir JavaScript motoru olan QuickJS'te çalışır</g1>, bellek ve çalışma süresi sınırlamalarıyla: sonsuz döngüye giren veya sonsuza kadar büyüyen bir betik, bozuk bir betik gibi başarısız olur (indirme varsayılan proxy ayarlarıyla devam eder), onu tutmak yerine."
   },
+  "0c9da169d64e8998": {
+   "source": "MDM's MCP server",
+   "text": "MDM'nin MCP sunucusu"
+  },
   "0cd4a41b7875f510": {
    "source": "Options → Archives: extract every archive, or only the packages that ask.",
    "text": "Seçenekler → Arşivler: her arşivi veya yalnızca isteyen paketleri çıkar."
@@ -1053,6 +1065,10 @@
   "0e703708311ea645": {
    "source": "The thin edge around a country's flag",
    "text": "Bir ülkenin bayrağının etrafındaki ince kenar"
+  },
+  "0e8cf57250a871ec": {
+   "source": "Read the site",
+   "text": "Siteyi oku"
   },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
@@ -1574,6 +1590,10 @@
    "source": "If it says <g1>the file changed on the server</g1>, the file isn't the one MDM started with. Right-click → <g2>Redownload</g2> to start again from the beginning.",
    "text": "Eğer <g1>dosya sunucuda değişti</g1> diyorsa, dosya MDM'nin başladığı dosya değildir. Baştan başlamak için sağ tıklayın → <g2>Yeniden indir</g2>."
   },
+  "1599478b71f60890": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
+   "text": "Bilinmeyen bir soru veya eylem <x1/> olarak yanıtlanır, API kapalıyken sorulan bir soru da öyle (bu durumda programların kontrol etmesi için <x2/> ile; hata metni değişebilir). Yanlış bir anahtar <x3/> olarak yanıtlanır. MDM aynı anda işleyebileceği kadar çok isteği zaten işliyorsa, <x4/> yanıtını verir: hiçbir şey yapılmamıştır ve komut bir süre sonra tekrar gönderilebilir."
+  },
   "15b2bf48d7547b61": {
    "source": "Opened 480, done in 15.9 s<g1><g2>2</g2></g1>",
    "text": "480 bağlantı açıldı, 15,9 saniyede tamamlandı<g1><g2>2</g2></g1>"
@@ -1698,6 +1718,10 @@
    "source": "<g1>Scheduler and queues</g1><g2>Queues started and stopped by the clock, a few files at a time, the computer off at the end.</g2>",
    "text": "<g1>Zamanlayıcı ve kuyruklar</g1><g2>Saatle başlatılıp durdurulan kuyruklar, aynı anda birkaç dosya, sonunda bilgisayar kapanır.</g2>"
   },
+  "1777ec4563260032": {
+   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
+   "text": "<g1><g2>sitemap.xml</g2></g1>: her dildeki her sayfa."
+  },
   "17834855ff83a05b": {
    "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> can't ask for that permission at the switch, so the extension has it from the install (Chrome counts it under the access to every site the extension already asks for, so it adds no line to the install prompt and the update asks for nothing new). The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy extension, a policy, the command line): a fixed server for the download's scheme (<x2/>, <x3/>, <x4/>, <x5/>), unless the address is on its bypass list, or its proxy auto-config script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes by its own Options. A QUIC proxy can't be shared.",
    "text": "<g1>Chrome, Edge, Brave, Opera ve Vivaldi</g1> bu izni anahtarı açarken soramaz, bu yüzden uzantı bu izne kurulumdan itibaren sahiptir (Chrome bunu uzantının zaten istediği her siteye erişim altında sayar, bu yüzden kurulum istemine yeni bir satır eklemez ve güncelleme yeni bir şey istemez). Anahtar hiçbir şey sormaz. MDM, tarayıcının etkin proxy'sini alır, kim ayarlamış olursa olsun (bir VPN veya proxy uzantısı, bir ilke, komut satırı): adres bypass listesinde değilse veya proxy otomatik yapılandırma betiği (adresiyle veya satır içi) tarafından belirlenmemişse, indirme şeması (<x2/>, <x3/>, <x4/>, <x5/>) için sabit bir sunucu. Proxy yoksa veya sistemin proxy'si kullanılıyorsa, hiçbir şey gönderilmez ve MDM kendi Seçeneklerine göre hareket eder. Bir QUIC proxy paylaşılamaz."
@@ -1777,6 +1801,10 @@
   "18b71bddc92d0eb7": {
    "source": "<g1>A Linux test machine, scripted</g1> (part of <g2>#164</g2>): <x3/> sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host (<x4/>: hardware, headless start, linked clones; <x5/>: packages, Rust, Node, the browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a quick test profile (<x6/>), and checks pull requests on it: windows shot and compared pixel by pixel (<x7/>, <x8/>, <x9/>), HLS and DASH hand-overs from the Snap Firefox and Google Chrome (<x10/>, <x11/>), the extension's proxy switch (<x12/>), hand-overs and the Scheduler while minimized, torrents without a network, and MDM's start-up time (<x13/>). Every change is now checked on Linux as on Windows. The machine also has copies on KDE Plasma, Cinnamon and XFCE (<x14/>), which get a build copied over instead of making one (<x15/>); a window harness shoots many windows from one running MDM in any language, mode and theme, with real clicks and keys inside the machine (<x16/>, <x17/>); and a store package is checked before it ships (<x18/>, <x19/>).",
    "text": "<g1>Betiklenmiş bir Linux test makinesi</g1> (<g2>#164</g2> bölümü): <x3/>, bir Windows ana bilgisayarından VirtualBox'ta bir Ubuntu 24.04 masaüstü kurar (<x4/>: donanım, başsız başlatma, bağlantılı klonlar; <x5/>: paketler, Rust, Node, tarayıcılar, kullanıcı arayüzü otomasyonu, kilidi açılmış anahtarlık), orada hızlı bir test profiliyle herhangi bir dalı veya çekme isteğini oluşturur (<x6/>) ve üzerinde çekme isteklerini kontrol eder: pencereler çekilir ve piksel piksel karşılaştırılır (<x7/>, <x8/>, <x9/>), Snap Firefox ve Google Chrome'dan HLS ve DASH aktarımları (<x10/>, <x11/>), uzantının proxy anahtarı (<x12/>), küçültülmüş durumdayken aktarımlar ve Zamanlayıcı, ağ olmadan torrentler ve MDM'nin başlangıç süresi (<x13/>). Her değişiklik artık Windows'ta olduğu gibi Linux'ta da kontrol edilir. Makinede ayrıca KDE Plasma, Cinnamon ve XFCE'de kopyalar bulunur (<x14/>), bunlar bir tane oluşturmak yerine bir derleme kopyalanır (<x15/>); bir pencere donanımı, herhangi bir dilde, modda ve temada çalışan tek bir MDM'den birçok pencereyi, makine içinde gerçek tıklamalar ve tuşlarla çeker (<x16/>, <x17/>); ve bir mağaza paketi gönderilmeden önce kontrol edilir (<x18/>, <x19/>)."
+  },
+  "18bc8bff0f9a1963": {
+   "source": "For AI tools that read the website",
+   "text": "Web sitesini okuyan yapay zeka araçları için"
   },
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
@@ -4790,6 +4818,10 @@
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "Chrome Web Mağazası'ndaki uzantının 0.5.1 sürümünden önce YouTube'da <g1>Videoyu indir</g1> düğmesi görünmüyordu. 0.5.1 sürümünden itibaren görünür. Tarayıcınız uzantıları otomatik olarak günceller; daha erken almak için uzantılar sayfasını açıp oradan güncelleyebilirsiniz."
   },
+  "427253cb798cd6a1": {
+   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
+   "text": "<g1>Tarayıcı mağazalarının kendi derecelendirmeleri</g1>: <g2>Firefox eklenti mağazası</g2> ve <g3>Chrome Web Mağazası</g3>'nın MDM uzantısı için gösterdiği derecelendirme, derecelendirme sayısı ve kullanıcılar, sitenin her derlemesinde tekrar okunur ve okunduğu gün belirtilir. Bunlar yalnızca sayfa metni olarak kalır."
+  },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
    "text": "<g1>Bittiğinde çıkar</g1>: pakette arşiv varsa otomatik olarak işaretlenir."
@@ -6078,6 +6110,10 @@
    "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
    "text": "Bir sayfanın bağlantılarını paketler halinde, adları, boyutları ve çevrimiçi olup olmadıklarıyla listeleyen bağlantı yakalayıcı"
   },
+  "5586e9c27d735100": {
+   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
+   "text": "Yapay zeka asistanları, aracıları ve arama araçları misterdownloadmanager.com'u nasıl okuyabilir: her sayfa Markdown formatında, llms.txt, sitenin izin verdikleri, API kataloğu, MDM'nin kendi MCP sunucusu ve sitenin yıldız derecelendirmelerinin nasıl çalıştığı."
+  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "Bir sayfanın oynatıcısının yüklediği video akışlarının (HLS ve DASH çalma listeleri) adreslerini, o sekme için bellekte not eder, böylece <g1>Videoyu indir</g1> düğmesi akışı iletebilir. Düğmesi, yalnızca video ve ses oynatıcılarını bulmak ve kendini yerleştirmek için sayfayı okur. Tıklamak, sayfanın adresini, videonun adresini, sayfanın başlığını, sitenin çerezlerini, oynatıcıyı yerleştiren sayfayı ve tarayıcınızın Kullanıcı Aracısını MDM'ye iletir."
@@ -6569,6 +6605,10 @@
   "5cc1a6448e1ca4fc": {
    "source": "Windows 10 and 11",
    "text": "Windows 10 ve 11"
+  },
+  "5cc5fcb12af24878": {
+   "source": "<g1>/.well-known/api-catalog</g1> lists them (RFC 9727):",
+   "text": "<g1>/.well-known/api-catalog</g1> bunları listeler (RFC 9727):"
   },
   "5cc90886ac3d306a": {
    "source": "The toolbar's top line",
@@ -7338,6 +7378,10 @@
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "<g1>Her şeyi</g1> başka bir ağ üzerinden yönlendirmek için tüm bilgisayarınızda VPN kullanın."
   },
+  "678b5f7a1583e7d1": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
+   "text": "<g1>Menüsü</g1> (yanındaki ok veya düğme klavye odağına sahipken <g2>↓</g2>): videonun başlığı, süresi ve sitesi; kaliteler farklı olduğunda filtreleri: <g3>Tümü</g3>, <g4>Video</g4> (sesiyle birlikte resim) veya <g5>Yalnızca ses</g5> ve dosya türü (MP4, WEBM, M4A, MP3...) veya resmin kodeği (AV1, VP9, H.264), site için saklanır; önce <g6>En iyi kaliteyi indir</g6> (filtrelerin sakladığı en iyisi), ardından <g7>VİDEO</g7> ve <g8>SES</g8> altında her kalite için bir numaralı satır, dosya türü, kodeği, kare hızı veya bit hızı ve boyutu (<x9/> <x10/>, İndirme videosu penceresinin dediği gibi), en iyisi işaretlenmiş ve her yerde oynayanın çözünürlüğünün yanında <g11>En uyumlu (H.264 + AAC)</g11> (<g12>Kaliteyi seçin</g12>); <g13>Tüm kaliteler ve altyazılar...</g13>, bu <g14>Bir sayfadan video indir</g14> penceresini açar; ardından <g15>Düğmeyi köşesine geri koy</g15> (sitede taşıdıktan sonra), <g16>Yalnızca bu videoda gizle</g16> (<g17>Esc</g17>), sitede <g18>Asla gösterme</g18> (MDM siteyi hatırlar) ve MDM'nin Seçenekler'ini açan <g19>Düğme ayarları...</g19>. Ok tuşları içinde gezinir, <g20>Enter</g20> seçer, <g21>Esc</g21> kapatır."
+  },
   "67b09013b9c7d05d": {
    "source": "Yes downloads both helpers in the background, once.",
    "text": "Evet, her iki yardımcıyı da bir kez arka planda indirir."
@@ -7938,6 +7982,10 @@
    "source": "<g1>A window closed with its title bar's × no longer turns black first</g1> (<g2>#207</g2>): every dialog and the progress window turned black for a moment when closed with the × or Alt+F4, rather than with Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on Windows. The window now keeps its contents until it goes.",
    "text": "<g1>Başlık çubuğunun × düğmesiyle kapatılan bir pencere artık önce siyaha dönmez</g1> (<g2>#207</g2>): her iletişim kutusu ve ilerleme penceresi, × veya Alt+F4 ile kapatıldığında, Esc veya düğmelerinden biriyle kapatılmadığında bir anlığına siyaha dönüyordu: Linux'ta bir ila birkaç saniye, Windows'ta birkaç yüzde bir saniye. Pencere artık gidene kadar içeriğini korur."
   },
+  "6f6dde6f363e5240": {
+   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
+   "text": "<g1>Bu sitenin derecelendirmeleri</g1>: ziyaretçiler MDM'yi bir ila beş yıldız arasında derecelendirir, tekrar seçerek derecelendirmelerini değiştirebilir veya kaldırabilirler. Yıldızların yanında: ortalama, derecelendirme sayısı ve her bir yıldız sayısını kaç kişinin verdiği. Yalnızca bunlar arama motorları için sayfanın yapılandırılmış verilerine girer."
+  },
   "6f6f84e7ad3660d6": {
    "source": "Numbers and dates",
    "text": "Sayılar ve tarihler"
@@ -7994,9 +8042,17 @@
    "source": "<g1>Torrents: file names are checked more strictly</g1> (<g2>#40</g2>): a torrent with names the system can't write safely is refused, saying which name, and so are torrents kept from an earlier run.",
    "text": "<g1>Torrentler: dosya adları daha sıkı denetleniyor</g1> (<g2>#40</g2>): sistemin güvenli bir şekilde yazamayacağı adlara sahip bir torrent, hangi ad olduğu belirtilerek reddedilir ve önceki bir çalıştırmadan kalan torrentler de reddedilir."
   },
+  "703d892a5281778d": {
+   "source": "What you may do with it",
+   "text": "Bununla ne yapabilirsiniz"
+  },
   "70424cf3215714b2": {
    "source": "A button's text",
    "text": "Düğme metni"
+  },
+  "704b09ba9997e7dc": {
+   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
+   "text": "Uygulamadaki sunucudan ayrı olarak, web sitesi onu bir MCP sunucu kartında, <g1>/.well-known/mcp/server-card.json</g1> adresinde yapay zeka araçları için tanımlar ve her sayfayı Markdown (<x2/> yanında <x3/>) olarak sunar, böylece bir asistan MDM'yi nasıl kuracağını okuyabilir: <g4>Yapay zeka araçları ve ajanları için</g4> bölümüne bakın. Web sitesinde bir MCP sunucusu yoktur: sunucu her zaman bilgisayarınızda, uygulamanın yanında çalışır."
   },
   "70950300e88df4b7": {
    "source": "An API for the running app",
@@ -8414,6 +8470,10 @@
    "source": "Download acceleration and crash-safe resume — Mister Download Manager",
    "text": "İndirme hızlandırma ve çökme durumunda güvenli sürdürme — Mister Download Manager"
   },
+  "7691b6b987bd0ca0": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Yolunuzdan çekilir: yalnızca işaretçiyi bir videonun üzerine getirdiğinizde (veya oynatıcı klavye odağına sahip olduğunda; <g1>Tab</g1> tuşu düğmeye taşınır) görünür, işaretçi durduktan 1,5 saniye sonra veya videodan ayrıldıktan bir an sonra soluklaşır ve 3 saniye sonra kaybolur; solukken hala bulunabilir ve üzerine gelindiğinde tamamen geri gelir. Menüsü açıkken asla solmaz ve sistemin azaltılmış hareket ayarıyla solmadan değişir. Küçük videoları ve kısa sessiz döngüleri (animasyonlu resimler, arka planlar) atlar. Sayfanın kendi düğmelerini asla kapatmaz: köşesinin herhangi bir kısmının altında bir düğme (oynatıcının geri bildirim veya ayarlar düğmesi, küçük resmin daha sonra izle düğmesi) bulunduğunda, bir sonraki boş köşeyi alır ve oynatıcı düğmelerini gösterip gizlerken orada kalır, böylece siz ona uzanırken yerinde durur. İşaretçi bir küçük resmin üzerindeyken oynayan bir önizlemenin üzerinde (YouTube'un ana sayfası, bir arama, bir kanal), işaretçi düğmeye ulaştığında sayfa önizlemeyi durdurur; işaretçi üzerindeyken düğme yerinde kalır ve tıklama o önizlemenin videosunu indirir. Videoyu oynatmak veya duraklatmak onu geri getirmez. Yüklendiği gibi (aşağıdaki Seçenekler'de <g2>Düğme boyutu: Otomatik</g2>), bir akıştaki (Facebook, X, LinkedIn, Instagram, Reddit, YouTube'un ana sayfası ve benzerleri) bir videonun ve küçük bir oynatıcının üzerinde yalnızca logosu, oku ve <g3>✕</g3> bulunur ve izleme sayfasındaki gibi büyük bir oynatıcının üzerinde kelimeleriyle birlikte tüm düğme görünür; 360 pikselden daha dar bir videoda veya kelimelerinin sığmayacağı yerlerde her zaman o yuvarlak düğmedir. <g4>Tam</g4> kelimelerini sığdığı her yerde tutar; <g5>Kompakt</g5> her videoda onu yuvarlak düğme yapar. Tam ekranda oynatıcı izin verdiğinde videoyu takip eder ve tam ekrana girildiğinde işaretçiyi tekrar hareket ettirene kadar yolunuzdan çekilir."
+  },
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>Kapalı</g1> (varsayılan) — yt-dlp, çerezleri yalnızca bir video üzerindeki düğmeyi kullandığınızda tarayıcının uzantısından alır."
@@ -8525,6 +8585,10 @@
   "7846a58f8fbe7e95": {
    "source": "Translated from Turkish",
    "text": "Türkçeden çevrildi"
+  },
+  "784a58b4ccb32fc0": {
+   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
+   "text": "<g1>Yeniden indir</g1>, bir dosyayı baştan, tek seferde yeniden indirir. Yeni kopya gelirken bitmiş dosya olduğu gibi kalır ve yeni kopya, ancak tamamlandığında aynı adla onun yerini alır: yeni indirme başarısız olursa veya siz durdurursanız, dosyanız sizde kalır. Başka bir program o anda dosyayı açık tutuyorsa (Windows'ta), MDM her ikisini de saklar, yeni kopyayı yanına bir numara (<x2/>) ile kaydeder ve size bildirir. Torrentler, videolar ve resim galerileri bu özelliğe sahip değildir: bir torrentin <g3>Dosyaları yeniden denetle</g3> seçeneği bozuk parçalarını bulur ve getirir, bitmiş bir galerinin <g4>İndirmeye Devam Et</g4> seçeneği ise eksik dosyalarını getirir."
   },
   "7868f11f6b965f60": {
    "source": "<g1>Windows on ARM</g1> (PCs with a Snapdragon or another ARM processor). On Windows 11 the x64 files run there too, translated by Windows, more slowly. The ARM64 setup installed over the x64 one replaces it; your list and settings stay, as they are kept in your profile, not with the program.",
@@ -9102,6 +9166,10 @@
    "source": "<g1>Downloads</g1>: MDM's newest downloads (see <g2>Recent downloads</g2>, below).",
    "text": "<g1>İndirilenler</g1>: MDM'nin en yeni indirmeleri (aşağıdaki <g2>Son indirmeler</g2> bölümüne bakın)."
   },
+  "7fc30b1ddac6d981": {
+   "source": "For AI tools and agents — Mister Download Manager",
+   "text": "Yapay zeka araçları ve aracıları için — Mister Download Manager"
+  },
   "7fc6f4be3515bc1a": {
    "source": "<g1>Help → Check for updates...</g1> — <g2>Check for updates at every start</g2> is in that window.",
    "text": "<g1>Yardım → Güncelleştirmeleri denetle...</g1> — <g2>Her başlangıçta güncelleştirmeleri denetle</g2> o pencerede bulunur."
@@ -9165,10 +9233,6 @@
   "806bd0646731ef21": {
    "source": "Fields (besides <x1/>)",
    "text": "Alanlar (<x1/> hariç)"
-  },
-  "807205b219bcd9d5": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
-   "text": "<g1>Menüsü</g1> (yanındaki ok veya düğme klavye odağındayken <g2>↓</g2>): videonun başlığı, süresi ve sitesi; önce <g3>En iyi kaliteyi indir</g3>, ardından <g4>VİDEO</g4> ve <g5>SES</g5> altında her kalite için dosya türü, kodeği, kare hızı veya bit hızı ve boyutuyla (<x6/> <x7/>, Videoyu indir penceresinde belirtildiği gibi) numaralandırılmış bir satır, en iyisi işaretli ve her yerde oynatılabilen çözünürlüğün yanında <g8>En uyumlu (H.264 + AAC)</g8> (<g9>Kaliteyi seçin</g9>); <g10>Tüm kaliteler ve altyazılar...</g10>, bu <g11>Bir sayfadan video indir</g11> penceresini açar; ardından <g12>Yalnızca bu videoda gizle</g12> (<g13>Esc</g13>), sitede <g14>Asla gösterme</g14> (MDM siteyi hatırlar) ve MDM'nin Seçenekler'ini açan <g15>Düğme ayarları...</g15>. Ok tuşları menüde gezinir, <g16>Enter</g16> seçer, <g17>Esc</g17> kapatır."
   },
   "808ac1f47da4b1bc": {
    "source": "A download's progress.",
@@ -9754,6 +9818,10 @@
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "<g1>Yükle</g1>'ye, ardından MDM'yi başlatmak için <g2>Bitir</g2>'e tıklayın."
   },
+  "888c81b1f49716a1": {
+   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
+   "text": "<g1><g2>MDM'i oyla</g2></g1> — web sitesinin ana sayfasında veya indirme sayfasında bir ila beş yıldız verin; oylamanızı değiştirmek veya kaldırmak için tekrar seçin."
+  },
   "888f93dc8f248ae4": {
    "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
    "text": "<g1>Çökme veri dosyası (<x2/>)</g1>, MDM'nin o anda çalıştırdıklarının bir anlık görüntüsüdür. Geliştiricilere en çok yardımcı olur, ancak indirme adresleri, çerezler ve kayıtlı parolalar gibi MDM'nin belleğinde bulunan parçaları içerebilir. Yalnızca <g3>Çökme verilerini de ekle</g3> seçeneğini işaretlediğinizde eklenir."
@@ -10061,6 +10129,10 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "Test düzeneği"
+  },
+  "8d0ba2eee06a5511": {
+   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>Taşıyın</g1>: noktalarından sürükleyerek başka bir köşeye veya videonun kenarı boyunca ya da oynatıcının dışına, üstüne, altına veya yanına (oynatıcısını kapatan veya düğmenin olacağı yere kendi kontrollerini çizen bir site için); sürüklerken kenar ve yapıştığı noktalar (köşeler ve orta) görünür. Pencerede yer olmadığında (pencerenin üstündeki bir oynatıcı, tam ekran) oynatıcının dışında o kenarda içeride kalır. Onu o sitede koyduğunuz yerde kalır; menünün <g2>Düğmeyi köşesine geri koy</g2> seçeneği onu geri getirir ve eklentinin açılır penceresinde her site için <g3>Ayarlar → Videoların üzerindeki indirme düğmesi → Sıfırla</g3> (filtreleri de) bulunur."
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10574,10 +10646,6 @@
    "source": "Where there is no tray",
    "text": "Tepsinin olmadığı yerlerde"
   },
-  "94d1eda28d7a14bb": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
-   "text": "<g1>Tarayıcılardaki MDM İndirme panellerini özelleştir → Düzenle...</g1> — web sayfalarındaki videoların üzerindeki indirme düğmesi: kapatın, <g2>Düğme boyutu</g2> (<g3>Tam</g3>, sığdığı yere kelimeleriyle veya <g4>Kompakt</g4>, sadece logo, ok ve her videoda ✕) seçin veya hiç görünmeyeceği siteleri listeleyin (boşluklarla ayırın; <x5/>, <x6/> veya <x7/> gibi joker karakterler çalışır). Bkz. <g8>Tarayıcı entegrasyonu</g8>."
-  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>Büyük bir indirme diske yazılırken pencere saniyelerce donuyordu</g1>: MDM listeyi pencerenin iş parçacığında kaydediyor, kayıt işlemi de diski bekliyordu. Artık kayıt kendi iş parçacığında yapılıyor (bunu yeni çökme raporları ortaya çıkardı)."
@@ -10693,6 +10761,10 @@
   "96305159e842a657": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45). A theme is a light and a dark palette, metrics, control styles and an icon style (<x1/>):",
    "text": "Bir kontrolün çizildiği her renk ve boyut, etkin temadan (#45) gelir. Bir tema, açık ve koyu bir palet, ölçümler, kontrol stilleri ve bir simge stilidir (<x1/>):"
+  },
+  "9632de50273e0f02": {
+   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
+   "text": "<g1>Sitenin yıldız derecelendirmeleri</g1>, <x2/> adresinde, <g3>OpenAPI</g3> içinde açıklanmıştır. Herkes sayıları okuyabilir; derecelendirme bu sitenin sayfaları içindir (aşağıda)."
   },
   "963552ab075ccbdb": {
    "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
@@ -11310,6 +11382,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Her iki uygulamada da yedi indirme, her biri en az yedi kez çalıştırıldı. Çubuk, çalıştırmaların orta yarısını; çizgi ise medyanı gösterir."
   },
+  "9e42b66c081a9f75": {
+   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
+   "text": "<g1><g2>llms.txt</g2></g1>: Mister Download Manager'ın ne olduğu, birkaç satırda ve ana sayfalar. <g3><g4>llms-full.txt</g4></g3>: yardım sayfaları ve sık sorulan soruların yanıtları tek bir dosyada."
+  },
   "9e4744c9b576debc": {
    "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
    "text": "Bir web sayfasına gidin ve bir indirme bağlantısına, örneğin bir ZIP veya EXE dosyasına tıklayın: MDM <g1>Dosya Bilgilerini İndir</g1> penceresini açar. <g2>İndirmeyi Başlat</g2> düğmesine tıklayın."
@@ -11662,6 +11738,10 @@
    "source": "480 connections against 2.",
    "text": "2 bağlantıya karşı 480 bağlantı."
   },
+  "a2f672d1532ccb2b": {
+   "source": "Star ratings",
+   "text": "Yıldız derecelendirmeleri"
+  },
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "İndirme listesini öğrenin →"
@@ -11925,6 +12005,10 @@
   "a61e186132bdafc0": {
    "source": "If the browser doesn't hand downloads over →",
    "text": "Tarayıcı indirmeleri devretmiyorsa →"
+  },
+  "a64c37b28be78aa0": {
+   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
+   "text": "Ziyaretçi başına bir derecelendirme ve serbest metin yok. Bir derecelendirme Cloudflare Turnstile (bir kişi, bir komut dosyası değil) tarafından kontrol edilir ve bir ziyaretçi on dakika içinde en fazla sekiz kez derecelendirebilir veya kaldırabilir. Derecelendirme hizmeti yıldızları ve ziyaretçinin IP adresinin tuzlanmış bir hash'ini tutar, böylece aynı ziyaretçi yeni bir tane eklemek yerine derecelendirmesini değiştirir; adresin kendisini asla tutmaz. <g1>Gizlilik politikası</g1> da aynı şeyi söyler."
   },
   "a656f8bb2618d9d8": {
    "source": "<g1>Choose columns:</g1> right-click any column title and tick the ones you want. <g2>Reset columns</g2> in the same menu puts them back as they first were.",
@@ -13018,6 +13102,10 @@
    "source": "Deleting downloads",
    "text": "İndirmeleri silme"
   },
+  "b4b12e00de9fb265": {
+   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
+   "text": "Bir komut (<x1/> olarak yanıtlanır) kendi <x2/> değerinizi taşıyabilir: harfler, rakamlar ve <x3/>, en fazla 64 karakter, her komut için farklı. Yanıtı geri gelmezse (bağlantı kapandı veya bekleme süresi doldu), aynı <x4/> ile aynı komutu tekrar gönderin: MDM, kaç tane bu tür komut ulaşırsa ulaşsın, onu bir kez yapar ve her birine <x5/> yanıtını verir. <x6/> olmadan, her komut yeni bir komuttur. Programın ikinci bir başlatılması (<x7/>, <x8/>) bunu kendi başına yapar."
+  },
   "b4c6b4d600e8fca1": {
    "source": "The code that draws the windows is optimised for size (the engine stays optimised for speed), and the programs are optimised as a whole.",
    "text": "Pencereleri çizen kod boyut için optimize edilmiştir (motor hız için optimize edilmiş kalır) ve programlar bir bütün olarak optimize edilmiştir."
@@ -13714,6 +13802,10 @@
    "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
    "text": "Bir video indirin. <x1/> veya <x2/> olmadan, İndirme videosu penceresinin başladığı en iyi kalite: ffmpeg ile en iyi görüntü ve en iyi ses birleştirilir (Bilibili gibi görüntüleri ve sesleri ayrı olan bir site, bir video için ffmpeg'e ihtiyaç duyar), aksi takdirde her ikisini içeren en iyi dosya. <x3/> (veya <x4/>) o yüksekliği veya sayfanın sunduğu en yakın altını (aksi takdirde en yakın üstünü) alır ve bunu belirtir. <x5/>, pencerenin <g6>En uyumlu (H.264 + AAC)</g6> seçeneği gibi en uyumlu kaliteyi alır: her düzenleyicide, TV'de ve telefonda oynatılabilen bir MP4'te AAC sesli en iyi H.264 görüntüsü; böyle bir seçeneği olmayan bir sayfa bunu belirtir (hiçbir şey dönüştürülmez). <x7/>, <x8/>'den bir kalitenin seçicisini alır (<x9/> = en iyi tek dosya; <x10/> = sitenin sahip olduğu gibi yalnızca ses, dönüştürülmez; <x11/>, <x12/>, <x13/> veya <x14/> = o bit hızında MP3 olarak ses, <x15/> en iyi değişken bit hızında; <x16/> = Opus olarak; <x17/> = FLAC olarak, kayıpsız ancak sitenin sesinden daha iyi değil; dönüştürmeler ffmpeg gerektirir). <x18/>: MDM'nin kendi indiricisi, yt-dlp'nin bulduğu her akışı bu kadar bağlantı üzerinden (varsayılan olarak 8, 1 ila 128), parçalı bir akışı (HLS, DASH) aynı anda bu kadar parça halinde getirir. <x19/> altyazıları yanına kaydeder: <x20/>'den dil kodları (<x21/>) veya yükleyicinin verdiği her biri için <x22/>; <x23/> bunun yerine sitenin otomatik altyazılarını alır; <x24/> bunları videoya yerleştirir (ffmpeg, MP4 veya MKV gerektirir). ffmpeg ile, videonun bölümleri de dosyaya eklenir, tıpkı İndirme videosunun <g25>Bölümleri dosyaya ekle</g25> seçeneği gibi. <x26/>, indirmelerin bağlantılarını ve yt-dlp'nin (ve ffmpeg'in) bağlantılarını <x27/> için olduğu gibi tek bir ağ bağdaştırıcısı üzerinden gönderir; bağlı değilse hiçbir şey başlamaz. Sayfanın hiçbir formatı eşleşmediğinde, hata, <x28/>'nin yaptığı gibi sunduğu formatları listeler."
   },
+  "bf1c4ba30d7b2674": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
+   "text": "<g1>Tarayıcılardaki MDM İndirme panellerini özelleştir → Düzenle...</g1> — web sayfalarındaki videoların üzerindeki indirme düğmesi: kapatın, <g2>Düğme boyutu</g2>nu seçin (<g3>Otomatik</g3>, kurulu olduğu gibi: yalnızca logo, ok ve ✕ bir akışta ve küçük bir oynatıcıda, kelimeleri büyük bir oynatıcıda; <g4>Tam</g4>, kelimeleri sığdığı her yerde; veya <g5>Kompakt</g5>, her videoda yalnızca logo, ok ve ✕), veya asla gösterilmeyeceği siteleri listeleyin (boşluklarla ayırın; <x6/>, <x7/> veya <x8/> gibi joker karakterler çalışır). Bkz. <g9>Tarayıcı entegrasyonu</g9>."
+  },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
    "text": "MDM, Afrikaans'tan Vietnamca'ya kadar Windows 11'in sunduğu her görüntüleme dili dahil 86 dil konuşur. Arapça, İbranice, Farsça, Urduca ve Uygurca'da tüm pencere sağdan sola çalışır."
@@ -13729,10 +13821,6 @@
   "bf425fd0bffea85c": {
    "source": "<g1>HatchZip</g1> is another free extractor (MIT or Apache-2.0), optional. MDM uses its command line program, <x2/>, when it is on the PATH (its installers and packages put it there; the desktop app alone isn't enough):",
    "text": "<g1>HatchZip</g1> başka bir ücretsiz çıkarıcıdır (MIT veya Apache-2.0), isteğe bağlıdır. MDM, PATH'te olduğunda (kurulumcuları ve paketleri onu oraya koyar; yalnızca masaüstü uygulaması yeterli değildir) komut satırı programı <x2/>'yi kullanır:"
-  },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>Taşı</g1>: videonun kenarı boyunca noktalarından sürükleyin; sürüklerken kenar ve yapıştığı noktalar (köşeler ve orta) görünür. O sitede orada kalır."
   },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
@@ -14050,6 +14138,10 @@
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "Normalde 200 GB'a açılan 180 GB'lık bir indirme, 380 GB'a ihtiyaç duyar: arşiv ve dosyaları aynı anda. Ücretsiz bir çıkarıcı olan <g1>HatchZip</g1> yüklüyken, <g3>Seçenekler → Arşivler</g3> bölümündeki <g2>HatchZip ile yerinde çıkar</g2> seçeneğini işaretleyin: arşiv, dosyaları çıktıkça küçülür, bu nedenle 200 GB'ın biraz üzeri yeterlidir. HatchZip, herhangi bir değişiklik yapmadan önce her şeyin sığdığını ve parolanın doğru olduğunu kontrol eder. Yarıda durursa, o ana kadar olan dosyalar arşivin yanında kalır ve <g4>Çıkar</g4> devam eder."
   },
+  "c45503a700d34859": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Kapatın, küçültün veya kapalı kaldığı siteleri görün</g1>: <g2>Seçenekler → Genel → Tarayıcılardaki MDM İndirme panellerini özelleştir → Düzenle...</g2>. <g3>Düğme boyutu</g3> yüklendiği gibi <g4>Otomatik</g4>'tir (bir akışta ve küçük bir oynatıcının üzerinde yuvarlak, büyük bir oynatıcının üzerinde kelimeleriyle), <g5>Tam</g5> (kelimeleri sığdığı her yerde) veya <g6>Kompakt</g6> (yalnızca MDM'nin logosu, ok ve <g7>✕</g7>, her videoda, küçük bir videoda olduğu gibi); bir tıklamadan sonra hala ne olduğunu kelimelerle söyler. Zaten açık olan sayfalar, yeniden yüklemeye gerek kalmadan birkaç saniye içinde bir değişikliği takip eder."
+  },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
    "text": "WinGet, kurulum dosyasını indirir ve kurulum sorularını sormadan MDM'yi yükler."
@@ -14305,6 +14397,10 @@
   "c7e58bdb0724078c": {
    "source": "Download torrents and magnet links — Mister Download Manager",
    "text": "Torrentleri ve magnet bağlantılarını indir — Mister Download Manager"
+  },
+  "c7eb011b0c201b7e": {
+   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
+   "text": "<x1/> ile bir sayfa istemek şimdilik hala HTML'ini getiriyor: bunun yerine <x2/> adresini okuyun."
   },
   "c804d97a6c6b59ba": {
    "source": "The page adds a download's address, a magnet link or a <x1/> file from the phone, with a <g2>Category</g2> and <g3>When</g3>: start now, or wait in a queue. It lists every download with its progress, speed and size, pauses and starts each one, and removes it, with its file if you ask. It starts and stops the queues too. The bar at the top shows the total speed and the free space where your downloads go.",
@@ -14766,6 +14862,10 @@
    "source": "AI assistants",
    "text": "Yapay zeka asistanları"
   },
+  "ce26147ce708b51e": {
+   "source": "For AI tools and agents",
+   "text": "Yapay zeka araçları ve aracıları için"
+  },
   "ce3d5af083f413b7": {
    "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
    "text": "Ana pencere: menü çubuğu, araç çubuğu, soldaki kategoriler ve sağdaki indirme listesi"
@@ -15217,6 +15317,10 @@
   "d4a71e10d53850e6": {
    "source": "<g1><g2>Catch downloads from your browser</g2></g1> — set up the extension so clicked downloads go to MDM.",
    "text": "<g1><g2>Tarayıcınızdan indirmeleri yakalayın</g2></g1> — tıklanan indirmelerin MDM'ye gitmesi için uzantıyı ayarlayın."
+  },
+  "d4ad3bf9b2a8e7ad": {
+   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
+   "text": "Arama motorları onu indeksleyebilir, yapay zeka araçları soruları yanıtlamak için kullanabilir ve yapay zeka modellerini eğitmek için kullanılabilir. Mister Download Manager ücretsiz, açık kaynaklı bir yazılımdır (GPL-3.0); sitesi bulunmak ve anlaşılmak için buradadır."
   },
   "d4c9212e6107e470": {
    "source": "Playlists and channels",
@@ -15970,6 +16074,10 @@
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge ve daha fazlası"
   },
+  "e07c144638064536": {
+   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
+   "text": "Sitenin <g1>robots.txt</g1> dosyası her tarayıcıya izin verir ve bunu yapay zeka için <g2>İçerik Sinyalleri</g2> bölümünde belirtir:"
+  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "Bir <x1/> dosyası için: <g2>Magnet bağlantılarını ve .torrent dosyalarını Mister Download Manager ile aç</g2> seçeneği <g3>Görevler → Torrent ayarları</g3> bölümünde açık olmalıdır."
@@ -16118,10 +16226,6 @@
    "source": "The system's DNS looks names up its own way, and Windows may ask over every adapter. To keep the names inside the VPN as well, choose a DNS in <g1>Options → Connection → DNS</g1>: MDM then asks it through the adapter. See <g2>DNS and proxies</g2>.",
    "text": "Sistemin DNS'i adları kendi yöntemleriyle arar ve Windows her bağdaştırıcı üzerinden sorabilir. Adları VPN içinde tutmak için <g1>Seçenekler → Bağlantı → DNS</g1> bölümünde bir DNS seçin: MDM daha sonra bunu bağdaştırıcı üzerinden sorar. <g2>DNS ve proxy'ler</g2> bölümüne bakın."
   },
-  "e2b2bd857e845dd3": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>Kapatın, küçültün veya görünmediği siteleri görün</g1>: <g2>Seçenekler → Genel → Tarayıcılardaki MDM İndirme panellerini özelleştir → Düzenle...</g2>. <g3>Düğme boyutu</g3> yüklendiğinde <g4>Tam</g4> (sözcükleri sığdığı yere) veya <g5>Kompakt</g5> (her videoda yalnızca MDM'nin logosu, ok ve <g6>✕</g6>, küçük bir videodaki gibi) şeklindedir; tıkladıktan sonra ne olduğunu yine sözcüklerle belirtir. Zaten açık olan sayfalar, yeniden yüklemeye gerek kalmadan birkaç saniye içinde değişikliği takip eder."
-  },
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "Sürükle bırak hedefinin kenarı (hareketsiz)"
@@ -16253,6 +16357,10 @@
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
    "text": "Nereden yardım alabilirim?"
+  },
+  "e4b94379cc8e1a72": {
+   "source": "APIs",
+   "text": "API'ler"
   },
   "e4cc9bf3454d9b53": {
    "source": "Click <g1>Add URL</g1> and paste a gallery's address. Instead of saving the page as a file, MDM opens <g2>Download a gallery</g2>. When its line reads <g3>gallery-dl can download this gallery's files</g3>, check <g4>Save to</g4> and click <g5>Download Now</g5>, or <g6>Later</g6> to add it without starting.",
@@ -16565,6 +16673,10 @@
   "e88a839b4e8d456b": {
    "source": "<g1>Command line</g1><g2>IDM's command-line switches, a terminal downloader with JSON output, and a local API for other programs.</g2>",
    "text": "<g1>Komut satırı</g1><g2>IDM'in komut satırı anahtarları, JSON çıktılı bir terminal indirici ve diğer programlar için yerel bir API.</g2>"
+  },
+  "e895e3e3d267de25": {
+   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
+   "text": "Bu site öncelikle insanlar tarafından okunmak üzere yazılmıştır ve indirme yöneticileri hakkında soru soran yapay zeka araçları için de geçerlidir. İşte bir programın okuyabileceği her şey ve bununla ne yapabileceği."
   },
   "e8a02996d2b8ca17": {
    "source": "<g1>A pasted address</g1> (Add URL, Download video from a page, a playlist): choose your browser in <g2>Options → Sites Logins → Cookies for video sites</g2>. yt-dlp then reads that browser's cookies on this computer for every video it looks up or downloads. When the extension passed the page's own cookies, those are used instead: they are that page's and that session's.",
@@ -17778,6 +17890,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Sürüm 0.5.0'daki yenilikler <g1>2026-11-08</g1>"
   },
+  "f9a4b5089b7bfcce": {
+   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
+   "text": "<g1>Her sayfa Markdown formatında.</g1> Her sayfanın yanında bir Markdown sürümü bulunur: <x2/> yerine <x3/> olan adres veya <x5/> ile biten bir adres için <x4/>. Yani <g6>/download.html</g6>, <g7>/download.md</g7>'dir, <g8>/help/</g8>, <g9>/help/index.md</g9>'dir ve Almanca ana sayfa <g10>/de/</g10>, <g11>/de/index.md</g11>'dir. Her sayfa kendi adını <x12/> (<x13/>) içinde belirtir. Yardım sayfalarının Markdown'ı onların kaynağıdır; diğerleri her derlemede sayfadan oluşturulur, bu yüzden ondan asla sapmazlar."
+  },
   "f9a8db1326e07676": {
    "source": "<x1/> issues",
    "text": "<x1/> sorun"
@@ -17905,10 +18021,6 @@
   "fb0e18326bfc6b12": {
    "source": "Download for Linux",
    "text": "Linux için İndir"
-  },
-  "fb140a625b84ac20": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
-   "text": "Bilinmeyen bir soru veya eyleme <x1/> ile yanıt verilir. API kapalıyken gelen bir soruya da <x2/> ile yanıt verilir; programlar bunu denetleyebilir, ancak hata metni değişebilir. Hatalı bir belirtece <x3/> ile yanıt verilir."
   },
   "fb1900915c99672a": {
    "source": "After a cut connection",
@@ -18098,6 +18210,10 @@
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>Aşağıdaki sitelerden otomatik indirme başlatma</g1> — indirmeleri tarayıcıda kalan siteler, boşluklarla ayrılmış. Bir ad, sitenin alt alanlarını da kapsar (<x2/>, <x3/> ve <x4/>'ü kapsar, <x5/> gibi), <x6/> İndirme panelleri listesindeki gibi her şeyi eşleştirir (<x7/>) ve sayfalarının başka bir sunucudaki (bir indirme sunucusu veya bir CDN) bağlantılarını, indirme geldiği sayfa tarafından belirtilir. Bilinen bir sayfası olmayan bir indirme, kendi adresiyle eşleştirilir. <g8>Varsayılan</g8> orijinal listeyi geri getirir."
   },
+  "fd2634470a1624af": {
+   "source": "The home and download pages show two kinds of ratings, never mixed:",
+   "text": "Ana sayfa ve indirme sayfaları, asla karıştırılmayan iki tür derecelendirme gösterir:"
+  },
   "fd2f8ecc1dec89a7": {
    "source": "Does it keep uploading after a torrent finishes? — Mister Download Manager",
    "text": "Torrent tamamlandıktan sonra yüklemeye devam eder mi? — Mister Download Manager"
@@ -18165,10 +18281,6 @@
   "fdb42bc6bffd138a": {
    "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
    "text": "<g1>Nasıl ister:</g1> gallery-dl ve MDM'nin indiricisi sitelerden MDM olarak ister; MDM aynı anda 4 resim getirir ve gallery-dl, kendisine kalanlar için en fazla saniyede bir resim getirir. Wikimedia sunucuları, çok daha hızlı veya isimsiz isteyen araçları reddeder. gallery-dl sizin hiçbir yapılandırma dosyanızı kullanmaz."
-  },
-  "fdbec569d3b4740e": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "Yoldan çekilir: yalnızca işaretçiyi bir videonun üzerine getirdiğinizde (veya oynatıcının klavye odağına sahip olduğunda; <g1>Tab</g1> daha sonra düğmeye geçer) görünür, işaretçi durduktan 1,5 saniye sonra ve videodan ayrıldığında hemen solar ve küçük videoları ve kısa sessiz döngüleri (hareketli resimler, arka planlar) dışarıda bırakır. Sayfanın kendi düğmelerini kapatmaz: bir tanesi köşesinin herhangi bir kısmının altında kaldığında (bir oynatıcının geri bildirim veya ayarlar düğmesi, bir küçük resmin daha sonra izle düğmesi), bir sonraki boş köşeyi alır ve oynatıcı düğmelerini gösterip gizlerken onu orada tutar, böylece siz ona ulaşırken yerinde kalır. İşaretçi bir küçük resmin üzerindeyken oynayan bir önizlemenin üzerinde (YouTube'un ana sayfası, bir arama, bir kanal), işaretçi düğmeye ulaştığında sayfa önizlemeyi durdurur; işaretçi üzerindeyken düğme olduğu yerde kalır ve bir tıklama o önizlemenin videosunu indirir. Videoyu oynatmak veya duraklatmak onu geri getirmez. 360 pikselden daha dar bir videoda veya kelimelerinin sığmayacağı yerlerde, yalnızca logosu, oku ve <g2>✕</g2> bulunur; Seçenekler'de (aşağıda) <g3>Düğme boyutu</g3> <g4>Kompakt</g4> olarak ayarlandığında, her videoda o yuvarlak düğmedir. Tam ekranda oynatıcı izin verdiğinde videoyu takip eder ve tam ekrana girerken işaretçiyi tekrar hareket ettirene kadar yoldan çekilir."
   },
   "fdc70071f8979731": {
    "source": "Warnings",

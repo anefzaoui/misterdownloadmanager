@@ -306,6 +306,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "토렌트에 포함된 파일 중 일부가 폴더에 이미 있으면 MDM은 사용 여부를 먼저 묻습니다. <g1>예</g1>를 선택하면 해당 파일을 토렌트에 사용합니다. MDM은 파일을 확인해 토렌트 내용과 일치하는 파일은 그대로 두고 나머지는 다운로드합니다. 이렇게 하면 다른 곳에서 시작한 다운로드를 이어 받거나 이미 가진 파일을 공유할 수 있습니다. <g2>아니요</g2>(기본값)를 선택하면 이전 단계로 돌아갑니다. 다른 폴더를 선택할 수 있으며 기존 파일은 덮어쓰지 않습니다."
   },
+  "04347ca0f5af1b11": {
+   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
+   "text": "<g1>MDM의 자동화 API</g1>는 이 사이트에 전혀 없습니다. 앱 내부, 사용자 자신의 컴퓨터에서 실행되며, 사용자가 켤 때까지 꺼져 있고, 비밀 토큰으로 거기에서만 응답합니다. <g2>문서</g2>와 <g3>JSON 스키마</g3>를 참조하세요."
+  },
   "043f6ef7d8d6d597": {
    "source": "Mister Download Manager is an interesting option for anyone looking for a modern, free and open-source download manager.",
    "text": "Mister Download Manager는 현대적이고 무료이며 오픈 소스 다운로드 관리자를 찾는 모든 사람에게 흥미로운 선택지입니다."
@@ -822,6 +826,10 @@
    "source": "<g1>Cancel</g1> stops the download and closes the window. The download stays in the list and can be resumed.",
    "text": "<g1>취소</g1>를 선택하면 다운로드를 중지하고 창을 닫습니다. 다운로드는 목록에 남아 있으며 다시 시작할 수 있습니다."
   },
+  "0af7f5cd6adffe8b": {
+   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
+   "text": "Mister Download Manager에는 <g1>MCP</g1> 서버 <x2/>가 함께 제공되므로, AI 어시스턴트(Claude, Cursor, VS Code 등)가 사용자의 실행 중인 MDM에서 다운로드를 나열, 추가, 일시 중지, 재개 및 제거할 수 있습니다. 이것은 <g3>로컬</g3> 서버입니다. 어시스턴트가 사용자 컴퓨터의 앱 옆에서 시작하며, 거기에서 MDM과만 통신합니다. 이 웹사이트에는 MCP 서버가 없습니다. <g4>서버 카드</g4>에 설명되어 있으며, <g5>AI 어시스턴트</g5>에서 설정 방법을 안내합니다."
+  },
   "0afe7d2cb5cea1a9": {
    "source": "Portable mode — Mister Download Manager help",
    "text": "휴대용 모드 — Mister Download Manager 도움말"
@@ -950,6 +958,10 @@
    "source": "<g1>Proxy auto-config scripts (PAC) run in QuickJS</g1>, a much smaller JavaScript engine, with limits on memory and running time: a script that loops or grows forever now fails, as a broken script does (the download goes on with the default proxy settings), instead of holding it.",
    "text": "<g1>프록시 자동 구성 스크립트(PAC)는 QuickJS에서 실행됩니다</g1>. QuickJS는 훨씬 작은 JavaScript 엔진으로, 메모리 및 실행 시간에 제한이 있습니다. 무한 루프를 돌거나 계속 증가하는 스크립트는 이제 손상된 스크립트처럼 실패하며(다운로드는 기본 프록시 설정으로 계속됨), 이를 유지하지 않습니다."
   },
+  "0c9da169d64e8998": {
+   "source": "MDM's MCP server",
+   "text": "MDM의 MCP 서버"
+  },
   "0cd4a41b7875f510": {
    "source": "Options → Archives: extract every archive, or only the packages that ask.",
    "text": "옵션 → 압축 파일: 모든 압축 파일을 추출하거나, 요청하는 패키지만 추출합니다."
@@ -1053,6 +1065,10 @@
   "0e703708311ea645": {
    "source": "The thin edge around a country's flag",
    "text": "국기 주변의 얇은 테두리"
+  },
+  "0e8cf57250a871ec": {
+   "source": "Read the site",
+   "text": "사이트 읽기"
   },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
@@ -1574,6 +1590,10 @@
    "source": "If it says <g1>the file changed on the server</g1>, the file isn't the one MDM started with. Right-click → <g2>Redownload</g2> to start again from the beginning.",
    "text": "<g1>서버에서 파일이 변경됨</g1>이라고 표시되면, 파일이 MDM이 시작한 파일과 다릅니다. 마우스 오른쪽 버튼 클릭 → <g2>다시 다운로드</g2>를 선택하여 처음부터 다시 시작합니다."
   },
+  "1599478b71f60890": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
+   "text": "알 수 없는 질문이나 동작에는 <x1/>로 응답하며, API가 꺼져 있을 때의 질문에도 마찬가지입니다(이 경우 프로그램이 확인할 수 있도록 <x2/>와 함께 응답하며, 오류 텍스트는 변경될 수 있습니다). 잘못된 토큰에는 <x3/>로 응답합니다. MDM이 이미 처리할 수 있는 최대 요청 수를 동시에 처리하고 있을 때는 <x4/>로 응답합니다. 아무것도 처리되지 않았으므로 잠시 후 다시 명령을 보낼 수 있습니다."
+  },
   "15b2bf48d7547b61": {
    "source": "Opened 480, done in 15.9 s<g1><g2>2</g2></g1>",
    "text": "480개 열림, 15.9초 소요<g1><g2>2</g2></g1>"
@@ -1698,6 +1718,10 @@
    "source": "<g1>Scheduler and queues</g1><g2>Queues started and stopped by the clock, a few files at a time, the computer off at the end.</g2>",
    "text": "<g1>스케줄러 및 큐</g1><g2>시간에 맞춰 대기열을 시작하고 중지하며, 한 번에 몇 개의 파일을 처리하고, 완료되면 컴퓨터를 끕니다.</g2>"
   },
+  "1777ec4563260032": {
+   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
+   "text": "<g1><g2>sitemap.xml</g2></g1>: 모든 언어의 모든 페이지."
+  },
   "17834855ff83a05b": {
    "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> can't ask for that permission at the switch, so the extension has it from the install (Chrome counts it under the access to every site the extension already asks for, so it adds no line to the install prompt and the update asks for nothing new). The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy extension, a policy, the command line): a fixed server for the download's scheme (<x2/>, <x3/>, <x4/>, <x5/>), unless the address is on its bypass list, or its proxy auto-config script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes by its own Options. A QUIC proxy can't be shared.",
    "text": "<g1>Chrome, Edge, Brave, Opera 및 Vivaldi</g1>는 스위치에서 해당 권한을 요청할 수 없으므로 확장 프로그램은 설치 시부터 해당 권한을 가집니다(Chrome은 확장 프로그램이 이미 요청하는 모든 사이트에 대한 액세스 권한으로 이를 계산하므로 설치 프롬프트에 줄을 추가하지 않으며 업데이트는 새로운 것을 요구하지 않습니다). 스위치는 아무것도 묻지 않습니다. MDM은 누가 설정했든(VPN 또는 프록시 확장 프로그램, 정책, 명령줄) 브라우저의 유효한 프록시를 얻습니다. 주소가 바이패스 목록에 있거나 프록시 자동 구성 스크립트(주소 또는 인라인)에 있지 않는 한, 다운로드 스키마(<x2/>, <x3/>, <x4/>, <x5/>)에 대한 고정 서버입니다. 프록시가 없거나 시스템 프록시인 경우 아무것도 전송되지 않으며 MDM은 자체 옵션에 따릅니다. QUIC 프록시는 공유할 수 없습니다."
@@ -1777,6 +1801,10 @@
   "18b71bddc92d0eb7": {
    "source": "<g1>A Linux test machine, scripted</g1> (part of <g2>#164</g2>): <x3/> sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host (<x4/>: hardware, headless start, linked clones; <x5/>: packages, Rust, Node, the browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a quick test profile (<x6/>), and checks pull requests on it: windows shot and compared pixel by pixel (<x7/>, <x8/>, <x9/>), HLS and DASH hand-overs from the Snap Firefox and Google Chrome (<x10/>, <x11/>), the extension's proxy switch (<x12/>), hand-overs and the Scheduler while minimized, torrents without a network, and MDM's start-up time (<x13/>). Every change is now checked on Linux as on Windows. The machine also has copies on KDE Plasma, Cinnamon and XFCE (<x14/>), which get a build copied over instead of making one (<x15/>); a window harness shoots many windows from one running MDM in any language, mode and theme, with real clicks and keys inside the machine (<x16/>, <x17/>); and a store package is checked before it ships (<x18/>, <x19/>).",
    "text": "<g1>스크립트화된 Linux 테스트 머신</g1> (<g2>#164</g2>의 일부): <x3/>는 Windows 호스트에서 VirtualBox에 Ubuntu 24.04 데스크톱을 설정하고(<x4/>: 하드웨어, 헤드리스 시작, 연결된 클론; <x5/>: 패키지, Rust, Node, 브라우저, UI 자동화, 잠금 해제된 키링), 빠른 테스트 프로필로 모든 브랜치 또는 풀 리퀘스트를 빌드하며(<x6/>), 다음을 확인합니다: 창을 픽셀 단위로 촬영하고 비교(<x7/>, <x8/>, <x9/>), Snap Firefox 및 Google Chrome에서 HLS 및 DASH 핸드오버(<x10/>, <x11/>), 확장 프로그램의 프록시 전환(<x12/>), 최소화된 상태에서의 핸드오버 및 예약 관리자, 네트워크 없는 토렌트, MDM의 시작 시간(<x13/>). 이제 모든 변경 사항은 Windows에서와 마찬가지로 Linux에서도 확인됩니다. 이 머신에는 KDE Plasma, Cinnamon 및 XFCE(<x14/>)에도 복사본이 있으며, 빌드를 만드는 대신 복사본을 가져옵니다(<x15/>). 창 하네스는 실행 중인 MDM에서 모든 언어, 모드 및 테마로 많은 창을 촬영하며, 머신 내부에서 실제 클릭 및 키를 사용합니다(<x16/>, <x17/>). 또한 스토어 패키지는 출시 전에 확인됩니다(<x18/>, <x19/>)."
+  },
+  "18bc8bff0f9a1963": {
+   "source": "For AI tools that read the website",
+   "text": "AI 도구를 위한 정보"
   },
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
@@ -4790,6 +4818,10 @@
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "Chrome 웹 스토어의 확장 프로그램은 버전 0.5.1 이전에는 YouTube에 <g1>비디오 다운로드</g1> 버튼을 표시하지 않았습니다. 0.5.1부터는 표시됩니다. 브라우저는 확장 프로그램을 자동으로 업데이트합니다. 더 빨리 업데이트하려면 확장 프로그램 페이지를 열어 수동으로 업데이트하세요."
   },
+  "427253cb798cd6a1": {
+   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
+   "text": "<g1>브라우저 스토어 자체의 평점</g1>: <g2>Firefox 부가 기능 스토어</g2>와 <g3>Chrome 웹 스토어</g3>가 MDM 확장 프로그램에 대해 표시하는 평점, 평점 수 및 사용자 수입니다. 사이트 빌드 시마다 다시 읽히며, 읽은 날짜가 함께 표시됩니다. 페이지 텍스트로만 유지됩니다."
+  },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
    "text": "<g1>완료 시 추출</g1>: 패키지에 압축 파일이 있으면 자동으로 선택됩니다."
@@ -6078,6 +6110,10 @@
    "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
    "text": "링크 그래버가 페이지의 링크를 패키지별로 나열하며, 이름, 크기 및 온라인 여부를 표시합니다."
   },
+  "5586e9c27d735100": {
+   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
+   "text": "AI 어시스턴트, 에이전트 및 검색 도구가 misterdownloadmanager.com을 읽는 방법: Markdown으로 된 모든 페이지, llms.txt, 사이트 허용 사항, API 카탈로그, MDM 자체 MCP 서버, 그리고 사이트 별점 작동 방식."
+  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "페이지의 플레이어가 불러오는 비디오 스트림(HLS 및 DASH 재생 목록)의 주소를 해당 탭의 메모리에 기록합니다. 그래야 <g1>비디오 다운로드</g1> 버튼이 스트림을 전달할 수 있습니다. 버튼은 비디오 및 오디오 플레이어를 찾아 배치할 때만 페이지를 읽습니다. 버튼을 클릭하면 페이지 주소, 비디오 주소, 페이지 제목, 사이트 쿠키, 플레이어를 포함하는 페이지 및 브라우저의 User-Agent를 MDM으로 전달합니다."
@@ -6569,6 +6605,10 @@
   "5cc1a6448e1ca4fc": {
    "source": "Windows 10 and 11",
    "text": "Windows 10 및 11"
+  },
+  "5cc5fcb12af24878": {
+   "source": "<g1>/.well-known/api-catalog</g1> lists them (RFC 9727):",
+   "text": "<g1>/.well-known/api-catalog</g1>에 목록이 있습니다(RFC 9727):"
   },
   "5cc90886ac3d306a": {
    "source": "The toolbar's top line",
@@ -7338,6 +7378,10 @@
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "다른 네트워크를 통해 <g1>모든</g1> 트래픽을 라우팅하려면 컴퓨터 전체에 VPN을 사용하세요."
   },
+  "678b5f7a1583e7d1": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
+   "text": "<g1>메뉴</g1>(버튼 옆의 화살표 또는 버튼에 키보드 초점이 있을 때 <g2>↓</g2>): 비디오의 제목, 길이 및 사이트; 품질이 다른 경우 필터: <g3>모두</g3>, <g4>비디오</g4>(소리가 포함된 영상) 또는 <g5>오디오만</g5>, 그리고 파일 형식(MP4, WEBM, M4A, MP3...) 또는 영상 코덱(AV1, VP9, H.264)은 사이트별로 유지됩니다. <g6>최고 품질 다운로드</g6>가 먼저 표시되고(필터가 유지하는 것 중 최고), 그 다음 <g7>비디오</g7> 및 <g8>오디오</g8> 아래에 품질별로 한 줄씩 번호가 매겨져 파일 형식, 코덱, 프레임 속도 또는 비트레이트 및 크기(<x9/> <x10/>, 비디오 다운로드 창에 표시된 대로)가 표시되며, 최고 품질은 표시되고, 어디서든 재생되는 품질의 해상도 옆에는 <g11>최대 호환(H.264 + AAC)</g11>이 표시됩니다(<g12>품질 선택</g12>). 그 다음 <g13>모든 화질 및 자막...</g13>이 있으며, 이는 <g14>페이지에서 비디오 다운로드</g14> 창을 엽니다. 이어서 <g15>버튼을 제자리로 되돌리기</g15>(사이트에서 이동한 경우), <g16>이 비디오에서 숨기기</g16>(<g17>Esc</g17>), 사이트에서 <g18>항상 숨기기</g18>(MDM이 사이트를 기억함), 그리고 MDM의 옵션을 여는 <g19>단추 설정...</g19>이 있습니다. 화살표 키로 이동하고, <g20>Enter</g20>로 선택하며, <g21>Esc</g21>로 닫습니다."
+  },
   "67b09013b9c7d05d": {
    "source": "Yes downloads both helpers in the background, once.",
    "text": "예를 선택하면 두 도우미가 한 번에 백그라운드에서 다운로드됩니다."
@@ -7938,6 +7982,10 @@
    "source": "<g1>A window closed with its title bar's × no longer turns black first</g1> (<g2>#207</g2>): every dialog and the progress window turned black for a moment when closed with the × or Alt+F4, rather than with Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on Windows. The window now keeps its contents until it goes.",
    "text": "<g1>제목 표시줄의 ×로 닫은 창이 더 이상 먼저 검은색으로 변하지 않습니다</g1> (<g2>#207</g2>): 모든 대화 상자와 진행 창은 Esc 키 또는 해당 단추가 아닌 × 또는 Alt+F4로 닫을 때 잠시 검은색으로 변했습니다. Linux에서는 1초에서 몇 초, Windows에서는 몇 백분의 1초였습니다. 이제 창은 사라질 때까지 내용을 유지합니다."
   },
+  "6f6dde6f363e5240": {
+   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
+   "text": "<g1>이 사이트의 평점</g1>: 방문자는 MDM에 1점에서 5점까지 별점을 매길 수 있으며, 다시 선택하여 평점을 변경하거나 제거할 수 있습니다. 별점 옆에는 평균, 평점 수, 각 별점 수에 대한 정보가 표시됩니다. 이 정보만 검색 엔진을 위한 페이지의 구조화된 데이터에 포함됩니다."
+  },
   "6f6f84e7ad3660d6": {
    "source": "Numbers and dates",
    "text": "숫자 및 날짜"
@@ -7994,9 +8042,17 @@
    "source": "<g1>Torrents: file names are checked more strictly</g1> (<g2>#40</g2>): a torrent with names the system can't write safely is refused, saying which name, and so are torrents kept from an earlier run.",
    "text": "<g1>토렌트: 파일 이름이 더 엄격하게 확인됩니다</g1> (<g2>#40</g2>): 시스템이 안전하게 쓸 수 없는 이름을 가진 토렌트는 어떤 이름인지 알려주며 거부되고, 이전 실행에서 보관된 토렌트도 마찬가지입니다."
   },
+  "703d892a5281778d": {
+   "source": "What you may do with it",
+   "text": "무엇을 할 수 있나요?"
+  },
   "70424cf3215714b2": {
    "source": "A button's text",
    "text": "버튼 텍스트"
+  },
+  "704b09ba9997e7dc": {
+   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
+   "text": "앱 내 서버와 별도로, 웹사이트는 AI 도구를 위해 MCP 서버 카드(<g1>/.well-known/mcp/server-card.json</g1>)에 정보를 제공하며, 모든 페이지는 마크다운 형식(<x2/> 옆 <x3/>)으로 되어 있어 AI 어시스턴트가 MDM 설정 방법을 읽을 수 있습니다. <g4>AI 도구 및 에이전트용</g4>을 참조하세요. 웹사이트에는 MCP 서버가 없습니다. 서버는 항상 앱 옆에 있는 사용자 컴퓨터에서 실행됩니다."
   },
   "70950300e88df4b7": {
    "source": "An API for the running app",
@@ -8414,6 +8470,10 @@
    "source": "Download acceleration and crash-safe resume — Mister Download Manager",
    "text": "다운로드 가속 및 충돌 방지 다시 시작 — Mister Download Manager"
   },
+  "7691b6b987bd0ca0": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "이 버튼은 방해가 되지 않습니다. 포인터를 비디오 위로 이동할 때만 표시되고(또는 플레이어에 키보드 초점이 있을 때; <g1>Tab</g1>을 누르면 버튼으로 이동), 포인터가 멈춘 후 1.5초 또는 비디오를 벗어난 직후 희미해졌다가 3초 후에 사라집니다. 희미한 상태에서도 찾을 수 있으며, 포인터를 가져가면 다시 온전하게 나타납니다. 메뉴가 열려 있는 동안에는 절대 희미해지지 않으며, 시스템의 동작 줄이기 설정에서는 희미해지는 효과 없이 변경됩니다. 작은 비디오나 짧은 음소거 루프(애니메이션 사진, 배경)에는 표시되지 않습니다. 페이지 자체의 버튼을 가리지 않습니다. 버튼의 모서리 아래에 다른 버튼(플레이어의 피드백 또는 설정 버튼, 썸네일의 나중에 볼 동영상 버튼)이 있는 경우, 다음 빈 모서리로 이동하여 플레이어가 버튼을 표시하고 숨기는 동안 그 자리를 유지하므로, 사용자가 버튼을 찾을 때 제자리에 있습니다. 썸네일에 포인터를 올리면 재생되는 미리보기(YouTube 홈 페이지, 검색, 채널) 위에서는 포인터가 버튼에 닿으면 페이지가 미리보기를 중지합니다. 포인터가 버튼 위에 있는 동안 버튼은 제자리에 있으며, 클릭하면 해당 미리보기 비디오를 다운로드합니다. 비디오를 재생하거나 일시 중지해도 다시 나타나지 않습니다. 설치 시(아래 옵션에서 <g2>단추 크기: 자동</g2>), 피드(Facebook, X, LinkedIn, Instagram, Reddit, YouTube 홈 등)의 비디오와 작은 플레이어 위에서는 로고, 화살표 및 <g3>✕</g3>만 표시되며, 시청 페이지와 같은 큰 플레이어 위에서는 단어가 포함된 전체 버튼이 표시됩니다. 너비가 360픽셀 미만이거나 단어가 들어갈 공간이 없는 비디오에서는 항상 둥근 버튼으로 표시됩니다. <g4>크게</g4>는 단어가 들어갈 수 있는 모든 곳에 단어를 유지하고, <g5>작게</g5>는 모든 비디오에서 둥근 버튼으로 만듭니다. 전체 화면에서는 플레이어가 허용하는 경우 비디오를 따라가며, 전체 화면으로 전환하면 포인터를 다시 움직일 때까지 방해가 되지 않습니다."
+  },
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>끔</g1>(기본값) — 동영상 위에 있는 버튼을 사용할 때 yt-dlp는 브라우저 확장 프로그램에서만 쿠키를 가져옵니다."
@@ -8525,6 +8585,10 @@
   "7846a58f8fbe7e95": {
    "source": "Translated from Turkish",
    "text": "튀르키예어 번역"
+  },
+  "784a58b4ccb32fc0": {
+   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
+   "text": "<g1>다시 다운로드</g1>는 파일을 처음부터 다시 다운로드합니다. 한 번에 하나의 파일만 다시 다운로드할 수 있습니다. 새 복사본이 다운로드되는 동안 완료된 파일은 그대로 유지되며, 새 복사본이 완료된 후에만 동일한 이름으로 그 자리를 대체합니다. 새 다운로드가 실패하거나 중지하면 기존 파일은 그대로 남아 있습니다. 다른 프로그램이 해당 파일을 열고 있는 경우(Windows에서), MDM은 두 파일을 모두 유지하고 새 복사본을 옆에 번호를 붙여 저장하며(<x2/>) 사용자에게 알립니다. 토렌트, 동영상 및 이미지 갤러리에는 이 기능이 없습니다. 토렌트의 <g3>파일 다시 확인</g3>은 손상된 조각을 찾아 가져오고, 완료된 갤러리의 <g4>다운로드 다시 시작</g4>은 누락된 파일을 가져옵니다."
   },
   "7868f11f6b965f60": {
    "source": "<g1>Windows on ARM</g1> (PCs with a Snapdragon or another ARM processor). On Windows 11 the x64 files run there too, translated by Windows, more slowly. The ARM64 setup installed over the x64 one replaces it; your list and settings stay, as they are kept in your profile, not with the program.",
@@ -9102,6 +9166,10 @@
    "source": "<g1>Downloads</g1>: MDM's newest downloads (see <g2>Recent downloads</g2>, below).",
    "text": "<g1>다운로드</g1>: MDM의 최신 다운로드(아래 <g2>최근 다운로드</g2> 참조)."
   },
+  "7fc30b1ddac6d981": {
+   "source": "For AI tools and agents — Mister Download Manager",
+   "text": "AI 도구 및 에이전트용 — Mister Download Manager"
+  },
   "7fc6f4be3515bc1a": {
    "source": "<g1>Help → Check for updates...</g1> — <g2>Check for updates at every start</g2> is in that window.",
    "text": "<g1>도움말 → 업데이트 확인...</g1> — 해당 창에서 <g2>시작할 때마다 업데이트 확인</g2>을 설정할 수 있습니다."
@@ -9165,10 +9233,6 @@
   "806bd0646731ef21": {
    "source": "Fields (besides <x1/>)",
    "text": "필드(<x1/> 제외)"
-  },
-  "807205b219bcd9d5": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
-   "text": "<g1>메뉴</g1>(옆의 화살표 또는 단추에 키보드 초점이 있을 때 <g2>↓</g2>): 비디오의 제목, 길이, 사이트; <g3>최고 품질 다운로드</g3>가 먼저 표시되고, 그 아래에 <g4>비디오</g4> 및 <g5>오디오</g5>별로 파일 형식, 코덱, 프레임 속도 또는 비트 전송률, 크기(<x6/> <x7/>, 비디오 다운로드 창에 표시된 대로)가 있는 번호가 매겨진 줄이 하나씩 표시되며, 가장 좋은 품질이 표시되고, 어디서든 재생되는 해상도 옆에는 <g8>최대 호환(H.264 + AAC)</g8>이 표시됩니다(<g9>품질 선택</g9>); <g10>모든 화질 및 자막...</g10>을 선택하면 <g11>페이지에서 비디오 다운로드</g11> 창이 열립니다. 그 다음에는 <g12>이 비디오에서 숨기기</g12>(<g13>Esc</g13>), 사이트에서 <g14>항상 숨기기</g14>(MDM이 사이트를 기억함), MDM의 옵션을 여는 <g15>단추 설정...</g15>이 있습니다. 화살표 키로 이동하고, <g16>Enter</g16>로 선택하며, <g17>Esc</g17>로 닫습니다."
   },
   "808ac1f47da4b1bc": {
    "source": "A download's progress.",
@@ -9754,6 +9818,10 @@
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "<g1>설치</g1>를 클릭한 다음 <g2>마침</g2>을 클릭하여 MDM을 시작하세요."
   },
+  "888c81b1f49716a1": {
+   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
+   "text": "<g1><g2>MDM 평가</g2></g1> — 웹사이트 홈 또는 다운로드 페이지에서 별 1개부터 5개까지 선택합니다. 다시 선택하여 평가를 변경하거나 제거할 수 있습니다."
+  },
   "888f93dc8f248ae4": {
    "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
    "text": "<g1>충돌 데이터 파일(<x2/>)</g1>은 당시 MDM이 실행하던 내용의 스냅샷입니다. 개발자에게 가장 유용한 정보지만 다운로드 주소, 쿠키, 저장된 비밀번호처럼 MDM 메모리에 있던 정보가 일부 포함될 수 있습니다. <g3>충돌 데이터도 첨부</g3>를 선택한 경우에만 첨부됩니다."
@@ -10061,6 +10129,10 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "테스트 프로그램"
+  },
+  "8d0ba2eee06a5511": {
+   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>이동</g1>: 점을 드래그하여 다른 모서리나 동영상 가장자리를 따라, 또는 플레이어 바깥쪽, 위, 아래 또는 옆으로 이동할 수 있습니다(플레이어를 가리거나 버튼이 있을 자리에 자체 컨트롤을 그리는 사이트의 경우). 드래그하는 동안 가장자리와 스냅되는 지점(모서리 및 중앙)이 표시됩니다. 플레이어 바깥쪽에 놓았을 때 창에 공간이 없으면(창 상단의 플레이어, 전체 화면) 해당 가장자리 안쪽에 머무릅니다. 해당 사이트에 놓은 위치에 머무릅니다. 메뉴의 <g2>버튼을 제자리로 되돌리기</g2>를 통해 되돌릴 수 있으며, 애드온 팝업에는 모든 사이트에 대한 <g3>설정 → 동영상 위 다운로드 버튼 → 재설정</g3>이 있습니다(필터도 포함)."
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10574,10 +10646,6 @@
    "source": "Where there is no tray",
    "text": "트레이가 없는 경우"
   },
-  "94d1eda28d7a14bb": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
-   "text": "<g1>브라우저의 MDM 다운로드 패널 사용자 지정 → 편집...</g1> — 웹 페이지 비디오 위에 표시되는 다운로드 버튼에 대한 설정입니다. 이 버튼을 끄거나, <g2>버튼 크기</g2>를 선택할 수 있습니다(<g3>전체</g3>는 공간이 허용하는 한 단어를 표시하고, <g4>축소</g4>는 모든 비디오에 로고, 화살표, ✕만 표시합니다). 또는 버튼이 표시되지 않을 사이트 목록을 지정할 수 있습니다(공백으로 구분하며, <x5/>, <x6/> 또는 <x7/>와 같은 와일드카드를 사용할 수 있습니다). <g8>브라우저 통합</g8>을 참조하세요."
-  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>대용량 파일을 저장하는 동안 창이 몇 초간 멈췄습니다</g1>: MDM이 창의 스레드에서 목록을 저장해 디스크 쓰기가 끝날 때까지 기다렸습니다. 새 충돌 보고 기능으로 문제를 발견했고, 이제 별도 스레드에서 저장합니다."
@@ -10693,6 +10761,10 @@
   "96305159e842a657": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45). A theme is a light and a dark palette, metrics, control styles and an icon style (<x1/>):",
    "text": "컨트롤이 그려지는 모든 색상과 크기는 활성 테마(#45)에서 가져옵니다. 테마는 밝고 어두운 팔레트, 측정 기준, 컨트롤 스타일 및 아이콘 스타일(<x1/>)로 구성됩니다."
+  },
+  "9632de50273e0f02": {
+   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
+   "text": "<g1>사이트의 별점</g1>은 <x2/>에 있으며, <g3>OpenAPI</g3>에 설명되어 있습니다. 누구나 숫자를 읽을 수 있으며, 평가는 이 사이트의 페이지(아래)에 대한 것입니다."
   },
   "963552ab075ccbdb": {
    "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
@@ -11310,6 +11382,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "두 앱 모두 각 다운로드를 최소 7회 실행했습니다. 막대는 실행 시간의 중간 절반을, 선은 중앙값을 나타냅니다."
   },
+  "9e42b66c081a9f75": {
+   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
+   "text": "<g1><g2>llms.txt</g2></g1>: Mister Download Manager가 무엇인지 몇 줄로 요약하고 주요 페이지를 설명합니다. <g3><g4>llms-full.txt</g4></g3>: 도움말 페이지와 일반적인 질문에 대한 답변이 하나의 파일에 담겨 있습니다."
+  },
   "9e4744c9b576debc": {
    "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
    "text": "웹 페이지에서 ZIP 또는 EXE 등의 다운로드 링크를 클릭하면 MDM에서 <g1>파일 정보 다운로드</g1> 창이 열립니다. <g2>다운로드 시작</g2>을 클릭합니다."
@@ -11662,6 +11738,10 @@
    "source": "480 connections against 2.",
    "text": "2개 연결에 대해 480개 연결."
   },
+  "a2f672d1532ccb2b": {
+   "source": "Star ratings",
+   "text": "별점"
+  },
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "다운로드 목록 알아보기 →"
@@ -11925,6 +12005,10 @@
   "a61e186132bdafc0": {
    "source": "If the browser doesn't hand downloads over →",
    "text": "브라우저가 다운로드를 넘겨주지 않는 경우 →"
+  },
+  "a64c37b28be78aa0": {
+   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
+   "text": "방문자당 하나의 평점만 허용되며, 자유 텍스트는 없습니다. 평점은 Cloudflare Turnstile(스크립트가 아닌 사람)에 의해 확인되며, 방문자는 10분 동안 최대 8번까지 평점을 매기거나 제거할 수 있습니다. 평점 서비스는 별점과 방문자 IP 주소의 솔트 해시를 보관하여 동일한 방문자가 새 평점을 추가하는 대신 기존 평점을 변경하도록 합니다. IP 주소 자체는 절대 보관하지 않습니다. <g1>개인정보처리방침</g1>에도 동일하게 명시되어 있습니다."
   },
   "a656f8bb2618d9d8": {
    "source": "<g1>Choose columns:</g1> right-click any column title and tick the ones you want. <g2>Reset columns</g2> in the same menu puts them back as they first were.",
@@ -13018,6 +13102,10 @@
    "source": "Deleting downloads",
    "text": "다운로드 삭제"
   },
+  "b4b12e00de9fb265": {
+   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
+   "text": "명령(<x1/>로 응답)에는 사용자가 지정한 <x2/>를 포함할 수 있습니다. 이는 문자, 숫자, <x3/>로 구성되며, 최대 64자까지 가능하고 각 명령마다 달라야 합니다. 응답이 돌아오지 않으면(연결이 끊기거나 대기 시간이 초과된 경우) 동일한 <x4/>로 같은 명령을 다시 보냅니다. MDM은 해당 명령이 몇 번 도달하든 한 번만 실행하고, 각 명령에 <x5/>로 응답합니다. <x6/>가 없으면 각 명령은 새로운 명령으로 간주됩니다. 프로그램의 두 번째 실행(<x7/>, <x8/>)은 이 작업을 자동으로 수행합니다."
+  },
   "b4c6b4d600e8fca1": {
    "source": "The code that draws the windows is optimised for size (the engine stays optimised for speed), and the programs are optimised as a whole.",
    "text": "창을 그리는 코드는 크기에 최적화되었으며(엔진은 속도에 최적화된 상태로 유지됨), 프로그램 전체가 최적화되었습니다."
@@ -13714,6 +13802,10 @@
    "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
    "text": "비디오를 다운로드합니다. <x1/> 또는 <x2/>가 없으면, 비디오 다운로드 창이 시작되는 최고 품질: ffmpeg를 사용하여 최고의 영상과 최고의 사운드를 결합합니다(Bilibili와 같이 영상과 사운드가 분리된 사이트는 비디오를 위해 ffmpeg가 필요합니다). 그렇지 않으면 영상과 사운드가 모두 포함된 최고의 파일을 사용합니다. <x3/> (또는 <x4/>)는 해당 높이 또는 페이지에서 제공하는 가장 가까운 낮은 높이(그렇지 않으면 가장 가까운 높은 높이)를 사용하며 이를 표시합니다. <x5/>는 창의 <g6>최대 호환(H.264 + AAC)</g6>과 같이 가장 호환되는 품질을 사용합니다: 모든 편집기, TV 및 휴대폰에서 재생되는 MP4 형식의 AAC 사운드가 포함된 최고의 H.264 영상입니다. 해당 형식이 없는 페이지는 이를 표시합니다(아무것도 변환되지 않습니다). <x7/>는 <x8/>에서 품질 선택기를 가져옵니다(<x9/> = 최고의 단일 파일; <x10/> = 사이트에 있는 그대로의 사운드만, 변환되지 않음; <x11/>, <x12/>, <x13/> 또는 <x14/> = 해당 비트레이트의 MP3 사운드, <x15/>는 최고의 가변 비트레이트; <x16/> = Opus; <x17/> = FLAC, 무손실이지만 사이트 사운드보다 좋지는 않음; 변환에는 ffmpeg가 필요합니다). <x18/>: MDM 자체 다운로더는 yt-dlp가 찾는 각 스트림을 이 연결 수(기본 8개, 1~128개)만큼 가져오고, 조각난 스트림(HLS, DASH)은 이 조각 수만큼 동시에 가져옵니다. <x19/>는 옆에 자막을 저장합니다: <x20/> (<x21/>)의 언어 코드, 또는 업로더가 제공한 모든 자막은 <x22/>; <x23/>는 대신 사이트의 자동 캡션을 가져옵니다; <x24/>는 자막을 비디오에 넣습니다(ffmpeg, MP4 또는 MKV 필요). ffmpeg를 사용하면 비디오의 챕터도 비디오 다운로드의 <g25>챕터 포함</g25>과 같이 파일에 포함됩니다. <x26/>는 <x27/>와 마찬가지로 다운로드 연결과 yt-dlp(및 ffmpeg) 연결을 하나의 네트워크 어댑터를 통해 보냅니다. 연결되지 않은 경우 아무것도 시작되지 않습니다. 페이지의 형식이 일치하지 않으면 <x28/>와 같이 제공하는 형식을 오류로 나열합니다."
   },
+  "bf1c4ba30d7b2674": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
+   "text": "<g1>브라우저의 MDM 다운로드 패널 사용자 지정 → 편집...</g1> — 웹 페이지 동영상 위에 표시되는 다운로드 버튼: 이 버튼을 끄거나, <g2>버튼 크기</g2>를 선택할 수 있습니다(<g3>자동</g3>은 설치 시 기본값으로, 피드 및 작은 플레이어에서는 로고, 화살표, ✕만 표시되고 큰 플레이어에서는 글자가 함께 표시됩니다. <g4>크게</g4>는 공간이 허용하는 모든 곳에 글자가 함께 표시되고, <g5>작게</g5>는 모든 동영상에 로고, 화살표, ✕만 표시됩니다). 또는 버튼이 표시되지 않을 사이트 목록을 지정할 수 있습니다(공백으로 구분하며, <x6/>, <x7/>, <x8/>와 같은 와일드카드를 사용할 수 있습니다). <g9>브라우저 통합</g9>을 참조하세요."
+  },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
    "text": "MDM은 아프리칸스어부터 베트남어까지 Windows 11이 제공하는 모든 표시 언어인 86개 언어를 지원합니다. 아랍어, 히브리어, 페르시아어, 우르두어, 위구르어에서는 전체 창이 오른쪽에서 왼쪽으로 표시됩니다."
@@ -13729,10 +13821,6 @@
   "bf425fd0bffea85c": {
    "source": "<g1>HatchZip</g1> is another free extractor (MIT or Apache-2.0), optional. MDM uses its command line program, <x2/>, when it is on the PATH (its installers and packages put it there; the desktop app alone isn't enough):",
    "text": "<g1>HatchZip</g1>은 또 다른 무료 추출 프로그램(MIT 또는 Apache-2.0)이며 선택 사항입니다. MDM은 HatchZip의 명령줄 프로그램인 <x2/>가 PATH에 있을 때 이를 사용합니다(설치 프로그램 및 패키지가 PATH에 추가합니다. 데스크톱 앱만으로는 충분하지 않습니다)."
-  },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>이동</g1>: 비디오 가장자리를 따라 점을 드래그하여 이동합니다. 드래그하는 동안 가장자리와 스냅되는 지점(모서리 및 중앙)이 표시됩니다. 해당 사이트에서 그 위치에 유지됩니다."
   },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
@@ -14050,6 +14138,10 @@
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "일반적으로 200GB로 압축 해제되는 180GB 다운로드에는 압축 파일과 파일이 동시에 존재해야 하므로 380GB가 필요합니다. 무료 압축 해제 프로그램인 <g1>HatchZip</g1>을 설치한 후 <g3>옵션 → 압축 파일</g3>에서 <g2>HatchZip으로 제자리 추출</g2>을 선택하면, 파일이 추출되면서 압축 파일의 크기가 줄어들어 200GB 조금 넘는 공간으로도 충분합니다. HatchZip은 변경 사항을 적용하기 전에 모든 것이 맞는지, 암호가 올바른지 확인합니다. 도중에 중단되면 지금까지 추출된 파일은 압축 파일 옆에 남아 있으며, <g4>추출</g4>을 계속할 수 있습니다."
   },
+  "c45503a700d34859": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>끄기, 작게 만들기 또는 표시되지 않는 사이트 확인</g1>: <g2>옵션 → 일반 → 브라우저의 MDM 다운로드 패널 사용자 지정 → 편집...</g2>. <g3>단추 크기</g3>는 설치 시 <g4>자동</g4>으로 설정되어 있으며(피드 및 작은 플레이어 위에서는 둥글게, 큰 플레이어 위에서는 단어가 포함), <g5>크게</g5>(단어가 들어갈 수 있는 모든 곳에 단어 포함) 또는 <g6>작게</g6>(모든 동영상에서 MDM 로고, 화살표, <g7>✕</g7>만 표시, 작은 동영상과 동일)로 설정할 수 있습니다. 클릭 후에도 발생한 일을 단어로 표시합니다. 이미 열려 있는 페이지는 다시 로드하지 않고 몇 초 내에 변경 사항을 따릅니다."
+  },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
    "text": "WinGet은 설치 프로그램을 다운로드하고 설치 프로그램의 질문 없이 MDM을 설치합니다."
@@ -14305,6 +14397,10 @@
   "c7e58bdb0724078c": {
    "source": "Download torrents and magnet links — Mister Download Manager",
    "text": "토렌트 및 마그넷 링크 다운로드 — Mister Download Manager"
+  },
+  "c7eb011b0c201b7e": {
+   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
+   "text": "<x1/>로 페이지를 요청하면 현재는 여전히 HTML이 제공됩니다. 대신 <x2/> 주소를 읽으세요."
   },
   "c804d97a6c6b59ba": {
    "source": "The page adds a download's address, a magnet link or a <x1/> file from the phone, with a <g2>Category</g2> and <g3>When</g3>: start now, or wait in a queue. It lists every download with its progress, speed and size, pauses and starts each one, and removes it, with its file if you ask. It starts and stops the queues too. The bar at the top shows the total speed and the free space where your downloads go.",
@@ -14766,6 +14862,10 @@
    "source": "AI assistants",
    "text": "AI 비서"
   },
+  "ce26147ce708b51e": {
+   "source": "For AI tools and agents",
+   "text": "AI 도구 및 에이전트용"
+  },
   "ce3d5af083f413b7": {
    "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
    "text": "메인 창: 메뉴 모음, 도구 모음, 왼쪽에 카테고리, 오른쪽에 다운로드 목록"
@@ -15217,6 +15317,10 @@
   "d4a71e10d53850e6": {
    "source": "<g1><g2>Catch downloads from your browser</g2></g1> — set up the extension so clicked downloads go to MDM.",
    "text": "<g1><g2>브라우저에서 다운로드 받기</g2></g1> — 클릭한 다운로드가 MDM으로 전달되도록 확장 프로그램을 설정합니다."
+  },
+  "d4ad3bf9b2a8e7ad": {
+   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
+   "text": "검색 엔진은 이 사이트를 색인할 수 있고, AI 도구는 질문에 답하기 위해 이 사이트를 사용할 수 있으며, AI 모델을 훈련하는 데 사용될 수 있습니다. Mister Download Manager는 무료 오픈 소스 소프트웨어(GPL-3.0)이며, 이 사이트는 발견되고 이해되기 위해 존재합니다."
   },
   "d4c9212e6107e470": {
    "source": "Playlists and channels",
@@ -15970,6 +16074,10 @@
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge 등"
   },
+  "e07c144638064536": {
+   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
+   "text": "사이트의 <g1>robots.txt</g1>는 모든 크롤러를 허용하며, <g2>콘텐츠 신호</g2>에서 AI에 대해 다음과 같이 명시합니다."
+  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "<x1/> 파일의 경우: <g2>Mister Download Manager로 마그넷 링크 및 .torrent 파일 열기</g2>가 <g3>작업 → 토렌트 설정</g3>에서 켜져 있습니다."
@@ -16118,10 +16226,6 @@
    "source": "The system's DNS looks names up its own way, and Windows may ask over every adapter. To keep the names inside the VPN as well, choose a DNS in <g1>Options → Connection → DNS</g1>: MDM then asks it through the adapter. See <g2>DNS and proxies</g2>.",
    "text": "시스템 DNS는 자체 방식으로 이름을 조회하며, Windows는 모든 어댑터를 통해 요청할 수 있습니다. 이름 조회도 VPN 내부에 유지하려면 <g1>옵션 → 연결 → DNS</g1>에서 DNS를 선택하세요. 그러면 MDM이 어댑터를 통해 DNS에 요청합니다. <g2>DNS 및 프록시</g2>를 참조하세요."
   },
-  "e2b2bd857e845dd3": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>끄거나, 작게 만들거나, 표시되지 않는 사이트 확인</g1>: <g2>옵션 → 일반 → 브라우저의 MDM 다운로드 패널 사용자 지정 → 편집...</g2>. <g3>버튼 크기</g3>는 설치 시 <g4>전체</g4>(단어가 맞는 곳에 표시) 또는 <g5>작게</g5>(MDM 로고, 화살표 및 <g6>✕</g6>만 모든 비디오에 표시, 작은 비디오처럼)입니다. 클릭 후에도 발생한 일을 단어로 표시합니다. 이미 열려 있는 페이지는 다시 로드하지 않고 몇 초 내에 변경 사항을 따릅니다."
-  },
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "정지 상태의 드롭 대상 가장자리"
@@ -16253,6 +16357,10 @@
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
    "text": "어디서 도움을 받을 수 있나요?"
+  },
+  "e4b94379cc8e1a72": {
+   "source": "APIs",
+   "text": "API"
   },
   "e4cc9bf3454d9b53": {
    "source": "Click <g1>Add URL</g1> and paste a gallery's address. Instead of saving the page as a file, MDM opens <g2>Download a gallery</g2>. When its line reads <g3>gallery-dl can download this gallery's files</g3>, check <g4>Save to</g4> and click <g5>Download Now</g5>, or <g6>Later</g6> to add it without starting.",
@@ -16565,6 +16673,10 @@
   "e88a839b4e8d456b": {
    "source": "<g1>Command line</g1><g2>IDM's command-line switches, a terminal downloader with JSON output, and a local API for other programs.</g2>",
    "text": "<g1>명령줄</g1><g2>IDM의 명령줄 스위치, JSON 출력을 지원하는 터미널 다운로더, 다른 프로그램을 위한 로컬 API.</g2>"
+  },
+  "e895e3e3d267de25": {
+   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
+   "text": "이 사이트는 사람들이 먼저 읽고, 다운로드 관리자에 대해 묻는 AI 도구도 읽을 수 있도록 작성되었습니다. 여기에는 프로그램이 읽을 수 있는 모든 것과 그것으로 무엇을 할 수 있는지에 대한 정보가 있습니다."
   },
   "e8a02996d2b8ca17": {
    "source": "<g1>A pasted address</g1> (Add URL, Download video from a page, a playlist): choose your browser in <g2>Options → Sites Logins → Cookies for video sites</g2>. yt-dlp then reads that browser's cookies on this computer for every video it looks up or downloads. When the extension passed the page's own cookies, those are used instead: they are that page's and that session's.",
@@ -17778,6 +17890,10 @@
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "버전 0.5.0의 새로운 기능 <g1>2026-11-08</g1>"
   },
+  "f9a4b5089b7bfcce": {
+   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
+   "text": "<g1>모든 페이지는 Markdown으로 제공됩니다.</g1> 각 페이지에는 옆에 Markdown 버전이 있습니다. 주소에서 <x2/> 대신 <x3/>를 사용하거나, <x5/>로 끝나는 주소에는 <x4/>를 사용합니다. 따라서 <g6>/download.html</g6>은 <g7>/download.md</g7>이고, <g8>/help/</g8>는 <g9>/help/index.md</g9>이며, 독일어 홈페이지 <g10>/de/</g10>는 <g11>/de/index.md</g11>입니다. 각 페이지는 <x12/>(<x13/>)에 자체 이름을 지정합니다. 도움말 페이지의 Markdown은 원본이며, 다른 페이지는 각 빌드 시 페이지에서 생성되므로 원본과 달라지지 않습니다."
+  },
   "f9a8db1326e07676": {
    "source": "<x1/> issues",
    "text": "<x1/>개 이슈"
@@ -17905,10 +18021,6 @@
   "fb0e18326bfc6b12": {
    "source": "Download for Linux",
    "text": "Linux용 다운로드"
-  },
-  "fb140a625b84ac20": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
-   "text": "알 수 없는 질문이나 작업은 <x1/>로 응답하며, API가 꺼져 있는 동안의 질문도 마찬가지입니다(이 경우 프로그램이 확인할 수 있도록 <x2/>로 응답합니다. 오류 텍스트는 변경될 수 있습니다). 잘못된 토큰은 <x3/>로 응답합니다."
   },
   "fb1900915c99672a": {
    "source": "After a cut connection",
@@ -18098,6 +18210,10 @@
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>다음 사이트에서는 자동으로 다운로드를 시작하지 않음</g1> — 다운로드가 브라우저에 남아 있는 사이트 목록을 공백으로 구분하여 입력합니다. 사이트 이름은 해당 사이트의 서브도메인도 포함합니다(<x2/>는 <x3/> 및 <x4/>를 포함하며, <x5/>도 마찬가지입니다). <x6/>는 다운로드 패널 목록(<x7/>)과 같이 모든 항목과 일치하며, 다운로드가 시작된 페이지를 통해 다른 서버(다운로드 서버 또는 CDN)에 연결된 파일도 포함합니다. 페이지를 알 수 없는 다운로드는 자체 주소와 일치합니다. <g8>기본값</g8>을 클릭하면 원래 목록으로 되돌립니다."
   },
+  "fd2634470a1624af": {
+   "source": "The home and download pages show two kinds of ratings, never mixed:",
+   "text": "홈페이지와 다운로드 페이지에는 두 가지 종류의 평점이 표시되며, 절대 혼합되지 않습니다."
+  },
   "fd2f8ecc1dec89a7": {
    "source": "Does it keep uploading after a torrent finishes? — Mister Download Manager",
    "text": "토렌트 완료 후에도 계속 업로드되나요? — Mister Download Manager"
@@ -18165,10 +18281,6 @@
   "fdb42bc6bffd138a": {
    "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
    "text": "<g1>요청 방식:</g1> gallery-dl과 MDM의 다운로더는 MDM으로 사이트에 요청합니다. MDM은 한 번에 4개의 사진을 가져오고, gallery-dl은 남은 사진에 대해 최대 초당 하나씩 가져옵니다. 위키미디어 서버는 너무 빠르게 또는 이름 없이 요청하는 도구를 거부합니다. gallery-dl은 사용자의 구성 파일을 사용하지 않습니다."
-  },
-  "fdbec569d3b4740e": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "방해가 되지 않습니다. 포인터를 비디오 위로 이동할 때만 표시되며(또는 플레이어가 키보드 포커스를 가질 때; <g1>Tab</g1>을 누르면 버튼으로 이동), 포인터가 멈춘 후 1.5초 후에 사라지고 비디오를 벗어나면 즉시 사라지며, 작은 비디오와 짧은 음소거 루프(애니메이션 그림, 배경)는 제외합니다. 페이지 자체 버튼을 가리지 않습니다. 버튼의 모서리 일부 아래에 버튼이 있는 경우(플레이어의 피드백 또는 설정 버튼, 썸네일의 나중에 보기 버튼) 다음 사용 가능한 모서리를 차지하고 플레이어가 버튼을 표시하고 숨기는 동안 유지되므로, 사용자가 버튼에 접근할 때 제자리에 있습니다. 썸네일 위에 포인터가 있을 때 재생되는 미리보기(YouTube 홈 페이지, 검색, 채널) 위에서는 포인터가 버튼에 도달하면 페이지가 미리보기를 중지합니다. 포인터가 버튼 위에 있는 동안 버튼은 제자리에 있으며, 클릭하면 해당 미리보기 비디오가 다운로드됩니다. 비디오를 재생하거나 일시 중지해도 다시 나타나지 않습니다. 너비가 360픽셀 미만이거나 단어가 맞지 않는 비디오에서는 로고, 화살표 및 <g2>✕</g2>만 표시됩니다. 옵션(아래)에서 <g3>버튼 크기</g3>를 <g4>작게</g4>로 설정하면 모든 비디오에 해당 원형 버튼이 표시됩니다. 전체 화면에서는 플레이어가 허용하는 경우 비디오를 따라가며, 전체 화면으로 전환하면 포인터를 다시 이동할 때까지 방해가 되지 않습니다."
   },
   "fdc70071f8979731": {
    "source": "Warnings",
