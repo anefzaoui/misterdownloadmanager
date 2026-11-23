@@ -1622,6 +1622,10 @@
    "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
    "text": "种子引擎使用 Rust 编写，可避免许多内存错误。MDM 还会根据种子的指纹检查每个数据块，因此对等方无法混入被篡改的数据。MDM 会及时更新种子引擎，以应用其作者发布的修复。"
   },
+  "16a5d1db49d75475": {
+   "source": "Get your file's SHA-256 checksum, with the downloaded file's name in place of <x1/>: on Windows, in PowerShell, <x2/>; on Linux, <x3/>; on macOS, <x4/>.",
+   "text": "获取文件的 SHA-256 校验和，将下载文件的名称替换 <x1/>：在 Windows 上，于 PowerShell 中运行 <x2/>；在 Linux 上运行 <x3/>；在 macOS 上运行 <x4/>。"
+  },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
    "text": "在长列表中查找下载"
@@ -1793,6 +1797,10 @@
   "19377f473665c846": {
    "source": "<g1>The help shows what it describes</g1> (<g2>#228</g2>): every guide and the main help pages now have pictures of the windows they explain, cropped to what matters, numbered where a step points at one control, and step strips for the usual flows (a download from the browser, a first download, a video, a torrent, a queue overnight). On the website they follow its light or dark theme, keep their place while they load, and open larger with a click; their descriptions and captions are translated with the page. The pictures are made by a script from one list (<x3/>), so they can all be taken again in one go.",
    "text": "<g1>帮助文档所见即所得</g1>（<g2>#228</g2>）：所有指南和主要帮助页面现在都配有其所解释窗口的图片，图片经过裁剪以突出重点，步骤指向某个控件时会进行编号，并为常见流程（从浏览器下载、首次下载、视频、种子、夜间队列）提供步骤条。在网站上，它们会根据网站的明暗主题显示，加载时保持原位，点击后可放大；图片描述和标题会随页面一起翻译。这些图片由脚本根据一个列表（<x3/>）生成，因此可以一次性全部重新拍摄。"
+  },
+  "1958a01b370ca326": {
+   "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
+   "text": "这很可能是一个误报。部分杀毒软件会根据推测而非已知病毒来判断不熟悉的程序：诸如 <x1/>、<x2/>、<x3/> 或 <x4/> 等检测名称就表示此类推测。它们最常标记的是来自小型项目、没有发行商签名、很少人运行过的新下载；MDM 的安装程序尚未进行代码签名。在 VirusTotal 上，少数引擎标记新安装程序而大多数保持干净，通常是误报的迹象。"
   },
   "1962902ce083389d": {
    "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
@@ -5078,6 +5086,10 @@
    "source": "Where the sign-in is kept",
    "text": "登录信息的保存位置"
   },
+  "47cff7958a924e1e": {
+   "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
+   "text": "将其与该版本 <x1/> 中相同文件的行进行比较（大小写不重要）。为确保列表本身是我们的，请使用 MDM 的发布密钥检查其签名 <x2/>：请参阅<g3>检查您的下载</g3>。"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "选项中的连接设置 →"
@@ -5469,6 +5481,10 @@
   "4d895f12e00559ae": {
    "source": "Can it download from Netflix or other paid streaming services?",
    "text": "它能从 Netflix 或其他付费流媒体服务下载吗？"
+  },
+  "4d8b3d6ddc128044": {
+   "source": "My antivirus flags MDM. Is it a virus? — Mister Download Manager",
+   "text": "我的杀毒软件将 MDM 标记为病毒。它是病毒吗？— Mister Download Manager"
   },
   "4d95d1dfa997c3ed": {
    "source": "The formats you meet",
@@ -7434,6 +7450,10 @@
    "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
    "text": "<g1>Firefox</g1><g2>Mozilla · <g3>添加到 Firefox</g3></g2>"
   },
+  "6a78482a79cac599": {
+   "source": "If the checksum doesn't match, or the copy came from anywhere else, don't run it: delete it and <g1>tell us</g1>.",
+   "text": "如果校验和不匹配，或者副本来自其他任何地方，请不要运行它：删除它并<g1>告诉我们</g1>。"
+  },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
    "text": "计划程序：队列按设定时间启动和停止。"
@@ -7669,6 +7689,10 @@
   "6dc00f6ca0aab78e": {
    "source": "<g1>What an archive holds goes</g1> — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.",
    "text": "<g1>存档内容的存放位置</g1>——存档包含多个文件时，放入以存档命名的文件夹中（默认）；始终放入这样的文件夹中；或直接放入存档所在的文件夹中。"
+  },
+  "6dce60e2f4b860a4": {
+   "source": "<g1>Tell us on GitHub</g1> which antivirus it was, the detection's name and the file, so we can report it too.",
+   "text": "<g1>在 GitHub 上告诉我们</g1>是哪款杀毒软件、检测名称和文件，以便我们也能报告。"
   },
   "6ddb957d293eb435": {
    "source": "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.",
@@ -8818,6 +8842,10 @@
    "source": "In dialogs",
    "text": "在对话框中"
   },
+  "7e2c588b344ccd88": {
+   "source": "No, if it came from <g1>this site</g1> or <g2>GitHub Releases</g2>. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x3/>, <x4/>, <x5/> or <x6/> mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's <x7/>. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and <g8>tell us on GitHub</g8> so we can report it too. The commands and the antivirus makers' report pages: <g9>My antivirus flags MDM</g9>.",
+   "text": "不，如果它来自<g1>本网站</g1>或<g2>GitHub Releases</g2>。部分杀毒软件会根据推测而非已知病毒来判断不熟悉的程序：例如<x3/>、<x4/>、<x5/>或<x6/>等检测名称就表示此类推测。它们最常标记的是很少有人运行过的新下载文件，且没有发布者签名；MDM 的安装程序尚未进行代码签名。为确保您的副本是我们的，请将其 SHA-256 校验和与发布版本的<x7/>进行比较。MDM 是开源的，每个版本都由 GitHub Actions 公开构建，因此任何人都可以阅读和重新构建它。然后将文件报告给您的杀毒软件，标记为误报，并<g8>在 GitHub 上告知我们</g8>，以便我们也能进行报告。命令和杀毒软件厂商的报告页面：<g9>我的杀毒软件将 MDM 标记为病毒</g9>。"
+  },
   "7e34624a653bd43b": {
    "source": "A file name sent by a site in plain UTF-8 now reaches MDM readable from Firefox and browsers built on it, such as Floorp, Waterfox and Zen: an Arabic name was saved as unreadable symbols (<g1>#447</g1>). A name written with percent signs in the same header is decoded as well. The add-on carries the fix",
    "text": "网站以纯 UTF-8 编码发送的文件名现在可以从 Firefox 及基于其构建的浏览器（如 Floorp、Waterfox 和 Zen）中清晰地显示在 MDM 中：以前阿拉伯语名称会保存为无法读取的符号（<g1>#447</g1>）。同一标头中带有百分号的文件名也会被解码。此修复已包含在附加组件中。"
@@ -9053,6 +9081,10 @@
   "80afa23a5451c61d": {
    "source": "What it can do, and what it can't",
    "text": "能做什么，不能做什么"
+  },
+  "80b75f50253c4016": {
+   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder.",
+   "text": "如果您的杀毒软件隔离了 MDM，请恢复它并为其文件夹添加例外。"
   },
   "80bb2d8150ab92af": {
    "source": "Mac or Linux?",
@@ -10433,6 +10465,10 @@
   "953a64f3542b5742": {
    "source": "Correct the translation in the third column and delete the row's <x1/> line.",
    "text": "更正第三列中的翻译，并删除该行的 <x1/>。"
+  },
+  "954373bf4b513543": {
+   "source": "Download MDM only from <g1>misterdownloadmanager.com</g1> or <g2>GitHub Releases</g2>.",
+   "text": "仅从 <g1>misterdownloadmanager.com</g1> 或 <g2>GitHub Releases</g2> 下载 MDM。"
   },
   "956271136a063e89": {
    "source": "What's new in version 0.2.4 <g1>2026-11-01</g1>",
@@ -12402,6 +12438,10 @@
    "source": "A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the <g1>Download complete</g1> window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.",
    "text": "请求过于频繁时，网站可能会拒绝提供字幕，YouTube 尤其如此，翻译字幕更是如此。视频仍会正常保存。MDM 会在 20 秒后再次请求字幕。如果仍未获取到，<g1>下载完成</g1>窗口和下载日志会说明缺少哪些字幕以及原因。可以稍后再试。如果原本应嵌入视频的字幕直到第二次尝试才获取到，就会改为保存在视频文件旁边。"
   },
+  "af76ea4a71ae00da": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as Malware.AI, Gen:, ML or Heur mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's SHA256SUMS.txt. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and tell us on GitHub so we can report it too. The commands and the antivirus makers' report pages: My antivirus flags MDM.",
+   "text": "不，如果它来自本网站或 GitHub Releases。部分杀毒软件会根据推测而非已知病毒来判断不熟悉的程序：例如 Malware.AI、Gen:、ML 或 Heur 等检测名称就表示此类推测。它们最常标记的是很少有人运行过的新下载文件，且没有发布者签名；MDM 的安装程序尚未进行代码签名。为确保您的副本是我们的，请将其 SHA-256 校验和与发布版本的 SHA256SUMS.txt 进行比较。MDM 是开源的，每个版本都由 GitHub Actions 公开构建，因此任何人都可以阅读和重新构建它。然后将文件报告给您的杀毒软件，标记为误报，并在 GitHub 上告知我们，以便我们也能进行报告。命令和杀毒软件厂商的报告页面：我的杀毒软件将 MDM 标记为病毒。"
+  },
   "af83c70c1ca46aae": {
    "source": "Options on its Connection page, on Linux",
    "text": "Linux 上“选项”的“连接”页面"
@@ -12830,6 +12870,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM 自身的下载使用自己的下载器</g1>：现在，yt-dlp、ffmpeg、MDM 更新和崩溃报告符号文件都会通过多个连接下载，网络中断后可以续传，并会使用代理设置。每个文件在使用前仍会根据发布者的签名校验和进行验证。"
   },
+  "b4d57a3265ad8025": {
+   "source": "Check that your copy is ours:",
+   "text": "请检查您的副本是否来自我们："
+  },
   "b4d5d25243e1d43b": {
    "source": "No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, each time it starts and once a day while it runs…",
    "text": "不。MDM 没有账户、分析或遥测功能。它连接到您下载文件的服务器，并且每次启动时以及运行时每天一次…"
@@ -13109,6 +13153,10 @@
   "b8ed53721f1b8571": {
    "source": "Click <g1>Apply</g1>.",
    "text": "点击<g1>应用</g1>。"
+  },
+  "b8f874b98d985f32": {
+   "source": "If they match, it is the file we published. MDM is open source and built in public: every release is built from the <g1>public source code</g1> by GitHub Actions, on GitHub's servers, with <g2>every build's log</g2> there to see, so anyone can read what went into it and build it again.",
+   "text": "如果匹配，则说明是我们发布的文件。MDM 是开源的，并在公共场合构建：每个版本都由 GitHub Actions 在 GitHub 服务器上从<g1>公共源代码</g1>构建，<g2>每个构建日志</g2>都可供查看，因此任何人都可以阅读其内容并重新构建。"
   },
   "b8face0bc8562340": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
@@ -14694,6 +14742,10 @@
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
    "text": "对于名称仅因数字或字母而异的文件，例如<x1/>到<x2/>："
   },
+  "d044acd0f39a8232": {
+   "source": "Report the file to your antivirus as a false positive: <g1>Microsoft Defender</g1>, <g2>Malwarebytes</g2>, <g3>Avast</g3>, <g4>AVG</g4>, <g5>Bitdefender</g5>, <g6>Kaspersky</g6>, <g7>ESET</g7>.",
+   "text": "向您的杀毒软件报告该文件为误报：<g1>Microsoft Defender</g1>、<g2>Malwarebytes</g2>、<g3>Avast</g3>、<g4>AVG</g4>、<g5>Bitdefender</g5>、<g6>Kaspersky</g6>、<g7>ESET</g7>。"
+  },
   "d04d5c0494e576d1": {
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "外观现代，提供多种主题、队列和计划任务，并有 Android 应用"
@@ -16149,6 +16201,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM 的第二个副本会监视第一个副本。当 MDM 崩溃时，报告窗口会显示<g1>Mister Download Manager 意外关闭</g1>。当其窗口在 8 秒内没有响应时，它会显示<g2>Mister Download Manager 已停止响应</g2>，并且<g3>结束并重启 MDM</g3>会关闭冻结的副本并启动一个新的。如果 MDM 自行恢复，窗口会显示此信息。"
+  },
+  "e6b85e1428494d1c": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
+   "text": "不，如果它来自本网站或 GitHub Releases。部分杀毒软件会根据推测而非已知病毒来判断不熟悉的程序……"
   },
   "e6e4ffbd1a17c7e8": {
    "source": "<x1/> pull request",
@@ -17814,6 +17870,10 @@
    "source": "Help pages",
    "text": "帮助页面"
   },
+  "fcf964e16b9ad4f2": {
+   "source": "Then:",
+   "text": "然后："
+  },
   "fd07a5008213448b": {
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>不自动从以下网站开始下载</g1> — 下载会保留在浏览器中的网站，用空格分隔。一个名称也涵盖该网站的子域名（<x2/> 涵盖 <x3/> 和 <x4/>，<x5/> 也是），<x6/> 匹配任何内容，如同下载面板列表中的那样（<x7/>），以及其页面链接到另一个服务器（下载服务器或 CDN）上的文件，由下载来源页面决定。未知来源页面的下载任务则通过其自身地址匹配。<g8>默认</g8>会恢复原始列表。"
@@ -17909,6 +17969,10 @@
   "fe1e9bfa950043a0": {
    "source": "File Properties: change the address or the folder of a download.",
    "text": "文件属性：更改下载的地址或文件夹。"
+  },
+  "fe2d94832629a9c2": {
+   "source": "My antivirus flags MDM. Is it a virus?",
+   "text": "我的杀毒软件将 MDM 标记为病毒。它是病毒吗？"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

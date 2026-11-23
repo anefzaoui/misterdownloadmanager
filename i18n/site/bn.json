@@ -1622,6 +1622,10 @@
    "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
    "text": "টরেন্ট ইঞ্জিনটি Rust-এ লেখা, যা অনেক মেমরি-সংক্রান্ত ত্রুটির সম্ভাবনা কমায়। MDM টরেন্টের ফিঙ্গারপ্রিন্টের সঙ্গে প্রতিটি অংশ মিলিয়ে দেখে, তাই কোনো পিয়ার পরিবর্তিত ডেটা ঢোকাতে পারে না। MDM ইঞ্জিনটি এর নির্মাতাদের প্রকাশিত সংশোধনসহ হালনাগাদ রাখে।"
   },
+  "16a5d1db49d75475": {
+   "source": "Get your file's SHA-256 checksum, with the downloaded file's name in place of <x1/>: on Windows, in PowerShell, <x2/>; on Linux, <x3/>; on macOS, <x4/>.",
+   "text": "আপনার ফাইলের SHA-256 চেকসাম নিন, <x1/>-এর জায়গায় ডাউনলোড করা ফাইলের নাম ব্যবহার করে: Windows-এ, PowerShell-এ, <x2/>; Linux-এ, <x3/>; macOS-এ, <x4/>।"
+  },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
    "text": "একটি দীর্ঘ তালিকায় একটি ডাউনলোড খুঁজুন"
@@ -1793,6 +1797,10 @@
   "19377f473665c846": {
    "source": "<g1>The help shows what it describes</g1> (<g2>#228</g2>): every guide and the main help pages now have pictures of the windows they explain, cropped to what matters, numbered where a step points at one control, and step strips for the usual flows (a download from the browser, a first download, a video, a torrent, a queue overnight). On the website they follow its light or dark theme, keep their place while they load, and open larger with a click; their descriptions and captions are translated with the page. The pictures are made by a script from one list (<x3/>), so they can all be taken again in one go.",
    "text": "<g1>সাহায্য যা বর্ণনা করে তা দেখায়</g1> (<g2>#228</g2>): প্রতিটি গাইড এবং প্রধান সাহায্য পৃষ্ঠাগুলিতে এখন তাদের ব্যাখ্যা করা উইন্ডোগুলির ছবি রয়েছে, যা গুরুত্বপূর্ণ অংশগুলিতে কাটা হয়েছে, যেখানে একটি ধাপ একটি নিয়ন্ত্রণকে নির্দেশ করে সেখানে সংখ্যাযুক্ত, এবং সাধারণ প্রবাহের জন্য ধাপ স্ট্রিপ (ব্রাউজার থেকে একটি ডাউনলোড, একটি প্রথম ডাউনলোড, একটি ভিডিও, একটি টরেন্ট, রাতারাতি একটি সারি)। ওয়েবসাইটে তারা এর হালকা বা গাঢ় থিম অনুসরণ করে, লোড হওয়ার সময় তাদের স্থান ধরে রাখে এবং ক্লিক করলে বড় হয়; তাদের বর্ণনা এবং ক্যাপশন পৃষ্ঠার সাথে অনুবাদ করা হয়। ছবিগুলি একটি তালিকা থেকে একটি স্ক্রিপ্ট দ্বারা তৈরি করা হয় (<x3/>), তাই সেগুলিকে একবারে আবার তোলা যায়।"
+  },
+  "1958a01b370ca326": {
+   "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
+   "text": "এটি সম্ভবত একটি ভুল অ্যালার্ম। কিছু অ্যান্টিভাইরাস প্রোগ্রাম অজানা প্রোগ্রামগুলোকে পরিচিত ভাইরাসের ভিত্তিতে নয়, বরং অনুমান করে বিচার করে: <x1/>, <x2/>, <x3/> বা <x4/>-এর মতো শনাক্তকরণের নামগুলো এমন অনুমানের ইঙ্গিত দেয়। তারা সাধারণত এমন নতুন ডাউনলোডগুলোকে চিহ্নিত করে যা খুব কম লোকই এখনো ব্যবহার করেছে, ছোট প্রকল্প থেকে এসেছে এবং প্রকাশকের স্বাক্ষর নেই; MDM-এর ইনস্টলার এখনো কোড-সাইন করা হয়নি। VirusTotal-এ, যখন বেশিরভাগ ইঞ্জিন পরিষ্কার থাকে কিন্তু কয়েকটি ইঞ্জিন একটি নতুন সেটআপকে চিহ্নিত করে, তখন এটি সাধারণত একটি ভুল পজিটিভের লক্ষণ।"
   },
   "1962902ce083389d": {
    "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
@@ -5078,6 +5086,10 @@
    "source": "Where the sign-in is kept",
    "text": "সাইন-ইনের তথ্য কোথায় রাখা হয়"
   },
+  "47cff7958a924e1e": {
+   "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
+   "text": "সেই রিলিজের <x1/>-এর একই ফাইলের লাইনের সাথে এটি তুলনা করুন (বড় বা ছোট অক্ষর কোনো ব্যাপার নয়)। তালিকাটি আমাদের কিনা তা নিশ্চিত হতে, MDM-এর রিলিজ কী দিয়ে এর স্বাক্ষর, <x2/>, যাচাই করুন: <g3>আপনার ডাউনলোড যাচাই করুন</g3> দেখুন।"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "বিকল্পগুলিতে সংযোগ সেটিংস →"
@@ -5469,6 +5481,10 @@
   "4d895f12e00559ae": {
    "source": "Can it download from Netflix or other paid streaming services?",
    "text": "এটি কি Netflix বা অন্যান্য পেইড স্ট্রিমিং পরিষেবা থেকে ডাউনলোড করতে পারে?"
+  },
+  "4d8b3d6ddc128044": {
+   "source": "My antivirus flags MDM. Is it a virus? — Mister Download Manager",
+   "text": "আমার অ্যান্টিভাইরাস MDM-কে ভাইরাস বলছে। এটি কি ভাইরাস? — Mister Download Manager"
   },
   "4d95d1dfa997c3ed": {
    "source": "The formats you meet",
@@ -7434,6 +7450,10 @@
    "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
    "text": "<g1>Firefox</g1><g2>Mozilla · <g3>Firefox-এ যোগ করুন</g3></g2>"
   },
+  "6a78482a79cac599": {
+   "source": "If the checksum doesn't match, or the copy came from anywhere else, don't run it: delete it and <g1>tell us</g1>.",
+   "text": "যদি চেকসাম না মিলে, অথবা কপিটি অন্য কোনো উৎস থেকে আসে, তাহলে এটি চালাবেন না: এটি মুছে ফেলুন এবং <g1>আমাদের জানান</g1>।"
+  },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
    "text": "সময়সূচী: ঘড়ি দ্বারা শুরু এবং বন্ধ করা একটি সারি।"
@@ -7669,6 +7689,10 @@
   "6dc00f6ca0aab78e": {
    "source": "<g1>What an archive holds goes</g1> — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.",
    "text": "<g1>আর্কাইভের ভেতরের ফাইলগুলো রাখা হবে</g1> — একাধিক ফাইল থাকলে আর্কাইভের নামে একটি ফোল্ডারে (ডিফল্ট), সব সময় এমন একটি ফোল্ডারে, অথবা সরাসরি আর্কাইভের ফোল্ডারে।"
+  },
+  "6dce60e2f4b860a4": {
+   "source": "<g1>Tell us on GitHub</g1> which antivirus it was, the detection's name and the file, so we can report it too.",
+   "text": "<g1>GitHub-এ আমাদের জানান</g1> কোন অ্যান্টিভাইরাস ছিল, সনাক্তকরণের নাম এবং ফাইলটি, যাতে আমরাও এটি রিপোর্ট করতে পারি।"
   },
   "6ddb957d293eb435": {
    "source": "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.",
@@ -8818,6 +8842,10 @@
    "source": "In dialogs",
    "text": "ডায়ালগগুলিতে"
   },
+  "7e2c588b344ccd88": {
+   "source": "No, if it came from <g1>this site</g1> or <g2>GitHub Releases</g2>. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x3/>, <x4/>, <x5/> or <x6/> mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's <x7/>. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and <g8>tell us on GitHub</g8> so we can report it too. The commands and the antivirus makers' report pages: <g9>My antivirus flags MDM</g9>.",
+   "text": "না, যদি এটি <g1>এই সাইট</g1> বা <g2>GitHub রিলিজ</g2> থেকে এসে থাকে। কিছু অ্যান্টিভাইরাস প্রোগ্রাম অজানা প্রোগ্রামকে পরিচিত ভাইরাস দিয়ে নয়, বরং অনুমান করে বিচার করে: <x3/>, <x4/>, <x5/> বা <x6/>-এর মতো শনাক্তকরণের নামগুলো এমন অনুমানকেই বোঝায়। তারা সাধারণত এমন নতুন ডাউনলোডকে চিহ্নিত করে যা খুব কম লোকই এখনো ব্যবহার করেছে এবং যার কোনো প্রকাশকের স্বাক্ষর নেই; MDM-এর ইনস্টলার এখনো কোড-সাইন করা হয়নি। আপনার কপিটি আমাদের কিনা তা নিশ্চিত হতে, এর SHA-256 চেকসামকে রিলিজের <x7/>-এর সাথে তুলনা করুন। MDM ওপেন সোর্স এবং প্রতিটি রিলিজ GitHub অ্যাকশনস দ্বারা প্রকাশ্যে তৈরি করা হয়, তাই যে কেউ এটি পড়তে এবং পুনরায় তৈরি করতে পারে। এরপর ফাইলটিকে আপনার অ্যান্টিভাইরাসের কাছে একটি ভুল পজিটিভ হিসেবে রিপোর্ট করুন এবং <g8>GitHub-এ আমাদের জানান</g8> যাতে আমরাও এটি রিপোর্ট করতে পারি। কমান্ড এবং অ্যান্টিভাইরাস নির্মাতাদের রিপোর্ট পেজগুলো: <g9>আমার অ্যান্টিভাইরাস MDM-কে চিহ্নিত করছে</g9>।"
+  },
   "7e34624a653bd43b": {
    "source": "A file name sent by a site in plain UTF-8 now reaches MDM readable from Firefox and browsers built on it, such as Floorp, Waterfox and Zen: an Arabic name was saved as unreadable symbols (<g1>#447</g1>). A name written with percent signs in the same header is decoded as well. The add-on carries the fix",
    "text": "একটি সাইট থেকে সাধারণ UTF-8-এ পাঠানো ফাইলের নাম এখন Firefox এবং এর উপর ভিত্তি করে তৈরি ব্রাউজার যেমন Floorp, Waterfox এবং Zen থেকে MDM-এ পাঠযোগ্য অবস্থায় পৌঁছায়: একটি আরবি নাম অপাঠ্য প্রতীক হিসাবে সংরক্ষিত হয়েছিল (<g1>#447</g1>)। একই হেডারে শতাংশ চিহ্ন দিয়ে লেখা একটি নামও ডিকোড করা হয়। অ্যাড-অনটি এই সমাধান বহন করে"
@@ -9053,6 +9081,10 @@
   "80afa23a5451c61d": {
    "source": "What it can do, and what it can't",
    "text": "এটি কী করতে পারে এবং কী করতে পারে না"
+  },
+  "80b75f50253c4016": {
+   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder.",
+   "text": "যদি আপনার অ্যান্টিভাইরাস MDM-কে কোয়ারেন্টাইন করে থাকে, তাহলে এটি পুনরুদ্ধার করুন এবং এর ফোল্ডারের জন্য একটি ব্যতিক্রম যোগ করুন।"
   },
   "80bb2d8150ab92af": {
    "source": "Mac or Linux?",
@@ -10433,6 +10465,10 @@
   "953a64f3542b5742": {
    "source": "Correct the translation in the third column and delete the row's <x1/> line.",
    "text": "তৃতীয় কলামে অনুবাদটি সংশোধন করুন এবং সারির <x1/> লাইনটি মুছে ফেলুন।"
+  },
+  "954373bf4b513543": {
+   "source": "Download MDM only from <g1>misterdownloadmanager.com</g1> or <g2>GitHub Releases</g2>.",
+   "text": "MDM শুধুমাত্র <g1>misterdownloadmanager.com</g1> বা <g2>GitHub Releases</g2> থেকে ডাউনলোড করুন।"
   },
   "956271136a063e89": {
    "source": "What's new in version 0.2.4 <g1>2026-11-01</g1>",
@@ -12402,6 +12438,10 @@
    "source": "A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the <g1>Download complete</g1> window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.",
    "text": "কোনো সাইটে খুব ঘন ঘন অনুরোধ করলে সেটি সাবটাইটেল দিতে অস্বীকার করতে পারে। YouTube বিশেষ করে অনূদিত ক্যাপশনের ক্ষেত্রে এমন করে। তবুও ভিডিওটি সংরক্ষিত হয়। 20 সেকেন্ড পর MDM আবার সাবটাইটেলের অনুরোধ করে। তখনও না এলে, <g1>ডাউনলোড সম্পূর্ণ</g1> উইন্ডো এবং ডাউনলোডের লগে কোন সাবটাইটেলগুলো নেই এবং কেন নেই, তা দেখানো হয়। পরে আবার চেষ্টা করুন। ভিডিওর ভেতরে থাকার কথা এমন সাবটাইটেল কেবল দ্বিতীয়বারের চেষ্টায় এলে, সেগুলো ভিডিওর পাশেই সংরক্ষিত হয়।"
   },
+  "af76ea4a71ae00da": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as Malware.AI, Gen:, ML or Heur mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's SHA256SUMS.txt. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and tell us on GitHub so we can report it too. The commands and the antivirus makers' report pages: My antivirus flags MDM.",
+   "text": "না, যদি এটি এই সাইট বা GitHub রিলিজ থেকে এসে থাকে। কিছু অ্যান্টিভাইরাস প্রোগ্রাম অজানা প্রোগ্রামকে পরিচিত ভাইরাস দিয়ে নয়, বরং অনুমান করে বিচার করে: Malware.AI, Gen:, ML বা Heur-এর মতো শনাক্তকরণের নামগুলো এমন অনুমানকেই বোঝায়। তারা সাধারণত এমন নতুন ডাউনলোডকে চিহ্নিত করে যা খুব কম লোকই এখনো ব্যবহার করেছে এবং যার কোনো প্রকাশকের স্বাক্ষর নেই; MDM-এর ইনস্টলার এখনো কোড-সাইন করা হয়নি। আপনার কপিটি আমাদের কিনা তা নিশ্চিত হতে, এর SHA-256 চেকসামকে রিলিজের SHA256SUMS.txt-এর সাথে তুলনা করুন। MDM ওপেন সোর্স এবং প্রতিটি রিলিজ GitHub অ্যাকশনস দ্বারা প্রকাশ্যে তৈরি করা হয়, তাই যে কেউ এটি পড়তে এবং পুনরায় তৈরি করতে পারে। এরপর ফাইলটিকে আপনার অ্যান্টিভাইরাসের কাছে একটি ভুল পজিটিভ হিসেবে রিপোর্ট করুন এবং GitHub-এ আমাদের জানান যাতে আমরাও এটি রিপোর্ট করতে পারি। কমান্ড এবং অ্যান্টিভাইরাস নির্মাতাদের রিপোর্ট পেজগুলো: আমার অ্যান্টিভাইরাস MDM-কে চিহ্নিত করছে।"
+  },
   "af83c70c1ca46aae": {
    "source": "Options on its Connection page, on Linux",
    "text": "Linux-এ এর সংযোগ পৃষ্ঠায় সেটিংস"
@@ -12830,6 +12870,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM-এর নিজস্ব ডাউনলোডগুলি তার নিজস্ব ডাউনলোডার ব্যবহার করে</g1>: yt-dlp, ffmpeg, MDM-এর আপডেট এবং একটি ক্র্যাশ রিপোর্টের প্রতীকগুলি এখন একাধিক সংযোগের মাধ্যমে ডাউনলোড হয়, সংযোগ বিচ্ছিন্ন হওয়ার পর আবার শুরু হয় এবং আপনার প্রক্সি সেটিংসের মাধ্যমে যায়। প্রতিটি ফাইল ব্যবহারের আগে তার প্রকাশকের স্বাক্ষরিত চেকসামের সাথে এখনও যাচাই করা হয়।"
   },
+  "b4d57a3265ad8025": {
+   "source": "Check that your copy is ours:",
+   "text": "আপনার কপিটি আমাদের কিনা তা যাচাই করুন:"
+  },
   "b4d5d25243e1d43b": {
    "source": "No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, each time it starts and once a day while it runs…",
    "text": "না। MDM-এর কোনো অ্যাকাউন্ট, অ্যানালিটিক্স বা টেলিমেট্রি নেই। এটি আপনি যে সার্ভার থেকে ডাউনলোড করেন সেগুলোর সাথে সংযুক্ত হয় এবং প্রতিবার চালু হওয়ার সময় ও চলার সময় দিনে একবার…"
@@ -13109,6 +13153,10 @@
   "b8ed53721f1b8571": {
    "source": "Click <g1>Apply</g1>.",
    "text": "<g1>প্রয়োগ করুন</g1> ক্লিক করুন।"
+  },
+  "b8f874b98d985f32": {
+   "source": "If they match, it is the file we published. MDM is open source and built in public: every release is built from the <g1>public source code</g1> by GitHub Actions, on GitHub's servers, with <g2>every build's log</g2> there to see, so anyone can read what went into it and build it again.",
+   "text": "যদি তারা মিলে যায়, তাহলে এটি আমাদের প্রকাশিত ফাইল। MDM ওপেন সোর্স এবং প্রকাশ্যে তৈরি করা হয়েছে: প্রতিটি রিলিজ GitHub-এর সার্ভারে GitHub Actions দ্বারা <g1>পাবলিক সোর্স কোড</g1> থেকে তৈরি করা হয়, যেখানে <g2>প্রতিটি বিল্ডের লগ</g2> দেখা যায়, যাতে যে কেউ এটিতে কী আছে তা পড়তে এবং এটি আবার তৈরি করতে পারে।"
   },
   "b8face0bc8562340": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
@@ -14694,6 +14742,10 @@
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
    "text": "যে ফাইলগুলির নাম শুধুমাত্র একটি সংখ্যা বা অক্ষর দ্বারা ভিন্ন, যেমন <x1/> থেকে <x2/>:"
   },
+  "d044acd0f39a8232": {
+   "source": "Report the file to your antivirus as a false positive: <g1>Microsoft Defender</g1>, <g2>Malwarebytes</g2>, <g3>Avast</g3>, <g4>AVG</g4>, <g5>Bitdefender</g5>, <g6>Kaspersky</g6>, <g7>ESET</g7>.",
+   "text": "আপনার অ্যান্টিভাইরাসকে ফাইলটি একটি ভুল পজিটিভ হিসাবে রিপোর্ট করুন: <g1>Microsoft Defender</g1>, <g2>Malwarebytes</g2>, <g3>Avast</g3>, <g4>AVG</g4>, <g5>Bitdefender</g5>, <g6>Kaspersky</g6>, <g7>ESET</g7>।"
+  },
   "d04d5c0494e576d1": {
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "কয়েকটি থিম, কিউ এবং শিডিউলার সহ একটি আধুনিক চেহারা এবং একটি Android অ্যাপ"
@@ -16149,6 +16201,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM-এর একটি দ্বিতীয় কপি প্রথমটিকে পর্যবেক্ষণ করে। যখন MDM ক্র্যাশ করে, তখন রিপোর্ট উইন্ডোতে <g1>Mister Download Manager অপ্রত্যাশিতভাবে বন্ধ হয়ে গেছে</g1> লেখা থাকে। যখন এর উইন্ডো 8 সেকেন্ড ধরে সাড়া না দেয়, তখন এটি <g2>Mister Download Manager সাড়া দেওয়া বন্ধ করে দিয়েছে</g2> বলে, এবং <g3>MDM বন্ধ করুন এবং পুনরায় চালু করুন</g3> হিমায়িত কপিটি বন্ধ করে একটি নতুন কপি শুরু করে। যদি MDM নিজে থেকেই ফিরে আসে, উইন্ডোটি তা বলে।"
+  },
+  "e6b85e1428494d1c": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
+   "text": "না, যদি এটি এই সাইট বা GitHub রিলিজ থেকে এসে থাকে। কিছু অ্যান্টিভাইরাস প্রোগ্রাম অজানা প্রোগ্রামকে পরিচিত ভাইরাস দিয়ে নয়, বরং অনুমান করে বিচার করে..."
   },
   "e6e4ffbd1a17c7e8": {
    "source": "<x1/> pull request",
@@ -17814,6 +17870,10 @@
    "source": "Help pages",
    "text": "সহায়তা পৃষ্ঠাগুলি"
   },
+  "fcf964e16b9ad4f2": {
+   "source": "Then:",
+   "text": "তারপর:"
+  },
   "fd07a5008213448b": {
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>নিম্নলিখিত সাইটগুলো থেকে স্বয়ংক্রিয়ভাবে ডাউনলোড শুরু করবেন না</g1> — যে সাইটগুলোর ডাউনলোড ব্রাউজারে থাকে, সেগুলোকে স্পেস দিয়ে আলাদা করুন। একটি নাম সাইটের সাবডোমেনগুলোকেও কভার করে (<x2/>, <x3/> এবং <x4/>-কে কভার করে, যেমন <x5/> করে), <x6/> ডাউনলোড প্যানেলের তালিকার মতো যেকোনো কিছুকে ম্যাচ করে (<x7/>), এবং এর পেজগুলো অন্য সার্ভারে (একটি ডাউনলোড সার্ভার বা একটি CDN) যে ফাইলগুলোর লিংক করে, তা যে পেজ থেকে ডাউনলোড এসেছে তার দ্বারা বোঝা যায়। যে ডাউনলোডের কোনো পেজ জানা নেই, তা তার নিজের ঠিকানা দ্বারা ম্যাচ করা হয়। <g8>ডিফল্ট</g8> মূল তালিকাটি ফিরিয়ে আনে।"
@@ -17909,6 +17969,10 @@
   "fe1e9bfa950043a0": {
    "source": "File Properties: change the address or the folder of a download.",
    "text": "ফাইলের বৈশিষ্ট্য: একটি ডাউনলোডের ঠিকানা বা ফোল্ডার পরিবর্তন করুন।"
+  },
+  "fe2d94832629a9c2": {
+   "source": "My antivirus flags MDM. Is it a virus?",
+   "text": "আমার অ্যান্টিভাইরাস MDM-কে ভাইরাস বলছে। এটি কি ভাইরাস?"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
