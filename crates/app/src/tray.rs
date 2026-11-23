@@ -85,7 +85,7 @@ pub enum OnClose {
 /// there does (#750, #718, #754: a shell that couldn't confirm the icon left the window in the
 /// taskbar with the icon right there); such a window still comes back from the icon once the
 /// shell answers, and a second start of MDM always brings it back. On macOS the Dock is that way
-/// back (#1125): MDM's icon stays there while it runs, and a click on it shows the window, so
+/// back (#1125) when the status item cannot be placed. A click there shows the window, so
 /// closing hides the window as Mac apps do, whatever the menu bar shows (an icon behind the
 /// notch, or turned off in System Settings, is no way back).
 pub fn on_close(

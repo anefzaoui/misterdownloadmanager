@@ -4859,6 +4859,14 @@ impl App {
         #[cfg(target_os = "linux")]
         crate::unix::withdraw_main_window();
         self.hidden = true;
+        #[cfg(target_os = "macos")]
+        if self
+            .tray
+            .as_ref()
+            .is_some_and(|t| t.icon_now() == crate::tray::Icon::There)
+        {
+            crate::unix::macos_show_in_dock(false);
+        }
         self.start_trimming();
     }
 
@@ -4875,6 +4883,10 @@ impl App {
         // Asked for (a second launch, the tray icon): no start with the session or browser to settle.
         self.tray_wait = None;
         self.trim_when_hidden = None;
+        #[cfg(target_os = "macos")]
+        if self.hidden {
+            crate::unix::macos_show_in_dock(true);
+        }
         self.hidden = false;
         // The freeze watchdog: from here a stall is seen (no longer the computer's, #1126).
         crate::crash::hidden(false);
@@ -4991,6 +5003,8 @@ impl App {
                 );
                 self.tray_wait = None;
                 self.trim_when_hidden = None;
+                #[cfg(target_os = "macos")]
+                crate::unix::macos_show_in_dock(true);
                 self.hidden = false;
                 ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
                 ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true));
@@ -5217,7 +5231,7 @@ impl App {
         // closing closes, as any window's does: Options' "Keep running when closing the window"
         // off, no tray at all, or Linux with no tray host (#59: a hidden window couldn't come
         // back, and one that merely minimized could never be closed). macOS (#1125): the window
-        // closes into the Dock, as Mac apps' do, and a click on MDM's icon there brings it back.
+        // stays reachable through the Dock when the menu bar cannot host the icon.
         // Asked to quit (`quit`: File → Exit, Cmd+Q, MDM → Quit, Exit when done…), the close quits
         // whatever the option.
         if ctx.input(|i| i.viewport().close_requested()) {
@@ -5237,12 +5251,10 @@ impl App {
             };
             let taskbar = cfg!(not(target_os = "linux"));
             match crate::tray::on_close(quitting, keep, tray, icon, taskbar, dock) {
-                OnClose::Hide if dock => {
-                    tracing::info!("close: hidden; MDM's icon in the Dock brings it back");
-                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
-                    self.hide_to_tray(ctx);
-                }
                 OnClose::Hide => {
+                    #[cfg(target_os = "macos")]
+                    tracing::info!("close: hiding the main window");
+                    #[cfg(not(target_os = "macos"))]
                     tracing::info!("close: hidden to the notification area (tray icon: {icon:?})");
                     ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
                     self.hide_to_tray(ctx);
@@ -5297,6 +5309,14 @@ impl App {
         // Hidden, the window gets no paint messages: keep the clock (queues, scheduler,
         // download limits) running.
         if self.hidden {
+            #[cfg(target_os = "macos")]
+            if self
+                .tray
+                .as_ref()
+                .is_some_and(|t| t.icon() == crate::tray::Icon::Gone)
+            {
+                crate::unix::macos_show_in_dock(true);
+            }
             ctx.request_repaint_after(Duration::from_secs(1));
             if self.trim_when_hidden.is_some_and(|t| Instant::now() >= t) {
                 trim_memory();
@@ -9173,6 +9193,16 @@ impl App {
         }
         if let Some(i) = self.items.iter().find(|i| i.id == id) {
             self.complete.push(Complete::of(i));
+            #[cfg(target_os = "macos")]
+            self.wake_completion_window();
+        }
+    }
+
+    #[cfg(target_os = "macos")]
+    fn wake_completion_window(&self) {
+        if self.hidden && !self.headless {
+            crate::unix::macos_unhide_app();
+            self.ui_ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
     }
 
@@ -9254,6 +9284,8 @@ impl App {
                         &s.failed,
                         &self.items,
                     ));
+                    #[cfg(target_os = "macos")]
+                    self.wake_completion_window();
                 }
             }
         }

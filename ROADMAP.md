@@ -570,7 +570,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ macOS: choose a running download in the menu bar to open its progress window. The menu
-  shows the file name and percentage when available, plus an entry for the main window
+  shows the file name and percentage when available, plus an entry for the main window. Closing
+  the main window hides its Dock indicator while completion dialogs can still appear
   ([#1732](https://github.com/anefzaoui/misterdownloadmanager/issues/1732)).
 
 - ✅ Website: the home page shows MDM's one-minute film under its first view; YouTube's player

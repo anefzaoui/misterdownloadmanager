@@ -3786,6 +3786,26 @@ pub fn macos_is_active_and_visible() -> bool {
     }
 }
 
+/// An accessory app can present windows and keep its status item while absent from the Dock.
+#[cfg(target_os = "macos")]
+pub fn macos_show_in_dock(show: bool) {
+    use objc2::MainThreadMarker;
+    use objc2_app_kit::{NSApplication, NSApplicationActivationPolicy as Policy};
+
+    let Some(mtm) = MainThreadMarker::new() else {
+        return;
+    };
+    let app = NSApplication::sharedApplication(mtm);
+    let policy = if show {
+        Policy::Regular
+    } else {
+        Policy::Accessory
+    };
+    if app.activationPolicy() != policy && !app.setActivationPolicy(policy) {
+        tracing::warn!("macOS declined the Dock visibility change (show: {show})");
+    }
+}
+
 /// macOS: unhides the application if [`macos_hide_window`] hid it, without activating it or
 /// ordering any window back to the front. While `NSApp` is hidden, macOS lets none of its windows
 /// draw, so eframe runs only the app's logic: a window a command opens (the browser's Download

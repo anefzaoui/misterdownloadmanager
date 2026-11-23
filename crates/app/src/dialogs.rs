@@ -248,6 +248,12 @@ pub fn keep_theme(
             egui::ViewportCommand::SetTheme(crate::theme::system_theme(dark)),
         );
         ctx.data_mut(|d| d.insert_temp(theme_key, dark));
+        // Immediate child windows are revealed in a second root pass. A hidden root on
+        // macOS skips its UI on a repaint alone.
+        #[cfg(target_os = "macos")]
+        if sent.is_none() && !activate {
+            ctx.request_ui_pass(egui::ViewportId::ROOT);
+        }
         // The window is revealed on the next frame: make sure there is one.
         ctx.request_repaint();
     }
