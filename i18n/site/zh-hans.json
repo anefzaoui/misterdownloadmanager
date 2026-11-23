@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "代码签名让 Windows 能够显示程序的发布者，并验证程序在构建后是否被篡改。当 Mister Download Manager（“MDM”）发布版本被签名时，其签名涵盖了来自此项目的 Windows 文件："
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> 个拉取请求"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "可以。MDM 会实时写入下载进度，因此在连接丢失、程序崩溃或重启后，它会从中断的地方继续。恢复下载前，它会检查服务器上的文件是否已更改。当下载地址过期时，您可以使用<g1>刷新下载地址</g1>来提供新的地址并保留已下载的数据。请参阅<g2>恢复中断的下载</g2>。"
@@ -226,10 +222,6 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>帮助 → 关于 Mister Download Manager</g1>显示你拥有的版本。"
   },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>拉取请求</g1><g2><x3/> 人</g2>"
-  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "计划程序能做的所有事情 →"
@@ -321,6 +313,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "免费开源。采用您熟悉的界面，底层引擎更快，并内置种子下载和视频下载功能。"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "每个链接都会打开一个独立的<g1>下载文件信息</g1>窗口，因此您可以并排打开多个窗口，在选择前比较它们的大小。每个新窗口都会在前一个窗口的下方和旁边打开并置于最前；从第二个窗口开始，其标题会带上序号：<g2>下载文件信息 (2)</g2>、<g3>(3)</g3>，依此类推。<g4>Esc</g4>键只会关闭当前窗口。最多可以同时打开六个窗口：如果同时提交了更多链接（例如浏览器传递了多个下载任务），它们会等待，并在您关闭窗口时逐个打开；<g5>取消</g5>会询问是否取消仍在等待的任务。如果再次提交相同的链接，其已打开的窗口会置于最前。如果您在仍有窗口打开的情况下退出 MDM，它们的下载任务会像选择<g7>稍后下载</g7>一样，进入<g6>主下载队列</g6>。"
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -1126,10 +1122,6 @@
    "source": "comes with every download of MDM and works without the app running. <x1/> downloads a file over several connections with a progress line, <g2>Ctrl+C</g2> pauses it and <x3/> carries on later. <x4/> downloads a video, and <x5/> a torrent or only some of its files. <x6/> and <x7/> say what there is to choose before you download. <x8/> lists every option, and a command that fails exits with code 1.",
    "text": "随 MDM 的每次下载附带，无需应用程序运行即可工作。<x1/> 通过多个连接下载文件，并显示进度条，<g2>Ctrl+C</g2> 暂停，<x3/> 稍后继续。<x4/> 下载视频，<x5/> 下载种子或仅下载其部分文件。<x6/> 和 <x7/> 说明下载前有哪些选项可供选择。<x8/> 列出所有选项，失败的命令将以代码 1 退出。"
   },
-  "0ff7458c260e0558": {
-   "source": "Last updated 2026-11-22",
-   "text": "最后更新：2026年11月22日"
-  },
   "10068bf8d08f9e51": {
    "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
    "text": "下载进度窗口也可以通过其“最小化”按钮或“<g1>隐藏到通知区域</g1>”按钮（一个短横线，带一个指向角落的箭头）隐藏到那里。"
@@ -1802,10 +1794,6 @@
    "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
    "text": "这很可能是一个误报。部分杀毒软件会根据推测而非已知病毒来判断不熟悉的程序：诸如 <x1/>、<x2/>、<x3/> 或 <x4/> 等检测名称就表示此类推测。它们最常标记的是来自小型项目、没有发行商签名、很少人运行过的新下载；MDM 的安装程序尚未进行代码签名。在 VirusTotal 上，少数引擎标记新安装程序而大多数保持干净，通常是误报的迹象。"
   },
-  "1962902ce083389d": {
-   "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
-   "text": "如果匹配，则说明是官方发布的文件。每个版本都是在 GitHub 上从<g1>公开源代码</g1>构建的，因此任何人都可以查看其内容。"
-  },
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "要通过服务器名称（<x1/>）打开页面，请为 MDM 提供该名称：<x2/>（多个名称用逗号分隔）。其他名称将被拒绝，这样任何网页都无法通过其自己的名称访问 MDM。"
@@ -1873,6 +1861,10 @@
   "1a3b9d0d6a07985d": {
    "source": "the page's address as you open it, shown with the pairing code",
    "text": "您打开页面时显示的地址，与配对码一起显示"
+  },
+  "1a5164060895b36a": {
+   "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
+   "text": "一个归档文件测试发现损坏并能定位（一个 ZIP 的条目，#1661：应用的 <x1/>）的已完成文件会再次成为部分文件（<x2/>）：其上次的恢复状态（由请求保留它的下载任务返回，<x3/>，<x4/>）会被写回，只留下损坏的范围待获取，每个范围提前几个字节开始以进行重叠检查，并且文件被重命名为部分文件。恢复它是一个普通的恢复：<x5/> 使用相同的验证器、重叠检查、摘要；服务器上已更改的文件会像 <x6/> 一样失败。"
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -1977,10 +1969,6 @@
   "1bad738cb3cea90f": {
    "source": "Select or unselect the download with the dotted outline",
    "text": "选择或取消选择带虚线轮廓的下载"
-  },
-  "1badff5f5fc8b6a9": {
-   "source": "Download MDM only from <g1>the website</g1> or <g2>GitHub Releases</g2>.",
-   "text": "仅从<g1>官网</g1>或 <g2>GitHub Releases</g2> 下载 MDM。"
   },
   "1bc816518d6f87cb": {
    "source": "<g1>Save to</g1>: the folder its torrents go to; empty, the Torrents category's folder. <g2>Add them without starting them</g2> adds them as <g3>Download Later</g3> would.",
@@ -2173,6 +2161,10 @@
   "1e303528b75b0fda": {
    "source": "{n} of {total}",
    "text": "{total} 张中的第 {n} 张"
+  },
+  "1e32ee75ad780ae4": {
+   "source": "An archive protected by a password isn't tested, as its files can't be read without it: the log says <g1>Couldn't test photos.zip: it needs a password</g1>. Nor are tar, gz and xz files.",
+   "text": "受密码保护的压缩包不会进行测试，因为没有密码无法读取其文件：日志会显示<g1>无法测试 photos.zip：需要密码</g1>。tar、gz 和 xz 文件也不会测试。"
   },
   "1e4861cc4f32a384": {
    "source": "<g1>Every text the user sees goes through <x2/></g1> (<x3/>, <x4/>, <x5/>, <x6/>); after adding one, run <x7/>. Data inside a sentence (a file name, an address, a size) goes in through <x8/> or <x9/>, so it reads right in right-to-left languages.",
@@ -2381,10 +2373,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "在 macOS 上，只有管理员才能安排唤醒，因此该选项是灰色的。MDM 不会要求管理员密码。管理员可以设置 Mac 在队列开始前一分钟每天唤醒，例如，对于晚上 11:00 开始的队列，在晚上 10:59 唤醒："
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "感谢自版本 <x1/> 以来在 GitHub 上提交拉取请求、提出问题或发表评论的所有人。"
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3010,6 +2998,10 @@
    "source": "Download limits",
    "text": "下载限制"
   },
+  "29c62272ce90056c": {
+   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
+   "text": "归档文件解压（#37）：zip、tar、gz 和 xz 正在处理中；7z 和 RAR 通过已安装的 7-Zip（作为独立程序运行）进行；根据请求通过 HatchZip 进行原地解压。归档文件测试（<x1/>，#1661）：<x2/>，一个没有它的 ZIP 正在处理中，以及一个 ZIP 中损坏的条目被放置在文件中"
+  },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
    "text": "如果队列没有启动 →"
@@ -3594,6 +3586,10 @@
    "source": "<g1>VPN and proxy support:</g1> send downloads through the browser's proxy or VPN extension (off until you turn it on).",
    "text": "<g1>VPN 和代理支持：</g1> 通过浏览器的代理或 VPN 扩展发送下载（默认关闭，需手动开启）。"
   },
+  "319a440ac21a4da8": {
+   "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
+   "text": "如果 MDM 重新下载了 ZIP 文件的损坏部分，但仍然损坏；或者 7z 或 RAR 文件在<g1>重新下载</g1>后再次损坏，则很可能是服务器上的文件本身已损坏：请向网站请求另一个副本。"
+  },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
    "text": "<g1>Arch</g1>：<x2/>，或"
@@ -4126,10 +4122,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "点击<g1>确定</g1>。"
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>问题</g1><g2><x3/> 人</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "选择<g1>下载 → 速度限制器 → 开启</g1>。"
@@ -4185,10 +4177,6 @@
   "3ad9354fd79e59c2": {
    "source": "In a Wayland session, MDM chooses its windows' system as it starts, the same way however it was started (its menu entry, the browser's helper, the session's autostart). Its windows run through XWayland where X11 programs look right: only X11 lets MDM open its menus and drop-down lists right under what you clicked (on Wayland they open where the compositor puts new windows, often the middle of the screen) and hide its window in the notification area. That is GNOME and KDE Plasma, which tell X11 programs the screen's scale, and any desktop whose screens aren't scaled. On a scaled screen where nothing tells X11 programs the scale (Hyprland, labwc, sway and other wlroots compositors), the compositor would scale MDM's windows up, blurry, so MDM uses Wayland's own windows there. <g1>View → Window system</g1> picks <g2>X11 (XWayland)</g2> or <g3>Wayland</g3> instead, from the next start, for every way MDM starts (<g4>Automatic</g4> goes back to MDM's choice); <x5/> or <x6/> decides for one start. If the system lacks a library X11 windows need (such as libxkbcommon-x11, which the .deb and .rpm bring but the AppImage and the tar.gz can't), MDM opens on Wayland instead; with no window system it can use, it names what's missing and the command that installs it.",
    "text": "在 Wayland 会话中，MDM 在启动时选择其窗口系统，无论以何种方式启动（其菜单项、浏览器的帮助程序、会话的自动启动）都一样。其窗口通过 XWayland 运行，X11 程序在那里看起来正常：只有 X11 允许 MDM 在您点击的位置下方打开其菜单和下拉列表（在 Wayland 上，它们在合成器放置新窗口的位置打开，通常是屏幕中央）并将其窗口隐藏在通知区域。这适用于 GNOME 和 KDE Plasma，它们会告诉 X11 程序屏幕的缩放比例，以及任何屏幕未缩放的桌面。在屏幕已缩放但没有告诉 X11 程序缩放比例的屏幕上（Hyprland、labwc、sway 和其他 wlroots 合成器），合成器会模糊地放大 MDM 的窗口，因此 MDM 在那里使用 Wayland 自己的窗口。<g1>视图 → 窗口系统</g1>选择<g2>X11 (XWayland)</g2>或<g3>Wayland</g3>，从下次启动开始，适用于 MDM 的所有启动方式（<g4>自动</g4>会回到 MDM 的选择）；<x5/>或<x6/>决定一次启动。如果系统缺少 X11 窗口所需的库（例如 libxkbcommon-x11，.deb 和 .rpm 包含，但 AppImage 和 tar.gz 不包含），MDM 会转而使用 Wayland 打开；如果没有可用的窗口系统，它会列出缺少的内容以及安装它的命令。"
-  },
-  "3ae1cbe9372aa706": {
-   "source": "Last updated 2026-11-22 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最后更新于 2026-11-22 · 适用于应用、浏览器扩展和 misterdownloadmanager.com"
   },
   "3ae62309609ddf49": {
    "source": "The desktop app (<x1/>, egui): list, categories, queues, scheduler, dialogs, tray, settings",
@@ -4474,6 +4462,10 @@
    "source": "Help translate",
    "text": "协助翻译"
   },
+  "3eaa27ee358ba512": {
+   "source": "Last updated 2026-11-23",
+   "text": "最后更新：2026-11-23"
+  },
   "3eba7f086afb94a2": {
    "source": "Is it really free?",
    "text": "它真的免费吗？"
@@ -4593,6 +4585,10 @@
   "4065d823f7a0f8c0": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>; <x12/> is a category's <x13/>; <x14/> is the free space where downloads go (<x15/> when unknown). Only while the API is on.",
    "text": "每个下载和总速度：<x1/>。<x2/> 是 <x3/>、<x4/>、<x5/>、<x6/> 或 <x7/>；<x8/> 在未知时是 <x9/>；<x10/>（失败原因）仅在下载处于 <x11/> 状态时存在；<x12/> 是类别的 <x13/>；<x14/> 是下载存储的可用空间（未知时为 <x15/>）。仅在 API 开启时可用。"
+  },
+  "406a5240307e8845": {
+   "source": "Right-click → <g1>Redownload</g1> (or the <g2>Damaged archive</g2> window's <g3>Redownload</g3>) downloads it again from the start.",
+   "text": "右键点击 → <g1>重新下载</g1>（或在<g2>损坏的存档</g2>窗口中点击<g3>重新下载</g3>）会从头开始再次下载。"
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -5830,10 +5826,6 @@
    "source": "The free MDM extension hands each download you click over to MDM, with the page it came from and your sign-in for the site. A button over videos sends them to MDM too.",
    "text": "免费的 MDM 扩展会将您点击的每个下载任务交给 MDM，同时附带来源页面和您在该网站的登录信息。视频上方的按钮也会将视频发送到 MDM。"
   },
-  "52fc7550762441e8": {
-   "source": "A few antivirus programs flag new installers just because they have rarely seen them, and machine-learning engines do this the most. On VirusTotal, a handful of small engines flagging a new setup while the big ones stay clean is usually a false positive. We report these to the vendors when we see them.",
-   "text": "一些杀毒软件会标记不常见的安装程序，尤其是那些使用机器学习引擎的。在 VirusTotal 上，如果只有少数小型引擎标记了一个新的安装程序，而主流引擎没有，这通常是误报。我们发现此类情况时会向厂商报告。"
-  },
   "53060965f7a26125": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1>, and a magnet link or a <x2/> file goes to the service. It downloads the torrent on its own servers while the list shows how far it is (<g3>45% at Real-Debrid</g3>). MDM then fetches the files over HTTP and removes the torrent from the account's list. Your computer never connects to the torrent's peers.",
    "text": "勾选<g1>将种子和磁力链接发送到第一个账户而不是对等点</g1>，磁力链接或<x2/>文件就会发送到服务。它会在自己的服务器上下载种子，同时列表会显示进度（<g3>Real-Debrid 上 45%</g3>）。MDM 随后通过 HTTP 获取文件，并从账户列表中删除该种子。您的计算机绝不会连接到种子的对等点。"
@@ -6030,10 +6022,6 @@
    "source": "A small file",
    "text": "小文件"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "鸣谢"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "粘贴播放列表 (<x1/>) 或频道视频 (<x2/>) 的地址，然后点击 <g3>查找</g3>。窗口不会显示单个视频的画质选项，而会列出播放列表中的视频及其时长。"
@@ -6165,10 +6153,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 和 Linux；macOS 试用版"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "感谢这些杰出人士的贡献"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6325,6 +6309,10 @@
   "59d718d0872bfa97": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1> in <g2>Options → Accounts</g2>. A magnet link (Add URL, the browser, the clipboard, a drop) or a <x3/> file (Add torrent's <g4>Download Now</g4> or <g5>Later</g5>) then goes to the first account in the list whose service takes torrents (Mega-Debrid doesn't, yet):",
    "text": "在<g2>选项 → 账户</g2>中勾选<g1>将种子和磁力链接发送到第一个账户而不是点对点</g1>。然后，磁力链接（添加 URL、浏览器、剪贴板、拖放）或 <x3/> 文件（添加种子中的<g4>立即下载</g4>或<g5>稍后</g5>）将发送到列表中第一个支持种子的账户（Mega-Debrid 尚未支持）："
+  },
+  "5a08cc8b48188788": {
+   "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
+   "text": "下载完成的压缩包仍可能损坏：服务器发送了错误的字节，或途中的代理篡改了文件的一部分。这通常只有在有人打开它时才会发现，而且往往是很久以后。因此，MDM 默认会在 ZIP、7z 和 RAR 压缩包（包括分卷压缩包，在所有分卷都下载完成后）下载完成后进行测试，最大支持 4 GB。默认开启选项为：<g1>选项 → 压缩包 → 下载完成后测试压缩包</g1>。测试会读取整个压缩包，因此更大的压缩包只有在您要求时才会测试：右键点击已完成的压缩包，选择<g2>测试压缩包</g2>，无论其大小如何。"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6510,10 +6498,6 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "将图库下载到以图库命名的文件夹中。请参阅<g1>命令行和自动化</g1>。"
   },
-  "5d07ba5f9c5ab43c": {
-   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder. If it flags something other than the setup or MDM's own programs, or a copy from anywhere else, don't run it, and please <g1>tell us</g1>.",
-   "text": "如果您的杀毒软件隔离了 MDM，请恢复它并为其文件夹添加例外。如果它标记了安装程序或 MDM 自身程序以外的内容，或者来自其他来源的副本，请不要运行它，并<g1>告知我们</g1>。"
-  },
   "5d0bbcc71d941fe0": {
    "source": "misterdownloadmanager.com's own pages (home, download, features, themes, FAQ); <x1/> adds the help from <x2/> and the news from the CHANGELOG, in 22 languages, and GitHub Pages publishes it",
    "text": "misterdownloadmanager.com 自己的页面（主页、下载、功能、主题、常见问题）；<x1/> 添加了来自 <x2/> 的帮助和来自 CHANGELOG 的新闻，共 22 种语言，由 GitHub Pages 发布"
@@ -6665,6 +6649,10 @@
   "5ed161293dc26f74": {
    "source": "If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.",
    "text": "选择其中一项时，如果无法连接到 MDM，帮助页面会打开到解释原因的对应部分。"
+  },
+  "5ed4e501adf0b774": {
+   "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
+   "text": "如果 MDM 能确定 ZIP 文件中损坏文件的位置，则会对其进行修复：仅重新下载这些损坏部分的字节，从同一服务器下载，并再次测试压缩包。日志会显示<g1>正在重新下载损坏的部分 (1.20 MB)</g1>，然后显示<g2>再次测试：存档现在没有错误</g2>。这些字节仅来自文件的同一版本：MDM 会像恢复任何下载一样请求它们（使用文件的 ETag 或日期，<x3/>），并在每个部分下载前检查其字节与磁盘上的字节是否一致。如果服务器上的文件发生更改，下载会停止并显示<g4>文件在服务器上已更改</g4>，而不是混合两个版本：<g5>重新下载</g5>会下载新文件。之后仍损坏的压缩包会提供<g6>重新下载</g6>。"
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7114,6 +7102,10 @@
    "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
    "text": "程序：<x1/>、<x2/>（浏览器帮助程序）、<x3/> 和 <x4/>；"
   },
+  "64e4c03c8252a3bc": {
+   "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
+   "text": "<g1>下载完成后测试存档，最大 4 GB</g1>（默认开启）— ZIP、7z 或 RAR 存档（分卷存档在最后一个分卷下载完成后）会在下载任务完成前被读取，并检查其中每个文件。MDM 会使用下方提到的 7-Zip（ZIP 格式无需 7-Zip）进行测试。大于 4 GB 的存档不会自动测试，因为测试会读取整个文件：右键点击 → <g2>测试存档</g2> 可手动测试。损坏的 ZIP 存档中损坏的文件会重新下载；其他损坏的存档会提示<g3>重新下载</g3>。请参阅<g4>测试存档</g4>。"
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "浏览器和 MDM 未连接"
@@ -7301,6 +7293,10 @@
   "6821496b26156b7b": {
    "source": "IDM facts from internetdownloadmanager.com, checked October 2026; timings from <g1>our published benchmark</g1> with raw data. Spot a mistake? <g2>Tell us</g2>.",
    "text": "IDM 数据来自 internetdownloadmanager.com，于 2026 年十月核实；时间数据来自<g1>我们发布的基准测试</g1>及原始数据。发现错误？<g2>告诉我们</g2>。"
+  },
+  "6827e4a6218bda8d": {
+   "source": "7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for <g1>Redownload</g1> when damaged, never repaired in part.",
+   "text": "7z 和 RAR 压缩包将其文件保存在块中，7-Zip 的测试不会提供这些块在文件中的位置，并且分卷压缩包的每个分卷都是单独的下载：这些压缩包会进行测试，并在损坏时提供<g1>重新下载</g1>，但绝不会部分修复。"
   },
   "6837961868984d5a": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>. To keep only a stretch of it, tick <g4>Only a part</g4>: see <g5>Download only a part</g5>.",
@@ -7642,10 +7638,6 @@
    "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
    "text": "在任何安装了 MDM 的 Linux 机器上（<x1/>、<x2/>、AppImage 或<x3/>）："
   },
-  "6d2e652c8dceae8f": {
-   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked",
-   "text": "归档文件提取（#37）：zip、tar、gz 和 xz 正在处理；7z 和 RAR 通过已安装的 7-Zip，作为独立程序运行；根据请求通过 HatchZip 原地提取。"
-  },
   "6d32144394d700a6": {
    "source": "Right-click a link, a picture, a video or a sound and choose <g1>Download with Mister Download Manager</g1>: MDM downloads it whatever its type.",
    "text": "右键点击链接、图片、视频或音频，然后选择<g1>使用 Mister Download Manager 下载</g1>：MDM 会下载它，无论其类型如何。"
@@ -7813,6 +7805,10 @@
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
    "text": "<g1>种子命令</g1>（<g2>#39</g2>）：种子的右键菜单现在包含 <g3>种子 → 重新检查文件</g3>、<g4>重新发布</g4>、<g5>添加跟踪器...</g5> 和 <g6>复制磁力链接</g6>。其“文件”选项卡可以在运行时勾选和取消勾选文件。在“添加 URL”或从浏览器中输入的 <x7/> 文件网址，会打开“添加种子”窗口并显示文件内容。TORRENT 已添加到“选项 → 文件类型”的默认设置中，因此浏览器会将 <x8/> 文件传递给 MDM；之前保存的列表会保留其原有内容。"
+  },
+  "6f2c084eea3d616f": {
+   "source": "A split archive (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. <g6>Test archive</g6> on a split archive not complete yet says so: <g7>Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)</g7>.",
+   "text": "分卷压缩包（<x1/>、<x2/>、<x3/>、<x4/>、<x5/>）在所有分卷下载完成后，从第一个分卷开始进行一次测试，无论哪个分卷最后完成。其分卷通常会一个接一个地完成（一次下载一个的队列，或主机要求您在文件之间等待），并且已下载的分卷会被读取为不完整的压缩包，因此它们不会单独进行测试。<g6>测试压缩包</g6>对尚未完成的分卷压缩包会显示：<g7>尚未测试：photos.zip.001 不完整（分卷 3 尚未下载）</g7>。"
   },
   "6f2f9063e93137cf": {
    "source": "<g1>Alt</g1> + an underlined letter",
@@ -8182,6 +8178,10 @@
    "source": "any distribution: make it executable, run it",
    "text": "适用于任何发行版：设为可执行文件后运行"
   },
+  "7466ed5799362d5d": {
+   "source": "The test is 7-Zip's (<x1/>, with the 7-Zip that <g2>Options → Archives</g2> names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.",
+   "text": "测试由 7-Zip 执行（<x1/>，使用<g2>选项 → 压缩包</g2>中指定的 7-Zip）：压缩包中的每个文件都会被读取并检查，不会写入任何内容。如果没有 7-Zip，MDM 会自行测试 ZIP 压缩包；7z 和 RAR 压缩包则不会测试。"
+  },
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
    "text": "<g1>帮助 → 检查更新 → 立即更新</g1>会下载新版本，检查其签名，将其放置到位并重新启动，适用于安装程序和两种 zip 包。"
@@ -8470,10 +8470,6 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "您需要拥有这些服务之一的付费账户：MDM 不出售或包含任何账户。共享账户或其链接会违反服务条款，并可能导致账户被暂停。"
   },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>所有贡献者</g2>"
-  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "常见问题 — Mister Download Manager"
@@ -8613,6 +8609,10 @@
   "7b41ec6610a88942": {
    "source": "How do I uninstall it?",
    "text": "如何卸载它？"
+  },
+  "7b51945e72d7d774": {
+   "source": "Testing archives",
+   "text": "测试压缩包"
   },
   "7b655c3076cd7d8b": {
    "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
@@ -10230,10 +10230,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>加速与续传</g1><g2>文件可拆分为最多 32 个连接，重新拆分直到最后一个字节，并在任何崩溃后恢复下载。</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> 在 GitHub 上提交拉取请求、报告问题或参与讨论的人们。 <g2>认识他们</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM 绘制的标题栏，当窗口非活动时（透明：如同活动时）"
@@ -10449,6 +10445,10 @@
   "94e5b9f5c92c226b": {
    "source": "Mister Download Manager downloads torrents and magnet links: choose the files, see peers, trackers and pieces, and queue them with your other downloads.",
    "text": "Mister Download Manager 下载种子和磁力链接：选择文件，查看对等点、跟踪器和分块，并将其与其他下载任务一起排队。"
+  },
+  "94e715f0410b20f6": {
+   "source": "To test it again by hand, right-click → <g1>Test archive</g1>.",
+   "text": "要手动再次测试，请右键点击 → <g1>测试存档</g1>。"
   },
   "94e7e5dadacf5b73": {
    "source": "Link grabber and archive extraction — Mister Download Manager",
@@ -10986,6 +10986,10 @@
    "source": "Control MDM from your phone — Mister Download Manager help",
    "text": "从手机控制 MDM — Mister Download Manager 帮助"
   },
+  "9be0243c13142898": {
+   "source": "Last updated 2026-11-23 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新日期：2026-11-23 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
+  },
   "9be7deca7d13f40b": {
    "source": "Keys to force or prevent capture",
    "text": "强制或阻止捕获的按键"
@@ -11114,10 +11118,6 @@
    "source": "<g1>Options → Remote</g1>.",
    "text": "<g1>选项 → 远程</g1>。"
   },
-  "9df4b353c5463d72": {
-   "source": "Get your file's SHA-256. On Windows, run <x1/>; on Linux, <x2/> and the file's name.",
-   "text": "获取您文件的 SHA-256 值。在 Windows 上，运行 <x1/>；在 Linux 上，运行 <x2/> 并加上文件名。"
-  },
   "9e0019721ea3837e": {
    "source": "Install it from the Chrome Web Store or Firefox Add-ons.",
    "text": "从 Chrome 网上应用店或 Firefox 附加组件安装。"
@@ -11141,10 +11141,6 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "从浏览器发送下载"
-  },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> 条评论"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -11957,6 +11953,10 @@
   "a8a147173e09f00a": {
    "source": "Other",
    "text": "其他"
+  },
+  "a8abc740d94eb990": {
+   "source": "Its archive's test found files in it that don't read back whole (<g1>Testing archives</g1>): hover over <g2>Status</g2> to see which.",
+   "text": "其存档测试发现其中文件无法完整读取（<g1>测试存档</g1>）：将鼠标悬停在<g2>状态</g2>上可查看具体是哪些文件。"
   },
   "a8b65ed9a2e906de": {
    "source": "Choose <g1>Tasks → Show drop target</g1>. A small box with the MDM icon appears and stays on top of other windows.",
@@ -13013,6 +13013,10 @@
   "b6fd95d785a07bfc": {
    "source": "The menu before / after; in a submenu, <g1>Left</g1> closes it",
    "text": "前一个/后一个菜单；在子菜单中，<g1>向左</g1>关闭子菜单"
+  },
+  "b705e95cb334fc6b": {
+   "source": "A download says Damaged",
+   "text": "下载显示“已损坏”"
   },
   "b706522e2a61060f": {
    "source": "Theme files you make or download go in MDM's themes folder. <g1>View → Theme → Open themes folder</g1> opens it (and makes it the first time). It is in MDM's data folder:",
@@ -14382,6 +14386,10 @@
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> 添加到 Firefox</g1><g3><x4/> 添加到 Chrome</g3>"
   },
+  "cb5b5cded4982e90": {
+   "source": "Closing MDM stops a test; the archive is tested again at the next start.",
+   "text": "关闭 MDM 会停止测试；压缩包会在下次启动时再次测试。"
+  },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "在下载进度窗口中查看该下载自己的<g1>速度限制器</g1>选项卡。"
@@ -14609,10 +14617,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "链接抓取器和存档 — Mister Download Manager 帮助"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>评论</g1><g2><x3/> 人</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -14946,6 +14950,10 @@
    "source": "Subtitles",
    "text": "字幕"
   },
+  "d368fe0c2974cd27": {
+   "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
+   "text": "下载在测试结束后才算完成。在此期间，列表会显示<g1>正在检查 45%</g1>，下载队列会等待它，并且其<g2>下载完成</g2>窗口、声音和解压操作都会在测试之后进行。"
+  },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
    "text": "在任何显示比例和界面大小下，靠近屏幕右边缘或下边缘打开的菜单都会在屏幕内部翻转：之前屏幕边缘以像素测量，菜单以点测量。"
@@ -15193,10 +15201,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager 与 IDM 并排比较。"
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> 个问题"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16166,6 +16170,10 @@
    "source": "<g1>Server mode</g1><g2>MDM without a window on a NAS, in Docker or on Unraid, fed from your phone or browser.</g2>",
    "text": "<g1>服务器模式</g1><g2>在 NAS、Docker 或 Unraid 上运行无界面的 MDM，通过手机或浏览器进行管理。</g2>"
   },
+  "e624996bba938a48": {
+   "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
+   "text": "损坏的压缩包在列表中显示<g1>已损坏</g1>，其日志会列出损坏的文件，并且<g2>损坏的压缩包</g2>窗口会提供<g3>重新下载</g3>：它会从头开始再次下载该压缩包（分卷压缩包的每个分卷）。它不会自行解压；<g4>解压</g4>仍会尝试解压。"
+  },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
    "text": "提取存档"
@@ -16205,10 +16213,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "不，如果它来自本网站或 GitHub Releases。部分杀毒软件会根据推测而非已知病毒来判断不熟悉的程序……"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> 个拉取请求"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17318,10 +17322,6 @@
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "<g1>现代</g1>，仿照 Windows 8 的扁平化外观：方角、扁平按钮、获得焦点时带有强调色边框的方框、带勾选标记的复选框、带边框的进度条、始终显示箭头的滚动条、单色图标（Microsoft 的 Fluent UI System Icons，MIT 许可）以及主题色标题栏，标题居中显示。"
   },
-  "f554a7b471d1c8c4": {
-   "source": "To check that your copy is the real one:",
-   "text": "要检查您的副本是否为正版："
-  },
   "f55e431df0898bf7": {
    "source": "Corner radius of a popup in a window (a calendar, a filter box)",
    "text": "窗口中弹出框的圆角半径（日历、筛选框）"
@@ -17349,10 +17349,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>添加下载</g2></g1> — 介绍“添加 URL”、剪贴板、拖放目标、批量下载和链接列表，以及“开始下载”与“稍后下载”的区别。"
-  },
-  "f5d1e8a8bc6e8e59": {
-   "source": "Compare it with the same file's line in that release's <x1/>.",
-   "text": "将其与该版本 <x1/> 中对应文件的行进行比较。"
   },
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
@@ -17466,10 +17462,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>共享时间达到以下时长后停止共享</g1> — 或者累计共享达到指定时长后停止。默认关闭。"
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> 条评论"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "除了其地址之外，页面可能通过其打开的名称"
@@ -17565,10 +17557,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "0.5.0 版本更新内容 <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> 个问题"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",

@@ -117,6 +117,8 @@ By default MDM starts downloading while this window is open, so no time is lost 
 
 If the folder doesn't exist yet, MDM asks **Do you want to create it?** before it starts.
 
+Each link opens a **Download File Info** of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: **Download File Info (2)**, **(3)** and so on. **Esc** closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; **Cancel** asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the **Main download queue**, as with **Download Later**.
+
 ## Download Later
 
 **Download Later** puts the download in a queue instead of starting it. By default MDM asks which one: pick the queue under **Add to queue**, and tick **Start the queue now** if you want it to run straight away. **Cancel** leaves the download in the list, in no queue.

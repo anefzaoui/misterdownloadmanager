@@ -575,6 +575,10 @@ These ship in the next version.
   stopped; a move cut short by MDM closing is settled at the next start. Videos, galleries and
   torrents still move once they're finished, and say so
   ([#1739](https://github.com/anefzaoui/misterdownloadmanager/issues/1739))
+- ✅ Several Download File Info windows at once, one for each link, side by side: each opens a
+  step from the one before and comes to the front, its title numbered from the second on; up to
+  six, more links waiting their turn
+  ([#1741](https://github.com/anefzaoui/misterdownloadmanager/issues/1741))
 - ✅ The browser add-on's Download video button out of the way: **Automatic** size, the new
   default (round in a feed and over a small player, whole over a big one), faint as the pointer
   rests or leaves before it goes, movable outside the player and kept for each site, with
