@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ `/exit` from a second launch quits MDM every time, with a dialog open or the main window
+  minimized too, and a link handed over by one is added once, never twice
+  ([#1651](https://github.com/anefzaoui/misterdownloadmanager/issues/1651))
 - ✅ The README opens with MDM's film: its picture, under the download buttons, plays it on
   YouTube; and Trendshift's badge beside the star button
 - ✅ Download only a part of a video or a sound, from one time to another, cut quickly at the
