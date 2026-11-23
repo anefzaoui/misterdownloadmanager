@@ -2,7 +2,11 @@
 name = "mdm-ratings"
 main = "src/worker.js"
 compatibility_date = "2026-11-01"
-workers_dev = true
+# Served only at its own address on the site's domain (a Custom Domain: Cloudflare makes its DNS
+# record and certificate); no address on Cloudflare's shared Workers domain, no preview addresses.
+workers_dev = false
+preview_urls = false
+routes = [{ pattern = "ratings.misterdownloadmanager.com", custom_domain = true }]
 
 # No request logs on Cloudflare: they would hold visitors' addresses.
 [observability]

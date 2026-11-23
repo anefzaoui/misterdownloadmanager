@@ -62,7 +62,7 @@ SPONSORS = "https://github.com/sponsors/anefzaoui"
 # the site then shows no rating widget and gives no rating in its structured data.
 # MDM_RATINGS_API and MDM_TURNSTILE_SITEKEY stand in for them to try a local Worker (`npm run
 # dev`), whose test ratings are then never written to website/content/ratings.json.
-RATINGS_API_LIVE = "https://mdm-ratings.nefzaoui-a.workers.dev/api/ratings"
+RATINGS_API_LIVE = "https://ratings.misterdownloadmanager.com/api/ratings"
 TURNSTILE_SITEKEY_LIVE = "0x4AAAAAAGPdSmAxeZS1XKuZ"
 RATINGS_API = os.environ.get("MDM_RATINGS_API", RATINGS_API_LIVE)
 TURNSTILE_SITEKEY = os.environ.get("MDM_TURNSTILE_SITEKEY", TURNSTILE_SITEKEY_LIVE)

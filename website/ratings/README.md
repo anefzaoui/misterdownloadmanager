@@ -57,8 +57,10 @@ rows read and 100,000 written a day; Turnstile: free). Reading the numbers reads
 1. Create a free account at [dash.cloudflare.com](https://dash.cloudflare.com/sign-up), or use
    the one misterdownloadmanager.com's DNS is in. Note the **Account ID** (Account home, the
    **⋯** next to the account's name, or the right column of any domain's Overview).
-2. **Workers & Pages**: open it once and choose the account's `workers.dev` subdomain (for
-   example `mdm`), if Cloudflare asks for one.
+2. **Workers & Pages**: open it once, so the account has Workers. The Worker answers only at
+   `ratings.misterdownloadmanager.com` (`routes` in `wrangler.toml`, a Custom Domain): Cloudflare
+   makes that host name's DNS record and certificate itself. It has no address on Cloudflare's
+   shared Workers domain and no preview addresses (`workers_dev` and `preview_urls` are off).
 3. **Turnstile → Add widget**: name it "MDM ratings", add the host names
    `misterdownloadmanager.com` and `www.misterdownloadmanager.com`, widget mode **Managed**,
    no pre-clearance. Copy its **Site key** (public) and **Secret key** (secret: never in the
@@ -94,26 +96,23 @@ A salt: `node -e "console.log(require('crypto').randomBytes(32).toString('base64
 it only in Cloudflare (the secret); a new salt later makes every visitor new, so every rating
 could be given again.
 
-`wrangler deploy` prints the Worker's address, such as
-`https://mdm-ratings.<subdomain>.workers.dev`. Check it:
+The first deploy attaches the Custom Domain. A token with only the three permissions above may
+not be allowed to create it: then add it once in the dashboard (**Workers & Pages → mdm-ratings →
+Settings → Domains & Routes → Add → Custom domain**, `ratings.misterdownloadmanager.com`) and
+deploy again. Check it:
 
 ```
-curl https://mdm-ratings.<subdomain>.workers.dev/api/ratings
+curl https://ratings.misterdownloadmanager.com/api/ratings
 ```
 
 answers `{"average":0,"count":0,"distribution":{...},"mine":null}`.
 
 ### 3. Turn it on in the site
 
-In `tools/website/build.py`, set
-
-```python
-RATINGS_API_LIVE = "https://mdm-ratings.<subdomain>.workers.dev/api/ratings"
-TURNSTILE_SITEKEY_LIVE = "<Turnstile's Site key>"
-```
-
-and open a pull request with it. From then on the home and download pages show the ratings
-sheet, each build reads the numbers again (and keeps the last known ones in
+In `tools/website/build.py`, `RATINGS_API_LIVE` is the Worker's address
+(`https://ratings.misterdownloadmanager.com/api/ratings`) and `TURNSTILE_SITEKEY_LIVE` the
+Turnstile widget's Site key (public). With both set, the home and download pages show the
+ratings sheet, each build reads the numbers again (and keeps the last known ones in
 `website/content/ratings.json`), and the structured data carries them once there is a rating.
 
 ## Later
