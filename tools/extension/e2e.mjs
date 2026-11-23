@@ -985,7 +985,11 @@ async function requests(p) {
   const log = await (await fetch(`${LAB}/_log`)).json();
   return log.filter((e) => e.path === p).sort((a, b) => a.req - b.req);
 }
-const clearLog = () => fetch(`${LAB}/_log`, { method: "DELETE" });
+// What a failed fetch says: undici's "fetch failed" names its cause only there.
+const clearLog = () =>
+  fetch(`${LAB}/_log`, { method: "DELETE" }).catch((e) => {
+    throw new Error(`the lab server's log: ${e.message} (${(e.cause && (e.cause.code || e.cause.message)) || "no cause"})`);
+  });
 const brief = (e) => `${e.method} ${e.status} ${e.outcome} ${e.range || "-"}`;
 
 // ---- another Mister Download Manager (the remote case, #157) -------------------------------------
