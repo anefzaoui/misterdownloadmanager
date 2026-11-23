@@ -1005,6 +1005,15 @@ fn progress_tick(now: Instant) -> u64 {
     (now.saturating_duration_since(shown_epoch()).as_secs_f64() / SHOWN_PROGRESS_EVERY) as u64
 }
 
+/// How long from `now` to the next tick of the shown progress clock, a few milliseconds
+/// past it so the frame lands in the new tick: the list redraws on that clock, so a figure
+/// read on one tick never waits a whole tick after the one it missed (#1441).
+pub fn until_progress_tick(now: Instant) -> std::time::Duration {
+    let t = now.saturating_duration_since(shown_epoch()).as_secs_f64();
+    let next = ((t / SHOWN_PROGRESS_EVERY).floor() + 1.0) * SHOWN_PROGRESS_EVERY;
+    std::time::Duration::from_secs_f64(next - t + 0.005)
+}
+
 /// A download's speed (#1176): an average of the bytes over time ([`average`]), whatever the
 /// frames that read them, and the figure shown from it, which changes on a steady clock
 /// ([`SHOWN_EVERY`]) so its digits can be read. The time left goes with the figure shown.
@@ -1412,6 +1421,9 @@ impl Item {
                     // Ended another way: the list shows where it stopped, at once.
                     self.shown_downloaded = self.downloaded;
                 }
+                // The tick is over: a later start, a new destination, or Recheck must not
+                // show the old % again from the tick of the run just ended (#1441).
+                self.shown_progress_tick = None;
                 // A video and its subtitles (#68), already marked as downloaded from the web by
                 // its job, before it said it was done (#1103).
                 let mut notices = Vec::new();
@@ -1580,10 +1592,15 @@ impl Item {
     /// The downloaded bytes the list shows: while it runs, the bytes read on the last tick
     /// of the steady progress clock ([`SHOWN_PROGRESS_EVERY`]), not the bytes as they are
     /// on this frame — a frame for every mouse movement would otherwise make them race.
-    /// Before the first tick, or not running, the bytes as they are.
+    /// Before the first tick, or once it is not running, the bytes as they are: a tick left
+    /// over from a run must not keep showing an old % after the download stops, a new
+    /// destination is chosen, Recheck runs, or it is downloaded again (#1441).
     pub fn shown_downloaded(&self) -> u64 {
-        self.shown_progress_tick
-            .map_or(self.downloaded, |_| self.shown_downloaded)
+        if self.status == Status::Downloading && self.shown_progress_tick.is_some() {
+            self.shown_downloaded
+        } else {
+            self.downloaded
+        }
     }
 
     /// The list's %: [`fraction`] from the bytes the list shows ([`shown_downloaded`]), so
@@ -2409,6 +2426,25 @@ mod tests {
         assert_eq!(it.status_text(), size_list(25));
     }
 
+    /// A stopped item shows its bytes as they are, not the last tick's: after a run ends,
+    /// a new destination, Recheck, or Download again must not leave the old % on the row
+    /// (#1441).
+    #[test]
+    fn a_stopped_item_shows_its_bytes_not_the_last_tick() {
+        let mut it = video_item(Some(100), 80, Status::Downloading);
+        it.video = None;
+        it.shown_downloaded = 45;
+        it.shown_progress_tick = Some(0);
+        assert_eq!(it.shown_fraction(), Some(0.45));
+        // The run ends and the bytes change after it (a new destination, Recheck,
+        // Download again).
+        it.status = Status::Stopped;
+        it.downloaded = 10;
+        assert_eq!(it.shown_downloaded(), 10);
+        assert_eq!(it.shown_fraction(), Some(0.1));
+        assert_eq!(it.status_text(), percent(0.1));
+    }
+
     #[test]
     fn a_folder_saved_as_shown_is_under_home() {
         let home = dirs::home_dir().unwrap();
@@ -2605,7 +2641,7 @@ mod helper_connection_tests {
 mod speed_tests {
     use super::{
         SHOWN_EVERY, SHOWN_PROGRESS_EVERY, STILL, Speed, progress_tick, shown_epoch, shown_tick,
-        until_shown,
+        until_progress_tick, until_shown,
     };
     use std::time::{Duration, Instant};
 
@@ -2755,6 +2791,18 @@ mod speed_tests {
         assert_eq!(progress_tick(at(0.1)), progress_tick(at(0.2)));
         assert_ne!(progress_tick(at(0.2)), progress_tick(at(0.3)));
         assert_eq!(progress_tick(at(1.0)), 4);
+    }
+
+    /// The next frame is asked for as the progress clock ticks, so a figure read on one
+    /// tick never waits a whole tick after the one it missed (#1441).
+    #[test]
+    fn the_next_frame_is_asked_for_as_the_progress_clock_ticks() {
+        let wait = until_progress_tick(at(2.3)).as_secs_f64();
+        assert!((0.2..0.21).contains(&wait), "{wait}");
+        assert_eq!(
+            progress_tick(at(2.3) + until_progress_tick(at(2.3))),
+            progress_tick(at(2.5))
+        );
     }
 
     /// The time left goes with the figure shown: from the bytes done when it was read.

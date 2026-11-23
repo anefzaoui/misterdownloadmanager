@@ -8241,7 +8241,10 @@ impl App {
             ctx.request_repaint_after(progress::SHOWN_WHOLE.saturating_sub(now.duration_since(at)));
         }
         if any_live {
-            ctx.request_repaint_after(Duration::from_millis(250));
+            // The list redraws as its progress clock ticks (every 250 ms), not a fixed
+            // 250 ms after this frame: a figure read on one tick is never left waiting
+            // for the next tick after the one it missed (#1441).
+            ctx.request_repaint_after(model::until_progress_tick(now));
             // The speeds shown change on their own clock (#1176): a frame as it ticks.
             ctx.request_repaint_after(model::until_shown(now));
             // The list's progress figures, every 30 s while something runs: after a crash the
