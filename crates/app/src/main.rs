@@ -1,6 +1,7 @@
 #![windows_subsystem = "windows"]
 
 mod app;
+mod archtest;
 mod batch;
 mod categories;
 mod checksum;

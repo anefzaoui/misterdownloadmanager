@@ -337,6 +337,60 @@ main > .sec:last-child { padding-bottom: var(--gap-section); }
   @keyframes feed { from { clip-path: inset(0 0 100% 0 round 12px); translate: 0 -18px; } to { clip-path: inset(0 0 0 0 round 12px); translate: 0 0; } }
 }
 
+/* ---- The film (home, under the parcel) -------------------------------------------------------- */
+
+/* The film on the start side, against the parcel's window set toward the end; its intro beside it.
+   The heading stays first in the source. */
+.film-inner { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 4.5vw, 72px); align-items: center; }
+/* Level with the screen, not with the label hanging under it. */
+.film-inner > .sec-intro { grid-column: 2; grid-row: 1; margin-bottom: 0; padding-bottom: 22px; }
+.film-inner > .film { grid-column: 1; grid-row: 1; }
+.film-sec .sec-intro .fine a { color: var(--on-board); font-weight: 650; white-space: nowrap; }
+.film { position: relative; padding-bottom: 22px; }
+/* The screen: the film's own 16:9, a dark well behind the poster while it loads. */
+.film-frame { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background: #05080f; box-shadow: var(--shadow-lift); }
+.film-frame img, .film-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.film-play { display: block; color: var(--ink); text-decoration: none; cursor: pointer; border-radius: 8px; }
+.film-play:focus-visible { outline: 0; }
+/* On the board the ring is board text, as the site's other rings on the board (Link Blue would vanish). */
+.film-play:focus-visible .film-frame { outline: 3px solid var(--on-board); outline-offset: 3px; }
+/* The play label: label stock stuck across the screen's lower start corner, tilted like the
+   waybill (mirrored right to left), ink on paper; never green, which is Download's. */
+.film-tag {
+  position: absolute; inset-inline-start: clamp(14px, 2.4vw, 28px); bottom: 0; z-index: 1;
+  display: flex; align-items: center; gap: 14px; padding: 12px; padding-inline-end: 22px;
+  background: var(--paper); color: var(--ink); border-radius: 12px;
+  /* A hairline edge keeps the reverse-print label apart from the dark poster at night. */
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 12%, transparent), var(--shadow-card);
+  transform: rotate(-2deg); transform-origin: 30% 50%;
+  transition: transform .2s cubic-bezier(.16, 1, .3, 1), box-shadow .2s ease;
+}
+[dir="rtl"] .film-tag { transform: rotate(2deg); }
+.film-disc { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--paper); transition: transform .2s cubic-bezier(.16, 1, .3, 1); }
+/* Play points the way a film runs, left to right, in every language; nudged to sit optically centred. */
+.film-disc svg { width: 22px; height: 22px; fill: currentColor; translate: 1.5px 0; }
+.film-words b { display: block; font-size: clamp(19px, 1.7vw, 22px); font-weight: 850; font-stretch: 76%; line-height: 1.1; letter-spacing: -.005em; }
+/* The label's field line: headline over a hairline, then the length as a field name. */
+.film-words small {
+  display: block; margin-top: 6px; padding-top: 5px; border-top: 1px solid var(--line);
+  font-size: 12px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; text-transform: uppercase;
+  line-height: 1.3; color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+.film-play:hover .film-tag { transform: rotate(-2deg) translateY(-3px); }
+[dir="rtl"] .film-play:hover .film-tag { transform: rotate(2deg) translateY(-3px); }
+.film-play:hover .film-disc { transform: scale(1.06); }
+.film[data-playing] { padding-bottom: 0; }
+@media (max-width: 980px) {
+  .film-inner { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .film-inner > .sec-intro, .film-inner > .film { grid-column: 1; grid-row: auto; }
+  .film-inner > .sec-intro { padding-bottom: 0; }
+}
+@media (max-width: 560px) {
+  .film-tag { gap: 10px; padding: 8px; padding-inline-end: 16px; }
+  .film-disc { width: 40px; height: 40px; }
+  .film-disc svg { width: 18px; height: 18px; }
+}
+
 /* ---- Packing list: the tour ------------------------------------------------------------------- */
 
 .tour { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 56px); align-items: start; }

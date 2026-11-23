@@ -122,6 +122,8 @@ copy on its own processor's files.
 > [!NOTE]
 > Windows may say *"Windows protected your PC"* the first time, because this early version isn't
 > code-signed yet. Click **More info**, then **Run anyway**.
+>
+> Your antivirus flags it? See [My antivirus flags MDM](https://misterdownloadmanager.com/help/troubleshooting.html#antivirus): how to check that your copy is ours, and report the false alarm.
 
 Or with [WinGet](https://learn.microsoft.com/windows/package-manager/winget/), Windows' package
 manager: in a terminal, the first line installs MDM and the second updates it.

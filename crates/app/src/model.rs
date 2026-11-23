@@ -602,6 +602,22 @@ pub struct Item {
     /// does ([`Item::holds_place`]). Memory only.
     #[serde(skip)]
     pub(crate) live_copy: bool,
+    /// Its archive is being tested before the download counts as done (#1661, archtest.rs):
+    /// queued or running; the row says "Checking..." and its queue takes it as running. Saved:
+    /// a test MDM's closing stopped runs again at the next start.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub testing: bool,
+    /// While its test runs: how far it is, in thousandths (its thread counts). Memory only.
+    #[serde(skip)]
+    pub(crate) test_progress: Option<std::sync::Arc<std::sync::atomic::AtomicU32>>,
+    /// Its archive's last test found it damaged (#1661): the row says "Damaged" until it is
+    /// downloaded again or a test finds it whole.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub damaged: bool,
+    /// Its archive's damaged parts were just downloaded again (#1661): the test that follows is
+    /// the last, never a second re-fetch. Memory only.
+    #[serde(skip)]
+    pub(crate) refetched: bool,
 }
 
 /// Adds `more` to a download's `written_files`, each path once, in order. A gallery lists up to
@@ -819,6 +835,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         server: engine.server,
         at_service: None,
         finishing: p.merging.flatten(),
+        kept: None,
     }
 }
 
@@ -1281,6 +1298,10 @@ impl Item {
             written_files: None,
             state_here: None,
             live_copy: false,
+            testing: false,
+            test_progress: None,
+            damaged: false,
+            refetched: false,
         }
     }
     /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
@@ -1685,6 +1706,9 @@ impl Item {
     /// column is wide enough for them in the interface language and font ([`crate::list::status_width`]). The
     /// cell's tip and a screen reader say it whole ([`crate::list::Row::status_whole`]).
     pub fn finishing(&self, short: bool) -> Option<String> {
+        if let Some(testing) = self.archive_testing(short) {
+            return Some(testing);
+        }
         let s = self.snap.as_ref()?;
         if !matches!(s.state, State::Verifying | State::Merging) {
             return None;
@@ -1724,6 +1748,46 @@ impl Item {
         })
     }
 
+    /// While its archive is tested before the download counts as done (#1661): "Checking 45%"
+    /// (`short`, the list's Status column, as a checksum's check) or "Testing the archive...
+    /// (45%)", with how far it is once its test runs.
+    fn archive_testing(&self, short: bool) -> Option<String> {
+        if !self.testing || self.status != Status::Complete {
+            return None;
+        }
+        let percent = self.test_progress.as_ref().map(|p| {
+            let done = p.load(std::sync::atomic::Ordering::Relaxed).min(1000);
+            crate::i18n::percent(f64::from(done) / 1000.0, 0)
+        });
+        Some(match (short, percent) {
+            (true, percent) => checking(percent.as_deref().unwrap_or("...")),
+            (false, Some(percent)) => crate::i18n::fmt(
+                // i18n: a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+                crate::i18n::t("Testing the archive... ({percent})"),
+                &[("percent", &percent)],
+            ),
+            (false, None) => crate::i18n::t("Testing the archive...").to_owned(),
+        })
+    }
+
+    /// Its archive's last test found it damaged (#1661): "Damaged" in the list's Status column
+    /// (`short`), whole for its tip and a screen reader.
+    pub fn damaged_text(&self, short: bool) -> Option<String> {
+        if !self.damaged || self.status != Status::Complete || self.testing {
+            return None;
+        }
+        Some(if short {
+            // i18n: a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+            crate::i18n::t("Damaged").to_owned()
+        } else {
+            crate::i18n::t(
+                // i18n: a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+                "Damaged: its archive test found errors. Right-click → Redownload downloads it again",
+            )
+            .to_owned()
+        })
+    }
+
     /// Every byte is in (#736): no rate and no time left, as once it is complete.
     pub fn past_last_byte(&self) -> bool {
         self.torrent.is_none() && self.snap.as_ref().is_some_and(every_byte_in)
@@ -1738,6 +1802,9 @@ impl Item {
         }
         if let Some(finishing) = self.finishing(true) {
             return finishing;
+        }
+        if let Some(damaged) = self.damaged_text(true) {
+            return damaged;
         }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished
