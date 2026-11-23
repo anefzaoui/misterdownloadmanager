@@ -613,10 +613,11 @@ fn fake_ytdlp() -> ExitCode {
 /// one: each chosen stream read from its address (MDM's server's, with the engine; the lab's
 /// otherwise) from where the part starts, by its share of the stream (the page's `duration`),
 /// over one open-ended request as ffmpeg asks (`Range: bytes=<start>-`), until it has the part's
-/// share; joined into `<output>.part`, then the file, said. `part-slow` (mode): a little at a
-/// time. Kept for the checks beside the output: its arguments (`part-args.txt`, a line each),
-/// what each stream's server answered (`part-status.txt`), the addresses it read
-/// (`part-urls.txt`) and its `no_proxy` (`part-env.txt`).
+/// share; joined into `<output>.part`, then the file, said. `part-gate` (mode): half-way through
+/// the first stream it waits (90 s at most) for `go.txt` in the folder, so a check sees the run
+/// under way however fast it reads. Kept for the checks beside the output: its arguments
+/// (`part-args.txt`, a line each), what each stream's server answered (`part-status.txt`), the
+/// addresses it read (`part-urls.txt`) and its `no_proxy` (`part-env.txt`).
 fn fake_part(
     args: &[String],
     sections: &str,
@@ -661,6 +662,7 @@ fn fake_part(
         .cloned()
         .unwrap_or_else(|| vec![chosen.clone()]);
     let (mut statuses, mut urls) = (Vec::new(), Vec::new());
+    let mut held = mode != "part-gate";
     for f in formats {
         let url = url::Url::parse(f["url"].as_str().unwrap()).unwrap();
         urls.push(url.to_string());
@@ -700,8 +702,16 @@ fn fake_part(
             }
             file.write_all(&buf[..n]).unwrap();
             left -= n as u64;
-            if mode == "part-slow" {
-                std::thread::sleep(Duration::from_millis(20));
+            if !held && left <= len / 2 {
+                held = true;
+                let until = Instant::now() + Duration::from_secs(90);
+                while !dir.join("go.txt").exists() {
+                    if Instant::now() >= until {
+                        eprintln!("ERROR: [ffmpeg] the fake part waited too long for go.txt");
+                        return ExitCode::FAILURE;
+                    }
+                    std::thread::sleep(Duration::from_millis(10));
+                }
             }
         }
     }
@@ -812,12 +822,31 @@ fn part_checks(me: &Path) {
             std::thread::sleep(Duration::from_millis(20));
         }
     };
+    // A run held half-way (`part-gate`) until its progress shows bytes brought in: what it
+    // showed. Never ended meanwhile: the fake can't end before `go.txt`.
+    let under_way = |job: &VideoJob| {
+        let end = Instant::now() + Duration::from_secs(60);
+        loop {
+            let p = job.progress();
+            assert_eq!(p.state, State::Running, "{:?}", log_of(&p));
+            if p.downloaded > 0 {
+                return (p.downloaded, p.total);
+            }
+            assert!(Instant::now() < end, "no progress: {:?}", log_of(&p));
+            std::thread::sleep(Duration::from_millis(10));
+        }
+    };
     let read = |dir: &Path, name: &str| std::fs::read_to_string(dir.join(name)).unwrap_or_default();
 
-    // A quick cut through MDM's server.
+    // A quick cut through MDM's server, held half-way until its progress is seen (a fast
+    // machine reads the whole part between two looks).
     let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
+    std::fs::write(out.path().join("mode.txt"), "part-gate").unwrap();
     let job = start(tools.path(), out.path(), Some(engine(None)), part, None);
-    let (p, seen) = wait(&job);
+    let held = under_way(&job);
+    std::fs::write(out.path().join("go.txt"), "").unwrap();
+    let (p, mut seen) = wait(&job);
+    seen.insert(0, held);
     let log = log_of(&p);
     assert!(matches!(p.state, State::Done(_)), "{:?}: {log:?}", p.state);
     assert!(
@@ -873,8 +902,9 @@ fn part_checks(me: &Path) {
             .any(|l| l == "ffmpeg reads the part through MDM's connections"),
         "{log:?}"
     );
-    // Its progress: the bytes brought in, against the part's share of the streams (1.5 MB).
-    assert!(!seen.is_empty(), "progress while it ran");
+    // Its progress: the bytes brought in, against the part's share of the streams (1.5 MB); some
+    // of it while it ran (the first, held half-way), short of the whole.
+    assert!(seen[0].1.is_some_and(|t| seen[0].0 < t), "{seen:?}");
     assert!(
         seen.iter().all(|(_, t)| t.is_some_and(|t| t >= 1_500_000)),
         "{seen:?}"
@@ -948,20 +978,12 @@ fn part_checks(me: &Path) {
             .any(|l| l.ends_with("an exact cut, encoded again"))
     );
 
-    // Stopped half-way, started again: the part comes whole (ffmpeg can't go on from where it
-    // was; the part is read again).
+    // Stopped while under way (held half-way, it can't end first), started again: the part comes
+    // whole (ffmpeg can't go on from where it was; the part is read again).
     let (tools, out) = (tempfile::tempdir().unwrap(), tempfile::tempdir().unwrap());
-    std::fs::write(out.path().join("mode.txt"), "part-slow").unwrap();
+    std::fs::write(out.path().join("mode.txt"), "part-gate").unwrap();
     let job = start(tools.path(), out.path(), Some(engine(None)), part, None);
-    let end = Instant::now() + Duration::from_secs(60);
-    while job.progress().downloaded < 300_000 {
-        assert!(
-            Instant::now() < end,
-            "no progress: {:?}",
-            log_of(&job.progress())
-        );
-        std::thread::sleep(Duration::from_millis(10));
-    }
+    under_way(&job);
     job.stop();
     let end = Instant::now() + Duration::from_secs(30);
     while job.progress().state == State::Running {
@@ -970,6 +992,7 @@ fn part_checks(me: &Path) {
     }
     assert_eq!(job.progress().state, State::Stopped);
     assert!(!out.path().join("Talk.mp4").exists());
+    std::fs::write(out.path().join("go.txt"), "").unwrap();
     let job = start(tools.path(), out.path(), Some(engine(None)), part, None);
     let (p, _) = wait(&job);
     assert!(

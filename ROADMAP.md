@@ -573,6 +573,10 @@ These ship in the next version.
   question says, instead of saving `name (1)` beside it; one that fails or is stopped keeps the
   file, and one whose file another program holds keeps both and says so
   ([#1698](https://github.com/anefzaoui/misterdownloadmanager/issues/1698))
+- ✅ Tests: the check of a video part's progress no longer fails now and then on a fast machine
+  (seen on macOS): the test tool held nothing back, so the whole part could come in between two
+  looks at the progress; it now waits half-way until the test has seen the progress, and the
+  stop-and-start-again check stops it there for certain too
 - ✅ Resume after a crash or a kill continues the download instead of starting it over as
   "name (1)" (#1705): a row whose name was still to be numbered at start resumes the resume
   state at that name when it is its own (the same address, no other row at the name), looked at
