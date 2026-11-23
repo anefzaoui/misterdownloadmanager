@@ -3737,22 +3737,36 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
     };
 }
 
+/// macOS: `NSApp` (`NSApplication.sharedApplication`), or `None` off the main thread. AppKit is
+/// used from the main thread only, and the first `sharedApplication` makes the application: made
+/// on another thread it traps (SIGTRAP) and the whole program ends. The windows' thread is the
+/// main one; a unit test's thread isn't, and the app's logic it runs may still bring a window
+/// forward (Download File Info's same address again, #1741), so every AppKit call here starts
+/// from this and does nothing elsewhere.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn ns_app() -> Option<*mut objc2::runtime::AnyObject> {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject};
+    objc2::MainThreadMarker::new()?;
+    let cls = AnyClass::get(c"NSApplication")?;
+    // SAFETY: on the main thread (just checked); the class method that gives the application.
+    let app: *mut AnyObject = unsafe { msg_send![cls, sharedApplication] };
+    (!app.is_null()).then_some(app)
+}
+
 /// macOS: whether `NSApplication.sharedApplication` is currently the active foreground app with a
 /// visible, non-minimized titled window (#558).
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub fn macos_is_active_and_visible() -> bool {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); queries `NSApplication.sharedApplication`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return false;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return false;
-        }
         let active: Bool = msg_send![app, isActive];
         if !active.as_bool() {
             return false;
@@ -3795,17 +3809,13 @@ pub fn macos_is_active_and_visible() -> bool {
 #[allow(unsafe_code)]
 pub fn macos_unhide_app() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; reads `isHidden` of, and sends
+    use objc2::runtime::Bool;
+    // SAFETY: on the main thread (`ns_app`); reads `isHidden` of, and sends
     // `unhideWithoutActivation` to, `NSApplication.sharedApplication`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let hidden: Bool = msg_send![app, isHidden];
         if hidden.as_bool() {
             let _: () = msg_send![app, unhideWithoutActivation];
@@ -3819,16 +3829,12 @@ pub fn macos_unhide_app() {
 #[allow(unsafe_code)]
 pub fn macos_hide_window() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; orders out titled windows and hides `NSApp`.
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); orders out titled windows and hides `NSApp`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
         let windows: *mut AnyObject = msg_send![app, windows];
         let mut visible_titled = 0usize;
@@ -3890,15 +3896,9 @@ unsafe fn activate_nsapp(app: *mut objc2::runtime::AnyObject, all_windows: bool)
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub fn macos_activate_app() {
-    use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject};
-    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    // SAFETY: `ns_app` gives `NSApp` on the main thread only.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
-            return;
-        };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if !app.is_null() {
+        if let Some(app) = ns_app() {
             activate_nsapp(app, false);
         }
     }
@@ -3913,17 +3913,13 @@ pub fn macos_activate_app() {
 #[allow(unsafe_code)]
 pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2::runtime::{AnyObject, Bool};
     use objc2_foundation::NSString;
     let want = NSString::from_str(&crate::i18n::os_text(title));
-    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and orders the matching
+    // SAFETY: on the main thread (`ns_app`); iterates `[NSApp windows]` and orders the matching
     // visible, non-miniaturized titled window to the front.
     unsafe {
-        let cls = AnyClass::get(c"NSApplication")?;
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return None;
-        }
+        let app = ns_app()?;
         let windows: *mut AnyObject = msg_send![app, windows];
         if windows.is_null() {
             return None;
@@ -3978,17 +3974,13 @@ pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
 #[allow(unsafe_code)]
 pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2::runtime::{AnyObject, Bool};
     use objc2_foundation::NSString;
     let want = NSString::from_str(&crate::i18n::os_text(title));
-    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and reads the matching
+    // SAFETY: on the main thread (`ns_app`); iterates `[NSApp windows]` and reads the matching
     // titled window's `isMiniaturized`, changing nothing.
     unsafe {
-        let cls = AnyClass::get(c"NSApplication")?;
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return None;
-        }
+        let app = ns_app()?;
         let windows: *mut AnyObject = msg_send![app, windows];
         if windows.is_null() {
             return None;
@@ -4023,17 +4015,13 @@ pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
 #[allow(unsafe_code)]
 pub fn macos_activate_and_show() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; activates `NSRunningApplication.currentApplication` and
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); activates `NSRunningApplication.currentApplication` and
     // `NSApplication.sharedApplication`, and orders all titled windows to the front.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
         activate_nsapp(app, true);
         let windows: *mut AnyObject = msg_send![app, windows];
@@ -4325,6 +4313,29 @@ mod macos_focus_tests {
         assert!(super::macos_window_needs_lift(true, true, true));
         assert!(super::macos_window_needs_lift(true, false, false));
         assert!(super::macos_window_needs_lift(false, true, false));
+    }
+
+    /// AppKit off the main thread does nothing (`ns_app`): Download File Info's same address
+    /// again brought its window forward from a test's thread, and the first `NSApp` made there
+    /// trapped and ended the whole macOS test run (#1741).
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn appkit_off_the_main_thread_does_nothing() {
+        std::thread::spawn(|| {
+            assert!(super::ns_app().is_none());
+            super::macos_activate_app();
+            super::macos_unhide_app();
+            super::macos_hide_window();
+            super::macos_activate_and_show();
+            assert!(!super::macos_is_active_and_visible());
+            assert_eq!(
+                super::macos_bring_window_forward("Download File Info"),
+                None
+            );
+            assert_eq!(super::macos_window_miniaturized("Download File Info"), None);
+        })
+        .join()
+        .expect("nothing traps or panics");
     }
 }
 
