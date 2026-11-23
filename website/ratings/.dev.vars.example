@@ -1,0 +1,6 @@
+# For `npm run dev` only: copy to .dev.vars (git-ignored). These are not secrets: the salt is for
+# a local database, and the Turnstile key is Cloudflare's public test key that always passes.
+IP_SALT=local-development-salt-not-for-production-0123456789
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+ALLOWED_ORIGINS=http://127.0.0.1:8765,http://localhost:8765
+TURNSTILE_HOSTNAMES=

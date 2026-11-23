@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Website: the browser stores' ratings and users under their buttons on the home and download
+  pages, read again at every build; visitors rate MDM from one to five stars on the site (change
+  or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
+  that keeps no IP address; only these ratings go into the structured data (opens once the
+  service is set up)
 - ✅ Resume after a crash or a kill continues the download instead of starting it over as
   "name (1)" (#1705): a row whose name was still to be numbered at start resumes the resume
   state at that name when it is its own (the same address, no other row at the name), looked at

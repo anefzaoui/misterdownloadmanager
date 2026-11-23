@@ -16,6 +16,23 @@
     for (var i = 0; i < els.length; i++) fn(els[i]);
   }
 
+  // ---- Numbers in the page's language ----------------------------------------------------------
+  // Figures the build wrote the English way (build.py num(): data-num, data-dec, data-plus) are
+  // written the page language's way, 200.000+ and 4,9 in German; in Western digits, as everywhere
+  // on the site.
+  (function () {
+    var lang = root.getAttribute("lang") || "en";
+    if (lang === "en" || !window.Intl || !Intl.NumberFormat) return;
+    var formats = {};
+    each("[data-num]", function (el) {
+      var dec = +(el.getAttribute("data-dec") || 0);
+      try {
+        formats[dec] = formats[dec] || new Intl.NumberFormat(lang, { minimumFractionDigits: dec, maximumFractionDigits: dec, numberingSystem: "latn" });
+        el.textContent = formats[dec].format(+el.getAttribute("data-num")) + (el.hasAttribute("data-plus") ? "+" : "");
+      } catch (e) { /* stays as built */ }
+    });
+  })();
+
   // ---- The crew's names ------------------------------------------------------------------------
   // A contributor's login shows over their photo on hover and focus (styles.css .face-name); at
   // the start or end of a row it slides back inside the list rather than run out of the sheet.

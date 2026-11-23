@@ -1,7 +1,7 @@
 ---
 title: Privacy policy
-description: What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.
-lede: Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.
+description: What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter and keeps star ratings without your IP address.
+lede: Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter, and if you rate MDM there, it keeps your stars with a code made from your IP address, never the address itself.
 fine: Last updated {{TODAY}} · applies to the app, the browser extension and misterdownloadmanager.com
 priority: 0.4
 ---
@@ -12,6 +12,7 @@ priority: 0.4
 
 - The app and the extension **send nothing about you to us**. We don't run servers that could receive it.
 - This **website** counts visits with **Statcounter**, which sets a cookie and sees your IP address; it runs only on the website, never in the app.
+- If you **rate MDM on the website**, we keep your stars and a salted hash of your IP address (never the address itself), so that you can change your rating instead of adding another; **Cloudflare Turnstile** checks that a person is rating.
 - The app talks to **the servers you download from**, to **GitHub** to check for updates when it starts (you can turn that off), and to GitHub again for **yt-dlp and ffmpeg** if you download videos.
 - **Torrents** are peer to peer: other people in a torrent's swarm see your IP address, as with every torrent client.
 - The **browser extension** talks only to Mister Download Manager on your own computer.
@@ -77,22 +78,23 @@ Its permissions, and why: *downloads* to see and hand over downloads; *cookies* 
 
 ## This website
 
-misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:
+misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings), and a fourth if you play the home page's film:
 
 - **GitHub Pages** hosts it. GitHub receives your IP address and browser details when you visit and may keep them in its server logs for security; see the [GitHub Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement). Download links lead to GitHub Releases.
 - **Cloudflare** sits in front of the site: every request passes through its network, which sees your IP address and browser details, protects the site from attacks and may set a cookie needed for that. See [Cloudflare's privacy policy](https://www.cloudflare.com/privacypolicy/).
 - **Statcounter** counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See [Statcounter's privacy policy](https://statcounter.com/about/legal/#privacy). Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.
+- **Star ratings**, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through **Cloudflare Turnstile**, which checks that a person is rating: its script loads only once you reach for the stars, and Cloudflare sees your IP address and browser details for that check, under [Cloudflare's privacy policy](https://www.cloudflare.com/privacypolicy/). Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with **Remove my rating**; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.
 - **YouTube** (Google) plays the home page's film, only once you start it: the player then comes from youtube-nocookie.com, and YouTube sees your IP address and browser details and may store data in your browser, under [Google's privacy policy](https://policies.google.com/privacy). Until then, nothing is loaded from YouTube: the picture you see is served from this site.
 
-The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.
+The site has no ads and no other trackers. Its fonts and scripts are served from the site itself, except Statcounter's and, once you reach for the rating stars, Turnstile's. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.
 
 ## Children
 
-The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.
+The app and the extension collect no personal data from anyone, children included. The website's visit counter and its star ratings don't know who you are or how old you are.
 
 ## Your rights
 
-The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.
+The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. A star rating can be changed or removed from the same connection at any time (**Remove my rating** under the stars); we can't tell which rating is whose, so we can't find one for you. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.
 
 ## Changes
 
