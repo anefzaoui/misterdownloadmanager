@@ -593,6 +593,8 @@ fn app() -> eframe::Result {
         // Linux: X11 (XWayland) over Wayland when both are there, so menus open where clicked.
         #[cfg(target_os = "linux")]
         event_loop_builder: unix::event_loop_hook(),
+        #[cfg(target_os = "macos")]
+        event_loop_builder: (start == Start::Session).then(unix::login_event_loop_hook),
         ..Default::default()
     };
     let result = renderer::run(APP_ID, &plan, options, move |cc| {

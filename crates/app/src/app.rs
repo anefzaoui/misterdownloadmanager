@@ -4996,6 +4996,14 @@ impl App {
                 self.tray_wait = None;
             }
             AtLogin::Minimize => {
+                // At macOS login the Dock can reopen the app even if the menu bar is unavailable.
+                #[cfg(target_os = "macos")]
+                if !self.tray_wait_browser {
+                    crate::unix::macos_show_in_dock(true);
+                    self.tray_wait = None;
+                    tracing::info!("{why}: menu bar unavailable; window stays hidden");
+                    return;
+                }
                 tracing::info!(
                     "{why}: no notification area within {} s of the icon: minimized ({} ms on)",
                     TRAY_GRACE.as_secs(),
@@ -5310,10 +5318,11 @@ impl App {
         // download limits) running.
         if self.hidden {
             #[cfg(target_os = "macos")]
-            if self
-                .tray
-                .as_ref()
-                .is_some_and(|t| t.icon() == crate::tray::Icon::Gone)
+            if self.tray_wait.is_none()
+                && self
+                    .tray
+                    .as_ref()
+                    .is_some_and(|t| t.icon() == crate::tray::Icon::Gone)
             {
                 crate::unix::macos_show_in_dock(true);
             }
