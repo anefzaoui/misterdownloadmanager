@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "एक कोड हस्ताक्षर Windows को यह दिखाने देता है कि किसी प्रोग्राम को किसने प्रकाशित किया और यह जांचने में मदद करता है कि इसे बनाने के बाद बदला नहीं गया था। जब Mister Download Manager (\"MDM\") का कोई रिलीज़ साइन किया जाता है, तो उसका हस्ताक्षर इस प्रोजेक्ट से आने वाली Windows फ़ाइलों को कवर करता है:"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> पुल रिक्वेस्ट"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "हाँ। MDM डाउनलोड की प्रगति को लगातार सहेजता रहता है, इसलिए कनेक्शन टूटने, क्रैश होने या रीस्टार्ट होने के बाद डाउनलोड वहीं से जारी रहता है जहाँ रुका था। फिर से शुरू करने से पहले यह जाँचता है कि सर्वर पर फ़ाइल बदली तो नहीं है। डाउनलोड का पता समाप्त हो जाने पर <g1>डाउनलोड पता रीफ़्रेश करें</g1> से नया पता देकर डेटा सुरक्षित रखा जा सकता है। <g2>रुका हुआ डाउनलोड फिर से शुरू करें</g2> देखें।"
@@ -226,6 +230,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>सहायता → Mister Download Manager के बारे में</g1> आपके पास मौजूद संस्करण दिखाता है।"
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>पुल रिक्वेस्ट</g1><g2><x3/> लोग</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "शेड्यूलर क्या-क्या कर सकता है →"
@@ -321,6 +329,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "मुफ़्त और ओपन सोर्स। वह इंटरफ़ेस जिसे आप पहले से जानते हैं, अंदर एक तेज़ इंजन, टोरेंट और वीडियो अंतर्निहित।"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "प्रत्येक लिंक अपनी एक <g1>फ़ाइल जानकारी डाउनलोड करें</g1> विंडो खोलता है, ताकि आप चुनने से पहले उनके आकार की तुलना करने के लिए कई विंडो को साथ-साथ खोल सकें। प्रत्येक नई विंडो पिछली वाली के थोड़ा नीचे और बगल में खुलती है और सामने आ जाती है; दूसरी विंडो से, उसके शीर्षक में उसकी संख्या होती है: <g2>फ़ाइल जानकारी डाउनलोड करें (2)</g2>, <g3>(3)</g3> और इसी तरह। <g4>Esc</g4> केवल उस विंडो को बंद करता है जिसमें आप हैं। एक बार में अधिकतम छह विंडो खुली हो सकती हैं: एक साथ दिए गए अधिक लिंक (एक ब्राउज़र कई डाउनलोड पास कर रहा है) प्रतीक्षा करते हैं, और जैसे ही आप विंडो बंद करते हैं, एक-एक करके खुलते हैं; <g5>रद्द करें</g5> पूछता है कि क्या अभी भी प्रतीक्षा कर रहे लोगों को रद्द करना है। वही लिंक फिर से देने पर उसकी खुली हुई विंडो सामने आ जाती है। यदि आप MDM को कुछ विंडो खुली छोड़कर बंद करते हैं, तो उनके डाउनलोड <g6>मुख्य डाउनलोड कतार</g6> में चले जाते हैं, जैसा कि <g7>बाद में डाउनलोड करें</g7> के साथ होता है।"
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -2426,6 +2438,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOS पर वेक शेड्यूल केवल व्यवस्थापक ही कर सकता है, इसलिए यह विकल्प धूसर रहता है। MDM व्यवस्थापक का पासवर्ड नहीं माँगता। उदाहरण के लिए, व्यवस्थापक Mac को हर दिन कतार शुरू होने से एक मिनट पहले जगा सकता है। 11:00 PM पर शुरू होने वाली कतार के लिए समय 10:59 PM सेट किया जा सकता है:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "हर उस व्यक्ति को जिसने <x1/> संस्करण के बाद से GitHub पर पुल रिक्वेस्ट भेजा, कोई समस्या खोली या टिप्पणी की।"
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>IDM से स्थानांतरण</g1><g2>आपकी IDM सूची एक फ़ाइल में आती है, प्रत्येक डाउनलोड अपने पते, रेफ़रर और कुकीज़ के साथ।</g2>"
@@ -4197,6 +4213,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "<g1>ठीक है</g1> पर क्लिक करें।"
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>समस्याएँ</g1><g2><x3/> लोग</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -6114,6 +6134,10 @@
    "source": "A small file",
    "text": "एक छोटी फ़ाइल"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "धन्यवाद"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "किसी प्लेलिस्ट (<x1/>) या चैनल के वीडियो (<x2/>) का पता चिपकाएँ और <g3>खोजें</g3> पर क्लिक करें। एक वीडियो की गुणवत्ता के बजाय, विंडो में प्लेलिस्ट के वीडियो और हर वीडियो की अवधि दिखाई जाती है।"
@@ -6245,6 +6269,10 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 और Linux; macOS आज़माने के लिए"
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "इन अद्भुत लोगों ने इसे संभव बनाया"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -8614,6 +8642,10 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "आपको इनमें से किसी एक सेवा के साथ अपना सशुल्क खाता चाहिए: MDM एक को बेचता या शामिल नहीं करता है। एक खाते या उसके लिंक को साझा करना सेवाओं की शर्तों का उल्लंघन करता है और खाते को निलंबित कर सकता है।"
   },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>सभी सहायक</g2>"
+  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "प्रश्न और उत्तर — Mister Download Manager"
@@ -10410,6 +10442,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>तेज़ डाउनलोड और फिर से शुरू करना</g1><g2>एक फ़ाइल को 32 कनेक्शनों तक विभाजित किया जाता है, अंतिम बाइट तक फिर से विभाजित किया जाता है, और किसी भी क्रैश के बाद फिर से शुरू किया जाता है।</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> जिन लोगों ने पुल रिक्वेस्ट भेजा, समस्या बताई या GitHub पर बातचीत में शामिल हुए। <g2>उन सभी से मिलें</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM द्वारा खींची गई शीर्षक पट्टी, जब उसकी विंडो सक्रिय न हो (पारदर्शी: जैसे सक्रिय होने पर)"
@@ -11329,6 +11365,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "अपने ब्राउज़र से डाउनलोड भेजें"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> टिप्पणी"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -14842,6 +14882,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "लिंक ग्रैबर और संग्रह — Mister Download Manager सहायता"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>टिप्पणियाँ</g1><g2><x3/> लोग</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "पिछला / अगला बटन (ग्रे किए गए भी: एक स्क्रीन रीडर कहता है कि वे अनुपलब्ध हैं)"
@@ -15433,6 +15477,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager और IDM, साथ-साथ।"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> समस्या"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16469,6 +16517,10 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "नहीं, अगर यह इस साइट या GitHub रिलीज़ से आया है। कुछ एंटीवायरस प्रोग्राम किसी अज्ञात प्रोग्राम को ज्ञात वायरस के बजाय अनुमान के आधार पर आँकते हैं…"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> पुल रिक्वेस्ट"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17738,6 +17790,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>इतने समय तक साझा करने के बाद साझा करना बंद करें … मिनट</g1> — या, जब कुल मिलाकर इतने समय तक साझा किया जा चुका हो, तो इसे साझा करना बंद करें। डिफ़ॉल्ट रूप से बंद।"
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> टिप्पणियाँ"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "इसके पतों के अलावा वे नाम जिनसे पेज खोला जा सकता है"
@@ -17841,6 +17897,10 @@
   "f9a4b5089b7bfcce": {
    "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
    "text": "<g1>हर पेज Markdown में।</g1> हर पेज के साथ उसका एक Markdown संस्करण होता है: <x2/> की जगह <x3/> वाला पता, या <x4/> ऐसे पते के लिए जो <x5/> में समाप्त होता है। तो <g6>/download.html</g6> <g7>/download.md</g7> है, <g8>/help/</g8> <g9>/help/index.md</g9> है, और जर्मन होम पेज <g10>/de/</g10> <g11>/de/index.md</g11> है। हर पेज अपने <x12/> (<x13/>) में अपना नाम बताता है। सहायता पेजों का Markdown उनका स्रोत है; अन्य हर बिल्ड पर पेज से बनाए जाते हैं, इसलिए वे कभी उससे अलग नहीं होते।"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> समस्याएँ"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18401,82 +18461,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "आपके डाउनलोड पते या फ़ाइल नाम;"
-  },
-  "048d941554aedc04": {
-   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
-   "text": "प्रत्येक लिंक अपनी एक <g1>फ़ाइल जानकारी डाउनलोड करें</g1> विंडो खोलता है, ताकि आप चुनने से पहले उनके आकार की तुलना करने के लिए कई विंडो को साथ-साथ खोल सकें। प्रत्येक नई विंडो पिछली वाली के थोड़ा नीचे और बगल में खुलती है और सामने आ जाती है; दूसरी विंडो से, उसके शीर्षक में उसकी संख्या होती है: <g2>फ़ाइल जानकारी डाउनलोड करें (2)</g2>, <g3>(3)</g3> और इसी तरह। <g4>Esc</g4> केवल उस विंडो को बंद करता है जिसमें आप हैं। एक बार में अधिकतम छह विंडो खुली हो सकती हैं: एक साथ दिए गए अधिक लिंक (एक ब्राउज़र कई डाउनलोड पास कर रहा है) प्रतीक्षा करते हैं, और जैसे ही आप विंडो बंद करते हैं, एक-एक करके खुलते हैं; <g5>रद्द करें</g5> पूछता है कि क्या अभी भी प्रतीक्षा कर रहे लोगों को रद्द करना है। वही लिंक फिर से देने पर उसकी खुली हुई विंडो सामने आ जाती है। यदि आप MDM को कुछ विंडो खुली छोड़कर बंद करते हैं, तो उनके डाउनलोड <g6>मुख्य डाउनलोड कतार</g6> में चले जाते हैं, जैसा कि <g7>बाद में डाउनलोड करें</g7> के साथ होता है।"
-  },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "जब यह पेज बनाया गया था तब GitHub से सूची नहीं पढ़ी जा सकी। इस बीच, सभी लोग प्रोजेक्ट के <g1>पुल रिक्वेस्ट</g1> और <g2>इश्यू</g2> में GitHub पर हैं।"
-  },
-  "49b4a645676f1c52": {
-   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
-   "text": "संक्षेप में: Mister Download Manager ऐप और इसका ब्राउज़र एक्सटेंशन आपके बारे में कोई जानकारी एकत्र नहीं करते। कोई खाते नहीं, कोई एनालिटिक्स नहीं, कोई टेलीमेट्री नहीं, कोई विज्ञापन नहीं। यह वेबसाइट अपनी विज़िट की गिनती Statcounter से करती है।"
-  },
-  "616c286a43aec83e": {
-   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
-   "text": "<g1>3,800+ दैनिक उपयोगकर्ता</g1><g2>7 रेटिंग्स में से 5 में से 4.7</g2>"
-  },
-  "84829118b707c58c": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com एक स्थिर साइट है। इसे आपको दिखाने में तीन कंपनियाँ भाग लेती हैं, और यदि आप होम पेज की फ़िल्म चलाते हैं तो चौथी भी:"
-  },
-  "8ccaf02f36376582": {
-   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
-   "text": "<g1>आँकड़ों में</g1><g2><x3/> पर जाँच की गई, पूर्णांकित</g2>"
-  },
-  "9fe595ed623618bf": {
-   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>डिलीवरी का प्रमाण</g1><g2><x3/> पर जाँचे गए आँकड़े · उद्धरण सटीक, उनके स्रोत से जुड़े हुए</g2>"
-  },
-  "b3192a3bf72c5c3b": {
-   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
-   "text": "ऐप और एक्सटेंशन बच्चों समेत किसी का भी व्यक्तिगत डेटा एकत्र नहीं करते। वेबसाइट का विज़िट काउंटर यह नहीं जानता कि आप कौन हैं या आपकी उम्र क्या है।"
-  },
-  "c9da130585eae7fa": {
-   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
-   "text": "इस वेबसाइट पर कोई विज्ञापन या अन्य ट्रैकर नहीं हैं। इसके फ़ॉन्ट और स्क्रिप्ट इसी वेबसाइट से लोड होते हैं। लाइट या डार्क मोड की आपकी पसंद ब्राउज़र के लोकल स्टोरेज में याद रखी जाती है और कहीं नहीं भेजी जाती।"
-  },
-  "cb565e5b28b1036b": {
-   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
-   "text": "<g1><x2/> Firefox में जोड़ें</g1><g3><x4/> Chrome में जोड़ें</g3>"
-  },
-  "d325a1b1c8ab0caa": {
-   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
-   "text": "Mister Download Manager, इसका ब्राउज़र एक्सटेंशन और यह वेबसाइट आपके डेटा का उपयोग कैसे करते हैं: ऐप और एक्सटेंशन कोई डेटा एकत्र नहीं करते; वेबसाइट Statcounter से विज़िट गिनती है।"
-  },
-  "d7a59305d1341d4e": {
-   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
-   "text": "ऐप और एक्सटेंशन में आपके बारे में कोई व्यक्तिगत डेटा नहीं रखा जाता, इसलिए हमारे पास वहाँ दिखाने, सुधारने या हटाने के लिए कुछ नहीं है। वेबसाइट के विज़िट आँकड़े Statcounter के पास रखे जाते हैं; अपनी विज़िट के रिकॉर्ड हटवाने के लिए, अपनी विज़िट की तारीख और समय के साथ एक issue दर्ज करें या सीधे Statcounter से संपर्क करें। GitHub को भेजा गया डेटा (उदाहरण के लिए, कोई issue) GitHub संभालता है और वहाँ उसे संपादित या हटाया जा सकता है।"
-  },
-  "f40a78a2a7aa4f18": {
-   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
-   "text": "<g1>50,000+ उपयोगकर्ता</g1><g2>43 रेटिंग्स में से 5 में से 4.9</g2>"
-  },
-  "807205b219bcd9d5": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
-   "text": "<g1>इसका मेन्यू</g1> (इसके बगल में तीर, या जब बटन पर कीबोर्ड का फ़ोकस हो तो <g2>↓</g2>): वीडियो का शीर्षक, लंबाई और साइट; पहले <g3>सर्वश्रेष्ठ डाउनलोड करें</g3>, फिर <g4>वीडियो</g4> और <g5>ऑडियो</g5> के तहत गुणवत्ता के अनुसार एक क्रमांकित पंक्ति, जिसमें फ़ाइल प्रकार, कोडेक, फ़्रेम दर या बिटरेट और आकार (<x6/> <x7/>, जैसा कि डाउनलोड वीडियो विंडो में लिखा है), सबसे अच्छी वाली चिह्नित, और <g8>सबसे संगत (H.264 + AAC)</g8> उस रेज़ोल्यूशन के बगल में जो हर जगह चलता है (<g9>गुणवत्ता चुनें</g9>); <g10>सभी गुणवत्ताएँ और उपशीर्षक...</g10>, जो <g11>एक पृष्ठ से वीडियो डाउनलोड करें</g11> विंडो खोलता है; फिर <g12>केवल इस वीडियो पर छिपाएँ</g12> (<g13>Esc</g13>), साइट पर <g14>कभी नहीं</g14> (MDM साइट को याद रखता है), और <g15>बटन सेटिंग्स...</g15>, जो MDM के विकल्प खोलता है। तीर कुंजियाँ इसमें घूमती हैं, <g16>Enter</g16> चुनता है, <g17>Esc</g17> इसे बंद करता है।"
-  },
-  "94d1eda28d7a14bb": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
-   "text": "<g1>ब्राउज़रों में MDM डाउनलोड पैनल को अनुकूलित करें → संपादित करें...</g1> — वेब पेजों पर वीडियो के ऊपर डाउनलोड बटन: इसे बंद करें, इसका <g2>बटन आकार</g2> चुनें (<g3>पूर्ण</g3>, इसके शब्द जहाँ फिट होते हैं, या <g4>कॉम्पैक्ट</g4>, केवल लोगो, तीर और हर वीडियो पर ✕), या उन साइटों की सूची बनाएँ जहाँ यह कभी नहीं दिखता है (उन्हें स्पेस से अलग करें; <x5/>, <x6/> या <x7/> जैसे वाइल्डकार्ड काम करते हैं)। <g8>ब्राउज़र एकीकरण</g8> देखें।"
-  },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>इसे स्थानांतरित करें</g1>: इसे वीडियो के किनारे के साथ उसके बिंदुओं से खींचें; जब आप खींचते हैं, तो किनारा और वे स्थान जहां यह चिपकता है (कोने और मध्य) दिखाई देते हैं। यह उस साइट पर वहीं रहता है।"
-  },
-  "e2b2bd857e845dd3": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>इसे बंद करें, इसे छोटा करें, या उन साइटों को देखें जहाँ यह बंद रहता है</g1>: <g2>विकल्प → सामान्य → ब्राउज़रों में MDM डाउनलोड पैनल को अनुकूलित करें → संपादित करें...</g2>। <g3>बटन का आकार</g3> स्थापित होने पर <g4>पूर्ण</g4> होता है (उसके शब्द जहाँ वे फिट होते हैं) या <g5>कॉम्पैक्ट</g5> (केवल MDM का लोगो, तीर और <g6>✕</g6>, हर वीडियो पर, जैसे एक छोटे पर); क्लिक के बाद भी यह शब्दों में बताता है कि क्या हुआ। पहले से खुले पृष्ठ कुछ सेकंड के भीतर एक परिवर्तन का पालन करते हैं, बिना पुनः लोड किए।"
-  },
-  "fb140a625b84ac20": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
-   "text": "अज्ञात प्रश्न या कार्रवाई का जवाब <x1/> दिया जाता है। API बंद होने पर पूछे गए प्रश्न का भी यही जवाब दिया जाता है (तब <x2/> के साथ, ताकि प्रोग्राम इसकी जाँच कर सकें: त्रुटि का पाठ बदल सकता है)। गलत टोकन का जवाब <x3/> दिया जाता है।"
-  },
-  "fdbec569d3b4740e": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "यह रास्ते से हटकर रहता है: यह केवल तभी दिखता है जब आप पॉइंटर को किसी वीडियो पर ले जाते हैं (या प्लेयर के पास कीबोर्ड का फोकस होता है; <g1>Tab</g1> फिर बटन पर चला जाता है), पॉइंटर रुकने के 1.5 सेकंड बाद और वीडियो छोड़ने पर तुरंत फीका पड़ जाता है, और छोटे वीडियो और छोटे म्यूट किए गए लूप (एनिमेटेड चित्र, पृष्ठभूमि) को छोड़ देता है। यह पेज के अपने बटनों को नहीं ढकता है: जब कोई इसके कोने के किसी भी हिस्से के नीचे होता है (एक प्लेयर का फीडबैक या सेटिंग्स बटन, एक थंबनेल का बाद में देखें बटन), तो यह अगला खाली कोना लेता है और उसे तब तक रखता है जब तक प्लेयर अपने बटन दिखाता और छिपाता है, ताकि आप उस तक पहुँचने पर यह वहीं रहे। एक पूर्वावलोकन पर जो थंबनेल पर पॉइंटर होने पर चलता है (YouTube का होम पेज, एक खोज, एक चैनल), पेज पूर्वावलोकन को रोक देता है जैसे ही पॉइंटर बटन तक पहुँचता है; बटन वहीं रहता है जहाँ वह था जब पॉइंटर उस पर होता है, और एक क्लिक उस पूर्वावलोकन के वीडियो को डाउनलोड करता है। वीडियो को चलाना या रोकना इसे वापस नहीं लाता है। 360 पिक्सेल से कम चौड़े वीडियो पर, या जहाँ इसके शब्द फिट नहीं होंगे, यह केवल इसका लोगो, इसका तीर और <g2>✕</g2> है; विकल्प में <g3>बटन का आकार</g3> <g4>कॉम्पैक्ट</g4> पर सेट होने पर (नीचे), यह हर वीडियो पर वह गोल बटन है। पूर्ण स्क्रीन में यह वीडियो का अनुसरण करता है जब प्लेयर इसकी अनुमति देता है, और पूर्ण स्क्रीन में प्रवेश करने पर यह रास्ते से हटकर रहता है जब तक आप पॉइंटर को फिर से नहीं ले जाते।"
   }
  }
 }

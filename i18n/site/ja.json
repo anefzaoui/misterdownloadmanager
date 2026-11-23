@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "コード署名により、Windows はプログラムの発行元を表示し、ビルド後に変更されていないことを確認できます。Mister Download Manager (MDM) のリリースが署名されると、その署名は次の Windows ファイルをカバーします。"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> 件のプルリクエスト"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "はい。MDMは進行状況を随時保存するため、接続が切れたり、クラッシュしたり、再起動したりしても、中断したところから再開します。再開する前に、サーバー上のファイルが変更されていないか確認します。ダウンロードアドレスの有効期限が切れた場合は、<g1>ダウンロードアドレスを更新</g1>して新しいアドレスを設定すれば、ダウンロード済みのデータを保持できます。<g2>中断したダウンロードを再開する</g2>をご覧ください。"
@@ -226,6 +230,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>ヘルプ → Mister Download Manager について</g1>で、お使いのバージョンが表示されます。"
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>プルリクエスト</g1><g2><x3/> 人</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "スケジューラでできることすべて →"
@@ -321,6 +329,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "各リンクはそれぞれ独自の<g1>ダウンロード ファイル情報</g1>を開くため、サイズを比較して選択する際に、複数並べて開くことができます。新しいウィンドウは、前のウィンドウの少し下と横に開いて前面に表示されます。2 番目以降のウィンドウのタイトルには、<g2>ダウンロード ファイル情報 (2)</g2>、<g3>(3)</g3> のように番号が付きます。<g4>Esc</g4> キーを押すと、現在アクティブなウィンドウのみが閉じます。最大 6 つのウィンドウを同時に開くことができます。複数のリンクが同時に渡された場合 (ブラウザーが複数のダウンロードを渡す場合など) は、ウィンドウを閉じるにつれて 1 つずつ開きます。<g5>キャンセル</g5>をクリックすると、待機中のダウンロードをキャンセルするかどうかを確認するメッセージが表示されます。同じリンクが再度渡されると、開いているウィンドウが前面に表示されます。MDM を終了する際にまだ開いているウィンドウがある場合、それらのダウンロードは<g6>メインのダウンロード キュー</g6>に移動します。<g7>後でダウンロード</g7>を選択した場合と同様です。"
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -2426,6 +2438,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOSでは、管理者のみがスリープ解除をスケジュールできるため、このオプションはグレー表示になります。MDMが管理者のパスワードを求めることはありません。管理者は、キューの開始1分前にMacを毎日起動するよう設定できます。たとえば、午後11時に開始するキューの場合、毎日午後10時59分に起動するよう設定できます。"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "バージョン <x1/> 以降、プルリクエストを送信したり、問題を報告したり、GitHub でコメントをくださったすべての皆様に感謝いたします。"
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>IDM からの移行</g1><g2>IDM リストは 1 つのファイルで移行され、各ダウンロードにはアドレス、リファラー、Cookie が含まれます。</g2>"
@@ -4197,6 +4213,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "<g1>OK</g1>をクリックします。"
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>イシュー</g1><g2><x3/> 人</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -6114,6 +6134,10 @@
    "source": "A small file",
    "text": "小さなファイル"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "協力してくださった皆様"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "プレイリスト（<x1/>）またはチャンネルの動画（<x2/>）のアドレスを貼り付けて、<g3>検索</g3>をクリックします。1本の動画の品質の代わりに、ウィンドウにはプレイリスト内の動画が長さとともに表示されます。"
@@ -6245,6 +6269,10 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 および Linux; macOS は試用版"
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "この素晴らしい方々のおかげです"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -8610,6 +8638,10 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "これらのサービスのいずれかで、ご自身の有料アカウントが必要です。MDM はアカウントを販売したり、含めたりすることはありません。アカウントやそのリンクを共有すると、サービスの利用規約に違反し、アカウントが停止される可能性があります。"
   },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>協力してくれたすべての人々</g2>"
+  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "よくある質問 — Mister Download Manager"
@@ -10406,6 +10438,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>高速化とレジューム</g1><g2>最大 32 の接続に分割されたファイルは、最後の 1 バイトまで再分割され、クラッシュ後もレジュームできます。</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> GitHub でプルリクエストを送信したり、問題を報告したり、議論に参加したりしてくれた人々。 <g2>全員を見る</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "MDM が描画するタイトル バー (ウィンドウがアクティブでない場合) (透明: アクティブな場合と同様)"
@@ -11325,6 +11361,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "ブラウザからダウンロードを送信する"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> 件のコメント"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -14118,6 +14158,10 @@
    "source": "On a queue's <g1>Schedule</g1> tab, tick <g2>Start download at</g2> and choose a time, <g3>Once at</g3> a date or <g4>Daily</g4> on the days you tick. <g5>Stop download at</g5> halts whatever is left, for example before work in the morning. A queue can also start whenever MDM starts.",
    "text": "キューの<g1>スケジュール</g1>タブで、<g2>ダウンロード開始時刻</g2>をオンにして時刻を選択し、日付の<g3>一度だけ</g3>、またはチェックした曜日の<g4>毎日</g4>を選択します。<g5>ダウンロードを停止する時刻</g5>は、たとえば朝の仕事の前に残っているものをすべて停止します。キューは MDM の開始時にも開始できます。"
   },
+  "c493485e5f202b58": {
+   "source": "Before you click <g1>OK</g1>, the window shows the <g2>First file</g2>, <g3>Second file</g3> and <g4>Last file</g4>, so a typo shows up before anything downloads. If the server needs a login, tick <g5>Use authorization</g5>. Copied one address with a number in it, such as <x6/>? <g7>Tasks → Add batch download from clipboard</g7> (Ctrl+B) puts the asterisk where the number was and waits for the last one in <g8>To</g8>. Copied a whole list of links, or a forum post with links in it? The same command lists every one of them in Link grabber, ticked and ready to start.",
+   "text": "［<g1>OK</g1>］をクリックする前に、ウィンドウに<g2>最初のファイル</g2>、<g3>2 番目のファイル</g3>、<g4>最後のファイル</g4>が表示されるため、ダウンロードが開始される前にタイプミスがわかります。サーバーにログインが必要な場合は、［<g5>認証を使用する</g5>］にチェックを入れます。<x6/> のように、数字を含むアドレスを 1 つコピーしましたか？ <g7>タスク → クリップボードからバッチ ダウンロードを追加</g7> (Ctrl+B) を選択すると、数字があった場所にアスタリスクが配置され、［<g8>終了</g8>］で最後の数字を待ちます。リンクのリスト全体、またはリンクを含むフォーラムの投稿をコピーしましたか？ 同じコマンドで、リンク グラバーにすべてのリンクが一覧表示され、チェックが入って開始準備が整います。"
+  },
   "c493cf1e8ba7e4c3": {
    "source": "Ctrl+N",
    "text": "Ctrl+N"
@@ -14590,6 +14634,10 @@
    "source": "Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code.",
    "text": "実行中のアプリのリモート コントロールと電話またはリモート ブラウザーをペアリングするための新しいコード (Web アドレス、ペアリング コード、QR コード) を表示します。"
   },
+  "cb3fee6871e1183d": {
+   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
+   "text": "<g1>0.5.2</g1> <g2>17.1 MB</g2>"
+  },
   "cb4ebdffdae9d416": {
    "source": "<g1>The previous version stays</g1>, so you can go back to it. Older ones are removed.",
    "text": "<g1>以前のバージョンは残る</g1>ため、元に戻すことができます。古いバージョンは削除されます。"
@@ -14829,6 +14877,10 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "リンクグラバーとアーカイブ — Mister Download Manager ヘルプ"
+  },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>コメント</g1><g2><x3/> 人</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -15421,6 +15473,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download ManagerとIDM、比較"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> 件のイシュー"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16457,6 +16513,10 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "いいえ、このサイトまたは GitHub Releases から入手したものであれば、ウイルスではありません。一部のウイルス対策プログラムは、未知のプログラムを既知のウイルスではなく、推測に基づいて判断します…"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> 件のプルリクエスト"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17726,6 +17786,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>共有後に共有を停止する … 分</g1> — または、すべての実行を通じてその時間共有された後に停止します。デフォルトではオフです。"
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> 件のコメント"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "ページが開かれる可能性のある、アドレス以外の名前"
@@ -17829,6 +17893,10 @@
   "f9a4b5089b7bfcce": {
    "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
    "text": "<g1>すべてのページは Markdown 形式です。</g1> 各ページには、その隣に Markdown バージョンがあります。アドレスの <x2/> を <x3/> に置き換えるか、<x4/> をアドレスの末尾に <x5/> を付けて指定します。したがって、<g6>/download.html</g6> は <g7>/download.md</g7>、<g8>/help/</g8> は <g9>/help/index.md</g9>、ドイツ語のホームページ <g10>/de/</g10> は <g11>/de/index.md</g11> となります。各ページは、<x12/> (<x13/>) で自身の名前を付けています。ヘルプページの Markdown はそのソースであり、他のページはビルドごとにページから作成されるため、常に同期しています。"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> 件のイシュー"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18389,82 +18457,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "ダウンロードアドレスまたはファイル名。"
-  },
-  "048d941554aedc04": {
-   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
-   "text": "各リンクはそれぞれ独自の<g1>ダウンロード ファイル情報</g1>を開くため、サイズを比較して選択する際に、複数並べて開くことができます。新しいウィンドウは、前のウィンドウの少し下と横に開いて前面に表示されます。2 番目以降のウィンドウのタイトルには、<g2>ダウンロード ファイル情報 (2)</g2>、<g3>(3)</g3> のように番号が付きます。<g4>Esc</g4> キーを押すと、現在アクティブなウィンドウのみが閉じます。最大 6 つのウィンドウを同時に開くことができます。複数のリンクが同時に渡された場合 (ブラウザーが複数のダウンロードを渡す場合など) は、ウィンドウを閉じるにつれて 1 つずつ開きます。<g5>キャンセル</g5>をクリックすると、待機中のダウンロードをキャンセルするかどうかを確認するメッセージが表示されます。同じリンクが再度渡されると、開いているウィンドウが前面に表示されます。MDM を終了する際にまだ開いているウィンドウがある場合、それらのダウンロードは<g6>メインのダウンロード キュー</g6>に移動します。<g7>後でダウンロード</g7>を選択した場合と同様です。"
-  },
-  "c493485e5f202b58": {
-   "source": "Before you click <g1>OK</g1>, the window shows the <g2>First file</g2>, <g3>Second file</g3> and <g4>Last file</g4>, so a typo shows up before anything downloads. If the server needs a login, tick <g5>Use authorization</g5>. Copied one address with a number in it, such as <x6/>? <g7>Tasks → Add batch download from clipboard</g7> (Ctrl+B) puts the asterisk where the number was and waits for the last one in <g8>To</g8>. Copied a whole list of links, or a forum post with links in it? The same command lists every one of them in Link grabber, ticked and ready to start.",
-   "text": "［<g1>OK</g1>］をクリックする前に、ウィンドウに<g2>最初のファイル</g2>、<g3>2 番目のファイル</g3>、<g4>最後のファイル</g4>が表示されるため、ダウンロードが開始される前にタイプミスがわかります。サーバーにログインが必要な場合は、［<g5>認証を使用する</g5>］にチェックを入れます。<x6/> のように、数字を含むアドレスを 1 つコピーしましたか？ <g7>タスク → クリップボードからバッチ ダウンロードを追加</g7> (Ctrl+B) を選択すると、数字があった場所にアスタリスクが配置され、［<g8>終了</g8>］で最後の数字を待ちます。リンクのリスト全体、またはリンクを含むフォーラムの投稿をコピーしましたか？ 同じコマンドで、リンク グラバーにすべてのリンクが一覧表示され、チェックが入って開始準備が整います。"
-  },
-  "49b4a645676f1c52": {
-   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
-   "text": "概要: Mister Download Manager アプリとブラウザー拡張機能は、お客様に関する情報を一切収集しません。アカウント、分析機能、テレメトリー、広告はありません。このウェブサイトでは Statcounter を使って訪問数を数えています。"
-  },
-  "616c286a43aec83e": {
-   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
-   "text": "<g1>3,800 人以上のデイリー ユーザー</g1><g2>7 件の評価で 5 段階中 4.7</g2>"
-  },
-  "84829118b707c58c": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com は静的サイトです。このサイトの表示には 3 社が関与しており、ホームページの動画を再生した場合はさらに 1 社が加わります。"
-  },
-  "8ccaf02f36376582": {
-   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
-   "text": "<g1>数字で見る</g1><g2><x3/> に確認、切り捨て</g2>"
-  },
-  "9fe595ed623618bf": {
-   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>納品証明</g1><g2><x3/> で確認された数値 · 引用は正確で、出典にリンクされています</g2>"
-  },
-  "b3192a3bf72c5c3b": {
-   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
-   "text": "アプリと拡張機能は、子どもを含め、誰からも個人データを収集しません。ウェブサイトの訪問カウンターは、訪問者が誰なのか、何歳なのかを把握しません。"
-  },
-  "c9da130585eae7fa": {
-   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
-   "text": "このサイトには広告や他のトラッカーはありません。フォントとスクリプトはサイト自体から配信されます。ライトモードまたはダークモードの選択はブラウザのローカルストレージに保存され、外部に送信されることはありません。"
-  },
-  "cb565e5b28b1036b": {
-   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
-   "text": "<g1><x2/> Firefox に追加</g1><g3><x4/> Chrome に追加</g3>"
-  },
-  "d325a1b1c8ab0caa": {
-   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
-   "text": "Mister Download Manager、そのブラウザ拡張機能、およびこのウェブサイトによるデータの取り扱い：アプリと拡張機能はデータを一切収集しません。ウェブサイトでは Statcounter を使って訪問数を集計します。"
-  },
-  "d7a59305d1341d4e": {
-   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
-   "text": "アプリと拡張機能はお客様の個人データを保持しないため、表示、訂正、削除できるデータはありません。ウェブサイトの訪問統計は Statcounter が保持しています。訪問記録の削除を希望する場合は、訪問日時を添えて issue を作成するか、Statcounter に直接お問い合わせください。GitHub に送信したデータ（issue など）は GitHub が管理し、GitHub 上で編集または削除できます。"
-  },
-  "f40a78a2a7aa4f18": {
-   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
-   "text": "<g1>50,000 人以上のユーザー</g1><g2>43 件の評価で 5 段階中 4.9</g2>"
-  },
-  "807205b219bcd9d5": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
-   "text": "<g1>そのメニュー</g1> (ボタンの横にある矢印、またはキーボードでボタンにフォーカスがある場合は<g2>↓</g2>) には、動画のタイトル、長さ、サイトが表示されます。<g3>最高画質をダウンロード</g3>が最初に表示され、次に<g4>動画</g4>と<g5>音声</g5>の下に画質ごとに番号付きの行が表示されます。各行にはファイルの種類、コーデック、フレームレートまたはビットレート、サイズ (<x6/> <x7/>、「動画をダウンロード」ウィンドウに表示されるとおり) が示され、最高画質にはマークが付けられています。どこでも再生できる画質には、その解像度の横に<g8>最も互換性のある形式 (H.264 + AAC)</g8>が表示されます (<g9>画質を選択</g9>)。<g10>すべての画質と字幕...</g10>を選択すると、<g11>ページからビデオをダウンロード</g11>ウィンドウが開きます。次に、<g12>この動画では非表示</g12> (<g13>Esc</g13>)、サイトで<g14>常に非表示</g14> (MDM がサイトを記憶します)、および MDM のオプションを開く<g15>ボタンの設定...</g15>が表示されます。矢印キーで移動し、<g16>Enter</g16>で選択、<g17>Esc</g17>で閉じます。"
-  },
-  "94d1eda28d7a14bb": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
-   "text": "<g1>ブラウザーの MDM ダウンロード パネルをカスタマイズ → 編集...</g1> — ウェブページの動画に表示されるダウンロード ボタン: オフにするか、<g2>ボタン サイズ</g2> (<g3>フル</g3>、収まる場合はその文字、または <g4>コンパクト</g4>、ロゴ、矢印、✕ のみ) を選択するか、表示しないサイトをリストします (スペースで区切ります。<x5/>、<x6/>、<x7/> などのワイルドカードが機能します)。<g8>ブラウザー統合</g8>を参照してください。"
-  },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>移動</g1>: 動画の端に沿ってドットをドラッグします。ドラッグ中は、端とスナップする場所 (角と中央) が表示されます。そのサイトではそこに留まります。"
-  },
-  "e2b2bd857e845dd3": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>オフにする、小さくする、または表示されないサイトを確認する</g1>: <g2>オプション → 一般 → ブラウザーの MDM ダウンロード パネルをカスタマイズ → 編集...</g2>。<g3>ボタン サイズ</g3> は、インストール時は <g4>フル</g4> (文字が収まる場所) または <g5>コンパクト</g5> (MDM のロゴ、矢印、および <g6>✕</g6> のみ、小さなビデオと同様にすべてのビデオに表示) です。クリック後も何が起こったかを言葉で表示します。すでに開いているページは、リロードなしで数秒以内に変更に追従します。"
-  },
-  "fb140a625b84ac20": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
-   "text": "不明な質問や操作には<x1/>が返されます。API がオフの場合の質問にも同様に応答します（その場合は<x2/>が返されます。プログラムで確認するための値です。エラーテキストは変更される可能性があります）。トークンが間違っている場合は<x3/>が返されます。"
-  },
-  "fdbec569d3b4740e": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "邪魔にならないように表示されます。ビデオにポインターを移動している間のみ表示され (またはプレーヤーがキーボードのフォーカスを持っている場合。<g1>Tab</g1> キーを押すとボタンに移動します)、ポインターが停止してから 1.5 秒後にフェードアウトし、ビデオから離れるとすぐにフェードアウトします。小さなビデオや短いミュートされたループ (アニメーション画像、背景) は表示されません。ページの独自のボタンを覆いません。ボタンの角の一部 (プレーヤーのフィードバックまたは設定ボタン、サムネイルの「後で見る」ボタンなど) の下にボタンがある場合、次の空いている角に移動し、プレーヤーがボタンを表示したり非表示にしたりする間、その位置を維持するため、操作しようとするときに動かずにそこに留まります。サムネイルにポインターを合わせると再生されるプレビュー (YouTube のホーム ページ、検索、チャンネル) の上では、ポインターがボタンに到達するとページはプレビューを停止します。ポインターがボタン上にある間、ボタンは元の位置に留まり、クリックするとそのプレビューのビデオがダウンロードされます。ビデオの再生または一時停止では戻りません。幅が 360 ピクセル未満のビデオ、または文字が収まらない場所では、ロゴ、矢印、<g2>✕</g2> のみになります。オプション (下記参照) で <g3>ボタンのサイズ</g3> が <g4>コンパクト</g4> に設定されている場合、すべてのビデオでその丸いボタンになります。全画面表示では、プレーヤーが許可すればビデオに追従し、全画面表示に入ると、ポインターを再度移動するまで邪魔にならないように表示されません。"
   }
  }
 }

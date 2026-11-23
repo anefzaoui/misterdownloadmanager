@@ -70,6 +70,10 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "การลงนามรหัสช่วยให้ Windows แสดงได้ว่าใครเป็นผู้เผยแพร่โปรแกรม และตรวจสอบว่าโปรแกรมไม่ถูกเปลี่ยนแปลงหลังจากสร้าง เมื่อมีการลงนามรุ่นของ Mister Download Manager (\"MDM\") ลายเซ็นจะครอบคลุมไฟล์ Windows ที่มาจากโครงการนี้:"
   },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> คำขอพูล"
+  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "ใช่ MDM จะบันทึกความคืบหน้าระหว่างดาวน์โหลด ดังนั้นเมื่อการเชื่อมต่อขาดหาย โปรแกรมขัดข้อง หรือรีสตาร์ท ก็จะดาวน์โหลดต่อจากจุดที่หยุดไว้ ก่อนดาวน์โหลดต่อ โปรแกรมจะตรวจสอบว่าไฟล์บนเซิร์ฟเวอร์ไม่มีการเปลี่ยนแปลง หากที่อยู่ดาวน์โหลดหมดอายุ <g1>รีเฟรชที่อยู่ดาวน์โหลด</g1> จะช่วยให้ระบุที่อยู่ใหม่และเก็บข้อมูลเดิมไว้ได้ ดู <g2>ดาวน์โหลดต่อจากจุดที่หยุด</g2>"
@@ -226,6 +230,10 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>วิธีใช้ → เกี่ยวกับ Mister Download Manager</g1> แสดงเวอร์ชันที่คุณมี"
   },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>คำขอพูล</g1><g2><x3/> คน</g2>"
+  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "ทุกอย่างที่ตัวจัดกำหนดการทำได้ →"
@@ -321,6 +329,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "ฟรีและโอเพนซอร์ส อินเทอร์เฟซที่คุณคุ้นเคย แต่มีเอนจินที่เร็วกว่าอยู่เบื้องหลัง พร้อมรองรับทอร์เรนต์และวิดีโอในตัว"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "แต่ละลิงก์จะเปิดหน้าต่าง <g1>ข้อมูลไฟล์ดาวน์โหลด</g1> ของตัวเอง ทำให้สามารถเปิดหลายหน้าต่างพร้อมกันเพื่อเปรียบเทียบขนาดก่อนเลือกได้ แต่ละหน้าต่างใหม่จะเปิดอยู่ด้านล่างและด้านข้างของหน้าต่างก่อนหน้า และจะขึ้นมาอยู่ด้านหน้า โดยตั้งแต่หน้าต่างที่สองเป็นต้นไป ชื่อหน้าต่างจะมีหมายเลขกำกับ เช่น <g2>ข้อมูลไฟล์ดาวน์โหลด (2)</g2>, <g3>(3)</g3> เป็นต้น <g4>Esc</g4> จะปิดเฉพาะหน้าต่างที่คุณกำลังใช้งานอยู่ สามารถเปิดได้สูงสุดหกหน้าต่างพร้อมกัน: หากมีลิงก์หลายลิงก์ถูกส่งมาพร้อมกัน (เช่น เบราว์เซอร์ส่งการดาวน์โหลดหลายรายการ) ลิงก์เหล่านั้นจะรอและเปิดทีละหน้าต่างเมื่อคุณปิดหน้าต่างที่มีอยู่ <g5>ยกเลิก</g5> จะถามว่าต้องการยกเลิกรายการที่ยังรออยู่หรือไม่ หากลิงก์เดิมถูกส่งมาอีกครั้ง หน้าต่างที่เปิดอยู่ของลิงก์นั้นจะขึ้นมาอยู่ด้านหน้า หากคุณปิด MDM โดยที่ยังมีหน้าต่างเปิดอยู่ การดาวน์โหลดเหล่านั้นจะถูกย้ายไปที่ <g6>คิวการดาวน์โหลดหลัก</g6> เช่นเดียวกับการเลือก <g7>ดาวน์โหลดภายหลัง</g7>"
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -2426,6 +2438,10 @@
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "บน macOS เฉพาะผู้ดูแลระบบเท่านั้นที่ตั้งเวลาปลุกได้ ตัวเลือกจึงเป็นสีเทา MDM จะไม่ขอรหัสผ่านผู้ดูแลระบบ ผู้ดูแลระบบสามารถตั้งให้ Mac ปลุกทุกวันก่อนคิวเริ่ม 1 นาที เช่น เวลา 22:59 น. สำหรับคิวที่เริ่มเวลา 23:00 น.:"
   },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "ทุกคนที่ส่ง pull request, เปิด issue หรือแสดงความคิดเห็นบน GitHub ตั้งแต่เวอร์ชัน <x1/>"
+  },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
    "text": "<g1>ย้ายจาก IDM</g1><g2>รายการ IDM ของคุณจะถูกย้ายมาในไฟล์เดียว แต่ละรายการดาวน์โหลดพร้อมที่อยู่, ตัวอ้างอิง และคุกกี้</g2>"
@@ -4197,6 +4213,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "คลิก <g1>ตกลง</g1>"
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>ปัญหา</g1><g2><x3/> คน</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -6114,6 +6134,10 @@
    "source": "A small file",
    "text": "ไฟล์ขนาดเล็ก"
   },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "ขอขอบคุณ"
+  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "วางที่อยู่ของเพลย์ลิสต์ (<x1/>) หรือหน้าวิดีโอของช่อง (<x2/>) แล้วคลิก <g3>ค้นหา</g3> แทนที่จะแสดงคุณภาพของวิดีโอรายการเดียว หน้าต่างจะแสดงวิดีโอทั้งหมดในเพลย์ลิสต์ พร้อมระยะเวลาของแต่ละวิดีโอ"
@@ -6245,6 +6269,10 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 และ Linux; macOS สำหรับทดลอง"
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "เป็นไปได้ด้วยความช่วยเหลือจากบุคคลที่น่าทึ่งเหล่านี้"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -8614,6 +8642,10 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "คุณต้องมีบัญชีแบบชำระเงินของตนเองกับบริการเหล่านี้: MDM ไม่ได้ขายหรือรวมบัญชีไว้ การแชร์บัญชีหรือลิงก์อาจละเมิดข้อกำหนดของบริการและอาจทำให้บัญชีถูกระงับได้"
   },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>ทุกคนที่ให้ความช่วยเหลือ</g2>"
+  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "คำถามและคำตอบ — Mister Download Manager"
@@ -10410,6 +10442,10 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>เร่งความเร็วและดาวน์โหลดต่อ</g1><g2>ไฟล์ถูกแบ่งออกเป็นสูงสุด 32 การเชื่อมต่อ และแบ่งใหม่จนถึงไบต์สุดท้าย สามารถดาวน์โหลดต่อได้หลังเกิดข้อผิดพลาดใดๆ</g2>"
   },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> ผู้ที่ส่ง pull request, รายงานปัญหา หรือเข้าร่วมการสนทนาบน GitHub <g2>พบกับพวกเขาทั้งหมด</g2>"
+  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "แถบชื่อเรื่องที่ MDM วาดเมื่อหน้าต่างไม่ทำงาน (โปร่งใส: เหมือนเมื่อทำงาน)"
@@ -11329,6 +11365,10 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "ส่งการดาวน์โหลดจากเบราว์เซอร์ของคุณ"
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> ความคิดเห็น"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -14838,6 +14878,10 @@
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "ตัวดึงลิงก์และไฟล์เก็บถาวร — วิธีใช้ Mister Download Manager"
   },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>ความคิดเห็น</g1><g2><x3/> คน</g2>"
+  },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
    "text": "ปุ่มก่อนหน้า / ถัดไป (รวมถึงปุ่มที่เป็นสีเทา: โปรแกรมอ่านหน้าจอจะบอกว่าไม่พร้อมใช้งาน)"
@@ -15429,6 +15473,10 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager และ IDM, เคียงข้างกัน"
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> ปัญหา"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16465,6 +16513,10 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "ไม่ ถ้าดาวน์โหลดจากเว็บไซต์นี้หรือ GitHub Releases โปรแกรมป้องกันไวรัสบางโปรแกรมจะตัดสินโปรแกรมที่ไม่รู้จักโดยการคาดเดา ไม่ใช่จากไวรัสที่รู้จัก…"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> คำขอพูล"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17734,6 +17786,10 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>หยุดการแชร์หลังจากแชร์เป็นเวลา … นาที</g1> — หรือหยุดเมื่อแชร์ครบเวลาที่กำหนด โดยนับรวมทุกครั้งที่ทำงาน ปิดไว้โดยค่าเริ่มต้น"
   },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> ความคิดเห็น"
+  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "ชื่ออื่น ๆ นอกเหนือจากที่อยู่ของมันที่หน้าอาจถูกเปิดโดย"
@@ -17837,6 +17893,10 @@
   "f9a4b5089b7bfcce": {
    "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6>/download.html</g6> is <g7>/download.md</g7>, <g8>/help/</g8> is <g9>/help/index.md</g9>, and the German home page <g10>/de/</g10> is <g11>/de/index.md</g11>. Each page names its own in its <x12/> (<x13/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
    "text": "<g1>ทุกหน้าในรูปแบบ Markdown</g1> แต่ละหน้ามีเวอร์ชัน Markdown อยู่ข้างๆ: ที่อยู่ที่มี <x2/> แทน <x3/> หรือ <x4/> สำหรับที่อยู่ที่ลงท้ายด้วย <x5/> ดังนั้น <g6>/download.html</g6> คือ <g7>/download.md</g7>, <g8>/help/</g8> คือ <g9>/help/index.md</g9> และหน้าแรกภาษาเยอรมัน <g10>/de/</g10> คือ <g11>/de/index.md</g11> แต่ละหน้าจะระบุชื่อของตัวเองใน <x12/> (<x13/>) Markdown ของหน้าช่วยเหลือคือแหล่งที่มา ส่วนหน้าอื่นๆ สร้างขึ้นจากหน้าเว็บในการสร้างแต่ละครั้ง ดังนั้นจึงไม่เคยแตกต่างจากหน้าเว็บ"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> ปัญหา"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18397,82 +18457,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "ที่อยู่ดาวน์โหลดหรือชื่อไฟล์ของคุณ;"
-  },
-  "048d941554aedc04": {
-   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
-   "text": "แต่ละลิงก์จะเปิดหน้าต่าง <g1>ข้อมูลไฟล์ดาวน์โหลด</g1> ของตัวเอง ทำให้สามารถเปิดหลายหน้าต่างพร้อมกันเพื่อเปรียบเทียบขนาดก่อนเลือกได้ แต่ละหน้าต่างใหม่จะเปิดอยู่ด้านล่างและด้านข้างของหน้าต่างก่อนหน้า และจะขึ้นมาอยู่ด้านหน้า โดยตั้งแต่หน้าต่างที่สองเป็นต้นไป ชื่อหน้าต่างจะมีหมายเลขกำกับ เช่น <g2>ข้อมูลไฟล์ดาวน์โหลด (2)</g2>, <g3>(3)</g3> เป็นต้น <g4>Esc</g4> จะปิดเฉพาะหน้าต่างที่คุณกำลังใช้งานอยู่ สามารถเปิดได้สูงสุดหกหน้าต่างพร้อมกัน: หากมีลิงก์หลายลิงก์ถูกส่งมาพร้อมกัน (เช่น เบราว์เซอร์ส่งการดาวน์โหลดหลายรายการ) ลิงก์เหล่านั้นจะรอและเปิดทีละหน้าต่างเมื่อคุณปิดหน้าต่างที่มีอยู่ <g5>ยกเลิก</g5> จะถามว่าต้องการยกเลิกรายการที่ยังรออยู่หรือไม่ หากลิงก์เดิมถูกส่งมาอีกครั้ง หน้าต่างที่เปิดอยู่ของลิงก์นั้นจะขึ้นมาอยู่ด้านหน้า หากคุณปิด MDM โดยที่ยังมีหน้าต่างเปิดอยู่ การดาวน์โหลดเหล่านั้นจะถูกย้ายไปที่ <g6>คิวการดาวน์โหลดหลัก</g6> เช่นเดียวกับการเลือก <g7>ดาวน์โหลดภายหลัง</g7>"
-  },
-  "7297ca101de5145e": {
-   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
-   "text": "ไม่สามารถอ่านรายการจาก GitHub ได้เมื่อสร้างหน้านี้ ทุกคนอยู่ใน GitHub ใน <g1>คำขอดึง</g1> และ <g2>ปัญหา</g2> ของโปรเจกต์"
-  },
-  "49b4a645676f1c52": {
-   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
-   "text": "สรุป: แอป Mister Download Manager และส่วนขยายเบราว์เซอร์ไม่เก็บข้อมูลเกี่ยวกับคุณ ไม่มีบัญชี ไม่มีการวิเคราะห์ ไม่มี telemetry และไม่มีโฆษณา เว็บไซต์นี้นับจำนวนผู้เข้าชมด้วย Statcounter"
-  },
-  "616c286a43aec83e": {
-   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
-   "text": "<g1>ผู้ใช้รายวัน 3,800+ ราย</g1><g2>4.7 จาก 5 คะแนน จาก 7 รีวิว</g2>"
-  },
-  "84829118b707c58c": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com เป็นเว็บไซต์แบบคงที่ มีสามบริษัทที่เกี่ยวข้องกับการแสดงเว็บไซต์นี้ให้คุณเห็น และบริษัทที่สี่หากคุณเล่นวิดีโอในหน้าแรก:"
-  },
-  "8ccaf02f36376582": {
-   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
-   "text": "<g1>ตัวเลข</g1><g2>ตรวจสอบเมื่อ <x3/> ปัดเศษลง</g2>"
-  },
-  "9fe595ed623618bf": {
-   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>หลักฐานการส่งมอบ</g1><g2>ตัวเลขตรวจสอบแล้วบน <x3/> · คำพูดถูกต้อง เชื่อมโยงไปยังแหล่งที่มา</g2>"
-  },
-  "b3192a3bf72c5c3b": {
-   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
-   "text": "แอปและส่วนขยายไม่เก็บข้อมูลส่วนบุคคลจากใคร รวมถึงเด็กด้วย ตัวนับการเข้าชมของเว็บไซต์ไม่ทราบว่าคุณเป็นใครหรืออายุเท่าไหร่"
-  },
-  "c9da130585eae7fa": {
-   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
-   "text": "เว็บไซต์ไม่มีโฆษณาหรือตัวติดตามอื่น ๆ ฟอนต์และสคริปต์มาจากเว็บไซต์โดยตรง การเลือกโหมดสว่างหรือมืดจะถูกจดจำไว้ในพื้นที่จัดเก็บภายในของเบราว์เซอร์ และไม่ส่งไปที่ใด"
-  },
-  "cb565e5b28b1036b": {
-   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
-   "text": "<g1><x2/> เพิ่มใน Firefox</g1><g3><x4/> เพิ่มใน Chrome</g3>"
-  },
-  "d325a1b1c8ab0caa": {
-   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
-   "text": "วิธีที่ Mister Download Manager ส่วนขยายเบราว์เซอร์ และเว็บไซต์นี้จัดการข้อมูลของคุณ: แอปและส่วนขยายไม่เก็บข้อมูลใด ๆ เว็บไซต์นับจำนวนการเข้าชมด้วย Statcounter"
-  },
-  "d7a59305d1341d4e": {
-   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
-   "text": "แอปและส่วนขยายไม่มีข้อมูลส่วนบุคคลเกี่ยวกับคุณ เราจึงไม่มีข้อมูลให้แสดง แก้ไข หรือลบ สถิติการเข้าชมเว็บไซต์เก็บไว้โดย Statcounter หากต้องการลบบันทึกการเข้าชม ให้เปิด issue พร้อมระบุวันที่และเวลาที่เข้าชม หรือสอบถาม Statcounter โดยตรง ข้อมูลที่คุณส่งไปยัง GitHub (เช่น issue) อยู่ภายใต้การจัดการของ GitHub และแก้ไขหรือลบได้ที่นั่น"
-  },
-  "f40a78a2a7aa4f18": {
-   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
-   "text": "<g1>ผู้ใช้ 50,000+ ราย</g1><g2>4.9 จาก 5 คะแนน จาก 43 รีวิว</g2>"
-  },
-  "807205b219bcd9d5": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
-   "text": "<g1>เมนู</g1> (ลูกศรข้างปุ่ม หรือ <g2>↓</g2> เมื่อปุ่มถูกเลือกด้วยแป้นพิมพ์): ชื่อวิดีโอ ความยาว และเว็บไซต์; <g3>ดาวน์โหลดคุณภาพดีที่สุด</g3> เป็นอันดับแรก จากนั้นเป็นรายการคุณภาพแต่ละรายการภายใต้ <g4>วิดีโอ</g4> และ <g5>เสียง</g5> พร้อมประเภทไฟล์, ตัวแปลงสัญญาณ, อัตราเฟรมหรือบิตเรต และขนาด (<x6/> <x7/> ตามที่ระบุในหน้าต่างดาวน์โหลดวิดีโอ) โดยมีรายการที่ดีที่สุดถูกทำเครื่องหมายไว้ และ <g8>เข้ากันได้มากที่สุด (H.264 + AAC)</g8> อยู่ข้างความละเอียดของรายการที่เล่นได้ทุกที่ (<g9>เลือกคุณภาพ</g9>); <g10>ทุกคุณภาพและคำบรรยาย...</g10> ซึ่งจะเปิดหน้าต่าง <g11>ดาวน์โหลดวิดีโอจากหน้า</g11>; จากนั้น <g12>ซ่อนวิดีโอนี้</g12> (<g13>Esc</g13>), <g14>ไม่แสดงบน</g14> เว็บไซต์นี้ (MDM จะจดจำเว็บไซต์) และ <g15>การตั้งค่าปุ่ม...</g15> ซึ่งจะเปิดตัวเลือกของ MDM ใช้ปุ่มลูกศรเพื่อเลื่อนดู, <g16>Enter</g16> เพื่อเลือก, <g17>Esc</g17> เพื่อปิด"
-  },
-  "94d1eda28d7a14bb": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
-   "text": "<g1>กำหนดค่าแผงดาวน์โหลด MDM ในเบราว์เซอร์ → แก้ไข...</g1> — ปุ่มดาวน์โหลดที่อยู่เหนือวิดีโอบนหน้าเว็บ: ปิด, เลือก <g2>ขนาดปุ่ม</g2> (<g3>เต็ม</g3>, มีข้อความเมื่อพอดี, หรือ <g4>กะทัดรัด</g4>, มีเพียงโลโก้, ลูกศร และ ✕ บนทุกวิดีโอ), หรือระบุเว็บไซต์ที่จะไม่แสดง (คั่นด้วยช่องว่าง; ใช้สัญลักษณ์แทนได้ เช่น <x5/>, <x6/> หรือ <x7/>) ดู <g8>การผนวกรวมกับเบราว์เซอร์</g8>"
-  },
-  "bf65e2eb8f9aed86": {
-   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
-   "text": "<g1>ย้าย</g1>: ลากโดยใช้จุดตามขอบวิดีโอ; ขณะที่คุณลาก ขอบและจุดที่ปุ่มจะยึดติด (มุมและตรงกลาง) จะแสดง ปุ่มจะอยู่ที่นั่นบนไซต์นั้น"
-  },
-  "e2b2bd857e845dd3": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>ปิด, ทำให้เล็กลง หรือดูเว็บไซต์ที่ปุ่มนี้ไม่แสดง</g1>: <g2>ตัวเลือก → ทั่วไป → กำหนดค่าแผงดาวน์โหลด MDM ในเบราว์เซอร์ → แก้ไข...</g2> <g3>ขนาดปุ่ม</g3> จะเป็น <g4>เต็ม</g4> ตามที่ติดตั้ง (มีข้อความเมื่อพอดี) หรือ <g5>กะทัดรัด</g5> (มีเพียงโลโก้ MDM, ลูกศร และ <g6>✕</g6> บนวิดีโอทุกรายการ เหมือนกับบนวิดีโอขนาดเล็ก) หลังจากคลิก ปุ่มจะยังคงแสดงสิ่งที่เกิดขึ้นเป็นข้อความ หน้าเว็บที่เปิดอยู่แล้วจะปรับตามการเปลี่ยนแปลงภายในไม่กี่วินาที โดยไม่ต้องโหลดซ้ำ"
-  },
-  "fb140a625b84ac20": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
-   "text": "คำถามหรือการกระทำที่ไม่รู้จักจะถูกตอบกลับ <x1/> เช่นเดียวกับคำถามในขณะที่ API ปิดอยู่ (จากนั้นด้วย <x2/> สำหรับโปรแกรมที่จะตรวจสอบ: ข้อความข้อผิดพลาดอาจเปลี่ยนแปลงได้) โทเค็นที่ไม่ถูกต้องจะถูกตอบกลับ <x3/>"
-  },
-  "fdbec569d3b4740e": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "ปุ่มจะอยู่ห่างจากทาง: จะแสดงเฉพาะเมื่อคุณเลื่อนตัวชี้ไปเหนือวิดีโอ (หรือเครื่องเล่นมีโฟกัสของแป้นพิมพ์; <g1>Tab</g1> จากนั้นจะเลื่อนไปที่ปุ่ม) จะจางหายไป 1.5 วินาทีหลังจากตัวชี้หยุด และทันทีเมื่อออกจากวิดีโอ และจะไม่อยู่ในวิดีโอขนาดเล็กและลูปสั้นๆ ที่ปิดเสียง (ภาพเคลื่อนไหว, พื้นหลัง) จะไม่ทับปุ่มของหน้าเว็บเอง: เมื่อมีปุ่มอยู่ใต้ส่วนใดส่วนหนึ่งของมุม (ปุ่มข้อเสนอแนะหรือการตั้งค่าของเครื่องเล่น, ปุ่มดูภายหลังของภาพขนาดย่อ) ปุ่มจะไปที่มุมว่างถัดไปและคงอยู่ตรงนั้นขณะที่เครื่องเล่นแสดงและซ่อนปุ่ม เพื่อให้ปุ่มอยู่กับที่เมื่อคุณต้องการใช้งาน เหนือภาพตัวอย่างที่เล่นขณะที่ตัวชี้อยู่บนภาพขนาดย่อ (หน้าแรกของ YouTube, การค้นหา, ช่อง) หน้าเว็บจะหยุดภาพตัวอย่างเมื่อตัวชี้ไปถึงปุ่ม; ปุ่มจะยังคงอยู่ที่เดิมขณะที่ตัวชี้อยู่บนนั้น และการคลิกจะดาวน์โหลดวิดีโอตัวอย่างนั้น การเล่นหรือหยุดวิดีโอชั่วคราวจะไม่ทำให้ปุ่มกลับมา ในวิดีโอที่มีความกว้างน้อยกว่า 360 พิกเซล หรือที่คำพูดไม่พอดี จะมีเพียงโลโก้ ลูกศร และ <g2>✕</g2>; เมื่อตั้งค่า <g3>ขนาดปุ่ม</g3> เป็น <g4>กะทัดรัด</g4> ในตัวเลือก (ด้านล่าง) จะเป็นปุ่มกลมนั้นบนวิดีโอทุกรายการ ในโหมดเต็มหน้าจอ ปุ่มจะตามวิดีโอเมื่อเครื่องเล่นอนุญาต และการเข้าสู่โหมดเต็มหน้าจอจะทำให้ปุ่มอยู่ห่างจากทางจนกว่าคุณจะเลื่อนตัวชี้อีกครั้ง"
   }
  }
 }
