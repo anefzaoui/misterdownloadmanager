@@ -2172,9 +2172,12 @@ def markdown_twins() -> int:
         if not target.is_file():
             target.write_text(pagemd.to_markdown(text, SITE + path), "utf-8", newline="\n")
             made += 1
-        if 'type="text/markdown"' not in text and "</head>" in text:
-            link = f'  <link rel="alternate" type="text/markdown" href="{twin}">\n'
-            page.write_text(text.replace("</head>", link + "</head>", 1), "utf-8", newline="\n")
+        # The page's own twin, in its own language (a translated help page came with the English one).
+        new = re.sub(r'(<link rel="alternate" type="text/markdown" href=")[^"]*(">)', rf"\g<1>{twin}\g<2>", text, count=1)
+        if 'type="text/markdown"' not in new and "</head>" in new:
+            new = new.replace("</head>", f'  <link rel="alternate" type="text/markdown" href="{twin}">\n</head>', 1)
+        if new != text:
+            page.write_text(new, "utf-8", newline="\n")
     return made
 
 
