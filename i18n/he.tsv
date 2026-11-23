@@ -7,6 +7,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	מחק גם מהדיסק את {n} הקבצים|מחק גם מהדיסק את {n} הקבצים|מחק גם מהדיסק את {n} הקבצים
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	ועוד {n} אחד|ועוד {n} נוספים|ועוד {n} נוספים
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -6475,6 +6480,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	לא ניתן היה לקרוא את {file} כדי לבדוק אותו
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	לא ניתן היה להחליף את {file}: ייתכן שתוכנית אחרת פתחה אותו. ההורדה החדשה נשמרה לידו בתור {new}, ושני הקבצים נשמרו.
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} כבר לא נמצא במקום שבו נשמר (הועבר או נמחק). האפשרות ״הורד מחדש״ בתפריט לחיצה ימנית מורידה אותו שוב.

@@ -573,6 +573,10 @@ These ship in the next version.
   step from the one before and comes to the front, its title numbered from the second on; up to
   six, more links waiting their turn
   ([#1741](https://github.com/anefzaoui/misterdownloadmanager/issues/1741))
+- ✅ Redownload replaces the finished file under its name once the new copy is complete, as its
+  question says, instead of saving `name (1)` beside it; one that fails or is stopped keeps the
+  file, and one whose file another program holds keeps both and says so
+  ([#1698](https://github.com/anefzaoui/misterdownloadmanager/issues/1698))
 - ✅ Tests: the check of a video part's progress no longer fails now and then on a fast machine
   (seen on macOS): the test tool held nothing back, so the whole part could come in between two
   looks at the progress; it now waits half-way until the test has seen the progress, and the
