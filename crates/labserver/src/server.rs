@@ -790,6 +790,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    connection alone takes all of it, n connections a share each
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
+    garble=SIZE    /files only: the first answer for a path that carries the byte at that
+                   offset sends 64 bytes from there inverted (a proxy that mangled a range);
+                   later answers send them right
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
     require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
     refuse_agent=TEXT                403 when the User-Agent contains TEXT
@@ -816,7 +819,8 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     the file, only for a POST whose form (urlencoded, multipart or text/plain) has FIELD=VALUE
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
-GET /files/{name}   a real file from --files DIR (Range too; 404 without --files)
+GET /files/{name}[?garble=SIZE]   a real file from --files DIR (Range too, its date as
+                    Last-Modified and If-Range; 404 without --files)
 GET /gh/api/*       a fake GitHub API, always refusing: 403, x-ratelimit-remaining: 0 (#1337)
 GET /gh/web/OWNER/REPO/releases/latest   302 to .../releases/tag/TAG (TAG: --files DIR/gh/OWNER/REPO/LATEST)
 GET /gh/web/OWNER/REPO/releases/download/TAG/FILE   302 to /gh/assets/OWNER/REPO/TAG/FILE (--files
@@ -1214,11 +1218,16 @@ async fn files(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     method: Method,
     Path(name): Path<String>,
+    RawQuery(query): RawQuery,
     headers: HeaderMap,
 ) -> Response {
     let path = shared.file_path(&name);
     let logged = format!("/files/{name}");
-    serve_file(&shared, peer, &method, &headers, logged, path, false).await
+    // Its own faults: `garble` only (#1661). Dated as a file server dates its files: a resume
+    // asks with `If-Range`, and a file changed since is sent whole.
+    let asked = Faults::parse(query.as_deref().unwrap_or("")).unwrap_or_default();
+    let garble = shared.faults().overridden_by(&asked).garble;
+    serve_file(&shared, peer, &method, &headers, logged, path, true, garble).await
 }
 
 impl Shared {
@@ -1233,7 +1242,12 @@ impl Shared {
 }
 
 /// The file at `path` (None: 404), whole or one range of it, logged as `logged`; with
-/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it).
+/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it),
+/// and a range asked with an `If-Range` that isn't that date answered with the whole file (RFC
+/// 9110 §13.1.5: the file changed since).
+/// `garble` (`Faults::garble`): the first answer that carries that byte sends
+/// [`crate::faults::GARBLED`] bytes from there inverted.
+#[allow(clippy::too_many_arguments)]
 pub(crate) async fn serve_file(
     shared: &Shared,
     peer: SocketAddr,
@@ -1242,7 +1256,9 @@ pub(crate) async fn serve_file(
     logged: String,
     path: Option<std::path::PathBuf>,
     last_modified: bool,
+    garble: Option<u64>,
 ) -> Response {
+    let garbled = format!("garble:{logged}");
     let entry = shared.begin(peer, method, logged, None, headers, &[]);
     let data = match &path {
         Some(path) => tokio::fs::read(path).await.ok(),
@@ -1261,9 +1277,13 @@ pub(crate) async fn serve_file(
         _ => None,
     };
     let size = data.len() as u64;
+    let changed = modified
+        .as_ref()
+        .is_some_and(|m| entry.if_range.as_ref().is_some_and(|i| i != m));
     let range = entry
         .range
         .as_deref()
+        .filter(|_| !changed)
         .and_then(|r| http_range_header::parse_range_header(r).ok())
         .and_then(|r| r.validate(size).ok())
         .filter(|v| v.len() == 1)
@@ -1290,9 +1310,23 @@ pub(crate) async fn serve_file(
     if *method == Method::HEAD {
         return builder.body(Body::empty()).unwrap();
     }
-    builder
-        .body(Body::from(data[start as usize..end as usize].to_vec()))
-        .unwrap()
+    let mut body = data[start as usize..end as usize].to_vec();
+    if let Some(at) = garble.filter(|at| (start..end).contains(at)) {
+        let key = format!("{garbled}@{at}");
+        let first = {
+            let mut served = shared.link_uses.lock().unwrap();
+            let n = served.entry(key).or_insert(0);
+            *n += 1;
+            *n == 1
+        };
+        if first {
+            let to = (at + crate::faults::GARBLED).min(end);
+            for b in &mut body[(at - start) as usize..(to - start) as usize] {
+                *b = !*b;
+            }
+        }
+    }
+    builder.body(Body::from(body)).unwrap()
 }
 
 /// `POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>`: the file, only for a

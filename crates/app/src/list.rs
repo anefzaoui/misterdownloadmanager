@@ -96,13 +96,14 @@ pub fn status_width(code: &str, full: &str, measure: impl Fn(&str) -> f32) -> f3
 
 /// What the Status cell says at its widest while a file is checked or a video joined, in
 /// language `code` (`crate::model::checking` and `merging`): the word with 100 % (as `full`, and
-/// as English writes it) and with "..." before MDM knows how far.
+/// as English writes it) and with "..." before MDM knows how far; and "Damaged", an archive its
+/// test found damaged (#1661).
 pub fn finishing_texts(code: &str, full: &str) -> Vec<String> {
     let i18n = crate::i18n::i18n();
     let Some(lang) = i18n.from_code(code) else {
         return Vec::new();
     };
-    let mut texts = Vec::new();
+    let mut texts = vec![i18n.t(lang, "Damaged").to_owned()];
     for template in ["Checking {percent}", "Merging {percent}"] {
         for percent in [full, "100%", "..."] {
             texts.push(crate::i18n::fmt(

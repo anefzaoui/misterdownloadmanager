@@ -3338,3 +3338,185 @@ async fn a_name_only_the_redirected_answer_gives_is_the_files() {
         assert_eq!(out.size, 64 << 10);
     }
 }
+
+/// A file served from `--files` through `garble` (#1661): downloaded with `keep_state`, its
+/// last resume state handed back, and the download's server.
+async fn garbled_download(
+    data: &[u8],
+    garble: u64,
+) -> (
+    LabServer,
+    tempfile::TempDir,
+    tempfile::TempDir,
+    std::path::PathBuf,
+    std::sync::Arc<mdm_engine::state::ResumeState>,
+) {
+    let served = tempfile::tempdir().unwrap();
+    let file = served.path().join("a.zip");
+    std::fs::write(&file, data).unwrap();
+    // Dated an hour ago: a date within a second of the answer's isn't a validator (RFC 9110
+    // §8.8.2.2), and the download would have none to ask `If-Range` with.
+    let hour_ago = std::time::SystemTime::now() - std::time::Duration::from_secs(3600);
+    std::fs::File::options()
+        .write(true)
+        .open(&file)
+        .unwrap()
+        .set_modified(hour_ago)
+        .unwrap();
+    let s = LabServer::start(Config {
+        files: Some(served.path().to_owned()),
+        ..Config::default()
+    })
+    .await
+    .unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s
+            .url(&format!("/files/a.zip?garble={garble}"))
+            .parse()
+            .unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let opts = Options {
+        keep_state: true,
+        ..fast_opts()
+    };
+    let dl = Download::start(req, opts);
+    let until = std::time::Instant::now() + SETTLE;
+    let kept = loop {
+        let v = dl.snapshot();
+        if v.state == mdm_engine::download::State::Done {
+            break v.kept.expect("its last state, handed back");
+        }
+        assert!(
+            v.state != mdm_engine::download::State::Failed,
+            "{:?}",
+            v.error
+        );
+        assert!(std::time::Instant::now() < until, "no end: {:?}", v.state);
+        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    };
+    let path = dl.wait().await.unwrap().path;
+    assert_eq!(kept.dest, path);
+    assert!(
+        !mdm_engine::state::state_path(&path).exists(),
+        "its state file still goes"
+    );
+    (s, served, dir, path, kept)
+}
+
+/// #1661: an archive test found damage in a finished file: the file is a part file again with
+/// only that range missing, and resuming it fetches only that range (and the overlap check's
+/// bytes before it), from the same server and the same version (`If-Range` with the date it was
+/// downloaded under); the file comes out whole.
+#[tokio::test]
+async fn a_finished_files_damaged_range_comes_again() {
+    let mut data = vec![0; 2 << 20];
+    content::fill(21, 0, &mut data);
+    let at = 1_000_000;
+    let (s, _served, _dir, path, kept) = garbled_download(&data, at).await;
+    let got = std::fs::read(&path).unwrap();
+    let differ: Vec<usize> = (0..data.len()).filter(|&i| got[i] != data[i]).collect();
+    assert_eq!(
+        differ,
+        (1_000_000..1_000_064).collect::<Vec<_>>(),
+        "garbled"
+    );
+    let bad = (at - 1000, at + 1000);
+    let modified = std::fs::metadata(&path).unwrap().modified().ok();
+    let missing = mdm_engine::repair::reopen(&kept, &[bad], modified).unwrap();
+    assert_eq!(missing, 2000);
+    let state = mdm_engine::state::state_path(&path);
+    tokio::time::timeout(SETTLE, s.settled()).await.unwrap();
+    s.clear_log();
+    let out = Download::resume(state.clone(), Default::default(), fast_opts())
+        .unwrap()
+        .wait()
+        .await
+        .unwrap();
+    assert_eq!(out.path, path);
+    assert!(std::fs::read(&path).unwrap() == data, "whole again");
+    assert!(!state.exists());
+    tokio::time::timeout(SETTLE, s.settled()).await.unwrap();
+    // Only the damaged range, from the overlap check's bytes before it, each under the date the
+    // file was downloaded under.
+    let overlap = mdm_engine::repair::OVERLAP;
+    let log = s.log();
+    assert!(!log.is_empty());
+    let date = kept.validators.last_modified.clone();
+    assert!(date.is_some(), "the server dates its files");
+    for e in &log {
+        assert_eq!(e.if_range, date, "{:?}", e.range);
+        let range = e.range.as_deref().expect("a range, never the whole file");
+        let (from, to) = range.trim_start_matches("bytes=").split_once('-').unwrap();
+        let from: u64 = from.parse().unwrap();
+        assert!(from >= bad.0 - overlap, "{range}");
+        if let Ok(to) = to.parse::<u64>() {
+            assert!(to < bad.1, "{range}");
+        }
+    }
+}
+
+/// #1661: the server's file changed since (another of the same size, dated later): its
+/// `If-Range` no longer holds, the server sends the whole other file, and the resume fails, the
+/// file on disk left as it was: never a file made of two versions. Without the date (a server
+/// that sends none), the overlap check's bytes before the damaged range catch it the same way.
+#[tokio::test]
+async fn a_damaged_range_is_never_taken_from_another_version() {
+    for dated in [true, false] {
+        changed_on_the_server(dated).await;
+    }
+}
+
+async fn changed_on_the_server(dated: bool) {
+    let mut data = vec![0; 2 << 20];
+    content::fill(22, 0, &mut data);
+    let at = 1_500_000;
+    let (s, served, _dir, path, kept) = garbled_download(&data, at).await;
+    let got = std::fs::read(&path).unwrap();
+    let mut kept = (*kept).clone();
+    if !dated {
+        kept.validators = Default::default();
+    }
+    mdm_engine::repair::reopen(&kept, &[(at, at + 64)], None).unwrap();
+    let mut other = vec![0; 2 << 20];
+    content::fill(23, 0, &mut other);
+    let file = served.path().join("a.zip");
+    std::fs::write(&file, &other).unwrap();
+    // A day later: HTTP dates are to the second.
+    let later = std::time::SystemTime::now() + std::time::Duration::from_secs(86_400);
+    std::fs::File::options()
+        .write(true)
+        .open(&file)
+        .unwrap()
+        .set_modified(later)
+        .unwrap();
+    tokio::time::timeout(SETTLE, s.settled()).await.unwrap();
+    s.clear_log();
+    let state = mdm_engine::state::state_path(&path);
+    let r = Download::resume(state.clone(), Default::default(), fast_opts())
+        .unwrap()
+        .wait()
+        .await;
+    assert!(
+        matches!(r, Err(mdm_engine::Error::FileChanged)),
+        "{:?}",
+        r.map(|o| o.path)
+    );
+    let part = mdm_engine::naming::part_path(&path);
+    assert!(
+        std::fs::read(&part).unwrap() == got,
+        "nothing of the other file in it"
+    );
+    assert!(state.exists(), "kept, as any stopped download's");
+    tokio::time::timeout(SETTLE, s.settled()).await.unwrap();
+    if dated {
+        // The server said so: the whole other file, not the range.
+        assert!(
+            s.log()
+                .iter()
+                .any(|e| e.if_range.is_some() && e.status == 200)
+        );
+    }
+}

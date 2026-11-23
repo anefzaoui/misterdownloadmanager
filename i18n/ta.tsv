@@ -54,6 +54,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	இப்போது {n} கட்டுரையுடன் பொருந்துகிறது (புதியவற்றை மட்டுமே சேர்க்கிறது):|இப்போது {n} கட்டுரைகளுடன் பொருந்துகிறது (புதியவற்றை மட்டுமே சேர்க்கிறது):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	காப்பகச் சோதனையில் {n} சேதமடைந்த கோப்பு கண்டறியப்பட்டது: {files}|காப்பகச் சோதனையில் {n} சேதமடைந்த கோப்புகள் கண்டறியப்பட்டன: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -232,6 +237,11 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-மணிநேரம் (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	7-ஜிப் அதைச் சோதிக்க முடியவில்லை ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
@@ -327,6 +337,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	அதில் ஒரு தொகுதி காணவில்லை
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	அதன் ஒரு தொகுதி இன்னும் இல்லை
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager பற்றி
@@ -1119,7 +1133,7 @@
 #. text in the Options window
 #, machine
 	Clock:	கடிகாரம்:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1269,6 +1283,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	புதிய {name} ஐத் தேட முடியவில்லை: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	{name} ஐச் சோதிக்க முடியவில்லை: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1316,6 +1335,18 @@
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	தினசரி
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	சேதமடைந்தது
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	சேதமடைந்த காப்பகம்
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	சேதமடைந்தது: அதன் காப்பகச் சோதனையில் பிழைகள் கண்டறியப்பட்டன. வலது கிளிக் → மீண்டும் பதிவிறக்கு என்பதைத் தட்டவும்
 #. text in the Options window
 #, machine
 	Date order:	தேதி வரிசை:
@@ -1611,6 +1642,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	MDM இன் நகலைப் பதிவிறக்குகிறது...
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	சேதமடைந்த பகுதிகளை மீண்டும் பதிவிறக்குகிறது ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -3527,6 +3563,15 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	இந்தச் சேவையால் ஆதரிக்கப்படவில்லை
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	இன்னும் சோதிக்கப்படவில்லை: {name} முழுமையடையவில்லை ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	சோதிக்கப்படவில்லை: இது {limit} ஐ விட பெரியது (விருப்பங்கள் → காப்பகங்கள்). வலது கிளிக் → காப்பகத்தைச் சோதி என்பதைத் தட்டவும்
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	பயன்படுத்தப்படவில்லை: கோப்பு பாகங்கள் கோப்புக்கு அடுத்ததாக எழுதப்படுகின்றன
@@ -4057,10 +4102,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	பதிவுசெய்கிறது...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
 	Redownload	மீண்டும் பதிவிறக்கு
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	மீண்டும் பதிவிறக்கு என்பது ஒவ்வொரு தொகுதியையும் மீண்டும் தொடக்கத்திலிருந்து பதிவிறக்கும்.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	மீண்டும் பதிவிறக்கு என்பது அதை மீண்டும் தொடக்கத்திலிருந்து பதிவிறக்கும்.
 #. text in a download's Properties window
 #, machine
 	Referer:	பரிந்துரையாளர்:
@@ -4624,6 +4677,10 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	சில
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	அதன் சில தொகுதிகள் இன்னும் பதிவிறக்கப்படுகின்றன
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	டொரண்டின் சில கோப்புகள் ஏற்கனவே இந்தக் கோப்புறையில் உள்ளன:
@@ -4927,6 +4984,13 @@
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
 	Test	சோதனை
+#. message or event log entry in the main window
+#, machine
+	Test archive	காப்பகத்தைச் சோதி
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	பதிவிறக்கம் முடிந்ததும் காப்பகங்களைச் சோதிக்கவும், {gb} ஜிபி வரை
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -4935,6 +4999,19 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Test browser integration...	உலாவி ஒருங்கிணைப்பைச் சோதிக்கவும்...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	மீண்டும் சோதிக்கப்பட்டது: காப்பகத்தில் இப்போது பிழைகள் இல்லை
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	காப்பகத்தைச் சோதிக்கிறது...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	காப்பகத்தைச் சோதிக்கிறது... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4968,6 +5045,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Trash: it was kept	காப்பகத்தை குப்பைக்கு நகர்த்த முடியவில்லை: அது வைக்கப்பட்டது
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	காப்பகச் சோதனை தோல்வியடைந்தது: அது சேதமடைந்துள்ளது, அல்லது அதன் பெயர் குறிப்பிடும் காப்பகம் அல்ல
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	காப்பகச் சோதனையில் பிழைகள் எதுவும் கண்டறியப்படவில்லை
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -5055,6 +5140,11 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	தரவைப் பெறும்போது இணைப்பு துண்டிக்கப்பட்டது
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	சேதமடைந்த பகுதிகளை மீண்டும் பதிவிறக்க முடியவில்லை: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -6093,6 +6183,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	வைரஸ் சரிபார்ப்பு அமைப்புகள்
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	{n} தொகுதி இன்னும் இல்லை
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -6549,6 +6644,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} ஏற்கனவே பதிவிறக்கப்படுகிறது: சிறிது நேரத்தில் மீண்டும் முயற்சிக்கவும்
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} சேதமடைந்துள்ளது: அதன் சோதனையில் பிழைகள் கண்டறியப்பட்டன.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} சேதமடைந்துள்ளது: அதன் தொகுதிகளில் ஒன்றில் பிழைகள் கண்டறியப்பட்டன.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -8270,6 +8375,10 @@ menu	Te&xt	உரை(&X)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Tell a &friend	ஒரு &நண்பருக்குத் தெரிவி
+#. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	காப்பகத்தைச் சரிபார்க்கவும்
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine

@@ -54,6 +54,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	현재 {n}개 항목과 일치합니다(새 항목만 추가됨):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	보관 파일 테스트에서 손상된 파일 {n}개를 찾았습니다: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -232,6 +237,11 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24시간제 (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	7-Zip에서 테스트할 수 없습니다({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
@@ -327,6 +337,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	볼륨이 없습니다.
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	볼륨이 아직 없습니다.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager 정보
@@ -1119,7 +1133,7 @@
 #. text in the Options window
 #, machine
 	Clock:	시계:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1269,6 +1283,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	최신 {name}을(를) 찾을 수 없음: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	{name}을(를) 테스트할 수 없습니다: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1316,6 +1335,18 @@
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	매일
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	손상됨
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	손상된 압축 파일
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	손상됨: 보관 파일 테스트에서 오류를 찾았습니다. 마우스 오른쪽 단추 클릭 → 다시 다운로드하여 다시 다운로드합니다.
 #. text in the Options window
 #, machine
 	Date order:	날짜 순서:
@@ -1611,6 +1642,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	MDM 자체 복사본 다운로드 중...
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	손상된 부분 다시 다운로드 중({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -3531,6 +3567,15 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	이 서비스에서 지원하지 않음
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	아직 테스트되지 않음: {name}이(가) 완전하지 않습니다({why}).
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	테스트하지 않음: {limit}보다 큽니다(옵션 → 보관 파일). 마우스 오른쪽 단추 클릭 → 보관 파일 테스트를 클릭하여 테스트합니다.
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	사용 안 함: 파일 부분이 파일 옆에 기록됩니다.
@@ -4061,10 +4106,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	녹화 중...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
 	Redownload	다시 다운로드
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	다시 다운로드를 클릭하면 모든 볼륨을 처음부터 다시 다운로드합니다.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	다시 다운로드를 클릭하면 처음부터 다시 다운로드합니다.
 #. text in a download's Properties window
 #, machine
 	Referer:	리퍼러:
@@ -4628,6 +4681,10 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	일부
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	일부 볼륨이 아직 다운로드 중입니다.
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	일부 토렌트 파일이 이미 이 폴더에 있습니다:
@@ -4931,6 +4988,13 @@
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
 	Test	테스트
+#. message or event log entry in the main window
+#, machine
+	Test archive	압축 파일 테스트
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	다운로드 완료 시 압축 파일 테스트, 최대 {gb}GB
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -4939,6 +5003,19 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Test browser integration...	브라우저 통합 테스트...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	다시 테스트됨: 보관 파일에 오류가 없습니다.
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	압축 파일 테스트 중...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	압축 파일 테스트 중... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4972,6 +5049,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Trash: it was kept	압축 파일을 휴지통으로 이동할 수 없습니다. 압축 파일이 보관되었습니다.
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	보관 파일 테스트 실패: 손상되었거나 이름과 일치하지 않는 보관 파일입니다.
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	압축 파일 테스트에서 오류를 찾지 못했습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -5059,6 +5144,11 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	데이터 수신 중 연결이 끊김
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	손상된 부분을 다시 다운로드할 수 없습니다: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -6097,6 +6187,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	바이러스 검사 설정
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	볼륨 {n}이(가) 아직 없습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -6553,6 +6648,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name}이(가) 이미 다운로드 중입니다. 잠시 후에 다시 시도하세요.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name}이(가) 손상되었습니다: 테스트에서 오류를 찾았습니다.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name}이(가) 손상되었습니다: 테스트에서 볼륨 중 하나에서 오류를 찾았습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -8264,6 +8369,10 @@ menu	Te&xt	텍스트(&X)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Tell a &friend	친구에게 알리기(&F)
+#. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	압축 파일 테스트
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine

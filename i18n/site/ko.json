@@ -1622,6 +1622,10 @@
    "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
    "text": "토렌트 엔진은 Rust로 작성되어 많은 메모리 버그를 배제하며, MDM은 모든 조각을 토렌트의 지문과 비교하여 피어가 변경된 데이터를 몰래 넣을 수 없도록 합니다. MDM은 저자가 게시하는 수정 사항으로 엔진을 최신 상태로 유지합니다."
   },
+  "16a5d1db49d75475": {
+   "source": "Get your file's SHA-256 checksum, with the downloaded file's name in place of <x1/>: on Windows, in PowerShell, <x2/>; on Linux, <x3/>; on macOS, <x4/>.",
+   "text": "다운로드한 파일 이름 대신 <x1/>을 사용하여 파일의 SHA-256 체크섬을 확인하세요. Windows에서는 PowerShell에서 <x2/>를 사용하고, Linux에서는 <x3/>를 사용하며, macOS에서는 <x4/>를 사용합니다."
+  },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
    "text": "긴 목록에서 다운로드 찾기"
@@ -1793,6 +1797,10 @@
   "19377f473665c846": {
    "source": "<g1>The help shows what it describes</g1> (<g2>#228</g2>): every guide and the main help pages now have pictures of the windows they explain, cropped to what matters, numbered where a step points at one control, and step strips for the usual flows (a download from the browser, a first download, a video, a torrent, a queue overnight). On the website they follow its light or dark theme, keep their place while they load, and open larger with a click; their descriptions and captions are translated with the page. The pictures are made by a script from one list (<x3/>), so they can all be taken again in one go.",
    "text": "<g1>도움말이 설명하는 내용을 보여줍니다</g1> (<g2>#228</g2>): 이제 모든 가이드와 주요 도움말 페이지에는 설명하는 창의 그림이 포함되어 있으며, 중요한 부분만 잘라내고, 단계가 특정 컨트롤을 가리키는 곳에는 번호가 매겨져 있으며, 일반적인 흐름(브라우저에서 다운로드, 첫 다운로드, 비디오, 토렌트, 밤샘 대기열)에 대한 단계별 스트립이 있습니다. 웹사이트에서는 밝거나 어두운 테마를 따르고, 로드되는 동안 제자리를 유지하며, 클릭하면 더 크게 열립니다. 그림의 설명과 캡션은 페이지와 함께 번역됩니다. 그림은 하나의 목록(<x3/>)에서 스크립트로 생성되므로 한 번에 모두 다시 찍을 수 있습니다."
+  },
+  "1958a01b370ca326": {
+   "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
+   "text": "오탐일 가능성이 높습니다. 일부 백신 프로그램은 알려진 바이러스가 아닌 추측으로 알 수 없는 프로그램을 판단합니다. <x1/>, <x2/>, <x3/> 또는 <x4/>와 같은 탐지명은 이러한 추측을 의미합니다. 백신 프로그램이 주로 플래그하는 것은 소규모 프로젝트에서 게시자 서명 없이 아직 실행한 사람이 거의 없는 새로운 다운로드입니다. MDM 설치 프로그램은 아직 코드 서명이 되어 있지 않습니다. VirusTotal에서 대부분의 엔진이 깨끗한 상태를 유지하는 동안 소수의 엔진이 새로운 설치 프로그램을 플래그하는 것은 오탐의 일반적인 징후입니다."
   },
   "1962902ce083389d": {
    "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
@@ -5078,6 +5086,10 @@
    "source": "Where the sign-in is kept",
    "text": "로그인 정보 저장 위치"
   },
+  "47cff7958a924e1e": {
+   "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
+   "text": "해당 릴리스의 <x1/>에 있는 동일한 파일의 줄과 비교하세요(대소문자는 중요하지 않습니다). 목록 자체가 당사의 것인지 확인하려면 MDM의 릴리스 키로 서명 <x2/>을 확인하세요. <g3>다운로드 확인</g3>을 참조하세요."
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "옵션의 연결 설정 →"
@@ -5469,6 +5481,10 @@
   "4d895f12e00559ae": {
    "source": "Can it download from Netflix or other paid streaming services?",
    "text": "Netflix 또는 다른 유료 스트리밍 서비스에서 다운로드할 수 있나요?"
+  },
+  "4d8b3d6ddc128044": {
+   "source": "My antivirus flags MDM. Is it a virus? — Mister Download Manager",
+   "text": "내 백신 프로그램이 MDM을 바이러스로 표시합니다. 바이러스인가요? — Mister Download Manager"
   },
   "4d95d1dfa997c3ed": {
    "source": "The formats you meet",
@@ -7434,6 +7450,10 @@
    "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
    "text": "<g1>Firefox</g1><g2>Mozilla · <g3>Firefox에 추가</g3></g2>"
   },
+  "6a78482a79cac599": {
+   "source": "If the checksum doesn't match, or the copy came from anywhere else, don't run it: delete it and <g1>tell us</g1>.",
+   "text": "체크섬이 일치하지 않거나 다른 곳에서 복사본을 가져온 경우 실행하지 마세요. 삭제하고 <g1>저희에게 알려주세요</g1>."
+  },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
    "text": "예약 관리자: 시간에 따라 시작되고 중지되는 대기열입니다."
@@ -7669,6 +7689,10 @@
   "6dc00f6ca0aab78e": {
    "source": "<g1>What an archive holds goes</g1> — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.",
    "text": "<g1>압축 파일 내용 저장 위치</g1> — 여러 항목이 들어 있는 경우 압축 파일 이름의 폴더에 저장(기본값), 항상 압축 파일 이름의 폴더에 저장, 또는 압축 파일이 있는 폴더에 바로 저장합니다."
+  },
+  "6dce60e2f4b860a4": {
+   "source": "<g1>Tell us on GitHub</g1> which antivirus it was, the detection's name and the file, so we can report it too.",
+   "text": "어떤 안티바이러스였는지, 탐지 이름과 파일을 <g1>GitHub에 알려주세요</g1>. 저희도 보고할 수 있습니다."
   },
   "6ddb957d293eb435": {
    "source": "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.",
@@ -8818,6 +8842,10 @@
    "source": "In dialogs",
    "text": "대화 상자에서"
   },
+  "7e2c588b344ccd88": {
+   "source": "No, if it came from <g1>this site</g1> or <g2>GitHub Releases</g2>. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x3/>, <x4/>, <x5/> or <x6/> mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's <x7/>. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and <g8>tell us on GitHub</g8> so we can report it too. The commands and the antivirus makers' report pages: <g9>My antivirus flags MDM</g9>.",
+   "text": "아닙니다. <g1>이 사이트</g1>나 <g2>GitHub Releases</g2>에서 다운로드했다면 바이러스가 아닙니다. 일부 백신 프로그램은 알려진 바이러스가 아니라, 알지 못하는 프로그램을 추정하여 판단합니다. <x3/>, <x4/>, <x5/> 또는 <x6/>와 같은 탐지명은 이러한 추정을 의미합니다. 백신 프로그램이 주로 플래그하는 것은 게시자 서명이 없는, 아직 소수의 사람만 실행한 새로운 다운로드입니다. MDM 설치 프로그램은 아직 코드 서명이 되어 있지 않습니다. 다운로드한 파일이 MDM의 공식 파일인지 확인하려면, 해당 파일의 SHA-256 체크섬을 릴리스의 <x7/>와 비교하세요. MDM은 오픈 소스이며 모든 릴리스는 GitHub Actions를 통해 공개적으로 빌드되므로, 누구나 코드를 읽고 다시 빌드할 수 있습니다. 그런 다음 해당 파일을 백신 프로그램에 오탐으로 신고하고, <g8>GitHub에 알려주세요</g8>. 저희도 신고할 수 있습니다. 명령어와 백신 제조사의 신고 페이지는 <g9>내 백신이 MDM을 플래그합니다</g9>를 참조하세요."
+  },
   "7e34624a653bd43b": {
    "source": "A file name sent by a site in plain UTF-8 now reaches MDM readable from Firefox and browsers built on it, such as Floorp, Waterfox and Zen: an Arabic name was saved as unreadable symbols (<g1>#447</g1>). A name written with percent signs in the same header is decoded as well. The add-on carries the fix",
    "text": "사이트에서 일반 UTF-8로 보낸 파일 이름이 이제 Firefox 및 Floorp, Waterfox, Zen과 같은 Firefox 기반 브라우저에서 MDM으로 읽을 수 있게 전달됩니다. 아랍어 이름이 읽을 수 없는 기호로 저장되던 문제가 해결되었습니다 (<g1>#447</g1>). 동일한 헤더에 퍼센트 기호로 작성된 이름도 디코딩됩니다. 이 수정 사항은 애드온에 포함되어 있습니다."
@@ -9053,6 +9081,10 @@
   "80afa23a5451c61d": {
    "source": "What it can do, and what it can't",
    "text": "가능한 기능과 불가능한 기능"
+  },
+  "80b75f50253c4016": {
+   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder.",
+   "text": "안티바이러스가 MDM을 격리했다면, 복원하고 해당 폴더에 예외를 추가하세요."
   },
   "80bb2d8150ab92af": {
    "source": "Mac or Linux?",
@@ -10433,6 +10465,10 @@
   "953a64f3542b5742": {
    "source": "Correct the translation in the third column and delete the row's <x1/> line.",
    "text": "세 번째 열에서 번역을 수정하고 해당 행의 <x1/> 줄을 삭제하세요."
+  },
+  "954373bf4b513543": {
+   "source": "Download MDM only from <g1>misterdownloadmanager.com</g1> or <g2>GitHub Releases</g2>.",
+   "text": "MDM은 <g1>misterdownloadmanager.com</g1> 또는 <g2>GitHub Releases</g2>에서만 다운로드하세요."
   },
   "956271136a063e89": {
    "source": "What's new in version 0.2.4 <g1>2026-11-01</g1>",
@@ -12402,6 +12438,10 @@
    "source": "A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the <g1>Download complete</g1> window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.",
    "text": "사이트는 자막을 너무 자주 요청하면 제공을 거부할 수 있습니다. 특히 YouTube는 번역 자막을 거부하는 경우가 많습니다. 그래도 비디오는 저장됩니다. MDM은 20초 후 자막을 다시 요청합니다. 그래도 자막을 받지 못하면 <g1>다운로드 완료</g1> 창과 다운로드 로그에 누락된 자막과 그 이유가 표시됩니다. 나중에 다시 시도해 보세요. 비디오에 포함하도록 설정한 자막을 두 번째 시도에서만 받으면 비디오와 별도로 저장됩니다."
   },
+  "af76ea4a71ae00da": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as Malware.AI, Gen:, ML or Heur mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's SHA256SUMS.txt. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and tell us on GitHub so we can report it too. The commands and the antivirus makers' report pages: My antivirus flags MDM.",
+   "text": "아닙니다. 이 사이트나 GitHub Releases에서 다운로드했다면 바이러스가 아닙니다. 일부 백신 프로그램은 알려진 바이러스가 아니라, 알지 못하는 프로그램을 추정하여 판단합니다. Malware.AI, Gen:, ML 또는 Heur와 같은 탐지명은 이러한 추정을 의미합니다. 백신 프로그램이 주로 플래그하는 것은 게시자 서명이 없는, 아직 소수의 사람만 실행한 새로운 다운로드입니다. MDM 설치 프로그램은 아직 코드 서명이 되어 있지 않습니다. 다운로드한 파일이 MDM의 공식 파일인지 확인하려면, 해당 파일의 SHA-256 체크섬을 릴리스의 SHA256SUMS.txt와 비교하세요. MDM은 오픈 소스이며 모든 릴리스는 GitHub Actions를 통해 공개적으로 빌드되므로, 누구나 코드를 읽고 다시 빌드할 수 있습니다. 그런 다음 해당 파일을 백신 프로그램에 오탐으로 신고하고, GitHub에 알려주세요. 저희도 신고할 수 있습니다. 명령어와 백신 제조사의 신고 페이지는 내 백신이 MDM을 플래그합니다를 참조하세요."
+  },
   "af83c70c1ca46aae": {
    "source": "Options on its Connection page, on Linux",
    "text": "Linux에서 연결 페이지의 옵션"
@@ -12830,6 +12870,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM 자체 다운로드는 자체 다운로더를 사용합니다</g1>: yt-dlp, ffmpeg, MDM 업데이트 및 충돌 보고서의 심볼은 이제 여러 연결을 통해 다운로드되고, 연결이 끊긴 후 재개되며, 프록시 설정을 통과합니다. 각 파일은 사용하기 전에 게시자의 서명된 체크섬과 대조하여 확인됩니다."
   },
+  "b4d57a3265ad8025": {
+   "source": "Check that your copy is ours:",
+   "text": "다운로드한 파일이 당사의 파일인지 확인하세요."
+  },
   "b4d5d25243e1d43b": {
    "source": "No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, each time it starts and once a day while it runs…",
    "text": "아니요. MDM은 계정, 분석, 원격 측정 기능을 사용하지 않습니다. 다운로드하는 서버에 연결하며, 시작할 때마다 그리고 실행 중 하루에 한 번씩 GitHub에 새 버전이 있는지 확인합니다(도움말 → 업데이트 확인에서 끌 수 있습니다). 브라우저 확장 프로그램은 사용자 컴퓨터의 MDM과만 통신합니다. 자세한 내용은 개인정보처리방침을 참조하세요."
@@ -13109,6 +13153,10 @@
   "b8ed53721f1b8571": {
    "source": "Click <g1>Apply</g1>.",
    "text": "<g1>적용</g1>을 클릭합니다."
+  },
+  "b8f874b98d985f32": {
+   "source": "If they match, it is the file we published. MDM is open source and built in public: every release is built from the <g1>public source code</g1> by GitHub Actions, on GitHub's servers, with <g2>every build's log</g2> there to see, so anyone can read what went into it and build it again.",
+   "text": "일치하면 당사에서 게시한 파일입니다. MDM은 오픈 소스이며 공개적으로 빌드됩니다. 모든 릴리스는 GitHub 서버에서 GitHub Actions를 통해 <g1>공개 소스 코드</g1>에서 빌드되며, <g2>모든 빌드 로그</g2>를 볼 수 있으므로 누구나 어떤 내용이 포함되었는지 읽고 다시 빌드할 수 있습니다."
   },
   "b8face0bc8562340": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
@@ -14694,6 +14742,10 @@
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
    "text": "이름에서 숫자나 문자만 다른 파일의 경우(예: <x1/>에서 <x2/>):"
   },
+  "d044acd0f39a8232": {
+   "source": "Report the file to your antivirus as a false positive: <g1>Microsoft Defender</g1>, <g2>Malwarebytes</g2>, <g3>Avast</g3>, <g4>AVG</g4>, <g5>Bitdefender</g5>, <g6>Kaspersky</g6>, <g7>ESET</g7>.",
+   "text": "파일을 안티바이러스에 오탐으로 보고하세요. <g1>Microsoft Defender</g1>, <g2>Malwarebytes</g2>, <g3>Avast</g3>, <g4>AVG</g4>, <g5>Bitdefender</g5>, <g6>Kaspersky</g6>, <g7>ESET</g7>."
+  },
   "d04d5c0494e576d1": {
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "여러 테마, 대기열 및 스케줄러, Android 앱을 갖춘 현대적인 모습"
@@ -16149,6 +16201,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM의 두 번째 복사본이 첫 번째 복사본을 감시합니다. MDM이 충돌하면 보고서 창에 <g1>Mister Download Manager이(가) 예기치 않게 종료되었습니다</g1>라고 표시됩니다. 창이 8초 동안 응답하지 않으면 <g2>Mister Download Manager이(가) 응답을 중지했습니다</g2>라고 표시되며, <g3>MDM 종료 및 다시 시작</g3>을 통해 멈춘 복사본을 닫고 새 복사본을 시작합니다. MDM이 자동으로 다시 시작되면 창에 해당 내용이 표시됩니다."
+  },
+  "e6b85e1428494d1c": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
+   "text": "아닙니다. 이 사이트나 GitHub Releases에서 다운로드했다면 바이러스가 아닙니다. 일부 백신 프로그램은 알려진 바이러스가 아니라, 알지 못하는 프로그램을 추정하여 판단합니다…"
   },
   "e6e4ffbd1a17c7e8": {
    "source": "<x1/> pull request",
@@ -17814,6 +17870,10 @@
    "source": "Help pages",
    "text": "도움말 페이지"
   },
+  "fcf964e16b9ad4f2": {
+   "source": "Then:",
+   "text": "그런 다음:"
+  },
   "fd07a5008213448b": {
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>다음 사이트에서는 자동으로 다운로드를 시작하지 않음</g1> — 다운로드가 브라우저에 남아 있는 사이트 목록을 공백으로 구분하여 입력합니다. 사이트 이름은 해당 사이트의 서브도메인도 포함합니다(<x2/>는 <x3/> 및 <x4/>를 포함하며, <x5/>도 마찬가지입니다). <x6/>는 다운로드 패널 목록(<x7/>)과 같이 모든 항목과 일치하며, 다운로드가 시작된 페이지를 통해 다른 서버(다운로드 서버 또는 CDN)에 연결된 파일도 포함합니다. 페이지를 알 수 없는 다운로드는 자체 주소와 일치합니다. <g8>기본값</g8>을 클릭하면 원래 목록으로 되돌립니다."
@@ -17909,6 +17969,10 @@
   "fe1e9bfa950043a0": {
    "source": "File Properties: change the address or the folder of a download.",
    "text": "파일 속성: 다운로드 주소나 폴더 변경"
+  },
+  "fe2d94832629a9c2": {
+   "source": "My antivirus flags MDM. Is it a virus?",
+   "text": "내 백신 프로그램이 MDM을 바이러스로 표시합니다. 바이러스인가요?"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

@@ -573,6 +573,8 @@ enum Cmd {
     VerifyChecksum,
     /// Right-click → Extract (beyond IDM, #37): a finished archive, into its folder.
     Extract,
+    /// Right-click → Test archive (#1661): read a finished ZIP, 7z or RAR back and check it.
+    TestArchive,
     /// Tasks → Link grabber… (#37): the window, empty (links pasted in) or as it is.
     LinkGrabber,
     /// Downloads → Find (Ctrl-F) / Find Next (F3).
@@ -1411,6 +1413,13 @@ pub struct App {
     assistive_checked: Option<Instant>,
     /// Archives extracted when their download completes (#37).
     extracts: crate::extractq::Extracts,
+    /// Archives tested when their download completes, before it counts as done (#1661).
+    tests: crate::archtest::Tests,
+    /// The tests MDM's closing stopped were queued again (at the first frame).
+    tests_resumed: bool,
+    /// A damaged ZIP's file being made a part file again beside the window, its damaged parts to
+    /// download (`mdm_engine::repair::reopen`): the download and the answer.
+    refetching: Vec<(u64, std::sync::mpsc::Receiver<std::io::Result<u64>>)>,
     /// Deleted downloads' files, deleted beside the window (#1170).
     deleter: crate::deleter::Deleter,
     /// Finished files looked at beside the window for the duplicate check, the adds waiting.
@@ -2209,6 +2218,9 @@ impl App {
             link_parts: Default::default(),
             assistive_checked: None,
             extracts: Default::default(),
+            tests: Default::default(),
+            tests_resumed: false,
+            refetching: Vec::new(),
             deleter: {
                 // A file that couldn't go is said in the notice: drawn when it is told.
                 let ctx = ctx.clone();
@@ -2633,7 +2645,7 @@ impl App {
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
             status_whole: (!self.extracts.extracting(it.id))
-                .then(|| it.finishing(false))
+                .then(|| it.finishing(false).or_else(|| it.damaged_text(false)))
                 .flatten(),
             // The limit holding it back (#1191), in the Transfer rate cell's tip.
             rate_tip: receiving
@@ -3537,6 +3549,9 @@ impl App {
             "tell-friend" => self.run(Cmd::TellFriend, None, ctx),
             "updates" => self.run(Cmd::CheckUpdates, None, ctx),
             "checksum" if first.is_some() => self.run(Cmd::VerifyChecksum, first, ctx),
+            // Right-click → Test archive on the first download (#1661), for screenshots and
+            // checks: its outcome's message box.
+            "test-archive" if first.is_some() => self.run(Cmd::TestArchive, first, ctx),
             "gallery" => {
                 let dir = self
                     .settings
@@ -4302,6 +4317,9 @@ impl App {
         // The file at its place, chosen to be replaced (#1088): replaced as it completes, on a
         // first start and on a resume alike. A place moved since doesn't replace anything.
         opts.replace_existing = item.replaces();
+        // An archive (or a name still to come from the server) keeps its last resume state as
+        // it completes: its test may find damage to download again from it (#1661).
+        opts.keep_state = crate::archtest::tested_name(&item.file_name) || item.name_from_url;
         // The page it was started from, kept with the list (the browser's request is memory
         // only): after a restart too, an expired link is renewed there (`Options::page`).
         if opts.page.is_none() {
@@ -4587,6 +4605,7 @@ impl App {
     fn remove_downloads(&mut self, ids: &[u64], files: bool) {
         let before = self.shown_ids();
         self.extracts.forget(ids);
+        self.tests.forget(ids);
         let doomed = ids
             .iter()
             .filter_map(|id| self.take_off_list(*id, files))
@@ -8137,6 +8156,8 @@ impl App {
             Status::Error if self.saved_by_hand.contains(&id) => Member::Held,
             Status::Queued | Status::Stopped => Member::Waiting,
             Status::Downloading => Member::Running,
+            // Its archive is tested before it counts as done (#1661).
+            Status::Complete if i.testing => Member::Running,
             Status::Complete => Member::Complete,
             Status::Error => {
                 let long_ago = now.checked_sub(queue::RETRY_DELAY).unwrap_or(now);
@@ -8194,7 +8215,10 @@ impl App {
         // kept awake while a queue that woke it runs (#142), and while anything downloads (#939):
         // its own idle sleep would stop them halfway.
         self.wake.sync(&self.queues);
-        let downloading = self.items.iter().any(|i| i.status == Status::Downloading);
+        let downloading = self
+            .items
+            .iter()
+            .any(|i| i.status == Status::Downloading || i.testing);
         let why = crate::wake::why_awake(&self.queues, downloading);
         self.wake.keep_awake(why);
     }
@@ -8568,6 +8592,14 @@ impl App {
                     }
                 }
             }
+            Cmd::TestArchive => {
+                // Every chosen archive (a split one once), whatever its size (#1661).
+                for id in self.targets(target) {
+                    if !self.extracts.extracting(id) {
+                        self.tests.by_hand(id, &mut self.items);
+                    }
+                }
+            }
             Cmd::VerifyChecksum => {
                 if let Some(id) = target
                     && !self.checksums.iter().any(|c| c.id == id)
@@ -8875,6 +8907,9 @@ impl App {
             }
             any_live |= i.live.is_some();
         }
+        // An archive is tested before its download counts as done (#1661): its finishing (its
+        // sound, Download complete, its extraction) waits for the test's outcome.
+        self.poll_tests(&mut finished, ctx);
         // A video or gallery whose helper seems out of date: a newer one first (#1544).
         failed.retain(|id| !self.heal_if_outdated(*id, ctx));
         failed.extend(self.healed(ctx));
@@ -9003,6 +9038,82 @@ impl App {
         }
         if let Some(outcome) = self.saver.outcome() {
             self.report_save(outcome);
+        }
+    }
+
+    /// Archive tests (#1661): `finished`'s downloads whose archive is to be tested wait for it
+    /// (taken out); those whose test is over are put in. A damaged ZIP whose damage is placed has
+    /// its file made a part file again beside the window, then those parts downloaded again.
+    fn poll_tests(&mut self, finished: &mut Vec<u64>, ctx: &egui::Context) {
+        if !self.tests_resumed {
+            self.tests_resumed = true;
+            self.tests.resume(&mut self.items, &self.settings);
+        }
+        let (tests, items, settings) = (&mut self.tests, &mut self.items, &self.settings);
+        let before = finished.len();
+        finished.retain(|id| !tests.hold(*id, items, settings));
+        if finished.len() != before {
+            self.dirty = true;
+        }
+        for done in self.tests.poll(&mut self.items, ctx) {
+            self.dirty = true;
+            match done {
+                crate::archtest::Done::Release(id) => finished.push(id),
+                crate::archtest::Done::Refetch {
+                    id,
+                    state,
+                    ranges,
+                    modified,
+                } => {
+                    let (tx, rx) = std::sync::mpsc::channel();
+                    let wake = ctx.clone();
+                    crate::launch::spawn("refetch", move || {
+                        let _ = tx.send(mdm_engine::repair::reopen(&state, &ranges, modified));
+                        wake.request_repaint();
+                    });
+                    self.refetching.push((id, rx));
+                }
+            }
+        }
+        let mut ready = Vec::new();
+        self.refetching.retain(|(id, rx)| match rx.try_recv() {
+            Ok(r) => {
+                ready.push((*id, r));
+                false
+            }
+            Err(std::sync::mpsc::TryRecvError::Empty) => true,
+            Err(_) => {
+                ready.push((*id, Err(std::io::Error::other("no answer"))));
+                false
+            }
+        });
+        for (id, r) in ready {
+            self.dirty = true;
+            match r {
+                // A part file again, with only its damaged parts left: resumed as any stopped
+                // download, its finishing still waiting for the test that follows.
+                Ok(missing) => {
+                    if let Some(item) = self.item(id) {
+                        item.refetched = true;
+                        item.status = Status::Stopped;
+                        let size = item.size.unwrap_or(item.downloaded);
+                        item.downloaded = size.saturating_sub(missing);
+                        item.state_here = Some((item.dest.clone(), true));
+                        item.error = None;
+                    }
+                    self.start(id, false);
+                }
+                Err(e) => {
+                    tracing::warn!("archive test: download {id}: no re-fetch: {e}");
+                    let why = crate::errors::describe(&mdm_engine::Error::Io(Arc::new(e)));
+                    if let Some(id) = self.tests.refetch_failed(id, &why, &mut self.items) {
+                        finished.push(id);
+                    }
+                }
+            }
+        }
+        if !self.refetching.is_empty() {
+            ctx.request_repaint_after(Duration::from_millis(100));
         }
     }
 
@@ -10043,8 +10154,12 @@ impl App {
             i.status == Status::Complete
                 && i.torrent.is_none()
                 && i.video.is_none()
+                && !i.testing
                 && crate::extractq::archive_name(&i.file_name)
         });
+        let testable = chosen
+            .iter()
+            .any(|i| crate::archtest::testable(i) && !i.testing && !self.extracts.extracting(i.id));
         let torrent = it.and_then(|i| i.torrent.as_ref().map(|t| (i, t)));
         let mut entries = vec![
             // i18n: verb: opens the downloaded file
@@ -10075,6 +10190,8 @@ impl App {
             I("Verify checksum...", Cmd::VerifyChecksum, sel, false),
             // i18n: verb: unpack the downloaded archive (zip, 7z, rar) into its folder
             I("Extract", Cmd::Extract, extractable, false),
+            // i18n: verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+            I("Test archive", Cmd::TestArchive, testable, false),
             Sep,
             // i18n: verb: removes the download from the list
             I("Remove", Cmd::Remove, any_idle, false),
@@ -12119,7 +12236,12 @@ impl App {
         item.downloaded = 0;
         item.status = Status::Stopped;
         item.error = None;
+        // Its archive's test and what it found (#1661) are the old file's.
+        item.testing = false;
+        item.damaged = false;
+        item.refetched = false;
         item.note(crate::i18n::t("Downloading again from the start"));
+        self.tests.forget(&[id]);
         self.dirty = true;
         self.deleter.delete(vec![doomed]);
         self.start(id, true);
@@ -12468,6 +12590,26 @@ impl App {
             && !matches!(d.show(ctx), Outcome::Open)
         {
             self.extracts.needs_7zip = None;
+        }
+        // A damaged archive (#1661): Redownload downloads it (every volume) again.
+        if let Some(d) = &mut self.tests.damaged {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed | Outcome::Done(false) => self.tests.damaged = None,
+                Outcome::Done(true) => {
+                    let ids = std::mem::take(&mut d.ids);
+                    self.tests.damaged = None;
+                    for id in ids {
+                        self.redownload(id);
+                    }
+                }
+            }
+        }
+        // Test archive's outcome, when it found no damage (one at a time).
+        if self.notice.is_none()
+            && let Some(text) = self.tests.told.take()
+        {
+            self.notice = Some((crate::i18n::mark("Test archive"), text));
         }
         if let Some(d) = &mut self.extracts.ask {
             match d.show(ctx) {
@@ -13775,8 +13917,21 @@ impl App {
                 self.apply_finished_rename(id, r, sharing_error, false);
             }
         }
-        // An archive being extracted stops; its staging folder goes with it.
+        // A damaged ZIP being made a part file again (#1661): a moment, so the list says what
+        // its file is now (a stopped download that resumes at the next start).
+        for (id, rx) in std::mem::take(&mut self.refetching) {
+            if let Ok(Ok(missing)) = rx.recv_timeout(left(Duration::from_secs(2)))
+                && let Some(item) = self.item(id)
+            {
+                item.status = Status::Stopped;
+                let size = item.size.unwrap_or(item.downloaded);
+                item.downloaded = size.saturating_sub(missing);
+            }
+        }
+        // An archive being extracted stops; its staging folder goes with it. One being tested
+        // stops too: it is tested again at the next start.
         self.extracts.stop();
+        self.tests.stop();
         // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
         self.wake.clear();
         self.keep_unseen();

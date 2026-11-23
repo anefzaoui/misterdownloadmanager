@@ -54,6 +54,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	आता {n} लेख जुळतात (फक्त नवीन लेख जोडले जातात):|आता {n} लेख जुळतात (फक्त नवीन लेख जोडले जातात):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	संग्रह चाचणीमध्ये {n} खराब झालेली फाइल आढळली: {files}|संग्रह चाचणीमध्ये {n} खराब झालेल्या फाइल्स आढळल्या: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -232,6 +237,11 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-तास (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	7-Zip ला त्याची चाचणी करता आली नाही ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
@@ -327,6 +337,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	त्याचा एक व्हॉल्यूम गहाळ आहे
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	त्याचा एक व्हॉल्यूम अजून आलेला नाही
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager बद्दल
@@ -1119,7 +1133,7 @@
 #. text in the Options window
 #, machine
 	Clock:	घड्याळ:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1269,6 +1283,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	नवीन {name} शोधता आले नाही: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	{name} ची चाचणी करता आली नाही: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1316,6 +1335,18 @@
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	दररोज
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	खराब झाले
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	खराब झालेला संग्रह
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	खराब झाले: त्याच्या संग्रह चाचणीत त्रुटी आढळल्या. उजवे-क्लिक → पुन्हा डाउनलोड करा याने ते पुन्हा डाउनलोड होते
 #. text in the Options window
 #, machine
 	Date order:	तारखेचा क्रम:
@@ -1611,6 +1642,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	MDM ची स्वतःची प्रत डाउनलोड करत आहे...
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	खराब झालेले भाग पुन्हा डाउनलोड करत आहे ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -3527,6 +3563,15 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	या सेवेद्वारे समर्थित नाही
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	अजून तपासले नाही: {name} अपूर्ण आहे ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	चाचणी केली नाही: ते {limit} पेक्षा मोठे आहे (पर्याय → संग्रह). उजवे-क्लिक → संग्रह चाचणी याने त्याची चाचणी होते
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	वापरले नाही: फाइलचे भाग फाइलच्या शेजारी लिहिले जातात
@@ -4057,10 +4102,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	रेकॉर्डिंग सुरू आहे...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
 	Redownload	पुन्हा डाउनलोड करा
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	पुन्हा डाउनलोड केल्याने प्रत्येक व्हॉल्यूम सुरुवातीपासून पुन्हा डाउनलोड होतो.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	पुन्हा डाउनलोड केल्याने ते सुरुवातीपासून पुन्हा डाउनलोड होते.
 #. text in a download's Properties window
 #, machine
 	Referer:	रेफरर:
@@ -4624,6 +4677,10 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	काही
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	त्याचे काही व्हॉल्यूम अजून डाउनलोड होत आहेत
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	टॉरेंटमधील काही फाइल्स या फोल्डरमध्ये आधीच आहेत:
@@ -4927,6 +4984,13 @@
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
 	Test	चाचणी
+#. message or event log entry in the main window
+#, machine
+	Test archive	संग्रह चाचणी
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	डाउनलोड पूर्ण झाल्यावर, {gb} GB पर्यंतच्या संग्रहांची चाचणी करा
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -4935,6 +4999,19 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Test browser integration...	ब्राउझर एकत्रीकरण तपासा...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	पुन्हा चाचणी केली: संग्रहात आता कोणतीही त्रुटी नाही
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	संग्रहाची चाचणी करत आहे...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	संग्रहाची चाचणी करत आहे... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4968,6 +5045,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Trash: it was kept	आर्काइव्हला ट्रॅशमध्ये हलवता आले नाही: ते तसेच ठेवले
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	संग्रह चाचणी अयशस्वी झाली: तो खराब झाला आहे, किंवा त्याच्या नावानुसार तो संग्रह नाही
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	संग्रह चाचणीत कोणतीही त्रुटी आढळली नाही
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -5055,6 +5140,11 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	डेटा प्राप्त करताना कनेक्शन गमावले
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	खराब झालेले भाग पुन्हा डाउनलोड करता आले नाहीत: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -6093,6 +6183,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	व्हायरस तपासणी सेटिंग्ज
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	व्हॉल्यूम {n} अजून आलेला नाही
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -6549,6 +6644,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} आधीच डाउनलोड होत आहे: थोड्या वेळाने पुन्हा प्रयत्न करा
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} खराब झाले आहे: त्याच्या चाचणीत त्यात त्रुटी आढळल्या.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} खराब झाले आहे: त्याच्या चाचणीत त्याच्या एका व्हॉल्यूममध्ये त्रुटी आढळल्या.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -8265,6 +8370,10 @@ menu	Te&xt	&मजकूर
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Tell a &friend	मित्राला सांगा(&f)
+#. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	संग्रह चाचणी करा
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine

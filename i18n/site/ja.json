@@ -1622,6 +1622,10 @@
    "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
    "text": "トレントエンジンはRustで書かれており、多くのメモリ関連の不具合を防ぎます。また、MDMはすべてのピースをトレントのフィンガープリントと照合するため、ピアが改変したデータを紛れ込ませることはできません。MDMは、開発者が公開する修正を反映してエンジンを最新の状態に保ちます。"
   },
+  "16a5d1db49d75475": {
+   "source": "Get your file's SHA-256 checksum, with the downloaded file's name in place of <x1/>: on Windows, in PowerShell, <x2/>; on Linux, <x3/>; on macOS, <x4/>.",
+   "text": "ダウンロードしたファイル名が <x1/> の場合、ファイルの SHA-256 チェックサムを取得します。Windows では PowerShell で <x2/>、Linux では <x3/>、macOS では <x4/> を使用します。"
+  },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
    "text": "長いリストからダウンロードを検索する"
@@ -1793,6 +1797,10 @@
   "19377f473665c846": {
    "source": "<g1>The help shows what it describes</g1> (<g2>#228</g2>): every guide and the main help pages now have pictures of the windows they explain, cropped to what matters, numbered where a step points at one control, and step strips for the usual flows (a download from the browser, a first download, a video, a torrent, a queue overnight). On the website they follow its light or dark theme, keep their place while they load, and open larger with a click; their descriptions and captions are translated with the page. The pictures are made by a script from one list (<x3/>), so they can all be taken again in one go.",
    "text": "<g1>ヘルプが説明内容を表示するようになりました</g1> (<g2>#228</g2>): すべてのガイドと主要なヘルプ ページに、説明するウィンドウの画像が追加されました。画像は重要な部分にトリミングされ、手順が特定のコントロールを指す場合は番号が付けられ、一般的なフロー (ブラウザからのダウンロード、最初のダウンロード、ビデオ、トレント、夜間のキュー) にはステップ ストリップが追加されています。ウェブサイトでは、ライトまたはダーク テーマに従い、読み込み中にその場所を保持し、クリックすると拡大表示されます。画像の説明とキャプションはページと共に翻訳されます。画像は 1 つのリスト (<x3/>) からスクリプトによって作成されるため、すべてを一度に再撮影できます。"
+  },
+  "1958a01b370ca326": {
+   "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
+   "text": "誤検知である可能性が高いです。一部のウイルス対策プログラムは、既知のウイルスではなく、推測に基づいて未知のプログラムを判断します。<x1/>、<x2/>、<x3/>、<x4/> などの検出名は、このような推測を意味します。最も多くフラグが立てられるのは、まだ実行した人が少ない、小規模なプロジェクトからの新しいダウンロードで、発行元の署名がないものです。MDM のインストーラーはまだコード署名されていません。VirusTotal で、ごく一部のエンジンが新しいセットアップにフラグを立て、ほとんどのエンジンがクリーンなままである場合、それは誤検知の通常の兆候です。"
   },
   "1962902ce083389d": {
    "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
@@ -5078,6 +5086,10 @@
    "source": "Where the sign-in is kept",
    "text": "ログイン情報の保存場所"
   },
+  "47cff7958a924e1e": {
+   "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
+   "text": "そのリリースの <x1/> にある同じファイルの行と比較します (大文字と小文字は区別されません)。リスト自体が当社のものか確認するには、MDM のリリースキーでその署名 <x2/> を確認します。<g3>ダウンロードを確認する</g3>を参照してください。"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "オプションの接続設定 →"
@@ -5469,6 +5481,10 @@
   "4d895f12e00559ae": {
    "source": "Can it download from Netflix or other paid streaming services?",
    "text": "Netflixなどの有料ストリーミングサービスからダウンロードできますか？"
+  },
+  "4d8b3d6ddc128044": {
+   "source": "My antivirus flags MDM. Is it a virus? — Mister Download Manager",
+   "text": "アンチウイルスが MDM をウイルスと判定します。これはウイルスですか？ — Mister Download Manager"
   },
   "4d95d1dfa997c3ed": {
    "source": "The formats you meet",
@@ -7430,6 +7446,10 @@
    "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
    "text": "<g1>Firefox</g1><g2>Mozilla · <g3>Firefox に追加</g3></g2>"
   },
+  "6a78482a79cac599": {
+   "source": "If the checksum doesn't match, or the copy came from anywhere else, don't run it: delete it and <g1>tell us</g1>.",
+   "text": "チェックサムが一致しない場合、またはコピーが他の場所から入手されたものである場合は、実行しないでください。削除して<g1>当社にお知らせください</g1>。"
+  },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
    "text": "スケジューラ：時間によって開始および停止されるキュー。"
@@ -7665,6 +7685,10 @@
   "6dc00f6ca0aab78e": {
    "source": "<g1>What an archive holds goes</g1> — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.",
    "text": "<g1>アーカイブの内容の保存先</g1> — 複数の項目が含まれる場合はアーカイブと同じ名前のフォルダーに保存 (デフォルト)、常にそのようなフォルダーに保存、またはアーカイブと同じフォルダーに直接保存します。"
+  },
+  "6dce60e2f4b860a4": {
+   "source": "<g1>Tell us on GitHub</g1> which antivirus it was, the detection's name and the file, so we can report it too.",
+   "text": "どのウイルス対策ソフトで、検出名とファイル名を <g1>GitHub でお知らせください</g1>。当社からも報告できます。"
   },
   "6ddb957d293eb435": {
    "source": "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.",
@@ -8814,6 +8838,10 @@
    "source": "In dialogs",
    "text": "ダイアログ内"
   },
+  "7e2c588b344ccd88": {
+   "source": "No, if it came from <g1>this site</g1> or <g2>GitHub Releases</g2>. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x3/>, <x4/>, <x5/> or <x6/> mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's <x7/>. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and <g8>tell us on GitHub</g8> so we can report it too. The commands and the antivirus makers' report pages: <g9>My antivirus flags MDM</g9>.",
+   "text": "いいえ、<g1>このサイト</g1>または<g2>GitHub Releases</g2>から入手したものであれば、ウイルスではありません。一部のウイルス対策プログラムは、未知のプログラムを既知のウイルスではなく、推測に基づいて判断します。<x3/>、<x4/>、<x5/>、<x6/>などの検出名は、そのような推測を意味します。最も多くフラグが立てられるのは、発行元の署名がない、まだほとんど実行されていない新しいダウンロードです。MDM のインストーラーはまだコード署名されていません。お使いのコピーが当社のものと確信するには、その SHA-256 チェックサムをリリースの<x7/>と比較してください。MDM はオープンソースであり、すべてのリリースは GitHub Actions によって公開でビルドされているため、誰でも読み取り、再ビルドできます。その後、そのファイルをウイルス対策プログラムに誤検知として報告し、<g8>GitHub で当社に連絡</g8>してください。そうすれば、当社も報告できます。コマンドとウイルス対策メーカーの報告ページは<g9>「私のウイルス対策が MDM にフラグを立てます」</g9>を参照してください。"
+  },
   "7e34624a653bd43b": {
    "source": "A file name sent by a site in plain UTF-8 now reaches MDM readable from Firefox and browsers built on it, such as Floorp, Waterfox and Zen: an Arabic name was saved as unreadable symbols (<g1>#447</g1>). A name written with percent signs in the same header is decoded as well. The add-on carries the fix",
    "text": "サイトからプレーンな UTF-8 で送信されたファイル名が、Firefox および Floorp、Waterfox、Zen などのそれに基づいて構築されたブラウザーから MDM で読み取り可能になりました。以前はアラビア語の名前が読み取り不能な記号として保存されていました (<g1>#447</g1>)。同じヘッダーでパーセント記号で記述された名前もデコードされます。アドオンに修正が含まれています。"
@@ -9049,6 +9077,10 @@
   "80afa23a5451c61d": {
    "source": "What it can do, and what it can't",
    "text": "できること、できないこと"
+  },
+  "80b75f50253c4016": {
+   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder.",
+   "text": "ウイルス対策ソフトが MDM を隔離した場合、復元してそのフォルダーの例外を追加してください。"
   },
   "80bb2d8150ab92af": {
    "source": "Mac or Linux?",
@@ -10429,6 +10461,10 @@
   "953a64f3542b5742": {
    "source": "Correct the translation in the third column and delete the row's <x1/> line.",
    "text": "3列目の翻訳を修正し、その行の<x1/>行を削除します。"
+  },
+  "954373bf4b513543": {
+   "source": "Download MDM only from <g1>misterdownloadmanager.com</g1> or <g2>GitHub Releases</g2>.",
+   "text": "MDM は <g1>misterdownloadmanager.com</g1> または <g2>GitHub Releases</g2> からのみダウンロードしてください。"
   },
   "956271136a063e89": {
    "source": "What's new in version 0.2.4 <g1>2026-11-01</g1>",
@@ -12398,6 +12434,10 @@
    "source": "A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the <g1>Download complete</g1> window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.",
    "text": "字幕を何度も要求すると、サイトが応答を拒否することがあります。特にYouTubeでは、翻訳された字幕で起こりやすくなります。それでも動画は保存されます。MDMは20秒後に字幕をもう一度要求します。それでも取得できない場合は、<g1>ダウンロード完了</g1>ウィンドウとダウンロードのログに、不足している字幕とその理由が表示されます。後でもう一度お試しください。動画に埋め込む字幕を2回目の試行でしか取得できなかった場合は、動画とは別に保存されます。"
   },
+  "af76ea4a71ae00da": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as Malware.AI, Gen:, ML or Heur mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's SHA256SUMS.txt. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and tell us on GitHub so we can report it too. The commands and the antivirus makers' report pages: My antivirus flags MDM.",
+   "text": "いいえ、このサイトまたは GitHub Releases から入手したものであれば、ウイルスではありません。一部のウイルス対策プログラムは、未知のプログラムを既知のウイルスではなく、推測に基づいて判断します。Malware.AI、Gen:、ML、Heur などの検出名は、そのような推測を意味します。最も多くフラグが立てられるのは、発行元の署名がない、まだほとんど実行されていない新しいダウンロードです。MDM のインストーラーはまだコード署名されていません。お使いのコピーが当社のものと確信するには、その SHA-256 チェックサムをリリースの SHA256SUMS.txt と比較してください。MDM はオープンソースであり、すべてのリリースは GitHub Actions によって公開でビルドされているため、誰でも読み取り、再ビルドできます。その後、そのファイルをウイルス対策プログラムに誤検知として報告し、GitHub で当社に連絡してください。そうすれば、当社も報告できます。コマンドとウイルス対策メーカーの報告ページは「私のウイルス対策が MDM にフラグを立てます」を参照してください。"
+  },
   "af83c70c1ca46aae": {
    "source": "Options on its Connection page, on Linux",
    "text": "Linux の「オプション」の「接続」ページ。"
@@ -12826,6 +12866,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM 自身のダウンロードに、MDM 独自のダウンローダーを使用</g1>: yt-dlp、ffmpeg、MDM の更新ファイル、クラッシュ レポートのシンボルを、複数の接続を使ってダウンロードするようになりました。接続が切れてもダウンロードを再開し、プロキシ設定も適用されます。各ファイルは、使用前に発行元が署名したチェックサムと照合されます。"
   },
+  "b4d57a3265ad8025": {
+   "source": "Check that your copy is ours:",
+   "text": "お使いのコピーが当社のものか確認してください。"
+  },
   "b4d5d25243e1d43b": {
    "source": "No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, each time it starts and once a day while it runs…",
    "text": "いいえ。MDM にはアカウント、分析機能、テレメトリ機能はありません。ダウンロード元のサーバーに接続し、起動時と実行中に 1 日 1 回、新しいバージョンがあるかどうかを GitHub に問い合わせます (これはヘルプ → 更新プログラムの確認でオフにできます)。ブラウザー拡張機能は、お使いのコンピューター上の MDM とのみ通信します。詳細はプライバシー ポリシーに記載されています。"
@@ -13105,6 +13149,10 @@
   "b8ed53721f1b8571": {
    "source": "Click <g1>Apply</g1>.",
    "text": "<g1>適用</g1>をクリックします。"
+  },
+  "b8f874b98d985f32": {
+   "source": "If they match, it is the file we published. MDM is open source and built in public: every release is built from the <g1>public source code</g1> by GitHub Actions, on GitHub's servers, with <g2>every build's log</g2> there to see, so anyone can read what went into it and build it again.",
+   "text": "一致する場合、それは当社が公開したファイルです。MDM はオープンソースであり、公開されています。すべてのリリースは、GitHub のサーバー上で GitHub Actions によって <g1>公開されているソースコード</g1> からビルドされ、<g2>すべてのビルドログ</g2> が公開されているため、誰でもその内容を読み、再度ビルドすることができます。"
   },
   "b8face0bc8562340": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
@@ -14686,6 +14734,10 @@
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
    "text": "ファイル名が数字または文字だけ異なるファイル（<x1/>から<x2/>など）の場合:"
   },
+  "d044acd0f39a8232": {
+   "source": "Report the file to your antivirus as a false positive: <g1>Microsoft Defender</g1>, <g2>Malwarebytes</g2>, <g3>Avast</g3>, <g4>AVG</g4>, <g5>Bitdefender</g5>, <g6>Kaspersky</g6>, <g7>ESET</g7>.",
+   "text": "ファイルを誤検知としてウイルス対策ソフトに報告してください。<g1>Microsoft Defender</g1>、<g2>Malwarebytes</g2>、<g3>Avast</g3>、<g4>AVG</g4>、<g5>Bitdefender</g5>、<g6>Kaspersky</g6>、<g7>ESET</g7>。"
+  },
   "d04d5c0494e576d1": {
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "複数のテーマ、キュー、スケジューラ、Android アプリを備えた、モダンな外観のソフト"
@@ -16141,6 +16193,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "MDM の 2 つ目のコピーが最初のコピーを監視します。MDM がクラッシュすると、レポート ウィンドウには<g1>Mister Download Manager が予期せず終了しました</g1>と表示されます。ウィンドウが 8 秒間応答しない場合、<g2>Mister Download Manager が応答を停止しました</g2>と表示され、<g3>MDM を終了して再起動する</g3>でフリーズしたコピーを閉じ、新しいコピーを開始します。MDM が自動的に回復した場合、ウィンドウにその旨が表示されます。"
+  },
+  "e6b85e1428494d1c": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
+   "text": "いいえ、このサイトまたは GitHub Releases から入手したものであれば、ウイルスではありません。一部のウイルス対策プログラムは、未知のプログラムを既知のウイルスではなく、推測に基づいて判断します…"
   },
   "e6e4ffbd1a17c7e8": {
    "source": "<x1/> pull request",
@@ -17806,6 +17862,10 @@
    "source": "Help pages",
    "text": "ヘルプページ"
   },
+  "fcf964e16b9ad4f2": {
+   "source": "Then:",
+   "text": "次に、"
+  },
   "fd07a5008213448b": {
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>以下のサイトからは自動的にダウンロードを開始しない</g1> — ダウンロードがブラウザーに残るサイトをスペースで区切って指定します。名前はサイトのサブドメインもカバーします (<x2/> は <x3/> と <x4/> をカバーし、<x5/> も同様です)。<x6/> はダウンロード パネルのリスト (<x7/>) と同様に何にでも一致し、そのページが別のサーバー (ダウンロード サーバーまたは CDN) にリンクしているファイルは、ダウンロード元のページによって識別されます。ページが不明なダウンロードは、そのアドレス自体によって一致します。<g8>既定</g8> をクリックすると、元のリストに戻ります。"
@@ -17901,6 +17961,10 @@
   "fe1e9bfa950043a0": {
    "source": "File Properties: change the address or the folder of a download.",
    "text": "ファイルのプロパティ: ダウンロードのアドレスまたはフォルダーを変更します。"
+  },
+  "fe2d94832629a9c2": {
+   "source": "My antivirus flags MDM. Is it a virus?",
+   "text": "アンチウイルスが MDM をウイルスと判定します。これはウイルスですか？"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

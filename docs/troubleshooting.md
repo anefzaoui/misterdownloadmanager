@@ -20,6 +20,14 @@ Every download keeps a log of its recent events: retries, redirects, the server'
 6. If it says **this site lets only browsers through**, the site's bot check (Cloudflare's, for one) turned MDM away. MDM has already asked once more connecting the way your browser does, with your browser's cookies for that site, and once under its own name (some checks let a program that says what it is through), and the site still wants its check answered in a browser. Hold **Alt** (**Option** on a Mac) as you click the link: the browser opens it in the tab, runs the site's check there ("Just a moment...", sometimes a box to tick), and keeps the download that comes after it. MDM leaves that download alone for a minute after your click. See [Browser integration](browser-integration.md#keys-to-force-or-prevent-capture).
 7. If it says **the site sent a web page instead of the file**, the link led to the site's own page: a file host's countdown, a captcha, a **Download** button to press, or a sign-in. MDM never saves that page as your file. Click **Open in browser** in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.
 
+## A download says Damaged
+
+Its archive's test found files in it that don't read back whole ([Testing archives](link-grabber.md#testing-archives)): hover over **Status** to see which.
+
+1. Right-click → **Redownload** (or the **Damaged archive** window's **Redownload**) downloads it again from the start.
+2. A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a **Redownload**, is probably damaged on the server itself: ask the site for another copy.
+3. To test it again by hand, right-click → **Test archive**.
+
 ## A download starts over instead of resuming
 
 - Look at **Resume capability** in the progress window. **No** means the server can't send a file in parts, so MDM can't continue it later.
@@ -100,17 +108,23 @@ On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with Ope
 
 ## My antivirus or VirusTotal flags MDM {#antivirus}
 
-A few antivirus programs flag new installers just because they have rarely seen them, and machine-learning engines do this the most. On VirusTotal, a handful of small engines flagging a new setup while the big ones stay clean is usually a false positive. We report these to the vendors when we see them.
+It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as `Malware.AI`, `Gen:`, `ML` or `Heur` mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.
 
-To check that your copy is the real one:
+**Check that your copy is ours:**
 
-1. Download MDM only from [the website](https://misterdownloadmanager.com) or [GitHub Releases](https://github.com/anefzaoui/misterdownloadmanager/releases).
-2. Get your file's SHA-256. On Windows, run `certutil -hashfile "MisterDownloadManager-0.5.0-setup.exe" SHA256`; on Linux, `sha256sum` and the file's name.
-3. Compare it with the same file's line in that release's `SHA256SUMS.txt`.
+1. Download MDM only from [misterdownloadmanager.com](https://misterdownloadmanager.com/download.html) or [GitHub Releases](https://github.com/anefzaoui/misterdownloadmanager/releases).
+2. Get your file's SHA-256 checksum, with the downloaded file's name in place of `<file>`: on Windows, in PowerShell, `Get-FileHash <file>`; on Linux, `sha256sum <file>`; on macOS, `shasum -a 256 <file>`.
+3. Compare it with the same file's line in that release's `SHA256SUMS.txt` (capital or small letters don't matter). To be sure the list itself is ours, check its signature, `SHA256SUMS.txt.sig`, with MDM's release key: see [Check your download](https://misterdownloadmanager.com/download.html#check-your-download).
 
-If they match, it is the file we published. Every release is built on GitHub from the [public source code](https://github.com/anefzaoui/misterdownloadmanager), so anyone can read what went into it.
+If they match, it is the file we published. MDM is open source and built in public: every release is built from the [public source code](https://github.com/anefzaoui/misterdownloadmanager) by GitHub Actions, on GitHub's servers, with [every build's log](https://github.com/anefzaoui/misterdownloadmanager/actions) there to see, so anyone can read what went into it and build it again.
 
-If your antivirus quarantined MDM, restore it and add an exception for its folder. If it flags something other than the setup or MDM's own programs, or a copy from anywhere else, don't run it, and please [tell us](https://github.com/anefzaoui/misterdownloadmanager/issues).
+**Then:**
+
+- Report the file to your antivirus as a false positive: [Microsoft Defender](https://www.microsoft.com/en-us/wdsi/filesubmission), [Malwarebytes](https://help.malwarebytes.com/hc/en-us/articles/31589211404571-Report-a-false-positive-to-Malwarebytes-Support), [Avast](https://www.avast.com/report-false-positive), [AVG](https://www.avg.com/en-ww/report-false-positive), [Bitdefender](https://www.bitdefender.com/consumer/support/answer/29358/), [Kaspersky](https://support.kaspersky.com/1870), [ESET](https://support.eset.com/en/kb141).
+- [Tell us on GitHub](https://github.com/anefzaoui/misterdownloadmanager/issues) which antivirus it was, the detection's name and the file, so we can report it too.
+- If your antivirus quarantined MDM, restore it and add an exception for its folder.
+
+If the checksum doesn't match, or the copy came from anywhere else, don't run it: delete it and [tell us](https://github.com/anefzaoui/misterdownloadmanager/issues).
 
 ## HTTPS downloads fail with "no certificates" (Linux)
 

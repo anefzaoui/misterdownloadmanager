@@ -119,6 +119,19 @@ The download's log (hover over it in the list) says what happened: **Extracted 1
 
 Each try starts the extraction again: with a long list and a large archive whose file names aren't encrypted, it can take a moment before the right one is found.
 
+## Testing archives
+
+A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: **Options → Archives → Test archives when their download completes** is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose **Test archive**, whatever its size.
+
+- The test is 7-Zip's (`7z t`, with the 7-Zip that **Options → Archives** names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.
+- The download counts as done once its test is over. The list says **Checking 45%** meanwhile, its queue waits for it, and its **Download complete** window, its sound and its extraction come after the test.
+- An archive protected by a password isn't tested, as its files can't be read without it: the log says **Couldn't test photos.zip: it needs a password**. Nor are tar, gz and xz files.
+- A damaged archive says **Damaged** in the list, its log names the damaged files, and the **Damaged archive** window offers **Redownload**: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; **Extract** still tries it.
+- A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says **Downloading the damaged parts again (1.20 MB)**, then **Tested again: the archive has no errors now**. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, `If-Range`), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with **the file changed on the server** instead of mixing two versions: **Redownload** downloads the new one. An archive still damaged after that is offered for **Redownload**.
+- 7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for **Redownload** when damaged, never repaired in part.
+- A split archive (`photos.zip.001`, `photos.z01`, `notes.7z.001`, `movie.part1.rar`, `movie.r00`) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. **Test archive** on a split archive not complete yet says so: **Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)**.
+- Closing MDM stops a test; the archive is tested again at the next start.
+
 ## Next steps
 
 - [Adding downloads →](adding-downloads.md)

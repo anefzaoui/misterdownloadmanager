@@ -1622,6 +1622,10 @@
    "source": "The torrent engine is written in Rust, which rules out many memory bugs, and MDM checks every piece against the torrent's fingerprint, so a peer can't slip in altered data. MDM keeps the engine up to date with the fixes its authors publish.",
    "text": "محرك التورنت مكتوب بلغة Rust، مما يستبعد العديد من أخطاء الذاكرة، ويتحقق MDM من كل جزء مقابل بصمة التورنت، لذلك لا يمكن لأي نظير إدخال بيانات معدلة. يحافظ MDM على تحديث المحرك بالإصلاحات التي ينشرها مؤلفوه."
   },
+  "16a5d1db49d75475": {
+   "source": "Get your file's SHA-256 checksum, with the downloaded file's name in place of <x1/>: on Windows, in PowerShell, <x2/>; on Linux, <x3/>; on macOS, <x4/>.",
+   "text": "احصل على بصمة الملف SHA-256 لملفك، مع اسم الملف الذي تم تنزيله بدلا من <x1/>: على Windows، في PowerShell، <x2/>؛ على Linux، <x3/>؛ على macOS، <x4/>."
+  },
   "16ae7edc2b9c219f": {
    "source": "Find a download in a long list",
    "text": "البحث عن تنزيل في قائمة طويلة"
@@ -1793,6 +1797,10 @@
   "19377f473665c846": {
    "source": "<g1>The help shows what it describes</g1> (<g2>#228</g2>): every guide and the main help pages now have pictures of the windows they explain, cropped to what matters, numbered where a step points at one control, and step strips for the usual flows (a download from the browser, a first download, a video, a torrent, a queue overnight). On the website they follow its light or dark theme, keep their place while they load, and open larger with a click; their descriptions and captions are translated with the page. The pictures are made by a script from one list (<x3/>), so they can all be taken again in one go.",
    "text": "<g1>تظهر التعليمات ما تصفه</g1> (<g2>#228</g2>): تحتوي كل الأدلة وصفحات التعليمات الرئيسية الآن على صور للنوافذ التي تشرحها، مقتطعة لما يهم، مرقمة حيث تشير خطوة إلى عنصر تحكم واحد، وشرائط خطوات للتدفقات المعتادة (تنزيل من المستعرض، تنزيل أول، فيديو، تورنت، قائمة انتظار ليلية). على الموقع، تتبع سمته الفاتح أو الداكن، وتحافظ على مكانها أثناء التحميل، وتفتح بحجم أكبر بنقرة؛ تترجم أوصافها وتسمياتها مع الصفحة. يتم إنشاء الصور بواسطة نص برمجي من قائمة واحدة (<x3/>)، بحيث يمكن التقاطها جميعا دفعة واحدة."
+  },
+  "1958a01b370ca326": {
+   "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
+   "text": "غالبا ما يكون هذا إنذارا كاذبا. تحكم بعض برامج مكافحة الفيروسات على برنامج لا تعرفه بناء على تخمين مدروس، وليس بناء على فيروس معروف: أسماء الكشف مثل <x1/> أو <x2/> أو <x3/> أو <x4/> تعني هذا التخمين. ما تشير إليه معظم هذه البرامج هو تنزيل جديد لم يقم بتشغيله سوى عدد قليل من الأشخاص حتى الآن، من مشروع صغير، بدون توقيع ناشر؛ مثبت MDM ليس موقعا برمجيا بعد. على VirusTotal، عدد قليل من المحركات التي تشير إلى إعداد جديد بينما تظل معظمها نظيفة هو العلامة المعتادة على نتيجة إيجابية خاطئة."
   },
   "1962902ce083389d": {
    "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
@@ -5078,6 +5086,10 @@
    "source": "Where the sign-in is kept",
    "text": "مكان حفظ بيانات تسجيل الدخول"
   },
+  "47cff7958a924e1e": {
+   "source": "Compare it with the same file's line in that release's <x1/> (capital or small letters don't matter). To be sure the list itself is ours, check its signature, <x2/>, with MDM's release key: see <g3>Check your download</g3>.",
+   "text": "قارنها بالسطر الخاص بنفس الملف في <x1/> الخاص بهذا الإصدار (الأحرف الكبيرة أو الصغيرة لا تهم). للتأكد من أن القائمة نفسها هي قائمتنا، تحقق من توقيعها، <x2/>، باستخدام مفتاح إصدار MDM: انظر <g3>التحقق من تنزيلك</g3>."
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "إعدادات الاتصال في الخيارات →"
@@ -5469,6 +5481,10 @@
   "4d895f12e00559ae": {
    "source": "Can it download from Netflix or other paid streaming services?",
    "text": "هل يمكنه التنزيل من Netflix أو خدمات البث المدفوعة الأخرى؟"
+  },
+  "4d8b3d6ddc128044": {
+   "source": "My antivirus flags MDM. Is it a virus? — Mister Download Manager",
+   "text": "برنامج مكافحة الفيروسات الخاص بي يضع علامة على MDM. هل هو فيروس؟ — Mister Download Manager"
   },
   "4d95d1dfa997c3ed": {
    "source": "The formats you meet",
@@ -7434,6 +7450,10 @@
    "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
    "text": "<g1>Firefox</g1><g2>Mozilla · <g3>أضف إلى Firefox</g3></g2>"
   },
+  "6a78482a79cac599": {
+   "source": "If the checksum doesn't match, or the copy came from anywhere else, don't run it: delete it and <g1>tell us</g1>.",
+   "text": "إذا لم تتطابق بصمة الملف، أو جاءت النسخة من أي مكان آخر، فلا تشغلها: احذفها و<g1>أخبرنا</g1>."
+  },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
    "text": "الجدولة: قائمة انتظار تبدأ وتتوقف حسب الساعة."
@@ -7669,6 +7689,10 @@
   "6dc00f6ca0aab78e": {
    "source": "<g1>What an archive holds goes</g1> — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.",
    "text": "<g1>محتويات الأرشيف تذهب</g1> — إلى مجلد يحمل اسمه عندما يحتوي على عدة أشياء (الافتراضي)، دائما إلى مثل هذا المجلد، أو مباشرة إلى مجلد الأرشيف."
+  },
+  "6dce60e2f4b860a4": {
+   "source": "<g1>Tell us on GitHub</g1> which antivirus it was, the detection's name and the file, so we can report it too.",
+   "text": "<g1>أخبرنا على GitHub</g1> عن برنامج مكافحة الفيروسات الذي كان، واسم الكشف والملف، حتى نتمكن من الإبلاغ عنه أيضا."
   },
   "6ddb957d293eb435": {
    "source": "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.",
@@ -8818,6 +8842,10 @@
    "source": "In dialogs",
    "text": "في مربعات الحوار"
   },
+  "7e2c588b344ccd88": {
+   "source": "No, if it came from <g1>this site</g1> or <g2>GitHub Releases</g2>. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x3/>, <x4/>, <x5/> or <x6/> mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's <x7/>. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and <g8>tell us on GitHub</g8> so we can report it too. The commands and the antivirus makers' report pages: <g9>My antivirus flags MDM</g9>.",
+   "text": "لا، إذا كان من <g1>هذا الموقع</g1> أو <g2>إصدارات GitHub</g2>. تحكم بعض برامج مكافحة الفيروسات على برنامج لا تعرفه بتخمين مدروس، وليس بفيروس معروف: أسماء الكشف مثل <x3/>، <x4/>، <x5/> أو <x6/> تعني هذا التخمين. ما تشير إليه في الغالب هو تنزيل جديد لم يقم بتشغيله سوى عدد قليل من الأشخاص بعد، بدون توقيع ناشر؛ مثبت MDM ليس موقعا برمجيا بعد. للتأكد من أن نسختك هي نسختنا، قارن بصمة الملف SHA-256 الخاصة بها مع <x7/> الخاص بالإصدار. MDM مفتوح المصدر وكل إصدار يتم بناؤه علنا، بواسطة GitHub Actions، بحيث يمكن لأي شخص قراءته وإعادة بنائه. ثم أبلغ برنامج مكافحة الفيروسات الخاص بك عن الملف على أنه إيجابي كاذب، و<g8>أخبرنا على GitHub</g8> حتى نتمكن من الإبلاغ عنه أيضا. الأوامر وصفحات الإبلاغ الخاصة بصانعي برامج مكافحة الفيروسات: <g9>برنامج مكافحة الفيروسات الخاص بي يشير إلى MDM</g9>."
+  },
   "7e34624a653bd43b": {
    "source": "A file name sent by a site in plain UTF-8 now reaches MDM readable from Firefox and browsers built on it, such as Floorp, Waterfox and Zen: an Arabic name was saved as unreadable symbols (<g1>#447</g1>). A name written with percent signs in the same header is decoded as well. The add-on carries the fix",
    "text": "اسم الملف الذي يرسله موقع ما بتشفير UTF-8 العادي يصل الآن إلى MDM قابلا للقراءة من Firefox والمستعرضات المبنية عليه، مثل Floorp وWaterfox وZen: تم حفظ اسم عربي كرموز غير قابلة للقراءة (<g1>#447</g1>). يتم فك تشفير الاسم المكتوب بعلامات النسبة المئوية في نفس الرأس أيضا. الإضافة تحمل الإصلاح."
@@ -9053,6 +9081,10 @@
   "80afa23a5451c61d": {
    "source": "What it can do, and what it can't",
    "text": "ما يمكنه فعله، وما لا يمكنه فعله"
+  },
+  "80b75f50253c4016": {
+   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder.",
+   "text": "إذا قام برنامج مكافحة الفيروسات الخاص بك بعزل MDM، فاستعده وأضف استثناء لمجلده."
   },
   "80bb2d8150ab92af": {
    "source": "Mac or Linux?",
@@ -10433,6 +10465,10 @@
   "953a64f3542b5742": {
    "source": "Correct the translation in the third column and delete the row's <x1/> line.",
    "text": "صحح الترجمة في العمود الثالث واحذف سطر <x1/> الخاص بالصف."
+  },
+  "954373bf4b513543": {
+   "source": "Download MDM only from <g1>misterdownloadmanager.com</g1> or <g2>GitHub Releases</g2>.",
+   "text": "نزل MDM فقط من <g1>misterdownloadmanager.com</g1> أو <g2>GitHub Releases</g2>."
   },
   "956271136a063e89": {
    "source": "What's new in version 0.2.4 <g1>2026-11-01</g1>",
@@ -12402,6 +12438,10 @@
    "source": "A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the <g1>Download complete</g1> window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.",
    "text": "قد يرفض موقع الترجمات عندما يطلب منه ذلك كثيرا: يفعل YouTube ذلك، وخاصة بالنسبة لتسمياته التوضيحية المترجمة. يتم حفظ الفيديو على أي حال. يطلب MDM الترجمات مرة أخرى بعد 20 ثانية، وإذا لم تأت بعد، فإن نافذة <g1>اكتمل التنزيل</g1> وسجل التنزيل يوضحان أي منها مفقود ولماذا. حاول مرة أخرى لاحقا. عندما تأتي الترجمات التي كان من المفترض أن تكون داخل الفيديو فقط في المحاولة الثانية، يتم حفظها بجانبه بدلا من ذلك."
   },
+  "af76ea4a71ae00da": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as Malware.AI, Gen:, ML or Heur mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's SHA256SUMS.txt. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and tell us on GitHub so we can report it too. The commands and the antivirus makers' report pages: My antivirus flags MDM.",
+   "text": "لا، إذا كان من هذا الموقع أو إصدارات GitHub. تحكم بعض برامج مكافحة الفيروسات على برنامج لا تعرفه بتخمين مدروس، وليس بفيروس معروف: أسماء الكشف مثل Malware.AI أو Gen: أو ML أو Heur تعني هذا التخمين. ما تشير إليه في الغالب هو تنزيل جديد لم يقم بتشغيله سوى عدد قليل من الأشخاص بعد، بدون توقيع ناشر؛ مثبت MDM ليس موقعا برمجيا بعد. للتأكد من أن نسختك هي نسختنا، قارن بصمة الملف SHA-256 الخاصة بها مع SHA256SUMS.txt الخاص بالإصدار. MDM مفتوح المصدر وكل إصدار يتم بناؤه علنا، بواسطة GitHub Actions، بحيث يمكن لأي شخص قراءته وإعادة بنائه. ثم أبلغ برنامج مكافحة الفيروسات الخاص بك عن الملف على أنه إيجابي كاذب، وأخبرنا على GitHub حتى نتمكن من الإبلاغ عنه أيضا. الأوامر وصفحات الإبلاغ الخاصة بصانعي برامج مكافحة الفيروسات: برنامج مكافحة الفيروسات الخاص بي يشير إلى MDM."
+  },
   "af83c70c1ca46aae": {
    "source": "Options on its Connection page, on Linux",
    "text": "الخيارات في صفحة الاتصال الخاصة بها، على Linux"
@@ -12830,6 +12870,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>تستخدم تنزيلات MDM برنامج التنزيل الخاص به</g1>: ينزل الآن yt-dlp وffmpeg وتحديثات MDM ورموز تقارير الأعطال عبر عدة اتصالات، وتتابع التنزيل بعد انقطاع الاتصال، وتستخدم إعدادات الوكيل لديك. ولا يزال يتحقق من بصمات الملفات التي وقعها ناشروها قبل استخدام كل ملف."
   },
+  "b4d57a3265ad8025": {
+   "source": "Check that your copy is ours:",
+   "text": "تأكد أن نسختك هي نسختنا:"
+  },
   "b4d5d25243e1d43b": {
    "source": "No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, each time it starts and once a day while it runs…",
    "text": "لا. ليس لدى MDM حسابات، ولا تحليلات، ولا قياس عن بعد. يتصل بالخوادم التي تنزل منها، وفي كل مرة يبدأ فيها، ومرة واحدة يوميا أثناء تشغيله..."
@@ -13109,6 +13153,10 @@
   "b8ed53721f1b8571": {
    "source": "Click <g1>Apply</g1>.",
    "text": "انقر على <g1>تطبيق</g1>."
+  },
+  "b8f874b98d985f32": {
+   "source": "If they match, it is the file we published. MDM is open source and built in public: every release is built from the <g1>public source code</g1> by GitHub Actions, on GitHub's servers, with <g2>every build's log</g2> there to see, so anyone can read what went into it and build it again.",
+   "text": "إذا تطابقتا، فهو الملف الذي نشرناه. MDM مفتوح المصدر ومبني علنا: كل إصدار يتم بناؤه من <g1>الشيفرة المصدرية العامة</g1> بواسطة GitHub Actions، على خوادم GitHub، مع <g2>سجل كل بناء</g2> متاح للاطلاع عليه، بحيث يمكن لأي شخص قراءة ما دخل فيه وبنائه مرة أخرى."
   },
   "b8face0bc8562340": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
@@ -14694,6 +14742,10 @@
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
    "text": "للملفات التي تختلف أسماؤها برقم أو حرف فقط، مثل <x1/> إلى <x2/>:"
   },
+  "d044acd0f39a8232": {
+   "source": "Report the file to your antivirus as a false positive: <g1>Microsoft Defender</g1>, <g2>Malwarebytes</g2>, <g3>Avast</g3>, <g4>AVG</g4>, <g5>Bitdefender</g5>, <g6>Kaspersky</g6>, <g7>ESET</g7>.",
+   "text": "أبلغ برنامج مكافحة الفيروسات الخاص بك عن الملف كإيجابية كاذبة: <g1>Microsoft Defender</g1>، <g2>Malwarebytes</g2>، <g3>Avast</g3>، <g4>AVG</g4>، <g5>Bitdefender</g5>، <g6>Kaspersky</g6>، <g7>ESET</g7>."
+  },
   "d04d5c0494e576d1": {
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "مظهر عصري مع عدة سمات، وقوائم انتظار ومجدولات، وتطبيق أندرويد"
@@ -16149,6 +16201,10 @@
   "e680b303dc899de3": {
    "source": "A second copy of MDM watches the first. When MDM crashes, the report window says <g1>Mister Download Manager closed unexpectedly</g1>. When its window hasn't answered for 8 seconds, it says <g2>Mister Download Manager stopped responding</g2>, and <g3>End and restart MDM</g3> closes the frozen copy and starts a fresh one. If MDM comes back by itself, the window says so.",
    "text": "تراقب نسخة ثانية من MDM النسخة الأولى. عندما يتعطل MDM، تقول نافذة التقرير <g1>توقف Mister Download Manager بشكل غير متوقع</g1>. عندما لا تستجيب نافذته لمدة 8 ثوان، تقول <g2>توقف Mister Download Manager عن الاستجابة</g2>، ويقوم <g3>إنهاء MDM وإعادة تشغيله</g3> بإغلاق النسخة المتوقفة وبدء نسخة جديدة. إذا عاد MDM للعمل من تلقاء نفسه، فإن النافذة تخبرك بذلك."
+  },
+  "e6b85e1428494d1c": {
+   "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
+   "text": "لا، إذا كان من هذا الموقع أو إصدارات GitHub. تحكم بعض برامج مكافحة الفيروسات على برنامج لا تعرفه بتخمين مدروس، وليس بفيروس معروف..."
   },
   "e6e4ffbd1a17c7e8": {
    "source": "<x1/> pull request",
@@ -17814,6 +17870,10 @@
    "source": "Help pages",
    "text": "صفحات التعليمات"
   },
+  "fcf964e16b9ad4f2": {
+   "source": "Then:",
+   "text": "ثم:"
+  },
   "fd07a5008213448b": {
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>عدم بدء التنزيل تلقائيا من المواقع التالية</g1> — المواقع التي تبقى تنزيلاتها في المستعرض، مفصولة بمسافات. يغطي الاسم النطاقات الفرعية للموقع أيضا (<x2/> يغطي <x3/> و<x4/>، وكذلك <x5/>)، وتطابق <x6/> أي شيء كما في قائمة لوحات التنزيل (<x7/>)، والملفات التي ترتبط بها صفحاته على خادم آخر (خادم تنزيل أو CDN)، يتم تحديدها من الصفحة التي جاء منها التنزيل. يتم مطابقة التنزيل الذي لا تعرف صفحته بعنوانه الخاص. يعيد <g8>افتراضي</g8> القائمة الأصلية."
@@ -17909,6 +17969,10 @@
   "fe1e9bfa950043a0": {
    "source": "File Properties: change the address or the folder of a download.",
    "text": "خصائص الملف: تغيير عنوان أو مجلد التنزيل."
+  },
+  "fe2d94832629a9c2": {
+   "source": "My antivirus flags MDM. Is it a virus?",
+   "text": "برنامج مكافحة الفيروسات الخاص بي يضع علامة على MDM. هل هو فيروس؟"
   },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",

@@ -27,6 +27,10 @@ On one test machine (Windows 11, MDM 0.5.2, IDM 6.42, release builds), memory in
 
 MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from [this site](/download.html) or the project's GitHub releases.
 
+### My antivirus flags MDM. Is it a virus? {#antivirus}
+
+No, if it came from [this site](/download.html) or [GitHub Releases]({{REPO}}/releases). Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as `Malware.AI`, `Gen:`, `ML` or `Heur` mean such a guess. What they flag most is a new download few people have run yet, without a publisher's signature; MDM's installer isn't code-signed yet. To be sure your copy is ours, compare its SHA-256 checksum with the release's `SHA256SUMS.txt`. MDM is open source and every release is built in public, by GitHub Actions, so anyone can read and rebuild it. Then report the file to your antivirus as a false positive, and [tell us on GitHub]({{REPO}}/issues) so we can report it too. The commands and the antivirus makers' report pages: [My antivirus flags MDM](/help/troubleshooting.html#antivirus).
+
 ### Does MDM collect my data? {#privacy}
 
 No. MDM has no accounts, no analytics and no telemetry. It connects to the servers you download from and, each time it starts and once a day while it runs, asks GitHub whether a newer version exists (you can turn that off in Help → Check for updates). The browser extension talks only to MDM on your own computer. The details are in the [privacy policy](/privacy.html).

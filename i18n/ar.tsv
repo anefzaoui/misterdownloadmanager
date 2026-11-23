@@ -47,6 +47,11 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالان الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالات الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالا الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	وجد اختبار الأرشيف {n} ملفا تالفا: {files}|وجد اختبار الأرشيف {n} ملفا تالفا: {files}|وجد اختبار الأرشيف {n} ملفين تالفين: {files}|وجد اختبار الأرشيف {n} ملفات تالفة: {files}|وجد اختبار الأرشيف {n} ملفا تالفا: {files}|وجد اختبار الأرشيف {n} ملفا تالفا: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -198,6 +203,11 @@
 #. text in the Options window
 #. a 24-hour clock, with an example
 	24-hour (21:41)	نظام 24 ساعة (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	لم يتمكن 7-Zip من اختباره ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 	7-Zip needed	يلزم 7-Zip
@@ -278,6 +288,10 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	a volume of it is missing	أحد مجلداته مفقود
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	أحد أجزائه غير موجود بعد
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	حول Mister Download Manager
 #. text in whereis.rs
@@ -900,7 +914,7 @@
 	Clipboard	الحافظة
 #. text in the Options window
 	Clock:	الساعة:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1024,6 +1038,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	تعذر البحث عن إصدار أحدث من {name}: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	تعذر اختبار {name}: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1059,6 +1078,18 @@
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 	Daily	يوميا
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	تالف
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	أرشيف تالف
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	تالف: كشف اختبار الأرشيف عن أخطاء فيه. انقر بزر الماوس الأيمن ← «إعادة التنزيل» لتنزيله مرة أخرى
 #. text in the Options window
 	Date order:	ترتيب التاريخ:
 #. page title in the Options window
@@ -1283,6 +1314,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	قيد تنزيل نسخة MDM الخاصة...
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	قيد تنزيل الأجزاء التالفة مرة أخرى ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	قيد تنزيل التحديث... {percent}
@@ -2803,6 +2839,15 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 	not supported by this service	غير مدعوم من هذه الخدمة
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	لم يتم اختباره بعد: {name} غير مكتمل ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	لم يختبر: حجمه أكبر من {limit} (الخيارات ← «الأرشيفات»). انقر بزر الماوس الأيمن ← «اختبار الأرشيف» لاختباره
 #. text in the Options window
 	Not used: file parts are written next to the file	غير مستخدم: أجزاء الملف تكتب بجانب الملف
 #. text in a dialog box
@@ -3224,9 +3269,17 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	قيد التسجيل...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 	Redownload	إعادة التنزيل
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	تعيد «إعادة التنزيل» تنزيل كل مجلد مرة أخرى من البداية.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	تعيد «إعادة التنزيل» تنزيله مرة أخرى من البداية.
 #. text in a download's Properties window
 	Referer:	المرجع:
 #. button in rssdlg.rs
@@ -3668,6 +3721,10 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 	Some	بعض
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	بعض أجزائه لا تزال قيد التنزيل
 #. text in a dialog box
 	Some of the torrent's files are already in this folder:	بعض ملفات التورنت موجودة بالفعل في هذا المجلد:
 #. text in the Options window
@@ -3905,12 +3962,32 @@
 #. button in the Options window
 #. button: asks the chosen DNS for an address, to see it works
 	Test	اختبار
+#. message or event log entry in the main window
+#, machine
+	Test archive	اختبار الأرشيف
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	اختبار الأرشيفات عند اكتمال تنزيلها، حتى {gb} غيغابايت
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 	Test browser integration	اختبار الربط بالمستعرض
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Test browser integration...	اختبار الربط بالمستعرض...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	تم اختباره مرة أخرى: الأرشيف لا يحتوي على أخطاء الآن
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	قيد اختبار الأرشيف...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	قيد اختبار الأرشيف... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 	Th	الخميس
@@ -3937,6 +4014,14 @@
 	The archive could not be moved to the Recycle Bin: it was kept	تعذر نقل الأرشيف إلى سلة المحذوفات: بقي في مكانه
 #. text in extracting archives (a download's log, the Archive password window)
 	The archive could not be moved to the Trash: it was kept	تعذر نقل الأرشيف إلى سلة المهملات: بقي في مكانه
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	فشل اختبار الأرشيف: إنه تالف، أو ليس الأرشيف الذي يشير إليه اسمه
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	لم يجد اختبار الأرشيف أي أخطاء
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 	The archive was moved to the Recycle Bin	تم نقل الأرشيف إلى سلة المحذوفات
@@ -4007,6 +4092,11 @@
 	the connection to {host} was cut: a firewall, or a network that blocks it	انقطع الاتصال بـ{host}: قد يكون السبب جدار حماية أو شبكة تمنع الاتصال
 #. text in errors.rs
 	the connection was lost while receiving data	انقطع الاتصال أثناء استلام البيانات
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	تعذر تنزيل الأجزاء التالفة مرة أخرى: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -4857,6 +4947,11 @@
 	Virgin Islands (U.S.)	جزر فيرجن (الولايات المتحدة)
 #. text in the Options window
 	Virus checking settings	إعدادات فحص الفيروسات
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	الجزء {n} غير موجود بعد
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -5237,6 +5332,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} قيد التنزيل بالفعل: حاول مرة أخرى بعد قليل
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} تالف: وجد اختباره أخطاء فيه.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} تالف: وجد اختباره أخطاء في أحد مجلداته.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6727,6 +6832,10 @@ menu	Te&xt	&نص
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	أخبر &صديقا
+#. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	اختبار الأرشيف
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 menu	The graphics card was lost twice in 10 minutes	انقطعت بطاقة الرسومات مرتين في 10 دقائق
