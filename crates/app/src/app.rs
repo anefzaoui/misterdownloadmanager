@@ -13829,6 +13829,7 @@ impl App {
             }
         }
         crate::crash::step(crate::crash::Step::MainWindow);
+        winui::name_window(ui, crate::MAIN_TITLE);
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));

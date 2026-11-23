@@ -395,8 +395,57 @@ pub fn app_pid() -> Option<u32> {
 struct Envelope {
     /// The `token` from ipc.json (it changes at every start of the app).
     token: String,
+    /// The hand-over's own id (#1651), random, made by the one sending it: a command sent again
+    /// with the same id, because its answer never came (lost on the way, or later than the
+    /// sender waited), is answered `ok` and not given to the app twice. Letters, digits and `-`,
+    /// at most 64; none (an older sender's): taken as it comes. Questions (those answered with
+    /// more than `ok`) aren't sent again, and carry none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    id: Option<String>,
     #[serde(flatten)]
     cmd: Command,
+}
+
+/// A command for the running app, sent until it is known to have it (a second launch's, #1651):
+/// every attempt carries the same id ([`Envelope::id`]), so the app takes it once however many
+/// attempts reach it, and an attempt whose answer was lost can be made again safely.
+pub struct Handover {
+    cmd: Command,
+    id: String,
+}
+
+impl Handover {
+    pub fn new(cmd: Command) -> Handover {
+        Handover {
+            cmd,
+            id: random_token(),
+        }
+    }
+
+    /// One attempt (see [`send`]).
+    pub fn send(&self) -> Result<(), SendError> {
+        ack(exchange(&self.cmd, Some(&self.id), ANSWER_WAIT))
+    }
+
+    /// Attempts until the app has it or `wait` passes: an app that is starting opens its
+    /// channel within it, and one whose answer didn't come is asked again (it takes the
+    /// command once: the same id).
+    pub fn send_waiting(&self, wait: Duration) -> Result<(), String> {
+        self.send_while(wait, || true)
+    }
+
+    /// [`Handover::send_waiting`], given up as soon as `running` says no app is there any more
+    /// (asked after each failed attempt): `/exit`'s, whose app may quit before its answer comes.
+    pub fn send_while(&self, wait: Duration, running: impl Fn() -> bool) -> Result<(), String> {
+        let start = std::time::Instant::now();
+        loop {
+            match self.send() {
+                Ok(()) => return Ok(()),
+                Err(e) if start.elapsed() >= wait || !running() => return Err(e.to_string()),
+                Err(_) => std::thread::sleep(Duration::from_millis(100)),
+            }
+        }
+    }
 }
 
 /// The data folder a headless run was given (`--data`, #157), before anything reads it.
@@ -503,26 +552,13 @@ pub fn instance_lock() -> Option<std::fs::File> {
     Some(file)
 }
 
-/// Hand `cmd` to the instance that holds the lock, waiting up to `wait` for it to start
-/// listening (it may have just been launched too).
-pub fn send_waiting(cmd: &Command, wait: Duration) -> Result<(), String> {
-    let start = std::time::Instant::now();
-    loop {
-        match send(cmd) {
-            Ok(()) => return Ok(()),
-            Err(e) if start.elapsed() >= wait => return Err(e.to_string()),
-            Err(_) => std::thread::sleep(Duration::from_millis(100)),
-        }
-    }
-}
-
 pub fn endpoint_path() -> Option<PathBuf> {
     data_dir().map(|d| d.join("ipc.json"))
 }
 
 /// Ask the running app something (automation API) and return its one-line answer.
 pub fn request(cmd: &Command) -> Result<String, String> {
-    exchange(cmd, ANSWER_WAIT).map_err(|e| e.to_string())
+    exchange(cmd, None, ANSWER_WAIT).map_err(|e| e.to_string())
 }
 
 /// Ask the running app something and return its one-line answer, whatever it is (an older app
@@ -532,7 +568,7 @@ pub fn request(cmd: &Command) -> Result<String, String> {
 /// It waits a second longer than the app's channel gives the app (2 s), so an app
 /// too busy to answer in time is heard saying `timeout` rather than taken for a closed line.
 pub fn request_checked(cmd: &Command) -> Result<String, SendError> {
-    exchange(cmd, REPLY_WAIT + Duration::from_secs(1))
+    exchange(cmd, None, REPLY_WAIT + Duration::from_secs(1))
 }
 
 /// How long a client reads for its answer (`send`, `request`).
@@ -559,9 +595,14 @@ impl std::fmt::Display for SendError {
     }
 }
 
-/// Send `cmd` to a running Mister Download Manager.
+/// Send `cmd` to a running Mister Download Manager, once (its own id: a [`Handover`] sent once).
 pub fn send(cmd: &Command) -> Result<(), SendError> {
-    let ack = exchange(cmd, ANSWER_WAIT)?;
+    Handover::new(cmd.clone()).send()
+}
+
+/// A command's answer: `ok`, or why it wasn't taken.
+fn ack(answer: Result<String, SendError>) -> Result<(), SendError> {
+    let ack = answer?;
     if ack.trim() == "ok" {
         Ok(())
     } else {
@@ -573,20 +614,34 @@ pub fn send(cmd: &Command) -> Result<(), SendError> {
     }
 }
 
-/// One request line out, one answer line back (read for up to `wait`).
-fn exchange(cmd: &Command, wait: Duration) -> Result<String, SendError> {
+/// One request line out, one answer line back (read for up to `wait`), to the app ipc.json names.
+fn exchange(cmd: &Command, id: Option<&str>, wait: Duration) -> Result<String, SendError> {
     let not_running = |e: String| SendError::NotRunning(e);
-    let refused = |e: std::io::Error| SendError::Refused(e.to_string());
     let path = endpoint_path().ok_or_else(|| not_running("no data dir".into()))?;
     let ep: Endpoint =
         serde_json::from_slice(&std::fs::read(&path).map_err(|e| not_running(e.to_string()))?)
             .map_err(|e| not_running(e.to_string()))?;
-    let addr = SocketAddr::from((Ipv4Addr::LOCALHOST, ep.port));
+    exchange_at(ep.port, ep.token, cmd, id, wait)
+}
+
+/// [`exchange`] with the app listening on `port`.
+fn exchange_at(
+    port: u16,
+    token: String,
+    cmd: &Command,
+    id: Option<&str>,
+    wait: Duration,
+) -> Result<String, SendError> {
+    let not_running = |e: String| SendError::NotRunning(e);
+    let refused = |e: std::io::Error| SendError::Refused(e.to_string());
+    let addr = SocketAddr::from((Ipv4Addr::LOCALHOST, port));
     let mut s = TcpStream::connect_timeout(&addr, Duration::from_millis(500))
         .map_err(|e| not_running(e.to_string()))?;
     s.set_read_timeout(Some(wait)).ok();
     let line = serde_json::to_string(&Envelope {
-        token: ep.token,
+        token,
+        // A question is answered by the app itself, and never sent again blindly.
+        id: id.filter(|_| !cmd.wants_reply()).map(str::to_owned),
         cmd: cmd.clone(),
     })
     .map_err(|e| SendError::Refused(e.to_string()))?;
@@ -620,8 +675,42 @@ pub fn serve(tx: Sender<Incoming>, wake: impl Fn() + Send + Sync + 'static) -> s
     Ok(())
 }
 
-/// Connections handled at once; more are closed unanswered.
+/// Connections handled at once; more are answered `busy` (nothing taken: sent again, it goes
+/// through once one is done).
 const MAX_IN_FLIGHT: usize = 8;
+
+/// The ids of the hand-overs the app was given lately ([`Envelope::id`]), the oldest forgotten
+/// first: one sent again (its `ok` lost, or later than its sender waited) isn't given twice.
+#[derive(Default)]
+struct Delivered {
+    order: std::collections::VecDeque<String>,
+    ids: std::collections::HashSet<String>,
+}
+
+/// Hand-over ids remembered: far more than are sent again within a sender's wait (10 s).
+const REMEMBERED: usize = 4096;
+
+impl Delivered {
+    fn has(&self, id: &str) -> bool {
+        self.ids.contains(id)
+    }
+
+    fn add(&mut self, id: String) {
+        if self.ids.insert(id.clone()) {
+            self.order.push_back(id);
+        }
+        while self.order.len() > REMEMBERED {
+            if let Some(old) = self.order.pop_front() {
+                self.ids.remove(&old);
+            }
+        }
+    }
+}
+
+/// An id [`Envelope::id`] may be.
+fn valid_id(id: &str) -> bool {
+    (1..=64).contains(&id.len()) && id.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-')
+}
 
 /// Each loopback connection on its own thread (a slow or hostile client can't hold up a real
 /// command), at most `MAX_IN_FLIGHT` at a time.
@@ -631,9 +720,10 @@ fn accept_loop(
     tx: Sender<Incoming>,
     wake: impl Fn() + Send + Sync + 'static,
 ) {
-    use std::sync::Arc;
     use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::{Arc, Mutex};
     let (token, wake) = (Arc::new(token), Arc::new(wake));
+    let delivered = Arc::new(Mutex::new(Delivered::default()));
     let in_flight = Arc::new(AtomicUsize::new(0));
     for conn in listener.incoming().flatten() {
         if !conn.peer_addr().is_ok_and(|a| a.ip().is_loopback()) {
@@ -641,13 +731,18 @@ fn accept_loop(
         }
         if in_flight.fetch_add(1, Ordering::SeqCst) >= MAX_IN_FLIGHT {
             in_flight.fetch_sub(1, Ordering::SeqCst);
-            continue; // dropped: closes the connection
+            // Said, not just closed (#1651): a closed line looked like an app that took the
+            // command and gave no answer, and a second launch's `/exit` was dropped then.
+            let _ = (&conn).write_all(b"busy\n");
+            let _ = conn.shutdown(std::net::Shutdown::Write);
+            continue;
         }
         let (token, wake, tx, slot) = (token.clone(), wake.clone(), tx.clone(), in_flight.clone());
+        let delivered = delivered.clone();
         let spawned = std::thread::Builder::new()
             .name("mdm-ipc-conn".into())
             .spawn(move || {
-                handle(&conn, &token, &tx, &*wake);
+                handle(&conn, &token, &tx, &delivered, &*wake);
                 slot.fetch_sub(1, Ordering::SeqCst);
             });
         if spawned.is_err() {
@@ -656,7 +751,13 @@ fn accept_loop(
     }
 }
 
-fn handle(conn: &TcpStream, token: &str, tx: &Sender<Incoming>, wake: &dyn Fn()) {
+fn handle(
+    conn: &TcpStream,
+    token: &str,
+    tx: &Sender<Incoming>,
+    delivered: &std::sync::Mutex<Delivered>,
+    wake: &dyn Fn(),
+) {
     let line = match read_request(conn) {
         Ok(line) => line,
         // Said so, so the browser's host doesn't take silence for an app that isn't there.
@@ -696,23 +797,57 @@ fn handle(conn: &TcpStream, token: &str, tx: &Sender<Incoming>, wake: &dyn Fn())
                 let _ = (&*conn).write_all(format!("{answer}\n").as_bytes());
                 return;
             }
-            // The app is quitting (its receiver gone): the command would be lost.
-            if tx
-                .send(Incoming {
-                    cmd: env.cmd,
-                    reply: None,
-                })
-                .is_err()
-            {
-                "gone\n"
+            let id = env.id.filter(|id| valid_id(id));
+            // Taken or not, under the lock: two attempts of one hand-over arriving together
+            // (the first slow to answer) give it to the app once.
+            let given = {
+                let mut delivered = delivered
+                    .lock()
+                    .unwrap_or_else(std::sync::PoisonError::into_inner);
+                if id.as_deref().is_some_and(|id| delivered.has(id)) {
+                    Given::Before
+                } else if tx
+                    .send(Incoming {
+                        cmd: env.cmd,
+                        reply: None,
+                    })
+                    .is_err()
+                {
+                    // The app is quitting (its receiver gone): the command would be lost.
+                    Given::Gone
+                } else {
+                    if let Some(id) = id {
+                        delivered.add(id);
+                    }
+                    Given::Now
+                }
+            };
+            // Answered first, then the app woken: the answer doesn't wait on the window.
+            let answer: &[u8] = if given == Given::Gone {
+                b"gone\n"
             } else {
+                b"ok\n"
+            };
+            let _ = (&*conn).write_all(answer);
+            if given == Given::Now {
                 wake();
-                "ok\n"
             }
+            return;
         }
         _ => "denied\n",
     };
     let _ = (&*conn).write_all(reply.as_bytes());
+}
+
+/// What became of a command.
+#[derive(PartialEq)]
+enum Given {
+    /// Given to the app now.
+    Now,
+    /// An attempt of the same hand-over had given it already.
+    Before,
+    /// The app is quitting.
+    Gone,
 }
 
 /// Close after an answer given before the request was read to its end: no more writing, then
@@ -1077,6 +1212,7 @@ mod tests {
         let back = |cmd: &Command| {
             let line = serde_json::to_string(&Envelope {
                 token: "t".into(),
+                id: None,
                 cmd: cmd.clone(),
             })
             .unwrap();
@@ -1152,6 +1288,7 @@ mod tests {
         };
         let line = serde_json::to_string(&Envelope {
             token: "t".into(),
+            id: None,
             cmd,
         })
         .unwrap();
@@ -1188,6 +1325,222 @@ mod tests {
         })
         .unwrap();
         assert!(!whole.contains("checksum"), "{whole}");
+    }
+
+    /// A running accept loop whose app is woken through `wake`: (port, received commands).
+    fn test_server_waking(
+        token: &str,
+        wake: impl Fn() + Send + Sync + 'static,
+    ) -> (u16, std::sync::mpsc::Receiver<Incoming>) {
+        let l = TcpListener::bind((Ipv4Addr::LOCALHOST, 0)).unwrap();
+        let port = l.local_addr().unwrap().port();
+        let (tx, rx) = std::sync::mpsc::channel();
+        let token = token.to_owned();
+        std::thread::spawn(move || accept_loop(l, token, tx, wake));
+        (port, rx)
+    }
+
+    /// Every command the app was given so far (waiting a moment for the last ones).
+    fn given(rx: &std::sync::mpsc::Receiver<Incoming>) -> Vec<Command> {
+        let mut all = Vec::new();
+        while let Ok(inc) = rx.recv_timeout(Duration::from_millis(500)) {
+            all.push(inc.cmd);
+        }
+        all
+    }
+
+    fn download(url: &str) -> Command {
+        Command {
+            url: Some(url.into()),
+            ..Default::default()
+        }
+    }
+
+    /// #1651: one hand-over sent again with its id (its `ok` lost) reaches the app once; another
+    /// hand-over of the same command (a second `/d` of the same link) is a new one.
+    #[test]
+    fn a_hand_over_sent_again_is_given_once() {
+        let (port, rx) = test_server("secret");
+        let cmd = download("http://x/a.zip");
+        let wait = Duration::from_secs(5);
+        for _ in 0..3 {
+            let answer = exchange_at(port, "secret".into(), &cmd, Some("hand-over-1"), wait);
+            assert_eq!(answer.ok().as_deref(), Some("ok"));
+        }
+        let other = exchange_at(port, "secret".into(), &cmd, Some("hand-over-2"), wait);
+        assert_eq!(other.ok().as_deref(), Some("ok"));
+        // No id (an older sender): taken as it comes, as before.
+        for _ in 0..2 {
+            assert_eq!(
+                exchange_at(port, "secret".into(), &cmd, None, wait)
+                    .ok()
+                    .as_deref(),
+                Some("ok")
+            );
+        }
+        assert_eq!(given(&rx).len(), 4);
+        // An id that isn't one is ignored, not trusted.
+        let bad = "x".repeat(65);
+        for _ in 0..2 {
+            let answer = exchange_at(port, "secret".into(), &cmd, Some(&bad), wait);
+            assert_eq!(answer.ok().as_deref(), Some("ok"));
+        }
+        assert_eq!(given(&rx).len(), 2);
+    }
+
+    /// #1651, the phantom "Duplicate download link": an app slow to answer (its waking held up)
+    /// made a second launch give up on its `ok` and send the command again, and the app got it
+    /// twice. Now the answer doesn't wait for the waking, and an attempt sent again is given
+    /// once, whatever the timing.
+    #[test]
+    fn an_answer_too_late_does_not_give_a_command_twice() {
+        let (port, rx) = test_server_waking("secret", || {
+            std::thread::sleep(Duration::from_secs(2));
+        });
+        let cmd = download("http://x/once.zip");
+        let started = std::time::Instant::now();
+        let answer = exchange_at(
+            port,
+            "secret".into(),
+            &cmd,
+            Some("slow-1"),
+            Duration::from_secs(5),
+        );
+        assert_eq!(answer.ok().as_deref(), Some("ok"));
+        assert!(
+            started.elapsed() < Duration::from_secs(2),
+            "answered before the app was woken: {:?}",
+            started.elapsed()
+        );
+        // A sender that gives up sooner than the app answers (a busy computer) and sends again:
+        // every attempt with the one id, at once.
+        let attempts: Vec<_> = (0..8)
+            .map(|_| {
+                let cmd = cmd.clone();
+                std::thread::spawn(move || {
+                    exchange_at(
+                        port,
+                        "secret".into(),
+                        &cmd,
+                        Some("slow-2"),
+                        Duration::from_secs(5),
+                    )
+                })
+            })
+            .collect();
+        for a in attempts {
+            let _ = a.join().unwrap();
+        }
+        assert_eq!(given(&rx).len(), 2, "slow-1 and slow-2, once each");
+    }
+
+    /// #1651: more connections than the channel handles at once are told `busy` (nothing was
+    /// taken), not closed unanswered, which looked like an app that took the command; a
+    /// [`Handover`]'s attempts go on until one is taken.
+    #[test]
+    fn over_the_limit_is_busy_and_nothing_is_lost() {
+        let (port, rx) = test_server("secret");
+        // Connections that say nothing hold every place for up to 3 s.
+        let silent: Vec<_> = (0..MAX_IN_FLIGHT)
+            .map(|_| TcpStream::connect((Ipv4Addr::LOCALHOST, port)).unwrap())
+            .collect();
+        std::thread::sleep(Duration::from_millis(300));
+        let cmd = download("http://x/busy.zip");
+        let answer = exchange_at(
+            port,
+            "secret".into(),
+            &cmd,
+            Some("busy-1"),
+            Duration::from_secs(5),
+        );
+        // `busy`, or the line reset as it closed (the request unread): not `ok`.
+        assert_ne!(answer.ok().as_deref(), Some("ok"), "nothing was taken");
+        assert!(rx.try_recv().is_err());
+        // Sent again with the same id until the places free up: taken once.
+        let until = std::time::Instant::now() + Duration::from_secs(10);
+        while exchange_at(
+            port,
+            "secret".into(),
+            &cmd,
+            Some("busy-1"),
+            Duration::from_secs(5),
+        )
+        .ok()
+        .as_deref()
+            != Some("ok")
+        {
+            assert!(std::time::Instant::now() < until, "never taken");
+            std::thread::sleep(Duration::from_millis(100));
+        }
+        drop(silent);
+        assert_eq!(given(&rx).len(), 1);
+    }
+
+    /// #1651, under load: many hand-overs at once, each attempted several times over (as a second
+    /// launch does when its answers come late), and every one reaches the app exactly once.
+    #[test]
+    fn many_hand_overs_at_once_each_given_exactly_once() {
+        let (port, rx) = test_server("secret");
+        let senders: Vec<_> = (0..64)
+            .map(|i| {
+                std::thread::spawn(move || {
+                    let cmd = download(&format!("http://x/{i}.zip"));
+                    let id = format!("load-{i}");
+                    let mut oks = 0;
+                    let until = std::time::Instant::now() + Duration::from_secs(20);
+                    // Three attempts that each must be taken, or seen as taken before.
+                    while oks < 3 && std::time::Instant::now() < until {
+                        let a = exchange_at(
+                            port,
+                            "secret".into(),
+                            &cmd,
+                            Some(&id),
+                            Duration::from_secs(5),
+                        );
+                        if a.ok().as_deref() == Some("ok") {
+                            oks += 1;
+                        } else {
+                            std::thread::sleep(Duration::from_millis(20));
+                        }
+                    }
+                    oks
+                })
+            })
+            .collect();
+        for s in senders {
+            assert_eq!(s.join().unwrap(), 3);
+        }
+        let mut urls: Vec<_> = given(&rx).into_iter().filter_map(|c| c.url).collect();
+        urls.sort();
+        let mut want: Vec<_> = (0..64).map(|i| format!("http://x/{i}.zip")).collect();
+        want.sort();
+        assert_eq!(urls, want);
+    }
+
+    /// Questions carry no hand-over id: an answer is the app's own, never assumed.
+    #[test]
+    fn questions_carry_no_hand_over_id() {
+        let l = TcpListener::bind((Ipv4Addr::LOCALHOST, 0)).unwrap();
+        let port = l.local_addr().unwrap().port();
+        let server = std::thread::spawn(move || {
+            let mut lines = Vec::new();
+            for _ in 0..2 {
+                let (conn, _) = l.accept().unwrap();
+                lines.push(read_request(&conn).ok().unwrap());
+                let _ = (&conn).write_all(b"ok\n");
+            }
+            lines
+        });
+        let ask = Command {
+            query: Some("list".into()),
+            ..Default::default()
+        };
+        let wait = Duration::from_secs(5);
+        let _ = exchange_at(port, "t".into(), &ask, Some("q-1"), wait);
+        let _ = exchange_at(port, "t".into(), &download("http://x/"), Some("d-1"), wait);
+        let lines = server.join().unwrap();
+        assert!(!lines[0].contains("q-1"), "{}", lines[0]);
+        assert!(lines[1].contains("\"id\":\"d-1\""), "{}", lines[1]);
     }
 
     #[test]
