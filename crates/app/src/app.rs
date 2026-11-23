@@ -1660,6 +1660,10 @@ pub struct App {
     previews: Vec<(u64, PathBuf)>,
     /// Torrents Preview switched to Download in order: switched back once they finish.
     preview_order: Vec<u64>,
+    /// Preview's links, and part files a player kept from being renamed, still to remove: a
+    /// player holds them open (Windows), so they are tried again every few seconds.
+    preview_leftovers: Vec<PathBuf>,
+    preview_sweep_at: Instant,
     /// The yt-dlp or gallery-dl version each video or gallery last started with.
     started_with: HashMap<u64, String>,
     /// Stopped by hand while they could have run: a running queue leaves them alone until
@@ -2165,9 +2169,24 @@ impl App {
             .flat_map(|i| [Some(i.dest.clone()), i.dest.parent().map(|p| p.to_owned())])
             .flatten()
             .collect();
+        // A finished download's part file that a player kept from being renamed: a second name
+        // of the file (or its copy), as its size says.
+        let parts: Vec<(PathBuf, PathBuf)> = items
+            .iter()
+            .filter(|i| i.status == Status::Complete)
+            .map(|i| (mdm_engine::naming::part_path(&i.dest), i.dest.clone()))
+            .collect();
         std::thread::spawn(move || {
             for f in folders {
                 dialogs::clear_preview_links(&f);
+            }
+            let len = |p: &PathBuf| std::fs::metadata(p).map(|m| m.len());
+            for (part, file) in parts {
+                if let (Ok(a), Ok(b)) = (len(&part), len(&file))
+                    && a == b
+                {
+                    let _ = std::fs::remove_file(&part);
+                }
             }
         });
         App {
@@ -2363,6 +2382,8 @@ impl App {
             heal_retry: Default::default(),
             previews: Vec::new(),
             preview_order: Vec::new(),
+            preview_leftovers: Vec::new(),
+            preview_sweep_at: Instant::now(),
             started_with: HashMap::new(),
             stopped_by_hand: Default::default(),
             saved_by_hand: Default::default(),
@@ -5859,7 +5880,10 @@ impl App {
     /// data isn't kept on the disk by the link; a torrent's Download in order, that Preview
     /// switched on, is switched off again once it finishes.
     fn poll_previews(&mut self) {
-        if self.previews.is_empty() && self.preview_order.is_empty() {
+        if self.previews.is_empty()
+            && self.preview_order.is_empty()
+            && self.preview_leftovers.is_empty()
+        {
             return;
         }
         let items = &self.items;
@@ -5869,13 +5893,28 @@ impl App {
                 .find(|i| i.id == id)
                 .filter(|i| i.status != Status::Complete)
         };
+        let leftovers = &mut self.preview_leftovers;
         self.previews.retain(|(id, file)| {
             if unfinished(*id).is_some_and(|i| preview_file(i) == *file) {
                 return true;
             }
-            dialogs::clear_preview_link(file);
+            leftovers.extend(dialogs::preview_link_of(file));
+            // Finished while a player held its part file: the engine couldn't rename it, and
+            // left the file a second name of it (or a copy); the part goes once the player lets go.
+            if items
+                .iter()
+                .any(|i| i.id == *id && i.status == Status::Complete)
+            {
+                leftovers.push(mdm_engine::naming::part_path(file));
+            }
             false
         });
+        // What a player still holds open (Windows) goes once it lets go.
+        if !self.preview_leftovers.is_empty() && Instant::now() >= self.preview_sweep_at {
+            self.preview_sweep_at = Instant::now() + Duration::from_secs(5);
+            self.preview_leftovers
+                .retain(|f| dialogs::clear_preview_leftover(f));
+        }
         let mut finished = Vec::new();
         self.preview_order.retain(|id| {
             if unfinished(*id).is_some() {

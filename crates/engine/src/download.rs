@@ -3116,12 +3116,7 @@ fn finish(
             .unwrap_or("download");
         naming::unique_path(dir, name)
     };
-    // Antivirus scanners and indexers briefly lock new files on Windows: retry the rename.
-    let rename = |to: &Path| {
-        craft_atomic::retry_rename(craft_atomic::RenameRetry::platform(), || {
-            std::fs::rename(&part, to)
-        })
-    };
+    let rename = |to: &Path| finish_part(&part, to);
     let dest = match final_place(dest, replace) {
         Final::Free => {
             rename(dest)?;
@@ -3157,6 +3152,31 @@ fn finish(
     // Only now is the resume state obsolete.
     let _ = std::fs::remove_file(state_path(original));
     Ok(Outcome { path: dest, size })
+}
+
+/// `part` renamed to `to`, tried again while an antivirus scanner or an indexer briefly holds it
+/// (Windows). A program that keeps it open and won't let it be renamed (a video player Preview
+/// opened it in, #1682) doesn't fail the finished download: `to` becomes a second name of the
+/// data (a copy where the drive has no hard links: FAT32, exFAT), and `part` goes when it can
+/// (the app removes it once the program lets go).
+fn finish_part(part: &Path, to: &Path) -> io::Result<()> {
+    let renamed = craft_atomic::retry_rename(craft_atomic::RenameRetry::platform(), || {
+        std::fs::rename(part, to)
+    });
+    match renamed {
+        // ERROR_SHARING_VIOLATION
+        Err(e) if cfg!(windows) && e.raw_os_error() == Some(32) && !to.exists() => {
+            if std::fs::hard_link(part, to).is_err()
+                && let Err(c) = std::fs::copy(part, to)
+            {
+                let _ = std::fs::remove_file(to);
+                return Err(c);
+            }
+            let _ = std::fs::remove_file(part);
+            Ok(())
+        }
+        r => r,
+    }
 }
 
 /// Whether a new download to `dest` may replace the file at its place
@@ -6406,6 +6426,32 @@ mod tests {
             );
         }
         assert!(!Error::Throttled(StatusCode::SERVICE_UNAVAILABLE, None).link_dead());
+    }
+
+    /// #1682: a part file a program holds open and won't let be renamed (a video player Preview
+    /// opened it in) still finishes: the file is there under its own name.
+    #[cfg(windows)]
+    #[test]
+    fn a_part_a_player_holds_open_still_finishes() {
+        use std::os::windows::fs::OpenOptionsExt;
+        let dir = tempfile::tempdir().unwrap();
+        let part = dir.path().join("v.mkv.mdm.part");
+        let to = dir.path().join("v.mkv");
+        std::fs::write(&part, b"video").unwrap();
+        // A player's open: reading, sharing reading and writing but not deleting (the C
+        // runtime's, as VLC opens files).
+        let player = std::fs::OpenOptions::new()
+            .read(true)
+            .share_mode(1 | 2)
+            .open(&part)
+            .unwrap();
+        assert!(
+            std::fs::rename(&part, &to).is_err(),
+            "the player stops a rename"
+        );
+        finish_part(&part, &to).unwrap();
+        assert_eq!(std::fs::read(&to).unwrap(), b"video");
+        drop(player);
     }
 
     #[test]

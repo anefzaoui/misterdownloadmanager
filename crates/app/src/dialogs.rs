@@ -3919,7 +3919,7 @@ pub fn preview_torrent(dest: &Path) {
 /// A second name for the part file, the finished file's own (`<folder>\.mdm-preview\<name>`): the
 /// same data, growing with it, that a player shows by its real name. None where the drive has no
 /// hard links (FAT32, exFAT) or the name is taken by a link a player still holds. The app
-/// removes it as the download ends or goes ([`clear_preview_link`]), and at start-up.
+/// removes it as the download ends or goes ([`clear_preview_leftover`]), and at start-up.
 fn preview_link(part: &Path, file: &Path) -> Option<PathBuf> {
     let dir = part.parent()?.join(PREVIEW_DIR);
     // Earlier previews' links (one a player still has open stays until the next time).
@@ -3937,15 +3937,23 @@ fn preview_link(part: &Path, file: &Path) -> Option<PathBuf> {
 /// The hidden folder of Preview's links, beside the downloads.
 const PREVIEW_DIR: &str = ".mdm-preview";
 
-/// Remove the preview link made for `file` (its folder too, once empty). One a player still
-/// holds open on Windows stays, and goes at the next start-up.
-pub fn clear_preview_link(file: &Path) {
-    let (Some(dir), Some(name)) = (file.parent(), file.file_name()) else {
-        return;
-    };
-    let dir = dir.join(PREVIEW_DIR);
-    let _ = std::fs::remove_file(dir.join(name));
-    let _ = std::fs::remove_dir(&dir);
+/// The preview link made for `file`: `<folder>\.mdm-preview\<name>`.
+pub fn preview_link_of(file: &Path) -> Option<PathBuf> {
+    Some(file.parent()?.join(PREVIEW_DIR).join(file.file_name()?))
+}
+
+/// Remove `file`, a preview's leftover (its link, or a part file a player kept from being
+/// renamed), and the preview folder once it is empty. True while it is still there: a program
+/// holds it open (Windows), and it is tried again later.
+pub fn clear_preview_leftover(file: &Path) -> bool {
+    let held = std::fs::remove_file(file).is_err_and(|e| e.kind() != std::io::ErrorKind::NotFound);
+    if let Some(dir) = file
+        .parent()
+        .filter(|d| d.file_name().is_some_and(|n| n == PREVIEW_DIR))
+    {
+        let _ = std::fs::remove_dir(dir);
+    }
+    held
 }
 
 /// Remove every preview link in `folder` (start-up: what a crash left).

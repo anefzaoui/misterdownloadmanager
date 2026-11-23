@@ -19,8 +19,14 @@ pub type WorkerId = u32;
 /// Split points are rounded down to this boundary when possible.
 const ALIGN: u64 = 4096;
 
-/// In sequential order (Preview), how much a newly free connection takes ahead of the others.
+/// In sequential order (Preview), how much a connection fetches before the next free one takes
+/// what follows: at least this much, or `SEQ_SECS` of its own speed (up to `SEQ_CHUNK_MAX`).
 const SEQ_CHUNK: u64 = 4 << 20;
+/// A connection in sequential order asks the server again about this often (each chunk is a new
+/// request): a fast one fetches a longer chunk, not a new request several times a second.
+const SEQ_SECS: f64 = 4.0;
+/// The longest chunk, so the connections stay near the start of the file.
+const SEQ_CHUNK_MAX: u64 = 64 << 20;
 
 /// One contiguous part of the file. Positions are byte offsets; ranges are half-open.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -38,6 +44,8 @@ pub struct Segment {
     pub receiving: bool,
     /// When the current worker got it.
     pub given_at: Option<std::time::Instant>,
+    /// Where the current worker began in it (its speed: what it fetched since `given_at`).
+    pub given_from: u64,
 }
 
 impl Segment {
@@ -169,6 +177,7 @@ impl Planner {
                 worker: None,
                 receiving: false,
                 given_at: None,
+                given_from: s.cursor,
             })
             .collect();
         Ok(Planner {
@@ -225,27 +234,36 @@ impl Planner {
     pub fn assign(&mut self, w: WorkerId, after: Option<u64>) -> Option<Assignment> {
         self.release(w);
 
-        // Sequential (Preview): whichever begins nearer the start, an unassigned segment or the
-        // next chunk after the first segment with room for two; near the end, where neither is
-        // left, the usual rules finish the file.
+        // Sequential (Preview): whichever begins nearer the start, an unassigned segment or what
+        // follows the owner's chunk (`seq_chunk`) in the first segment with room for two; near
+        // the end, where neither is left, the usual rules finish the file.
         if self.sequential {
-            let chunk = SEQ_CHUNK.max(self.min_split);
+            let base = SEQ_CHUNK.max(self.min_split);
             let open = self
                 .segs
                 .iter()
                 .position(|s| s.worker.is_none() && s.unclaimed() > 0);
-            let split = self
-                .segs
-                .iter()
-                .position(|s| s.worker.is_some() && s.unclaimed() >= 2 * chunk);
+            // Where no owner's whole chunk leaves room, the first with room for two short ones
+            // is halved: the order holds to the end of the file.
+            let owned = |s: &&Segment| s.worker.is_some();
+            let split = (self.segs.iter().enumerate())
+                .filter(|(_, s)| owned(s))
+                .find_map(|(i, s)| {
+                    let chunk = seq_chunk(s, base);
+                    (s.unclaimed() >= chunk + base).then_some((i, s.reserved + chunk))
+                })
+                .or_else(|| {
+                    (self.segs.iter().enumerate())
+                        .filter(|(_, s)| owned(s) && s.unclaimed() >= 2 * base)
+                        .map(|(i, s)| (i, s.reserved + s.unclaimed() / 2 / ALIGN * ALIGN))
+                        .next()
+                });
             match (open, split) {
-                (Some(o), Some(sp)) if self.segs[o].cursor > self.segs[sp].reserved + chunk => {
-                    return Some(self.split_at(sp, self.segs[sp].reserved + chunk, w));
+                (Some(o), Some((sp, mid))) if self.segs[o].cursor > mid => {
+                    return Some(self.split_at(sp, mid, w));
                 }
                 (Some(o), _) => return Some(self.give(o, w, None)),
-                (None, Some(sp)) => {
-                    return Some(self.split_at(sp, self.segs[sp].reserved + chunk, w));
-                }
+                (None, Some((sp, mid))) => return Some(self.split_at(sp, mid, w)),
                 (None, None) => {}
             }
         }
@@ -400,6 +418,7 @@ impl Planner {
         s.worker = Some(w);
         s.receiving = false;
         s.given_at = Some(std::time::Instant::now());
+        s.given_from = s.cursor;
         s.reserved = s.cursor;
         Assignment {
             from: s.cursor,
@@ -419,7 +438,20 @@ fn fresh(start: u64, end: u64, worker: Option<WorkerId>) -> Segment {
         worker,
         receiving: false,
         given_at: worker.map(|_| std::time::Instant::now()),
+        given_from: start,
     }
+}
+
+/// How much the connection on `s` fetches in sequential order before the next free one takes
+/// what follows: `base` until its speed is known (a second in), then `SEQ_SECS` of that speed,
+/// up to `SEQ_CHUNK_MAX`, so each connection's next request comes every few seconds (#1682).
+fn seq_chunk(s: &Segment, base: u64) -> u64 {
+    let secs = s.given_at.map_or(0.0, |t| t.elapsed().as_secs_f64());
+    if secs < 1.0 {
+        return base;
+    }
+    let speed = s.reserved.saturating_sub(s.given_from) as f64 / secs;
+    ((speed * SEQ_SECS) as u64 / ALIGN * ALIGN).clamp(base, SEQ_CHUNK_MAX.max(base))
 }
 
 #[cfg(test)]
