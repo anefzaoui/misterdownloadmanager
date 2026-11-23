@@ -5,39 +5,41 @@
 #. count in a dialog box
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Also delete the {n} file from disk|Also delete the {n} files from disk	同时从磁盘中删除 {n} 个文件
 #. count in cnl.rs
 #. Click'n'Load window: a page whose web site the browser doesn't name, so MDM can't tell which site it is
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	未知网站要向链接抓取器发送 {n} 个链接。
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	还有 {n} 个
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+@plural	And {n} other file.|And {n} other files.	以及其他 {n} 个文件。
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	确定要从 Mister Download Manager 下载列表中删除这 {n} 个下载任务吗？
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-#, machine
 @plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	已连接到 {n} 个节点，正在获取文件列表...
 #. count in the Add torrent window
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT，{n} 个节点：{peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	已将 {n} 个文件解压到 {folder}
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
-#, machine
 @plural	Found {n} peer, connecting...|Found {n} peers, connecting...	已找到 {n} 个节点，正在连接...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
@@ -47,22 +49,22 @@
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	还有 {n} 个下载任务在等待。也要取消吗？
+#. count in a dialog box
+#. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+#. {n} = a number (keep the braces as they are)
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	这还会删除 {n} 个已完成的文件。
 #. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	and {n} more|and {n} more	另有 {n} 个
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	and {n} other file|and {n} other files	以及其他 {n} 个文件
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
-#, machine
 @plural	{host} allows {n} connection|{host} allows {n} connections	{host} 允许 {n} 个连接
 #. count in rssdlg.rs
 #. {n} = a number (keep the braces as they are)
@@ -70,20 +72,16 @@
 @plural	{n} article|{n} articles	{n} 篇文章
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} byte|{n} bytes	{n} 字节
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} download|{n} downloads	{n} 个下载任务
 #. count in a dialog box
 #. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} download finished|{n} downloads finished	{n} 个下载已完成
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} downloading|{n} downloading	{n} 个下载中
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
@@ -93,18 +91,15 @@
 #. count in a dialog box
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} failed|{n} failed	其中 {n} 个失败
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} file|{n} files	{n} 个文件
 #. count in the main window
 #. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} file chosen to download|{n} files chosen to download	已选择下载 {n} 个文件
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting
@@ -114,133 +109,102 @@
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} more file could not be deleted either.|{n} more files could not be deleted either.	还有 {n} 个文件未能删除。
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} peer|{n} peers	{n} 个节点
 #. count in the Options window
 #. Options → Archives: beside the Archive passwords button: how many are saved
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} saved|{n} saved	已保存 {n} 个
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} selected|{n} selected	{n} 个已选中
 #. count in the Options window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} site added from the file.|{n} sites added from the file.	已从文件添加 {n} 个站点。
 #. count in the Options window
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} site saved to the file.|{n} sites saved to the file.	已将 {n} 个站点保存到文件。
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} tracker added|{n} trackers added	已添加 {n} 个 Tracker
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
-#, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} 个 Tracker：{peers}
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
-#, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} 要向链接抓取器发送 {n} 个链接。
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
-#, machine
 @plural	{title}: {count} video|{title}: {count} videos	{title}：{count} 个视频
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
-#, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}：已列出 {total} 个视频中的 {listed} 个
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
-#, machine
 	"{what}" isn't an IP address.	“{what}”不是 IP 地址。
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Apply	应用(&A)
 #. text in the Scheduler window; button in standard windows
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Close	关闭(&C)
 #. button in the Scheduler window
 #. verb: delete the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Delete	删除(&D)
 #. text in the Scheduler window
 #. noun: button that opens the help
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Help	帮助(&H)
 #. button in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&New queue	新建队列(&N)
 #. text in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
 	&Start now	立即开始(&S)
 #. text in the Options window
 #. under Download panels site exclusions list
-#, machine
 	(separate by spaces; * matches anything)	(用空格分隔；* 匹配任意内容)
 #. text in the Options window
-#, machine
 	(separate names by spaces)	（用空格分隔名称）
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
-#, machine
 	(the Torrents category's folder)	（“种子”类别的文件夹）
 #. text in remote.rs
 #. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
 	.torrent file	.torrent 文件
 #. text in the Options window
 #. a 12-hour clock, with an example
-#, machine
 	12-hour (9:41 PM)	12 小时制（下午 9:41）
 #. text in the Options window
 #. a 24-hour clock, with an example
-#, machine
 	24-hour (21:41)	24 小时制（21:41）
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
-#, machine
 	7-Zip needed	需要 7-Zip
 #. tab in the main window
-#, machine
 	720p	720p
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
-#, machine
 	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 压缩包由 7-Zip（{path}）解压。
 #. text in the Options window
 #. Options → Archives, when Extract in place with HatchZip (a program's name) is on: {path} is where its program is
-#, machine
 	7z and RAR archives are extracted by HatchZip ({path}).	7z 和 RAR 压缩包由 HatchZip ({path}) 解压。
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
-#, machine
 	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z 和 RAR 压缩包需要 7-Zip（7-zip.org），但尚未安装。
 #. text in extracting archives (a download's log, the Archive password window)
-#, machine
 	7z and RAR archives need 7-Zip, which isn't installed	7z 和 RAR 压缩包需要 7-Zip，但尚未安装
 #. text in a download's progress window
-#, machine
 	<< Hide details	<< 隐藏详细信息
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
@@ -248,41 +212,42 @@
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid 服务使用您自己的付费账户下载文件托管站的链接，并为 MDM 提供直链。请仅使用您自己的账户：共享账户或其链接违反服务条款，可能导致账户被暂停。浏览器已开始的下载任务保持不变。
 #. text in a download's progress window
 #. reason shown on the Rename box when the entered name ends with a period
-#, machine
 	A file name cannot end with a dot	文件名不能以句点结尾
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
-#, machine
 	A file of this torrent can't be saved safely: {name}	此种子中有一个文件无法安全保存：{name}
 #. text in a dialog box
 #. the question about a name typed in Save As, above the file's path; the choices are the duplicate question's (numbered name, overwrite)
-#, machine
 	A file with this name is already there:	同名文件已存在：
 #. message or event log entry in the main window
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	A magnet link's files could not be looked up: {error}	无法查找磁力链接文件：{error}
+	A magnet link's files could not be looked up: {error}	无法获取磁力链接的文件列表：{error}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 配置 ID 由 6 位字母或数字（0-9、a-f）组成。
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	部分保存不含视频章节和字幕
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	播放列表中的视频将完整下载
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	配置文件的名称或其文件夹。留空：使用上次的配置文件。对于未列出的基于 Chromium 的浏览器（Helium、Thorium...），选择 Chromium 及其配置文件文件夹。
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
-#, machine
 	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下载任务通过代理传输：显示的位置和时间来自代理，而非服务器。
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
-#, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	报告已保存。将其发送给 GitHub 上的开发者有助于修复此问题；您可以先在下方查看报告的全部内容。不会自动发送任何内容：“发送”会在浏览器中打开已填写好的报告表单，供您检查后提交。
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
-#, machine
 	A rule adds the new articles whose titles it matches, as they come.	规则会在新文章发布时添加标题匹配的文章。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
@@ -292,22 +257,24 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	单文件种子需保留原文件名
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	某个种子文件的文件夹指向其目标位置之外
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
-#, machine
 	A tracker on this computer or the local network is never contacted: {line}	不会连接本机或本地网络上的 Tracker：{line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	缺少其中一个卷
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	About Mister Download Manager	关于 Mister Download Manager
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
-#, machine
 	about {ms} ms ({reach})	约 {ms} 毫秒（{reach}）
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -322,96 +289,73 @@
 	Accept incoming connections	接受传入连接
 #. text in the Options window
 #. column title: the account's name at the service
-#, machine
 	Account	账户
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
-#, machine
 	Accounts	账户
 #. text in remote.rs
 #. remote control page (on a phone): button: add the download
-#, machine
 	Add	添加
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
 	Add a download (Add URL)	添加下载任务（添加 URL）
 #. message or event log entry in the main window
 #. title of the file dialog of View → Theme → Add a theme file
 #. title of the message when View → Theme → Add a theme file fails
-#, machine
 	Add a theme file	添加主题文件
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
-#, machine
 	Add an account	添加账户
 #. text in the tray icon's menu
-#, machine
 	Add batch download	添加批量下载
 #. message or event log entry in the main window; text in the tray icon's menu
 #. title of the note when Tasks → Add batch download from clipboard finds nothing to download
-#, machine
 	Add batch download from clipboard	从剪贴板批量添加下载
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Add browser...	添加浏览器...
-#. text in categories.rs
-#, machine
+#. text in categories.rs; text in a dialog box
 	Add category	添加类别
 #. button in rssdlg.rs
 #. RSS feeds window: button that subscribes to the feed whose address is typed
-#, machine
 	Add feed	添加源
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
-#, machine
 	Add many downloads	添加多个下载任务
 #. window title in extension.rs
 #. title of the window that offers the browser extension
-#, machine
 	Add Mister Download Manager to your browser	将 Mister Download Manager 添加到您的浏览器
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
-#, machine
 	Add new download	添加新下载任务
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	添加重复项并覆盖现有文件
 #. text in the Options window
-#, machine
-	Add the duplicate with a numbered file name	添加重复项，文件名加编号
+	Add the duplicate with a numbered file name	添加重复下载，并使用带编号的文件名
 #. text in extension.rs
 #. button in the browser extension's window: open the extension's page in that browser
-#, machine
 	Add the extension	添加扩展
 #. window title in extension.rs
 #. title of the window that shows how to turn on the Safari extension
-#, machine
 	Add the extension to Safari	将扩展添加到 Safari
 #. text in extension.rs
-#, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	添加免费扩展：您在浏览器中下载的文件会出现在这里，视频页面会出现“下载”按钮。
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
-#, machine
 	Add them without starting them	添加但不启动
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
-#, machine
 	Add to queue	添加到队列
 #. text in a dialog box
-#, machine
 	Add to queue:	添加到队列：
 #. message or event log entry in the main window; window title in the Add torrent window
-#, machine
 	Add torrent	添加种子
 #. window title in the Add torrent window
-#, machine
 	Add trackers	添加 Tracker
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
-#, machine
 	Add {n} downloads to the list? Each video gets its own row.	要将 {n} 个下载任务添加到列表吗？每个视频占一行。
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
@@ -459,10 +403,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	留给浏览器的地址
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	高级/SOCKS...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -504,6 +444,8 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	上传者提供的所有字幕
+#. text in helpers.rs
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	这三款软件都是开源的。MDM通过自带的下载器从官方发布版本中获取它们，并在运行前检查每个文件的签名。大约140 MB，一次性下载。
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 #, machine
@@ -578,10 +520,22 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	其他 DNS...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	另一个下载已占用此种子的目标位置
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	另一个下载已占用 {file}。请选择其他目标位置。
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	其他程序已设置计算机的唤醒定时器
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	已在 {ms} 毫秒内响应。网站看到的 IP 是 {ip}。
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -663,6 +617,7 @@
 #, machine
 	Asking the service...	正在请求服务...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,7 +753,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	British Indian Ocean Territory	英属印度洋领地
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	浏览
@@ -862,7 +817,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	加拿大
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	取消
@@ -901,7 +856,7 @@
 #. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	类别
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #. title of the folder picker of the category dialog
 #, machine
 	Category folder	类别文件夹
@@ -944,7 +899,8 @@
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
 	Check feeds every	每隔
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 #, machine
 	Check for updates	检查更新
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -960,9 +916,17 @@
 #, machine
 	Check your connection, then try again, or get them later from the video window.	检查您的连接，然后重试，或者稍后从视频窗口获取。
 #. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	选中后，单击 MDM 图标会显示正在下载的内容，并提供暂停和取消选项；双击则打开窗口。未选中时，单击图标会显示或隐藏窗口
+#. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	选中后，关闭窗口时 MDM 继续运行：可用时隐藏到通知区域，否则最小化到任务栏，下载继续；未选中时，关闭窗口即退出 MDM。
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	选中后，来自浏览器隐私窗口的下载会保存到列表中，并在 MDM 重启后仍然存在；未选中时，它们仅保留在内存中，并在 MDM 关闭时消失。其 Cookie 永不保存
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -971,7 +935,8 @@
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
 	Checking every piece again	正在再次检查每个分块
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	正在检查更新...
@@ -1018,6 +983,9 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	选择 .torrent 文件
+#. text in helpers.rs
+#, machine
+	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	选择一个 JavaScript 运行时（Node.js、Deno、QuickJS 或 Bun）
 #. text in langpick.rs
 #, machine
 	Choose a language	选择语言
@@ -1028,7 +996,8 @@
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 #, machine
 	Choose the profile's folder	选择配置文件文件夹
-#. text in helpers.rs
+#. text in helpers.rs; text in the Options window
+#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	选择 {name}
@@ -1060,7 +1029,7 @@
 #. text in the Options window
 #, machine
 	Clock:	时钟：
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1123,6 +1092,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	刚果
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	也通过 uTP 连接 (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1192,11 +1165,24 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	could not reach {host} ({cause})	无法访问 {host} ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+#, machine
+	Couldn't check for updates: MDM tries again later	无法检查更新：MDM 将稍后重试
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	无法解压 {name}：{why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	Couldn't look for a newer {name}: {error}	无法查找比 {name} 更新的版本：{error}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	为此种子创建文件夹
 #. window title in a dialog box
 #, machine
 	Create folder	创建文件夹
@@ -1250,7 +1236,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	日、月、年
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	Debrid 服务账户
 #. text in the Scheduler window
@@ -1274,7 +1260,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	默认最大连接数
-#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs; text in torrent downloads
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1525,6 +1511,10 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
+	Downloading and verifying Node.js (40 to 60 MB)...	正在下载并验证 Node.js (40 到 60 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
 	Downloading and verifying yt-dlp...	正在下载并验证 yt-dlp...
 #. text in helpers.rs
 #. Video helpers: MDM's own yt-dlp is being downloaded
@@ -1536,7 +1526,11 @@
 #, machine
 	Downloading the update... {percent}	正在下载更新... {percent}
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+#, machine
+	Downloading the update... {percent}%	正在下载更新... {percent}%
+#. text in helpers.rs
+#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
 	Downloading {name} ({n} of {total})... {percent}	正在下载 {name}（{n} / {total}）... {percent}
@@ -1552,8 +1546,13 @@
 #. Windows' Settings → Default apps: what Mister Download Manager is
 #, machine
 	Downloads files, videos and torrents	下载文件、视频和种子
-#. text in the tray icon's menu
+#. message or event log entry in the main window
+#. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
+#, machine
+	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	来自浏览器隐私窗口的下载任务会像其他任务一样保留在 MDM 列表中，即使 MDM 重启后也是如此；其 Cookie 永远不会保存。若要仅将其保留在内存中，请取消勾选“{options}”→“{general}”→“{checkbox}”。
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	正在进行的下载任务
 #. text in a dialog box
@@ -1593,14 +1592,15 @@
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	拖放的链接
-#. window title in a dialog box
+#. text in a dialog box
+#. window title: the question asked when an address added is already in the list of downloads
 #, machine
 	Duplicate download link	重复的下载链接
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	每个连接都采用系统路由。
-#. text in the Link grabber window
+#. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	每个文件所属类别的文件夹
@@ -1719,6 +1719,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	全部恢复正常大小（100%）
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	精确剪切，重新编码
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1803,6 +1807,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	法罗群岛
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	快速：流按原样复制，因此部分可能在“从”时间之前一点开始
 #. text in the Scheduler window
 #, machine
 	February	二月
@@ -1891,6 +1899,10 @@
 #. verb: button that starts the search
 #, machine
 	Find	查找
+#. text in the Options window
+#. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
+#, machine
+	Find 7-Zip automatically	自动查找 7-Zip
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find a download	查找下载任务
@@ -2025,6 +2037,14 @@
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
 	from a playlist (yt-dlp)	来自播放列表（yt-dlp）
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and it is in memory only, gone from the list when MDM closes
+#, machine
+	From a private window: in memory only, gone from the list when MDM closes	来自隐私窗口：仅保留在内存中，MDM 关闭后将从列表中消失
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and MDM's list keeps it after a restart (Options → General → Keep private-window downloads in the list)
+#, machine
+	From a private window: kept in the list	来自隐私窗口：保留在列表中
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	来自种子文件
@@ -2042,12 +2062,20 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	来自命令行
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	从 {from} 到 {to}
 #. text in the Batch download window
 #, machine
 	From:	从：
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP 下载不通过 HTTP 代理。请选择 SOCKS5 或 SOCKS4 以通过代理发送。
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2078,7 +2106,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gambia	冈比亚
-#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
@@ -2116,6 +2144,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gibraltar	直布罗陀
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Go back to {version}	恢复到 {version}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2343,6 +2376,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	手动安装
+#. text in the Download video window
+#. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+#, machine
+	Install Node.js	安装 Node.js
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
@@ -2470,6 +2507,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Japan	日本
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
+#, machine
+	JavaScript runtime (for YouTube)	JavaScript 运行时（用于 YouTube）
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2494,6 +2535,14 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/秒
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
+#, machine
+	Keep MDM's helpers up to date automatically	自动保持 MDM 辅助程序为最新版本
+#. message or event log entry in the main window; text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	将隐私窗口下载保留在列表中
 #. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
@@ -2587,6 +2636,10 @@
 #. Options → Remote check box (off by default)
 #, machine
 	Let phones and computers on the local network control MDM	允许本地网络上的手机和电脑控制 MDM
+#. text in helpers.rs
+#. Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+#, machine
+	lets yt-dlp list all of YouTube's qualities	让 yt-dlp 列出 YouTube 的所有画质
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2681,10 +2734,19 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	查找
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	通过代理查找站点名称
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	请先查找新地址
+#. text in helpers.rs
+#. Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for a JavaScript runtime on this computer...	正在此计算机上查找 JavaScript 运行时...
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
@@ -2766,6 +2828,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	手动代理/SOCKS 配置
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	许多对等点只接受 uTP。没有它，MDM 无法连接到它们。
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2840,6 +2906,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM 无法执行此操作。
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM 未创建这些文件。启动种子可能会调整它们的大小并替换其内容，包括共享分块的未勾选文件。要将它们用于此种子吗？
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -2853,6 +2923,10 @@
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install it, or use another program	MDM 没有适用于此系统的副本：请安装，或使用其他程序
+#. text in helpers.rs
+#. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM 没有适用于此系统的副本：请安装 Node.js 或 Deno，或使用其他程序
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3123,6 +3197,11 @@
 #. button: create a new item
 #, machine
 	New	新建
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	来自浏览器的新地址 ({host})：正在从该地址继续
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3168,6 +3247,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	尚无地址
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	20 秒内无响应。
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3191,6 +3274,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	剪贴板中未找到下载链接。请复制包含 http、https、ftp 或 magnet 链接的文本，然后重试。
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	没有正在运行的下载
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3231,6 +3318,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	没有邮件应用：消息已复制，请粘贴到您的邮件中。
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	No newer {name} than this one	没有比此版本更新的 {name}
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	没有节点及时发送种子的文件列表
@@ -3263,6 +3355,10 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	在 {file} 中未找到任何网址。
+#. text in helpers.rs
+#. helper name and what it does (Node.js and YouTube are names)
+#, machine
+	Node.js: unlocks YouTube's qualities	Node.js：解锁 YouTube 视频画质
 #. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -3373,6 +3469,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	关
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	代理关闭：uTP 通过 UDP 传输，SOCKS5 代理不支持
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	关闭：种子完成后即停止，与普通下载任务一样。
@@ -3452,6 +3552,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	只有已完成或尚未开始的下载任务才能移动。请先停止并完成该任务。
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	仅下载部分内容
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3469,6 +3573,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	仅列出前 {n} 个视频。
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	仅下载“添加种子”中勾选的 {files} 个文件
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	仅在我使用计算机时
@@ -3493,7 +3601,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	使用 Mister Download Manager 打开磁力链接和 .torrent 文件
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	打开 Mister Download Manager
 #. text in extension.rs
@@ -3531,7 +3640,7 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Open with...	打开方式...
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
 	Options	选项
@@ -3603,6 +3712,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	巴拉圭
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	部分
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	密码
@@ -3722,6 +3835,14 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	预览暂不可用
+#. message or event log entry in the main window
+#. title of the notice shown once, the first time a download comes from a browser's private (incognito) window
+#, machine
+	Private-window downloads	隐私窗口中的下载
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	隐私窗口下载不使用“选项”中的视频网站 Cookie。请在隐私窗口中打开页面，在那里登录，然后再次使用其“下载视频”按钮。
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3790,6 +3911,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	队列
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	快速剪切，在关键帧处
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -3836,6 +3961,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	重新校验失败：{error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	正在录制...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4033,7 +4163,8 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	保存到：
-#. text in the Link grabber window; text in rssdlg.rs
+#. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
+#. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
@@ -4047,6 +4178,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	保存位置
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	正在保存...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4144,10 +4280,10 @@
 #. text in the Options window
 #, machine
 	Service:	服务：
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	请先在“选项”→“代理/SOCKS”中设置 socks5:// 代理
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	请先在“选项”>“代理/SOCKS”（手动，类型 SOCKS5）中设置 SOCKS5 代理
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	将文件创建日期设为服务器提供的日期
@@ -4202,8 +4338,7 @@
 #. message or event log entry in the main window
 #. event log entry on a finished torrent when re-attaching it to keep sharing failed; {error} = why
 #. {error} = an error message (keep the braces as they are)
-#, machine
-	Sharing stopped: {error}	共享停止：{error}
+	Sharing stopped: {error}	做种停止：{error}
 #. text in the Options window
 #. Options → General: label for the global keyboard shortcut that shows or hides MDM's main window (#558)
 	Shortcut to show or hide window:	显示或隐藏窗口的快捷键：
@@ -4236,6 +4371,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	下载开始时显示下载进度对话框
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	单击通知区域图标时显示下载
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4528,6 +4667,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	正在启动...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	精确地从“从”时间开始到“到”时间结束：ffmpeg 会重新编码该部分，这需要更长时间
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4545,6 +4688,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	停止
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	停止并保存
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	在以下时间停止下载
@@ -4707,6 +4854,14 @@
 #. why Batch download's OK is greyed
 #, machine
 	That is more than 100,000 files: make the range smaller	文件数超过 100,000：请缩小范围
+#. text in the Options window
+#. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
+#, machine
+	That isn't 7-Zip's command line program (7z.exe).	这不是 7-Zip 的命令行程序 (7z.exe)。
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	这是整个视频：更改“从”或“到”时间，或取消勾选“仅下载部分内容”
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -4802,6 +4957,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	接收数据时连接丢失
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	目标位置持续变化。请停止对其文件的更改，然后尝试再次启动种子。
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4900,6 +5059,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	无法选择文件：{error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	文件已保留，因为此旧下载没有所有权记录
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4934,6 +5097,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	网络适配器 {adapter} 未连接
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	输出文件夹无效
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4964,6 +5131,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	报告已复制到剪贴板：请粘贴到该问题的评论中。
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	保存的 .torrent 文件与此下载不匹配
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	保存的 .torrent 文件缺失或无法读取。请再次添加种子以恢复其元数据；保留其现有文件。
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -4995,10 +5170,19 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	服务器发送了非预期的文件分块（{detail}）
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	服务器只发送了 {sent}，而浏览器文件为 {size}（链接只能使用一次，或只能在浏览器中打开）：Alt+单击链接，让浏览器下载
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	服务未说明是否为高级账户
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	站点未说明此视频的时长
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5067,6 +5251,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	系统 DNS
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	测试页面没有显示它看到的地址。
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5079,6 +5267,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	种子已不存在
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	种子所有权记录包含不安全的路径
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	种子所有权记录与其文件列表不匹配
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	种子所有权记录无效
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	由于拒绝使用现有文件的权限，种子未启动。
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5220,9 +5425,14 @@
 	This name is reserved by Windows	此名称为 Windows 保留名称
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	此功能需要 ffmpeg
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	此选项适用于直接 BitTorrent 下载
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5253,9 +5463,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	此种子已在下载任务列表中
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	此种子正在忙碌。请等待其当前操作完成，然后再重新添加。
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	此种子不在列表中
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	此种子需要使用 {file} 的权限才能启动。
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	此种子共享其目标文件夹
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5269,6 +5491,9 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	this {site} link is a web page, not the file: open it in your browser and download from there	此 {site} 链接是网页而非文件：请在浏览器中打开并从那里下载
+#. text in helpers.rs
+#, machine
+	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	三个免费的辅助程序让它正常运行。立即获取它们，找到视频后即可一键保存。
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5303,6 +5528,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	要安装缺失的组件：{command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	“到”时间已超过视频结尾
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	“到”时间必须在“从”时间之后
 #. text in the Batch download window
 #, machine
 	To:	到：
@@ -5454,6 +5687,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	两个免费辅助工具即可让它工作。立即获取，找到视频后一键保存。
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	类型
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5486,6 +5723,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	输入队列名称
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	请将时间输入为 1:30 或 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5553,14 +5794,31 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	上移
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+#, machine
+	Up to date	已是最新版本
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
 	Up to {height}p	最高 {height}p
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+#, machine
+	Update	更新
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
 	Update now	立即更新
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+#, machine
+	Updated by you	由您更新
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Updated to {version}	已更新到 {version}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5575,8 +5833,9 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	使用高级浏览器集成
-#. text in errors.rs; button in helpers.rs
+#. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	使用其他程序...
@@ -5586,6 +5845,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	使用自动配置脚本
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	使用现有种子文件
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	在 PASV 模式下使用 FTP
@@ -5593,6 +5855,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	使用 MDM 自带的副本
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	使用我的 yt-dlp 配置文件
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5618,9 +5884,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	要将它们用于此种子吗？匹配项保留，其余替换。
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	将此代理用于以下协议：
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
@@ -5636,7 +5899,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	用户名：
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	服务器/站点的用户名和密码
 #. text in the Options window
@@ -5648,6 +5911,10 @@
 #. label in the Options window
 #, machine
 	UserName	用户名
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP 使用传入连接的端口：请打开“接受传入连接”
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5691,6 +5958,16 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Version {version} ({commit})	版本 {version}（{commit}）
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} available	有可用版本 {version}
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} is ready: used once its downloads end	版本 {version} 已就绪：下载完成后使用
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 #, machine
@@ -5741,6 +6018,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	等待中
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	正在等待来自浏览器的新地址
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5918,10 +6199,17 @@
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	系统自带的程序：{path}
+#. text in helpers.rs
+#, machine
+	YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.	YouTube 会让 yt-dlp 在列出视频前运行一段 JavaScript，而这台计算机上没有可运行它的程序。Node.js 可以。
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube 需要 JavaScript 运行时才能列出其视频质量：请安装 Node.js 或 Deno，然后再次查找
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp 还会读取其自己的配置文件（在 Windows 上为 %APPDATA%\\yt-dlp\\config.txt，在 Linux 和 macOS 上为 ~/.config/yt-dlp/config）。MDM 选择的大部分内容（文件夹、名称和质量）仍然优先，但其中跳过或筛选视频的选项也适用。
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6028,7 +6316,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} 已配对，现在可以控制 MDM。
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -6042,8 +6330,9 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	{ext} 文件
-#. text in the main window's messages (deleting downloads' files)
+#. text in the main window's messages (deleting downloads' files); text in torrent downloads
 #. a message: a deleted download's file stayed on the disk; {file} = its name
+#. error dialog when a torrent's files could not be deleted; {file} is the download's name, {error} why
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	无法从磁盘中删除 {file}：{error}
@@ -6073,6 +6362,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}：文件与校验和（{algorithm}）匹配
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}：这些文件保留在磁盘上，因为 MDM 未创建它们或另一个下载正在使用它们：
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6142,7 +6435,7 @@
 #, machine
 	{name}  ({files}, {size})	{name}（{files}，{size}）
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = yt-dlp, ffmpeg or Node.js; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} 无法下载：{error}
@@ -6151,6 +6444,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 是 7z 或 RAR 压缩包。MDM 需用 7-Zip 解压此类文件，但尚未安装。
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is being downloaded already: try again in a moment	{name} 正在下载中：请稍后重试
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6161,12 +6459,22 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} 不支持 {how}。
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is in: trying again with it	{name} {version} 已就绪：正在使用此版本重试
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} 版本过旧：MDM 需要 {oldest} 或更高版本
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} 可能已过时：正在查找更新版本
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
@@ -6206,6 +6514,22 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (限制：{limit})
+#. text in helpers.rs
+#. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
+#, machine
+	{runtime}, MDM's earlier copy: Node.js takes its place at the next update	{runtime}，MDM 的早期副本：Node.js 将在下次更新时取代它
+#. text in helpers.rs
+#. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
+#, machine
+	{runtime}, Mister Download Manager's own copy	{runtime}，Mister Download Manager 自带版本
+#. text in helpers.rs
+#. Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
+#, machine
+	{runtime}, your own program: {path}	{runtime}，您自己的程序：{path}
+#. text in helpers.rs
+#. Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
+#, machine
+	{runtime}, your system's, nothing to download: {path}	{runtime}，系统自带，无需下载：{path}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6220,6 +6544,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} 暂时无法访问此文件主机；MDM 将稍后重试
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} 未列出在“添加种子”中选择的 {file}：未下载任何内容。请重新添加所有文件或不含此文件的种子
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6263,6 +6591,11 @@
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
 	{service}: {message}	{service}：{message}
+#. text in errors.rs
+#. a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} didn't give the file this time: try again in a moment	{site} 这次没有提供文件：请稍后再试
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6368,6 +6701,14 @@ column	Upload speed	上传速度
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	视频列表：请在 Mister Download Manager 中选择
 #. text in the browser extension
+#. link after popup_by_hand_firefox in the toolbar button's popup: opens the add-on's page on addons.mozilla.org (Firefox's add-ons store), whose copy Firefox keeps and updates; keep addons.mozilla.org as it is
+#, machine
+extension	Add it from addons.mozilla.org	从 addons.mozilla.org 添加
+#. text in the browser extension
+#. link after popup_by_hand in the toolbar button's popup: opens the extension's page in the Chrome Web Store, whose copy the browser keeps up to date; keep the name Chrome Web Store as it is
+#, machine
+extension	Add it from the Chrome Web Store	从 Chrome 网上应用店添加
+#. text in the browser extension
 #. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
 #, machine
 extension	Added to MDM	已添加到 MDM
@@ -6375,6 +6716,10 @@ extension	Added to MDM	已添加到 MDM
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 #, machine
 extension	Added to the queue	已添加到队列
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	所有
 #. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
@@ -6406,9 +6751,41 @@ extension	Button settings...	按钮设置...
 #, machine
 extension	can't be saved	无法保存
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	无法连接到 Mister Download Manager
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	无法连接到 Mister Download Manager（服务器：{server}）
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	无法判断这是哪个视频：请打开该视频所在页面重试
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	取消
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	请检查它是否正在运行，以及此浏览器是否接受其证书（设置 → 发送下载到 → 打开它）。
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	清除
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	清除已完成
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	清除已完成的下载？
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	已连接
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6419,13 +6796,57 @@ extension	Connected to Mister Download Manager	已连接到 Mister Download Mana
 #, machine
 extension	Connected to Mister Download Manager {version}	已连接到 Mister Download Manager {version}
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	已连接 · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	已复制 {file}。请将其粘贴到文件夹、聊天或消息中。
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	复制文件
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	复制链接
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	无法查找
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	删除
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	删除文件...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	删除文件？
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	已完成
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	下载
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	从此处下载部分...
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	重新下载
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6455,7 +6876,20 @@ extension	Download with Mister Download Manager	使用 Mister Download Manager �
 #, machine
 extension	Download {what}	下载 {what}
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	正在重新下载 {file}
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	正在下载：{count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	下载
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	来自 {site} 的下载任务将由浏览器处理
@@ -6471,6 +6905,27 @@ extension	Drag the dots to move it along the edge	拖动圆点可沿边缘移动
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	输入其 https:// 地址。
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	失败
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	失败：{why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	文件已删除或移动
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	已清除已完成的下载
+#. text in the browser extension
+#. button: forget / unpair this server
+#, machine
+extension	Forget	忘记
 #. text in the browser extension
 #. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
 #, machine
@@ -6520,6 +6975,10 @@ extension	It's smaller than the minimum size in Options → File types.	文件�
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	其地址已列入“选项”→“文件类型”中留给浏览器的地址。
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	其文件已不在保存位置（已移动或删除）。
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	其网站已列入“选项”→“文件类型”中留给浏览器的网站。
@@ -6528,14 +6987,31 @@ extension	Its site is in Options → File types, sites left to the browser.	其�
 #, machine
 extension	Its type isn't in Options → File types.	其文件类型不在“选项”→“文件类型”列表中。
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	刚刚
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	根据“选项”中的规则，已留给浏览器处理
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	已留给浏览器：{name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	链接已复制
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	直播
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	正在查找下载...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6557,6 +7033,10 @@ extension	Media on this page	此页面上的媒体
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager 未及时响应。请重试。
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager 未及时启动
@@ -6569,6 +7049,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager 正忙于处理其他视频
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager 正忙。正在重试...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager 未安装或未启动
@@ -6576,6 +7061,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager 未安装，或其浏览器集成未配置
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager 未运行
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager 未运行。
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6588,6 +7081,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager 将通过与此浏览器相同的代理下载。关闭此开关时，扩展不会读取浏览器的代理设置。
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	更多操作
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	{file} 的更多操作
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6602,10 +7103,18 @@ extension	Most compatible	最兼容
 #, machine
 extension	Never on {site}	在 {site} 上永不显示
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	永不接管来自 {site} 的下载任务
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	没有下载任务的名称或地址包含“{words}”。
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	暂无下载
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6615,13 +7124,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	此处没有可下载的视频
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	未连接
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	无法访问。请先在此浏览器中打开其地址并接受其证书，然后重试。
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	无匹配项
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	此站点已关闭
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	打开
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6630,6 +7151,10 @@ extension	Open it	打开地址
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	请先打开其地址并接受证书，然后输入其“选项”→“远程”→“配对设备”中显示的配对码（或 misterdownloadmanager-cli pair）。
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	打开其页面
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6642,6 +7167,14 @@ extension	Open post	打开帖子
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	打开帖子以下载
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	打开 {file}
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	在 Mister Download Manager 中设置选项
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6660,9 +7193,30 @@ extension	Pair	配对
 #, machine
 extension	Pairing code	配对码
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	暂停
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	请先暂停。
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	暂停 {file}
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	已暂停
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	已暂停：下载任务将由浏览器处理
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	弹出窗口部分
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6676,9 +7230,29 @@ extension	Protected	受保护
 #, machine
 extension	Protected video	受保护视频
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	从列表中移除
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	恢复
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	恢复 {file}
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	重试
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	正在运行
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	搜索下载
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6693,13 +7267,52 @@ extension	Send downloads to	将下载任务发送到
 #, machine
 extension	Sending to MDM...	正在发送到 MDM...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	正在发送到 {server}
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	已发送到 Mister Download Manager
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	设置
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	共享...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	显示
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	显示所有下载
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	在文件夹中显示
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	在文件夹中显示 {file}
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	启动它以在此处查看您的下载。
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	启动 Mister Download Manager
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	正在启动...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6708,6 +7321,18 @@ extension	Support MDM	赞助 MDM
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	从此浏览器接管下载任务
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	当前无法对该下载执行此操作。
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	操作失败。请重试。
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	该下载已不在列表中。
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6725,6 +7350,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	上次下载任务已交由浏览器处理。
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	显示 {total} 个中的最新 {shown} 个。Mister Download Manager 列出所有下载。
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	{count} 个已完成的下载将从列表中移除。其文件保留在原位。
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	这些是 {server} 上的 Mister Download Manager 的下载。请在那里打开其文件。
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	“选项”→“常规”中未勾选此浏览器。
@@ -6733,21 +7371,46 @@ extension	This browser isn't ticked in Options → General.	“选项”→“�
 #, machine
 extension	This computer	此电脑
 #. text in the browser extension
+#. one line at the top of the toolbar button's popup when the extension was loaded by hand (Load unpacked, with Developer mode on) in Chrome, Edge, Brave, Opera or Vivaldi; followed by the link popup_store_chrome
+#, machine
+extension	This copy was loaded by hand and won't update itself.	此副本是手动加载的，不会自动更新。
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the add-on was loaded by hand in Firefox (Load Temporary Add-on, in about:debugging); followed by the link popup_store_firefox; the browser here is Firefox (or Zen, LibreWolf)
+#, machine
+extension	This copy was loaded by hand: it won't update itself, and the browser removes it when it restarts.	此副本是手动加载的：它不会自行更新，并且浏览器重启时会将其删除。
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	此下载任务的详细信息过大，无法转交
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	这不是网页：此处无事可做。
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	此页面
 #. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	此页面的播放器分段流式传输视频，没有可列出的文件。将鼠标移到视频上，点击“下载视频”按钮。
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	此系统无法执行此操作。
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	此版本尚无法在此处列出其下载。
+#. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	启用
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	撤销
+extension	Update Mister Download Manager	更新 Mister Download Manager
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6765,6 +7428,14 @@ extension	Video	视频
 #, machine
 extension	Wait a moment, then try again.	请稍等片刻后重试。
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	正在等待
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	您使用 Mister Download Manager 下载的内容将显示在此处。
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	页面全屏时，视频上不会显示“下载视频”按钮
@@ -6772,6 +7443,32 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	配对码错误。
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	正在下载 {count} 个
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{done} / {size}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	{file} 已删除
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	{file} 已从列表中移除
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} 将从您的计算机中删除，并从列表中移除下载。此操作无法撤销。
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	剩余 {time}
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7292,8 +7989,7 @@ menu	Metal didn't start here: OpenGL draws	Metal 未能启动：使用 OpenGL �
 menu	Metal draws with a software renderer	Metal 使用软件渲染器绘制
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
-#, machine
-menu	Metro	现代
+menu	Metro	Metro
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

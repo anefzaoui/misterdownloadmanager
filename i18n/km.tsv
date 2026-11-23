@@ -12,6 +12,16 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	គេហទំព័រមិនស្គាល់មួយចង់ផ្ញើតំណចំនួន {n} ទៅកម្មវិធីចាប់យកតំណ។
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	និង {n} ទៀត
+#. count in torrent downloads
+#. number of additional files in a list of files
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} other file.|And {n} other files.	និងឯកសារផ្សេងទៀតចំនួន {n}។
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -49,6 +59,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	មានការទាញយក {n} ទៀតកំពុងរង់ចាំ។ តើត្រូវលុបចោលដែរឬទេ?
+#. count in a dialog box
+#. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	នេះក៏លុបឯកសារដែលបានបញ្ចប់ចំនួន {n} ផងដែរ។
 #. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
@@ -268,6 +283,14 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	លេខសម្គាល់ការកំណត់រចនាសម្ព័ន្ធ NextDNS មានអក្សរ និងលេខប្រាំមួយខ្ទង់ (0-9, a-f)។
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	ផ្នែកមួយត្រូវបានរក្សាទុកដោយគ្មានជំពូក និងចំណងជើងរងរបស់វីដេអូ
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	វីដេអូក្នុងបញ្ជីចាក់ត្រូវបានទាញយកទាំងមូល
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -292,6 +315,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Torrent ឯកសារតែមួយរក្សាទុកឈ្មោះរបស់វា
+#. text in torrent_ownership.rs
+#. a torrent's folder is a link or junction leading outside its destination
+#, machine
+	A torrent file's folder points outside its destination	ថតឯកសារ torrent នេះភ្ជាប់ទៅខាងក្រៅគោលដៅរបស់វា
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -308,6 +335,7 @@
 #, machine
 	about {ms} ms ({reach})	ប្រហែល {ms} ម.វ. ( {reach} )
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -355,7 +383,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Add browser...	បន្ថែមកម្មវិធីរុករក...
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #, machine
 	Add category	បន្ថែមប្រភេទ
 #. button in rssdlg.rs
@@ -459,10 +487,6 @@
 #. window title: the addresses whose downloads stay with the browser
 #, machine
 	Addresses left to the browser	អាសយដ្ឋានដែលនៅសល់សម្រាប់កម្មវិធីរុករក
-#. button in the Options window
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Advanced / Socks...	កម្រិតខ្ពស់ / Socks...
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
@@ -504,6 +528,9 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	ទាំងអស់ដែលអ្នកបង្ហោះបានផ្ដល់
+#. text in helpers.rs
+#, machine
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	ទាំងបីជាកម្មវិធីប្រភពបើកចំហ។ MDM ទាញយកពួកវាពីកំណែចេញផ្សាយផ្លូវការរបស់ពួកវា ដោយប្រើកម្មវិធីទាញយកផ្ទាល់ខ្លួន ហើយពិនិត្យហត្ថលេខារបស់ឯកសារនីមួយៗ មុនពេលដំណើរការឯកសារ។ ទំហំប្រហែល 140 MB ម្តងប៉ុណ្ណោះ។
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 #, machine
@@ -578,10 +605,22 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS ផ្សេងទៀត...
+#. text in torrent downloads
+#. starting a torrent whose destination another listed download claims
+#, machine
+	Another download already claims this torrent's destination	ការទាញយកផ្សេងទៀតបានកាន់កាប់គោលដៅ torrent នេះរួចហើយ
+#. message or event log entry in the main window; text in the Add torrent window
+#. said when a torrent would write a file another download in the list already uses; {file} is its path
+#, machine
+	Another download already claims {file}. Choose a different destination.	ការទាញយកផ្សេងទៀតបានកាន់កាប់ {file} រួចហើយ។ ជ្រើសរើសគោលដៅផ្សេង។
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	កម្មវិធីផ្សេងទៀតបានកំណត់ម៉ោងរោទ៍ដាស់កុំព្យូទ័រ
+#. text in the Options window
+#. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
+#, machine
+	Answered in {ms} ms. The internet sees {ip}.	បានឆ្លើយតបក្នុង {ms} ms។ អ៊ីនធឺណិតឃើញ {ip}។
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -663,6 +702,7 @@
 #, machine
 	Asking the service...	កំពុង​សួរ​សេវាកម្ម...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,7 +838,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	British Indian Ocean Territory	ដែនដីអង់គ្លេសនៅមហាសមុទ្រឥណ្ឌា
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. text in a dialog box; text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	រកមើល
@@ -862,7 +902,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	កាណាដា
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	បោះបង់
@@ -901,7 +941,7 @@
 #. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	ប្រភេទ
-#. text in categories.rs
+#. text in categories.rs; text in a dialog box
 #. title of the folder picker of the category dialog
 #, machine
 	Category folder	ថតឯកសារប្រភេទ
@@ -944,7 +984,8 @@
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
 	Check feeds every	ពិនិត្យមើលមតិព័ត៌មានរៀងរាល់
-#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: button: look for newer versions of MDM's own helpers now, and install them
 #, machine
 	Check for updates	ពិនិត្យមើលបច្ចុប្បន្នភាព
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -960,9 +1001,17 @@
 #, machine
 	Check your connection, then try again, or get them later from the video window.	ពិនិត្យមើលការតភ្ជាប់របស់អ្នក រួចព្យាយាមម្ដងទៀត ឬយកវាពេលក្រោយពីបង្អួចវីដេអូ។
 #. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	ប្រសិនបើធីក ការចុចលើរូបតំណាង MDM បង្ហាញអ្វីដែលកំពុងទាញយក ជាមួយនឹងផ្អាក និងបោះបង់ ហើយការចុចពីរដងបើកបង្អួច។ ប្រសិនបើមិនធីក ការចុចបង្ហាញ ឬលាក់បង្អួច។
+#. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	នៅពេលធីក ការបិទបង្អួចនឹងរក្សា MDM ឱ្យដំណើរការ៖ វានឹងលាក់នៅក្នុងតំបន់ជូនដំណឹង ប្រសិនបើមាន ឬបង្រួមទៅរបារភារកិច្ច បើមិនដូច្នោះទេ ហើយការទាញយកនឹងបន្ត។ នៅពេលមិនធីក ការបិទបង្អួចនឹងចេញពី MDM។
+#. text in the Options window
+#. tooltip of "Keep private-window downloads in the list": checked, downloads from a browser's private (incognito) window are saved in the list and survive MDM closing or restarting; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved.
+#, machine
+	Checked, downloads from a browser's private window are saved in the list and are still there when MDM restarts; unchecked, they are kept in memory only and are gone when MDM closes. Their cookies are never saved	នៅពេលធីក ការទាញយកពីបង្អួចឯកជនរបស់កម្មវិធីរុករកត្រូវបានរក្សាទុកក្នុងបញ្ជី ហើយនៅតែមាននៅពេល MDM ចាប់ផ្ដើមឡើងវិញ។ នៅពេលមិនធីក ពួកវាត្រូវបានរក្សាទុកក្នុងអង្គចងចាំតែប៉ុណ្ណោះ ហើយបាត់ទៅវិញនៅពេល MDM បិទ។ ឃុកឃីរបស់ពួកវា មិនត្រូវបានរក្សាទុកឡើយ។
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
@@ -971,7 +1020,8 @@
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
 	Checking every piece again	កំពុង​ពិនិត្យ​បំណែក​នីមួយៗ​ម្ដង​ទៀត
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in helpers.rs
+#. Helpers: MDM is asking whether a newer version of a helper exists
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	កំពុងពិនិត្យមើលបច្ចុប្បន្នភាព...
@@ -1018,6 +1068,9 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	ជ្រើសរើសឯកសារ .torrent
+#. text in helpers.rs
+#, machine
+	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	ជ្រើសរើសបរិស្ថានដំណើរការ JavaScript (Node.js, Deno, QuickJS ឬ Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	ជ្រើសរើសភាសា
@@ -1028,7 +1081,8 @@
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 #, machine
 	Choose the profile's folder	ជ្រើសរើសថតឯកសារប្រវត្តិរូប
-#. text in helpers.rs
+#. text in helpers.rs; text in the Options window
+#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	ជ្រើសរើស {name}
@@ -1060,7 +1114,7 @@
 #. text in the Options window
 #, machine
 	Clock:	នាឡិកា៖
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1123,6 +1177,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Congo	កុងហ្គោ
+#. text in the Add torrent window
+#. Torrent settings: uTP, BitTorrent over UDP, which many peers use (more peers, often faster)
+#, machine
+	Connect over uTP too (UDP)	ភ្ជាប់តាម uTP ផងដែរ (UDP)
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -1192,11 +1250,24 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	could not reach {host} ({cause})	មិនអាចភ្ជាប់ទៅ {host} បានទេ ({cause})
+#. text in helpers.rs
+#. Helpers: the last update check failed (no network...); MDM checks again later by itself
+#, machine
+	Couldn't check for updates: MDM tries again later	មិនអាចពិនិត្យរកមើលបច្ចុប្បន្នភាពបានទេ៖ MDM នឹងព្យាយាមម្ដងទៀតនៅពេលក្រោយ
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Couldn't extract {name}: {why}	មិនអាចពន្លា {name} បានទេ៖ {why}
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM couldn't look for a newer yt-dlp (or gallery-dl); {name} = its name, {error} = why
+#. {name} = a file name; {error} = an error message (keep the braces as they are)
+#, machine
+	Couldn't look for a newer {name}: {error}	មិនអាចស្វែងរក {name} កំណែថ្មីជាងនេះបានទេ៖ {error}
+#. checkbox in the Add torrent window
+#. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
+#, machine
+	Create a folder for this torrent	បង្កើតថតសម្រាប់ torrent នេះ
 #. window title in a dialog box
 #, machine
 	Create folder	បង្កើតថតឯកសារ
@@ -1250,7 +1321,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	ថ្ងៃ ខែ ឆ្នាំ
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	គណនី​សេវាកម្ម​ដឺប្រ៊ីដ
 #. text in the Scheduler window
@@ -1274,7 +1345,7 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ចំនួនតំណភ្ជាប់អតិបរមា​លំនាំដើម
-#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs
+#. text in the main window's messages (deleting downloads' files); button in a dialog box; button in the Options window; button in rssdlg.rs; text in torrent downloads
 #. button: deletes the category
 #. verb: delete the item
 #, machine
@@ -1525,6 +1596,10 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
+	Downloading and verifying Node.js (40 to 60 MB)...	កំពុងទាញយក និងផ្ទៀងផ្ទាត់ Node.js (40 ទៅ 60 MB)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
 	Downloading and verifying yt-dlp...	កំពុងទាញយក និងផ្ទៀងផ្ទាត់ yt-dlp...
 #. text in helpers.rs
 #. Video helpers: MDM's own yt-dlp is being downloaded
@@ -1536,7 +1611,11 @@
 #, machine
 	Downloading the update... {percent}	កំពុងទាញយកបច្ចុប្បន្នភាព... {percent}
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. Helpers: a newer version of a helper is being downloaded; {percent} = how far, a number
+#, machine
+	Downloading the update... {percent}%	កំពុងទាញយកបច្ចុប្បន្នភាព... {percent}%
+#. text in helpers.rs
+#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
 	Downloading {name} ({n} of {total})... {percent}	កំពុងទាញយក {name} ({n} ក្នុងចំណោម {total})... {percent}
@@ -1552,8 +1631,13 @@
 #. Windows' Settings → Default apps: what Mister Download Manager is
 #, machine
 	Downloads files, videos and torrents	ទាញយកឯកសារ វីដេអូ និង torrent
-#. text in the tray icon's menu
+#. message or event log entry in the main window
+#. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
+#, machine
+	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ការទាញយកពីបង្អួចឯកជនរបស់កម្មវិធីរុករកនៅតែមានក្នុងបញ្ជីរបស់ MDM ដូចការទាញយកផ្សេងទៀតដែរ ទោះបីជា MDM ចាប់ផ្ដើមឡើងវិញក៏ដោយ។ ឃុកឃីរបស់វាមិនត្រូវបានរក្សាទុកទេ។ ដើម្បីរក្សាទុកការទាញយកទាំងនេះក្នុងអង្គចងចាំតែប៉ុណ្ណោះ សូមដោះធីក {options} → {general} → {checkbox}។
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	កំពុងទាញយក
 #. text in a dialog box
@@ -1593,14 +1677,15 @@
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
 	Dropped links	តំណដែលបានទម្លាក់
-#. window title in a dialog box
+#. text in a dialog box
+#. window title: the question asked when an address added is already in the list of downloads
 #, machine
 	Duplicate download link	តំណទាញយកស្ទួន
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	ការតភ្ជាប់នីមួយៗប្រើប្រាស់ផ្លូវរបស់ប្រព័ន្ធ។
-#. text in the Link grabber window
+#. text in the Batch download window; text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	ថតឯកសារប្រភេទរបស់ឯកសារនីមួយៗ
@@ -1719,6 +1804,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	អ្វីៗទាំងអស់មានទំហំធម្មតា (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	កាត់ឱ្យច្បាស់លាស់ កូដម្ដងទៀត
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1803,6 +1892,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	កោះហ្វារ៉ូ
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	លឿន៖ ស្ទ្រីមត្រូវបានចម្លងដូចដើម ដូច្នេះផ្នែកអាចចាប់ផ្តើមបន្តិចមុនពេលចាប់ផ្តើម។
 #. text in the Scheduler window
 #, machine
 	February	ខែកុម្ភៈ
@@ -1891,6 +1984,10 @@
 #. verb: button that starts the search
 #, machine
 	Find	ស្វែងរក
+#. text in the Options window
+#. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
+#, machine
+	Find 7-Zip automatically	ស្វែងរក 7-Zip ដោយស្វ័យប្រវត្តិ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find a download	ស្វែងរកការទាញយក
@@ -2025,6 +2122,14 @@
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
 	from a playlist (yt-dlp)	ពីបញ្ជីចាក់ (yt-dlp)
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and it is in memory only, gone from the list when MDM closes
+#, machine
+	From a private window: in memory only, gone from the list when MDM closes	ពីបង្អួចឯកជន៖ រក្សាទុកក្នុងអង្គចងចាំតែប៉ុណ្ណោះ បាត់ពីបញ្ជីនៅពេល MDM បិទ
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and MDM's list keeps it after a restart (Options → General → Keep private-window downloads in the list)
+#, machine
+	From a private window: kept in the list	ពីបង្អួចឯកជន៖ រក្សាទុកក្នុងបញ្ជី
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ពីឯកសារ torrent
@@ -2042,12 +2147,20 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	ពីបន្ទាត់ពាក្យបញ្ជា
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	ពី {from} ដល់ {to}
 #. text in the Batch download window
 #, machine
 	From:	ពី៖
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. tooltip (why a control is greyed) in the Options window
+#. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
+#, machine
+	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	ការទាញយក FTP មិនឆ្លងកាត់ប្រូកស៊ី HTTP ទេ។ ជ្រើសរើស SOCKS5 ឬ SOCKS4 ដើម្បីផ្ញើពួកវាឆ្លងកាត់ប្រូកស៊ី។
 #. text in the Options window
 #. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
 #, machine
@@ -2078,7 +2191,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gambia	ហ្គាំប៊ី
-#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
@@ -2116,6 +2229,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gibraltar	ហ្គីប្រាល់តា
+#. text in helpers.rs
+#. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Go back to {version}	ត្រឡប់ទៅ {version} វិញ
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2343,6 +2461,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	ដំឡើងដោយដៃ
+#. text in the Download video window
+#. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+#, machine
+	Install Node.js	ដំឡើង Node.js
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
@@ -2470,6 +2592,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Japan	ជប៉ុន
+#. text in helpers.rs
+#. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
+#, machine
+	JavaScript runtime (for YouTube)	បរិស្ថានដំណើរការ JavaScript (សម្រាប់ YouTube)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2494,6 +2620,14 @@
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	គីឡូបៃ/វិនាទី
+#. text in helpers.rs
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
+#, machine
+	Keep MDM's helpers up to date automatically	រក្សាទុកកម្មវិធីជំនួយរបស់ MDM ឱ្យទាន់សម័យដោយស្វ័យប្រវត្តិ
+#. message or event log entry in the main window; text in the Options window
+#. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
+#, machine
+	Keep private-window downloads in the list	រក្សាទុកការទាញយកពីបង្អួចឯកជនក្នុងបញ្ជី
 #. text in the Options window
 #. checkbox: closing keeps MDM running, in the notification area when available or else the taskbar, instead of quitting
 #, machine
@@ -2587,6 +2721,10 @@
 #. Options → Remote check box (off by default)
 #, machine
 	Let phones and computers on the local network control MDM	អនុញ្ញាតឱ្យទូរសព្ទ និងកុំព្យូទ័រនៅលើបណ្ដាញមូលដ្ឋានគ្រប់គ្រង MDM
+#. text in helpers.rs
+#. Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+#, machine
+	lets yt-dlp list all of YouTube's qualities	អនុញ្ញាតឱ្យ yt-dlp រាយបញ្ជីគុណភាពវីដេអូទាំងអស់របស់ YouTube
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2681,10 +2819,19 @@
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ស្វែងរក
+#. text in the Options window
+#. Options → Proxy / Socks → Manual, SOCKS: the proxy turns the sites' names into addresses (socks5h), so this computer's DNS never sees them
+#, machine
+	Look up site names through the proxy	ស្វែងរកឈ្មោះគេហទំព័រតាមរយៈប្រូកស៊ី
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	ស្វែងរកអាសយដ្ឋានថ្មីជាមុនសិន
+#. text in helpers.rs
+#. Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for a JavaScript runtime on this computer...	កំពុងស្វែងរកបរិស្ថានដំណើរការ JavaScript នៅលើកុំព្យូទ័រនេះ...
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
@@ -2766,6 +2913,10 @@
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	ការកំណត់រចនាសម្ព័ន្ធប្រូកស៊ី/SOCKS ដោយដៃ
+#. text in the Add torrent window
+#. Torrent settings: the hover text of "Connect over uTP too (UDP)"
+#, machine
+	Many peers take only uTP. Without it, MDM can't reach them.	អ្នកចែករំលែកជាច្រើនប្រើតែ uTP ប៉ុណ្ណោះ។ បើគ្មានវាទេ MDM មិនអាចភ្ជាប់ទៅពួកគេបានទេ។
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2840,6 +2991,10 @@
 #. remote control page (on a phone): an action failed
 #, machine
 	MDM could not do it.	MDM មិនអាចធ្វើវាបានទេ។
+#. text in torrent downloads
+#. question before starting/resuming a torrent that would modify files MDM did not create; Yes authorizes writes, No leaves files unchanged
+#, machine
+	MDM didn't create these files. Starting the torrent can resize them and replace their contents, including unticked files that share pieces. Use them for this torrent?	MDM មិនបានបង្កើតឯកសារទាំងនេះទេ។ ការចាប់ផ្ដើម torrent អាចប្ដូរទំហំឯកសារ និងជំនួសខ្លឹមសាររបស់វា រួមទាំងឯកសារដែលមិនបានធីក ប៉ុន្តែចែករំលែកបំណែកជាមួយឯកសារផ្សេង។ តើអ្នកចង់ប្រើឯកសារទាំងនេះសម្រាប់ torrent នេះឬទេ?
 #. text in remote.rs
 #. remote control page (on a phone): MDM can't be reached while pairing
 #, machine
@@ -2853,6 +3008,10 @@
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install it, or use another program	MDM គ្មានច្បាប់ចម្លងសម្រាប់ប្រព័ន្ធនេះទេ៖ ដំឡើងវា ឬប្រើកម្មវិធីផ្សេងទៀត
+#. text in helpers.rs
+#. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install Node.js or Deno, or use another program	MDM មិនមានច្បាប់ចម្លងសម្រាប់ប្រព័ន្ធនេះទេ៖ សូមដំឡើង Node.js ឬ Deno ឬប្រើកម្មវិធីផ្សេងទៀត
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3123,6 +3282,11 @@
 #. button: create a new item
 #, machine
 	New	ថ្មី
+#. message or event log entry in the main window
+#. event log: the browser's new download of the same file gave a download that waited for a new address (its link had expired) its address, and it goes on from there; {host} = the new address's server
+#. {host} = a server name such as "example.com" (keep the braces as they are)
+#, machine
+	New address from the browser ({host}): going on from it	អាសយដ្ឋានថ្មីពីកម្មវិធីរុករក ({host})៖ កំពុងបន្តពីវា
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3168,6 +3332,10 @@
 #. text in a dialog box
 #, machine
 	No addresses yet	មិនទាន់មានអាសយដ្ឋាននៅឡើយទេ
+#. text in the Options window
+#. Options → Proxy / Socks: Test got no answer in time
+#, machine
+	No answer within 20 seconds.	គ្មានការឆ្លើយតបក្នុងរយៈពេល 20 វិនាទីទេ។
 #. text in extension.rs
 #. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
 #, machine
@@ -3191,6 +3359,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	មិនមានតំណទាញយកណាមួយត្រូវបានរកឃើញនៅក្នុងក្ដារតម្បៀតខ្ទាស់ទេ។ ចម្លងអត្ថបទដែលមានតំណ http, https, ftp ឬ magnet រួចព្យាយាមម្ដងទៀត។
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	គ្មានការទាញយកណាកំពុងដំណើរការទេ
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3231,6 +3403,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	មិនមានកម្មវិធីអ៊ីមែលទេ៖ សារត្រូវបានចម្លង សូមបិទភ្ជាប់វាក្នុងកម្មវិធីអ៊ីមែលរបស់អ្នក។
+#. message or event log entry in the main window
+#. a video's or gallery's log: MDM looked for a newer yt-dlp (or gallery-dl) and the one it has is the newest; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	No newer {name} than this one	គ្មាន {name} កំណែថ្មីជាងនេះទេ
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	គ្មានភៀរណាមួយបានផ្ញើបញ្ជីឯកសាររបស់ torrent ទាន់ពេលទេ
@@ -3263,6 +3440,10 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	មិនមានអាសយដ្ឋានគេហទំព័រណាមួយត្រូវបានរកឃើញនៅក្នុង {file}។
+#. text in helpers.rs
+#. helper name and what it does (Node.js and YouTube are names)
+#, machine
+	Node.js: unlocks YouTube's qualities	Node.js៖ ដោះសោជម្រើសគុណភាពវីដេអូរបស់ YouTube
 #. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -3373,6 +3554,10 @@
 #. option (radio button) in the Options window
 #, machine
 	Off	បិទ
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: the proxy is on
+#, machine
+	Off with the proxy: uTP goes over UDP, which a SOCKS5 proxy doesn't carry	បិទជាមួយប្រូកស៊ី៖ uTP ដំណើរការលើ UDP ដែលប្រូកស៊ី SOCKS5 មិនផ្ទុក
 #. text in the Add torrent window
 #, machine
 	Off: a finished torrent stops, like any download.	បិទ៖ torrent ដែលបានបញ្ចប់ឈប់ ដូចជាការទាញយកផ្សេងទៀត។
@@ -3452,6 +3637,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	មានតែការទាញយកដែលបានបញ្ចប់ ឬមិនទាន់ចាប់ផ្តើមទេ ទើបអាចផ្លាស់ទីបាន។ បញ្ឈប់វា ហើយបញ្ចប់វាជាមុនសិន។
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	តែមួយផ្នែកប៉ុណ្ណោះ
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3469,6 +3658,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	មានតែវីដេអូ {n} ដំបូងប៉ុណ្ណោះដែលត្រូវបានរាយបញ្ជី។
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	មានតែឯកសារ {files} ដែលបានធីកនៅក្នុង Add torrent ប៉ុណ្ណោះ
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	តែនៅពេលខ្ញុំកំពុងប្រើកុំព្យូទ័រ
@@ -3493,7 +3686,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	បើកតំណ magnet និងឯកសារ .torrent ជាមួយ Mister Download Manager
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	បើក Mister Download Manager
 #. text in extension.rs
@@ -3531,7 +3725,7 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Open with...	បើកជាមួយ...
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
 	Options	ជម្រើស
@@ -3603,6 +3797,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	ប៉ារ៉ាហ្គាយ
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	ផ្នែក
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	ពាក្យសម្ងាត់
@@ -3723,6 +3921,14 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	ការមើលជាមុនមិនទាន់មាននៅឡើយទេ
+#. message or event log entry in the main window
+#. title of the notice shown once, the first time a download comes from a browser's private (incognito) window
+#, machine
+	Private-window downloads	ការទាញយកពីបង្អួចឯកជន
+#. text in the Download video window
+#. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
+#, machine
+	Private-window downloads do not use Cookies for video sites from Options. Open the page in a private window, sign in there, and use its Download video button again.	ការទាញយកពីបង្អួចឯកជនមិនប្រើឃុកឃីសម្រាប់គេហទំព័រវីដេអូពីការកំណត់ទេ។ បើកទំព័រក្នុងបង្អួចឯកជន ចូលគណនីនៅទីនោះ ហើយប្រើប៊ូតុងទាញយកវីដេអូក្នុងបង្អួចនោះម្ដងទៀត។
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
 #, machine
@@ -3791,6 +3997,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ជួរ
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	កាត់រហ័ស នៅ keyframes
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -3837,6 +4047,11 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Recheck failed: {error}	ការ​ពិនិត្យ​ឡើងវិញ​បាន​បរាជ័យ៖ {error}
+#. text in a download's progress window
+#. a live stream's status: yt-dlp records it (it shows no progress, only the size so far)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Recording...	កំពុងថត...
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -4034,7 +4249,8 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	រក្សាទុកទៅ៖
-#. text in the Link grabber window; text in rssdlg.rs
+#. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
+#. Batch download: the folder every file goes to (a label before its box)
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
 #, machine
@@ -4048,6 +4264,11 @@
 #. label before the folder the torrent is saved in
 #, machine
 	Saved in	បានរក្សាទុកក្នុង
+#. text in a download's progress window
+#. a live stream's status: stopped, and what was recorded being made into the video file kept
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Saving...	កំពុងរក្សាទុក...
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -4145,10 +4366,10 @@
 #. text in the Options window
 #, machine
 	Service:	សេវាកម្ម៖
-#. text in the Add torrent window
+#. tooltip (why a control is greyed) in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
-	Set a socks5:// proxy in Options → Proxy / Socks first	កំណត់ប្រូកស៊ី socks5:// នៅក្នុងជម្រើស → ប្រូកស៊ី / Socks ជាមុនសិន
+	Set a SOCKS5 proxy in Options → Proxy / Socks (Manual, Type SOCKS5) first	កំណត់ប្រូកស៊ី SOCKS5 នៅក្នុង Options → Proxy / Socks (Manual, Type SOCKS5) ជាមុនសិន
 #. checkbox in the Options window
 #, machine
 	Set file creation date as provided by the server	កំណត់កាលបរិច្ឆេទបង្កើតឯកសារដូចដែលបានផ្ដល់ដោយម៉ាស៊ីនមេ
@@ -4238,6 +4459,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	បង្ហាញប្រអប់ដំណើរការទាញយកនៅពេលការទាញយកចាប់ផ្តើម
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	បង្ហាញការទាញយកនៅពេលចុចរូបតំណាងតំបន់ជូនដំណឹង
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4530,6 +4755,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	កំពុងចាប់ផ្ដើម...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	ចាប់ផ្តើម និងបញ្ចប់យ៉ាងពិតប្រាកដនៅ From និង To៖ ffmpeg កូដផ្នែកនោះម្តងទៀត ដែលចំណាយពេលយូរជាង
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4547,6 +4776,10 @@
 #. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	បញ្ឈប់
+#. text in a download's progress window
+#. button in a live stream's progress window: stop recording it and keep what was recorded as a video file
+#, machine
+	Stop and save	បញ្ឈប់ និងរក្សាទុក
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	បញ្ឈប់ការទាញយកនៅម៉ោង
@@ -4709,6 +4942,14 @@
 #. why Batch download's OK is greyed
 #, machine
 	That is more than 100,000 files: make the range smaller	នោះច្រើនជាង 100,000 ឯកសារ៖ ធ្វើឱ្យជួរតូចជាងមុន
+#. text in the Options window
+#. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
+#, machine
+	That isn't 7-Zip's command line program (7z.exe).	នោះមិនមែនជាកម្មវិធីបន្ទាត់ពាក្យបញ្ជារបស់ 7-Zip (7z.exe) ទេ។
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	នោះជាវីដេអូទាំងមូល៖ ផ្លាស់ប្តូរ From ឬ To ឬដោះធីក Only a part
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -4809,6 +5050,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	ការតភ្ជាប់បានបាត់បង់ពេលកំពុងទទួលទិន្នន័យ
+#. text in torrent downloads
+#. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
+#, machine
+	The destination keeps changing. Stop changes to its files and try starting the torrent again.	គោលដៅបន្តផ្លាស់ប្ដូរ។ បញ្ឈប់ការផ្លាស់ប្ដូរទៅឯកសាររបស់វា ហើយព្យាយាមចាប់ផ្ដើម torrent ម្ដងទៀត។
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
@@ -4907,6 +5152,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The files could not be chosen: {error}	មិនអាចជ្រើសរើសឯកសារបានទេ៖ {error}
+#. text in torrent downloads
+#. error when deleting a torrent added by an older MDM that saved no record of its files: they stay on the disk
+#, machine
+	The files were kept because this older download has no ownership record	បានរក្សាទុកឯកសារទុក ព្រោះការទាញយកចាស់នេះមិនមានកំណត់ត្រាកម្មសិទ្ធិ
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4941,6 +5190,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	អាដាប់ទ័របណ្ដាញ {adapter} មិនបានភ្ជាប់ទេ
+#. text in torrent_ownership.rs
+#. error when a torrent's output folder path cannot be used
+#, machine
+	The output folder is invalid	ថតលទ្ធផលមិនត្រឹមត្រូវ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4971,6 +5224,14 @@
 #. text in crashui.rs
 #, machine
 	The report is on your clipboard: paste it in a comment on the issue.	របាយការណ៍ស្ថិតនៅលើក្ដារតម្បៀតខ្ទាស់របស់អ្នក៖ បិទភ្ជាប់វានៅក្នុងមតិយោបល់លើបញ្ហា។
+#. text in torrent downloads
+#. error when deleting a torrent: the .torrent file MDM kept is another torrent's
+#, machine
+	The saved .torrent file does not match this download	ឯកសារ .torrent ដែលបានរក្សាទុកមិនត្រូវគ្នានឹងការទាញយកនេះទេ
+#. text in torrent downloads
+#. starting an old torrent whose cached metadata was lost; re-adding can restore it without deleting data
+#, machine
+	The saved .torrent file is missing or unreadable. Add the torrent again to recover its metadata; keep its existing files.	ឯកសារ .torrent ដែលបានរក្សាទុកបាត់ ឬមិនអាចអានបាន។ បន្ថែម torrent ម្ដងទៀតដើម្បីស្ដារទិន្នន័យមេតារបស់វា។ រក្សាទុកឯកសារដែលមានស្រាប់របស់វា។
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -5002,10 +5263,19 @@
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	ម៉ាស៊ីនមេបានផ្ញើផ្នែកដែលមិនបានរំពឹងទុកនៃឯកសារ ({detail})
+#. text in errors.rs
+#. why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it	ម៉ាស៊ីនមេបានផ្ញើតែ {sent} ដែលឯកសាររបស់កម្មវិធីរុករកមានទំហំ {size} (តំណដែលដំណើរការតែម្ដង ឬតែក្នុងកម្មវិធីរុករក)៖ Alt+ចុចតំណដើម្បីឱ្យកម្មវិធីរុករកទាញយកវា
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	សេវាកម្មមិនបានបញ្ជាក់ថាគណនីនេះជា Premium ឬអត់ទេ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	គេហទំព័រមិនបានបញ្ជាក់ថាវីដេអូនេះមានរយៈពេលប៉ុន្មានទេ
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5074,6 +5344,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	DNS របស់ប្រព័ន្ធ
+#. text in the Options window
+#. Options → Proxy / Socks: Test's server answered without saying the address it saw
+#, machine
+	The test page didn't say the address it saw.	ទំព័រសាកល្បងមិនបានប្រាប់អាសយដ្ឋានដែលវាបានឃើញទេ។
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
@@ -5086,6 +5360,23 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	torrent លែងមានទៀតហើយ
+#. text in torrent_ownership.rs
+#. unsafe path found in a saved torrent ownership record
+#. error when the saved record of a torrent's files holds a path that leaves its folder
+#, machine
+	The torrent ownership record contains an unsafe path	កំណត់ត្រាកម្មសិទ្ធិ torrent មានផ្លូវមិនមានសុវត្ថិភាព
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files differs from the .torrent file
+#, machine
+	The torrent ownership record does not match its file list	កំណត់ត្រាកម្មសិទ្ធិ torrent មិនត្រូវគ្នានឹងបញ្ជីឯកសាររបស់វាទេ
+#. text in torrent_ownership.rs
+#. error when the saved record of a torrent's files cannot be read as one
+#, machine
+	The torrent ownership record is invalid	កំណត់ត្រាកម្មសិទ្ធិ torrent មិនត្រឹមត្រូវ
+#. text in torrent downloads
+#. the user refused write permission for existing files when starting a torrent
+#, machine
+	The torrent was not started because permission to use existing files was declined.	មិនបានចាប់ផ្ដើម torrent ទេ ព្រោះការអនុញ្ញាតឱ្យប្រើឯកសារដែលមានស្រាប់ត្រូវបានបដិសេធ។
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5227,9 +5518,14 @@
 	This name is reserved by Windows	ឈ្មោះនេះត្រូវបានបម្រុងទុកដោយ Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ត្រូវការ ffmpeg
+#. text in the Add torrent window
+#. tooltip of the greyed "Create a folder for this torrent" checkbox: debrid downloads cannot use it
+#, machine
+	This option is available for direct BitTorrent downloads	ជម្រើសនេះអាចប្រើបានសម្រាប់ការទាញយក BitTorrent ដោយផ្ទាល់
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -5261,9 +5557,21 @@
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	torrent នេះមាននៅក្នុងបញ្ជីទាញយករួចហើយ
+#. message or event log entry in the main window
+#. said when a torrent is added again while an action on the same torrent is still running
+#, machine
+	This torrent is busy. Wait for its current operation to finish before adding it again.	Torrent នេះកំពុងរវល់។ រង់ចាំប្រតិបត្តិការបច្ចុប្បន្នរបស់វាបញ្ចប់ មុនពេលបន្ថែមវាម្ដងទៀត។
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	តូរ៉ិននេះមិនមាននៅក្នុងបញ្ជីទេ
+#. text in torrent_ownership.rs
+#. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
+#, machine
+	This torrent needs permission to use {file} before it can start.	Torrent នេះត្រូវការការអនុញ្ញាតឱ្យប្រើ {file} មុនពេលចាប់ផ្ដើម។
+#. message or event log entry in the main window; text in a download's Properties window
+#. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+#, machine
+	This torrent shares its destination folder	Torrent នេះប្រើថតគោលដៅរួមជាមួយឯកសារផ្សេងទៀត
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -5277,6 +5585,9 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	this {site} link is a web page, not the file: open it in your browser and download from there	តំណ {site} នេះគឺជាទំព័របណ្ដាញ មិនមែនឯកសារទេ៖ បើកវានៅក្នុងកម្មវិធីរុករករបស់អ្នក ហើយទាញយកពីទីនោះ
+#. text in helpers.rs
+#, machine
+	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	ឧបករណ៍ជំនួយឥតគិតថ្លៃបីធ្វើឱ្យវាដំណើរការ។ ទទួលបានពួកវាឥឡូវនេះ ហើយពេលអ្នករកឃើញវីដេអូ អ្នកអាចរក្សាទុកវាបានដោយចុចតែម្តង។
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5311,6 +5622,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	ដើម្បីដំឡើងអ្វីដែលបាត់៖ {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	To គឺហួសពីចុងបញ្ចប់នៃវីដេអូ
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	To ត្រូវតែមកបន្ទាប់ពី From
 #. text in the Batch download window
 #, machine
 	To:	ទៅ៖
@@ -5462,6 +5781,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ជំនួយការឥតគិតថ្លៃពីរធ្វើឱ្យវាដំណើរការ។ ទទួលបានពួកវាឥឡូវនេះ ហើយការរក្សាទុកវីដេអូគឺគ្រាន់តែចុចមួយដងប៉ុណ្ណោះ នៅពេលអ្នករកឃើញមួយ។
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	ប្រភេទ
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5494,6 +5817,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	វាយឈ្មោះជួរ
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	វាយបញ្ចូលពេលវេលាជា 1:30 ឬ 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5561,14 +5888,31 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	ឡើង
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is the newest version
+#, machine
+	Up to date	ទាន់សម័យ
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
 	Up to {height}p	រហូតដល់ {height}p
+#. text in helpers.rs
+#. Helpers: button: check for a newer version of this helper now and install it
+#, machine
+	Update	ធ្វើបច្ចុប្បន្នភាព
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
 	Update now	អាប់ដេតឥឡូវ
+#. text in helpers.rs
+#. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
+#, machine
+	Updated by you	បានធ្វើបច្ចុប្បន្នភាពដោយអ្នក
+#. text in helpers.rs
+#. Helpers: MDM updated its own copy of a helper lately; {version} = the new version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Updated to {version}	បានធ្វើបច្ចុប្បន្នភាពទៅ {version}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5583,8 +5927,9 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	ប្រើការរួមបញ្ចូលកម្មវិធីរុករកកម្រិតខ្ពស់
-#. text in errors.rs; button in helpers.rs
+#. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	ប្រើកម្មវិធីផ្សេង...
@@ -5594,6 +5939,9 @@
 #. text in the Options window
 #, machine
 	Use automatic configuration script	ប្រើស្គ្រីបកំណត់រចនាសម្ព័ន្ធដោយស្វ័យប្រវត្តិ
+#. text in torrent downloads
+#, machine
+	Use existing torrent files	ប្រើឯកសារ torrent ដែលមានស្រាប់
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	ប្រើ FTP ក្នុងរបៀប PASV
@@ -5601,6 +5949,10 @@
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	ប្រើច្បាប់ចម្លងផ្ទាល់ខ្លួនរបស់ MDM
+#. checkbox in the Options window
+#. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
+#, machine
+	Use my yt-dlp config file	ប្រើឯកសារកំណត់រចនាសម្ព័ន្ធ yt-dlp របស់ខ្ញុំ
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -5626,9 +5978,6 @@
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ប្រើពួកវាសម្រាប់តូរ៉ិននេះ? អ្វីដែលត្រូវគ្នាត្រូវបានរក្សាទុក អ្វីដែលនៅសល់ត្រូវបានជំនួស។
-#. label in the Options window
-#, machine
-	Use this proxy for the following protocols:	ប្រើប្រូកស៊ីនេះសម្រាប់ពិធីការខាងក្រោម៖
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
@@ -5644,7 +5993,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	ឈ្មោះអ្នកប្រើប្រាស់៖
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	ឈ្មោះអ្នកប្រើប្រាស់ និងពាក្យសម្ងាត់សម្រាប់ម៉ាស៊ីនមេ/គេហទំព័រ
 #. text in the Options window
@@ -5656,6 +6005,10 @@
 #. label in the Options window
 #, machine
 	UserName	ឈ្មោះអ្នកប្រើប្រាស់
+#. tooltip (why a control is greyed) in the Add torrent window
+#. why "Connect over uTP too" is greyed in Torrent settings: incoming connections are off
+#, machine
+	uTP uses the port for incoming connections: turn on Accept incoming connections	uTP ប្រើច្រកសម្រាប់ការតភ្ជាប់ចូល៖ បើក Accept incoming connections
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5699,6 +6052,16 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Version {version} ({commit})	កំណែ {version} ({commit})
+#. text in helpers.rs
+#. Helpers: a newer version of a helper exists ("Update" downloads it); {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} available	មានកំណែ {version}
+#. text in helpers.rs
+#. Helpers: a newer version is downloaded and checked, and is used as soon as the downloads using this helper end; {version} = its version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Version {version} is ready: used once its downloads end	កំណែ {version} រួចរាល់ហើយ៖ ប្រើនៅពេលការទាញយករបស់វាចប់
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 #, machine
@@ -5749,6 +6112,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	កំពុងរង់ចាំ
+#. message or event log entry in the main window
+#. event log: after Refresh download address, the download waits for the browser's next download of the same file, whose address it takes
+#, machine
+	Waiting for a new address from the browser	កំពុងរង់ចាំអាសយដ្ឋានថ្មីពីកម្មវិធីរុករក
 #. text in the Options window
 #. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
 #. {time} = a time of day (keep the braces as they are)
@@ -5927,10 +6294,17 @@
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	ប្រព័ន្ធរបស់អ្នក៖ {path}
+#. text in helpers.rs
+#, machine
+	YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.	YouTube ធ្វើឱ្យ yt-dlp ដំណើរការកូដ JavaScript មួយផ្នែក មុនពេលបង្ហាញបញ្ជីវីដេអូរបស់វា ហើយកុំព្យូទ័រនេះគ្មានកម្មវិធីសម្រាប់ដំណើរការកូដនោះទេ។ Node.js អាចធ្វើបាន។
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
 	YouTube needs a JavaScript runtime to list its video qualities: install Node.js or Deno, then look it up again	YouTube ត្រូវការ JavaScript runtime ដើម្បីរាយបញ្ជីគុណភាពវីដេអូរបស់វា៖ ដំឡើង Node.js ឬ Deno រួចស្វែងរកម្តងទៀត
+#. text in the Options window
+#. Options → Sites Logins → Use my yt-dlp config file: its tooltip
+#, machine
+	yt-dlp also reads its own config files (on Windows %APPDATA%\\yt-dlp\\config.txt, on Linux and macOS ~/.config/yt-dlp/config). Most of what MDM chooses, the folder, the name and the quality, still wins, but options there that skip or filter videos apply too.	yt-dlp ក៏អានឯកសារកំណត់រចនាសម្ព័ន្ធរបស់វាផ្ទាល់ផងដែរ (នៅលើ Windows %APPDATA%\\yt-dlp\\config.txt, នៅលើ Linux និង macOS ~/.config/yt-dlp/config)។ ជម្រើសភាគច្រើនដែល MDM កំណត់ ដូចជាថត ឈ្មោះ និងគុណភាព នៅតែមានអាទិភាព ប៉ុន្តែជម្រើសដែលរំលង ឬត្រងវីដេអូក៏ត្រូវបានអនុវត្តដែរ។
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -6037,7 +6411,7 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} ត្រូវបានផ្គូផ្គង។ ឥឡូវនេះវាអាចគ្រប់គ្រង MDM បានហើយ។
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -6051,8 +6425,9 @@
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
 	{ext} File	ឯកសារ {ext}
-#. text in the main window's messages (deleting downloads' files)
+#. text in the main window's messages (deleting downloads' files); text in torrent downloads
 #. a message: a deleted download's file stayed on the disk; {file} = its name
+#. error dialog when a torrent's files could not be deleted; {file} is the download's name, {error} why
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	{file} could not be deleted from the disk: {error}	{file} មិនអាចលុបចេញពីថាសបានទេ៖ {error}
@@ -6082,6 +6457,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	{file}: the file matches its checksum ({algorithm})	{file}៖ ឯកសារត្រូវគ្នានឹងតម្លៃត្រួតពិនិត្យរបស់វា ({algorithm})
+#. text in torrent downloads
+#. said after Delete with files when some files stayed on the disk; {file} is the download's name; the files' paths follow it
+#, machine
+	{file}: these files stayed on the disk, because MDM didn't create them or another download uses them:	{file}៖ ឯកសារទាំងនេះនៅតែមាននៅលើថាស ដោយសារ MDM មិនបានបង្កើតពួកវា ឬការទាញយកផ្សេងទៀតកំពុងប្រើពួកវា៖
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -6151,7 +6530,7 @@
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = yt-dlp, ffmpeg or Node.js; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} មិនអាចទាញយកបានទេ៖ {error}
@@ -6160,6 +6539,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} គឺជាបណ្ណសារ 7z ឬ RAR។ MDM ប្រើ 7-Zip ដើម្បីពន្លាបណ្ណសារទាំងនោះ ប៉ុន្តែ 7-Zip មិនបានដំឡើងទេ។
+#. text in errors.rs
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is being downloaded already: try again in a moment	{name} កំពុងត្រូវបានទាញយករួចហើយ៖ សូមព្យាយាមម្ដងទៀតក្នុងពេលបន្តិចទៀត
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6170,12 +6554,22 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	មិនមាន {name} ជា {how} ទេ។
+#. message or event log entry in the main window
+#. a video's or gallery's log: a newer yt-dlp (or gallery-dl) is in, and the download starts again with it; {name} = yt-dlp or gallery-dl, {version} = the new version
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is in: trying again with it	{name} {version} ចូលហើយ៖ កំពុងព្យាយាមម្ដងទៀតជាមួយវា
 #. text in errors.rs
 #. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
 #. {name} = a file name; {version} = a version number (keep the braces as they are)
 #, machine
 	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} ចាស់ពេកហើយ៖ MDM ត្រូវការ {oldest} ឬថ្មីជាងនេះ
-#. text in a dialog box
+#. message or event log entry in the main window
+#. a video's or gallery's log: it failed in a way that usually means yt-dlp (or gallery-dl) is out of date with the site; {name} = yt-dlp or gallery-dl, {version} = the version used
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} may be out of date for this site: looking for a newer version	{name} {version} អាចនឹងហួសសម័យសម្រាប់គេហទំព័រនេះ៖ កំពុងរកមើលកំណែថ្មីជាងនេះ
+#. text in a dialog box; text in helpers.rs
 #. one failed download in the summary of a group of downloads: {name} its file name, {error} why it failed
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
@@ -6215,6 +6609,22 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (កំណត់៖ {limit})
+#. text in helpers.rs
+#. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
+#, machine
+	{runtime}, MDM's earlier copy: Node.js takes its place at the next update	{runtime}, ច្បាប់ចម្លងពីមុនរបស់ MDM៖ Node.js នឹងជំនួសវានៅពេលអាប់ដេតបន្ទាប់
+#. text in helpers.rs
+#. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
+#, machine
+	{runtime}, Mister Download Manager's own copy	{runtime}, ច្បាប់ចម្លងផ្ទាល់ខ្លួនរបស់ Mister Download Manager
+#. text in helpers.rs
+#. Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
+#, machine
+	{runtime}, your own program: {path}	{runtime}, កម្មវិធីផ្ទាល់ខ្លួនរបស់អ្នក៖ {path}
+#. text in helpers.rs
+#. Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
+#, machine
+	{runtime}, your system's, nothing to download: {path}	{runtime}, បរិស្ថានដំណើរការរបស់ប្រព័ន្ធអ្នក មិនចាំបាច់ទាញយកទេ៖ {path}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6229,6 +6639,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} មិនអាចភ្ជាប់ទៅម៉ាស៊ីនបម្រើឯកសារនេះបានទេនៅពេលនេះ៖ MDM នឹងព្យាយាមម្ដងទៀតនៅពេលក្រោយ
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} មិនបានរាយបញ្ជី {file} ដែលបានជ្រើសរើសនៅក្នុង Add torrent ទេ៖ គ្មានអ្វីត្រូវបានទាញយកទេ។ បន្ថែម torrent ម្តងទៀតជាមួយនឹងឯកសារទាំងអស់របស់វា ឬដោយគ្មានឯកសារនេះ
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6272,6 +6686,11 @@
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
 	{service}: {message}	{service}៖ {message}
+#. text in errors.rs
+#. a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} didn't give the file this time: try again in a moment	{site} មិនបានផ្តល់ឯកសារនៅពេលនេះទេ៖ សូមព្យាយាមម្តងទៀតក្នុងពេលបន្តិចទៀត
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6377,6 +6796,14 @@ column	Upload speed	ល្បឿនបង្ហោះ
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	បញ្ជីវីដេអូ៖ ជ្រើសរើសវីដេអូនៅក្នុង Mister Download Manager
 #. text in the browser extension
+#. link after popup_by_hand_firefox in the toolbar button's popup: opens the add-on's page on addons.mozilla.org (Firefox's add-ons store), whose copy Firefox keeps and updates; keep addons.mozilla.org as it is
+#, machine
+extension	Add it from addons.mozilla.org	បន្ថែមវាពី addons.mozilla.org
+#. text in the browser extension
+#. link after popup_by_hand in the toolbar button's popup: opens the extension's page in the Chrome Web Store, whose copy the browser keeps up to date; keep the name Chrome Web Store as it is
+#, machine
+extension	Add it from the Chrome Web Store	បន្ថែមវាពី Chrome Web Store
+#. text in the browser extension
 #. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
 #, machine
 extension	Added to MDM	បានបន្ថែមទៅ MDM
@@ -6384,6 +6811,10 @@ extension	Added to MDM	បានបន្ថែមទៅ MDM
 #. shown briefly on the download button over a video after a quality was picked: the download was added to the app's download queue, to start later
 #, machine
 extension	Added to the queue	បានបន្ថែមទៅជួររង់ចាំ
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#, machine
+extension	All	ទាំងអស់
 #. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
 #. the trailing ... means it is still going on: keep it
@@ -6415,9 +6846,41 @@ extension	Button settings...	ការកំណត់ប៊ូតុង...
 #, machine
 extension	can't be saved	មិនអាចរក្សាទុកបានទេ
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the browser can't reach the app (why is said below it); keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach Mister Download Manager	មិនអាចភ្ជាប់ទៅ Mister Download Manager បានទេ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; keep the name Mister Download Manager as it is
+#, machine
+extension	Can't reach the Mister Download Manager at {server}	មិនអាចភ្ជាប់ទៅ Mister Download Manager នៅ {server} បានទេ
+#. text in the browser extension
 #. shown briefly on the download button when nothing on the page says which video the player is playing, so nothing was sent
 #, machine
 extension	Can't tell which video this is: open its own page and try there	មិនអាចដឹងថាជាវីដេអូមួយណាបានទេ៖ បើកទំព័ររបស់វាផ្ទាល់ រួចសាកល្បងនៅទីនោះ
+#. text in the browser extension
+#. button of a question in the toolbar button's popup: don't do it
+#, machine
+extension	Cancel	បោះបង់
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the other Mister Download Manager (a server) doesn't answer; Settings, Send downloads to and Open it are the names of a tab, a section and a button of the popup
+#, machine
+extension	Check that it's running, and that this browser accepts its certificate (Settings → Send downloads to → Open it).	ពិនិត្យមើលថាវា​កំពុងដំណើរការ ហើយកម្មវិធីរុករកនេះទទួលយកវិញ្ញាបនបត្ររបស់វា (ការកំណត់ → ផ្ញើការទាញយកទៅ → បើកវា)។
+#. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list; verb
+#, machine
+extension	Clear	ជម្រះ
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the finished downloads off the list (their files stay); short
+#, machine
+extension	Clear finished	ជម្រះដែលបានបញ្ចប់
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#, machine
+extension	Clear finished downloads?	ជម្រះការទាញយកដែលបានបញ្ចប់?
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; short
+#, machine
+extension	Connected	បានភ្ជាប់
 #. text in the browser extension
 #. the toolbar button's status when the browser reaches the app; keep the name Mister Download Manager as it is
 #, machine
@@ -6428,13 +6891,57 @@ extension	Connected to Mister Download Manager	បានភ្ជាប់ទៅ
 #, machine
 extension	Connected to Mister Download Manager {version}	បានភ្ជាប់ទៅ Mister Download Manager {version}
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser reaches the app; its version follows; short
+#. {version} = a version number (keep the braces as they are)
+#, machine
+extension	Connected · {version}	បានភ្ជាប់ · {version}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy file
+#, machine
+extension	Copied {file}. Paste it into a folder, a chat or a message.	បានចម្លង {file}។ បិទភ្ជាប់វាទៅក្នុងថត ជជែក ឬសារ។
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): puts the file itself on the clipboard, to paste it into a folder, a chat or a message
+#, machine
+extension	Copy file	ចម្លងឯកសារ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): copies the download's address
+#, machine
+extension	Copy link	ចម្លងតំណ
+#. text in the browser extension
 #. in the menu under the download button over a video: finding the video's qualities failed; the app's own explanation follows on the next line
 #, machine
 extension	Could not look it up	មិនអាចស្វែងរកបានទេ
 #. text in the browser extension
+#. button of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): deletes the file; verb
+#, machine
+extension	Delete	លុប
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list and deletes its file from the disk (it asks first)
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Delete file...	លុបឯកសារ...
+#. text in the browser extension
+#. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	Delete the file?	លុបឯកសារ?
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the finished downloads; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it has just finished; short
+#, machine
+extension	Done	បានបញ្ចប់
+#. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	ទាញយក
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	ទាញយកផ្នែកមួយពីទីនេះ...
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
+#, machine
+extension	Download again	ទាញយកម្ដងទៀត
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -6464,7 +6971,20 @@ extension	Download with Mister Download Manager	ទាញយកជាមួយ M
 #, machine
 extension	Download {what}	ទាញយក {what}
 #. text in the browser extension
-#. shown in the toolbar button's popup after the site was excluded
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Download again
+#, machine
+extension	Downloading {file} again	កំពុងទាញយក {file} ម្ដងទៀត
+#. text in the browser extension
+#. second line of the toolbar button's tooltip while the app downloads: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	Downloading: {count}	កំពុងទាញយក៖ {count}
+#. text in the browser extension
+#. tab in the toolbar button's popup: the list of Mister Download Manager's newest downloads; noun, short
+#, machine
+extension	Downloads	ការទាញយក
+#. text in the browser extension
+#. shown under the switch Never take downloads from this site in the toolbar button's popup while it is on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Downloads from {site} stay with the browser	ការទាញយកពី {site} នៅតែមានជាមួយកម្មវិធីរុករក
@@ -6480,6 +7000,27 @@ extension	Drag the dots to move it along the edge	អូសចំណុចដើ
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	បញ្ចូល​អាសយដ្ឋាន https:// របស់​វា។
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads that failed; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed; short
+#, machine
+extension	Failed	បរាជ័យ
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it failed, and why (the app's words)
+#, machine
+extension	Failed: {why}	បរាជ័យ៖ {why}
+#. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
+#, machine
+extension	File deleted or moved	ឯកសារត្រូវបានលុប ឬផ្លាស់ទី
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
+#, machine
+extension	Finished downloads cleared	ការទាញយកដែលបានបញ្ចប់ត្រូវបានជម្រះ
+#. text in the browser extension
+#. button: forget / unpair this server
+#, machine
+extension	Forget	បំភ្លេច
 #. text in the browser extension
 #. button on the download button over a video when the app didn't answer: opens the app's download page; MDM is the app's short name, keep it; very short
 #, machine
@@ -6529,6 +7070,10 @@ extension	It's smaller than the minimum size in Options → File types.	វា�
 #, machine
 extension	Its address is in Options → File types, addresses left to the browser.	អាសយដ្ឋាន​របស់​វា​ស្ថិត​នៅ​ក្នុង​ជម្រើស → ប្រភេទ​ឯកសារ, អាសយដ្ឋាន​ដែល​ទុក​ឲ្យ​កម្មវិធី​រុករក។
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a download's file can't be opened, copied or shared
+#, machine
+extension	Its file is no longer where it was saved (moved or deleted).	ឯកសាររបស់វាលែងនៅកន្លែងដែលវាត្រូវបានរក្សាទុកទៀតហើយ (បានផ្លាស់ទី ឬលុប)។
+#. text in the browser extension
 #. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
 #, machine
 extension	Its site is in Options → File types, sites left to the browser.	គេហទំព័រ​របស់​វា​ស្ថិត​នៅ​ក្នុង​ជម្រើស → ប្រភេទ​ឯកសារ, គេហទំព័រ​ដែល​ទុក​ឲ្យ​កម្មវិធី​រុករក។
@@ -6537,14 +7082,31 @@ extension	Its site is in Options → File types, sites left to the browser.	គ�
 #, machine
 extension	Its type isn't in Options → File types.	ប្រភេទ​របស់​វា​មិន​ស្ថិត​នៅ​ក្នុង​ជម្រើស → ប្រភេទ​ឯកសារ​ទេ។
 #. text in the browser extension
+#. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): it finished less than a minute ago; lower case where the language allows
+#, machine
+extension	just now	ឥឡូវនេះ
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup, under the switch Never take downloads from this site, when a pattern in Mister Download Manager's Options excludes the site (the switch can't be turned off here)
+#, machine
+extension	Left to the browser by a rule in Options	បានទុកឱ្យកម្មវិធីរុករកតាមច្បាប់ក្នុងជម្រើស
+#. text in the browser extension
 #. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 extension	Left to the browser: {name}	ទុក​ឲ្យ​កម្មវិធី​រុករក៖ {name}
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Copy link
+#, machine
+extension	Link copied	តំណបានចម្លង
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ផ្ទាល់
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads), while it asks the app for them
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Looking for downloads...	កំពុងស្វែងរកការទាញយក...
 #. text in the browser extension
 #. in the menu that opens from the download button over a video, while the app finds which qualities (resolutions, formats) the video can be downloaded in
 #, machine
@@ -6566,6 +7128,10 @@ extension	Media on this page	មេឌៀនៅលើទំព័រនេះ
 #, machine
 extension	Mister Download Manager	Mister Download Manager
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager didn't answer in time. Try again.	Mister Download Manager មិនបានឆ្លើយតបទាន់ពេលទេ។ សូមព្យាយាមម្ដងទៀត។
+#. text in the browser extension
 #. status when the app was started for a download but didn't answer in time; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager didn't start in time	Mister Download Manager មិនបានចាប់ផ្តើមទាន់ពេលទេ
@@ -6578,6 +7144,11 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #, machine
 extension	Mister Download Manager is busy with other videos	Mister Download Manager កំពុងរវល់ជាមួយវីដេអូផ្សេងទៀត
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app didn't answer in time; keep the name Mister Download Manager as it is
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Mister Download Manager is busy. Trying again...	Mister Download Manager រវល់។ កំពុងព្យាយាមម្ដងទៀត...
+#. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager មិនត្រូវបានដំឡើង ឬមិនបានចាប់ផ្តើម
@@ -6585,6 +7156,14 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager មិនត្រូវបានដំឡើង ឬការរួមបញ្ចូលកម្មវិធីរុករករបស់វាមិនត្រូវបានដំឡើង
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running	Mister Download Manager មិនកំពុងដំណើរការ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager isn't running.	Mister Download Manager មិនកំពុងដំណើរការទេ។
 #. text in the browser extension
 #. in the menu under the download button over a video: the app needs the yt-dlp tool (a program's name, keep it as it is) to find this video's qualities, and it isn't installed; keep the name Mister Download Manager as it is
 #, machine
@@ -6597,6 +7176,14 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension in Chrome, Edge and the other Chromium browsers (they ask for no permission at the switch); keep the name Mister Download Manager as it is
 #, machine
 extension	Mister Download Manager then downloads through the same proxy as this browser. While this is off, the extension doesn't read the browser's proxy.	Mister Download Manager បន្ទាប់មកទាញយកតាមរយៈប្រូកស៊ីដូចកម្មវិធីរុករកនេះ។ ខណៈពេលដែលនេះបិទ ផ្នែកបន្ថែមមិនអានប្រូកស៊ីរបស់កម្មវិធីរុករកទេ។
+#. text in the browser extension
+#. tooltip of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens its menu
+#, machine
+extension	More actions	សកម្មភាពបន្ថែម
+#. text in the browser extension
+#. screen readers' name of the ⋯ button of a download in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	More actions for {file}	សកម្មភាពបន្ថែមសម្រាប់ {file}
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -6611,10 +7198,18 @@ extension	Most compatible	ត្រូវគ្នាបំផុត
 #, machine
 extension	Never on {site}	មិនដែលនៅលើ {site}
 #. text in the browser extension
-#. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
+#. switch in the This page tab in the toolbar button's popup: on, this web site's downloads are left to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 extension	Never take downloads from {site}	កុំទាញយកពី {site} ទៀត
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search; the words searched for follow
+#, machine
+extension	No download's name or address has “{words}”.	គ្មានឈ្មោះ ឬអាសយដ្ឋាននៃការទាញយកណាមួយមាន “{words}” ទេ។
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads
+#, machine
+extension	No downloads yet	មិនទាន់មានការទាញយកនៅឡើយទេ
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -6624,13 +7219,25 @@ extension	No video or sound found on this page yet. Play it, then open this agai
 #, machine
 extension	No video to download here	គ្មានវីដេអូសម្រាប់ទាញយកនៅទីនេះទេ
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: the browser can't reach the app (why is said below it); short
+#, machine
+extension	Not connected	មិនបានភ្ជាប់
+#. text in the browser extension
 #. pairing failed: the other MDM didn't answer
 #, machine
 extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	មិន​អាច​ទៅ​ដល់​បាន​ទេ។ សូម​បើក​អាសយដ្ឋាន​របស់​វា​ម្ដង​ក្នុង​កម្មវិធី​រុករក​នេះ ហើយ​ទទួល​យក​វិញ្ញាបនបត្រ​របស់​វា រួច​ព្យាយាម​ម្ដង​ទៀត។
 #. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when no download matches the search or the filter
+#, machine
+extension	Nothing matches	គ្មានអ្វីត្រូវគ្នាទេ
+#. text in the browser extension
 #. on the download button over a video (grey) when the button is turned off on this web site; a 'Turn on' button follows it; short
 #, machine
 extension	Off on this site	បិទនៅលើគេហទំព័រនេះ
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the downloaded file; verb
+#, machine
+extension	Open	បើក
 #. text in the browser extension
 #. button: open the other MDM's address in a tab (to accept its certificate once)
 #, machine
@@ -6639,6 +7246,10 @@ extension	Open it	បើក​វា
 #. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
 #, machine
 extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	បើក​អាសយដ្ឋាន​របស់​វា​ម្ដង ហើយ​ទទួល​យក​វិញ្ញាបនបត្រ​របស់​វា រួច​បញ្ចូល​កូដ​ពី Options, Remote, Pair a device (ឬ misterdownloadmanager-cli pair) របស់​វា។
+#. text in the browser extension
+#. button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page
+#, machine
+extension	Open its page	បើកទំព័ររបស់វា
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -6651,6 +7262,14 @@ extension	Open post	បើកប្រកាស
 #. on the download button (amber) over a video in a feed (a social site's home page, a timeline) that can't be downloaded from there: the user should open the post the video belongs to; short
 #, machine
 extension	Open the post to download it	បើកប្រកាសដើម្បីទាញយកវា
+#. text in the browser extension
+#. screen readers' name of a finished download's name in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clicking it opens the file
+#, machine
+extension	Open {file}	បើក {file}
+#. text in the browser extension
+#. the gear button at the top of in the toolbar button's popup: opens Mister Download Manager's Options window; keep the name Mister Download Manager as it is
+#, machine
+extension	Options in Mister Download Manager	ជម្រើសនៅក្នុង Mister Download Manager
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
@@ -6669,9 +7288,30 @@ extension	Pair	ផ្គូផ្គង
 #, machine
 extension	Pairing code	កូដ​ផ្គូផ្គង
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stops a running download, to resume it later; verb
+#, machine
+extension	Pause	ផ្អាក
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a running download can't be removed or downloaded again
+#, machine
+extension	Pause it first.	សូមផ្អាកវាជាមុនសិន។
+#. text in the browser extension
+#. screen readers' name of a running download's Pause button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Pause {file}	ផ្អាក {file}
+#. text in the browser extension
+#. under the extension's name in the toolbar button's popup: taking downloads from this browser is paused; short
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): stopped by the user, can be resumed; short
+#, machine
+extension	Paused	បានផ្អាក
+#. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
 extension	Paused: downloads stay with the browser	ផ្អាក៖ ការទាញយកនៅតែមានជាមួយកម្មវិធីរុករក
+#. text in the browser extension
+#. name of the row of tabs in the toolbar button's popup, read by screen readers
+#, machine
+extension	Popup sections	ផ្នែកផ្ទាំងលេចឡើង
 #. text in the browser extension
 #. Option in the browser extension media list: put the page title before the original file name when downloading a detected media file
 #, machine
@@ -6685,9 +7325,29 @@ extension	Protected	ការពារ
 #, machine
 extension	Protected video	វីដេអូការពារ
 #. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
+#, machine
+extension	Remove from list	លុបចេញពីបញ្ជី
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
+#, machine
+extension	Resume	បន្ត
+#. text in the browser extension
+#. screen readers' name of a download's Resume button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Resume {file}	បន្ត {file}
+#. text in the browser extension
 #. button on the download button over a video when the app didn't answer: try again; verb; very short
 #, machine
 extension	Retry	ព្យាយាមម្តងទៀត
+#. text in the browser extension
+#. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the downloads downloading now; short
+#, machine
+extension	Running	កំពុងទាញយក
+#. text in the browser extension
+#. placeholder of the search box in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads); it finds downloads by their name or address
+#, machine
+extension	Search downloads	ស្វែងរកការទាញយក
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -6702,13 +7362,52 @@ extension	Send downloads to	ផ្ញើ​ការ​ទាញ​យក​ទ�
 #, machine
 extension	Sending to MDM...	កំពុងផ្ញើទៅ MDM...
 #. text in the browser extension
+#. under the extension's name in the toolbar button's popup: downloads go to another Mister Download Manager, a server, at this address; short
+#, machine
+extension	Sending to {server}	កំពុងផ្ញើទៅ {server}
+#. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
 extension	Sent to Mister Download Manager	បានផ្ញើទៅ Mister Download Manager
 #. text in the browser extension
+#. tab in the toolbar button's popup: the extension's settings; noun, short
+#, machine
+extension	Settings	ការកំណត់
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the system's share sheet for the file
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Share...	ចែករំលែក...
+#. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
+#. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
 #, machine
 extension	Show	បង្ហាញ
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
+#, machine
+extension	Show all downloads	បង្ហាញការទាញយកទាំងអស់
+#. text in the browser extension
+#. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): opens the file's folder with the file selected
+#, machine
+extension	Show in folder	បង្ហាញក្នុងថត
+#. text in the browser extension
+#. screen readers' name of a download's Show in folder button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads)
+#, machine
+extension	Show {file} in folder	បង្ហាញ {file} ក្នុងថត
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running
+#, machine
+extension	Start it to see your downloads here.	ចាប់ផ្តើមវាដើម្បីមើលការទាញយករបស់អ្នកនៅទីនេះ។
+#. text in the browser extension
+#. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app isn't running; keep the name Mister Download Manager as it is
+#, machine
+extension	Start Mister Download Manager	ចាប់ផ្តើម Mister Download Manager
+#. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when it has just started and nothing has come yet
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Starting...	កំពុងចាប់ផ្តើម...
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -6717,6 +7416,18 @@ extension	Support MDM	គាំទ្រ MDM
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	ទាញយកពីកម្មវិធីរុករកនេះ
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button can't act on the download
+#, machine
+extension	That can't be done to this download now.	មិនអាចធ្វើបានចំពោះការទាញយកនេះឥឡូវនេះទេ។
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's action failed
+#, machine
+extension	That didn't work. Try again.	នោះមិនបានដំណើរការទេ។ សូមព្យាយាមម្តងទៀត។
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when a button's download was removed meanwhile
+#, machine
+extension	That download is no longer in the list.	ការទាញយកនោះលែងមាននៅក្នុងបញ្ជីទៀតហើយ។
 #. text in the browser extension
 #. in the toolbar button's popup, on a site where the Chrome Web Store's copy of the extension shows no download button; Help is the link at the bottom of the popup
 #, machine
@@ -6734,6 +7445,19 @@ extension	The extension isn't allowed to read this site (the browser's site acce
 #, machine
 extension	The last download was left to the browser.	ការ​ទាញ​យក​ចុង​ក្រោយ​ត្រូវ​បាន​ទុក​ឲ្យ​កម្មវិធី​រុករក។
 #. text in the browser extension
+#. under the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when there are more downloads than it shows; keep the name Mister Download Manager as it is
+#, machine
+extension	The newest {shown} of {total}. Mister Download Manager lists them all.	ថ្មីបំផុត {shown} ក្នុងចំណោម {total}។ Mister Download Manager រាយបញ្ជីពួកវាទាំងអស់។
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	The {count} finished downloads go off the list. Their files stay where they are.	ការទាញយកដែលបានបញ្ចប់ចំនួន {count} នឹងត្រូវលុបចេញពីបញ្ជី។ ឯកសាររបស់ពួកវានៅដដែល។
+#. text in the browser extension
+#. note at the top of the list in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when downloads go to another Mister Download Manager (a server): the buttons that need the file on this computer are not offered; keep the name Mister Download Manager as it is
+#, machine
+extension	These are the downloads of the Mister Download Manager at {server}. Open their files there.	ទាំងនេះគឺជាការទាញយករបស់ Mister Download Manager នៅ {server}។ បើកឯកសាររបស់ពួកវានៅទីនោះ។
+#. text in the browser extension
 #. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
 #, machine
 extension	This browser isn't ticked in Options → General.	កម្មវិធី​រុករក​នេះ​មិន​ត្រូវ​បាន​ធីក​នៅ​ក្នុង​ជម្រើស → ទូទៅ​ទេ។
@@ -6742,21 +7466,46 @@ extension	This browser isn't ticked in Options → General.	កម្មវិ�
 #, machine
 extension	This computer	កុំព្យូទ័រ​នេះ
 #. text in the browser extension
+#. one line at the top of the toolbar button's popup when the extension was loaded by hand (Load unpacked, with Developer mode on) in Chrome, Edge, Brave, Opera or Vivaldi; followed by the link popup_store_chrome
+#, machine
+extension	This copy was loaded by hand and won't update itself.	ច្បាប់ចម្លងនេះត្រូវបានផ្ទុកដោយដៃ ហើយនឹងមិនអាប់ដេតដោយខ្លួនឯងទេ។
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the add-on was loaded by hand in Firefox (Load Temporary Add-on, in about:debugging); followed by the link popup_store_firefox; the browser here is Firefox (or Zen, LibreWolf)
+#, machine
+extension	This copy was loaded by hand: it won't update itself, and the browser removes it when it restarts.	ច្បាប់ចម្លងនេះត្រូវបានផ្ទុកដោយដៃ៖ វានឹងមិនអាប់ដេតដោយខ្លួនឯងទេ ហើយកម្មវិធីរុករកនឹងលុបវាចេញនៅពេលវាចាប់ផ្តើមឡើងវិញ។
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	ព័ត៌មានលម្អិតនៃការទាញយកនេះធំពេកមិនអាចប្រគល់បានទេ
+#. text in the browser extension
+#. in the This page tab in the toolbar button's popup when the browser's tab shows one of its own pages (settings, a new tab)
+#, machine
+extension	This isn't a web page: there's nothing to do here.	នេះមិនមែនជាទំព័របណ្ដាញទេ៖ គ្មានអ្វីត្រូវធ្វើនៅទីនេះទេ។
+#. text in the browser extension
+#. tab in the toolbar button's popup: what can be done on the web page open in the browser (its videos, leaving its site to the browser); short
+#, machine
+extension	This page	ទំព័រនេះ
 #. text in the browser extension
 #. in the toolbar button's popup, when the page's player plays from a stream built in the page (a blob:): the list of the page's media has nothing to show; Download video is the name of the button over videos
 #, machine
 extension	This page's player streams its video in pieces, so there's no file to list. Point at the video and use its Download video button.	កម្មវិធីចាក់របស់ទំព័រនេះផ្សាយវីដេអូជាបំណែកៗ ដូច្នេះគ្មានឯកសារដើម្បីរាយបញ្ជីទេ។ ចង្អុលទៅវីដេអូ ហើយប្រើប៊ូតុងទាញយកវីដេអូរបស់វា។
 #. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the system has no way to do it
+#, machine
+extension	This system can't do that.	ប្រព័ន្ធនេះមិនអាចធ្វើដូច្នេះបានទេ។
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here
+#, machine
+extension	This version can't list its downloads here yet.	កំណែនេះមិនទាន់អាចរាយបញ្ជីការទាញយករបស់វានៅទីនេះបានទេ។
+#. text in the browser extension
 #. button on the download button over a video when it is off on this web site: turns it on again here; verb; very short
 #, machine
 extension	Turn on	បើក
 #. text in the browser extension
-#. link beside "Downloads from <site> stay with the browser" in the toolbar button's popup: take the site off the excluded sites again
+#. under the extension's name in the toolbar button's popup: the app is older than the extension; keep the name Mister Download Manager as it is; short
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app is too old to list its downloads here; keep the name Mister Download Manager as it is
 #, machine
-extension	Undo	មិនធ្វើវិញ
+extension	Update Mister Download Manager	អាប់ដេត Mister Download Manager
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -6774,6 +7523,14 @@ extension	Video	វីដេអូ
 #, machine
 extension	Wait a moment, then try again.	សូម​រង់ចាំ​បន្តិច រួច​ព្យាយាម​ម្ដង​ទៀត។
 #. text in the browser extension
+#. a download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): waiting in a queue, never started; short
+#, machine
+extension	Waiting	កំពុងរង់ចាំ
+#. text in the browser extension
+#. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
+#, machine
+extension	What you download with Mister Download Manager shows up here.	អ្វីដែលអ្នកទាញយកជាមួយ Mister Download Manager នឹងបង្ហាញនៅទីនេះ។
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	នៅពេលទំព័រពេញអេក្រង់ វីដេអូរបស់វាមិនបង្ហាញប៊ូតុងទាញយកវីដេអូទេ។
@@ -6781,6 +7538,33 @@ extension	While the page is in full screen, its videos show no Download video bu
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	កូដ​ខុស។
+#. text in the browser extension
+#. tooltip of the number on the Downloads tab in the toolbar button's popup: how many downloads are running
+#. {count} = a number (keep the braces as they are)
+#, machine
+extension	{count} downloading now	កំពុងទាញយក {count} ឥឡូវនេះ
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): how much has come of its size
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+extension	{done} of {size}	{done} នៃ {size}
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Delete file
+#, machine
+extension	{file} deleted	{file} ត្រូវបានលុប
+#. text in the browser extension
+#. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Remove from list
+#, machine
+extension	{file} removed from the list	{file} ត្រូវបានលុបចេញពីបញ្ជី
+#. text in the browser extension
+#. question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before a download's file is deleted
+#, machine
+extension	{file} will be deleted from your computer, and the download taken off the list. This can't be undone.	{file} នឹងត្រូវបានលុបចេញពីកុំព្យូទ័ររបស់អ្នក ហើយការទាញយកនឹងត្រូវលុបចេញពីបញ្ជី។ នេះមិនអាចបោះបង់បានទេ។
+#. text in the browser extension
+#. a running download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): the time left, as a clock (minutes:seconds)
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+extension	{time} left	នៅសល់ {time}
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

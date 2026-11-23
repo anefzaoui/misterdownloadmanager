@@ -484,6 +484,48 @@ async fn a_second_refusal_stays_the_bot_check() {
     assert_eq!(log.len(), 2, "{log:?}");
 }
 
+/// #1494: a challenge that wants its script run (Cloudflare's "Just a moment..."; the lab's
+/// `js_challenge`) refuses every connection MDM makes, since MDM runs no script: the download
+/// fails with the bot check's refusal (Alt+click leaves it to the browser, which runs it). With
+/// the cookie the browser got for passing it, the same address gives the file.
+#[tokio::test]
+async fn a_challenge_to_run_in_a_browser_stays_the_bot_check() {
+    let s = server("js_challenge=0").await;
+    let dir = tempfile::tempdir().unwrap();
+    let err = Download::start(
+        Request {
+            url: s.url("/gen/64K/js.bin?seed=1494").parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts(),
+    )
+    .wait()
+    .await
+    .unwrap_err();
+    assert!(matches!(err, mdm_engine::Error::BotCheck), "{err:?}");
+    let log = settled_log(&s).await;
+    assert!(log.len() >= 2, "asked once more at least: {log:?}");
+    assert!(
+        log.iter().all(|e| e.outcome == "fault:js_challenge"),
+        "{log:?}"
+    );
+    let mut passed = HeaderMap::new();
+    passed.insert(COOKIE, "mdm_lab_clearance=1".parse().unwrap());
+    let out = Download::start(
+        Request {
+            url: s.url("/gen/64K/js.bin?seed=1494").parse().unwrap(),
+            headers: passed,
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts(),
+    )
+    .wait()
+    .await
+    .expect("the check's cookie lets it through");
+    same_content(&out.path, 1494, 64 << 10);
+}
+
 /// FileHippo's way (#630): 412 Precondition Failed, empty, to whatever isn't a browser. MDM's
 /// first request carries no precondition, so that 412 can only refuse the program: it is asked
 /// once more the way a browser connects too, and the file comes.
@@ -693,4 +735,73 @@ async fn parts_ignored_leave_it_on_one_connection() {
             .any(|e| e.contains("was answered with the whole file; going on with one connection")),
         "{events:?}"
     );
+}
+
+/// #1494: the browser-like connection sends one User-Agent, the download's, even when the
+/// download's headers carry it (a site's own, a caller's): two would tell a program apart from
+/// a browser. A server that answers MDM's own request with Cloudflare's challenge and keeps the
+/// browser-like request's header lines as they came.
+#[tokio::test]
+async fn the_browser_like_connection_sends_one_user_agent() {
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let (seen_tx, mut seen_rx) = tokio::sync::mpsc::unbounded_channel::<String>();
+    tokio::spawn(async move {
+        loop {
+            let Ok((mut sock, _)) = listener.accept().await else {
+                return;
+            };
+            let seen = seen_tx.clone();
+            tokio::spawn(async move {
+                loop {
+                    let mut head = Vec::new();
+                    let mut byte = [0u8; 1];
+                    while !head.ends_with(b"\r\n\r\n") {
+                        match sock.read(&mut byte).await {
+                            Ok(1) => head.push(byte[0]),
+                            _ => return,
+                        }
+                    }
+                    let head = String::from_utf8_lossy(&head).into_owned();
+                    let browser = head.to_ascii_lowercase().contains("\r\nsec-fetch-mode:");
+                    let answer = if browser {
+                        let _ = seen.send(head);
+                        "HTTP/1.1 200 OK\r\ncontent-type: application/octet-stream\r\ncontent-length: 5\r\n\r\nhello".to_owned()
+                    } else {
+                        let page = "<!DOCTYPE html><title>Just a moment...</title>";
+                        format!(
+                            "HTTP/1.1 403 Forbidden\r\ncf-mitigated: challenge\r\ncontent-type: text/html\r\ncontent-length: {}\r\n\r\n{page}",
+                            page.len()
+                        )
+                    };
+                    if sock.write_all(answer.as_bytes()).await.is_err() {
+                        return;
+                    }
+                }
+            });
+        }
+    });
+    let mut headers = HeaderMap::new();
+    headers.insert(USER_AGENT, CHROME.parse().unwrap());
+    let dir = tempfile::tempdir().unwrap();
+    let out = Download::start(
+        Request {
+            url: format!("http://127.0.0.1:{port}/f.bin").parse().unwrap(),
+            headers,
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        opts(),
+    )
+    .wait()
+    .await
+    .expect("the browser-like connection gets it");
+    assert_eq!(std::fs::read(&out.path).unwrap(), b"hello");
+    let head = seen_rx.recv().await.expect("a browser-like request");
+    let agents: Vec<&str> = head
+        .split("\r\n")
+        .filter(|l| l.to_ascii_lowercase().starts_with("user-agent:"))
+        .collect();
+    assert_eq!(agents.len(), 1, "{head}");
+    assert!(agents[0].ends_with(CHROME), "{head}");
 }

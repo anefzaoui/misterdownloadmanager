@@ -164,6 +164,9 @@ pub async fn api_get(client: &reqwest::Client, url: &str) -> Result<Api, Error> 
 pub(crate) struct Latest {
     pub tag: String,
     pub files: Vec<(String, String)>,
+    /// GitHub's own digest of each file it has one of (`sha256:<hex>`), the API's only: none
+    /// from the pages.
+    pub digests: Vec<(String, String)>,
 }
 
 #[derive(Deserialize)]
@@ -176,6 +179,8 @@ struct ApiRelease {
 struct ApiAsset {
     name: String,
     browser_download_url: String,
+    /// `sha256:<hex>` (GitHub's digest of the upload).
+    digest: Option<String>,
 }
 
 /// The latest release of `repo` (`owner/name`) from GitHub's API at `api` (its
@@ -197,6 +202,11 @@ pub(crate) async fn latest_release(
                 serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
             return Ok(Latest {
                 tag: r.tag_name,
+                digests: r
+                    .assets
+                    .iter()
+                    .filter_map(|a| Some((a.name.clone(), a.digest.clone()?)))
+                    .collect(),
                 files: r
                     .assets
                     .into_iter()
@@ -227,7 +237,11 @@ pub(crate) async fn latest_release(
                 .iter()
                 .map(|n| ((*n).to_owned(), download_url(web, repo, &tag, n)))
                 .collect();
-            Ok(Latest { tag, files })
+            Ok(Latest {
+                tag,
+                files,
+                digests: Vec::new(),
+            })
         }
         Err(e) => {
             tracing::warn!("{page}: {e}");
@@ -505,7 +519,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         std::fs::write(
             dir.path().join("latest.json"),
-            r#"{"tag_name":"v1.0.0","assets":[{"name":"a.zip","browser_download_url":"https://example.invalid/a.zip"}]}"#,
+            r#"{"tag_name":"v1.0.0","assets":[{"name":"a.zip","browser_download_url":"https://example.invalid/a.zip","digest":"sha256:00ff"},{"name":"b.zip","browser_download_url":"https://example.invalid/b.zip"}]}"#,
         )
         .unwrap();
         let lab = mdm_labserver::LabServer::start(mdm_labserver::Config {
@@ -523,7 +537,11 @@ mod tests {
             found,
             Latest {
                 tag: "v1.0.0".into(),
-                files: vec![("a.zip".into(), "https://example.invalid/a.zip".into())],
+                files: vec![
+                    ("a.zip".into(), "https://example.invalid/a.zip".into()),
+                    ("b.zip".into(), "https://example.invalid/b.zip".into())
+                ],
+                digests: vec![("a.zip".into(), "sha256:00ff".into())],
             }
         );
         let missing = latest_release(&net, &lab.url("/files/none.json"), &web, "x/y", &["b"]).await;

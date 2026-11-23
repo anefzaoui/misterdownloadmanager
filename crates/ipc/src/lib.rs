@@ -116,6 +116,9 @@ pub struct Command {
     /// startup, or the installer's "Start when Windows starts", #226): MDM starts in the
     /// notification area, its window hidden. Changes nothing in a running app.
     pub startup: bool,
+    /// `/fromhost` (beyond IDM, #1333): started by the browser native messaging host:
+    /// starts hidden without marking an OS session login.
+    pub hidden: bool,
     /// `/show <window>` (beyond IDM): the running app opens one of its windows by name, for
     /// screenshots and scripted checks (tools/lab/docs-shots.ps1): `addurl`, `batch`, `find`,
     /// `scheduler`, `about`, `language`, `shortcuts`, `speedlimit`, `properties`, `delete`,
@@ -130,6 +133,10 @@ pub struct Command {
     /// it), without the site's name (`Film | Site` is `Film`: the extension's `withoutSiteName`):
     /// a video yt-dlp knows only by its address is named by it.
     pub video_title: Option<String>,
+    /// With `video_page`, from that button's "Download a part from here..." (#1662): the window
+    /// opens with Part ticked, From this many seconds into the video (where its player was).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub video_part_from: Option<u32>,
     /// From the browser's quality menu over a video (the button's click): look this video up
     /// with yt-dlp, off the window, and answer at once with a token to ask about it
     /// ([`api::VideoLookupAnswer`], `pending`). The browser's request context (`referer`,
@@ -167,7 +174,68 @@ pub struct Command {
     /// sites again (a pattern of the user's own that covers it stays).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub include_site: Option<String>,
+    /// From the browser's toolbar button (#1496, its native host asks): the newest downloads its
+    /// popup lists, answered with an [`api::RecentAnswer`] whatever the automation API's switch,
+    /// never for a paired device.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recent: Option<RecentAsk>,
+    /// That list's buttons: act on one download (open it, show it in its folder, copy its file,
+    /// share it, pause, resume…), answered with an [`api::RecentActAnswer`].
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub recent_act: Option<RecentAct>,
 }
+
+/// The browser popup's list of downloads ([`Command::recent`], #1496): which ones, and the file
+/// type icons it lacks.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct RecentAsk {
+    /// One of [`RECENT_FILTERS`]: every download, those running, complete, or failed.
+    pub filter: String,
+    /// Words to find in the file's name or its address (case doesn't matter); empty: all.
+    pub search: String,
+    /// The most downloads answered, newest first (at most [`RECENT_MAX`]); 0: none, only the
+    /// counts (the toolbar button's count of running downloads).
+    pub limit: usize,
+    /// The file type icons the popup has already (their keys): not sent again.
+    pub have: Vec<String>,
+    /// The icons' side in pixels (the popup's size for them at the screen's scale), 16 to 64.
+    pub px: u32,
+}
+
+/// [`RecentAsk::filter`]'s values.
+pub const RECENT_FILTERS: [&str; 4] = ["all", "running", "done", "failed"];
+
+/// The most downloads one [`RecentAsk`] is answered with.
+pub const RECENT_MAX: usize = 200;
+
+/// One of the browser popup's buttons on a download ([`Command::recent_act`], #1496).
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, schemars::JsonSchema)]
+#[serde(default)]
+pub struct RecentAct {
+    /// One of [`RECENT_ACTS`].
+    pub act: String,
+    /// The download (its `id` in the list); none for `clear-done`.
+    pub id: u64,
+}
+
+/// [`RecentAct::act`]'s values: open the file; show it selected in its folder; put the file on
+/// the clipboard (to paste in a folder, a chat, an upload box); the system's share sheet
+/// (Windows, macOS); stop it (resumable); resume it; download it again from the start; take it
+/// off the list (its file kept); take it off the list and delete its file; take every complete
+/// download off the list (their files kept).
+pub const RECENT_ACTS: [&str; 10] = [
+    "open",
+    "folder",
+    "copy-file",
+    "share",
+    "pause",
+    "resume",
+    "redownload",
+    "remove",
+    "delete",
+    "clear-done",
+];
 
 /// The most parts a page's links come in ([`LinksPart`]): 256 messages of up to 1 MB each.
 pub const MAX_LINK_PARTS: u32 = 256;
@@ -258,6 +326,8 @@ impl Command {
             || self.video_lookup.is_some()
             || self.video_poll.is_some()
             || self.video_pick.is_some()
+            || self.recent.is_some()
+            || self.recent_act.is_some()
             // An add's expected checksum is read before it is added: a bad one is answered,
             // not dropped while the add goes on.
             || (self.url.is_some() && self.checksum.is_some())
@@ -760,6 +830,10 @@ pub fn random_token() -> String {
 /// LaunchAgent, the installer's): MDM starts in the notification area ([`Command::startup`]).
 pub const STARTUP: &str = "/startup";
 
+/// The argument passed when the browser native messaging host starts MDM (#1333): MDM starts
+/// in the notification area with its main window hidden, without marking an OS session login.
+pub const FROM_HOST: &str = "/fromhost";
+
 /// Parse IDM's command line: `/d URL [/p dir] [/f name] [/a] [/n] [/q] [/s]` (case-insensitive;
 /// `-d` also accepted). Returns None when there is nothing to do.
 pub fn parse_args(args: &[String]) -> Option<Command> {
@@ -778,6 +852,7 @@ pub fn parse_args(args: &[String]) -> Option<Command> {
             "q" | "h" => {}
             "exit" => cmd.exit = true,
             "startup" => cmd.startup = true,
+            "fromhost" => cmd.hidden = true,
             "show" => cmd.show = it.next().map(|w| w.to_ascii_lowercase()),
             // A bare magnet link or .torrent file (what Windows passes for an association).
             _ if a
@@ -839,7 +914,12 @@ mod tests {
         // The startup entries' argument (#226), as written and as a Linux user might.
         assert!(parse_args(&[STARTUP.into()]).unwrap().startup);
         assert!(parse_args(&a("--startup")).unwrap().startup);
+        assert!(!parse_args(&[STARTUP.into()]).unwrap().hidden);
         assert!(!parse_args(&a("/s")).unwrap().startup);
+        // The browser host's argument (#1333): hidden start without startup session markers.
+        assert!(parse_args(&[FROM_HOST.into()]).unwrap().hidden);
+        assert!(parse_args(&a("--fromhost")).unwrap().hidden);
+        assert!(!parse_args(&[FROM_HOST.into()]).unwrap().startup);
         assert!(parse_args(&[]).is_none());
     }
 

@@ -11,30 +11,52 @@ use std::process::{Command, Stdio};
 use crate::Error;
 use crate::safe::{self, Writer};
 
-/// 7-Zip's program: in its usual install folders on Windows, else `7zz`, `7z` or `7za` on the
-/// PATH (Linux and macOS packages name it so).
+/// 7-Zip's program, the first there of [`candidates`].
 pub fn find_7zip() -> Option<PathBuf> {
+    candidates(|var| std::env::var_os(var))
+        .into_iter()
+        .find(|p| p.is_file())
+}
+
+/// Where 7-Zip's program may be, in the order looked at (`var`: an environment variable). On
+/// Windows 7-Zip's own install folders first, then the PATH, then the 7-Zip another archiver
+/// brings with it (#1525): PeaZip's, in its install folder. Elsewhere `7zz`, `7z` or `7za` on
+/// the PATH (Linux and macOS packages name it so). NanaZip, a Store app, has no folder to look
+/// in: its command line is `NanaZipC.exe` on the PATH (an app execution alias, a file to
+/// `is_file`). Any other (a portable copy, a per-user install) is chosen in Options → Archives.
+fn candidates(var: impl Fn(&str) -> Option<std::ffi::OsString>) -> Vec<PathBuf> {
+    const PROGRAMS: [&str; 3] = ["ProgramFiles", "ProgramW6432", "ProgramFiles(x86)"];
     let mut candidates: Vec<PathBuf> = Vec::new();
     if cfg!(windows) {
-        for var in ["ProgramFiles", "ProgramW6432", "ProgramFiles(x86)"] {
-            if let Some(dir) = std::env::var_os(var) {
-                candidates.push(PathBuf::from(dir).join("7-Zip").join("7z.exe"));
-            }
+        for dir in PROGRAMS.iter().filter_map(|v| var(v)) {
+            candidates.push(PathBuf::from(dir).join("7-Zip").join("7z.exe"));
         }
     }
     let names: &[&str] = if cfg!(windows) {
-        &["7z.exe", "7za.exe"]
+        &["7z.exe", "7za.exe", "NanaZipC.exe"]
     } else {
         &["7zz", "7z", "7za"]
     };
-    if let Some(path) = std::env::var_os("PATH") {
+    if let Some(path) = var("PATH") {
         for dir in std::env::split_paths(&path) {
             for n in names {
                 candidates.push(dir.join(n));
             }
         }
     }
-    candidates.into_iter().find(|p| p.is_file())
+    if cfg!(windows) {
+        for dir in PROGRAMS.iter().filter_map(|v| var(v)) {
+            candidates.push(
+                PathBuf::from(dir)
+                    .join("PeaZip")
+                    .join("res")
+                    .join("bin")
+                    .join("7z")
+                    .join("7z.exe"),
+            );
+        }
+    }
+    candidates
 }
 
 pub fn extract(
@@ -109,4 +131,66 @@ pub fn extract(
         w.skip(&name, why);
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::ffi::OsString;
+
+    fn looked_at(var: impl Fn(&str) -> Option<OsString>) -> Vec<String> {
+        candidates(var)
+            .iter()
+            .map(|p| p.display().to_string())
+            .collect()
+    }
+
+    /// #1525: 7-Zip's own folders first, then the PATH (NanaZip's command line there too), then
+    /// the 7-Zip PeaZip brings with it, so an installed 7-Zip stays the one used.
+    #[cfg(windows)]
+    #[test]
+    fn seven_zip_is_looked_for_in_its_folders_the_path_then_peazip() {
+        let var = |v: &str| match v {
+            "ProgramFiles" => Some(OsString::from(r"C:\Program Files")),
+            "ProgramFiles(x86)" => Some(OsString::from(r"C:\Program Files (x86)")),
+            "PATH" => Some(OsString::from(r"C:\tools;D:\bin")),
+            _ => None,
+        };
+        assert_eq!(
+            looked_at(var),
+            [
+                r"C:\Program Files\7-Zip\7z.exe",
+                r"C:\Program Files (x86)\7-Zip\7z.exe",
+                r"C:\tools\7z.exe",
+                r"C:\tools\7za.exe",
+                r"C:\tools\NanaZipC.exe",
+                r"D:\bin\7z.exe",
+                r"D:\bin\7za.exe",
+                r"D:\bin\NanaZipC.exe",
+                r"C:\Program Files\PeaZip\res\bin\7z\7z.exe",
+                r"C:\Program Files (x86)\PeaZip\res\bin\7z\7z.exe",
+            ]
+        );
+        // Nothing set: nowhere to look, and no panic.
+        assert!(looked_at(|_| None).is_empty());
+    }
+
+    /// Linux and macOS: the names their packages give it, on the PATH.
+    #[cfg(not(windows))]
+    #[test]
+    fn seven_zip_is_looked_for_on_the_path() {
+        let var = |v: &str| (v == "PATH").then(|| OsString::from("/usr/bin:/opt/bin"));
+        assert_eq!(
+            looked_at(var),
+            [
+                "/usr/bin/7zz",
+                "/usr/bin/7z",
+                "/usr/bin/7za",
+                "/opt/bin/7zz",
+                "/opt/bin/7z",
+                "/opt/bin/7za",
+            ]
+        );
+        assert!(looked_at(|_| None).is_empty());
+    }
 }

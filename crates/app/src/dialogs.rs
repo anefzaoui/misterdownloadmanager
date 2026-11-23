@@ -299,7 +299,7 @@ pub fn keep_theme(
                     if lifted {
                         tracing::info!("window {title:?} shown behind another program's: lifted");
                     }
-                    ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Focus);
+                    focus(ctx, vid);
                     TRIES
                 }
                 None => {
@@ -602,12 +602,13 @@ fn dialog_window<T>(
     // Download File Info on Linux (#484): asked for from the browser, it opened behind it.
     // Windows and macOS lift and focus in `keep_theme` once visible.
     let focused = key.with("focus-sent");
-    let takes_focus =
-        modal || (cfg!(all(not(windows), not(target_os = "macos"))) && id == "file-info");
+    let takes_focus = modal
+        || (cfg!(all(not(windows), not(target_os = "macos")))
+            && matches!(id, "file-info" | "video-page" | "torrent" | "grabber"));
     if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
-            ctx.send_viewport_cmd_to(ViewportId::from_hash_of(id), egui::ViewportCommand::Focus);
+            focus(ctx, ViewportId::from_hash_of(id));
             ctx.data_mut(|d| d.insert_temp(focused, true));
         }
     }
@@ -1689,7 +1690,9 @@ impl FileInfo {
                 }
                 let category_was_open = self.category_open;
                 // "+": a new category (the app's category window).
-                if winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+").clicked() {
+                let new_category = winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+");
+                winui::name(&new_category, crate::i18n::t("Add category"));
+                if new_category.clicked() {
                     self.new_category = true;
                 }
 
@@ -1751,7 +1754,9 @@ impl FileInfo {
                     }
                 }
                 // "...": the system's Save dialog, its folder and file name (#1088).
-                if winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...").clicked() {
+                let browse = winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...");
+                winui::name(&browse, crate::i18n::t("Browse"));
+                if browse.clicked() {
                     let dest = self.dest();
                     let dir = dest.parent().map(Path::to_path_buf).unwrap_or_default();
                     let name = dest
@@ -1805,7 +1810,10 @@ impl FileInfo {
                     .trim_end_matches('\\')
                 );
                 let folder_rc = r(o, 104.0, 112.0, 348.0, 23.0);
-                winui::edit(ui, folder_rc, &mut folder, false, false);
+                // Read-only, and not a password box: bool::default() for both flags.
+                let folder_resp =
+                    winui::edit(ui, folder_rc, &mut folder, bool::default(), bool::default());
+                winui::name(&folder_resp, crate::i18n::t("Category folder"));
                 // Greyed as IDM shows it, and still copyable.
                 winui::copyable(ui, folder_rc, "remembered-folder", &folder, false);
 
@@ -2744,7 +2752,13 @@ impl SpeedSettings {
                         winui::text(p, x, baseline, s, black);
                     },
                 );
-                winui::number_field(
+                // The sentence's words are painted, not exposed: the box is named as its part
+                // of it reads (#1407).
+                let names = winui::sentence_names(
+                    crate::i18n::t("Maximum download speed for one file {kb} KBytes/sec"),
+                    &["kb"],
+                );
+                let kb = winui::number_field(
                     ui,
                     kb_box[0],
                     &mut self.kb,
@@ -2753,6 +2767,7 @@ impl SpeedSettings {
                     true,
                     winui::LIGHT_BG(),
                 );
+                winui::name(&kb, &names[0]);
                 let note = crate::i18n::t(
                     "Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n\"resume\" feature.",
                 );
@@ -3159,40 +3174,45 @@ impl TurnOffCountdown {
 
 /// "Confirm deletion of downloads": Delete / Remove / Delete All Completed. Asks whether the
 /// files go too (user, 2026-10-29: IDM's checkbox; for an unfinished download its data so far),
-/// for one download or several. `Done((files, dont_show_again))` on Yes.
+/// for one download or several. `Done((files, dont_show_again))` on Yes. The box is never
+/// remembered (#1563): unticked, or ticked by Shift+Delete for this once; ticked, the window
+/// says how many finished files go with it.
 pub struct ConfirmDelete {
     pub ids: Vec<u64>,
     /// The file name when there is one download.
     name: String,
     /// One download, not complete (IDM's wording).
     unfinished: bool,
-    files: bool,
+    /// "Also delete the files from disk".
+    pub files: bool,
+    /// How many of the downloads are finished: their files go too when `files` is ticked.
+    pub finished: u64,
     dont_show: bool,
-    /// The files box's answer becomes the next one's default (not after Shift+Delete).
-    pub remember: bool,
 }
 
 impl ConfirmDelete {
-    /// `files`: the checkbox's first state (the last answer, or Shift+Delete).
-    pub fn new(ids: Vec<u64>, name: String, unfinished: bool, files: bool) -> Self {
+    /// `files`: the checkbox's first state (ticked only by Shift+Delete / Remove with files).
+    pub fn new(ids: Vec<u64>, name: String, unfinished: bool, files: bool, finished: u64) -> Self {
         ConfirmDelete {
             ids,
             name,
             unfinished,
             files,
+            finished,
             dont_show: false,
-            remember: true,
         }
     }
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<(bool, bool)> {
         let n = self.ids.len() as u64;
         let extra = grow_extra(ctx, "confirm-delete");
+        // The finished files' line under the box, while it is ticked (#1563).
+        let warned = grow_extra(ctx, "confirm-delete-finished");
         question(
             ctx,
             "confirm-delete",
             "Confirm deletion of downloads",
-            [374.0, 146.0 + extra],
+            [374.0, 146.0 + extra + warned],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
@@ -3245,6 +3265,33 @@ it from Mister Download Manager list of downloads?",
                     )
                 };
                 winui::checkbox_light(ui, o + vec2(24.0, 60.0), &mut self.files, &files, true);
+                // Ticked, the finished downloads' files go too: said, so none is lost by
+                // surprise (#1563); under the box, beside its caption.
+                let warn = if self.files && self.finished > 0 {
+                    let text = crate::i18n::fmt(
+                        // i18n: under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+                        &crate::i18n::tn(
+                            self.finished,
+                            "This also deletes {n} finished file.",
+                            "This also deletes {n} finished files.",
+                        ),
+                        &[("n", &crate::i18n::integer(self.finished))],
+                    );
+                    let lines = winui::paragraph(
+                        &p,
+                        o.x + 40.0,
+                        o.y + 88.0,
+                        &text,
+                        winui::ERROR(),
+                        o.x + 362.0,
+                        13.0,
+                    );
+                    lines as f32 * 13.0 + 6.0
+                } else {
+                    0.0
+                };
+                grow_px(ui.ctx(), "confirm-delete-finished", warn);
+                let o = o + vec2(0.0, warn);
                 let yes = winui::button_light(
                     ui,
                     r(o, 94.0, 86.0, 73.0, 21.0),
@@ -3303,8 +3350,87 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     if !crate::offscreen() {
         #[cfg(target_os = "macos")]
         crate::unix::macos_activate_app();
-        ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
+        focus(ctx, viewport);
     }
+}
+
+/// Bring `viewport`'s window to the front with the keyboard: every window of MDM comes forward
+/// through here (a test holds the line), never by egui's `Focus` command. On Windows winit
+/// carries that command out with a made-up Left Alt press and release (`SendInput`, to get past
+/// Windows' foreground lock), and every program listening for Alt across the system heard it:
+/// a push-to-talk key went off when the browser asked MDM for a window (#1645). There the
+/// window comes forward MDM's own way once it shows ([`focus_pending`], each frame), with the
+/// right to the foreground the browser's native host or a second launch passed on, else joined
+/// to the input of the window in front; a refusal even then flashes its taskbar button, as
+/// Windows means a program in the background to ask. Linux and macOS: winit's focus, which sends
+/// no input (X11 `_NET_ACTIVE_WINDOW`, macOS `activateIgnoringOtherApps`, nothing on Wayland).
+/// Off-screen test runs never take the focus (main.rs `offscreen`).
+pub fn focus(ctx: &egui::Context, viewport: ViewportId) {
+    if crate::offscreen() {
+        return;
+    }
+    #[cfg(windows)]
+    {
+        let until = std::time::Instant::now() + FOCUS_WAIT;
+        ctx.data_mut(|d| {
+            let asked = d.get_temp_mut_or_default::<Vec<(ViewportId, std::time::Instant)>>(
+                egui::Id::unique(FOCUS_ASKED),
+            );
+            if !asked.iter().any(|(v, _)| *v == viewport) {
+                asked.push((viewport, until));
+            }
+        });
+        // The window is looked for in the next frame, once the commands of this one (shown,
+        // restored) are carried out.
+        ctx.request_repaint();
+    }
+    #[cfg(not(windows))]
+    ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
+}
+
+/// Where [`focus`] keeps the windows it was asked to bring forward (Windows), each with when to
+/// give up on it.
+#[cfg(windows)]
+const FOCUS_ASKED: &str = "dialogs-focus-asked";
+
+/// How long [`focus`] waits for a window to show (a dialog is shown a frame or two after it is
+/// made, once it has its theme; the main window once it is back from the tray).
+#[cfg(windows)]
+const FOCUS_WAIT: std::time::Duration = std::time::Duration::from_secs(3);
+
+/// The windows [`focus`] was asked for that show now, brought forward; the others asked again
+/// in the next frame until their time is up. Called at every frame (`App::logic`).
+#[cfg(windows)]
+pub fn focus_pending(ctx: &egui::Context) {
+    let key = egui::Id::unique(FOCUS_ASKED);
+    let asked = ctx.data(|d| d.get_temp::<Vec<(ViewportId, std::time::Instant)>>(key));
+    let Some(asked) = asked.filter(|a| !a.is_empty()) else {
+        return;
+    };
+    let now = std::time::Instant::now();
+    let mut left = Vec::new();
+    for (viewport, until) in asked {
+        // The main window by its handle, the others by the title they have now (a progress
+        // window's changes as it goes).
+        let title = if viewport == ViewportId::ROOT {
+            Some(crate::MAIN_TITLE.to_owned())
+        } else {
+            ctx.input(|i| i.raw.viewports.get(&viewport).and_then(|v| v.title.clone()))
+        };
+        let front = title.and_then(|t| crate::win32::bring_own_forward(&t));
+        match front {
+            Some(true) => {}
+            Some(false) => tracing::info!(
+                "a window asked to the front stays behind (Windows refused it): its button flashes"
+            ),
+            None if now < until => left.push((viewport, until)),
+            None => tracing::info!("a window asked to the front didn't show in time"),
+        }
+    }
+    if !left.is_empty() {
+        ctx.request_repaint();
+    }
+    ctx.data_mut(|d| d.insert_temp(key, left));
 }
 
 /// A click in the window this pass draws (the main window, a dialog, a progress window; never a
@@ -3437,6 +3563,82 @@ pub fn drag_downloads_out(
 /// without a handle on the app.
 static TOLD: std::sync::Mutex<Vec<(&'static str, String)>> = std::sync::Mutex::new(Vec::new());
 
+pub struct Confirmation {
+    title: &'static str,
+    text: String,
+    answer: tokio::sync::oneshot::Sender<bool>,
+}
+impl Confirmation {
+    pub fn answer(self, yes: bool) {
+        let _ = self.answer.send(yes);
+    }
+}
+static QUESTIONS: Mutex<std::collections::VecDeque<Confirmation>> =
+    Mutex::new(std::collections::VecDeque::new());
+
+/// Ask from a worker without blocking the UI or treating a closed question as consent.
+pub async fn confirm(title: &'static str, text: String) -> bool {
+    let (answer, reply) = tokio::sync::oneshot::channel();
+    QUESTIONS.lock().unwrap().push_back(Confirmation {
+        title,
+        text,
+        answer,
+    });
+    reply.await.unwrap_or(false)
+}
+pub fn next_confirmation() -> Option<Confirmation> {
+    QUESTIONS.lock().unwrap().pop_front()
+}
+pub fn show_confirmation(ctx: &egui::Context, ask: &Confirmation) -> Outcome<bool> {
+    let id = "torrent-file-permission";
+    let extra = grow_extra(ctx, id);
+    question(
+        ctx,
+        id,
+        ask.title,
+        [540.0, 112.0 + extra],
+        false,
+        winui::BG(),
+        |ui, o| {
+            let lines = winui::paragraph(
+                &ui.painter().clone(),
+                o.x + 16.0,
+                o.y + 20.0,
+                &ask.text,
+                winui::TEXT(),
+                o.x + 524.0,
+                13.0,
+            );
+            grow_to(ui.ctx(), id, lines, 4);
+            let yes = winui::button(
+                ui,
+                r(o, 176.0, 77.0 + extra, 73.0, 21.0),
+                "Yes",
+                ButtonKind::Normal,
+                false,
+                None,
+            )
+            .clicked();
+            let no = winui::button(
+                ui,
+                r(o, 268.0, 77.0 + extra, 73.0, 21.0),
+                "No",
+                ButtonKind::Default,
+                false,
+                None,
+            )
+            .clicked();
+            if yes {
+                Outcome::Done(true)
+            } else if no || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
+                Outcome::Done(false)
+            } else {
+                Outcome::Open
+            }
+        },
+    )
+}
+
 /// Tell the user `text` under the window title `title` (English, marked; the text translated).
 pub fn tell(title: &'static str, text: String) {
     TOLD.lock().unwrap().push((title, text));
@@ -3477,6 +3679,22 @@ fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
     {
         open::that_detached(path)
     }
+}
+
+/// [`open_download`] for the browser popup's list (#1496): on Windows, the window showing the
+/// file is brought in front of the browser (`win32::open_file_in_front`); elsewhere as
+/// [`open_download`].
+pub fn open_download_in_front(path: &Path, moved_away: bool) {
+    let path = path.to_owned();
+    crate::launch::spawn("open file", move || {
+        hand_over(&path, moved_away, |p| {
+            #[cfg(windows)]
+            let opened = crate::win32::open_file_in_front(p);
+            #[cfg(not(windows))]
+            let opened = open_file_platform(p);
+            opened.map_err(|e| e.to_string())
+        });
+    });
 }
 
 /// [`open_download`], waited for: true when the file was handed to the system. For a thread
@@ -4445,6 +4663,71 @@ pub fn ensure_replace_asked<T>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Every window comes to the front through `focus` (#1645): egui's `Focus` command, which
+    /// winit carries out on Windows with a made-up Alt key press heard by the whole system, is
+    /// sent from nowhere else in the app's sources.
+    #[test]
+    fn windows_come_forward_only_through_focus() {
+        // Split, so this test's own line isn't one.
+        let command = ["ViewportCommand", "::Focus"].concat();
+        let mut found = Vec::new();
+        let mut dirs = vec![std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src")];
+        while let Some(dir) = dirs.pop() {
+            for entry in std::fs::read_dir(dir).unwrap() {
+                let path = entry.unwrap().path();
+                if path.is_dir() {
+                    dirs.push(path);
+                    continue;
+                }
+                let Ok(src) = std::fs::read_to_string(&path) else {
+                    continue;
+                };
+                for (n, line) in src.lines().enumerate() {
+                    let code = line.split("//").next().unwrap_or_default();
+                    if code.contains(&command) {
+                        found.push(format!("{}:{}", path.display(), n + 1));
+                    }
+                }
+            }
+        }
+        // The one in `focus` itself, for Linux and macOS.
+        assert_eq!(
+            found.len(),
+            1,
+            "Focus sent outside dialogs::focus: {found:?}"
+        );
+        assert!(found[0].contains("dialogs.rs"), "{found:?}");
+    }
+
+    /// Asked to bring a window forward (Windows), `focus` keeps it once, however often it is
+    /// asked before the window shows, and lets it go once its time is up.
+    #[cfg(windows)]
+    #[test]
+    fn focus_keeps_each_window_once_until_its_time_is_up() {
+        let ctx = egui::Context::default();
+        let vid = ViewportId::from_hash_of("focus-test");
+        let asked = |ctx: &egui::Context| {
+            ctx.data(|d| {
+                d.get_temp::<Vec<(ViewportId, std::time::Instant)>>(egui::Id::unique(FOCUS_ASKED))
+            })
+            .unwrap_or_default()
+        };
+        focus(&ctx, vid);
+        focus(&ctx, vid);
+        assert_eq!(asked(&ctx).len(), 1);
+        // No such window: still asked while there is time.
+        focus_pending(&ctx);
+        assert_eq!(asked(&ctx).len(), 1);
+        ctx.data_mut(|d| {
+            d.insert_temp(
+                egui::Id::unique(FOCUS_ASKED),
+                vec![(vid, std::time::Instant::now())],
+            )
+        });
+        focus_pending(&ctx);
+        assert!(asked(&ctx).is_empty());
+    }
 
     /// A dialog that opened over the browser stays on its own for as long as it is open, even
     /// once it is the window in front (its frame applied again at a new size); the next opening

@@ -992,9 +992,15 @@ impl Scheduler {
                 text(p, x, baseline, s, LIGHT_TEXT());
             },
         );
+        // The sentence's words are painted, not exposed: the box is named as its part of it
+        // reads (#1407).
+        let names = winui::sentence_names(
+            crate::i18n::t("Download {files} files at the same time"),
+            &["files"],
+        );
         let f = &mut self.forms[self.selected];
         // A spin box: the number and its arrows, one control.
-        winui::spin_box(
+        let files = winui::spin_box(
             ui,
             boxes[0],
             &mut f.files_at_once,
@@ -1003,6 +1009,7 @@ impl Scheduler {
             true,
             "files-at-once",
         );
+        winui::name(&files, &names[0]);
 
         // The queue's files: File Name, Size, Status, Time left.
         let list = r(o, 229.0, 82.0, 396.0, 294.0 + DY);
@@ -1015,6 +1022,7 @@ impl Scheduler {
             o.y + 106.0,
             winui::LIST_HEADER(),
         );
+        winui::header_shade(&p, o.x + 230.0, o.x + 624.0, o.y + 106.0, false);
         let cols = [
             (crate::i18n::mark("File Name"), 230.0, 421.0),
             // i18n: column title: the file's size
@@ -1027,14 +1035,7 @@ impl Scheduler {
         for (title, x0, x1) in cols {
             let title = crate::i18n::t(title);
             text(&p, o.x + x0 + 6.0, o.y + 99.0, title, LIGHT_TEXT());
-            fill(
-                &p,
-                o.x + x1,
-                o.y + 83.0,
-                o.x + x1,
-                o.y + 106.0,
-                winui::HEADER_LINE(),
-            );
+            winui::header_divider(&p, o.x + x1, o.y + 83.0, o.y + 106.0, winui::HEADER_LINE());
         }
         // The rows: the shared row list under the header (its frame on the list's).
         let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0 + DY));
@@ -1215,7 +1216,13 @@ impl Scheduler {
                 text(p, x, baseline, s, c);
             },
         );
-        winui::number_field(
+        // Named as Options → Connection's are, from the sentence they share (quota.rs):
+        // its words are painted, not exposed (#1407).
+        let names = winui::sentence_names(
+            crate::i18n::t(crate::quota::LIMITS_SENTENCE),
+            &["mb", "hours"],
+        );
+        let mb_box = winui::number_field(
             ui,
             boxes[0],
             &mut self.limits_mb,
@@ -1224,7 +1231,8 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
-        winui::number_field(
+        winui::name(&mb_box, &names[0]);
+        let hours_box = winui::number_field(
             ui,
             boxes[1],
             &mut self.limits_hours,
@@ -1233,6 +1241,7 @@ impl Scheduler {
             l.on,
             LIGHT_BG(),
         );
+        winui::name(&hours_box, &names[1]);
         winui::checkbox_light(
             ui,
             o + vec2(239.0, 127.0),

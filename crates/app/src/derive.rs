@@ -116,6 +116,16 @@ pub fn shade(c: Color32, dl: f32) -> Color32 {
     rgb_of(x)
 }
 
+/// [`shade`], and its colourfulness (OKLab chroma) times `k`: Windows XP's title bar is more
+/// vivid where it is lighter.
+pub fn shade_chroma(c: Color32, dl: f32, k: f32) -> Color32 {
+    let mut x = lab(c);
+    x.l = (x.l + dl).clamp(0.0, 1.0);
+    x.a *= k;
+    x.b *= k;
+    rgb_of(x)
+}
+
 fn with_alpha(c: Color32, a: u8) -> Color32 {
     Color32::from_rgba_unmultiplied(c.r(), c.g(), c.b(), a)
 }
@@ -308,6 +318,8 @@ pub fn derive(s: &Seeds) -> Palette {
         scroll_thumb: thumb,
         scroll_thumb_hot: toward(thumb, 0.2),
         scroll_thumb_pressed: toward(thumb, 0.4),
+        scroll_edge: toward(thumb, 0.25),
+        scroll_glyph: text,
         menubar: s.header,
         menubar_bottom: s.header,
         menubar_line: toward(s.header, 0.08),
@@ -339,6 +351,7 @@ pub fn derive(s: &Seeds) -> Palette {
         tree_lines: toward(surface, 0.35),
         tree_frame: toward(bg, 0.16),
         status_value: text,
+        connections: Color32::TRANSPARENT,
         progress_label_disabled: disabled,
         segment_border: toward(surface, 0.4),
         segment_corner: toward(surface, 0.25),
@@ -354,6 +367,10 @@ pub fn derive(s: &Seeds) -> Palette {
         caption_close: Color32::from_rgb(0xc4, 0x2b, 0x1c),
         caption_close_text: Color32::WHITE,
         caption_inactive: Color32::TRANSPARENT,
+        caption_button_inactive: Color32::TRANSPARENT,
+        caption_close_inactive: Color32::TRANSPARENT,
+        caption_glyph_inactive: Color32::TRANSPARENT,
+        caption_edge_inactive: Color32::TRANSPARENT,
         drop_edge: toward(bg, 0.4),
         egui_panel: bg,
         egui_window: surface,

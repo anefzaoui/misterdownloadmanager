@@ -29,7 +29,8 @@ same progress window.
 - `ftps://` — implicit FTPS, port 990 unless the address gives another.
 
 The server's certificate is checked against Windows' (or the system's) trusted certificates, as
-for `https://`. A Linux system without them (a minimal install without the `ca-certificates`
+for `https://`, and against Mozilla's, the ones Firefox carries, where the system lacks the root
+a server's certificate comes from (an older Windows that hasn't fetched it yet). A Linux system without them (a minimal install without the `ca-certificates`
 package) still downloads over plain HTTP and FTP; each secure download then fails at once, saying
 to install that package.
 
@@ -50,8 +51,9 @@ password is not written to the resume file next to the download: MDM gives it ag
 resumes.
 
 **Connections.** Passive mode is used by default. **Options → Proxy / Socks → Use FTP in PASV
-mode** switches it off for servers that only take active connections. FTP connects to the
-server directly, not through the HTTP proxy.
+mode** switches it off for servers that only take active connections. FTP goes through a SOCKS
+proxy set in **Options → Proxy / Socks** (passive then, always; `ftps://` can't go through one
+yet), and connects to the server directly when the proxy is an HTTP one.
 
 Browsers no longer download `ftp://` links themselves. Right-click one and choose **Download with
 Mister Download Manager**, or copy it and use **Add URL**.
