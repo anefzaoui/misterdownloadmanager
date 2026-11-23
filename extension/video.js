@@ -2670,6 +2670,9 @@ button:focus-visible { outline: none; }
   // The pointer reached the button: what the video plays now, kept in case the page stops it for
   // that (a hover-to-play preview, #503).
   root.addEventListener("pointerenter", () => {
+    // Reached as it was fading out (gone a moment later): whole again, not taken away from under
+    // the pointer with its menu about to open.
+    if (video && !pill.classList.contains("shown")) show(video);
     if (video && !held && video.isConnected && eligible(video)) {
       entered = { v: video, d: describe(video, video.getBoundingClientRect()), t: Date.now() };
     }

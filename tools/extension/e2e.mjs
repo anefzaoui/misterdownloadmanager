@@ -494,8 +494,17 @@ async function chromium(bin, profile, dl, page, ready) {
       const r = await cdp.send("Runtime.callFunctionOn", { objectId: object.objectId, functionDeclaration: fn, returnByValue: true }, sessionId);
       return r.result.value ? JSON.parse(r.result.value) : null;
     };
-    const pill = (fn = PILL_STYLE) => inShadow(fn);
-    const picks = (reveal) => inShadow(PICKS(reveal));
+    // One at a time: DOM.getDocument gives the whole tree new node ids, so a second call between
+    // another's getDocument and its resolveNode left that one with an id that no longer exists
+    // ("No node with given id found"; the feeds case watches the button's words while it clicks).
+    let shadowQueue = Promise.resolve();
+    const inShadowOnce = (fn) => {
+      const run = shadowQueue.then(() => inShadow(fn));
+      shadowQueue = run.catch(() => {});
+      return run;
+    };
+    const pill = (fn = PILL_STYLE) => inShadowOnce(fn);
+    const picks = (reveal) => inShadowOnce(PICKS(reveal));
     // Another tab at `url` (the extension's own pages too): its `evaluate` and `close`.
     const tab = async (url) => {
       const { targetId: tid } = await cdp.send("Target.createTarget", { url });
@@ -1575,6 +1584,32 @@ async function calmButton(session) {
     await panelSettings({ video_panel_full: true });
     await sleep(PANEL_KEPT_MS);
   }
+  // Where an earlier case put the button on this site (the video case drags it), forgotten: the
+  // popup's own storage, as its Reset does.
+  const forget = async () => {
+    const popup = await session.tab(`${session.base}popup.html?tab=settings`);
+    try {
+      await until("the button's places forgotten", 10000, () =>
+        popup.evaluate("(globalThis.browser ?? chrome).storage.local.remove(['positions', 'videoFilters']).then(() => true)").catch(() => false),
+      );
+    } finally {
+      await popup.close();
+    }
+  };
+  await forget();
+  // The video case's "Never on the site" (in the last browser) leaves the lab's site listed.
+  const listed = () => {
+    try {
+      const saved = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^﻿/, "")).settings;
+      return (saved.video_panel_sites || "").split(" ").includes("127.0.0.1");
+    } catch {
+      return false;
+    }
+  };
+  if (listed()) {
+    await panelSettings({ video_panel_sites: "" });
+    await sleep(PANEL_KEPT_MS);
+  }
   try {
     // 1. A feed: a post's video gets the round button (Automatic, the default).
     await draw("feed");
@@ -1678,7 +1713,7 @@ async function calmButton(session) {
     await session.mouse(5, 5);
     const popup = await session.tab(`${session.base}popup.html?tab=settings`);
     try {
-      await until("the popup's Reset", 10000, () => popup.evaluate('Boolean(document.querySelector("#video-reset"))'));
+      await until("the popup's Reset", 10000, () => popup.evaluate('Boolean(document.querySelector("#video-reset"))').catch(() => false));
       if (shots && popup.shot) {
         await popup.evaluate('(() => { const t = document.querySelector("#tab-settings"); if (t) t.click(); return 0; })()');
         await sleep(300);

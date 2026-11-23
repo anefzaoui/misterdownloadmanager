@@ -3364,6 +3364,9 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.ok(/if \(!over && !wanted && lookingFor\) \{\s*clearTimeout\(lookTimer\);\s*lookingFor = null;/.test(tick), "tick: off the video, the early look-up waits no more (#1053's pass asks nothing)");
     assert.ok(tick.includes('if (fade === "gone") return hide();') && tick.includes('pill.classList.toggle("faint", fade === "faint");'), "tick: faint, then gone");
     assert.ok(fn("show").includes('pill.classList.remove("faint");'), "show: whole again as the pointer moves over the video");
+    // Reached as it fades out: whole again (a click there would open its menu in a button about
+    // to go).
+    assert.ok(/root\.addEventListener\("pointerenter", \(\) => \{[^}]*if \(video && !pill\.classList\.contains\("shown"\)\) show\(video\);/.test(source), "reached while fading out: shown again");
     // A show right after a hide (the pointer's move landing just after a fullscreen change hid it)
     // isn't taken away by the hide's delayed display: none.
     assert.ok(fn("show").includes("clearTimeout(hideTimer);") && fn("hide").includes("hideTimer = setTimeout("), "show cancels a hide's pending display: none");
