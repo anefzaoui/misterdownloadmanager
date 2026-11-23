@@ -852,6 +852,39 @@ async fn help_lists_the_routes() {
     }
 }
 
+/// `garble` (#1661): the first answer for a file that carries the byte sends 64 bytes from there
+/// inverted, every later one sends them right; answers that don't carry it are untouched.
+#[tokio::test]
+async fn garble_mangles_a_files_bytes_once() {
+    let dir = tempfile::tempdir().unwrap();
+    let data: Vec<u8> = (0..10_000u32).map(|i| (i * 7 % 251) as u8).collect();
+    std::fs::write(dir.path().join("a.zip"), &data).unwrap();
+    let s = LabServer::start(Config {
+        files: Some(dir.path().to_owned()),
+        ..Config::default()
+    })
+    .await
+    .unwrap();
+    let c = reqwest::Client::new();
+    let get = |range: Option<&'static str>| {
+        let mut r = c.get(s.url("/files/a.zip?garble=5000"));
+        if let Some(range) = range {
+            r = r.header("Range", range);
+        }
+        async move { r.send().await.unwrap().bytes().await.unwrap().to_vec() }
+    };
+    // Before the byte: untouched, and the garble still to come.
+    assert_eq!(get(Some("bytes=0-999")).await, &data[..1000]);
+    let first = get(None).await;
+    assert_eq!(first.len(), data.len());
+    let differ: Vec<usize> = (0..data.len()).filter(|&i| first[i] != data[i]).collect();
+    assert_eq!(differ, (5000..5064).collect::<Vec<_>>());
+    assert!(differ.iter().all(|&i| first[i] == !data[i]));
+    // Asked again (the damaged part's range): right.
+    assert_eq!(get(Some("bytes=4990-5099")).await, &data[4990..5100]);
+    assert_eq!(get(None).await, data);
+}
+
 /// `stall_at` (#123): a response stops at that byte and goes on once the server's faults are
 /// changed; a request that starts past it isn't held; `settled` waits for every request's entry.
 #[tokio::test]

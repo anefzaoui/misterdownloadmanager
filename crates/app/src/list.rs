@@ -96,13 +96,14 @@ pub fn status_width(code: &str, full: &str, measure: impl Fn(&str) -> f32) -> f3
 
 /// What the Status cell says at its widest while a file is checked or a video joined, in
 /// language `code` (`crate::model::checking` and `merging`): the word with 100 % (as `full`, and
-/// as English writes it) and with "..." before MDM knows how far.
+/// as English writes it) and with "..." before MDM knows how far; and "Damaged", an archive its
+/// test found damaged (#1661).
 pub fn finishing_texts(code: &str, full: &str) -> Vec<String> {
     let i18n = crate::i18n::i18n();
     let Some(lang) = i18n.from_code(code) else {
         return Vec::new();
     };
-    let mut texts = Vec::new();
+    let mut texts = vec![i18n.t(lang, "Damaged").to_owned()];
     for template in ["Checking {percent}", "Merging {percent}"] {
         for percent in [full, "100%", "..."] {
             texts.push(crate::i18n::fmt(
@@ -1019,23 +1020,16 @@ pub fn show(
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
             expose_row(idx, row, picked);
-            // The download's progress as a progress bar of its own (#1190): UI Automation reads
-            // it through the RangeValue pattern, so a reader's own progress reporting — its beeps
-            // and percentages — follows it without anyone moving the focus. Unnamed on purpose: a
-            // name would be read in place of the value.
+            // The download's progress as a progress bar of its own (#1190, #1406): the same node
+            // the Download status page carries, so a reader's progress reporting follows it
+            // without anyone moving the focus (winui::expose_progress).
             if let Some(frac) = row.progress {
                 let bar = row_id(idx).with("progress");
                 let bar_rc = screen(Rect::from_min_size(
                     pos2(cl, top),
                     egui::vec2(rr - cl, row_h()),
                 ));
-                rows_ui.interact(bar_rc, bar, egui::Sense::hover());
-                ui.ctx().accesskit_node_builder(bar, |n| {
-                    n.set_role(egui::Role::ProgressIndicator);
-                    n.set_min_numeric_value(0.0);
-                    n.set_max_numeric_value(100.0);
-                    n.set_numeric_value(frac.clamp(0.0, 1.0) * 100.0);
-                });
+                winui::expose_progress(&rows_ui, bar_rc, bar, frac);
             }
             let sel = picked && st.focused;
             // The focused row's dotted outline only once the keyboard is in use, as every

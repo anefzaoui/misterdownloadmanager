@@ -222,6 +222,10 @@ pub struct Options {
     /// flush holds every write to the file (as NTFS's does, #361, #782). None: the real disk.
     #[doc(hidden)]
     pub slow_disk: Option<crate::slowdisk::SlowDisk>,
+    /// Hand the finished download's last resume state back ([`Snapshot::kept`]) instead of only
+    /// removing its file: an archive test that finds damage downloads those parts again from it,
+    /// under the same validators (#1661, [`crate::repair`]). The state file still goes.
+    pub keep_state: bool,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -306,6 +310,7 @@ impl Default for Options {
             page: None,
             request_cap: None,
             slow_disk: None,
+            keep_state: false,
         }
     }
 }
@@ -895,6 +900,10 @@ pub struct Snapshot {
     /// How far `Verifying` (the bytes checked) or `Merging` has come, 0 to 1, when that is
     /// known (#736).
     pub finishing: Option<f64>,
+    /// Done, with `Options::keep_state`: its last resume state (every byte on disk, the file's
+    /// validators, its final place), for [`crate::repair::reopen`]. None when it had none (a
+    /// server without ranges).
+    pub kept: Option<Arc<ResumeState>>,
 }
 
 /// One entry of a download's event log; `seq` counts up within one `Download`.
@@ -1368,6 +1377,49 @@ impl Download {
         })
     }
 
+    /// [`Download::start_with`] under a name still to be numbered (`req.dest`, a
+    /// [`Destination::Free`]), unless the download was at that name already (#1705): a resume
+    /// state at `state_file` for the same address is its own, left by a run whose caller never
+    /// got to keep the name it took (MDM killed, or crashed, before its list was saved). It is
+    /// resumed then, as [`Download::resume`] would. Numbering the name past its own part file
+    /// would start the download over as "name (1)" and leave the part behind.
+    ///
+    /// Any other state there (another address's, or one that doesn't read) is someone else's,
+    /// and the name is numbered past it as before. The disk is looked at on the download's task,
+    /// never the caller's (#743). The caller makes sure no other download of its own is at that
+    /// name: two downloads of one address would otherwise both take the one state.
+    pub fn start_or_resume_own(
+        state_file: PathBuf,
+        req: Request,
+        opts: Options,
+        kept: Option<KeptAnswer>,
+    ) -> Download {
+        Download::spawn(req.url.clone(), move |shared, cancel| {
+            let sh = shared.clone();
+            let body = async move {
+                after_clearing(req.dest.folder(), &cancel).await?;
+                after_settling(&req.dest, &cancel).await?;
+                let look = {
+                    let state_file = state_file.clone();
+                    tokio::task::spawn_blocking(move || Found::look(&state_file))
+                };
+                let found = tokio::select! {
+                    _ = cancel.cancelled() => return Err(Error::Cancelled),
+                    found = look => found.ok(),
+                };
+                match found {
+                    Some(Found::State(Ok(saved))) if saved.url == req.url => {
+                        sh.event("Continuing the download this name was left by");
+                        run_resume(*saved, state_file, req.headers, opts, sh, cancel).await
+                    }
+                    _ if crate::ftp::is_ftp(&req.url) => run_fresh_ftp(req, opts, sh, cancel).await,
+                    _ => run_fresh(req, opts, sh, cancel, kept).await,
+                }
+            };
+            run(body, shared)
+        })
+    }
+
     fn spawn<F, Fut>(url: Url, f: F) -> Download
     where
         F: FnOnce(Arc<Shared>, CancellationToken) -> Fut,
@@ -1399,6 +1451,7 @@ impl Download {
                 server: None,
                 at_service: None,
                 finishing: None,
+                kept: None,
             }),
             seen: Default::default(),
             planner: Mutex::new(None),
@@ -2546,7 +2599,8 @@ async fn run_fresh(
         single_stream(body, &file, shared, opts.global.as_deref(), cancel).await?
     };
     verify_part(shared, &dest, checksum.as_ref()).await?;
-    finish(shared, file, &dest, size, stamp, replaces(&req.dest, &opts))
+    let replace = replaces(&req.dest, &opts);
+    finish(shared, file, &dest, size, stamp, replace, opts.keep_state)
 }
 
 /// Prepare the destination of a new download of `size` bytes (if known), named `name()` in a
@@ -2757,7 +2811,8 @@ async fn run_fresh_ftp(
         single_stream(first, &file, shared, opts.global.as_deref(), cancel).await?
     };
     verify_part(shared, &dest, opts.checksum.as_ref()).await?;
-    finish(shared, file, &dest, size, stamp, replaces(&req.dest, &opts))
+    let replace = replaces(&req.dest, &opts);
+    finish(shared, file, &dest, size, stamp, replace, opts.keep_state)
 }
 
 async fn run_resume(
@@ -2969,9 +3024,10 @@ async fn run_resume(
         .then(|| ctx.validators.lock().unwrap().last_modified.clone())
         .flatten()
         .and_then(|lm| httpdate::parse_http_date(&lm).ok());
+    let keep = ctx.opts.keep_state;
     segmented(ctx, saved, None).await?;
     verify_part(&shared, &dest, checksum.as_ref()).await?;
-    finish(&shared, file, &dest, size, stamp, replace)
+    finish(&shared, file, &dest, size, stamp, replace, keep)
 }
 
 /// Follow the original address again (with its own headers, and a POST download's body) as the
@@ -3062,7 +3118,8 @@ async fn verify_part(
 }
 
 /// Flush and rename the part file to its final name. With `replace` (`Options::replace_existing`)
-/// a file at `dest` is replaced now, as the download completes.
+/// a file at `dest` is replaced now, as the download completes. With `keep`
+/// (`Options::keep_state`), its last resume state is handed back ([`Snapshot::kept`]).
 fn finish(
     shared: &Shared,
     file: Arc<File>,
@@ -3070,6 +3127,7 @@ fn finish(
     size: u64,
     stamp: Option<std::time::SystemTime>,
     replace: bool,
+    keep: bool,
 ) -> Result<Outcome, Error> {
     shared.every_byte_in();
     shared.set_state(State::Completing);
@@ -3139,8 +3197,21 @@ fn finish(
             other
         }
     };
-    // Only now is the resume state obsolete.
-    let _ = std::fs::remove_file(state_path(original));
+    // Only now is the resume state obsolete. Kept, it is the one a re-fetch of damaged parts
+    // goes on from (#1661): only a whole one, of a download not known to refuse ranges (a
+    // resume takes a server's full answer for a changed file and stops), at the file's place
+    // now.
+    let state = state_path(original);
+    if keep
+        && shared.view.lock().unwrap().resumable != Some(false)
+        && let Ok(mut s) = ResumeState::load(&state)
+        && s.size == size
+        && s.downloaded() == size
+    {
+        s.dest = dest.clone();
+        shared.view.lock().unwrap().kept = Some(Arc::new(s));
+    }
+    let _ = std::fs::remove_file(state);
     Ok(Outcome { path: dest, size })
 }
 

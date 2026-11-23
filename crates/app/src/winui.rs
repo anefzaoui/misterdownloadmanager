@@ -1522,6 +1522,8 @@ impl RowList {
 pub struct RowEvents {
     /// The selection moved to this row (a click, the keys).
     pub picked: Option<usize>,
+    /// A left click on this row (even the one already selected).
+    pub clicked: Option<usize>,
     pub double_clicked: Option<usize>,
     /// Enter on the selected row (not taken: [`take_key`] it to keep it from the dialog).
     pub entered: Option<usize>,
@@ -1818,6 +1820,9 @@ pub fn row_list(
                 // the next mouse move: a screen reader's click moves no mouse.
                 ui.ctx().request_repaint();
             }
+        }
+        if r.clicked() {
+            ev.clicked = Some(i);
         }
         if r.double_clicked() {
             ev.double_clicked = Some(i);
@@ -5399,6 +5404,19 @@ pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug,
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
 }
 
+/// The window's own node in the accessibility tree carries the window's title: egui leaves the
+/// root Window node unnamed, so a screen reader met `[frame] ''` where it looks for the window's
+/// name (#1407). The title is passed in, not read back from the OS window — on X11 winit's
+/// `Window::title()` is a stub that returns `""`. Call once a frame on each window's root ui.
+pub fn name_window(ui: &Ui, title: &str) {
+    if title.is_empty() {
+        return;
+    }
+    let resp = ui.interact(ui.max_rect(), egui::accesskit_root_id(), Sense::hover());
+    let title = title.to_owned();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::Role::Window, true, &title));
+}
+
 /// A [`paragraph`] a screen reader can read too: its lines painted, then a [`readable`] Label
 /// node over them, for text that was only painted (#1407). Returns the line count, like
 /// [`paragraph`].
@@ -5494,6 +5512,61 @@ pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: boo
         info.current_text_value = Some(value.clone());
         info
     });
+}
+
+/// A download's progress as a progress bar of its own (#1190, #1406): UI Automation reads it
+/// through the RangeValue pattern, so a reader's own progress reporting — its beeps and
+/// percentages — follows it without anyone moving the focus.
+///
+/// An AccessKit node of its own rather than [`expose`]: egui's `WidgetInfo` carries a value but no
+/// range (`Response::widget_info` sets the numeric value alone), and what a reader follows is a
+/// value inside a range, 0–100 here. Unnamed on purpose: a name is read in place of the value.
+/// `frac` is the download's own fraction, 0..=1.
+pub fn expose_progress(ui: &Ui, rc: Rect, id: egui::Id, frac: f64) {
+    ui.interact(rc, id, Sense::hover());
+    ui.ctx().accesskit_node_builder(id, |n| {
+        n.set_role(egui::Role::ProgressIndicator);
+        // Its rectangle, as egui gives one to every control it makes a node of (response.rs,
+        // fill_accesskit_node_common): without it UI Automation reports the node without any
+        // bounds, so a reader's review keys have nowhere on the bar to land — only its value,
+        // through the RangeValue pattern, would reach them.
+        n.set_bounds(egui::accesskit::Rect {
+            x0: f64::from(rc.min.x),
+            y0: f64::from(rc.min.y),
+            x1: f64::from(rc.max.x),
+            y1: f64::from(rc.max.y),
+        });
+        n.set_min_numeric_value(0.0);
+        n.set_max_numeric_value(100.0);
+        n.set_numeric_value(progress_value(frac));
+    });
+}
+
+/// [`expose_progress`]'s value as UI Automation reads it, 0–100: a figure that outran its own
+/// size (a rounded-up byte count, a file that grew under it) stays inside the range, since one
+/// outside it is dropped by the reader rather than clamped by it.
+fn progress_value(frac: f64) -> f64 {
+    frac.clamp(0.0, 1.0) * 100.0
+}
+
+#[cfg(test)]
+mod progress_value_tests {
+    use super::progress_value;
+
+    #[test]
+    fn a_fraction_becomes_a_percentage() {
+        assert_eq!(progress_value(0.0), 0.0);
+        assert_eq!(progress_value(0.25), 25.0);
+        assert_eq!(progress_value(1.0), 100.0);
+        // 41.3 % through, as the "Downloaded" row says it.
+        assert!((progress_value(0.413) - 41.3).abs() < 1e-9);
+    }
+
+    #[test]
+    fn a_figure_outside_the_fraction_stays_in_the_range() {
+        assert_eq!(progress_value(-0.03), 0.0);
+        assert_eq!(progress_value(1.04), 100.0);
+    }
 }
 
 /// The click of a control that opens a popup, except the one ending the press that just closed
