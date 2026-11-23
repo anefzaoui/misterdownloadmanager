@@ -575,6 +575,7 @@
 #. a country's name (where a download's server is)
 	Austria	Austria
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 	Automatic	Automatic
 #. text in remote.rs
@@ -680,7 +681,7 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 	Busy, try later	Busy, try later
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 	Button size:	Button size:
 #. message or event log entry in the main window
 	by batch download	by batch download
@@ -889,7 +890,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	Comoros
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 	Compact	Compact
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
@@ -1652,7 +1653,7 @@
 #. Options → Proxy / Socks: why the "ftp" box of an HTTP proxy is greyed
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 	Full	Full
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -5185,6 +5186,7 @@ extension	Added to MDM	Added to MDM
 extension	Added to the queue	Added to the queue
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 extension	All	All
 #. text in the browser extension
 #. command in the menu of the download button over a video: opens the app's Download video window, with every quality and the subtitles
@@ -5196,6 +5198,12 @@ extension	Another Mister Download Manager (a server)	Another Mister Download Man
 #. text in the browser extension
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 extension	Audio	Audio
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+extension	Audio only	Audio only
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+extension	Back in its corner, its menu showing everything, on every site	Back in its corner, its menu showing everything, on every site
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 extension	best	best
@@ -5233,6 +5241,9 @@ extension	Clear finished	Clear finished
 #. text in the browser extension
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 extension	Clear finished downloads?	Clear finished downloads?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+extension	Codec	Codec
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 extension	Connected	Connected
@@ -5290,6 +5301,9 @@ extension	Download all links with Mister Download Manager	Download all links wit
 #. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
 extension	Download best	Download best
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+extension	Download button over videos	Download button over videos
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 extension	Download selected links with Mister Download Manager	Download selected links with Mister Download Manager
 #. text in the browser extension
@@ -5322,8 +5336,8 @@ extension	Downloads from {site} stay with the browser	Downloads from {site} stay
 #. the toolbar button's status while downloads go to another MDM
 extension	Downloads go to {address}	Downloads go to {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-extension	Drag the dots to move it along the edge	Drag the dots to move it along the edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
+extension	Drag the dots to move it to another corner, or outside the video	Drag the dots to move it to another corner, or outside the video
 #. text in the browser extension
 #. the address typed isn't an https:// address
 extension	Enter its https:// address.	Enter its https:// address.
@@ -5337,6 +5351,9 @@ extension	Failed: {why}	Failed: {why}
 #. text in the browser extension
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 extension	File deleted or moved	File deleted or moved
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+extension	File type	File type
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 extension	Finished downloads cleared	Finished downloads cleared
@@ -5573,8 +5590,14 @@ extension	Protected	Protected
 #. on the download button over a copy-protected (DRM) video, which no tool can download; 'can't be saved' follows it after a dot; short
 extension	Protected video	Protected video
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+extension	Put the button back in its corner	Put the button back in its corner
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 extension	Remove from list	Remove from list
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+extension	Reset	Reset
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 extension	Resume	Resume
@@ -5616,6 +5639,7 @@ extension	Share...	Share...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 extension	Show	Show
 #. text in the browser extension
 #. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
@@ -5728,6 +5752,9 @@ extension	Waiting	Waiting
 #. text in the browser extension
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
 extension	What you download with Mister Download Manager shows up here.	What you download with Mister Download Manager shows up here.
+#. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+extension	Where you moved it, and its menu's filters, on each site	Where you moved it, and its menu's filters, on each site
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 extension	While the page is in full screen, its videos show no Download video button	While the page is in full screen, its videos show no Download video button

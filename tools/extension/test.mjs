@@ -36,6 +36,7 @@ function fakeApi({
   // Options → Download panels → Button size (#1278): Compact (a function: the app's answer now);
   // undefined: an older host, which doesn't say.
   panelCompact,
+  panelFull,
   access = true,
   rules = {},
   rulesReply,
@@ -156,7 +157,8 @@ function fakeApi({
         if (m.panel) {
           const on = typeof panelOn === "function" ? panelOn(m) : panelOn !== false;
           const compact = typeof panelCompact === "function" ? panelCompact(m) : panelCompact;
-          return { ok: on, ...(on && compact !== undefined ? { compact } : {}) };
+          const full = typeof panelFull === "function" ? panelFull(m) : panelFull;
+          return { ok: on, ...(on && compact !== undefined ? { compact } : {}), ...(on && full !== undefined ? { full } : {}) };
         }
         // A notice of a download left alone (#208): an older host, which knows none, takes it
         // for an address it can't download (`noticeReply`).
@@ -1113,7 +1115,17 @@ const ok = (what) => {
   const older = fakeApi({ firefox: false, panelOn: () => true });
   load(older.api, false);
   const said = await new Promise((r) => older.listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
-  assert.deepEqual(said, { on: true, compact: false }, "an older host: Full");
+  assert.deepEqual(said, { on: true, compact: false }, "an older host: Automatic (video.js sizeMode)");
+  // Full chosen (a newer app says it): said, and kept with the answer; not chosen: not said.
+  let full = true;
+  const newer = fakeApi({ firefox: false, panelOn: () => true, panelCompact: () => false, panelFull: () => full });
+  load(newer.api, false, { Date: FakeDate });
+  const askNewer = () => new Promise((r) => newer.listeners.message({ type: "panel" }, page, (v) => r(JSON.parse(JSON.stringify(v)))));
+  assert.deepEqual(await askNewer(), { on: true, compact: false, full: true });
+  full = false;
+  assert.deepEqual(await askNewer(), { on: true, compact: false, full: true }, "kept a moment");
+  clock.t += 6000;
+  assert.deepEqual(await askNewer(), { on: true, compact: false }, "Automatic again");
   ok("#1278: the video button's size comes from Options with its answer, and follows a change");
 }
 {
@@ -3302,22 +3314,184 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
     assert.equal(w.fitsWords(640, 240, 14), true);
     assert.equal(w.fitsWords(359, 100, 14), false, "under 360 px: the round button only");
     assert.equal(w.fitsWords(400, 380, 14), false, "a long language that wouldn't fit");
-    // #1278: Options → Download panels → Button size. Full (the default): the words where they
-    // fit, the round button on a small video or for a long language; Compact: round on every video.
+    // #1278: Options → Download panels → Button size. Full: the words where they fit, the round
+    // button on a small video or for a long language; Compact: round on every video; Automatic
+    // (the default, feedback 2026-11-23): the words on a big player only, round in a feed and on a
+    // small player.
     const english = 240;
     const german = 380; // the same button's width with longer words
-    assert.equal(w.compactFor(false, 1280, english, 14), false, "Full on a large video: the words");
-    assert.equal(w.compactFor(false, 1280, german, 14), false, "Full, a long language on a large video: the words");
-    assert.equal(w.compactFor(false, 320, english, 14), true, "Full on a small video: round");
-    assert.equal(w.compactFor(false, 400, german, 14), true, "Full, a long language that wouldn't fit: round");
+    assert.equal(w.compactFor("full", 1280, 720, english, 14, false), false, "Full on a large video: the words");
+    assert.equal(w.compactFor("full", 1280, 720, german, 14, false), false, "Full, a long language on a large video: the words");
+    assert.equal(w.compactFor("full", 320, 180, english, 14, false), true, "Full on a small video: round");
+    assert.equal(w.compactFor("full", 400, 225, german, 14, false), true, "Full, a long language that wouldn't fit: round");
+    assert.equal(w.compactFor("full", 680, 680, english, 14, true), false, "Full in a feed: the words, as before Automatic");
     for (const [width, full] of [[1920, english], [1280, german], [640, english], [400, german], [200, english]]) {
-      assert.equal(w.compactFor(true, width, full, 14), true, `Compact: round at ${width} px whatever the language`);
+      assert.equal(w.compactFor("compact", width, 720, full, 14, false), true, `Compact: round at ${width} px whatever the language`);
     }
-    assert.equal(w.compactFor(undefined, 1280, english, 14), false, "not said (an older app): Full");
-    // The answer to `panel` sets it, and position() decides from it.
-    const ask = fn("ask");
-    assert.ok(ask.includes("compactAlways = Boolean(r && r.compact);"), "ask: the size comes with the app's answer");
-    assert.ok(fn("position").includes('pill.classList.toggle("compact", compactFor(compactAlways, vr.width, fullWidth, INSET));'), "position: compact from the setting and the video's width");
+    assert.equal(w.compactFor("auto", 1280, 720, english, 14, false), false, "Automatic, a watch page's big player: the words");
+    assert.equal(w.compactFor("auto", 854, 480, german, 14, false), false, "Automatic, a big player in a long language: the words");
+    assert.equal(w.compactFor("auto", 680, 680, english, 14, true), true, "Automatic, a post's video in a feed: round, however big");
+    assert.equal(w.compactFor("auto", 560, 315, english, 14, false), true, "Automatic, a small player: round");
+    assert.equal(w.compactFor("auto", 900, 260, english, 14, false), true, "Automatic, a short wide strip: round");
+    // The app's answer: Compact, Full (newer apps say it), else Automatic, which an older app's
+    // compact: false is (its Full was the default, never chosen).
+    const sizeMode = make(["sizeMode"], "sizeMode");
+    assert.deepEqual([{ on: true, compact: true }, { on: true, compact: false, full: true }, { on: true, compact: false }, { on: true }, null, { compact: "yes", full: 1 }].map(sizeMode),
+      ["compact", "full", "auto", "auto", "auto", "auto"]);
+    // The answer to `panel` sets it, and position() decides from it, the video's size and its feed.
+    assert.ok(fn("ask").includes("size = sizeMode(r);"), "ask: the size comes with the app's answer");
+    assert.ok(fn("position").includes('pill.classList.toggle("compact", compactFor(size, vr.width, vr.height, fullWidth, INSET, isFeed(video)));'), "position: compact from the setting, the video's size and its feed");
+  }
+  // The button fades instead of vanishing (feedback 2026-11-23): full while the pointer moves over
+  // the video, faint 1.5 s after it rests or 0.4 s after it left (on its way to a button outside
+  // the player, #1735), gone 3 s later; full whenever it is wanted (the pointer on it, its menu, a
+  // drag, the keyboard).
+  {
+    const fadeState = make(["fadeState"], "fadeState");
+    const f = (held, over, sinceMove, sinceOver) => fadeState(held, over, sinceMove, sinceOver, 1500, 400, 3000);
+    assert.equal(f(false, true, 0, 0), "full", "the pointer moving over the video");
+    assert.equal(f(false, true, 1499, 0), "full");
+    assert.equal(f(false, true, 1500, 0), "faint", "rested 1.5 s: faint");
+    assert.equal(f(false, true, 4499, 0), "faint");
+    assert.equal(f(false, true, 4500, 0), "gone", "and gone 3 s after");
+    assert.equal(f(false, false, 0, 399), "full", "just left (towards a button outside the player): still whole");
+    assert.equal(f(false, false, 0, 400), "faint", "left: faint");
+    assert.equal(f(false, false, 0, 3400), "gone", "and gone");
+    for (const [move, over] of [[99999, 99999], [0, 99999], [99999, 0]]) assert.equal(f(true, false, move, over), "full", "wanted: whole");
+    assert.ok(/const IDLE_MS = 1500;\s*const LEAVE_MS = 400;\s*const FAINT_MS = 3000;/.test(source), "its times");
+    const tick = fn("tick");
+    assert.ok(tick.includes("const wanted = onButton || menuOpen || Boolean(dragging) || keyboardOn();"), "tick: wanted while on it, its menu, a drag, the keyboard");
+    assert.ok(/if \(!over && !wanted && lookingFor\) \{\s*clearTimeout\(lookTimer\);\s*lookingFor = null;/.test(tick), "tick: off the video, the early look-up waits no more (#1053's pass asks nothing)");
+    assert.ok(tick.includes('if (fade === "gone") return hide();') && tick.includes('pill.classList.toggle("faint", fade === "faint");'), "tick: faint, then gone");
+    assert.ok(fn("show").includes('pill.classList.remove("faint");'), "show: whole again as the pointer moves over the video");
+    // Reached as it fades out: whole again (a click there would open its menu in a button about
+    // to go).
+    assert.ok(/root\.addEventListener\("pointerenter", \(\) => \{[^}]*if \(video && !pill\.classList\.contains\("shown"\)\) show\(video\);/.test(source), "reached while fading out: shown again");
+    // A show right after a hide (the pointer's move landing just after a fullscreen change hid it)
+    // isn't taken away by the hide's delayed display: none.
+    assert.ok(fn("show").includes("clearTimeout(hideTimer);") && fn("hide").includes("hideTimer = setTimeout("), "show cancels a hide's pending display: none");
+    assert.ok(/\.pill\.shown\.faint \{ opacity: \.3;/.test(source) && /\.pill\.shown\.faint:hover, \.pill\.shown\.faint:focus-within \{ opacity: 1;/.test(source), "faint: whole again under the pointer and the keyboard at once");
+    assert.ok(/@media \(prefers-reduced-motion: reduce\) \{\s*\.pill \{ transition: none;/.test(source), "reduced motion: no fade's motion");
+    ok("video.js: the button fades to faint, then goes; whole while wanted (#1735's feedback)");
+  }
+  // Where it sits (#1735): a spot on the video's edge, or outside the player next to it; snapped to
+  // the edge's corners and middle; remembered per site; mirrored for right to left.
+  {
+    const w = make(["edgeOf", "snap", "spotAt", "dragAt"], "{ edgeOf, snap, spotAt, dragAt }");
+    const r = { left: 100, top: 200, right: 740, bottom: 560, width: 640, height: 360 };
+    const view = { width: 1280, height: 800 };
+    const plain = (x) => JSON.parse(JSON.stringify(x));
+    // Over the player: the corners, inset 8 px.
+    assert.deepEqual(plain(w.spotAt(r, 40, 30, { x: 1, y: 0 }, 8, 6, view)), { left: 692, top: 208, out: false }, "top right");
+    assert.deepEqual(plain(w.spotAt(r, 40, 30, { x: 0, y: 1 }, 8, 6, view)), { left: 108, top: 522, out: false }, "bottom left");
+    // Outside it, 6 px from its side, along it.
+    assert.deepEqual(plain(w.spotAt(r, 40, 30, { x: 1, y: 0, out: true, side: "top" }, 8, 6, view)), { left: 700, top: 164, out: true }, "above its top right");
+    assert.deepEqual(plain(w.spotAt(r, 40, 30, { x: 0, y: 1, out: true, side: "bottom" }, 8, 6, view)), { left: 100, top: 566, out: true }, "under its bottom left");
+    assert.deepEqual(plain(w.spotAt(r, 40, 30, { x: 1, y: 0, out: true, side: "right" }, 8, 6, view)), { left: 746, top: 200, out: true }, "beside its right, at the top");
+    assert.deepEqual(plain(w.spotAt(r, 40, 30, { x: 0, y: 0.5, out: true, side: "left" }, 8, 6, view)), { left: 54, top: 365, out: true }, "beside its left, halfway");
+    // Where outside doesn't fit (a player at the window's top, as wide as it, in full screen): over
+    // it, on that edge.
+    const top = { left: 0, top: 0, right: 1280, bottom: 720, width: 1280, height: 720 };
+    assert.deepEqual(plain(w.spotAt(top, 40, 30, { x: 1, y: 0, out: true, side: "top" }, 8, 6, view)), { left: 1232, top: 8, out: false }, "no room above: inside, at the top");
+    assert.deepEqual(plain(w.spotAt(top, 40, 30, { x: 1, y: 0.5, out: true, side: "right" }, 8, 6, view)), { left: 1232, top: 345, out: false }, "no room beside: inside, on the right");
+    // A drag: over the player while the button's middle is; past an edge, outside on that side.
+    assert.deepEqual(plain(w.dragAt(r, 40, 30, 400, 300, 8)), { x: 292 / 584, y: 92 / 314 }, "free over the player");
+    assert.deepEqual(plain(w.dragAt(r, 40, 30, 700, 160, 8)), { x: 1, y: 0, out: true, side: "top" }, "above the top right");
+    assert.deepEqual(plain(w.dragAt(r, 40, 30, 760, 365, 8)), { x: 1, y: 0.5, out: true, side: "right" }, "beside the right");
+    assert.deepEqual(plain(w.dragAt(r, 40, 30, 90, 580, 8)), { x: 0, y: 1, out: true, side: "bottom" }, "under the bottom left");
+    assert.deepEqual(plain(w.dragAt(r, 40, 30, 50, 300, 8)), { x: 0, y: 100 / 330, out: true, side: "left" }, "beside the left");
+    assert.equal(w.dragAt(r, 40, 30, 700, 190, 8).out, undefined, "half out (its middle still over the player): over it");
+    assert.deepEqual(plain(w.dragAt(r, 200, 30, 650, 160, 8)), { x: 1, y: 0, out: true, side: "top" }, "a wide button above the top right corner: above it, though its middle is further right");
+    // Dropped: snapped to its edge's corners and middle, along the side outside it.
+    assert.deepEqual(plain(w.snap({ x: 0.97, y: 0.03 })), { x: 1, y: 0 }, "into the corner");
+    assert.deepEqual(plain(w.snap({ x: 0.52, y: 0.9 })), { x: 0.5, y: 1 }, "the bottom's middle");
+    assert.deepEqual(plain(w.snap({ x: 0.3, y: 0.02 })), { x: 0.3, y: 0 }, "along the top");
+    assert.deepEqual(plain(w.snap({ x: 0.95, y: 0, out: true, side: "top" })), { x: 1, y: 0, out: true, side: "top" }, "outside, into its corner");
+    assert.deepEqual(plain(w.snap({ x: 1, y: 0.47, out: true, side: "right" })), { x: 1, y: 0.5, out: true, side: "right" }, "outside, the side's middle");
+    // What the site kept, whatever it is: a spot on an edge (an older copy's kept spot as it was).
+    assert.deepEqual(plain(w.snap({ x: 1, y: 0 })), { x: 1, y: 0 });
+    assert.deepEqual(plain(w.snap({ x: "a", y: null, out: "yes", side: "middle" })), { x: 0, y: 0 }, "nonsense: a corner, over the player");
+    assert.deepEqual(plain(w.snap({ x: 7, y: -3, out: true, side: "bottom" })), { x: 1, y: 1, out: true, side: "bottom" }, "out of range: clamped");
+    assert.deepEqual(plain(w.snap({ x: 0.5, y: 0.5, out: true, side: "left" })), { x: 0, y: 0.5, out: true, side: "left" });
+    assert.equal(w.edgeOf({ x: 1, y: 0, out: true, side: "top" }), "top", "outside: its side, not the nearest edge");
+    assert.equal(w.edgeOf({ x: 0.5, y: 0.02 }), "top");
+    // Wired: the drag, the guide, kept per site (not in a private window), its corner mirrored.
+    assert.ok(source.includes("dragging.at = dragAt(r, w, h, e.clientX - dragging.dx, e.clientY - dragging.dy, INSET);"), "the drag: inside or out");
+    assert.ok(fn("position").includes("const p = spotAt(r, w, h, at, INSET, GAP, view());"), "position: inside or out, where it fits");
+    assert.ok(fn("remember").includes("if (PRIVATE) return;"), "remember: never in a private window");
+    assert.ok(/remember\("positions", place\);/.test(source), "a drag's spot kept for the site");
+    assert.ok(source.includes("const HOME = { x: rtl ? 0 : 1, y: 0 };"), "its corner: the top's end (the top left right to left)");
+    assert.ok(source.includes("const CORNERS = rtl ? [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }] : [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }];"), "the other corners mirrored too");
+    assert.ok(fn("look").includes('if (video && root.matches(":hover")) return;'), "on the button (outside its player, over the next post): it stays with its video");
+    assert.ok(fn("openMenu").includes('item("home").hidden = !chosen;'), "Put the button back in its corner: once it was moved");
+    ok("video.js: the button moves to a corner or outside the player, snapped, kept per site (#1735)");
+  }
+  // #1735: the menu's filters. What it lists (both kinds, the sound only), its file types and
+  // codecs where they differ; a filter kept from another video never empties the list.
+  {
+    const w = make(["cleanFilter", "typeOf", "codecOf", "filterOptions", "filterChoices"], "{ cleanFilter, filterOptions, filterChoices }");
+    const yt = [
+      { label: "2160p MP4 · AV1", ext: "mp4", height: 2160, codec: "AV1" },
+      { label: "2160p MP4 · VP9", ext: "mp4", height: 2160, codec: "VP9" },
+      { label: "Most compatible (H.264 + AAC) · 1080p", ext: "mp4", height: 1080, codec: "H.264", compatible: true },
+      { label: "1080p MP4 · AV1", ext: "mp4", height: 1080, codec: "AV1" },
+      { label: "Audio only original M4A", ext: "m4a", audio: true, original: true },
+      { label: "Audio only original WEBM", ext: "webm", audio: true, original: true },
+      { label: "Audio only MP3 VBR", ext: "mp3", audio: true },
+    ];
+    const plain = (x) => JSON.parse(JSON.stringify(x));
+    assert.deepEqual(plain(w.filterOptions(yt, "all")), { kinds: ["all", "video", "audio"], types: ["MP4", "M4A", "WEBM", "MP3"], codecs: [] }, "both kinds: no codecs beside the sound");
+    assert.deepEqual(plain(w.filterOptions(yt, "video")), { kinds: ["all", "video", "audio"], types: [], codecs: ["AV1", "VP9", "H.264"] }, "pictures, every one an MP4: codecs only");
+    assert.deepEqual(plain(w.filterOptions(yt, "audio")), { kinds: ["all", "video", "audio"], types: ["M4A", "WEBM", "MP3"], codecs: [] });
+    assert.deepEqual(plain(w.filterOptions(yt.slice(0, 2), "audio")), { kinds: [], types: [], codecs: ["AV1", "VP9"] }, "one kind: no kinds, a filter kept for another kind is any");
+    assert.deepEqual(plain(w.filterOptions([{ label: "720p MP4" }, { label: "360p MP4" }], "all")), { kinds: [], types: [], codecs: [] }, "an older app's: nothing to filter");
+    assert.deepEqual(plain(w.filterChoices(yt, { kind: "all" }).keep), [0, 1, 2, 3, 4, 5, 6], "no filter: everything, in the app's order");
+    assert.deepEqual(plain(w.filterChoices(yt, { kind: "audio" }).keep), [4, 5, 6]);
+    assert.deepEqual(plain(w.filterChoices(yt, { kind: "audio", type: "mp3" }).keep), [6], "a type as kept, in any case");
+    assert.deepEqual(plain(w.filterChoices(yt, { kind: "video", codec: "AV1" }).keep), [0, 3], "the places in the app's list (what a pick sends)");
+    assert.deepEqual(plain(w.filterChoices(yt, { kind: "video", codec: "HEVC" }).keep), [0, 1, 2, 3], "a codec this video hasn't: any");
+    assert.deepEqual(plain(w.filterChoices(yt, { kind: "all", codec: "AV1" }).keep), [0, 1, 2, 3, 4, 5, 6], "a codec beside the sound: any");
+    assert.deepEqual(plain(w.filterChoices(yt.slice(0, 4), { kind: "audio" }).keep), [0, 1, 2, 3], "the sound kept for a video that has none: everything");
+    const f = w.filterChoices(yt, { kind: "video", codec: "VP9" });
+    assert.deepEqual([f.kind, f.type, f.codec], ["video", "", "VP9"], "the filter as it applies");
+    // What a page or an older copy kept is checked: words only, short.
+    assert.deepEqual(plain(w.cleanFilter({ kind: "<b>", type: "x".repeat(11), codec: "<img>" })), { kind: "all", type: "", codec: "" });
+    assert.deepEqual(plain(w.cleanFilter(null)), { kind: "all", type: "", codec: "" });
+    assert.deepEqual(plain(w.cleanFilter({ kind: "audio", type: "webm", codec: "H.264" })), { kind: "audio", type: "WEBM", codec: "H.264" });
+    // The menu: its chips as text, the rows it keeps, "Download best" the best of those; kept per
+    // site, forgotten when it lists everything again; chips are the keyboard's too.
+    const fill = fn("fillMenu");
+    assert.ok(fill.includes("const kept = filterChoices(choices, filter);") && fill.includes("const shown = groups[kind].filter((i) => keep.has(i));"), "fillMenu: the filter's rows");
+    assert.ok(fill.includes("const top = bestOf({ state: \"ready\", choices: kept.keep.map((i) => choices[i]) }) || best;"), "Download best: the best the filter keeps");
+    assert.ok(fn("fillFilters").includes("b.textContent = words;") && !fn("fillFilters").includes("innerHTML"), "chips: text only");
+    assert.ok(fn("setFilter").includes('remember("videoFilters", all ? null : filter);'), "kept per site");
+    assert.ok(fn("runItem").includes('if (b.dataset.filter !== undefined) return setFilter(b.dataset.filter, b.dataset.value || "");'), "a chip, clicked or by key");
+    ok("video.js: the menu's filters (#1735)");
+  }
+  // Which videos are a feed's (the Automatic size's round button there): the big sites' feeds and
+  // home pages, YouTube's home; not a video's own page, an embedded player, a watch page.
+  {
+    const source = readText("../../extension/video.js");
+    const start = source.indexOf("function videoPage(v) {");
+    const end = source.indexOf("// ---- the video's own address: end.");
+    const body = `${source.slice(start, end)}; return feedVideo;`;
+    const feedOf = (href, { feed = false, videos = 1 } = {}) => {
+      const v = { parentElement: null, parentNode: null, getAttribute: () => null };
+      if (feed) v.parentElement = { parentElement: null, parentNode: null, getAttribute: (a) => (a === "role" ? "feed" : null) };
+      const document = { querySelectorAll: (sel) => (sel === "video" ? { length: videos } : []), querySelector: () => null };
+      return new Function("location", "document", body)({ href }, document)(v);
+    };
+    for (const page of ["https://www.facebook.com/", "https://www.facebook.com/watch/", "https://x.com/home", "https://www.linkedin.com/feed/", "https://www.instagram.com/", "https://www.reddit.com/", "https://www.reddit.com/r/videos/", "https://www.youtube.com/", "https://www.youtube.com/@channel/videos", "https://www.tiktok.com/foryou"]) {
+      assert.equal(feedOf(page), true, `a feed: ${page}`);
+    }
+    for (const page of ["https://www.youtube.com/watch?v=abc", "https://www.youtube.com/shorts/abc", "https://www.facebook.com/watch/?v=1234567", "https://www.facebook.com/reel/1234567", "https://x.com/someone/status/123", "https://www.reddit.com/r/videos/comments/abc/title/", "https://www.instagram.com/p/AbCdEf1/", "https://vimeo.com/123456", "https://www.youtube-nocookie.com/embed/abc"]) {
+      assert.equal(feedOf(page), false, `a video's own page: ${page}`);
+    }
+    assert.equal(feedOf("https://social.example/@me", { feed: true }), true, "any site's role=\"feed\"");
+    assert.equal(feedOf("https://news.example/", { videos: 3 }), true, "a home page of many videos");
+    assert.equal(feedOf("https://news.example/", { videos: 1 }), false, "a home page's one video");
+    assert.equal(feedOf("https://news.example/article/1", { videos: 3 }), false, "an article's players");
+    ok("video.js: a feed's videos get the round button by default (feedback 2026-11-23)");
   }
   ok("video.js: the qualities' menu follows a lookup one question at a time for a minute; rows as text, the user's own clicks and keys; its words, #703's early look-up, #741's moves");
 }

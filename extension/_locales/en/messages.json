@@ -376,8 +376,8 @@
     "description": "button on the download button over a video in a feed: opens the post the video belongs to in a new tab; verb; very short"
   },
   "video_drag_dots": {
-    "message": "Drag the dots to move it along the edge",
-    "description": "second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge"
+    "message": "Drag the dots to move it to another corner, or outside the video",
+    "description": "second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it"
   },
   "video_tip": {
     "message": "Download $what$",
@@ -954,5 +954,45 @@
   "popup_dl_open_remote": {
     "message": "Open its page",
     "description": "button at the foot of the Downloads tab in the toolbar button's popup when downloads go to another Mister Download Manager (a server): opens that server's own web page"
+  },
+  "video_home": {
+    "message": "Put the button back in its corner",
+    "description": "menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video"
+  },
+  "video_filter_all": {
+    "message": "All",
+    "description": "chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word"
+  },
+  "video_filter_audio": {
+    "message": "Audio only",
+    "description": "chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short"
+  },
+  "video_filter_kind": {
+    "message": "Show",
+    "description": "label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short"
+  },
+  "video_filter_type": {
+    "message": "File type",
+    "description": "label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short"
+  },
+  "video_filter_codec": {
+    "message": "Codec",
+    "description": "label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short"
+  },
+  "popup_video_reset_text": {
+    "message": "Download button over videos",
+    "description": "toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos"
+  },
+  "popup_video_reset_sub": {
+    "message": "Where you moved it, and its menu's filters, on each site",
+    "description": "toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site"
+  },
+  "popup_video_reset": {
+    "message": "Reset",
+    "description": "toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short"
+  },
+  "popup_video_reset_done": {
+    "message": "Back in its corner, its menu showing everything, on every site",
+    "description": "toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site"
   }
 }
