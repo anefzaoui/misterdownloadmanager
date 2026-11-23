@@ -310,9 +310,13 @@ struct Reply {
     #[serde(skip_serializing_if = "Option::is_none")]
     lookup: Option<mdm_ipc::api::VideoLookupAnswer>,
     /// For `panel` when it may show (#1278): Options → Download panels → Button size is
-    /// Compact (the round button over every video). An older host doesn't say: Full.
+    /// Compact (the round button over every video). An older host doesn't say: Automatic.
     #[serde(skip_serializing_if = "Option::is_none")]
     compact: Option<bool>,
+    /// The same, Full: its words wherever they fit. Neither: Automatic, the round button in a
+    /// feed and over a small player. An older host doesn't say (its Full was its default).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    full: Option<bool>,
     /// For `recent` (#1496): the app's list.
     #[serde(skip_serializing_if = "Option::is_none")]
     recent: Option<mdm_ipc::api::RecentAnswer>,
@@ -448,6 +452,7 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
         return Reply {
             ok,
             compact: ok.then_some(rules.video_panel_compact),
+            full: ok.then_some(rules.video_panel_full),
             ..Default::default()
         };
     }
@@ -2018,13 +2023,24 @@ mod tests {
         };
         assert!(answer(ask("https://videos.test/watch"), &rules).ok);
         assert!(!answer(ask("https://www.quiet.test/watch"), &rules).ok);
-        // #1278: its size comes with the answer where it shows; Full unless Compact is chosen.
+        // #1278: its size comes with the answer where it shows; Automatic (neither) unless Full
+        // or Compact is chosen.
         let r = answer(ask("https://videos.test/watch"), &rules);
         assert_eq!(r.compact, Some(false));
         assert_eq!(
             serde_json::to_value(&r).unwrap(),
-            serde_json::json!({ "ok": true, "compact": false })
+            serde_json::json!({ "ok": true, "compact": false, "full": false })
         );
+        rules.video_panel_full = true;
+        assert_eq!(
+            answer(ask("https://videos.test/watch"), &rules).full,
+            Some(true)
+        );
+        assert_eq!(
+            answer(ask("https://www.quiet.test/watch"), &rules).full,
+            None
+        );
+        rules.video_panel_full = false;
         rules.video_panel_compact = true;
         assert_eq!(
             answer(ask("https://videos.test/watch"), &rules).compact,

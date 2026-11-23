@@ -57,9 +57,11 @@ pub struct CaptureRules {
     pub video_panel: bool,
     /// The sites it stays off (space-separated, `*.example.com` takes subdomains too).
     pub video_panel_sites: String,
-    /// Its size (#1278): Compact, the round form over every video; else Full, its words where
-    /// they fit. Told with the answer to `panel`.
+    /// Its size (#1278): Compact, the round form over every video; Full (`video_panel_full`),
+    /// its words wherever they fit; neither, Automatic: the round form in a feed and over a small
+    /// player, the words over a big one. Told with the answer to `panel`.
     pub video_panel_compact: bool,
+    pub video_panel_full: bool,
     /// Options → General: also take the listed types the browser would open itself (a PDF in
     /// its viewer, an MP3 in its player), not only what it downloads.
     pub capture_opened: bool,
@@ -85,6 +87,7 @@ impl Default for CaptureRules {
             video_panel: true,
             video_panel_sites: String::new(),
             video_panel_compact: false,
+            video_panel_full: false,
             capture_opened: true,
             capture_min_kb: 0,
             torrent_handler: None,

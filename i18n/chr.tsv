@@ -672,6 +672,7 @@
 #, machine
 	Austria	ᎠᏍᏟᏯ
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	ᎪᎯᎨ
@@ -1984,7 +1985,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP downloads ᎥᏝ HTTP proxy ᏱᏓᎬᏔᎠ. SOCKS5 ᎠᎴ SOCKS4 ᎢᏳᏍᏗ ᏕᎪᏏ proxy ᎢᏳᏩᏂᏐᏗ.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	ᎠᎧᎵᎢ
 #. text in countries.rs
@@ -6608,6 +6609,7 @@ extension	Added to MDM	MDM ᎭᏫᏂᏗᏢ ᏗᏓᎴᏔᏅᎢ
 extension	Added to the queue	ᏚᎾᏓᏁᎸᎢ ᏗᎪᏪᎵ
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	ᏂᎦᏗᏳ
 #. text in the browser extension
@@ -6623,6 +6625,10 @@ extension	Another Mister Download Manager (a server)	ᏅᏩᏓᎴ Mister Downloa
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	ᎦᏬᏂᎯᏍᏗ
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	ᎠᏥᏅᏏᏓᏍᏗ ᎤᏅᏏᏓᏍᏗ, ᎤᏤᎵᎦ ᏗᏟᎶᏍᏔᏅᎯ ᏂᎦᎥ ᎪᎱᏍᏗ ᎬᏂᎨᏒᎢ, ᏂᎦᎥ ᏚᏓᏂᎸᎢ
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6672,6 +6678,10 @@ extension	Clear finished	ᎠᏓᏅᎦᎸᏗ ᎤᏍᏆᏛᎯ
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	ᎠᏓᏅᎦᎸᏗ ᎤᏍᏆᏛᎯ ᏗᎦᏁᏟᏴᏍᏗ?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	ᏗᏟᎶᏍᏔᏅᎯ
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -6746,6 +6756,10 @@ extension	Download all links with Mister Download Manager	ᏗᏓᏂᏴᏗ ᏗᏕ
 #, machine
 extension	Download best	ᏗᎦᎴᏴᏔᏅᎢ ᎤᏟ ᎣᏍᏛ
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	ᏗᎦᏃᎩᏍᏗ ปุ่ม ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎳᏗᏢ
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ Mister Download Manager
@@ -6788,9 +6802,9 @@ extension	Downloads from {site} stay with the browser	ᏗᏓᏂᏴᏗ ᏗᏕᎬ�
 #, machine
 extension	Downloads go to {address}	ᎠᎾᏗᏒᏍᎬᎢ {address} ᏩᏂᎷᎪᎢ
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	ᏗᏓᎴᏔᏅᎢ ᏗᏓᎴᏔᏅᎢ ᏗᏓᎴᏔᏅᎢ
+extension	Drag the dots to move it to another corner, or outside the video	ᏕᎦᏃᎯᎵᏙᏗ ᎤᏓᎷᎸᎢ ᏗᏐᎢ ᏧᏅᏏᏓᏍᏗ ᏗᎦᏃᎯᎵᏙᏗ, ᎠᎴ ᏙᏱᏗᏢ ᏗᎦᏃᎯᎵᏙᏗ
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -6808,6 +6822,10 @@ extension	Failed: {why}	ᎤᏓᏍᏙᏴᎯ: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	ᏗᎪᏪᎵ ᏗᏙᏪᎳᏅᎯ ᎠᎴ ᏗᏙᏪᎳᏅᎯ
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	ᎪᏪᎵ ᎢᏳᏍᏗ
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7120,9 +7138,17 @@ extension	Protected	ᎤᎦᏘᏗᏍᏗ
 #, machine
 extension	Protected video	ᏗᏓᎴᏔᏅᎢ ᏗᏓᎴᏔᏅᎢ
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	ᏗᎦᏃᎯᎵᏙᏗ ᎤᏅᏏᏓᏍᏗ ᎤᏤᎵᎦ ᏗᎦᏃᎯᎵᏙᏗ ᏗᎦᏃᎯᎵᏙᏗ
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	ᎠᏰᎵ ᏗᎦᏟᎶᏍᏗ ᎢᏴᏛ ᏩᏍᎦᎸᏓ
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	ᏗᎦᏃᎯᎵᏙᏗ
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7176,6 +7202,7 @@ extension	Share...	ᏗᏯᏙᎳᏤᏗ...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	ᏗᏓᎴᏔᏅᎢ
 #. text in the browser extension
@@ -7325,6 +7352,10 @@ extension	Waiting	ᎠᎦᏘᏗᏍᏗ
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
 #, machine
 extension	What you download with Mister Download Manager shows up here.	ᎾᏍᎩ Ꮎ ᏗᎦᏟᎶᏍᏗ ᏗᎦᏁᏟᏴᏍᏗ ᎾᎿ Mister Download Manager ᎾᎿ ᎢᏗᎦᏅᏁᏗ.
+#. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	ᎭᏢ ᎯᏃᎯᎵᏙᏔᏅᎢ, ᎠᎴ ᎤᏤᎵᎦ ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏃᎯᎵᏙᏗ, ᏂᎦᎥ ᏗᎦᏃᎯᎵᏙᏗ
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine

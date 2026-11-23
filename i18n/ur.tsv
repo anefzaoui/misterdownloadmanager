@@ -745,6 +745,7 @@
 #, machine
 	Austria	آسٹریا
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	خودکار
@@ -887,7 +888,7 @@
 #, machine
 	Busy, try later	مصروف ہے، بعد میں کوشش کریں
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	بٹن کا سائز:
 #. message or event log entry in the main window
@@ -1165,7 +1166,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	کوموروس
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	کمپیکٹ
@@ -2203,7 +2204,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ڈاؤن لوڈز HTTP پراکسی کے ذریعے نہیں جاتے ہیں۔ انہیں پراکسی کے ذریعے بھیجنے کے لیے SOCKS5 یا SOCKS4 کا انتخاب کریں۔
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	مکمل
 #. text in countries.rs
@@ -6927,6 +6928,7 @@ extension	Added to MDM	MDM میں شامل کر دیا گیا
 extension	Added to the queue	قطار میں شامل کر دیا گیا
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	تمام
 #. text in the browser extension
@@ -6942,6 +6944,14 @@ extension	Another Mister Download Manager (a server)	ایک اور Mister Downlo
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	آڈیو
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	صرف آڈیو
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	اپنی جگہ پر واپس، اس کا مینو ہر سائٹ پر سب کچھ دکھا رہا ہے
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6991,6 +7001,10 @@ extension	Clear finished	مکمل شدہ صاف کریں
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	مکمل شدہ ڈاؤن لوڈز صاف کریں؟
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	کوڈیک
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7065,6 +7079,10 @@ extension	Download all links with Mister Download Manager	Mister Download Manage
 #, machine
 extension	Download best	بہترین ڈاؤن لوڈ کریں
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	ویڈیوز پر ڈاؤن لوڈ بٹن
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Mister Download Manager کے ساتھ منتخب لنکس ڈاؤن لوڈ کریں
@@ -7107,9 +7125,9 @@ extension	Downloads from {site} stay with the browser	{site} سے ڈاؤن لو�
 #, machine
 extension	Downloads go to {address}	ڈاؤن لوڈز {address} پر جاتے ہیں
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	کنارے کے ساتھ منتقل کرنے کے لیے نقطوں کو گھسیٹیں
+extension	Drag the dots to move it to another corner, or outside the video	اسے کسی دوسرے کونے یا ویڈیو سے باہر منتقل کرنے کے لیے نقطوں کو گھسیٹیں
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7127,6 +7145,10 @@ extension	Failed: {why}	ناکام: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	فائل حذف یا منتقل کر دی گئی
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	فائل کی قسم
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7439,9 +7461,17 @@ extension	Protected	محفوظ
 #, machine
 extension	Protected video	کاپی سے محفوظ ویڈیو
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	بٹن کو اس کے کونے میں واپس رکھیں
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	فہرست سے ہٹائیں
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	ری سیٹ کریں
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7495,6 +7525,7 @@ extension	Share...	شیئر کریں...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	دکھائیں
 #. text in the browser extension
@@ -7644,6 +7675,10 @@ extension	Waiting	انتظار کر رہا ہے
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
 #, machine
 extension	What you download with Mister Download Manager shows up here.	آپ Mister Download Manager کے ساتھ جو ڈاؤن لوڈ کرتے ہیں وہ یہاں ظاہر ہوتا ہے۔
+#. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	جہاں آپ نے اسے منتقل کیا، اور اس کے مینو کے فلٹرز، ہر سائٹ پر
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine

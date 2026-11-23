@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ The browser add-on's Download video button out of the way: **Automatic** size, the new
+  default (round in a feed and over a small player, whole over a big one), faint as the pointer
+  rests or leaves before it goes, movable outside the player and kept for each site, with
+  **Put the button back in its corner** in its menu and **Reset** in the add-on's popup; its
+  menu filters what it lists (all, video, audio only; the file type or the codec where they
+  differ), kept for each site ([#1735](https://github.com/anefzaoui/misterdownloadmanager/issues/1735))
 - ✅ Website and help: what to do when an antivirus flags MDM (why it happens, how to check your
   copy against the release's checksums, where to report the false alarm), linked from the README
 - ✅ Website: the home page shows MDM's one-minute film under its first view; YouTube's player
