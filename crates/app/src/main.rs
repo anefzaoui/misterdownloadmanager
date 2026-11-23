@@ -428,23 +428,39 @@ fn app() -> eframe::Result {
     if !after_update && let Some(pid) = mdm_ipc::app_pid() {
         win32::allow_foreground(pid);
     }
-    if !after_update
-        && (mdm_ipc::send(&cmd.clone().unwrap_or_default()).is_ok()
-            || cmd.as_ref().is_some_and(|c| c.exit))
-    {
+    // Every attempt to hand the command over carries one id: the running app takes it once,
+    // however many attempts reach it (#1651: an attempt whose answer came late was sent again, and
+    // the app got a `/d` twice).
+    let handover = mdm_ipc::Handover::new(cmd.clone().unwrap_or_default());
+    let exit = cmd.as_ref().is_some_and(|c| c.exit);
+    if !after_update && handover.send().is_ok() {
         return Ok(());
     }
     // No instance answered. Only one launch may become the instance (two started together
-    // would both get here); the other forwards its command once the winner listens.
+    // would both get here); the other forwards its command once the winner listens. So does a
+    // launch whose one attempt failed while the app runs (its channel busy, a connection the
+    // system didn't let through in time, an answer late): `/exit` too, which was given up
+    // then, and the app went on running (#1651).
     let lock = if after_update {
         update::lock_after_update()
     } else {
         mdm_ipc::instance_lock()
     };
     let Some(_instance) = lock else {
-        let _ = mdm_ipc::send_waiting(&cmd.unwrap_or_default(), std::time::Duration::from_secs(10));
+        let wait = std::time::Duration::from_secs(10);
+        let _ = if exit {
+            // Until it has it, or has quit (the instance lock free again: an earlier attempt
+            // reached it, its answer didn't come back).
+            handover.send_while(wait, || mdm_ipc::instance_lock().is_none())
+        } else {
+            handover.send_waiting(wait)
+        };
         return Ok(());
     };
+    // `/exit` starts nothing when no app runs.
+    if exit && !after_update {
+        return Ok(());
+    }
     #[cfg(windows)]
     win32::mark_running();
     // Started with the session (#226) or from browser native messaging host (#1333): read before
@@ -471,8 +487,11 @@ fn app() -> eframe::Result {
     let wake: std::sync::Arc<dyn Fn() + Send + Sync> = std::sync::Arc::new(move || {
         // A command came in: someone waits for the window's answer, hidden or not (#1126).
         crash::asked();
+        // The main window's pass reads the commands (`App::tick`), whichever window draws now:
+        // `request_repaint` asks for the window being drawn at this moment, a dialog's when
+        // one is open, and the main window, minimized, waited for its next timed pass (#1651).
         if let Some(ctx) = wake.get() {
-            ctx.request_repaint();
+            ctx.request_repaint_of(egui::ViewportId::ROOT);
         }
     });
     #[cfg(target_os = "linux")]

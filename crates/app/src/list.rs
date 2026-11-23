@@ -1020,23 +1020,16 @@ pub fn show(
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
             expose_row(idx, row, picked);
-            // The download's progress as a progress bar of its own (#1190): UI Automation reads
-            // it through the RangeValue pattern, so a reader's own progress reporting — its beeps
-            // and percentages — follows it without anyone moving the focus. Unnamed on purpose: a
-            // name would be read in place of the value.
+            // The download's progress as a progress bar of its own (#1190, #1406): the same node
+            // the Download status page carries, so a reader's progress reporting follows it
+            // without anyone moving the focus (winui::expose_progress).
             if let Some(frac) = row.progress {
                 let bar = row_id(idx).with("progress");
                 let bar_rc = screen(Rect::from_min_size(
                     pos2(cl, top),
                     egui::vec2(rr - cl, row_h()),
                 ));
-                rows_ui.interact(bar_rc, bar, egui::Sense::hover());
-                ui.ctx().accesskit_node_builder(bar, |n| {
-                    n.set_role(egui::Role::ProgressIndicator);
-                    n.set_min_numeric_value(0.0);
-                    n.set_max_numeric_value(100.0);
-                    n.set_numeric_value(frac.clamp(0.0, 1.0) * 100.0);
-                });
+                winui::expose_progress(&rows_ui, bar_rc, bar, frac);
             }
             let sel = picked && st.focused;
             // The focused row's dotted outline only once the keyboard is in use, as every

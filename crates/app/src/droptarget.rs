@@ -138,6 +138,7 @@ impl DropTarget {
         ctx.show_viewport_immediate(vid, builder, |ui, _| {
             // Styled in its own pass, before anything is drawn in it.
             styled = crate::chrome::style_popup(TITLE, crate::chrome::PopupLook::Floating);
+            crate::winui::name_window(ui, TITLE);
             let rect = ui.max_rect();
             let p = ui.painter();
             // Something dragged over it: the shared highlight and accent, in the mode.
