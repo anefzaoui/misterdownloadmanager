@@ -3256,7 +3256,9 @@ async function injectOpenTabs() {
 // (#532: it was kept a minute, and by the page for good). A failure to reach it isn't kept.
 // `top`: the tab's address, when the frame asking is another page's (a player embedded from
 // another site): the button stays off there too when the tab's site is listed. With it, its size
-// (#1278: Options → Download panels → Button size): `compact`, the round button over every video.
+// (#1278: Options → Download panels → Button size): `compact`, the round button over every video;
+// `full` (only when chosen: an older app never says it), its words wherever they fit; neither,
+// Automatic (video.js sizeMode).
 const PANEL_KEEP_MS = 5000;
 const panelCache = new Map();
 async function panelOn(page, top) {
@@ -3267,13 +3269,13 @@ async function panelOn(page, top) {
   forget(panelCache, PANEL_KEEP_MS);
   if (panelCache.get(site)?.hidden) return { on: false, compact: false };
   const kept = panelCache.get(key);
-  if (kept) return { on: kept.on, compact: kept.compact };
+  if (kept) return { on: kept.on, compact: kept.compact, ...(kept.full ? { full: true } : {}) };
   // Always this computer's MDM's Options: a question, never a download (`download`). With another
   // MDM chosen and none here to ask, the button shows, as Options have it at first: the other
   // MDM's remote control adds and lists downloads, it has no Options to ask.
   let reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
   if (!reply.ok && reply.why && (await remoteTarget())) reply = { ok: true };
-  const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact) };
+  const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact), ...(reply.ok && reply.full === true ? { full: true } : {}) };
   if (reply.ok || !reply.why) panelCache.set(key, { ...answer, at: Date.now() });
   return answer;
 }
