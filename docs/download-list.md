@@ -121,6 +121,8 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 
 **Move/Rename** (**Ctrl+M**) moves or renames the file of a finished download, or of one that hasn't started yet. With several downloads selected it asks for a folder and moves them all there, each under its own name.
 
+**Redownload** downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (`name (1).ext`) and tells you. Torrents, videos and image galleries don't have it: a torrent's **Recheck files** finds and fetches its damaged pieces, and a finished gallery's **Resume Download** fetches the files it is missing.
+
 ## Verify checksum
 
 Many sites publish a checksum next to the download. Right-click the download, choose **Verify checksum...** and paste it. MDM reads MD5, SHA-1, SHA-256, SHA-512 and CRC32. A finished file is checked at once; an unfinished one is checked when its download ends. MDM then says **The file matches** or **The file does NOT match**.
