@@ -2292,16 +2292,16 @@ function samplePage(html) {
 }
 
 // A video that hasn't played has no stream yet: the button takes the one its page wrote for the
-// player (video.js bestPageStream), the best quality its address names, escaped "\/" undone.
+// player (video.js bestPageStream), the best quality its address names, escaped "\/" undone. Only
+// what the page names: no address is guessed.
 {
   const source = readText("../../extension/video.js");
   const cut = (name) => {
     const at = source.indexOf(`  function ${name}(`);
     return source.slice(at, source.indexOf("\n  }\n", at) + 4);
   };
-  const [bestPageStream, higherStream] = new Function(
-    `${cut("bestPageStream")}${cut("streamHeight")}${cut("higherStream")}\nreturn [bestPageStream, higherStream];`,
-  )();
+  assert.ok(!/1080"\s*\+|higherStream/.test(source), "no guessed address (a 1080p beside a 720p)");
+  const bestPageStream = new Function(`${cut("bestPageStream")}${cut("streamHeight")}\nreturn bestPageStream;`)();
   // The quality named beside the link, not in it; a master list (every quality) over them all.
   assert.equal(
     bestPageStream(`sources:[{label:"720p",file:"https://cdn.example.com/a/v1.m3u8"},{label:"1080p",file:"https://cdn.example.com/a/v2.m3u8"},{label:"480p",file:"https://cdn.example.com/a/v3.m3u8"}]`),
@@ -2314,10 +2314,6 @@ function samplePage(html) {
     "https://c.example.com/v/master.m3u8",
     "a master list lists them all",
   );
-  // Only the starting quality written: its 1080p is tried first.
-  assert.equal(higherStream("https://c.example.com/v/abc_720p.m3u8?t=1"), "https://c.example.com/v/abc_1080p.m3u8?t=1");
-  assert.equal(higherStream("https://c.example.com/v/abc_1080p.m3u8"), "", "already 1080p");
-  assert.equal(higherStream("https://c.example.com/v/master.m3u8"), "", "no quality named");
   const html = `<script>var cfg={"hls":{"360":"https:\\/\\/cdn.example.com\\/v\\/abc_360p.m3u8?t=1\\u0026e=2",
     "1080":"https:\\/\\/cdn.example.com\\/v\\/abc_1080p.m3u8?t=1\\u0026e=2","720":"https://cdn.example.com/v/abc_720p.m3u8"}}</script>`;
   assert.equal(bestPageStream(html), "https://cdn.example.com/v/abc_1080p.m3u8?t=1&e=2", "the 1080p one, unescaped");
@@ -2327,6 +2323,15 @@ function samplePage(html) {
     "no quality named: the first, &amp; undone",
   );
   assert.equal(bestPageStream("<p>no video here, just video.mp4</p>"), "", "none");
+  // The page is read as a look-up starts, never as the button follows the pointer (describe).
+  const body = (name) => {
+    const at = source.indexOf(`  function ${name}(`);
+    return source.slice(at, source.indexOf("\n  }\n", at));
+  };
+  assert.ok(!body("describe").includes("pageStream("), "describe doesn't read the page");
+  assert.ok(body("startLook").includes("pageStream()"), "startLook does");
+  // One minute for the whole look-up, the page's stream included: it always ends.
+  assert.ok(body("startLook").includes("pageLook(lookUp, l.at + LOOKUP_MS)"), "the page's stream within the look-up's minute");
   ok("a stream the page wrote is found before the video plays");
 }
 
