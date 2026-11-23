@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Redownload replaces the finished file under its name once the new copy is complete, as its
+  question says, instead of saving `name (1)` beside it; one that fails or is stopped keeps the
+  file, and one whose file another program holds keeps both and says so
+  ([#1698](https://github.com/anefzaoui/misterdownloadmanager/issues/1698))
 - ✅ The README opens with MDM's film: its picture, under the download buttons, plays it on
   YouTube; and Trendshift's badge beside the star button
 - ✅ Download only a part of a video or a sound, from one time to another, cut quickly at the
