@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Tests: the check of a video part's progress no longer fails now and then on a fast machine
+  (seen on macOS): the test tool held nothing back, so the whole part could come in between two
+  looks at the progress; it now waits half-way until the test has seen the progress, and the
+  stop-and-start-again check stops it there for certain too
 - ✅ Resume after a crash or a kill continues the download instead of starting it over as
   "name (1)" (#1705): a row whose name was still to be numbered at start resumes the resume
   state at that name when it is its own (the same address, no other row at the name), looked at
