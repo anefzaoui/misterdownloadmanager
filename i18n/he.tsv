@@ -106,6 +106,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} peer|{n} peers	עמית אחד ({n})|2 עמיתים ({n})|{n} עמיתים
+#. count in the Options window
+#. Options → Archives: beside the Archive passwords button: how many are saved
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} saved|{n} saved	{n} נשמרו|{n} נשמרו|{n} נשמרו
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -692,6 +697,7 @@
 #, machine
 	Austria	אוסטריה
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	אוטומטי
@@ -834,7 +840,7 @@
 #, machine
 	Busy, try later	השרת עסוק, נסה שוב מאוחר יותר
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	גודל לחצן:
 #. message or event log entry in the main window
@@ -1107,7 +1113,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	קומורו
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	קומפקטי
@@ -2145,7 +2151,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	הורדות FTP אינן עוברות דרך שרת Proxy מסוג HTTP. בחר SOCKS5 או SOCKS4 כדי לשלוח אותן דרך שרת ה-Proxy.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	מלא
 #. text in countries.rs
@@ -6874,6 +6880,7 @@ extension	Added to MDM	נוסף ל-MDM
 extension	Added to the queue	נוסף לתור
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	הכל
 #. text in the browser extension
@@ -6889,6 +6896,14 @@ extension	Another Mister Download Manager (a server)	Mister Download Manager א�
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	שמע
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	שמע בלבד
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	חזר למקומו, התפריט שלו מציג הכול, בכל אתר
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6938,6 +6953,10 @@ extension	Clear finished	נקה שהושלמו
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	לנקות הורדות שהושלמו?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	קודק
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7012,6 +7031,10 @@ extension	Download all links with Mister Download Manager	הורד את כל ה�
 #, machine
 extension	Download best	הורד את האיכות הטובה ביותר
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	לחצן ההורדה שמעל לסרטונים
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	הורד את הקישורים שנבחרו באמצעות Mister Download Manager
@@ -7054,9 +7077,9 @@ extension	Downloads from {site} stay with the browser	הורדות מ־{site} נ
 #, machine
 extension	Downloads go to {address}	ההורדות עוברות אל {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	גרור את הנקודות כדי להזיז אותו לאורך הקצה
+extension	Drag the dots to move it to another corner, or outside the video	גרור את הנקודות כדי להזיז אותו לפינה אחרת, או מחוץ לסרטון
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7074,6 +7097,10 @@ extension	Failed: {why}	נכשל: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	הקובץ נמחק או הועבר
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	סוג הקובץ
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7386,9 +7413,17 @@ extension	Protected	מוגן
 #, machine
 extension	Protected video	סרטון מוגן
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	החזר את הלחצן למקומו
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	הסר מהרשימה
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	איפוס
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7442,6 +7477,7 @@ extension	Share...	שתף...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	הצג
 #. text in the browser extension
@@ -7591,6 +7627,10 @@ extension	Waiting	ממתין
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
 #, machine
 extension	What you download with Mister Download Manager shows up here.	מה שתוריד באמצעות Mister Download Manager יופיע כאן.
+#. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	המיקומים שאליהם העברת אותו והמסננים בתפריט שלו, בכל אתר
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine

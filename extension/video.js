@@ -32,9 +32,14 @@
   const MIN_AUDIO_H = 24;
   const CLIP_S = 15;
   // Shown this long after the pointer last moved over the video, kept while it is on the button
-  // (#741: 1.5 s, it was 2.6); gone at once when the pointer leaves the video.
+  // (#741: 1.5 s, it was 2.6); then faint (still there to find, over less of the picture) for
+  // FAINT_MS before it goes, and faint LEAVE_MS after the pointer left the video (fadeState).
   const IDLE_MS = 1500;
+  const LEAVE_MS = 400;
+  const FAINT_MS = 3000;
   const INSET = 8;
+  // Outside the player (#1735): this far from its edge.
+  const GAP = 6;
   const DRAG_PX = 4;
   // Our app icon (extension/icons/icon-48.png, as data: no extension file is exposed to pages).
   const LOGO = "data:image/png;base64,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";
@@ -53,7 +58,7 @@
     video_unnamed: "Can't tell which video this is: open its own page and try there",
     video_open_post: "Open the post to download it",
     video_open_post_button: "Open post",
-    video_drag_dots: "Drag the dots to move it along the edge",
+    video_drag_dots: "Drag the dots to move it to another corner, or outside the video",
     video_tip: "Download $1",
     video_tip_best: "Download the best quality",
     video_sending: "Sending to MDM...",
@@ -79,6 +84,12 @@
     video_failed_lookup: "Could not look it up",
     video_tab_video: "Video",
     video_tab_audio: "Audio",
+    video_filter_all: "All",
+    video_filter_audio: "Audio only",
+    video_filter_kind: "Show",
+    video_filter_type: "File type",
+    video_filter_codec: "Codec",
+    video_home: "Put the button back in its corner",
   };
   // Sizes as the browser's language writes them.
   const lang = ext.i18n.getUILanguage?.() || undefined;
@@ -434,6 +445,29 @@
   function inFeed(v) {
     for (let node = upFrom(v); node; node = upFrom(node)) if (node.getAttribute?.("role") === "feed") return true;
     return false;
+  }
+
+  // A video in a feed, a list or a home page, not on a page of its own: a post's video on
+  // Facebook's, X's, LinkedIn's, Instagram's or Reddit's feed, a preview on YouTube's home. The
+  // button's Automatic size is its round form there (compactFor): its words covered the post's
+  // picture (feedback, 2026-11-23). The same tests as the video's own address: the big sites' own
+  // pages, a feed's role, a feed's address on a page of many videos; an embedded player is the
+  // video's page.
+  function feedVideo(v) {
+    try {
+      const url = new URL(location.href);
+      if (inFeed(v)) return true;
+      if (framed()) return false;
+      const name = siteName(url.hostname);
+      if (/^(?:youtube\.com|youtube-nocookie\.com|youtu\.be)$/.test(name)) {
+        return name === "youtube.com" && !/^\/(?:watch|embed\/|shorts\/|live\/|v\/)/.test(url.pathname);
+      }
+      const site = SITES.find((s) => s.hosts.test(name));
+      if (site) return !(site.embed && site.embed(url)) && !site.own(url) && !(site.opened && site.opened(url));
+      return FEED_PATH.test(url.pathname) && document.querySelectorAll("video").length > 1;
+    } catch {
+      return false;
+    }
   }
 
   const framed = () => {
@@ -902,10 +936,90 @@
   function fitsWords(videoWidth, fullWidth, inset) {
     return videoWidth >= 360 && fullWidth <= videoWidth - 2 * inset;
   }
-  // The round button (the logo, the arrow, the ✕) or the whole one: always round when Options →
-  // Download panels → Button size is Compact (`always`, #1278); else round where its words don't fit.
-  function compactFor(always, videoWidth, fullWidth, inset) {
-    return Boolean(always) || !fitsWords(videoWidth, fullWidth, inset);
+  // Options → Download panels → Button size (#1278), from the app's answer to `panel`: "compact",
+  // the round button over every video; "full", its words wherever they fit (as before
+  // Automatic); else "auto", the default, which an app older than Automatic says as compact:
+  // false (Full was its default, so the user never chose it).
+  function sizeMode(r) {
+    if (r && r.compact === true) return "compact";
+    if (r && r.full === true) return "full";
+    return "auto";
+  }
+  // The round button (the logo, the arrow, the ✕) or the whole one (`mode`: sizeMode's): round
+  // where its words don't fit, and always when Compact is chosen. Automatic keeps the words for a
+  // big player only (a watch page's), and is round over a small one and in a feed (`feed`), where
+  // the whole button covered too much of the post's picture.
+  function compactFor(mode, videoWidth, videoHeight, fullWidth, inset, feed) {
+    if (mode === "compact" || !fitsWords(videoWidth, fullWidth, inset)) return true;
+    if (mode === "full") return false;
+    return Boolean(feed) || videoWidth < 640 || videoHeight < 300;
+  }
+
+  // How much of it shows (#1735's feedback): "full", "faint" (there to find, over less of the
+  // picture) or "gone". Full while it is wanted (`held`: the pointer on it, its menu, a drag, the
+  // keyboard) and while the pointer moves over the video; faint IDLE_MS after it rests there, or
+  // LEAVE_MS after it left the video (on its way to a button outside the player too); gone
+  // FAINT_MS after that. `sinceMove`, `sinceOver`: ms since the pointer last moved, and was over
+  // the video.
+  function fadeState(held, over, sinceMove, sinceOver, idleMs, leaveMs, faintMs) {
+    if (held) return "full";
+    const since = over ? sinceMove - idleMs : sinceOver - leaveMs;
+    if (since < 0) return "full";
+    return since < faintMs ? "faint" : "gone";
+  }
+
+  // ---- the menu's filters (#1735): plain functions, run as they are by tools/extension/test.mjs.
+  // A filter is { kind: "all" | "video" | "audio", type: a file type ("MP4", "" for any), codec: a
+  // picture's codec ("AV1", "" for any) }, kept per site.
+  function cleanFilter(f) {
+    const o = f && typeof f === "object" ? f : {};
+    const word = (x, max) => (typeof x === "string" && x.length <= max && /^[\w.+ -]*$/.test(x) ? x : "");
+    return {
+      kind: ["video", "audio"].includes(o.kind) ? o.kind : "all",
+      type: word(o.type, 10).toUpperCase(),
+      codec: word(o.codec, 24),
+    };
+  }
+  // A quality's file type and codec as the filters name them ("" when not said).
+  function typeOf(c) {
+    return typeof c.ext === "string" ? c.ext.trim().slice(0, 10).toUpperCase() : "";
+  }
+  function codecOf(c) {
+    return c.audio !== true && typeof c.codec === "string" ? c.codec.trim().slice(0, 24) : "";
+  }
+  // What the filters offer for a look-up's qualities (`choices`) with `kind` chosen: the kinds
+  // when it has both (with the picture, the sound only); the file types and the codecs that
+  // kind's qualities come in, where they differ (none when every one is an MP4, or no codec is
+  // said); the codecs only for pictures (a list with sound only lines has none).
+  function filterOptions(choices, kind) {
+    const list = (Array.isArray(choices) ? choices : []).filter((c) => c && typeof c === "object");
+    const audio = list.filter((c) => c.audio === true).length;
+    const kinds = audio && audio < list.length ? ["all", "video", "audio"] : [];
+    const k = kinds.includes(kind) ? kind : "all";
+    const shown = list.filter((c) => k === "all" || (k === "audio") === (c.audio === true));
+    const each = (get) => [...new Set(shown.map(get).filter(Boolean))];
+    const types = each(typeOf);
+    const codecs = shown.every((c) => c.audio !== true) ? each(codecOf) : [];
+    return { kinds, types: types.length > 1 ? types : [], codecs: codecs.length > 1 ? codecs : [] };
+  }
+  // The qualities a filter keeps: their places in the app's list (what a pick sends), and the
+  // filter as it applies here. A part of it that none of these qualities offers (kept for the site
+  // from another video) applies as "any": a filter never empties the list.
+  function filterChoices(choices, filter) {
+    const list = Array.isArray(choices) ? choices : [];
+    const f = cleanFilter(filter);
+    const kind = filterOptions(list, f.kind).kinds.includes(f.kind) ? f.kind : "all";
+    const opts = filterOptions(list, kind);
+    const type = opts.types.includes(f.type) ? f.type : "";
+    const codec = opts.codecs.includes(f.codec) ? f.codec : "";
+    const keep = [];
+    list.forEach((c, i) => {
+      if (!c || typeof c !== "object") return;
+      if (kind !== "all" && (kind === "audio") !== (c.audio === true)) return;
+      if ((type && typeOf(c) !== type) || (codec && codecOf(c) !== codec)) return;
+      keep.push(i);
+    });
+    return { keep, kind, type, codec, ...opts };
   }
   // ---- the button's words: end.
 
@@ -928,9 +1042,13 @@
   let asking = null;
   let never = false;
   let placed = false;
-  // Options → Download panels → Button size is Compact (#1278): the round button over every video.
-  // It comes with the app's answer, so a change in Options reaches a page already open with it.
-  let compactAlways = false;
+  // Options → Download panels → Button size (#1278; sizeMode): Automatic, Full or Compact. It comes
+  // with the app's answer, so a change in Options reaches a page already open with it.
+  let size = "auto";
+  // A right-to-left language mirrors the button's corners as it mirrors its words: its own
+  // corner is the top's end (the top left), and the others follow from there.
+  const rtl = (ext.i18n.getMessage("@@bidi_dir") || "ltr") === "rtl";
+  const HOME = { x: rtl ? 0 : 1, y: 0 };
   // Hidden while the page is fullscreen, when chosen in the popup (off: it shows, as now).
   let hideFullscreen = false;
   try {
@@ -946,14 +1064,32 @@
           else show(video);
         }
       }
+      // The popup's "Reset the video button" (or another tab's move): this site's spot and filter
+      // as they are kept now.
+      if (area === "local" && changes.positions) {
+        const kept = changes.positions.newValue && changes.positions.newValue[host];
+        place = kept ? snap(kept) : HOME;
+        chosen = Boolean(kept);
+        auto = { v: null, at: null, t: 0 };
+        pinned = null;
+        if (video) position();
+      }
+      if (area === "local" && changes.videoFilters) {
+        filter = cleanFilter(changes.videoFilters.newValue && changes.videoFilters.newValue[host]);
+        if (menuOpen) fillMenu();
+      }
     });
   } catch {
     // Without storage: shown, as now.
   }
   const ASK_MS = 5000;
   const answered = () => allowed !== null && Date.now() - askedAt < ASK_MS;
-  let place = { x: 1, y: 0 }; // where on the edge: fractions of the room, top right by default
+  let place = HOME; // where on the edge: fractions of the room (spotAt), the top's end by default
   let chosen = false; // the user put it where it is (dragged it, on this site): theirs, never moved for a page's control
+  // The menu's filter on this site (#1735; cleanFilter's).
+  let filter = cleanFilter(null);
+  // When the pointer was last over the video (fadeState).
+  let lastOver = 0;
   let auto = { v: null, at: null, t: 0 }; // the spot found for this video, kept for a moment
   const AUTO_MS = 400;
   // Where it is on the screen, while the pointer is on it (#560): { v, left, top, w, end }.
@@ -1027,6 +1163,10 @@
   user-select: none; -webkit-user-select: none; touch-action: none;
 }
 .pill.shown { opacity: 1; transform: none; }
+/* Faint (fadeState): still there to find, over less of the picture; whole again under the
+   pointer or the keyboard at once. */
+.pill.shown.faint { opacity: .3; transition-duration: .4s; }
+.pill.shown.faint:hover, .pill.shown.faint:focus-within { opacity: 1; transition-duration: .1s; }
 button {
   /* all: unset resets box-sizing too, past the rule above: without it a menu item's 100 % width
      plus its padding ran past the menu's edge (#81). */
@@ -1132,6 +1272,7 @@ button:focus-visible { outline: none; }
 .rows { max-height: min(300px, 45vh); overflow: auto; overscroll-behavior: contain; }
 .menu button { position: relative; display: flex; width: 100%; height: 28px; gap: 8px; padding-inline: 8px; border-radius: 4px; cursor: default; }
 .menu button:hover { background: var(--hov); }
+.menu button[hidden] { display: none; }
 .menu button.sel { background: var(--hov); }
 .menu button.sel::before { content: ""; position: absolute; inset-inline-start: 0; top: 6px; bottom: 6px; width: 3px; border-radius: 2px; background: var(--go); }
 .menu .n { width: 14px; color: var(--tx2); font-size: 11px; text-align: end; flex: none; }
@@ -1146,6 +1287,16 @@ button:focus-visible { outline: none; }
 .menu .mi svg { width: 13px; height: 13px; }
 .menu .top .mi { color: var(--go); }
 .menu .top .mi svg { width: 14px; height: 14px; }
+/* #1735: the filters, a row of chips per kind of choice (what it lists, its file type, its codec). */
+.filters { display: flex; flex-direction: column; gap: 4px; padding: 2px 6px 6px; }
+.filters[hidden] { display: none; }
+.fg { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.fg .fl { font: 600 10.5px/1 var(--font); color: var(--tx2); margin-inline-end: 2px; min-width: 0; }
+.menu .fc { width: auto; height: 22px; padding-inline: 8px; gap: 4px; border: 1px solid var(--bd); border-radius: 11px;
+  font: 600 11px/1 var(--font); color: var(--tx2); background: var(--bg); cursor: pointer; }
+.menu .fc:hover { background: var(--hov); color: var(--tx); }
+.menu .fc[aria-checked="true"] { border-color: var(--go); background: var(--hov); color: var(--tx); }
+.menu .fc:focus-visible { box-shadow: 0 0 0 1px var(--tx) inset; }
 .menu .skrow { height: 24px; margin: 2px 8px; border-radius: 4px; background-size: 200% 100%;
   background-image: linear-gradient(90deg, var(--hov), rgba(127, 127, 127, .12), var(--hov));
   animation: shimmer 1.4s linear infinite; }
@@ -1198,12 +1349,14 @@ button:focus-visible { outline: none; }
 <div class="menu" role="menu" tabindex="-1">
   <div class="mh"><img alt="" draggable="false"><div><span class="t"></span><span class="s"></span></div></div>
   <div class="hr"></div>
+  <div class="filters" hidden></div>
   <div class="note" role="status" hidden></div>
   <div class="rows" role="group"></div>
   <div class="hr"></div>
   <button role="menuitem" data-act="window"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><path d="M2.5 4h11M2.5 8h11M2.5 12h7"/></svg></span><span></span></button>
   <button role="menuitem" data-act="part"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><path d="M3.5 2.5v11M12.5 2.5v11M3.5 8h9M6 6l-2.5 2L6 10M10 6l2.5 2L10 10"/></svg></span><span></span></button>
   <div class="hr"></div>
+  <button role="menuitem" data-act="home" hidden><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M9 5.5h1.5v1.5"/></svg></span><span></span></button>
   <button role="menuitem" data-act="hide"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><circle cx="8" cy="8" r="5.5"/><path d="M4.2 11.8l7.6-7.6"/></svg></span><span></span><span class="k">Esc</span></button>
   <button role="menuitem" data-act="never"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><circle cx="8" cy="8" r="5.5"/><path d="M2.5 8h11M8 2.5c2 2 2 9 0 11M8 2.5c-2 2-2 9 0 11"/></svg></span><span></span></button>
   <button role="menuitem" data-act="settings"><span class="mi"><svg viewBox="0 0 16 16" ${ICON} stroke-width="1.4"><circle cx="8" cy="8" r="2"/><path d="M8 1.8v2M8 12.2v2M1.8 8h2M12.2 8h2M3.6 3.6l1.4 1.4M11 11l1.4 1.4M3.6 12.4 5 11M11 5l1.4-1.4"/></svg></span><span></span></button>
@@ -1222,6 +1375,7 @@ button:focus-visible { outline: none; }
   const menu = $(".menu");
   const note = $(".note");
   const rows = $(".rows");
+  const filters = $(".filters");
   const item = (act) => menu.querySelector(`[data-act="${act}"]`);
   const dir = ext.i18n.getMessage("@@bidi_dir") || "ltr";
   for (const el of [pill, menu, tip]) el.dir = dir;
@@ -1235,6 +1389,7 @@ button:focus-visible { outline: none; }
   menu.setAttribute("aria-label", idleLabel);
   item("window").lastElementChild.textContent = t("video_all_qualities");
   item("part").lastElementChild.textContent = t("video_part");
+  item("home").lastElementChild.textContent = t("video_home");
   item("hide").children[1].textContent = t("video_hide_here");
   item("never").lastElementChild.textContent = ext.i18n.getMessage("video_never_site", [host]) || `Never on ${host}`;
   item("settings").lastElementChild.textContent = t("video_settings");
@@ -1292,6 +1447,14 @@ button:focus-visible { outline: none; }
       current = { v, d, key: lookKey(d), t: Date.now() };
     }
     return current;
+  }
+  // Whether a video is a feed's (feedVideo), kept a moment: position() asks it every frame.
+  let feedSeen = { v: null, href: "", feed: false, t: 0 };
+  function isFeed(v) {
+    if (feedSeen.v !== v || feedSeen.href !== location.href || Date.now() - feedSeen.t > 2000) {
+      feedSeen = { v, href: location.href, feed: feedVideo(v), t: Date.now() };
+    }
+    return feedSeen.feed;
   }
   // The look-up for what the button over `c.v` sends: its plain file's own (none asked), the
   // one asked, or null.
@@ -1649,7 +1812,8 @@ button:focus-visible { outline: none; }
   // hover-to-play preview (YouTube's thumbnails, #560) shows its sound and captions buttons while
   // the pointer is over the video and hides them as the pointer reaches the button, so going back
   // when they hide, then away again when they show, kept the button jumping from under the pointer.
-  const CORNERS = [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }];
+  // From its own corner (HOME, the top's end) on around the others, mirrored for right to left.
+  const CORNERS = rtl ? [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }] : [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }];
   function spot(r, w, h, roomX, roomY) {
     if (chosen) return place;
     // Still while its menu is open: the player's own controls come and go as the pointer moves
@@ -1673,12 +1837,15 @@ button:focus-visible { outline: none; }
     return at;
   }
 
+  // The window's size: where a spot outside the player must fit.
+  const view = () => ({ width: innerWidth, height: innerHeight });
+
   function position() {
     if (!video) return;
-    // A small video, one its words wouldn't fit, or Compact chosen in Options: the round button
-    // and its menu only.
+    // A small video, one its words wouldn't fit, a feed's (Automatic), or Compact chosen in
+    // Options: the round button and its menu only.
     const vr = held ? held.r : video.getBoundingClientRect();
-    pill.classList.toggle("compact", compactFor(compactAlways, vr.width, fullWidth, INSET));
+    pill.classList.toggle("compact", compactFor(size, vr.width, vr.height, fullWidth, INSET, isFeed(video)));
     const { r, w, roomX, roomY } = rects();
     // The pointer on it (or its menu open): it stays where it is, whatever the video does
     // meanwhile. A preview that grows while the pointer is over it and shrinks back when the
@@ -1699,16 +1866,21 @@ button:focus-visible { outline: none; }
     // shows there now.
     const h = pill.offsetHeight || 30;
     const at = dragging ? dragging.at : held && !chosen ? held.at : spot(r, w, h, roomX, roomY);
-    const left = r.left + INSET + at.x * roomX;
-    // In the part of the video on screen: one scrolled half out keeps its button in view.
+    const p = spotAt(r, w, h, at, INSET, GAP, view());
+    const left = p.left;
+    // Over the part of the video on screen: one scrolled half out keeps its button in view.
+    // Outside the player it is where it fits (spotAt).
     const visTop = Math.max(r.top, 0) + INSET;
     const visBottom = Math.min(r.bottom, innerHeight) - INSET - h;
-    const top = Math.min(Math.max(r.top + INSET + at.y * roomY, visTop), Math.max(visTop, visBottom));
+    const top = p.out ? p.top : Math.min(Math.max(p.top, visTop), Math.max(visTop, visBottom));
     root.style.setProperty("transform", `translate(${Math.round(left)}px, ${Math.round(top)}px)`, "important");
-    pinned = { v: video, left, top, w, end: at.x > 0.5 };
+    // Its end against the edge it was put at: the right one, or (outside, at the player's left)
+    // its own end.
+    const edge = edgeOf(at);
+    pinned = { v: video, left, top, w, end: p.out && (edge === "left" || edge === "right") ? edge === "left" : at.x > 0.5 };
     if (menuOpen) placeMenu(top, left, w);
     placeTip(left, w);
-    if (dragging && dragging.moved) drawGuide(r, w, h, roomX, roomY, left, top);
+    if (dragging && dragging.moved) drawGuide(r, w, h, left, top);
   }
 
   // Which of its sides is nearer the video's middle: its menu and its tip line up with that one.
@@ -1729,47 +1901,107 @@ button:focus-visible { outline: none; }
     if (tip.classList.contains("on")) tip.style.left = towardEnd(left, w) ? `${w - tip.offsetWidth}px` : "0";
   }
 
-  // While dragging: the edge it slides along (through the button's middle, from one end of the
-  // video's edge to the other) and the spots it snaps to on it (its ends and its middle), from
-  // the video's rectangle `r`, in the button's own coordinates (it sits at `left`, `top`).
-  function drawGuide(r, w, h, roomX, roomY, left, top) {
+  // While dragging: the track it slides along on its edge (over the player or outside it, through
+  // the button's middle from one end of the edge to the other) and the spots it snaps to on it
+  // (its ends and its middle), in the button's own coordinates (it sits at `left`, `top`).
+  function drawGuide(r, w, h, left, top) {
+    // On the edge it snaps to (over the player, a free spot is between them).
     const edge = edgeOf(dragging.at);
+    const at = { ...dragging.at, ...(edge === "left" || edge === "right" ? { x: edge === "left" ? 0 : 1 } : { y: edge === "top" ? 0 : 1 }) };
     const across = edge === "top" || edge === "bottom";
-    const x0 = r.left + INSET - left;
-    const y0 = r.top + INSET - top;
-    const at = across ? y0 + h / 2 + (edge === "bottom" ? roomY : 0) : x0 + w / 2 + (edge === "right" ? roomX : 0);
-    const len = across ? r.width - 2 * INSET : r.height - 2 * INSET;
+    const anywhere = { width: Infinity, height: Infinity };
+    const mid = (f) => {
+      const p = spotAt(r, w, h, { ...at, ...(across ? { x: f } : { y: f }) }, INSET, GAP, anywhere);
+      return { x: p.left + w / 2 - left, y: p.top + h / 2 - top };
+    };
+    const [a, b] = [mid(0), mid(1)];
     const line = document.createElement("i");
     line.className = `line ${across ? "h" : "v"}`;
     Object.assign(line.style, across
-      ? { left: `${x0}px`, top: `${at - 1}px`, width: `${len}px` }
-      : { left: `${at - 1}px`, top: `${y0}px`, height: `${len}px` });
+      ? { left: `${a.x}px`, top: `${a.y - 1}px`, width: `${b.x - a.x}px` }
+      : { left: `${a.x - 1}px`, top: `${a.y}px`, height: `${b.y - a.y}px` });
     const spots = [0, 0.5, 1].map((f) => {
       const s = document.createElement("i");
       s.className = "snap";
-      Object.assign(s.style, across ? { left: `${x0 + f * len}px`, top: `${at}px` } : { left: `${at}px`, top: `${y0 + f * len}px` });
+      const m = mid(f);
+      Object.assign(s.style, { left: `${m.x}px`, top: `${m.y}px` });
       return s;
     });
     guide.replaceChildren(line, ...spots);
     guide.classList.add("on");
   }
 
-  // The edge nearest a free spot (fractions).
+  // ---- where it sits: plain functions, run as they are by tools/extension/test.mjs. A spot (`at`)
+  // is where on the video's edge: x and y from 0 to 1 of the room the video leaves around the
+  // button, one of them 0 or 1 (the edge it is on). Outside the player (#1735: a site that covers
+  // its player, or draws over where the button would be): `out`, against its `side`.
+
+  // The edge a spot is on (its side outside the player), else the nearest one.
   function edgeOf(at) {
+    if (at && at.out && ["top", "bottom", "left", "right"].includes(at.side)) return at.side;
     const d = { left: at.x, right: 1 - at.x, top: at.y, bottom: 1 - at.y };
     return Object.keys(d).reduce((a, b) => (d[a] <= d[b] ? a : b));
   }
 
-  // Snap a free spot (fractions, after a drag) to the nearest edge: into a corner, or the edge's
-  // middle, when close to one; else where it was dropped along it.
+  // Snap a free spot (after a drag, or as kept for the site) to its edge: into a corner, or the
+  // edge's middle, when close to one; else where it was dropped along it. Outside the player,
+  // along its side. Anything else kept (a value that isn't a number) counts as 0.
   function snap(at) {
-    const edge = edgeOf(at);
-    const c = (n) => (n < 0.08 ? 0 : n > 0.92 ? 1 : Math.abs(n - 0.5) < 0.06 ? 0.5 : n);
-    if (edge === "left") return { x: 0, y: c(at.y) };
-    if (edge === "right") return { x: 1, y: c(at.y) };
-    if (edge === "top") return { x: c(at.x), y: 0 };
-    return { x: c(at.x), y: 1 };
+    const n = (v) => Math.min(1, Math.max(0, Number.isFinite(Number(v)) ? Number(v) : 0));
+    const free = { x: n(at && at.x), y: n(at && at.y), out: Boolean(at && at.out), side: at && at.side };
+    const edge = edgeOf(free);
+    const c = (v) => (v < 0.08 ? 0 : v > 0.92 ? 1 : Math.abs(v - 0.5) < 0.06 ? 0.5 : v);
+    const out = free.out && edge === free.side ? { out: true, side: edge } : {};
+    if (edge === "left") return { x: 0, y: c(free.y), ...out };
+    if (edge === "right") return { x: 1, y: c(free.y), ...out };
+    if (edge === "top") return { x: c(free.x), y: 0, ...out };
+    return { x: c(free.x), y: 1, ...out };
   }
+
+  // Where the button's corner goes for a spot, over the video's rectangle `r` (the button `w` by
+  // `h`): `inset` inside its edges, or outside it, `gap` from its side. Outside only where it fits
+  // in the window (`view`): a player as wide as the window, at its top or in full screen keeps it
+  // inside, on that edge. `out`: it is outside.
+  function spotAt(r, w, h, at, inset, gap, view) {
+    if (at.out) {
+      const side = edgeOf(at);
+      const alongX = r.left + at.x * Math.max(0, r.width - w);
+      const alongY = r.top + at.y * Math.max(0, r.height - h);
+      const p =
+        side === "top" ? { left: alongX, top: r.top - gap - h }
+          : side === "bottom" ? { left: alongX, top: r.bottom + gap }
+            : side === "left" ? { left: r.left - gap - w, top: alongY }
+              : { left: r.right + gap, top: alongY };
+      if (p.left >= 0 && p.top >= 0 && p.left + w <= view.width && p.top + h <= view.height) return { ...p, out: true };
+    }
+    const roomX = Math.max(0, r.width - w - 2 * inset);
+    const roomY = Math.max(0, r.height - h - 2 * inset);
+    return { left: r.left + inset + at.x * roomX, top: r.top + inset + at.y * roomY, out: false };
+  }
+
+  // The spot a drag has the button at (its corner at `left`, `top`): over the player while its
+  // middle is, free (snap puts it on an edge when dropped); else outside it (#1735), on the side
+  // it went furthest past for its size (a wide button dragged above a corner goes above it, not
+  // beside it).
+  function dragAt(r, w, h, left, top, inset) {
+    const f = (v) => Math.min(1, Math.max(0, v));
+    const cx = left + w / 2;
+    const cy = top + h / 2;
+    const past = { top: (r.top - cy) / h, bottom: (cy - r.bottom) / h, left: (r.left - cx) / w, right: (cx - r.right) / w };
+    const side = Object.keys(past).reduce((a, b) => (past[a] >= past[b] ? a : b));
+    if (past[side] > 0) {
+      const x = f((left - r.left) / Math.max(1, r.width - w));
+      const y = f((top - r.top) / Math.max(1, r.height - h));
+      if (side === "top") return { x, y: 0, out: true, side };
+      if (side === "bottom") return { x, y: 1, out: true, side };
+      if (side === "left") return { x: 0, y, out: true, side };
+      return { x: 1, y, out: true, side };
+    }
+    const roomX = Math.max(0, r.width - w - 2 * inset);
+    const roomY = Math.max(0, r.height - h - 2 * inset);
+    return { x: roomX ? f((left - r.left - inset) / roomX) : 0, y: roomY ? f((top - r.top - inset) / roomY) : 0 };
+  }
+  // ---- where it sits: end.
 
   // ---- showing and hiding ---------------------------------------------------------------------
   function attach() {
@@ -1796,6 +2028,9 @@ button:focus-visible { outline: none; }
     }
     if (hideFullscreen && document.fullscreenElement) return hide(true);
     if (!attach()) return hide(true);
+    lastOver = Date.now();
+    pill.classList.remove("faint");
+    clearTimeout(hideTimer);
     root.style.setProperty("display", "block", "important");
     const c = describeNow(v);
     if (!PRIVATE && !usable(looks.get(c.key))) scheduleLook(v);
@@ -1825,10 +2060,15 @@ button:focus-visible { outline: none; }
     cancelAnimationFrame(raf);
     raf = 0;
     const was = video;
-    setTimeout(() => {
+    // Out of the layout once faded, unless it was shown again meanwhile: a show between this
+    // and its frame (the pointer's move landing just after a fullscreen change hid it) adds
+    // "shown" only in its next frame, and this would have taken it away under the pointer.
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
       if (!pill.classList.contains("shown") && video === was) root.style.setProperty("display", "none", "important");
     }, now || reduced ? 0 : 140);
   }
+  let hideTimer = 0;
 
   // What the button sends for `v` (its rectangle `r`): see `download`.
   function describe(v, r) {
@@ -1856,8 +2096,8 @@ button:focus-visible { outline: none; }
     return { r: lastRect, at: chosen ? place : (auto.v === video && auto.at) || place, d, since: now };
   }
 
-  // While shown: follow the video (scrolling, layout) and fade when the pointer rests (IDLE_MS)
-  // or at once when it leaves the video.
+  // While shown: follow the video (scrolling, layout); faint when the pointer rests (IDLE_MS) or
+  // left the video (LEAVE_MS), and gone FAINT_MS later (fadeState).
   function tick() {
     raf = 0;
     if (!video) return hide(true);
@@ -1883,9 +2123,18 @@ button:focus-visible { outline: none; }
     const r = video.getBoundingClientRect();
     const over =
       pointer.x >= r.left && pointer.x <= r.right && pointer.y >= r.top && pointer.y <= r.bottom;
-    if (!onButton && !menuOpen && !dragging && !keyboardOn() && (!over || Date.now() - lastMove > IDLE_MS)) {
-      return hide();
+    const now = Date.now();
+    if (over) lastOver = now;
+    const wanted = onButton || menuOpen || Boolean(dragging) || keyboardOn();
+    // Off the video (and not on the button): its early look-up waits no more, as when it went at
+    // once (a pass over a preview asks nothing, #1053); the click and the menu still ask.
+    if (!over && !wanted && lookingFor) {
+      clearTimeout(lookTimer);
+      lookingFor = null;
     }
+    const fade = fadeState(wanted, over, now - lastMove, now - lastOver, IDLE_MS, LEAVE_MS, FAINT_MS);
+    if (fade === "gone") return hide();
+    pill.classList.toggle("faint", fade === "faint");
     position();
     raf = requestAnimationFrame(tick);
   }
@@ -1903,6 +2152,9 @@ button:focus-visible { outline: none; }
   function look() {
     scan = 0;
     if (dragging || never || (allowed === false && answered())) return;
+    // On the button: it stays with its video, though it may sit over another one (outside its
+    // player, #1735, over the next post of a feed).
+    if (video && root.matches(":hover")) return;
     // Kept on its video while its menu is open (pointerTarget).
     const v = pointerTarget(videoAt(pointer.x, pointer.y), video, menuOpen);
     if (!v) return;
@@ -1920,9 +2172,9 @@ button:focus-visible { outline: none; }
     asking = asking || send({ type: "panel" }).then(async (r) => {
       allowed = !never && Boolean(r && r.on);
       askedAt = Date.now();
-      const wasCompact = compactAlways;
-      compactAlways = Boolean(r && r.compact);
-      if (allowed && compactAlways !== wasCompact && video) position();
+      const was = size;
+      size = sizeMode(r);
+      if (allowed && size !== was && video) position();
       // Switched off meanwhile: gone now, unless the menu, a drag or its "Turn on" has it in hand.
       if (!allowed && video && !menuOpen && !dragging && !(status && status.state === "off")) {
         video = null;
@@ -1931,11 +2183,12 @@ button:focus-visible { outline: none; }
       if (allowed && !placed) {
         placed = true;
         try {
-          const { positions } = await ext.storage.local.get({ positions: {} });
-          if (positions[host]) {
+          const { positions, videoFilters } = await ext.storage.local.get({ positions: {}, videoFilters: {} });
+          if (positions && positions[host]) {
             place = snap(positions[host]);
             chosen = true;
           }
+          filter = cleanFilter(videoFilters && videoFilters[host]);
         } catch {
           // Default spot.
         }
@@ -2134,6 +2387,8 @@ button:focus-visible { outline: none; }
     $(".mh .t").textContent = String((look && look.title) || document.title || "").slice(0, 200);
     $(".mh .s").textContent = headerLine("", video && video.duration, site);
     rows.replaceChildren();
+    filters.replaceChildren();
+    filters.hidden = true;
     note.hidden = true;
     note.classList.remove("warn");
     note.replaceChildren();
@@ -2151,17 +2406,25 @@ button:focus-visible { outline: none; }
         rows.append(s);
       }
     } else if (look && look.state === "ready" && Array.isArray(look.choices) && look.choices.length) {
-      const groups = groupChoices(look.choices, 100);
-      rows.append(topRow(best, { choice: look.choices.indexOf(best) }));
+      const choices = look.choices.slice(0, 100);
+      // The site's filter (#1735): its chips, and only the qualities it keeps; "Download best" the
+      // best of those.
+      const kept = filterChoices(choices, filter);
+      fillFilters(kept);
+      const keep = new Set(kept.keep);
+      const top = bestOf({ state: "ready", choices: kept.keep.map((i) => choices[i]) }) || best;
+      const groups = groupChoices(choices, 100);
+      rows.append(topRow(top, { choice: choices.indexOf(top) }));
       let n = 0;
       for (const [kind, words] of [["video", "video_tab_video"], ["audio", "video_tab_audio"]]) {
-        if (!groups[kind].length) continue;
+        const shown = groups[kind].filter((i) => keep.has(i));
+        if (!shown.length) continue;
         const cap = document.createElement("div");
         cap.className = "cap";
         cap.dataset.kind = kind;
         cap.textContent = t(words);
         rows.append(cap);
-        for (const i of groups[kind]) rows.append(row(look.choices[i], i, (n += 1), look.choices[i] === best));
+        for (const i of shown) rows.append(row(choices[i], i, (n += 1), choices[i] === top));
       }
       tell(noticeOf(look));
     } else if (look) {
@@ -2171,6 +2434,52 @@ button:focus-visible { outline: none; }
       tell(noticeOf(look));
     }
     if (menuOpen) position();
+  }
+
+  // The filters' chips (#1735) for what filterChoices made of this video's qualities (`f`): what it
+  // lists (when it has both kinds), its file types and its codecs (where they differ), each row
+  // one part of the site's filter. Words as text only.
+  function fillFilters(f) {
+    const group = (dim, label, values, named) => {
+      if (!values.length) return null;
+      const g = document.createElement("div");
+      g.className = "fg";
+      g.setAttribute("role", "group");
+      g.setAttribute("aria-label", label);
+      if (named) g.append(span("fl", label));
+      for (const [value, words] of values) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "fc";
+        b.setAttribute("role", "menuitemradio");
+        b.setAttribute("aria-checked", String(f[dim] === value));
+        b.dataset.filter = dim;
+        b.dataset.value = value;
+        b.textContent = words;
+        g.append(b);
+      }
+      return g;
+    };
+    const any = (list) => (list.length ? [["", t("video_filter_all")], ...list.map((x) => [x, x])] : []);
+    const words = { all: "video_filter_all", video: "video_tab_video", audio: "video_filter_audio" };
+    const made = [
+      group("kind", t("video_filter_kind"), f.kinds.map((k) => [k, t(words[k])]), false),
+      group("type", t("video_filter_type"), any(f.types), true),
+      group("codec", t("video_filter_codec"), any(f.codecs), true),
+    ].filter(Boolean);
+    filters.replaceChildren(...made);
+    filters.hidden = !made.length;
+  }
+
+  // A filter's chip chosen: kept for the site (forgotten when it lists everything), the list
+  // filled again, the keyboard on the same chip. Another kind starts with any type and codec.
+  function setFilter(dim, value) {
+    filter = cleanFilter({ ...filter, ...(dim === "kind" ? { type: "", codec: "" } : {}), [dim]: value });
+    const all = !filter.type && !filter.codec && filter.kind === "all";
+    remember("videoFilters", all ? null : filter);
+    fillMenu();
+    const same = [...filters.querySelectorAll(".fc")].find((b) => b.dataset.filter === dim && b.dataset.value === String(value));
+    focusItem(same || rows.querySelector("button.sel") || menuItems()[0]);
   }
 
   // The menu's message (plain text), with the app's own words under it.
@@ -2262,7 +2571,7 @@ button:focus-visible { outline: none; }
   }
 
   // The menu's items the arrows go through.
-  const menuItems = () => [...menu.querySelectorAll("button")];
+  const menuItems = () => [...menu.querySelectorAll("button")].filter((b) => !b.hidden);
   function focusItem(b) {
     if (!b) return;
     b.focus();
@@ -2277,6 +2586,8 @@ button:focus-visible { outline: none; }
     // was too busy for it before.
     if (video) startLook(describeNow(video), true);
     menuOpen = true;
+    // Back to its corner, once it was moved on this site.
+    item("home").hidden = !chosen;
     fillMenu();
     menu.classList.add("open");
     more.setAttribute("aria-expanded", "true");
@@ -2299,6 +2610,7 @@ button:focus-visible { outline: none; }
   // An item of the menu, clicked or by key.
   function runItem(b) {
     if (!b) return;
+    if (b.dataset.filter !== undefined) return setFilter(b.dataset.filter, b.dataset.value || "");
     if (b.dataset.choice !== undefined) return download({ choice: Number(b.dataset.choice) });
     if (b.dataset.row !== undefined) return download();
     run(b.dataset.act);
@@ -2315,6 +2627,15 @@ button:focus-visible { outline: none; }
     if (act === "part") return download(null, true, partFrom(video));
     closeMenu();
     if (act === "hide") return hideHere();
+    if (act === "home") {
+      place = HOME;
+      chosen = false;
+      auto = { v: null, at: null, t: 0 };
+      pinned = null;
+      remember("positions", null);
+      lastMove = Date.now();
+      return position();
+    }
     if (act === "never") {
       never = true;
       allowed = false;
@@ -2349,6 +2670,9 @@ button:focus-visible { outline: none; }
   // The pointer reached the button: what the video plays now, kept in case the page stops it for
   // that (a hover-to-play preview, #503).
   root.addEventListener("pointerenter", () => {
+    // Reached as it was fading out (gone a moment later): whole again, not taken away from under
+    // the pointer with its menu about to open.
+    if (video && !pill.classList.contains("shown")) show(video);
     if (video && !held && video.isConnected && eligible(video)) {
       entered = { v: video, d: describe(video, video.getBoundingClientRect()), t: Date.now() };
     }
@@ -2393,14 +2717,15 @@ button:focus-visible { outline: none; }
   go.addEventListener("pointerdown", (e) => {
     if (e.button !== 0 || !video || !e.isTrusted) return;
     tipOff();
-    const { r, roomX, roomY } = rects();
+    // Where in the button it was taken (wherever it is: over the player, outside it, or moved up
+    // into the part of the video on screen).
+    const box = pill.getBoundingClientRect();
     dragging = {
       id: e.pointerId,
       startX: e.clientX,
       startY: e.clientY,
-      // Where in the button it was taken.
-      dx: e.clientX - (r.left + INSET + (chosen ? place : auto.at || place).x * roomX),
-      dy: e.clientY - (r.top + INSET + (chosen ? place : auto.at || place).y * roomY),
+      dx: e.clientX - box.left,
+      dy: e.clientY - box.top,
       at: chosen ? place : auto.at || place,
       moved: false,
     };
@@ -2415,12 +2740,8 @@ button:focus-visible { outline: none; }
       closeMenu();
       pill.classList.add("dragging");
     }
-    const { r, roomX, roomY } = rects();
-    const c = (n) => Math.min(1, Math.max(0, n));
-    dragging.at = {
-      x: roomX ? c((e.clientX - dragging.dx - r.left - INSET) / roomX) : 0,
-      y: roomY ? c((e.clientY - dragging.dy - r.top - INSET) / roomY) : 0,
-    };
+    const { r, w, h } = rects();
+    dragging.at = dragAt(r, w, h, e.clientX - dragging.dx, e.clientY - dragging.dy, INSET);
     position();
   });
   const endDrag = (e) => {
@@ -2441,24 +2762,30 @@ button:focus-visible { outline: none; }
     pinned = null;
     position();
     lastMove = Date.now();
-    // Remembered per site, not in a private window (it would keep the site's name), and the
-    // 200 sites used last only.
-    if (ext.extension?.inIncognitoContext) return;
+    remember("positions", place);
+  };
+
+  // Kept for this site in the add-on's own storage (its spot, its menu's filter), the 200 sites
+  // used last only; `value` null forgets the site. Not in a private window: it would keep the
+  // site's name.
+  function remember(key, value) {
+    if (PRIVATE) return;
     try {
       ext.storage.local
-        .get({ positions: {} })
-        .then(({ positions }) => {
-          delete positions[host];
-          positions[host] = place;
-          const sites = Object.keys(positions);
-          for (const s of sites.slice(0, Math.max(0, sites.length - 200))) delete positions[s];
-          return ext.storage.local.set({ positions });
+        .get({ [key]: {} })
+        .then((got) => {
+          const all = got[key] && typeof got[key] === "object" ? got[key] : {};
+          delete all[host];
+          if (value !== null) all[host] = value;
+          const sites = Object.keys(all);
+          for (const s of sites.slice(0, Math.max(0, sites.length - 200))) delete all[s];
+          return ext.storage.local.set({ [key]: all });
         })
         .catch(() => {});
     } catch {
       teardown();
     }
-  };
+  }
   go.addEventListener("pointerup", endDrag);
   go.addEventListener("pointercancel", endDrag);
   // Keyboard: Enter / Space (a real button's click without a pointer).

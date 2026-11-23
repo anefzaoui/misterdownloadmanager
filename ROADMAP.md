@@ -573,6 +573,12 @@ These ship in the next version.
   step from the one before and comes to the front, its title numbered from the second on; up to
   six, more links waiting their turn
   ([#1741](https://github.com/anefzaoui/misterdownloadmanager/issues/1741))
+- ✅ The browser add-on's Download video button out of the way: **Automatic** size, the new
+  default (round in a feed and over a small player, whole over a big one), faint as the pointer
+  rests or leaves before it goes, movable outside the player and kept for each site, with
+  **Put the button back in its corner** in its menu and **Reset** in the add-on's popup; its
+  menu filters what it lists (all, video, audio only; the file type or the codec where they
+  differ), kept for each site ([#1735](https://github.com/anefzaoui/misterdownloadmanager/issues/1735))
 - ✅ Tests: the browser add-on's real-browser tests no longer hang on a browser that stops
   answering: each command has a deadline, past which that browser is stopped and its test fails
   with the command's name; stopping a run (Ctrl+C) or an error in the test tool still cleans up
