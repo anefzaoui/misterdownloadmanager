@@ -377,6 +377,7 @@ impl eframe::App for ReportWindow {
         }
         // MDM's state is checked now and then (a frozen one may recover or be ended).
         ui.ctx().request_repaint_after(Duration::from_secs(1));
+        winui::name_window(ui, crate::i18n::t("Mister Download Manager crash report"));
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(winui::BG()))
             .show(ui, |ui| {

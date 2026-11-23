@@ -3339,6 +3339,53 @@ async fn a_name_only_the_redirected_answer_gives_is_the_files() {
     }
 }
 
+/// #1705: a download started under a name still to be numbered (`Destination::Free`) that was
+/// at that name already (killed before its caller kept the name) resumes its own state there.
+/// Another address's state at the name is someone else's: the name is numbered past it.
+#[tokio::test]
+async fn a_name_to_be_numbered_resumes_the_downloads_own_state() {
+    let s = server("rate=1M").await;
+    let (dir, state) = paused(&s, "/gen/8M/kill.bin?seed=1705").await;
+    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    let dest = saved.dest.clone();
+    s.set_faults(Faults::default());
+    s.clear_log();
+    let own = Request {
+        url: saved.url.clone(),
+        headers: Default::default(),
+        dest: Destination::Free(dest.clone()),
+    };
+    let dl = Download::start_or_resume_own(state.clone(), own, fast_opts(), None);
+    let out = dl.wait().await.expect("resumes");
+    assert_eq!(out.path, dest);
+    assert_eq!(std::fs::read(&dest).unwrap(), generated(1705, 8 << 20));
+    assert!(!state.exists() && !dir.path().join("kill (1).bin").exists());
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
+    for e in &log {
+        let again = on_disk(e.range.as_deref(), &saved);
+        assert!(again <= fast_opts().verify_overlap, "{:?}", e.range);
+    }
+
+    s.set_faults(Faults::parse("rate=1M").unwrap());
+    let (dir, state) = paused(&s, "/gen/8M/kill.bin?seed=1").await;
+    let saved = mdm_engine::state::ResumeState::load(&state).unwrap();
+    s.set_faults(Faults::default());
+    let other = Request {
+        url: s.url("/gen/1M/kill.bin?seed=2").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Free(saved.dest.clone()),
+    };
+    let dl = Download::start_or_resume_own(state.clone(), other, fast_opts(), None);
+    let out = dl.wait().await.expect("downloads under the next name");
+    assert_eq!(out.path, dir.path().join("kill (1).bin"));
+    assert_eq!(std::fs::read(&out.path).unwrap(), generated(2, 1 << 20));
+    let left = mdm_engine::state::ResumeState::load(&state).unwrap();
+    assert_eq!(left, saved, "the other download's state is as it was");
+}
+
 /// A file served from `--files` through `garble` (#1661): downloaded with `keep_state`, its
 /// last resume state handed back, and the download's server.
 async fn garbled_download(

@@ -720,6 +720,27 @@ fn item_claims(item: &Item, paths: &mut Vec<PathBuf>) {
     }
 }
 
+/// What is said when a download that was to replace the file `old` as it completed (a
+/// Redownload, #1698) couldn't, and was saved beside it as `new`: both names, both kept.
+fn not_replaced_text(old: &std::path::Path, new: &std::path::Path) -> String {
+    let name = |p: &std::path::Path| {
+        p.file_name().map_or_else(
+            || p.display().to_string(),
+            |n| n.to_string_lossy().into_owned(),
+        )
+    };
+    crate::i18n::fmt(
+        // i18n: a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+        crate::i18n::t(
+            "{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.",
+        ),
+        &[
+            ("file", &crate::i18n::isolate(&name(old))),
+            ("new", &crate::i18n::isolate(&name(new))),
+        ],
+    )
+}
+
 /// What is said when a download can't move, or stays while the others of a selection move.
 fn cant_move_notice() -> (&'static str, String) {
     (
@@ -4332,6 +4353,22 @@ impl App {
             && matches!(&item.state_here, Some((at, true)) if *at == item.dest);
         item.state_here = None;
         self.state_reads.forget(id);
+        // A name still to be numbered may be this row's own already (#1705), when no other row
+        // is at it: one running there, or whose name is settled (its file, its resume state).
+        let own_state = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .filter(|i| fresh && !i.name_from_url)
+            .filter(|i| {
+                let lower = |p: &std::path::Path| p.to_string_lossy().to_lowercase();
+                !self.items.iter().any(|o| {
+                    o.id != id
+                        && lower(&o.dest) == lower(&i.dest)
+                        && (o.live.is_some() || !o.number_at_start)
+                })
+            })
+            .map(|i| state_path(&i.dest));
         let Some(item) = self.item(id) else { return };
         let _guard = rt.enter();
         // A name nobody gave (the address's guess) is the server's to give: into the folder,
@@ -4351,7 +4388,13 @@ impl App {
         item.waits_for_address = false;
         let dl = if fresh {
             item.downloaded = 0;
-            Download::start_with(request, opts, kept)
+            match own_state {
+                // #1705: killed before the list was saved with the name its run took, it may
+                // be at this name already: the engine resumes its own state there, and numbers
+                // the name only past someone else's file.
+                Some(state) => Download::start_or_resume_own(state, request, opts, kept),
+                None => Download::start_with(request, opts, kept),
+            }
         } else {
             // Resume whenever there is something to resume, as the engine finds on its own task:
             // the window never waits for the disk (a folder on a network share that doesn't
@@ -8869,7 +8912,14 @@ impl App {
         let mut failed = Vec::new();
         let mut any_live = false;
         for i in &mut self.items {
-            if i.poll() {
+            let unnamed = i.number_at_start || i.name_from_url;
+            let ended = i.poll();
+            // #1705: the name its run took is saved with the list at once, not at the next
+            // half-minute's save: killed until then, the row would come back as never started.
+            if unnamed && !(i.number_at_start || i.name_from_url) {
+                self.dirty = true;
+            }
+            if ended {
                 self.dirty = true;
                 match i.status {
                     Status::Complete => {
@@ -8934,6 +8984,7 @@ impl App {
                 q.items.retain(|x| x != id);
             }
         }
+        self.tell_not_replaced(&finished);
         if self.extracts.poll(&mut self.items, ctx) {
             self.dirty = true;
         }
@@ -12185,12 +12236,13 @@ impl App {
     }
 
     /// Can this download be fetched again from the start? A file download that isn't running
-    /// (torrents re-check their data instead; a video's file is yt-dlp's to replace).
+    /// ([`Item::can_redownload`]: torrents re-check their data instead; a video's file is
+    /// yt-dlp's to replace, a gallery's files gallery-dl's).
     fn can_redownload(&self, id: u64) -> bool {
         self.items
             .iter()
             .find(|i| i.id == id)
-            .is_some_and(|i| i.live.is_none() && i.torrent.is_none() && i.video.is_none())
+            .is_some_and(Item::can_redownload)
     }
 
     /// Download again from the start: the partial state goes; a finished file is replaced when
@@ -12200,6 +12252,15 @@ impl App {
             return;
         }
         let Some(item) = self.item(id) else { return };
+        // Its finished file stays as it is while the new copy downloads under its part file, and
+        // the new copy takes its place, under its name, only as it completes (#1698,
+        // `Item::replace_file`): a Redownload that fails or is stopped leaves it, and the row
+        // keeps its name (no "name (1)"). A file moved or deleted since: a plain download to its
+        // name. One another program holds then is kept, the new copy saved beside it (said).
+        // A Redownload of one stopped part-way keeps what an earlier one was to replace.
+        if item.status == Status::Complete {
+            item.replace_file = Some(item.dest.clone());
+        }
         // Its state and part file go beside the window (#1170); its start, just below, waits on
         // its own task until they are gone: it never resumes from them.
         let doomed = crate::deleter::Doomed::clearing(
@@ -12221,6 +12282,31 @@ impl App {
         self.dirty = true;
         self.deleter.delete(vec![doomed]);
         self.start(id, true);
+    }
+
+    /// The downloads just finished that were to replace the file at their place and couldn't
+    /// (`Item::not_replaced`: another program had it open): said in one message, both files
+    /// named, and in each one's log.
+    fn tell_not_replaced(&mut self, finished: &[u64]) {
+        let mut texts = Vec::new();
+        for id in finished {
+            let Some(item) = self.item(*id) else { continue };
+            let Some(old) = item.not_replaced.take() else {
+                continue;
+            };
+            let text = not_replaced_text(&old, &item.dest);
+            item.note(text.clone());
+            tracing::warn!(
+                "download {id}: the file at its place couldn't be replaced; saved beside it"
+            );
+            texts.push(text);
+        }
+        if !texts.is_empty() {
+            self.notice = Some((
+                crate::i18n::mark("Mister Download Manager"),
+                texts.join("\n\n"),
+            ));
+        }
     }
 
     /// Move/Rename: a Save As box at the file's place; a finished file is moved there, one
@@ -13743,6 +13829,7 @@ impl App {
             }
         }
         crate::crash::step(crate::crash::Step::MainWindow);
+        winui::name_window(ui, crate::MAIN_TITLE);
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
@@ -16941,16 +17028,18 @@ mod start_disk_tests {
     }
 }
 
-/// The browser's next download of a file whose download waits for a new address (its link
-/// expired) continues that download, end to end against the lab server (`freshlink`,
-/// `App::take_fresh_address`).
+/// Redownload of a finished download (#1698), end to end against the lab server: the new copy
+/// comes in under its part file while the finished file stays as it was, and takes its place,
+/// under its name, only as it completes. One that fails or is stopped leaves the finished file;
+/// one whose file another program holds keeps it and saves the new copy beside it, and says so.
 #[cfg(test)]
-mod fresh_address_tests {
+mod redownload_tests {
     use super::*;
     use mdm_labserver::{Config, Faults, LabServer, content};
 
-    const SIZE: u64 = 2 << 20;
-    const SEED: u64 = 7;
+    const SIZE: u64 = 1 << 20;
+    /// What the finished file held before its Redownload.
+    const OLD: &[u8] = b"the finished file the user had";
 
     fn runtime() -> &'static tokio::runtime::Runtime {
         Box::leak(Box::new(
@@ -16986,6 +17075,272 @@ mod fresh_address_tests {
         ))
     }
 
+    fn server(rt: &tokio::runtime::Runtime, faults: &str) -> LabServer {
+        rt.block_on(LabServer::start(Config {
+            faults: Faults::parse(faults).unwrap(),
+            ..Config::default()
+        }))
+        .unwrap()
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    /// A finished download of the lab's file `seed` at `dir/data.bin`, its file there the copy
+    /// the user had (`OLD`).
+    fn finished(s: &LabServer, dir: &std::path::Path, seed: u64) -> Item {
+        let port = s.addr().port();
+        let url = format!("http://127.0.0.1:{port}/gen/{SIZE}/data.bin?seed={seed}");
+        let dest = dir.join("data.bin");
+        std::fs::write(&dest, OLD).unwrap();
+        let mut item = Item::new(1, url.parse().unwrap(), dest, Category::General);
+        item.size = Some(SIZE);
+        item.downloaded = SIZE;
+        item.status = Status::Complete;
+        item
+    }
+
+    fn served(seed: u64) -> Vec<u8> {
+        let mut want = vec![0; SIZE as usize];
+        content::fill(seed, 0, &mut want);
+        want
+    }
+
+    /// The folder's file names, sorted.
+    fn names(dir: &std::path::Path) -> Vec<String> {
+        let mut n: Vec<String> = std::fs::read_dir(dir)
+            .unwrap()
+            .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+            .collect();
+        n.sort();
+        n
+    }
+
+    /// The window's frames until `done` (at most 30 s).
+    fn until(app: &mut App, done: impl Fn(&Item) -> bool) {
+        let ctx = egui::Context::default();
+        let end = Instant::now() + Duration::from_secs(30);
+        while !done(get(app, 1)) {
+            let i = get(app, 1);
+            assert!(
+                Instant::now() < end,
+                "never came: {:?} {:?} {}",
+                i.status,
+                i.error,
+                i.downloaded
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    /// The issue's steps: the finished file stays while the new copy comes in, then the new copy
+    /// takes its place under its name. No "data (1).bin", the row keeps its name, nothing said.
+    #[test]
+    fn redownload_replaces_the_finished_file_as_it_completes() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 31)]);
+        s.set_faults(Faults {
+            stall_at: Some(512 << 10),
+            ..Faults::default()
+        });
+        app.redownload(1);
+        assert_eq!(get(&app, 1).replace_file.as_deref(), Some(dest.as_path()));
+        until(&mut app, |i| i.downloaded > 0);
+        // Mid-way: the finished file as it was, the new copy in its part file.
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD);
+        assert!(mdm_engine::naming::part_path(&dest).exists());
+        s.set_faults(Faults::default());
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(31), "the new copy");
+        let row = get(&app, 1);
+        assert_eq!(
+            (row.dest.as_path(), row.file_name.as_str()),
+            (dest.as_path(), "data.bin")
+        );
+        assert!(row.replace_file.is_none() && row.not_replaced.is_none());
+        assert!(app.notice.is_none());
+    }
+
+    /// A Redownload that fails, at its very end (the file's checksum doesn't match), leaves the
+    /// finished file as it was; the next one, which completes, still replaces it.
+    #[test]
+    fn a_failed_redownload_keeps_the_finished_file() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut row = finished(&s, dir.path(), 32);
+        row.checksum = Some(mdm_engine::verify::Hash {
+            algo: mdm_engine::verify::Algo::Sha256,
+            value: vec![0; 32],
+        });
+        let mut app = app_with(rt, vec![row]);
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Error);
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD);
+        assert!(!dir.path().join("data (1).bin").exists());
+        assert_eq!(get(&app, 1).file_name, "data.bin");
+        // Again, the checksum right this time: an earlier Redownload's choice still holds.
+        app.item(1).unwrap().checksum = None;
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(32), "the new copy");
+    }
+
+    /// Stopped part-way, the finished file stays as it was; resumed, the Redownload completes and
+    /// replaces it then.
+    #[test]
+    fn a_stopped_redownload_keeps_the_finished_file_until_it_completes() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 33)]);
+        s.set_faults(Faults {
+            stall_at: Some(512 << 10),
+            ..Faults::default()
+        });
+        app.redownload(1);
+        until(&mut app, |i| i.downloaded > 0);
+        app.stop_by_hand(1);
+        until(&mut app, |i| i.live.is_none());
+        assert_eq!(get(&app, 1).status, Status::Stopped);
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD);
+        assert!(!dir.path().join("data (1).bin").exists());
+        s.set_faults(Faults::default());
+        app.start(1, false);
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(33), "the new copy");
+    }
+
+    /// Its file moved or deleted since: a plain download to its name.
+    #[test]
+    fn a_redownload_whose_file_is_gone_downloads_to_its_name() {
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 34)]);
+        std::fs::remove_file(&dest).unwrap();
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Complete);
+        assert_eq!(names(dir.path()), ["data.bin"]);
+        assert!(std::fs::read(&dest).unwrap() == served(34));
+        assert!(app.notice.is_none());
+    }
+
+    /// The finished file open in another program that doesn't let it be deleted, as the new copy
+    /// completes: it is kept, the new copy saved beside it (the row follows that one), and the
+    /// window says so, both names in it. Windows only: elsewhere an open file doesn't stop the
+    /// rename over it (the program goes on reading the old copy).
+    #[cfg(windows)]
+    #[test]
+    fn a_finished_file_held_open_is_kept_and_the_new_copy_saved_beside_it() {
+        use std::os::windows::fs::OpenOptionsExt;
+        let rt = runtime();
+        let s = server(rt, "");
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let mut app = app_with(rt, vec![finished(&s, dir.path(), 35)]);
+        let held = std::fs::OpenOptions::new()
+            .read(true)
+            .share_mode(1) // FILE_SHARE_READ: no delete, no rename over it
+            .open(&dest)
+            .unwrap();
+        app.redownload(1);
+        until(&mut app, |i| i.status == Status::Complete);
+        drop(held);
+        let beside = dir.path().join("data (1).bin");
+        assert_eq!(names(dir.path()), ["data (1).bin", "data.bin"]);
+        assert_eq!(std::fs::read(&dest).unwrap(), OLD, "the user's file kept");
+        assert!(
+            std::fs::read(&beside).unwrap() == served(35),
+            "the new copy"
+        );
+        let row = get(&app, 1);
+        assert_eq!(row.dest, beside);
+        assert!(row.not_replaced.is_none(), "taken by the window");
+        let (_, text) = app.notice.clone().expect("said");
+        assert!(
+            text.contains("data.bin") && text.contains("data (1).bin"),
+            "{text}"
+        );
+        assert!(row.log.iter().any(|(_, t)| *t == text), "in its log too");
+    }
+
+    /// What can be downloaded again: a file download; a gallery (gallery-dl fetches only what
+    /// isn't there yet) or a torrent through a debrid account no more than a torrent or a video.
+    #[test]
+    fn a_gallery_or_a_debrid_torrent_is_not_offered_for_redownload() {
+        let new = || {
+            let url = "http://127.0.0.1:9/a.bin".parse().unwrap();
+            Item::new(1, url, PathBuf::from("a.bin"), Category::General)
+        };
+        assert!(new().can_redownload());
+        let mut gallery = new();
+        gallery.gallery = Some(Default::default());
+        let mut remote = new();
+        remote.remote = Some(Default::default());
+        assert!(!gallery.can_redownload() && !remote.can_redownload());
+    }
+}
+
+/// The browser's next download of a file whose download waits for a new address (its link
+/// expired) continues that download, end to end against the lab server (`freshlink`,
+/// `App::take_fresh_address`).
+#[cfg(test)]
+mod fresh_address_tests {
+    use super::*;
+    use mdm_labserver::{Config, Faults, LabServer, content};
+
+    const SIZE: u64 = 2 << 20;
+    const SEED: u64 = 7;
+
+    pub(super) fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    pub(super) fn app_with(
+        rt: &tokio::runtime::Runtime,
+        items: Vec<Item>,
+    ) -> std::mem::ManuallyDrop<App> {
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings: Settings {
+                // No windows: the test looks at the rows.
+                show_progress: false,
+                show_complete: false,
+                ..Settings::default()
+            },
+            queues: Vec::new(),
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
     fn now_ms() -> u64 {
         std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
@@ -16993,7 +17348,7 @@ mod fresh_address_tests {
             .as_millis() as u64
     }
 
-    fn get(app: &App, id: u64) -> &Item {
+    pub(super) fn get(app: &App, id: u64) -> &Item {
         app.items.iter().find(|i| i.id == id).unwrap()
     }
 
@@ -17075,7 +17430,7 @@ mod fresh_address_tests {
     }
 
     /// Bytes of `range` (`bytes=a-b`; none: the whole file) that `saved` says were on disk.
-    fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
+    pub(super) fn on_disk(range: Option<&str>, saved: &mdm_engine::state::ResumeState) -> u64 {
         let (from, to) = match range.and_then(|r| r.strip_prefix("bytes=")?.split_once('-')) {
             Some((a, b)) => (
                 a.parse::<u64>().unwrap(),
@@ -17342,6 +17697,158 @@ mod fresh_address_tests {
             app.row(it, &none, 0).private.as_deref(),
             Some(model::PrivateMark::MemoryOnly.tip())
         );
+    }
+}
+
+/// #1705: MDM killed while a download ran (a crash, End task, a power cut), before its list was
+/// saved with the name the run took. The row comes back as the list held it at add, its name
+/// still to be numbered at start, with its part file and resume state under that very name.
+/// Resume continues it there; it used to start over as "name (1)" and leave the part behind.
+#[cfg(test)]
+mod killed_tests {
+    use super::fresh_address_tests::{app_with, get, on_disk, runtime};
+    use super::*;
+    use mdm_labserver::{Config, Faults, LabServer, content};
+
+    const SIZE: u64 = 4 << 20;
+    const SEED: u64 = 1705;
+
+    fn server(rt: &tokio::runtime::Runtime) -> (LabServer, url::Url) {
+        let s = rt
+            .block_on(LabServer::start(Config {
+                faults: Faults::parse("rate=4M").unwrap(),
+                ..Config::default()
+            }))
+            .unwrap();
+        let url = s.url(&format!("/gen/{SIZE}/data.bin?seed={SEED}"));
+        (s, url.parse().unwrap())
+    }
+
+    /// What a killed run of `url` leaves at `dest`: part of the file and its resume state.
+    fn cut_off(
+        rt: &tokio::runtime::Runtime,
+        s: &LabServer,
+        url: &url::Url,
+        dest: &std::path::Path,
+    ) -> mdm_engine::state::ResumeState {
+        let faults = s.faults();
+        s.set_faults(Faults {
+            stall_at: Some(1 << 20),
+            ..faults.clone()
+        });
+        let dl = {
+            let _in = rt.enter();
+            Download::start(
+                Request {
+                    url: url.clone(),
+                    headers: HeaderMap::new(),
+                    dest: Destination::File(dest.to_owned()),
+                },
+                Options {
+                    save_interval: Duration::from_millis(100),
+                    ..Options::default()
+                },
+            )
+        };
+        let end = Instant::now() + Duration::from_secs(20);
+        while dl.snapshot().downloaded < 256 << 10 {
+            assert!(Instant::now() < end, "the download never started");
+            std::thread::sleep(Duration::from_millis(20));
+        }
+        dl.cancel();
+        assert!(rt.block_on(dl.wait()).is_err());
+        s.set_faults(faults);
+        settled(rt, s);
+        let saved = mdm_engine::state::ResumeState::load(&state_path(dest)).unwrap();
+        assert!(saved.downloaded() > 0 && saved.downloaded() < SIZE);
+        saved
+    }
+
+    fn settled(rt: &tokio::runtime::Runtime, s: &LabServer) {
+        rt.block_on(async {
+            tokio::time::timeout(Duration::from_secs(10), s.settled())
+                .await
+                .expect("the lab server settles")
+        });
+    }
+
+    /// The row as the list saved at add holds it: nothing downloaded, its name to be numbered.
+    fn as_added(id: u64, url: &url::Url, dest: &std::path::Path) -> Item {
+        let mut item = Item::new(id, url.clone(), dest.to_owned(), Category::General);
+        item.number_at_start = true;
+        item
+    }
+
+    fn finish(app: &mut App, id: u64) {
+        let ctx = egui::Context::default();
+        let end = Instant::now() + Duration::from_secs(30);
+        while get(app, id).status != Status::Complete {
+            let row = get(app, id);
+            assert!(
+                Instant::now() < end,
+                "it never finished: {:?} {:?}",
+                row.status,
+                row.error
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    #[test]
+    fn resume_after_a_kill_continues_the_download_under_its_name() {
+        let rt = runtime();
+        let (s, url) = server(rt);
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let saved = cut_off(rt, &s, &url, &dest);
+        let mut app = app_with(rt, vec![as_added(1, &url, &dest)]);
+        s.clear_log();
+        app.start(1, false);
+        finish(&mut app, 1);
+        assert_eq!(get(&app, 1).dest, dest);
+        let mut names: Vec<_> = std::fs::read_dir(dir.path())
+            .unwrap()
+            .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+            .collect();
+        names.sort_unstable();
+        assert_eq!(names, ["data.bin"], "one file, its part and state gone");
+        let data = std::fs::read(&dest).unwrap();
+        let mut want = vec![0; SIZE as usize];
+        content::fill(SEED, 0, &mut want);
+        assert!(data == want, "content mismatch");
+        // Continued: of what was on disk only each part's few bytes of check are asked again.
+        settled(rt, &s);
+        let log = s.log();
+        assert!(!log.is_empty());
+        let overlap = Options::default().verify_overlap;
+        for e in &log {
+            let again = on_disk(e.range.as_deref(), &saved);
+            assert!(again <= overlap, "asked again for {again}: {:?}", e.range);
+        }
+    }
+
+    /// The name is numbered as before when it is another row's: a second download of the same
+    /// address, added while the first one is stopped part-way at that name, never takes the
+    /// first one's part.
+    #[test]
+    fn a_name_that_is_another_rows_is_still_numbered() {
+        let rt = runtime();
+        let (s, url) = server(rt);
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("data.bin");
+        let saved = cut_off(rt, &s, &url, &dest);
+        let mut first = Item::new(2, url.clone(), dest.clone(), Category::General);
+        first.downloaded = saved.downloaded();
+        first.size = Some(SIZE);
+        first.status = Status::Stopped;
+        let mut app = app_with(rt, vec![first, as_added(1, &url, &dest)]);
+        app.start(1, false);
+        finish(&mut app, 1);
+        assert_eq!(get(&app, 1).dest, dir.path().join("data (1).bin"));
+        assert_eq!(std::fs::metadata(&get(&app, 1).dest).unwrap().len(), SIZE);
+        let untouched = mdm_engine::state::ResumeState::load(&state_path(&dest)).unwrap();
+        assert_eq!(untouched, saved, "the first row's state is as it was");
     }
 }
 

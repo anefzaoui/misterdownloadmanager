@@ -1377,6 +1377,49 @@ impl Download {
         })
     }
 
+    /// [`Download::start_with`] under a name still to be numbered (`req.dest`, a
+    /// [`Destination::Free`]), unless the download was at that name already (#1705): a resume
+    /// state at `state_file` for the same address is its own, left by a run whose caller never
+    /// got to keep the name it took (MDM killed, or crashed, before its list was saved). It is
+    /// resumed then, as [`Download::resume`] would. Numbering the name past its own part file
+    /// would start the download over as "name (1)" and leave the part behind.
+    ///
+    /// Any other state there (another address's, or one that doesn't read) is someone else's,
+    /// and the name is numbered past it as before. The disk is looked at on the download's task,
+    /// never the caller's (#743). The caller makes sure no other download of its own is at that
+    /// name: two downloads of one address would otherwise both take the one state.
+    pub fn start_or_resume_own(
+        state_file: PathBuf,
+        req: Request,
+        opts: Options,
+        kept: Option<KeptAnswer>,
+    ) -> Download {
+        Download::spawn(req.url.clone(), move |shared, cancel| {
+            let sh = shared.clone();
+            let body = async move {
+                after_clearing(req.dest.folder(), &cancel).await?;
+                after_settling(&req.dest, &cancel).await?;
+                let look = {
+                    let state_file = state_file.clone();
+                    tokio::task::spawn_blocking(move || Found::look(&state_file))
+                };
+                let found = tokio::select! {
+                    _ = cancel.cancelled() => return Err(Error::Cancelled),
+                    found = look => found.ok(),
+                };
+                match found {
+                    Some(Found::State(Ok(saved))) if saved.url == req.url => {
+                        sh.event("Continuing the download this name was left by");
+                        run_resume(*saved, state_file, req.headers, opts, sh, cancel).await
+                    }
+                    _ if crate::ftp::is_ftp(&req.url) => run_fresh_ftp(req, opts, sh, cancel).await,
+                    _ => run_fresh(req, opts, sh, cancel, kept).await,
+                }
+            };
+            run(body, shared)
+        })
+    }
+
     fn spawn<F, Fut>(url: Url, f: F) -> Download
     where
         F: FnOnce(Arc<Shared>, CancellationToken) -> Fut,

@@ -159,6 +159,9 @@ pub struct Scheduler {
     /// The queue list's and the files list's scroll and selection.
     tree_rows: winui::RowList,
     files_rows: winui::RowList,
+    /// The files picked with Ctrl / Shift (their ids), and the row a Shift-click counts from.
+    files_marked: std::collections::HashSet<u64>,
+    files_anchor: Option<usize>,
     /// Each queue's downloads as the app last had them ([`Scheduler::sync_items`]).
     base: std::collections::HashMap<String, Vec<u64>>,
     focus: Focus,
@@ -229,6 +232,8 @@ impl Scheduler {
             tab: Tab::Schedule,
             tree_rows: Default::default(),
             files_rows: Default::default(),
+            files_marked: Default::default(),
+            files_anchor: None,
             focus: Focus::default(),
             naming: None,
             deleting: None,
@@ -1023,19 +1028,89 @@ impl Scheduler {
             winui::LIST_HEADER(),
         );
         winui::header_shade(&p, o.x + 230.0, o.x + 624.0, o.y + 106.0, false);
-        let cols = [
-            (crate::i18n::mark("File Name"), 230.0, 421.0),
+        // Column widths: dragging a header border resizes the column on its left (kept while
+        // the app runs).
+        let widths_id = egui::Id::unique("sched-files-widths");
+        let mut widths: [f32; 4] = ui
+            .data(|d| d.get_temp(widths_id))
+            .unwrap_or([191.0, 67.0, 52.0, 67.0]);
+        let header = r(o, 230.0, 83.0, 394.0, 23.0);
+        let hresp = ui.interact(header, widths_id.with("header"), Sense::drag());
+        let edges: Vec<f32> = widths
+            .iter()
+            .scan(230.0, |x, w| {
+                *x += w;
+                Some(*x)
+            })
+            .collect();
+        let near = |sx: f32| {
+            let x = winui::mcol(sx) - o.x;
+            edges.iter().position(|e| (x - e).abs() <= 4.0)
+        };
+        if hresp.hover_pos().is_some_and(|pp| near(pp.x).is_some()) || hresp.dragged() {
+            ui.ctx().set_cursor_icon(egui::CursorIcon::ResizeHorizontal);
+        }
+        let drag_key = widths_id.with("drag");
+        if hresp.drag_started()
+            && let Some(pp) = ui.input(|i| i.pointer.press_origin())
+            && let Some(c) = near(pp.x)
+        {
+            ui.data_mut(|d| d.insert_temp(drag_key, (c, widths[c], winui::mcol(pp.x))));
+        }
+        if hresp.dragged()
+            && let Some((c, w0, x0)) = ui.data(|d| d.get_temp::<(usize, f32, f32)>(drag_key))
+            && let Some(pp) = hresp.interact_pointer_pos()
+        {
+            widths[c] = (w0 + winui::mcol(pp.x) - x0).round().clamp(30.0, 600.0);
+            ui.data_mut(|d| d.insert_temp(widths_id, widths));
+        }
+        if hresp.drag_stopped() {
+            ui.data_mut(|d| d.remove::<(usize, f32, f32)>(drag_key));
+        }
+        let titles = [
+            crate::i18n::mark("File Name"),
             // i18n: column title: the file's size
-            (crate::i18n::mark("Size"), 421.0, 488.0),
+            crate::i18n::mark("Size"),
             // i18n: column title: the download's state
-            (crate::i18n::mark("Status"), 488.0, 540.0),
-            (crate::i18n::mark("Time left"), 540.0, 607.0),
+            crate::i18n::mark("Status"),
+            crate::i18n::mark("Time left"),
         ];
+        let mut x = 230.0;
+        let cols: Vec<(&str, f32, f32)> = titles
+            .iter()
+            .zip(widths)
+            .map(|(t, w)| {
+                x += w;
+                (*t, x - w, x)
+            })
+            .collect();
         let grid = winui::GRID();
-        for (title, x0, x1) in cols {
+        // Columns past the list's right edge are cut there.
+        let hp = p.with_clip_rect(winui::rect(Rect::from_min_max(
+            o + vec2(230.0, 83.0),
+            o + vec2(623.0, 106.0),
+        )));
+        for &(title, x0, x1) in &cols {
+            // Cut to its own column, as the cells ("File NaSize" on narrow columns).
+            let col = hp.with_clip_rect(
+                winui::rect(Rect::from_min_max(
+                    pos2(o.x + x0, o.y + 83.0),
+                    pos2(o.x + x1 - 1.0, o.y + 106.0),
+                ))
+                .intersect(hp.clip_rect()),
+            );
             let title = crate::i18n::t(title);
-            text(&p, o.x + x0 + 6.0, o.y + 99.0, title, LIGHT_TEXT());
-            winui::header_divider(&p, o.x + x1, o.y + 83.0, o.y + 106.0, winui::HEADER_LINE());
+            winui::fit(
+                ui,
+                &col,
+                o.x + x0 + 6.0,
+                o.y + 99.0,
+                title,
+                LIGHT_TEXT(),
+                o.x + x1 - 3.0,
+                ("sched-title", x0 as i32),
+            );
+            winui::header_divider(&hp, o.x + x1, o.y + 83.0, o.y + 106.0, winui::HEADER_LINE());
         }
         // The rows: the shared row list under the header (its frame on the list's).
         let body = Rect::from_min_max(o + vec2(230.0, 108.0), o + vec2(624.0, 375.0 + DY));
@@ -1044,6 +1119,18 @@ impl Scheduler {
         let by_id: std::collections::HashMap<u64, &Item> =
             items.iter().map(|i| (i.id, i)).collect();
         let rows: Vec<&Item> = ids.iter().filter_map(|id| by_id.get(id).copied()).collect();
+        // A list picked elsewhere (another queue, none) starts with nothing marked.
+        if self.files_rows.selected.is_none() {
+            self.files_marked.clear();
+        }
+        self.files_marked
+            .retain(|id| rows.iter().any(|i| i.id == *id));
+        if self.files_marked.is_empty()
+            && let Some(s) = self.files_rows.selected.filter(|s| *s < rows.len())
+        {
+            self.files_marked.insert(rows[s].id);
+        }
+        let marked = self.files_marked.clone();
         // Named for screen readers (#102), as its tab reads.
         self.files_rows.name = crate::i18n::t("Files in the queue");
         let ev = winui::row_list(
@@ -1056,6 +1143,15 @@ impl Scheduler {
             |ui, clip, k, row, look| {
                 let item = rows[k];
                 let top = row.top();
+                // Painted as selected exactly when picked: Ctrl / Shift picks drawn as selected
+                // too, and the focused row dropped with Ctrl-click drawn as not.
+                if marked.contains(&item.id) && !look.selected {
+                    clip.rect_filled(winui::rect(row), 0.0, winui::ROW_SELECTED());
+                    look.ink = winui::SELECTION_TEXT();
+                } else if look.selected && !marked.contains(&item.id) {
+                    clip.rect_filled(winui::rect(row), 0.0, winui::FIELD());
+                    look.ink = winui::TEXT();
+                }
                 fill(clip, row.left(), top + 16.0, row.right(), top + 16.0, grid);
                 look.name = [
                     item.file_name.clone(),
@@ -1073,7 +1169,7 @@ impl Scheduler {
                     item.status_text(),
                     item.time_left(),
                 ];
-                for (c, ((_, x0, x1), cell)) in cols.iter().zip(&cells).enumerate() {
+                for (c, (&(_, x0, x1), cell)) in cols.iter().zip(&cells).enumerate() {
                     fill(clip, o.x + x1, top, o.x + x1, top + 16.0, grid);
                     let cell_clip = clip.with_clip_rect(
                         winui::rect(Rect::from_min_max(
@@ -1102,11 +1198,31 @@ impl Scheduler {
                         cell,
                         look.ink,
                         o.x + x1 - 3.0,
-                        ("sched-cell", k, *x0 as i32),
+                        ("sched-cell", k, c as i32),
                     );
                 }
             },
         );
+        // Ctrl-click adds or drops a file, Shift-click picks a run, Ctrl+A picks them all.
+        let mods = ui.input(|i| i.modifiers);
+        if let Some(i) = ev.clicked.or(ev.picked.filter(|_| ev.context.is_none())) {
+            let id = rows[i].id;
+            if mods.shift {
+                let a = self.files_anchor.unwrap_or(i).min(rows.len() - 1);
+                self.files_marked = rows[a.min(i)..=a.max(i)].iter().map(|r| r.id).collect();
+            } else if mods.command && ev.clicked.is_some() {
+                if !self.files_marked.remove(&id) {
+                    self.files_marked.insert(id);
+                }
+                self.files_anchor = Some(i);
+            } else {
+                self.files_marked = [id].into();
+                self.files_anchor = Some(i);
+            }
+        }
+        if ev.focused && ui.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::A)) {
+            self.files_marked = rows.iter().map(|r| r.id).collect();
+        }
         // Delete on a file: Remove from the queue.
         let delete_key = ev.delete.is_some();
         if ev.focused {
@@ -1115,28 +1231,29 @@ impl Scheduler {
         }
 
         // Move down, move up, remove from the queue.
-        let sel = self.files_rows.selected;
+        let marks: Vec<bool> = rows
+            .iter()
+            .map(|r| self.files_marked.contains(&r.id))
+            .collect();
         let n = rows.len();
+        // A marked file can move while the one next to it (that way) isn't marked.
+        let can_up = (1..n).any(|j| marks[j] && !marks[j - 1]);
+        let can_down = (0..n.saturating_sub(1)).any(|j| marks[j] && !marks[j + 1]);
         let buttons = [
             // i18n: tooltip of an icon button in the Scheduler's list of files
             (
                 "arrow_down",
                 233.0,
-                sel.is_some_and(|s| s + 1 < n),
+                can_down,
                 crate::i18n::mark("Move down"),
             ),
             // i18n: tooltip of an icon button in the Scheduler's list of files
-            (
-                "arrow_up",
-                263.0,
-                sel.is_some_and(|s| s > 0),
-                crate::i18n::mark("Move up"),
-            ),
+            ("arrow_up", 263.0, can_up, crate::i18n::mark("Move up")),
             // i18n: tooltip of an icon button in the Scheduler's list of files
             (
                 "cross",
                 290.0,
-                sel.is_some(),
+                marks.contains(&true),
                 crate::i18n::mark("Remove from the queue"),
             ),
         ];
@@ -1164,30 +1281,31 @@ impl Scheduler {
             if !(clicked && enabled) {
                 continue;
             }
-            let (Some(s), q) = (sel, &mut self.queues[self.selected]) else {
-                continue;
-            };
+            let q = &mut self.queues[self.selected];
             // Positions in `rows` map to the queue's ids in order (missing items are skipped).
-            let id = rows[s].id;
-            let Some(pos) = q.items.iter().position(|x| *x == id) else {
+            let pos: Vec<usize> = rows
+                .iter()
+                .filter_map(|r| q.items.iter().position(|x| *x == r.id))
+                .collect();
+            if pos.len() != n {
                 continue;
-            };
+            }
             match icon {
-                "arrow_down" => {
-                    let next = rows[s + 1].id;
-                    let npos = q.items.iter().position(|x| *x == next).unwrap_or(pos);
-                    q.items.swap(pos, npos);
-                    self.files_rows.selected = Some(s + 1);
-                }
-                "arrow_up" => {
-                    let prev = rows[s - 1].id;
-                    let ppos = q.items.iter().position(|x| *x == prev).unwrap_or(pos);
-                    q.items.swap(pos, ppos);
-                    self.files_rows.selected = Some(s - 1);
+                "arrow_down" | "arrow_up" => {
+                    let moved = move_marked(&marks, icon == "arrow_up");
+                    for (p, j) in pos.iter().zip(&moved) {
+                        q.items[*p] = rows[*j].id;
+                    }
+                    // The focused row and the Shift anchor follow their files.
+                    let at = |r: Option<usize>| r.and_then(|r| moved.iter().position(|j| *j == r));
+                    self.files_rows.selected = at(self.files_rows.selected);
+                    self.files_anchor = at(self.files_anchor);
                 }
                 _ => {
-                    q.items.remove(pos);
+                    q.items.retain(|x| !self.files_marked.contains(x));
+                    self.files_marked.clear();
                     self.files_rows.selected = None;
+                    self.files_anchor = None;
                 }
             }
         }
@@ -2155,6 +2273,28 @@ fn calendar(ui: &mut Ui, key: egui::Id, under: Rect, date: NaiveDate) -> (Option
 
 /// A queue's downloads after a three-way merge: the draft's order, less what left the list
 /// since `base`, plus what was added to the queue since (at the end).
+/// The rows' new order after the marked ones each move one place up (or down): a marked row
+/// steps past the unmarked one next to it, and a block of marked rows moves as one.
+fn move_marked(marks: &[bool], up: bool) -> Vec<usize> {
+    let n = marks.len();
+    let mut order: Vec<usize> = (0..n).collect();
+    for k in 0..n {
+        let j = if up { k } else { n - 1 - k };
+        let other = if up {
+            j.checked_sub(1)
+        } else {
+            Some(j + 1).filter(|o| *o < n)
+        };
+        if let Some(o) = other
+            && marks[order[j]]
+            && !marks[order[o]]
+        {
+            order.swap(j, o);
+        }
+    }
+    order
+}
+
 fn merge_items(base: &[u64], draft: &[u64], live: &[u64]) -> Vec<u64> {
     let mut out: Vec<u64> = draft
         .iter()
@@ -2172,6 +2312,13 @@ fn merge_items(base: &[u64], draft: &[u64], live: &[u64]) -> Vec<u64> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn marked_rows_move_together_and_stop_at_the_ends() {
+        let m = [true, false, true, true, false];
+        assert_eq!(move_marked(&m, true), vec![0, 2, 3, 1, 4]);
+        assert_eq!(move_marked(&m, false), vec![1, 0, 4, 2, 3]);
+    }
 
     #[test]
     fn the_draft_keeps_its_order_and_the_lists_changes() {
