@@ -571,6 +571,8 @@ These ship in the next version.
 
 - ✅ Website and help: what to do when an antivirus flags MDM (why it happens, how to check your
   copy against the release's checksums, where to report the false alarm), linked from the README
+- ✅ The README opens with MDM's film: its picture, under the download buttons, plays it on
+  YouTube; and Trendshift's badge beside the star button
 - ✅ Download only a part of a video or a sound, from one time to another, cut quickly at the
   keyframes or exactly (encoded again), from the Download video window and the browser add-on's
   menu over a video ([#1662](https://github.com/anefzaoui/misterdownloadmanager/issues/1662))
