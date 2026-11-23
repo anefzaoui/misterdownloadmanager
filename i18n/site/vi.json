@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Chữ ký mã cho phép Windows hiển thị nhà phát hành chương trình và kiểm tra xem chương trình đó có bị thay đổi sau khi được tạo hay không. Khi một bản phát hành của Mister Download Manager (\"MDM\") được ký, chữ ký của nó bao gồm các tệp Windows đến từ dự án này:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> yêu cầu kéo"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Có. MDM ghi lại tiến độ trong quá trình tải xuống, vì vậy sau khi mất kết nối, gặp sự cố hoặc khởi động lại, quá trình tải xuống sẽ tiếp tục từ chỗ đã dừng. Trước khi tiếp tục, MDM kiểm tra xem tệp trên máy chủ có bị thay đổi không. Khi địa chỉ tải xuống hết hạn, <g1>Làm mới địa chỉ tải xuống</g1> cho phép bạn thay bằng địa chỉ mới mà vẫn giữ lại dữ liệu. Xem <g2>Tiếp tục tải xuống bị gián đoạn</g2>."
@@ -226,10 +222,6 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Trợ giúp → Giới thiệu về Mister Download Manager</g1> hiển thị phiên bản bạn đang dùng."
   },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>Yêu cầu kéo</g1><g2><x3/> người</g2>"
-  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "Mọi thứ Bộ lập lịch có thể làm →"
@@ -321,6 +313,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Miễn phí và mã nguồn mở. Giao diện bạn đã quen thuộc, một công cụ nhanh hơn bên dưới, tích hợp torrent và video."
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "Mỗi liên kết mở một cửa sổ <g1>Thông tin tệp tải xuống</g1> riêng, nên bạn có thể mở nhiều cửa sổ cạnh nhau để so sánh kích thước trước khi chọn. Mỗi cửa sổ mới mở hơi thấp hơn và lệch sang bên cạnh cửa sổ trước đó, rồi hiện lên phía trước; từ cửa sổ thứ hai trở đi, tiêu đề của nó sẽ có số thứ tự: <g2>Thông tin tệp tải xuống (2)</g2>, <g3>(3)</g3> và cứ thế. Phím <g4>Esc</g4> chỉ đóng cửa sổ bạn đang dùng. Tối đa sáu cửa sổ có thể mở cùng lúc: nếu có nhiều liên kết được chuyển giao cùng lúc (một trình duyệt chuyển nhiều lượt tải xuống), chúng sẽ chờ và mở từng cái một khi bạn đóng các cửa sổ; <g5>Hủy</g5> sẽ hỏi bạn có muốn hủy các lượt đang chờ hay không. Nếu cùng một liên kết được chuyển giao lại, cửa sổ đang mở của nó sẽ hiện lên phía trước. Nếu bạn thoát MDM khi một số cửa sổ vẫn đang mở, các lượt tải xuống của chúng sẽ chuyển vào <g6>Hàng đợi tải xuống chính</g6>, giống như khi bạn chọn <g7>Tải xuống sau</g7>."
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -1126,10 +1122,6 @@
    "source": "comes with every download of MDM and works without the app running. <x1/> downloads a file over several connections with a progress line, <g2>Ctrl+C</g2> pauses it and <x3/> carries on later. <x4/> downloads a video, and <x5/> a torrent or only some of its files. <x6/> and <x7/> say what there is to choose before you download. <x8/> lists every option, and a command that fails exits with code 1.",
    "text": "đi kèm với mọi bản tải xuống của MDM và hoạt động mà không cần ứng dụng chạy. <x1/> tải xuống một tệp qua nhiều kết nối với một dòng tiến trình, <g2>Ctrl+C</g2> tạm dừng và <x3/> tiếp tục sau đó. <x4/> tải xuống một video, và <x5/> một torrent hoặc chỉ một số tệp của nó. <x6/> và <x7/> cho biết có gì để chọn trước khi bạn tải xuống. <x8/> liệt kê mọi tùy chọn, và một lệnh thất bại sẽ thoát với mã 1."
   },
-  "0ff7458c260e0558": {
-   "source": "Last updated 2026-11-22",
-   "text": "Cập nhật lần cuối 22-11-2026"
-  },
   "10068bf8d08f9e51": {
    "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
    "text": "Cửa sổ tiến trình tải xuống cũng có thể ẩn vào vùng thông báo bằng nút Thu nhỏ hoặc nút <g1>Ẩn vào vùng thông báo</g1>: một dấu gạch ngang ngắn với mũi tên chỉ xuống góc."
@@ -1802,10 +1794,6 @@
    "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
    "text": "Rất có thể đây là cảnh báo nhầm. Một số chương trình diệt virus đánh giá một chương trình mà chúng không biết bằng cách phỏng đoán, chứ không phải dựa trên virus đã biết: các tên phát hiện như <x1/>, <x2/>, <x3/> hoặc <x4/> có nghĩa là một phỏng đoán như vậy. Điều chúng thường gắn cờ nhất là một bản tải xuống mới mà ít người đã chạy, từ một dự án nhỏ, không có chữ ký của nhà phát hành; trình cài đặt của MDM chưa được ký mã. Trên VirusTotal, một vài công cụ gắn cờ một bản cài đặt mới trong khi hầu hết vẫn sạch là dấu hiệu thông thường của một cảnh báo nhầm."
   },
-  "1962902ce083389d": {
-   "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
-   "text": "Nếu chúng khớp, đó là tệp chúng tôi đã xuất bản. Mọi bản phát hành đều được xây dựng trên GitHub từ <g1>mã nguồn công khai</g1>, vì vậy bất kỳ ai cũng có thể đọc những gì đã có trong đó."
-  },
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "Để mở trang bằng tên máy chủ (<x1/>), hãy cung cấp cho MDM tên đó: <x2/> (nhiều tên: cách nhau bằng dấu phẩy). Các tên khác bị từ chối, để không có trang web nào có thể truy cập MDM thông qua tên riêng của nó."
@@ -1873,6 +1861,10 @@
   "1a3b9d0d6a07985d": {
    "source": "the page's address as you open it, shown with the pairing code",
    "text": "địa chỉ của trang khi bạn mở nó, hiển thị cùng với mã ghép nối"
+  },
+  "1a5164060895b36a": {
+   "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
+   "text": "Một tệp đã hoàn tất mà quá trình kiểm tra tệp lưu trữ phát hiện hư hỏng có thể đặt được (các mục của tệp ZIP, #1661: <x1/> của ứng dụng) sẽ được tạo lại thành tệp một phần (<x2/>): trạng thái tiếp tục cuối cùng của nó, được trả lại bởi một lượt tải xuống được yêu cầu giữ lại (<x3/>, <x4/>), được ghi lại chỉ với các phạm vi bị hỏng còn lại để tìm nạp, mỗi phạm vi bắt đầu sớm vài byte để kiểm tra trùng lặp, và tệp được đổi tên thành tệp một phần của nó. Tiếp tục nó là một quá trình tiếp tục thông thường: <x5/> với cùng các trình xác thực, kiểm tra trùng lặp, mã băm; một tệp đã thay đổi trên máy chủ sẽ thất bại như <x6/>."
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -1977,10 +1969,6 @@
   "1bad738cb3cea90f": {
    "source": "Select or unselect the download with the dotted outline",
    "text": "Chọn hoặc bỏ chọn bản tải xuống có đường viền chấm chấm"
-  },
-  "1badff5f5fc8b6a9": {
-   "source": "Download MDM only from <g1>the website</g1> or <g2>GitHub Releases</g2>.",
-   "text": "Chỉ tải MDM từ <g1>trang web</g1> hoặc <g2>GitHub Releases</g2>."
   },
   "1bc816518d6f87cb": {
    "source": "<g1>Save to</g1>: the folder its torrents go to; empty, the Torrents category's folder. <g2>Add them without starting them</g2> adds them as <g3>Download Later</g3> would.",
@@ -2173,6 +2161,10 @@
   "1e303528b75b0fda": {
    "source": "{n} of {total}",
    "text": "{n} trên {total}"
+  },
+  "1e32ee75ad780ae4": {
+   "source": "An archive protected by a password isn't tested, as its files can't be read without it: the log says <g1>Couldn't test photos.zip: it needs a password</g1>. Nor are tar, gz and xz files.",
+   "text": "Một kho lưu trữ được bảo vệ bằng mật khẩu không được kiểm tra, vì các tệp của nó không thể đọc được nếu không có mật khẩu: nhật ký hiển thị <g1>Không thể kiểm tra photos.zip: cần mật khẩu</g1>. Các tệp tar, gz và xz cũng vậy."
   },
   "1e4861cc4f32a384": {
    "source": "<g1>Every text the user sees goes through <x2/></g1> (<x3/>, <x4/>, <x5/>, <x6/>); after adding one, run <x7/>. Data inside a sentence (a file name, an address, a size) goes in through <x8/> or <x9/>, so it reads right in right-to-left languages.",
@@ -2381,10 +2373,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "Trên macOS, chỉ quản trị viên mới có thể lên lịch đánh thức, vì vậy tùy chọn này bị mờ. MDM không yêu cầu mật khẩu quản trị viên. Một quản trị viên có thể cho phép máy Mac đánh thức mỗi ngày một phút trước khi hàng đợi bắt đầu, ví dụ lúc 10:59 PM cho một hàng đợi bắt đầu lúc 11:00 PM:"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "Tất cả những ai đã gửi yêu cầu kéo, mở vấn đề hoặc bình luận trên GitHub kể từ phiên bản <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3010,6 +2998,10 @@
    "source": "Download limits",
    "text": "Giới hạn tải xuống"
   },
+  "29c62272ce90056c": {
+   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
+   "text": "Giải nén tệp lưu trữ (#37): zip, tar, gz và xz đang xử lý; 7z và RAR thông qua 7-Zip đã cài đặt, chạy như một chương trình riêng; tại chỗ thông qua HatchZip khi được yêu cầu. Kiểm tra tệp lưu trữ (<x1/>, #1661): <x2/>, một tệp ZIP đang xử lý mà không có nó, và các mục bị hỏng của tệp ZIP được đặt trong tệp"
+  },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
    "text": "Nếu hàng đợi không bắt đầu →"
@@ -3594,6 +3586,10 @@
    "source": "<g1>VPN and proxy support:</g1> send downloads through the browser's proxy or VPN extension (off until you turn it on).",
    "text": "<g1>Hỗ trợ VPN và proxy:</g1> gửi các bản tải xuống qua proxy hoặc tiện ích mở rộng VPN của trình duyệt (tắt cho đến khi bạn bật)."
   },
+  "319a440ac21a4da8": {
+   "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
+   "text": "Một tệp ZIP mà MDM đã tải xuống lại các phần bị hỏng và vẫn bị hỏng, hoặc tệp 7z hay RAR bị hỏng lại sau khi <g1>Tải xuống lại</g1>, có thể đã bị hỏng trên chính máy chủ: hãy yêu cầu trang web cung cấp bản sao khác."
+  },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
    "text": "<g1>Arch</g1>: <x2/>, hoặc"
@@ -4126,10 +4122,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "Nhấp vào <g1>OK</g1>."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>Vấn đề</g1><g2><x3/> người</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "Chọn <g1>Tải xuống → Giới hạn tốc độ → Bật</g1>."
@@ -4185,10 +4177,6 @@
   "3ad9354fd79e59c2": {
    "source": "In a Wayland session, MDM chooses its windows' system as it starts, the same way however it was started (its menu entry, the browser's helper, the session's autostart). Its windows run through XWayland where X11 programs look right: only X11 lets MDM open its menus and drop-down lists right under what you clicked (on Wayland they open where the compositor puts new windows, often the middle of the screen) and hide its window in the notification area. That is GNOME and KDE Plasma, which tell X11 programs the screen's scale, and any desktop whose screens aren't scaled. On a scaled screen where nothing tells X11 programs the scale (Hyprland, labwc, sway and other wlroots compositors), the compositor would scale MDM's windows up, blurry, so MDM uses Wayland's own windows there. <g1>View → Window system</g1> picks <g2>X11 (XWayland)</g2> or <g3>Wayland</g3> instead, from the next start, for every way MDM starts (<g4>Automatic</g4> goes back to MDM's choice); <x5/> or <x6/> decides for one start. If the system lacks a library X11 windows need (such as libxkbcommon-x11, which the .deb and .rpm bring but the AppImage and the tar.gz can't), MDM opens on Wayland instead; with no window system it can use, it names what's missing and the command that installs it.",
    "text": "Trong phiên Wayland, MDM chọn hệ thống cửa sổ của nó khi khởi động, theo cùng một cách bất kể nó được khởi động như thế nào (mục menu của nó, trình trợ giúp của trình duyệt, tự động khởi động của phiên). Các cửa sổ của nó chạy qua XWayland nơi các chương trình X11 trông đúng: chỉ X11 mới cho phép MDM mở menu và danh sách thả xuống ngay dưới nơi bạn nhấp (trên Wayland chúng mở nơi trình tổng hợp đặt cửa sổ mới, thường là giữa màn hình) và ẩn cửa sổ của nó trong khu vực thông báo. Đó là GNOME và KDE Plasma, chúng cho các chương trình X11 biết tỷ lệ màn hình, và bất kỳ máy tính để bàn nào mà màn hình không được chia tỷ lệ. Trên màn hình được chia tỷ lệ mà không có gì cho các chương trình X11 biết tỷ lệ (Hyprland, labwc, sway và các trình tổng hợp wlroots khác), trình tổng hợp sẽ phóng to cửa sổ của MDM, bị mờ, vì vậy MDM sử dụng cửa sổ riêng của Wayland ở đó. <g1>Xem → Hệ thống cửa sổ</g1> chọn <g2>X11 (XWayland)</g2> hoặc <g3>Wayland</g3> thay vào đó, từ lần khởi động tiếp theo, cho mọi cách MDM khởi động (<g4>Tự động</g4> quay lại lựa chọn của MDM); <x5/> hoặc <x6/> quyết định cho một lần khởi động. Nếu hệ thống thiếu thư viện mà cửa sổ X11 cần (chẳng hạn như libxkbcommon-x11, mà .deb và .rpm mang lại nhưng AppImage và tar.gz không thể), MDM sẽ mở trên Wayland thay vào đó; nếu không có hệ thống cửa sổ nào nó có thể sử dụng, nó sẽ nêu tên những gì bị thiếu và lệnh cài đặt nó."
-  },
-  "3ae1cbe9372aa706": {
-   "source": "Last updated 2026-11-22 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Cập nhật lần cuối 22-11-2026 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
   },
   "3ae62309609ddf49": {
    "source": "The desktop app (<x1/>, egui): list, categories, queues, scheduler, dialogs, tray, settings",
@@ -4474,6 +4462,10 @@
    "source": "Help translate",
    "text": "Tham gia dịch"
   },
+  "3eaa27ee358ba512": {
+   "source": "Last updated 2026-11-23",
+   "text": "Cập nhật lần cuối 23-11-2026"
+  },
   "3eba7f086afb94a2": {
    "source": "Is it really free?",
    "text": "Có thực sự miễn phí không?"
@@ -4593,6 +4585,10 @@
   "4065d823f7a0f8c0": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>; <x12/> is a category's <x13/>; <x14/> is the free space where downloads go (<x15/> when unknown). Only while the API is on.",
    "text": "Mỗi lượt tải xuống và tổng tốc độ: <x1/>. <x2/> là <x3/>, <x4/>, <x5/>, <x6/> hoặc <x7/>; <x8/> là <x9/> khi không xác định; <x10/> (lý do thất bại) chỉ có cho lượt tải xuống ở <x11/>; <x12/> là <x13/> của một danh mục; <x14/> là dung lượng trống nơi các lượt tải xuống được lưu (<x15/> khi không xác định). Chỉ khi API đang bật."
+  },
+  "406a5240307e8845": {
+   "source": "Right-click → <g1>Redownload</g1> (or the <g2>Damaged archive</g2> window's <g3>Redownload</g3>) downloads it again from the start.",
+   "text": "Nhấp chuột phải → <g1>Tải xuống lại</g1> (hoặc <g2>Tải xuống lại</g2> trong cửa sổ <g3>Kho lưu trữ bị hỏng</g3>) sẽ tải xuống lại từ đầu."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -5830,10 +5826,6 @@
    "source": "The free MDM extension hands each download you click over to MDM, with the page it came from and your sign-in for the site. A button over videos sends them to MDM too.",
    "text": "Tiện ích mở rộng MDM miễn phí sẽ chuyển mỗi lượt tải xuống bạn nhấp vào cho MDM, kèm theo trang gốc và thông tin đăng nhập của bạn cho trang đó. Một nút trên video cũng gửi chúng đến MDM."
   },
-  "52fc7550762441e8": {
-   "source": "A few antivirus programs flag new installers just because they have rarely seen them, and machine-learning engines do this the most. On VirusTotal, a handful of small engines flagging a new setup while the big ones stay clean is usually a false positive. We report these to the vendors when we see them.",
-   "text": "Một số chương trình diệt virus gắn cờ các trình cài đặt mới chỉ vì chúng hiếm khi thấy chúng, và các công cụ học máy làm điều này nhiều nhất. Trên VirusTotal, một vài công cụ nhỏ gắn cờ một thiết lập mới trong khi các công cụ lớn vẫn sạch thường là báo động giả. Chúng tôi báo cáo những trường hợp này cho các nhà cung cấp khi chúng tôi thấy chúng."
-  },
   "53060965f7a26125": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1>, and a magnet link or a <x2/> file goes to the service. It downloads the torrent on its own servers while the list shows how far it is (<g3>45% at Real-Debrid</g3>). MDM then fetches the files over HTTP and removes the torrent from the account's list. Your computer never connects to the torrent's peers.",
    "text": "Chọn <g1>Gửi torrent và liên kết magnet đến tài khoản đầu tiên thay vì đến peer</g1>, và một liên kết magnet hoặc tệp <x2/> sẽ được gửi đến dịch vụ. Dịch vụ sẽ tải torrent về máy chủ của riêng nó trong khi danh sách hiển thị tiến độ (<g3>45% tại Real-Debrid</g3>). MDM sau đó sẽ lấy các tệp qua HTTP và xóa torrent khỏi danh sách tài khoản. Máy tính của bạn không bao giờ kết nối với các peer của torrent."
@@ -6030,10 +6022,6 @@
    "source": "A small file",
    "text": "Một tệp nhỏ"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "Cảm ơn"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Dán địa chỉ của danh sách phát (<x1/>) hoặc video của một kênh (<x2/>) rồi nhấp <g3>Tra cứu</g3>. Thay vì hiển thị các chất lượng của một video, cửa sổ sẽ liệt kê các video trong danh sách, cùng thời lượng của từng video."
@@ -6165,10 +6153,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 và Linux; macOS để dùng thử"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "Được tạo nên nhờ những con người tuyệt vời này"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6325,6 +6309,10 @@
   "59d718d0872bfa97": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1> in <g2>Options → Accounts</g2>. A magnet link (Add URL, the browser, the clipboard, a drop) or a <x3/> file (Add torrent's <g4>Download Now</g4> or <g5>Later</g5>) then goes to the first account in the list whose service takes torrents (Mega-Debrid doesn't, yet):",
    "text": "Đánh dấu <g1>Gửi torrent và liên kết magnet đến tài khoản đầu tiên thay vì đến các peer</g1> trong <g2>Tùy chọn → Tài khoản</g2>. Một liên kết magnet (Thêm URL, trình duyệt, clipboard, kéo thả) hoặc một tệp <x3/> (nút <g4>Tải xuống ngay</g4> hoặc <g5>Sau</g5> của Thêm torrent) sau đó sẽ được gửi đến tài khoản đầu tiên trong danh sách mà dịch vụ của nó chấp nhận torrent (Mega-Debrid chưa hỗ trợ):"
+  },
+  "5a08cc8b48188788": {
+   "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
+   "text": "Một kho lưu trữ đã tải xuống xong vẫn có thể bị hỏng: máy chủ gửi sai byte, hoặc proxy trên đường truyền làm hỏng một phần tệp. Lỗi này chỉ hiện ra khi có người mở tệp, thường là rất lâu sau đó. Vì vậy, MDM kiểm tra các kho lưu trữ ZIP, 7z và RAR, kể cả các tệp chia nhỏ khi tất cả các phần đã được tải xuống hoàn tất: <g1>Tùy chọn → Lưu trữ → Kiểm tra kho lưu trữ khi tải xuống hoàn tất</g1> được bật theo mặc định, tối đa 4 GB. Một bài kiểm tra sẽ đọc toàn bộ kho lưu trữ, vì vậy một kho lưu trữ lớn hơn chỉ được kiểm tra khi bạn yêu cầu: nhấp chuột phải vào một kho lưu trữ đã hoàn tất và chọn <g2>Kiểm tra kho lưu trữ</g2>, bất kể kích thước của nó."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6510,10 +6498,6 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "tải xuống một thư viện vào một thư mục được đặt tên theo nó. Xem <g1>Dòng lệnh và tự động hóa</g1>."
   },
-  "5d07ba5f9c5ab43c": {
-   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder. If it flags something other than the setup or MDM's own programs, or a copy from anywhere else, don't run it, and please <g1>tell us</g1>.",
-   "text": "Nếu phần mềm diệt virus của bạn đã cách ly MDM, hãy khôi phục nó và thêm ngoại lệ cho thư mục của nó. Nếu nó gắn cờ thứ gì đó khác ngoài trình cài đặt hoặc các chương trình của MDM, hoặc một bản sao từ bất kỳ nơi nào khác, đừng chạy nó và vui lòng <g1>cho chúng tôi biết</g1>."
-  },
   "5d0bbcc71d941fe0": {
    "source": "misterdownloadmanager.com's own pages (home, download, features, themes, FAQ); <x1/> adds the help from <x2/> and the news from the CHANGELOG, in 22 languages, and GitHub Pages publishes it",
    "text": "Các trang của misterdownloadmanager.com (trang chủ, tải xuống, tính năng, chủ đề, FAQ); <x1/> thêm trợ giúp từ <x2/> và tin tức từ CHANGELOG, bằng 22 ngôn ngữ, và GitHub Pages xuất bản"
@@ -6665,6 +6649,10 @@
   "5ed161293dc26f74": {
    "source": "If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.",
    "text": "Nếu không thể kết nối với MDM khi bạn chọn một trong các mục này, trang trợ giúp sẽ mở đến phần giải thích lý do."
+  },
+  "5ed4e501adf0b774": {
+   "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
+   "text": "Thay vào đó, một tệp ZIP trong một tệp được sửa chữa, khi MDM có thể biết các tệp bị hỏng nằm ở đâu trong đó: chỉ các byte của chúng được tải xuống lại, từ cùng một máy chủ, và kho lưu trữ được kiểm tra lại. Nhật ký hiển thị <g1>Đang tải xuống lại các phần bị hỏng (1.20 MB)</g1>, sau đó <g2>Đã kiểm tra lại: kho lưu trữ hiện không có lỗi</g2>. Các byte chỉ đến từ cùng một phiên bản của tệp: MDM yêu cầu chúng khi tiếp tục bất kỳ quá trình tải xuống nào (với ETag hoặc ngày của tệp, <x3/>), và kiểm tra các byte ngay trước mỗi phần so với các byte trên đĩa. Một tệp đã thay đổi trên máy chủ sẽ dừng quá trình tải xuống với <g4>tệp đã thay đổi trên máy chủ</g4> thay vì trộn hai phiên bản: <g5>Tải xuống lại</g5> tải xuống phiên bản mới. Một kho lưu trữ vẫn bị hỏng sau đó sẽ được đề xuất <g6>Tải xuống lại</g6>."
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7114,6 +7102,10 @@
    "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
    "text": "các chương trình: <x1/>, <x2/> (trợ giúp trình duyệt), <x3/> và <x4/>;"
   },
+  "64e4c03c8252a3bc": {
+   "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
+   "text": "<g1>Kiểm tra kho lưu trữ khi tải xuống hoàn tất, tối đa 4 GB</g1> (mặc định bật) — một kho lưu trữ ZIP, 7z hoặc RAR (một kho lưu trữ chia nhỏ sau khi tập cuối cùng của nó được tải xuống) sẽ được đọc lại và mọi tệp trong đó được kiểm tra trước khi quá trình tải xuống được tính là hoàn tất, với 7-Zip được nêu tên bên dưới (ZIP không có 7-Zip sẽ do MDM tự kiểm tra). Một tệp lớn hơn sẽ không được tự kiểm tra, vì một lần kiểm tra sẽ đọc toàn bộ tệp: nhấp chuột phải → <g2>Kiểm tra kho lưu trữ</g2> để kiểm tra. Các tệp bị hỏng trong ZIP bị hỏng sẽ được tải xuống lại; bất kỳ kho lưu trữ bị hỏng nào khác sẽ được đề xuất <g3>Tải xuống lại</g3>. Xem <g4>Kiểm tra kho lưu trữ</g4>."
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "Trình duyệt và MDM chưa kết nối"
@@ -7301,6 +7293,10 @@
   "6821496b26156b7b": {
    "source": "IDM facts from internetdownloadmanager.com, checked October 2026; timings from <g1>our published benchmark</g1> with raw data. Spot a mistake? <g2>Tell us</g2>.",
    "text": "Thông tin về IDM lấy từ internetdownloadmanager.com, kiểm tra tháng 10 năm 2026; thời gian từ <g1>điểm chuẩn đã công bố của chúng tôi</g1> với dữ liệu thô. Phát hiện lỗi? <g2>Hãy cho chúng tôi biết</g2>."
+  },
+  "6827e4a6218bda8d": {
+   "source": "7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for <g1>Redownload</g1> when damaged, never repaired in part.",
+   "text": "Các kho lưu trữ 7z và RAR giữ các tệp của chúng trong các khối mà vị trí của chúng trong tệp không được bài kiểm tra của 7-Zip cung cấp, và các phần của kho lưu trữ chia nhỏ là các lượt tải xuống riêng biệt: những tệp này được kiểm tra, và được đề xuất <g1>Tải xuống lại</g1> khi bị hỏng, không bao giờ được sửa chữa một phần."
   },
   "6837961868984d5a": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>. To keep only a stretch of it, tick <g4>Only a part</g4>: see <g5>Download only a part</g5>.",
@@ -7642,10 +7638,6 @@
    "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
    "text": "Trên bất kỳ máy Linux nào đã cài đặt MDM (tệp <x1/>, <x2/>, AppImage hoặc <x3/>):"
   },
-  "6d2e652c8dceae8f": {
-   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked",
-   "text": "Giải nén kho lưu trữ (#37): zip, tar, gz và xz đang xử lý; 7z và RAR thông qua 7-Zip đã cài đặt, chạy như một chương trình riêng; tại chỗ thông qua HatchZip khi được yêu cầu"
-  },
   "6d32144394d700a6": {
    "source": "Right-click a link, a picture, a video or a sound and choose <g1>Download with Mister Download Manager</g1>: MDM downloads it whatever its type.",
    "text": "Nhấp chuột phải vào một liên kết, hình ảnh, video hoặc âm thanh và chọn <g1>Tải xuống bằng Mister Download Manager</g1>: MDM sẽ tải xuống bất kể loại nào."
@@ -7813,6 +7805,10 @@
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
    "text": "<g1>Lệnh torrent</g1> (<g2>#39</g2>): menu chuột phải của torrent có <g3>Torrent → Kiểm tra lại tệp</g3>, <g4>Thông báo lại</g4>, <g5>Thêm trình theo dõi...</g5> và <g6>Sao chép liên kết magnet</g6>. Tab Tệp của nó có thể chọn và bỏ chọn tệp khi nó đang chạy. Một địa chỉ web của tệp <x7/>, trong Thêm URL hoặc từ trình duyệt, mở Thêm torrent với nội dung của tệp. TORRENT nằm trong cài đặt mặc định của Tùy chọn → Loại tệp, vì vậy trình duyệt sẽ chuyển các tệp <x8/>; một danh sách đã lưu trước đó giữ nguyên những gì nó có."
+  },
+  "6f2c084eea3d616f": {
+   "source": "A split archive (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. <g6>Test archive</g6> on a split archive not complete yet says so: <g7>Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)</g7>.",
+   "text": "Một kho lưu trữ chia nhỏ (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) được kiểm tra một lần, từ phần đầu tiên của nó, khi mọi phần đã được tải xuống, bất kể phần nào hoàn tất cuối cùng. Các phần của nó thường hoàn tất lần lượt (một hàng đợi tải xuống từng tệp một, một máy chủ khiến bạn phải chờ giữa các tệp), và các phần đã có đọc như một kho lưu trữ bị cắt ngắn, vì vậy chúng không được kiểm tra riêng. <g6>Kiểm tra kho lưu trữ</g6> trên một kho lưu trữ chia nhỏ chưa hoàn tất sẽ hiển thị: <g7>Chưa kiểm tra: photos.zip.001 chưa hoàn tất (phần 3 chưa có)</g7>."
   },
   "6f2f9063e93137cf": {
    "source": "<g1>Alt</g1> + an underlined letter",
@@ -8038,6 +8034,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Dán nguyên liên kết Google Drive mà bạn nhận được khi chọn <g1>Chia sẻ → Sao chép liên kết</g1>:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Không thể đọc danh sách từ GitHub khi trang này được tạo. Trong thời gian chờ đợi, mọi người đều có mặt trên GitHub, trong <g1>yêu cầu kéo</g1> và <g2>vấn đề</g2> của dự án."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Báo cáo sự cố"
@@ -8181,6 +8181,10 @@
   "74632f0763b57b9b": {
    "source": "any distribution: make it executable, run it",
    "text": "bất kỳ bản phân phối nào: đặt quyền thực thi, chạy"
+  },
+  "7466ed5799362d5d": {
+   "source": "The test is 7-Zip's (<x1/>, with the 7-Zip that <g2>Options → Archives</g2> names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.",
+   "text": "Bài kiểm tra là của 7-Zip (<x1/>, với 7-Zip mà <g2>Tùy chọn → Lưu trữ</g2> đã đặt tên): mọi tệp trong kho lưu trữ được đọc lại và kiểm tra, không có gì được ghi. Nếu không có 7-Zip, MDM tự kiểm tra các kho lưu trữ ZIP; các kho lưu trữ 7z và RAR không được kiểm tra."
   },
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
@@ -8470,10 +8474,6 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Bạn cần có tài khoản trả phí của riêng mình với một trong các dịch vụ này: MDM không bán hoặc bao gồm tài khoản. Chia sẻ tài khoản hoặc liên kết của nó vi phạm các điều khoản của dịch vụ và có thể khiến tài khoản bị đình chỉ."
   },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>Tất cả những người đã giúp đỡ</g2>"
-  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "Các câu hỏi thường gặp — Mister Download Manager"
@@ -8613,6 +8613,10 @@
   "7b41ec6610a88942": {
    "source": "How do I uninstall it?",
    "text": "Làm cách nào để gỡ cài đặt nó?"
+  },
+  "7b51945e72d7d774": {
+   "source": "Testing archives",
+   "text": "Kiểm tra kho lưu trữ"
   },
   "7b655c3076cd7d8b": {
    "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
@@ -10230,10 +10234,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Tăng tốc và tiếp tục</g1><g2>Một tệp được chia thành tối đa 32 kết nối, chia lại cho đến byte cuối cùng và tiếp tục sau bất kỳ sự cố nào.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> những người đã gửi yêu cầu kéo, báo cáo sự cố hoặc tham gia thảo luận trên GitHub. <g2>Gặp gỡ tất cả</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Thanh tiêu đề do MDM vẽ, khi cửa sổ không hoạt động (trong suốt: như khi hoạt động)"
@@ -10449,6 +10449,10 @@
   "94e5b9f5c92c226b": {
    "source": "Mister Download Manager downloads torrents and magnet links: choose the files, see peers, trackers and pieces, and queue them with your other downloads.",
    "text": "Mister Download Manager tải torrent và liên kết magnet: chọn tệp, xem các máy ngang hàng, trình theo dõi và các phần, và xếp chúng vào hàng đợi cùng các lượt tải xuống khác của bạn."
+  },
+  "94e715f0410b20f6": {
+   "source": "To test it again by hand, right-click → <g1>Test archive</g1>.",
+   "text": "Để kiểm tra lại thủ công, nhấp chuột phải → <g1>Kiểm tra kho lưu trữ</g1>."
   },
   "94e7e5dadacf5b73": {
    "source": "Link grabber and archive extraction — Mister Download Manager",
@@ -10986,6 +10990,10 @@
    "source": "Control MDM from your phone — Mister Download Manager help",
    "text": "Điều khiển MDM từ điện thoại của bạn — Trợ giúp Mister Download Manager"
   },
+  "9be0243c13142898": {
+   "source": "Last updated 2026-11-23 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Cập nhật lần cuối 23-11-2026 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
+  },
   "9be7deca7d13f40b": {
    "source": "Keys to force or prevent capture",
    "text": "Phím để buộc hoặc ngăn chặn việc bắt tải xuống"
@@ -11114,10 +11122,6 @@
    "source": "<g1>Options → Remote</g1>.",
    "text": "<g1>Tùy chọn → Điều khiển từ xa</g1>."
   },
-  "9df4b353c5463d72": {
-   "source": "Get your file's SHA-256. On Windows, run <x1/>; on Linux, <x2/> and the file's name.",
-   "text": "Lấy SHA-256 của tệp của bạn. Trên Windows, chạy <x1/>; trên Linux, <x2/> và tên tệp."
-  },
   "9e0019721ea3837e": {
    "source": "Install it from the Chrome Web Store or Firefox Add-ons.",
    "text": "Cài đặt từ Chrome Web Store hoặc Firefox Add-ons."
@@ -11141,10 +11145,6 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "Gửi tải xuống từ trình duyệt của bạn"
-  },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> bình luận"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -11957,6 +11957,10 @@
   "a8a147173e09f00a": {
    "source": "Other",
    "text": "Khác"
+  },
+  "a8abc740d94eb990": {
+   "source": "Its archive's test found files in it that don't read back whole (<g1>Testing archives</g1>): hover over <g2>Status</g2> to see which.",
+   "text": "Kiểm tra kho lưu trữ của nó đã tìm thấy các tệp không đọc được toàn bộ (<g1>Kiểm tra kho lưu trữ</g1>): di chuột qua <g2>Trạng thái</g2> để xem tệp nào."
   },
   "a8b65ed9a2e906de": {
    "source": "Choose <g1>Tasks → Show drop target</g1>. A small box with the MDM icon appears and stays on top of other windows.",
@@ -13013,6 +13017,10 @@
   "b6fd95d785a07bfc": {
    "source": "The menu before / after; in a submenu, <g1>Left</g1> closes it",
    "text": "Menu trước / sau; trong một menu con, <g1>Trái</g1> đóng nó"
+  },
+  "b705e95cb334fc6b": {
+   "source": "A download says Damaged",
+   "text": "Tải xuống báo cáo bị hỏng"
   },
   "b706522e2a61060f": {
    "source": "Theme files you make or download go in MDM's themes folder. <g1>View → Theme → Open themes folder</g1> opens it (and makes it the first time). It is in MDM's data folder:",
@@ -14382,6 +14390,10 @@
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> Thêm vào Firefox</g1><g3><x4/> Thêm vào Chrome</g3>"
   },
+  "cb5b5cded4982e90": {
+   "source": "Closing MDM stops a test; the archive is tested again at the next start.",
+   "text": "Đóng MDM sẽ dừng một bài kiểm tra; kho lưu trữ được kiểm tra lại vào lần khởi động tiếp theo."
+  },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "Kiểm tra tab <g1>Giới hạn tốc độ</g1> của chính lượt tải xuống trong cửa sổ tiến trình của nó."
@@ -14609,10 +14621,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Trình lấy liên kết và lưu trữ — Trợ giúp Mister Download Manager"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>Bình luận</g1><g2><x3/> người</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -14946,6 +14954,10 @@
    "source": "Subtitles",
    "text": "Phụ đề"
   },
+  "d368fe0c2974cd27": {
+   "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
+   "text": "Quá trình tải xuống được tính là hoàn tất khi bài kiểm tra kết thúc. Danh sách hiển thị <g1>Đang kiểm tra 45%</g1> trong khi đó, hàng đợi chờ nó, và cửa sổ <g2>Tải xuống hoàn tất</g2>, âm thanh và quá trình giải nén của nó sẽ diễn ra sau bài kiểm tra."
+  },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
    "text": "Các menu mở gần cạnh phải hoặc cạnh dưới của màn hình sẽ lật vào bên trong ở mọi tỷ lệ hiển thị và kích thước giao diện: cạnh màn hình được đo bằng pixel và menu bằng điểm."
@@ -15193,10 +15205,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager và IDM, đặt cạnh nhau."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> vấn đề"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16166,6 +16174,10 @@
    "source": "<g1>Server mode</g1><g2>MDM without a window on a NAS, in Docker or on Unraid, fed from your phone or browser.</g2>",
    "text": "<g1>Chế độ máy chủ</g1><g2>MDM không có cửa sổ trên NAS, trong Docker hoặc trên Unraid, được cấp dữ liệu từ điện thoại hoặc trình duyệt của bạn.</g2>"
   },
+  "e624996bba938a48": {
+   "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
+   "text": "Một kho lưu trữ bị hỏng hiển thị <g1>Hỏng</g1> trong danh sách, nhật ký của nó nêu tên các tệp bị hỏng, và cửa sổ <g2>Kho lưu trữ bị hỏng</g2> cung cấp <g3>Tải xuống lại</g3>: nó tải xuống lại kho lưu trữ (mọi phần của tệp chia nhỏ) từ đầu. Nó không tự giải nén; <g4>Giải nén</g4> vẫn thử nó."
+  },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
    "text": "Giải nén tệp lưu trữ"
@@ -16205,10 +16217,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Không, nếu nó đến từ trang web này hoặc GitHub Releases. Một số chương trình diệt virus đánh giá một chương trình mà chúng không biết bằng cách phỏng đoán, chứ không phải dựa trên virus đã biết…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> yêu cầu kéo"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17318,10 +17326,6 @@
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "<g1>Metro</g1>, theo giao diện phẳng của Windows 8: góc vuông, nút phẳng, hộp có viền nhấn khi được lấy nét, hộp kiểm có dấu tích, thanh tiến trình có viền, thanh cuộn luôn hiển thị mũi tên, biểu tượng một màu (Microsoft Fluent UI System Icons, MIT) và thanh tiêu đề có màu chủ đề với tiêu đề căn giữa."
   },
-  "f554a7b471d1c8c4": {
-   "source": "To check that your copy is the real one:",
-   "text": "Để kiểm tra xem bản sao của bạn có phải là bản thật không:"
-  },
   "f55e431df0898bf7": {
    "source": "Corner radius of a popup in a window (a calendar, a filter box)",
    "text": "Bán kính góc của cửa sổ bật lên trong một cửa sổ (lịch, hộp lọc)"
@@ -17349,10 +17353,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>Thêm lượt tải xuống</g2></g1> — Thêm URL, bảng tạm, vùng thả, tải xuống hàng loạt và danh sách liên kết; phân biệt Bắt đầu tải xuống với Tải xuống sau."
-  },
-  "f5d1e8a8bc6e8e59": {
-   "source": "Compare it with the same file's line in that release's <x1/>.",
-   "text": "So sánh nó với dòng của cùng tệp đó trong <x1/> của bản phát hành đó."
   },
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
@@ -17466,10 +17466,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Dừng chia sẻ sau khi chia sẻ trong … phút</g1> — hoặc sau khi nó đã được chia sẻ trong khoảng thời gian đó, qua tất cả các lần chạy của nó. Mặc định là tắt."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> bình luận"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "các tên ngoài địa chỉ của nó mà trang có thể được mở bằng"
@@ -17565,10 +17561,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Có gì mới trong phiên bản 0.5.0 <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> vấn đề"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",

@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "امضای کد به Windows اجازه می‌دهد تا ناشر یک برنامه را نشان دهد و بررسی کند که پس از ساخت، تغییری در آن ایجاد نشده است. وقتی یک نسخه از Mister Download Manager («MDM») امضا می‌شود، امضای آن شامل فایل‌های Windows است که از این پروژه می‌آیند:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> درخواست پول"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "بله. MDM پیشرفت خود را در حین کار می‌نویسد، بنابراین پس از قطع اتصال، خرابی یا راه‌اندازی مجدد، از همان جایی که متوقف شده بود ادامه می‌دهد. قبل از ادامه، بررسی می‌کند که فایل روی سرور تغییر نکرده باشد. هنگامی که نشانی بارگیری منقضی شده است، <g1>تازه‌سازی نشانی بارگیری</g1> به شما امکان می‌دهد یک نشانی جدید به آن بدهید و داده‌ها را حفظ کنید. به <g2>ادامه بارگیری قطع شده</g2> مراجعه کنید."
@@ -226,10 +222,6 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>راهنما → درباره Mister Download Manager</g1> نسخه نصب‌شده را نشان می‌دهد."
   },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>درخواست‌های پول</g1><g2><x3/> نفر</g2>"
-  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "هر کاری زمان‌بند می‌تواند انجام دهد ←"
@@ -321,6 +313,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "رایگان و متن‌باز. رابط کاربری که از قبل می‌شناسید، یک موتور سریع‌تر در زیر، تورنت‌ها و ویدئو به صورت داخلی."
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "هر پیوند پنجره <g1>اطلاعات فایل بارگیری‌شده</g1> مخصوص به خود را باز می‌کند، بنابراین می‌توانید چندین پنجره را کنار هم باز کنید تا اندازه‌های آن‌ها را پیش از انتخاب مقایسه کنید. هر پنجره جدید کمی پایین‌تر و کنار پنجره قبلی باز می‌شود و به جلو می‌آید؛ از پنجره دوم به بعد، عنوان آن شماره‌اش را نشان می‌دهد: <g2>اطلاعات فایل بارگیری‌شده (2)</g2>، <g3>(3)</g3> و غیره. کلید <g4>Esc</g4> فقط پنجره‌ای را که در آن هستید می‌بندد. حداکثر شش پنجره می‌توانند هم‌زمان باز باشند: پیوندهای بیشتری که هم‌زمان ارسال می‌شوند (مثلا مرورگری که چندین بارگیری را ارسال می‌کند) منتظر می‌مانند و با بستن پنجره‌ها یکی‌یکی باز می‌شوند؛ <g5>لغو</g5> می‌پرسد که آیا می‌خواهید موارد در انتظار را لغو کنید. ارسال مجدد همان پیوند، پنجره باز آن را به جلو می‌آورد. اگر MDM را با پنجره‌های باز ببندید، بارگیری‌های آن‌ها به <g6>صف اصلی دانلود</g6> منتقل می‌شوند، درست مانند گزینه <g7>بارگیری بعدا</g7>."
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -1126,10 +1122,6 @@
    "source": "comes with every download of MDM and works without the app running. <x1/> downloads a file over several connections with a progress line, <g2>Ctrl+C</g2> pauses it and <x3/> carries on later. <x4/> downloads a video, and <x5/> a torrent or only some of its files. <x6/> and <x7/> say what there is to choose before you download. <x8/> lists every option, and a command that fails exits with code 1.",
    "text": "با هر بارگیری MDM همراه است و بدون اجرای برنامه کار می‌کند. <x1/> یک فایل را از طریق چندین اتصال با یک خط پیشرفت بارگیری می‌کند، <g2>Ctrl+C</g2> آن را متوقف می‌کند و <x3/> بعدا ادامه می‌دهد. <x4/> یک ویدیو را بارگیری می‌کند، و <x5/> یک تورنت یا فقط برخی از فایل‌های آن را. <x6/> و <x7/> می‌گویند قبل از بارگیری چه چیزی برای انتخاب وجود دارد. <x8/> هر گزینه را لیست می‌کند، و فرمانی که با شکست مواجه می‌شود با کد 1 خارج می‌شود."
   },
-  "0ff7458c260e0558": {
-   "source": "Last updated 2026-11-22",
-   "text": "آخرین به‌روزرسانی: 2026-11-22"
-  },
   "10068bf8d08f9e51": {
    "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
    "text": "پنجره پیشرفت بارگیری را هم می‌توان با دکمه کوچک‌نمایی یا دکمه <g1>پنهان کردن در ناحیه اعلان</g1> به آنجا فرستاد؛ این دکمه خط تیره کوتاهی با پیکانی رو به پایین، به سمت گوشه، دارد."
@@ -1802,10 +1794,6 @@
    "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
    "text": "به احتمال زیاد این یک هشدار اشتباه است. برخی از برنامه‌های آنتی‌ویروس، برنامه‌های ناشناخته را بر اساس حدس و گمان قضاوت می‌کنند، نه بر اساس ویروس‌های شناخته‌شده: نام‌های شناسایی مانند <x1/>، <x2/>، <x3/> یا <x4/> به معنای چنین حدسی هستند. آنچه بیشتر پرچم‌گذاری می‌کنند، یک بارگیری جدید از یک پروژه کوچک است که هنوز افراد کمی آن را اجرا کرده‌اند و بدون امضای ناشر است؛ نصب‌کننده MDM هنوز کد-امضا نشده است. در VirusTotal، پرچم‌گذاری یک راه‌اندازی جدید توسط تعداد کمی از موتورها در حالی که بیشتر آن‌ها پاک می‌مانند، نشانه معمول یک مثبت کاذب است."
   },
-  "1962902ce083389d": {
-   "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
-   "text": "اگر مطابقت داشتند، این همان فایلی است که ما منتشر کرده‌ایم. هر نسخه در GitHub از <g1>کد منبع عمومی</g1> ساخته می‌شود، بنابراین هر کسی می‌تواند محتوای آن را بررسی کند."
-  },
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "برای باز کردن صفحه با نام سرور (<x1/>)، آن نام را به MDM بدهید: <x2/> (چندین نام: با کاما جدا شده‌اند). نام‌های دیگر رد می‌شوند، تا هیچ صفحه وبی نتواند از طریق نام خود به MDM دسترسی پیدا کند."
@@ -1873,6 +1861,10 @@
   "1a3b9d0d6a07985d": {
    "source": "the page's address as you open it, shown with the pairing code",
    "text": "آدرس صفحه همانطور که آن را باز می‌کنید، همراه با کد جفت‌سازی نشان داده می‌شود"
+  },
+  "1a5164060895b36a": {
+   "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
+   "text": "فایلی که پس از اتمام، آزمایش آرشیو آن آسیب‌هایی را پیدا کرده که می‌توانست قرار دهد (ورودی‌های یک ZIP، شماره 1661: <x1/> برنامه)، دوباره به یک فایل پاره‌ای تبدیل می‌شود (<x2/>): آخرین وضعیت ادامه آن، که توسط بارگیری‌ای که خواسته شده بود آن را نگه دارد (<x3/>، <x4/>) بازگردانده شده، با تنها محدوده‌های آسیب‌دیده که باید واکشی شوند، دوباره نوشته می‌شود؛ هر محدوده چند بایت زودتر برای بررسی هم‌پوشانی آغاز می‌شود و نام فایل به فایل پاره‌ای آن تغییر می‌کند. ادامه آن یک ادامه معمولی است: <x5/> با همان اعتبارسنج‌ها، بررسی هم‌پوشانی، و خلاصه؛ فایلی که در سرور تغییر کرده باشد، مانند <x6/> با شکست مواجه می‌شود."
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -1977,10 +1969,6 @@
   "1bad738cb3cea90f": {
    "source": "Select or unselect the download with the dotted outline",
    "text": "انتخاب یا لغو انتخاب دانلود با طرح کلی نقطه‌چین"
-  },
-  "1badff5f5fc8b6a9": {
-   "source": "Download MDM only from <g1>the website</g1> or <g2>GitHub Releases</g2>.",
-   "text": "MDM را فقط از <g1>وب‌سایت</g1> یا <g2>انتشارات GitHub</g2> بارگیری کنید."
   },
   "1bc816518d6f87cb": {
    "source": "<g1>Save to</g1>: the folder its torrents go to; empty, the Torrents category's folder. <g2>Add them without starting them</g2> adds them as <g3>Download Later</g3> would.",
@@ -2173,6 +2161,10 @@
   "1e303528b75b0fda": {
    "source": "{n} of {total}",
    "text": "{n} از {total}"
+  },
+  "1e32ee75ad780ae4": {
+   "source": "An archive protected by a password isn't tested, as its files can't be read without it: the log says <g1>Couldn't test photos.zip: it needs a password</g1>. Nor are tar, gz and xz files.",
+   "text": "یک بایگانی محافظت‌شده با رمز عبور آزمایش نمی‌شود، زیرا فایل‌های آن بدون رمز قابل خواندن نیستند: در گزارش نوشته می‌شود <g1>امکان آزمایش photos.zip وجود نداشت: به رمز عبور نیاز دارد</g1>. فایل‌های tar، gz و xz نیز آزمایش نمی‌شوند."
   },
   "1e4861cc4f32a384": {
    "source": "<g1>Every text the user sees goes through <x2/></g1> (<x3/>, <x4/>, <x5/>, <x6/>); after adding one, run <x7/>. Data inside a sentence (a file name, an address, a size) goes in through <x8/> or <x9/>, so it reads right in right-to-left languages.",
@@ -2381,10 +2373,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "در macOS فقط مدیر سیستم می‌تواند زمان بیدار شدن رایانه را تنظیم کند؛ بنابراین این گزینه غیرفعال است. MDM رمز عبور مدیر سیستم را درخواست نمی‌کند. برای نمونه، مدیر سیستم می‌تواند Mac را هر روز یک دقیقه پیش از شروع صف بیدار کند؛ مثلا ساعت 10:59 شب برای صفی که ساعت 11:00 شب شروع می‌شود:"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "همه کسانی که از نسخه <x1/>، درخواست پول، گزارش مشکل یا نظر خود را در GitHub ارسال کردند."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3010,6 +2998,10 @@
    "source": "Download limits",
    "text": "محدودیت‌های بارگیری"
   },
+  "29c62272ce90056c": {
+   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
+   "text": "استخراج آرشیو (شماره 37): zip، tar، gz و xz در حال پردازش؛ 7z و RAR از طریق 7-Zip نصب‌شده، که به عنوان برنامه مستقل اجرا می‌شود؛ در صورت درخواست، در محل از طریق HatchZip. آزمایش آرشیو (<x1/>، شماره 1661): <x2/>، یک ZIP در حال پردازش بدون آن، و ورودی‌های آسیب‌دیده یک ZIP که در فایل قرار گرفته‌اند."
+  },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
    "text": "اگر صف شروع نشد ←"
@@ -3594,6 +3586,10 @@
    "source": "<g1>VPN and proxy support:</g1> send downloads through the browser's proxy or VPN extension (off until you turn it on).",
    "text": "<g1>پشتیبانی از VPN و پروکسی:</g1> بارگیری‌ها را از طریق پروکسی یا افزونه VPN مرورگر ارسال کنید (غیرفعال است تا زمانی که آن را روشن کنید)."
   },
+  "319a440ac21a4da8": {
+   "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
+   "text": "اگر یک فایل ZIP که MDM بخش‌های آسیب‌دیده آن را دوباره بارگیری کرده، باز هم آسیب‌دیده باشد، یا یک فایل 7z یا RAR پس از <g1>بارگیری مجدد</g1> همچنان آسیب‌دیده باشد، احتمالا مشکل از خود سرور است: از وب‌سایت بخواهید یک نسخه دیگر ارائه دهد."
+  },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
    "text": "<g1>آرچ</g1>: <x2/>، یا"
@@ -4126,10 +4122,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "روی <g1>تأیید</g1> کلیک کنید."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>مشکلات</g1><g2><x3/> نفر</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "گزینه <g1>بارگیری‌ها → محدودکننده سرعت → روشن کردن</g1> را انتخاب کنید."
@@ -4185,10 +4177,6 @@
   "3ad9354fd79e59c2": {
    "source": "In a Wayland session, MDM chooses its windows' system as it starts, the same way however it was started (its menu entry, the browser's helper, the session's autostart). Its windows run through XWayland where X11 programs look right: only X11 lets MDM open its menus and drop-down lists right under what you clicked (on Wayland they open where the compositor puts new windows, often the middle of the screen) and hide its window in the notification area. That is GNOME and KDE Plasma, which tell X11 programs the screen's scale, and any desktop whose screens aren't scaled. On a scaled screen where nothing tells X11 programs the scale (Hyprland, labwc, sway and other wlroots compositors), the compositor would scale MDM's windows up, blurry, so MDM uses Wayland's own windows there. <g1>View → Window system</g1> picks <g2>X11 (XWayland)</g2> or <g3>Wayland</g3> instead, from the next start, for every way MDM starts (<g4>Automatic</g4> goes back to MDM's choice); <x5/> or <x6/> decides for one start. If the system lacks a library X11 windows need (such as libxkbcommon-x11, which the .deb and .rpm bring but the AppImage and the tar.gz can't), MDM opens on Wayland instead; with no window system it can use, it names what's missing and the command that installs it.",
    "text": "در یک جلسه Wayland، MDM سیستم پنجره‌های خود را هنگام شروع انتخاب می‌کند، به همان روشی که شروع شده است (ورودی منوی آن، کمک‌کننده مرورگر، شروع خودکار جلسه). پنجره‌های آن از طریق XWayland اجرا می‌شوند که برنامه‌های X11 در آن درست به نظر می‌رسند: فقط X11 به MDM اجازه می‌دهد منوها و لیست‌های کشویی خود را درست زیر جایی که کلیک کرده‌اید باز کند (در Wayland آن‌ها در جایی باز می‌شوند که کامپوزیتور پنجره‌های جدید را قرار می‌دهد، اغلب وسط صفحه) و پنجره خود را در ناحیه اعلان پنهان کند. این شامل GNOME و KDE Plasma است که مقیاس صفحه را به برنامه‌های X11 می‌گویند، و هر دسکتاپی که صفحه‌های آن مقیاس‌بندی نشده‌اند. روی یک صفحه مقیاس‌بندی شده که چیزی مقیاس را به برنامه‌های X11 نمی‌گوید (Hyprland، labwc، sway و دیگر کامپوزیتورهای wlroots)، کامپوزیتور پنجره‌های MDM را بزرگ‌تر و تار می‌کند، بنابراین MDM در آنجا از پنجره‌های خود Wayland استفاده می‌کند. <g1>نما ← سیستم پنجره</g1> به جای آن <g2>X11 (XWayland)</g2> یا <g3>Wayland</g3> را از شروع بعدی، برای هر روشی که MDM شروع می‌شود، انتخاب می‌کند (<g4>خودکار</g4> به انتخاب MDM بازمی‌گردد)؛ <x5/> یا <x6/> برای یک شروع تصمیم می‌گیرد. اگر سیستم فاقد کتابخانه‌ای باشد که پنجره‌های X11 به آن نیاز دارند (مانند libxkbcommon-x11، که .deb و .rpm آن را می‌آورند اما AppImage و tar.gz نمی‌توانند)، MDM به جای آن روی Wayland باز می‌شود؛ بدون سیستم پنجره‌ای که بتواند از آن استفاده کند، نام آنچه را که گم شده و دستور نصب آن را می‌گوید."
-  },
-  "3ae1cbe9372aa706": {
-   "source": "Last updated 2026-11-22 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "آخرین به‌روزرسانی: 2026/11/22 · شامل برنامه، افزونه مرورگر و misterdownloadmanager.com می‌شود"
   },
   "3ae62309609ddf49": {
    "source": "The desktop app (<x1/>, egui): list, categories, queues, scheduler, dialogs, tray, settings",
@@ -4474,6 +4462,10 @@
    "source": "Help translate",
    "text": "کمک به ترجمه"
   },
+  "3eaa27ee358ba512": {
+   "source": "Last updated 2026-11-23",
+   "text": "آخرین به‌روزرسانی: 23 نوامبر 2026"
+  },
   "3eba7f086afb94a2": {
    "source": "Is it really free?",
    "text": "آیا واقعا رایگان است؟"
@@ -4593,6 +4585,10 @@
   "4065d823f7a0f8c0": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>; <x12/> is a category's <x13/>; <x14/> is the free space where downloads go (<x15/> when unknown). Only while the API is on.",
    "text": "هر دانلود و سرعت کلی: <x1/>. <x2/> می‌تواند <x3/>، <x4/>، <x5/>، <x6/> یا <x7/> باشد؛ <x8/> در حالی که نامعلوم است، <x9/> است؛ <x10/> (چرا شکست خورد) فقط برای دانلودی در <x11/> وجود دارد؛ <x12/> <x13/> یک دسته است؛ <x14/> فضای خالی است که دانلودها به آنجا می‌روند (<x15/> وقتی نامعلوم است). فقط زمانی که API روشن است."
+  },
+  "406a5240307e8845": {
+   "source": "Right-click → <g1>Redownload</g1> (or the <g2>Damaged archive</g2> window's <g3>Redownload</g3>) downloads it again from the start.",
+   "text": "با راست‌کلیک و انتخاب <g1>بارگیری مجدد</g1> (یا دکمه <g3>بارگیری مجدد</g3> در پنجره <g2>آرشیو آسیب‌دیده</g2>)، فایل از ابتدا دوباره بارگیری می‌شود."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -5830,10 +5826,6 @@
    "source": "The free MDM extension hands each download you click over to MDM, with the page it came from and your sign-in for the site. A button over videos sends them to MDM too.",
    "text": "افزونه رایگان MDM هر بارگیری که روی آن کلیک می‌کنید را به MDM می‌فرستد، همراه با صفحه‌ای که از آن آمده و اطلاعات ورود شما به سایت. دکمه‌ای که روی ویدئوها ظاهر می‌شود نیز آن‌ها را به MDM می‌فرستد."
   },
-  "52fc7550762441e8": {
-   "source": "A few antivirus programs flag new installers just because they have rarely seen them, and machine-learning engines do this the most. On VirusTotal, a handful of small engines flagging a new setup while the big ones stay clean is usually a false positive. We report these to the vendors when we see them.",
-   "text": "برخی برنامه‌های آنتی‌ویروس، نصب‌کننده‌های جدید را فقط به این دلیل که کمتر دیده‌اند، مخرب شناسایی می‌کنند؛ موتورهای یادگیری ماشینی بیشتر این کار را انجام می‌دهند. در VirusTotal، اگر تعداد کمی از موتورهای کوچک یک نصب‌کننده جدید را مخرب شناسایی کنند در حالی که موتورهای بزرگ آن را پاک بدانند، معمولا یک هشدار اشتباه (False Positive) است. ما این موارد را به شرکت‌های سازنده گزارش می‌دهیم."
-  },
   "53060965f7a26125": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1>, and a magnet link or a <x2/> file goes to the service. It downloads the torrent on its own servers while the list shows how far it is (<g3>45% at Real-Debrid</g3>). MDM then fetches the files over HTTP and removes the torrent from the account's list. Your computer never connects to the torrent's peers.",
    "text": "تیک <g1>ارسال تورنت‌ها و پیوندهای مگنت به اولین حساب به جای همتاها</g1> را بزنید، و یک پیوند مگنت یا فایل <x2/> به سرویس می‌رود. سرویس تورنت را روی سرورهای خود بارگیری می‌کند در حالی که لیست نشان می‌دهد چقدر پیش رفته است (<g3>45٪ در Real-Debrid</g3>). سپس MDM فایل‌ها را از طریق HTTP دریافت می‌کند و تورنت را از لیست حساب حذف می‌کند. رایانه شما هرگز به همتاهای تورنت متصل نمی‌شود."
@@ -6030,10 +6022,6 @@
    "source": "A small file",
    "text": "یک فایل کوچک"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "تشکر از"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "نشانی یک فهرست پخش (<x1/>) یا ویدیوهای یک کانال (<x2/>) را بچسبانید و روی <g3>جستجو</g3> کلیک کنید. به‌جای کیفیت‌های یک ویدیو، پنجره ویدیوهای فهرست را همراه با مدت‌زمان هرکدام نشان می‌دهد."
@@ -6165,10 +6153,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 و Linux؛ macOS آزمایشی"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "ساخته‌شده به‌دست این انسان‌های شگفت‌انگیز"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6325,6 +6309,10 @@
   "59d718d0872bfa97": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1> in <g2>Options → Accounts</g2>. A magnet link (Add URL, the browser, the clipboard, a drop) or a <x3/> file (Add torrent's <g4>Download Now</g4> or <g5>Later</g5>) then goes to the first account in the list whose service takes torrents (Mega-Debrid doesn't, yet):",
    "text": "در <g2>گزینه‌ها ← حساب‌ها</g2>، تیک <g1>ارسال تورنت‌ها و پیوندهای مگنت به اولین حساب به جای همتایان</g1> را بزنید. سپس یک پیوند مگنت (افزودن URL، مرورگر، کلیپ‌بورد، کشیدن و رها کردن) یا یک فایل <x3/> (دکمه <g4>اکنون بارگیری کن</g4> یا <g5>بعدا</g5> در افزودن تورنت) به اولین حساب در فهرست که سرویس آن تورنت‌ها را می‌پذیرد (Mega-Debrid هنوز نمی‌پذیرد) ارسال می‌شود:"
+  },
+  "5a08cc8b48188788": {
+   "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
+   "text": "یک بایگانی کامل‌شده ممکن است همچنان خراب باشد: سرور بایت‌های اشتباهی فرستاده یا یک پروکسی در مسیر بخشی از فایل را خراب کرده است. این مشکل فقط زمانی مشخص می‌شود که کسی آن را باز کند، که اغلب خیلی دیرتر است. بنابراین MDM بایگانی‌های ZIP، 7z و RAR را، حتی بایگانی‌های چندقسمتی را پس از دریافت همه قسمت‌ها، پس از پایان بارگیری آزمایش می‌کند: <g1>گزینه‌ها ← بایگانی‌ها ← آزمایش بایگانی‌ها پس از پایان بارگیری</g1> به‌طور پیش‌فرض برای فایل‌های تا 4 گیگابایت فعال است. آزمایش کل بایگانی را می‌خواند، بنابراین بایگانی‌های بزرگ‌تر فقط در صورت درخواست شما آزمایش می‌شوند: روی یک بایگانی کامل‌شده راست‌کلیک کرده و <g2>آزمایش آرشیو</g2> را انتخاب کنید، صرف‌نظر از اندازه‌اش."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6510,10 +6498,6 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "یک گالری را در پوشه‌ای به نام خودش بارگیری می‌کند. به <g1>خط فرمان و خودکارسازی</g1> مراجعه کنید."
   },
-  "5d07ba5f9c5ab43c": {
-   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder. If it flags something other than the setup or MDM's own programs, or a copy from anywhere else, don't run it, and please <g1>tell us</g1>.",
-   "text": "اگر آنتی‌ویروس شما MDM را قرنطینه کرده است، آن را بازیابی کرده و برای پوشه‌اش یک استثنا اضافه کنید. اگر آنتی‌ویروس چیزی غیر از نصب‌کننده یا برنامه‌های خود MDM، یا نسخه‌ای از جای دیگر را مخرب شناسایی کرد، آن را اجرا نکنید و لطفا <g1>به ما اطلاع دهید</g1>."
-  },
   "5d0bbcc71d941fe0": {
    "source": "misterdownloadmanager.com's own pages (home, download, features, themes, FAQ); <x1/> adds the help from <x2/> and the news from the CHANGELOG, in 22 languages, and GitHub Pages publishes it",
    "text": "صفحات خود misterdownloadmanager.com (خانه، بارگیری، ویژگی‌ها، پوسته‌ها، پرسش‌های متداول)؛ <x1/> راهنمای <x2/> و اخبار CHANGELOG را به 22 زبان اضافه می‌کند و GitHub Pages آن را منتشر می‌کند."
@@ -6665,6 +6649,10 @@
   "5ed161293dc26f74": {
    "source": "If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.",
    "text": "اگر هنگام انتخاب یکی از این گزینه‌ها MDM در دسترس نباشد، صفحه راهنما در بخشی باز می‌شود که دلیل را توضیح می‌دهد."
+  },
+  "5ed4e501adf0b774": {
+   "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
+   "text": "یک فایل ZIP تک‌قسمتی در عوض تعمیر می‌شود، اگر MDM بتواند محل فایل‌های آسیب‌دیده را در آن تشخیص دهد: فقط بایت‌های آن‌ها دوباره از همان سرور بارگیری می‌شوند و بایگانی یک بار دیگر آزمایش می‌شود. در گزارش نوشته می‌شود <g1>در حال بارگیری مجدد قسمت‌های آسیب‌دیده (1.20 مگابایت)</g1>، سپس <g2>دوباره آزمایش شد: آرشیو اکنون بدون خطا است</g2>. بایت‌ها فقط از همان نسخه فایل می‌آیند: MDM آن‌ها را همان‌طور که هر بارگیری را از سر می‌گیرد (با ETag یا تاریخ فایل، <x3/>) درخواست می‌کند و بایت‌ها را درست قبل از هر قسمت با بایت‌های روی دیسک مقایسه می‌کند. فایلی که روی سرور تغییر کرده باشد، بارگیری را با <g4>فایل روی سرور تغییر کرده است</g4> متوقف می‌کند، به‌جای اینکه دو نسخه را با هم ترکیب کند: <g5>بارگیری مجدد</g5> نسخه جدید را بارگیری می‌کند. بایگانی‌ای که پس از آن همچنان آسیب‌دیده باشد، برای <g6>بارگیری مجدد</g6> ارائه می‌شود."
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7114,6 +7102,10 @@
    "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
    "text": "برنامه‌ها: <x1/>، <x2/> (کمک‌کننده مرورگر)، <x3/> و <x4/>؛"
   },
+  "64e4c03c8252a3bc": {
+   "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
+   "text": "<g1>پس از پایان بارگیری، آرشیوها را تا حجم 4 گیگابایت آزمایش کن</g1> (به‌طور پیش‌فرض فعال است) — یک آرشیو ZIP، 7z یا RAR (و آرشیوهای چندقسمتی پس از دریافت آخرین بخش) با استفاده از 7-Zip که در ادامه نام برده شده است، خوانده می‌شود و هر فایل درون آن پیش از اینکه بارگیری کامل محسوب شود، بررسی می‌گردد (آرشیوهای ZIP بدون 7-Zip توسط خود MDM آزمایش می‌شوند). آرشیوهای بزرگ‌تر به‌طور خودکار آزمایش نمی‌شوند، زیرا آزمایش کل فایل را می‌خواند: با راست‌کلیک → <g2>آزمایش آرشیو</g2> می‌توانید آن را آزمایش کنید. فایل‌های آسیب‌دیده در آرشیوهای ZIP دوباره بارگیری می‌شوند؛ هر آرشیو آسیب‌دیده دیگری برای <g3>بارگیری مجدد</g3> پیشنهاد می‌شود. به <g4>آزمایش آرشیوها</g4> مراجعه کنید."
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "مرورگر و MDM متصل نیستند"
@@ -7301,6 +7293,10 @@
   "6821496b26156b7b": {
    "source": "IDM facts from internetdownloadmanager.com, checked October 2026; timings from <g1>our published benchmark</g1> with raw data. Spot a mistake? <g2>Tell us</g2>.",
    "text": "حقایق IDM از internetdownloadmanager.com، بررسی شده در اکتبر 2026؛ زمان‌بندی‌ها از <g1>معیار منتشر شده ما</g1> با داده‌های خام. اشتباهی مشاهده کردید؟ <g2>به ما بگویید</g2>."
+  },
+  "6827e4a6218bda8d": {
+   "source": "7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for <g1>Redownload</g1> when damaged, never repaired in part.",
+   "text": "بایگانی‌های 7z و RAR فایل‌های خود را در بلوک‌هایی نگه می‌دارند که محل آن‌ها در فایل توسط آزمایش 7-Zip مشخص نمی‌شود و قسمت‌های یک بایگانی چندقسمتی بارگیری‌های جداگانه‌ای هستند: این‌ها آزمایش می‌شوند و در صورت آسیب‌دیدگی برای <g1>بارگیری مجدد</g1> ارائه می‌شوند، هرگز به‌صورت جزئی تعمیر نمی‌شوند."
   },
   "6837961868984d5a": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>. To keep only a stretch of it, tick <g4>Only a part</g4>: see <g5>Download only a part</g5>.",
@@ -7642,10 +7638,6 @@
    "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
    "text": "در هر دستگاه Linux که MDM روی آن نصب شده است (<x1/>، <x2/>، AppImage یا <x3/>):"
   },
-  "6d2e652c8dceae8f": {
-   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked",
-   "text": "استخراج آرشیو (#37): zip، tar، gz و xz در حال پردازش؛ 7z و RAR از طریق 7-Zip نصب‌شده، که به عنوان برنامه مستقل اجرا می‌شود؛ در صورت درخواست، در محل از طریق HatchZip"
-  },
   "6d32144394d700a6": {
    "source": "Right-click a link, a picture, a video or a sound and choose <g1>Download with Mister Download Manager</g1>: MDM downloads it whatever its type.",
    "text": "روی یک پیوند، یک تصویر، یک ویدئو یا یک صدا کلیک راست کنید و <g1>دانلود با Mister Download Manager</g1> را انتخاب کنید: MDM آن را بدون توجه به نوعش بارگیری می‌کند."
@@ -7813,6 +7805,10 @@
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
    "text": "<g1>فرمان‌های تورنت</g1> (<g2>#39</g2>): منوی راست‌کلیک یک تورنت دارای <g3>تورنت → بررسی مجدد فایل‌ها</g3>، <g4>اعلام مجدد</g4>، <g5>افزودن ردیاب‌ها...</g5> و <g6>کپی پیوند مگنت</g6> است. تب «فایل‌ها» آن می‌تواند فایل‌ها را در حین اجرا تیک بزند و تیک آن‌ها را بردارد. آدرس وب یک فایل <x7/>، در «افزودن URL» یا از مرورگر، «افزودن تورنت» را با آنچه فایل در خود دارد باز می‌کند. TORRENT در پیش‌فرض‌های «گزینه‌ها → انواع فایل» است، بنابراین مرورگر فایل‌های <x8/> را تحویل می‌دهد؛ یک فهرست ذخیره شده قبلی آنچه را که داشت حفظ می‌کند."
+  },
+  "6f2c084eea3d616f": {
+   "source": "A split archive (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. <g6>Test archive</g6> on a split archive not complete yet says so: <g7>Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)</g7>.",
+   "text": "یک بایگانی چندقسمتی (<x1/>، <x2/>، <x3/>، <x4/>، <x5/>) یک بار، از اولین قسمت آن، زمانی که همه قسمت‌ها بارگیری شدند، هر کدام که آخر تمام شود، آزمایش می‌شود. قسمت‌های آن اغلب یکی پس از دیگری تمام می‌شوند (صفی که یکی‌یکی بارگیری می‌کند، میزبانی که شما را بین فایل‌ها منتظر می‌گذارد) و قسمت‌های موجود به‌عنوان یک بایگانی ناقص خوانده می‌شوند، بنابراین به‌تنهایی آزمایش نمی‌شوند. <g6>آزمایش آرشیو</g6> روی یک بایگانی چندقسمتی که هنوز کامل نشده است، این را می‌گوید: <g7>هنوز آزمایش نشده است: photos.zip.001 کامل نیست (قسمت 3 هنوز موجود نیست)</g7>."
   },
   "6f2f9063e93137cf": {
    "source": "<g1>Alt</g1> + an underlined letter",
@@ -8038,6 +8034,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "پیوند Google Drive را همان‌طور که هست بچسبانید؛ همان پیوندی که با <g1>اشتراک‌گذاری → کپی پیوند</g1> دریافت می‌کنید:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "هنگام ساخت این صفحه، فهرست از GitHub خوانده نشد. در این مدت، همه در GitHub، در <g1>درخواست‌های پول</g1> و <g2>مسائل</g2> پروژه هستند."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "گزارش مشکلات"
@@ -8181,6 +8181,10 @@
   "74632f0763b57b9b": {
    "source": "any distribution: make it executable, run it",
    "text": "برای هر توزیعی: فایل را اجرایی کنید و اجرا کنید"
+  },
+  "7466ed5799362d5d": {
+   "source": "The test is 7-Zip's (<x1/>, with the 7-Zip that <g2>Options → Archives</g2> names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.",
+   "text": "آزمایش توسط 7-Zip انجام می‌شود (<x1/>، با همان 7-Zip که در <g2>گزینه‌ها ← بایگانی‌ها</g2> نام برده شده است): هر فایل در بایگانی دوباره خوانده و بررسی می‌شود و چیزی نوشته نمی‌شود. بدون 7-Zip، MDM بایگانی‌های ZIP را خودش آزمایش می‌کند؛ بایگانی‌های 7z و RAR آزمایش نمی‌شوند."
   },
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
@@ -8470,10 +8474,6 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "شما به حساب پولی خود با یکی از این سرویس‌ها نیاز دارید: MDM هیچ حسابی را نمی‌فروشد یا شامل نمی‌شود. اشتراک‌گذاری یک حساب یا پیوندهای آن، شرایط سرویس‌ها را نقض می‌کند و می‌تواند منجر به تعلیق حساب شود."
   },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>همه کسانی که کمک کردند</g2>"
-  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "پرسش و پاسخ — Mister Download Manager"
@@ -8613,6 +8613,10 @@
   "7b41ec6610a88942": {
    "source": "How do I uninstall it?",
    "text": "چگونه آن را حذف نصب کنم؟"
+  },
+  "7b51945e72d7d774": {
+   "source": "Testing archives",
+   "text": "آزمایش بایگانی‌ها"
   },
   "7b655c3076cd7d8b": {
    "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
@@ -10230,10 +10234,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>افزایش سرعت و ادامه بارگیری</g1><g2>یک فایل تا 32 اتصال تقسیم می‌شود، تا بایت آخر دوباره تقسیم می‌شود و پس از هر خرابی ادامه می‌یابد.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> افرادی که درخواست پول (pull request) فرستادند، مشکلی را گزارش کردند یا در گفت‌وگوهای GitHub شرکت کردند. <g2>با همه آن‌ها آشنا شوید</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "نوار عنوان ترسیم‌شده توسط MDM، وقتی پنجره فعال نیست (شفاف: مانند حالت فعال)"
@@ -10449,6 +10449,10 @@
   "94e5b9f5c92c226b": {
    "source": "Mister Download Manager downloads torrents and magnet links: choose the files, see peers, trackers and pieces, and queue them with your other downloads.",
    "text": "Mister Download Manager تورنت‌ها و پیوندهای مگنت را بارگیری می‌کند: فایل‌ها را انتخاب کنید، همتایان، ردیاب‌ها و قطعات را ببینید، و آنها را با سایر بارگیری‌های خود در صف قرار دهید."
+  },
+  "94e715f0410b20f6": {
+   "source": "To test it again by hand, right-click → <g1>Test archive</g1>.",
+   "text": "برای آزمایش مجدد دستی، راست‌کلیک کرده و <g1>آزمایش آرشیو</g1> را انتخاب کنید."
   },
   "94e7e5dadacf5b73": {
    "source": "Link grabber and archive extraction — Mister Download Manager",
@@ -10986,6 +10990,10 @@
    "source": "Control MDM from your phone — Mister Download Manager help",
    "text": "کنترل MDM از طریق تلفن شما — راهنمای Mister Download Manager"
   },
+  "9be0243c13142898": {
+   "source": "Last updated 2026-11-23 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخرین به‌روزرسانی: 23 نوامبر 2026 · شامل برنامه، افزونه مرورگر و misterdownloadmanager.com می‌شود"
+  },
   "9be7deca7d13f40b": {
    "source": "Keys to force or prevent capture",
    "text": "کلیدهای اجبار یا جلوگیری از دریافت"
@@ -11114,10 +11122,6 @@
    "source": "<g1>Options → Remote</g1>.",
    "text": "<g1>گزینه‌ها → کنترل از راه دور</g1>."
   },
-  "9df4b353c5463d72": {
-   "source": "Get your file's SHA-256. On Windows, run <x1/>; on Linux, <x2/> and the file's name.",
-   "text": "SHA-256 فایل خود را به دست آورید. در Windows، <x1/> را اجرا کنید؛ در Linux، <x2/> و نام فایل را وارد کنید."
-  },
   "9e0019721ea3837e": {
    "source": "Install it from the Chrome Web Store or Firefox Add-ons.",
    "text": "آن را از Chrome Web Store یا Firefox Add-ons نصب کنید."
@@ -11141,10 +11145,6 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "ارسال دانلودها از مرورگر شما"
-  },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> دیدگاه"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -11957,6 +11957,10 @@
   "a8a147173e09f00a": {
    "source": "Other",
    "text": "سایر"
+  },
+  "a8abc740d94eb990": {
+   "source": "Its archive's test found files in it that don't read back whole (<g1>Testing archives</g1>): hover over <g2>Status</g2> to see which.",
+   "text": "آزمایش آرشیو نشان می‌دهد که فایل‌های درون آن به‌طور کامل خوانده نمی‌شوند (<g1>آزمایش آرشیوها</g1>): نشانگر ماوس را روی <g2>وضعیت</g2> نگه دارید تا جزئیات را ببینید."
   },
   "a8b65ed9a2e906de": {
    "source": "Choose <g1>Tasks → Show drop target</g1>. A small box with the MDM icon appears and stays on top of other windows.",
@@ -13013,6 +13017,10 @@
   "b6fd95d785a07bfc": {
    "source": "The menu before / after; in a submenu, <g1>Left</g1> closes it",
    "text": "منوی قبلی / بعدی؛ در یک زیرمنو، <g1>چپ</g1> آن را می‌بندد"
+  },
+  "b705e95cb334fc6b": {
+   "source": "A download says Damaged",
+   "text": "بارگیری «آسیب‌دیده» است"
   },
   "b706522e2a61060f": {
    "source": "Theme files you make or download go in MDM's themes folder. <g1>View → Theme → Open themes folder</g1> opens it (and makes it the first time). It is in MDM's data folder:",
@@ -14382,6 +14390,10 @@
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> افزودن به Firefox</g1><g3><x4/> افزودن به Chrome</g3>"
   },
+  "cb5b5cded4982e90": {
+   "source": "Closing MDM stops a test; the archive is tested again at the next start.",
+   "text": "بستن MDM یک آزمایش را متوقف می‌کند؛ بایگانی در شروع بعدی دوباره آزمایش می‌شود."
+  },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "برگه <g1>محدودکننده سرعت</g1> را در پنجره پیشرفت بارگیری بررسی کنید."
@@ -14609,10 +14621,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "دریافت‌کننده پیوند و بایگانی‌ها — راهنمای Mister Download Manager"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>دیدگاه‌ها</g1><g2><x3/> نفر</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -14946,6 +14954,10 @@
    "source": "Subtitles",
    "text": "زیرنویس‌ها"
   },
+  "d368fe0c2974cd27": {
+   "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
+   "text": "بارگیری پس از پایان آزمایش آن، کامل‌شده محسوب می‌شود. در این مدت، لیست <g1>در حال بررسی 45٪</g1> را نشان می‌دهد، صف آن منتظر می‌ماند و پنجره <g2>بارگیری کامل شد</g2>، صدای آن و استخراج آن پس از آزمایش انجام می‌شود."
+  },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
    "text": "منوهایی که نزدیک لبه راست یا پایین صفحه باز می‌شوند، در هر مقیاس نمایشگر و اندازه رابط کاربری به داخل آن برمی‌گردند: لبه صفحه بر حسب پیکسل و منو بر حسب پوینت اندازه‌گیری می‌شد."
@@ -15193,10 +15205,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager و IDM، کنار هم."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> مشکل"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16166,6 +16174,10 @@
    "source": "<g1>Server mode</g1><g2>MDM without a window on a NAS, in Docker or on Unraid, fed from your phone or browser.</g2>",
    "text": "<g1>حالت سرور</g1><g2>MDM بدون پنجره روی NAS، در Docker یا Unraid، که از گوشی یا مرورگر شما تغذیه می‌شود.</g2>"
   },
+  "e624996bba938a48": {
+   "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
+   "text": "یک بایگانی آسیب‌دیده در لیست <g1>آسیب‌دیده</g1> نشان داده می‌شود، گزارش آن فایل‌های آسیب‌دیده را نام می‌برد و پنجره <g2>آرشیو آسیب‌دیده</g2> گزینه <g3>بارگیری مجدد</g3> را ارائه می‌دهد: این گزینه بایگانی (هر قسمت از یک بایگانی چندقسمتی) را دوباره از ابتدا بارگیری می‌کند. این بایگانی به‌طور خودکار استخراج نمی‌شود؛ <g4>استخراج</g4> همچنان آن را امتحان می‌کند."
+  },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
    "text": "استخراج بایگانی‌ها"
@@ -16205,10 +16217,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "خیر، اگر از این سایت یا انتشارات GitHub دریافت شده باشد. برخی از برنامه‌های آنتی‌ویروس، برنامه‌ای را که نمی‌شناسند، با حدس و گمان ارزیابی می‌کنند، نه بر اساس ویروس‌های شناخته‌شده…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> درخواست پول"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17318,10 +17326,6 @@
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "<g1>مترو</g1>، به سبک تخت Windows 8: گوشه‌های مربع، دکمه‌های تخت، جعبه‌هایی که هنگام فوکوس یک حاشیه برجسته می‌گیرند، چک‌باکس‌هایی با علامت تیک، نوار پیشرفت حاشیه‌دار، نوارهای پیمایش با فلش‌های همیشه نمایش داده شده، آیکون‌های تک‌رنگ (Microsoft's Fluent UI System Icons, MIT) و یک نوار عنوان به رنگ پوسته با عنوان در مرکز."
   },
-  "f554a7b471d1c8c4": {
-   "source": "To check that your copy is the real one:",
-   "text": "برای بررسی اینکه نسخه شما اصلی است:"
-  },
   "f55e431df0898bf7": {
    "source": "Corner radius of a popup in a window (a calendar, a filter box)",
    "text": "شعاع گوشه یک پنجره بازشو در یک پنجره (تقویم، کادر فیلتر)"
@@ -17349,10 +17353,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>افزودن دانلودها</g2></g1> — افزودن URL، کلیپ‌بورد، هدف کشیدن و رها کردن، دانلودهای دسته‌ای و لیست لینک‌ها، و شروع دانلود در مقابل بارگیری بعدا."
-  },
-  "f5d1e8a8bc6e8e59": {
-   "source": "Compare it with the same file's line in that release's <x1/>.",
-   "text": "آن را با خط مربوط به همان فایل در <x1/> همان نسخه مقایسه کنید."
   },
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
@@ -17466,10 +17466,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>توقف اشتراک‌گذاری پس از اشتراک‌گذاری به مدت … دقیقه</g1> — یا وقتی این مدت در مجموع اجراهایش سپری شود. به‌طور پیش‌فرض خاموش است."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> دیدگاه"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "نام‌هایی علاوه بر آدرس‌های آن که صفحه ممکن است با آنها باز شود"
@@ -17565,10 +17561,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "تازه‌های نسخه 0.5.0 <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> مشکل"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
