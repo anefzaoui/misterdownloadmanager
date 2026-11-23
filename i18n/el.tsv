@@ -745,6 +745,7 @@
 #, machine
 	Austria	Αυστρία
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	Αυτόματη
@@ -887,7 +888,7 @@
 #, machine
 	Busy, try later	Απασχολημένο, δοκιμάστε αργότερα
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	Μέγεθος κουμπιού:
 #. message or event log entry in the main window
@@ -1160,7 +1161,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Κομόρες
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	Συμπαγές
@@ -2198,7 +2199,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	Οι λήψεις FTP δεν περνούν μέσω διακομιστή μεσολάβησης HTTP. Επιλέξτε SOCKS5 ή SOCKS4 για να τις στείλετε μέσω του διακομιστή μεσολάβησης.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	Πλήρες
 #. text in countries.rs
@@ -6537,6 +6538,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Δεν ήταν δυνατή η ανάγνωση του αρχείου {file} για έλεγχο
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	Δεν ήταν δυνατή η αντικατάσταση του αρχείου {file}: ενδέχεται να είναι ανοιχτό σε άλλο πρόγραμμα. Η νέα λήψη αποθηκεύτηκε δίπλα του ως {new} και τα δύο αρχεία διατηρούνται.
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Το αρχείο {file} δεν βρίσκεται πλέον εκεί όπου αποθηκεύτηκε (μετακινήθηκε ή διαγράφηκε). Η επιλογή «Εκ νέου λήψη» στο μενού δεξιού κλικ το κατεβάζει ξανά.
@@ -6922,6 +6927,7 @@ extension	Added to MDM	Προστέθηκε στο MDM
 extension	Added to the queue	Προστέθηκε στην ουρά
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	Όλες
 #. text in the browser extension
@@ -6937,6 +6943,14 @@ extension	Another Mister Download Manager (a server)	Άλλο Mister Download Ma
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	Ήχος
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	Μόνο ήχος
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	Πίσω στη γωνία του, το μενού του εμφανίζει τα πάντα, σε κάθε ιστότοπο
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6986,6 +7000,10 @@ extension	Clear finished	Εκκαθάριση ολοκληρωμένων
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	Εκκαθάριση ολοκληρωμένων λήψεων;
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	Κωδικοποιητής
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7060,6 +7078,10 @@ extension	Download all links with Mister Download Manager	Λήψη όλων τω
 #, machine
 extension	Download best	Λήψη καλύτερης
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	Κουμπί λήψης πάνω από βίντεο
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Λήψη επιλεγμένων συνδέσμων με το Mister Download Manager
@@ -7102,9 +7124,9 @@ extension	Downloads from {site} stay with the browser	Οι λήψεις από �
 #, machine
 extension	Downloads go to {address}	Οι λήψεις μεταβαίνουν στη διεύθυνση {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	Σύρετε τις τελείες για να το μετακινήσετε κατά μήκος της άκρης
+extension	Drag the dots to move it to another corner, or outside the video	Σύρετε τις τελείες για να το μετακινήσετε σε άλλη γωνία ή έξω από το βίντεο
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7122,6 +7144,10 @@ extension	Failed: {why}	Απέτυχε: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	Το αρχείο διαγράφηκε ή μετακινήθηκε
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	Τύπος αρχείου
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7434,9 +7460,17 @@ extension	Protected	Προστατευμένο
 #, machine
 extension	Protected video	Προστατευμένο βίντεο
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	Επαναφορά του κουμπιού στη γωνία του
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	Κατάργηση από τη λίστα
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	Επαναφορά
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7490,6 +7524,7 @@ extension	Share...	Κοινή χρήση...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	Εμφάνιση
 #. text in the browser extension
@@ -7639,6 +7674,10 @@ extension	Waiting	Σε αναμονή
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
 #, machine
 extension	What you download with Mister Download Manager shows up here.	Ό,τι κατεβάζετε με το Mister Download Manager εμφανίζεται εδώ.
+#. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	Πού το μετακινήσατε και τα φίλτρα του μενού του, σε κάθε ιστότοπο
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine

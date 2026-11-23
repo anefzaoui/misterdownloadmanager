@@ -745,6 +745,7 @@
 #, machine
 	Austria	Áo
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	Tự động
@@ -887,7 +888,7 @@
 #, machine
 	Busy, try later	Bận, thử lại sau
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	Kích thước nút:
 #. message or event log entry in the main window
@@ -1165,7 +1166,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Comoros
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	Thu gọn
@@ -2203,7 +2204,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	Tải xuống FTP không đi qua proxy HTTP. Chọn SOCKS5 hoặc SOCKS4 để gửi chúng qua proxy.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	Đầy đủ
 #. text in countries.rs
@@ -6538,6 +6539,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Không thể đọc {file} để kiểm tra
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	Không thể thay thế {file}: có thể một chương trình khác đang mở tệp này. Bản tải xuống mới được lưu trong cùng thư mục với tên {new}, và cả hai tệp đều được giữ lại.
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} không còn ở vị trí đã lưu (đã bị di chuyển hoặc xóa). Chọn Tải lại trong menu chuột phải để tải lại tệp.
@@ -6923,6 +6928,7 @@ extension	Added to MDM	Đã thêm vào MDM
 extension	Added to the queue	Đã thêm vào hàng đợi
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	Tất cả
 #. text in the browser extension
@@ -6938,6 +6944,14 @@ extension	Another Mister Download Manager (a server)	Một Mister Download Manag
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	Âm thanh
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	Chỉ âm thanh
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	Đã đưa nút về vị trí cũ, menu hiển thị mọi mục trên mọi trang web
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6987,6 +7001,10 @@ extension	Clear finished	Xóa các mục đã hoàn tất
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	Xóa các mục tải xuống đã hoàn tất?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	Codec
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7061,6 +7079,10 @@ extension	Download all links with Mister Download Manager	Tải xuống tất c�
 #, machine
 extension	Download best	Tải xuống chất lượng tốt nhất
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	Nút tải xuống trên video
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Tải xuống các liên kết đã chọn bằng Mister Download Manager
@@ -7103,9 +7125,9 @@ extension	Downloads from {site} stay with the browser	Tải xuống từ {site} 
 #, machine
 extension	Downloads go to {address}	Tải xuống chuyển đến {address}
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	Kéo các chấm để di chuyển nút dọc theo cạnh
+extension	Drag the dots to move it to another corner, or outside the video	Kéo các dấu chấm để di chuyển nó đến một góc khác hoặc ra ngoài video
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7123,6 +7145,10 @@ extension	Failed: {why}	Thất bại: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	Tệp đã bị xóa hoặc di chuyển
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	Loại tệp
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7435,9 +7461,17 @@ extension	Protected	Được bảo vệ
 #, machine
 extension	Protected video	Video được bảo vệ
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	Đặt lại nút về vị trí cũ
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	Xóa khỏi danh sách
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	Đặt lại
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7491,6 +7525,7 @@ extension	Share...	Chia sẻ...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	Hiển thị
 #. text in the browser extension
@@ -7640,6 +7675,10 @@ extension	Waiting	Đang chờ
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
 #, machine
 extension	What you download with Mister Download Manager shows up here.	Những gì bạn tải xuống bằng Mister Download Manager sẽ hiển thị ở đây.
+#. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	Vị trí bạn đã di chuyển và bộ lọc menu của nó, trên mỗi trang web
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine

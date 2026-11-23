@@ -745,6 +745,7 @@
 #, machine
 	Austria	ਆਸਟ੍ਰੀਆ
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	ਆਟੋਮੈਟਿਕ
@@ -887,7 +888,7 @@
 #, machine
 	Busy, try later	ਵਿਅਸਤ, ਬਾਅਦ ਵਿੱਚ ਕੋਸ਼ਿਸ਼ ਕਰੋ
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	ਬਟਨ ਦਾ ਆਕਾਰ:
 #. message or event log entry in the main window
@@ -1165,7 +1166,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	ਕੋਮੋਰੋਸ
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	ਸੰਖੇਪ
@@ -2203,7 +2204,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ਡਾਊਨਲੋਡ HTTP ਪ੍ਰੌਕਸੀ ਰਾਹੀਂ ਨਹੀਂ ਜਾਂਦੇ। ਉਹਨਾਂ ਨੂੰ ਪ੍ਰੌਕਸੀ ਰਾਹੀਂ ਭੇਜਣ ਲਈ SOCKS5 ਜਾਂ SOCKS4 ਚੁਣੋ।
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	ਪੂਰਾ
 #. text in countries.rs
@@ -6538,6 +6539,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	ਜਾਂਚ ਲਈ {file} ਨੂੰ ਪੜ੍ਹਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} ਨੂੰ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਕਿਸੇ ਹੋਰ ਪ੍ਰੋਗਰਾਮ ਵਿੱਚ ਇਹ ਖੁੱਲ੍ਹੀ ਹੋਵੇ। ਨਵੀਂ ਕਾਪੀ ਇਸੇ ਫੋਲਡਰ ਵਿੱਚ {new} ਨਾਂ ਨਾਲ ਸੇਵ ਕੀਤੀ ਗਈ ਹੈ, ਅਤੇ ਦੋਵੇਂ ਫ਼ਾਈਲਾਂ ਰੱਖੀਆਂ ਗਈਆਂ ਹਨ।
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ਹੁਣ ਉਸ ਥਾਂ 'ਤੇ ਨਹੀਂ ਹੈ ਜਿੱਥੇ ਇਸਨੂੰ ਸੇਵ ਕੀਤਾ ਗਿਆ ਸੀ (ਇਸਨੂੰ ਕਿਤੇ ਹੋਰ ਲਿਜਾਇਆ ਜਾਂ ਮਿਟਾਇਆ ਗਿਆ ਹੈ)। ਇਸਨੂੰ ਦੁਬਾਰਾ ਲੈਣ ਲਈ, ਇਸ ਦੇ ਸੱਜਾ-ਕਲਿੱਕ ਮੀਨੂ ਵਿੱਚੋਂ ਮੁੜ-ਡਾਊਨਲੋਡ ਕਰੋ ਚੁਣੋ।
@@ -6923,6 +6928,7 @@ extension	Added to MDM	MDM ਵਿੱਚ ਜੋੜਿਆ ਗਿਆ
 extension	Added to the queue	ਕਤਾਰ ਵਿੱਚ ਜੋੜਿਆ ਗਿਆ
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	ਸਾਰੇ
 #. text in the browser extension
@@ -6938,6 +6944,14 @@ extension	Another Mister Download Manager (a server)	ਇੱਕ ਹੋਰ Mister 
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	ਆਡੀਓ
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	ਸਿਰਫ਼ ਆਡੀਓ
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	ਆਪਣੇ ਕੋਨੇ ਵਿੱਚ ਵਾਪਸ, ਇਸਦਾ ਮੀਨੂ ਹਰ ਸਾਈਟ 'ਤੇ ਸਭ ਕੁਝ ਦਿਖਾ ਰਿਹਾ ਹੈ
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6987,6 +7001,10 @@ extension	Clear finished	ਪੂਰੇ ਹੋਏ ਸਾਫ਼ ਕਰੋ
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	ਪੂਰੇ ਹੋਏ ਡਾਊਨਲੋਡ ਸਾਫ਼ ਕਰੀਏ?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	ਕੋਡੇਕ
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -7061,6 +7079,10 @@ extension	Download all links with Mister Download Manager	Mister Download Manage
 #, machine
 extension	Download best	ਸਭ ਤੋਂ ਵਧੀਆ ਡਾਊਨਲੋਡ ਕਰੋ
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	ਵੀਡੀਓ ਉੱਤੇ ਡਾਊਨਲੋਡ ਬਟਨ
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Mister Download Manager ਨਾਲ ਚੁਣੇ ਗਏ ਲਿੰਕ ਡਾਊਨਲੋਡ ਕਰੋ
@@ -7103,9 +7125,9 @@ extension	Downloads from {site} stay with the browser	{site} ਤੋਂ ਡਾਊ
 #, machine
 extension	Downloads go to {address}	ਡਾਊਨਲੋਡ {address} 'ਤੇ ਜਾਂਦੇ ਹਨ
 #. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
-extension	Drag the dots to move it along the edge	ਇਸਨੂੰ ਕਿਨਾਰੇ ਦੇ ਨਾਲ ਲਿਜਾਣ ਲਈ ਬਿੰਦੀਆਂ ਨੂੰ ਖਿੱਚੋ
+extension	Drag the dots to move it to another corner, or outside the video	ਇਸਨੂੰ ਕਿਸੇ ਹੋਰ ਕੋਨੇ ਵਿੱਚ, ਜਾਂ ਵੀਡੀਓ ਤੋਂ ਬਾਹਰ ਲਿਜਾਣ ਲਈ ਬਿੰਦੀਆਂ ਨੂੰ ਖਿੱਚੋ
 #. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
@@ -7123,6 +7145,10 @@ extension	Failed: {why}	ਅਸਫਲ: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	ਫ਼ਾਈਲ ਮਿਟਾਈ ਗਈ ਜਾਂ ਮੂਵ ਕੀਤੀ ਗਈ
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	ਫ਼ਾਈਲ ਕਿਸਮ
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7435,9 +7461,17 @@ extension	Protected	ਸੁਰੱਖਿਅਤ
 #, machine
 extension	Protected video	ਸੁਰੱਖਿਅਤ ਵੀਡੀਓ
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	ਬਟਨ ਨੂੰ ਵਾਪਸ ਇਸਦੇ ਕੋਨੇ ਵਿੱਚ ਰੱਖੋ
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	ਸੂਚੀ ਵਿੱਚੋਂ ਹਟਾਓ
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	ਰੀਸੈੱਟ ਕਰੋ
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7491,6 +7525,7 @@ extension	Share...	ਸਾਂਝਾ ਕਰੋ...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	ਦਿਖਾਓ
 #. text in the browser extension
@@ -7640,6 +7675,10 @@ extension	Waiting	ਉਡੀਕ ਰਿਹਾ ਹੈ
 #. in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when the app has no downloads; keep the name Mister Download Manager as it is
 #, machine
 extension	What you download with Mister Download Manager shows up here.	ਤੁਸੀਂ Mister Download Manager ਨਾਲ ਜੋ ਡਾਊਨਲੋਡ ਕਰਦੇ ਹੋ, ਉਹ ਇੱਥੇ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ।
+#. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	ਜਿੱਥੇ ਤੁਸੀਂ ਇਸਨੂੰ ਲਿਜਾਇਆ ਸੀ, ਅਤੇ ਇਸਦੇ ਮੀਨੂ ਦੇ ਫਿਲਟਰ, ਹਰੇਕ ਸਾਈਟ 'ਤੇ
 #. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine

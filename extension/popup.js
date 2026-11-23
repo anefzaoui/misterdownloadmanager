@@ -334,6 +334,12 @@ ext.storage.local.get({ hideVideoFullscreen: false })
 hideFullscreen.addEventListener("change", () =>
   ext.storage.local.set({ hideVideoFullscreen: hideFullscreen.checked }).catch(() => {}));
 
+// #1735: the video button back in its corner and its menu listing everything, on every site
+// (video.js keeps both per site; its pages already open follow at once).
+$("video-reset").addEventListener("click", () =>
+  ext.storage.local.remove(["positions", "videoFilters"])
+    .then(() => sayBriefly(t("popup_video_reset_done"), "ok"), () => {}));
+
 // #42: reading the browser's proxy (a VPN or proxy extension's) is an opt-in, this switch, off as
 // installed. Firefox: the optional "proxy" permission, asked for on it. Chromium can't make that
 // permission optional, so the extension has it from the install, and the switch is a setting of
