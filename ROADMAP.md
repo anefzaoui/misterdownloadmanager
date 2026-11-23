@@ -573,6 +573,10 @@ These ship in the next version.
   pages, read again at every build; visitors rate MDM from one to five stars on the site (change
   or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
   that keeps no IP address; only these ratings go into the structured data
+- ✅ Several Download File Info windows at once, one for each link, side by side: each opens a
+  step from the one before and comes to the front, its title numbered from the second on; up to
+  six, more links waiting their turn
+  ([#1741](https://github.com/anefzaoui/misterdownloadmanager/issues/1741))
 - ✅ The browser add-on's Download video button out of the way: **Automatic** size, the new
   default (round in a feed and over a small player, whole over a big one), faint as the pointer
   rests or leaves before it goes, movable outside the player and kept for each site, with

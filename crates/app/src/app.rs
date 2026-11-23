@@ -1357,8 +1357,11 @@ pub struct App {
     finished_open: bool,
     queues_open: bool,
     add_url: Option<AddUrl>,
-    file_info: Option<FileInfo>,
-    /// Addresses (and their browser context) waiting for Download File Info to close.
+    /// The Download File Info windows open, one for each address (#1741), in the order they
+    /// opened; at most [`FILE_INFOS_MOST`]. Each knows its number (`FileInfo::nth`).
+    file_infos: Vec<FileInfo>,
+    /// Addresses (and their browser context) waiting for a Download File Info window: more came
+    /// than may be open at once. Each opens, in order, as a window closes.
     file_info_waiting: std::collections::VecDeque<(dialogs::NewUrl, ipc::Command)>,
     /// Download File Info's open answers, for the download each was given to (by id) to start
     /// from (#28: a one-time link refuses a second request).
@@ -1456,8 +1459,9 @@ pub struct App {
     video_places: crate::videoplace::VideoPlaces,
     /// Add category / Properties from the Categories tree.
     category_dlg: Option<crate::categories::CategoryDialog>,
-    /// The category dialog was opened by Download File Info's "+" (its result is picked there).
-    category_for_file_info: bool,
+    /// The category dialog was opened by a Download File Info's "+": that window's number (its
+    /// result is picked there).
+    category_for_file_info: Option<dialogs::Nth>,
     /// Delete a category of the user's, asking first.
     confirm_category_delete: Option<dialogs::DeleteCategory>,
     /// File Properties windows, one per download.
@@ -2218,7 +2222,7 @@ impl App {
             raise_options: false,
             started: Instant::now(),
             update_checked_this_run: None,
-            file_info: None,
+            file_infos: Vec::new(),
             file_info_waiting: Default::default(),
             kept_answers: Default::default(),
             progress: Vec::new(),
@@ -2234,7 +2238,7 @@ impl App {
             scheduler: None,
             options: None,
             category_dlg: None,
-            category_for_file_info: false,
+            category_for_file_info: None,
             grabber: None,
             link_parts: Default::default(),
             assistive_checked: None,
@@ -8995,9 +8999,9 @@ impl App {
             self.dirty = true;
         }
         self.tick_queues();
-        // A download started early behind Download File Info stays quiet until the dialog's
+        // A download started early behind a Download File Info stays quiet until the dialog's
         // answer (Start shows its box then; Cancel drops it).
-        let early = self.file_info.as_ref().and_then(|f| f.early);
+        let early: Vec<u64> = self.file_infos.iter().filter_map(|f| f.early).collect();
         let close = finished_windows(
             finished,
             |id| self.progress.iter().any(|p| p.id == id && !p.hidden),
@@ -9010,7 +9014,7 @@ impl App {
             now,
         );
         for id in close {
-            self.close_finished(id, early);
+            self.close_finished(id, &early);
         }
         self.settle_groups();
         // A snooze over (#741): Download complete shows again.
@@ -9282,7 +9286,7 @@ impl App {
 
     /// A finished download's progress window closes, and Download complete opens for it (`early`:
     /// the download Download File Info started early, which stays quiet).
-    fn close_finished(&mut self, id: u64, early: Option<u64>) {
+    fn close_finished(&mut self, id: u64, early: &[u64]) {
         // This file's "Show download complete dialog" (its progress window's Options on
         // completion tab), read before the window closes.
         let window = self.progress.iter().find(|p| p.id == id);
@@ -9291,7 +9295,7 @@ impl App {
             self.when_done(w);
         }
         self.progress.retain(|p| p.id != id);
-        if Some(id) == early {
+        if early.contains(&id) {
             return;
         }
         // One of a group: its summary speaks for it (#766).
@@ -11232,13 +11236,46 @@ impl App {
     }
 
     /// Download File Info for an address from Add URL, the browser (`context`) or the command
-    /// line. One at a time: another that arrives meanwhile waits its turn (the browser has
-    /// already given its own copy up, so none may be dropped).
+    /// line: a window of its own beside those open (#1741), up to [`FILE_INFOS_MOST`]. More
+    /// wait their turn, in the order they came, each opening as a window closes (the browser
+    /// has already given its own copy up, so none may be dropped). An address a window shows
+    /// already opens no second window: that one comes to the front (two windows for one address
+    /// would make two downloads of it by mistake); one already waiting isn't waited for twice.
     fn open_file_info(&mut self, new: dialogs::NewUrl, context: ipc::Command, ctx: &egui::Context) {
-        if self.file_info.is_some() {
+        if let Some(fi) = self.file_infos.iter().find(|f| f.url == new.url) {
+            tracing::info!("Download File Info: the same address again: its window to the front");
+            dialogs::raise(ctx, fi.viewport());
+            return;
+        }
+        if self.file_info_waiting.iter().any(|(w, _)| w.url == new.url) {
+            tracing::info!("Download File Info: the same address again: it waits once");
+            return;
+        }
+        // Behind those waiting already, so that they open in the order they came.
+        if self.file_infos.len() >= FILE_INFOS_MOST || !self.file_info_waiting.is_empty() {
             self.file_info_waiting.push_back((new, context));
             return;
         }
+        self.open_file_info_now(new, context, ctx);
+    }
+
+    /// The downloads that waited for a Download File Info window, in the order they came, while
+    /// there is room for more windows.
+    fn open_waiting_file_infos(&mut self, ctx: &egui::Context) {
+        while self.file_infos.len() < FILE_INFOS_MOST
+            && let Some((new, context)) = self.file_info_waiting.pop_front()
+        {
+            self.open_file_info_now(new, context, ctx);
+        }
+    }
+
+    /// A Download File Info window for `new`, numbered after those open ([`dialogs::Nth`]).
+    fn open_file_info_now(
+        &mut self,
+        new: dialogs::NewUrl,
+        context: ipc::Command,
+        ctx: &egui::Context,
+    ) {
         let direct = crate::debrid::browser_started(&context);
         let request = self.request_parts(&new.url, new.login.as_ref(), &context, direct);
         let mut fi = FileInfo::new(
@@ -11253,7 +11290,14 @@ impl App {
         );
         fi.remember = self.settings.change_folder_on_last;
         fi.folders = self.settings.folder_history.clone();
-        self.file_info = Some(fi);
+        fi.nth = dialogs::Nth::free(self.file_infos.iter().map(|f| f.nth));
+        if fi.nth != dialogs::Nth::FIRST {
+            tracing::info!(
+                "Download File Info: window {} opened beside the others",
+                fi.nth.0
+            );
+        }
+        self.file_infos.push(fi);
     }
 
     /// Options → Downloads → "If a duplicate download link is added", for a new download that
@@ -12683,13 +12727,16 @@ impl App {
         if let Some(d) = &mut self.category_dlg {
             match d.show(ctx, &crate::categories::names()) {
                 Outcome::Open => {}
-                Outcome::Closed => self.category_dlg = None,
+                Outcome::Closed => {
+                    self.category_dlg = None;
+                    self.category_for_file_info = None;
+                }
                 Outcome::Done(e) => {
                     self.category_dlg = None;
                     let made = crate::categories::apply(&mut self.settings, e, &self.downloads);
-                    // Made with Download File Info's "+": that download goes in it.
-                    if std::mem::take(&mut self.category_for_file_info)
-                        && let Some(fi) = &mut self.file_info
+                    // Made with a Download File Info's "+": that window's download goes in it.
+                    if let Some(nth) = self.category_for_file_info.take()
+                        && let Some(fi) = self.file_infos.iter_mut().find(|f| f.nth == nth)
                     {
                         fi.set_category(made);
                     }
@@ -13250,14 +13297,17 @@ impl App {
                 }
             }
         }
-        if let Some(mut fi) = self.file_info.take() {
+        // Each Download File Info window open (#1741), in the order they opened: each answers
+        // for its own address.
+        let mut still_open = Vec::new();
+        for mut fi in std::mem::take(&mut self.file_infos) {
             self.start_early(&mut fi);
-            // The downloads waiting their turn behind this one (a browser selection's arrive
-            // one by one): Cancel asks whether they are cancelled too (#394).
+            // The downloads waiting for a window (a browser selection's arrive one by one, more
+            // than may be open at once): Cancel asks whether they are cancelled too (#394).
             fi.waiting = self.file_info_waiting.len();
             let out = fi.show(ctx, &mut self.icons);
             if std::mem::take(&mut fi.new_category) {
-                self.category_for_file_info = true;
+                self.category_for_file_info = Some(fi.nth);
                 self.run(Cmd::AddCategory, None, ctx);
             }
             // The folder a download goes to is remembered for the Save As drop list.
@@ -13283,12 +13333,12 @@ impl App {
                 fi.early = None;
             }
             match out {
-                Outcome::Open => self.file_info = Some(fi),
+                Outcome::Open => still_open.push(fi),
                 Outcome::Closed => {
                     if fi.cancel_all {
-                        // #394: "Yes" to "Cancel them too?": the browser's links waiting
-                        // behind this one are cancelled with it (the browser gave its own copy
-                        // up, and Download File Info was their step).
+                        // #394: "Yes" to "Cancel them too?": the browser's links waiting for a
+                        // window are cancelled with it (the browser gave its own copy up, and
+                        // Download File Info was their step). The windows open stay.
                         self.file_info_waiting.clear();
                     }
                     if let Some(id) = fi.early {
@@ -13302,12 +13352,10 @@ impl App {
                 },
             }
         }
-        // The next download that waited for Download File Info.
-        if self.file_info.is_none()
-            && let Some((new, context)) = self.file_info_waiting.pop_front()
-        {
-            self.open_file_info(new, context, ctx);
-        }
+        // Any opened meanwhile come after them.
+        still_open.append(&mut self.file_infos);
+        self.file_infos = still_open;
+        self.open_waiting_file_infos(ctx);
         self.finish_stopped();
         let mut actions = Vec::new();
         // A progress window can be hidden in the tray only when there is one to bring it back.
@@ -13845,6 +13893,16 @@ impl App {
 /// A download no Download File Info answered: its address, login and browser context.
 type Unseen = (url::Url, Option<(String, String)>, ipc::Command);
 
+/// How many Download File Info windows may be open at once (#1741): one for each address, side
+/// by side, each a cascade step further ([`dialogs::Nth`]). Six open a step apart still fit
+/// around the main window on a 1366 × 768 screen, and are as many as can be compared at a
+/// glance; more addresses at once (a browser handing over a selection one by one) wait their
+/// turn and open as windows close, with their browser context whole (Link grabber would keep
+/// only the address, referrer, cookies and user agent: a form's POST, the browser's file name
+/// and size would be lost). Cancel asks about the ones waiting (#394); quitting keeps them in the
+/// main queue (`keep_unseen`).
+const FILE_INFOS_MOST: usize = 6;
+
 impl App {
     /// Quitting: downloads the browser handed over that never got their Download File Info
     /// (waiting their turn, or arriving at the last moment) go to the main queue as Download
@@ -13855,13 +13913,14 @@ impl App {
             .drain(..)
             .map(|(new, context)| (new.url, new.login, context))
             .collect();
-        // The one Download File Info shows, unanswered (an early download is in the list
-        // already).
-        if let Some(fi) = self.file_info.take()
-            && fi.early.is_none()
-        {
-            unseen.insert(0, (fi.url.clone(), fi.login.clone(), fi.context.clone()));
-        }
+        // The ones the Download File Info windows show, unanswered, first and in the order they
+        // opened (#1741; an early download is in the list already).
+        let shown: Vec<Unseen> = std::mem::take(&mut self.file_infos)
+            .into_iter()
+            .filter(|fi| fi.early.is_none())
+            .map(|fi| (fi.url, fi.login, fi.context))
+            .collect();
+        unseen.splice(0..0, shown);
         while let Ok(inc) = self.commands.try_recv() {
             if inc.reply.is_none()
                 && let Some(url) = inc
@@ -16984,6 +17043,79 @@ mod start_disk_tests {
         let ctx = egui::Context::default();
         app.show_for_dialog(&ctx);
         assert!(app.hidden, "main window must stay hidden when dialog opens");
+    }
+
+    /// #1741: one Download File Info window for each address, up to FILE_INFOS_MOST, numbered
+    /// from 1 (a closed one's number goes to the next); more wait in the order they came; an
+    /// address shown or waiting already opens nothing more; quitting keeps every unanswered one
+    /// in the main queue, the windows' first.
+    #[test]
+    fn several_download_file_info_windows() {
+        let mut app = app_with(vec![]);
+        let ctx = egui::Context::default();
+        // A name from the browser: nothing is looked up.
+        let open = |app: &mut App, name: &str| {
+            let context = ipc::Command {
+                name: Some(name.to_owned()),
+                ..Default::default()
+            };
+            app.open_file_info(
+                dialogs::NewUrl {
+                    url: address(name),
+                    login: None,
+                },
+                context,
+                &ctx,
+            );
+        };
+        let names: Vec<String> = (1..=FILE_INFOS_MOST + 2)
+            .map(|n| format!("file-{n}.zip"))
+            .collect();
+        for name in &names {
+            open(&mut app, name);
+        }
+        let numbers = |app: &App| app.file_infos.iter().map(|f| f.nth.0).collect::<Vec<_>>();
+        assert_eq!(numbers(&app), (1..=FILE_INFOS_MOST).collect::<Vec<_>>());
+        assert_eq!(app.file_info_waiting.len(), 2, "the rest wait");
+        // The same address again, shown or waiting: nothing more.
+        open(&mut app, &names[0]);
+        open(&mut app, &names[FILE_INFOS_MOST]);
+        assert_eq!(app.file_infos.len(), FILE_INFOS_MOST);
+        assert_eq!(app.file_info_waiting.len(), 2);
+        // The third closes: the first waiting takes its number (and its place in the cascade).
+        app.file_infos.remove(2);
+        app.open_waiting_file_infos(&ctx);
+        assert_eq!(numbers(&app), vec![1, 2, 4, 5, 6, 3]);
+        assert_eq!(
+            app.file_infos[5].url,
+            address(&names[FILE_INFOS_MOST]),
+            "the first that waited"
+        );
+        assert_eq!(app.file_info_waiting.len(), 1);
+        // A new address while one waits: behind it, whatever room there is.
+        app.file_infos.remove(0);
+        open(&mut app, "late.zip");
+        assert_eq!(app.file_infos.len(), FILE_INFOS_MOST - 1);
+        assert_eq!(app.file_info_waiting.len(), 2);
+        app.open_waiting_file_infos(&ctx);
+        assert_eq!(app.file_infos.len(), FILE_INFOS_MOST);
+        assert_eq!(app.file_infos[5].url, address(&names[FILE_INFOS_MOST + 1]));
+        assert_eq!(app.file_info_waiting.len(), 1, "late.zip waits");
+        // Quitting: every unanswered address goes to the main queue, the windows' first.
+        app.keep_unseen();
+        let queued: Vec<String> = app.queues[0]
+            .items
+            .iter()
+            .filter_map(|id| app.items.iter().find(|i| i.id == *id))
+            .map(|i| i.url.path().trim_start_matches('/').to_owned())
+            .collect();
+        let mut want: Vec<String> = [1, 3, 4, 5, 6, 7]
+            .iter()
+            .map(|n| names[*n].clone())
+            .collect();
+        want.push("late.zip".to_owned());
+        assert_eq!(queued, want);
+        assert!(app.file_infos.is_empty());
     }
 
     #[test]

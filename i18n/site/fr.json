@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Une signature de code permet à Windows d’afficher l’éditeur d’un programme et de vérifier qu’il n’a pas été modifié après sa création. Lorsqu’une version de Mister Download Manager (« MDM ») est signée, sa signature couvre les fichiers Windows provenant de ce projet :"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> demandes de tirage"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Oui. MDM enregistre sa progression au fur et à mesure. Après une coupure de connexion, un plantage ou un redémarrage, il reprend là où il s’était arrêté. Avant de reprendre, il vérifie que le fichier sur le serveur n’a pas changé. Quand une adresse de téléchargement a expiré, <g1>Actualiser l’adresse de téléchargement</g1> vous permet d’en fournir une nouvelle sans perdre les données. Voir <g2>Reprendre un téléchargement interrompu</g2>."
@@ -229,10 +225,6 @@
   "03069bf346ba733c": {
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Aide → À propos de Mister Download Manager</g1> affiche votre version."
-  },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>Demandes de tirage</g1><g2><x3/> personnes</g2>"
   },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
@@ -1892,7 +1884,7 @@
   },
   "1a5164060895b36a": {
    "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
-   "text": "Un fichier terminé dont le test d’archive a trouvé des dommages qu’il a pu placer (entrées d’un ZIP, #1661 : l’application <x1/>) est de nouveau transformé en fichier partiel (<x2/>) : son dernier état de reprise, renvoyé par un téléchargement demandé de le conserver (<x3/>, <x4/>), est réécrit avec seulement les plages endommagées à récupérer, chacune commençant quelques octets plus tôt pour la vérification de chevauchement, et le fichier est renommé en son nom de fichier partiel. La reprise est une reprise ordinaire : <x5/> avec les mêmes validateurs, la vérification de chevauchement, le condensé ; un fichier qui a changé sur le serveur échoue comme <x6/>."
+   "text": "Un fichier terminé dont le test d’archive a détecté des dommages qu’il a pu placer (entrées d’un ZIP, #1661 : <x1/> de l’application) est de nouveau transformé en fichier partiel (<x2/>) : son dernier état de reprise, renvoyé par un téléchargement demandé de le conserver (<x3/>, <x4/>), est réécrit avec seulement les plages endommagées à récupérer, chacune commençant quelques octets plus tôt pour la vérification de chevauchement, et le fichier est renommé en son nom de fichier partiel. Le reprendre est une reprise ordinaire : <x5/> avec les mêmes validateurs, la vérification de chevauchement, le condensat ; un fichier qui a changé sur le serveur échoue comme <x6/>."
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -2192,7 +2184,7 @@
   },
   "1e32ee75ad780ae4": {
    "source": "An archive protected by a password isn't tested, as its files can't be read without it: the log says <g1>Couldn't test photos.zip: it needs a password</g1>. Nor are tar, gz and xz files.",
-   "text": "Une archive protégée par un mot de passe n’est pas testée, car ses fichiers ne peuvent pas être lus sans lui : le journal indique <g1>Impossible de tester photos.zip : un mot de passe est requis</g1>. Les fichiers tar, gz et xz ne le sont pas non plus."
+   "text": "Une archive protégée par un mot de passe n’est pas testée, car ses fichiers ne peuvent être lus sans lui : le journal indique <g1>Impossible de tester photos.zip : un mot de passe est requis</g1>. Les fichiers tar, gz et xz ne le sont pas non plus."
   },
   "1e4861cc4f32a384": {
    "source": "<g1>Every text the user sees goes through <x2/></g1> (<x3/>, <x4/>, <x5/>, <x6/>); after adding one, run <x7/>. Data inside a sentence (a file name, an address, a size) goes in through <x8/> or <x9/>, so it reads right in right-to-left languages.",
@@ -2401,10 +2393,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "Sous macOS, seul un administrateur peut planifier un réveil. L’option est donc grisée. MDM ne demande pas le mot de passe d’un administrateur. Un administrateur peut faire en sorte que le Mac se réveille tous les jours une minute avant le début de la file d’attente, par exemple à 22h59 pour une file d’attente qui commence à 23h00 :"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "À toutes les personnes qui ont envoyé une pull request, ouvert un problème ou commenté sur GitHub depuis la version <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3036,7 +3024,7 @@
   },
   "29c62272ce90056c": {
    "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
-   "text": "Extraction d’archives (#37) : zip, tar, gz et xz en cours ; 7z et RAR via 7-Zip installé, exécuté comme son propre programme ; sur place via HatchZip si demandé. Tests d’archives (<x1/>, #1661) : <x2/>, un ZIP en cours sans cela, et les entrées endommagées d’un ZIP placées dans le fichier"
+   "text": "Extraction d’archives (#37) : zip, tar, gz et xz en cours ; 7z et RAR via 7-Zip installé, exécuté comme son propre programme ; sur place via HatchZip sur demande. Tests d’archives (<x1/>, #1661) : <x2/>, un ZIP en cours sans cela, et les entrées endommagées d’un ZIP placées dans le fichier"
   },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
@@ -3628,7 +3616,7 @@
   },
   "319a440ac21a4da8": {
    "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
-   "text": "Un fichier ZIP dont les parties endommagées ont été retéléchargées par MDM et qui est toujours endommagé, ou un fichier 7z ou RAR qui est endommagé après un <g1>Retélécharger</g1>, est probablement endommagé sur le serveur lui-même : demandez une autre copie au site."
+   "text": "Si un fichier ZIP reste endommagé après que MDM a retéléchargé les parties corrompues, ou si un fichier 7z ou RAR est toujours endommagé après un <g1>Retélécharger</g1>, il est probable que le fichier soit corrompu sur le serveur lui-même : demandez une autre copie au site."
   },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
@@ -4177,10 +4165,6 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "Cliquez sur <g1>OK</g1>."
-  },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>Problèmes</g1><g2><x3/> personnes</g2>"
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -6090,10 +6074,6 @@
    "source": "A small file",
    "text": "Un petit fichier"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "Remerciements"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Collez l'adresse d'une liste de lecture (<x1/>) ou des vidéos d'une chaîne (<x2/>), puis cliquez sur <g3>Rechercher</g3>. Au lieu des qualités d'une seule vidéo, la fenêtre affiche les vidéos de la liste, chacune avec sa durée."
@@ -6225,10 +6205,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 et Linux ; macOS à l’essai"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "Rendu possible par ces personnes extraordinaires"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6388,7 +6364,7 @@
   },
   "5a08cc8b48188788": {
    "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
-   "text": "Une archive téléchargée peut être corrompue : le serveur a envoyé des octets erronés, ou un proxy a altéré une partie du fichier. Cela ne se voit que lorsque quelqu’un l’ouvre, souvent bien plus tard. MDM teste donc les archives ZIP, 7z et RAR, y compris les archives fractionnées une fois tous les volumes téléchargés, dès que leur téléchargement est terminé : l’option <g1>Options → Archives → Tester les archives une fois le téléchargement terminé</g1> est activée par défaut, jusqu’à 4 Go. Un test lit l’intégralité de l’archive, donc une archive plus grande n’est testée que si vous le demandez : faites un clic droit sur une archive terminée et choisissez <g2>Tester l’archive</g2>, quelle que soit sa taille."
+   "text": "Une archive téléchargée peut être corrompue : le serveur a envoyé des octets erronés ou un proxy a altéré une partie du fichier. Cela ne se révèle qu’à l’ouverture, souvent bien plus tard. MDM teste donc les archives ZIP, 7z et RAR, y compris les archives fractionnées une fois tous les volumes présents, dès que leur téléchargement est terminé. L’option <g1>Options → Archives → Tester les archives une fois le téléchargement terminé</g1> est activée par défaut, jusqu’à 4 Go. Un test lit l’intégralité de l’archive ; une archive plus grande n’est testée que si vous le demandez : faites un clic droit sur une archive terminée et choisissez <g2>Tester l’archive</g2>, quelle que soit sa taille."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6736,7 +6712,7 @@
   },
   "5ed4e501adf0b774": {
    "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
-   "text": "Une archive ZIP en un seul fichier est réparée à la place, lorsque MDM peut déterminer où se trouvent ses fichiers endommagés : seuls leurs octets sont téléchargés à nouveau, depuis le même serveur, et l’archive est testée une fois de plus. Le journal indique <g1>Retéléchargement des parties endommagées (1,20 Mo)</g1>, puis <g2>Testé à nouveau : l’archive n’a plus d’erreurs</g2>. Les octets proviennent uniquement de la même version du fichier : MDM les demande comme il reprend tout téléchargement (avec l’ETag ou la date du fichier, <x3/>), et vérifie les octets juste avant chaque partie par rapport à ceux sur le disque. Un fichier qui a changé sur le serveur arrête le téléchargement avec <g4>le fichier a changé sur le serveur</g4> au lieu de mélanger deux versions : <g5>Retélécharger</g5> télécharge la nouvelle. Une archive toujours endommagée après cela est proposée pour <g6>Retélécharger</g6>."
+   "text": "Une archive ZIP en un seul fichier est réparée à la place, lorsque MDM peut déterminer l’emplacement de ses fichiers endommagés : seuls leurs octets sont téléchargés à nouveau, depuis le même serveur, et l’archive est testée une fois de plus. Le journal indique <g1>Retéléchargement des parties endommagées (1,20 Mo)</g1>, puis <g2>Testé à nouveau : l’archive n’a plus d’erreurs</g2>. Les octets proviennent uniquement de la même version du fichier : MDM les demande comme il reprend tout téléchargement (avec l’ETag ou la date du fichier, <x3/>), et vérifie les octets juste avant chaque partie par rapport à ceux sur le disque. Un fichier qui a changé sur le serveur arrête le téléchargement avec <g4>le fichier a changé sur le serveur</g4> au lieu de mélanger deux versions : <g5>Retélécharger</g5> télécharge la nouvelle. Une archive toujours endommagée après cela est proposée pour <g6>Retélécharger</g6>."
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7188,7 +7164,7 @@
   },
   "64e4c03c8252a3bc": {
    "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
-   "text": "<g1>Tester les archives une fois le téléchargement terminé, jusqu’à 4 Go</g1> (activé par défaut) — une archive ZIP, 7z ou RAR (y compris une archive en plusieurs volumes, une fois le dernier volume reçu) est relue et chaque fichier qu’elle contient est vérifié avant que le téléchargement ne soit considéré comme terminé, avec le 7-Zip mentionné ci-dessous (un ZIP sans 7-Zip par MDM lui-même). Une archive plus grande n’est pas testée automatiquement, car un test lit le fichier entier : faites un clic droit → <g2>Tester l’archive</g2> pour la tester. Les fichiers endommagés d’un ZIP endommagé sont téléchargés à nouveau ; toute autre archive endommagée est proposée pour <g3>Retélécharger</g3>. Voir <g4>Tester les archives</g4>."
+   "text": "<g1>Tester les archives une fois le téléchargement terminé, jusqu’à 4 Go</g1> (activé par défaut) — une archive ZIP, 7z ou RAR (y compris une archive fractionnée une fois son dernier volume téléchargé) est relue et chaque fichier qu’elle contient est vérifié avant que le téléchargement ne soit considéré comme terminé, avec le 7-Zip mentionné ci-dessous (un ZIP sans 7-Zip par MDM lui-même). Une archive plus grande n’est pas testée automatiquement, car un test lit le fichier entier : faites un clic droit → <g2>Tester l’archive</g2> pour la tester. Les fichiers endommagés d’un ZIP endommagé sont téléchargés à nouveau ; toute autre archive endommagée est proposée pour <g3>Retélécharger</g3>. Voir <g4>Test des archives</g4>."
   },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
@@ -8276,7 +8252,7 @@
   },
   "7466ed5799362d5d": {
    "source": "The test is 7-Zip's (<x1/>, with the 7-Zip that <g2>Options → Archives</g2> names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.",
-   "text": "Le test est celui de 7-Zip (<x1/>, avec le 7-Zip que <g2>Options → Archives</g2> indique) : chaque fichier de l’archive est relu et vérifié, et rien n’est écrit. Sans 7-Zip, MDM teste lui-même les archives ZIP ; les archives 7z et RAR ne sont pas testées."
+   "text": "Le test est celui de 7-Zip (<x1/>, avec le 7-Zip nommé dans <g2>Options → Archives</g2>) : chaque fichier de l’archive est relu et vérifié, sans aucune écriture. Sans 7-Zip, MDM teste lui-même les archives ZIP ; les archives 7z et RAR ne sont pas testées."
   },
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
@@ -8569,10 +8545,6 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Vous avez besoin de votre propre compte payant avec l'un de ces services : MDM n'en vend ni n'en inclut. Le partage d'un compte ou de ses liens enfreint les conditions des services et peut entraîner la suspension du compte."
-  },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>Toutes les personnes qui ont contribué</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -10362,10 +10334,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Accélération et reprise</g1><g2>Un fichier divisé en 32 connexions maximum, re-divisé jusqu'au dernier octet, et repris après tout plantage.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> les personnes qui ont envoyé une pull request, signalé un problème ou participé à une conversation sur GitHub. <g2>Découvrez-les toutes</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Barre de titre dessinée par MDM, lorsque sa fenêtre n'est pas active (transparente : comme lorsqu'elle est active)"
@@ -11286,10 +11254,6 @@
    "source": "Send downloads from your browser",
    "text": "Envoyer les téléchargements depuis votre navigateur"
   },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> commentaire"
-  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "L’ambiance de Windows 7 : boutons brillants, une barre de titre vitreuse et une barre de progression verte brillante."
@@ -12108,7 +12072,7 @@
   },
   "a8abc740d94eb990": {
    "source": "Its archive's test found files in it that don't read back whole (<g1>Testing archives</g1>): hover over <g2>Status</g2> to see which.",
-   "text": "Le test de l’archive a révélé que certains fichiers ne peuvent pas être lus entièrement (<g1>Tester les archives</g1>) : passez la souris sur <g2>État</g2> pour voir lesquels."
+   "text": "Le test de l’archive a révélé des fichiers illisibles ou incomplets (<g1>Tester les archives</g1>) : passez la souris sur <g2>État</g2> pour voir lesquels."
   },
   "a8b65ed9a2e906de": {
    "source": "Choose <g1>Tasks → Show drop target</g1>. A small box with the MDM icon appears and stays on top of other windows.",
@@ -14530,17 +14494,13 @@
    "source": "Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code.",
    "text": "Afficher un nouveau code pour associer un téléphone ou un navigateur distant à la télécommande de l'application en cours : ses adresses web, le code d'association et un code QR."
   },
-  "cb3fee6871e1183d": {
-   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
-   "text": "<g1>0.5.2</g1> <g2>17,1 Mo</g2>"
-  },
   "cb4ebdffdae9d416": {
    "source": "<g1>The previous version stays</g1>, so you can go back to it. Older ones are removed.",
    "text": "<g1>La version précédente reste</g1>, vous pouvez donc y revenir. Les plus anciennes sont supprimées."
   },
   "cb5b5cded4982e90": {
    "source": "Closing MDM stops a test; the archive is tested again at the next start.",
-   "text": "Fermer MDM arrête un test ; l’archive est testée à nouveau au prochain démarrage."
+   "text": "La fermeture de MDM arrête un test ; l’archive est testée à nouveau au prochain démarrage."
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -14769,10 +14729,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Récupérateur de liens et archives — Aide de Mister Download Manager"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>Commentaires</g1><g2><x3/> personnes</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -15108,7 +15064,7 @@
   },
   "d368fe0c2974cd27": {
    "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
-   "text": "Le téléchargement est considéré comme terminé une fois le test achevé. La liste indique <g1>Vérification en cours 45 %</g1> pendant ce temps, sa file d’attente l’attend, et sa fenêtre <g2>Téléchargement terminé</g2>, son son et son extraction viennent après le test."
+   "text": "Le téléchargement est considéré comme terminé une fois le test achevé. La liste indique <g1>Vérification en cours 45 %</g1> pendant ce temps, sa file d’attente patiente, et sa fenêtre <g2>Téléchargement terminé</g2>, son son et son extraction suivent le test."
   },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
@@ -15361,10 +15317,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager et IDM, côte à côte."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> problème"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16352,7 +16304,7 @@
   },
   "e624996bba938a48": {
    "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
-   "text": "Une archive endommagée indique <g1>Endommagé</g1> dans la liste, son journal nomme les fichiers endommagés, et la fenêtre <g2>Archive endommagée</g2> propose <g3>Retélécharger</g3> : elle télécharge à nouveau l’archive (chaque volume d’une archive fractionnée) depuis le début. Elle n’est pas extraite automatiquement ; <g4>Extraire</g4> l’essaie quand même."
+   "text": "Une archive endommagée indique <g1>Endommagé</g1> dans la liste, son journal nomme les fichiers endommagés, et la fenêtre <g2>Archive endommagée</g2> propose <g3>Retélécharger</g3> : elle télécharge à nouveau l’archive (chaque volume d’une archive fractionnée) depuis le début. Elle n’est pas extraite automatiquement ; <g4>Extraire</g4> tente toujours de le faire."
   },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
@@ -16397,10 +16349,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Non, si le programme provient de ce site ou de GitHub Releases. Certains antivirus jugent un programme inconnu par une estimation éclairée, et non par un virus connu…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> demande de tirage"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17666,10 +17614,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Arrêter le partage après avoir partagé pendant … minutes</g1> — ou une fois qu'il a été partagé pendant cette durée, sur toutes ses exécutions. Désactivé par défaut."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> commentaires"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "noms autres que ses adresses par lesquels la page peut être ouverte"
@@ -17769,10 +17713,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Nouveautés de la version 0.5.0 <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> problèmes"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18333,6 +18273,14 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "vos adresses de téléchargement ni les noms de vos fichiers ;"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "Chaque lien ouvre sa propre fenêtre <g1>Informations sur le fichier à télécharger</g1>. Vous pouvez en ouvrir plusieurs côte à côte pour comparer les tailles avant de choisir. Chaque nouvelle fenêtre s’ouvre légèrement en dessous et à côté de la précédente, et passe au premier plan. À partir de la deuxième, son titre indique son numéro : <g2>Informations sur le fichier à télécharger (2)</g2>, <g3>(3)</g3>, etc. La touche <g4>Échap</g4> ferme uniquement la fenêtre active. Vous pouvez en ouvrir jusqu’à six simultanément. Si plusieurs liens sont transmis en même temps (par exemple, un navigateur qui passe plusieurs téléchargements), ils attendent et s’ouvrent un par un à mesure que vous fermez des fenêtres. Le bouton <g5>Annuler</g5> vous demande si vous souhaitez annuler ceux qui sont encore en attente. Si le même lien est transmis à nouveau, sa fenêtre ouverte passe au premier plan. Si vous quittez MDM alors que des fenêtres sont encore ouvertes, leurs téléchargements sont ajoutés à la <g6>File d’attente de téléchargement principale</g6>, comme avec <g7>Télécharger plus tard</g7>."
+  },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "La liste n'a pas pu être lue depuis GitHub lors de la création de cette page. Tout le monde est sur GitHub en attendant, dans les <g1>pull requests</g1> et les <g2>issues</g2> du projet."
   }
  }
 }
