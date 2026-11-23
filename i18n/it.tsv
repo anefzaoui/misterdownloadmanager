@@ -11,11 +11,6 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Un sito sconosciuto vuole inviare {n} collegamento a Link grabber.|Un sito sconosciuto vuole inviare {n} collegamenti a Link grabber.
-#. count in traypanel.rs
-#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	And {n} more|And {n} more	E un altro {n}|E altri {n}
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -250,6 +245,14 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Un ID di configurazione NextDNS è composto da sei caratteri tra lettere e cifre (0-9, a-f).
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	Una parte viene salvata senza i capitoli e i sottotitoli del video
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	I video di una playlist vengono scaricati per intero
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Il nome di un profilo o la sua cartella. Vuoto: l'ultimo profilo usato. Per un browser basato su Chromium non elencato (Helium, Thorium...), scegli Chromium e la cartella del suo profilo.
@@ -289,6 +292,7 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 	about {ms} ms ({reach})	circa {ms} ms ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -804,7 +808,7 @@
 #. text in the Options window
 #. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
 #, machine
-	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Se selezionata, un clic sull'icona di MDM mostra i download in corso, con Pausa e Annulla, e un doppio clic apre la finestra; se deselezionata, un clic mostra o nasconde la finestra
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Se selezioni questa opzione, un clic sull'icona di MDM mostra i download in corso, con Pausa e Annulla, e un doppio clic apre la finestra; se deselezioni questa opzione, un clic mostra o nasconde la finestra
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -1458,6 +1462,10 @@
 	Every local network address	Tutti gli indirizzi della rete locale
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Everything at its normal size (100%)	Tutto alle dimensioni normali (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	Taglio esatto, con nuova codifica
 #. text in the Options window
 #. label before an example date and time written the chosen way
 	Example:	Esempio:
@@ -1524,6 +1532,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Faroe Islands	Isole Fær Øer
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	Veloce: i flussi vengono copiati così come sono, quindi la parte potrebbe iniziare un po' prima di Da
 #. text in the Scheduler window
 	February	febbraio
 #. text in rssdlg.rs
@@ -1717,6 +1729,10 @@
 	from the browser	dal browser
 #. message or event log entry in the main window
 	from the command line	dalla riga di comando
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	da {from} a {to}
 #. text in the Batch download window
 	From:	Da:
 #. checkbox in the Options window
@@ -2879,6 +2895,10 @@
 	Only a finished download, or one not started yet, can be moved	Si può spostare solo un download completato o non ancora avviato
 #. message or event log entry in the main window
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Si può spostare solo un download completato o non ancora avviato. Prima interrompilo e portalo a termine.
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	Solo una parte
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 	Only an administrator can allow this	Solo un amministratore può consentirlo
@@ -3001,6 +3021,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Paraguay	Paraguay
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	Parte
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	Password
 #. text in the Link grabber window; text in the Options window
@@ -3150,6 +3174,10 @@
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	Code
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	Taglio rapido, ai fotogrammi chiave
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 	Read on this computer only, and sent only to the video's site.	I cookie vengono letti solo su questo computer e inviati solo al sito del video.
@@ -3515,7 +3543,7 @@
 #. text in the Options window
 #. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
 #, machine
-	Show downloads when the notification area icon is clicked	Mostra i download quando fai clic sull'icona nell'area di notifica
+	Show downloads when the notification area icon is clicked	Mostra i download quando si fa clic sull'icona dell'area di notifica
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -3750,6 +3778,10 @@
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 	Starting...	Avvio in corso...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	Inizia e finisce esattamente in Da e A: ffmpeg codifica di nuovo la parte, il che richiede più tempo
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 	State	Stato
@@ -3915,6 +3947,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	Non è il programma da riga di comando di 7-Zip (7z.exe).
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	È l'intero video: cambia Da o A, oppure deseleziona Solo una parte
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 	the .torrent file kept for it is gone	il file .torrent conservato non esiste più
@@ -4183,6 +4219,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	il servizio non dice se l'account è premium
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	Il sito non indica la durata di questo video
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -4386,6 +4426,7 @@
 	This name is reserved by Windows	Questo nome è riservato da Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	Serve ffmpeg
 #. text in the Add torrent window
@@ -4470,6 +4511,14 @@
 #. text in unix.rs
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 	To install what's missing: {command}	Per installare ciò che manca: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	A è oltre la fine del video
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	A deve venire dopo Da
 #. text in the Batch download window
 	To:	A:
 #. text in the Scheduler window
@@ -4617,6 +4666,10 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	Type the queue's name	Digita il nome della coda
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	Digita gli orari come 1:30 o 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5299,7 +5352,7 @@
 #. text in errors.rs
 #. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
 #, machine
-	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} non elenca {file}, scelto in Aggiungi torrent: nulla è stato scaricato. Aggiungi di nuovo il torrent con tutti i suoi file o senza questo
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} non elenca {file}, selezionato in Aggiungi torrent: non è stato scaricato nulla. Aggiungi di nuovo il torrent con tutti i suoi file, o senza questo file
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 	{service} is not responding; try again later	{service} non risponde; riprova più tardi
@@ -5551,6 +5604,11 @@ extension	Done	Completati
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 extension	Download	Scarica
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	Scarica una parte da qui...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine

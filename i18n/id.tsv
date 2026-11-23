@@ -241,6 +241,14 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ID konfigurasi NextDNS adalah enam huruf dan digit (0-9, a-f).
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	Bagian disimpan tanpa bab dan subtitel video
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	Video dalam daftar putar diunduh secara utuh
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Nama profil atau foldernya. Kosong: profil yang terakhir digunakan. Untuk browser berbasis Chromium yang tidak terdaftar (Helium, Thorium...), pilih Chromium dan folder profilnya.
@@ -279,6 +287,7 @@
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 	about {ms} ms ({reach})	sekitar {ms} ms ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	about {size}	sekitar {size}
@@ -789,7 +798,7 @@
 #. text in the Options window
 #. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
 #, machine
-	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Jika dicentang, mengeklik ikon MDM akan menampilkan unduhan yang sedang berjalan, dengan Jeda dan Batal, dan mengeklik dua kali akan membuka jendela; jika tidak dicentang, mengeklik akan menampilkan atau menyembunyikan jendela
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Jika dicentang, mengeklik ikon MDM akan menampilkan apa yang sedang diunduh, dengan Jeda dan Batal, dan mengeklik dua kali akan membuka jendela; jika tidak dicentang, mengeklik akan menampilkan atau menyembunyikan jendela
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Jika dicentang, menutup jendela akan membuat MDM tetap berjalan: MDM akan disembunyikan di area notifikasi jika tersedia, atau diminimalkan ke bilah tugas, dan unduhan akan terus berjalan; jika tidak dicentang, menutup jendela akan keluar dari MDM
@@ -1428,6 +1437,10 @@
 	Every local network address	Setiap alamat jaringan lokal
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Everything at its normal size (100%)	Semuanya dalam ukuran normal (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	Potongan tepat, dikodekan ulang
 #. text in the Options window
 #. label before an example date and time written the chosen way
 	Example:	Contoh:
@@ -1492,6 +1505,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Faroe Islands	Kepulauan Faroe
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	Cepat: aliran disalin apa adanya, sehingga bagian mungkin dimulai sedikit sebelum Dari
 #. text in the Scheduler window
 	February	Februari
 #. text in rssdlg.rs
@@ -1679,6 +1696,10 @@
 	from the browser	dari browser
 #. message or event log entry in the main window
 	from the command line	dari baris perintah
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	dari {from} hingga {to}
 #. text in the Batch download window
 	From:	Dari:
 #. checkbox in the Options window
@@ -2821,6 +2842,10 @@
 	Only a finished download, or one not started yet, can be moved	Hanya unduhan yang selesai, atau yang belum dimulai, yang dapat dipindahkan
 #. message or event log entry in the main window
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Hanya unduhan yang selesai, atau yang belum dimulai, yang dapat dipindahkan. Hentikan dan selesaikan terlebih dahulu.
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	Hanya sebagian
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 	Only an administrator can allow this	Hanya administrator yang dapat mengizinkan ini
@@ -2940,6 +2965,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Paraguay	Paraguay
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	Bagian
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	Kata Sandi
 #. text in the Link grabber window; text in the Options window
@@ -3089,6 +3118,10 @@
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	Antrean
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	Potongan cepat pada keyframe
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 	Read on this computer only, and sent only to the video's site.	Hanya dibaca di komputer ini, dan hanya dikirim ke situs video.
@@ -3680,6 +3713,10 @@
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 	Starting...	Memulai...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	Dimulai dan diakhiri tepat pada Dari dan Hingga: ffmpeg mengodekan ulang bagian tersebut, yang membutuhkan waktu lebih lama
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 	State	Status
@@ -3841,6 +3878,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	Itu bukan program baris perintah 7-Zip (7z.exe).
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	Ini adalah keseluruhan video: ubah Dari atau Hingga, atau hapus centang Hanya sebagian
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 	the .torrent file kept for it is gone	file .torrent yang disimpan untuknya telah hilang
@@ -4103,6 +4144,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	layanan tidak menyebutkan apakah akun ini premium
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	Situs tidak menyebutkan durasi video ini
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 	the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM	situs mengirim halaman web alih-alih file (halaman tunggu, captcha, atau masuk): buka tautan di browser Anda, selesaikan di sana, dan unduhan akan kembali ke MDM
@@ -4298,6 +4343,7 @@
 	This name is reserved by Windows	Nama ini dicadangkan oleh Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	Ini memerlukan ffmpeg
 #. text in the Add torrent window
@@ -4380,6 +4426,14 @@
 #. text in unix.rs
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 	To install what's missing: {command}	Untuk menginstal komponen yang belum tersedia: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	Hingga melewati akhir video
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	Hingga harus setelah Dari
 #. text in the Batch download window
 	To:	Ke:
 #. text in the Scheduler window
@@ -4521,6 +4575,10 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	Type the queue's name	Ketik nama antrean
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	Ketik waktu sebagai 1:30 atau 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5182,7 +5240,7 @@
 #. text in errors.rs
 #. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
 #, machine
-	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} tidak mencantumkan {file}, yang dipilih di Tambah torrent: tidak ada yang diunduh. Tambahkan torrent lagi dengan semua filenya, atau tanpa file ini
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} tidak mencantumkan {file}, yang dipilih di Tambah torrent: tidak ada yang diunduh. Tambahkan torrent lagi dengan semua filenya, atau tanpa yang ini
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 	{service} is not responding; try again later	{service} tidak merespons; coba lagi nanti
@@ -5422,6 +5480,11 @@ extension	Done	Selesai
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 extension	Download	Unduh
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	Unduh sebagian dari sini...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine

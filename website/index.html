@@ -73,6 +73,28 @@
       </div>
     </section>
 
+    <!-- The film: the ad, played from YouTube only when asked for (main.js). Until then the poster
+         is the site's own copy of the film's title card and nothing is loaded from YouTube; the
+         link opens it on YouTube without scripts. The music's licence rules out a file of our own. -->
+    <section class="sec film-sec" id="film" aria-labelledby="film-title">
+      <div class="wrap film-inner">
+        <div class="sec-intro">
+          <h2 id="film-title">Watch it work.</h2>
+          <p>A minute with the app: video from a page, the browser extension, torrents file by file, and its looks, switched live.</p>
+          <p class="fine">YouTube's player loads only once you start the film. <a href="https://www.youtube.com/watch?v=TATDxWuu4Q8">Watch it on YouTube</a></p>
+        </div>
+        <div class="film" data-film="TATDxWuu4Q8" data-label="Mister Download Manager: a free, open-source download manager for Windows, macOS and Linux">
+          <a class="film-play" href="https://www.youtube.com/watch?v=TATDxWuu4Q8">
+            <span class="film-frame"><img src="/assets/film/poster-1280.webp" srcset="/assets/film/poster-640.webp 640w, /assets/film/poster-1280.webp 1280w" sizes="(max-width: 980px) 100vw, 700px" width="1280" height="720" loading="lazy" alt=""></span>
+            <span class="film-tag">
+              <span class="film-disc" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5z"/></svg></span>
+              <span class="film-words"><b>Play the film</b><small>1:09, with sound</small></span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- Packing list: a tour of the app, one window at a time (main.js: tabs that move on by themselves). -->
     <section class="sec manifest" id="features" aria-labelledby="features-title">
       <div class="wrap">

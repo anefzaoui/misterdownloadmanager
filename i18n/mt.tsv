@@ -293,6 +293,14 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ID ta' konfigurazzjoni ta' NextDNS ikun magħmul minn sitt ittri u ċifri (0-9, a-f).
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	Parti tiġi ssejvjata mingħajr il-kapitli u s-sottotitli tal-video
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	Il-videos ta' playlist jitniżżlu kollha
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -341,6 +349,7 @@
 #, machine
 	about {ms} ms ({reach})	madwar {ms} ms ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -1008,7 +1017,7 @@
 #. text in the Options window
 #. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
 #, machine
-	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Jekk immarkata, klikk fuq l-ikona tal-MDM turi dak li qed jitniżżel, b’Issospendi u Ikkanċella, u klikk darbtejn tiftaħ it-tieqa; jekk mhux immarkata, klikk turi jew taħbi t-tieqa
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Jekk tkun iċċekkjata, klikk fuq l-ikona tal-MDM turi dak li qed jitniżżel, b'Pause u Cancel, u double click tiftaħ it-tieqa; jekk ma tkunx iċċekkjata, klikk turi jew taħbi t-tieqa
 #. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
@@ -1836,6 +1845,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	Kollox fid-daqs normali (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	Qtugħ eżatt, ikkodifikat mill-ġdid
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1920,6 +1933,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	Gżejjer Faroe
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	Mgħaġġel: l-istreams jiġu kkupjati kif inhuma, għalhekk il-parti tista' tibda ftit qabel Minn
 #. text in the Scheduler window
 #, machine
 	February	Frar
@@ -2171,6 +2188,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	mil-linja tal-kmand
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	minn {from} sa {to}
 #. text in the Batch download window
 #, machine
 	From:	Minn:
@@ -3382,7 +3403,7 @@
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
-	No downloads are running	L-ebda tniżżil ma qed jaħdem
+	No downloads are running	L-ebda tniżżil m'hu għaddej
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3666,6 +3687,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Jista' jitċaqlaq biss tniżżil lest, jew wieħed li għadu ma bediex. Waqqfu u lestih l-ewwel.
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	Parti biss
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3686,7 +3711,7 @@
 #. message or event log entry in the main window
 #. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
 #, machine
-	Only the {files} file(s) ticked in Add torrent	Il-{files} fajl(s) biss immarkat(i) f'Żid torrent
+	Only the {files} file(s) ticked in Add torrent	Il-{files} fajl(s) biss iċċekkjat(i) f'Żid torrent
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Biss waqt li nkun qed nuża l-kompjuter
@@ -3822,6 +3847,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	Paragwaj
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	Parti
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Password
@@ -4018,6 +4047,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Kjujiet
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	Qtugħ mgħaġġel, f'keyframes
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -4784,6 +4817,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Qed jibda...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	Tibda u tispiċċa eżattament f'Minn u Sa: ffmpeg jikkodifika l-parti mill-ġdid, li tieħu aktar żmien
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4991,6 +5028,10 @@
 #. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
 #, machine
 	That isn't 7-Zip's command line program (7z.exe).	Dak mhuwiex il-programm tal-linja tal-kmand ta’ 7-Zip (7z.exe).
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	Dan huwa l-video kollu: ibdel Minn jew Sa, jew neħħi l-marka minn Parti biss
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -5326,6 +5367,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	is-servizz ma jgħidx jekk huwiex premium
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	Is-sit ma jgħidx kemm idum dan il-video
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5568,6 +5613,7 @@
 	This name is reserved by Windows	Dan l-isem huwa riżervat minn Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Dan jeħtieġ ffmpeg
@@ -5671,6 +5717,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	Biex tinstalla dak li hemm nieqes: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	Sa huwa wara t-tmiem tal-video
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	Sa trid tiġi wara Minn
 #. text in the Batch download window
 #, machine
 	To:	Lil:
@@ -5858,6 +5912,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Ikteb l-isem tal-kju
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	Ikteb il-ħinijiet bħala 1:30 jew 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -6985,6 +7043,11 @@ extension	Done	Lest
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
 extension	Download	Niżżel
+#. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	Niżżel parti minn hawn...
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine
