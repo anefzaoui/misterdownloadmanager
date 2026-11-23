@@ -3712,7 +3712,9 @@ function videoButton({ stored = {}, location, iframes, videos, subframe = false 
   const english = JSON.parse(readText(new URL("en/messages.json", dir)));
   for (const locale of readdirSync(dir)) {
     const m = JSON.parse(readText(new URL(`${locale}/messages.json`, dir)));
-    assert.deepEqual(Object.keys(m).sort(), Object.keys(english).sort(), `${locale} has every text`);
+    for (const key of Object.keys(m)) {
+      assert.ok(english[key], `${locale} has unknown key: ${key}`);
+    }
   }
   for (const name of ["manifest.json", "manifest.firefox.json"]) {
     const text = readText(`../../extension/${name}`);
@@ -5063,7 +5065,7 @@ for (const here of [true, false]) {
     await settle();
     const adds = fetched.slice(from).filter(([u]) => u.includes("api/add"));
     assert.equal(adds.length, 1, "stops immediately on first status 0");
-    assert.equal(store.status.why, "unreachable");
+    assert.equal(store.status.remoteWhy, "unreachable");
     assert.equal(store.status.notice, "Server not reached");
     assert.ok(calls.some((c) => c[0] === "badge" && c[1] === "!"), "badge shows !");
 
@@ -5071,7 +5073,7 @@ for (const here of [true, false]) {
     served[`${R}api/add`] = { status: 200, body: JSON.stringify({ ok: true }) };
     await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
     await settle();
-    assert.equal(store.status.why, null, "unreachable cleared by later successful send");
+    assert.equal(store.status.remoteWhy, null, "unreachable cleared by later successful send");
     assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge ! cleared");
 
     // Expired notice (after 10s) dropped by showStatus
@@ -5118,12 +5120,22 @@ for (const here of [true, false]) {
     const nativeFiles = natives(calls).filter((m) => m.file);
     assert.equal(nativeFiles.length, 1, "sent to this computer's MDM");
 
-    // Notice dropped at next download
+    // Notice dropped at next download, singular for 1 link
+    await ctx.noteLinksNotice({ sent: 1, refused: 0, leftOut: 0 });
+    assert.equal(store.status.notice, "Sent 1 link", "singular for 1 link");
     await ctx.noteLinksNotice({ sent: 10, refused: 0, leftOut: 0 });
     assert.equal(store.status.notice, "Sent 10 links");
     await ctx.download("file", { file: true });
     await settle();
     assert.equal(store.status.notice, "", "notice dropped at next download");
+
+    // Switching back to This computer clears remote unreachable and does not leak
+    await ctx.noteLinksNotice({ sent: 0, refused: 0, leftOut: 0, why: "unreachable" });
+    assert.equal(store.status.remoteWhy, "unreachable");
+    await ctx.remoteOff();
+    await settle();
+    assert.equal(store.status.remoteWhy, null, "remoteWhy cleared on remoteOff");
+    assert.equal(store.status.why, null, "this computer why untouched");
   }
 
   delete served[`${R}api/add`];

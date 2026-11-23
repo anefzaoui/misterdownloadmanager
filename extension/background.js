@@ -100,6 +100,7 @@ const REMOTE_LINKS_CAP = 100;
 
 function formatLinksNotice(r) {
   if (r.why === "unreachable") return t("status_unreachable");
+  if (r.sent === 1 && r.refused === 0 && r.leftOut === 0) return t("status_links_sent_one");
   if (r.sent > 0 && r.refused === 0 && r.leftOut === 0) return t("status_links_sent", String(r.sent));
   if (r.sent > 0 && r.refused === 0 && r.leftOut > 0) return t("status_links_cut", String(r.sent), String(r.leftOut));
   if (r.sent > 0 && r.refused > 0 && r.leftOut > 0) return t("status_links_partial_cut", String(r.sent), String(r.refused), String(r.leftOut));
@@ -109,13 +110,22 @@ function formatLinksNotice(r) {
   return "";
 }
 
+async function noteRemoteStatus(why) {
+  const now = await readStatus();
+  const remoteWhy = why === "unreachable" ? "unreachable" : null;
+  if ((now.remoteWhy || null) === remoteWhy) return;
+  status = { ...now, remoteWhy, at: Date.now() };
+  await ext.storage.local.set({ status });
+  await showStatus();
+}
+
 async function noteLinksNotice(result) {
   const notice = formatLinksNotice(result);
   result.notice = notice;
   const now = await readStatus();
   const failed = result.why === "unreachable" || (result.sent === 0 && result.refused > 0);
-  const why = result.why === "unreachable" ? "unreachable" : (result.sent > 0 ? null : now.why);
-  status = { ...now, why, notice, at: Date.now() };
+  const remoteWhy = result.why === "unreachable" ? "unreachable" : (result.sent > 0 ? null : now.remoteWhy);
+  status = { ...now, remoteWhy, notice, at: Date.now() };
   await ext.storage.local.set({ status });
   try {
     if (failed) {
@@ -178,22 +188,7 @@ async function download(kind, message) {
       let unreachable = false;
       for (const url of toSend) {
         const res = await remoteSend(target, { ...message, url });
-        if (isSingle) {
-          if (res.ok) {
-            const s = await readStatus();
-            if (s && s.why) {
-              status = { ...s, why: null };
-              await ext.storage.local.set({ status });
-              await showStatus();
-            }
-          } else if (res.why === "unreachable") {
-            const s = await readStatus();
-            status = { ...s, why: "unreachable" };
-            await ext.storage.local.set({ status });
-            await showStatus();
-          }
-          return res;
-        }
+        if (isSingle) return res;
         if (res.ok) {
           sent++;
         } else if (res.why === "unreachable") {
@@ -270,12 +265,7 @@ async function remoteCall(base, path, body, token) {
 async function remoteSend(target, message) {
   const r = await remoteCall(target.url, "api/add", { url: message.url, start: true }, target.token);
   if (r.status === 200 && r.body && !r.body.error) {
-    const s = await readStatus();
-    if (s && s.why) {
-      status = { ...s, why: null };
-      await ext.storage.local.set({ status });
-      await showStatus();
-    }
+    await noteRemoteStatus(null);
     return { ok: true };
   }
   if (r.status === 401) {
@@ -285,7 +275,9 @@ async function remoteSend(target, message) {
     const nextRemote = remote && remote.url === target.url && remote.token === target.token ? null : remote;
     await ext.storage.local.set({ remotes: updated, remote: nextRemote });
   }
-  return { ok: false, why: r.status === 0 ? "unreachable" : "refused" };
+  const why = r.status === 0 ? "unreachable" : "refused";
+  if (why === "unreachable") await noteRemoteStatus("unreachable");
+  return { ok: false, why };
 }
 
 // The file types the app takes by default (mdm_ipc::capture::DEFAULT_AUTO_TYPES; a test keeps
@@ -324,6 +316,11 @@ async function remoteSelect(url) {
   const list = await readRemotes();
   const target = list.find((item) => item.url === url);
   if (target) {
+    const s = await readStatus();
+    if (s.remoteWhy) {
+      status = { ...s, remoteWhy: null };
+      await ext.storage.local.set({ status });
+    }
     await ext.storage.local.set({ remote: target });
     await refreshRules();
     await showStatus();
@@ -348,6 +345,11 @@ async function remoteForget(url) {
 
 // Back to this computer: active remote set to null without forgetting paired remotes.
 async function remoteOff() {
+  const s = await readStatus();
+  if (s.remoteWhy) {
+    status = { ...s, remoteWhy: null };
+    await ext.storage.local.set({ status });
+  }
   await ext.storage.local.set({ remote: null });
   await refreshRules();
   await showStatus();
@@ -697,7 +699,7 @@ async function showStatus() {
     await ext.storage.local.set({ status });
     s.notice = "";
   }
-  const why = remote ? (s.why === "unreachable" ? "unreachable" : null) : s.why;
+  const why = remote ? (s.remoteWhy === "unreachable" ? "unreachable" : null) : s.why;
   const { paused } = await ext.storage.local.get({ paused: false });
   const running = !remote && !why && !paused && runningNow > 0 ? (runningNow > 99 ? "99+" : String(runningNow)) : "";
   try {
