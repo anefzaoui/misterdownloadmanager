@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Tests: the browser add-on's real-browser tests no longer hang on a browser that stops
+  answering: each command has a deadline, past which that browser is stopped and its test fails
+  with the command's name; stopping a run (Ctrl+C) or an error in the test tool still cleans up
+  what it started. Each run takes free ports of its own (`E2E_PORT` fixes them from one base), so
+  two runs on one computer no longer meet
 - ✅ Tests: the check of a video part's progress no longer fails now and then on a fast machine
   (seen on macOS): the test tool held nothing back, so the whole part could come in between two
   looks at the progress; it now waits half-way until the test has seen the progress, and the
