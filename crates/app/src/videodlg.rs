@@ -2907,7 +2907,7 @@ mod tests {
     fn helper_refresh_prefers_exact_selector_over_earlier_compatible_row() {
         let old = Choice {
             selector: "18/old-fallback".into(),
-            label: "360p MP4 · H.264".into(),
+            label: String::from("360p MP4 · H.264"),
             ext: "mp4".into(),
             height: Some(360),
             codec: Some("H.264".into()),
