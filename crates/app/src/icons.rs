@@ -173,13 +173,14 @@ impl Icon {
         }
     }
 
-    /// Resume's green, Stop's red and Stop All's dark red: their ink while they can be used, whatever the theme's
-    /// icon style.
+    /// Resume's green, Stop's red, Stop All's dark red and Delete's eggplant: their ink while they can be used,
+    /// whatever the theme's icon style.
     fn signal(self) -> Option<(&'static str, &'static str)> {
         match self {
             Icon::Resume => Some(GO),
             Icon::Stop => Some(HALT),
             Icon::StopAll => Some(HALT_ALL),
+            Icon::Delete => Some(EGGPLANT),
             _ => None,
         }
     }
@@ -190,7 +191,7 @@ impl Icon {
             Icon::AddUrl => ("#9ad9b0", "#7fb4c0"),
             // The Torrent pill's purple.
             Icon::AddTorrent => ("#b07ad9", "#7d5fd0"),
-            Icon::Delete => ("#e2e2e2", "#b4b4b4"),
+            Icon::Delete => EGGPLANT,
             // Ours: green and red while they can be used, so they stand out from their grey off look.
             Icon::Resume => GO,
             Icon::Stop => HALT,
@@ -368,6 +369,8 @@ const GO: (&str, &str) = ("#5fd38a", "#239a55");
 const HALT: (&str, &str) = ("#f27878", "#c93a3a");
 /// Stop All's ink while it can be used: a darker red than Stop's.
 const HALT_ALL: (&str, &str) = ("#b52a2a", "#7a1010");
+/// Delete's ink while it can be used: eggplant, apart from Stop's reds.
+const EGGPLANT: (&str, &str) = ("#8e4f86", "#5a2d55");
 
 /// The download list's mark for a private (incognito) window's download (#1581): Lucide
 /// "venetian-mask", 16 × 16, inked in `ink` (the row's text colour, so it reads on a selected
