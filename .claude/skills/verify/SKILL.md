@@ -112,6 +112,10 @@ Not verified: <what wasn't: an OS, a setup, a screen reader, a real site> (or "n
 If the same check fails three rounds in a row, stop: report what you tried, what you saw and
 what you think is wrong, and ask. No fourth blind attempt.
 
+One build folder per worktree: never point two worktrees at the same `CARGO_TARGET_DIR`. Cargo
+reuses the app's build script from the other worktree, and the build then packs that worktree's
+translation catalogs (screenshots in other languages come out stale or in English).
+
 ## 6. Clean up
 
 Quit every MDM you started properly (`/exit`, File → Exit), close the browsers and windows you
