@@ -7,7 +7,7 @@ priority: 0.4
 
 ## Read the site
 
-- **Every page in Markdown.** Each page has a Markdown version beside it: the address with `.md` in place of `.html`, or `index.md` for an address that ends in `/`. So [/download.html](/download.html) is [/download.md](/download.md), [/help/](/help/) is [/help/index.md](/help/index.md), and the German home page [/de/](/de/) is [/de/index.md](/de/index.md). Each page names its own in its `<head>` (`<link rel="alternate" type="text/markdown">`). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.
+- **Every page in Markdown.** Each page has a Markdown version beside it: the address with `.md` in place of `.html`, or `index.md` for an address that ends in `/`. So [`/download.html`](/download.html) is [`/download.md`](/download.md), [`/help/`](/help/) is [`/help/index.md`](/help/index.md), and the German home page [`/de/`](/de/) is [`/de/index.md`](/de/index.md). Each page names its own in its `<head>` (`<link rel="alternate" type="text/markdown">`). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.
 - **[llms.txt](/llms.txt)**: what Mister Download Manager is, in a few lines, and the main pages. **[llms-full.txt](/llms-full.txt)**: the help pages and the answers to common questions in one file.
 - **[sitemap.xml](/sitemap.xml)**: every page, in every language.
 
@@ -25,7 +25,7 @@ Search engines may index it, AI tools may use it to answer questions, and it may
 
 ## APIs
 
-[/.well-known/api-catalog](/.well-known/api-catalog) lists them (RFC 9727):
+[`/.well-known/api-catalog`](/.well-known/api-catalog) lists them (RFC 9727):
 
 - **The site's star ratings**, at `https://ratings.misterdownloadmanager.com/api/ratings`, described in [OpenAPI](/ratings-openapi.json). Anyone may read the numbers; rating is for this site's pages (below).
 - **MDM's automation API**, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its [documentation](/help/command-line.html#the-automation-api) and its [JSON Schema](/automation-api.schema.json).
