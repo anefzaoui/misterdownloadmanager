@@ -500,6 +500,12 @@ pub struct Item {
     /// once complete.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub replace_file: Option<PathBuf>,
+    /// The file it was to replace as it completed (`replace_file`: a Redownload, #1698, or
+    /// #1088's Replace?) that couldn't be replaced (another program had it open): it is kept,
+    /// and the new copy saved beside it, numbered (the row follows the new copy). Set as the
+    /// download completes, taken by the window, which says so. Memory only.
+    #[serde(skip)]
+    pub not_replaced: Option<PathBuf>,
     /// The Link grabber package it came in (#37): its archives are extracted together once
     /// every volume is there.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1233,6 +1239,21 @@ impl Item {
         self.replace_file.as_ref() == Some(&self.dest)
     }
 
+    /// Can it be downloaded again from the start (Redownload)? A file download that isn't
+    /// running. Not a torrent (its pieces are checked against their hashes: Recheck files finds
+    /// and fetches the damaged ones, and its data keeps seeding), a video (its file is yt-dlp's to
+    /// make), a gallery (gallery-dl fetches only the files not there yet: Download Now does
+    /// that), nor a torrent through a debrid account (the service's files, #44). Nor one whose
+    /// unfinished file is being moved (`move_from`, #1739): its part file is on its way.
+    pub fn can_redownload(&self) -> bool {
+        self.live.is_none()
+            && self.move_from.is_none()
+            && self.torrent.is_none()
+            && self.video.is_none()
+            && self.gallery.is_none()
+            && self.remote.is_none()
+    }
+
     /// What tells where this row's files are (its place, its kind, the files it wrote), for a
     /// look at the disk on a thread other than the window's (#743): no live download, no log.
     pub fn place_copy(&self) -> Item {
@@ -1280,6 +1301,7 @@ impl Item {
             name_from_url: false,
             number_at_start: false,
             replace_file: None,
+            not_replaced: None,
             package: None,
             group: None,
             server: None,
@@ -1419,6 +1441,13 @@ impl Item {
             let guessed = std::mem::take(&mut self.name_from_url);
             self.number_at_start = false;
             if *f != self.dest {
+                // It was to replace the file at its place as it completed, and the engine saved
+                // it beside instead: that file couldn't be replaced (open in another program),
+                // and both stay (#1698).
+                // (`Item::replaces`, by its fields: `live` is borrowed.)
+                if s.state == State::Done && self.replace_file.as_ref() == Some(&self.dest) {
+                    self.not_replaced = Some(self.dest.clone());
+                }
                 // The file as saved (a video's real extension, a numbered duplicate, the name
                 // the server gave).
                 self.dest = f.clone();

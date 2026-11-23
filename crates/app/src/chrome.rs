@@ -1526,6 +1526,18 @@ fn heading_into(from: Pos2, p: Pos2, sub: Rect) -> bool {
     !(neg && pos)
 }
 
+/// The name a menu's window announces for a screen reader (#1407): a bar menu's own title
+/// ("Tasks"); a context menu or a drop-down's list has none, like a native menu's window.
+/// `id` is the caller's ("menu-{i}" for the bar's menus, from `open_menu`).
+fn menu_frame_name(kind: MenuKind, id: &str) -> Option<String> {
+    if kind != MenuKind::Bar {
+        return None;
+    }
+    let i: usize = id.strip_prefix("menu-")?.parse().ok()?;
+    let title = crate::i18n::tc("menubar", MENUS.get(i)?.0);
+    Some(plain(title).0)
+}
+
 #[allow(clippy::too_many_arguments)]
 fn popup_level<C: Clone>(
     ctx: &egui::Context,
@@ -1574,6 +1586,10 @@ fn popup_level<C: Clone>(
     ctx.show_viewport_immediate(vid, builder, |ui, _| {
         // Made a menu window in its own pass, before anything is drawn in it (style_popup).
         styled = style_popup(&title, PopupLook::Menu);
+        // The window's name is the menu's, not the window's internal id (#1407).
+        if let Some(name) = menu_frame_name(kind, id) {
+            crate::winui::name_window(ui, &name);
+        }
         // What happens in this window, for popup() and keyboard(), which run in the parent's
         // pass: they must not ask egui about a menu window by its id, which creates one when it
         // isn't open (a submenu, mostly): an untitled copy of the main window, opened and closed

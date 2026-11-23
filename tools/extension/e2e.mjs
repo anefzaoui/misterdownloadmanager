@@ -88,6 +88,18 @@
 // put back byte for byte at the end (E2E_REPLACE_HOST=1 lets it replace a copy already
 // registered there); the cases that read the app's windows (UI Automation) are skipped.
 //
+// Ports: each server this run starts (the lab server, the proxy, the remote case's headless MDM,
+// Firefox's remote protocol) listens on a free port the system picks, so two runs side by side
+// never meet. E2E_PORT=<n> fixes them from one base instead: the lab server on n, the proxy on
+// n+1, the headless MDM on n+2, Firefox's protocol on n+3. Two runs side by side also need their
+// own E2E_WORK, E2E_HOST_NAME and programs (CARGO_TARGET_DIR: each run stops its own app's copies).
+//
+// Deadlines: a browser that doesn't answer a command within E2E_COMMAND_TIMEOUT seconds (30;
+// E2E_NAVIGATION_TIMEOUT, 90, for a navigation, a new session or loading the extension) is
+// stopped, and its case and the browser's remaining ones fail with the command's name. Ctrl+C,
+// SIGTERM, a closed console or an uncaught error still stop everything this run started and put
+// the registry (or the host's manifests) back.
+//
 // The programs: target/release, or CARGO_TARGET_DIR's release folder when it is set.
 import { spawn, spawnSync } from "node:child_process";
 import crypto from "node:crypto";
@@ -102,15 +114,19 @@ export const release = path.join(process.env.CARGO_TARGET_DIR ? path.resolve(pro
 export const exe = (name) => path.join(release, process.platform === "win32" ? `${name}.exe` : name);
 // E2E_WORK: the run's own folder instead (its profiles, the instance's data and downloads).
 const work = process.env.E2E_WORK ? path.resolve(process.env.E2E_WORK) : path.join(root, "target", "e2e");
-const PORT = 8101;
-const LAB = `http://127.0.0.1:${PORT}`;
+// E2E_PORT: the ports from one base (see Ports above), else 0: each server's own free port, read
+// back as it starts (run(), before any case).
+const BASE_PORT = process.env.E2E_PORT ? Number(process.env.E2E_PORT) : 0;
+if (!Number.isInteger(BASE_PORT) || BASE_PORT < 0 || BASE_PORT > 65532) throw new Error(`E2E_PORT: ${process.env.E2E_PORT} isn't a port (1 to 65532)`);
+let PORT = BASE_PORT;
+let LAB = `http://127.0.0.1:${PORT}`;
 // The proxy case (#42): a proxy on 127.0.0.1 that alone knows the name lab.mdm.test (the lab
 // server), standing for a VPN extension's proxy.
-const PROXY_PORT = 8102;
+let PROXY_PORT = BASE_PORT && BASE_PORT + 1;
 const PROXY_HOST = "lab.mdm.test";
 const proxyLog = [];
 // The same proxy as a PAC script (Chromium's case: inline, or by its address on that proxy).
-const PAC = `function FindProxyForURL(url, host) { return host === "${PROXY_HOST}" ? "PROXY 127.0.0.1:${PROXY_PORT}" : "DIRECT"; }`;
+const pac = () => `function FindProxyForURL(url, host) { return host === "${PROXY_HOST}" ? "PROXY 127.0.0.1:${PROXY_PORT}" : "DIRECT"; }`;
 // The extension's own address in Firefox (moz-extension://UUID/), fixed in the test profile so
 // its pages (the popup) can be opened in a tab.
 const FIREFOX_ID = "integration@misterdownloadmanager.com";
@@ -179,14 +195,91 @@ export function killProfile(profile) {
   ]);
 }
 
-// Chromium's DevTools protocol over --remote-debugging-pipe (needed to load an extension).
-export class Pipe {
-  constructor(proc) {
-    this.out = proc.stdio[3];
+// How long a browser may take to answer one command (E2E_COMMAND_TIMEOUT, seconds), and a
+// navigation, a new session or loading the extension (E2E_NAVIGATION_TIMEOUT): past it the
+// browser is taken as stuck and stopped. Without a deadline, one command a browser never answered
+// held the whole run (4.7 hours once), `until` included, as it waits on that same command.
+function seconds(name, otherwise) {
+  const v = process.env[name];
+  if (!v) return otherwise * 1000;
+  const n = Number(v);
+  if (!(n > 0)) throw new Error(`${name}: ${v} isn't a number of seconds`);
+  return n * 1000;
+}
+export const COMMAND_MS = seconds("E2E_COMMAND_TIMEOUT", 30);
+export const NAVIGATION_MS = seconds("E2E_NAVIGATION_TIMEOUT", 90);
+const SLOW_COMMANDS = new Set(["Page.navigate", "Extensions.loadUnpacked", "session.new", "webExtension.install", "browsingContext.navigate"]);
+
+// A browser that didn't answer a command in time (it was stopped), or went away.
+export class BrowserGone extends Error {}
+
+// The commands sent to a browser and their answers, by id, each with its deadline. `stop` stops
+// the browser when one isn't answered; from then on (or once the browser went away: `fail`) every
+// command waiting and every later one fails with that reason, at once.
+class Commands {
+  constructor(browser, stop) {
+    this.browser = browser;
+    this.stop = stop;
     this.next = 1;
     this.waiting = new Map();
-    // Event listeners (`on`): each gets every event {method, params, sessionId}.
+    // Event listeners (`on`): each gets every event.
     this.listeners = [];
+    // Why the browser can't answer any more (a BrowserGone), or null.
+    this.failure = null;
+  }
+  on(f) {
+    this.listeners.push(f);
+  }
+  // `write(id)` sends command `id`; its answer, or a BrowserGone past its deadline.
+  command(method, write) {
+    if (this.failure) return Promise.reject(this.failure);
+    const id = this.next++;
+    const ms = SLOW_COMMANDS.has(method) ? NAVIGATION_MS : COMMAND_MS;
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        const e = new BrowserGone(`${this.browser} didn't answer ${method} in ${ms / 1000} s: stopped it`);
+        this.fail(e);
+        try {
+          this.stop();
+        } catch (err) {
+          console.error(`stopping ${this.browser}: ${err.message}`);
+        }
+      }, ms);
+      this.waiting.set(id, { resolve, reject, method, timer });
+      try {
+        write(id);
+      } catch (e) {
+        clearTimeout(timer);
+        this.waiting.delete(id);
+        reject(new BrowserGone(`${this.browser}: ${method} couldn't be sent: ${e.message}`));
+      }
+    });
+  }
+  // The answer to command `id` (null: not one of ours).
+  answer(id, error, result) {
+    const w = id && this.waiting.get(id);
+    if (!w) return false;
+    this.waiting.delete(id);
+    clearTimeout(w.timer);
+    error ? w.reject(new Error(`${w.method}: ${error}`)) : w.resolve(result);
+    return true;
+  }
+  fail(e) {
+    if (!this.failure) this.failure = e;
+    for (const w of this.waiting.values()) {
+      clearTimeout(w.timer);
+      w.reject(this.failure);
+    }
+    this.waiting.clear();
+  }
+}
+
+// Chromium's DevTools protocol over --remote-debugging-pipe (needed to load an extension).
+// `browser` names it in errors; `stop` stops it when a command isn't answered (its process tree).
+export class Pipe extends Commands {
+  constructor(proc, { browser = "the browser", stop = () => killTree(proc) } = {}) {
+    super(browser, stop);
+    this.out = proc.stdio[3];
     let buf = "";
     proc.stdio[4].on("data", (d) => {
       buf += d.toString("utf8");
@@ -195,52 +288,36 @@ export class Pipe {
         const m = JSON.parse(buf.slice(0, i));
         buf = buf.slice(i + 1);
         if (process.env.E2E_DEBUG && m.method) console.error("cdp", m.method, JSON.stringify(m.params).slice(0, 300));
-        const w = m.id && this.waiting.get(m.id);
-        if (w) {
-          this.waiting.delete(m.id);
-          m.error ? w.reject(new Error(`${w.method}: ${m.error.message}`)) : w.resolve(m.result);
-        } else if (m.method) {
+        if (!this.answer(m.id, m.error && (m.error.message || JSON.stringify(m.error)), m.result) && m.method) {
           for (const f of this.listeners) f(m);
         }
       }
     });
-  }
-  on(f) {
-    this.listeners.push(f);
+    const gone = (why) => this.fail(new BrowserGone(`${browser} ${why}`));
+    this.out.on("error", (e) => gone(`closed its pipe: ${e.message}`));
+    proc.stdio[4].on("error", (e) => gone(`closed its pipe: ${e.message}`));
+    proc.on("exit", (code) => gone(`exited (${code})`));
   }
   send(method, params = {}, sessionId) {
-    const id = this.next++;
-    this.out.write(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }) + "\0");
-    return new Promise((resolve, reject) => this.waiting.set(id, { resolve, reject, method }));
+    return this.command(method, (id) => this.out.write(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }) + "\0"));
   }
 }
 
-// Firefox's WebDriver BiDi over its remote-debugging WebSocket.
-class Bidi {
-  constructor(ws) {
+// Firefox's WebDriver BiDi over its remote-debugging WebSocket (`browser` and `stop` as Pipe's).
+class Bidi extends Commands {
+  constructor(ws, { browser, stop }) {
+    super(browser, stop);
     this.ws = ws;
-    this.next = 1;
-    this.waiting = new Map();
-    // Event listeners (`on`): each gets every event {method, params}.
-    this.listeners = [];
     ws.addEventListener("message", (e) => {
       const m = JSON.parse(e.data);
-      const w = m.id && this.waiting.get(m.id);
-      if (w) {
-        this.waiting.delete(m.id);
-        m.type === "error" ? w.reject(new Error(`${w.method}: ${m.error} ${m.message}`)) : w.resolve(m.result);
-      } else if (m.type === "event") {
+      if (!this.answer(m.id, m.type === "error" && `${m.error} ${m.message}`, m.result) && m.type === "event") {
         for (const f of this.listeners) f(m);
       }
     });
-  }
-  on(f) {
-    this.listeners.push(f);
+    ws.addEventListener("close", () => this.fail(new BrowserGone(`${browser} closed its remote protocol`)));
   }
   send(method, params = {}) {
-    const id = this.next++;
-    this.ws.send(JSON.stringify({ id, method, params }));
-    return new Promise((resolve, reject) => this.waiting.set(id, { resolve, reject, method }));
+    return this.command(method, (id) => this.ws.send(JSON.stringify({ id, method, params })));
   }
 }
 
@@ -336,7 +413,7 @@ const PILL_STATE = `function () {
 // coordinates, Alt held with `{alt: true}`), `navigate` (`{download: true}`: the address
 // becomes a download, the page stays), `key`, `pill`, `picks` (PICKS), `major` (the browser's
 // version) and `close`. `ready` resolves once the extension reached the native host.
-async function chromium(bin, profile, dl, page, ready) {
+async function chromium(bin, profile, dl, page, ready, name = "Chromium") {
   // The browser's own download folder, without asking, set as a user would: the profile's
   // preferences. (DevTools' Browser.setDownloadBehavior would take downloads past extensions.)
   fs.mkdirSync(path.join(profile, "Default"), { recursive: true });
@@ -369,7 +446,13 @@ async function chromium(bin, profile, dl, page, ready) {
     ],
     { env: process.env, stdio: ["ignore", "ignore", "ignore", "pipe", "pipe"], windowsHide: true },
   );
-  const cdp = new Pipe(proc);
+  const cdp = new Pipe(proc, {
+    browser: name,
+    stop: () => {
+      killTree(proc);
+      killProfile(profile);
+    },
+  });
   try {
     const { product } = await cdp.send("Browser.getVersion");
     const major = Number((/\/(\d+)\./.exec(product) || [])[1]) || 0;
@@ -530,6 +613,8 @@ async function chromium(bin, profile, dl, page, ready) {
       await cdp.send("Fetch.enable", { patterns }, sessionId);
     };
     return {
+      // Why the browser can't answer any more (it didn't answer in time, or went away), or null.
+      gone: () => cdp.failure,
       extension: id,
       base: `chrome-extension://${id}/`,
       serve,
@@ -594,8 +679,10 @@ async function chromium(bin, profile, dl, page, ready) {
   }
 }
 
-async function firefox(bin, profile, dl, page, ready) {
-  const port = 9300 + Math.floor(Math.random() * 500);
+async function firefox(bin, profile, dl, page, ready, name = "Firefox") {
+  // Its remote protocol's port: E2E_PORT's +3, else 0, a free one it picks and says
+  // ("WebDriver BiDi listening on ws://127.0.0.1:<port>", on its error output).
+  const askedPort = BASE_PORT && BASE_PORT + 3;
   const pref = (k, v) => `user_pref(${JSON.stringify(k)}, ${JSON.stringify(v)});`;
   fs.writeFileSync(
     path.join(profile, "user.js"),
@@ -621,22 +708,46 @@ async function firefox(bin, profile, dl, page, ready) {
       ...(process.env.E2E_COLOR_SCHEME ? [pref("layout.css.prefers-color-scheme.content-override", process.env.E2E_COLOR_SCHEME === "dark" ? 0 : 1)] : []),
     ].join("\n"),
   );
-  const proc = spawn(bin, ["-headless", "-no-remote", "-profile", profile, "--remote-debugging-port", String(port), "--width=1280", "--height=900"], {
+  const proc = spawn(bin, ["-headless", "-no-remote", "-profile", profile, "--remote-debugging-port", String(askedPort), "--width=1280", "--height=900"], {
     // Headless even where its launcher restarts it without the flag. System access (this test
     // profile only, its protocol on 127.0.0.1): to open the extension's own pages in a tab.
     env: { ...process.env, MOZ_HEADLESS: "1", MOZ_REMOTE_ALLOW_SYSTEM_ACCESS: "1" },
-    stdio: "ignore",
+    stdio: ["ignore", "ignore", "pipe"],
     windowsHide: true,
   });
+  let said = "";
+  let port = askedPort;
+  proc.stderr.on("data", (d) => {
+    if (port) return;
+    said = (said + d).slice(-4000);
+    const m = /WebDriver BiDi listening on ws:\/\/[^\s/]+:(\d+)/.exec(said);
+    if (m) port = Number(m[1]);
+  });
+  const stop = () => {
+    killTree(proc);
+    killProfile(profile);
+  };
   try {
-    const ws = await until("Firefox's remote protocol", 30000, () =>
+    await until(`${name}'s remote protocol's port`, 30000, () => port);
+    // Each try to reach it ends in 5 s (a browser stuck before its first answer).
+    const ws = await until(`${name}'s remote protocol`, 30000, () =>
       new Promise((resolve) => {
         const s = new WebSocket(`ws://127.0.0.1:${port}/session`);
-        s.addEventListener("open", () => resolve(s));
-        s.addEventListener("error", () => resolve(null));
+        const late = setTimeout(() => {
+          s.close();
+          resolve(null);
+        }, 5000);
+        s.addEventListener("open", () => {
+          clearTimeout(late);
+          resolve(s);
+        });
+        s.addEventListener("error", () => {
+          clearTimeout(late);
+          resolve(null);
+        });
       }),
     );
-    const bidi = new Bidi(ws);
+    const bidi = new Bidi(ws, { browser: name, stop });
     // The remote case's server certificate, as in Chromium (above).
     const { capabilities } = await bidi.send("session.new", { capabilities: { alwaysMatch: { acceptInsecureCerts: true } } });
     const major = Number(String(capabilities.browserVersion || "").split(".")[0]) || 0;
@@ -808,6 +919,8 @@ async function firefox(bin, profile, dl, page, ready) {
       await bidi.send("network.addIntercept", { phases: ["beforeRequestSent"], urlPatterns, contexts: [context] });
     };
     return {
+      // Why the browser can't answer any more (it didn't answer in time, or went away), or null.
+      gone: () => bidi.failure,
       extension,
       serve,
       // Another add-on (the folder `dir`), temporary beside ours: its ID; and removed again.
@@ -833,13 +946,11 @@ async function firefox(bin, profile, dl, page, ready) {
       tab,
       close: () => {
         ws.close();
-        killTree(proc);
-        killProfile(profile);
+        stop();
       },
     };
   } catch (e) {
-    killTree(proc);
-    killProfile(profile);
+    stop();
     throw e;
   }
 }
@@ -919,6 +1030,7 @@ const ourPids = () => appProcesses().map(([pid]) => pid).filter((p) => !before.h
 const ourApps = () => appProcesses().filter(([pid, monitor]) => !monitor && !before.has(pid)).map(([pid]) => pid);
 
 async function startApp() {
+  if (stopping) throw new Error("the run is stopping");
   if (ourPids().length) return;
   fs.rmSync(path.join(data, "ipc.json"), { force: true });
   spawn(appExe, [], { env: process.env, stdio: "ignore", detached: false });
@@ -974,8 +1086,7 @@ const brief = (e) => `${e.method} ${e.status} ${e.outcome} ${e.range || "-"}`;
 // Docker image: E2E_REMOTE_PAIR is a command printing a pairing code, `docker exec mdm
 // misterdownloadmanager-cli pair`, and E2E_REMOTE_DOWNLOADS the folder its downloads land in, as
 // seen from here); else target/release's app runs headless here, on 127.0.0.1, with its own data
-// and download folders under target/e2e.
-const REMOTE_PORT = 18463;
+// and download folders under target/e2e, on E2E_PORT's +2 or a free port (freePort).
 let remote = null;
 async function remoteServer() {
   if (remote) return remote;
@@ -996,14 +1107,15 @@ async function remoteServer() {
   const rdata = path.join(dir, "data");
   const downloads = path.join(dir, "Downloads");
   fs.mkdirSync(rdata, { recursive: true });
-  const args = ["--headless", "--data", rdata, "--downloads", downloads, "--listen", "127.0.0.1", "--port", String(REMOTE_PORT)];
+  const port = BASE_PORT ? BASE_PORT + 2 : await freePort();
+  const args = ["--headless", "--data", rdata, "--downloads", downloads, "--listen", "127.0.0.1", "--port", String(port)];
   const proc = spawn(appExe, args, { env: { ...process.env, MDM_DATA_DIR: rdata }, stdio: "ignore", windowsHide: true });
   const code = async () => {
     const a = JSON.parse(await ipc({ pair: true }, rdata));
     if (!a.code) throw new Error(`no pairing code: ${JSON.stringify(a)}`);
     return a.code;
   };
-  remote = { url: `https://127.0.0.1:${REMOTE_PORT}/`, downloads, code, proc, data: rdata };
+  remote = { url: `https://127.0.0.1:${port}/`, downloads, code, proc, data: rdata };
   await until("the headless MDM", 20000, () => code().then(() => true, () => false));
   return remote;
 }
@@ -1711,14 +1823,56 @@ async function videoButtonFollowsOptions(session) {
 
 class Skip extends Error {}
 
+// A port free now: bound as port 0 on 127.0.0.1, read back and let go, for a program that can't
+// say which one it got (the headless MDM's --port takes no 0). Another program could take it in
+// between, unlike the ports the servers below bind themselves; a run then fails, never another's.
+function freePort() {
+  return new Promise((resolve, reject) => {
+    const s = net.createServer();
+    s.once("error", reject);
+    s.listen(0, "127.0.0.1", () => {
+      const { port } = s.address();
+      s.close(() => resolve(port));
+    });
+  });
+}
+
+// A promise that fails after `ms` with "timed out: <what>", unless `p` settles first.
+function within(what, ms, p) {
+  let timer;
+  return Promise.race([p, new Promise((_, reject) => (timer = setTimeout(() => reject(new Error(`timed out: ${what}`)), ms)))]).finally(() => clearTimeout(timer));
+}
+
+// The lab server on 127.0.0.1, at E2E_PORT or on a free port it binds itself (port 0): `port`
+// resolves with the one it says it listens on.
+function startLab() {
+  const server = spawn(exe("labserver"), ["--bind", `127.0.0.1:${BASE_PORT}`], { stdio: ["ignore", "ignore", "pipe"], windowsHide: true });
+  let said = "";
+  const port = new Promise((resolve, reject) => {
+    server.stderr.on("data", (d) => {
+      if (said === null) return;
+      said = (said + d).slice(-4000);
+      const m = /labserver listening on https?:\/\/[^\s/]+:(\d+)/.exec(said);
+      if (m) {
+        said = null;
+        resolve(Number(m[1]));
+      }
+    });
+    server.on("error", reject);
+    server.on("exit", (code) => reject(new Error(`the lab server stopped (${code}): ${(said || "").trim()}`)));
+  });
+  return { server, port: within("the lab server's port", 15000, port) };
+}
+
 // A forward proxy on 127.0.0.1 (#42): plain requests in absolute form and CONNECT tunnels, the
-// name lab.mdm.test sent to the lab server, every request logged ({method, target}).
+// name lab.mdm.test sent to the lab server, every request logged ({method, target}). On E2E_PORT's
+// +1, else on a free port (0, read back into PROXY_PORT once it listens: `started`).
 function startProxy() {
   const to = (host, port) => (host === PROXY_HOST ? ["127.0.0.1", PORT] : [host, Number(port) || 80]);
   const server = http.createServer((req, res) => {
     // Its PAC script, as a VPN extension may set one by its address (Chromium's pac_script.url).
     if (req.url === "/mdm.pac") {
-      res.writeHead(200, { "content-type": "application/x-ns-proxy-autoconfig" }).end(PAC);
+      res.writeHead(200, { "content-type": "application/x-ns-proxy-autoconfig" }).end(pac());
       return;
     }
     proxyLog.push({ method: req.method, target: req.url });
@@ -1750,7 +1904,15 @@ function startProxy() {
     up.on("error", () => client.destroy());
     client.on("error", () => up.destroy());
   });
-  server.listen(PROXY_PORT, "127.0.0.1");
+  server.started = new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(PROXY_PORT, "127.0.0.1", () => {
+      PROXY_PORT = server.address().port;
+      resolve();
+    });
+  });
+  // A failed start is the run's error (the promise above), not an uncaught one.
+  server.started.catch(() => {});
   return server;
 }
 
@@ -1903,7 +2065,7 @@ async function proxyInChromium(t) {
     if (local) throw new Error(`on: ${local} request(s) for 127.0.0.1 through the proxy (Chromium sends none there)`);
     done.push("on: an ordinary link on 127.0.0.1 taken, straight (the proxy bypassed, as the browser does)");
 
-    await setProxy({ mode: "pac_script", pacScript: { data: PAC } });
+    await setProxy({ mode: "pac_script", pacScript: { data: pac() } });
     const pacData = await throughProxy(t, "pac-data", true);
     if (pacData < 2) throw new Error(`a PAC script (inline): only ${pacData} request(s) through the proxy`);
     done.push(`an inline PAC script: ${pacData} requests through its proxy`);
@@ -4766,6 +4928,11 @@ function testHost(name, browsers, nmhost) {
 // IDM downloads the file itself), so that case is left out while it runs.
 let idmRunning = false;
 
+// run()'s cleanup once it has started something (stopRun calls it too), and whether it began:
+// nothing new is started from then on.
+let cleanup = null;
+let stopping = false;
+
 async function run() {
   const args = process.argv.slice(2);
   const only = (args.find((a) => a.startsWith("--only=")) || "").slice(7).split(",").filter(Boolean);
@@ -4848,8 +5015,6 @@ async function run() {
   process.env.MDM_OFFSCREEN = "1";
 
   before = new Set(appProcesses().map(([pid]) => pid));
-  const server = spawn(exe("labserver"), ["--bind", `127.0.0.1:${PORT}`], { stdio: "ignore", windowsHide: true });
-  const proxy = startProxy();
   const nmhost = exe("misterdownloadmanager-nmhost");
   const results = [];
   let regBefore = null;
@@ -4861,7 +5026,50 @@ async function run() {
   // E2E_HOST_NAME's registration (testHost), and what was left of it at the end.
   let test = null;
   let testLeft = [];
+  // The browser open now: its profile (from before it starts) and its session.
+  let openProfile = null;
+  let session = null;
+  // The lab server and the proxy (started in the try below, so a failed start is cleaned up too).
+  let server = null;
+  let proxy = null;
+  // Everything this run started, stopped, and the registry put back: at its end, or from a signal
+  // or an uncaught error (stopRun), once. What it found, as the summary's lines.
+  let cleaned = null;
+  let summary = [];
+  cleanup = () =>
+    (cleaned ??= (async () => {
+      stopping = true;
+      // The registry first: a closed console leaves a few seconds only.
+      if (test) testLeft = test.remove();
+      else if (registered) spawnSync(nmhost, ["--unregister"]);
+      if (regBefore) regCheck = regRestore(regBefore, path.join(work, "registry", "after"), written);
+      if (session) session.close();
+      else if (openProfile) killProfile(openProfile);
+      await stopApp().catch(() => {});
+      await stopRemote().catch(() => {});
+      for (const pid of ourPids()) killPid(pid);
+      killTree(server);
+      if (proxy) proxy.close();
+      const lines = [];
+      if (regCheck) {
+        const kept = regBefore.filter((b) => b.bytes).map((b) => b.key);
+        lines.push(
+          regCheck.differ.length
+            ? `${WIN ? "registry" : "host manifests"}: DIFFERS after the run: ${regCheck.differ.join(", ")}`
+            : `${WIN ? "registry" : "host manifests"}: ${regBefore.length} ${WIN ? "keys" : "files"} byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
+        );
+      }
+      if (test) lines.push(testLeft.length ? `test host: STILL REGISTERED: ${testLeft.join(", ")}` : `test host: ${test.keys.join(", ")} registered for the run, removed`);
+      return lines;
+    })());
   try {
+    const lab = startLab();
+    server = lab.server;
+    proxy = startProxy();
+    PORT = await lab.port;
+    LAB = `http://127.0.0.1:${PORT}`;
+    await proxy.started;
+    console.error(`  lab server on ${PORT}, proxy on ${PROXY_PORT}`);
     await until("the lab server", 10000, () => fetch(`${LAB}/`).then((r) => r.ok, () => false));
     // An installed Mister Download Manager's registration is never replaced or removed.
     // Linux and macOS: its manifests (files) are put back byte for byte at the end, so a lab
@@ -4901,7 +5109,8 @@ async function run() {
         fs.copyFileSync(chromiumManifest, path.join(profile, "NativeMessagingHosts", `${HOST}.json`));
       }
       const started = Date.now();
-      let session;
+      session = null;
+      openProfile = profile;
       try {
         if (!bin) throw new Error("not installed");
         await startApp();
@@ -4925,7 +5134,7 @@ async function run() {
               return false;
             }
           }).then(() => sleep(300)); // its answer stored
-        session = await (kind === "firefox" ? firefox : chromium)(bin, profile, dl, `${LAB}/page?link=none`, ready);
+        session = await (kind === "firefox" ? firefox : chromium)(bin, profile, dl, `${LAB}/page?link=none`, ready, name);
         const t = { name, kind, session, dl, snap, last: name === names[names.length - 1], ua: await session.evaluate("navigator.userAgent") };
         // Firefox's family: whether it asks what to do with each new type (E2E_FIREFOX_ASK).
         const asks = session.inBrowser
@@ -4944,11 +5153,20 @@ async function run() {
           } catch (e) {
             const bug = KNOWN_BUGS[`${name}:${label}`] || KNOWN_BUGS[label];
             const status = e instanceof Skip ? "skipped" : bug ? "BUG" : "FAILED";
-            results.push([name, label, status, bug ? `${bug} -- ${e.message}` : e.message, Date.now() - at]);
+            // A failed fetch ("fetch failed") names its cause only there.
+            const message = e.cause ? `${e.message} (${e.cause.code || e.cause.message || e.cause})` : e.message;
+            results.push([name, label, status, bug ? `${bug} -- ${message}` : message, Date.now() - at]);
             // What the browser kept, so the next case starts clean.
             for (const f of fs.readdirSync(dl)) fs.rmSync(path.join(dl, f), { force: true, recursive: true });
           }
           console.error(`  ${name} ${label}: ${results[results.length - 1][2]}`);
+          // The browser stopped answering (stopped) or went away: its other cases can't run.
+          const gone = session.gone();
+          if (gone) {
+            results.push([name, "browser", "FAILED", `${gone.message}; its other cases weren't run`, Date.now() - started]);
+            break;
+          }
+          if (stopping) break;
           // E2E_DEBUG: what the extension did (Chromium).
           if (session.trace && process.env.E2E_DEBUG) console.error(`${name} ${label} trace:`, await session.trace());
         }
@@ -4956,40 +5174,58 @@ async function run() {
         results.push([name, "browser", "FAILED", e.message, Date.now() - started]);
       } finally {
         if (session) session.close();
+        session = null;
+        openProfile = null;
         if (snap) fs.rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 500 });
       }
+      if (stopping) break;
     }
   } finally {
-    if (test) testLeft = test.remove();
-    else if (registered) spawnSync(nmhost, ["--unregister"]);
-    if (regBefore) regCheck = regRestore(regBefore, path.join(work, "registry", "after"), written);
-    await stopApp().catch(() => {});
-    await stopRemote().catch(() => {});
-    for (const pid of ourPids()) killPid(pid);
-    killTree(server);
-    proxy.close();
+    summary = await cleanup();
   }
   for (const [name, label, status, detail, ms] of results) {
     console.log(`${name.padEnd(8)} ${label.padEnd(9)} ${status.padEnd(8)} ${(ms / 1000).toFixed(1).padStart(5)}s  ${detail}`);
   }
-  if (regCheck) {
-    const kept = regBefore.filter((b) => b.bytes).map((b) => b.key);
-    console.log(
-      regCheck.differ.length
-        ? `${WIN ? "registry" : "host manifests"}: DIFFERS after the run: ${regCheck.differ.join(", ")}`
-        : `${WIN ? "registry" : "host manifests"}: ${regBefore.length} ${WIN ? "keys" : "files"} byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
-    );
-  }
+  for (const line of summary) console.log(line);
   // A test instance changed this account's .torrent or magnet association (put back above).
   const associations = regCheck ? regCheck.changed.filter((k) => TORRENT_KEYS.has(k)) : [];
   if (associations.length) console.log(`registry: the run CHANGED this account's torrent associations (put back): ${associations.join(", ")}`);
-  if (test) console.log(testLeft.length ? `test host: STILL REGISTERED: ${testLeft.join(", ")}` : `test host: ${test.keys.join(", ")} registered for the run, removed`);
   console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);
   if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length) || associations.length || testLeft.length) process.exit(1);
 }
 
+// The run stopped from outside (Ctrl+C, SIGTERM, its console closed) or by an error nothing
+// caught: what it started is stopped and the registry put back (cleanup) before it exits, as at
+// its end. Once: a second signal while that runs only says so.
+let ending = false;
+async function stopRun(why, code) {
+  if (ending) return console.error(`${why}: still stopping what the run started`);
+  ending = true;
+  console.error(`${why}: stopping what the run started`);
+  stopping = true;
+  try {
+    if (cleanup) for (const line of await within("the cleanup", 90000, cleanup())) console.error(line);
+  } catch (e) {
+    console.error(`the cleanup: ${e.message}`);
+    code = code || 1;
+  }
+  process.exit(code);
+}
+
 // Run when started, not when another script imports its helpers (tools/readme/browser-shots.mjs).
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) run().catch((e) => {
-  console.error(e.message);
-  process.exit(1);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  // SIGHUP: the console window closed (Windows gives a few seconds); SIGBREAK: Ctrl+Break.
+  for (const [signal, code] of [["SIGINT", 130], ["SIGTERM", 143], ["SIGHUP", 129], ...(WIN ? [["SIGBREAK", 149]] : [])]) {
+    process.on(signal, () => stopRun(signal, code));
+  }
+  // Its output gone (the console or a pipe closed) doesn't stop the cleanup.
+  for (const s of [process.stdout, process.stderr]) s.on("error", () => {});
+  process.on("uncaughtException", (e) => stopRun(`an uncaught error: ${(e && e.stack) || e}`, 1));
+  // A command left waiting nowhere (a case gave up on it) fails with its stopped browser: the
+  // browser's own case reports that.
+  process.on("unhandledRejection", (e) => (e instanceof BrowserGone ? undefined : stopRun(`an unhandled rejection: ${(e && e.stack) || e}`, 1)));
+  run().catch((e) => {
+    console.error(e.message);
+    process.exit(1);
+  });
+}
