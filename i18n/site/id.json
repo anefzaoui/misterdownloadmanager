@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Tanda tangan kode memungkinkan Windows menunjukkan siapa yang menerbitkan program dan memeriksa bahwa program tersebut tidak diubah setelah dibuat. Ketika rilis Mister Download Manager (\"MDM\") ditandatangani, tanda tangannya mencakup file Windows yang berasal dari proyek ini:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> permintaan tarik"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Ya. MDM menyimpan progres unduhan selama proses berlangsung, jadi setelah koneksi terputus, aplikasi mengalami crash, atau komputer dimulai ulang, unduhan akan dilanjutkan dari bagian terakhir. Sebelum melanjutkan, MDM memeriksa apakah file di server telah berubah. Jika alamat unduhan sudah kedaluwarsa, <g1>Segarkan alamat unduhan</g1> memungkinkan Anda menggantinya dengan alamat baru tanpa kehilangan data. Lihat <g2>Melanjutkan unduhan yang terputus</g2>."
@@ -226,10 +222,6 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Bantuan → Tentang Mister Download Manager</g1> menampilkan versi yang Anda gunakan."
   },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>Permintaan tarik</g1><g2><x3/> orang</g2>"
-  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "Semua yang bisa dilakukan Penjadwal →"
@@ -321,6 +313,10 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Gratis dan sumber terbuka. Antarmuka yang sudah Anda kenal, mesin yang lebih cepat di baliknya, torrent dan video bawaan."
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "Setiap tautan membuka <g1>Info file unduhan</g1> sendiri, sehingga beberapa dapat dibuka berdampingan untuk membandingkan ukurannya sebelum Anda memilih. Setiap jendela baru terbuka sedikit di bawah dan di samping jendela sebelumnya dan muncul ke depan; mulai dari yang kedua, judulnya menyertakan nomornya: <g2>Info file unduhan (2)</g2>, <g3>(3)</g3> dan seterusnya. <g4>Esc</g4> hanya menutup jendela yang sedang Anda gunakan. Hingga enam jendela dapat dibuka sekaligus: lebih banyak tautan yang diserahkan bersamaan (peramban yang meneruskan beberapa unduhan) akan menunggu, dan terbuka satu per satu saat Anda menutup jendela; <g5>Batal</g5> akan menanyakan apakah akan membatalkan yang masih menunggu. Tautan yang sama yang diserahkan lagi akan membawa jendela yang terbuka ke depan. Jika Anda keluar dari MDM dengan beberapa jendela masih terbuka, unduhannya akan masuk ke <g6>Antrean unduhan utama</g6>, seperti halnya dengan <g7>Unduh nanti</g7>."
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -1126,10 +1122,6 @@
    "source": "comes with every download of MDM and works without the app running. <x1/> downloads a file over several connections with a progress line, <g2>Ctrl+C</g2> pauses it and <x3/> carries on later. <x4/> downloads a video, and <x5/> a torrent or only some of its files. <x6/> and <x7/> say what there is to choose before you download. <x8/> lists every option, and a command that fails exits with code 1.",
    "text": "hadir dengan setiap unduhan MDM dan berfungsi tanpa aplikasi berjalan. <x1/> mengunduh file melalui beberapa koneksi dengan bilah kemajuan, <g2>Ctrl+C</g2> menjedanya dan <x3/> melanjutkannya nanti. <x4/> mengunduh video, dan <x5/> torrent atau hanya beberapa filenya. <x6/> dan <x7/> menyatakan apa yang dapat dipilih sebelum Anda mengunduh. <x8/> mencantumkan setiap opsi, dan perintah yang gagal akan keluar dengan kode 1."
   },
-  "0ff7458c260e0558": {
-   "source": "Last updated 2026-11-22",
-   "text": "Terakhir diperbarui 22-11-2026"
-  },
   "10068bf8d08f9e51": {
    "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
    "text": "Jendela progres unduhan juga bisa ke sana, dengan tombol Minimalkan atau tombol <g1>Sembunyikan ke area notifikasi</g1>: tanda hubung pendek dengan panah ke bawah menuju sudut."
@@ -1802,10 +1794,6 @@
    "source": "It is most likely a false alarm. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus: detection names such as <x1/>, <x2/>, <x3/> or <x4/> mean such a guess. What they flag most is a new download few people have run yet, from a small project, without a publisher's signature; MDM's installer isn't code-signed yet. On VirusTotal, a handful of engines flagging a new setup while most stay clean is the usual sign of a false positive.",
    "text": "Kemungkinan besar ini adalah alarm palsu. Beberapa program antivirus menilai program yang tidak mereka kenal berdasarkan dugaan, bukan berdasarkan virus yang diketahui: nama deteksi seperti <x1/>, <x2/>, <x3/>, atau <x4/> berarti dugaan semacam itu. Yang paling sering mereka tandai adalah unduhan baru yang belum banyak dijalankan orang, dari proyek kecil, tanpa tanda tangan penerbit; penginstal MDM belum ditandatangani secara digital. Di VirusTotal, beberapa mesin yang menandai pengaturan baru sementara sebagian besar tetap bersih adalah tanda umum positif palsu."
   },
-  "1962902ce083389d": {
-   "source": "If they match, it is the file we published. Every release is built on GitHub from the <g1>public source code</g1>, so anyone can read what went into it.",
-   "text": "Jika cocok, itu adalah file yang kami publikasikan. Setiap rilis dibuat di GitHub dari <g1>kode sumber publik</g1>, sehingga siapa pun dapat membaca apa saja yang ada di dalamnya."
-  },
   "19686779e1123d73": {
    "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
    "text": "Untuk membuka halaman dengan nama server (<x1/>), berikan nama tersebut kepada MDM: <x2/> (beberapa: dipisahkan koma). Nama lain ditolak, agar tidak ada halaman web yang dapat menjangkau MDM melalui namanya sendiri."
@@ -1873,6 +1861,10 @@
   "1a3b9d0d6a07985d": {
    "source": "the page's address as you open it, shown with the pairing code",
    "text": "alamat halaman saat Anda membukanya, ditampilkan dengan kode pemasangan"
+  },
+  "1a5164060895b36a": {
+   "source": "A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's <x1/>) is made a part file again (<x2/>): its last resume state, handed back by a download asked to keep it (<x3/>, <x4/>), is written back with only the damaged ranges left to fetch, each starting a few bytes early for the overlap check, and the file renamed to its part file. Resuming it is an ordinary resume: <x5/> with the same validators, the overlap check, the digest; a file that changed on the server fails as <x6/>.",
+   "text": "File selesai yang tes arsipnya menemukan kerusakan yang dapat ditempatkan (entri ZIP, #1661: <x1/> aplikasi) dijadikan file bagian lagi (<x2/>): status resume terakhirnya, dikembalikan oleh unduhan yang diminta untuk menyimpannya (<x3/>, <x4/>), ditulis kembali hanya dengan rentang yang rusak yang tersisa untuk diambil, masing-masing dimulai beberapa byte lebih awal untuk pemeriksaan tumpang tindih, dan file diganti namanya menjadi file bagiannya. Melanjutkan unduhan adalah resume biasa: <x5/> dengan validator yang sama, pemeriksaan tumpang tindih, digest; file yang berubah di server gagal sebagai <x6/>."
   },
   "1a75969a8e571dd7": {
    "source": "GitHub",
@@ -1977,10 +1969,6 @@
   "1bad738cb3cea90f": {
    "source": "Select or unselect the download with the dotted outline",
    "text": "Pilih atau batalkan pilihan unduhan dengan garis putus-putus"
-  },
-  "1badff5f5fc8b6a9": {
-   "source": "Download MDM only from <g1>the website</g1> or <g2>GitHub Releases</g2>.",
-   "text": "Unduh MDM hanya dari <g1>situs web</g1> atau <g2>Rilis GitHub</g2>."
   },
   "1bc816518d6f87cb": {
    "source": "<g1>Save to</g1>: the folder its torrents go to; empty, the Torrents category's folder. <g2>Add them without starting them</g2> adds them as <g3>Download Later</g3> would.",
@@ -2173,6 +2161,10 @@
   "1e303528b75b0fda": {
    "source": "{n} of {total}",
    "text": "{n} dari {total}"
+  },
+  "1e32ee75ad780ae4": {
+   "source": "An archive protected by a password isn't tested, as its files can't be read without it: the log says <g1>Couldn't test photos.zip: it needs a password</g1>. Nor are tar, gz and xz files.",
+   "text": "Arsip yang dilindungi kata sandi tidak diuji, karena filenya tidak dapat dibaca tanpanya: log mengatakan <g1>Tidak dapat menguji photos.zip: memerlukan kata sandi</g1>. File tar, gz, dan xz juga tidak."
   },
   "1e4861cc4f32a384": {
    "source": "<g1>Every text the user sees goes through <x2/></g1> (<x3/>, <x4/>, <x5/>, <x6/>); after adding one, run <x7/>. Data inside a sentence (a file name, an address, a size) goes in through <x8/> or <x9/>, so it reads right in right-to-left languages.",
@@ -2381,10 +2373,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "Di macOS, hanya administrator yang dapat menjadwalkan komputer agar bangun, jadi opsi ini dinonaktifkan. MDM tidak meminta kata sandi administrator. Misalnya, administrator dapat mengatur Mac agar bangun setiap hari satu menit sebelum antrean dimulai, seperti pukul 22:59 untuk antrean yang dimulai pukul 23:00:"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "Semua yang mengirimkan permintaan tarik, membuka masalah, atau berkomentar di GitHub sejak versi <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -3010,6 +2998,10 @@
    "source": "Download limits",
    "text": "Batas unduhan"
   },
+  "29c62272ce90056c": {
+   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked. Archive tests (<x1/>, #1661): <x2/>, a ZIP in process without it, and a ZIP's damaged entries placed in the file",
+   "text": "Ekstraksi arsip (#37): zip, tar, gz, dan xz sedang dalam proses; 7z dan RAR melalui 7-Zip yang terinstal, dijalankan sebagai programnya sendiri; di tempat melalui HatchZip jika diminta. Tes arsip (<x1/>, #1661): <x2/>, ZIP yang sedang dalam proses tanpanya, dan entri ZIP yang rusak ditempatkan dalam file"
+  },
   "29ea1d92cca7773f": {
    "source": "If the queue didn't start →",
    "text": "Jika antrean tidak dimulai →"
@@ -3594,6 +3586,10 @@
    "source": "<g1>VPN and proxy support:</g1> send downloads through the browser's proxy or VPN extension (off until you turn it on).",
    "text": "<g1>Dukungan VPN dan proksi:</g1> kirim unduhan melalui proksi peramban atau ekstensi VPN (nonaktif sampai Anda mengaktifkannya)."
   },
+  "319a440ac21a4da8": {
+   "source": "A ZIP whose damaged parts MDM downloaded again and still came damaged, or a 7z or RAR that is damaged again after a <g1>Redownload</g1>, is probably damaged on the server itself: ask the site for another copy.",
+   "text": "File ZIP yang bagian rusaknya diunduh ulang oleh MDM dan masih rusak, atau file 7z atau RAR yang rusak lagi setelah <g1>Unduh ulang</g1>, kemungkinan rusak di server itu sendiri: minta salinan lain dari situs tersebut."
+  },
   "31a94655ff7435c5": {
    "source": "<g1>Arch</g1>: <x2/>, or",
    "text": "<g1>Arch</g1>: <x2/>, atau"
@@ -4126,10 +4122,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "Klik <g1>OK</g1>."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>Masalah</g1><g2><x3/> orang</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "Pilih <g1>Unduhan → Pembatas Kecepatan → Nyalakan</g1>."
@@ -4185,10 +4177,6 @@
   "3ad9354fd79e59c2": {
    "source": "In a Wayland session, MDM chooses its windows' system as it starts, the same way however it was started (its menu entry, the browser's helper, the session's autostart). Its windows run through XWayland where X11 programs look right: only X11 lets MDM open its menus and drop-down lists right under what you clicked (on Wayland they open where the compositor puts new windows, often the middle of the screen) and hide its window in the notification area. That is GNOME and KDE Plasma, which tell X11 programs the screen's scale, and any desktop whose screens aren't scaled. On a scaled screen where nothing tells X11 programs the scale (Hyprland, labwc, sway and other wlroots compositors), the compositor would scale MDM's windows up, blurry, so MDM uses Wayland's own windows there. <g1>View → Window system</g1> picks <g2>X11 (XWayland)</g2> or <g3>Wayland</g3> instead, from the next start, for every way MDM starts (<g4>Automatic</g4> goes back to MDM's choice); <x5/> or <x6/> decides for one start. If the system lacks a library X11 windows need (such as libxkbcommon-x11, which the .deb and .rpm bring but the AppImage and the tar.gz can't), MDM opens on Wayland instead; with no window system it can use, it names what's missing and the command that installs it.",
    "text": "Dalam sesi Wayland, MDM memilih sistem jendelanya saat dimulai, dengan cara yang sama tidak peduli bagaimana ia dimulai (entri menunya, pembantu peramban, autostart sesi). Jendela-jendelanya berjalan melalui XWayland di mana program X11 terlihat benar: hanya X11 yang memungkinkan MDM membuka menu dan daftar tarik-turunnya tepat di bawah apa yang Anda klik (di Wayland mereka terbuka di mana komposer menempatkan jendela baru, seringkali di tengah layar) dan menyembunyikan jendelanya di area notifikasi. Itu adalah GNOME dan KDE Plasma, yang memberi tahu program X11 skala layar, dan desktop apa pun yang layarnya tidak diskalakan. Pada layar yang diskalakan di mana tidak ada yang memberi tahu program X11 skala (Hyprland, labwc, sway, dan komposer wlroots lainnya), komposer akan memperbesar jendela MDM, buram, jadi MDM menggunakan jendela Wayland sendiri di sana. <g1>Tampilan → Sistem jendela</g1> memilih <g2>X11 (XWayland)</g2> atau <g3>Wayland</g3> sebagai gantinya, mulai dari awal berikutnya, untuk setiap cara MDM dimulai (<g4>Otomatis</g4> kembali ke pilihan MDM); <x5/> atau <x6/> memutuskan untuk satu kali mulai. Jika sistem tidak memiliki pustaka yang dibutuhkan jendela X11 (seperti libxkbcommon-x11, yang dibawa oleh .deb dan .rpm tetapi tidak oleh AppImage dan tar.gz), MDM akan terbuka di Wayland sebagai gantinya; tanpa sistem jendela yang dapat digunakannya, ia akan menyebutkan apa yang hilang dan perintah yang menginstalnya."
-  },
-  "3ae1cbe9372aa706": {
-   "source": "Last updated 2026-11-22 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Terakhir diperbarui 2026-11-22 · berlaku untuk aplikasi, ekstensi peramban, dan misterdownloadmanager.com"
   },
   "3ae62309609ddf49": {
    "source": "The desktop app (<x1/>, egui): list, categories, queues, scheduler, dialogs, tray, settings",
@@ -4474,6 +4462,10 @@
    "source": "Help translate",
    "text": "Bantu menerjemahkan"
   },
+  "3eaa27ee358ba512": {
+   "source": "Last updated 2026-11-23",
+   "text": "Terakhir diperbarui 23-11-2026"
+  },
   "3eba7f086afb94a2": {
    "source": "Is it really free?",
    "text": "Apakah ini benar-benar gratis?"
@@ -4593,6 +4585,10 @@
   "4065d823f7a0f8c0": {
    "source": "Every download and the total speed: <x1/>. <x2/> is <x3/>, <x4/>, <x5/>, <x6/> or <x7/>; <x8/> is <x9/> while unknown; <x10/> (why it failed) is there only for a download in <x11/>; <x12/> is a category's <x13/>; <x14/> is the free space where downloads go (<x15/> when unknown). Only while the API is on.",
    "text": "Setiap unduhan dan kecepatan total: <x1/>. <x2/> adalah <x3/>, <x4/>, <x5/>, <x6/>, atau <x7/>; <x8/> adalah <x9/> saat tidak diketahui; <x10/> (mengapa gagal) hanya ada untuk unduhan di <x11/>; <x12/> adalah <x13/> dari kategori; <x14/> adalah ruang kosong tempat unduhan disimpan (<x15/> saat tidak diketahui). Hanya saat API aktif."
+  },
+  "406a5240307e8845": {
+   "source": "Right-click → <g1>Redownload</g1> (or the <g2>Damaged archive</g2> window's <g3>Redownload</g3>) downloads it again from the start.",
+   "text": "Klik kanan → <g1>Unduh ulang</g1> (atau <g3>Unduh ulang</g3> di jendela <g2>Arsip rusak</g2>) akan mengunduhnya lagi dari awal."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -5830,10 +5826,6 @@
    "source": "The free MDM extension hands each download you click over to MDM, with the page it came from and your sign-in for the site. A button over videos sends them to MDM too.",
    "text": "Ekstensi MDM gratis menyerahkan setiap unduhan yang Anda klik ke MDM, beserta halaman asalnya dan informasi masuk Anda untuk situs tersebut. Tombol di atas video juga mengirimkannya ke MDM."
   },
-  "52fc7550762441e8": {
-   "source": "A few antivirus programs flag new installers just because they have rarely seen them, and machine-learning engines do this the most. On VirusTotal, a handful of small engines flagging a new setup while the big ones stay clean is usually a false positive. We report these to the vendors when we see them.",
-   "text": "Beberapa program antivirus menandai penginstal baru hanya karena jarang melihatnya, dan mesin pembelajaran mesin paling sering melakukannya. Di VirusTotal, beberapa mesin kecil yang menandai pengaturan baru sementara yang besar tetap bersih biasanya adalah positif palsu. Kami melaporkan ini kepada vendor saat kami melihatnya."
-  },
   "53060965f7a26125": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1>, and a magnet link or a <x2/> file goes to the service. It downloads the torrent on its own servers while the list shows how far it is (<g3>45% at Real-Debrid</g3>). MDM then fetches the files over HTTP and removes the torrent from the account's list. Your computer never connects to the torrent's peers.",
    "text": "Centang <g1>Kirim torrent dan tautan magnet ke akun pertama alih-alih ke peer</g1>, dan tautan magnet atau file <x2/> akan dikirim ke layanan. Layanan tersebut mengunduh torrent di servernya sendiri sementara daftar menunjukkan seberapa jauh prosesnya (<g3>45% di Real-Debrid</g3>). MDM kemudian mengambil file melalui HTTP dan menghapus torrent dari daftar akun. Komputer Anda tidak pernah terhubung ke peer torrent."
@@ -6030,10 +6022,6 @@
    "source": "A small file",
    "text": "File kecil"
   },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "Terima kasih kepada"
-  },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
    "text": "Tempel alamat daftar putar (<x1/>) atau video saluran (<x2/>) lalu klik <g3>Cari</g3>. Alih-alih kualitas satu video, jendela ini mencantumkan video-video dalam daftar, masing-masing dengan durasinya."
@@ -6165,10 +6153,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 dan Linux; macOS untuk dicoba"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "Dimungkinkan oleh orang-orang hebat ini"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -6325,6 +6309,10 @@
   "59d718d0872bfa97": {
    "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1> in <g2>Options → Accounts</g2>. A magnet link (Add URL, the browser, the clipboard, a drop) or a <x3/> file (Add torrent's <g4>Download Now</g4> or <g5>Later</g5>) then goes to the first account in the list whose service takes torrents (Mega-Debrid doesn't, yet):",
    "text": "Centang <g1>Kirim torrent dan tautan magnet ke akun pertama alih-alih ke rekan</g1> di <g2>Opsi → Akun</g2>. Tautan magnet (Tambah URL, browser, papan klip, seret) atau file <x3/> (Unduh sekarang <g4>Unduh sekarang</g4> atau <g5>Nanti</g5>) kemudian akan masuk ke akun pertama dalam daftar yang layanannya menerima torrent (Mega-Debrid belum):"
+  },
+  "5a08cc8b48188788": {
+   "source": "A finished archive can still be broken: a server sent wrong bytes, or a proxy on the way mangled part of the file. It shows only when someone opens it, often much later. So MDM tests ZIP, 7z and RAR archives, split ones too once every volume is in, when their download completes: <g1>Options → Archives → Test archives when their download completes</g1> is on by default, up to 4 GB. A test reads the whole archive, so a larger one is tested only when you ask: right-click a finished archive and choose <g2>Test archive</g2>, whatever its size.",
+   "text": "Arsip yang sudah selesai masih bisa rusak: server mengirimkan byte yang salah, atau proxy di tengah jalan merusak sebagian file. Ini baru terlihat saat seseorang membukanya, seringkali jauh kemudian. Jadi MDM menguji arsip ZIP, 7z, dan RAR, termasuk yang terpisah setelah semua volume ada, saat unduhannya selesai: <g1>Opsi → Arsip → Uji arsip saat unduhannya selesai</g1> aktif secara default, hingga 4 GB. Pengujian membaca seluruh arsip, jadi arsip yang lebih besar hanya diuji saat Anda memintanya: klik kanan arsip yang sudah selesai dan pilih <g2>Uji arsip</g2>, berapa pun ukurannya."
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -6510,10 +6498,6 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "mengunduh galeri ke dalam folder yang dinamai sesuai galeri tersebut. Lihat <g1>Baris perintah dan otomatisasi</g1>."
   },
-  "5d07ba5f9c5ab43c": {
-   "source": "If your antivirus quarantined MDM, restore it and add an exception for its folder. If it flags something other than the setup or MDM's own programs, or a copy from anywhere else, don't run it, and please <g1>tell us</g1>.",
-   "text": "Jika antivirus Anda mengkarantina MDM, pulihkan dan tambahkan pengecualian untuk foldernya. Jika menandai sesuatu selain pengaturan atau program MDM sendiri, atau salinan dari tempat lain, jangan jalankan, dan mohon <g1>beritahu kami</g1>."
-  },
   "5d0bbcc71d941fe0": {
    "source": "misterdownloadmanager.com's own pages (home, download, features, themes, FAQ); <x1/> adds the help from <x2/> and the news from the CHANGELOG, in 22 languages, and GitHub Pages publishes it",
    "text": "Halaman misterdownloadmanager.com sendiri (beranda, unduh, fitur, tema, FAQ); <x1/> menambahkan bantuan dari <x2/> dan berita dari CHANGELOG, dalam 22 bahasa, dan GitHub Pages memublikasikannya"
@@ -6665,6 +6649,10 @@
   "5ed161293dc26f74": {
    "source": "If MDM can't be reached when you choose one of these, the help page opens at the section that explains why.",
    "text": "Jika MDM tidak dapat dijangkau saat Anda memilih salah satu dari ini, halaman bantuan akan terbuka di bagian yang menjelaskan alasannya."
+  },
+  "5ed4e501adf0b774": {
+   "source": "A ZIP in one file is repaired instead, when MDM can tell where its damaged files are in it: their bytes alone are downloaded again, from the same server, and the archive is tested once more. The log says <g1>Downloading the damaged parts again (1.20 MB)</g1>, then <g2>Tested again: the archive has no errors now</g2>. The bytes come only from the same version of the file: MDM asks for them as it resumes any download (with the file's ETag or date, <x3/>), and checks the bytes just before each part against the ones on disk. A file that changed on the server stops the download with <g4>the file changed on the server</g4> instead of mixing two versions: <g5>Redownload</g5> downloads the new one. An archive still damaged after that is offered for <g6>Redownload</g6>.",
+   "text": "ZIP dalam satu file diperbaiki sebagai gantinya, ketika MDM dapat mengetahui di mana file yang rusak berada di dalamnya: hanya byte-nya saja yang diunduh lagi, dari server yang sama, dan arsip diuji sekali lagi. Log mengatakan <g1>Mengunduh bagian yang rusak lagi (1,20 MB)</g1>, lalu <g2>Diuji lagi: arsip kini tidak memiliki kesalahan</g2>. Byte hanya berasal dari versi file yang sama: MDM memintanya saat melanjutkan unduhan apa pun (dengan ETag atau tanggal file, <x3/>), dan memeriksa byte tepat sebelum setiap bagian terhadap yang ada di disk. File yang berubah di server menghentikan unduhan dengan <g4>file berubah di server</g4> alih-alih mencampur dua versi: <g5>Unduh ulang</g5> mengunduh yang baru. Arsip yang masih rusak setelah itu ditawarkan untuk <g6>Unduh ulang</g6>."
   },
   "5ee9fd44cd66de17": {
    "source": "Each episode once",
@@ -7114,6 +7102,10 @@
    "source": "the programs: <x1/>, <x2/> (the browser helper), <x3/> and <x4/>;",
    "text": "program: <x1/>, <x2/> (pembantu peramban), <x3/> dan <x4/>;"
   },
+  "64e4c03c8252a3bc": {
+   "source": "<g1>Test archives when their download completes, up to 4 GB</g1> (on by default) — a ZIP, 7z or RAR archive (a split one once its last volume is in) is read back and every file in it checked before its download counts as done, with the 7-Zip named below (a ZIP without 7-Zip by MDM itself). A larger one isn't tested by itself, as a test reads the whole file: right-click → <g2>Test archive</g2> tests it. A damaged ZIP's damaged files are downloaded again; any other damaged archive is offered for <g3>Redownload</g3>. See <g4>Testing archives</g4>.",
+   "text": "<g1>Uji arsip setelah unduhan selesai, hingga 4 GB</g1> (aktif secara default) — arsip ZIP, 7z, atau RAR (arsip terpisah setelah volume terakhirnya ada) dibaca kembali dan setiap file di dalamnya diperiksa sebelum unduhannya dianggap selesai, dengan 7-Zip yang disebutkan di bawah (ZIP tanpa 7-Zip oleh MDM sendiri). Arsip yang lebih besar tidak diuji secara otomatis, karena pengujian membaca seluruh file: klik kanan → <g2>Uji arsip</g2> untuk mengujinya. File ZIP yang rusak akan diunduh lagi; arsip lain yang rusak akan ditawarkan untuk <g3>Unduh ulang</g3>. Lihat <g4>Menguji arsip</g4>."
+  },
   "64e9d0f93e60556f": {
    "source": "The browser and MDM aren't connected",
    "text": "Peramban dan MDM tidak terhubung"
@@ -7301,6 +7293,10 @@
   "6821496b26156b7b": {
    "source": "IDM facts from internetdownloadmanager.com, checked October 2026; timings from <g1>our published benchmark</g1> with raw data. Spot a mistake? <g2>Tell us</g2>.",
    "text": "Fakta IDM dari internetdownloadmanager.com, diperiksa Oktober 2026; waktu dari <g1>tolok ukur kami yang dipublikasikan</g1> dengan data mentah. Menemukan kesalahan? <g2>Beritahu kami</g2>."
+  },
+  "6827e4a6218bda8d": {
+   "source": "7z and RAR archives keep their files in blocks whose place in the file 7-Zip's test doesn't give, and a split archive's volumes are separate downloads: those are tested, and offered for <g1>Redownload</g1> when damaged, never repaired in part.",
+   "text": "Arsip 7z dan RAR menyimpan filenya dalam blok yang tempatnya di file tidak diberikan oleh pengujian 7-Zip, dan volume arsip terpisah adalah unduhan terpisah: ini diuji, dan ditawarkan untuk <g1>Unduh ulang</g1> saat rusak, tidak pernah diperbaiki sebagian."
   },
   "6837961868984d5a": {
    "source": "Choose <g1>Subtitles</g1> if you want them (see below). <g2>Embed chapters</g2> is ticked: see <g3>Chapters</g3>. To keep only a stretch of it, tick <g4>Only a part</g4>: see <g5>Download only a part</g5>.",
@@ -7642,10 +7638,6 @@
    "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
    "text": "Di mesin Linux mana pun dengan MDM terinstal (yang <x1/>, <x2/>, AppImage atau <x3/>):"
   },
-  "6d2e652c8dceae8f": {
-   "source": "Archive extraction (#37): zip, tar, gz and xz in process; 7z and RAR through an installed 7-Zip, run as its own program; in place through HatchZip when asked",
-   "text": "Ekstraksi arsip (#37): zip, tar, gz, dan xz sedang diproses; 7z dan RAR melalui 7-Zip yang terinstal, dijalankan sebagai programnya sendiri; di tempat melalui HatchZip jika diminta"
-  },
   "6d32144394d700a6": {
    "source": "Right-click a link, a picture, a video or a sound and choose <g1>Download with Mister Download Manager</g1>: MDM downloads it whatever its type.",
    "text": "Klik kanan tautan, gambar, video, atau suara dan pilih <g1>Unduh dengan Mister Download Manager</g1>: MDM akan mengunduhnya apa pun jenisnya."
@@ -7813,6 +7805,10 @@
   "6f22280b42545622": {
    "source": "<g1>Torrent commands</g1> (<g2>#39</g2>): a torrent's right-click menu has <g3>Torrent → Recheck files</g3>, <g4>Reannounce</g4>, <g5>Add trackers...</g5> and <g6>Copy magnet link</g6>. Its Files tab can tick and untick files while it runs. A <x7/> file's web address, in Add URL or from the browser, opens Add torrent with what the file holds. TORRENT is in Options → File types' defaults, so the browser hands <x8/> files over; a list saved before keeps what it had.",
    "text": "<g1>Perintah torrent</g1> (<g2>#39</g2>): menu klik kanan torrent memiliki <g3>Torrent → Periksa ulang file</g3>, <g4>Umumkan ulang</g4>, <g5>Tambahkan pelacak...</g5>, dan <g6>Salin tautan magnet</g6>. Tab \"File\"-nya dapat mencentang dan menghapus centang file saat berjalan. Alamat web file <x7/>, di \"Tambah URL\" atau dari peramban, membuka \"Tambahkan torrent\" dengan apa yang ada di file tersebut. TORRENT ada di default \"Opsi → Jenis file\", sehingga peramban menyerahkan file <x8/>; daftar yang disimpan sebelumnya mempertahankan apa yang dimilikinya."
+  },
+  "6f2c084eea3d616f": {
+   "source": "A split archive (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) is tested once, from its first volume, when every volume is downloaded, whichever of them finishes last. Its volumes often finish one after another (a queue that downloads one at a time, a host that makes you wait between files), and the ones in so far read as an archive cut short, so they aren't tested on their own. <g6>Test archive</g6> on a split archive not complete yet says so: <g7>Not tested yet: photos.zip.001 isn't complete (volume 3 isn't there yet)</g7>.",
+   "text": "Arsip terpisah (<x1/>, <x2/>, <x3/>, <x4/>, <x5/>) diuji sekali, dari volume pertamanya, ketika setiap volume telah diunduh, mana pun yang selesai terakhir. Volumenya seringkali selesai satu per satu (antrean yang mengunduh satu per satu, host yang membuat Anda menunggu di antara file), dan yang sudah ada terbaca sebagai arsip yang terpotong, jadi tidak diuji sendiri. <g6>Uji arsip</g6> pada arsip terpisah yang belum lengkap mengatakan demikian: <g7>Belum diuji: photos.zip.001 belum lengkap (volume 3 belum ada)</g7>."
   },
   "6f2f9063e93137cf": {
    "source": "<g1>Alt</g1> + an underlined letter",
@@ -8038,6 +8034,10 @@
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Tempel tautan Google Drive apa adanya, seperti tautan yang diberikan melalui <g1>Bagikan → Salin tautan</g1>:"
   },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Daftar tidak dapat dibaca dari GitHub saat halaman ini dibuat. Sementara itu, semua orang ada di GitHub, di <g1>permintaan tarik</g1> dan <g2>masalah</g2> proyek."
+  },
   "729a19fc6ce418f9": {
    "source": "Reporting problems",
    "text": "Melaporkan masalah"
@@ -8181,6 +8181,10 @@
   "74632f0763b57b9b": {
    "source": "any distribution: make it executable, run it",
    "text": "distribusi apa pun: jadikan dapat dieksekusi, jalankan"
+  },
+  "7466ed5799362d5d": {
+   "source": "The test is 7-Zip's (<x1/>, with the 7-Zip that <g2>Options → Archives</g2> names): every file in the archive is read back and checked, and nothing is written. Without 7-Zip, MDM tests ZIP archives itself; 7z and RAR archives aren't tested.",
+   "text": "Pengujian adalah milik 7-Zip (<x1/>, dengan 7-Zip yang disebutkan di <g2>Opsi → Arsip</g2>): setiap file dalam arsip dibaca kembali dan diperiksa, dan tidak ada yang ditulis. Tanpa 7-Zip, MDM menguji arsip ZIP sendiri; arsip 7z dan RAR tidak diuji."
   },
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
@@ -8470,10 +8474,6 @@
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Anda memerlukan akun berbayar sendiri dengan salah satu layanan ini: MDM tidak menjual atau menyertakannya. Berbagi akun atau tautannya melanggar ketentuan layanan dan dapat menyebabkan akun ditangguhkan."
   },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>Semua yang membantu</g2>"
-  },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
    "text": "Tanya jawab — Mister Download Manager"
@@ -8613,6 +8613,10 @@
   "7b41ec6610a88942": {
    "source": "How do I uninstall it?",
    "text": "Bagaimana cara menghapus instalasinya?"
+  },
+  "7b51945e72d7d774": {
+   "source": "Testing archives",
+   "text": "Menguji arsip"
   },
   "7b655c3076cd7d8b": {
    "source": "<g1>Tasks → Import → From text file</g1> and <g2>From IDM export file</g2>. An <x3/> file brings each download's referrer and cookies.",
@@ -10230,10 +10234,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Akselerasi dan lanjutkan</g1><g2>Satu file dibagi hingga 32 koneksi, dibagi ulang hingga byte terakhir, dan dilanjutkan setelah crash apa pun.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> orang-orang yang mengirimkan permintaan tarik, melaporkan masalah, atau bergabung dalam percakapan di GitHub. <g2>Temui mereka semua</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Bilah judul yang digambar MDM, saat jendelanya tidak aktif (transparan: seperti saat aktif)"
@@ -10449,6 +10449,10 @@
   "94e5b9f5c92c226b": {
    "source": "Mister Download Manager downloads torrents and magnet links: choose the files, see peers, trackers and pieces, and queue them with your other downloads.",
    "text": "Mister Download Manager mengunduh torrent dan tautan magnet: pilih file, lihat rekan, pelacak, dan potongan, serta antrekan dengan unduhan Anda yang lain."
+  },
+  "94e715f0410b20f6": {
+   "source": "To test it again by hand, right-click → <g1>Test archive</g1>.",
+   "text": "Untuk mengujinya lagi secara manual, klik kanan → <g1>Uji arsip</g1>."
   },
   "94e7e5dadacf5b73": {
    "source": "Link grabber and archive extraction — Mister Download Manager",
@@ -10986,6 +10990,10 @@
    "source": "Control MDM from your phone — Mister Download Manager help",
    "text": "Kontrol MDM dari ponsel Anda — Bantuan Mister Download Manager"
   },
+  "9be0243c13142898": {
+   "source": "Last updated 2026-11-23 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Terakhir diperbarui 23-11-2026 · berlaku untuk aplikasi, ekstensi peramban, dan misterdownloadmanager.com"
+  },
   "9be7deca7d13f40b": {
    "source": "Keys to force or prevent capture",
    "text": "Tombol untuk memaksa atau mencegah pengambilan"
@@ -11114,10 +11122,6 @@
    "source": "<g1>Options → Remote</g1>.",
    "text": "<g1>Opsi → Jarak Jauh</g1>."
   },
-  "9df4b353c5463d72": {
-   "source": "Get your file's SHA-256. On Windows, run <x1/>; on Linux, <x2/> and the file's name.",
-   "text": "Dapatkan SHA-256 file Anda. Di Windows, jalankan <x1/>; di Linux, <x2/> dan nama file."
-  },
   "9e0019721ea3837e": {
    "source": "Install it from the Chrome Web Store or Firefox Add-ons.",
    "text": "Instal dari Chrome Web Store atau Firefox Add-ons."
@@ -11141,10 +11145,6 @@
   "9e18dba709154be4": {
    "source": "Send downloads from your browser",
    "text": "Kirim unduhan dari browser Anda"
-  },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> komentar"
   },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
@@ -11957,6 +11957,10 @@
   "a8a147173e09f00a": {
    "source": "Other",
    "text": "Lain-lain"
+  },
+  "a8abc740d94eb990": {
+   "source": "Its archive's test found files in it that don't read back whole (<g1>Testing archives</g1>): hover over <g2>Status</g2> to see which.",
+   "text": "Pengujian arsip menemukan file yang tidak dapat dibaca secara utuh (<g1>Menguji arsip</g1>): arahkan kursor ke <g2>Status</g2> untuk melihat file mana."
   },
   "a8b65ed9a2e906de": {
    "source": "Choose <g1>Tasks → Show drop target</g1>. A small box with the MDM icon appears and stays on top of other windows.",
@@ -13013,6 +13017,10 @@
   "b6fd95d785a07bfc": {
    "source": "The menu before / after; in a submenu, <g1>Left</g1> closes it",
    "text": "Menu sebelum / sesudah; di submenu, <g1>Kiri</g1> menutupnya"
+  },
+  "b705e95cb334fc6b": {
+   "source": "A download says Damaged",
+   "text": "Unduhan berstatus Rusak"
   },
   "b706522e2a61060f": {
    "source": "Theme files you make or download go in MDM's themes folder. <g1>View → Theme → Open themes folder</g1> opens it (and makes it the first time). It is in MDM's data folder:",
@@ -14382,6 +14390,10 @@
    "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
    "text": "<g1><x2/> Tambah ke Firefox</g1><g3><x4/> Tambah ke Chrome</g3>"
   },
+  "cb5b5cded4982e90": {
+   "source": "Closing MDM stops a test; the archive is tested again at the next start.",
+   "text": "Menutup MDM menghentikan pengujian; arsip diuji lagi pada saat mulai berikutnya."
+  },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "Periksa tab <g1>Pembatas Kecepatan</g1> unduhan itu sendiri di jendela progresnya."
@@ -14609,10 +14621,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Link grabber dan arsip — Bantuan Mister Download Manager"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>Komentar</g1><g2><x3/> orang</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -14946,6 +14954,10 @@
    "source": "Subtitles",
    "text": "Subtitel"
   },
+  "d368fe0c2974cd27": {
+   "source": "The download counts as done once its test is over. The list says <g1>Checking 45%</g1> meanwhile, its queue waits for it, and its <g2>Download complete</g2> window, its sound and its extraction come after the test.",
+   "text": "Unduhan dianggap selesai setelah pengujiannya selesai. Daftar menunjukkan <g1>Memeriksa 45%</g1> sementara itu, antreannya menunggunya, dan jendela <g2>Unduhan selesai</g2>, suara, serta ekstraksinya datang setelah pengujian."
+  },
   "d36c66bc6fc4f036": {
    "source": "Menus opened near the screen's right or bottom edge flip inside it at every display scale and interface size: the screen's edge was measured in pixels and the menu in points.",
    "text": "Menu yang dibuka di dekat tepi kanan atau bawah layar akan membalik ke dalamnya pada setiap skala tampilan dan ukuran antarmuka: tepi layar diukur dalam piksel dan menu dalam poin."
@@ -15193,10 +15205,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager dan IDM, berdampingan."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> masalah"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16166,6 +16174,10 @@
    "source": "<g1>Server mode</g1><g2>MDM without a window on a NAS, in Docker or on Unraid, fed from your phone or browser.</g2>",
    "text": "<g1>Mode server</g1><g2>MDM tanpa jendela di NAS, di Docker, atau di Unraid, diisi dari ponsel atau peramban Anda.</g2>"
   },
+  "e624996bba938a48": {
+   "source": "A damaged archive says <g1>Damaged</g1> in the list, its log names the damaged files, and the <g2>Damaged archive</g2> window offers <g3>Redownload</g3>: it downloads the archive (every volume of a split one) again from the start. It isn't extracted by itself; <g4>Extract</g4> still tries it.",
+   "text": "Arsip yang rusak menunjukkan <g1>Rusak</g1> di daftar, lognya menyebutkan file yang rusak, dan jendela <g2>Arsip rusak</g2> menawarkan <g3>Unduh ulang</g3>: ini mengunduh arsip (setiap volume dari yang terpisah) lagi dari awal. Ini tidak diekstrak sendiri; <g4>Ekstrak</g4> masih mencobanya."
+  },
   "e629533fa65b8d1f": {
    "source": "Extracting archives",
    "text": "Ekstraksi arsip"
@@ -16205,10 +16217,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Tidak, jika diunduh dari situs ini atau GitHub Releases. Beberapa program antivirus menilai program yang tidak mereka kenal berdasarkan dugaan, bukan berdasarkan virus yang sudah diketahui…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> permintaan tarik"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -17318,10 +17326,6 @@
    "source": "<g1>Metro</g1>, after Windows 8's flat look: square corners, flat buttons, boxes that take an accent border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and a title bar in the theme's colour with the title centred.",
    "text": "<g1>Metro</g1>, mengikuti tampilan datar Windows 8: sudut persegi, tombol datar, kotak yang mengambil batas aksen saat fokus, kotak centang dengan tanda centang, bilah progres berbatas, bilah gulir dengan panah yang selalu ditampilkan, ikon satu warna (Microsoft Fluent UI System Icons, MIT) dan bilah judul dalam warna tema dengan judul di tengah."
   },
-  "f554a7b471d1c8c4": {
-   "source": "To check that your copy is the real one:",
-   "text": "Untuk memeriksa bahwa salinan Anda adalah yang asli:"
-  },
   "f55e431df0898bf7": {
    "source": "Corner radius of a popup in a window (a calendar, a filter box)",
    "text": "Radius sudut pop-up di jendela (kalender, kotak filter)"
@@ -17349,10 +17353,6 @@
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>Menambahkan unduhan</g2></g1> — Tambah URL, papan klip, target lepas, unduhan massal dan daftar tautan, serta Mulai Unduhan versus Unduh Nanti."
-  },
-  "f5d1e8a8bc6e8e59": {
-   "source": "Compare it with the same file's line in that release's <x1/>.",
-   "text": "Bandingkan dengan baris file yang sama di <x1/> rilis tersebut."
   },
   "f5e911e1675285c5": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's <g1>Add Mister Download Manager to your browser</g1> window opens at each start: it lists the browsers it found, and <g2>Add the extension</g2> opens the store's page in that browser. <g3>Install it by hand</g3> opens the steps for loading it without the store; <g4>Don't ask again</g4> stops the window.",
@@ -17466,10 +17466,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Berhenti berbagi setelah berbagi selama … menit</g1> — atau setelah dibagikan selama itu, di semua sesi. Nonaktif secara default."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> komentar"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "nama selain alamatnya yang mungkin digunakan untuk membuka halaman"
@@ -17565,10 +17561,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Apa yang baru di versi 0.5.0 <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> masalah"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",

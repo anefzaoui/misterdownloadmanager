@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Several Download File Info windows at once, one for each link, side by side: each opens a
+  step from the one before and comes to the front, its title numbered from the second on; up to
+  six, more links waiting their turn
+  ([#1741](https://github.com/anefzaoui/misterdownloadmanager/issues/1741))
 - ✅ Tests: the check of a video part's progress no longer fails now and then on a fast machine
   (seen on macOS): the test tool held nothing back, so the whole part could come in between two
   looks at the progress; it now waits half-way until the test has seen the progress, and the
