@@ -3432,13 +3432,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ᎢᏗᎦᎴᏴᏔᏅᎯ
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	ᎠᎧᎵᎢᏍᏔᏅᎯ ᎠᏗᏰᏍᏗᏉ, ᎠᎴ ᎾᏍᎩ ᎾᎥᏂᎨ ᏂᎨᏒᎾ, ᎠᏓᏟᎶᏍᏗ ᏰᎵᏉ ᎢᎬᏩᏓᏟᎶᏍᏗ.
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ᎠᎧᎵᎢᏍᏔᏅᎯ ᎠᏗᏰᏍᏗᏉ, ᎠᎴ ᎾᏍᎩ ᎾᎥᏂᎨ ᏂᎨᏒᎾ, ᎠᏓᏟᎶᏍᏗ ᏰᎵᏉ ᎢᎬᏩᏓᏟᎶᏍᏗ. ᎢᎬᏱᏱ ᎤᏃᎴ ᎠᎴ ᎠᎧᎵᎢᏍᏔᏅᎯ.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -5221,6 +5214,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	ᎥᏝ ᏱᏚᎭ ᎢᎦᎢ ᏗᏟᎶᏍᏔᏅᎯ ᎢᏳᎢ, HatchZip ᎦᏛ; ᎥᏝ ᏱᏚᎭ ᏗᎦᏁᏟᏴᏍᏗ
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	ᎠᏂ ᎥᏝ ᏰᎵ ᎢᎦᎢ ᏂᎨᏒᎾ ᎦᏙᎯ ᏱᎩ ({needed} ᎠᏎᎸᏗ, {free} ᏂᎨᏒᎾ)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	ᎯᎠ ᎢᏯᏓᏛᏁᏗ ᎥᏝ ᏱᏚᎾᏙᏢᏒ ᎾᏍᎩ ᎢᏳᎵᏍᏙᏗ "Show download complete dialog" ᎤᎾᏙᏢᏒ ᎢᏳᎵᏍᏙᏗ
@@ -6228,6 +6225,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} ᎥᏝ ᏰᎵ ᏱᎪᎵᏰᏗ ᏱᎩ
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ᎾᎿ ᎦᏙᎯ ᎦᏙᎯ
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ᎥᏝ ᎿᏉ ᏱᏚᏍᏆᏂᎪᏔᏅ (ᎤᏓᏅᏒᎯ ᎠᎴ ᎤᏲᏨᎯ). ᏔᎵᏁ ᎭᏓᎴᎯᏍᏗ, ᎤᎦᏘᏗᏢ ᏗᏟᏍᏔᏅᎯ ᎨᏒᎢ, ᏔᎵᏁ ᏓᎭᏩᏛᎯ.

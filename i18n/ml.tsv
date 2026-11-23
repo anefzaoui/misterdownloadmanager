@@ -289,6 +289,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	മാഗ്നറ്റ് ലിങ്കിലെ ഫയലുകൾ കണ്ടെത്താനായില്ല: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM അടച്ചതോടെ നീക്കം പൂർത്തിയാകാതെ പോയി: ഡൗൺലോഡ് ഇപ്പോൾ {folder} എന്ന ഫോൾഡറിലാണ്
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -325,6 +329,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	ഒറ്റ-ഫയൽ ടോറന്റ് അതിന്റെ പേര് നിലനിർത്തുന്നു
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	ഒരു ടോറന്റ് പൂർത്തിയായാൽ നീക്കാൻ കഴിയും: അതുവരെ ടോറന്റ് എഞ്ചിൻ അതിന്റെ ഭാഗങ്ങൾ അവയുടെ ഫയലുകളിലേക്ക് എഴുതുന്നു
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +341,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	ഈ കമ്പ്യൂട്ടറിലോ ലോക്കൽ നെറ്റ്‌വർക്കിലോ ഉള്ള ഒരു ട്രാക്കറുമായി ഒരിക്കലും ബന്ധപ്പെടില്ല: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	ഒരു വീഡിയോ അല്ലെങ്കിൽ ഒരു ഗാലറി പൂർത്തിയായാൽ നീക്കാൻ കഴിയും: അതുവരെ അതിന്റെ സഹായ പ്രോഗ്രാമുകൾ അവയുടെ പൂർത്തിയാകാത്ത ഫയലുകൾ അതിന്റെ ഫോൾഡറിൽ സൂക്ഷിക്കുന്നു
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2605,6 +2617,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	അതിൻ്റെ ഫയലുകൾ എഴുതാനായില്ല: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	അതിന്റെ ഫോൾഡർ {folder} എത്തിച്ചേരാൻ കഴിയില്ല
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3232,9 +3248,22 @@
 #, machine
 	Move/Rename	നീക്കുക/പേരുമാറ്റുക
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	{folder} എന്നതിലേക്ക് മാറ്റി
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ഫയൽ നീക്കുന്നു...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	{folder} എന്നതിലേക്ക് മാറ്റുന്നു
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	മാറ്റുന്നു...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3676,13 +3705,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ഓൺലൈൻ
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	പൂർത്തിയാക്കിയ ഡൗൺലോഡ് അല്ലെങ്കിൽ ഇതുവരെ ആരംഭിക്കാത്ത ഡൗൺലോഡ് മാത്രമേ നീക്കാൻ കഴിയൂ
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	പൂർത്തിയാക്കിയ ഡൗൺലോഡ് അല്ലെങ്കിൽ ഇതുവരെ ആരംഭിക്കാത്ത ഡൗൺലോഡ് മാത്രമേ നീക്കാൻ കഴിയൂ. ആദ്യം അത് നിർത്തി പൂർത്തിയാക്കുക.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -5157,6 +5179,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} എന്നതിൽ നിന്നുള്ള ഡൗൺലോഡ് മുറിഞ്ഞുപോയി
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	ഡൗൺലോഡ് മാറ്റിക്കൊണ്ടിരിക്കുകയാണ്
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5505,6 +5531,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	അതിന്റെ ഫയലുകൾക്ക് ആവശ്യത്തിന് ഇടമില്ലെന്ന് HatchZip പറയുന്നു; ഒന്നും മാറ്റിയിട്ടില്ല
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	അവിടെ ആവശ്യത്തിന് ഒഴിവുള്ള സ്ഥലമില്ല ({needed} ആവശ്യമുണ്ട്, {free} ഒഴിവുണ്ട്)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"ഡൗൺലോഡ് പൂർത്തിയായ ഡയലോഗ് കാണിക്കുക" ഓണാക്കുമ്പോൾ ഈ ക്രമീകരണങ്ങൾ ലഭ്യമല്ല
@@ -6530,6 +6560,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} പരിശോധിക്കുന്നതിനായി വായിക്കാനായില്ല
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ഇതിനകം അവിടെയുണ്ട്
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
