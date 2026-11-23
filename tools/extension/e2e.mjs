@@ -1587,7 +1587,7 @@ async function calmButton(session) {
   // Where an earlier case put the button on this site (the video case drags it), forgotten: the
   // popup's own storage, as its Reset does.
   const forget = async () => {
-    const popup = await session.tab(`${session.base}popup.html?tab=settings`);
+    const popup = await session.tab(`${session.base}popup.html`);
     try {
       await until("the button's places forgotten", 10000, () =>
         popup.evaluate("(globalThis.browser ?? chrome).storage.local.remove(['positions', 'videoFilters']).then(() => true)").catch(() => false),
@@ -1711,7 +1711,7 @@ async function calmButton(session) {
     b = await drag(b, corner, v.t - 30);
     near(b.b, v.t - 6, "outside again");
     await session.mouse(5, 5);
-    const popup = await session.tab(`${session.base}popup.html?tab=settings`);
+    const popup = await session.tab(`${session.base}popup.html`);
     try {
       await until("the popup's Reset", 10000, () => popup.evaluate('Boolean(document.querySelector("#video-reset"))').catch(() => false));
       if (shots && popup.shot) {
