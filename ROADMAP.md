@@ -572,8 +572,7 @@ These ship in the next version.
 - ✅ Website: the browser stores' ratings and users under their buttons on the home and download
   pages, read again at every build; visitors rate MDM from one to five stars on the site (change
   or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
-  that keeps no IP address; only these ratings go into the structured data (opens once the
-  service is set up)
+  that keeps no IP address; only these ratings go into the structured data
 - ✅ The browser add-on's Download video button out of the way: **Automatic** size, the new
   default (round in a feed and over a small player, whole over a big one), faint as the pointer
   rests or leaves before it goes, movable outside the player and kept for each site, with
