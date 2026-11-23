@@ -531,7 +531,7 @@ enum Cmd {
     OpenFolder,
     Properties,
     /// Show or hide a list column (data slot).
-    ToggleColumn(usize),
+    ColumnsDialog,
     /// Downloads → Speed Limiter.
     LimiterOn,
     LimiterOff,
@@ -589,7 +589,6 @@ enum Cmd {
     /// The All Downloads view (an empty list's link).
     ShowAll,
     /// Header right-click → Reset columns.
-    ResetColumns,
     None,
 }
 
@@ -1598,6 +1597,8 @@ pub struct App {
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
+    /// The Columns dialog (header right-click).
+    columns_dialog: Option<dialogs::Columns>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
     /// Redownload, asking first: the download and the question.
@@ -1943,6 +1944,7 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
             }),
             String::new(),
         ),
+        list::SAVE_TO => (0.0, it.folder().display().to_string().to_lowercase()),
         _ => (0.0, it.description.to_lowercase()),
     }
 }
@@ -2319,6 +2321,7 @@ impl App {
             exiting: false,
             headless: false,
             confirm_delete: None,
+            columns_dialog: None,
             confirm_queue_delete: None,
             confirm_redownload: None,
             duplicate: None,
@@ -2641,6 +2644,7 @@ impl App {
                 it.torrent
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
+                crate::i18n::ltr(&it.folder().display().to_string()),
             ],
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
@@ -4765,14 +4769,33 @@ impl App {
         self.dirty = true;
     }
 
-    fn delete_completed(&mut self) {
-        let done = self
+    /// A double-click on a row: File Properties for every download. Only a finished one opens
+    /// its file, and only when the row menu's "On Double click" says Open.
+    fn double_click(&mut self, id: u64) {
+        let complete = self
             .items
             .iter()
-            .filter(|i| i.status == Status::Complete)
-            .map(|i| i.id)
+            .any(|it| it.id == id && it.status == Status::Complete);
+        if complete && self.settings.double_click_open {
+            self.open_item(id);
+        } else {
+            self.properties(id);
+        }
+    }
+
+    fn delete_completed(&mut self) {
+        // Always asked, whatever "Don't show this dialog again" was ticked on a plain Delete.
+        let done: Vec<&Item> = self
+            .items
+            .iter()
+            .filter(|i| i.status == Status::Complete && i.live.is_none())
             .collect();
-        self.ask_delete(done, false);
+        if done.is_empty() {
+            return;
+        }
+        let files = done.iter().filter(|i| i.gallery.is_none()).count() as u64;
+        let ids = done.iter().map(|i| i.id).collect();
+        self.confirm_delete = Some(dialogs::ConfirmDelete::completed(ids, files));
     }
 
     /// The global cap's rate now: on, and (if asked) only while the user is active (input in
@@ -8651,7 +8674,7 @@ impl App {
                     dialogs::show_download_in_folder(&d, moved_away);
                 }
             }
-            Cmd::ToggleColumn(i) => self.list.visible[i] = !self.list.visible[i],
+            Cmd::ColumnsDialog => self.columns_dialog = Some(dialogs::Columns::new(&self.list)),
             Cmd::LimiterOn | Cmd::LimiterOff => {
                 self.settings.speed_limit_on = cmd == Cmd::LimiterOn;
                 self.apply_speed_limit();
@@ -8865,7 +8888,6 @@ impl App {
             }
             Cmd::Arrange(col) => self.list.sort = col.map(|c| (c, true)),
             Cmd::ClearFilters => self.list.filters = vec![None; list::COLS],
-            Cmd::ResetColumns => self.list.reset_columns(),
             Cmd::ShowAll => self.view = View::All,
             Cmd::SelectAll => {
                 let ids = self.shown_ids();
@@ -10015,7 +10037,7 @@ impl App {
                 by("By &Last Try Date", Some(6)),
                 by("By Date &Added", Some(list::ADDED)),
                 by("By &Description", Some(7)),
-                off("By Save &Path"),
+                by("By Save &Path", Some(list::SAVE_TO)),
                 off("By R&eferer"),
                 off("By Parent &Web Page"),
             ]
@@ -10026,38 +10048,16 @@ impl App {
     fn popup_entries(&self, kind: Popup) -> (Vec<MenuEntry<Cmd>>, Option<u64>) {
         match kind {
             // Column chooser (IDM: right-click on the header). File Name always stays.
-            Popup::Columns => {
-                let mut e: Vec<MenuEntry<Cmd>> = list::TITLES
-                    .iter()
-                    .enumerate()
-                    .map(|(i, t)| {
-                        // As the header names them (its own words, not the menus'), and
-                        // the narrow Q column by its whole name.
-                        let name = if *t == "Q" {
-                            crate::i18n::tc("column", "Queue")
-                        } else {
-                            crate::i18n::tc("column", t)
-                        };
-                        let name = crate::chrome::label(&name.replace('&', "&&"));
-                        MenuEntry::Item(name, Cmd::ToggleColumn(i), i != 0, self.list.visible[i])
-                    })
-                    .collect();
-                e.push(MenuEntry::Sep);
-                e.push(MenuEntry::Item(
-                    "Clear all &filters",
-                    Cmd::ClearFilters,
-                    self.list.filters.iter().any(Option::is_some),
-                    false,
-                ));
-                // i18n: header menu: put the columns back as they first were (order, widths, all shown)
-                e.push(MenuEntry::Item(
-                    "&Reset columns",
-                    Cmd::ResetColumns,
+            Popup::Columns => (
+                vec![MenuEntry::Item(
+                    // i18n: header menu: opens the dialog that chooses the list's columns
+                    "&Columns...",
+                    Cmd::ColumnsDialog,
                     true,
                     false,
-                ));
-                (e, None)
-            }
+                )],
+                None,
+            ),
             Popup::Item(None) => (self.blank_entries(), None),
             Popup::Item(id) => (self.item_entries(id), id),
             Popup::QueueDrop(start) => (self.queue_drop(start), None),
@@ -11067,18 +11067,8 @@ impl App {
         if let Some(i) = r.properties {
             self.properties(ids[i]);
         }
-        // A finished download: Open or Properties (IDM's default), as the context menu sets.
         if let Some(i) = r.double_clicked {
-            let id = ids[i];
-            let complete = self
-                .items
-                .iter()
-                .any(|it| it.id == id && it.status == Status::Complete);
-            if complete && !self.settings.double_click_open {
-                self.properties(id);
-            } else {
-                self.open_item(id);
-            }
+            self.double_click(ids[i]);
         }
         // Enter while files are dragged out is the drag's (#561), not the list's.
         #[cfg(windows)]
@@ -12757,6 +12747,19 @@ impl App {
                     let ids = std::mem::take(&mut d.ids);
                     self.confirm_delete = None;
                     self.confirmed_delete(&ids, files, dont_show);
+                }
+            }
+        }
+        if let Some(d) = &mut self.columns_dialog {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.columns_dialog = None,
+                Outcome::Done((order, visible, reset)) => {
+                    self.columns_dialog = None;
+                    if reset {
+                        self.list.reset_columns();
+                    }
+                    self.list.set_columns(order, visible);
                 }
             }
         }

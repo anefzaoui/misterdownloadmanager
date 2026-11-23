@@ -47,9 +47,9 @@ themed! {
 /// "Added" (2026-10-30: when the download was added; sorts in order of addition), "Source"
 /// (D-014: a Web or Torrent chip, first by default), and a torrent's "Peers" and "Share ratio"
 /// (#357: how many peers it has connected and what it has given back). "Upload speed" (#357: what
-/// it sends) is the last slot: a saved layout is indexed by slot, so it must not take a slot an
+/// it sends) and "Save To" are the last slots: a saved layout is indexed by slot, so it must not take a slot an
 /// older build already meant something else by.
-pub const COLS: usize = 13;
+pub const COLS: usize = 14;
 pub const TITLES: [&str; COLS] = [
     "File Name",
     // i18n: column title: one letter for Queue (the column is narrow)
@@ -73,6 +73,8 @@ pub const TITLES: [&str; COLS] = [
     "Share ratio",
     // i18n: column title: what a torrent sends to peers, bytes per second
     "Upload speed",
+    // i18n: column title: the folder the download is saved in
+    "Save To",
 ];
 /// The "Status" column's data slot.
 pub const STATUS: usize = 3;
@@ -125,6 +127,9 @@ pub const RATIO: usize = 11;
 /// The "Upload speed" column's data slot (what a torrent sends; blank for anything else). The
 /// last slot, so a layout saved before it existed still means what it meant.
 pub const UPLOAD: usize = 12;
+/// The "Save To" column's data slot: the folder the download is saved in. Last slot, shown by
+/// default after Description.
+pub const SAVE_TO: usize = 13;
 
 /// IDM's default column widths (and ours for Added, room for a 12-hour clock's
 /// `Oct 28 9:05:01 AM 2026`, Source, Peers, Share ratio and Upload speed). Status is wider than
@@ -134,11 +139,13 @@ pub const UPLOAD: usize = 12;
 /// ([`status_width`]). Linux draws with fontconfig's interface font, often DejaVu Sans, wider
 /// than Windows' Segoe UI.
 pub const DEFAULT_WIDTHS: [f32; COLS] = [
-    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0,
+    150.0, 20.0, 75.0, 132.0, 75.0, 95.0, 65.0, 200.0, 145.0, 62.0, 64.0, 92.0, 100.0, 220.0,
 ];
 /// Default display order: Source first, then IDM's, a torrent's three columns after its rate, and
 /// Added after Last Try Date.
-const DEFAULT_ORDER: [usize; COLS] = [SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7];
+const DEFAULT_ORDER: [usize; COLS] = [
+    SOURCE, 0, 1, 2, 3, 4, 5, UPLOAD, PEERS, RATIO, 6, ADDED, 7, SAVE_TO,
+];
 
 const MIN_WIDTH: f32 = 16.0;
 /// How far from a separator a press grabs it for resizing.
@@ -359,6 +366,10 @@ impl ListState {
                 .map_or(l.order.len(), |p| p + 1);
             l.order.insert(at, UPLOAD);
         }
+        // A layout from before "Save To" gets it last, shown, at its default width.
+        if !l.order.contains(&SAVE_TO) {
+            l.order.push(SAVE_TO);
+        }
         let mut seen = l.order.clone();
         seen.sort_unstable();
         if seen != (0..COLS).collect::<Vec<_>>() {
@@ -380,6 +391,19 @@ impl ListState {
         }
         self.visible[0] = true;
         self.sort = l.sort.filter(|(c, _)| *c < COLS);
+    }
+
+    /// Set the order and which columns show (the Columns dialog). An order that doesn't name
+    /// every column exactly once is ignored; File Name always shows. Widths stay.
+    pub fn set_columns(&mut self, order: Vec<usize>, visible: [bool; COLS]) {
+        let mut seen = order.clone();
+        seen.sort_unstable();
+        if seen != (0..COLS).collect::<Vec<_>>() {
+            return;
+        }
+        self.order = order;
+        self.visible = visible;
+        self.visible[0] = true;
     }
 
     /// Visible columns in display order.

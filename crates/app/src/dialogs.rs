@@ -3188,9 +3188,26 @@ pub struct ConfirmDelete {
     /// How many of the downloads are finished: their files go too when `files` is ticked.
     pub finished: u64,
     dont_show: bool,
+    /// "Delete Completed": every one of the downloads is finished. It asks every time, with its
+    /// own question and without "Don't show this dialog again".
+    all_completed: bool,
 }
 
 impl ConfirmDelete {
+    /// "Delete Completed": the finished downloads `ids`; asked every time, whatever "Don't show
+    /// this dialog again" was ticked on a plain Delete.
+    pub fn completed(ids: Vec<u64>, finished: u64) -> Self {
+        ConfirmDelete {
+            ids,
+            name: String::new(),
+            unfinished: false,
+            files: false,
+            finished,
+            dont_show: false,
+            all_completed: true,
+        }
+    }
+
     /// `files`: the checkbox's first state (ticked only by Shift+Delete / Remove with files).
     pub fn new(ids: Vec<u64>, name: String, unfinished: bool, files: bool, finished: u64) -> Self {
         ConfirmDelete {
@@ -3200,6 +3217,7 @@ impl ConfirmDelete {
             files,
             finished,
             dont_show: false,
+            all_completed: false,
         }
     }
 
@@ -3211,14 +3229,32 @@ impl ConfirmDelete {
         question(
             ctx,
             "confirm-delete",
-            "Confirm deletion of downloads",
-            [374.0, 146.0 + extra + warned],
+            if self.all_completed {
+                // i18n: title of the question asked before Delete Completed removes every finished download
+                "Confirm deletion of completed downloads"
+            } else {
+                "Confirm deletion of downloads"
+            },
+            // The completed question has no "Don't show this dialog again" row (30 px).
+            [
+                374.0,
+                (if self.all_completed { 116.0 } else { 146.0 }) + extra + warned,
+            ],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
                 let p = ui.painter().clone();
                 let black = winui::LIGHT_TEXT();
-                let text = if n == 1 && self.unfinished {
+                let text = if self.all_completed {
+                    crate::i18n::fmt(
+                        &crate::i18n::tn(
+                            n,
+                            "Are you sure you want to delete {n} completed download from Mister Download Manager list of downloads?",
+                            "Are you sure you want to delete all {n} completed downloads from Mister Download Manager list of downloads?",
+                        ),
+                        &[("n", &crate::i18n::integer(n))],
+                    )
+                } else if n == 1 && self.unfinished {
                     crate::i18n::t(
                         "The selected download is not complete. Are you sure you want to delete
 it from Mister Download Manager list of downloads?",
@@ -3308,17 +3344,176 @@ it from Mister Download Manager list of downloads?",
                     false,
                 )
                 .clicked();
-                winui::checkbox_light(
-                    ui,
-                    o + vec2(24.0, 120.0),
-                    &mut self.dont_show,
-                    "Don't show this dialog again",
-                    true,
-                );
+                if !self.all_completed {
+                    winui::checkbox_light(
+                        ui,
+                        o + vec2(24.0, 120.0),
+                        &mut self.dont_show,
+                        "Don't show this dialog again",
+                        true,
+                    );
+                }
                 if no || winui::escape_pressed(ui) {
                     Outcome::Closed
                 } else if yes || winui::enter_pressed(ui) {
                     Outcome::Done((self.files, self.dont_show))
+                } else {
+                    Outcome::Open
+                }
+            },
+        )
+    }
+}
+
+// ---- Columns (client 360 x 372, light) ---------------------------------------------------------
+
+/// What the Columns dialog hands back on OK: the order, which columns show, and whether Reset
+/// was pressed (the caller then puts the widths back too).
+pub type ColumnsChoice = (Vec<usize>, [bool; crate::list::COLS], bool);
+
+/// "Columns": which columns the list of downloads shows, and in what order. Works on a copy.
+pub struct Columns {
+    order: Vec<usize>,
+    visible: [bool; crate::list::COLS],
+    selected: usize,
+    reset: bool,
+}
+
+impl Columns {
+    pub fn new(list: &crate::list::ListState) -> Self {
+        Columns {
+            order: list.order.clone(),
+            visible: list.visible,
+            selected: 0,
+            reset: false,
+        }
+    }
+
+    /// A column's name as the header says it (the narrow Q by its whole name).
+    pub fn name(slot: usize) -> String {
+        let t = crate::list::TITLES[slot];
+        if t == "Q" {
+            crate::i18n::tc("column", "Queue").to_owned()
+        } else {
+            crate::i18n::tc("column", t).to_owned()
+        }
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<ColumnsChoice> {
+        window(
+            ctx,
+            "columns",
+            "Columns",
+            [360.0, 372.0],
+            false,
+            winui::LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                winui::paragraph(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 12.0,
+                    crate::i18n::t("Choose the columns to show in the list of downloads"),
+                    winui::LIGHT_TEXT(),
+                    o.x + 348.0,
+                    13.0,
+                );
+                const ROW: f32 = 20.0;
+                for (i, slot) in self.order.clone().into_iter().enumerate() {
+                    let y = 40.0 + i as f32 * ROW;
+                    let row = r(o, 11.0, y, 232.0, ROW);
+                    if i == self.selected {
+                        p.rect_filled(row, 0.0, egui::Color32::from_rgb(205, 232, 255));
+                    }
+                    let id = ui.id().with(("columns-row", slot));
+                    if ui.interact(row, id, egui::Sense::click()).clicked() {
+                        self.selected = i;
+                    }
+                    let name = Self::name(slot);
+                    let hit = winui::checkbox_light_until(
+                        ui,
+                        o + vec2(16.0, y + 3.0),
+                        &mut self.visible[slot],
+                        &name,
+                        slot != 0,
+                        Some(238.0),
+                    );
+                    if hit.clicked() {
+                        self.selected = i;
+                    }
+                }
+                self.visible[0] = true;
+                let n = self.order.len();
+                let up = winui::button_light(
+                    ui,
+                    r(o, 256.0, 40.0, 94.0, 21.0),
+                    // i18n: button in the Columns dialog: move the selected column one place towards the start of the list
+                    "Move up",
+                    if self.selected > 0 {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    },
+                    false,
+                )
+                .clicked();
+                let down = winui::button_light(
+                    ui,
+                    r(o, 256.0, 66.0, 94.0, 21.0),
+                    // i18n: button in the Columns dialog: move the selected column one place towards the end of the list
+                    "Move down",
+                    if self.selected + 1 < n {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    },
+                    false,
+                )
+                .clicked();
+                let reset = winui::button_light(
+                    ui,
+                    r(o, 256.0, 100.0, 94.0, 21.0),
+                    // i18n: button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+                    "Reset",
+                    ButtonKind::Normal,
+                    false,
+                )
+                .clicked();
+                if up && self.selected > 0 {
+                    self.order.swap(self.selected, self.selected - 1);
+                    self.selected -= 1;
+                }
+                if down && self.selected + 1 < n {
+                    self.order.swap(self.selected, self.selected + 1);
+                    self.selected += 1;
+                }
+                if reset {
+                    let fresh = crate::list::ListState::default();
+                    self.order = fresh.order;
+                    self.visible = fresh.visible;
+                    self.reset = true;
+                    self.selected = 0;
+                }
+                let ok = winui::button_light(
+                    ui,
+                    r(o, 188.0, 340.0, 73.0, 21.0),
+                    "OK",
+                    ButtonKind::Default,
+                    false,
+                )
+                .clicked();
+                let cancel = winui::button_light(
+                    ui,
+                    r(o, 272.0, 340.0, 73.0, 21.0),
+                    "Cancel",
+                    ButtonKind::Normal,
+                    false,
+                )
+                .clicked();
+                if cancel || winui::escape_pressed(ui) {
+                    Outcome::Closed
+                } else if ok || winui::enter_pressed(ui) {
+                    Outcome::Done((self.order.clone(), self.visible, self.reset))
                 } else {
                     Outcome::Open
                 }
