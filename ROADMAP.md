@@ -569,6 +569,10 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Website: the home page shows MDM's one-minute film under its first view; YouTube's player
+  loads only when the visitor presses play, and the privacy policy says so
+- ✅ The README opens with MDM's film: its picture, under the download buttons, plays it on
+  YouTube; and Trendshift's badge beside the star button
 - ✅ Download only a part of a video or a sound, from one time to another, cut quickly at the
   keyframes or exactly (encoded again), from the Download video window and the browser add-on's
   menu over a video ([#1662](https://github.com/anefzaoui/misterdownloadmanager/issues/1662))

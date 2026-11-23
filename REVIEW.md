@@ -34,6 +34,11 @@ from a diff. Items that stop earning their place are removed.
 - **Triggered by:** a change under `extension/` that adds or renames a text.
   - [ ] `en/messages.json`, the catalogs and every `extension/_locales/*/messages.json` agree:
         `python tools/extension/locales.py` leaves no diff.
+- **Triggered by:** a diff to any non-English `i18n/*.tsv`.
+  - [ ] It only adds the PR's own new rows (marked `#, machine` when machine-made), or changes
+        rows the PR is about (a translation fix); it never removes or rewrites another row, and
+        a new row never carries the English text as its "translation". After a merge of `main`,
+        compare each catalog with `main`'s: rows `main` has must still be there.
 
 ## Windows and their sizes
 
