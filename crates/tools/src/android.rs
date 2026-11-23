@@ -68,22 +68,36 @@ impl Helpers {
 /// [`helpers`] waits for it.
 pub fn start(lib: &Path, data: &Path, cache: &Path) {
     let (lib, root, cache) = (lib.to_owned(), data.join("helpers"), cache.to_owned());
-    let _ = std::thread::Builder::new()
-        .name("helpers-unpack".into())
-        .spawn(move || {
-            let error = unpack(&lib, &root).err();
-            if let Some(e) = &error {
-                tracing::warn!("helpers: {e}");
-            } else {
-                tracing::info!("helpers ready in {}", root.display());
-            }
-            let _ = HELPERS.set(Helpers {
-                lib,
-                root,
-                cache,
-                error,
-            });
+    let unpacking = {
+        let (lib, root, cache) = (lib.clone(), root.clone(), cache.clone());
+        std::thread::Builder::new()
+            .name("helpers-unpack".into())
+            .spawn(move || {
+                let error = unpack(&lib, &root).err();
+                if let Some(e) = &error {
+                    tracing::warn!("helpers: {e}");
+                } else {
+                    tracing::info!("helpers ready in {}", root.display());
+                }
+                let _ = HELPERS.set(Helpers {
+                    lib,
+                    root,
+                    cache,
+                    error,
+                });
+            })
+    };
+    // No thread for it: the helpers are known unusable now, so [`helpers`] never waits.
+    if let Err(e) = unpacking {
+        let error = format!("no thread to unpack them: {e}");
+        tracing::warn!("helpers: {error}");
+        let _ = HELPERS.set(Helpers {
+            lib,
+            root,
+            cache,
+            error: Some(error),
         });
+    }
 }
 
 /// The helpers, once unpacked (waits for [`start`]'s thread); None when never started.
@@ -171,9 +185,16 @@ fn native(h: &Helpers, exe: &Path) -> bool {
     let real = std::fs::canonicalize(exe).unwrap_or_else(|_| exe.to_owned());
     real.starts_with(&h.lib)
         || real.starts_with("/system")
-        || std::fs::read(&real)
-            .ok()
-            .is_some_and(|b| b.starts_with(b"\x7fELF") && !real.starts_with(&h.root))
+        || (!real.starts_with(&h.root) && elf(&real))
+}
+
+/// Whether the file at `path` is a program (an ELF file): its first 4 bytes.
+fn elf(path: &Path) -> bool {
+    use std::io::Read as _;
+    let mut magic = [0u8; 4];
+    std::fs::File::open(path)
+        .and_then(|mut f| f.read_exact(&mut magic))
+        .is_ok_and(|()| &magic == b"\x7fELF")
 }
 
 /// The command that runs `exe` here: itself when it is one of the APK's programs, else the

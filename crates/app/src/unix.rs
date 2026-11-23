@@ -972,6 +972,7 @@ pub fn os_version() -> String {
 }
 
 /// What `cmd` prints, trimmed, when it succeeds within `secs` seconds (`launch::output_within`).
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 fn printed_within(cmd: &mut Command, secs: u64) -> Option<String> {
     crate::launch::output_within(cmd, std::time::Duration::from_secs(secs))
         .filter(|o| o.status.success())
@@ -4455,6 +4456,10 @@ pub fn rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
                 return Err(err);
             }
         }
+        // Android: the fallback alone (its app sandbox's system call filter isn't relied on for
+        // renameat2).
+        #[cfg(target_os = "android")]
+        let _ = (from_c, to_c);
 
         fallback_rename_no_replace(from, to)
     }
@@ -5929,10 +5934,10 @@ pub fn wake_support() -> crate::wake::Support {
     {
         crate::wake::Support::MacAdmin
     }
-    // Android: an exact alarm starts the app (android.rs `wake_at`).
+    // Android: an exact alarm starts the app, once the Android app is there to set it.
     #[cfg(target_os = "android")]
     {
-        crate::wake::Support::Ready
+        crate::android::wake_support()
     }
 }
 

@@ -3285,6 +3285,7 @@ impl TurnOffCountdown {
 
     /// Shut down, sleep or hibernate now.
     pub fn execute(&self) {
+        #[cfg(not(target_os = "android"))]
         use crate::queue::TurnOff;
         #[cfg(windows)]
         {
@@ -3339,6 +3340,15 @@ impl TurnOffCountdown {
             cmd.args(["-e", script]);
             run_or_tell(cmd);
             let _ = self.force;
+        }
+        // Android: no app may shut the phone down or put it to sleep.
+        #[cfg(target_os = "android")]
+        {
+            let _ = (self.mode, self.force);
+            tell_turn_off_failed(
+                // i18n: why the phone could not be turned off after the queue (fills {error}, Android)
+                crate::i18n::t("Android doesn't let apps turn the phone off").to_owned(),
+            );
         }
     }
 }
@@ -3627,6 +3637,7 @@ pub fn dialog_viewport(id: &str) -> ViewportId {
 
 /// Run a shut down / sleep command and say when it fails (hibernation off, a program
 /// holding it up): it did nothing, silently.
+#[cfg(not(target_os = "android"))]
 fn run_or_tell(mut cmd: std::process::Command) {
     std::thread::spawn(move || match cmd.output() {
         Ok(out) if out.status.success() => {}

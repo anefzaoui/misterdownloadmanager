@@ -57,6 +57,16 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
     }
 }
 
+/// Whether the Scheduler can start the app at a time: with the host's exact alarm, once there
+/// is a host.
+pub fn wake_support() -> crate::wake::Support {
+    if host().is_some() {
+        crate::wake::Support::Ready
+    } else {
+        crate::wake::Support::NoAlarm
+    }
+}
+
 /// A wake lock and a Wi-Fi lock while downloads run (the host's).
 pub fn keep_awake(reason: Option<&str>) -> bool {
     host().is_some_and(|h| h.keep_awake(reason))
@@ -167,6 +177,7 @@ mod tests {
     fn calls_reach_the_host() {
         assert!(matches!(keychain_probe("mdm"), Err(Fault::Missing)));
         assert!(wake_at(Some(1)).is_err());
+        assert_eq!(wake_support(), crate::wake::Support::NoAlarm);
         assert!(!keep_awake(Some("downloads")));
 
         let fake = Arc::new(Fake::default());
@@ -186,6 +197,7 @@ mod tests {
         keychain_delete("mdm", "debrid").unwrap();
         assert_eq!(keychain_list("mdm").unwrap(), ["proxy"]);
 
+        assert_eq!(wake_support(), crate::wake::Support::Ready);
         wake_at(Some(1_800_000_000)).unwrap();
         assert_eq!(*fake.alarm.lock().unwrap(), Some(1_800_000_000));
         wake_at(None).unwrap();

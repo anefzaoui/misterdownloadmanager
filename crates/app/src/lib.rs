@@ -1,13 +1,5 @@
 //! Mister Download Manager's app as a library: `main.rs` is the desktop program that runs it.
 
-// Android builds the whole app, but some desktop features have no Android side yet (turning the
-// computer off when downloads end, global hotkeys, the first frame's timing): their code is
-// unused there until the Android app gives them one.
-#![cfg_attr(
-    target_os = "android",
-    allow(dead_code, unused_imports, unused_variables)
-)]
-
 mod app;
 mod archtest;
 mod batch;
