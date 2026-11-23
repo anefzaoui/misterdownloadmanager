@@ -507,7 +507,7 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
-        let checks: [(f32, &mut bool, &str); 9] = [
+        let checks = [
             (
                 94.0,
                 &mut s.launch_on_startup,
@@ -562,6 +562,7 @@ impl OptionsDialog {
             // MDM's (#1365): a click on the tray icon shows the downloads panel (traypanel.rs);
             // unticked, it shows or hides the window as before. With MDM's other tray settings:
             // the rows are 18 apart (were 19 or 20) to make room, the rest of the page 9 lower.
+            #[cfg(not(target_os = "macos"))]
             (
                 238.0,
                 &mut s.tray_panel,

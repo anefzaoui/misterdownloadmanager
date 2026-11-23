@@ -1,5 +1,6 @@
 //! The notification-area icon (IDM: "IDM menu pops up when you right click on IDM icon"
-//! [IDM-doc]). Left click shows the downloads panel (traypanel.rs, #1365), or, with Options →
+//! [IDM-doc]). On macOS either click opens the native list of windows (#1732). Elsewhere,
+//! left click shows the downloads panel (traypanel.rs, #1365), or, with Options →
 //! General's "Show downloads when the notification area icon is clicked" unticked, shows the
 //! window again or hides it there while it shows; a double click (Windows) opens the window;
 //! right click shows the menu. The menu's
@@ -145,17 +146,13 @@ pub struct Tray {
 
 /// The icon and its menu, as the system's tray library makes them.
 struct Native {
-    limiter_on: CheckMenuItem,
-    limiter_off: CheckMenuItem,
-    /// Start and Stop main download queue: one of them enabled, as the queue runs.
-    start_queue: MenuItem,
-    stop_queue: MenuItem,
+    #[cfg(target_os = "macos")]
+    menu: Menu,
+    controls: Option<Controls>,
     /// The icon itself, kept for as long as the tray (Windows asks and tells the shell about it
     /// from the watcher's thread, through its hidden window).
     #[cfg_attr(windows, allow(dead_code))]
     tray: TrayIcon,
-    /// "Downloads in progress": one entry per running download, rebuilt when they change.
-    downloads: Submenu,
     download_ids: Arc<Mutex<Vec<(MenuId, u64)>>>,
     /// Every entry with its English text, to translate again when the language changes.
     labels: Vec<(Entry, &'static str)>,
@@ -173,6 +170,15 @@ struct Native {
     /// the next.
     #[cfg(windows)]
     seen: std::cell::Cell<Option<watch::Seen>>,
+}
+
+struct Controls {
+    limiter_on: CheckMenuItem,
+    limiter_off: CheckMenuItem,
+    start_queue: MenuItem,
+    stop_queue: MenuItem,
+    #[cfg_attr(target_os = "macos", allow(dead_code))]
+    downloads: Submenu,
 }
 
 /// A menu entry whose text is translated.
@@ -473,48 +479,64 @@ impl Native {
             crate::i18n::mark("Open Mister Download Manager"),
             TrayCmd::Show,
         );
-        menu.append(&PredefinedMenuItem::separator()).ok();
-        let mark = crate::i18n::mark;
-        add(&menu, mark("Add new download"), TrayCmd::AddUrl);
-        add(&menu, mark("Add batch download"), TrayCmd::Batch);
-        // i18n: tray menu: the links copied to the clipboard, to tick in Link grabber (as Tasks → Add batch download from clipboard)
-        add(
-            &menu,
-            mark("Add batch download from clipboard"),
-            TrayCmd::BatchClipboard,
-        );
-        // i18n: tray menu: a submenu of the downloads now running; choosing one shows its progress window
-        let downloads_label = mark("Downloads in progress");
-        let downloads = Submenu::new(crate::i18n::t(downloads_label), false);
-        menu.append(&downloads).ok();
-        menu.append(&PredefinedMenuItem::separator()).ok();
-        let limiter_label = mark("Speed Limiter");
-        let limiter_menu = Submenu::new(crate::i18n::t(limiter_label), true);
-        // i18n: verb: turn the Speed Limiter on
-        let on_label = mark("Turn on");
-        // i18n: verb: turn the Speed Limiter off
-        let off_label = mark("Turn off");
-        let limiter_on = CheckMenuItem::new(crate::i18n::t(on_label), true, limiter, None);
-        let limiter_off = CheckMenuItem::new(crate::i18n::t(off_label), true, !limiter, None);
-        limiter_menu.append(&limiter_on).ok();
-        limiter_menu.append(&limiter_off).ok();
-        menu.append(&limiter_menu).ok();
-        // i18n: noun: opens the Scheduler (the tool that starts queues on time)
-        add(&menu, mark("Scheduler"), TrayCmd::Scheduler);
-        let start_queue = add(
-            &menu,
-            mark("Start main download queue"),
-            TrayCmd::StartQueue,
-        );
-        let stop_queue = add(&menu, mark("Stop main download queue"), TrayCmd::StopQueue);
-        // i18n: plural noun: opens the Options window (settings)
-        add(&menu, mark("Options"), TrayCmd::Options);
-        menu.append(&PredefinedMenuItem::separator()).ok();
-        // i18n: verb: quit the app
-        add(&menu, mark("Exit"), TrayCmd::Exit);
-        drop(add);
-        items.push((limiter_on.id().clone(), TrayCmd::LimiterOn));
-        items.push((limiter_off.id().clone(), TrayCmd::LimiterOff));
+        let controls = if cfg!(target_os = "macos") {
+            None
+        } else {
+            menu.append(&PredefinedMenuItem::separator()).ok();
+            let mark = crate::i18n::mark;
+            add(&menu, mark("Add new download"), TrayCmd::AddUrl);
+            add(&menu, mark("Add batch download"), TrayCmd::Batch);
+            // i18n: tray menu: the links copied to the clipboard, to tick in Link grabber (as Tasks → Add batch download from clipboard)
+            add(
+                &menu,
+                mark("Add batch download from clipboard"),
+                TrayCmd::BatchClipboard,
+            );
+            // i18n: tray menu: a submenu of the downloads now running; choosing one shows its progress window
+            let downloads_label = mark("Downloads in progress");
+            let downloads = Submenu::new(crate::i18n::t(downloads_label), false);
+            menu.append(&downloads).ok();
+            menu.append(&PredefinedMenuItem::separator()).ok();
+            let limiter_label = mark("Speed Limiter");
+            let limiter_menu = Submenu::new(crate::i18n::t(limiter_label), true);
+            // i18n: verb: turn the Speed Limiter on
+            let on_label = mark("Turn on");
+            // i18n: verb: turn the Speed Limiter off
+            let off_label = mark("Turn off");
+            let limiter_on = CheckMenuItem::new(crate::i18n::t(on_label), true, limiter, None);
+            let limiter_off = CheckMenuItem::new(crate::i18n::t(off_label), true, !limiter, None);
+            limiter_menu.append(&limiter_on).ok();
+            limiter_menu.append(&limiter_off).ok();
+            menu.append(&limiter_menu).ok();
+            // i18n: noun: opens the Scheduler (the tool that starts queues on time)
+            add(&menu, mark("Scheduler"), TrayCmd::Scheduler);
+            let start_queue = add(
+                &menu,
+                mark("Start main download queue"),
+                TrayCmd::StartQueue,
+            );
+            let stop_queue = add(&menu, mark("Stop main download queue"), TrayCmd::StopQueue);
+            // i18n: plural noun: opens the Options window (settings)
+            add(&menu, mark("Options"), TrayCmd::Options);
+            menu.append(&PredefinedMenuItem::separator()).ok();
+            // i18n: verb: quit the app
+            add(&menu, mark("Exit"), TrayCmd::Exit);
+            drop(add);
+            items.push((limiter_on.id().clone(), TrayCmd::LimiterOn));
+            items.push((limiter_off.id().clone(), TrayCmd::LimiterOff));
+
+            labels.push((Entry::Sub(limiter_menu), limiter_label));
+            labels.push((Entry::Sub(downloads.clone()), downloads_label));
+            labels.push((Entry::Check(limiter_on.clone()), on_label));
+            labels.push((Entry::Check(limiter_off.clone()), off_label));
+            Some(Controls {
+                downloads,
+                limiter_on,
+                limiter_off,
+                start_queue,
+                stop_queue,
+            })
+        };
 
         // Windows: the size the taskbar draws the icon at, and the taskbar, drawn again for another
         // by the watcher (`WindowsShell::fit`).
@@ -532,8 +554,8 @@ impl Native {
             }
         };
         let builder = TrayIconBuilder::new()
-            .with_menu(Box::new(menu))
-            .with_menu_on_left_click(false)
+            .with_menu(Box::new(menu.clone()))
+            .with_menu_on_left_click(cfg!(target_os = "macos"))
             .with_tooltip(crate::MAIN_TITLE)
             .with_icon(icon);
         // Linux and the BSDs (StatusNotifierItem): the item's title is its name in the shell's
@@ -573,6 +595,9 @@ impl Native {
         // double click, not a click of its own (it would open the panel again over the window).
         let doubled: Mutex<Option<std::time::Instant>> = Mutex::new(None);
         TrayIconEvent::set_event_handler(Some(move |e: TrayIconEvent| {
+            if cfg!(target_os = "macos") {
+                return; // AppKit opens the native menu on either click.
+            }
             let cmd = match e {
                 TrayIconEvent::Click {
                     button: MouseButton::Left,
@@ -624,17 +649,11 @@ impl Native {
                 menu_ctx.request_repaint();
             }
         }));
-        labels.push((Entry::Sub(limiter_menu), limiter_label));
-        labels.push((Entry::Sub(downloads.clone()), downloads_label));
-        labels.push((Entry::Check(limiter_on.clone()), on_label));
-        labels.push((Entry::Check(limiter_off.clone()), off_label));
         Some(Native {
             tray,
-            limiter_on,
-            limiter_off,
-            start_queue,
-            stop_queue,
-            downloads,
+            #[cfg(target_os = "macos")]
+            menu,
+            controls,
             download_ids,
             labels,
             #[cfg(target_os = "macos")]
@@ -662,8 +681,10 @@ impl Native {
 
     /// Start / Stop main download queue, as the queue runs.
     fn set_queue(&self, running: bool) {
-        self.start_queue.set_enabled(!running);
-        self.stop_queue.set_enabled(running);
+        if let Some(controls) = &self.controls {
+            controls.start_queue.set_enabled(!running);
+            controls.stop_queue.set_enabled(running);
+        }
     }
 
     /// Set the icon's tip; false if the shell didn't take it (Windows: the watcher was busy, asked
@@ -683,26 +704,63 @@ impl Native {
     }
 
     /// "Downloads in progress": the running downloads (id, name); greyed when none runs.
+    #[cfg(not(target_os = "macos"))]
     fn set_downloads(&self, running: &[(u64, String)]) {
-        for _ in 0..self.downloads.items().len() {
-            let _ = self.downloads.remove_at(0);
+        let Some(controls) = &self.controls else {
+            return;
+        };
+        for _ in 0..controls.downloads.items().len() {
+            let _ = controls.downloads.remove_at(0);
         }
         let mut ids = Vec::with_capacity(running.len());
         for (id, name) in running {
             let item = MenuItem::new(short(name), true, None);
             ids.push((item.id().clone(), *id));
-            self.downloads.append(&item).ok();
+            controls.downloads.append(&item).ok();
         }
         if let Ok(mut d) = self.download_ids.lock() {
             *d = ids;
         }
-        self.downloads.set_enabled(!running.is_empty());
+        controls.downloads.set_enabled(!running.is_empty());
+    }
+
+    /// The first item opens the manager. Each following item opens one progress window.
+    #[cfg(target_os = "macos")]
+    fn set_downloads(&self, running: &[(u64, String)]) {
+        let mut ids = self.download_ids.lock().unwrap();
+        let rows = self.menu.items().into_iter().skip(1);
+        if ids
+            .iter()
+            .map(|(_, id)| id)
+            .eq(running.iter().map(|(id, _)| id))
+        {
+            for (row, (_, label)) in rows.zip(running) {
+                if let Some(item) = row.as_menuitem() {
+                    item.set_text(label);
+                }
+            }
+            return;
+        }
+        for row in rows {
+            if let Some(item) = row.as_menuitem() {
+                self.menu.remove(item).ok();
+            }
+        }
+        ids.clear();
+        for (id, label) in running {
+            let item = MenuItem::new(label, true, None);
+            if self.menu.append(&item).is_ok() {
+                ids.push((item.id().clone(), *id));
+            }
+        }
     }
 
     /// The Speed Limiter checks.
     fn set_limiter(&self, on: bool) {
-        self.limiter_on.set_checked(on);
-        self.limiter_off.set_checked(!on);
+        if let Some(controls) = &self.controls {
+            controls.limiter_on.set_checked(on);
+            controls.limiter_off.set_checked(!on);
+        }
     }
 }
 
@@ -790,7 +848,7 @@ impl watch::Port for WindowsShell {
 
 /// A download's name as the tray menu shows it: at most MENU_NAME_MAX characters, the rest "…";
 /// "&" doubled, which menus would read as a shortcut mark.
-fn short(name: &str) -> String {
+pub(super) fn short(name: &str) -> String {
     let mut s: String = name.chars().take(MENU_NAME_MAX).collect();
     if name.chars().count() > MENU_NAME_MAX {
         s.push('…');

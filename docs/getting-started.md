@@ -262,12 +262,16 @@ used, and how to make and share one.
 
 ## The tray icon
 
-Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on. To make closing quit (a portable copy's folder can then be deleted), untick **Options → General → Keep running when closing the window**. If there is no icon for MDM at all — not in the notification area, nor behind the ^ hidden icons — the window minimizes to the taskbar instead, so downloads continue and there is a way back. An icon behind ^ can be clicked to bring the window back, and starting MDM again always does. On macOS the window closes into the Dock, as Mac apps' windows do: click MDM's icon in the Dock (or in the menu bar) to bring it back, and quit with **Cmd+Q** or **Mister Download Manager → Quit**.
+Closing the main window doesn't quit MDM. It hides in the notification area, and downloads, queues and schedules carry on. To make closing quit (a portable copy's folder can then be deleted), untick **Options → General → Keep running when closing the window**. If there is no icon for MDM at all — not in the notification area, nor behind the ^ hidden icons — the window minimizes to the taskbar instead, so downloads continue and there is a way back. An icon behind ^ can be clicked to bring the window back, and starting MDM again always does. On macOS the window closes into the Dock, as Mac apps' windows do: click MDM's icon in the Dock to bring it back, and quit with **Cmd+Q** or **Mister Download Manager → Quit**.
+
+On macOS, click the menu bar icon and choose **Open Mister Download Manager** or a running download. Each download shows its file name and, when the total size is known, its percentage. Choosing a download opens its progress window and keeps the main window hidden if you closed it.
 
 On Linux this needs a tray, which most desktops have (KDE Plasma, Xfce, Cinnamon, Ubuntu's GNOME or GNOME with the AppIndicator extension, waybar's tray). On a desktop without one (some tiling window managers), closing the window quits MDM, since there would be nowhere to bring it back from.
 
 ![MDM's icon in the top bar of Ubuntu's GNOME, its menu open: Open Mister Download Manager, Add new download, Add batch download, Downloads in progress, Speed Limiter, Scheduler, the main queue, Options and Exit](images/tray-linux.webp)
 *The tray icon's menu on Ubuntu's GNOME.*
+
+On Windows and Linux:
 
 - Click the tray icon to see what is downloading: a small panel over the icon lists each running download with its progress bar, how much has come of how much, its speed and the time left, and the progress window's **Pause** (then **Resume**; **Stop and save** for a live stream being recorded) and **Cancel** beside it. **Open Mister Download Manager** at its bottom brings the window back. Its **×**, **Esc**, a click elsewhere or another click on the icon closes it.
 - Double-click the tray icon to bring the window back straight away (Windows).
@@ -282,9 +286,9 @@ A download's progress window can go there as well, with its Minimize or with its
 
 On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.
 
-To bring the window back, choose it in **Downloads in progress**, or double-click the download in the list.
+To bring the window back, double-click the download in the list, choose its name in the macOS menu bar, or choose it under **Downloads in progress** on Windows and Linux.
 
-To quit, choose **Tasks → Exit** or **Exit** in the tray menu.
+To quit, choose **Tasks → Exit**, press **Cmd+Q** on macOS, or choose **Exit** in the Windows or Linux tray menu.
 
 ## Where MDM keeps its data
 

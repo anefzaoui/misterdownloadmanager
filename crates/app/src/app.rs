@@ -5095,7 +5095,19 @@ impl App {
                 .items
                 .iter()
                 .filter(|i| i.live.is_some())
-                .map(|i| (i.id, i.file_name.clone()))
+                .map(|i| {
+                    #[cfg(target_os = "macos")]
+                    let name = {
+                        let name = crate::tray::short(&i.file_name);
+                        match i.fraction() {
+                            Some(f) => format!("{name}  {}", crate::i18n::percent(f, 0)),
+                            None => name,
+                        }
+                    };
+                    #[cfg(not(target_os = "macos"))]
+                    let name = i.file_name.clone();
+                    (i.id, name)
+                })
                 .collect();
             t.set_downloads(&running);
         }
@@ -5126,6 +5138,10 @@ impl App {
             tracing::info!("tray: {c:?}");
             let cmd = match c {
                 TrayCmd::Show => {
+                    #[cfg(target_os = "macos")]
+                    if !crate::offscreen() {
+                        crate::unix::macos_unhide_app();
+                    }
                     self.show_window(ctx);
                     continue;
                 }
@@ -5181,7 +5197,14 @@ impl App {
                 TrayCmd::Options => Cmd::Options,
                 TrayCmd::Exit => Cmd::Exit,
                 TrayCmd::ShowDownload(id) => {
-                    self.open_item(id);
+                    if self.item(id).is_some_and(|i| i.live.is_some()) {
+                        #[cfg(target_os = "macos")]
+                        if !crate::offscreen() {
+                            crate::unix::macos_unhide_app();
+                        }
+                        self.open_item(id);
+                        ctx.request_ui_pass(egui::ViewportId::ROOT);
+                    }
                     continue;
                 }
             };

@@ -32,8 +32,10 @@ an arrow down to the corner. On Windows it sits in the title bar, left of Minimi
 title bar's menu (Alt+Space). On Linux and macOS it is at the end of the tab row. The download
 carries on.
 
-To see it again, right-click the tray icon and choose it under **Downloads in progress**, which
-lists every running download. Double-clicking the download in the list brings its window back
+On macOS, click the menu bar icon and choose the file name to open its progress window. Each
+running download shows its percentage when available. **Open Mister Download Manager** opens the
+main window. On Windows and Linux, right-click the tray icon and choose the download under
+**Downloads in progress**. Double-clicking the download in the list brings its window back
 too.
 
 ## Minimize sends windows to the tray as well
@@ -41,9 +43,9 @@ too.
 With **Minimize to the notification area** on in **Options → General** (it is on by default),
 Minimize hides the main window, and a progress window, in the notification area instead of
 leaving them on the taskbar. Closing the main window does the same: MDM keeps running until you
-choose **Tasks → Exit** or **Exit** in the tray menu.
+choose **Tasks → Exit**, press **Cmd+Q** on macOS, or choose **Exit** in the Windows or Linux tray menu.
 
-The tray menu also has **Add new download**, **Add batch download**, **Add batch download from
+On Windows and Linux the tray menu also has **Add new download**, **Add batch download**, **Add batch download from
 clipboard**, the **Speed Limiter**, the
 **Scheduler**, the main download queue and **Options**.
 
