@@ -1114,13 +1114,7 @@ impl VideoDialog {
             // One quality for every video; their names are their titles (no subtitles).
             list.quality_row(ui, r(o, bx, 284.0, 489.0 - bx, 21.0), ffmpeg.is_some());
         } else {
-            winui::edit(
-                ui,
-                r(o, bx, 284.0, 489.0 - bx, 21.0),
-                &mut self.name,
-                true,
-                false,
-            );
+            winui::edit_file_name(ui, r(o, bx, 284.0, 489.0 - bx, 21.0), &mut self.name, true);
             let on = self.subtitles_row(ui, o, bx, ffmpeg.is_some());
             let shade = if on {
                 winui::TEXT()

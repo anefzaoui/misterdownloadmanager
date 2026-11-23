@@ -2,8 +2,9 @@
 ; which passes /DAppVersion=..., /DArch=... and /DBin=... and, when a certificate is set up,
 ; /DSign with /Smdmsign=...
 ;
-; Install for the current user (no administrator rights, %LOCALAPPDATA%\Programs) or for
-; everyone (Program Files); the wizard asks. Tasks: browser integration (native messaging host
+; Install for everyone (asks for administrator rights; Program Files) or for the current user
+; only (no administrator rights, %LOCALAPPDATA%\Programs); the wizard's first page asks, with
+; everyone first. Tasks: browser integration (native messaging host
 ; for Chrome, Edge, Brave and Firefox), .torrent files and magnet links, start with Windows, a
 ; desktop shortcut. A running MDM is asked to save and quit first (/exit). Uninstalling asks
 ; whether to keep the download list and settings; removing them also removes MDM's sign-ins from
@@ -38,8 +39,13 @@ AppUpdatesURL=https://github.com/anefzaoui/misterdownloadmanager/releases
 AppCopyright=Copyright (C) 2026 Ahmed Nefzaoui
 DefaultDirName={autopf}\{#AppName}
 DisableProgramGroupPage=yes
-PrivilegesRequired=lowest
+; Administrator by default (a UAC prompt; Program Files, for everyone); the wizard's first page
+; lets the user choose "Install for me only" instead (no prompt, %LOCALAPPDATA%\Programs).
+PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=dialog
+; Ask every time, also when MDM is installed already: without this Setup reuses the earlier
+; install's mode and never shows "for everyone / for me only" again.
+UsePreviousPrivileges=no
 ; The Run entry is the installing user's, also when installing for everyone.
 UsedUserAreasWarning=no
 ; One installer per processor, all with the same AppId: the ARM64 one run on a Windows on ARM PC
@@ -98,6 +104,7 @@ SignedUninstaller=yes
 lang_en.TaskBrowser=Set up &browser integration (Chrome, Edge, Brave, Firefox)
 lang_en.TaskTorrents=Open .&torrent files and magnet links with {#AppName}
 lang_en.TaskStartup=Start {#AppName} when &Windows starts
+lang_en.TaskPortable=&Portable: keep the download list and settings in the install folder (choose a folder you can write to, not Program Files)
 lang_en.TaskGroupOther=Other:
 lang_en.Launch=Start {#AppName}
 lang_en.KeepData=Also delete your download list and settings?%n%nYour downloaded files are not touched either way.
@@ -113,6 +120,7 @@ lang_en.WindowsVersionNotSupported=This is the setup for 32-bit Windows, and thi
 Name: "browser"; Description: "{cm:TaskBrowser}"
 Name: "torrents"; Description: "{cm:TaskTorrents}"
 Name: "startup"; Description: "{cm:TaskStartup}"
+Name: "portable"; Description: "{cm:TaskPortable}"; Flags: unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:TaskGroupOther}"; Flags: unchecked
 
 [Files]
@@ -126,6 +134,10 @@ Source: "{#Root}\target\extension\chromium\*"; DestDir: "{app}\extension\chromiu
 Source: "{#Root}\target\extension\mdm-firefox.xpi"; DestDir: "{app}\extension"; Flags: ignoreversion
 Source: "{#Root}\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignoreversion
 Source: "{#Root}\ATTRIBUTION.md"; DestDir: "{app}"; DestName: "ATTRIBUTION.txt"; Flags: ignoreversion
+
+; Portable mode (crates/app: a `data` folder beside the exe): settings and the list stay there.
+[Dirs]
+Name: "{app}\data"; Tasks: portable
 
 [Icons]
 Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExe}"

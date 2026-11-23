@@ -3235,10 +3235,11 @@ impl ConfirmDelete {
             } else {
                 "Confirm deletion of downloads"
             },
-            // The completed question has no "Don't show this dialog again" row (30 px).
+            // The completed question has no "Don't show this dialog again" row (30 px) and no
+            // "Also delete the file from disk" box (26 px).
             [
                 374.0,
-                (if self.all_completed { 116.0 } else { 146.0 }) + extra + warned,
+                (if self.all_completed { 90.0 } else { 146.0 }) + extra + warned,
             ],
             false,
             winui::LIGHT_BG(),
@@ -3300,10 +3301,12 @@ it from Mister Download Manager list of downloads?",
                         &[("n", &crate::i18n::integer(n))],
                     )
                 };
-                winui::checkbox_light(ui, o + vec2(24.0, 60.0), &mut self.files, &files, true);
+                if !self.all_completed {
+                    winui::checkbox_light(ui, o + vec2(24.0, 60.0), &mut self.files, &files, true);
+                }
                 // Ticked, the finished downloads' files go too: said, so none is lost by
                 // surprise (#1563); under the box, beside its caption.
-                let warn = if self.files && self.finished > 0 {
+                let warn = if !self.all_completed && self.files && self.finished > 0 {
                     let text = crate::i18n::fmt(
                         // i18n: under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
                         &crate::i18n::tn(
@@ -3328,9 +3331,11 @@ it from Mister Download Manager list of downloads?",
                 };
                 grow_px(ui.ctx(), "confirm-delete-finished", warn);
                 let o = o + vec2(0.0, warn);
+                // The buttons sit under the box, or where it would be.
+                let up = if self.all_completed { 26.0 } else { 0.0 };
                 let yes = winui::button_light(
                     ui,
-                    r(o, 94.0, 86.0, 73.0, 21.0),
+                    r(o, 94.0, 86.0 - up, 73.0, 21.0),
                     "Yes",
                     ButtonKind::Default,
                     false,
@@ -3338,7 +3343,7 @@ it from Mister Download Manager list of downloads?",
                 .clicked();
                 let no = winui::button_light(
                     ui,
-                    r(o, 207.0, 86.0, 73.0, 21.0),
+                    r(o, 207.0, 86.0 - up, 73.0, 21.0),
                     "No",
                     ButtonKind::Normal,
                     false,

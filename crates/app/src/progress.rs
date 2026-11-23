@@ -1609,7 +1609,7 @@ impl Progress {
             .flatten();
         let enabled = item.status != Status::Complete && disabled_reason.is_none();
         let edit_rc = r(o, edit_x, top, edit_w, 21.0);
-        let edit_resp = winui::edit(ui, edit_rc, &mut self.rename_text, enabled, false);
+        let edit_resp = winui::edit_file_name(ui, edit_rc, &mut self.rename_text, enabled);
         if edit_resp.changed() {
             self.on_rename_text_changed(std::time::Instant::now());
             if let Some(wait) = self.poll_rename_autosave(std::time::Instant::now()) {

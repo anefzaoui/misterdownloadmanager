@@ -2275,6 +2275,17 @@ pub fn edit_frame(p: &Painter, rc: Rect, enabled: bool) {
 
 /// A single-line edit: frame + egui text editing positioned so text starts at x+5 with its
 /// baseline at top+13.
+/// [`edit`] for a file name: the line is laid out left to right whatever its first letter, so an
+/// Arabic name keeps its extension at the end (".mp4" after it, on the right) instead of at the
+/// left end of a right-to-left line.
+pub fn edit_file_name(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) -> Response {
+    let key = egui::Id::unique("edit-line-ltr");
+    ui.data_mut(|d| d.insert_temp(key, true));
+    let resp = edit(ui, rc, value, enabled, false);
+    ui.data_mut(|d| d.remove::<bool>(key));
+    resp
+}
+
 pub fn edit(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool, password: bool) -> Response {
     edit_frame(ui.painter(), rc, enabled);
     let resp = edit_text(ui, rc, value, enabled, password, 5.0);
@@ -2434,7 +2445,12 @@ fn edit_text_with(
     // out left of 0, so it never scrolled: its end stayed out of sight, and End, the arrows, a
     // click or typing there went on out of view. A line that fits keeps its alignment: there is
     // nothing to scroll.
-    let align = if align != egui::Align::LEFT && overflows(ui, value, password, inner.width()) {
+    let ltr_line = ui
+        .data(|d| d.get_temp::<bool>(egui::Id::unique("edit-line-ltr")))
+        .unwrap_or(false);
+    let align = if ltr_line {
+        egui::Align::LEFT
+    } else if align != egui::Align::LEFT && overflows(ui, value, password, inner.width()) {
         egui::Align::LEFT
     } else {
         align
@@ -2451,6 +2467,17 @@ fn edit_text_with(
         // lost the keys on Enter took the next typing nowhere).
         .return_key(None)
         .desired_width(inner.width());
+    let mut ltr_layout = move |ui: &Ui, text: &dyn egui::TextBuffer, _wrap: f32| {
+        let mut job =
+            egui::text::LayoutJob::simple_singleline(text.as_str().to_owned(), tahoma(), color);
+        job.direction = egui::epaint::text::TextDirection::LeftToRight;
+        ui.painter().layout_job(job)
+    };
+    let te = if ltr_line {
+        te.layouter(&mut ltr_layout)
+    } else {
+        te
+    };
     if ui.memory(|m| m.has_focus(edit_id)) {
         ui.input_mut(|i| {
             let mut events = Vec::with_capacity(i.events.len());
@@ -2697,19 +2724,20 @@ pub fn readonly_file(
     readonly_with_icon(ui, rc, name, true, id, icon)
 }
 
-/// A file name for drawing: the name with the direction of its own letters (an Arabic name reads
-/// right to left, a Latin one left to right) and its extension, ".mp4", apart as left to right,
-/// so the dot stays in front of it at the end of a right-to-left name instead of after it.
+/// A file name for drawing: laid out left to right as a whole, so its extension is at the end
+/// (".mp4" after the name, on the right), with the name's own letters in their own direction (an
+/// Arabic stem reads right to left inside it). Drawn as a right-to-left line, the extension came
+/// first, at the left end, and its dot after it ("mp4.").
 fn file_name_bidi(name: &str) -> String {
     match name.rfind('.') {
         Some(dot) if dot > 0 && name[dot..].is_ascii() && name[dot..].len() <= 12 => {
-            format!(
+            crate::i18n::ltr(&format!(
                 "{}{}",
                 crate::i18n::isolate(&name[..dot]),
-                crate::i18n::ltr(&name[dot..])
-            )
+                &name[dot..]
+            ))
         }
-        _ => crate::i18n::isolate(name),
+        _ => crate::i18n::ltr(&crate::i18n::isolate(name)),
     }
 }
 
@@ -7407,17 +7435,17 @@ pub mod caption {
 mod tests {
     use super::*;
 
-    /// An Arabic name's extension is drawn apart, left to right, so its dot isn't left behind
-    /// after it.
+    /// An Arabic name is drawn left to right as a whole: its extension at the end.
     #[test]
     fn a_file_names_extension_is_isolated_left_to_right() {
         let shown = file_name_bidi("ليه؟.mp4");
-        assert!(shown.ends_with(&crate::i18n::ltr(".mp4")), "{shown:?}");
-        assert!(
-            shown.starts_with(&crate::i18n::isolate("ليه؟")),
-            "{shown:?}"
+        // The whole line left to right, the extension after the stem.
+        let stem = crate::i18n::isolate("ليه؟");
+        assert_eq!(shown, crate::i18n::ltr(&format!("{stem}.mp4")));
+        assert_eq!(
+            file_name_bidi("noext"),
+            crate::i18n::ltr(&crate::i18n::isolate("noext"))
         );
-        assert_eq!(file_name_bidi("noext"), crate::i18n::isolate("noext"));
     }
 
     /// #1192: every system dialog `start_pick` shows is counted open while it runs (the freeze
