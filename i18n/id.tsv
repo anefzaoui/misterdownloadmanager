@@ -238,6 +238,10 @@
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
 	A magnet link's files could not be looked up: {error}	Daftar file untuk tautan magnet tidak dapat diperoleh: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	Pemindahan terhenti saat MDM ditutup: unduhan ada di {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	ID konfigurasi NextDNS adalah enam huruf dan digit (0-9, a-f).
@@ -267,6 +271,10 @@
 #. message or event log entry in the main window
 #. tooltip on the disabled Rename box for a single-file torrent
 	A single-file torrent keeps its name	Torrent satu file mempertahankan namanya
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Torrent dapat dipindahkan setelah selesai: sampai saat itu, mesin torrent menulis bagian-bagiannya di tempatnya
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -274,6 +282,10 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	Pelacak di komputer ini atau jaringan lokal tidak pernah dihubungi: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Video atau galeri dapat dipindahkan setelah selesai: sampai saat itu, program pembantunya menyimpan file yang belum selesai di foldernya
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	a volume of it is missing	salah satu volumenya hilang
@@ -2022,6 +2034,10 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	file-nya tidak dapat ditulis: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	foldernya {folder} tidak dapat dijangkau
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2503,8 +2519,21 @@
 #. message or event log entry in the main window
 	Move/Rename	Pindahkan/Ganti Nama
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	Dipindahkan ke {folder}
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 	Moving the file...	Memindahkan file...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	Sedang dipindahkan ke {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	Sedang dipindahkan...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	Mozambik
@@ -2838,11 +2867,6 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 	Online	Online
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-	Only a finished download, or one not started yet, can be moved	Hanya unduhan yang selesai, atau yang belum dimulai, yang dapat dipindahkan
-#. message or event log entry in the main window
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Hanya unduhan yang selesai, atau yang belum dimulai, yang dapat dipindahkan. Hentikan dan selesaikan terlebih dahulu.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3985,6 +4009,10 @@
 #. a helper (yt-dlp, ffmpeg) couldn't be downloaded: the connection to its server ({host}) closed before all of it came
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 	the download from {host} was cut short	unduhan dari {host} terputus sebelum selesai
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	Unduhan sedang dipindahkan
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 	The download isn't complete yet	Unduhan belum selesai
@@ -4266,6 +4294,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	ruang kosong tidak cukup untuk file di dalamnya, kata HatchZip; tidak ada yang diubah
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	tidak ada cukup ruang kosong di sana ({needed} diperlukan, {free} kosong)
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	Pengaturan ini tidak tersedia saat "Tampilkan dialog unduhan selesai" diaktifkan
 #. text in helpers.rs
@@ -5062,6 +5094,10 @@
 	{file} could not be opened: {error}	{file} tidak dapat dibuka: {error}
 #. text in the Checksum window
 	{file} could not be read to check it	{file} tidak dapat dibaca untuk memeriksanya
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} sudah ada di sana
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine

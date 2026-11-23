@@ -289,6 +289,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	मॅग्नेट लिंकच्या फाइल्स शोधता आल्या नाहीत: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM बंद झाल्यामुळे हलवण्याची प्रक्रिया मध्येच थांबली: डाउनलोड {folder} मध्ये आहे
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -325,6 +329,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	एकल-फाईल टोरेंट स्वतःचे नाव कायम ठेवतो
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	टॉरेंट पूर्ण झाल्यावर हलवता येते: तोपर्यंत टॉरेंट इंजिन त्याचे भाग जिथे आहेत तिथे लिहितो
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +341,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	या संगणकावरील किंवा स्थानिक नेटवर्कवरील ट्रॅकरशी कधीही संपर्क साधला जात नाही: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	व्हिडिओ किंवा गॅलरी पूर्ण झाल्यावर हलवता येते: तोपर्यंत त्याचे सहायक प्रोग्राम्स त्यांच्या अपूर्ण फाइल्स त्याच्या फोल्डरमध्ये ठेवतात
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2610,6 +2622,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	त्याच्या फाइल्स लिहिल्या जाऊ शकल्या नाहीत: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	त्याचे फोल्डर {folder} उपलब्ध नाही
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3237,9 +3253,22 @@
 #, machine
 	Move/Rename	हलवा/नाव बदला
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	{folder} मध्ये हलवले
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	फाइल हलवत आहे...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	{folder} मध्ये हलवत आहे
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	हलवत आहे...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3681,13 +3710,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ऑनलाइन
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	फक्त पूर्ण झालेले डाउनलोड किंवा अजून सुरू न झालेले डाउनलोड हलवता येते
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	फक्त पूर्ण झालेले डाउनलोड किंवा अजून सुरू न झालेले डाउनलोड हलवता येते. ते थांबवा आणि प्रथम पूर्ण करा.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -5162,6 +5184,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} वरून डाउनलोड मध्येच थांबले
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	डाउनलोड हलवले जात आहे
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5510,6 +5536,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	HatchZip नुसार, त्याच्या फाइल्ससाठी पुरेशी मोकळी जागा नाही; काहीही बदलले नाही
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	तेथे पुरेशी मोकळी जागा नाही ({needed} आवश्यक, {free} मोकळी)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"डाउनलोड पूर्ण झाल्यावर संवाद दाखवा" चालू असताना या सेटिंग्ज उपलब्ध नाहीत
@@ -6539,6 +6569,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} तपासण्यासाठी वाचता आले नाही
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} आधीच तेथे आहे
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine

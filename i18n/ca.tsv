@@ -289,6 +289,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	No s'han pogut cercar els fitxers d'un enllaç magnet: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	S’ha interromput un trasllat en tancar-se l’MDM: la baixada és a {folder}.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -325,6 +329,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Un torrent d'un sol fitxer conserva el nom
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Un torrent es pot moure un cop ha acabat: fins aleshores, el motor de torrents escriu les seves peces on són
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +341,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	No es contacta mai amb un rastrejador d'aquest ordinador o de la xarxa local: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Un vídeo o una galeria es pot moure un cop s’ha completat: fins aleshores, els programes auxiliars hi mantenen els fitxers incomplets
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2614,6 +2626,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	no s'han pogut escriure els seus fitxers: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	no es pot accedir a la seva carpeta {folder}
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3241,9 +3257,22 @@
 #, machine
 	Move/Rename	Mou/Canvia el nom
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	S’ha mogut a {folder}
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	S'està movent el fitxer...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	S’està movent a {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	S’està movent...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3685,13 +3714,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	En línia
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	Només es pot moure una baixada finalitzada o una que encara no s'ha iniciat
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Només es pot moure una baixada finalitzada o una que encara no s'ha iniciat. Atura-la i finalitza-la primer.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -5166,6 +5188,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	La baixada de {host} s’ha tallat abans d’hora
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	La baixada s’està movent
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5514,6 +5540,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	no hi ha prou espai lliure per als seus fitxers, diu HatchZip; no s’ha canviat res
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	no hi ha prou espai lliure ({needed} necessaris, {free} lliures)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Aquests paràmetres no estan disponibles quan l'opció «Mostra el diàleg de descàrrega completada» està activada
@@ -6543,6 +6573,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	No s'ha pogut llegir {file} per comprovar-lo
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ja hi és
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine

@@ -289,6 +289,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	மேக்னெட் இணைப்பின் கோப்புகளைக் கண்டறிய முடியவில்லை: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM மூடப்பட்டதால் நகர்த்தும் பணி பாதியில் நிறுத்தப்பட்டது: பதிவிறக்கம் {folder} இல் உள்ளது
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -325,6 +329,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	ஒற்றைக் கோப்பு டொரண்ட் தன் பெயரைத் தக்கவைத்துக் கொள்ளும்
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	ஒரு டொரண்ட் முடிந்ததும் அதை நகர்த்தலாம்: அதுவரை டொரண்ட் எஞ்சின் அதன் பகுதிகளை அங்கேயே எழுதுகிறது
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +341,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	இந்தக் கணினியில் அல்லது உள்ளூர் நெட்வொர்க்கில் உள்ள டிராக்கரைத் தொடர்புகொள்வதில்லை: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	ஒரு வீடியோ அல்லது கேலரி முடிந்ததும் அதை நகர்த்தலாம்: அதுவரை அதன் துணை நிரல்கள் அதன் முடிக்கப்படாத கோப்புகளை அதன் கோப்புறையில் வைத்திருக்கும்
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2610,6 +2622,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	அதன் கோப்புகளை எழுத முடியவில்லை: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	அதன் கோப்புறை {folder} ஐ அணுக முடியவில்லை
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3237,9 +3253,22 @@
 #, machine
 	Move/Rename	நகர்த்தவும்/மறுபெயரிடவும்
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	{folder} க்கு நகர்த்தப்பட்டது
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	கோப்பு நகர்த்தப்படுகிறது...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	{folder} க்கு நகர்த்துகிறது
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	நகர்த்துகிறது...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3681,13 +3710,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ஆன்லைனில்
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	முடிந்த பதிவிறக்கம் அல்லது இன்னும் தொடங்கப்படாத பதிவிறக்கம் மட்டுமே நகர்த்த முடியும்
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	முடிந்த பதிவிறக்கம் அல்லது இன்னும் தொடங்கப்படாத பதிவிறக்கம் மட்டுமே நகர்த்த முடியும். முதலில் அதை நிறுத்தி முடிக்கவும்.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -5162,6 +5184,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} இலிருந்து பதிவிறக்கம் பாதியில் துண்டிக்கப்பட்டது
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	பதிவிறக்கம் நகர்த்தப்படுகிறது
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5510,6 +5536,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	அதன் கோப்புகளுக்கு போதுமான இலவச இடம் இல்லை என்று HatchZip கூறுகிறது; எதுவும் மாற்றப்படவில்லை
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	அங்கு போதுமான காலியிடம் இல்லை ({needed} தேவை, {free} காலியாக உள்ளது)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	“பதிவிறக்கம் முடிந்ததும் உரையாடலைக் காட்டு” இயக்கப்பட்டிருக்கும்போது இந்த அமைப்புகள் கிடைக்காது
@@ -6539,6 +6569,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} ஐச் சரிபார்க்கப் படிக்க முடியவில்லை
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ஏற்கனவே உள்ளது
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine

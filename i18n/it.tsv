@@ -247,6 +247,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	Impossibile cercare i file di un link magnet: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	Lo spostamento si è interrotto quando MDM si è chiuso: il download si trova in {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Un ID di configurazione NextDNS è composto da sei caratteri tra lettere e cifre (0-9, a-f).
@@ -277,6 +281,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Un torrent a file singolo mantiene il proprio nome
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Un torrent può essere spostato una volta completato: fino ad allora il motore torrent scrive le sue parti dove si trovano
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -284,6 +292,10 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	Un tracker su questo computer o sulla rete locale non viene mai contattato: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Un video o una galleria possono essere spostati una volta completati: fino ad allora i programmi helper mantengono i loro file incompleti nella sua cartella
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	a volume of it is missing	ne manca un volume
@@ -2068,6 +2080,10 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	impossibile scrivere i suoi file: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	impossibile raggiungere la sua cartella {folder}
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2559,8 +2575,21 @@
 #. message or event log entry in the main window
 	Move/Rename	Sposta/Rinomina
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	Spostato in {folder}
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 	Moving the file...	Spostamento del file...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	Spostamento in {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	Spostamento in corso...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	Mozambico
@@ -2896,11 +2925,6 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 	Online	Online
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-	Only a finished download, or one not started yet, can be moved	Si può spostare solo un download completato o non ancora avviato
-#. message or event log entry in the main window
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Si può spostare solo un download completato o non ancora avviato. Prima interrompilo e portalo a termine.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4062,6 +4086,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	il download da {host} è stato interrotto
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	Il download è in fase di spostamento
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 	The download isn't complete yet	Il download non è ancora completo
@@ -4350,6 +4378,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	non c'è abbastanza spazio libero per i suoi file, dice HatchZip; nulla è stato modificato
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	non c'è abbastanza spazio libero ({needed} necessari, {free} disponibili)
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	Queste impostazioni non sono disponibili quando "Mostra la finestra di download completato" è attivo
 #. text in helpers.rs
@@ -5170,6 +5202,10 @@
 	{file} could not be opened: {error}	Impossibile aprire {file}: {error}
 #. text in the Checksum window
 	{file} could not be read to check it	Impossibile leggere {file} per verificarlo
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} è già presente
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine

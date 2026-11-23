@@ -289,6 +289,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	Не ўдалося атрымаць спіс файлаў для магнітнай спасылкі: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	Перамяшчэнне перапынілася, калі MDM закрыўся: спампоўка знаходзіцца ў папцы {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -325,6 +329,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Аднафайлавы торэнт захоўвае сваё імя
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Торэнт можна перамясціць пасля завяршэння: да гэтага часу торэнт-рухавік запісвае свае часткі туды, дзе яны знаходзяцца
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +341,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	Трэкер на гэтым камп’ютары або ў лакальнай сетцы ніколі не кантактуе: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Відэа ці галерэю можна перамясціць пасля завяршэння: да гэтага часу дапаможныя праграмы захоўваюць свае незавершаныя файлы ў сваёй папцы
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2609,6 +2621,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	немагчыма запісаць яго файлы: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	яе папка {folder} недаступная
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3236,9 +3252,22 @@
 #, machine
 	Move/Rename	Перамясціць/Перайменаваць
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	Перамешчана ў {folder}
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	Перамяшчэнне файла...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	Перамяшчаецца ў {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	Перамяшчэнне...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3680,13 +3709,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	Анлайн
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	Перамясціць можна толькі завершанае спампоўванне або тое, што яшчэ не пачалося
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Перамясціць можна толькі завершанае спампоўванне або тое, што яшчэ не пачалося. Спачатку спыніце яго і завяршыце.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -5161,6 +5183,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	Спампоўванне з {host} было перапынена
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	Спампоўванне перамяшчаецца
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5509,6 +5535,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	недастаткова вольнага месца для яго файлаў, паводле паведамлення HatchZip; нічога не змянілася
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	недастаткова вольнага месца там ({needed} патрабуецца, {free} вольна)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Гэтыя налады недаступныя, калі ўключана «Паказваць дыялогавае акно аб завяршэнні спампоўвання»
@@ -6538,6 +6568,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Не ўдалося прачытаць {file} для праверкі
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	файл {file} ужо ёсць у гэтай папцы
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
