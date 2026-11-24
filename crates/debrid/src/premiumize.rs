@@ -222,9 +222,11 @@ pub(crate) async fn transfer_status(
         // Breadth first, a folder's path before its files'; at most 64 folders.
         let mut todo = vec![(folder.to_owned(), String::new())];
         let mut seen = 0;
+        let mut cut_short = false;
         while let Some((fid, prefix)) = todo.pop() {
             seen += 1;
             if seen > 64 {
+                cut_short = true;
                 break;
             }
             let mut url = http.services.pm.join("folder/list").expect("relative");
@@ -238,7 +240,10 @@ pub(crate) async fn transfer_status(
                     format!("{prefix}/{}", i.name)
                 };
                 if i.kind == "folder" {
-                    todo.push((i.id, path));
+                    // A folder with no id can't be listed; the rest still can.
+                    if !i.id.is_empty() {
+                        todo.push((i.id, path));
+                    }
                 } else if !i.link.is_empty() {
                     files.push(RemoteFile {
                         path,
@@ -247,6 +252,13 @@ pub(crate) async fn transfer_status(
                     });
                 }
             }
+        }
+        // Ready with a partial walk would download some files and delete the transfer: say it
+        // couldn't be listed whole instead.
+        if cut_short {
+            return Err(Fault::Service(mdm_engine::ServiceFault::Other(
+                "the transfer's folder has more subfolders than MDM lists (64)".into(),
+            )));
         }
     }
     Ok(Status::Ready {
