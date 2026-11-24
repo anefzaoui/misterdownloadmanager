@@ -77,7 +77,7 @@ Also check the extension's toolbar button: with **Take downloads from this brows
 
 ## The browser opens PDFs and music instead of sending them {#opened}
 
-MDM also takes the file types the browser would show or play itself (a PDF, an MP3, also in a frame of a page), when they're listed in **Options → File types** and **Also take files the browser would open** is ticked in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox. Sites in MDM's excluded sites keep opening them in the browser. Hold **Alt** (**Option** on a Mac) while clicking a link to leave it to the browser: Firefox then follows it as a plain click does, while Chromium browsers and Safari download it themselves (it is their own "download link").
+MDM also takes the file types the browser would show or play itself (a PDF, an MP3, also in a frame of a page), when they're listed in **Options → File types** and **Also take files the browser would open** is ticked in **Options → General → Keys...**. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox. Sites in MDM's excluded sites keep opening them in the browser. Hold **Alt** (**Option** on a Mac) while clicking a link to leave it to the browser: the extension follows it as a plain click does (the browser opens or downloads it, and a site's bot check runs in the tab first), instead of the browser's own Alt+click, which saves the link without opening it in Chromium browsers and Safari.
 
 ## No Download video button on YouTube in Chrome, Edge or Brave {#store-youtube}
 
@@ -88,6 +88,10 @@ You can always save a video without the button: in MDM, open **Tasks → Downloa
 ## The extension can't read this site {#site-access}
 
 In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → **This can read and change site data**). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose **On all sites** to let MDM take downloads everywhere.
+
+## The popup says this copy was loaded by hand {#loaded-by-hand}
+
+A copy loaded with **Load unpacked** (Chrome, Edge, Brave, Opera, Vivaldi) or **Load Temporary Add-on** (Firefox) doesn't update itself, and its toolbar button's popup says so, with a link to the browser's store. Add the extension from that link, then remove the copy loaded by hand on the browser's extensions page (`chrome://extensions`, `edge://extensions`, `about:addons`...), so the browser doesn't run two. The store's copy is the same extension, and the browser keeps it up to date.
 
 ## Firefox forgets the extension after a restart {#firefox-temporary}
 

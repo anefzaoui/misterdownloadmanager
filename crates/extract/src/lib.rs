@@ -9,8 +9,12 @@
 //! the new one numbered. One path for every format and for the external tool, and a failure
 //! leaves nothing behind but the archive.
 //!
+//! A finished archive can be tested as well ([`check`], #1661): every entry read back and
+//! checked, nothing written, and a ZIP's damaged entries placed in the file.
+//!
 //! Portable, no unsafe, no UI and no words: errors are an enum the app words.
 
+pub mod check;
 mod external;
 pub mod hatchzip;
 pub mod safe;
@@ -22,10 +26,11 @@ mod zip_fmt;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::AtomicBool;
 
+pub use check::{Damage, Verdict};
 pub use external::find_7zip;
 pub use hatchzip::find_hatchzip;
 pub use safe::Limits;
-pub use volumes::{Volume, VolumeKind, volume_key};
+pub use volumes::{OnDisk, Volume, VolumeKind, on_disk, set_key, spanned_part, volume_key};
 
 /// What an archive is, by its first bytes (and, for a compressed tar, its name).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -67,7 +72,17 @@ impl Format {
 
     fn from_head(head: &[u8], name: &str) -> Option<Format> {
         let tar_named = |exts: &[&str]| exts.iter().any(|e| name.ends_with(e));
-        if head.starts_with(b"PK\x03\x04") || head.starts_with(b"PK\x05\x06") {
+        // A spanned ZIP's first volume starts with its spanning mark (`PK\x07\x08`, or `PK00`
+        // when it fitted in one volume after all), then its first entry.
+        if [
+            &b"PK\x03\x04"[..],
+            b"PK\x05\x06",
+            b"PK\x07\x08PK",
+            b"PK00PK",
+        ]
+        .iter()
+        .any(|s| head.starts_with(s))
+        {
             Some(Format::Zip)
         } else if head.starts_with(&[b'7', b'z', 0xBC, 0xAF, 0x27, 0x1C]) {
             Some(Format::SevenZip)

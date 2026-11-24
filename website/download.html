@@ -20,8 +20,13 @@
   <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/vitrine/vitrine.css">
+  <link rel="stylesheet" href="/vitrine/vitrine-modal.css">
   <link rel="stylesheet" href="/styles.css">
   <!--@theme-->
+  <script src="/vitrine/vitrine-core.js" defer></script>
+  <script src="/vitrine/vitrine-modal.js" defer></script>
+  <script src="/vitrine/vitrine.js" defer></script>
   <script src="/main.js" defer></script>
   <script type="application/ld+json">{{SOFTWARE_LD}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{SITE}}/"},{"@type":"ListItem","position":2,"name":"Download","item":"{{SITE}}/download.html"}]}</script>
@@ -78,7 +83,9 @@
           <li><a href="{{REPO}}/releases/tag/v{{VERSION}}"><svg aria-hidden="true"><use href="#i-tag"/></svg><span><b>All files and checksums</b><small>Version {{VERSION}} on GitHub Releases, with SHA256SUMS.txt</small></span></a></li>
           <li><a href="/contributing.html#getting-set-up"><svg aria-hidden="true"><use href="#i-code"/></svg><span><b>Build it from source</b><small>cargo build, on Windows, macOS or Linux</small></span></a></li>
           <li><a href="{{REPO}}"><svg aria-hidden="true"><use href="#i-github"/></svg><span><b>The project on GitHub</b><small>Code, issues and every release</small></span></a></li>
+          <li><a href="/code-signing-policy.html"><svg aria-hidden="true"><use href="#i-seal"/></svg><span><b>Code signing policy</b><small>What is signed, who approves it, and privacy</small></span></a></li>
         </ul>
+        <!--@rate-->
       </div>
     </section>
 
@@ -86,9 +93,10 @@
       <h2 id="extension">The browser extension</h2>
       <p>It hands your browser's downloads to MDM with their cookies, adds <b>Download with Mister Download Manager</b> to the right-click menu and puts a <b>Download video</b> button over videos.</p>
       <p><b>Firefox</b> (and Zen, LibreWolf): one click from its add-ons store, and Firefox keeps it up to date.</p>
-      <p class="store-act"><!--@amo--></p>
+      <div class="store-act"><!--@amo--></div>
       <p><b>Chrome, Edge, Brave, Opera and Vivaldi</b>: one click from the Chrome Web Store, and the browser keeps it up to date. Edge first asks to allow extensions from other stores.</p>
-      <p class="store-act"><span class="store-btns"><!--@cws--></span></p>
+      <div class="store-act"><!--@cws--></div>
+      <!--@stores-asof-->
       <p>Can't use a store? It comes with the app, in its <code>extension</code> folder, and <a href="{{FILE_CHROMIUM}}">as its own download</a> for Chromium browsers (<code>.zip</code>: unzip, then <b>Load unpacked</b> on the browser's extensions page with Developer mode on). The <a href="/help/guide-catch-browser-downloads.html">step-by-step guide</a> shows each browser.</p>
 
       <h2>Install in three steps</h2>

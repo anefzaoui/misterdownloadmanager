@@ -75,7 +75,8 @@ pub fn place(ctx: &egui::Context, key: egui::Id, client: [f32; 2]) -> Option<Pos
     let main = main_rect(ctx)?;
     // A fixed-frame dialog's outer size is client + (6, 29) (spec "Conventions").
     let outer = vec2(client[0] + 6.0, client[1] + 29.0);
-    let mut p = (main.center() - outer / 2.0).round();
+    // The second of a kind and the ones after it a step further each (#1741).
+    let mut p = (main.center() + cascade_offset(ctx, key) - outer / 2.0).round();
     if let Some(area) = crate::scale::work_area(ctx, main.center()) {
         let whole = vec2(client[0], client[1]) + crate::scale::frame(ctx);
         p = crate::scale::keep_inside(p, whole, area).round();
@@ -89,6 +90,69 @@ pub fn forget_place(ctx: &egui::Context, key: egui::Id) {
         d.remove::<(Pos2, f32)>(key);
         d.remove::<egui::Rect>(key.with("main-px"));
     });
+}
+
+/// How far each window of a kind opens from the one numbered before it ([`Nth`]), in points: a
+/// title bar and its frame, down and towards the window's far side (left in a right-to-left
+/// interface), as the system cascades windows. Never fully over the one before.
+const CASCADE_STEP: f32 = 28.0;
+
+/// Where window `key` opens from the centre of the main window: its cascade step ([`Nth`],
+/// given by `dialog_window` before it is placed) times [`CASCADE_STEP`]; nothing for the first.
+fn cascade_offset(ctx: &egui::Context, key: egui::Id) -> egui::Vec2 {
+    let k = ctx.data(|d| d.get_temp::<usize>(key.with("cascade")).unwrap_or(0)) as f32;
+    let along = if crate::i18n::rtl() { -1.0 } else { 1.0 };
+    vec2(along * CASCADE_STEP * k, CASCADE_STEP * k)
+}
+
+/// One of several windows of a kind open at once (#1741: a Download File Info for each link),
+/// numbered from 1. The first is the window as it always was, its id and title its own; each
+/// other one's id and title carry its number ("Download File Info (2)"), so that Windows finds
+/// each by its title (`win32::find_own_window`) and a screen reader names them apart. Each opens
+/// [`CASCADE_STEP`] further than the one numbered before it, so that none opens fully over
+/// another. The questions a window asks (Create folder...) carry its number too.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Nth(pub usize);
+
+impl Nth {
+    pub const FIRST: Nth = Nth(1);
+
+    /// The lowest number none of `taken` has: a window closed leaves its number (and its place
+    /// in the cascade) to the next one.
+    pub fn free(taken: impl IntoIterator<Item = Nth>) -> Nth {
+        let taken: std::collections::BTreeSet<usize> = taken.into_iter().map(|n| n.0).collect();
+        Nth((1..).find(|n| !taken.contains(n)).unwrap_or(1))
+    }
+
+    /// The window's id: `base` for the first, `base-n` for the others.
+    pub fn id(self, base: &str) -> String {
+        if self.0 <= 1 {
+            base.to_owned()
+        } else {
+            format!("{base}-{}", self.0)
+        }
+    }
+
+    /// `title` in the interface language, with the number for all but the first.
+    pub fn title(self, title: &str) -> String {
+        let title = crate::i18n::t(title);
+        if self.0 <= 1 {
+            return title.to_owned();
+        }
+        crate::i18n::fmt(
+            // i18n: the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+            crate::i18n::t("{title} ({n})"),
+            &[
+                ("title", title),
+                ("n", &crate::i18n::integer(self.0 as u64)),
+            ],
+        )
+    }
+
+    /// Its steps from the first one's place ([`cascade_offset`]).
+    fn cascade(self) -> usize {
+        self.0.saturating_sub(1)
+    }
 }
 
 /// How many passes after it is shown a window is still kept where [`place`] put it: its new
@@ -148,7 +212,11 @@ fn keep_placed(ctx: &egui::Context, key: egui::Id, title: &str, shown: bool) {
         })
         .collect();
     let main = ctx.data(|d| d.get_temp::<egui::Rect>(key.with("main-px")));
-    let want = main.map_or(at.min, |m| crate::scale::centred_on(m, at.size(), &screens));
+    // Its cascade step (#1741), in pixels at the main window's scale.
+    let step = cascade_offset(ctx, key) * ctx.pixels_per_point();
+    let want = main.map_or(at.min, |m| {
+        crate::scale::centred_on(m.translate(step), at.size(), &screens)
+    });
     let want =
         crate::scale::onto_screens(egui::Rect::from_min_size(want, at.size()), main, &screens)
             .unwrap_or(want);
@@ -299,7 +367,7 @@ pub fn keep_theme(
                     if lifted {
                         tracing::info!("window {title:?} shown behind another program's: lifted");
                     }
-                    ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Focus);
+                    focus(ctx, vid);
                     TRIES
                 }
                 None => {
@@ -345,7 +413,20 @@ pub(crate) fn window_was_gone(ctx: &egui::Context, key: egui::Id) -> bool {
 /// must be on the screen, even while the main window is minimized (Windows hides a window's owned
 /// windows with it, leaving the downloads waiting behind one nobody can see, #440).
 #[cfg(windows)]
-const QUEUE_GATES: [&str; 2] = ["file-info", "duplicate"];
+const QUEUE_GATES: [&str; 1] = ["duplicate"];
+
+/// Whether window `id` is a Download File Info: the first ("file-info") or another one open at
+/// the same time ("file-info-2", #1741).
+fn is_file_info(id: &str) -> bool {
+    id == FILE_INFO
+        || id
+            .strip_prefix(FILE_INFO)
+            .and_then(|n| n.strip_prefix('-'))
+            .is_some_and(|n| !n.is_empty() && n.bytes().all(|b| b.is_ascii_digit()))
+}
+
+/// Download File Info's window id (the first one's; [`Nth::id`] numbers the others).
+pub const FILE_INFO: &str = "file-info";
 
 /// A window that must be on the screen and isn't (hidden, not minimized): shown again after a
 /// moment, however it got that way, directly: winit believes it is still visible and ignores
@@ -383,7 +464,33 @@ pub(crate) fn window<T>(
     bg: egui::Color32,
     body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
-    dialog_window(ctx, id, title, client, minimize, bg, Kind::Plain, body)
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::Plain,
+        Nth::FIRST,
+        body,
+    )
+}
+
+/// [`window`] number `nth` of its kind (#1741): its id and title numbered, a cascade step
+/// further than the one before ([`Nth`]).
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn window_nth<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    nth: Nth,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(ctx, id, title, client, minimize, bg, Kind::Plain, nth, body)
 }
 
 /// A question that must be answered (Yes / No, a countdown): a `window` that stays above the
@@ -399,7 +506,42 @@ pub(crate) fn question<T>(
     bg: egui::Color32,
     body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
-    dialog_window(ctx, id, title, client, minimize, bg, Kind::Question, body)
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::Question,
+        Nth::FIRST,
+        body,
+    )
+}
+
+/// [`question`] asked by window number `nth` of its kind (#1741): numbered as it is.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn question_nth<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    client: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    nth: Nth,
+    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+) -> Outcome<T> {
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        minimize,
+        bg,
+        Kind::Question,
+        nth,
+        body,
+    )
 }
 
 /// News that must not go unseen (Download complete, as IDM shows it): a `window` shown above
@@ -424,6 +566,7 @@ pub(crate) fn notice<T>(
         minimize,
         bg,
         Kind::Notice { on_top },
+        Nth::FIRST,
         body,
     )
 }
@@ -461,13 +604,18 @@ fn dialog_window<T>(
     minimize: bool,
     bg: egui::Color32,
     kind: Kind,
+    nth: Nth,
     mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
     let modal = kind == Kind::Question;
+    // The window's own id, numbered when it isn't the first of its kind (#1741).
+    let id = nth.id(id);
+    let id = id.as_str();
     let key = egui::Id::unique(("dialog-pos", id));
-    // The title in the interface language (Win32 finds the window by it, so it is used as is
-    // from here on).
-    let title = crate::i18n::t(title);
+    // The title in the interface language, numbered as the id (Win32 finds the window by it, so
+    // it is used as is from here on).
+    let title = nth.title(title);
+    let title = title.as_str();
     // A style theme's title bar is ours (Windows, #45): drawn above the layout, which keeps its
     // size; the frame (win32::thin_frame) gives the caption to the client.
     let drawn = drawn_captions();
@@ -507,12 +655,15 @@ fn dialog_window<T>(
             egui::WindowLevel::Normal
         });
     }
+    // Its place in the cascade (#1741), for `place` and `keep_placed`.
+    ctx.data_mut(|d| d.insert_temp(key.with("cascade"), nth.cascade()));
     if let Some(p) = place(ctx, key, shown) {
         builder = builder.with_position(p);
     }
     crate::crash::window(id);
     let out = ctx.show_viewport_immediate(vid, builder, |ui, _| {
         keyboard_to_click(ui.ctx());
+        crate::winui::name_window(ui, title);
         // Painted in the pass that closes it too (see close_requested).
         let close = close_requested(ui);
         let out = egui::CentralPanel::no_frame()
@@ -602,17 +753,18 @@ fn dialog_window<T>(
     // Download File Info on Linux (#484): asked for from the browser, it opened behind it.
     // Windows and macOS lift and focus in `keep_theme` once visible.
     let focused = key.with("focus-sent");
-    let takes_focus =
-        modal || (cfg!(all(not(windows), not(target_os = "macos"))) && id == "file-info");
+    let takes_focus = modal
+        || (cfg!(all(not(windows), not(target_os = "macos")))
+            && (is_file_info(id) || matches!(id, "video-page" | "torrent" | "grabber")));
     if takes_focus && matches!(out, Outcome::Open) && !crate::offscreen() {
         let shown = ctx.data(|d| d.get_temp::<bool>(key.with("shown")).unwrap_or(false));
         if shown && !ctx.data(|d| d.get_temp::<bool>(focused).unwrap_or(false)) {
-            ctx.send_viewport_cmd_to(ViewportId::from_hash_of(id), egui::ViewportCommand::Focus);
+            focus(ctx, ViewportId::from_hash_of(id));
             ctx.data_mut(|d| d.insert_temp(focused, true));
         }
     }
     #[cfg(windows)]
-    if matches!(out, Outcome::Open) && QUEUE_GATES.contains(&id) {
+    if matches!(out, Outcome::Open) && (is_file_info(id) || QUEUE_GATES.contains(&id)) {
         keep_on_screen(ctx, key, title);
     }
     if !matches!(out, Outcome::Open) {
@@ -1223,6 +1375,13 @@ pub struct FileInfo {
     pub context: mdm_ipc::Command,
     /// Start or Later held while the folder is looked at, and asked to be created when missing.
     asking: FolderGate<Start>,
+    /// Save As's name was typed by the user (its keys), not given by MDM or the Save dialog
+    /// since (#1447): a file already there under it is asked about as Start or Later is
+    /// pressed (`replacing`), not numbered without a word.
+    typed: bool,
+    /// Start or Later held while the typed name is looked at on the disk, and asked about when a
+    /// file is there (the duplicate question: replace it or number the name).
+    replacing: ReplaceGate<Start>,
     /// The download already running while the dialog shows (Options → Downloads → "Start
     /// downloading immediately while displaying Download File Info dialog").
     pub early: Option<u64>,
@@ -1259,6 +1418,9 @@ pub struct FileInfo {
     /// Set on the Save dialog's thread with its answer: whether it replaces a file
     /// (`winui::replaces_picked`).
     picked_replaces: Arc<std::sync::atomic::AtomicBool>,
+    /// Its number among the Download File Info windows open at once (#1741): its window's id,
+    /// title and place in the cascade, and those of the questions it asks. The app gives it.
+    pub nth: Nth,
 }
 
 pub enum Start {
@@ -1337,6 +1499,8 @@ impl FileInfo {
             category_open: false,
             context,
             asking: FolderGate::default(),
+            typed: false,
+            replacing: ReplaceGate::default(),
             early: None,
             folders: Vec::new(),
             folders_open: false,
@@ -1349,7 +1513,13 @@ impl FileInfo {
             direct,
             replace: None,
             picked_replaces: Default::default(),
+            nth: Nth::FIRST,
         }
+    }
+
+    /// Its window, to bring it to the front (the same address handed over again, #1741).
+    pub fn viewport(&self) -> ViewportId {
+        dialog_viewport(&self.nth.id(FILE_INFO))
     }
 
     /// Look the address up again as it will now be downloaded: through the debrid account
@@ -1436,6 +1606,15 @@ impl FileInfo {
         // Fitted to the new folder too (#28): a deeper one leaves a long name less room.
         self.save_as = self.place.name_in(folder, &name);
         self.edited = true;
+        // MDM's name in that folder now: numbered there when taken.
+        self.typed = false;
+    }
+
+    /// Save As was typed in (#1447): the name is the user's, and a file already there under it
+    /// is asked about as the download is started.
+    fn typed(&mut self) {
+        self.edited = true;
+        self.typed = true;
     }
 
     /// The system Save dialog's answer (`winui::saved_name`): Save As takes its folder and the
@@ -1450,6 +1629,8 @@ impl FileInfo {
         // if it is the same name (the user just chose it as it is).
         self.place.forget();
         self.replace = replace.then(|| self.dest());
+        // The Save dialog asked its own question about a file there.
+        self.typed = false;
     }
 
     /// The file the download replaces as it completes (`Item::replace_file`): the one the Save
@@ -1513,6 +1694,7 @@ impl FileInfo {
             .unwrap_or_default();
         let folder = crate::model::category_folder(c, &self.downloads, &self.dirs);
         self.save_as = self.place.name_in(&folder, &name);
+        self.typed = false;
     }
 
     /// Whether Save As's folder is there, as looked at off the window's thread for the name it
@@ -1521,7 +1703,42 @@ impl FileInfo {
         self.place.folder(&mut self.save_as)
     }
 
-    /// The dialog; Start (or Download Later) waits for a missing folder to be created.
+    /// Start or Later (`out`) with a name typed in Save As that is a file already there (#1447):
+    /// held while the disk is looked at (`exists`, off the window's thread), then the duplicate
+    /// question about it (`show`). Overwrite: the download replaces that file as it completes
+    /// ([`Self::replaces`], as the Save dialog's Replace? does); numbered name: as before, the
+    /// download is numbered as it starts; Cancel: back to the dialog. A name MDM gave, and the
+    /// early download's own place (its file finished behind the dialog), ask nothing.
+    fn ask_replace(
+        &mut self,
+        ctx: &egui::Context,
+        out: Outcome<Start>,
+        exists: impl FnOnce(&Path) -> bool + Send + 'static,
+        show: impl FnOnce(&mut Duplicate, &egui::Context) -> Outcome<usize>,
+    ) -> Outcome<Start> {
+        let dest = self.dest();
+        let typed = self.typed && self.place.own.as_ref() != Some(&dest);
+        let nth = self.nth;
+        let show = move |d: &mut Duplicate, ctx: &egui::Context| {
+            d.nth = nth;
+            show(d, ctx)
+        };
+        match ensure_replace_asked(ctx, &mut self.replacing, out, &dest, typed, exists, show) {
+            Outcome::Done((start, replace)) => {
+                // A typed name's answer is the one that counts (a Replace? answered in the Save
+                // dialog before it was typed over is not).
+                if typed {
+                    self.replace = replace.then_some(dest);
+                }
+                Outcome::Done(start)
+            }
+            Outcome::Open => Outcome::Open,
+            Outcome::Closed => Outcome::Closed,
+        }
+    }
+
+    /// The dialog; Start (or Download Later) waits for a missing folder to be created, and for
+    /// the question about a file already there under a typed name (#1447).
     pub fn show(
         &mut self,
         ctx: &egui::Context,
@@ -1533,7 +1750,8 @@ impl FileInfo {
             .map(Path::to_path_buf)
             .unwrap_or_default();
         let out = self.dialog(ctx, icons);
-        let out = ensure_folder(ctx, &mut self.asking, out, &folder);
+        let out = ensure_folder_for(ctx, &mut self.asking, out, &folder, self.nth);
+        let out = self.ask_replace(ctx, out, |d| d.is_file(), Duplicate::show);
         // #394: more downloads wait their turn behind this one (the browser's selected links):
         // Cancel (the button, Escape, the window's ×) asks whether they are cancelled too.
         if matches!(out, Outcome::Closed) && self.waiting > 0 && !self.cancel_ask {
@@ -1542,7 +1760,7 @@ impl FileInfo {
         if self.cancel_ask {
             // The question answers for the dialog: a Start pressed meanwhile waits for it, as
             // with the Create folder question.
-            return match cancel_waiting(ctx, self.waiting) {
+            return match cancel_waiting(ctx, self.waiting, self.nth) {
                 Outcome::Done(all) => {
                     self.cancel_ask = false;
                     self.cancel_all = all;
@@ -1595,13 +1813,18 @@ impl FileInfo {
         );
         let wide = (preview_w - 92.0).max(0.0);
         let cx = (wide / 2.0).floor();
-        window(
+        // Its own names for what opens from it (drop lists, the Save dialog): several may be
+        // open at once (#1741), each with its own.
+        let nth = self.nth;
+        let own = |base: &str| nth.id(base);
+        window_nth(
             ctx,
-            "file-info",
+            FILE_INFO,
             "Download File Info",
             [570.0 + wide, 234.0 + dy],
             true,
             winui::BG(),
+            nth,
             |ui, o| {
                 let p = ui.painter().clone();
                 winui::text_right(
@@ -1637,7 +1860,9 @@ impl FileInfo {
                 }
                 let category_was_open = self.category_open;
                 // "+": a new category (the app's category window).
-                if winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+").clicked() {
+                let new_category = winui::small_button(ui, r(o, 276.0, 35.0, 22.0, 21.0), "+");
+                winui::name(&new_category, crate::i18n::t("Add category"));
+                if new_category.clicked() {
                     self.new_category = true;
                 }
 
@@ -1656,7 +1881,7 @@ impl FileInfo {
                     self.focused = true;
                 }
                 if save.changed() {
-                    self.edited = true;
+                    self.typed();
                 }
                 // The arrow: the folders saved to before.
                 if winui::combo_arrow(ui, save_rc, "save-as", self.folders_open).clicked()
@@ -1688,7 +1913,7 @@ impl FileInfo {
                         .collect();
                     if let Some(i) = winui::drop_list(
                         ui,
-                        "save-as-history",
+                        &own("save-as-history"),
                         save_rc,
                         &shown,
                         crate::i18n::t("No folders yet"),
@@ -1699,7 +1924,9 @@ impl FileInfo {
                     }
                 }
                 // "...": the system's Save dialog, its folder and file name (#1088).
-                if winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...").clicked() {
+                let browse = winui::small_button(ui, r(o, 439.0, 64.0, 22.0, 21.0), "...");
+                winui::name(&browse, crate::i18n::t("Browse"));
+                if browse.clicked() {
                     let dest = self.dest();
                     let dir = dest.parent().map(Path::to_path_buf).unwrap_or_default();
                     let name = dest
@@ -1708,7 +1935,7 @@ impl FileInfo {
                         .unwrap_or_default();
                     let title = crate::i18n::t("Save As").to_owned();
                     let replaces = self.picked_replaces.clone();
-                    winui::start_pick(ui.ctx(), "file-info-save-as", move || {
+                    winui::start_pick(ui.ctx(), &own("file-info-save-as"), move || {
                         let picked = winui::save_dialog(&title, &dir, &name).save_file()?;
                         let saved = winui::saved_name(&name, &picked);
                         // On the dialog's thread: it looks at the disk.
@@ -1719,7 +1946,7 @@ impl FileInfo {
                         Some(saved)
                     });
                 }
-                if let Some(path) = winui::picked(ui.ctx(), "file-info-save-as") {
+                if let Some(path) = winui::picked(ui.ctx(), &own("file-info-save-as")) {
                     let replace = self
                         .picked_replaces
                         .load(std::sync::atomic::Ordering::Relaxed);
@@ -1753,7 +1980,10 @@ impl FileInfo {
                     .trim_end_matches('\\')
                 );
                 let folder_rc = r(o, 104.0, 112.0, 348.0, 23.0);
-                winui::edit(ui, folder_rc, &mut folder, false, false);
+                // Read-only, and not a password box: bool::default() for both flags.
+                let folder_resp =
+                    winui::edit(ui, folder_rc, &mut folder, bool::default(), bool::default());
+                winui::name(&folder_resp, crate::i18n::t("Category folder"));
                 // Greyed as IDM shows it, and still copyable.
                 winui::copyable(ui, folder_rc, "remembered-folder", &folder, false);
 
@@ -1814,7 +2044,7 @@ impl FileInfo {
                         o.y + 193.0 + dy,
                         o.x + 462.0,
                         None,
-                        "file-info",
+                        &own(FILE_INFO),
                     ),
                     Some(Ok(pi)) => {
                         if let Some(server) = &pi.server {
@@ -1825,7 +2055,7 @@ impl FileInfo {
                                 o.y + 193.0 + dy,
                                 o.x + 462.0,
                                 Some(&seen),
-                                "file-info",
+                                &own(FILE_INFO),
                             );
                         }
                     }
@@ -1838,7 +2068,7 @@ impl FileInfo {
                             winui::ERROR(),
                             o.x + 462.0,
                         );
-                        winui::copyable(ui, rect, "file-info-failed", reason, cut);
+                        winui::copyable(ui, rect, own("file-info-failed"), reason, cut);
                     }
                 }
 
@@ -1952,7 +2182,7 @@ impl FileInfo {
                 );
                 // Why the address didn't answer (not found, sign-in needed…): on hover, copyable.
                 if let Some(reason) = reason {
-                    winui::copyable(ui, at, "file-info-error", &reason, true);
+                    winui::copyable(ui, at, own("file-info-error"), &reason, true);
                 }
                 // As wide as its label in this language (#192), around the column's centre, from
                 // 8 px after the group box (it ends at 462) to the window's edge.
@@ -1979,7 +2209,7 @@ impl FileInfo {
                     let labels: Vec<String> = all.iter().map(|c| c.shown()).collect();
                     if let Some(i) = winui::drop_list(
                         ui,
-                        "file-info-category",
+                        &own("file-info-category"),
                         cat_rect,
                         &labels,
                         "",
@@ -2011,15 +2241,18 @@ impl FileInfo {
 
 /// Cancel in Download File Info while more downloads wait their turn behind it (#394): are
 /// those cancelled too? `Done(true)`: yes; `Done(false)`: this one alone is skipped.
-fn cancel_waiting(ctx: &egui::Context, n: usize) -> Outcome<bool> {
-    let extra = grow_extra(ctx, "cancel-waiting");
-    question(
+fn cancel_waiting(ctx: &egui::Context, n: usize, nth: Nth) -> Outcome<bool> {
+    // Its growth kept for its own window (#1741: each Download File Info may ask).
+    let grow = nth.id("cancel-waiting");
+    let extra = grow_extra(ctx, &grow);
+    question_nth(
         ctx,
         "cancel-waiting",
         "Mister Download Manager",
         [374.0, 100.0 + extra],
         false,
         winui::BG(),
+        nth,
         |ui, o| {
             let p = ui.painter().clone();
             let text = crate::i18n::fmt(
@@ -2040,7 +2273,7 @@ fn cancel_waiting(ctx: &egui::Context, n: usize) -> Outcome<bool> {
                 o.x + 362.0,
                 13.0,
             );
-            grow_to(ui.ctx(), "cancel-waiting", lines, 2);
+            grow_to(ui.ctx(), &grow, lines, 2);
             let o = o + vec2(0.0, extra);
             let yes = winui::button(
                 ui,
@@ -2692,7 +2925,13 @@ impl SpeedSettings {
                         winui::text(p, x, baseline, s, black);
                     },
                 );
-                winui::number_field(
+                // The sentence's words are painted, not exposed: the box is named as its part
+                // of it reads (#1407).
+                let names = winui::sentence_names(
+                    crate::i18n::t("Maximum download speed for one file {kb} KBytes/sec"),
+                    &["kb"],
+                );
+                let kb = winui::number_field(
                     ui,
                     kb_box[0],
                     &mut self.kb,
@@ -2701,6 +2940,7 @@ impl SpeedSettings {
                     true,
                     winui::LIGHT_BG(),
                 );
+                winui::name(&kb, &names[0]);
                 let note = crate::i18n::t(
                     "Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n\"resume\" feature.",
                 );
@@ -3107,40 +3347,45 @@ impl TurnOffCountdown {
 
 /// "Confirm deletion of downloads": Delete / Remove / Delete All Completed. Asks whether the
 /// files go too (user, 2026-10-29: IDM's checkbox; for an unfinished download its data so far),
-/// for one download or several. `Done((files, dont_show_again))` on Yes.
+/// for one download or several. `Done((files, dont_show_again))` on Yes. The box is never
+/// remembered (#1563): unticked, or ticked by Shift+Delete for this once; ticked, the window
+/// says how many finished files go with it.
 pub struct ConfirmDelete {
     pub ids: Vec<u64>,
     /// The file name when there is one download.
     name: String,
     /// One download, not complete (IDM's wording).
     unfinished: bool,
-    files: bool,
+    /// "Also delete the files from disk".
+    pub files: bool,
+    /// How many of the downloads are finished: their files go too when `files` is ticked.
+    pub finished: u64,
     dont_show: bool,
-    /// The files box's answer becomes the next one's default (not after Shift+Delete).
-    pub remember: bool,
 }
 
 impl ConfirmDelete {
-    /// `files`: the checkbox's first state (the last answer, or Shift+Delete).
-    pub fn new(ids: Vec<u64>, name: String, unfinished: bool, files: bool) -> Self {
+    /// `files`: the checkbox's first state (ticked only by Shift+Delete / Remove with files).
+    pub fn new(ids: Vec<u64>, name: String, unfinished: bool, files: bool, finished: u64) -> Self {
         ConfirmDelete {
             ids,
             name,
             unfinished,
             files,
+            finished,
             dont_show: false,
-            remember: true,
         }
     }
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<(bool, bool)> {
         let n = self.ids.len() as u64;
         let extra = grow_extra(ctx, "confirm-delete");
+        // The finished files' line under the box, while it is ticked (#1563).
+        let warned = grow_extra(ctx, "confirm-delete-finished");
         question(
             ctx,
             "confirm-delete",
             "Confirm deletion of downloads",
-            [374.0, 146.0 + extra],
+            [374.0, 146.0 + extra + warned],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
@@ -3193,6 +3438,33 @@ it from Mister Download Manager list of downloads?",
                     )
                 };
                 winui::checkbox_light(ui, o + vec2(24.0, 60.0), &mut self.files, &files, true);
+                // Ticked, the finished downloads' files go too: said, so none is lost by
+                // surprise (#1563); under the box, beside its caption.
+                let warn = if self.files && self.finished > 0 {
+                    let text = crate::i18n::fmt(
+                        // i18n: under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+                        &crate::i18n::tn(
+                            self.finished,
+                            "This also deletes {n} finished file.",
+                            "This also deletes {n} finished files.",
+                        ),
+                        &[("n", &crate::i18n::integer(self.finished))],
+                    );
+                    let lines = winui::paragraph(
+                        &p,
+                        o.x + 40.0,
+                        o.y + 88.0,
+                        &text,
+                        winui::ERROR(),
+                        o.x + 362.0,
+                        13.0,
+                    );
+                    lines as f32 * 13.0 + 6.0
+                } else {
+                    0.0
+                };
+                grow_px(ui.ctx(), "confirm-delete-finished", warn);
+                let o = o + vec2(0.0, warn);
                 let yes = winui::button_light(
                     ui,
                     r(o, 94.0, 86.0, 73.0, 21.0),
@@ -3251,8 +3523,87 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     if !crate::offscreen() {
         #[cfg(target_os = "macos")]
         crate::unix::macos_activate_app();
-        ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
+        focus(ctx, viewport);
     }
+}
+
+/// Bring `viewport`'s window to the front with the keyboard: every window of MDM comes forward
+/// through here (a test holds the line), never by egui's `Focus` command. On Windows winit
+/// carries that command out with a made-up Left Alt press and release (`SendInput`, to get past
+/// Windows' foreground lock), and every program listening for Alt across the system heard it:
+/// a push-to-talk key went off when the browser asked MDM for a window (#1645). There the
+/// window comes forward MDM's own way once it shows ([`focus_pending`], each frame), with the
+/// right to the foreground the browser's native host or a second launch passed on, else joined
+/// to the input of the window in front; a refusal even then flashes its taskbar button, as
+/// Windows means a program in the background to ask. Linux and macOS: winit's focus, which sends
+/// no input (X11 `_NET_ACTIVE_WINDOW`, macOS `activateIgnoringOtherApps`, nothing on Wayland).
+/// Off-screen test runs never take the focus (main.rs `offscreen`).
+pub fn focus(ctx: &egui::Context, viewport: ViewportId) {
+    if crate::offscreen() {
+        return;
+    }
+    #[cfg(windows)]
+    {
+        let until = std::time::Instant::now() + FOCUS_WAIT;
+        ctx.data_mut(|d| {
+            let asked = d.get_temp_mut_or_default::<Vec<(ViewportId, std::time::Instant)>>(
+                egui::Id::unique(FOCUS_ASKED),
+            );
+            if !asked.iter().any(|(v, _)| *v == viewport) {
+                asked.push((viewport, until));
+            }
+        });
+        // The window is looked for in the next frame, once the commands of this one (shown,
+        // restored) are carried out.
+        ctx.request_repaint();
+    }
+    #[cfg(not(windows))]
+    ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Focus);
+}
+
+/// Where [`focus`] keeps the windows it was asked to bring forward (Windows), each with when to
+/// give up on it.
+#[cfg(windows)]
+const FOCUS_ASKED: &str = "dialogs-focus-asked";
+
+/// How long [`focus`] waits for a window to show (a dialog is shown a frame or two after it is
+/// made, once it has its theme; the main window once it is back from the tray).
+#[cfg(windows)]
+const FOCUS_WAIT: std::time::Duration = std::time::Duration::from_secs(3);
+
+/// The windows [`focus`] was asked for that show now, brought forward; the others asked again
+/// in the next frame until their time is up. Called at every frame (`App::logic`).
+#[cfg(windows)]
+pub fn focus_pending(ctx: &egui::Context) {
+    let key = egui::Id::unique(FOCUS_ASKED);
+    let asked = ctx.data(|d| d.get_temp::<Vec<(ViewportId, std::time::Instant)>>(key));
+    let Some(asked) = asked.filter(|a| !a.is_empty()) else {
+        return;
+    };
+    let now = std::time::Instant::now();
+    let mut left = Vec::new();
+    for (viewport, until) in asked {
+        // The main window by its handle, the others by the title they have now (a progress
+        // window's changes as it goes).
+        let title = if viewport == ViewportId::ROOT {
+            Some(crate::MAIN_TITLE.to_owned())
+        } else {
+            ctx.input(|i| i.raw.viewports.get(&viewport).and_then(|v| v.title.clone()))
+        };
+        let front = title.and_then(|t| crate::win32::bring_own_forward(&t));
+        match front {
+            Some(true) => {}
+            Some(false) => tracing::info!(
+                "a window asked to the front stays behind (Windows refused it): its button flashes"
+            ),
+            None if now < until => left.push((viewport, until)),
+            None => tracing::info!("a window asked to the front didn't show in time"),
+        }
+    }
+    if !left.is_empty() {
+        ctx.request_repaint();
+    }
+    ctx.data_mut(|d| d.insert_temp(key, left));
 }
 
 /// A click in the window this pass draws (the main window, a dialog, a progress window; never a
@@ -3385,6 +3736,82 @@ pub fn drag_downloads_out(
 /// without a handle on the app.
 static TOLD: std::sync::Mutex<Vec<(&'static str, String)>> = std::sync::Mutex::new(Vec::new());
 
+pub struct Confirmation {
+    title: &'static str,
+    text: String,
+    answer: tokio::sync::oneshot::Sender<bool>,
+}
+impl Confirmation {
+    pub fn answer(self, yes: bool) {
+        let _ = self.answer.send(yes);
+    }
+}
+static QUESTIONS: Mutex<std::collections::VecDeque<Confirmation>> =
+    Mutex::new(std::collections::VecDeque::new());
+
+/// Ask from a worker without blocking the UI or treating a closed question as consent.
+pub async fn confirm(title: &'static str, text: String) -> bool {
+    let (answer, reply) = tokio::sync::oneshot::channel();
+    QUESTIONS.lock().unwrap().push_back(Confirmation {
+        title,
+        text,
+        answer,
+    });
+    reply.await.unwrap_or(false)
+}
+pub fn next_confirmation() -> Option<Confirmation> {
+    QUESTIONS.lock().unwrap().pop_front()
+}
+pub fn show_confirmation(ctx: &egui::Context, ask: &Confirmation) -> Outcome<bool> {
+    let id = "torrent-file-permission";
+    let extra = grow_extra(ctx, id);
+    question(
+        ctx,
+        id,
+        ask.title,
+        [540.0, 112.0 + extra],
+        false,
+        winui::BG(),
+        |ui, o| {
+            let lines = winui::paragraph(
+                &ui.painter().clone(),
+                o.x + 16.0,
+                o.y + 20.0,
+                &ask.text,
+                winui::TEXT(),
+                o.x + 524.0,
+                13.0,
+            );
+            grow_to(ui.ctx(), id, lines, 4);
+            let yes = winui::button(
+                ui,
+                r(o, 176.0, 77.0 + extra, 73.0, 21.0),
+                "Yes",
+                ButtonKind::Normal,
+                false,
+                None,
+            )
+            .clicked();
+            let no = winui::button(
+                ui,
+                r(o, 268.0, 77.0 + extra, 73.0, 21.0),
+                "No",
+                ButtonKind::Default,
+                false,
+                None,
+            )
+            .clicked();
+            if yes {
+                Outcome::Done(true)
+            } else if no || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
+                Outcome::Done(false)
+            } else {
+                Outcome::Open
+            }
+        },
+    )
+}
+
 /// Tell the user `text` under the window title `title` (English, marked; the text translated).
 pub fn tell(title: &'static str, text: String) {
     TOLD.lock().unwrap().push((title, text));
@@ -3425,6 +3852,22 @@ fn open_file_platform(path: &Path) -> Result<(), std::io::Error> {
     {
         open::that_detached(path)
     }
+}
+
+/// [`open_download`] for the browser popup's list (#1496): on Windows, the window showing the
+/// file is brought in front of the browser (`win32::open_file_in_front`); elsewhere as
+/// [`open_download`].
+pub fn open_download_in_front(path: &Path, moved_away: bool) {
+    let path = path.to_owned();
+    crate::launch::spawn("open file", move || {
+        hand_over(&path, moved_away, |p| {
+            #[cfg(windows)]
+            let opened = crate::win32::open_file_in_front(p);
+            #[cfg(not(windows))]
+            let opened = open_file_platform(p);
+            opened.map_err(|e| e.to_string())
+        });
+    });
 }
 
 /// [`open_download`], waited for: true when the file was handed to the system. For a thread
@@ -3564,45 +4007,98 @@ pub fn open_download_with(path: &Path, moved_away: bool) {
     });
 }
 
+/// [`Duplicate`]'s answer "Add the duplicate with a numbered file name" (as Options numbers it).
+pub const DUPLICATE_NUMBERED: usize = 1;
+/// [`Duplicate`]'s answer "Add the duplicate and overwrite the existing file".
+pub const DUPLICATE_OVERWRITE: usize = 2;
+
 /// "Duplicate download link": the address is already in the list (Options → Downloads → "If a
 /// duplicate download link is added: Show a dialog and ask what to do"). `Done` with the
 /// choice, numbered as Options lists them (1 numbered name, 2 overwrite, 3 open or resume).
+///
+/// The same question about a file (#1447, [`Self::file`]): the name typed in Download File
+/// Info's Save As is a file already there. Numbered name or overwrite (the file is replaced as
+/// the download completes, never before); Cancel goes back to the dialog.
 pub struct Duplicate {
     name: String,
     choice: usize,
+    /// About a file on the disk (its path in `name`), not an address in the list.
+    file: bool,
+    /// The Download File Info that asks about its file, when several are open (#1741).
+    nth: Nth,
 }
 
 impl Duplicate {
     pub fn new(name: String) -> Self {
-        Duplicate { name, choice: 1 }
+        Duplicate {
+            name,
+            choice: DUPLICATE_NUMBERED,
+            file: false,
+            nth: Nth::FIRST,
+        }
+    }
+
+    /// The question about the file at `path`, which the name typed in Save As names.
+    pub fn file(path: &Path) -> Self {
+        Duplicate {
+            name: display_path(path),
+            choice: DUPLICATE_NUMBERED,
+            file: true,
+            nth: Nth::FIRST,
+        }
     }
 
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<usize> {
-        question(
+        // A file has two answers (an address's third, open or resume the one in the list, has
+        // no download to open): the window is a row shorter.
+        let (id, title, said, answers) = if self.file {
+            (
+                "duplicate-file",
+                // i18n: window title: the question asked when the name typed in Download File Info's Save As is a file already there
+                crate::i18n::mark("File already exists"),
+                // i18n: the question about a name typed in Save As, above the file's path; the choices are the duplicate question's (numbered name, overwrite)
+                crate::i18n::mark("A file with this name is already there:"),
+                2,
+            )
+        } else {
+            (
+                "duplicate",
+                // i18n: window title: the question asked when an address added is already in the list of downloads
+                crate::i18n::mark("Duplicate download link"),
+                crate::i18n::mark("This address is already in the list of downloads:"),
+                3,
+            )
+        };
+        let short = 20.0 * (3 - answers) as f32;
+        question_nth(
             ctx,
-            "duplicate",
-            "Duplicate download link",
-            [460.0, 156.0],
+            id,
+            title,
+            [460.0, 156.0 - short],
             false,
             winui::LIGHT_BG(),
+            self.nth,
             |ui, o| {
                 let p = ui.painter().clone();
                 let ink = winui::LIGHT_TEXT();
-                winui::text(
-                    &p,
-                    o.x + 11.0,
-                    o.y + 21.0,
-                    crate::i18n::t("This address is already in the list of downloads:"),
-                    ink,
-                );
-                let name = crate::i18n::isolate(&self.name);
+                winui::text(&p, o.x + 11.0, o.y + 21.0, crate::i18n::t(said), ink);
+                let name = if self.file {
+                    crate::i18n::ltr(&self.name)
+                } else {
+                    crate::i18n::isolate(&self.name)
+                };
                 let (rect, cut) =
                     winui::text_fit(&p, o.x + 11.0, o.y + 39.0, &name, ink, o.x + 449.0);
                 if cut {
                     winui::full_on_hover(ui, rect, "duplicate-name", &self.name);
                 }
                 let mut group = Vec::new();
-                for (k, label) in crate::options::DUPLICATE.iter().enumerate().skip(1) {
+                for (k, label) in crate::options::DUPLICATE
+                    .iter()
+                    .enumerate()
+                    .skip(1)
+                    .take(answers)
+                {
                     let y = 52.0 + 20.0 * (k - 1) as f32;
                     let resp =
                         winui::radio_light(ui, o + vec2(14.0, y), self.choice == k, label, true);
@@ -3616,7 +4112,7 @@ impl Duplicate {
                 }
                 let ok = winui::button_light(
                     ui,
-                    r(o, 295.0, 124.0, 73.0, 21.0),
+                    r(o, 295.0, 124.0 - short, 73.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
@@ -3624,7 +4120,7 @@ impl Duplicate {
                 .clicked();
                 let cancel = winui::button_light(
                     ui,
-                    r(o, 376.0, 124.0, 73.0, 21.0),
+                    r(o, 376.0, 124.0 - short, 73.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
@@ -3901,6 +4397,8 @@ pub struct CreateFolder {
     error: Option<String>,
     /// Yes was pressed: the folder is made off the window's thread (#743), its answer to come.
     making: Option<crate::launch::Asked<PathBuf, Result<(), String>>>,
+    /// The window that asks, when several of its kind are open (#1741): numbered as it is.
+    nth: Nth,
 }
 
 impl CreateFolder {
@@ -3909,19 +4407,21 @@ impl CreateFolder {
             folder,
             error: None,
             making: None,
+            nth: Nth::FIRST,
         }
     }
 
     /// `Done` once the folder exists (created on Yes); `Closed` on No, Escape or the close box.
     pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let folder = self.folder.display().to_string();
-        question(
+        question_nth(
             ctx,
             "create-folder",
             "Create folder",
             [420.0, 128.0],
             false,
             winui::BG(),
+            self.nth,
             |ui, o| {
                 let p = ui.painter().clone();
                 let ink = winui::TEXT();
@@ -4160,25 +4660,32 @@ impl<T, A, Q> Default for Gate<T, A, Q> {
 }
 
 impl<T, A: Clone + PartialEq + Send + 'static, Q> Gate<T, A, Q> {
-    /// The dialog's "start", let go: the gate starts over.
-    fn release(&mut self) -> Outcome<T> {
+    /// Nothing is held: no "start" is waiting for a look or a question.
+    fn idle(&self) -> bool {
+        self.held.is_none()
+    }
+
+    /// The dialog's "start", let go with the question's answer (None: nothing was asked): the
+    /// gate starts over.
+    fn release<R>(&mut self, answer: Option<R>) -> Outcome<(T, Option<R>)> {
         let held = self.held.take();
         *self = Gate::default();
-        held.map_or(Outcome::Open, Outcome::Done)
+        held.map_or(Outcome::Open, |v| Outcome::Done((v, answer)))
     }
 
     /// `out` held until `at` has been looked at with `look` (made only when asked; it runs on
     /// a thread of its own) and the question `ask` makes of the answer (None: nothing to ask)
-    /// was answered Yes by `show`. No goes back to the dialog.
-    fn pass<L: FnOnce(&PathBuf) -> A + Send + 'static>(
+    /// was answered by `show` (its `Done`, given back with the "start"). No (the question's
+    /// `Closed`) goes back to the dialog.
+    fn pass<R, L: FnOnce(&PathBuf) -> A + Send + 'static>(
         &mut self,
         ctx: &egui::Context,
         out: Outcome<T>,
         at: &Path,
         look: impl FnOnce() -> L,
         ask: impl FnOnce(A) -> Option<Q>,
-        show: impl FnOnce(&mut Q, &egui::Context) -> Outcome<()>,
-    ) -> Outcome<T> {
+        show: impl FnOnce(&mut Q, &egui::Context) -> Outcome<R>,
+    ) -> Outcome<(T, Option<R>)> {
         match out {
             Outcome::Closed => {
                 *self = Gate::default();
@@ -4207,7 +4714,7 @@ impl<T, A: Clone + PartialEq + Send + 'static, Q> Gate<T, A, Q> {
             let found = self.look.as_ref().and_then(|(p, a)| a.answer(p));
             match found.map(ask) {
                 None => return Outcome::Open,
-                Some(None) => return self.release(),
+                Some(None) => return self.release(None),
                 Some(question) => self.question = question,
             }
         }
@@ -4220,7 +4727,18 @@ impl<T, A: Clone + PartialEq + Send + 'static, Q> Gate<T, A, Q> {
                 *self = Gate::default();
                 Outcome::Open
             }
-            Outcome::Done(()) => self.release(),
+            Outcome::Done(answer) => self.release(Some(answer)),
+        }
+    }
+}
+
+impl<T> Outcome<T> {
+    /// The dialog's answer made into another (`Open` and `Closed` stay as they are).
+    pub fn map<U>(self, f: impl FnOnce(T) -> U) -> Outcome<U> {
+        match self {
+            Outcome::Open => Outcome::Open,
+            Outcome::Done(v) => Outcome::Done(f(v)),
+            Outcome::Closed => Outcome::Closed,
         }
     }
 }
@@ -4247,6 +4765,7 @@ pub fn ensure_files_free<T, F: FnOnce() -> Vec<PathBuf> + Send + 'static>(
         |found| (!found.is_empty()).then(|| ExistingFiles::new(&found)),
         ExistingFiles::show,
     )
+    .map(|(v, _)| v)
 }
 
 /// Holds a dialog's "start" (`out`) until `folder` exists: looked at off the window's thread,
@@ -4258,7 +4777,18 @@ pub fn ensure_folder<T>(
     out: Outcome<T>,
     folder: &Path,
 ) -> Outcome<T> {
-    ensure_folder_with(ctx, gate, out, folder, |f| f.is_dir())
+    ensure_folder_with(ctx, gate, out, folder, Nth::FIRST, |f| f.is_dir())
+}
+
+/// [`ensure_folder`] for window `nth` of its kind (#1741): its question numbered as it is.
+pub fn ensure_folder_for<T>(
+    ctx: &egui::Context,
+    gate: &mut FolderGate<T>,
+    out: Outcome<T>,
+    folder: &Path,
+    nth: Nth,
+) -> Outcome<T> {
+    ensure_folder_with(ctx, gate, out, folder, nth, |f| f.is_dir())
 }
 
 /// [`ensure_folder`], the folder looked at with `is_dir` (a test's).
@@ -4267,6 +4797,7 @@ fn ensure_folder_with<T>(
     gate: &mut FolderGate<T>,
     out: Outcome<T>,
     folder: &Path,
+    nth: Nth,
     is_dir: impl FnOnce(&Path) -> bool + Send + 'static,
 ) -> Outcome<T> {
     gate.pass(
@@ -4274,14 +4805,155 @@ fn ensure_folder_with<T>(
         out,
         folder,
         || move |f: &PathBuf| f.as_os_str().is_empty() || is_dir(f.as_path()),
-        |there| (!there).then(|| CreateFolder::new(folder.to_owned())),
+        |there| {
+            (!there).then(|| CreateFolder {
+                nth,
+                ..CreateFolder::new(folder.to_owned())
+            })
+        },
         CreateFolder::show,
     )
+    .map(|(v, _)| v)
+}
+
+/// [`ensure_replace_asked`]'s: whether a file is at the typed name; the duplicate question,
+/// about that file.
+pub type ReplaceGate<T> = Gate<T, bool, Duplicate>;
+
+/// Holds a dialog's "start" (`out`) while the file name the user typed (`dest`; `typed`) names
+/// a file that is already there (#1447): looked at off the window's thread (with `exists`, once
+/// the old files being deleted in its folder for a new start are gone), then asked with the
+/// duplicate question about that file ([`Duplicate::file`], shown by `show`). Its overwrite
+/// answer gives `true` (the download replaces the file as it completes, `Item::replace_file`),
+/// its numbered name `false` (numbered as the download starts, as before); Cancel goes back to
+/// the dialog. A name MDM gave (not `typed`) passes as it is, numbered as it starts if taken.
+/// `gate` lives in the dialog, across frames.
+pub fn ensure_replace_asked<T>(
+    ctx: &egui::Context,
+    gate: &mut ReplaceGate<T>,
+    out: Outcome<T>,
+    dest: &Path,
+    typed: bool,
+    exists: impl FnOnce(&Path) -> bool + Send + 'static,
+    show: impl FnOnce(&mut Duplicate, &egui::Context) -> Outcome<usize>,
+) -> Outcome<(T, bool)> {
+    if !typed && gate.idle() {
+        // Nothing to ask about a name MDM gave: no look at the disk either.
+        return out.map(|v| (v, false));
+    }
+    gate.pass(
+        ctx,
+        out,
+        dest,
+        || {
+            move |d: &PathBuf| {
+                if let Some(dir) = d.parent().filter(|p| !p.as_os_str().is_empty()) {
+                    mdm_engine::naming::wait_cleared(dir);
+                }
+                exists(d)
+            }
+        },
+        |there| (there && typed).then(|| Duplicate::file(dest)),
+        show,
+    )
+    .map(|(v, answer)| (v, answer == Some(DUPLICATE_OVERWRITE)))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1741: the first Download File Info is the window it always was; the others are
+    /// numbered (their ids and titles, which Windows finds them by), each a cascade step
+    /// further, and a closed one's number goes to the next.
+    #[test]
+    fn several_windows_of_a_kind_are_numbered() {
+        assert_eq!(Nth::FIRST.id(FILE_INFO), "file-info");
+        assert_eq!(Nth(3).id(FILE_INFO), "file-info-3");
+        // (Not a literal in the call: the catalog's extractor would take it for a text.)
+        let title = ["Download File", " Info"].concat();
+        assert_eq!(Nth::FIRST.title(&title), "Download File Info");
+        assert_eq!(Nth(2).title(&title), "Download File Info (2)");
+        assert!(is_file_info("file-info") && is_file_info("file-info-12"));
+        // Its pickers and drop lists are no Download File Info windows.
+        assert!(!is_file_info("file-info-save-as") && !is_file_info("file-info-"));
+        assert_eq!(Nth::free([]), Nth(1));
+        assert_eq!(Nth::free([Nth(1), Nth(2), Nth(3)]), Nth(4));
+        assert_eq!(Nth::free([Nth(1), Nth(3)]), Nth(2));
+        assert_eq!(Nth::free([Nth(2)]), Nth(1));
+        let ctx = egui::Context::default();
+        let key = egui::Id::unique("cascade-test");
+        assert_eq!(cascade_offset(&ctx, key), egui::Vec2::ZERO, "the first");
+        ctx.data_mut(|d| d.insert_temp(key.with("cascade"), Nth(3).cascade()));
+        let step = cascade_offset(&ctx, key);
+        assert_eq!(step.y, 2.0 * CASCADE_STEP);
+        assert_eq!(step.x.abs(), 2.0 * CASCADE_STEP);
+    }
+
+    /// Every window comes to the front through `focus` (#1645): egui's `Focus` command, which
+    /// winit carries out on Windows with a made-up Alt key press heard by the whole system, is
+    /// sent from nowhere else in the app's sources.
+    #[test]
+    fn windows_come_forward_only_through_focus() {
+        // Split, so this test's own line isn't one.
+        let command = ["ViewportCommand", "::Focus"].concat();
+        let mut found = Vec::new();
+        let mut dirs = vec![std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src")];
+        while let Some(dir) = dirs.pop() {
+            for entry in std::fs::read_dir(dir).unwrap() {
+                let path = entry.unwrap().path();
+                if path.is_dir() {
+                    dirs.push(path);
+                    continue;
+                }
+                let Ok(src) = std::fs::read_to_string(&path) else {
+                    continue;
+                };
+                for (n, line) in src.lines().enumerate() {
+                    let code = line.split("//").next().unwrap_or_default();
+                    if code.contains(&command) {
+                        found.push(format!("{}:{}", path.display(), n + 1));
+                    }
+                }
+            }
+        }
+        // The one in `focus` itself, for Linux and macOS.
+        assert_eq!(
+            found.len(),
+            1,
+            "Focus sent outside dialogs::focus: {found:?}"
+        );
+        assert!(found[0].contains("dialogs.rs"), "{found:?}");
+    }
+
+    /// Asked to bring a window forward (Windows), `focus` keeps it once, however often it is
+    /// asked before the window shows, and lets it go once its time is up.
+    #[cfg(windows)]
+    #[test]
+    fn focus_keeps_each_window_once_until_its_time_is_up() {
+        let ctx = egui::Context::default();
+        let vid = ViewportId::from_hash_of("focus-test");
+        let asked = |ctx: &egui::Context| {
+            ctx.data(|d| {
+                d.get_temp::<Vec<(ViewportId, std::time::Instant)>>(egui::Id::unique(FOCUS_ASKED))
+            })
+            .unwrap_or_default()
+        };
+        focus(&ctx, vid);
+        focus(&ctx, vid);
+        assert_eq!(asked(&ctx).len(), 1);
+        // No such window: still asked while there is time.
+        focus_pending(&ctx);
+        assert_eq!(asked(&ctx).len(), 1);
+        ctx.data_mut(|d| {
+            d.insert_temp(
+                egui::Id::unique(FOCUS_ASKED),
+                vec![(vid, std::time::Instant::now())],
+            )
+        });
+        focus_pending(&ctx);
+        assert!(asked(&ctx).is_empty());
+    }
 
     /// A dialog that opened over the browser stays on its own for as long as it is open, even
     /// once it is the window in front (its frame applied again at a new size); the next opening
@@ -4405,7 +5077,7 @@ mod tests {
         let pass = |key: Option<egui::Key>, answer: &std::cell::Cell<Option<Outcome<bool>>>| {
             KEY.with(|k| k.set(key));
             let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
-                answer.set(Some(cancel_waiting(ui.ctx(), 2)));
+                answer.set(Some(cancel_waiting(ui.ctx(), 2, Nth::FIRST)));
             });
             out.textures_delta.clear();
             answer.take()
@@ -4978,6 +5650,159 @@ mod tests {
         assert_eq!(fi.replaces(), Some(taken));
     }
 
+    /// Frames of Download File Info's replace gate after Start (`first`) until it lets the
+    /// start go, the question answered by `answer` (None: never asked). Whether it was asked,
+    /// what about, and how the dialog ended (None: still open after 5 s).
+    fn start_with_answer(
+        fi: &mut FileInfo,
+        first: Start,
+        answer: Outcome<usize>,
+    ) -> (Option<String>, Option<Outcome<Start>>) {
+        let ctx = egui::Context::default();
+        let mut asked = None;
+        let mut answer = Some(answer);
+        let mut out = Outcome::Done(first);
+        let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        loop {
+            let got = fi.ask_replace(
+                &ctx,
+                std::mem::replace(&mut out, Outcome::Open),
+                |d| d.is_file(),
+                |q, _| {
+                    assert!(q.file, "the question about a file");
+                    asked = Some(q.name.clone());
+                    // Once answered, the gate starts over: a second question is a second Start.
+                    answer.take().expect("asked once")
+                },
+            );
+            match got {
+                Outcome::Open if asked.is_some() && answer.is_none() => {
+                    // Cancel: back to the dialog, nothing held.
+                    return (asked, Some(Outcome::Open));
+                }
+                Outcome::Open if std::time::Instant::now() < until => {
+                    std::thread::sleep(std::time::Duration::from_millis(2));
+                }
+                Outcome::Open => return (asked, None),
+                got => return (asked, Some(got)),
+            }
+        }
+    }
+
+    /// #1447: a name typed in Save As that is a file already there is asked about as Start (or
+    /// Later) is pressed: overwrite makes the download replace that file as it completes
+    /// (`Item::replace_file`, as the Save dialog's Replace? does); the numbered name replaces
+    /// nothing (the download is numbered as it starts, as before); Cancel goes back to the
+    /// dialog, and the next Start asks again.
+    #[test]
+    fn a_typed_name_of_a_file_already_there_is_asked_about() {
+        let d = tempfile::tempdir().unwrap();
+        let taken = d.path().join("pssh-ui-x64.exe");
+        std::fs::write(&taken, b"the old file").unwrap();
+        let (mut fi, _rt) = file_info(d.path(), "pssh-ui-x64.exe");
+        fi.save_as = display_path(&taken);
+        fi.typed();
+
+        let (asked, out) =
+            start_with_answer(&mut fi, Start::Now, Outcome::Done(DUPLICATE_OVERWRITE));
+        assert_eq!(asked.as_deref(), Some(display_path(&taken).as_str()));
+        assert!(matches!(out, Some(Outcome::Done(Start::Now))));
+        assert_eq!(
+            fi.replaces(),
+            Some(taken.clone()),
+            "replaced as it completes"
+        );
+        assert_eq!(
+            std::fs::read(&taken).unwrap(),
+            b"the old file",
+            "never before"
+        );
+
+        let (asked, out) =
+            start_with_answer(&mut fi, Start::Later, Outcome::Done(DUPLICATE_NUMBERED));
+        assert!(asked.is_some());
+        assert!(matches!(out, Some(Outcome::Done(Start::Later))));
+        assert_eq!(fi.replaces(), None, "numbered as it starts");
+
+        let (asked, out) = start_with_answer(&mut fi, Start::Now, Outcome::Closed);
+        assert!(asked.is_some());
+        assert!(
+            matches!(out, Some(Outcome::Open)),
+            "Cancel: back to the dialog"
+        );
+        assert_eq!(fi.replaces(), None);
+        let (asked, out) =
+            start_with_answer(&mut fi, Start::Now, Outcome::Done(DUPLICATE_OVERWRITE));
+        assert!(asked.is_some(), "asked again");
+        assert!(matches!(out, Some(Outcome::Done(Start::Now))));
+        assert_eq!(fi.replaces(), Some(taken));
+    }
+
+    /// #1447: what asks nothing. A typed name no file has; a name MDM gave, even one a file has
+    /// by now (numbered as it starts, as before, and let go in the same frame: no look at the
+    /// disk); the name of the download started early behind the dialog (#597: its own file).
+    #[test]
+    fn a_name_mdm_gave_or_a_free_one_is_not_asked_about() {
+        let d = tempfile::tempdir().unwrap();
+        let taken = d.path().join("taken.7z");
+        std::fs::write(&taken, b"the old file").unwrap();
+        let (mut fi, _rt) = file_info(d.path(), "taken.7z");
+
+        fi.save_as = display_path(&d.path().join("free.7z"));
+        fi.typed();
+        let (asked, out) = start_with_answer(&mut fi, Start::Now, Outcome::Closed);
+        assert_eq!(asked, None);
+        assert!(matches!(out, Some(Outcome::Done(Start::Now))));
+        assert_eq!(fi.replaces(), None);
+
+        // MDM's name (a category or folder chosen gives it again), the file there meanwhile.
+        fi.set_category(Category::General);
+        fi.save_as = display_path(&taken);
+        let ctx = egui::Context::default();
+        let out = fi.ask_replace(
+            &ctx,
+            Outcome::Done(Start::Now),
+            |_| unreachable!("no look at the disk"),
+            |_, _| unreachable!("nothing asked"),
+        );
+        assert!(matches!(out, Outcome::Done(Start::Now)), "at once");
+        assert_eq!(fi.replaces(), None);
+
+        // The early download's own place.
+        fi.typed();
+        fi.set_early_place(Some(taken.clone()));
+        let out = fi.ask_replace(
+            &ctx,
+            Outcome::Done(Start::Now),
+            |_| unreachable!("no look at the disk"),
+            |_, _| unreachable!("nothing asked"),
+        );
+        assert!(matches!(out, Outcome::Done(Start::Now)));
+    }
+
+    /// #1447: a name chosen in the Save dialog was asked about there (Windows' Replace?): not
+    /// again. Typed over afterwards, it is the typed name's question that counts.
+    #[test]
+    fn a_name_from_the_save_dialog_is_not_asked_again() {
+        let d = tempfile::tempdir().unwrap();
+        let taken = d.path().join("taken.7z");
+        std::fs::write(&taken, b"the old file").unwrap();
+        let (mut fi, _rt) = file_info(d.path(), "taken.7z");
+        fi.typed();
+        fi.set_saved(&taken, true);
+        let (asked, out) = start_with_answer(&mut fi, Start::Now, Outcome::Closed);
+        assert_eq!(asked, None);
+        assert!(matches!(out, Some(Outcome::Done(Start::Now))));
+        assert_eq!(fi.replaces(), Some(taken.clone()));
+
+        fi.typed();
+        let (asked, out) =
+            start_with_answer(&mut fi, Start::Now, Outcome::Done(DUPLICATE_NUMBERED));
+        assert!(asked.is_some());
+        assert!(matches!(out, Some(Outcome::Done(Start::Now))));
+        assert_eq!(fi.replaces(), None);
+    }
+
     /// #743: Start in a dialog whose folder is on a disk slow to answer holds up no frame: the
     /// dialog stays as it is until the answer comes, then goes on with what Start said.
     #[test]
@@ -4991,13 +5816,25 @@ mod tests {
             let _ = stuck.recv();
             true
         };
-        let first = ensure_folder_with(&ctx, &mut gate, Outcome::Done(7), &folder, is_dir);
+        let first = ensure_folder_with(
+            &ctx,
+            &mut gate,
+            Outcome::Done(7),
+            &folder,
+            Nth::FIRST,
+            is_dir,
+        );
         assert!(matches!(first, Outcome::Open));
         for _ in 0..1000 {
             // A second Start meanwhile changes nothing; nor does a frame without one.
-            let again = ensure_folder_with(&ctx, &mut gate, Outcome::Done(8), &folder, |_| {
-                unreachable!("looked at once")
-            });
+            let again = ensure_folder_with(
+                &ctx,
+                &mut gate,
+                Outcome::Done(8),
+                &folder,
+                Nth::FIRST,
+                |_| unreachable!("looked at once"),
+            );
             assert!(matches!(again, Outcome::Open));
         }
         assert!(
@@ -5008,7 +5845,7 @@ mod tests {
         drop(release);
         let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
         let done = loop {
-            match ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, |_| {
+            match ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, Nth::FIRST, |_| {
                 unreachable!("looked at once")
             }) {
                 Outcome::Done(v) => break Some(v),
@@ -5018,12 +5855,21 @@ mod tests {
         };
         assert_eq!(done, Some(7), "the first Start's");
         // Let go: the next Start is looked at afresh.
-        let next = ensure_folder_with(&ctx, &mut gate, Outcome::Done(9), &folder, |_| true);
+        let next = ensure_folder_with(
+            &ctx,
+            &mut gate,
+            Outcome::Done(9),
+            &folder,
+            Nth::FIRST,
+            |_| true,
+        );
         let until = std::time::Instant::now() + std::time::Duration::from_secs(5);
         let mut next = next;
         while !matches!(next, Outcome::Done(_)) && std::time::Instant::now() < until {
             std::thread::sleep(std::time::Duration::from_millis(2));
-            next = ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, |_| true);
+            next = ensure_folder_with(&ctx, &mut gate, Outcome::Open, &folder, Nth::FIRST, |_| {
+                true
+            });
         }
         assert!(matches!(next, Outcome::Done(9)));
     }

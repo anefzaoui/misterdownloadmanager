@@ -46,15 +46,17 @@ const WAKE_GRACE: Duration = Duration::from_secs(60);
 /// A first frame late then is taken for the busy login's, once (renderer.rs, #1205).
 pub(crate) const LOGIN_GRACE: Duration = Duration::from_secs(180);
 
-/// A stall while every window of MDM's is hidden (in the notification area, nothing of MDM's on
-/// screen) and its thread barely runs ([`IDLE_SHARE`]) is the computer's for this long, counted
-/// from the stall's start. Windows that started with the session or were closed to the
-/// notification area hours before stopped answering for 8 s in one of the hidden window's small
-/// ticks, their thread running 0 ms of the 8 with a few dozen page faults in the whole process,
-/// back 0.2 to 57 s later with no sleep in between (#1126): the computer kept MDM waiting (most
-/// likely its memory, given back while hidden (#72), read back from a busy or sleeping disk),
-/// and nobody could see the window stuck. Logged, and reported only if it is still stuck
-/// [`FREEZE_AFTER`] past this, or [`FREEZE_AFTER`] after a window was asked for ([`asked`]).
+/// A stall while every window of MDM's is hidden (in the notification area or minimized to the
+/// taskbar, nothing of MDM's on screen: [`out_of_sight`]) and its thread barely runs
+/// ([`IDLE_SHARE`]) is the computer's for this long, counted from the stall's start. Windows that
+/// started with the session or were closed to the notification area hours before stopped
+/// answering for 8 s in one of the hidden window's small ticks, their thread running 0 ms of the
+/// 8 with a few dozen page faults in the whole process, back 0.2 to 57 s later with no sleep in
+/// between (#1126): the computer kept MDM waiting (most likely its memory, given back while
+/// hidden (#72), read back from a busy or sleeping disk), and nobody could see the window stuck.
+/// Windows minimized to the taskbar did the same (#1481, #1309). Logged, and reported only if it
+/// is still stuck [`FREEZE_AFTER`] past this, or [`FREEZE_AFTER`] after a window was asked for
+/// ([`asked`]).
 const HIDDEN_GRACE: Duration = Duration::from_secs(60);
 
 /// The window thread barely ran during a stall when it ran less than 1/IDLE_SHARE of it (5 %):
@@ -124,6 +126,9 @@ pub fn start(data: &Path, session: Session, at_login: bool) {
     let _ = UI_THREAD.set(crate::win32::thread_id());
     #[cfg(unix)]
     let _ = UI_THREAD.set(crate::unix::thread_id());
+    // macOS: the window thread's use is asked for by its Mach port instead ([`usage`]).
+    #[cfg(target_os = "macos")]
+    crate::unix::remember_window_thread();
     let Some(exe) = std::env::current_exe().ok() else {
         return;
     };
@@ -351,12 +356,20 @@ pub fn step(s: Step) {
     STEP.store(s as u8, Ordering::Relaxed);
 }
 
-/// Whether every window of MDM's is hidden now (the main window in the notification area and no
-/// other window open): set by the window thread at each frame's logic and as the window comes
-/// back. A stall then is felt by nobody, and while the window thread barely runs it is the
-/// computer's ([`HIDDEN_GRACE`]).
+/// Whether every window of MDM's is out of sight now ([`out_of_sight`]): set by the window thread
+/// at each frame's logic and as the window comes back. A stall then is felt by nobody, and while
+/// the window thread barely runs it is the computer's ([`HIDDEN_GRACE`]).
 pub fn hidden(all: bool) {
     HIDDEN.store(all, Ordering::Release);
+}
+
+/// Whether nothing of MDM's is on screen: the main window `hidden` in the notification area or
+/// `minimized` to the taskbar (the Dock, the window list), and no other window open (`windows`,
+/// the main one's included). A minimized window is no more on screen than a hidden one: the
+/// system stops painting it and may take its memory back, and an idle wait then is the
+/// computer's as much (#1481, #1309).
+pub fn out_of_sight(hidden: bool, minimized: bool, windows: usize) -> bool {
+    (hidden || minimized) && windows <= 1
 }
 
 /// Someone asked for a window, or for an answer, from outside the window thread: a command came
@@ -548,7 +561,9 @@ impl After {
         match self {
             After::Wake => "since the computer woke",
             After::Login => "since MDM started with the session",
-            After::Hidden => "with every window of MDM's hidden and its thread waiting",
+            After::Hidden => {
+                "with every window of MDM's hidden or minimized and its thread waiting"
+            }
         }
     }
 
@@ -566,7 +581,9 @@ impl After {
         match self {
             After::Wake => "the computer had just woken",
             After::Login => "MDM had just started with the session",
-            After::Hidden => "every window was hidden, and the computer kept its thread waiting",
+            After::Hidden => {
+                "every window was hidden or minimized, and the computer kept its thread waiting"
+            }
         }
     }
 }
@@ -721,26 +738,22 @@ fn watchdog(at_login: bool) {
         // normal frame is over long before: the thread isn't asked about each one).
         let long = now.saturating_sub(from) >= freeze_after;
         let busy = seen.filter(|_| long).and_then(|(_, at, before)| {
-            let (before, after) = (before?, usage(ui)?);
-            Some(Busy {
-                wall_ms: now.saturating_sub(at),
-                cpu_ms: after.cpu_ms.saturating_sub(before.cpu_ms),
-                faults: before
-                    .faults
-                    .zip(after.faults)
-                    .map(|(b, a)| a.saturating_sub(b)),
-            })
+            Some(busy_between(before?, usage(ui)?, now.saturating_sub(at)))
         });
         let told = |b: Busy| {
+            let pageins = b
+                .pageins
+                .map(|n| format!(", {n} page-ins"))
+                .unwrap_or_default();
             tracing::warn!(
-                "the window thread ran {} of {} ms meanwhile ({} page faults)",
+                "the window thread ran {} of {} ms meanwhile ({} page faults{pageins})",
                 b.cpu_ms,
                 b.wall_ms,
                 b.faults.map_or("unknown".to_owned(), |n| n.to_string())
             );
         };
         // Every window hidden and the window thread barely running: nobody sees the stall, and
-        // the computer has the thread (#1126). Unknown use (macOS) isn't taken for idle.
+        // the computer has the thread (#1126). Unknown use isn't taken for idle.
         let hidden_idle =
             HIDDEN.load(Ordering::Acquire) && busy.is_some_and(|b| idle(b.cpu_ms, b.wall_ms));
         let asked = ASKED.load(Ordering::Acquire).saturating_sub(1);
@@ -793,23 +806,39 @@ fn watchdog(at_login: bool) {
     }
 }
 
-/// A thread's processor time so far and the page faults counted so far (see `Busy::faults`).
+/// A thread's processor time so far and the page faults and page-ins counted so far (see
+/// `Busy::faults` and `Busy::pageins`).
 #[derive(Clone, Copy, Debug)]
 pub struct Usage {
     pub cpu_ms: u64,
     pub faults: Option<u64>,
+    pub pageins: Option<u64>,
 }
 
-/// The window thread's use so far. None on macOS: the dump can't name the window thread there
-/// (`thread_id` is 0), so its use isn't measured either.
-fn usage(ui_thread: u32) -> Option<Usage> {
-    if ui_thread == 0 {
-        return None;
+/// What the window thread used between two readings `wall_ms` apart.
+fn busy_between(before: Usage, after: Usage, wall_ms: u64) -> Busy {
+    let since = |b: Option<u64>, a: Option<u64>| b.zip(a).map(|(b, a)| a.saturating_sub(b));
+    Busy {
+        wall_ms,
+        cpu_ms: after.cpu_ms.saturating_sub(before.cpu_ms),
+        faults: since(before.faults, after.faults),
+        pageins: since(before.pageins, after.pageins),
     }
+}
+
+/// The window thread's use so far: by its id on Windows and Linux; on macOS, where the dump
+/// can't name it (`thread_id` is 0), by the Mach port remembered at [`start`] (#1515).
+fn usage(ui_thread: u32) -> Option<Usage> {
     #[cfg(windows)]
-    return crate::win32::thread_usage(ui_thread);
-    #[cfg(unix)]
+    return (ui_thread != 0)
+        .then(|| crate::win32::thread_usage(ui_thread))
+        .flatten();
+    #[cfg(target_os = "macos")]
     return crate::unix::thread_usage(ui_thread);
+    #[cfg(all(unix, not(target_os = "macos")))]
+    return (ui_thread != 0)
+        .then(|| crate::unix::thread_usage(ui_thread))
+        .flatten();
 }
 
 /// The session's description for the monitor.
@@ -849,7 +878,8 @@ pub fn session(language: &str, dark: bool) -> Session {
 /// the window thread), spin (the window thread busy for 12 s, then it answers again), abort.
 /// With the window hidden in the notification area first ([`testing`], app.rs), a few seconds
 /// later, in a tick of the hidden window ([`armed`], #1126): hidden-stall[:s] (the window thread
-/// waits, running nothing, 12 s or `s`), hidden-spin[:s] (it runs).
+/// waits, running nothing, 12 s or `s`), hidden-spin[:s] (it runs). minimized-stall[:s] and
+/// minimized-spin[:s] do the same with the main window minimized to the taskbar instead (#1481).
 pub fn test(what: &str) {
     if !testing() {
         return;
@@ -868,8 +898,8 @@ pub fn test(what: &str) {
         "freeze" => crash_test_freeze(),
         "spin" => crash_test_spin(12),
         "abort" => std::process::abort(),
-        "hidden-stall" | "hidden-spin" => {
-            ARMED_SPIN.store(what == "hidden-spin", Ordering::Relaxed);
+        "hidden-stall" | "hidden-spin" | "minimized-stall" | "minimized-spin" => {
+            ARMED_SPIN.store(what.ends_with("-spin"), Ordering::Relaxed);
             ARMED_SECS.store(secs, Ordering::Relaxed);
             ARMED_AT.store(now_ms() + 1 + ARMED_AFTER, Ordering::Release);
         }
@@ -1046,6 +1076,27 @@ mod watchdog_tests {
         assert_eq!(computers_for(71_000, login, false, 0), login);
     }
 
+    /// #1481, #1309: a main window minimized to the taskbar is out of sight as much as one hidden
+    /// in the notification area; any other window open (a dialog, a progress window) is not.
+    #[test]
+    fn a_minimized_window_is_out_of_sight_as_a_hidden_one() {
+        assert!(
+            out_of_sight(true, false, 1),
+            "hidden in the notification area"
+        );
+        assert!(out_of_sight(false, true, 1), "minimized to the taskbar");
+        assert!(out_of_sight(true, true, 1));
+        assert!(!out_of_sight(false, false, 1), "on screen");
+        assert!(
+            !out_of_sight(false, true, 2),
+            "minimized, a dialog on screen"
+        );
+        assert!(
+            !out_of_sight(true, false, 3),
+            "hidden, two windows on screen"
+        );
+    }
+
     /// What the log says of a stall in the computer's time, and the store reads back.
     #[test]
     fn the_log_says_whose_time_it_was() {
@@ -1056,7 +1107,7 @@ mod watchdog_tests {
         assert_eq!(Computers::wake(1).after.since(), "since the computer woke");
         assert_eq!(
             Computers::hidden(1, 0).after.since(),
-            "with every window of MDM's hidden and its thread waiting"
+            "with every window of MDM's hidden or minimized and its thread waiting"
         );
         for a in [After::Wake, After::Login, After::Hidden] {
             assert_eq!(After::from_u8(a as u8), Some(a));
@@ -1117,6 +1168,60 @@ mod watchdog_tests {
         });
         assert!(panicked.is_err());
         assert_eq!(dialogs_open(), 0, "closed by the panic too");
+    }
+
+    /// #1515: a macOS freeze said nothing of the window thread's use, the dump's thread ids
+    /// being the monitor's there. Two readings of the thread (by its Mach port, unix.rs) make
+    /// the report's "ran X of Y s" line, with the page-ins of the whole of MDM meanwhile.
+    #[test]
+    fn two_readings_of_the_window_thread_make_the_reports_lines() {
+        let before = Usage {
+            cpu_ms: 61_250,
+            faults: Some(480_000),
+            pageins: Some(9_100),
+        };
+        let after = Usage {
+            cpu_ms: 61_330,
+            faults: Some(483_100),
+            pageins: Some(9_912),
+        };
+        let busy = busy_between(before, after, 8_000);
+        assert_eq!(
+            busy,
+            Busy {
+                wall_ms: 8_000,
+                cpu_ms: 80,
+                faults: Some(3_100),
+                pageins: Some(812),
+            }
+        );
+        let freeze = Freeze {
+            ui_thread: 0,
+            main: true,
+            seconds: 8,
+            busy: Some(busy),
+            step: "the torrents".to_owned(),
+        };
+        let input = mdm_crash::report::Input {
+            kind: Some(mdm_crash::protocol::Kind::Freeze),
+            notes: mdm_crash::protocol::Notes {
+                freeze: Some(freeze),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        let t = mdm_crash::report::text(&input, None);
+        assert!(t.contains("Its thread ran 0.1 of 8.0 s."), "{t}");
+        assert!(
+            t.contains("812 page-ins during the freeze (pages of MDM read from disk"),
+            "{t}"
+        );
+        // A reading without them (Windows, Linux) leaves them unknown, not 0.
+        let none = Usage {
+            pageins: None,
+            ..after
+        };
+        assert_eq!(busy_between(before, none, 8_000).pageins, None);
     }
 
     /// Every step has its label, and the store reads back as the same step.

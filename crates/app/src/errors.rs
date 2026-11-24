@@ -67,6 +67,16 @@ pub fn describe(e: &Error) -> String {
             "the site sent a web page instead of the file (a waiting page, a captcha or a sign-in): open the link in your browser, finish there, and the download comes back to MDM",
         )
         .to_owned(),
+        Error::NotTheFile { size, sent } => fmt(
+            // i18n: why a download failed (#1460): the browser's own download of the link was a file of {size} (such as 117.65 MB), but when MDM asked the server for it, it sent only {sent} (such as 4.65 KB): an error or a notice, not the file. Some links work only once, or only in the browser. Alt+click: the link clicked with the Alt key held, which leaves the download to the browser
+            t(
+                "the server sent only {sent} where the browser's file is {size} (a link that works once, or only in the browser): Alt+click the link to let the browser download it",
+            ),
+            &[
+                ("sent", &crate::model::size(*sent)),
+                ("size", &crate::model::size(*size)),
+            ],
+        ),
         Error::RangesUnavailable => t("the server did not send the requested part").to_owned(),
         Error::LinkExpired => {
             t("the download link has expired (refresh the download address)").to_owned()
@@ -227,6 +237,15 @@ pub fn service(service: &str, fault: &mdm_engine::ServiceFault) -> String {
                 &[("name", &ltr(name))],
             );
         }
+        F::ChosenFileMissing(path) => {
+            return fmt(
+                // i18n: a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+                t(
+                    "{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one",
+                ),
+                &[("service", service), ("file", &crate::i18n::isolate(path))],
+            );
+        }
         F::Other(message) => {
             return fmt(
                 // i18n: a debrid service's error in its own words (English); {service} its name
@@ -266,6 +285,11 @@ fn refusal(r: &Refusal) -> String {
             t(
                 "this {site} link is a web page, not the file: open it in your browser and download from there",
             ),
+            &[("site", &ltr(site))],
+        ),
+        Refusal::NotTaken { site } => fmt(
+            // i18n: a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
+            t("{site} didn't give the file this time: try again in a moment"),
             &[("site", &ltr(site))],
         ),
         Refusal::Service { service, fault } => self::service(service, fault),
@@ -357,6 +381,11 @@ pub fn tools(e: &mdm_tools::Error) -> String {
             // i18n: error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
             t("{name} {version} is too old: MDM needs {oldest} or newer"),
             &[("name", name), ("version", version), ("oldest", oldest)],
+        ),
+        E::Busy(name) => fmt(
+            // i18n: error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+            t("{name} is being downloaded already: try again in a moment"),
+            &[("name", name)],
         ),
     }
 }
@@ -564,6 +593,12 @@ mod tests {
             message: "Too many users".into(),
         });
         assert!(describe(&quota).contains("Too many users"));
+        // #1460: both sizes, the server's answer's and the browser's file's.
+        let short = describe(&Error::NotTheFile {
+            size: 123_365_000,
+            sent: 4_762,
+        });
+        assert!(short.contains("117.65 MB") && short.contains("4.65 KB"));
         assert_eq!(
             os_text("Access is denied. (os error 5)"),
             "Access is denied"

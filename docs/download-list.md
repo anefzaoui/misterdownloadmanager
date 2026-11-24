@@ -80,6 +80,27 @@ To bring the built-in categories back as they came, with their names, file types
 The top branches show how many downloads they hold. **View → Hide categories** gives the list
 the whole window.
 
+## The preview pane
+
+**View → Show preview pane**, the **Preview** button at the toolbar's end, or **Alt+P** opens a
+pane beside the list (on its left in right-to-left languages) with the selected download:
+
+- its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or
+  a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a
+  photo or a video's frame), else its file type's large icon. Only a finished file has one;
+- its name and type, its size (how much has come while it downloads, with its progress bar) and
+  its status;
+- **File:** whether the finished file is **still there**, or was **moved or deleted** (MDM looks
+  again every few seconds while it is shown), or its folder can't be reached now (a drive that
+  isn't plugged in);
+- where it was saved, its address and the web page it came from (right-click one to copy it),
+  when it was added and when it finished.
+
+With several downloads selected it says how many, how many are finished and their total size.
+Drag the pane's edge to make it wider or narrower; its **x**, the button or Alt+P again hide it.
+MDM remembers it shown or hidden, and its width. In a language whose menu bar has P for a
+menu's letter (Polish, Croatian...), Alt+P opens that menu instead, as Windows' menus do.
+
 ## Dropping links and files
 
 Drag a link from a browser (or a page's text with links in it) onto the list to add it: one
@@ -121,6 +142,8 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 
 **Move/Rename** (**Ctrl+M**) moves or renames the file of a finished download, or of one that hasn't started yet. With several downloads selected it asks for a folder and moves them all there, each under its own name.
 
+**Redownload** downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (`name (1).ext`) and tells you. Torrents, videos and image galleries don't have it: a torrent's **Recheck files** finds and fetches its damaged pieces, and a finished gallery's **Resume Download** fetches the files it is missing.
+
 ## Verify checksum
 
 Many sites publish a checksum next to the download. Right-click the download, choose **Verify checksum...** and paste it. MDM reads MD5, SHA-1, SHA-256, SHA-512 and CRC32. A finished file is checked at once; an unfinished one is checked when its download ends. MDM then says **The file matches** or **The file does NOT match**.
@@ -148,18 +171,18 @@ Typing the start of a name while the list has the focus jumps to the first downl
 
 Select one or more downloads and press **Delete**, click **Delete** on the toolbar, or choose **File → Remove**. MDM asks first:
 
-- **Also delete the file from disk** — tick it to delete the files too. For an unfinished download, this deletes the part downloaded so far. Leave it unticked to take the downloads off the list and keep the files.
-- **Don't show this dialog again** — MDM stops asking and does what you answered this time. To be asked again, tick **Options → General → Confirm before deleting downloads**.
+- **Also delete the file from disk** — unticked every time the question opens. Tick it to delete the files too. For an unfinished download, this deletes the part downloaded so far. When finished downloads are among the ones you delete, the question says how many finished files go with them. Leave it unticked to take the downloads off the list and keep the files.
+- **Don't show this dialog again** — MDM stops asking: **Delete** then only takes downloads off the list and keeps their files. To be asked again, tick **Options → General → Confirm before deleting downloads**.
 
 Click **Yes** to delete, or **No** to keep everything.
 
-**Shift+Delete** opens the same question with **Also delete the file from disk** already ticked, for that time only. After a plain **Delete**, MDM remembers your answer and ticks the box the same way next time.
+**Shift+Delete** (or **Remove with files**) opens the same question with **Also delete the file from disk** already ticked, for that time only. It always asks, even after **Don't show this dialog again**: MDM never deletes a file from the disk without asking. The box is never remembered: the next **Delete** starts unticked again.
 
 After deleting, the next download in the list is selected, so you can press **Delete** again.
 
 A download that is running isn't deleted. Stop it first.
 
-**Delete Completed** on the toolbar (or **Downloads → Delete All Completed**) removes every finished download from the list, with the same question.
+**Delete Completed** on the toolbar (or **Downloads → Delete All Completed**) removes every finished download from the list, with the same question. Their files stay unless you tick **Also delete the files from disk** in that question.
 
 ![Confirm deletion of downloads, with Also delete the file from disk](images/help/delete-confirm.webp)
 *Tick Also delete the file from disk only if you want the file gone too.*

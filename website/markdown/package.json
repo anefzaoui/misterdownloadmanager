@@ -1,0 +1,13 @@
+{
+  "name": "mdm-markdown",
+  "private": true,
+  "description": "Mister Download Manager's website as Markdown for AI tools and agents: a Cloudflare Worker that answers Accept: text/markdown with each page's Markdown twin (README.md).",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "test": "node --test test/markdown.test.mjs"
+  }
+}

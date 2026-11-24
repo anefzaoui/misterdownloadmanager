@@ -11,8 +11,11 @@
 //! remembered, and so is one whose first frame doesn't come within [`FIRST_FRAME_WITHIN`] (MDM
 //! starts again, the next way): the next starts pass over it, and View → Draw with says why,
 //! since when and when MDM tries it again. A graphics card lost while MDM runs (a driver update
-//! or reset) starts MDM again; a second loss soon after counts as the API failing. The same code
-//! does all of this on every system: only [`GPU`] and the backend in `gpu::options` differ.
+//! or reset) starts MDM again; a second loss soon after counts as the API failing. OpenGL's too:
+//! a paint that fails (eframe couldn't make the context current on a window, #1448) is skipped
+//! and tried again, and a window whose paints keep failing is a lost device ([`gl_lost`]). The
+//! same code does all of this on every system: only [`GPU`] and the backend in `gpu::options`
+//! differ.
 //!
 //! A failure isn't remembered for good (#1205: one slow start just after Windows started kept a
 //! laptop on OpenGL from then on). Its file keeps when it happened, on which adapter and driver,
@@ -1351,7 +1354,7 @@ fn check_gl(gl: &eframe::glow::Context, checked: bool, driver: &str) {
         let _ = std::fs::remove_file(starting);
     }
     #[cfg(gpu)]
-    gpu::start_again(&format!("OpenGL can't draw MDM here: {details}"));
+    start_again(&format!("OpenGL can't draw MDM here: {details}"));
 }
 
 /// A test's failure asked for (`name`=1), honoured only by off-screen test copies.
@@ -1385,7 +1388,7 @@ pub fn frame_begin(ctx: &egui::Context) {
 /// wgpu presents without waiting for the refresh, and MDM paces its frames (see [`Swaps`]).
 static PACED: AtomicBool = AtomicBool::new(false);
 
-/// OpenGL's windows swap as [`swap_waits`] says, through [`SwapHooks`] (see [`Swaps`]).
+/// OpenGL's windows swap as [`swap_waits`] says, through [`GlHooks`] (see [`Swaps`]).
 static GL_HOOKED: AtomicBool = AtomicBool::new(false);
 
 /// wgpu presents without waiting for the refresh once MDM paces the frames: its surface takes
@@ -1447,7 +1450,7 @@ fn swaps() -> Swaps {
 }
 
 /// Whether a window's next swap waits for the screen's refresh (OpenGL: eframe asks before each
-/// swap, [`SwapHooks`]). `main`: the main window; `shown`: neither minimized nor covered, as far
+/// swap, [`GlHooks`]). `main`: the main window; `shown`: neither minimized nor covered, as far
 /// as the system says; `vsync`: what eframe gave every window.
 fn swap_waits(swaps: Swaps, main: bool, shown: bool, vsync: bool) -> bool {
     match swaps {
@@ -1462,10 +1465,11 @@ fn shown(info: &egui::ViewportInfo) -> bool {
     info.visible() != Some(false)
 }
 
-/// OpenGL: each window's swap interval, chosen before each of its swaps ([`swap_waits`]).
-struct SwapHooks(Swaps);
+/// OpenGL's hooks in eframe: each window's swap interval, chosen before each of its swaps
+/// ([`swap_waits`]), and the paints that failed ([`gl_paint_failed`]).
+struct GlHooks(Swaps);
 
-impl eframe::ViewportHooks for SwapHooks {
+impl eframe::ViewportHooks for GlHooks {
     fn swap_waits_for_vsync(
         &self,
         viewport: egui::ViewportId,
@@ -1479,10 +1483,118 @@ impl eframe::ViewportHooks for SwapHooks {
             vsync,
         )
     }
+
+    fn gl_paint_failed(
+        &self,
+        viewport: egui::ViewportId,
+        error: &str,
+        in_a_row: u32,
+        failing_for: std::time::Duration,
+    ) {
+        gl_paint_failed(
+            viewport == egui::ViewportId::ROOT,
+            error,
+            in_a_row,
+            failing_for,
+        );
+    }
+}
+
+// ---- An OpenGL that stops drawing (#1448) ---------------------------------------------------
+
+/// When a graphics device (Direct3D's, Vulkan's, Metal's; OpenGL's context) is lost twice this
+/// close together, its way counts as failing.
+const LOST_AGAIN_WITHIN: std::time::Duration = std::time::Duration::from_secs(600);
+
+/// Is a loss now (`now`, seconds since 1970) the second within [`LOST_AGAIN_WITHIN`], the last one
+/// at `last`?
+fn lost_again(last: Option<u64>, now: u64) -> bool {
+    last.is_some_and(|t| now.saturating_sub(t) < LOST_AGAIN_WITHIN.as_secs())
+}
+
+/// When OpenGL last stopped drawing (its time inside), in the data folder.
+const GL_LOST: &str = "opengl-lost";
+
+/// Has a window's OpenGL stopped drawing for good? A paint that fails now and then is passing
+/// (#1448's Intel driver failed `wglMakeCurrent` as a window closed: eframe skips that paint and
+/// paints again 100 ms later); one that keeps failing is a lost device (a driver reset or update),
+/// which OpenGL doesn't come back from. The main window sooner (nothing of MDM draws without
+/// it), a dialog later (one being closed or hidden can fail a few times).
+fn gl_lost(main: bool, in_a_row: u32, failing_for: std::time::Duration) -> bool {
+    let (times, secs) = if main { (5, 2) } else { (10, 5) };
+    in_a_row >= times && failing_for >= std::time::Duration::from_secs(secs)
+}
+
+/// eframe couldn't paint a window with OpenGL (its context couldn't be made current on it, it
+/// has no surface, or its frame couldn't be shown): logged by eframe; once it is lost
+/// ([`gl_lost`]), MDM starts again, as after a lost graphics card; a second loss within 10
+/// minutes is remembered (Windows, [`WATCH_GL`]: the next starts draw with Direct3D 12 on the
+/// card or on WARP), and elsewhere, or where OpenGL already draws as the last way, MDM goes on as
+/// it can rather than start again and again.
+fn gl_paint_failed(main: bool, error: &str, in_a_row: u32, failing_for: std::time::Duration) {
+    static LOST: AtomicBool = AtomicBool::new(false);
+    if !gl_lost(main, in_a_row, failing_for) || LOST.swap(true, Ordering::Relaxed) {
+        return;
+    }
+    let window = if main { "the main window" } else { "a window" };
+    let why = format!(
+        "OpenGL couldn't draw {window} for {} s ({in_a_row} paints in a row: {error})",
+        failing_for.as_secs()
+    );
+    let now = unix_now();
+    let file = mdm_ipc::data_dir().map(|d| d.join(GL_LOST));
+    let last = file
+        .as_ref()
+        .and_then(|f| std::fs::read_to_string(f).ok())
+        .and_then(|t| t.trim().parse::<u64>().ok());
+    if lost_again(last, now) {
+        let details = format!("{why}, twice within 10 minutes");
+        // Elsewhere OpenGL stays the next start's way; and OpenGL that already draws as the last
+        // way (known to fail here, nothing else started) would draw again: no start again.
+        let known = GL_FAILED_WHY.lock().is_ok_and(|u| u.is_some());
+        if !WATCH_GL || known {
+            tracing::error!("{details}: not started again (it would draw with OpenGL again)");
+            return;
+        }
+        tracing::warn!("OpenGL can't draw MDM here: {details}; passed over from the next start");
+        remember_failure(Way::OpenGl, Why::LostTwice, &details);
+    } else if let Some(f) = &file {
+        let _ = std::fs::write(f, now.to_string());
+    }
+    start_again(&why);
+}
+
+/// End this copy and start MDM again: the new one waits for this one to be gone (as after
+/// an update), and draws as the failure markers now say.
+fn start_again(why: &str) {
+    tracing::warn!("{why}: starting MDM again");
+    // The AppImage file itself on Linux (this program sits in its temporary mount).
+    #[cfg(windows)]
+    let program = std::env::current_exe().ok();
+    #[cfg(unix)]
+    let program = crate::unix::program();
+    let started = program.and_then(|exe| {
+        std::process::Command::new(exe)
+            .arg(crate::update::UPDATED)
+            // An override would bring the same failure back.
+            .env_remove("MDM_RENDERER")
+            .spawn()
+            .ok()
+    });
+    if started.is_none() {
+        tracing::error!("MDM couldn't start again");
+    }
+    crate::crash::clean_exit();
+    // The window thread may be stuck in the driver: end at once, without unwinding.
+    #[cfg(windows)]
+    crate::win32::end_process(std::process::id());
+    #[cfg(unix)]
+    crate::unix::end_process(std::process::id());
+    std::process::exit(1);
 }
 
 /// Once the app is made and its driver is known: whether MDM paces the frames, and the log says
-/// so. OpenGL's windows swap through [`SwapHooks`] (installed by [`configure`]); wgpu's present
+/// so. OpenGL's windows swap through [`GlHooks`] (installed by [`configure`]); wgpu's present
 /// mode is one for every window, so none waits on X11 and XWayland, from the first pass
 /// ([`present_unpaced`]).
 fn pacing_known(cc: &eframe::CreationContext<'_>) {
@@ -1811,8 +1923,10 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
     let swaps = swaps();
     let hooked = attempt == Attempt::OpenGl && swaps != Swaps::Own;
     GL_HOOKED.store(hooked, Ordering::Relaxed);
-    if hooked {
-        opts.viewport_hooks = Some(std::sync::Arc::new(SwapHooks(swaps)));
+    // Every OpenGL start: its paints that fail are watched (#1448); with Swaps::Own, the swaps
+    // are eframe's own (swap_waits gives back what eframe gives).
+    if attempt == Attempt::OpenGl {
+        opts.viewport_hooks = Some(std::sync::Arc::new(GlHooks(swaps)));
     }
 }
 
@@ -1891,7 +2005,7 @@ pub fn test_device_lost() {
 mod gpu {
     use super::{
         Adapters, DRAWN, FIRST_FRAME_WITHIN, GPU, Way, Why, clock_counted, file, remember_failure,
-        testing,
+        start_again, testing,
     };
     use eframe::egui_wgpu::{WgpuConfiguration, WgpuSetup, WgpuSetupCreateNew};
     use eframe::wgpu;
@@ -1948,8 +2062,6 @@ mod gpu {
             });
     }
 
-    /// When the graphics card is lost twice this close together, the API counts as failing.
-    const LOST_AGAIN_WITHIN: Duration = Duration::from_secs(600);
     /// When the card was last lost (its time inside).
     const LOST: &str = "lost";
 
@@ -1973,7 +2085,7 @@ mod gpu {
             let last = file(LOST)
                 .and_then(|f| std::fs::read_to_string(f).ok())
                 .and_then(|t| t.trim().parse::<u64>().ok());
-            if last.is_some_and(|t| now.saturating_sub(t) < LOST_AGAIN_WITHIN.as_secs()) {
+            if super::lost_again(last, now) {
                 // The card's, or its software renderer's when that is what drew.
                 let way = if super::software() {
                     Way::Software
@@ -2008,35 +2120,6 @@ mod gpu {
             d.destroy();
             poll();
         }
-    }
-
-    /// End this copy and start MDM again: the new one waits for this one to be gone (as after
-    /// an update), and draws as the failure markers now say.
-    pub(super) fn start_again(why: &str) {
-        tracing::warn!("{why}: starting MDM again");
-        // The AppImage file itself on Linux (this program sits in its temporary mount).
-        #[cfg(windows)]
-        let program = std::env::current_exe().ok();
-        #[cfg(unix)]
-        let program = crate::unix::program();
-        let started = program.and_then(|exe| {
-            std::process::Command::new(exe)
-                .arg(crate::update::UPDATED)
-                // An override would bring the same failure back.
-                .env_remove("MDM_RENDERER")
-                .spawn()
-                .ok()
-        });
-        if started.is_none() {
-            tracing::error!("MDM couldn't start again");
-        }
-        crate::crash::clean_exit();
-        // The window thread may be stuck in the driver: end at once, without unwinding.
-        #[cfg(windows)]
-        crate::win32::end_process(std::process::id());
-        #[cfg(unix)]
-        crate::unix::end_process(std::process::id());
-        std::process::exit(1);
     }
 
     pub fn options(adapters: Adapters) -> WgpuConfiguration {
@@ -2194,6 +2277,7 @@ fn choose(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::time::Duration;
 
     /// X11: only the main window waits for the refresh, and only while it's shown; XWayland:
     /// none (#347, #1025); elsewhere every window keeps what eframe gave it.
@@ -2233,7 +2317,7 @@ mod tests {
     #[test]
     fn the_hooks_ask_for_the_main_window_by_its_viewport() {
         use eframe::ViewportHooks as _;
-        let hooks = SwapHooks(Swaps::MainOnly);
+        let hooks = GlHooks(Swaps::MainOnly);
         let info = egui::ViewportInfo::default();
         assert!(hooks.swap_waits_for_vsync(egui::ViewportId::ROOT, &info, true));
         let dialog = egui::ViewportId::from_hash_of("dialog");
@@ -2243,6 +2327,64 @@ mod tests {
             ..Default::default()
         };
         assert!(!hooks.swap_waits_for_vsync(egui::ViewportId::ROOT, &minimized, true));
+    }
+
+    /// Every OpenGL start has the hooks (the paints that fail are watched, #1448), and they
+    /// leave the swaps as eframe gives them where the system's own choice is kept.
+    #[test]
+    fn every_opengl_start_has_the_hooks() {
+        use eframe::ViewportHooks as _;
+        let mut opts = eframe::NativeOptions::default();
+        configure(&mut opts, Attempt::OpenGl);
+        assert!(opts.viewport_hooks.is_some());
+        let hooks = GlHooks(Swaps::Own);
+        let info = egui::ViewportInfo::default();
+        let dialog = egui::ViewportId::from_hash_of("dialog");
+        for vsync in [true, false] {
+            assert_eq!(hooks.swap_waits_for_vsync(dialog, &info, vsync), vsync);
+        }
+        // A failure eframe tells of, short of a lost device, is only logged (no start again:
+        // this test would end).
+        hooks.gl_paint_failed(egui::ViewportId::ROOT, "test", 1, Duration::ZERO);
+        hooks.gl_paint_failed(dialog, "test", 9, Duration::from_secs(60));
+        #[cfg(gpu)]
+        {
+            let mut opts = eframe::NativeOptions::default();
+            configure(&mut opts, Attempt::Gpu(Adapters::Hardware));
+            assert!(opts.viewport_hooks.is_none());
+        }
+    }
+
+    /// A paint that fails now and then is passing; one that keeps failing is OpenGL lost, the
+    /// main window's sooner than a dialog's (#1448: Intel's wglMakeCurrent as a dialog closed).
+    #[test]
+    fn opengl_is_lost_when_its_paints_keep_failing() {
+        let s = Duration::from_secs;
+        // Once, or a few times quickly (a dialog closing): passing.
+        assert!(!gl_lost(true, 1, Duration::ZERO));
+        assert!(!gl_lost(false, 3, Duration::from_millis(300)));
+        // Many times, but not for long: passing still.
+        assert!(!gl_lost(true, 20, Duration::from_millis(1900)));
+        // For long, but only a few paints (the window is painted rarely): not yet.
+        assert!(!gl_lost(true, 4, s(60)));
+        // The main window: 5 paints over 2 s; another: 10 over 5 s.
+        assert!(gl_lost(true, 5, s(2)));
+        assert!(!gl_lost(false, 5, s(2)));
+        assert!(!gl_lost(false, 10, s(4)));
+        assert!(gl_lost(false, 10, s(5)));
+    }
+
+    /// A device lost twice within 10 minutes (Direct3D's, or OpenGL's context): its way fails.
+    #[test]
+    fn a_second_loss_within_ten_minutes_counts() {
+        let now = 1_800_000_000;
+        assert!(!lost_again(None, now));
+        assert!(lost_again(Some(now - 60), now));
+        assert!(lost_again(Some(now - 599), now));
+        assert!(!lost_again(Some(now - 600), now));
+        assert!(!lost_again(Some(now - 86_400), now));
+        // A clock set back since: as just now.
+        assert!(lost_again(Some(now + 30), now));
     }
 
     #[test]

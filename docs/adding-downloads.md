@@ -29,7 +29,8 @@ same progress window.
 - `ftps://` — implicit FTPS, port 990 unless the address gives another.
 
 The server's certificate is checked against Windows' (or the system's) trusted certificates, as
-for `https://`. A Linux system without them (a minimal install without the `ca-certificates`
+for `https://`, and against Mozilla's, the ones Firefox carries, where the system lacks the root
+a server's certificate comes from (an older Windows that hasn't fetched it yet). A Linux system without them (a minimal install without the `ca-certificates`
 package) still downloads over plain HTTP and FTP; each secure download then fails at once, saying
 to install that package.
 
@@ -50,8 +51,9 @@ password is not written to the resume file next to the download: MDM gives it ag
 resumes.
 
 **Connections.** Passive mode is used by default. **Options → Proxy / Socks → Use FTP in PASV
-mode** switches it off for servers that only take active connections. FTP connects to the
-server directly, not through the HTTP proxy.
+mode** switches it off for servers that only take active connections. FTP goes through a SOCKS
+proxy set in **Options → Proxy / Socks** (passive then, always; `ftps://` can't go through one
+yet), and connects to the server directly when the proxy is an HTTP one.
 
 Browsers no longer download `ftp://` links themselves. Right-click one and choose **Download with
 Mister Download Manager**, or copy it and use **Add URL**.
@@ -97,7 +99,7 @@ MDM asks the server for the file's name and size, and shows them in **Download F
 
 - **URL** — the address.
 - **Category** — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. **+** beside it makes a new category.
-- **Save As** — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose the folder and the file name in the system's Save dialog with **...** (a name typed there without an extension keeps the download's). If you choose a file that is already there and answer **Yes** when the dialog asks whether to replace it, the download replaces it once it is complete; until then the old file stays as it was, so it is kept if the download fails or you cancel it. A name already taken that you type in **Save As** itself never replaces anything: the download takes the next free name, such as `name (1).zip`.
+- **Save As** — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose the folder and the file name in the system's Save dialog with **...** (a name typed there without an extension keeps the download's). If you choose a file that is already there and answer **Yes** when the dialog asks whether to replace it, the download replaces it once it is complete; until then the old file stays as it was, so it is kept if the download fails or you cancel it. A name of a file that is already there that you type in **Save As** itself is asked about as you press **Start Download** or **Download Later**: **Add the duplicate with a numbered file name** takes the next free name, such as `name (1).zip`; **Add the duplicate and overwrite the existing file** replaces it once the download is complete, as above; **Cancel** goes back to the dialog. A name MDM gave that is taken by the time the download starts is numbered without asking.
 - **Remember this path for "…" category** — tick it to make the folder you typed the category's folder from now on.
 - **Description** — a note of your own. It shows in the list's **Description** column and Find can search it.
 - **Server** — where the server is: its country's flag and name, and how long a round trip to it takes. See [Where the server is](connections-and-speed.md#where-the-server-is). It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.
@@ -114,6 +116,8 @@ Then choose:
 By default MDM starts downloading while this window is open, so no time is lost while you decide. **Cancel** drops what it fetched. You can turn this off in **Options → Downloads → Start downloading immediately while displaying "Download File Info" dialog**.
 
 If the folder doesn't exist yet, MDM asks **Do you want to create it?** before it starts.
+
+Each link opens a **Download File Info** of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: **Download File Info (2)**, **(3)** and so on. **Esc** closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; **Cancel** asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the **Main download queue**, as with **Download Later**.
 
 ## Download Later
 

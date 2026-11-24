@@ -62,15 +62,11 @@ async function stamped(message) {
   return { ...message, userAgent: navigator.userAgent, brands, v: VERSION };
 }
 
-// Every message says which browser and extension version it comes from (the app keeps each
-// browser's status, and the rules depend on the browser). Never throws: failures come back as
-// `{ok: false, why}`.
+// A message to this computer's MDM, through its host: only ever this computer's, whatever "Send
+// downloads to" says (a download for another MDM goes through `download`). Every message says
+// which browser and extension version it comes from (the app keeps each browser's status, and
+// the rules depend on the browser). Never throws: failures come back as `{ok: false, why}`.
 async function native(message, ms = HOST_WAIT) {
-  // A download for another MDM (a server, #157): sent there, not to this computer's.
-  if (typeof message.url === "string" && message.url) {
-    const target = await remoteTarget();
-    if (target) return remoteSend(target, message);
-  }
   const sent = await stamped(message);
   try {
     const reply = (await withTimeout(ext.runtime.sendNativeMessage(HOST, sent), ms)) || {};
@@ -89,7 +85,43 @@ async function native(message, ms = HOST_WAIT) {
   }
 }
 
+// The kinds of message that are a download, and only these, go to another MDM when one is
+// chosen (#157: its remote control's api/add, which adds the address to its list). A whitelist:
+// any other message (the video button's "may it show here", the rules, a look-up, a setting, a
+// window to open) is for this computer's MDM, never a download there. Pointing at videos added
+// the page to the other MDM's list every few seconds while the button's question went there too.
+//  - "file": a download handed over (`handOff`: the browser's own, a link page.js held, the
+//    right-click menu's link, a file in the popup's media list);
+//  - "video": Download video asked for (the button's click, the right-click menu over a player
+//    or on a stream's manifest, a stream in the popup's media list).
+const REMOTE_ADD = new Set(["file", "video"]);
+
+// A download (`kind`, one of REMOTE_ADD) for MDM: to the other MDM when one is chosen, else to
+// this computer's. Never throws.
+async function download(kind, message) {
+  if (REMOTE_ADD.has(kind) && typeof message.url === "string" && message.url) {
+    const target = await remoteTarget();
+    if (target) return remoteSend(target, message);
+  }
+  const reply = await native(message);
+  // A download handed over: the toolbar button counts it while it runs (#1496).
+  if (reply.ok) watchRecent();
+  return reply;
+}
+
 // ---- another MDM (#157): a server's, through its remote control ------------------------------
+
+// A list of all known paired servers: [{url, token}, ...]
+async function readRemotes() {
+  const { remotes, remote } = await ext.storage.local.get({ remotes: null, remote: null });
+  if (Array.isArray(remotes)) return remotes.filter((r) => r && r.url && r.token);
+  if (remote && remote.url && remote.token) {
+    const list = [remote];
+    await ext.storage.local.set({ remotes: list });
+    return list;
+  }
+  return [];
+}
 
 // {url, token} while downloads go to another MDM instead of this computer's, else null.
 async function remoteTarget() {
@@ -129,7 +161,13 @@ async function remoteCall(base, path, body, token) {
 async function remoteSend(target, message) {
   const r = await remoteCall(target.url, "api/add", { url: message.url, start: true }, target.token);
   if (r.status === 200 && r.body && !r.body.error) return { ok: true };
-  if (r.status === 401) await ext.storage.local.set({ remote: null }); // unpaired there
+  if (r.status === 401) {
+    const list = await readRemotes();
+    const updated = list.filter((item) => !(item.url === target.url && item.token === target.token));
+    const { remote } = await ext.storage.local.get({ remote: null });
+    const nextRemote = remote && remote.url === target.url && remote.token === target.token ? null : remote;
+    await ext.storage.local.set({ remotes: updated, remote: nextRemote });
+  }
   return { ok: false, why: "refused" };
 }
 
@@ -151,7 +189,11 @@ async function remotePair(address, code) {
   const name = ext.i18n.getMessage("remote_device_name") || "Browser";
   const r = await remoteCall(base, "api/pair", { code: String(code), name }, null);
   if (r.status === 200 && r.body && typeof r.body.token === "string") {
-    await ext.storage.local.set({ remote: { url: base, token: r.body.token } });
+    const list = await readRemotes();
+    const updated = list.filter((item) => item.url !== base);
+    const item = { url: base, token: r.body.token };
+    updated.push(item);
+    await ext.storage.local.set({ remotes: updated, remote: item });
     await refreshRules();
     await showStatus();
     return { ok: true };
@@ -160,15 +202,326 @@ async function remotePair(address, code) {
   return { ok: false, why, left: r.body && r.body.left };
 }
 
-// Back to this computer: unpaired there too (when it answers).
-async function remoteOff() {
-  const target = await remoteTarget();
+// Switch active remote to a previously paired MDM at `url`.
+async function remoteSelect(url) {
+  const list = await readRemotes();
+  const target = list.find((item) => item.url === url);
+  if (target) {
+    await ext.storage.local.set({ remote: target });
+    await refreshRules();
+    await showStatus();
+    return { ok: true };
+  }
+  return { ok: false, why: "not-found" };
+}
+
+// Forget a paired MDM at `url`: unpair there (when it answers) and remove from remotes.
+async function remoteForget(url) {
+  const list = await readRemotes();
+  const target = list.find((item) => item.url === url);
   if (target) await remoteCall(target.url, "api/forget", {}, target.token);
+  const updated = list.filter((item) => item.url !== url);
+  const { remote } = await ext.storage.local.get({ remote: null });
+  const nextRemote = remote && remote.url === url ? null : remote;
+  await ext.storage.local.set({ remotes: updated, remote: nextRemote });
+  await refreshRules();
+  await showStatus();
+  return { ok: true };
+}
+
+// Back to this computer: active remote set to null without forgetting paired remotes.
+async function remoteOff() {
   await ext.storage.local.set({ remote: null });
   await refreshRules();
   await showStatus();
   return { ok: true };
 }
+
+// ---- the popup's Downloads tab and the toolbar button's count (#1496) ------------------------
+
+// While the popup is open, its Downloads tab gets MDM's newest downloads every second through a
+// port of its own ("recent"): from this computer's MDM over one native port (one helper process
+// for as long as it is open, not one per question; Safari, which has none, asks one message at
+// a time), or from another MDM's remote control (#157), whose list is cut to the same view here
+// (`recentView`). The toolbar button counts this computer's running downloads: watched every few
+// seconds while any runs (an open native port keeps the background alive in Chromium), and no
+// longer once none does. A download handed over starts the watch, as does the popup.
+const RECENT_EVERY = 1000;
+const BADGE_EVERY = 3000;
+// How long one answer through the native port may take (the app answers within 3 s, or says it
+// is busy).
+const RECENT_WAIT = 6000;
+// The most rows the popup asks for (the app's limit is mdm_ipc::RECENT_MAX).
+const RECENT_MAX = 200;
+
+let nativePort = null;
+// Resolvers of the port's questions, in the order asked: the helper answers each in turn.
+let hostWaiting = [];
+// The popup's ports, each with what it asks: {port, ask, sent: icon keys it has}.
+const recentPorts = new Set();
+let recentTimer = null;
+let recentBusy = false;
+// The file type icons, by key, at `iconPx` pixels (the popup's size for them on this screen).
+let icons = new Map();
+let iconPx = 0;
+// Downloads running in this computer's MDM, as last heard (the toolbar button's count).
+let runningNow = 0;
+
+// One question to the helper through the native port, opened when needed; never throws.
+function hostAsk(message) {
+  if (SAFARI || !ext.runtime.connectNative) return nativeQuietly(message);
+  return new Promise(async (resolve) => {
+    if (!nativePort) {
+      try {
+        nativePort = ext.runtime.connectNative(HOST);
+      } catch (e) {
+        resolve({ ok: false, why: hostProblem(e) });
+        return;
+      }
+      const port = nativePort;
+      port.onMessage.addListener((reply) => {
+        const next = hostWaiting.shift();
+        if (next) next(reply || {});
+      });
+      port.onDisconnect.addListener(() => {
+        const e = ext.runtime.lastError || port.error;
+        if (nativePort === port) nativePort = null;
+        const why = e ? hostProblem(e) : "not-running";
+        for (const r of hostWaiting.splice(0)) r({ ok: false, why });
+      });
+    }
+    let done = false;
+    const timer = setTimeout(() => {
+      if (done) return;
+      done = true;
+      // A helper that stopped answering: started again for the next question.
+      const i = hostWaiting.indexOf(finish);
+      if (i >= 0) hostWaiting.splice(i, 1);
+      closeHostPort();
+      resolve({ ok: false, why: "not-running" });
+    }, RECENT_WAIT);
+    const finish = (reply) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve(reply);
+    };
+    hostWaiting.push(finish);
+    try {
+      nativePort.postMessage(await stamped(message));
+    } catch (e) {
+      finish({ ok: false, why: hostProblem(e) });
+    }
+  });
+}
+
+// One message to the helper, by itself (Safari), with nothing noted of the browser's status: the
+// list's answers carry no version (`native` would take the browser for connected to an app that
+// needs no update), and say whether the app runs in their own words.
+async function nativeQuietly(message) {
+  try {
+    return (await withTimeout(ext.runtime.sendNativeMessage(HOST, await stamped(message)), RECENT_WAIT)) || {};
+  } catch (e) {
+    return { ok: false, why: hostProblem(e) };
+  }
+}
+
+function closeHostPort() {
+  const port = nativePort;
+  nativePort = null;
+  for (const r of hostWaiting.splice(0)) r({ ok: false, why: "not-running" });
+  try {
+    if (port) port.disconnect();
+  } catch {
+    // Already gone.
+  }
+}
+
+// A download's place in the popup's filters (mdm_ipc::api::recent_filter).
+function recentFilterOf(status) {
+  return { Downloading: "running", Complete: "done", Error: "failed" }[status] || null;
+}
+
+// The popup's view of a whole list (another MDM's, whose remote control lists every download):
+// the same as the app's (mdm_ipc::api::RecentAnswer::of; a test keeps them alike): every word
+// of the search in the file's name or its address, the filter, newest first, the limit; the
+// counts of each filter for the search, the running ones whatever the search.
+function recentView(downloads, ask, speed = 0) {
+  const list = Array.isArray(downloads) ? downloads : [];
+  const words = String(ask.search || "").toLowerCase().split(/\s+/).filter(Boolean);
+  const found = (d) => {
+    const file = String(d.file || "").toLowerCase();
+    const url = String(d.url || "").toLowerCase();
+    return words.every((w) => file.includes(w) || url.includes(w));
+  };
+  const running = list.filter((d) => recentFilterOf(d.status) === "running").length;
+  const matching = list.filter(found);
+  const counts = { all: matching.length, running: 0, done: 0, failed: 0 };
+  for (const d of matching) {
+    const f = recentFilterOf(d.status);
+    if (f) counts[f]++;
+  }
+  const filter = ["running", "done", "failed"].includes(ask.filter) ? ask.filter : null;
+  const rows = (filter ? matching.filter((d) => recentFilterOf(d.status) === filter) : matching)
+    .slice()
+    .sort((a, b) => b.id - a.id)
+    .slice(0, Math.max(0, Math.min(Number(ask.limit) || 0, RECENT_MAX)));
+  return { downloads: rows, counts, running, speed, icons: {}, share: false };
+}
+
+// The question as the helper takes it: within bounds, with the icons already here.
+function recentQuestion(ask) {
+  const px = Math.min(64, Math.max(16, Math.round(Number(ask.px) || 24)));
+  if (px !== iconPx) {
+    icons = new Map();
+    iconPx = px;
+  }
+  return {
+    filter: ["all", "running", "done", "failed"].includes(ask.filter) ? ask.filter : "all",
+    search: String(ask.search || "").slice(0, 200),
+    limit: Math.max(0, Math.min(Number(ask.limit) || 0, RECENT_MAX)),
+    have: [...icons.keys()],
+    px,
+  };
+}
+
+// A GET of the remote control's API (its list); {status, body} as remoteCall.
+async function remoteGet(base, path, token) {
+  try {
+    const r = await withTimeout(
+      fetch(new URL(path, base), {
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: "omit",
+        cache: "no-store",
+        redirect: "error",
+      }),
+      15000,
+    );
+    let json = null;
+    try {
+      json = await r.json();
+    } catch {
+      json = null;
+    }
+    return { status: r.status, body: json };
+  } catch {
+    return { status: 0, body: null };
+  }
+}
+
+// The popup's list for `ask`: {ok, list, remote} or {ok: false, appState, why, remote}.
+async function recentList(ask) {
+  const target = await remoteTarget();
+  if (target) {
+    const r = await remoteGet(target.url, "api/list", target.token);
+    if (r.status === 200 && r.body && Array.isArray(r.body.downloads)) {
+      return { ok: true, remote: target.url, list: recentView(r.body.downloads, ask, r.body.speed || 0) };
+    }
+    return { ok: false, remote: target.url, why: r.status === 401 ? "not-paired" : "unreachable" };
+  }
+  const reply = await hostAsk({ recent: recentQuestion(ask) });
+  if (reply.ok && reply.recent) {
+    // Answered: the helper and the app are there (an update the app needs is still said).
+    const { why } = await readStatus();
+    if (why && why !== "update-app") await noteStatus(null);
+    for (const [key, url] of Object.entries(reply.recent.icons || {})) {
+      if (typeof url === "string" && /^data:image\/(png|svg\+xml);base64,/.test(url)) icons.set(key, url);
+    }
+    await noteRunning(Number(reply.recent.running) || 0);
+    return { ok: true, remote: null, list: reply.recent };
+  }
+  // Not answered: MDM not running (`off`), older than the list (`old`: an older helper refuses
+  // the question), busy, or not reached (`why`).
+  const old = reply.why === "refused";
+  if (reply.why && !old) await noteStatus(reply.why);
+  await noteRunning(0);
+  return { ok: false, remote: null, appState: reply.appState || (old ? "old" : null), why: old ? null : reply.why || null };
+}
+
+// Ask again now, then every RECENT_EVERY while a popup is open, every BADGE_EVERY while this
+// computer's MDM runs a download; else the watch ends (and the helper with it).
+function watchRecent(now = true) {
+  if (recentTimer) clearTimeout(recentTimer);
+  recentTimer = setTimeout(recentTick, now ? 0 : recentPorts.size ? RECENT_EVERY : BADGE_EVERY);
+}
+
+async function recentTick() {
+  recentTimer = null;
+  if (recentBusy) return watchRecent(false);
+  recentBusy = true;
+  try {
+    if (recentPorts.size) {
+      for (const p of [...recentPorts]) {
+        const got = await recentList(p.ask);
+        if (!recentPorts.has(p)) continue;
+        const fresh = {};
+        for (const [k, v] of icons) {
+          if (!p.sent.has(k)) {
+            fresh[k] = v;
+            p.sent.add(k);
+          }
+        }
+        try {
+          p.port.postMessage({ type: "list", ...got, icons: fresh, px: iconPx });
+        } catch {
+          recentPorts.delete(p);
+        }
+      }
+    } else if (!(await remoteTarget())) {
+      await recentList({ limit: 0 });
+    }
+  } finally {
+    recentBusy = false;
+  }
+  if (recentPorts.size || (runningNow > 0 && !(await remoteTarget()))) watchRecent(false);
+  else closeHostPort();
+}
+
+// One of the popup's buttons on a download: here, or on the other MDM (what its remote control
+// takes: pause, start, remove).
+async function recentAct(act, id) {
+  const target = await remoteTarget();
+  let reply;
+  if (target) {
+    const action = { pause: "pause", resume: "start", remove: "remove" }[act];
+    if (!action) return { ok: false, why: "unsupported" };
+    const r = await remoteCall(target.url, "api/act", { action, ids: [id] }, target.token);
+    const done = r.status === 200 && r.body && Array.isArray(r.body.done) && r.body.done.includes(id);
+    reply = done ? { ok: true } : { ok: false, why: r.status === 0 ? "unreachable" : "cant" };
+  } else {
+    const r = await hostAsk({ downloadAct: { act, id: Number(id) || 0 } });
+    reply = r.act ? { ok: Boolean(r.act.done), why: r.act.why || null } : { ok: false, why: r.appState || r.why || "failed" };
+  }
+  watchRecent();
+  return reply;
+}
+
+// The toolbar button's count, kept for the browser's next start of this script (storage.session:
+// memory only, gone with the browser), where the watch goes on while it is above 0.
+async function noteRunning(n) {
+  if (n === runningNow) return;
+  runningNow = n;
+  await showStatus();
+  if (ext.storage.session) await ext.storage.session.set({ running: n }).catch(() => {});
+}
+
+ext.runtime.onConnect.addListener((port) => {
+  const sender = port.sender || {};
+  // Only the popup (or its page in a tab of its own): never a page's script.
+  if (port.name !== "recent" || sender.id !== ext.runtime.id || !String(sender.url || "").startsWith(ext.runtime.getURL(""))) return;
+  const p = { port, ask: { filter: "all", search: "", limit: 60, px: 24 }, sent: new Set() };
+  recentPorts.add(p);
+  port.onMessage.addListener((m) => {
+    if (!m || m.type !== "ask") return;
+    p.ask = { ...p.ask, ...(m.ask || {}) };
+    watchRecent();
+  });
+  port.onDisconnect.addListener(() => {
+    recentPorts.delete(p);
+    if (!recentPorts.size) watchRecent(false);
+  });
+  watchRecent();
+});
 
 // a < b, both "x.y.z".
 // Is version `a` an older release than `b`? Only the first two numbers count: the store can publish
@@ -213,13 +566,19 @@ async function noteLookup(on) {
   await ext.storage.local.set({ status });
 }
 
+// The badge: "!" while MDM can't be reached, "II" while paused, else how many downloads run in
+// this computer's MDM (#1496), in MDM's blue.
 async function showStatus() {
-  const why = (await remoteTarget()) ? null : (await readStatus()).why;
+  const remote = await remoteTarget();
+  const why = remote ? null : (await readStatus()).why;
   const { paused } = await ext.storage.local.get({ paused: false });
+  const running = !remote && !why && !paused && runningNow > 0 ? (runningNow > 99 ? "99+" : String(runningNow)) : "";
   try {
-    await action.setBadgeBackgroundColor({ color: why ? "#C42B1C" : "#6B6B6B" });
-    await action.setBadgeText({ text: why && why !== "update-app" ? "!" : paused ? "II" : "" });
-    await action.setTitle({ title: why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : t("status_connected") });
+    await action.setBadgeBackgroundColor({ color: why ? "#C42B1C" : running ? "#0078D4" : "#6B6B6B" });
+    if (action.setBadgeTextColor) await action.setBadgeTextColor({ color: "#FFFFFF" }).catch(() => {});
+    await action.setBadgeText({ text: why && why !== "update-app" ? "!" : paused ? "II" : running });
+    const title = why ? t(`status_${why.replace(/-/g, "_")}`) : paused ? t("status_paused") : t("status_connected");
+    await action.setTitle({ title: running ? `${title}\n${t("status_running", running)}` : title });
   } catch {
     // No toolbar button (a browser without one): the popup and the help page still say it.
   }
@@ -566,16 +925,22 @@ function firstUrl(item) {
 
 // Links clicked with Alt (Option on a Mac) held (page.js): the browser keeps their download. By
 // the link's address (the click's own download, the start of a redirect), and once per click the
-// download that follows it under another address in the next seconds (#332): one in the same
-// tab (Firefox says which tab a page load is in), or one whose referrer is the link or the page
-// it was on (a page's script that starts the download, a link to a page whose script does).
+// download that follows it under another address (#332): one whose referrer is the link's own
+// page (a bot check's page that sends to the file once its script ran, #1494), or, in the next
+// seconds, one in the same tab (Firefox says which tab a page load is in) or whose referrer is the
+// page the link was on (a page's script that starts the download, a link to a page whose script
+// does).
 const bypass = new Map(); // address -> {at, tab, page, used}
+// The page a link opens may be a site's bot check ("Just a moment...", Cloudflare's): its script
+// runs in the tab (some want a box ticked) before the file comes. The link's own address, and a
+// download its page starts, stay the browser's that long; anything else only BYPASS_MS.
+const BYPASS_CHECK_MS = 60000;
 const BYPASS_MS = 10000;
 
 // `clicked`: the download is a link the user just clicked without Alt (Safari's `link`), never
 // one that follows an Alt+click.
 function altClicked(item, url, first, clicked = false) {
-  forget(bypass, BYPASS_MS);
+  forget(bypass, BYPASS_CHECK_MS);
   const exact = [item.url, url, first].map((u) => u && bypass.get(u)).find(Boolean);
   if (exact) {
     exact.used = true;
@@ -583,15 +948,33 @@ function altClicked(item, url, first, clicked = false) {
   }
   if (clicked) return false;
   const ref = item.referrer || "";
+  const now = Date.now();
   for (const [link, b] of bypass) {
     if (b.used) continue;
-    const tab = Number.isInteger(item.tabId) && item.tabId >= 0 && item.tabId === b.tab;
-    if (tab || fromPage(ref, link) || fromPage(ref, b.page)) {
+    const soon = now - b.at <= BYPASS_MS;
+    const tab = soon && Number.isInteger(item.tabId) && item.tabId >= 0 && item.tabId === b.tab;
+    if (tab || linkPage(ref, link) || (soon && (fromPage(ref, link) || fromPage(ref, b.page)))) {
       b.used = true;
       return true;
     }
   }
   return false;
+}
+
+// Whether `ref` (a download's referrer) is the page at `link` itself: the same address, give or
+// take what its own script added to its query (Cloudflare's check puts its token there) and its
+// #part. Never only the site's address: that may be any of its pages.
+function linkPage(ref, link) {
+  if (!ref || !link) return false;
+  try {
+    const r = new URL(ref);
+    const l = new URL(link);
+    if (r.origin !== l.origin || r.pathname !== l.pathname) return false;
+    for (const [k, v] of l.searchParams) if (!r.searchParams.getAll(k).includes(v)) return false;
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // Whether `ref` (a download's referrer) names `page`: the same address without its #part, or
@@ -1639,7 +2022,7 @@ async function mediaDownload(tabId, url) {
   const page = frame && /^https?:/i.test(frame) ? frame : tab.url || "";
   const ctx = { incognito: Boolean(tab.incognito), storeId: tab.cookieStoreId };
   if (isStream(it)) {
-    return native({
+    return download("video", {
       video: true,
       // Asked for: whether the button over videos shows on this site doesn't matter.
       explicit: true,
@@ -2037,7 +2420,7 @@ async function handOff(d) {
     // Through the browser's proxy too (#42): the one its own request for the file took.
     ...(await browserProxy(d.finalUrl || d.url, d.incognito)),
   };
-  return native(message);
+  return download("file", message);
 }
 
 // Telegram Web (web.telegram.org: its K and A apps) downloads a file through its own service
@@ -2402,7 +2785,7 @@ function dispositionName(cd) {
   const star = /filename\*\s*=\s*([\w-]+)'[^']*'([^;]+)/i.exec(cd);
   if (star) {
     try {
-      return decodeURIComponent(star[2].trim().replace(/^"|"$/g, ""));
+      return decodeURIComponent(escapedSeparators(star[2].trim().replace(/^"|"$/g, "")));
     } catch {
       // Not percent-encoded as it says: the plain name below.
     }
@@ -2412,16 +2795,92 @@ function dispositionName(cd) {
   return decodedPlain((plain[2] !== undefined ? plain[2].replace(/\\(.)/g, "$1") : plain[1]).trim());
 }
 
-// A plain `filename` as sent, or its percent-encoded UTF-8 decoded when that is what it holds
-// (non-ASCII once decoded: `100%25.txt` stays as it is), as the app reads it (naming.rs).
+// A plain `filename` as Chrome and Firefox read it (#1427), and the app (naming.rs
+// `decode_plain`): RFC 2047's encoded words (`=?UTF-8?B?…?=`) decoded, else its percent-encoding
+// whenever that decodes to UTF-8 (`My%20Report.pdf` is "My Report.pdf"), else as sent.
 function decodedPlain(name) {
+  const words = encodedWords(name);
+  if (words !== null) return words;
   if (!name.includes("%")) return name;
-  try {
-    const decoded = decodeURIComponent(name);
-    return /[^\x00-\x7f]/.test(decoded) ? decoded : name;
-  } catch {
-    return name; // not percent-encoded UTF-8
+  // Byte by byte, as the app: an escape that isn't one (`50%off`) stays as it is.
+  const bytes = new TextEncoder().encode(escapedSeparators(name));
+  const out = [];
+  for (let i = 0; i < bytes.length; i++) {
+    const hex = String.fromCharCode(bytes[i + 1] || 0, bytes[i + 2] || 0);
+    if (bytes[i] === 0x25 && /^[0-9a-f]{2}$/i.test(hex)) {
+      out.push(parseInt(hex, 16));
+      i += 2;
+    } else out.push(bytes[i]);
   }
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(out));
+  } catch {
+    return name; // not UTF-8 once decoded
+  }
+}
+
+// A name's percent-encoded `/` and `\` as `_`, as Chrome and Firefox save them (naming.rs
+// `escaped_separators`): a character of the name, never a folder.
+function escapedSeparators(name) {
+  return name.replace(/%(2f|5c)/gi, "_");
+}
+
+// `name` with its RFC 2047 encoded words (`=?charset?B|Q?text?=`, UTF-8 or ISO-8859-1) decoded,
+// the space between two of them dropped; null when it has none, or one it can't read (naming.rs
+// `encoded_words`).
+function encodedWords(name) {
+  const word = /=\?([^?\s]+)\?([bq])\?([^?\s]*)\?=/gi;
+  let out = "";
+  let at = 0;
+  let any = false;
+  for (let m; (m = word.exec(name)); ) {
+    const text = wordText(m[1], m[2], m[3]);
+    if (text === null) return null;
+    const between = name.slice(at, m.index);
+    // Only space between two encoded words isn't the name's.
+    out += any && /^\s*$/.test(between) ? "" : between;
+    out += text;
+    at = m.index + m[0].length;
+    any = true;
+  }
+  return any ? out + name.slice(at) : null;
+}
+
+// An encoded word's text: its bytes base64 (B) or quoted-printable with `_` for a space (Q), in
+// UTF-8 or ISO-8859-1 (and US-ASCII); null for anything else.
+function wordText(charset, kind, text) {
+  let bytes;
+  if (kind.toLowerCase() === "b") {
+    try {
+      bytes = Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
+    } catch {
+      return null;
+    }
+  } else {
+    const out = [];
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === "_") out.push(0x20);
+      else if (text[i] === "=") {
+        const hex = text.slice(i + 1, i + 3);
+        if (!/^[0-9a-f]{2}$/i.test(hex)) return null;
+        out.push(parseInt(hex, 16));
+        i += 2;
+      } else if (text.charCodeAt(i) < 0x80) out.push(text.charCodeAt(i));
+      else return null;
+    }
+    bytes = Uint8Array.from(out);
+  }
+  // RFC 2231's language after a `*` (`UTF-8*en`) isn't the charset's.
+  const cs = charset.split("*")[0].toLowerCase();
+  if (cs === "utf-8" || cs === "utf8") {
+    try {
+      return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    } catch {
+      return null;
+    }
+  }
+  if (["iso-8859-1", "iso_8859-1", "latin1", "us-ascii"].includes(cs)) return String.fromCharCode(...bytes);
+  return null;
 }
 
 // A response header's value as text. Firefox gives its bytes one character each (ISO-8859-1), so
@@ -2673,7 +3132,7 @@ async function menuClicked(info, tab) {
     // The manifest's own cookies (its server may not be the page's), as the media list sends.
     if (url && MANIFEST.test(url)) {
       await mediaBack;
-      const reply = await native({ video: true, explicit: true, url: info.pageUrl, src: url, title, ...(await streamContext(tab && tab.id, url, { incognito, storeId })), private: incognito });
+      const reply = await download("video", { video: true, explicit: true, url: info.pageUrl, src: url, title, ...(await streamContext(tab && tab.id, url, { incognito, storeId })), private: incognito });
       if (!reply.ok && reply.why !== "options") explain(reply.why);
       return;
     }
@@ -2686,7 +3145,7 @@ async function menuClicked(info, tab) {
       const page = info.frameUrl || info.pageUrl;
       await mediaBack;
       const src = await streamFor({ tab, frameId: info.frameId || 0 });
-      const reply = await native({
+      const reply = await download("video", {
         video: true,
         explicit: true,
         url: page,
@@ -2741,6 +3200,8 @@ ext.runtime.onInstalled.addListener(async (details) => {
 ext.runtime.onStartup.addListener(() => {
   refreshRules();
   showStatus();
+  // Downloads MDM runs from before the browser started: counted at once.
+  watchRecent();
 });
 
 // A match pattern's host and path as a test (`*://*.youtube.com/*`).
@@ -2795,7 +3256,9 @@ async function injectOpenTabs() {
 // (#532: it was kept a minute, and by the page for good). A failure to reach it isn't kept.
 // `top`: the tab's address, when the frame asking is another page's (a player embedded from
 // another site): the button stays off there too when the tab's site is listed. With it, its size
-// (#1278: Options → Download panels → Button size): `compact`, the round button over every video.
+// (#1278: Options → Download panels → Button size): `compact`, the round button over every video;
+// `full` (only when chosen: an older app never says it), its words wherever they fit; neither,
+// Automatic (video.js sizeMode).
 const PANEL_KEEP_MS = 5000;
 const panelCache = new Map();
 async function panelOn(page, top) {
@@ -2806,9 +3269,13 @@ async function panelOn(page, top) {
   forget(panelCache, PANEL_KEEP_MS);
   if (panelCache.get(site)?.hidden) return { on: false, compact: false };
   const kept = panelCache.get(key);
-  if (kept) return { on: kept.on, compact: kept.compact };
-  const reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
-  const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact) };
+  if (kept) return { on: kept.on, compact: kept.compact, ...(kept.full ? { full: true } : {}) };
+  // Always this computer's MDM's Options: a question, never a download (`download`). With another
+  // MDM chosen and none here to ask, the button shows, as Options have it at first: the other
+  // MDM's remote control adds and lists downloads, it has no Options to ask.
+  let reply = await native({ panel: true, url: page, ...(key !== site ? { referrer: top } : {}) });
+  if (!reply.ok && reply.why && (await remoteTarget())) reply = { ok: true };
+  const answer = { on: Boolean(reply.ok), compact: Boolean(reply.ok && reply.compact), ...(reply.ok && reply.full === true ? { full: true } : {}) };
   if (reply.ok || !reply.why) panelCache.set(key, { ...answer, at: Date.now() });
   return answer;
 }
@@ -2846,6 +3313,10 @@ function playingAt(x, y) {
 }
 
 const isYouTube = (url) => /(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/i.test(siteOf(url));
+const isDrive = (url) => /(^|\.)(?:drive|docs)\.google\.com$/i.test(siteOf(url));
+const isDriveFile = (url) =>
+  /\/file\/d\/[\w-]{25,}/.test(url) ||
+  (/\/(?:uc|open)\b/.test(url) && /[?&]id=[\w-]{25,}/.test(url));
 
 // The watch address of what the player at `at` (the video's middle, in the sender's frame) plays,
 // or "": a page without such a player, one too old for `world`, a page extensions may not read.
@@ -2888,6 +3359,11 @@ async function videoAddress(m, page, sender) {
   if (isYouTube(page)) {
     const playing = await playingVideo(sender, m.at);
     return playing || (isYouTube(named) ? named : "");
+  }
+  if (isDrive(page)) {
+    if (isDriveFile(named)) return named;
+    if (isDriveFile(page)) return page;
+    return "";
   }
   if (m.url === null) return "";
   return named && siteKey(named) === siteKey(page) ? named : page;
@@ -3027,6 +3503,28 @@ const beside = (tab) => ({
 async function pageMessage(m, sender) {
   const page = senderPage(sender);
   const tab = sender.tab || {};
+  // #758: on Google Drive, pointer movement inside a player's subframe informs the top frame
+  // so the floating button stays visible while hovering over the cross-origin player.
+  if (m.type === "drive-frame-pointer") {
+    const tabId = tab.id;
+    const tabUrl = tab.url || "";
+    const senderUrl = sender.url || "";
+    const isPlayer =
+      (/(^|\.)youtube\.googleapis\.com$/i.test(siteOf(senderUrl)) &&
+        (/[?&](?:driveid|docid)=/.test(senderUrl) || /[?&]ps=docs\b/.test(senderUrl))) ||
+      (isDrive(senderUrl) && (/\/file\/d\/[^/]+\/preview/.test(senderUrl) || /\/viewer\/main\b/.test(senderUrl)));
+    if (
+      Number.isInteger(tabId) &&
+      Number.isInteger(sender.frameId) &&
+      sender.frameId !== 0 &&
+      isDrive(tabUrl) &&
+      isPlayer
+    ) {
+      ext.tabs.sendMessage(tabId, { type: "drive-frame-pointer" }, { frameId: 0 }).catch(() => {});
+      return { ok: true };
+    }
+    return { ok: false };
+  }
   if (m.type === "panel") {
     const top = tab.url && /^https?:/i.test(tab.url) ? tab.url : "";
     return page ? await panelOn(page, top) : { on: false, compact: false };
@@ -3058,7 +3556,7 @@ async function pageMessage(m, sender) {
     const direct = Boolean(m.direct) && Boolean(v.file) && v.file === v.src;
     // A file a player fetched in ranges (#1092) as one it plays itself.
     const loaded = direct && playedItem(tab.id, v.src);
-    const reply = await native({
+    const reply = await download("video", {
       video: true,
       url: v.own,
       ...(v.src ? { src: v.src } : {}),
@@ -3070,6 +3568,8 @@ async function pageMessage(m, sender) {
       cookieJar: v.cookieJar,
       ...(v.fetchedWith ? { fetchedWith: v.fetchedWith } : {}),
       ...(tab.incognito ? { private: true } : {}),
+      // #1662: "Download a part from here...": the window with Part ticked, From at this second.
+      ...(!direct && Number.isInteger(m.part) && m.part >= 0 ? { part: m.part } : {}),
     });
     return { ok: Boolean(reply.ok), why: reply.why, ...(reply.ok && direct ? { show: v.src } : {}) };
   }
@@ -3116,10 +3616,13 @@ async function popupMessage(m) {
     const s = await readStatus();
     const { declined } = await ext.storage.local.get({ declined: null });
     const remote = await remoteTarget();
-    if (remote) return { connected: true, why: null, remote: remote.url, version: VERSION, paused, declined };
-    return { connected: Boolean(r) && (!s.why || s.why === "update-app"), why: s.why, app: s.app, version: VERSION, paused, declined };
+    const remotes = (await readRemotes()).map((x) => x.url);
+    if (remote) return { connected: true, why: null, remote: remote.url, remotes, version: VERSION, paused, declined };
+    return { connected: Boolean(r) && (!s.why || s.why === "update-app"), why: s.why, app: s.app, remote: null, remotes, version: VERSION, paused, declined };
   }
   if (m.type === "remote-pair" && typeof m.url === "string" && typeof m.code === "string") return remotePair(m.url, m.code);
+  if (m.type === "remote-select" && typeof m.url === "string") return remoteSelect(m.url);
+  if (m.type === "remote-forget" && typeof m.url === "string") return remoteForget(m.url);
   if (m.type === "remote-off") return remoteOff();
   if (m.type === "pause") {
     await ext.storage.local.set({ paused: Boolean(m.paused) });
@@ -3148,6 +3651,8 @@ async function popupMessage(m) {
     return { excluded: undo || Boolean(r && siteListed(r, host)), undo };
   }
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
+  // The Downloads tab's buttons on a download (#1496).
+  if (m.type === "download-act" && typeof m.act === "string" && Number.isInteger(m.id)) return recentAct(m.act, m.id);
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };
   // The media the popup's tab loaded (#38), and one of them handed to the app.
   if (m.type === "media" && Number.isInteger(m.tab)) {
@@ -3180,5 +3685,12 @@ ext.runtime.onMessage.addListener((m, sender, sendResponse) => {
 });
 
 showStatus();
+// This script started again while MDM ran downloads (the browser stops it when idle): counted on.
+if (ext.storage.session) {
+  ext.storage.session
+    .get({ running: 0 })
+    .then((v) => (Number(v.running) > 0 ? ((runningNow = Number(v.running)), watchRecent()) : null))
+    .catch(() => {});
+}
 // Rules kept from before, else asked now (a first start, storage cleared).
 storedRules().then((r) => (r ? syncOpenedRule() : refreshRules()));

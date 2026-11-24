@@ -431,7 +431,8 @@ fn title_of<'a>(v: &'a Video, address: &str, context: &'a mdm_ipc::Command) -> &
 }
 
 /// Choice `c` as the browser's quality menu shows it: its label in MDM's language, and what the
-/// menu's line says beside it (#755: height, codec, frame rate, range; #801: an about size).
+/// menu's line says beside it (#755: height, codec, frame rate, range; #801: an about size;
+/// #1439: the most compatible one).
 fn menu_choice(c: &Choice) -> VideoChoice {
     VideoChoice {
         label: crate::videodlg::choice_label(&c.label),
@@ -445,6 +446,7 @@ fn menu_choice(c: &Choice) -> VideoChoice {
         codec: c.codec.clone(),
         range: c.range.clone(),
         approx: c.approx && c.size.is_some(),
+        compatible: mdm_tools::resolve::is_compatible(c),
     }
 }
 
@@ -525,6 +527,7 @@ pub fn video_add(
         // The page's title, shortened to fit (#1102).
         named: false,
         duration: crate::videodlg::whole_seconds(p.video.duration),
+        part: None,
     })
 }
 
@@ -749,7 +752,10 @@ mod tests {
         assert_eq!(p.context.user_agent.as_deref(), Some("UA"));
         assert_eq!(p.context.video_title.as_deref(), Some("A talk: in Lisbon"));
         assert!(!p.context.private && !p.context.startup);
-        assert_eq!(p.choice.selector, "hls-800/b[height=360]");
+        assert_eq!(
+            p.choice.selector,
+            "hls-800/b[height=360][vcodec^=avc1]/b[height=360]"
+        );
         // Once.
         assert!(
             l.pick(&pick(&a.token, 1, Some("firefox-container-1")), false, now)
@@ -1322,7 +1328,7 @@ mod tests {
         let add = video_add(p, &folder, None, true, &de).unwrap();
         assert_eq!(add.page.as_str(), SRC);
         assert_eq!(
-            add.selector, "hls-2500/b[height=720]",
+            add.selector, "hls-2500/b[height=720][vcodec^=avc1]/b[height=720]",
             "MDM's own, never the browser's"
         );
         assert_eq!(add.dest, folder.join("A talk_ in Lisbon.mp4"));
@@ -1339,7 +1345,11 @@ mod tests {
         let pre = add.preloaded.as_ref().unwrap();
         assert_eq!(
             (pre.selector.as_str(), pre.label.as_str(), pre.merge),
-            ("hls-2500/b[height=720]", "720p · H.264", false)
+            (
+                "hls-2500/b[height=720][vcodec^=avc1]/b[height=720]",
+                "720p MP4 · H.264",
+                false
+            )
         );
         // No page title (a page yt-dlp names itself), Options' "only add to the queue", a
         // language this page doesn't have.
@@ -1355,7 +1365,10 @@ mod tests {
         };
         let add = video_add(p, &folder, None, false, &ja).unwrap();
         assert_eq!(add.dest, folder.join("master.mp4"));
-        assert_eq!(add.selector, "hls-800/b[height=360]");
+        assert_eq!(
+            add.selector,
+            "hls-800/b[height=360][vcodec^=avc1]/b[height=360]"
+        );
         assert!(!add.start_now);
         assert!(add.subs.langs.is_empty());
         // A video yt-dlp titled itself keeps its title, whatever the page's (#345).
@@ -1391,7 +1404,8 @@ mod tests {
     }
 
     /// What the browser's menu is told of each choice (#755, #801): the height, frame rate,
-    /// codec and range of a video's, the sound's bitrate, whether its size is about.
+    /// codec and range of a video's, the sound's bitrate, whether its size is about, which one is
+    /// the most compatible (#1439).
     #[test]
     fn the_buttons_details_of_each_choice() {
         const V: &str = r#"{"title": "A talk", "duration": 60, "formats": [
@@ -1426,8 +1440,15 @@ mod tests {
                 false
             )
         );
+        // #1439: the most compatible, H.264 with AAC, right after the best, said to be.
         assert_eq!(
             of(1),
+            (Some(1080), Some(60), Some("H.264"), None, Some(8900), false)
+        );
+        assert!(a[1].compatible);
+        assert_eq!(a.iter().filter(|c| c.compatible).count(), 1);
+        assert_eq!(
+            of(2),
             (
                 Some(1080),
                 Some(60),
@@ -1438,11 +1459,11 @@ mod tests {
             )
         );
         assert_eq!(
-            of(2),
+            of(3),
             (Some(720), Some(30), Some("H.264"), None, Some(7900), true),
             "a size the site only guessed"
         );
-        let sound = &a[3];
+        let sound = &a[4];
         assert!(sound.original && sound.audio);
         assert_eq!(
             (sound.kbps, sound.size, sound.approx),

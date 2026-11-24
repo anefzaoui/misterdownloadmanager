@@ -2,7 +2,7 @@
 //!
 //! Routes (every parameter is listed by `GET /`, [`HELP`]):
 //! - `GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>` — deterministic content (see
-//!   `content`); the file params shape its headers (`cd`, `cdstar`, `inline`)
+//!   `content`); the file params shape its headers (`cd`, `cdstar`, `cdraw`, `inline`)
 //! - `POST /form/{size}[/{name}]?need=FIELD=VALUE[&see_other=1]&<as /gen>` — the same file, only
 //!   for a form post that carries `FIELD=VALUE`
 //! - `GET /files/{name}` — a real file from `--files DIR` (Range too; 404 without it): archives
@@ -15,6 +15,9 @@
 //!   to `URL` (cross-host redirects, credential scoping); with `ttl_ms` the target gets
 //!   `expires=<unix ms>` and answers 403 after it (signed CDN links); with `uses` it is a link of
 //!   its own that answers 403 after N requests (a link that expires however slow the machine)
+//! - `GET /gen/…?lasts_ms=N&link=ID` — a signed link timed from its first request: every address
+//!   with this `link` answers 403 once N ms have passed since the first of them was asked (a
+//!   look-up's addresses expire together, however late the download starts)
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
@@ -55,8 +58,8 @@ use tokio::sync::Notify;
 use tokio::task::JoinHandle;
 
 use crate::content;
-use crate::faults::{Faults, every, has_cookie, parse_flag};
-use crate::{debrid, drive, mediafire, pages, rapidgator, streams};
+use crate::faults::{CLEARANCE, Faults, challenge_page, every, has_cookie, parse_flag};
+use crate::{debrid, drive, lulustream, mediafire, pages, rapidgator, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -267,6 +270,8 @@ pub(crate) struct Shared {
     used_once: Mutex<HashSet<String>>,
     /// Requests each signed link with `uses` has served (path and query).
     link_uses: Mutex<HashMap<String, u64>>,
+    /// The first request of each link with `lasts_ms` (its `link`, else path and query), unix ms.
+    link_first: Mutex<HashMap<String, u64>>,
     conn_reqs: Mutex<HashMap<SocketAddr, u64>>,
     /// Each client's `max_conns` slots in use.
     active: Mutex<HashMap<IpAddr, Vec<Arc<SlotUse>>>>,
@@ -274,6 +279,8 @@ pub(crate) struct Shared {
     on_log: Option<LogSink>,
     /// The fake Drive's virus-scan pages' `uuid`s handed out (`drive`).
     pub(crate) drive_uuids: Mutex<HashSet<String>>,
+    /// The fake LuluStream's form posts, per video code (`lulustream`).
+    pub(crate) lulu_posts: Mutex<HashMap<String, u32>>,
     files: Option<std::path::PathBuf>,
     /// Over HTTPS: each connection's ClientHello, browser-like or not (`LogEntry::browser_tls`),
     /// by the client's address.
@@ -408,11 +415,13 @@ impl LabServer {
             seq: AtomicU64::new(0),
             used_once: Mutex::default(),
             link_uses: Mutex::default(),
+            link_first: Mutex::default(),
             conn_reqs: Mutex::default(),
             active: Mutex::default(),
             log: Mutex::default(),
             on_log: cfg.on_log,
             drive_uuids: Mutex::default(),
+            lulu_posts: Mutex::default(),
             files: cfg.files,
             browser_tls: Mutex::default(),
             link_free: Mutex::new(Instant::now()),
@@ -584,6 +593,10 @@ impl LabServer {
                 post(crate::debrid_torrents::tb_control),
             )
             .route("/_debrid/torrents", get(crate::debrid_torrents::held))
+            .route(
+                "/_debrid/rd-selected/{id}",
+                get(crate::debrid_torrents::rd_selected),
+            )
             // RSS feeds for the app's RSS tests (#39, `feeds`).
             .route("/rss/shows.xml", get(crate::feeds::shows))
             .route("/rss/dir.xml", get(crate::feeds::dir))
@@ -694,13 +707,15 @@ impl Drop for LabServer {
 
 /// Every address the routes don't have, by its Host header: MediaFire's host names go to the fake
 /// MediaFire (`mediafire`), Rapidgator's to the fake Rapidgator (`rapidgator`), the rest to the
-/// fake Google Drive (`drive`, which answers 404 for any host but Google's).
+/// fake Google Drive (`drive`, which answers 404 for any host but Google's). LuluStream's go to
+/// the fake LuluStream (`lulustream`), with the request's body (its form's POST).
 async fn by_host(
     State(shared): State<Arc<Shared>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     method: Method,
     uri: Uri,
     headers: HeaderMap,
+    body: Bytes,
 ) -> Response {
     let host = header_str(&headers, header::HOST)
         .unwrap_or_default()
@@ -714,6 +729,10 @@ async fn by_host(
         let (name, port) = (name.to_owned(), port.to_owned());
         return rapidgator::handle(shared, peer, method, uri, headers, &name, &port).await;
     }
+    if lulustream::HOSTS.contains(&name) {
+        let (name, port) = (name.to_owned(), port.to_owned());
+        return lulustream::handle(shared, peer, method, uri, headers, &body, &name, &port).await;
+    }
     drive::handle(State(shared), ConnectInfo(peer), method, uri, headers).await
 }
 
@@ -726,6 +745,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     cd=NAME        Content-Disposition: attachment; filename="NAME" (whatever the path's name;
                    UTF-8 is sent raw, as many servers do)
     cdstar=NAME    attachment; filename="fallback-name.zip"; filename*=UTF-8''<NAME %-encoded>
+    cdraw=VALUE    Content-Disposition: VALUE, exactly as given (a name the way a server wrote
+                   it: only filename*, %-encoded or RFC 2047 in filename=, #1427)
     inline=1       Content-Disposition: inline (filename: cdstar, cd or the path's name) and the
                    name's real Content-Type (.pdf application/pdf, .mp3 audio/mpeg, .mp4
                    video/mp4, ...): a browser displays or plays it
@@ -733,8 +754,13 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     type=MIME      that Content-Type instead (none: no Content-Type at all)
     Expires= Signature= Key-Pair-Id= Policy=   ignored: a CloudFront signed address's own keys
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
+    from=UNIXMS    403 before that time (a YouTube stream before the ad played ahead of its
+                   video would end: yt-dlp's available_at, #1655)
     uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
                    with a link= of its own)
+    lasts_ms=N     403 once N ms have passed since this link's first request: every address with
+                   the same link=ID expires together (a look-up's), timed from the first of them
+                   asked, however late (without link=: this path and query's own)
     movie=MS       the file starts as an MP4 movie of MS ms does (an ftyp, a moov saying its
                    length and tracks, a mdat's header over the rest), for a reader of its header
                    (#1092); with tracks=av|v|a (default av: a picture and a sound) and height=PX
@@ -748,7 +774,14 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     html_after=N   the first N requests for this path and query get the file, every later one
                    the page (as html=1 with html_type and html_cd): a link that leads to a
                    waiting page once the download is resumed; vary seed= for a fresh link
-    node=N         another server's copy of the same file: its own ETag and date
+    html_body=challenge|json|text  with html=1 or html_after=N: a bot check's script page
+                   (text/html), a JSON error (application/json) or a line of text (text/plain)
+                   instead of the waiting page: a one-time link asked a second time (#1460)
+    html_chunked=1 with html=1 or html_after=N: the page chunked, without a Content-Length
+    node=N        another server's copy of the same file: its own ETag and date
+    nodes=N        a CDN in front of N copies (as node=): request n gets copy (n-1) mod N
+    digest=1       x-oss-hash-crc64ecma on every answer: the file's version, the same on every
+                   copy (a stand-in value, not the bytes' CRC; etag_change_every changes it)
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -757,6 +790,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    connection alone takes all of it, n connections a share each
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
+    garble=SIZE    /files only: the first answer for a path that carries the byte at that
+                   offset sends 64 bytes from there inverted (a proxy that mangled a range);
+                   later answers send them right
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
     require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
     refuse_agent=TEXT                403 when the User-Agent contains TEXT
@@ -769,6 +805,10 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     refuse_browsers=1  a bot check that refuses whatever claims to be a browser (a User-Agent with
                    Mozilla/) on any connection, the browser-like one too, and lets programs that
                    say what they are through: 403 with cf-mitigated: challenge (SourceForge's, #1422)
+    js_challenge=MS  a bot check passed by running its script (Cloudflare's "Just a moment...",
+                   #1494): 403 with cf-mitigated: challenge and a page whose script, after MS ms,
+                   sets the cookie mdm_lab_clearance=1 and loads the address again; with that
+                   cookie, the file
     refuse_ranges=STATUS    every request with a Range answered with STATUS (the whole file
                    still served): with browser_only=1, a site that lets the browser-like
                    connection download a file only whole (#668)
@@ -779,7 +819,8 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     the file, only for a POST whose form (urlencoded, multipart or text/plain) has FIELD=VALUE
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
-GET /files/{name}   a real file from --files DIR (Range too; 404 without --files)
+GET /files/{name}[?garble=SIZE]   a real file from --files DIR (Range too, its date as
+                    Last-Modified and If-Range; 404 without --files)
 GET /gh/api/*       a fake GitHub API, always refusing: 403, x-ratelimit-remaining: 0 (#1337)
 GET /gh/web/OWNER/REPO/releases/latest   302 to .../releases/tag/TAG (TAG: --files DIR/gh/OWNER/REPO/LATEST)
 GET /gh/web/OWNER/REPO/releases/download/TAG/FILE   302 to /gh/assets/OWNER/REPO/TAG/FILE (--files
@@ -911,6 +952,16 @@ RAPIDGATOR  a fake one for the engine's tests, on Rapidgator's host names (resol
                             302 to it; without, a free account's page (no link)
   s118.rapidgator.net       /download/<expiry unix ms>-<n>-ID (file params and faults as /gen):
                             the file until then, 404 Not Found after
+
+LULUSTREAM  a fake one for the engine's tests, on LuluStream's host names (resolve lplaygo.com,
+    lulustream.com and s1.lulu-files.test to this server); hand-made pages (src/lulustream.rs)
+  codes: <lab|fla|exp|cap|bad><size>t<TTL s> padded with z to 12, e.g. lab2mt600zzz (fla: its
+    form is taken on its third post only; exp: only its first post's link lasts TTL s; cap:
+    it wants a captcha; bad: it never takes the post)
+  lplaygo.com, lulustream.com  /CODE, /e/CODE: a player; /d/CODE: links to /d/CODE_n and
+                            /d/CODE_h on lulustream.com; /d/CODE_MODE: a form (op, id, mode, hash)
+                            which, posted back, answers with the file's link lasting TTL s
+  s1.lulu-files.test        /v/01/CODE_MODE/NAME?t=<expiry unix ms>: the file until then, 403 after
 
 HTTPS  --tls serves all of it over HTTPS as localhost, its certificate from a test CA made at start
   (written next to the log, or printed); --tls-cert picks a faulty one (a connection's fault,
@@ -1167,11 +1218,16 @@ async fn files(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     method: Method,
     Path(name): Path<String>,
+    RawQuery(query): RawQuery,
     headers: HeaderMap,
 ) -> Response {
     let path = shared.file_path(&name);
     let logged = format!("/files/{name}");
-    serve_file(&shared, peer, &method, &headers, logged, path, false).await
+    // Its own faults: `garble` only (#1661). Dated as a file server dates its files: a resume
+    // asks with `If-Range`, and a file changed since is sent whole.
+    let asked = Faults::parse(query.as_deref().unwrap_or("")).unwrap_or_default();
+    let garble = shared.faults().overridden_by(&asked).garble;
+    serve_file(&shared, peer, &method, &headers, logged, path, true, garble).await
 }
 
 impl Shared {
@@ -1186,7 +1242,12 @@ impl Shared {
 }
 
 /// The file at `path` (None: 404), whole or one range of it, logged as `logged`; with
-/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it).
+/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it),
+/// and a range asked with an `If-Range` that isn't that date answered with the whole file (RFC
+/// 9110 §13.1.5: the file changed since).
+/// `garble` (`Faults::garble`): the first answer that carries that byte sends
+/// [`crate::faults::GARBLED`] bytes from there inverted.
+#[allow(clippy::too_many_arguments)]
 pub(crate) async fn serve_file(
     shared: &Shared,
     peer: SocketAddr,
@@ -1195,7 +1256,9 @@ pub(crate) async fn serve_file(
     logged: String,
     path: Option<std::path::PathBuf>,
     last_modified: bool,
+    garble: Option<u64>,
 ) -> Response {
+    let garbled = format!("garble:{logged}");
     let entry = shared.begin(peer, method, logged, None, headers, &[]);
     let data = match &path {
         Some(path) => tokio::fs::read(path).await.ok(),
@@ -1214,9 +1277,13 @@ pub(crate) async fn serve_file(
         _ => None,
     };
     let size = data.len() as u64;
+    let changed = modified
+        .as_ref()
+        .is_some_and(|m| entry.if_range.as_ref().is_some_and(|i| i != m));
     let range = entry
         .range
         .as_deref()
+        .filter(|_| !changed)
         .and_then(|r| http_range_header::parse_range_header(r).ok())
         .and_then(|r| r.validate(size).ok())
         .filter(|v| v.len() == 1)
@@ -1243,9 +1310,23 @@ pub(crate) async fn serve_file(
     if *method == Method::HEAD {
         return builder.body(Body::empty()).unwrap();
     }
-    builder
-        .body(Body::from(data[start as usize..end as usize].to_vec()))
-        .unwrap()
+    let mut body = data[start as usize..end as usize].to_vec();
+    if let Some(at) = garble.filter(|at| (start..end).contains(at)) {
+        let key = format!("{garbled}@{at}");
+        let first = {
+            let mut served = shared.link_uses.lock().unwrap();
+            let n = served.entry(key).or_insert(0);
+            *n += 1;
+            *n == 1
+        };
+        if first {
+            let to = (at + crate::faults::GARBLED).min(end);
+            for b in &mut body[(at - start) as usize..(to - start) as usize] {
+                *b = !*b;
+            }
+        }
+    }
+    builder.body(Body::from(body)).unwrap()
 }
 
 /// `POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>`: the file, only for a
@@ -1376,10 +1457,18 @@ struct FileQuery {
     seed: u64,
     /// A signed link's end, unix ms.
     expires: Option<u64>,
+    /// When a link starts being served, unix ms: 403 before it (#1655).
+    from: Option<u64>,
     /// The requests a signed link serves (`link` tells the links apart).
     uses: Option<u64>,
+    /// How long a signed link lasts from its first request, ms (`link` makes its addresses one).
+    lasts_ms: Option<u64>,
+    /// `link`: which signed link this address is part of.
+    link: Option<String>,
     cd: Option<String>,
     cdstar: Option<String>,
+    /// `cdraw`: the whole `Content-Disposition` value, sent as given (#1427).
+    cd_raw: Option<String>,
     disposition: Disposition,
     /// `type`: the Content-Type sent instead of the name's (`none`: none at all).
     content_type: Option<String>,
@@ -1470,9 +1559,24 @@ pub(crate) async fn serve(
         *n += 1;
         *n > uses
     });
-    if used_up || q.expires.is_some_and(|t| unix_ms() > t) {
+    // Timed from the link's first request, not from when it was made: a download's first request
+    // may come late on a busy computer, and a link that is dead before it is asked tests nothing.
+    let lapsed = q.lasts_ms.is_some_and(|lasts| {
+        let key = match &q.link {
+            Some(link) => format!("link:{link}"),
+            None => format!("{}?{query}", entry.path),
+        };
+        let mut first = shared.link_first.lock().unwrap();
+        let at = *first.entry(key).or_insert_with(unix_ms);
+        unix_ms() > at + lasts
+    });
+    if used_up || lapsed || q.expires.is_some_and(|t| unix_ms() > t) {
         shared.record(entry, 403, "expired");
         return (StatusCode::FORBIDDEN, "link expired\n").into_response();
+    }
+    if q.from.is_some_and(|t| unix_ms() < t) {
+        shared.record(entry, 403, "too early");
+        return StatusCode::FORBIDDEN.into_response();
     }
     let f = shared.faults().overridden_by(&q.faults);
 
@@ -1510,6 +1614,23 @@ pub(crate) async fn serve(
     {
         shared.record(entry, 403, "fault:refuse_browsers");
         return challenge();
+    }
+    // A challenge a browser passes by running its script (#1494), whatever the connection: a
+    // program that runs none never gets the cookie it sets.
+    if let Some(wait) = f.js_challenge
+        && !has_cookie(entry.cookie.as_deref(), CLEARANCE)
+    {
+        shared.record(entry, 403, "fault:js_challenge");
+        return (
+            StatusCode::FORBIDDEN,
+            [
+                ("cf-mitigated", "challenge"),
+                ("content-type", "text/html; charset=UTF-8"),
+                ("cache-control", "no-store"),
+            ],
+            challenge_page(wait),
+        )
+            .into_response();
     }
     if let Some(want) = &f.require_cookie
         && !has_cookie(entry.cookie.as_deref(), want)
@@ -1603,8 +1724,12 @@ pub(crate) async fn serve(
         Some("none") => None,
         _ => Some(format!("\"{seed:x}-{size:x}-{generation}\"")),
     };
-    // Another server's copy (`node`): its own ETag and date.
-    let node = f.node.unwrap_or(0);
+    // Another server's copy (`node`): its own ETag and date. Behind a CDN of several copies
+    // (`nodes`), the copy is the node's this request landed on.
+    let node = match f.nodes.filter(|k| *k > 1) {
+        Some(k) => (n - 1) % k,
+        None => f.node.unwrap_or(0),
+    };
     let etag = etag.map(|e| match node {
         0 => e,
         n => format!("{}-n{n}\"", e.trim_end_matches('"')),
@@ -1667,6 +1792,12 @@ pub(crate) async fn serve(
     }
     if let Some(etag) = &etag {
         builder = builder.header(header::ETAG, etag);
+    }
+    // The whole file's digest, whatever the range and the copy: the file's version (a stand-in
+    // for its CRC-64), not a hash of the bytes.
+    if f.digest == Some(true) {
+        let crc = seed.rotate_left(17) ^ size.wrapping_mul(0x9E37_79B9_7F4A_7C15) ^ generation;
+        builder = builder.header("x-oss-hash-crc64ecma", crc.to_string());
     }
     if status == StatusCode::PARTIAL_CONTENT {
         builder = builder.header(
@@ -1731,18 +1862,37 @@ pub(crate) async fn serve(
 /// `html=1`'s page: a sign-in wall, or (with `html_type` or `html_cd`) a file host's waiting page
 /// as it comes, its blank lines first (#701).
 fn web_page(f: &Faults, name: Option<&str>, size: u64) -> Response {
-    if f.html_type.is_none() && f.html_cd != Some(true) {
-        return (
-            [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
-            "<!doctype html><title>Sign in</title><form>Please sign in</form>\n",
-        )
-            .into_response();
+    // #1460: a one-time link's host's answer to a second request, instead of a page.
+    let other = match f.html_body.as_deref() {
+        Some("challenge") => Some((
+            "text/html; charset=utf-8",
+            "<html><script>var arg1='5C95CC7557DB4053192CC0CE9891F2B874A9E345';\
+             document.cookie='acw_sc__v2='+arg1;location.reload();</script></html>",
+        )),
+        Some("json") => Some((
+            "application/json",
+            "{\"zt\":0,\"info\":\"\\u94fe\\u63a5\\u5df2\\u5931\\u6548\"}",
+        )),
+        Some("text") => Some(("text/plain; charset=utf-8", "Access denied\n")),
+        _ => None,
+    };
+    if other.is_none() && f.html_type.is_none() && f.html_cd != Some(true) {
+        return page_body(
+            Response::builder()
+                .status(StatusCode::OK)
+                .header(header::CONTENT_TYPE, "text/html; charset=utf-8"),
+            "<!doctype html><title>Sign in</title><form>Please sign in</form>\n".to_owned(),
+            f,
+        );
     }
     let mut builder = Response::builder().status(StatusCode::OK);
     match f.html_type.as_deref() {
         Some("none") => {}
         Some(t) => builder = builder.header(header::CONTENT_TYPE, t),
-        None => builder = builder.header(header::CONTENT_TYPE, "text/html; charset=utf-8"),
+        None => {
+            let t = other.map_or("text/html; charset=utf-8", |(t, _)| t);
+            builder = builder.header(header::CONTENT_TYPE, t);
+        }
     }
     if f.html_cd == Some(true) {
         let name = name.unwrap_or("file.zip").replace(['"', '\\'], "_");
@@ -1750,6 +1900,9 @@ fn web_page(f: &Faults, name: Option<&str>, size: u64) -> Response {
             header::CONTENT_DISPOSITION,
             format!("attachment; filename=\"{name}\""),
         );
+    }
+    if let Some((_, body)) = other {
+        return page_body(builder, body.to_owned(), f);
     }
     let mut page = String::from(
         "\r\n\r\n<!DOCTYPE html>\n<html><head><title>Your file is almost ready</title></head>\
@@ -1763,6 +1916,16 @@ fn web_page(f: &Faults, name: Option<&str>, size: u64) -> Response {
         page.push_str("<!--");
         page.push_str(&" ".repeat(want - page.len() - 8));
         page.push_str("-->\n");
+    }
+    page_body(builder, page, f)
+}
+
+/// `web_page`'s answer with `page` as its body: with its length, or chunked without one
+/// (`html_chunked`).
+fn page_body(builder: axum::http::response::Builder, page: String, f: &Faults) -> Response {
+    if f.html_chunked == Some(true) {
+        let chunks = futures::stream::iter([Ok::<_, std::io::Error>(bytes::Bytes::from(page))]);
+        return builder.body(Body::from_stream(chunks)).unwrap();
     }
     builder.body(Body::from(page)).unwrap()
 }
@@ -1784,6 +1947,9 @@ const ATTR_CHAR: &AsciiSet = &NON_ALPHANUMERIC
 
 /// The `Content-Disposition` of a generated file; `path_name` is the name in its path.
 fn content_disposition(q: &FileQuery, path_name: Option<&str>) -> Option<String> {
+    if let Some(raw) = &q.cd_raw {
+        return Some(raw.clone());
+    }
     let kind = match q.disposition {
         Disposition::Attachment => "attachment",
         Disposition::Inline => "inline",
@@ -1840,9 +2006,13 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
     let mut out = FileQuery {
         seed: 0,
         expires: None,
+        from: None,
         uses: None,
+        lasts_ms: None,
+        link: None,
         cd: None,
         cdstar: None,
+        cd_raw: None,
         disposition: Disposition::Attachment,
         content_type: None,
         magic: None,
@@ -1863,9 +2033,14 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             "expires" => {
                 out.expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?)
             }
+            "from" => out.from = Some(v.parse().map_err(|_| format!("invalid from `{v}`\n"))?),
             "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
+            "lasts_ms" => {
+                out.lasts_ms = Some(v.parse().map_err(|_| format!("invalid lasts_ms `{v}`\n"))?)
+            }
+            "link" => out.link = Some(v),
             // A page's own keys for a server's program (`script`): they change nothing here.
-            "link" | "id" | "file" | "filename" | "token" => {}
+            "id" | "file" | "filename" | "token" => {}
             // A CloudFront signed address's own keys (#1087): they change nothing here.
             "Expires" | "Signature" | "Key-Pair-Id" | "Policy" => {}
             "type" => out.content_type = name(&k, v)?,
@@ -1895,6 +2070,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             }
             "cd" => out.cd = name(&k, v)?,
             "cdstar" => out.cdstar = name(&k, v)?,
+            "cdraw" => out.cd_raw = name(&k, v)?,
             "inline" => {
                 out.disposition = match (v.as_str(), parse_flag(&v)) {
                     ("bare" | "none", _) => Disposition::Bare,
@@ -2067,6 +2243,14 @@ mod tests {
         assert!(content_disposition(&split_query("inline=bare").unwrap(), Some("a.pdf")).is_none());
         assert!(split_query("inline=maybe").is_err());
         assert!(split_query("cd=a%0Ab").is_err());
+        // #1427: a value as a server wrote it, sent as given.
+        let raw = "attachment; filename=\"My%20Report.pdf\"";
+        let q = split_query(&format!(
+            "cdraw={}",
+            utf8_percent_encode(raw, NON_ALPHANUMERIC)
+        ))
+        .unwrap();
+        assert_eq!(content_disposition(&q, Some("x.bin")).unwrap(), raw);
         // A CloudFront signed address's keys (#1087) change nothing; a type is sent as asked.
         let q = split_query(
             "inline=bare&type=binary/octet-stream&Expires=1&Signature=a~b&Key-Pair-Id=K",

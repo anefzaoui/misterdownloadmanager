@@ -1,6 +1,7 @@
 #![windows_subsystem = "windows"]
 
 mod app;
+mod archtest;
 mod batch;
 mod categories;
 mod checksum;
@@ -22,6 +23,7 @@ mod droptarget;
 mod errors;
 mod extension;
 mod extractq;
+mod fileclip;
 mod fileicons;
 mod find;
 mod finish;
@@ -31,6 +33,7 @@ mod grabber;
 mod headless;
 mod help;
 mod helpers;
+mod hold;
 mod hotkey;
 mod i18n;
 mod icons;
@@ -46,11 +49,14 @@ mod options;
 mod pacfetch;
 mod palette;
 mod playlistdlg;
+mod preview;
 mod progress;
 mod properties;
 mod queue;
 mod quota;
+mod recent;
 mod regional;
+mod relocate;
 mod remote;
 mod renderer;
 mod resumeread;
@@ -67,12 +73,14 @@ mod store;
 mod theme;
 mod themefile;
 mod themeicons;
+mod torrent_ownership;
 mod torrent_rename;
 mod torrentdlg;
 mod torrentfiles;
 mod torrents;
 mod transfer;
 mod tray;
+mod traypanel;
 #[cfg(unix)]
 mod unix;
 mod update;
@@ -302,17 +310,22 @@ pub enum Start {
     /// queues and the Scheduler running. It stays in the notification area once MDM's icon is
     /// there, or shows minimized if none comes (app.rs `at_login`, decided there alone).
     Session,
+    /// Started hidden by the browser host or a background caller ([`mdm_ipc::FROM_HOST`], #1333):
+    /// the main window is hidden, without marking an OS session login.
+    Hidden,
     /// Started with the session where a window can't be hidden (Wayland): minimized.
     Minimized,
 }
 
-/// How a start shows the main window: `at_login` when the startup entry started it, `can_hide`
-/// where a window can be hidden (not on Wayland).
-fn start_mode(at_login: bool, can_hide: bool) -> Start {
-    match (at_login, can_hide) {
-        (false, _) => Start::Shown,
-        (true, true) => Start::Session,
-        (true, false) => Start::Minimized,
+/// How a start shows the main window: `at_login` when the startup entry started it, `hidden`
+/// when started hidden from host, `can_hide` where a window can be hidden (not on Wayland).
+fn start_mode(at_login: bool, hidden: bool, can_hide: bool) -> Start {
+    match (at_login, hidden, can_hide) {
+        (true, _, true) => Start::Session,
+        (true, _, false) => Start::Minimized,
+        (false, true, true) => Start::Hidden,
+        (false, true, false) => Start::Minimized,
+        (false, false, _) => Start::Shown,
     }
 }
 
@@ -353,8 +366,9 @@ fn main() -> std::process::ExitCode {
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
         win32::cli_console(cli.launcher);
-        // Downloads go through the debrid accounts of Options → Accounts (#44).
-        return mdm_cli::main_with(cli.args, Some(&debrid::CliAccounts));
+        // Downloads go through the debrid accounts of Options → Accounts (#44), and Options'
+        // proxy, DNS and network adapter (#1556).
+        return mdm_cli::main_with(cli.args, Some(&debrid::CliAccounts), settings::cli_net());
     }
     // The Windows uninstaller, when the user chose to remove the data too: MDM's sign-ins leave
     // the system's keychain with it (#44).
@@ -410,28 +424,52 @@ fn app() -> eframe::Result {
     // Started by an update (update.rs): the old copy may still be closing; this one waits for
     // it rather than handing it anything.
     let after_update = args.iter().any(|a| a.eq_ignore_ascii_case(update::UPDATED));
-    if !after_update
-        && (mdm_ipc::send(&cmd.clone().unwrap_or_default()).is_ok()
-            || cmd.as_ref().is_some_and(|c| c.exit))
-    {
+    // A second launch brings the running copy's window to the front: this launch, just started
+    // by the user, passes its right to the foreground on (as the browser's native host does), so
+    // Windows lets it come forward with no trick (#1645).
+    #[cfg(windows)]
+    if !after_update && let Some(pid) = mdm_ipc::app_pid() {
+        win32::allow_foreground(pid);
+    }
+    // Every attempt to hand the command over carries one id: the running app takes it once,
+    // however many attempts reach it (#1651: an attempt whose answer came late was sent again, and
+    // the app got a `/d` twice).
+    let handover = mdm_ipc::Handover::new(cmd.clone().unwrap_or_default());
+    let exit = cmd.as_ref().is_some_and(|c| c.exit);
+    if !after_update && handover.send().is_ok() {
         return Ok(());
     }
     // No instance answered. Only one launch may become the instance (two started together
-    // would both get here); the other forwards its command once the winner listens.
+    // would both get here); the other forwards its command once the winner listens. So does a
+    // launch whose one attempt failed while the app runs (its channel busy, a connection the
+    // system didn't let through in time, an answer late): `/exit` too, which was given up
+    // then, and the app went on running (#1651).
     let lock = if after_update {
         update::lock_after_update()
     } else {
         mdm_ipc::instance_lock()
     };
     let Some(_instance) = lock else {
-        let _ = mdm_ipc::send_waiting(&cmd.unwrap_or_default(), std::time::Duration::from_secs(10));
+        let wait = std::time::Duration::from_secs(10);
+        let _ = if exit {
+            // Until it has it, or has quit (the instance lock free again: an earlier attempt
+            // reached it, its answer didn't come back).
+            handover.send_while(wait, || mdm_ipc::instance_lock().is_none())
+        } else {
+            handover.send_waiting(wait)
+        };
         return Ok(());
     };
+    // `/exit` starts nothing when no app runs.
+    if exit && !after_update {
+        return Ok(());
+    }
     #[cfg(windows)]
     win32::mark_running();
-    // Started with the session (#226): read before the command goes to the channel; the start's
-    // mode once the window system is known (below).
+    // Started with the session (#226) or from browser native messaging host (#1333): read before
+    // the command goes to the channel; the start's mode once the window system is known (below).
     let at_login = cmd.as_ref().is_some_and(|c| c.startup);
+    let from_host = cmd.as_ref().is_some_and(|c| c.hidden);
     // This launch is MDM: its fonts are looked up while the rest starts (only the instance pays
     // for them, not a launch that hands its command over).
     theme::prepare_fonts();
@@ -452,8 +490,11 @@ fn app() -> eframe::Result {
     let wake: std::sync::Arc<dyn Fn() + Send + Sync> = std::sync::Arc::new(move || {
         // A command came in: someone waits for the window's answer, hidden or not (#1126).
         crash::asked();
+        // The main window's pass reads the commands (`App::tick`), whichever window draws now:
+        // `request_repaint` asks for the window being drawn at this moment, a dialog's when
+        // one is open, and the main window, minimized, waited for its next timed pass (#1651).
         if let Some(ctx) = wake.get() {
-            ctx.request_repaint();
+            ctx.request_repaint_of(egui::ViewportId::ROOT);
         }
     });
     #[cfg(target_os = "linux")]
@@ -520,9 +561,10 @@ fn app() -> eframe::Result {
             tracing::warn!("{text}");
         }
     }
-    // Started with the session (#226): in the notification area, not in front, where a window
-    // can be hidden (Linux: known once the window system is chosen above, with the saved choice).
-    let start = start_mode(at_login, can_hide());
+    // Started with the session (#226) or from host (#1333): in the notification area, not in
+    // front, where a window can be hidden (Linux: known once the window system is chosen above,
+    // with the saved choice).
+    let start = start_mode(at_login, from_host, can_hide());
     // Secrets from before (sealed, or kept as they were) go to the system's keychain now; the
     // list is saved with their references once it holds them (secrets.rs, #44).
     let _ = loaded.settings.for_disk();
@@ -552,8 +594,12 @@ fn app() -> eframe::Result {
     }
     // Hidden from its first frame on (eframe keeps a root window built hidden so), until the
     // app knows whether its tray icon is shown (app.rs at_login).
-    if start == Start::Session {
-        tracing::info!("started with the session: hidden");
+    if matches!(start, Start::Session | Start::Hidden) {
+        if start == Start::Session {
+            tracing::info!("started with the session: hidden");
+        } else {
+            tracing::info!("started from host: hidden");
+        }
         viewport = viewport.with_visible(false);
     }
     // OpenGL or Direct3D (View → Draw with, #89), the next way when one can't start (Direct3D on
@@ -602,6 +648,10 @@ fn app() -> eframe::Result {
         {
             let app = std::rc::Rc::downgrade(&app);
             win32::on_session_end(move |why| end_session(&app, why));
+            // The session's lock and unlock (#1773): pop-ups that waited show once it is
+            // unlocked, at the frame this asks for.
+            let ctx = cc.egui_ctx.clone();
+            win32::watch_session_lock(move || ctx.request_repaint());
         }
         #[cfg(target_os = "linux")]
         {
@@ -710,14 +760,16 @@ mod tests {
             .unwrap_or_else(std::sync::PoisonError::into_inner)
     }
 
-    /// Started with the session (#226): hidden (the tray decided by the app), or minimized
-    /// where a window can't be hidden; a start by the user shows the window.
+    /// Started with the session (#226) or from host (#1333): hidden (the tray decided by
+    /// the app), or minimized where a window can't be hidden; a start by the user shows the window.
     #[test]
     fn a_start_with_the_session_waits_in_the_tray() {
-        assert_eq!(start_mode(true, true), Start::Session);
-        assert_eq!(start_mode(true, false), Start::Minimized);
-        assert_eq!(start_mode(false, true), Start::Shown);
-        assert_eq!(start_mode(false, false), Start::Shown);
+        assert_eq!(start_mode(true, false, true), Start::Session);
+        assert_eq!(start_mode(true, false, false), Start::Minimized);
+        assert_eq!(start_mode(false, true, true), Start::Hidden);
+        assert_eq!(start_mode(false, true, false), Start::Minimized);
+        assert_eq!(start_mode(false, false, true), Start::Shown);
+        assert_eq!(start_mode(false, false, false), Start::Shown);
     }
 
     /// An off-screen run neither reads the clipboard (Add URL, Batch, the clipboard monitor…)

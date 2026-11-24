@@ -320,8 +320,16 @@ mod tests {
     /// Details are read only while asked for, and a put keeps the last ones.
     #[test]
     fn details_while_wanted() {
+        // Each reading waits for the test's go (`next`): one that ran between the put and the
+        // look at it read stats(1) after the put and was rightly taken whole, and the test, on a
+        // slow runner, saw 1 for the put's 2 (macOS CI).
+        let (go, gate) = mpsc::channel::<()>();
+        let next = || go.send(()).unwrap();
         let (tx, rx) = mpsc::channel();
         let w = Watch::start(HashMap::new(), Duration::from_millis(5), move |wanted| {
+            if gate.recv().is_err() {
+                return HashMap::new();
+            }
             let _ = tx.send(wanted.clone());
             HashMap::from([(
                 "aa".to_owned(),
@@ -336,8 +344,20 @@ mod tests {
                 }),
             )])
         });
+        next();
         assert!(rx.recv().unwrap().is_empty());
         w.want("AA");
+        // The reading after it may have begun before the want: the one after that has it.
+        let mut readings = 0;
+        loop {
+            next();
+            readings += 1;
+            if rx.recv().unwrap().contains("aa") {
+                break;
+            }
+            assert!(readings < 3, "details never asked for");
+        }
+        // Taken (just after the reading returns); the next reading then waits for its go.
         let at = Instant::now();
         while w.get("aa").and_then(|s| s.swarm.clone()).is_none() {
             assert!(at.elapsed() < Duration::from_secs(5), "details never read");

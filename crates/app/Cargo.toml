@@ -55,7 +55,7 @@ toml.workspace = true
 tokio.workspace = true
 url.workspace = true
 percent-encoding.workspace = true
-rfd = "0.17.2"
+rfd = "0.18.0"
 # Options → Remote → Pair a device's QR code of the address (#141; Nayuki's, no dependencies).
 qrcodegen = "1.8.0"
 # Line breaks between characters keep a letter and its marks together (Thai, Khmer, Indic).
@@ -74,6 +74,9 @@ brotli-decompressor = "6.2.0"
 # in the tree (resvg's SVG, the engine's dependencies).
 roxmltree = "0.20.0"
 regex = "1.13.1"
+# The preview pane's thumbnails on Linux (#1368): the freedesktop cache names them by their
+# file's address's MD5 (preview.rs); the engine's checksums already build it.
+md-5.workspace = true
 
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
@@ -88,7 +91,12 @@ raw-window-handle = "0.6"
 # (win32.rs `text_rasterizer`): its COM interfaces, which windows-sys doesn't have. The windows
 # 0.62 wgpu-hal already builds. DXGI: the graphics drivers' versions, read before Direct3D 12 starts
 # (win32.rs `graphics_drivers`, #1205; wgpu-hal builds it too).
-windows = { version = "0.62", default-features = false, features = ["Win32_Graphics_DirectWrite", "Win32_Graphics_Dxgi"] }
+# The share sheet for a downloaded file from the browser popup's list (win32.rs `share_file`,
+# #1496): DataTransferManager through its desktop interop, a StorageFile for the path; with its
+# companions for WinRT's collections and asynchronous calls (already in the tree through it).
+windows = { version = "0.62", default-features = false, features = ["std", "Win32_Graphics_DirectWrite", "Win32_Graphics_Dxgi", "Win32_Foundation", "Win32_UI_Shell", "Foundation", "Foundation_Collections", "ApplicationModel_DataTransfer", "Storage", "Storage_Streams"] }
+windows-collections = { version = "0.3.2", default-features = false, features = ["std"] }
+windows-future = { version = "0.3.2", default-features = false, features = ["std"] }
 
 # The notification-area icon and its menu (tray.rs).
 [target.'cfg(not(target_os = "linux"))'.dependencies]
@@ -113,20 +121,25 @@ tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] 
 zbus = { version = "5.19.0", default-features = false, features = ["async-io", "blocking-api"] }
 # The settings daemon's theme name (XSETTINGS) when the portal can't say dark or light (unix.rs,
 # #156); already in the tree through winit. Its pure-Rust connection, no extension.
-x11rb = { version = "0.13.2", default-features = false }
+x11rb = { version = "0.14.0", default-features = false }
 # Whether a Wayland screen is scaled, for the windows' system MDM chooses (unix.rs x11_fit,
 # #624); already in the tree through winit.
 wayland-client = "0.31.15"
 # The Xlib display winit opened, for Xlib to return from a lost connection (unix.rs
 # on_display_lost); already in the tree through winit.
 raw-window-handle = "0.6"
+# The preview pane's pictures where the desktop's thumbnail cache has none (#1368, unix.rs
+# thumbnail): photos decoded and scaled down here, as the file managers' thumbnailers do.
+image = { workspace = true, features = ["jpeg", "gif", "webp", "bmp"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 # Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.
 objc2 = "0.6.5"
 # .torrent files and magnet links Finder hands over as Apple events (unix.rs open_events, #698).
-objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation", "NSAppleEventDescriptor", "NSAppleEventManager", "NSNotification", "NSURL"] }
-objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation"] }
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation", "NSAppleEventDescriptor", "NSAppleEventManager", "NSNotification", "NSURL", "NSArray"] }
+# The share sheet for a downloaded file from the browser popup's list (unix.rs share_file, #1496):
+# the sharing service picker, from a window of MDM's own at the pointer.
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation", "NSSharingService", "NSWindow", "NSView", "NSResponder", "NSEvent", "NSColor", "NSApplication"] }
 # View → Draw with → Metal (#206, renderer.rs): eframe's wgpu renderer with wgpu's Metal backend
 # only; OpenGL stays eframe's glow, and the default. egui-wgpu's fix for windows that jitter while
 # they are resized (Core Animation presenting with the resize), as upstream egui turns it on.

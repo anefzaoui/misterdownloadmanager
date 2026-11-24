@@ -1,6 +1,9 @@
 <!doctype html>
 <!-- Facebook's home feed (#643), reduced to what names a post (our own sample: no real person, post
-     or text). data-expect: what the button must send for each video ("page", "none"). -->
+     or text). data-expect: what the button must send for each video ("page", "none"). Posts 8 to
+     11 have the feed's 2026 depth: the <video> 24 levels below its post (aria-posinset), its id
+     (data-video-id) 10 levels above it, the timestamp a placeholder (?__cft__…) until hovered, a
+     comment's timestamp a reel link naming another video; 10 is a sponsored post. -->
 <html><head><meta charset="utf-8"><meta name="mdm-page" content="https://www.facebook.com/"><title>Facebook</title><link rel="stylesheet" href="feeds.css"></head>
 <body>
 <div role="main">
@@ -31,7 +34,7 @@
   <div aria-posinset="4" aria-describedby=":r4:">
     <div class="x1yztbdb">
       <h4><a href="https://www.facebook.com/groups/123456789012/">Sample Group</a></h4>
-      <div data-video-id="3456789012345678"><video data-expect="https://www.facebook.com/watch/?v=3456789012345678"></video></div>
+      <div data-video-id="3456789012345678"><video data-expect="https://www.facebook.com/reel/3456789012345678/"></video></div>
       <a href="https://www.facebook.com/groups/123456789012/posts/4567890123456789/">Sample Person D posted</a>
     </div>
   </div>
@@ -54,6 +57,36 @@
       <h4><a href="https://www.facebook.com/sample.page.g">Sample Page G</a></h4>
       <div class="x1lliihq"><video data-expect="https://fb.watch/sAmPlE7x/"></video></div>
       <a href="https://fb.watch/sAmPlE7x/?mibextid=sample">Share</a>
+    </div>
+  </div>
+  <div aria-posinset="8" aria-describedby=":r8:">
+    <div class="x1yztbdb">
+      <h4><a href="https://www.facebook.com/sample.page.h?__cft__[0]=AZs8&amp;__tn__=-UC%2CP-R">Sample Page H</a></h4>
+      <span><a href="?__cft__[0]=AZs8&amp;__tn__=%2CO%2CP-R" role="link">4h</a> <a href="https://www.facebook.com/?__cft__[0]=AZs8">Share</a></span>
+      <div><div><div><div><div><div><div><div><div><div><div><div><div data-video-id="8901234567890123"><div><div><div><div><div><div><div><div><div><video data-expect="https://www.facebook.com/reel/8901234567890123/"></video></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+      <ul><li>Sample comment <a href="https://www.facebook.com/reel/9012345678901234/?comment_id=Y29tbWVudDpzYW1wbGU%3D&amp;__cft__[0]=AZs8">1d</a></li></ul>
+    </div>
+  </div>
+  <div aria-posinset="9" aria-describedby=":r9:">
+    <div class="x1yztbdb">
+      <h4><a href="https://www.facebook.com/sample.page.i?__cft__[0]=AZs9&amp;__tn__=-UC%2CP-R">Sample Page I</a></h4>
+      <span><a href="https://www.facebook.com/reel/1023456789012345/?__cft__[0]=AZs9&amp;__tn__=%2CO%2CP-R" role="link">6h</a></span>
+      <div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><video data-expect="https://www.facebook.com/reel/1023456789012345/"></video></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+    </div>
+  </div>
+  <div aria-posinset="10" aria-describedby=":r10:">
+    <div class="x1yztbdb">
+      <h4><a href="https://www.facebook.com/sample.page.j?__cft__[0]=AZs10&amp;__tn__=-UC%2CP-R">Sample Page J</a></h4>
+      <span><a href="?__cft__[0]=AZs10&amp;__tn__=%2CO%2CP-R" role="link">Sponsored</a> <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fshop.example.test%2F&amp;h=AT0sample">Shop now</a></span>
+      <div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><video data-expect="none"></video></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+    </div>
+  </div>
+  <div aria-posinset="11" aria-describedby=":r11:">
+    <div class="x1yztbdb">
+      <h4><a href="https://www.facebook.com/sample.page.k?__cft__[0]=AZs11&amp;__tn__=-UC%2CP-R">Sample Page K</a></h4>
+      <span><a href="https://www.facebook.com/?__cft__[0]=AZs11&amp;__tn__=%2CO%2CP-R" role="link">1h</a></span>
+      <div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><video data-expect="none"></video></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+      <ul><li>Sample comment <a href="https://www.facebook.com/reel/1123456789012345/?comment_id=Y29tbWVudDpzYW1wbGUy&amp;__cft__[0]=AZs11">1d</a></li></ul>
     </div>
   </div>
 </div>

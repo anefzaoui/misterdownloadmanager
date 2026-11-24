@@ -57,7 +57,9 @@ KEEP = sorted(set(tr.KEEP + ["macOS", "Linux", "Rust", "YouTube", "Vimeo", "Tone
                              "Free Download Manager", "AB Download Manager", "Motrix",
                              "Neat Download Manager", "Prism", "JDownloader 2", "JDownloader",
                              "Xtreme Download Manager", "Gopeed", "DOWNitUP", "PyIDM", "aria2",
-                             "Hugging Face"]), key=len, reverse=True)
+                             "Hugging Face",
+                             # The code signing policy's signer.
+                             "SignPath Foundation", "SignPath.io", "SignPath"]), key=len, reverse=True)
 # Kept names a language writes in its own script instead (the maintainer's spelling of his name).
 OWN_SPELLING = {
     "ar": {"Ahmed Nefzaoui": "أحمد نفزاوي"},
@@ -158,6 +160,12 @@ def build_english() -> None:
     env = dict(os.environ, MDM_SITE_NO_STATS="1")
     # Only English: the catalogs being translated mustn't decide what the English pages are.
     env["MDM_SITE_ENGLISH_ONLY"] = "1"
+    # The star ratings' sheet (build.py rate_sheet) is on the pages, so its words are translated
+    # (and kept) before the ratings service is set up: a local address that answers nothing (the
+    # sheet then shows the last known numbers) and Turnstile's public test key.
+    if not os.environ.get("MDM_RATINGS_API"):
+        env["MDM_RATINGS_API"] = "http://127.0.0.1:9/api/ratings"
+        env["MDM_TURNSTILE_SITEKEY"] = "1x00000000000000000000AA"
     subprocess.run([sys.executable, str(HERE / "build.py")], check=True, env=env,
                    stdout=subprocess.DEVNULL)
 

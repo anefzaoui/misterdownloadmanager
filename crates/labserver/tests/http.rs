@@ -502,6 +502,27 @@ async fn one_time_links() {
     assert_eq!(log.iter().filter(|e| e.outcome == "fault:once").count(), 3);
 }
 
+/// `lasts_ms`: a link's time runs from its first request, however late that is, and every
+/// address with the same `link` expires with it; another `link` has its own time.
+#[tokio::test]
+async fn links_timed_from_their_first_request() {
+    let s = server("").await;
+    let c = reqwest::Client::new();
+    let status = |path: &str| {
+        let (c, url) = (c.clone(), s.url(path));
+        async move { c.get(&url).send().await.unwrap().status() }
+    };
+    // Asked late: still good, the first request starts its time.
+    tokio::time::sleep(Duration::from_millis(400)).await;
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=200&link=one").await, 200);
+    tokio::time::sleep(Duration::from_millis(400)).await;
+    // Its time is up, for its other addresses too; another link's starts now.
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=200&link=one").await, 403);
+    assert_eq!(status("/gen/1K/b?seed=2&lasts_ms=200&link=one").await, 403);
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=200&link=two").await, 200);
+    assert_eq!(status("/gen/1K/a?seed=1&lasts_ms=x").await, 400);
+}
+
 async fn text(s: &LabServer, path: &str) -> (reqwest::header::HeaderMap, String) {
     let r = reqwest::get(s.url(path)).await.unwrap();
     assert_eq!(r.status(), 200, "{path}");
@@ -829,6 +850,39 @@ async fn help_lists_the_routes() {
     ] {
         assert!(help.contains(word), "{word}");
     }
+}
+
+/// `garble` (#1661): the first answer for a file that carries the byte sends 64 bytes from there
+/// inverted, every later one sends them right; answers that don't carry it are untouched.
+#[tokio::test]
+async fn garble_mangles_a_files_bytes_once() {
+    let dir = tempfile::tempdir().unwrap();
+    let data: Vec<u8> = (0..10_000u32).map(|i| (i * 7 % 251) as u8).collect();
+    std::fs::write(dir.path().join("a.zip"), &data).unwrap();
+    let s = LabServer::start(Config {
+        files: Some(dir.path().to_owned()),
+        ..Config::default()
+    })
+    .await
+    .unwrap();
+    let c = reqwest::Client::new();
+    let get = |range: Option<&'static str>| {
+        let mut r = c.get(s.url("/files/a.zip?garble=5000"));
+        if let Some(range) = range {
+            r = r.header("Range", range);
+        }
+        async move { r.send().await.unwrap().bytes().await.unwrap().to_vec() }
+    };
+    // Before the byte: untouched, and the garble still to come.
+    assert_eq!(get(Some("bytes=0-999")).await, &data[..1000]);
+    let first = get(None).await;
+    assert_eq!(first.len(), data.len());
+    let differ: Vec<usize> = (0..data.len()).filter(|&i| first[i] != data[i]).collect();
+    assert_eq!(differ, (5000..5064).collect::<Vec<_>>());
+    assert!(differ.iter().all(|&i| first[i] == !data[i]));
+    // Asked again (the damaged part's range): right.
+    assert_eq!(get(Some("bytes=4990-5099")).await, &data[4990..5100]);
+    assert_eq!(get(None).await, data);
 }
 
 /// `stall_at` (#123): a response stops at that byte and goes on once the server's faults are

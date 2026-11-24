@@ -54,6 +54,14 @@ pub struct Faults {
     /// (`html`'s, with `html_type` and `html_cd`): a link that leads to a waiting page once
     /// the download is resumed (#701).
     pub html_after: Option<u64>,
+    /// With `html` or `html_after`: what comes instead of the waiting page (#1460): `challenge`
+    /// (a bot check's script page, `<html><script>…`, as text/html, a one-time link's host's
+    /// answer to a second request), `json` (a JSON error, as `application/json`) or `text` (a
+    /// line of text, as `text/plain`); `html_type` still sets the type.
+    pub html_body: Option<String>,
+    /// With `html` or `html_after`: the page without a `Content-Length`, chunked (#1460).
+    #[serde(deserialize_with = "flag_opt")]
+    pub html_chunked: Option<bool>,
     /// ETag / Last-Modified change every N requests (resume validation).
     pub etag_change_every: Option<u64>,
     /// ETag style: `weak` (W/"…"), `per-request` (a new strong ETag on every answer, same file,
@@ -62,6 +70,15 @@ pub struct Faults {
     /// The server (of a file host's several) whose copy is served: its own ETag and a
     /// Last-Modified N × 12 s later, the same bytes (Rapidgator's servers).
     pub node: Option<u64>,
+    /// A CDN in front of N copies of the file (#1577): request n is served by copy `(n-1) % N`
+    /// (as `node`: its own ETag and Last-Modified, the same bytes), whichever node a connection
+    /// lands on.
+    pub nodes: Option<u64>,
+    /// Every answer carries the whole file's digest, `x-oss-hash-crc64ecma` (a stand-in value:
+    /// the same on every copy, another once `etag_change_every` changes the file), as object
+    /// stores and their CDNs send it with any range (#1577).
+    #[serde(deserialize_with = "flag_opt")]
+    pub digest: Option<bool>,
     /// Delay before sending response headers, ms.
     pub latency_ms: Option<u64>,
     /// Delay before answering a request that asks for a range, ms (on top of `latency_ms`): the
@@ -95,6 +112,12 @@ pub struct Faults {
     /// `cf-mitigated: challenge` and a challenge page, as `browser_only`'s.
     #[serde(deserialize_with = "flag_opt")]
     pub refuse_browsers: Option<bool>,
+    /// A bot check whose challenge a browser passes by running its script (Cloudflare's "Just a
+    /// moment...", #1494): every file request without the cookie [`CLEARANCE`] gets 403 with
+    /// `cf-mitigated: challenge` and a page whose script, after this many milliseconds, sets
+    /// that cookie and loads the address again; with it, the file. A program that runs no
+    /// script never gets past it on its own.
+    pub js_challenge: Option<u64>,
     /// The same check answering this status instead, empty, with `Retry-After: 0` (FileHippo's
     /// 412 to whatever isn't a browser, #630, #668).
     pub refuse_programs: Option<u16>,
@@ -111,7 +134,16 @@ pub struct Faults {
     /// URL's own value is never lifted). A download can't finish meanwhile, only be stopped.
     #[serde(deserialize_with = "size_opt")]
     pub stall_at: Option<u64>,
+    /// `/files` only: the first answer for a path that carries the file's byte at this offset
+    /// sends [`GARBLED`] bytes from there inverted, as a proxy that mangled a range (#1661);
+    /// every later answer sends them right. An archive downloaded through it is damaged there,
+    /// and its damaged part downloaded again comes whole.
+    #[serde(deserialize_with = "size_opt")]
+    pub garble: Option<u64>,
 }
+
+/// How many bytes `garble` inverts.
+pub const GARBLED: u64 = 64;
 
 impl Faults {
     pub fn parse(query: &str) -> Result<Self, serde_urlencoded::de::Error> {
@@ -137,9 +169,13 @@ impl Faults {
             html_type: over.html_type.clone().or(self.html_type.clone()),
             html_cd: over.html_cd.or(self.html_cd),
             html_after: over.html_after.or(self.html_after),
+            html_body: over.html_body.clone().or(self.html_body.clone()),
+            html_chunked: over.html_chunked.or(self.html_chunked),
             etag_change_every: over.etag_change_every.or(self.etag_change_every),
             etag: over.etag.clone().or(self.etag.clone()),
             node: over.node.or(self.node),
+            nodes: over.nodes.or(self.nodes),
+            digest: over.digest.or(self.digest),
             latency_ms: over.latency_ms.or(self.latency_ms),
             range_latency_ms: over.range_latency_ms.or(self.range_latency_ms),
             range_rate: over.range_rate.or(self.range_rate),
@@ -148,6 +184,7 @@ impl Faults {
             refuse: over.refuse.or(self.refuse),
             browser_only: over.browser_only.or(self.browser_only),
             refuse_browsers: over.refuse_browsers.or(self.refuse_browsers),
+            js_challenge: over.js_challenge.or(self.js_challenge),
             refuse_programs: over.refuse_programs.or(self.refuse_programs),
             refuse_ranges: over.refuse_ranges.or(self.refuse_ranges),
             require_referer: over
@@ -156,6 +193,7 @@ impl Faults {
                 .or(self.require_referer.clone()),
             once: over.once.or(self.once),
             stall_at: over.stall_at.or(self.stall_at),
+            garble: over.garble.or(self.garble),
         }
     }
 }
@@ -186,6 +224,20 @@ pub(crate) fn parse_flag(s: &str) -> Option<bool> {
         "0" | "false" | "no" => Some(false),
         _ => None,
     }
+}
+
+/// The cookie `js_challenge`'s script sets, and lets through.
+pub const CLEARANCE: &str = "mdm_lab_clearance=1";
+
+/// `js_challenge`'s page: after `wait_ms`, its script sets [`CLEARANCE`] and loads the page's
+/// address again, as Cloudflare's challenge page does once its check is passed.
+pub fn challenge_page(wait_ms: u64) -> String {
+    format!(
+        "<!DOCTYPE html><html><head><title>Just a moment...</title></head>\n\
+         <body><p>Checking your browser before you go on.</p>\n\
+         <script>setTimeout(function () {{ document.cookie = \"{CLEARANCE}; path=/\"; \
+         location.reload(); }}, {wait_ms});</script></body></html>\n"
+    )
 }
 
 /// True when the `Cookie` header `cookie` satisfies `require_cookie` (`name=value` or `name`).
@@ -229,6 +281,9 @@ mod tests {
         )
         .unwrap();
         let page = Faults::parse("html_type=none&html_cd=1&html_after=2").unwrap();
+        let stub = Faults::parse("html_body=json&html_chunked=1").unwrap();
+        assert_eq!(stub.html_body.as_deref(), Some("json"));
+        assert_eq!(stub.html_chunked, Some(true));
         assert_eq!(page.html_type.as_deref(), Some("none"));
         assert_eq!(page.html_cd, Some(true));
         assert_eq!(page.html_after, Some(2));
@@ -244,6 +299,10 @@ mod tests {
         assert!(!has_cookie(Some("sid=11"), "sid=1"));
         assert!(!has_cookie(Some("xsid=1"), "sid=1"));
         assert!(!has_cookie(None, "sid"));
+        let js = Faults::parse("js_challenge=2500").unwrap();
+        assert_eq!(js.js_challenge, Some(2500));
+        assert!(challenge_page(2500).contains("2500"));
+        assert!(challenge_page(0).contains(CLEARANCE));
     }
 
     #[test]

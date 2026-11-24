@@ -1,9 +1,10 @@
 # Builds the downloads: Windows (tools/installer/build.ps1: installer, portable zip, plain zip)
-# for x64, ARM64 and 32-bit (x86), the browser extensions (tools/extension/pack.ps1: Chromium zip,
-# Firefox .xpi), Linux for x86-64 and ARM64 (build-linux.sh: AppImage, tar.gz, .deb, .rpm) and,
-# experimental and not yet tested by us, macOS (build-macos.sh: a .dmg for Apple Silicon, one for
-# Intel; named "-experimental"). Each build's programs are tried on the machine that built them
-# first (tools/installer/smoke.py): the processor they are for, and a download.
+# for x64, ARM64 and 32-bit (x86), the browser extension (tools/extension/pack.ps1: the Chromium
+# zip; Firefox's add-on goes to addons.mozilla.org only), Linux for x86-64 and ARM64
+# (build-linux.sh: AppImage, tar.gz, .deb, .rpm) and, experimental and not yet tested by us,
+# macOS (build-macos.sh: a .dmg for Apple Silicon, one for Intel; named "-experimental"). Each
+# build's programs are tried on the machine that built them first (tools/installer/smoke.py): the
+# processor they are for, and a download.
 # - A pushed tag vX.Y.Z (matching Cargo.toml's version) publishes a GitHub release with them and
 #   SHA256SUMS.txt, its notes from CHANGELOG.md (Help -> Check for updates sees it at once). The
 #   release waits for x64 Windows and the extensions: a failed build of another processor or
@@ -37,7 +38,7 @@ jobs:
       - name: IP-to-country table
         run: python3 tools/geo/build.py --release
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: geo-data
           path: crates/geo/data/*
@@ -70,7 +71,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: geo-data
           path: crates/geo/data
@@ -95,7 +96,7 @@ jobs:
           rustup show active-toolchain || rustup toolchain install
           rustup target add ${{ matrix.target }}
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ~/.cargo/registry
@@ -116,10 +117,8 @@ jobs:
       # libclang already.
       - name: NASM
         if: runner.arch != 'ARM64'
-        shell: pwsh
-        run: |
-          choco install nasm --version 2.16.3 --no-progress -y
-          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+        # nasm.us at a pinned SHA256, Chocolatey's feed only if that download fails.
+        uses: ./.github/actions/nasm
 
       # Windows on ARM: LLVM (clang and libclang) for their assembly and bindings there.
       - name: LLVM
@@ -180,14 +179,16 @@ jobs:
           if ($LASTEXITCODE) { throw "symbols failed" }
 
       # x64's under the name it always had ("windows"), the others' with their processor.
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ matrix.arch == 'x64' && 'windows' || format('windows-{0}', matrix.arch) }}
           path: target/dist/*
 
   extension:
-    # Every browser's extension as its own download: Chrome, Edge, Brave, Opera and Vivaldi
-    # (unzip, then load the folder unpacked) and Firefox (.xpi).
+    # The extension as its own download for the Chromium browsers that can't use the Chrome Web
+    # Store (unzip, then load the folder unpacked). Firefox's isn't one (#1613): an unsigned .xpi
+    # lasts in Firefox only until it restarts, so Firefox gets it from addons.mozilla.org, and the
+    # app's own extension folder keeps a copy for developers (about:debugging).
     runs-on: ubuntu-latest
     # The store steps below run only for a pushed tag, and only when their key is there: a run by
     # hand never sends anything to a store. Each key is in the environment of its own step only.
@@ -212,7 +213,7 @@ jobs:
       - name: Tests
         run: node tools/extension/test.mjs
 
-      - name: Chromium zip, Firefox .xpi and the Chrome Web Store's zip
+      - name: Chromium zip and the Chrome Web Store's zip
         shell: pwsh
         run: |
           ./tools/extension/pack.ps1
@@ -220,7 +221,6 @@ jobs:
           $v = [regex]::Match((Get-Content Cargo.toml -Raw), '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
           New-Item -ItemType Directory -Force target/dist | Out-Null
           Copy-Item target/extension/mdm-chromium.zip "target/dist/MisterDownloadManager-$v-extension-chromium.zip"
-          Copy-Item target/extension/mdm-firefox.xpi "target/dist/MisterDownloadManager-$v-extension-firefox.xpi"
           # For the Chrome Web Store (the next step, or its dashboard by hand): kept with the
           # build, not the release.
           New-Item -ItemType Directory -Force target/store | Out-Null
@@ -233,8 +233,8 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
 
       # The Firefox add-on is listed on addons.mozilla.org: each release's version is sent there
-      # for review (not waited for); Firefox installs and updates it from its listing. The .xpi
-      # in the release stays the unsigned one (for about:debugging).
+      # for review (not waited for); Firefox installs and updates it from its listing. The release
+      # has no .xpi (the unsigned one is gone at Firefox's next restart, #1613).
       - name: Send the Firefox add-on to addons.mozilla.org
         if: ${{ startsWith(github.ref, 'refs/tags/') && steps.keys.outputs.amo == 'true' }}
         env:
@@ -269,12 +269,12 @@ jobs:
           EXTENSION_ID: ejoleppdfgjdndddcjoehopknmlglojp
         run: ./tools/release/node_modules/.bin/chrome-webstore-upload --source target/extension/mdm-chrome-store.zip
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: chrome-web-store
           path: target/store/*
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: extension
           path: target/dist/*
@@ -300,7 +300,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: geo-data
           path: crates/geo/data
@@ -308,7 +308,7 @@ jobs:
       - name: Toolchain
         run: rustup show active-toolchain || rustup toolchain install
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ~/.cargo/registry
@@ -355,7 +355,7 @@ jobs:
         run: python3 tools/installer/smoke.py target/release ${{ matrix.arch }}
 
       # x64's under the name it always had ("linux"), ARM64's with its processor.
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ matrix.arch == 'x64' && 'linux' || format('linux-{0}', matrix.arch) }}
           path: target/dist/*
@@ -368,7 +368,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: geo-data
           path: crates/geo/data
@@ -376,7 +376,7 @@ jobs:
       - name: Toolchain
         run: rustup show active-toolchain || rustup toolchain install
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ~/.cargo/registry
@@ -390,7 +390,7 @@ jobs:
           GH_TOKEN: ${{ github.token }} # downloads the build's helpers signed in (fetch_release.py)
         run: bash tools/installer/build-macos.sh
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: macos
           path: target/dist/*
@@ -415,7 +415,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           path: dist
           merge-multiple: true
@@ -461,12 +461,17 @@ jobs:
             Write-Warning "MDM_RELEASE_KEY isn't set: this release is unsigned, and MDM won't update to it by itself."
           }
           # Notes: the version's section of CHANGELOG.md ("## [X.Y.Z]" up to the next "## "),
-          # else GitHub's list of changes since the last tag; first, the invitation to try the
-          # macOS builds when they are there (Linux's files are no longer "-experimental").
+          # else GitHub's list of changes since the last tag. First, the browser add-on's stores
+          # (#1613: the release has no file for Firefox, and the stores' copies update themselves),
+          # then the invitation to try the macOS builds when they are there (Linux's files are no
+          # longer "-experimental").
           $v = "${{ github.ref_name }}".TrimStart("v")
           $log = Get-Content CHANGELOG.md -Raw -ErrorAction SilentlyContinue
           $m = [regex]::Match("$log", "(?ms)^## \[$([regex]::Escape($v))\][^\n]*\n(.*?)(?=^## |\z)")
           $title = "Mister Download Manager ${{ github.ref_name }}"
+          $stores = "**The browser add-on:** [Add to Firefox](https://addons.mozilla.org/firefox/addon/mister-download-manager/) " +
+            "(Zen, LibreWolf too) · [Add to Chrome, Edge, Brave, Opera, Vivaldi](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp). " +
+            "The stores' copy updates itself; ``-extension-chromium.zip`` is only for a Chromium browser that can't use its store.`n`n"
           $invite = ""
           if ($files.Name -like "*-experimental*") {
             $invite = "**On a Mac?** The ``-experimental`` files are fresh builds for Mac " +
@@ -490,12 +495,50 @@ jobs:
             # Links into the repository (docs/x.md) would resolve against the release's page:
             # point them at the tagged files.
             $notes = $m.Groups[1].Value.Trim() -replace '\]\((?![a-z]+:|#)([^)\s]+)\)', '](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/$1)'
-            Set-Content -Encoding utf8 notes.md ($invite + $notes + $thanks)
+            Set-Content -Encoding utf8 notes.md ($stores + $invite + $notes + $thanks)
             gh release create "${{ github.ref_name }}" --latest --title $title --notes-file notes.md $all
           } else {
-            Set-Content -Encoding utf8 notes.md ($invite + $thanks.Trim())
+            Set-Content -Encoding utf8 notes.md ($stores + $invite + $thanks.Trim())
             gh release create "${{ github.ref_name }}" --latest --title $title --notes-file notes.md --generate-notes $all
           }
           # The website links to the latest published release: rebuild it now that the files are
           # there (a release made with this token starts no workflow by itself).
           gh workflow run pages.yml --ref main
+
+  docker:
+    # A published Docker image for servers and NAS systems (docs/server.md, Dockerfile).
+    name: docker
+    needs: publish
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Image tags
+        id: tags
+        run: |
+          ref="${GITHUB_REF_NAME#v}"
+          repo="${GITHUB_REPOSITORY,,}"
+          echo "tags=ghcr.io/${repo}:latest,ghcr.io/${repo}:${GITHUB_REF_NAME},ghcr.io/${repo}:${ref}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}

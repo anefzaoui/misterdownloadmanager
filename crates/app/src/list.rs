@@ -96,13 +96,14 @@ pub fn status_width(code: &str, full: &str, measure: impl Fn(&str) -> f32) -> f3
 
 /// What the Status cell says at its widest while a file is checked or a video joined, in
 /// language `code` (`crate::model::checking` and `merging`): the word with 100 % (as `full`, and
-/// as English writes it) and with "..." before MDM knows how far.
+/// as English writes it) and with "..." before MDM knows how far; and "Damaged", an archive its
+/// test found damaged (#1661).
 pub fn finishing_texts(code: &str, full: &str) -> Vec<String> {
     let i18n = crate::i18n::i18n();
     let Some(lang) = i18n.from_code(code) else {
         return Vec::new();
     };
-    let mut texts = Vec::new();
+    let mut texts = vec![i18n.t(lang, "Damaged").to_owned()];
     for template in ["Checking {percent}", "Merging {percent}"] {
         for percent in [full, "100%", "..."] {
             texts.push(crate::i18n::fmt(
@@ -404,6 +405,12 @@ pub struct Row {
     /// The speed limit holding the download back (#1191), said by the Transfer rate cell's tip:
     /// the column is too narrow for it beside the speed.
     pub rate_tip: Option<String>,
+    /// How far the download is, 0..=1, when the model knows (a file with a known size): a screen
+    /// reader gets it as the row's own progress bar (#1190).
+    pub progress: Option<f64>,
+    /// From a private (incognito) window (#1581): the Status cell starts with a mask, and its
+    /// tip, and what a screen reader says of the row, with this (whether the list keeps it).
+    pub private: Option<String>,
 }
 
 #[derive(Default)]
@@ -766,6 +773,7 @@ pub fn show(
     let p_all = p.clone();
     let p = p.with_clip_rect(screen(header));
     fill(&p, cl, ct, rr, ct + header_h() - 1.0, HEADER_BG());
+    winui::header_shade(&p, cl, rr, ct + header_h() - 1.0, false);
     for (c, x0, x1) in &cols {
         let hovered = hresp
             .hover_pos()
@@ -803,7 +811,11 @@ pub fn show(
         } else if let Some(t) = tint {
             fill(&p, *x0, ct, x1 - 1.0, ct + header_h() - 1.0, t);
         }
-        fill(&p, *x1, ct, *x1, ct + header_h() - 1.0, HEADER_SEP());
+        // Windows XP's headers: the shaded bottom (orange under the pointer) over the tints.
+        if state != winui::State::Normal || st.sort.is_some_and(|(sc, _)| sc == *c) {
+            winui::header_shade(&p, *x0, x1 - 1.0, ct + header_h() - 1.0, hovered);
+        }
+        winui::header_divider(&p, *x1, ct, ct + header_h() - 1.0, HEADER_SEP());
         let mut arrow_room = if st.sort.is_some_and(|(sc, _)| sc == *c) {
             14.0
         } else {
@@ -963,6 +975,7 @@ pub fn show(
                 Some(whole) if *c == 3 => whole.as_str(),
                 _ => row.cells[*c].as_str(),
             })
+            .chain(row.private.as_deref())
             .filter(|t| !t.is_empty())
             .collect::<Vec<_>>()
             .join(", ");
@@ -1007,6 +1020,17 @@ pub fn show(
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
             expose_row(idx, row, picked);
+            // The download's progress as a progress bar of its own (#1190, #1406): the same node
+            // the Download status page carries, so a reader's progress reporting follows it
+            // without anyone moving the focus (winui::expose_progress).
+            if let Some(frac) = row.progress {
+                let bar = row_id(idx).with("progress");
+                let bar_rc = screen(Rect::from_min_size(
+                    pos2(cl, top),
+                    egui::vec2(rr - cl, row_h()),
+                ));
+                winui::expose_progress(&rows_ui, bar_rc, bar, frac);
+            }
             let sel = picked && st.focused;
             // The focused row's dotted outline only once the keyboard is in use, as every
             // control's focus (winui::keyboard_in_use).
@@ -1043,6 +1067,21 @@ pub fn show(
                 // The file-type icon sits in the File Name column, wherever it is.
                 let tx = if *c == 0 {
                     icons.paint_in(ui, &bp, row.icon.clone(), pos2(x0 + 4.0, top));
+                    x0 + 22.0
+                } else if *c == STATUS && row.private.is_some() {
+                    // A private window's download (#1581): a mask before its status, in the
+                    // row's text colour, kept to the cell.
+                    let ink = if sel { winui::SELECTION_TEXT() } else { TEXT() };
+                    let cell = Rect::from_min_max(pos2(*x0, top), pos2(*x1 - 1.0, top + row_h()));
+                    crate::chrome::paint_image(
+                        ui,
+                        &bp.with_clip_rect(screen(cell.intersect(body))),
+                        crate::icons::private_mark(ink),
+                        screen(Rect::from_min_size(
+                            pos2(x0 + 4.0, top),
+                            egui::vec2(16.0, 16.0),
+                        )),
+                    );
                     x0 + 22.0
                 } else {
                     x0 + 6.0
@@ -1082,13 +1121,17 @@ pub fn show(
                     .map(english)
                     .is_some_and(|h| cell.contains(h))
                 {
-                    let tip = if *c == 3 {
+                    let tip = if *c == STATUS {
+                        // Private window's mark first (#1581), the whole status, the events.
                         let events = status_tip(idx);
-                        match &row.status_whole {
-                            Some(whole) if events.is_empty() => whole.clone(),
-                            Some(whole) => format!("{whole}\n{events}"),
-                            None => events,
-                        }
+                        row.private
+                            .iter()
+                            .chain(&row.status_whole)
+                            .chain(Some(&events))
+                            .filter(|t| !t.is_empty())
+                            .cloned()
+                            .collect::<Vec<_>>()
+                            .join("\n")
                     } else if *c == RATE && !row.cells[*c].is_empty() {
                         row.rate_tip.clone().unwrap_or_default()
                     } else {
@@ -1809,7 +1852,9 @@ mod tests {
             queued,
             cells,
             status_whole: None,
+            private: None,
             rate_tip: None,
+            progress: None,
         }
     }
 
@@ -2056,7 +2101,9 @@ mod tests {
                     _ => String::new(),
                 }),
                 status_whole: None,
+                private: None,
                 rate_tip: None,
+                progress: None,
             })
             .collect();
         let mut icons = ShellIcons;
