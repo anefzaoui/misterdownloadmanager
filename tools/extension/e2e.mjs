@@ -48,6 +48,8 @@
 // serves to its page's player only: looked up and downloaded with the Origin and Referer the
 // browser sent, #900), played (a feed whose page names no video: the file and the stream the tab
 // played for each video, found by its length, downloaded by MDM; never the next video, #1092),
+// beforeplay (a video that hasn't played: the stream address its page wrote for the player looked
+// up, only what the page names asked for, "Download best" downloading it, #1826),
 // qualities (the button's menu: a stream's qualities looked up by MDM, with their sizes; the one
 // picked downloads with its progress window only, MDM's main window hidden), page (the menu on a
 // real video page, E2E_VIDEO_PAGE, and the line E2E_VIDEO_PICK downloaded: off by default), video (shown,
@@ -4602,6 +4604,104 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       if (three.m.rows.length !== 1 || !megabytes(three.m.rows[0].size, 3)) throw new Error(`#feed3's menu: ${rows(three.m)}`);
       await s.mouse(2, 2);
       return `#feed1: chip "${one.p.chip}", "${rows(one.m)}", ${done.file} ${done.size} bytes, ${got.length} request(s) with the feed as Referer, "${green.text}"; #feed2: ${rows(two.m)}, 360p: ${streamed.file}; #feed3: "${rows(three.m)}"`;
+    } finally {
+      await stopApp();
+    }
+  },
+
+  // #1826: a video that hasn't played, on a site yt-dlp has no reader for (pages answered here at
+  // clips.example.test, which yt-dlp can't reach, so the page's own look-up finds nothing): the
+  // button takes the stream address the page wrote for its player ("\/" for "/") and looks that
+  // up, the video never playing. Only what the page names is asked of the lab (its log); of two
+  // variants named in a JSON script the better one, its look-up ended within its minute; a page
+  // naming none asks the lab for nothing. "Download best" downloads the stream to its end.
+  async beforeplay(t) {
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    if (!ffmpeg) throw new Skip("no ffmpeg (E2E_FFMPEG or PATH)");
+    await stopApp();
+    fs.rmSync(path.join(data, "ipc.json"), { force: true });
+    spawn(appExe, ["/startup"], { env: process.env, stdio: "ignore", detached: false });
+    try {
+      await until("the test instance, in the notification area", 20000, () => mdmList().then(() => true, () => false));
+      const s = t.session;
+      const HOST = "clips.example.test";
+      const esc = (p) => JSON.stringify(`${LAB}${p}`).replaceAll("/", "\\/");
+      const player = (script) =>
+        `<!doctype html><meta charset="utf-8"><title>A clip before it plays</title><body style="margin:0">` +
+        `<video id="clip" width="640" height="360" controls preload="none"></video><script>${script}</script></body>`;
+      const pages = {
+        "/one.html": player(`window.playerConfig = {"sources": {"hls": ${esc("/hls/master.m3u8")}}};`),
+        "/two.html": player(`window.playerConfig = {"hls": {"360": ${esc("/hls/360p/index.m3u8")}, "720": ${esc("/hls/720p/index.m3u8")}}};`),
+        "/none.html": player(`window.playerConfig = {"poster": "/poster.jpg"};`),
+      };
+      await s.serve([HOST], (url) => {
+        const page = pages[new URL(url).pathname];
+        return page ? { status: 200, type: "text/html; charset=utf-8", body: page } : { status: 404, type: "text/plain", body: "not a sample page" };
+      });
+      const earlier = (await mdmList()).filter((d) => d.url.startsWith(`${LAB}/hls/`)).map((d) => d.id);
+      if (earlier.length) await ipc({ action: "delete", ids: earlier });
+      // What the lab was asked for under /hls/ since its log was cleared.
+      const asked = async () => (await (await fetch(`${LAB}/_log`)).json()).filter((e) => e.path.startsWith("/hls")).map((e) => `${e.path} ${e.status}`);
+      const notPlayed = async (page) => {
+        const played = await s.evaluate(`(() => { const v = document.getElementById("clip"); return v.currentSrc || (v.paused ? "" : "playing"); })()`);
+        if (played) throw new Error(`${page}: the clip played (${played})`);
+      };
+      const rows = (m) => m.rows.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
+      // The button over the clip, its menu (the pointer resting on its arrow starts the look-up),
+      // followed until the look-up ended.
+      const menuOf = async (page) => {
+        await s.mouse(2, 2);
+        await clearLog();
+        await s.navigate(`http://${HOST}${page}`);
+        const v = await until(`${page}: the clip`, 10000, () => rect(s, "#clip"));
+        let b = null;
+        for (let i = 0; i < 4 && !b; i++) {
+          b = await hover(s, v);
+          if (!b) {
+            await s.mouse(2, 2);
+            await sleep(1000);
+          }
+        }
+        if (!b) throw new Error(`${page}: no button over the clip`);
+        await clickArrow(s);
+        const opened = Date.now();
+        const said = new Set();
+        const m = await until(`${page}: its menu, its look-up ended`, 75000, async () => {
+          const q = await s.picks("row");
+          if (q) said.add(q.busy ? "looking" : q.note || rows(q));
+          return q && !q.busy && (q.rows.length || q.note) ? q : null;
+        }).catch((e) => {
+          throw new Error(`${e.message} (it said: ${[...said].join(" | ")})`);
+        });
+        await notPlayed(page);
+        return { m, ms: Date.now() - opened, asked: await asked(), p: await s.pill(PILL_STATE) };
+      };
+      // The master playlist the page named: its qualities, the chip its best, and only it and
+      // what it lists asked for.
+      const one = await menuOf("/one.html");
+      if (!one.m.rows.some((r) => /\b720p\b/.test(r.name)) || !one.m.rows.some((r) => /\b360p\b/.test(r.name))) throw new Error(`/one.html's menu: ${rows(one.m) || one.m.note}`);
+      if (!one.p || one.p.chip !== "720p") throw new Error(`/one.html: the chip is "${one.p && one.p.chip}", not 720p`);
+      const strange = one.asked.filter((a) => !/^\/hls\/(?:master\.m3u8|(?:720p|360p|audio)\/[\w.]+) 200$/.test(a));
+      if (!one.asked.length || strange.length) throw new Error(`/one.html: the lab was asked for ${one.asked.join(", ") || "nothing"}`);
+      const before = new Set((await mdmList()).map((d) => d.id));
+      await s.mouse(one.m.rows[0].x, one.m.rows[0].y, "click");
+      const item = await until("/one.html's best quality, in MDM's list", 15000, async () => (await mdmList().catch(() => [])).find((d) => !before.has(d.id)));
+      if (item.url !== `${LAB}/hls/master.m3u8`) throw new Error(`MDM downloads ${item.url}, not the stream the page named`);
+      const done = await until(`${item.file}, complete`, 90000, async () => {
+        const d = (await mdmList().catch(() => [])).find((x) => x.id === item.id);
+        if (d && d.status === "Error") throw new Error(`${item.file}: ${d.error}`);
+        return d && d.status === "Complete" ? d : null;
+      });
+      await notPlayed("/one.html");
+      // Two variants in a JSON script: the 720p one looked up, never the 360p, within the minute.
+      const two = await menuOf("/two.html");
+      if (!two.asked.some((a) => a === "/hls/720p/index.m3u8 200") || two.asked.some((a) => a.startsWith("/hls/360p/"))) throw new Error(`/two.html: the lab was asked for ${two.asked.join(", ") || "nothing"}`);
+      if (two.ms > 65000) throw new Error(`/two.html: its look-up ended ${two.ms} ms after the menu opened, past its minute`);
+      // None named: nothing asked.
+      const none = await menuOf("/none.html");
+      if (none.asked.length) throw new Error(`/none.html: the lab was asked for ${none.asked.join(", ")}`);
+      await s.mouse(2, 2);
+      return `/one.html: chip "${one.p.chip}", ${rows(one.m)} in ${one.ms} ms, lab asked ${one.asked.length}x (${[...new Set(one.asked.map((a) => a.split("/")[2]))].join(", ")}), "Download best": ${done.file} ${done.size} bytes, never played; /two.html: ${rows(two.m) || two.m.note} in ${two.ms} ms, asked ${two.asked.join(", ")}; /none.html: "${none.m.note || rows(none.m)}" in ${none.ms} ms, nothing asked`;
     } finally {
       await stopApp();
     }
