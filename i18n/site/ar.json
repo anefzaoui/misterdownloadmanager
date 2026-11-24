@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "تعرض الصفحات الرئيسية وصفحات التنزيل نوعين من التقييمات، لا يختلطان أبدا:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>تقييمات النجوم</g1>، فقط إذا قيمت MDM في الصفحة الرئيسية أو صفحة التنزيل: يذهب تقييمك إلى خدمة التقييمات الخاصة بنا، وهو برنامج صغير على Cloudflare (Workers، مع قاعدة بياناته في Cloudflare D1). يحتفظ بشيئين: عدد النجوم، وتجزئة معالجة لعنوان IP الخاص بك، وهو رمز أحادي الاتجاه تم إنشاؤه بمفتاح سري، ولا يمكن قراءة العنوان منه مرة أخرى. التجزئة هي ما يتيح لك تغيير تقييمك أو إزالته بدلا من إضافة تقييم آخر؛ لا يتم تخزين عنوان IP الخاص بك أبدا أو كتابته في سجل. لمنع التصويت الآلي، يمر التقييم أولا عبر <g2>Cloudflare Turnstile</g2>، الذي يتحقق من أن شخصا ما يقوم بالتقييم: يتم تحميل نصه البرمجي، ويبدأ التحقق منه، فقط بمجرد أن تصل إلى النجوم (حتى يتمكن تقييمك من الذهاب بمجرد اختياره)، ويرى Cloudflare عنوان IP الخاص بك وتفاصيل المستعرض لهذا التحقق، بموجب <g3>سياسة خصوصية Cloudflare</g3>. يتم الاحتفاظ بتقييمك وتجزئته طالما أن الموقع يعرض التقييمات، أو حتى تزيله باستخدام <g4>إزالة تقييمي</g4>؛ لتحديد عدد المرات التي يمكن فيها لاتصال واحد التقييم، يتم الاحتفاظ بكل محاولة (نفس التجزئة ووقتها) لمدة ساعة، ثم يتم حذفها. يعرض الموقع فقط المتوسط وعدد التقييمات وعدد من أعطى كل عدد من النجوم. يتذكر المستعرض الخاص بك أيضا تقييمك الخاص في وحدة التخزين المحلية الخاصة به، لعرضه لك؛ ولا يتم إرساله إلى أي مكان أبدا."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخر تحديث 24-11-2026 · ينطبق على التطبيق وملحق المستعرض وموقع misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "آخر تحديث 24-11-2026"
   }
  }
 }

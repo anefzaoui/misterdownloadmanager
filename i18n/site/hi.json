@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "होम और डाउनलोड पेज दो प्रकार की रेटिंग दिखाते हैं, कभी मिश्रित नहीं:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>स्टार रेटिंग</g1>, केवल तभी जब आप MDM को होम या डाउनलोड पेज पर रेट करते हैं: आपकी रेटिंग हमारी रेटिंग सेवा पर जाती है, जो Cloudflare (Workers, जिसका डेटाबेस Cloudflare के D1 में है) पर एक छोटा प्रोग्राम है। यह दो चीजें रखता है: सितारों की संख्या, और आपके IP पते का एक सॉल्टेड हैश, एक गुप्त कुंजी के साथ बनाया गया एक-तरफ़ा कोड, जिससे पता वापस नहीं पढ़ा जा सकता। हैश ही आपको एक और रेटिंग जोड़ने के बजाय अपनी रेटिंग बदलने या हटाने की सुविधा देता है; आपका IP पता स्वयं कभी भी संग्रहीत या लॉग में नहीं लिखा जाता है। स्वचालित वोटों को बाहर रखने के लिए, एक रेटिंग पहले <g2>Cloudflare Turnstile</g2> से होकर गुजरती है, जो यह जाँचता है कि कोई व्यक्ति रेटिंग दे रहा है: इसकी स्क्रिप्ट लोड होती है, और इसकी जाँच तभी शुरू होती है जब आप सितारों तक पहुँचते हैं (ताकि आपकी रेटिंग जैसे ही आप इसे चुनते हैं, जा सके), और Cloudflare उस जाँच के लिए आपका IP पता और ब्राउज़र विवरण देखता है, <g3>Cloudflare की गोपनीयता नीति</g3> के तहत। आपकी रेटिंग और उसका हैश तब तक रखा जाता है जब तक साइट रेटिंग दिखाती है, या जब तक आप इसे <g4>मेरी रेटिंग हटाएँ</g4> से हटा नहीं देते; यह सीमित करने के लिए कि एक कनेक्शन कितनी बार रेटिंग दे सकता है, प्रत्येक प्रयास (वही हैश और उसका समय) एक घंटे के लिए रखा जाता है, फिर हटा दिया जाता है। साइट केवल औसत, रेटिंग की संख्या और कितने लोगों ने प्रत्येक संख्या के सितारे दिए, दिखाती है। आपका ब्राउज़र आपकी अपनी रेटिंग को अपने स्थानीय स्टोरेज में भी याद रखता है, ताकि आपको इसे दिखाया जा सके; इसे कभी भी कहीं भी नहीं भेजा जाता है।"
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "अंतिम अपडेट 2026-11-24 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "अंतिम अपडेट: 2026-11-24"
   }
  }
 }

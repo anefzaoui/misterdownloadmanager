@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "Các trang chủ và trang tải xuống hiển thị hai loại xếp hạng, không bao giờ trộn lẫn:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>Đánh giá sao</g1>, chỉ khi bạn đánh giá MDM trên trang chủ hoặc trang tải xuống: đánh giá của bạn được gửi đến dịch vụ đánh giá của chúng tôi, một chương trình nhỏ trên Cloudflare (Workers, với cơ sở dữ liệu trong D1 của Cloudflare). Nó lưu giữ hai thứ: số sao và một mã băm đã được thêm muối của địa chỉ IP của bạn, một mã một chiều được tạo bằng khóa bí mật, từ đó không thể đọc ngược lại địa chỉ. Mã băm là thứ cho phép bạn thay đổi hoặc xóa đánh giá của mình thay vì thêm một đánh giá khác; bản thân địa chỉ IP của bạn không bao giờ được lưu trữ hoặc ghi vào nhật ký. Để ngăn chặn các lượt bình chọn tự động, một đánh giá trước tiên sẽ đi qua <g2>Cloudflare Turnstile</g2>, kiểm tra xem có phải một người đang đánh giá hay không: tập lệnh của nó tải và kiểm tra bắt đầu, chỉ khi bạn chọn số sao (để đánh giá của bạn có thể được gửi ngay khi bạn chọn), và Cloudflare thấy địa chỉ IP và chi tiết trình duyệt của bạn cho lần kiểm tra đó, theo <g3>chính sách quyền riêng tư của Cloudflare</g3>. Đánh giá và mã băm của bạn được giữ lại miễn là trang web hiển thị đánh giá, hoặc cho đến khi bạn xóa nó bằng <g4>Xóa đánh giá của tôi</g4>; để giới hạn tần suất một kết nối có thể đánh giá, mỗi lần thử (cùng mã băm và thời gian của nó) được giữ lại trong một giờ, sau đó bị xóa. Trang web chỉ hiển thị điểm trung bình, số lượng đánh giá và số lượng người đã cho mỗi số sao. Trình duyệt của bạn cũng ghi nhớ đánh giá của chính bạn trong bộ nhớ cục bộ của nó, để hiển thị cho bạn; nó không bao giờ được gửi đi bất cứ đâu."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Cập nhật lần cuối 24-11-2026 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "Cập nhật lần cuối 24-11-2026"
   }
  }
 }

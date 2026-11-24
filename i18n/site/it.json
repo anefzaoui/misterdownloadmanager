@@ -18529,6 +18529,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "Le pagine home e di download mostrano due tipi di valutazioni, mai mescolate:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>Valutazioni in stelle</g1>, solo se valuti MDM sulla pagina iniziale o di download: la tua valutazione va al nostro servizio di valutazione, un piccolo programma su Cloudflare (Workers, con il suo database in D1 di Cloudflare). Conserva due cose: il numero di stelle e un hash salato del tuo indirizzo IP, un codice unidirezionale creato con una chiave segreta, dal quale l'indirizzo non può essere letto. L'hash è ciò che ti permette di modificare o <g4>rimuovere la tua valutazione</g4> invece di aggiungerne un'altra; il tuo indirizzo IP non viene mai memorizzato o scritto in un log. Per escludere i voti automatici, una valutazione passa prima attraverso <g2>Cloudflare Turnstile</g2>, che verifica che sia una persona a valutare: il suo script si carica e la sua verifica inizia solo quando raggiungi le stelle (in modo che la tua valutazione possa essere inviata non appena la scegli), e Cloudflare vede il tuo indirizzo IP e i dettagli del tuo browser per quella verifica, secondo la <g3>politica sulla privacy di Cloudflare</g3>. La tua valutazione e il suo hash vengono conservati finché il sito mostra le valutazioni, o finché non la rimuovi; per limitare la frequenza con cui una connessione può valutare, ogni tentativo (lo stesso hash e il suo orario) viene conservato per un'ora, poi eliminato. Il sito mostra solo la media, il numero di valutazioni e quante hanno dato ogni numero di stelle. Il tuo browser ricorda anche la tua valutazione nella sua memoria locale, per mostrartela; non viene mai inviata da nessuna parte."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Ultimo aggiornamento: 24/11/2026 · si applica all'app, all'estensione del browser e a misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "Ultimo aggiornamento: 24/11/2026"
   }
  }
 }

@@ -18525,6 +18525,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "ホームページとダウンロードページには、決して混同されない 2 種類の評価が表示されます。"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>星評価</g1>は、MDM をホームまたはダウンロード ページで評価した場合にのみ適用されます。評価は当社の評価サービスに送信されます。これは Cloudflare 上の小さなプログラム (Workers、Cloudflare の D1 にデータベースがあります) です。このサービスは 2 つの情報を保持します。星の数と、IP アドレスのソルト付きハッシュです。これは秘密鍵で作成された一方向のコードで、アドレスを読み戻すことはできません。ハッシュは、別の評価を追加するのではなく、評価を変更または削除できるようにするためのものです。IP アドレス自体が保存されたり、ログに書き込まれたりすることはありません。自動投票を防ぐため、評価はまず <g2>Cloudflare Turnstile</g2> を経由します。これは、人間が評価していることを確認するものです。スクリプトが読み込まれ、チェックが開始されるのは、星に触れたときだけです (これにより、評価を選択するとすぐに評価が送信されます)。Cloudflare は、このチェックのために IP アドレスとブラウザーの詳細を <g3>Cloudflare のプライバシー ポリシー</g3> に基づいて確認します。評価とそのハッシュは、サイトが評価を表示している間、または <g4>自分の評価を削除</g4> で削除するまで保持されます。1 つの接続が評価できる頻度を制限するため、各試行 (同じハッシュとその時間) は 1 時間保持され、その後削除されます。サイトには、平均、評価数、各星の数を付けた人数のみが表示されます。お使いのブラウザーも、自分の評価をローカル ストレージに記憶して表示します。これはどこにも送信されません。"
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最終更新日: 2026-11-24 · アプリ、ブラウザー拡張機能、misterdownloadmanager.com に適用されます"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "最終更新日: 2026-11-24"
   }
  }
 }

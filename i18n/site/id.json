@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "Halaman utama dan unduhan menunjukkan dua jenis peringkat, tidak pernah dicampur:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>Peringkat bintang</g1>, hanya jika Anda memberi peringkat MDM di halaman utama atau halaman unduhan: peringkat Anda dikirim ke layanan peringkat kami, sebuah program kecil di Cloudflare (Workers, dengan basis datanya di D1 Cloudflare). Program ini menyimpan dua hal: jumlah bintang, dan hash bergaram dari alamat IP Anda, sebuah kode satu arah yang dibuat dengan kunci rahasia, yang darinya alamat tidak dapat dibaca kembali. Hash inilah yang memungkinkan Anda mengubah atau menghapus peringkat Anda alih-alih menambahkan yang lain; alamat IP Anda sendiri tidak pernah disimpan atau ditulis ke log. Untuk mencegah suara otomatis, peringkat pertama-tama melewati <g2>Cloudflare Turnstile</g2>, yang memeriksa bahwa yang memberi peringkat adalah manusia: skripnya dimuat, dan pemeriksaannya dimulai, hanya setelah Anda memilih bintang (agar peringkat Anda dapat langsung dikirim setelah Anda memilihnya), dan Cloudflare melihat alamat IP serta detail browser Anda untuk pemeriksaan tersebut, di bawah <g3>kebijakan privasi Cloudflare</g3>. Peringkat Anda dan hash-nya disimpan selama situs menampilkan peringkat, atau sampai Anda menghapusnya dengan <g4>Hapus peringkat saya</g4>; untuk membatasi seberapa sering satu koneksi dapat memberi peringkat, setiap percobaan (hash yang sama dan waktunya) disimpan selama satu jam, lalu dihapus. Situs hanya menampilkan rata-rata, jumlah peringkat, dan berapa banyak yang memberikan setiap jumlah bintang. Browser Anda juga mengingat peringkat Anda sendiri di penyimpanan lokalnya, untuk menampilkannya kepada Anda; peringkat tersebut tidak pernah dikirim ke mana pun."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Terakhir diperbarui 2026-11-24 · berlaku untuk aplikasi, ekstensi browser, dan misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "Terakhir diperbarui 24-11-2026"
   }
  }
 }

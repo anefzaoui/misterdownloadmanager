@@ -18529,6 +18529,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "صفحات اصلی و بارگیری دو نوع امتیاز را نشان می‌دهند که هرگز با هم مخلوط نمی‌شوند:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>امتیازدهی با ستاره</g1>، فقط در صورتی که به MDM در صفحه اصلی یا صفحه بارگیری امتیاز دهید: امتیاز شما به سرویس امتیازدهی ما ارسال می‌شود، یک برنامه کوچک روی Cloudflare (Workers، با پایگاه داده آن در D1 Cloudflare). این سرویس دو چیز را نگه می‌دارد: تعداد ستاره‌ها و یک هش نمک‌خورده از آدرس IP شما، یک کد یک‌طرفه که با یک کلید مخفی ساخته شده و آدرس از آن قابل بازخوانی نیست. هش همان چیزی است که به شما امکان می‌دهد امتیاز خود را تغییر دهید یا حذف کنید، به جای افزودن یک امتیاز دیگر؛ خود آدرس IP شما هرگز ذخیره یا در هیچ گزارشی نوشته نمی‌شود. برای جلوگیری از رأی‌های خودکار، یک امتیاز ابتدا از <g2>Cloudflare Turnstile</g2> عبور می‌کند، که بررسی می‌کند یک شخص در حال امتیازدهی است: اسکریپت آن بارگذاری می‌شود و بررسی آن آغاز می‌شود، فقط زمانی که شما به سمت ستاره‌ها می‌روید (تا امتیاز شما به محض انتخاب آن ارسال شود)، و Cloudflare آدرس IP و جزئیات مرورگر شما را برای آن بررسی، تحت <g3>سیاست حفظ حریم خصوصی Cloudflare</g3>، مشاهده می‌کند. امتیاز شما و هش آن تا زمانی که سایت امتیازها را نشان می‌دهد، یا تا زمانی که شما آن را با <g4>حذف امتیاز من</g4> حذف کنید، نگهداری می‌شود؛ برای محدود کردن دفعات امتیازدهی یک اتصال، هر تلاش (همان هش و زمان آن) به مدت یک ساعت نگهداری می‌شود، سپس حذف می‌گردد. سایت فقط میانگین، تعداد امتیازها و تعداد افرادی که هر تعداد ستاره را داده‌اند، نشان می‌دهد. مرورگر شما نیز امتیاز خودتان را در حافظه محلی خود به خاطر می‌سپارد تا آن را به شما نشان دهد؛ این اطلاعات هرگز به جایی ارسال نمی‌شود."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخرین به‌روزرسانی: 2026-11-24 · شامل برنامه، افزونه مرورگر و وب‌سایت misterdownloadmanager.com می‌شود"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "آخرین به‌روزرسانی: 24 نوامبر 2026"
   }
  }
 }

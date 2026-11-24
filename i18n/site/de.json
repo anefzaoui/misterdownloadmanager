@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "Die Start- und Downloadseiten zeigen zwei Arten von Bewertungen, die niemals gemischt werden:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>Sternebewertungen</g1>, nur wenn Sie MDM auf der Start- oder Downloadseite bewerten: Ihre Bewertung geht an unseren Bewertungsdienst, ein kleines Programm auf Cloudflare (Workers, mit seiner Datenbank in Cloudflares D1). Es speichert zwei Dinge: die Anzahl der Sterne und einen gesalzenen Hash Ihrer IP-Adresse, einen Einweg-Code, der mit einem geheimen Schlüssel erstellt wird, aus dem die Adresse nicht zurückgelesen werden kann. Der Hash ermöglicht es Ihnen, Ihre Bewertung zu ändern oder zu entfernen, anstatt eine weitere hinzuzufügen; Ihre IP-Adresse selbst wird niemals gespeichert oder in einem Protokoll erfasst. Um automatisierte Abstimmungen auszuschließen, durchläuft eine Bewertung zuerst <g2>Cloudflare Turnstile</g2>, das überprüft, ob eine Person bewertet: Das Skript wird geladen und die Überprüfung beginnt erst, wenn Sie nach den Sternen greifen (damit Ihre Bewertung sofort nach der Auswahl übermittelt werden kann), und Cloudflare sieht Ihre IP-Adresse und Browserdetails für diese Überprüfung gemäß <g3>Cloudflares Datenschutzrichtlinie</g3>. Ihre Bewertung und ihr Hash werden so lange gespeichert, wie die Website Bewertungen anzeigt, oder bis Sie sie mit <g4>Meine Bewertung entfernen</g4> löschen; um zu begrenzen, wie oft eine Verbindung bewerten kann, wird jeder Versuch (derselbe Hash und seine Zeit) eine Stunde lang gespeichert und dann gelöscht. Die Website zeigt nur den Durchschnitt, die Anzahl der Bewertungen und wie viele jede Anzahl von Sternen vergeben haben. Ihr Browser speichert Ihre eigene Bewertung auch im lokalen Speicher, um sie Ihnen anzuzeigen; sie wird niemals irgendwohin gesendet."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Zuletzt aktualisiert am 24.11.2026 · gilt für die App, die Browser-Erweiterung und misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "Zuletzt aktualisiert am 24.11.2026"
   }
  }
 }
