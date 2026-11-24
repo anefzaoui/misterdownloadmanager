@@ -569,6 +569,13 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ A drive too full for a download says the space needed and the space free right
+- ✅ FTP: the 32-bit build never resumes a file over 4 GB at the wrong place
+- ✅ A file from a server without ranges is no longer failed as cut short when it starts over on one connection
+- ✅ Replacing a file never takes a paused download's name
+- ✅ Debrid torrents: a "ready" torrent with no files listed yet is asked again
+- ✅ Real-Debrid: a download waits out the service's maintenance for up to an hour
+- ✅ Premiumize: large torrents with many folders come down
 - ✅ Linux and macOS: the running downloads' progress on MDM's icon in the dock (Ubuntu Dock,
   Dash to Dock, KDE Plasma's task manager and others) and in the macOS Dock, as on the Windows
   taskbar ([#1777](https://github.com/anefzaoui/misterdownloadmanager/issues/1777))
