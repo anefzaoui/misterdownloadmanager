@@ -986,3 +986,19 @@ fn only_hatchzips_own_refusal_with_nothing_changed_falls_back() {
     assert_eq!(seen, 0);
     assert!(!t.path().join("two.txt").exists());
 }
+
+/// An entry that cannot be written because a file of the archive is in the way is skipped, not
+/// fatal: the rest of the archive still extracts.
+#[test]
+fn an_entry_under_a_file_is_skipped_not_fatal() {
+    let t = tempfile::tempdir().unwrap();
+    let zip = t.path().join("a.zip");
+    zip_of(&zip, &[("a", b"1"), ("a/b", b"2"), ("c.txt", b"3")], None);
+    let dest = t.path().join("out");
+    std::fs::create_dir(&dest).unwrap();
+    let (r, _) = run(&zip, &dest, None, Subfolder::Never);
+    assert!(r.is_ok(), "{r:?}");
+    assert_eq!(std::fs::read(dest.join("a")).unwrap(), b"1");
+    assert!(!dest.join("a/b").exists());
+    assert_eq!(std::fs::read(dest.join("c.txt")).unwrap(), b"3");
+}

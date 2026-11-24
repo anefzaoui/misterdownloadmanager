@@ -210,7 +210,16 @@ impl<'a> Writer<'a> {
             self.skip(name, "through a link");
             return Ok(());
         }
-        fs::create_dir_all(&path)?;
+        fs::create_dir_all(&path).or_else(|e| {
+            // A file of that name is the archive's own entry, not a damaged disk: nothing
+            // under it can be written, and the rest of the archive still can.
+            if fs::symlink_metadata(&path).is_ok_and(|m| !m.is_dir()) {
+                self.skip(name, "a file is in the way");
+                Ok(())
+            } else {
+                Err(e)
+            }
+        })?;
         Ok(())
     }
 
@@ -238,7 +247,17 @@ impl<'a> Writer<'a> {
                 self.skip(name, "through a link");
                 return self.drain(name, size, data);
             }
-            fs::create_dir_all(parent)?;
+            fs::create_dir_all(parent).or_else(|e| {
+                if fs::symlink_metadata(parent).is_ok_and(|m| !m.is_dir()) {
+                    self.skip(name, "a file is in the way");
+                    Ok(())
+                } else {
+                    Err(e)
+                }
+            })?;
+            if fs::symlink_metadata(parent).is_ok_and(|m| !m.is_dir()) {
+                return self.drain(name, size, data);
+            }
         }
         // Two entries of one name (an archive can hold that): the second is numbered.
         if fs::symlink_metadata(&path).is_ok() {
