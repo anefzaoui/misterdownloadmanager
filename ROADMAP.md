@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Find: Sites searches the parent web page too
+- ✅ Sites Logins: a saved login is matched more carefully
+- ✅ Sites Logins: saved passwords are shown more discreetly
+- ✅ Sizes: a size that rounds up to the next unit is shown in it; 1 Byte in the singular
+- ✅ Tray panel: it stays on the screen its icon is on
 - ✅ Scheduler: a queue's Once at date is kept while its start time is off
 - ✅ Download limits: an empty box keeps the limit in force
 - ✅ Scheduler: a clock that goes back no longer runs every schedule time at once

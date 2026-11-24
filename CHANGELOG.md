@@ -96,6 +96,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Find: **Sites** also searches the download's parent web page, as its checkbox says (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Sites Logins: a saved login is matched more carefully (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Options → Sites Logins: the list shows saved passwords more discreetly, and nothing for a login without one (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Sizes: a size just under 1 MB or 1 GB reads 1.00 MB or 1.00 GB instead of 1024.00 KB or 1024.00 MB (speeds too), and a one-byte file reads 1 Byte (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Linux and macOS: the tray panel opens on the screen, not half off its right edge, and stays on a screen left of the main one (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Scheduler: a queue's **Once at** date is kept while **Start download at** is unticked, so ticking it again gives the same date back instead of a daily queue (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Download limits: an empty box keeps the limit in force, in Options and in the Scheduler, instead of putting back 200 MB / 5 hours (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Scheduler: a clock that goes back (summer time's end, a time sync, setting it by hand) no longer starts and stops every scheduled queue at once (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
