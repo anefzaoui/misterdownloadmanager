@@ -1060,9 +1060,24 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
         std::fs::write(&part, &data).and_then(|_| std::fs::rename(&part, &file))
     })
     .await;
-    if !matches!(written, Ok(Ok(()))) {
-        undo(got);
-        return Err(PieceError::Dead(format!("{} can't be saved", run.one())));
+    match written {
+        Ok(Ok(())) => {}
+        Ok(Err(e)) => {
+            // A disk full, a read-only folder: no new list of addresses can help, so this is not
+            // a piece the site refused (`Dead`, which asks yt-dlp again).
+            undo(got);
+            return Err(PieceError::Again(format!(
+                "{} can't be saved: {e}",
+                run.one()
+            )));
+        }
+        Err(e) => {
+            undo(got);
+            return Err(PieceError::Again(format!(
+                "{} can't be saved: {e}",
+                run.one()
+            )));
+        }
     }
     run.shared.whole_bytes.fetch_add(size, Ordering::Relaxed);
     run.shared.whole.fetch_add(1, Ordering::Relaxed);
