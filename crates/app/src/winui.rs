@@ -962,6 +962,12 @@ fn data_left(x: f32, right: f32) -> f32 {
 /// `s` broken into the lines it shows in `room` px: at its own line breaks, and where a line is
 /// too long, at spaces, or between any two characters in scripts written without spaces.
 fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
+    wrap_lines_font(p, tahoma(), s, room)
+}
+
+/// [`wrap_lines`] in any font (a bold name on several lines: the preview pane's).
+pub fn wrap_lines_font(p: &Painter, font: FontId, s: &str, room: f32) -> Vec<String> {
+    let text_width = |p: &Painter, t: &str| text_width_font(p, font.clone(), t);
     let mut lines: Vec<String> = Vec::new();
     for given in s.split('\n') {
         // A Windows line end (a report written there) breaks the line too.
@@ -1017,6 +1023,170 @@ fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
         lines.push(line.trim_end().to_owned());
     }
     lines
+}
+
+/// A file's name on up to `max` lines of `room` px (`width` measures a text): broken at its own
+/// separators (after a space, `_`, `-`, `.`, `,`, `+`, `~`; before an opening bracket), its
+/// extension never split and kept on the last line with the piece before it; a part with no
+/// separator wider than the room broken between its characters (a letter and its marks together).
+/// Longer than `max` lines: the last one is the name's end, cut at its start with "..." (so the
+/// extension still shows).
+pub fn name_lines(name: &str, room: f32, max: usize, width: impl Fn(&str) -> f32) -> Vec<String> {
+    let max = max.max(1);
+    if width(name) <= room {
+        return vec![name.to_owned()];
+    }
+    // The extension: after the last dot, short, after a stem of its own.
+    let (stem, ext) = match name.rfind('.') {
+        Some(at) if at > 0 && name.len() - at <= 17 && !name[at + 1..].contains(' ') => {
+            name.split_at(at)
+        }
+        _ => (name, ""),
+    };
+    // The stem in pieces, each ending at a separator.
+    let mut pieces: Vec<String> = Vec::new();
+    let mut cur = String::new();
+    for g in stem.graphemes(true) {
+        if matches!(g, "(" | "[" | "{") && !cur.is_empty() {
+            pieces.push(std::mem::take(&mut cur));
+        }
+        cur.push_str(g);
+        if matches!(g, " " | "_" | "-" | "." | "," | "+" | "~" | ")" | "]" | "}") {
+            pieces.push(std::mem::take(&mut cur));
+        }
+    }
+    if !cur.is_empty() {
+        pieces.push(cur);
+    }
+    // A piece wider than the room: cut between its characters.
+    let mut parts: Vec<String> = Vec::new();
+    for piece in pieces {
+        if width(&piece) <= room {
+            parts.push(piece);
+            continue;
+        }
+        let mut chunk = String::new();
+        for g in piece.graphemes(true) {
+            if !chunk.is_empty() && width(&format!("{chunk}{g}")) > room {
+                parts.push(std::mem::take(&mut chunk));
+            }
+            chunk.push_str(g);
+        }
+        if !chunk.is_empty() {
+            parts.push(chunk);
+        }
+    }
+    // The extension goes with the piece before it where they fit together, so it never ends up
+    // alone on a line of its own ("...10s_1MB" / ".mp4").
+    if !ext.is_empty() {
+        match parts.last_mut() {
+            Some(last) if width(&format!("{last}{ext}")) <= room => last.push_str(ext),
+            _ => parts.push(ext.to_owned()),
+        }
+    }
+    let mut lines: Vec<String> = Vec::new();
+    let mut line = String::new();
+    for part in parts {
+        if line.is_empty() || width(&format!("{line}{part}")) <= room {
+            line.push_str(&part);
+        } else {
+            lines.push(std::mem::take(&mut line));
+            line = part;
+        }
+    }
+    lines.push(line);
+    for l in &mut lines {
+        // A space a line ends on isn't seen.
+        let trimmed = l.trim_end_matches(' ').len();
+        l.truncate(trimmed.max(1).min(l.len()));
+    }
+    if lines.len() > max {
+        let rest: String = lines.split_off(max - 1).concat();
+        // The rest's end that fits after "...": the extension stays in sight.
+        let gs: Vec<&str> = rest.graphemes(true).collect();
+        let mut k = gs.len();
+        while k > 0 && width(&format!("...{}", gs[k - 1..].concat())) <= room {
+            k -= 1;
+        }
+        lines.push(format!("...{}", gs[k..].concat()));
+    }
+    lines
+}
+
+/// [`name_lines`] measured in `font`.
+pub fn name_lines_in(p: &Painter, font: FontId, name: &str, room: f32, max: usize) -> Vec<String> {
+    name_lines(name, room, max, |s| text_width_font(p, font.clone(), s))
+}
+
+#[cfg(test)]
+mod name_lines_tests {
+    use super::name_lines;
+
+    /// One unit per character: a room of 10 holds ten.
+    fn lines(name: &str, room: f32, max: usize) -> Vec<String> {
+        name_lines(name, room, max, |s| s.chars().count() as f32)
+    }
+
+    #[test]
+    fn a_name_breaks_at_its_separators_and_keeps_its_extension_whole() {
+        // #1368's: "Big_Buck_Bunny_360_10s_1MB.m" / "p4" before.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 20.0, 3),
+            ["Big_Buck_Bunny_360_", "10s_1MB.mp4"]
+        );
+        assert_eq!(lines("short.mp4", 20.0, 3), ["short.mp4"]);
+        // Not the extension alone on the last line: the piece before it goes down with it.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 26.0, 3),
+            ["Big_Buck_Bunny_360_10s_", "1MB.mp4"]
+        );
+        assert_eq!(
+            lines("with-a-rather-long-name.iso.torrent", 26.0, 3),
+            ["with-a-rather-long-name.", "iso.torrent"]
+        );
+        // The extension goes down whole rather than split.
+        assert_eq!(
+            lines("abcdefghij.torrent", 12.0, 3),
+            ["abcdefghij", ".torrent"]
+        );
+        // Spaces and dashes; the space a line ends on dropped.
+        assert_eq!(
+            lines("My holiday photos - final.zip", 12.0, 3),
+            ["My holiday", "photos -", "final.zip"]
+        );
+        // A bracket starts its line.
+        assert_eq!(
+            lines("Report(2026).pdf", 8.0, 3),
+            ["Report", "(2026)", ".pdf"]
+        );
+    }
+
+    #[test]
+    fn a_name_without_separators_breaks_between_letters_not_in_its_extension() {
+        let l = lines("abcdefghijklmnopqrstuvwxyz.torrent", 10.0, 5);
+        assert_eq!(l, ["abcdefghij", "klmnopqrst", "uvwxyz", ".torrent"]);
+        assert!(l.iter().all(|x| x.chars().count() <= 10));
+    }
+
+    #[test]
+    fn too_many_lines_end_with_the_names_end() {
+        let l = lines("a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p.mp4", 9.0, 3);
+        assert_eq!(l.len(), 3);
+        assert_eq!(l[2], "..._p.mp4");
+        assert_eq!(l[0], "a_b_c_d_");
+    }
+
+    #[test]
+    fn a_name_in_another_script_keeps_its_letters_and_marks() {
+        // Arabic letters with their marks, no separator: broken between whole characters.
+        let name = "مِلَفٌّطَوِيلٌجِدًّا.pdf";
+        let l = name_lines(name, 6.0, 4, |s| {
+            use unicode_segmentation::UnicodeSegmentation;
+            s.graphemes(true).count() as f32
+        });
+        assert_eq!(l.concat(), name);
+        assert_eq!(l.last().map(String::as_str), Some(".pdf"));
+    }
 }
 
 /// Where the text before a line's first input box goes in a [`sentence`].

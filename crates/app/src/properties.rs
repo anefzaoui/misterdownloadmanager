@@ -508,7 +508,7 @@ impl Properties {
 }
 
 /// Windows' name for the file type ("BIN File", "Compressed (zipped) Folder").
-fn file_type(name: &str, ext: &str) -> String {
+pub(crate) fn file_type(name: &str, ext: &str) -> String {
     #[cfg(windows)]
     if let Some(t) = crate::win32::type_name(name) {
         return t;

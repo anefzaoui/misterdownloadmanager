@@ -463,6 +463,10 @@ pub struct Item {
     /// added before the column existed have none.
     #[serde(default)]
     pub added: Option<String>,
+    /// When it last finished (the preview pane's "Finished", #1368), as `added` is written.
+    /// Downloads finished before it was kept have none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub finished: Option<String>,
     /// Its own speed limit, bytes/s (progress window → Speed Limiter, "Remember Speed Limiter
     /// settings for this file on download stop/resume"): used again whenever it starts.
     #[serde(default)]
@@ -1293,6 +1297,7 @@ impl Item {
             resumable: None,
             checksum: None,
             added: Some(now_stamp()),
+            finished: None,
             own_limit: None,
             video: None,
             torrent: None,
@@ -1550,6 +1555,7 @@ impl Item {
                     v.parts = job.progress().merge_failed.unwrap_or_default();
                 }
                 if status == Status::Complete {
+                    self.finished = Some(now_stamp());
                     self.downloaded = self.size.unwrap_or(self.downloaded);
                     // Replaced (or kept, when it couldn't be): the file there now is its own.
                     self.replace_file = None;

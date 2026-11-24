@@ -2273,6 +2273,80 @@ function samplePage(html) {
   ok(`#689: a video in a feed names its post, never the feed (${pages.length} sample pages, ${checked} videos)`);
 }
 
+// #643: Facebook's feed as it is built in 2026 (our own synthetic posts, no real one). The <video>
+// sits `depth` levels below its post (aria-posinset: 21 to 24), the id its player's wrapper carries
+// (data-video-id) about 10 above it, before it plays. The timestamp link is a placeholder
+// (?__cft__…, or the home page with it) until hovered or focused, then the video's /reel/<id>/;
+// a comment's timestamp can be another video's reel (…?comment_id=…). What the button sends.
+{
+  const post = ({ id = null, idAt = 10, depth = 24, head = [], comment = null, inner = "" } = {}) => {
+    let player = "<video></video>";
+    for (let level = 1; level <= depth - 2; level += 1) {
+      const named = (Array.isArray(id) ? id : [[idAt, id]]).find(([at, v]) => at === level && v);
+      player = `<div${named ? ` data-video-id="${named[1]}"` : ""}>${player}${level === 3 ? inner : ""}</div>`;
+    }
+    return `<div aria-posinset="1"><div><h4><a href="https://www.facebook.com/sample.page?__cft__[0]=AZ">Sample Page</a></h4>
+      <span>${head.map((h) => `<a href="${h}">4h</a>`).join(" ")}</span>${player}
+      ${comment ? `<ul><li><a href="${comment}">1d</a></li></ul>` : ""}</div></div>`;
+  };
+  const send = (html, at = "https://www.facebook.com/") => {
+    const { document, videos } = samplePage(`<html><head><meta name="mdm-page" content="${at}"></head><body><div role="main"><div role="feed">${html}</div></div></body></html>`);
+    return videoPageOn(new URL(at), document)(videos[0]);
+  };
+  const ID = "8901234567890123";
+  const OTHER = "9012345678901234";
+  const reel = (id) => `https://www.facebook.com/reel/${id}/`;
+  const placeholders = ["?__cft__[0]=AZsample&__tn__=%2CO%2CP-R", "https://www.facebook.com/?__cft__[0]=AZsample"];
+  const hovered = (id) => `https://www.facebook.com/reel/${id}/?__cft__[0]=AZsample&__tn__=%2CO%2CP-R`;
+  const commentOf = (id) => `https://www.facebook.com/reel/${id}/?comment_id=Y29tbWVudDpzYW1wbGU%3D&__cft__[0]=AZsample`;
+
+  // An ordinary video post before it is hovered: its wrapper's id, as /reel/<id>/.
+  assert.equal(send(post({ id: ID, head: placeholders })), reel(ID), "data-video-id 10 up, placeholders");
+  // Hovered: its timestamp names the same video.
+  assert.equal(send(post({ id: ID, head: [hovered(ID)] })), reel(ID));
+  // A comment's reel link names another video: the post's own id still decides.
+  assert.equal(send(post({ id: ID, head: placeholders, comment: commentOf(OTHER) })), reel(ID));
+  // The nearest id up decides (an outer one is something else's).
+  assert.equal(send(post({ id: [[10, ID], [14, OTHER]], head: placeholders })), reel(ID), "the nearest data-video-id");
+  // No id: the hovered timestamp, 22 levels up (beyond the old 16-level walk), inside its post.
+  assert.equal(send(post({ head: [hovered(ID)] })), reel(ID), "the timestamp link at the post's depth");
+  assert.equal(send(post({ head: [hovered(ID)], comment: commentOf(OTHER) })), reel(ID), "the post's link, not its comment's");
+  // No id, placeholders only, and a comment's reel: nothing (never the comment's video, nor the feed).
+  assert.equal(send(post({ head: placeholders })), null, "placeholders name nothing");
+  assert.equal(send(post({ head: placeholders, comment: commentOf(OTHER) })), null, "a comment's reel isn't the post's video");
+  // The same in a shallower post (12 levels), which the old walk reached.
+  assert.equal(send(post({ depth: 12, head: placeholders, comment: commentOf(OTHER) })), null, "a comment's reel, 12 levels up");
+  assert.equal(send(post({ depth: 12, head: [hovered(ID)], comment: commentOf(OTHER) })), reel(ID), "the post's reel beside a comment's");
+  // On another page too: a placeholder resolves against the page's address, and names nothing.
+  assert.equal(send(post({ head: ["?__cft__[0]=AZsample"] }), "https://www.facebook.com/groups/123456789012/"), null);
+  // A sponsored post: no id, no video link (the advertiser's page, an outside link).
+  const sponsored = post({ head: ["?__cft__[0]=AZsample", "https://www.facebook.com/sample.advertiser?__cft__[0]=AZ", "https://l.facebook.com/l.php?u=https%3A%2F%2Fshop.example.test%2F&h=AT0"] });
+  assert.equal(send(sponsored), null, "a sponsored post names nothing");
+  // The video's other links, in the post, as before: a watch page, video.php, a page's video, fb.watch.
+  assert.equal(send(post({ head: ["https://www.facebook.com/watch/?v=1234567890123456&__cft__[0]=AZ"] })), "https://www.facebook.com/watch/?v=1234567890123456");
+  assert.equal(send(post({ head: ["https://www.facebook.com/video.php?v=1234567890123456"] })), "https://www.facebook.com/watch/?v=1234567890123456");
+  assert.equal(send(post({ head: ["https://www.facebook.com/sample.page/videos/a-title/1234567890123456/?__cft__[0]=AZ"] })), "https://www.facebook.com/watch/?v=1234567890123456");
+  assert.equal(send(post({ head: ["https://fb.watch/sAmPlE7x/?mibextid=sample"] })), "https://fb.watch/sAmPlE7x/");
+  // A post's permalink is the last resort: a video link anywhere in the post goes first, even one
+  // further from the <video> than the permalink.
+  const permalink = "https://www.facebook.com/sample.page/posts/pfbid02SampleSampleSampleSampleSampleSample1l";
+  assert.equal(send(post({ head: [permalink] })), permalink, "only a permalink: the post");
+  assert.equal(send(post({ head: [hovered(ID)], inner: `<a href="${permalink}?__cft__[0]=AZ">See more</a>` })), reel(ID), "a video link over a nearer permalink");
+  assert.equal(send(post({ id: ID, head: [permalink] })), reel(ID));
+  // A permalink in a comment is no post's either.
+  assert.equal(send(post({ head: placeholders, comment: `${permalink}?comment_id=Y29tbWVudA%3D%3D` })), null);
+  // The walk ends at the post: the next post's link is never this video's.
+  const two = `${post({ head: placeholders })}<div aria-posinset="2"><div><span><a href="${hovered(OTHER)}">2h</a></span></div></div>`;
+  assert.equal(send(`<div>${two}</div>`), null, "nothing past the post");
+  // Without a post container the walk keeps its 16 levels: a link 22 up names nothing.
+  const bare = post({ head: [hovered(ID)] }).replace('aria-posinset="1"', 'class="x1"');
+  assert.equal(send(bare), null, "no post container: 16 levels, as before");
+  // m. and web. are the same site.
+  assert.equal(send(post({ id: ID, head: placeholders }), "https://m.facebook.com/"), reel(ID));
+  assert.equal(send(post({ id: ID, head: placeholders }), "https://web.facebook.com/"), reel(ID));
+  ok("#643: Facebook's feed: the player's id, then the post's video links, its permalink last");
+}
+
 // #1458: Kwai's video page (our own sample of its player's shape: no real account or video) plays
 // its video's plain MP4 in a <video src>, a signed `?tag=` after it, the next one ready below it.
 // Each names the page (which yt-dlp can't read: it has no Kwai reader), and its own file goes with

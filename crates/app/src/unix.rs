@@ -2737,9 +2737,8 @@ fn icon_theme(kde: bool) -> Option<String> {
 #[allow(unsafe_code)]
 pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
     use crate::fileicons::{Native, What};
-    use objc2::AllocAnyThread as _;
-    use objc2_app_kit::{NSBitmapImageRep, NSDeviceRGBColorSpace, NSGraphicsContext, NSWorkspace};
-    use objc2_foundation::{NSPoint, NSRect, NSSize, NSString};
+    use objc2_app_kit::NSWorkspace;
+    use objc2_foundation::NSString;
     // An extension, or a type identifier where there is none.
     let ty = match what {
         // Finder has no open folder of its own: its folder.
@@ -2751,6 +2750,24 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
     objc2::rc::autoreleasepool(|_| {
         #[allow(deprecated)] // iconForContentType needs a UTType; this takes the extension as is.
         let image = NSWorkspace::sharedWorkspace().iconForFileType(&NSString::from_str(&ty));
+        let rgba = ns_image_rgba(&image, side)?;
+        Some(Native::Rgba {
+            side: side as u32,
+            rgba,
+            premultiplied: true,
+        })
+    })
+}
+
+/// `image` drawn at `side` pixels square into a bitmap of our own (AppKit picks its picture made
+/// for that size), as premultiplied RGBA.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn ns_image_rgba(image: &objc2_app_kit::NSImage, side: usize) -> Option<Vec<u8>> {
+    use objc2::AllocAnyThread as _;
+    use objc2_app_kit::{NSBitmapImageRep, NSDeviceRGBColorSpace, NSGraphicsContext};
+    use objc2_foundation::{NSPoint, NSRect, NSSize};
+    {
         // SAFETY: no planes, so the bitmap allocates and owns its pixels: 8-bit RGBA, packed rows
         // (0 lets it choose the row length and bits per pixel). The colour space name is AppKit's
         // own constant.
@@ -2788,11 +2805,189 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
                 std::slice::from_raw_parts(data.add(y * row), side * 4)
             });
         }
-        Some(Native::Rgba {
-            side: side as u32,
+        Some(rgba)
+    }
+}
+
+// ---- Thumbnails (preview.rs, #1368) -------------------------------------------------------------
+
+/// `win32::thumbnail` on macOS: Finder's icon for the file itself (NSWorkspace `iconForFile`: a
+/// program's own, a folder's custom one), drawn at `px` pixels, marked as an icon. Not Quick
+/// Look's picture of the file's content: that is QuickLookThumbnailing's QLThumbnailGenerator,
+/// which answers later through a completion block, a framework MDM's macOS code doesn't bind
+/// (it would bring objc2's QuickLookThumbnailing and block2 bindings), with no Mac at hand to
+/// try it on. The pane shows the file's icon there instead.
+#[cfg(target_os = "macos")]
+pub fn thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    use objc2_app_kit::NSWorkspace;
+    use objc2_foundation::NSString;
+    let side = px.clamp(16, 512) as usize;
+    let path = path.to_str()?;
+    objc2::rc::autoreleasepool(|_| {
+        let image = NSWorkspace::sharedWorkspace().iconForFile(&NSString::from_str(path));
+        let rgba = ns_image_rgba(&image, side)?;
+        Some(crate::preview::Picture {
+            w: side as u32,
+            h: side as u32,
             rgba,
             premultiplied: true,
+            icon: true,
         })
+    })
+}
+
+/// `win32::thumbnail` on Linux: the picture the desktop's file manager made of the file (the
+/// freedesktop thumbnail cache, GNOME's and KDE's), else one made here: a photo decoded and
+/// scaled down, a video's frame through the ffmpeg MDM uses for videos. None: the type's icon.
+#[cfg(target_os = "linux")]
+pub fn thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    cached_thumbnail(path, px)
+        .or_else(|| decoded_picture(path, px))
+        .or_else(|| video_frame(path, px))
+}
+
+/// The Thumbnail Managing Standard's cache (`$XDG_CACHE_HOME/thumbnails`, `~/.cache/thumbnails`):
+/// the file's picture at the smallest size there at least `px`, else the largest, only one made
+/// from the file as it is now (its `Thumb::MTime` the file's date).
+#[cfg(target_os = "linux")]
+fn cached_thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    use std::os::unix::ffi::OsStrExt;
+    let path = if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        std::env::current_dir().ok()?.join(path)
+    };
+    let mtime = std::fs::metadata(&path)
+        .ok()?
+        .modified()
+        .ok()?
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()?
+        .as_secs();
+    let cache = std::env::var_os("XDG_CACHE_HOME")
+        .map(PathBuf::from)
+        .filter(|p| p.is_absolute())
+        .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".cache")))?
+        .join("thumbnails");
+    let name =
+        crate::preview::thumbnail_name(&crate::preview::thumbnail_uri(path.as_os_str().as_bytes()));
+    let mut sizes = [
+        ("normal", 128u32),
+        ("large", 256),
+        ("x-large", 512),
+        ("xx-large", 1024),
+    ];
+    // The smallest at least as large as asked first, then the larger ones, then the smaller.
+    sizes.sort_by_key(|(_, s)| {
+        if *s >= px {
+            (0, *s)
+        } else {
+            (1, u32::MAX - *s)
+        }
+    });
+    sizes.iter().find_map(|(dir, _)| {
+        let file = cache.join(dir).join(&name);
+        if std::fs::metadata(&file).ok()?.len() > 16 << 20 {
+            return None;
+        }
+        let bytes = std::fs::read(&file).ok()?;
+        let made = crate::preview::png_text(&bytes, "Thumb::MTime")?;
+        // Seconds; some writers add a fraction.
+        if made.trim().parse::<f64>().ok()? as u64 != mtime {
+            return None;
+        }
+        let img = image::load_from_memory_with_format(&bytes, image::ImageFormat::Png).ok()?;
+        rgba_picture(img.to_rgba8())
+    })
+}
+
+/// A photo the desktop has no thumbnail of, decoded here and made `px` on its longer side, within
+/// limits (a huge picture is left to its icon).
+#[cfg(target_os = "linux")]
+fn decoded_picture(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    let ext = path.extension()?.to_str()?.to_ascii_lowercase();
+    if !matches!(
+        ext.as_str(),
+        "jpg" | "jpeg" | "png" | "gif" | "webp" | "bmp"
+    ) {
+        return None;
+    }
+    if std::fs::metadata(path).ok()?.len() > 200 << 20 {
+        return None;
+    }
+    let mut reader = image::ImageReader::open(path)
+        .ok()?
+        .with_guessed_format()
+        .ok()?;
+    let mut limits = image::Limits::default();
+    limits.max_image_width = Some(20_000);
+    limits.max_image_height = Some(20_000);
+    limits.max_alloc = Some(512 << 20);
+    reader.limits(limits);
+    let img = reader.decode().ok()?;
+    rgba_picture(img.thumbnail(px, px).to_rgba8())
+}
+
+/// A video's frame a few seconds in (its first when it is shorter), made by ffmpeg (the person's
+/// own, MDM's or the system's, as videos use) as a PNG on its output, `px` on its longer side.
+#[cfg(target_os = "linux")]
+fn video_frame(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    let ext = path.extension()?.to_str()?.to_ascii_lowercase();
+    if !matches!(
+        ext.as_str(),
+        "mp4"
+            | "mkv"
+            | "webm"
+            | "mov"
+            | "avi"
+            | "m4v"
+            | "wmv"
+            | "flv"
+            | "mpg"
+            | "mpeg"
+            | "ts"
+            | "3gp"
+            | "ogv"
+    ) {
+        return None;
+    }
+    let ffmpeg = mdm_tools::tools_dir()
+        .as_deref()
+        .and_then(mdm_tools::ffmpeg::installed)?;
+    let scale = format!("scale={px}:{px}:force_original_aspect_ratio=decrease");
+    ["3", "0"].iter().find_map(|at| {
+        let mut cmd = Command::new(&ffmpeg.exe);
+        cmd.args(["-nostdin", "-v", "error", "-ss", at, "-i"])
+            .arg(path)
+            .args([
+                "-frames:v",
+                "1",
+                "-vf",
+                &scale,
+                "-f",
+                "image2pipe",
+                "-c:v",
+                "png",
+                "-",
+            ]);
+        let out = crate::launch::output_within(&mut cmd, std::time::Duration::from_secs(15))?;
+        if !out.stdout.starts_with(b"\x89PNG") {
+            return None;
+        }
+        let img = image::load_from_memory_with_format(&out.stdout, image::ImageFormat::Png).ok()?;
+        rgba_picture(img.to_rgba8())
+    })
+}
+
+#[cfg(target_os = "linux")]
+fn rgba_picture(img: image::RgbaImage) -> Option<crate::preview::Picture> {
+    let (w, h) = img.dimensions();
+    (w > 0 && h > 0).then(|| crate::preview::Picture {
+        w,
+        h,
+        rgba: img.into_raw(),
+        premultiplied: false,
+        icon: false,
     })
 }
 

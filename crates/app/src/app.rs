@@ -499,6 +499,8 @@ enum Cmd {
     AddToQueue(usize),
     RemoveFromQueue,
     ToggleCategories,
+    /// View → Preview pane, the toolbar's toggle, Alt+P (#1368).
+    TogglePreview,
     /// View → Dark Mode support.
     ToggleDarkMode,
     /// View → Always dark (#60).
@@ -1159,6 +1161,7 @@ impl Cmd {
             Cmd::Open => "Enter",
             Cmd::SelectAll => "Ctrl+A",
             Cmd::Properties => "Alt+Enter",
+            Cmd::TogglePreview if preview_key_free() => "Alt+P",
             Cmd::InterfaceSize(100) => "Ctrl+0",
             _ => return None,
         })
@@ -1271,16 +1274,35 @@ enum Pane {
     /// The menu bar (#1190): Tab from the list reaches it, and Tab again goes on to the toolbar
     /// (Shift+Tab back to the list), so a reader can walk the window's parts.
     Bar,
+    /// The preview pane (#1368), after the list while it shows: its keys scroll it.
+    Preview,
+}
+
+/// Alt+P shows and hides the preview pane, as in Explorer (#1368), where no menu bar title of
+/// the interface language has P for its access key (Polish's Plik, Croatian's Preuzimanja...):
+/// there Alt+P opens that menu, as Windows' own menus answer it.
+fn preview_key_free() -> bool {
+    !crate::chrome::menubar_letters().iter().any(|l| l == "p")
 }
 
 /// Where Tab (Shift+Tab: `back`) takes the keys from `from` (`None`: nothing had them, after a
-/// click on the toolbar or the strip), round; the tree left out while it is hidden.
-fn tab_to(from: Option<Pane>, tree_shown: bool, back: bool) -> Pane {
-    let order: &[Pane] = if tree_shown {
-        &[Pane::Toolbar, Pane::Tree, Pane::List, Pane::Bar]
-    } else {
-        &[Pane::Toolbar, Pane::List, Pane::Bar]
-    };
+/// click on the toolbar or the strip), round; the tree and the preview pane left out while they
+/// are hidden.
+fn tab_to(from: Option<Pane>, tree_shown: bool, preview_shown: bool, back: bool) -> Pane {
+    let order: Vec<Pane> = [
+        Pane::Toolbar,
+        Pane::Tree,
+        Pane::List,
+        Pane::Preview,
+        Pane::Bar,
+    ]
+    .into_iter()
+    .filter(|p| match p {
+        Pane::Tree => tree_shown,
+        Pane::Preview => preview_shown,
+        _ => true,
+    })
+    .collect();
     let n = order.len();
     let at = from.and_then(|p| order.iter().position(|q| *q == p));
     order[match (at, back) {
@@ -1329,6 +1351,9 @@ pub struct App {
     move_many_for: Vec<u64>,
     /// The Categories tree has the keys (else the list or the toolbar; Tab moves between them).
     tree_keys: bool,
+    /// The preview pane has the keys (#1368), and its own state (where it is scrolled to).
+    preview_keys: bool,
+    preview: crate::preview::Pane,
     /// The toolbar has the keys (Tab reaches it, #1190), at button `toolbar_at` (kept when Tab
     /// leaves it, as Windows' toolbars keep theirs).
     toolbar_keys: bool,
@@ -2197,6 +2222,8 @@ impl App {
             a11y_lang: "",
             ui_ctx: ctx.clone(),
             tree_keys: false,
+            preview_keys: false,
+            preview: Default::default(),
             toolbar_keys: false,
             bar_keys: false,
             menubar_at: 0,
@@ -3490,6 +3517,31 @@ impl App {
                     if window == "category-remove" {
                         self.confirm_category_delete =
                             self.confirm_category_delete.take().map(|d| d.removing());
+                    }
+                }
+            }
+            // The preview pane shown (#1368's checks and screenshots), `preview:off` hidden.
+            "preview" => {
+                let on = tab != "off";
+                if self.settings.preview_pane != on {
+                    self.run(Cmd::TogglePreview, None, ctx);
+                }
+            }
+            // The list's selection (checks of what depends on it, screenshots): `select:3` the
+            // third download shown, `select:all`, `select:none`.
+            "select" => {
+                let shown = self.shown_ids();
+                match tab {
+                    "all" => self.run(Cmd::SelectAll, None, ctx),
+                    "none" => self.selection.retain(&Vec::new()),
+                    n => {
+                        if let Some(id) = n
+                            .parse::<usize>()
+                            .ok()
+                            .and_then(|n| shown.get(n.checked_sub(1)?).copied())
+                        {
+                            self.selection.set(id);
+                        }
                     }
                 }
             }
@@ -8718,6 +8770,14 @@ impl App {
                 self.dirty = true;
             }
             Cmd::ToggleCategories => self.show_categories = !self.show_categories,
+            Cmd::TogglePreview => {
+                self.settings.preview_pane = !self.settings.preview_pane;
+                // Hidden with the keys: they go back to the list.
+                if !self.settings.preview_pane && self.preview_keys {
+                    self.give_keys(Pane::List);
+                }
+                self.dirty = true;
+            }
             Cmd::ChooseLanguage => {
                 if self.lang_picker.is_none() {
                     self.lang_picker = Some(crate::langpick::Picker::new(
@@ -9823,6 +9883,19 @@ impl App {
                     true,
                     false,
                 ),
+                // MDM's (#1368): the selected download's picture and details beside the list.
+                I(
+                    if self.settings.preview_pane {
+                        // i18n: View menu: hides the pane beside the download list that shows the selected download's picture and details
+                        crate::i18n::mark("Hide &preview pane")
+                    } else {
+                        // i18n: View menu: shows a pane beside the download list with the selected download's picture and details
+                        crate::i18n::mark("Show &preview pane")
+                    },
+                    Cmd::TogglePreview,
+                    true,
+                    false,
+                ),
                 self.arrange_menu(),
                 // i18n: noun: the toolbar (submenu of View with its settings)
                 Sub("Toolbar", false, vec![]),
@@ -10716,10 +10789,98 @@ impl App {
     }
 
     /// Gives `pane` the main window's keys, and takes them from the other two (#1190).
+    /// The preview pane (#1368) at the list's trailing side, from English `list_left` on: its
+    /// splitter, its frame and what it shows of the selection. `free`: nothing else (a menu, a
+    /// text box) has the keys. Returns where the list ends (English, from the window's left).
+    fn preview_pane(
+        &mut self,
+        ui: &mut Ui,
+        o: Pos2,
+        w: f32,
+        h: f32,
+        list_left: f32,
+        free: bool,
+    ) -> f32 {
+        use crate::preview::{self, Shows, Summary};
+        let ctx = ui.ctx().clone();
+        let top = o.y + chrome::MENU_H + chrome::pane_top();
+        let bottom = o.y + h - STRIP_H - 5.0;
+        let right = o.x + w - 7.0;
+        // As wide as it was left, the list keeping room of its own (a narrow window: the pane
+        // gives way first, never more than 60 % of the room).
+        let room = w - 7.0 - list_left - 4.0;
+        let max_w = (room - preview::LIST_KEEPS).max(preview::MIN_WIDTH);
+        let pane_w = (self.settings.preview_width as f32)
+            .clamp(preview::MIN_WIDTH, max_w)
+            .min((room * 0.6).floor());
+        let left = right - pane_w;
+        // The splitter: the 4 px gap between the list and the pane, dragged sideways.
+        let split = winui::rect(egui::Rect::from_min_max(
+            pos2(left - 4.0, top),
+            pos2(left, bottom),
+        ));
+        let sr = ui.interact(
+            split,
+            egui::Id::unique("preview-splitter"),
+            winui::pointer_drag(),
+        );
+        if sr.hovered() || sr.dragged() {
+            ctx.set_cursor_icon(egui::CursorIcon::ResizeHorizontal);
+        }
+        if sr.dragged()
+            && let Some(p) = sr.interact_pointer_pos()
+        {
+            // The pointer stays on the splitter's middle (the pane's width from the window's
+            // trailing edge: the left in RTL).
+            let nw = (right - winui::mx(p.x) - 2.0)
+                .round()
+                .clamp(preview::MIN_WIDTH, max_w);
+            self.settings.preview_width = nw as u32;
+        }
+        if sr.drag_stopped() {
+            self.dirty = true;
+        }
+        // A press in the pane gives it the keys, as the tree takes them by a click.
+        let pane_rc = winui::rect(egui::Rect::from_min_max(
+            pos2(left, top),
+            pos2(right, bottom),
+        ));
+        if ctx.input(|i| {
+            i.pointer.any_pressed()
+                && i.pointer
+                    .press_origin()
+                    .is_some_and(|at| pane_rc.contains(at))
+        }) {
+            self.give_keys(Pane::Preview);
+        }
+        let picked: Vec<&Item> = self
+            .selection
+            .ids()
+            .iter()
+            .filter_map(|id| self.items.iter().find(|i| i.id == *id))
+            .collect();
+        let shows = match picked.as_slice() {
+            [] => Shows::Nothing,
+            [one] => Shows::One(one),
+            many => Shows::Many(Summary::of(many.iter().copied())),
+        };
+        let keys = self.preview_keys && free;
+        let event = self
+            .preview
+            .show(ui, left, right, top, bottom, &shows, keys);
+        match event {
+            Some(preview::Event::Close) => self.run(Cmd::TogglePreview, None, &ctx),
+            Some(preview::Event::Keys) => self.give_keys(Pane::Preview),
+            None => {}
+        }
+        left - 4.0 - o.x
+    }
+
     fn give_keys(&mut self, pane: Pane) {
         self.toolbar_keys = pane == Pane::Toolbar;
         self.tree_keys = pane == Pane::Tree;
         self.bar_keys = pane == Pane::Bar;
+        self.preview_keys = pane == Pane::Preview;
         self.list.set_keys(pane == Pane::List);
     }
 
@@ -10832,6 +10993,10 @@ impl App {
         // A style theme's title bar, drawn above the layout (Windows; #45), mirrored right to
         // left as the progress window's.
         let full = self.drawn_caption(ui, full);
+        // Whether the keys are in use, read before the panes take theirs (Tab, the arrows, End):
+        // read only after them, the press that moved the keys was gone and no focus ring showed
+        // (the toolbar's, the tree's, the preview pane's, #1368).
+        winui::keyboard_in_use(&ctx);
         let o = full.min;
         let (w, h) = (full.width(), full.height());
         let mut chosen: Option<(Cmd, Option<u64>)> = None;
@@ -11072,6 +11237,8 @@ impl App {
                     Some(Pane::Toolbar)
                 } else if self.tree_keys && self.show_categories {
                     Some(Pane::Tree)
+                } else if self.preview_keys && self.settings.preview_pane {
+                    Some(Pane::Preview)
                 } else if self.list.has_keys() {
                     Some(Pane::List)
                 } else if self.bar_keys {
@@ -11079,7 +11246,7 @@ impl App {
                 } else {
                     None
                 };
-                let pane = tab_to(from, self.show_categories, back);
+                let pane = tab_to(from, self.show_categories, self.settings.preview_pane, back);
                 self.give_keys(pane);
                 crate::chrome::show_cues(&ctx);
             }
@@ -11128,7 +11295,16 @@ impl App {
         ];
         let tb: Vec<(Icon, &str, bool)> = buttons.iter().map(|(i, l, e, _)| (*i, *l, *e)).collect();
         let tb_keys = (self.toolbar_keys && free).then_some(self.toolbar_at);
-        match chrome::toolbar(ui, o, w, &tb, tb_keys) {
+        // The preview pane's toggle at the band's end (#1368), its picture on the pane's side.
+        // i18n: toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+        let mut toggle = (Icon::PreviewPane, "Preview", self.settings.preview_pane);
+        if winui::rtl() {
+            toggle.0 = Icon::PreviewPaneLeft;
+        }
+        match chrome::toolbar(ui, o, w, &tb, Some(toggle), tb_keys) {
+            Some(ToolbarEvent::Click(k)) if k == buttons.len() => {
+                chosen = Some((Cmd::TogglePreview, None));
+            }
             Some(ToolbarEvent::Click(k)) => chosen = Some((buttons[k].3, None)),
             Some(ToolbarEvent::Drop(k, at)) => {
                 let kind = match buttons[k].0 {
@@ -11263,9 +11439,16 @@ impl App {
         let (ids, rows) = self.list_rows();
         self.selection.retain(&ids);
         let (selected, focus) = self.selection.rows(&ids);
+        // The preview pane (#1368): at the list's trailing side (the left in RTL), as wide as
+        // its splitter leaves it, the list keeping room of its own.
+        let list_right = if self.settings.preview_pane {
+            self.preview_pane(ui, o, w, h, list_left, free)
+        } else {
+            w - 7.0
+        };
         let outer = egui::Rect::from_min_max(
             pos2(o.x + list_left, o.y + chrome::MENU_H + chrome::pane_top()),
-            pos2(o.x + w - 7.0, o.y + h - STRIP_H - 4.0),
+            pos2(o.x + list_right, o.y + h - STRIP_H - 4.0),
         );
         self.list.menu_open = self.popup.is_some() || self.open_menu.is_some();
         // Another node shows from its top (its rows aren't the last one's).
@@ -11294,6 +11477,7 @@ impl App {
         if self.list.has_keys() {
             self.tree_keys = false;
             self.toolbar_keys = false;
+            self.preview_keys = false;
         }
         if let Some(pick) = r.pick {
             self.selection.apply(pick, &ids);
@@ -11403,6 +11587,12 @@ impl App {
                     || i.consume_key(egui::Modifiers::NONE, egui::Key::F2)
             }) {
                 chosen = Some((Cmd::MoveRename, None));
+            }
+            // Alt+P: the preview pane, as Explorer's (#1368), unless a menu bar title takes P.
+            if preview_key_free()
+                && ctx.input_mut(|i| i.consume_key(egui::Modifiers::ALT, egui::Key::P))
+            {
+                chosen = Some((Cmd::TogglePreview, None));
             }
             if find {
                 chosen = Some((Cmd::Find, None));
@@ -16501,7 +16691,7 @@ mod pane_tests {
             let mut at = from;
             let mut seen = Vec::new();
             for _ in 0..4 {
-                let to = tab_to(at, shown, back);
+                let to = tab_to(at, shown, false, back);
                 seen.push(to);
                 at = Some(to);
             }
@@ -16511,15 +16701,27 @@ mod pane_tests {
         assert_eq!(round(Some(List), true, true), [Tree, Toolbar, Bar, List]);
         assert_eq!(round(Some(List), false, false), [Bar, Toolbar, List, Bar]);
         // The tree had the keys as it was hidden: on to the toolbar.
-        assert_eq!(tab_to(Some(Tree), false, false), Toolbar);
-        assert_eq!(tab_to(None, true, false), Toolbar);
-        assert_eq!(tab_to(None, true, true), Bar);
+        assert_eq!(tab_to(Some(Tree), false, false, false), Toolbar);
+        assert_eq!(tab_to(None, true, false, false), Toolbar);
+        assert_eq!(tab_to(None, true, false, true), Bar);
         // The bar is one step from the list either way: Tab from the list reaches the menus, and
         // Shift+Tab from the toolbar comes back to them.
-        assert_eq!(tab_to(Some(List), true, false), Bar);
-        assert_eq!(tab_to(Some(Toolbar), true, true), Bar);
-        assert_eq!(tab_to(Some(Bar), true, false), Toolbar);
-        assert_eq!(tab_to(Some(Bar), true, true), List);
+        assert_eq!(tab_to(Some(List), true, false, false), Bar);
+        assert_eq!(tab_to(Some(Toolbar), true, false, true), Bar);
+        assert_eq!(tab_to(Some(Bar), true, false, false), Toolbar);
+        assert_eq!(tab_to(Some(Bar), true, false, true), List);
+    }
+
+    /// #1368: the preview pane, while it shows, comes after the list (Shift+Tab: before the bar).
+    #[test]
+    fn tab_reaches_the_preview_pane_after_the_list() {
+        use Pane::*;
+        assert_eq!(tab_to(Some(List), true, true, false), Preview);
+        assert_eq!(tab_to(Some(Preview), true, true, false), Bar);
+        assert_eq!(tab_to(Some(Bar), true, true, true), Preview);
+        assert_eq!(tab_to(Some(Preview), false, true, true), List);
+        // Hidden with the keys: on to the toolbar, as the tree.
+        assert_eq!(tab_to(Some(Preview), true, false, false), Toolbar);
     }
 }
 

@@ -376,15 +376,17 @@
   // The walk ends at the page's column (a feed, role="feed") and at a container holding another
   // video: from there up, what it names may be that one's (a post naming nothing next to one
   // that names its own). A page that breaks a reader's expectations names nothing (never the
-  // page's own address instead).
-  function nearest(v, read) {
+  // page's own address instead). `top`, when a site knows the post around the video (Facebook's
+  // aria-posinset), ends the walk there instead of 16 levels up (its posts sit deeper than that).
+  function nearest(v, read, top = null) {
     try {
-      for (let node = v, i = 0; node && i < 16; i += 1, node = upFrom(node)) {
+      for (let node = v, i = 0; node && i < (top ? POST_DEPTH : 16); i += 1, node = upFrom(node)) {
         if (node.localName === "body" || node.localName === "html") break;
         if (node !== v && (node.getAttribute?.("role") === "feed" || manyVideos(node))) break;
         const { sure, maybe } = read(node);
         if (sure.size) return sure.size === 1 ? [...sure.values()][0] : null;
         if (maybe.size) return maybe.size === 1 ? [...maybe.values()][0] : null;
+        if (node === top) break;
       }
     } catch {
       // Nothing named.
@@ -401,13 +403,14 @@
   };
 
   // The links in a container (the container itself when it is one), as addresses, with whether
-  // each holds a <time> (a timestamp link: a post's own permalink).
+  // each holds a <time> (a timestamp link: a post's own permalink) and its href as written.
   function linksIn(node, sel = "a[href]") {
     const found = [];
     const own = node.localName === "a" ? [node] : [];
     for (const a of [...own, ...(node.querySelectorAll ? node.querySelectorAll(sel) : [])]) {
-      const u = linkTo(a.getAttribute && a.getAttribute("href"));
-      if (u && /^https?:$/.test(u.protocol)) found.push({ u, time: Boolean(a.querySelector && a.querySelector("time")) });
+      const raw = a.getAttribute && a.getAttribute("href");
+      const u = linkTo(raw);
+      if (u && /^https?:$/.test(u.protocol)) found.push({ u, raw, time: Boolean(a.querySelector && a.querySelector("time")) });
     }
     return found;
   }
@@ -423,7 +426,8 @@
       // A site's own player in another page (an embed) is its video's page: its address holds
       // what the links around it may lack (a private video's key).
       if (site.embed && site.embed(url)) return location.href;
-      const found = nearest(v, (node) => site.read(node, url));
+      // A site with its own way through the post (`find`), or the nearest container naming it.
+      const found = site.find ? site.find(v, url) : nearest(v, (node) => site.read(node, url));
       if (found) return found;
       // The page's own, or the one video its address opens over it (Douyin's ?modal_id=).
       return site.own(url) ? location.href : (site.opened && site.opened(url)) || null;
@@ -478,6 +482,17 @@
     }
   };
   const manyVideos = (node) => Boolean(node.querySelectorAll && node.querySelectorAll("video").length > 1);
+  // How far up a site's post container is looked for (Facebook's: 21 to 24 levels above its
+  // <video> in 2026's feed), and so how far a walk bounded by it may go.
+  const POST_DEPTH = 40;
+  // The nearest container above the video carrying `attr` (a post's), within POST_DEPTH; null.
+  function postAround(v, attr) {
+    for (let node = upFrom(v), i = 1; node && i < POST_DEPTH; i += 1, node = upFrom(node)) {
+      if (node.localName === "body" || node.localName === "html") break;
+      if (node.getAttribute?.(attr) != null) return node;
+    }
+    return null;
+  }
 
   // Any other site: a link of this site that has a post's or a video's shape, or that holds the
   // post's timestamp (Mastodon's, a forum's), and isn't the page itself.
@@ -568,21 +583,52 @@
       own: (u) => /^\/(?:feed\/update\/urn:li:|posts\/|embed\/feed\/update\/|events\/|learning\/)/.test(u.pathname),
     },
     {
-      // A video's own links (a reel, a watch page, a page's video, data-video-id) before a post's
-      // (its permalink); fb.watch short links as they are (they lead to the video's page).
+      // The id its player's wrapper carries (data-video-id, about ten levels above the <video>,
+      // there before it plays) names the video in every ordinary feed post: the nearest one up
+      // decides, sent as /reel/<id>/ (the address Facebook's own timestamp link takes for it on
+      // hover; yt-dlp reads it as watch?v=<id>, the same video, a reel's or not). Else the video's
+      // own links in its post (a reel, a watch page, a page's video; fb.watch short links as they
+      // are, they lead to the video's page), and last the post's permalink. The walk ends at the
+      // post (aria-posinset, 21 to 24 levels above the <video>), not 16 levels up. The feed's
+      // timestamp links are placeholders (?__cft__…, the path "/") until hovered or focused, and
+      // a comment's timestamp (/reel/<id>/?comment_id=…) may name another video: neither counts.
+      // A sponsored post's player names nothing: nothing goes.
       hosts: /^(?:[\w-]+\.)?facebook\.com$/,
       embed: (u) => /^\/plugins\/video\.php$/.test(u.pathname),
+      find(v) {
+        const top = postAround(v, "aria-posinset");
+        const none = new Map();
+        const own = nearest(
+          v,
+          (node) => {
+            const id = node.getAttribute?.("data-video-id");
+            return { sure: /^\d{6,}$/.test(id || "") ? new Map([[id, `https://www.facebook.com/reel/${id}/`]]) : none, maybe: none };
+          },
+          top,
+        );
+        return (
+          own ||
+          nearest(v, (node) => ({ sure: this.read(node).sure, maybe: none }), top) ||
+          nearest(v, (node) => ({ sure: none, maybe: this.read(node).maybe }), top)
+        );
+      },
       read(node) {
         const sure = new Map();
         const maybe = new Map();
-        const video = (id) => sure.set(`v:${id}`, `https://www.facebook.com/watch/?v=${id}`);
+        // One address per video: the first form found keeps it.
+        const add = (id, address) => sure.has(`v:${id}`) || sure.set(`v:${id}`, address);
+        const video = (id) => add(id, `https://www.facebook.com/watch/?v=${id}`);
+        const reel = (id) => add(id, `https://www.facebook.com/reel/${id}/`);
         const id = node.getAttribute?.("data-video-id");
-        if (/^\d{6,}$/.test(id || "")) video(id);
+        if (/^\d{6,}$/.test(id || "")) reel(id);
         for (const el of node.querySelectorAll?.("[data-video-id]") || []) {
           const d = el.getAttribute("data-video-id");
-          if (/^\d{6,}$/.test(d || "")) video(d);
+          if (/^\d{6,}$/.test(d || "")) reel(d);
         }
-        for (const { u } of linksIn(node)) {
+        for (const { u, raw } of linksIn(node)) {
+          // A placeholder (the feed's links before hover or focus: the page's own address with a
+          // query, or the home page), or a comment's link.
+          if (/^(?:[?#]|$)/.test(raw || "") || u.pathname === "/" || u.searchParams.has("comment_id")) continue;
           if (u.hostname === "fb.watch") {
             const code = u.pathname.split("/")[1];
             if (/^\w+$/.test(code || "")) sure.set(`w:${code}`, `https://fb.watch/${code}/`);
@@ -591,7 +637,7 @@
           if (!/(^|\.)facebook\.com$/.test(u.hostname)) continue;
           const p = u.pathname;
           let m;
-          if ((m = /^\/reel\/(\d+)/.exec(p))) sure.set(`v:${m[1]}`, `https://www.facebook.com/reel/${m[1]}/`);
+          if ((m = /^\/reel\/(\d+)/.exec(p))) reel(m[1]);
           else if (/^\/watch\/?$/.test(p) && /^\d+$/.test(u.searchParams.get("v") || "")) video(u.searchParams.get("v"));
           else if (/^\/video\.php$/.test(p) && /^\d+$/.test(u.searchParams.get("v") || "")) video(u.searchParams.get("v"));
           else if ((m = /^\/[^/]+\/videos\/(?:[^/]+\/)?(\d+)/.exec(p))) video(m[1]);
