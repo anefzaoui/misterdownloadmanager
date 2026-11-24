@@ -1755,7 +1755,7 @@ fn move_column(st: &mut ListState, cols: &[(usize, f32, f32)], col: usize, x: f3
 /// press: every list that reads clicks calls this in each frame it's drawn, so it sees its own
 /// presses.
 pub(crate) fn click_modifiers(ui: &Ui) -> egui::Modifiers {
-    let id = egui::Id::new("list-click-press-modifiers").with(ui.ctx().viewport_id());
+    let id = egui::Id::unique(("list-click-press-modifiers", ui.ctx().viewport_id()));
     let held = ui.data(|d| d.get_temp::<egui::Modifiers>(id));
     let (mods, press) =
         ui.input(|i| modifiers_of_click(&i.events, i.modifiers, held, i.pointer.primary_down()));
