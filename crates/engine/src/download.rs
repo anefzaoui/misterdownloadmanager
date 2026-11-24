@@ -1818,7 +1818,22 @@ impl Body {
             Body::Http(r) => r.content_length(),
             Body::Ftp(t) => t.expected(),
             Body::Browser(b) => b.len(),
+            // An HTTP answer's length is what is left of it, so the bytes peeked out of it are
+            // added back; the others' stays the whole body's, the peeked bytes in it.
+            Body::Prefixed(first, rest) if rest.counts_down() => rest
+                .len()
+                .map(|n| n.saturating_add(first.as_ref().map_or(0, |b| b.len() as u64))),
             Body::Prefixed(_, rest) => rest.len(),
+        }
+    }
+
+    /// Does [`Body::len`] fall as the body is read? An HTTP answer's does (hyper counts down
+    /// its Content-Length); FTP's and the browser-like connection's are set when it opens.
+    fn counts_down(&self) -> bool {
+        match self {
+            Body::Http(_) => true,
+            Body::Ftp(_) | Body::Browser(_) => false,
+            Body::Prefixed(_, rest) => rest.counts_down(),
         }
     }
 

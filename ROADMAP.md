@@ -569,6 +569,26 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ README and website: SourceForge's badges (its download button, the downloads count and its
+  *Users Love Us* award); the website serves the award's picture itself, so showing it asks
+  SourceForge for nothing
+- ✅ Sinhala, the 87th language: the app, its setup and uninstaller, Sri Lanka's flag,
+  Windows' Nirmala UI for its script (machine translated, open to a native speaker's review)
+- ✅ A drive too full for a download says the space needed and the space free right
+- ✅ FTP: the 32-bit build never resumes a file over 4 GB at the wrong place
+- ✅ A file from a server without ranges is no longer failed as cut short when it starts over on one connection
+- ✅ Replacing a file never takes a paused download's name
+- ✅ Debrid torrents: a "ready" torrent with no files listed yet is asked again
+- ✅ Real-Debrid: a download waits out the service's maintenance for up to an hour
+- ✅ Premiumize: large torrents with many folders come down
+- ✅ Find: Sites searches the parent web page too
+- ✅ Sites Logins: a saved login is matched more carefully
+- ✅ Sites Logins: saved passwords are shown more discreetly
+- ✅ Sizes: a size that rounds up to the next unit is shown in it; 1 Byte in the singular
+- ✅ Tray panel: it stays on the screen its icon is on
+- ✅ Scheduler: a queue's Once at date is kept while its start time is off
+- ✅ Download limits: an empty box keeps the limit in force
+- ✅ Scheduler: a clock that goes back no longer runs every schedule time at once
 - ✅ Browser add-on: each Alt+click on the same link leaves its download to the browser
 - ✅ Browser add-on: a media row whose page changed says it is gone
 - ✅ Browser add-on: Hide on this video follows the video in a reused feed player

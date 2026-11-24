@@ -860,7 +860,7 @@ GET /stream.php, /remote_control.php?id=N|file=NAME&size=1M&type=MIME|none&magic
     video/mp4 (type= another, none for none at all), magic= its first bytes a media type's
 GET /redirect?to=URL[&ttl_ms=N][&uses=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms; uses: a new link each time, expiring after N requests
 /rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
-                                              a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
+                                              a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE&busy=N]
 /ad/v4/{user,hosts/domains,link/unlock,link/delayed,pin/check}, /ad/v4.1/pin/get      a fake AllDebrid: the same tokens and links, plus delayed=N
 /pm/api/{account/info,services/list,transfer/directdl}      a fake Premiumize: the same tokens and links
 /tb/v1/api/{user/me,user/auth/device/{start,token},webdl/hosters,webdl/createwebdownload,torrents/createtorrent,*/mylist,*/requestdl,*/control*}

@@ -9,7 +9,9 @@
 //! - The fake file host: `http://hoster.test/file/<size>/<name>[?flags]`. Its direct link is the
 //!   lab's own `/gen/<size>/<name>`, the same bytes on every unlock of the same link. Flags:
 //!   `gone=1` (the file is unavailable, 24), `down=1` (the host is down, 19), `chunks=N` (the
-//!   connection cap), `ttl_ms=N` (the direct link expires), `rate=SIZE` (it is that slow).
+//!   connection cap), `ttl_ms=N` (the direct link expires), `rate=SIZE` (it is that slow),
+//!   `busy=N` (Real-Debrid: the first N unrestricts of that link get a bare 503, as while the
+//!   service is down for maintenance: no error code).
 //!   Any other host is unsupported (16). A free account gets 20 (premium only).
 //! - Device flow: the code is allowed after `approve_after` polls (default 2) of
 //!   `device/credentials`.
@@ -29,6 +31,8 @@ use crate::server::unix_ms;
 pub const HOSTER: &str = "hoster.test";
 
 static DEVICE_POLLS: Mutex<Option<HashMap<String, u32>>> = Mutex::new(None);
+/// `busy=N`: how many times each link was unrestricted.
+static BUSY_ASKS: Mutex<Option<HashMap<String, u32>>> = Mutex::new(None);
 
 fn error(status: StatusCode, error: &str, code: i64) -> Response {
     (
@@ -97,6 +101,17 @@ pub async fn unrestrict(headers: HeaderMap, body: Bytes) -> Response {
         return error(StatusCode::FORBIDDEN, "hoster_not_free", 20);
     }
     let flags: HashMap<String, String> = link.query_pairs().into_owned().collect();
+    if let Some(busy) = flags.get("busy").and_then(|n| n.parse::<u32>().ok()) {
+        let mut asks = BUSY_ASKS.lock().unwrap();
+        let n = asks
+            .get_or_insert_with(HashMap::new)
+            .entry(link.to_string())
+            .or_insert(0);
+        *n += 1;
+        if *n <= busy {
+            return (StatusCode::SERVICE_UNAVAILABLE, "Service Unavailable").into_response();
+        }
+    }
     if flags.contains_key("gone") {
         return error(StatusCode::SERVICE_UNAVAILABLE, "unavailable_file", 24);
     }

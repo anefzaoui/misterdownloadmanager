@@ -112,6 +112,69 @@ async fn other_hosts_are_not_the_services() {
     assert!(d.hosts_known());
 }
 
+/// #1868: a 503 without an error code (the service down for maintenance, a proxy in front of it)
+/// is asked again, said in the event log, and taken as the file being gone only once the
+/// service's hour is up (the lab's: 400 ms).
+#[tokio::test]
+async fn a_bare_503_is_asked_again_then_taken_as_the_file_gone() {
+    let (_lab, http) = lab().await;
+    let premium = debrid(&http, token("good")).await;
+    let url: Url = "http://hoster.test/file/64K/busy.bin?busy=2"
+        .parse()
+        .unwrap();
+    let dir = tempfile_dir();
+    let dl = Download::start(
+        Request {
+            url: url.clone(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.clone()),
+        },
+        Options {
+            unlocker: premium.unlocker_for(&url),
+            max_retries: 1,
+            retry_delay: Duration::from_millis(50),
+            ..Options::default()
+        },
+    );
+    let deadline = std::time::Instant::now() + Duration::from_secs(20);
+    while !matches!(
+        dl.snapshot().state,
+        mdm_engine::download::State::Done | mdm_engine::download::State::Failed
+    ) {
+        assert!(std::time::Instant::now() < deadline, "never ended");
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    let said: Vec<String> = dl.snapshot().events.into_iter().map(|e| e.text).collect();
+    let path = dl
+        .wait()
+        .await
+        .expect("through Real-Debrid once it answers")
+        .path;
+    assert!(std::fs::read(&path).unwrap() == expected("/file/64K/busy.bin", 64 << 10));
+    assert_eq!(
+        said.iter()
+            .filter(|t| t.contains("Real-Debrid answers 503"))
+            .count(),
+        2,
+        "{said:#?}"
+    );
+    let _ = std::fs::remove_dir_all(dir);
+    // Busy past the hour: the file is gone.
+    let gone = download(&premium, "http://hoster.test/file/64K/busy2.bin?busy=1000")
+        .await
+        .unwrap_err();
+    assert!(
+        matches!(
+            gone,
+            Error::Refused(Refusal::Service {
+                fault: ServiceFault::FileUnavailable,
+                ..
+            })
+        ),
+        "{gone:?}"
+    );
+}
+
 #[tokio::test]
 async fn the_services_refusals_say_why() {
     let (_lab, http) = lab().await;

@@ -37,10 +37,12 @@ pub enum Status {
         progress: Option<f32>,
         what: String,
     },
-    /// Done on its servers: the torrent's name and files.
+    /// Done on its servers: the torrent's name and files; `partial` when the service's list of
+    /// them was cut short (Premiumize: more folders than MDM lists), the files found still are.
     Ready {
         name: String,
         files: Vec<RemoteFile>,
+        partial: bool,
     },
     Failed(ServiceFault),
 }
@@ -110,6 +112,7 @@ impl Session {
                     None => Ok(Status::Ready {
                         files: torbox::files(&self.http, &key, kind, n, &i).await?,
                         name: i.name,
+                        partial: false,
                     }),
                 }
             }
@@ -317,9 +320,42 @@ impl RemoteTorrent {
         // The service at work: asked every `poll`, the event log told when its word or the
         // percentage (by tens) changes.
         let mut said = String::new();
+        // A "ready" with no files yet is not a finished torrent: asking again a few times gives
+        // the service time to list them, and a list that never comes fails without deleting the
+        // torrent (which was the only handle to try it again).
+        let mut empty = 0;
         let (name, files) = loop {
             match s.torrent_status(&id, order.files.as_deref()).await? {
-                Status::Ready { name, files } => break (name, files),
+                Status::Ready { files, .. } if files.is_empty() && empty >= 5 => {
+                    return Err(Fault::Service(ServiceFault::Other(
+                        "the service listed no files for the torrent".into(),
+                    )));
+                }
+                Status::Ready { files, .. } if files.is_empty() => {
+                    empty += 1;
+                    let line = format!(
+                        "{service} says the torrent is ready but lists no files yet ({} of 5)",
+                        empty
+                    );
+                    if line != said {
+                        self.note(line.clone());
+                        said = line;
+                    }
+                }
+                Status::Ready {
+                    name,
+                    files,
+                    partial,
+                } => {
+                    if partial {
+                        let max = premiumize::MAX_FOLDERS;
+                        self.note(format!(
+                            "{service} has more than {max} folders in the torrent: downloading the {} file(s) in the first {max}; the rest stay in your {service} cloud",
+                            files.len()
+                        ));
+                    }
+                    break (name, files);
+                }
                 Status::Failed(f) => return Err(Fault::Service(f)),
                 Status::Working { progress, what } => {
                     self.shared.lock().unwrap().working = Some(progress);
@@ -785,6 +821,7 @@ pub(crate) fn rd_status(i: RdInfo) -> Status {
             Status::Ready {
                 name: i.filename,
                 files,
+                partial: false,
             }
         }
         "magnet_error" | "dead" => Status::Failed(F::TorrentUnavailable),
@@ -983,7 +1020,7 @@ mod tests {
             "links":["https://real-debrid.com/d/A","https://real-debrid.com/d/B"],"ended":"2026-11-06T00:00:00.000Z"}"#,
         )
         .unwrap();
-        let Status::Ready { name, files } = rd_status(ready) else {
+        let Status::Ready { name, files, .. } = rd_status(ready) else {
             panic!("ready")
         };
         assert_eq!(name, "Show");
