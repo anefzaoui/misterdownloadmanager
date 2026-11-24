@@ -99,6 +99,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Extracting: a damaged entry of a zip encrypted with AES is reported as damaged, not as a wrong password (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Extracting: an entry under a file of the same archive (a file `a`, then `a/b`) is left out and the rest of the archive extracts, instead of nothing at all; the download's log counts it with the other entries left out (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Video pieces: a server's announced size is handled more carefully (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Download video: a piece that can't be saved (a full disk, a read-only folder) is tried again a few times and then fails with the reason, instead of asking yt-dlp for the video's addresses again and again (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Video playlists: an entry with an enormous number no longer stops the listing or numbers the entries after it 0 (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).

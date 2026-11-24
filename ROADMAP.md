@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Extracting: a damaged AES zip says it is damaged, not that the password is wrong
+- ✅ Extracting: one entry in the way no longer stops a whole archive
 - ✅ Video pieces: a server's announced size is handled more carefully
 - ✅ Download video: a piece that can't be saved fails with the reason
 - ✅ Video playlists: enormous entry numbers no longer break the listing
