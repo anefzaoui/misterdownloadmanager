@@ -12602,6 +12602,7 @@ impl App {
                 s.category_dirs.clone(),
                 s.grabber_hide_pages,
                 s.extract_delete,
+                s.grabber_size.map(|[w, h]| [w as f32, h as f32]),
             )
         });
         grabber.add(found, source, |u| known.contains(u.as_str()));
@@ -13220,7 +13221,15 @@ impl App {
         }
         self.grabber_checks(ctx);
         if let Some(d) = &mut self.grabber {
-            match d.show(ctx) {
+            let outcome = d.show(ctx);
+            // The size the user gives the window (#714), for its next opening; kept as it
+            // changes (saved at most once a second), so quitting with it open keeps it too.
+            let size = d.size.map(|v| v.round() as u32);
+            if self.settings.grabber_size != Some(size) {
+                self.settings.grabber_size = Some(size);
+                self.dirty = true;
+            }
+            match outcome {
                 Outcome::Open => {}
                 Outcome::Closed => self.grabber = None,
                 Outcome::Done((start, packages)) => {

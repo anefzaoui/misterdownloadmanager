@@ -579,6 +579,9 @@ pub struct Settings {
     pub grabber_check: bool,
     /// Link grabber: web pages hidden (IDM's "Hide HTML files"). On.
     pub grabber_hide_pages: bool,
+    /// Link grabber's window as the user last sized it (#714): its client, width and height in
+    /// the layout's points (the same at any interface size). None: its least size.
+    pub grabber_size: Option<[u32; 2]>,
     /// Click'n'Load (#37): a page's button posts its links to 127.0.0.1:9666, shown in Link
     /// grabber. Off by default: any page may post there.
     pub cnl_on: bool,
@@ -764,6 +767,7 @@ impl Default for Settings {
             test_archives_gb: 4,
             grabber_check: true,
             grabber_hide_pages: true,
+            grabber_size: None,
             cnl_on: false,
             cnl_sites: Vec::new(),
         }

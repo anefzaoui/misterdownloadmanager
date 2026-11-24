@@ -52,6 +52,8 @@ SINKS = {
     "radio_light": (3, ""), "window": (2, ""), "question": (2, ""), "notice": (2, ""), "row": (1, ""), "t": (0, ""), "tc": (1, None),
     # Several windows of a kind open at once (dialogs.rs, #1741): the title as window and question.
     "window_nth": (2, ""), "question_nth": (2, ""),
+    # A window the user resizes (Link grabber, #714): its title as a window's.
+    "sizable_window": (2, ""),
     "tn": (1, "@plural"), "mark": (0, ""), "branch": (0, ""),
     "Item": (0, "menu"), "I": (0, "menu"), "Radio": (0, "menu"), "Sub": (0, "menu"),
     "off": (0, "menu"), "by": (0, "menu"), "link": (4, ""),
@@ -94,6 +96,7 @@ ROLES = {
     "radio_light": "option (radio button)", "radio_light_until": "option (radio button)",
     "window": "window title", "question": "window title", "notice": "window title", "row": "item in the Categories tree",
     "window_nth": "window title", "question_nth": "window title",
+    "sizable_window": "window title",
     "branch": "item in the Categories tree", "Item": "menu command", "I": "menu command",
     "Radio": "menu choice", "Sub": "submenu", "off": "menu command", "by": "menu choice",
     "tn": "count", "link": "link (opens a web page)", "header": "page title",

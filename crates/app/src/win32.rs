@@ -787,9 +787,17 @@ unsafe fn above_others(hwnd: HWND) {
 /// frame: 3 px borders, 26 px caption) and resize it so the client stays `client` points, at
 /// `scale` pixels per point (the display's scaling times any zoom), with the frame measured for
 /// the window's own DPI. `light` dialogs get a light caption. `owned`: the main window owns it
-/// (see there).
+/// (see there). `sizable`: a dialog the user resizes (Link grabber, #714) keeps the system's
+/// sizing frame instead of IDM's fixed one.
 /// Returns true once applied (call again each frame until it is).
-pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owned: bool) -> bool {
+pub fn dialog_frame(
+    title: &str,
+    client: [f32; 2],
+    light: bool,
+    scale: f32,
+    owned: bool,
+    sizable: bool,
+) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{DWMWA_USE_IMMERSIVE_DARK_MODE, DwmSetWindowAttribute};
     let Some(hwnd) = find_own_window(title) else {
         return false;
@@ -814,8 +822,15 @@ pub fn dialog_frame(title: &str, client: [f32; 2], light: bool, scale: f32, owne
             let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32 & !WS_EX_APPWINDOW;
             SetWindowLongPtrW(hwnd, GWL_EXSTYLE, ex as isize);
         }
-        let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32 & !WS_THICKFRAME;
-        let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32 | WS_EX_DLGMODALFRAME;
+        let (style, ex) = (
+            GetWindowLongPtrW(hwnd, GWL_STYLE) as u32,
+            GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32,
+        );
+        let (style, ex) = if sizable {
+            (style | WS_THICKFRAME, ex & !WS_EX_DLGMODALFRAME)
+        } else {
+            (style & !WS_THICKFRAME, ex | WS_EX_DLGMODALFRAME)
+        };
         SetWindowLongPtrW(hwnd, GWL_STYLE, style as isize);
         SetWindowLongPtrW(hwnd, GWL_EXSTYLE, ex as isize);
         size_to_client(hwnd, style, ex, client_px(client, scale));
@@ -1058,6 +1073,22 @@ pub fn thin_frame(
     hide_item: Option<&str>,
 ) -> Option<isize> {
     thin_frame_on(find_own_window(title)? as isize, client, scale, hide_item)
+}
+
+/// [`thin_frame`] for a dialog the user resizes (Link grabber, #714): the resizable main window's
+/// frame ([`Drawn::Sizable`]: the system's sizing frame round a client that draws its own title
+/// bar), the client made `client` points at `scale`. Call while the window is still hidden, and
+/// again when the scale changes; not when the user resized it. Returns the window, once applied.
+pub fn sizable_thin_frame(title: &str, client: [f32; 2], scale: f32) -> Option<isize> {
+    let hwnd = find_own_window(title)?;
+    // SAFETY: our own window, on its thread.
+    unsafe {
+        caption_less(hwnd, Drawn::Sizable);
+        let style = drawn_style(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, Drawn::Sizable);
+        let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
+        size_to_client(hwnd, style, ex, client_px(client, scale));
+    }
+    Some(hwnd as isize)
 }
 
 /// Reapply a frame to the bound window, even when another download has the same title.

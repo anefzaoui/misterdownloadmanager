@@ -462,13 +462,43 @@ pub(crate) fn window<T>(
     client: [f32; 2],
     minimize: bool,
     bg: egui::Color32,
-    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+    mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
     dialog_window(
         ctx,
         id,
         title,
         client,
+        None,
+        minimize,
+        bg,
+        Kind::Plain,
+        Nth::FIRST,
+        |ui, o, _| body(ui, o),
+    )
+}
+
+/// A dialog window the user resizes (Link grabber, #714): it opens with a client of `start`
+/// points (as large as the screen allows), and is never made smaller than `least`. `body` gets
+/// the client origin and the client's size now (never under `least`), and lays itself out in it.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn sizable_window<T>(
+    ctx: &egui::Context,
+    id: &str,
+    title: &str,
+    least: [f32; 2],
+    start: [f32; 2],
+    minimize: bool,
+    bg: egui::Color32,
+    body: impl FnMut(&mut Ui, Pos2, [f32; 2]) -> Outcome<T>,
+) -> Outcome<T> {
+    let start = [start[0].max(least[0]), start[1].max(least[1])];
+    dialog_window(
+        ctx,
+        id,
+        title,
+        start,
+        Some(least),
         minimize,
         bg,
         Kind::Plain,
@@ -488,9 +518,20 @@ pub(crate) fn window_nth<T>(
     minimize: bool,
     bg: egui::Color32,
     nth: Nth,
-    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+    mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
-    dialog_window(ctx, id, title, client, minimize, bg, Kind::Plain, nth, body)
+    dialog_window(
+        ctx,
+        id,
+        title,
+        client,
+        None,
+        minimize,
+        bg,
+        Kind::Plain,
+        nth,
+        |ui, o, _| body(ui, o),
+    )
 }
 
 /// A question that must be answered (Yes / No, a countdown): a `window` that stays above the
@@ -504,18 +545,19 @@ pub(crate) fn question<T>(
     client: [f32; 2],
     minimize: bool,
     bg: egui::Color32,
-    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+    mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
     dialog_window(
         ctx,
         id,
         title,
         client,
+        None,
         minimize,
         bg,
         Kind::Question,
         Nth::FIRST,
-        body,
+        |ui, o, _| body(ui, o),
     )
 }
 
@@ -529,18 +571,19 @@ pub(crate) fn question_nth<T>(
     minimize: bool,
     bg: egui::Color32,
     nth: Nth,
-    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+    mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
     dialog_window(
         ctx,
         id,
         title,
         client,
+        None,
         minimize,
         bg,
         Kind::Question,
         nth,
-        body,
+        |ui, o, _| body(ui, o),
     )
 }
 
@@ -556,18 +599,19 @@ pub(crate) fn notice<T>(
     minimize: bool,
     bg: egui::Color32,
     on_top: bool,
-    body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+    mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
 ) -> Outcome<T> {
     dialog_window(
         ctx,
         id,
         title,
         client,
+        None,
         minimize,
         bg,
         Kind::Notice { on_top },
         Nth::FIRST,
-        body,
+        |ui, o, _| body(ui, o),
     )
 }
 
@@ -601,12 +645,16 @@ fn dialog_window<T>(
     id: &str,
     title: &str,
     client: [f32; 2],
+    // The least client of a dialog the user resizes ([`sizable_window`]); `client` is then the
+    // one it opens with.
+    least: Option<[f32; 2]>,
     minimize: bool,
     bg: egui::Color32,
     kind: Kind,
     nth: Nth,
-    mut body: impl FnMut(&mut Ui, Pos2) -> Outcome<T>,
+    mut body: impl FnMut(&mut Ui, Pos2, [f32; 2]) -> Outcome<T>,
 ) -> Outcome<T> {
+    let sizable = least.is_some();
     let modal = kind == Kind::Question;
     // The window's own id, numbered when it isn't the first of its kind (#1741).
     let id = nth.id(id);
@@ -625,22 +673,47 @@ fn dialog_window<T>(
         0.0
     };
     let outer = [client[0], client[1] + caption_h];
-    // As large as the screen allows at the interface size (#262): the rest scrolls.
-    let shown = shown_size(ctx, outer);
     let vid = ViewportId::from_hash_of(id);
     // A new window: nothing kept about the last one applies to it (#440).
     if window_was_gone(ctx, key.with("window-pass")) {
         forget_window(ctx, vid, key);
     }
+    // As large as the screen allows at the interface size (#262): the rest scrolls. A window the
+    // user resizes keeps asking for the size it opened with: the builder asking for another one
+    // would size it again.
+    let shown = if sizable {
+        let start = key.with("start-size");
+        ctx.data(|d| d.get_temp::<[f32; 2]>(start))
+            .unwrap_or_else(|| {
+                let s = shown_size(ctx, outer);
+                ctx.data_mut(|d| d.insert_temp(start, s));
+                s
+            })
+    } else {
+        shown_size(ctx, outer)
+    };
+    // Its size now (resized by the user), as the last pass drew it.
+    let now_key = key.with("size-now");
+    let now = if sizable {
+        ctx.data(|d| d.get_temp::<[f32; 2]>(now_key))
+            .unwrap_or(shown)
+    } else {
+        shown
+    };
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = crate::window_builder()
         .with_visible(false)
         .with_title(crate::i18n::os_text(title))
         .with_inner_size(shown)
-        // The thin frame trims the sizing borders and keeps the size fixed.
-        .with_resizable(drawn)
+        // The thin frame trims the sizing borders and keeps the size fixed; one the user
+        // resizes keeps them.
+        .with_resizable(drawn || sizable)
         .with_minimize_button(minimize)
-        .with_maximize_button(false);
+        // One the user resizes can fill the screen too.
+        .with_maximize_button(sizable);
+    if let Some(least) = least {
+        builder = builder.with_min_inner_size([least[0], least[1] + caption_h]);
+    }
     // Every dialog carries the app icon: without one Windows draws its generic placeholder.
     builder = crate::quiet(builder.with_icon(crate::app_icon()));
     if modal {
@@ -670,6 +743,16 @@ fn dialog_window<T>(
             .frame(egui::Frame::new().fill(bg))
             .show(ui, |ui| {
                 let origin = ui.max_rect().min;
+                // A window the user resizes is laid out at the size it has, never under its least.
+                let (shown, client) = match least {
+                    Some(least) => {
+                        let has = ui.max_rect().size();
+                        let shown = [has.x.max(least[0]), has.y.max(least[1] + caption_h)];
+                        ui.ctx().data_mut(|d| d.insert_temp(now_key, shown));
+                        (shown, [shown[0], shown[1] - caption_h])
+                    }
+                    None => (shown, client),
+                };
                 // The window's width, laid out from the right in a right-to-left interface (the
                 // title bar; the layout under it has its own, scrolled with it).
                 let _surface = winui::Surface::enter(origin.x, origin.x + shown[0]);
@@ -679,6 +762,10 @@ fn dialog_window<T>(
                 if drawn {
                     use crate::winui::caption::CaptionButton;
                     let mut buttons = vec![(CaptionButton::Close, true)];
+                    // Maximize (Restore while maximized), as the main window's.
+                    if sizable {
+                        buttons.push((CaptionButton::Maximize, true));
+                    }
                     if minimize {
                         buttons.push((CaptionButton::Minimize, true));
                     }
@@ -686,6 +773,7 @@ fn dialog_window<T>(
                     match drawn_title(ui, origin, shown[0], title, &buttons, hwnd) {
                         Some(CaptionButton::Close) => caption_close = true,
                         Some(CaptionButton::Minimize) => crate::dialogs::minimize(ui.ctx(), hwnd),
+                        Some(CaptionButton::Maximize) => toggle_maximized(ui.ctx(), hwnd),
                         _ => {}
                     }
                 }
@@ -697,7 +785,7 @@ fn dialog_window<T>(
                 let mut rest = ui.new_child(egui::UiBuilder::new().max_rect(below));
                 let out = scroll(&mut rest, key, client, |ui, o| {
                     let _surface = winui::Surface::enter(o.x, o.x + client[0]);
-                    body(ui, o)
+                    body(ui, o, client)
                 });
                 if caption_close { Outcome::Closed } else { out }
             })
@@ -706,7 +794,8 @@ fn dialog_window<T>(
         crate::chrome::tell_screen_readers(ui.ctx());
         if close { Outcome::Closed } else { out }
     });
-    let rescaled = follow_scale(ctx, vid, key, shown);
+    // A new scale keeps the size the user gave it.
+    let rescaled = follow_scale(ctx, vid, key, now);
     // Elsewhere follow_scale asked the window manager itself.
     #[cfg(not(windows))]
     let _ = rescaled;
@@ -717,11 +806,19 @@ fn dialog_window<T>(
         let framed = key.with("framed");
         let scale = ctx.input_for(vid, |i| i.pixels_per_point);
         // The size and whose title bar it is: either changing frames it again, as does a new
-        // scale (the interface size, #262; another monitor's).
+        // scale (the interface size, #262; another monitor's). A window the user resizes: the
+        // size it opened with (`shown` stays that), framed again at the size it has now.
         let want = [shown[0], shown[1] + if drawn { 1e6 } else { 0.0 }];
         if rescaled || ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(want) {
+            let framed_h = if !drawn {
+                None
+            } else if sizable {
+                crate::win32::sizable_thin_frame(title, now, scale)
+            } else {
+                crate::win32::thin_frame(title, shown, scale, None)
+            };
             if drawn {
-                if let Some(h) = crate::win32::thin_frame(title, shown, scale, None) {
+                if let Some(h) = framed_h {
                     ctx.data_mut(|d| {
                         d.insert_temp(framed, want);
                         d.insert_temp(key.with("hwnd"), h);
@@ -729,10 +826,11 @@ fn dialog_window<T>(
                 }
             } else if crate::win32::dialog_frame(
                 title,
-                shown,
+                now,
                 !crate::theme::dark_surface(),
                 scale,
                 owned_by_main(ctx, key, crate::win32::main_in_front),
+                sizable,
             ) {
                 ctx.data_mut(|d| d.insert_temp(framed, want));
             }
@@ -781,6 +879,8 @@ fn forget_window(ctx: &egui::Context, vid: ViewportId, key: egui::Id) {
         let n = d.get_temp::<u64>(opened).unwrap_or(0);
         d.insert_temp(opened, n + 1);
         d.remove::<bool>(key.with("focus-sent"));
+        d.remove::<[f32; 2]>(key.with("start-size"));
+        d.remove::<[f32; 2]>(key.with("size-now"));
     });
     forget_place(ctx, key);
     #[cfg(windows)]
@@ -828,8 +928,18 @@ pub fn drawn_title(
     buttons: &[(crate::winui::caption::CaptionButton, bool)],
     hwnd: Option<isize>,
 ) -> Option<crate::winui::caption::CaptionButton> {
-    use crate::winui::caption::CAPTION_H;
+    use crate::winui::caption::{CAPTION_H, CaptionButton};
     let rect = egui::Rect::from_min_size(o, egui::vec2(width, CAPTION_H));
+    // A Maximize button is the frame's (Windows 11's Snap Layouts open over it): the system
+    // hovers and presses it, and the bar draws what it says (as the main window's).
+    let max_at = buttons
+        .iter()
+        .position(|(b, _)| *b == CaptionButton::Maximize);
+    #[cfg(windows)]
+    if let (Some(_), Some(h)) = (max_at, hwnd) {
+        let m = crate::win32::max_button_state(h);
+        crate::winui::caption::frame_maximize(m.hot, m.pressed);
+    }
     let bar = crate::winui::caption::title_bar(ui, rect, title, buttons);
     #[cfg(windows)]
     if let Some(hwnd) = hwnd {
@@ -849,13 +959,26 @@ pub fn drawn_title(
                 strip_h: (CAPTION_H * ppp).round() as i32,
                 icon: px(bar.icon),
                 buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
-                max_button: None,
+                max_button: max_at,
             },
         );
     }
     #[cfg(not(windows))]
-    let _ = hwnd;
+    let _ = (hwnd, max_at);
     bar.pressed
+}
+
+/// Maximize the window (`hwnd` once its frame is applied), or restore it while it is: the
+/// system's command, as the frame's own Maximize sends it (#874).
+fn toggle_maximized(ctx: &egui::Context, hwnd: Option<isize>) {
+    #[cfg(windows)]
+    if let Some(h) = hwnd {
+        crate::win32::toggle_maximized(h);
+        return;
+    }
+    let _ = hwnd;
+    let max = ctx.input(|i| i.viewport().maximized) == Some(true);
+    ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
 }
 
 /// Whether the window manager asked this window to close (its title bar's ×, Alt+F4, a

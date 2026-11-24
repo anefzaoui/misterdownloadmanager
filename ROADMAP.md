@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Link grabber's window can be resized and maximized: the list takes the room it gains, and it
+  opens at the size it was left at; Ctrl-click, Shift-click (and Shift with the arrows) and Ctrl+A highlight
+  several rows, which Space or the right-click menu's **Check** / **Uncheck** tick or untick
+  together ([#973](https://github.com/anefzaoui/misterdownloadmanager/discussions/973),
+  [#972](https://github.com/anefzaoui/misterdownloadmanager/discussions/972))
 - ✅ Tests: the check that one download's IP family never changes another download of the same
   host no longer fails now and then (seen on a Windows runner): it took for granted that the
   first download, slowed down, was still running when the second one ended; the test server now

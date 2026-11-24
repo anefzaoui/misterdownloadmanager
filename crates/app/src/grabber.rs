@@ -14,7 +14,8 @@ use std::sync::{Arc, Mutex};
 use egui::{Pos2, Rect, Ui, pos2, vec2};
 use url::Url;
 
-use crate::dialogs::{Outcome, window};
+use crate::chrome::{MenuEntry, MenuKind, PopupResult};
+use crate::dialogs::Outcome;
 use crate::model::{Category, category_folder};
 use crate::transfer::Imported;
 use crate::winui::{self, ButtonKind, LIGHT_BG, LIGHT_TEXT, fill_l as fill, r, text};
@@ -217,7 +218,7 @@ pub struct Picked {
 }
 
 /// What a row of the list is.
-#[derive(Clone, Copy, PartialEq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 enum Row {
     Pkg(usize),
     Link(usize),
@@ -258,16 +259,33 @@ pub struct Grabber {
     origins: std::collections::HashMap<Origin, usize>,
     /// `model::categories_changed` when the links' categories were worked out.
     categories: u64,
+    /// The rows picked with Ctrl / Shift (#715), and the row a Shift-click counts from; the
+    /// focused row alone when none is.
+    marked: std::collections::HashSet<Row>,
+    anchor: Option<Row>,
+    /// The picked rows' right-click menu (Check, Uncheck), open at this point.
+    menu: Option<Pos2>,
+    /// The window's client as the user sized it (#714): what it opens with next time.
+    pub size: [f32; 2],
 }
 
+/// The window's least client: the size it was laid out for (#714 lets it grow).
+pub const LEAST: [f32; 2] = [640.0, BUTTONS_Y + 30.0];
+
 impl Grabber {
+    /// `size`: the window's client as last left (`None`: its least, [`LEAST`]).
     pub fn new(
         downloads: PathBuf,
         dirs: Vec<(String, String)>,
         hide_pages: bool,
         delete_default: bool,
+        size: Option<[f32; 2]>,
     ) -> Self {
         Grabber {
+            marked: Default::default(),
+            anchor: None,
+            menu: None,
+            size: size.unwrap_or(LEAST),
             packages: Vec::new(),
             links: Vec::new(),
             source: String::new(),
@@ -705,14 +723,23 @@ impl Grabber {
         if self.links.iter().any(|l| l.state == LinkState::Checking) {
             ctx.request_repaint_after(std::time::Duration::from_millis(250));
         }
-        let out = window(
+        // Sized by the user (#714): the list takes what the window gains.
+        let start = self.size;
+        let out = crate::dialogs::sizable_window(
             ctx,
             "grabber",
             "Link grabber",
-            [640.0, BUTTONS_Y + 30.0],
+            LEAST,
+            start,
             true,
             LIGHT_BG(),
-            |ui, o| self.body(ui, o),
+            |ui, o, size| {
+                // Maximized, it is still left at the size it was given (as Windows restores it).
+                if ui.ctx().input(|i| i.viewport().maximized) != Some(true) {
+                    self.size = size;
+                }
+                self.body(ui, o, size)
+            },
         );
         match out {
             Outcome::Open => Outcome::Open,
@@ -721,7 +748,11 @@ impl Grabber {
         }
     }
 
-    fn body(&mut self, ui: &mut Ui, o: Pos2) -> Outcome<bool> {
+    /// The window's layout at a client of `size` (at least [`LEAST`]): what it has beyond that
+    /// goes to the list; the rows under it move down and their right ends with the window's.
+    fn body(&mut self, ui: &mut Ui, o: Pos2, size: [f32; 2]) -> Outcome<bool> {
+        let dw = (size[0] - LEAST[0]).max(0.0);
+        let dh = (size[1] - LEAST[1]).max(0.0);
         let p = ui.painter().clone();
         // Ctrl+V: the addresses in the pasted text, as Import finds them in a file.
         let pasted: Option<String> = ui.input(|i| {
@@ -749,14 +780,17 @@ impl Grabber {
             o.y + 20.0,
             &line,
             LIGHT_TEXT(),
-            o.x + 629.0,
+            o.x + 629.0 + dw,
             "grabber-source",
         );
         self.list(
             ui,
-            Rect::from_min_size(o + vec2(11.0, 30.0), vec2(618.0, 258.0)),
+            Rect::from_min_size(o + vec2(11.0, 30.0), vec2(618.0 + dw, 258.0 + dh)),
         );
 
+        // Everything under the list, as far down as the list grew; `right`, its right end.
+        let o = o + vec2(0.0, dh);
+        let right = 629.0 + dw;
         // Under the list: Hide web pages, the count, Check all / Uncheck all.
         let mut hide = self.hide_pages;
         // i18n: Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
@@ -780,7 +814,7 @@ impl Grabber {
         let picks = winui::buttons_light_right(
             ui,
             o,
-            629.0,
+            right,
             296.0,
             &[
                 // i18n: Link grabber button (IDM's): tick every link
@@ -799,7 +833,7 @@ impl Grabber {
             self.links.iter_mut().for_each(|l| l.on = false);
         }
 
-        self.package_box(ui, o);
+        self.package_box(ui, o, dw);
 
         let any = ticked > 0;
         let kind = |default: bool| match (any, default) {
@@ -810,7 +844,7 @@ impl Grabber {
         let row = winui::buttons_light_right(
             ui,
             o,
-            629.0,
+            right,
             BUTTONS_Y,
             &[
                 // i18n: Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
@@ -905,6 +939,17 @@ impl Grabber {
         }
         let view = self.view();
         let rows = &view.rows;
+        // The picked rows (#715) that still show (a package closed, web pages hidden: theirs
+        // go); none, the focused row.
+        if !self.marked.is_empty() {
+            let here: std::collections::HashSet<Row> = rows.iter().copied().collect();
+            self.marked.retain(|r| here.contains(r));
+        }
+        if self.marked.is_empty()
+            && let Some(s) = self.rows.selected.filter(|s| *s < rows.len())
+        {
+            self.marked.insert(rows[s]);
+        }
         // i18n: what a screen reader calls Link grabber's list
         self.rows.name = crate::i18n::t("Links");
         let mut toggle_link = None;
@@ -923,6 +968,18 @@ impl Grabber {
                 &mut st,
                 |ui, clip, k, row, look| {
                     let top = row.top();
+                    // Painted as selected exactly when picked: Ctrl / Shift picks too, and not
+                    // the focused row a Ctrl-click dropped.
+                    let picked = this.marked.contains(&rows[k]);
+                    if picked && !look.selected {
+                        clip.rect_filled(winui::rect(row), 0.0, winui::ROW_SELECTED());
+                        look.ink = winui::SELECTION_TEXT();
+                        look.selected = true;
+                    } else if look.selected && !picked {
+                        clip.rect_filled(winui::rect(row), 0.0, winui::FIELD());
+                        look.ink = winui::TEXT();
+                        look.selected = false;
+                    }
                     match rows[k] {
                         Row::Pkg(n) => {
                             let pk = &packages[n];
@@ -1085,7 +1142,98 @@ impl Grabber {
         };
         let (ev, st) = ev;
         self.rows = st;
-        if let Some(k) = ev.space.or(ev.double_clicked) {
+        // Ctrl-click adds or drops a row, Shift-click (and Shift with the arrows) picks a run,
+        // Ctrl+A picks them all (#715), as in the download list.
+        // As the click had them, even in a slow frame (#1734).
+        let mods = crate::list::click_modifiers(ui);
+        if let Some(k) = ev.clicked.or(ev.picked.filter(|_| ev.context.is_none())) {
+            let at = rows[k];
+            if mods.shift {
+                let a = self
+                    .anchor
+                    .and_then(|a| rows.iter().position(|r| *r == a))
+                    .unwrap_or(k);
+                self.marked = rows[a.min(k)..=a.max(k)].iter().copied().collect();
+            } else if mods.command && ev.clicked.is_some() {
+                if !self.marked.remove(&at) {
+                    self.marked.insert(at);
+                }
+                self.anchor = Some(at);
+            } else {
+                self.marked = [at].into();
+                self.anchor = Some(at);
+            }
+        }
+        if ev.focused && ui.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::A)) {
+            self.marked = rows.iter().copied().collect();
+        }
+        // A right-click on a row that isn't picked picks it alone; the menu acts on the picked.
+        if let Some((k, at)) = ev.context {
+            if !self.marked.contains(&rows[k]) {
+                self.marked = [rows[k]].into();
+                self.anchor = Some(rows[k]);
+            }
+            self.menu = Some(at);
+        }
+        // The same menu from the keys (the Menu key, Shift+F10), under the focused row.
+        if ev.focused
+            && self.menu.is_none()
+            && let Some(s) = self.rows.selected.filter(|s| *s < rows.len())
+            && ui.input_mut(|i| {
+                i.consume_key(egui::Modifiers::SHIFT, egui::Key::F10)
+                    || i.consume_key(egui::Modifiers::NONE, egui::Key::Menu)
+            })
+        {
+            let top = body.top() + s.saturating_sub(self.rows.first) as f32 * ROW;
+            let under = winui::rect(Rect::from_min_size(
+                pos2(body.left() + 40.0, top),
+                vec2(1.0, ROW),
+            ));
+            self.menu = Some(if winui::rtl() {
+                under.right_bottom()
+            } else {
+                under.left_bottom()
+            });
+        }
+        // Tick (true) or untick every picked row: Space on one of them, or the menu.
+        let mut group = None;
+        if let Some(at) = self.menu {
+            let any = !self.marked.is_empty();
+            // i18n: Link grabber, right-click menu of the highlighted rows: tick them (their links will be downloaded)
+            let check = crate::i18n::mark("&Check");
+            // i18n: Link grabber, right-click menu of the highlighted rows: untick them (their links will be left out)
+            let uncheck = crate::i18n::mark("&Uncheck");
+            let entries = [
+                MenuEntry::Item(check, true, any, false),
+                MenuEntry::Item(uncheck, false, any, false),
+            ];
+            match crate::chrome::popup(
+                ui.ctx(),
+                MenuKind::Context,
+                "grabber-menu",
+                at,
+                &entries,
+                &|_| None,
+            ) {
+                PopupResult::Open | PopupResult::Neighbor(_) => {}
+                PopupResult::Chosen(on) => {
+                    group = Some(on);
+                    self.menu = None;
+                }
+                PopupResult::Dismissed => self.menu = None,
+            }
+        }
+        let space_on_picked = ev
+            .space
+            .is_some_and(|k| self.marked.len() > 1 && self.marked.contains(&rows[k]));
+        if space_on_picked {
+            // All ticked: untick them; else tick them all (as a package's box does its links).
+            let all = self.marked.iter().all(|r| match *r {
+                Row::Pkg(n) => view.packages[n].on == view.packages[n].links,
+                Row::Link(i) => self.links[i].on,
+            });
+            group = Some(!all);
+        } else if let Some(k) = ev.space.or(ev.double_clicked) {
             match rows[k] {
                 Row::Pkg(n) if ev.double_clicked == Some(k) => flip = Some(n),
                 Row::Pkg(n) => toggle_pkg = Some(n),
@@ -1126,10 +1274,36 @@ impl Grabber {
         if let Some(i) = toggle_link {
             self.links[i].on = !self.links[i].on;
         }
+        if let Some(on) = group {
+            self.tick_marked(on);
+        }
     }
 
-    /// The selected package's name, folder, password and what happens to its archives.
-    fn package_box(&mut self, ui: &mut Ui, o: Pos2) {
+    /// Ticks (`on`) or unticks the picked rows (#715): a package's links that show, as its own
+    /// box does, and each link.
+    fn tick_marked(&mut self, on: bool) {
+        let packages: std::collections::HashSet<usize> = self
+            .marked
+            .iter()
+            .filter_map(|r| match *r {
+                Row::Pkg(n) => Some(n),
+                Row::Link(_) => None,
+            })
+            .collect();
+        let hide = self.hide_pages;
+        for (i, l) in self.links.iter_mut().enumerate() {
+            let in_package = packages.contains(&l.pkg) && !(hide && l.is_page());
+            if in_package || self.marked.contains(&Row::Link(i)) {
+                l.on = on;
+            }
+        }
+    }
+
+    /// The selected package's name, folder, password and what happens to its archives; `dw`
+    /// points wider than the least window (#714), its boxes as much longer.
+    fn package_box(&mut self, ui: &mut Ui, o: Pos2, dw: f32) {
+        // The boxes' right end; the password's half of the gain.
+        let end = 621.0 + dw;
         let p = ui.painter().clone();
         // A package has a row when some of its links show.
         let shown = self.shown();
@@ -1143,7 +1317,7 @@ impl Grabber {
         let cw = winui::text_width(&p, caption);
         winui::group_box(
             &p,
-            r(o, 11.0, 330.0, 618.0, 106.0),
+            r(o, 11.0, 330.0, 618.0 + dw, 106.0),
             Some((o.x + 18.0, o.x + 22.0 + cw)),
         );
         text(&p, o.x + 20.0, o.y + 334.0, caption, LIGHT_TEXT());
@@ -1193,8 +1367,8 @@ impl Grabber {
         };
         // Row 1: the name, then the password.
         label(ui, 21.0, 360.0, name_label, bx - 4.0);
-        let pw_x = 340.0;
-        let pbx = (pw_x + wide(pw_label) + 8.0).min(470.0);
+        let pw_x = 340.0 + dw / 2.0;
+        let pbx = (pw_x + wide(pw_label) + 8.0).min(470.0 + dw / 2.0);
         let named = winui::edit_light(
             ui,
             r(o, bx, 345.0, pw_x - 12.0 - bx, 23.0),
@@ -1203,7 +1377,7 @@ impl Grabber {
             false,
         );
         label(ui, pw_x, 360.0, pw_label, pbx - 4.0);
-        let pw = winui::password_light(ui, r(o, pbx, 345.0, 621.0 - pbx, 23.0), password, enabled);
+        let pw = winui::password_light(ui, r(o, pbx, 345.0, end - pbx, 23.0), password, enabled);
         // i18n: what a screen reader calls Link grabber's password box
         let pw_name = crate::i18n::t("Archive password");
         ui.ctx().accesskit_node_builder(pw.id, |n| {
@@ -1218,7 +1392,7 @@ impl Grabber {
         let bw = winui::button_width(&p, "Browse", 73.0);
         let typed = winui::edit_light(
             ui,
-            r(o, bx, 376.0, 621.0 - bw - 8.0 - bx, 23.0),
+            r(o, bx, 376.0, end - bw - 8.0 - bx, 23.0),
             folder,
             enabled,
             false,
@@ -1233,13 +1407,13 @@ impl Grabber {
                 o.y + 391.0,
                 each,
                 winui::MUTED(),
-                o.x + 621.0 - bw - 12.0,
+                o.x + end - bw - 12.0,
                 "grabber-each",
             );
         }
         let browse = winui::button_light(
             ui,
-            r(o, 621.0 - bw, 377.0, bw, 21.0),
+            r(o, end - bw, 377.0, bw, 21.0),
             "Browse",
             if enabled {
                 ButtonKind::Normal
@@ -1380,7 +1554,61 @@ mod tests {
     }
 
     fn grabber() -> Grabber {
-        Grabber::new(PathBuf::from("D:\\dl"), Vec::new(), true, false)
+        Grabber::new(PathBuf::from("D:\\dl"), Vec::new(), true, false, None)
+    }
+
+    /// #715: the highlighted rows are ticked or unticked together, the rest left as they are; a
+    /// highlighted package's row takes its links, as its own box does.
+    #[test]
+    fn highlighted_rows_are_ticked_together() {
+        let mut g = grabber();
+        g.add(
+            vec![
+                link("https://dl.example.com/holiday.part1.rar", None),
+                link("https://dl.example.com/holiday.part2.rar", None),
+                link("https://files.example.org/a.bin", None),
+                link("https://files.example.org/b.bin", None),
+                link("https://files.example.org/c.bin", None),
+            ],
+            String::new(),
+            |_| false,
+        );
+        assert!(g.links.iter().all(|l| l.on));
+        let at = |g: &Grabber, name: &str| g.links.iter().position(|l| l.name == name).unwrap();
+        let (a, c) = (at(&g, "a.bin"), at(&g, "c.bin"));
+        g.marked = [Row::Link(a), Row::Link(c)].into();
+        g.tick_marked(false);
+        let on: Vec<&str> = g
+            .links
+            .iter()
+            .filter(|l| l.on)
+            .map(|l| l.name.as_str())
+            .collect();
+        assert_eq!(on, ["holiday.part1.rar", "holiday.part2.rar", "b.bin"]);
+
+        // The volumes' package, highlighted with one of the unticked links.
+        let volumes = g.links[at(&g, "holiday.part1.rar")].pkg;
+        assert_ne!(
+            volumes, g.links[a].pkg,
+            "the volumes are a package of their own"
+        );
+        g.marked = [Row::Pkg(volumes), Row::Link(a)].into();
+        g.tick_marked(false);
+        let on: Vec<&str> = g
+            .links
+            .iter()
+            .filter(|l| l.on)
+            .map(|l| l.name.as_str())
+            .collect();
+        assert_eq!(on, ["b.bin"]);
+        g.tick_marked(true);
+        let off: Vec<&str> = g
+            .links
+            .iter()
+            .filter(|l| !l.on)
+            .map(|l| l.name.as_str())
+            .collect();
+        assert_eq!(off, ["c.bin"], "only the highlighted rows changed");
     }
 
     #[test]
