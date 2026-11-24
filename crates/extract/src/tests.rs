@@ -986,3 +986,12 @@ fn only_hatchzips_own_refusal_with_nothing_changed_falls_back() {
     assert_eq!(seen, 0);
     assert!(!t.path().join("two.txt").exists());
 }
+
+/// `base_name` takes an archive's extension off by an offset measured in its lower case; a
+/// character whose lower case is shorter (`U+210A`, three bytes, lowercases to `g`) must not
+/// make it slice past the name's end.
+#[test]
+fn an_archive_name_that_lowercases_shorter_still_names_its_folder() {
+    assert_eq!(base_name(Path::new("x.\u{210a}z")), "x");
+    assert_eq!(base_name(Path::new("photos.TAR.GZ")), "photos");
+}

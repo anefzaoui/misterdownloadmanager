@@ -252,7 +252,8 @@ pub fn base_name(archive: &Path) -> String {
         ".tar.gz", ".tar.xz", ".tgz", ".txz", ".zip", ".7z", ".rar", ".tar", ".gz", ".xz",
     ] {
         if lower.ends_with(ext) && lower.len() > ext.len() {
-            return name[..name.len() - ext.len()].to_owned();
+            return crate::volumes::without_lower_suffix(&name, &lower, lower.len() - ext.len())
+                .to_owned();
         }
     }
     name

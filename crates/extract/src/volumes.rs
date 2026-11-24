@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 /// suffix ends `name` the same number of bytes from its end. Indexing `name` with an offset
 /// measured in `lower` is wrong wherever lowercasing changes a character's byte length (`İ` is
 /// 2 bytes, its lowercase `i̇` is 3): it slices into the wrong place or panics.
-fn without_lower_suffix<'a>(name: &'a str, lower: &str, at: usize) -> &'a str {
+pub(crate) fn without_lower_suffix<'a>(name: &'a str, lower: &str, at: usize) -> &'a str {
     let suffix = lower.len() - at;
     name.get(..name.len() - suffix).unwrap_or(name)
 }

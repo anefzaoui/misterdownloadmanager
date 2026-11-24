@@ -16,7 +16,9 @@ pub fn extract(archive: &Path, format: Format, w: &mut Writer) -> Result<(), Err
     let inner = [".gz", ".xz"]
         .iter()
         .find(|e| lower.ends_with(*e) && lower.len() > e.len())
-        .map(|e| name[..name.len() - e.len()].to_owned())
+        .map(|e| {
+            crate::volumes::without_lower_suffix(&name, &lower, lower.len() - e.len()).to_owned()
+        })
         .unwrap_or_else(|| format!("{name}.out"));
     let mut reader: Box<dyn Read> = match format {
         Format::Xz => Box::new(lzma_rust2::XzReader::new(file, true)),
