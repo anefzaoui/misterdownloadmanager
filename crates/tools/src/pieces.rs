@@ -290,8 +290,8 @@ pub fn decrypt(data: &[u8], key: &[u8; 16], iv: &[u8; 16]) -> Option<Vec<u8>> {
     Some(buf)
 }
 
-/// The most a piece reserves for its body up front, whatever length an answer announces: a
-/// reservation is a hint, and one the server chose must not be able to fail the allocation.
+/// The most a piece reserves for its body up front, whatever length an answer announces (the
+/// body still grows to the piece's real size).
 const PIECE_RESERVE: u64 = 1 << 20;
 
 /// The most files of a gallery downloaded at once (#769): Wikimedia's servers answer 429 Too
@@ -985,8 +985,7 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
         ));
     }
     let len = resp.content_length();
-    // A hint only: an answer that announces an enormous length must not make the piece reserve
-    // it (a failed allocation aborts the process, and no piece is anywhere near this big).
+    // The announced length is a hint for the reservation only.
     let mut body = Vec::with_capacity(len.unwrap_or(0).min(PIECE_RESERVE) as usize);
     run.shared.each.lock().unwrap()[i] = (0, len);
     set_conn(run, c, |v| v.status = ConnStatus::Receiving);
@@ -1060,24 +1059,14 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
         std::fs::write(&part, &data).and_then(|_| std::fs::rename(&part, &file))
     })
     .await;
-    match written {
-        Ok(Ok(())) => {}
-        Ok(Err(e)) => {
-            // A disk full, a read-only folder: no new list of addresses can help, so this is not
-            // a piece the site refused (`Dead`, which asks yt-dlp again).
-            undo(got);
-            return Err(PieceError::Again(format!(
-                "{} can't be saved: {e}",
-                run.one()
-            )));
-        }
-        Err(e) => {
-            undo(got);
-            return Err(PieceError::Again(format!(
-                "{} can't be saved: {e}",
-                run.one()
-            )));
-        }
+    // A disk full, a read-only folder: no new list of addresses can help, so this is not a
+    // piece the site refused (`Dead`, which asks yt-dlp again).
+    if let Err(e) = written.map_err(std::io::Error::other).and_then(|w| w) {
+        undo(got);
+        return Err(PieceError::Again(format!(
+            "{} can't be saved: {e}",
+            run.one()
+        )));
     }
     run.shared.whole_bytes.fetch_add(size, Ordering::Relaxed);
     run.shared.whole.fetch_add(1, Ordering::Relaxed);
