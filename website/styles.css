@@ -1457,6 +1457,8 @@ html[lang|="it"] .said-tr[data-same="it"], html[lang|="tr"] .said-tr[data-same="
 .rate-hint { max-width: 42ch; margin-top: 8px; font-size: 14px; line-height: 1.5; color: var(--ink-3); }
 .rate-remove { margin-top: 6px; padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; font-size: 14px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; }
 .rate-remove:hover { color: var(--ink); text-decoration-thickness: 2px; }
+/* Unchanged to the eye for the moment a rating is on its way (rate.js), only not clickable. */
+.rate-remove:disabled { color: var(--ink-2); text-decoration-thickness: 1px; cursor: default; }
 .rate-status { min-height: 1.5em; margin-top: 8px; font-size: 14.5px; font-weight: 650; line-height: 1.5; }
 .rate-check:empty { display: none; }
 .rate-check { margin-top: 10px; }

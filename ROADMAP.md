@@ -581,9 +581,14 @@ These ship in the next version.
   [#1786](https://github.com/anefzaoui/misterdownloadmanager/issues/1786),
   [#1788](https://github.com/anefzaoui/misterdownloadmanager/issues/1788),
   [#1789](https://github.com/anefzaoui/misterdownloadmanager/issues/1789))
-- 🔄 Website: `Link` headers on the home page for the API catalog, the sitemap and its Markdown
-  ([#1787](https://github.com/anefzaoui/misterdownloadmanager/issues/1787)); a page asked for with
-  `Accept: text/markdown` answered in Markdown (the Worker is written, not switched on)
+- ✅ Website: `Link` headers on the home page for the API catalog, the sitemap and its Markdown
+  ([#1787](https://github.com/anefzaoui/misterdownloadmanager/issues/1787))
+- 🔄 Website: a page asked for with `Accept: text/markdown` answered in Markdown (the Worker is
+  written, not switched on)
+- ✅ Website: a star rating shows as given the moment it's picked (thanks and numbers included),
+  then follows the ratings service's answer, or goes back and says why if it couldn't be sent;
+  the check that a person is rating starts as the visitor reaches for the stars, and the service
+  answers in fewer steps
 - ✅ Tests: the check that a finished file's damaged part is downloaded again no longer fails now
   and then (seen on a Linux runner): the test server damages only the first answer that carries
   those bytes, and the first download, on several connections, could split that answer off
