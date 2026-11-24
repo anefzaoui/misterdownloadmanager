@@ -2045,7 +2045,7 @@ fn choice_line(c: &mdm_tools::resolve::Choice) -> String {
     let about = if c.approx { "~" } else { "" };
     let size = c
         .size
-        .map_or(String::new(), |s| format!("  {about}{} MB", s / 1_000_000));
+        .map_or(String::new(), |s| format!("  {about}{}", mb(s)));
     format!("  {}{size}    -f \"{}\"", c.label, c.selector)
 }
 
