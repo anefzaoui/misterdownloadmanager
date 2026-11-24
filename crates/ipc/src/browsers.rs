@@ -402,7 +402,9 @@ pub fn command_program(command: &str) -> Option<String> {
     let program = if let Some(rest) = c.strip_prefix('"') {
         rest.split('"').next()?
     } else {
-        let end = c.to_lowercase().find(".exe").map(|i| i + 4)?;
+        // An ASCII lower case keeps every byte where it was; `to_lowercase` does not (U+0130,
+        // U+212A), and slicing `c` with an offset from it would panic or cut a character.
+        let end = c.to_ascii_lowercase().find(".exe").map(|i| i + 4)?;
         &c[..end]
     };
     let program = program.trim();
@@ -1039,6 +1041,17 @@ mod tests {
         );
         assert_eq!(command_program(r#""""#), None);
         assert_eq!(command_program("rundll32"), None);
+        // A program whose name lowercases to more bytes than it has: U+0130 is two bytes,
+        // "i" + U+0307 three. A `to_lowercase` offset ran past the end of the first and kept
+        // part of the second's arguments.
+        assert_eq!(
+            command_program("\u{130}.exe").as_deref(),
+            Some("\u{130}.exe")
+        );
+        assert_eq!(
+            command_program("\u{130}\u{130}.exe %1").as_deref(),
+            Some("\u{130}\u{130}.exe")
+        );
         assert!(!windows_can_run_extension(
             r"C:\Program Files\Internet Explorer\iexplore.exe"
         ));
