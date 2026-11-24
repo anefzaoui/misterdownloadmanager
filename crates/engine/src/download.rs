@@ -1344,12 +1344,19 @@ impl Download {
             return Err(Error::DestinationUnavailable(dir.to_owned()));
         }
         let saved = ResumeState::load(&state_file).map_err(Error::BadState)?;
-        Ok(Download::spawn(saved.url.clone(), move |shared, cancel| {
-            run(
-                run_resume(saved, state_file, headers, opts, shared.clone(), cancel),
-                shared,
-            )
-        }))
+        // The bytes on disk from the first snapshot, not only once the run has read the state
+        // again: a watcher's speed (the command line's) doesn't count them as new (#1872).
+        let on_disk = saved.downloaded();
+        Ok(Download::spawn_showing(
+            saved.url.clone(),
+            on_disk,
+            move |shared, cancel| {
+                run(
+                    run_resume(saved, state_file, headers, opts, shared.clone(), cancel),
+                    shared,
+                )
+            },
+        ))
     }
 
     /// [`Download::resume`] when there is a resume state at `state_file`, else `req` from the
