@@ -97,6 +97,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- A drive too full for a download says how much space the download needs and how much the drive has, instead of a smaller need and 0 bytes free (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- FTP: the 32-bit build refuses to resume a file of 4 GB or more with a clear message, instead of resuming it at the wrong place (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- A file whose first bytes are read to see what it is (a .zip, for one), from a server without ranges that has to start over on one connection, is no longer failed as cut short (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- A download that replaces a file of the same name no longer takes the name of a paused download's file beside it: it takes the next free name (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Debrid torrents: a service that says a torrent is ready but lists no files is asked again, up to five times, instead of finishing an empty download and removing the torrent from the account (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Real-Debrid: an answer that the service is unavailable, without a reason (maintenance), is asked again every 5 minutes for up to an hour, said in the download's log, before the file is taken as gone (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Premiumize: a torrent's folders are listed up to 1000 (instead of 64), a folder without an id is skipped instead of failing the whole torrent, and a larger torrent downloads the files found and says in its log that the rest stay in the Premiumize cloud (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Find: **Sites** also searches the download's parent web page, as its checkbox says (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Sites Logins: a saved login is matched more carefully (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Options → Sites Logins: the list shows saved passwords more discreetly, and nothing for a login without one (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).

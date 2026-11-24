@@ -7,10 +7,13 @@
 //! - Errors are HTTP 4xx/5xx with `{"error": "...", "error_code": N}` (`fault`).
 //! - `remote` is always 0: MDM is a desktop program, and remote traffic is for servers.
 
+use std::time::{Duration, Instant};
+
 use serde::Deserialize;
+use tokio_util::sync::CancellationToken;
 use url::Url;
 
-use crate::{Fault, Http};
+use crate::{Fault, Http, ServiceKind};
 
 /// The client id Real-Debrid gives open-source programs for the device flow ("Opensource Apps").
 pub const OPEN_SOURCE_CLIENT_ID: &str = "X245A4XAIBGVM";
@@ -22,6 +25,10 @@ const DEVICE_GRANT: &str = "http://oauth.net/grant_type/device/1.0";
 pub struct Endpoints {
     pub rest: Url,
     pub oauth: Url,
+    /// A 503 without an error code to `unrestrict/link` (#1868) is asked again this often...
+    pub busy_every: Duration,
+    /// ...for up to this long, then taken as the file being gone.
+    pub busy_for: Duration,
 }
 
 impl Default for Endpoints {
@@ -29,16 +36,21 @@ impl Default for Endpoints {
         Endpoints {
             rest: Url::parse("https://api.real-debrid.com/rest/1.0/").expect("constant"),
             oauth: Url::parse("https://api.real-debrid.com/oauth/v2/").expect("constant"),
+            busy_every: Duration::from_secs(5 * 60),
+            busy_for: Duration::from_secs(60 * 60),
         }
     }
 }
 
 impl Endpoints {
-    /// The lab server's fake Real-Debrid at `base` (`http://127.0.0.1:PORT/`).
+    /// The lab server's fake Real-Debrid at `base` (`http://127.0.0.1:PORT/`), whose waits
+    /// after a bare 503 are a moment's, not minutes'.
     pub fn at(base: &Url) -> Self {
         Endpoints {
             rest: base.join("rd/rest/1.0/").expect("relative"),
             oauth: base.join("rd/oauth/v2/").expect("relative"),
+            busy_every: Duration::from_millis(50),
+            busy_for: Duration::from_millis(400),
         }
     }
 }
@@ -102,6 +114,24 @@ struct ErrorBody {
     error_code: Option<i64>,
 }
 
+/// A 503 without an error code: Real-Debrid's answer for a file it can't get, and also what it
+/// (or a proxy in front of it) sends while it is down for maintenance.
+fn bare_503(status: u16, body: &[u8]) -> bool {
+    status == 503
+        && serde_json::from_slice::<ErrorBody>(body)
+            .ok()
+            .is_none_or(|e| e.error_code.is_none())
+}
+
+/// After bare 503s for `since`: how long to wait before asking again (`every`, the last wait
+/// ending at `limit`), or None once `limit` has gone by and the file is taken as gone.
+fn after_bare_503(since: Duration, every: Duration, limit: Duration) -> Option<Duration> {
+    limit
+        .checked_sub(since)
+        .filter(|left| !left.is_zero())
+        .map(|left| left.min(every))
+}
+
 /// What an error answer means for MDM (the API documentation's list of codes).
 pub(crate) fn fault(status: u16, body: &[u8], retry_after: Option<u64>) -> Fault {
     use mdm_engine::ServiceFault as F;
@@ -118,7 +148,9 @@ pub(crate) fn fault(status: u16, body: &[u8], retry_after: Option<u64>) -> Fault
         (Some(18 | 23 | 36), _) => F::LimitReached,
         (Some(21), _) => F::TooManyActive,
         (Some(22), _) => F::IpRefused,
-        (Some(24), _) | (None, 503) => F::FileUnavailable,
+        // A 503 with no error code is the service being down (maintenance, a proxy in front of
+        // it), as every 5xx is; `unrestrict` gives it an hour before it takes the file as gone.
+        (Some(24), _) => F::FileUnavailable,
         (Some(28 | 35), _) => F::FileRefused,
         (Some(5 | 34), _) | (None, 429) => {
             F::TooManyRequests(retry_after.map(std::time::Duration::from_secs))
@@ -150,20 +182,46 @@ pub(crate) async fn domains(http: &Http) -> Result<Vec<String>, Fault> {
 }
 
 /// Today's direct link for `link`.
+///
+/// A bare 503 (`bare_503`) may be the service down for a while: asked again every 5 minutes
+/// (`Endpoints::busy_every`), said in the event log, for up to an hour (`busy_for`); then the
+/// file is taken as gone (#1868), so a dead file isn't asked for forever.
 pub(crate) async fn unrestrict(
     http: &Http,
     token: &str,
     link: &Url,
+    note: &(dyn Fn(String, Option<f32>) + Send + Sync),
+    cancel: &CancellationToken,
 ) -> Result<Unrestricted, Fault> {
-    let url = http
-        .services
-        .rd
-        .rest
-        .join("unrestrict/link")
-        .expect("relative");
+    use mdm_engine::ServiceFault as F;
+    let rd = &http.services.rd;
+    let url = rd.rest.join("unrestrict/link").expect("relative");
     let form = [("link", link.as_str()), ("remote", "0")];
-    http.json(http.post_form(&url, &form).bearer_auth(token), fault)
-        .await
+    let first = Instant::now();
+    loop {
+        let req = http.post_form(&url, &form).bearer_auth(token);
+        let answer = http.send(ServiceKind::RealDebrid, req).await?;
+        if !bare_503(answer.0, &answer.1) {
+            return http.read_json(answer, fault);
+        }
+        let Some(wait) = after_bare_503(first.elapsed(), rd.busy_every, rd.busy_for) else {
+            return Err(Fault::Service(F::FileUnavailable));
+        };
+        let secs = wait.as_secs_f32().ceil() as u64;
+        let when = if secs >= 60 {
+            format!("{} min", secs.div_ceil(60))
+        } else {
+            format!("{secs} s")
+        };
+        note(
+            format!("Real-Debrid answers 503 (down or busy): asking again in {when}"),
+            None,
+        );
+        tokio::select! {
+            _ = tokio::time::sleep(wait) => {}
+            _ = cancel.cancelled() => return Err(Fault::Service(F::Other("cancelled".into()))),
+        }
+    }
 }
 
 /// Sign-in by code, step 1: the code the user types at Real-Debrid.
@@ -299,6 +357,27 @@ mod tests {
     use mdm_engine::ServiceFault as F;
 
     #[test]
+    fn a_bare_503_is_asked_again_every_5_minutes_for_an_hour() {
+        let (every, limit) = (Duration::from_secs(300), Duration::from_secs(3600));
+        let min = |m: u64| Duration::from_secs(m * 60);
+        assert_eq!(after_bare_503(Duration::ZERO, every, limit), Some(min(5)));
+        assert_eq!(after_bare_503(min(30), every, limit), Some(min(5)));
+        // The last wait ends at the hour, not after it.
+        assert_eq!(after_bare_503(min(58), every, limit), Some(min(2)));
+        assert_eq!(after_bare_503(min(60), every, limit), None);
+        assert_eq!(after_bare_503(min(61), every, limit), None);
+        // Asked at 0, 5, ..., 55 and 60 minutes: 13 times, then the file is gone.
+        let (mut at, mut asked) = (Duration::ZERO, 1);
+        while let Some(wait) = after_bare_503(at, every, limit) {
+            at += wait;
+            asked += 1;
+        }
+        assert_eq!((asked, at), (13, limit));
+        let real = Endpoints::default();
+        assert_eq!((real.busy_every, real.busy_for), (every, limit));
+    }
+
+    #[test]
     fn documented_errors_mean_what_they_say() {
         let f = |status, body: &str| fault(status, body.as_bytes(), None);
         assert_eq!(
@@ -338,6 +417,19 @@ mod tests {
             Fault::Service(F::TooManyRequests(Some(std::time::Duration::from_secs(30))))
         );
         assert_eq!(f(500, "not json"), Fault::Service(F::ServiceDown));
+        assert_eq!(
+            f(503, "not json"),
+            Fault::Service(F::ServiceDown),
+            "a bare 503 is the service, not the file"
+        );
+        assert!(bare_503(503, b""));
+        assert!(bare_503(503, b"<html>Service Unavailable</html>"));
+        assert!(bare_503(503, br#"{"error":"busy"}"#));
+        assert!(!bare_503(
+            503,
+            br#"{"error":"unavailable_file","error_code":24}"#
+        ));
+        assert!(!bare_503(500, b""));
         assert_eq!(
             f(400, r#"{"error":"something new"}"#),
             Fault::Service(F::Other("something new".into()))

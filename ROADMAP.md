@@ -572,6 +572,13 @@ These ship in the next version.
 - ✅ README and website: SourceForge's badges (its download button, the downloads count and its
   *Users Love Us* award); the website serves the award's picture itself, so showing it asks
   SourceForge for nothing
+- ✅ A drive too full for a download says the space needed and the space free right
+- ✅ FTP: the 32-bit build never resumes a file over 4 GB at the wrong place
+- ✅ A file from a server without ranges is no longer failed as cut short when it starts over on one connection
+- ✅ Replacing a file never takes a paused download's name
+- ✅ Debrid torrents: a "ready" torrent with no files listed yet is asked again
+- ✅ Real-Debrid: a download waits out the service's maintenance for up to an hour
+- ✅ Premiumize: large torrents with many folders come down
 - ✅ Find: Sites searches the parent web page too
 - ✅ Sites Logins: a saved login is matched more carefully
 - ✅ Sites Logins: saved passwords are shown more discreetly
