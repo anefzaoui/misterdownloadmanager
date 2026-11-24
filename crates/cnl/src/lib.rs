@@ -244,8 +244,7 @@ fn router(on_found: OnFound) -> Router {
         move |headers: HeaderMap, body: Bytes| {
             let (on_found, rate) = (on_found.clone(), rate.clone());
             async move {
-                // Charged before the parse: a page that posts garbage costs the same to read
-                // and parse as a real package, and must not be free of the limit.
+                // Every post counts toward its site's minute, whatever it holds.
                 let site = site(&headers);
                 if !rate.take(&site, Instant::now()) {
                     tracing::info!("Click'n'Load: a post refused, too many this minute");
@@ -641,6 +640,28 @@ mod tests {
             }
         }
         assert_eq!((*n.lock().unwrap(), refused), (POSTS_PER_MINUTE, 5));
+        // Posts that can't be read count toward their site's minute as well.
+        let from_other = |body: &'static str| {
+            c.post(&url)
+                .header(header::CONTENT_TYPE, "application/x-www-form-urlencoded")
+                .header(header::ORIGIN, "https://other.example")
+                .body(body)
+                .send()
+        };
+        for _ in 0..POSTS_PER_MINUTE {
+            assert_eq!(
+                from_other("urls=").await.unwrap().text().await.unwrap(),
+                "failed: no links\r\n"
+            );
+        }
+        assert_eq!(
+            from_other("urls=https%3A%2F%2Fa.example%2Fz")
+                .await
+                .unwrap()
+                .status(),
+            StatusCode::TOO_MANY_REQUESTS
+        );
+        assert_eq!(*n.lock().unwrap(), POSTS_PER_MINUTE);
         let big = format!("urls={}", "a".repeat(MAX_BODY + 1));
         assert_eq!(
             send(big).await.unwrap().status(),
