@@ -515,8 +515,9 @@ fn app() -> eframe::Result {
     // screenshots, the windows' sizing at high display scaling). The window is made before the
     // zoom applies: its sizes are given zoomed here.
     let z = scale::startup(loaded.settings.interface_size);
-    theme::init_smooth_text(loaded.settings.smooth_text);
-    // The log (release builds too) and the crash monitor.
+    // The log (release builds too) and the crash monitor. The interface's font and text size come
+    // after it: a saved file that can't be read warns from the `ui-font` thread, and that line
+    // must reach a logger that exists (#1489).
     if let Some(data) = mdm_ipc::data_dir() {
         mdm_crash::logs::init(&data, mdm_crash::logs::APP);
         tracing::info!(
@@ -525,6 +526,10 @@ fn app() -> eframe::Result {
             help::COMMIT
         );
     }
+    // View → Font (#1489): the interface's own font and text size, apart from that zoom.
+    theme::init_smooth_text(loaded.settings.smooth_text);
+    theme::set_ui_font(loaded.settings.interface_font.clone(), false, false);
+    theme::init_text_size(loaded.settings.interface_text_size);
     // The default browser, looked for once on a thread of its own (logged): its User-Agent is
     // the one links added by hand go with (#668).
     defaultbrowser::start();

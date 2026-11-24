@@ -805,3 +805,57 @@ async fn the_browser_like_connection_sends_one_user_agent() {
     assert_eq!(agents.len(), 1, "{head}");
     assert!(agents[0].ends_with(CHROME), "{head}");
 }
+
+/// #1660: past the bot check, the browser-like connection can meet the link's own 403, for the
+/// IP family it came over (a link signed for the page's IPv4 address): it asks once over the
+/// other family, on a connection of its own, and the download goes on over it.
+#[tokio::test]
+async fn the_browser_like_connection_asks_the_other_family_after_a_403() {
+    let s = LabServer::start(Config {
+        both_families: true,
+        faults: Faults::parse("browser_only=1&refuse_family=6").unwrap(),
+        ..Config::default()
+    })
+    .await
+    .expect("a lab server on 127.0.0.1 and ::1 (this machine needs an IPv6 loopback address)");
+    let host = "signed-behind-a-check.mdm.test";
+    let url = format!("http://{host}:{}/gen/1M/f.bin?seed=1660", s.addr().port());
+    let dir = tempfile::tempdir().unwrap();
+    let dl = Download::start(
+        Request {
+            url: url.parse().unwrap(),
+            headers: Default::default(),
+            dest: Destination::Dir(dir.path().to_owned()),
+        },
+        Options {
+            hosts: vec![(
+                host.to_owned(),
+                vec!["::1".parse().unwrap(), Ipv4Addr::LOCALHOST.into()],
+            )],
+            ..opts()
+        },
+    );
+    let events = loop {
+        let v = dl.snapshot();
+        if matches!(v.state, State::Done | State::Failed | State::Cancelled) {
+            break v.events;
+        }
+        tokio::time::sleep(Duration::from_millis(2)).await;
+    };
+    let out = dl.wait().await;
+    let log = settled_log(&s).await;
+    assert_eq!(out.expect("downloads over IPv4").size, 1 << 20, "{log:?}");
+    // MDM's own request (the bot check), the browser-like one over IPv6 (the link's 403), then
+    // everything over IPv4.
+    let outcomes: Vec<&str> = log.iter().take(2).map(|e| e.outcome.as_str()).collect();
+    assert_eq!(
+        outcomes,
+        ["fault:browser_only", "fault:refuse_family"],
+        "{log:?}"
+    );
+    assert!(log[..2].iter().all(|e| e.peer.is_ipv6()), "{log:?}");
+    assert!(log[2..].iter().all(|e| e.peer.is_ipv4()), "{log:?}");
+    assert!(log[2..].iter().all(|e| e.status != 403), "{log:?}");
+    let said = format!("{host} refused over IPv6, downloading over IPv4");
+    assert!(events.iter().any(|e| e.text == said), "{events:?}");
+}

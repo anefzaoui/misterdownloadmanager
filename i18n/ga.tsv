@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Cuireadh {n} rianaitheoir ón liosta poiblí leis.|Cuireadh {n} rianaitheoir ón liosta poiblí leis.|Cuireadh {n} rianaitheoir ón liosta poiblí leis.|Cuireadh {n} rianaitheoir ón liosta poiblí leis.|Cuireadh {n} rianaitheoir ón liosta poiblí leis.
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Íoslódáiltear físeáin an tseinmliosta ina n-iomláine
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Torrent príobháideach: ní chuirtear an liosta rianaitheoirí poiblí leis
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Cuir an síneadh saor in aisce leis: tagann comhaid a íoslódálann tú i do bhrabhsálaí anseo, agus faigheann físeáin cnaipe Íoslódáil.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Cuir rianaitheoirí ón liosta poiblí seo le torrents poiblí:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,6 +1133,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Roghnaigh comhad .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Roghnaigh clóchomhad
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Roghnaigh timpeallacht JavaScript (Node.js, Deno, QuickJS nó Bun)
@@ -2003,6 +2020,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Athghabhtar é gach 7 lá. Cuirtear athruithe i bhfeidhm nuair nach bhfuil aon torrent ag rith.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Faightear uair amháin sa lá é. Ní chuirtear le torrents príobháideacha riamh é.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2135,6 +2156,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	Fillteán:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Comhaid chló
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -5683,6 +5708,10 @@
 #, machine
 	This device's name	Ainm an ghléis seo
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Ní féidir an comhad seo a úsáid mar chló.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5995,6 +6024,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Cas an cianda-rialú air ar dtús.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Nuair a bhíonn sé múchta, fanann na rianairí atá curtha leis cheana féin.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -8019,6 +8052,11 @@ menu	&Download Now	&Íoslódáil anois
 #, machine
 menu	&Exit	&Scoir
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	Cl&ó
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8097,6 +8135,11 @@ menu	&Stop All	&Stop gach ceann
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Stop an íoslódáil
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&Cló córais
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8243,6 +8286,12 @@ menu	C&ustomize URL List...	Liosta URL a &Saincheapadh...
 #, machine
 menu	Check for &updates...	Seiceáil le haghaidh &nuashonruithe...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	Rog&hnaigh clóchomhad...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Clasaiceach
@@ -8331,10 +8380,6 @@ menu	Find Next (F3)	Aimsigh an Chéad Eile (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	An chéad phíosa agus an píosa deireanach ar dtús
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Cló
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

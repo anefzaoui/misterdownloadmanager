@@ -67,8 +67,9 @@ an address it then refused; Rapidgator's page is the browser's tab the download 
 `Options::page`), with pure functions tested without a network. A page whose file comes only once
 its form is sent back (LuluStream's quality page) says so with `PageSays::Form`: `get` posts that
 form's fields (`application/x-www-form-urlencoded`) with its next request only and reads the
-answer as a page; a site that answers with its form again is posted again, up to
-`MAX_FORM_POSTS`, and then refuses in the site's name (`sites::form_refused`). The lab server
+answer as a page; a site that answers with its form again is posted again after a short, growing
+pause (`FORM_REPOST_PAUSE`), up to `MAX_FORM_POSTS`, and then refuses in the site's name
+(`sites::form_refused`). The lab server
 plays such a site on its real host names for the end-to-end tests (`labserver/src/drive.rs`,
 `labserver/src/mediafire.rs`, `labserver/src/rapidgator.rs`, `labserver/src/lulustream.rs`).
 
@@ -150,6 +151,16 @@ The fork's eframe tells MDM through its viewport hooks (`gl_paint_failed`, #1448
 View → Interface size (`scale.rs`, #262) is egui's zoom factor over the display's own scale:
 every window is laid out in points, so it opens that much larger; one larger than the screen
 scrolls.
+
+View → Font (`theme.rs`, #1489) is separate: the font file the interface's text is drawn in
+(`interface_font` in `settings.json`; Segoe UI, the system's own, unless chosen) and
+`interface_text_size`,
+the percent of the theme's sizes the text is drawn at. `theme::font_size` is the one place the
+sizes come from, for egui's text styles and for the custom-drawn Win32 controls alike
+(`winui::tahoma`); the layout's own measurements don't change, so text can overflow where a
+window is tight, but nothing moves. On Windows the DirectWrite rasterizer
+(`win32::classic_text`) draws the chosen file too, and the glyph atlas is rebuilt when the font
+changes.
 
 ### Data
 
