@@ -271,10 +271,10 @@ enum Cmd {
         /// The playlist's or channel's address.
         url: String,
         /// The first entry (from 1).
-        #[arg(long, default_value_t = 1)]
+        #[arg(long, default_value_t = 1, value_parser = clap::value_parser!(u64).range(1..))]
         from: u64,
         /// How many entries at most (none: to the end of the list).
-        #[arg(long)]
+        #[arg(long, value_parser = clap::value_parser!(u64).range(1..))]
         count: Option<u64>,
         /// The proxy for this run, instead of the app's Options → Proxy / Socks: "none", "system"
         /// (the HTTPS_PROXY / HTTP_PROXY / ALL_PROXY variables, else the system's settings), or
@@ -304,10 +304,10 @@ enum Cmd {
         #[arg(long)]
         split_chapters: bool,
         /// The first entry (from 1).
-        #[arg(long, default_value_t = 1)]
+        #[arg(long, default_value_t = 1, value_parser = clap::value_parser!(u64).range(1..))]
         from: u64,
         /// How many entries at most (none: to the end of the list).
-        #[arg(long)]
+        #[arg(long, value_parser = clap::value_parser!(u64).range(1..))]
         count: Option<u64>,
         /// The proxy for this run, instead of the app's Options → Proxy / Socks: "none", "system"
         /// (the HTTPS_PROXY / HTTP_PROXY / ALL_PROXY variables, else the system's settings), or
@@ -1419,7 +1419,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
-            let to = count.map(|c| from + c.max(1) - 1);
+            let to = count.map(|c| from.saturating_add(c).saturating_sub(1));
             let listing = mdm_tools::playlist::Listing::start(
                 &tool.exe,
                 &url,
@@ -1482,7 +1482,7 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
             let ffmpeg = mdm_tools::ffmpeg::installed(&dir).map(|f| f.exe);
-            let to = count.map(|c| from + c.max(1) - 1);
+            let to = count.map(|c| from.saturating_add(c).saturating_sub(1));
             let listing = mdm_tools::playlist::Listing::start(
                 &tool.exe,
                 &url,
