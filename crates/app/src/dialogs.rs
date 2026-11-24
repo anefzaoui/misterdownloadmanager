@@ -3327,6 +3327,244 @@ it from Mister Download Manager list of downloads?",
     }
 }
 
+// ---- Columns (client 360 x 372, light) ---------------------------------------------------------
+
+/// What the Columns dialog hands back on OK: the order, which columns show, and whether Reset
+/// was pressed (the caller then puts the widths back too).
+pub type ColumnsChoice = (Vec<usize>, [bool; crate::list::COLS], bool);
+
+/// "Columns": which columns the list of downloads shows, and in what order. Works on a copy.
+pub struct Columns {
+    order: Vec<usize>,
+    visible: [bool; crate::list::COLS],
+    selected: usize,
+    reset: bool,
+    focus_requested: bool,
+}
+
+impl Columns {
+    pub fn new(list: &crate::list::ListState) -> Self {
+        Columns {
+            order: list.order.clone(),
+            visible: list.visible,
+            selected: 0,
+            reset: false,
+            focus_requested: false,
+        }
+    }
+
+    /// A column's name as the header says it (the narrow Q by its whole name).
+    pub fn name(slot: usize) -> String {
+        let t = crate::list::TITLES[slot];
+        if t == "Q" {
+            crate::i18n::tc("column", "Queue").to_owned()
+        } else {
+            crate::i18n::tc("column", t).to_owned()
+        }
+    }
+
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<ColumnsChoice> {
+        let out = window(
+            ctx,
+            "columns",
+            "Columns",
+            [360.0, 372.0],
+            false,
+            winui::LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                winui::paragraph(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 12.0,
+                    crate::i18n::t("Choose the columns to show in the list of downloads"),
+                    winui::LIGHT_TEXT(),
+                    o.x + 348.0,
+                    13.0,
+                );
+                let reorder_hint = format!(
+                    "{} (Alt+↑)   {} (Alt+↓)",
+                    crate::i18n::t("Move up"),
+                    crate::i18n::t("Move down")
+                );
+                winui::paragraph(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 28.0,
+                    &reorder_hint,
+                    winui::LIGHT_TEXT(),
+                    o.x + 348.0,
+                    11.0,
+                );
+                let hint = ui.interact(
+                    r(o, 11.0, 20.0, 337.0, 14.0),
+                    ui.scope_id().with("columns-reorder-hint"),
+                    egui::Sense::focusable_noninteractive(),
+                );
+                winui::expose(&hint, egui::Role::Label, &reorder_hint, true, None);
+                if hint.ctx.memory(|m| m.focused()).is_none() {
+                    hint.request_focus();
+                }
+                winui::keep_keys(ui, &hint, false, true, false);
+                const ROW: f32 = 20.0;
+                let n = self.order.len();
+                self.selected = self.selected.min(n.saturating_sub(1));
+                let list_rect = r(o, 11.0, 40.0, 232.0, ROW * n as f32);
+                let list = ui.interact(
+                    list_rect,
+                    ui.scope_id().with("columns-list"),
+                    egui::Sense::click(),
+                );
+                winui::expose(
+                    &list,
+                    egui::Role::ListBox,
+                    &crate::i18n::t("Columns"),
+                    true,
+                    None,
+                );
+                winui::focus_on_press(&list);
+                winui::keep_keys(ui, &list, false, true, false);
+                let move_up_key =
+                    ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowUp));
+                let move_down_key =
+                    ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, egui::Key::ArrowDown));
+                if list.clicked()
+                    && let Some(pos) = list.interact_pointer_pos()
+                {
+                    self.selected = ((pos.y - list_rect.top()) / ROW).floor() as usize;
+                    self.selected = self.selected.min(n.saturating_sub(1));
+                }
+                if (list.has_focus() || hint.has_focus()) && n > 0 {
+                    if winui::take_key(ui, egui::Key::ArrowUp) {
+                        self.selected = self.selected.saturating_sub(1);
+                        list.request_focus();
+                    } else if winui::take_key(ui, egui::Key::ArrowDown) {
+                        self.selected = (self.selected + 1).min(n - 1);
+                        list.request_focus();
+                    } else if winui::take_key(ui, egui::Key::Home) {
+                        self.selected = 0;
+                        list.request_focus();
+                    } else if winui::take_key(ui, egui::Key::End) {
+                        self.selected = n - 1;
+                        list.request_focus();
+                    } else if winui::take_key(ui, egui::Key::Space) {
+                        let slot = self.order[self.selected];
+                        if slot != 0 {
+                            self.visible[slot] = !self.visible[slot];
+                        }
+                        list.request_focus();
+                    }
+                }
+                for (i, slot) in self.order.clone().into_iter().enumerate() {
+                    let y = 40.0 + i as f32 * ROW;
+                    let row = r(o, 11.0, y, 232.0, ROW);
+                    if i == self.selected {
+                        p.rect_filled(row, 0.0, winui::ROW_SELECTED());
+                    }
+                    let id = egui::Id::unique(("columns-row", slot));
+                    if ui.interact(row, id, winui::pointer_only()).clicked() {
+                        self.selected = i;
+                        list.request_focus();
+                    }
+                    let name = Self::name(slot);
+                    let hit = winui::checkbox_light_until(
+                        ui,
+                        o + vec2(16.0, y + 3.0),
+                        &mut self.visible[slot],
+                        &name,
+                        slot != 0,
+                        Some(238.0),
+                    );
+                    if hit.clicked() {
+                        self.selected = i;
+                        list.request_focus();
+                    }
+                }
+                self.visible[0] = true;
+                let up = winui::button_light(
+                    ui,
+                    r(o, 256.0, 40.0, 94.0, 21.0),
+                    // i18n: button in the Columns dialog: move the selected column one place towards the start of the list
+                    "Move up",
+                    if self.selected > 0 {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    },
+                    false,
+                )
+                .clicked();
+                let down = winui::button_light(
+                    ui,
+                    r(o, 256.0, 66.0, 94.0, 21.0),
+                    // i18n: button in the Columns dialog: move the selected column one place towards the end of the list
+                    "Move down",
+                    if self.selected + 1 < n {
+                        ButtonKind::Normal
+                    } else {
+                        ButtonKind::Disabled
+                    },
+                    false,
+                )
+                .clicked();
+                let reset = winui::button_light(
+                    ui,
+                    r(o, 256.0, 100.0, 94.0, 21.0),
+                    // i18n: button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+                    "Reset",
+                    ButtonKind::Normal,
+                    false,
+                )
+                .clicked();
+                if (up || move_up_key) && self.selected > 0 {
+                    self.order.swap(self.selected, self.selected - 1);
+                    self.selected -= 1;
+                }
+                if (down || move_down_key) && self.selected + 1 < n {
+                    self.order.swap(self.selected, self.selected + 1);
+                    self.selected += 1;
+                }
+                if reset {
+                    let fresh = crate::list::ListState::default();
+                    self.order = fresh.order;
+                    self.visible = fresh.visible;
+                    self.reset = true;
+                    self.selected = 0;
+                }
+                let ok = winui::button_light(
+                    ui,
+                    r(o, 188.0, 340.0, 73.0, 21.0),
+                    "OK",
+                    ButtonKind::Default,
+                    false,
+                )
+                .clicked();
+                let cancel = winui::button_light(
+                    ui,
+                    r(o, 272.0, 340.0, 73.0, 21.0),
+                    "Cancel",
+                    ButtonKind::Normal,
+                    false,
+                )
+                .clicked();
+                if cancel || winui::escape_pressed(ui) {
+                    Outcome::Closed
+                } else if ok || winui::enter_pressed(ui) {
+                    Outcome::Done((self.order.clone(), self.visible, self.reset))
+                } else {
+                    Outcome::Open
+                }
+            },
+        );
+        if matches!(out, Outcome::Open) && !self.focus_requested && focus_when_shown(ctx, "columns")
+        {
+            focus(ctx, dialog_viewport("columns"));
+            self.focus_requested = true;
+        }
+        out
+    }
+}
+
 /// Minimize a window as its title bar's Minimize asks (`hwnd`: the window, once known). On
 /// Windows by the system's own command, as the system's title bar sends it, so a window whose
 /// title bar is ours animates down to the taskbar like any other (#874).
