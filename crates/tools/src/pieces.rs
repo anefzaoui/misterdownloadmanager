@@ -290,6 +290,10 @@ pub fn decrypt(data: &[u8], key: &[u8; 16], iv: &[u8; 16]) -> Option<Vec<u8>> {
     Some(buf)
 }
 
+/// The most a piece reserves for its body up front, whatever length an answer announces: a
+/// reservation is a hint, and one the server chose must not be able to fail the allocation.
+const PIECE_RESERVE: u64 = 1 << 20;
+
 /// The most files of a gallery downloaded at once (#769): Wikimedia's servers answer 429 Too
 /// Many Requests to more (measured: 8 at once, 2 of them refused, again and again).
 pub const GALLERY_AT_ONCE: u32 = 4;
@@ -981,7 +985,9 @@ async fn fetch_piece(run: &Run, c: usize, i: usize, piece: &Piece) -> Result<(),
         ));
     }
     let len = resp.content_length();
-    let mut body = Vec::with_capacity(len.unwrap_or(0) as usize);
+    // A hint only: an answer that announces an enormous length must not make the piece reserve
+    // it (a failed allocation aborts the process, and no piece is anywhere near this big).
+    let mut body = Vec::with_capacity(len.unwrap_or(0).min(PIECE_RESERVE) as usize);
     run.shared.each.lock().unwrap()[i] = (0, len);
     set_conn(run, c, |v| v.status = ConnStatus::Receiving);
     let started = Instant::now();
