@@ -1176,6 +1176,18 @@ impl PrivateMark {
 }
 
 impl Item {
+    /// The folder the download is saved in (the list's "Save To"): an ordinary file's parent; a
+    /// gallery's, and a torrent's that has a folder of its own, `dest` itself.
+    pub fn folder(&self) -> std::path::PathBuf {
+        let own = self.gallery.is_some()
+            || (self.torrent.is_some() && self.dest.file_name() != Some(self.file_name.as_ref()));
+        if own {
+            self.dest.clone()
+        } else {
+            self.dest.parent().map_or_else(Default::default, Into::into)
+        }
+    }
+
     /// Made from a private window's download, in this session or one before it.
     pub fn is_private_window(&self) -> bool {
         self.private_window || self.context.private

@@ -530,7 +530,7 @@ enum Cmd {
     OpenWith,
     OpenFolder,
     Properties,
-    /// Show or hide a list column (data slot).
+    /// Header right-click → show or hide a list column (data slot).
     ToggleColumn(usize),
     /// Downloads → Speed Limiter.
     LimiterOn,
@@ -584,12 +584,12 @@ enum Cmd {
     Arrange(Option<usize>),
     /// Header right-click → Clear all filters.
     ClearFilters,
+    /// Header right-click → Reset columns.
+    ResetColumns,
     /// Every download the list shows (Ctrl+A).
     SelectAll,
     /// The All Downloads view (an empty list's link).
     ShowAll,
-    /// Header right-click → Reset columns.
-    ResetColumns,
     None,
 }
 
@@ -1943,6 +1943,7 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
             }),
             String::new(),
         ),
+        list::SAVE_TO => (0.0, it.folder().display().to_string().to_lowercase()),
         _ => (0.0, it.description.to_lowercase()),
     }
 }
@@ -2641,6 +2642,7 @@ impl App {
                 it.torrent
                     .as_ref()
                     .map_or(String::new(), |t| model::rate(t.up_speed)),
+                crate::i18n::ltr(&it.folder().display().to_string()),
             ],
             // A short word and a percentage in the cell while checked or joined (#736): the
             // whole words in its tip and for a screen reader.
@@ -10015,7 +10017,7 @@ impl App {
                 by("By &Last Try Date", Some(6)),
                 by("By Date &Added", Some(list::ADDED)),
                 by("By &Description", Some(7)),
-                off("By Save &Path"),
+                by("By Save &Path", Some(list::SAVE_TO)),
                 off("By R&eferer"),
                 off("By Parent &Web Page"),
             ]
@@ -10031,8 +10033,6 @@ impl App {
                     .iter()
                     .enumerate()
                     .map(|(i, t)| {
-                        // As the header names them (its own words, not the menus'), and
-                        // the narrow Q column by its whole name.
                         let name = if *t == "Q" {
                             crate::i18n::tc("column", "Queue")
                         } else {
@@ -17634,6 +17634,31 @@ mod delete_tests {
         assert!(!asked(&app).files, "the tick was not remembered");
         app.confirm_delete = None;
         assert!(files[2].exists());
+    }
+
+    #[test]
+    fn header_menu_keeps_quick_columns_filters_and_reset() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, _files) = three(dir.path());
+        let app = app_from_052(items, true);
+        let (entries, _) = app.popup_entries(Popup::Columns);
+
+        assert!(
+            entries.iter().any(|entry| matches!(
+                entry,
+                MenuEntry::Item(_, Cmd::ToggleColumn(0), false, true)
+            ))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ClearFilters, _, false)))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ResetColumns, true, false)))
+        );
     }
 
     #[test]
