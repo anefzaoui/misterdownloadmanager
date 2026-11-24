@@ -101,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} ડાઉનલોડ પૂર્ણ થયું|{n} ડાઉનલોડ્સ પૂર્ણ થયા
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} ડાઉનલોડ પસંદ કરેલ છે|{n} ડાઉનલોડ પસંદ કરેલાં છે
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ફાઇલનું નામ ત્યાં પહેલેથી જ એક ફાઇલના નામ જેવું હતું અને તેને નંબર આપવામાં આવ્યો હતો|{n} ફાઇલોના નામ ત્યાં પહેલેથી જ ફાઇલોના નામ જેવા હતા અને તેમને નંબર આપવામાં આવ્યા હતા
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} પૂર્ણ થયું|{n} પૂર્ણ થયા
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -173,6 +181,11 @@
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} લિંક ગ્રેબરને {n} લિંક મોકલવા માંગે છે.|{site} લિંક ગ્રેબરને {n} લિંક્સ મોકલવા માંગે છે.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} અને {n} અજ્ઞાત કદના|{size} અને {n} અજ્ઞાત કદના
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -488,6 +501,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	ઉમેરાયું. MDM ટોરેન્ટ વાંચી રહ્યું છે: તે થોડીવારમાં સૂચિમાં જોડાશે.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	ઉમેર્યું:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -2011,6 +2028,10 @@
 #. text in categories.rs
 #, machine
 	File types:	ફાઇલ પ્રકારો:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	ફાઇલ:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2071,6 +2092,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	પૂર્ણ થયું
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	પૂર્ણ થયું:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2376,6 +2401,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&કેટેગરીઝ છુપાવો
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	પૂર્વાવલોકન ફલક છુપાવો(&P)
 #. button in a download's progress window
 #, machine
 	Hide tab	ટેબ છુપાવો
@@ -2622,6 +2652,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	તેની ફાઇલો લખી શકાઈ નથી: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	તેનું ફોલ્ડર અત્યારે પહોંચી શકાય તેવું નથી
 #. text in relocate.rs
 #. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
 #, machine
@@ -2907,6 +2941,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	પૃષ્ઠ શોધી રહ્યું છે...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	શોધી રહ્યું છે...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3252,6 +3291,10 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	ખસેડો/નામ બદલો
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	ખસેડાયું અથવા કાઢી નાખ્યું
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
 #, machine
@@ -3430,6 +3473,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ક્લિપબોર્ડમાં કોઈ ડાઉનલોડ લિંક્સ મળી નથી. તેમાં http, https, ftp અથવા મેગ્નેટ લિંક્સ સાથેનો ટેક્સ્ટ કૉપિ કરો અને ફરી પ્રયાસ કરો.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	કોઈ ડાઉનલોડ પસંદ કરેલ નથી
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3575,6 +3622,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	હજી ઇન્સ્ટોલ કરેલ નથી
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	હજુ સુધી જાણીતું નથી
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3710,6 +3761,13 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ઑનલાઇન
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	ફક્ત પૂર્ણ થયેલું અથવા હજી શરૂ ન થયેલું ડાઉનલોડ જ ખસેડી શકાય છે
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ફક્ત પૂર્ણ થયેલું અથવા હજી શરૂ ન થયેલું ડાઉનલોડ જ ખસેડી શકાય છે. પહેલાં તેને રોકો અને પૂર્ણ કરો.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4365,6 +4423,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	બીજી ફાઇલ:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	તેનું ચિત્ર અને વિગતો અહીં જોવા માટે ડાઉનલોડ પસંદ કરો.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4518,6 +4580,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	&શ્રેણીઓ બતાવો
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	પૂર્વાવલોકન ફલક બતાવો(&P)
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	એક ડાયલોગ બતાવો અને શું કરવું તે પૂછો.
@@ -4552,6 +4619,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	મને બતાવો કે કેવી રીતે
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	પૂર્વાવલોકન ફલક બતાવો અથવા છુપાવો
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	બેચ ડાઉનલોડ ડાયલોગ બંધ કરતી વખતે કતાર પસંદગી પેનલ બતાવો
@@ -4857,6 +4927,10 @@
 #. label before the download's state
 #, machine
 	Status:	સ્થિતિ:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	હજુ ત્યાં છે
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -5807,6 +5881,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	ટોરેન્ટ્સ શરૂ થઈ શક્યાં નથી: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	કુલ કદ:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6271,6 +6349,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	વેબ
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	વેબ પેજ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	બુધવાર
@@ -6547,6 +6629,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size} માંથી {done}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{total} માંથી {done}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -7164,6 +7250,10 @@ extension	Downloads from {site} stay with the browser	{site} માંથી ડ
 #, machine
 extension	Downloads go to {address}	ડાઉનલોડ્સ {address} પર જાય છે
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#, machine
+extension	Drag the dots to move it along the edge	તેને કિનારી પર ખસેડવા માટે ટપકાં ખેંચો
+#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	બિંદુઓને ખેંચીને તેને બીજા ખૂણે અથવા વીડિયોની બહાર ખસેડો
@@ -7757,6 +7847,10 @@ extension	{time} left	{time} બાકી
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8527,6 +8621,10 @@ menubar	&Tasks	&કાર્યો
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&જુઓ
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	પૂર્વાવલોકન
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	ટૉરેન્ટ ઉમેરો
@@ -8544,6 +8642,10 @@ toolbar	Delete Completed	પૂર્ણ થયેલાં કાઢી ના�
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	વિકલ્પો
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	પૂર્વાવલોકન
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

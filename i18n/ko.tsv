@@ -101,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	다운로드 {n}개 완료됨
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n}개 다운로드 선택됨
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n}개 파일의 이름이 이미 있는 파일과 같아서 번호가 매겨졌습니다.
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n}개 완료됨
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -173,6 +181,11 @@
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site}에서 {n}개의 링크를 링크 그래버로 보내려고 합니다.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size}, 알 수 없는 크기 {n}개
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -488,6 +501,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	추가됨. MDM이 토렌트를 읽는 중입니다. 잠시 후 목록에 추가됩니다.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	추가됨:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -2011,6 +2028,10 @@
 #. text in categories.rs
 #, machine
 	File types:	파일 형식:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	파일:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2071,6 +2092,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	완료됨
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	완료됨:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2376,6 +2401,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	범주 숨기기(&C)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	미리 보기 창 &숨기기
 #. button in a download's progress window
 #, machine
 	Hide tab	탭 숨기기
@@ -2626,6 +2656,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	파일을 쓸 수 없습니다. {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	폴더에 지금 연결할 수 없음
 #. text in relocate.rs
 #. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
 #, machine
@@ -2911,6 +2945,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	페이지를 찾는 중...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	찾는 중...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3256,6 +3295,10 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	이동/이름 바꾸기
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	이동되었거나 삭제됨
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
 #, machine
@@ -3434,6 +3477,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	클립보드에서 다운로드 링크를 찾을 수 없습니다. http, https, ftp 또는 마그넷 링크가 포함된 텍스트를 복사한 후 다시 시도하세요.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	선택된 다운로드 없음
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3579,6 +3626,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	아직 설치되지 않음
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	아직 알 수 없음
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3714,6 +3765,13 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	온라인
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	완료된 다운로드 또는 아직 시작되지 않은 다운로드만 이동할 수 있습니다.
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	완료된 다운로드 또는 아직 시작되지 않은 다운로드만 이동할 수 있습니다. 먼저 중지한 다음 완료될 때까지 기다리세요.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4369,6 +4427,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	두 번째 파일:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	사진과 세부 정보를 보려면 다운로드를 선택하세요.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4522,6 +4584,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	범주 &표시
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	미리 보기 창 &표시
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	대화 상자를 표시하고 수행할 작업을 묻습니다.
@@ -4556,6 +4623,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	방법 보기
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	미리 보기 창 표시 또는 숨기기
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	일괄 다운로드 대화 상자를 닫을 때 큐 선택 패널 표시
@@ -4861,6 +4931,10 @@
 #. label before the download's state
 #, machine
 	Status:	상태:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	아직 있음
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -5811,6 +5885,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	토렌트를 시작할 수 없습니다: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	총 크기:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6275,6 +6353,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	웹
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	웹 페이지:
 #. text in the Scheduler window
 #, machine
 	Wednesday	수요일
@@ -6551,6 +6633,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size} 중 {done}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{total} 중 {done}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -7168,6 +7254,10 @@ extension	Downloads from {site} stay with the browser	{site}에서 다운로드�
 #, machine
 extension	Downloads go to {address}	{address}으로 다운로드
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#, machine
+extension	Drag the dots to move it along the edge	점을 끌어 가장자리를 따라 이동
+#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	점을 끌어 다른 모서리나 동영상 밖으로 이동
@@ -7761,6 +7851,10 @@ extension	{time} left	{time} 남음
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8526,6 +8620,10 @@ menubar	&Tasks	&작업
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&보기
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	미리 보기
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	토렌트 추가
@@ -8543,6 +8641,10 @@ toolbar	Delete Completed	완료된 항목 삭제
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	옵션
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	미리 보기
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

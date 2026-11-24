@@ -101,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n}টা ডাউনলোড শেষ হ’ল|{n}টা ডাউনলোড শেষ হ’ল
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n}টা ডাউনলোড নিৰ্বাচিত|{n}টা ডাউনলোড নিৰ্বাচিত
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n}টা ফাইলৰ তাত ইতিমধ্যে থকা ফাইলৰ নাম আছিল আৰু নম্বৰ দিয়া হৈছিল|{n}টা ফাইলৰ তাত ইতিমধ্যে থকা ফাইলৰ নাম আছিল আৰু নম্বৰ দিয়া হৈছিল
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n}টা শেষ হ’ল|{n}টা শেষ হ’ল
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -173,6 +181,11 @@
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site}-এ লিংক গ্ৰেবাৰলৈ {n}টা লিংক পঠিয়াব বিচাৰিছে।|{site}-এ লিংক গ্ৰেবাৰলৈ {n}টা লিংক পঠিয়াব বিচাৰিছে।
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} আৰু {n}টাৰ আকাৰ অজ্ঞাত|{size} আৰু {n}টাৰ আকাৰ অজ্ঞাত
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -488,6 +501,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	যোগ কৰা হ’ল। MDM-এ টৰেন্টটো পঢ়ি আছে: ই অলপ পিছতে তালিকাত যোগ হ’ব।
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	যোগ কৰা হ’ল:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -2006,6 +2023,10 @@
 #. text in categories.rs
 #, machine
 	File types:	ফাইলৰ প্ৰকাৰসমূহ:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	ফাইল:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2066,6 +2087,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	সম্পূৰ্ণ
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	শেষ হ’ল:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2371,6 +2396,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	শ্ৰেণীসমূহ &লুকুৱাওক
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	পূৰ্ব&দৰ্শন পেন লুকুৱাওক
 #. button in a download's progress window
 #, machine
 	Hide tab	টেব লুকুৱাওক
@@ -2617,6 +2647,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	ইয়াৰ ফাইলসমূহ লিখিব পৰা নগ'ল: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	ইয়াৰ ফোল্ডাৰ এতিয়া পাবলৈ নাই
 #. text in relocate.rs
 #. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
 #, machine
@@ -2902,6 +2936,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	পৃষ্ঠাখন চাই আছে...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	চাই আছে...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3247,6 +3286,10 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	স্থানান্তৰ/নাম সলনি কৰা হ’ল
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	স্থানান্তৰিত বা মচি পেলোৱা হ’ল
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
 #, machine
@@ -3425,6 +3468,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ক্লিপব’ৰ্ডত কোনো ডাউনলোড লিংক পোৱা নগ’ল। http, https, ftp বা মেগনেট লিংক থকা এটা টেক্সট কপি কৰি পুনৰ চেষ্টা কৰক।
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	কোনো ডাউনলোড নিৰ্বাচিত নহয়
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3570,6 +3617,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	এতিয়ালৈকে ইনষ্টল কৰা হোৱা নাই
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	এতিয়ালৈকে জনা নাযায়
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3705,6 +3756,13 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	অনলাইন
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	কেৱল এটা সম্পূৰ্ণ হোৱা ডাউনল’ড, বা এটা আৰম্ভ নোহোৱা ডাউনল’ড স্থানান্তৰ কৰিব পাৰি
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	কেৱল এটা সম্পূৰ্ণ হোৱা ডাউনল’ড, বা এটা আৰম্ভ নোহোৱা ডাউনল’ড স্থানান্তৰ কৰিব পাৰি। ইয়াক বন্ধ কৰক আৰু প্ৰথমে সম্পূৰ্ণ কৰক।
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4360,6 +4418,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	দ্বিতীয় ফাইল:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	ইয়াৰ ছবি আৰু বিৱৰণ চাবলৈ এটা ডাউনলোড নিৰ্বাচন কৰক।
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4513,6 +4575,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	শ্ৰেণীসমূহ প্ৰদৰ্শন &কৰক
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	পূৰ্ব&দৰ্শন পেন দেখুৱাওক
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	এটা ডাইলগ প্ৰদৰ্শন কৰক আৰু কি কৰিব সুধক।
@@ -4547,6 +4614,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	মোক দেখুৱাওক কেনেকৈ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	পূৰ্বদৰ্শন পেন দেখুৱাওক বা লুকুৱাওক
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	বেচ ডাউনলোড ডাইলগ বন্ধ কৰোঁতে কিউ বাছনি পেনেল দেখুৱাওক
@@ -4852,6 +4922,10 @@
 #. label before the download's state
 #, machine
 	Status:	স্থিতি:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	এতিয়াও আছে
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -5802,6 +5876,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	টৰেণ্টসমূহ আৰম্ভ কৰিব পৰা নগ’ল: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	মুঠ আকাৰ:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6266,6 +6344,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	ৱেব
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	ৱেব পৃষ্ঠা:
 #. text in the Scheduler window
 #, machine
 	Wednesday	বুধবাৰ
@@ -6542,6 +6624,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size} ৰ {done}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{total}ৰ {done}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -7159,6 +7245,10 @@ extension	Downloads from {site} stay with the browser	{site} ৰ পৰা ড�
 #, machine
 extension	Downloads go to {address}	ডাউনলোডসমূহ {address} লৈ যায়
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#, machine
+extension	Drag the dots to move it along the edge	বিন্দুসমূহ টানি কাষত লৈ যাওক
+#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	বুটামটো আন এটা কোণলৈ, বা ভিডিঅ'ৰ বাহিৰলৈ স্থানান্তৰ কৰিবলৈ ডটবোৰ টানক
@@ -7752,6 +7842,10 @@ extension	{time} left	{time} বাকী
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8527,6 +8621,10 @@ menubar	&Tasks	&কাৰ্য্যসমূহ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&প্ৰদৰ্শন
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	পূৰ্বদৰ্শন
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	টৰেণ্ট যোগ কৰক
@@ -8544,6 +8642,10 @@ toolbar	Delete Completed	সম্পূৰ্ণ হোৱা বিলোপ �
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	বিকল্পসমূহ
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	পূৰ্বদৰ্শন
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

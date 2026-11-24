@@ -89,6 +89,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} download completato|{n} download completati
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} download selezionato|{n} download selezionati
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} in corso|{n} in corso
@@ -114,6 +118,10 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} file aveva lo stesso nome di un file già presente ed è stato numerato|{n} file avevano lo stesso nome di file già presenti e sono stati numerati
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} completato|{n} completati
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -152,6 +160,11 @@
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} vuole inviare {n} collegamento a Link grabber.|{site} vuole inviare {n} collegamenti a Link grabber.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} e {n} di dimensioni sconosciute|{size} e {n} di dimensioni sconosciute
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -407,6 +420,10 @@
 #. text in remote.rs
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 	Added. MDM is reading the torrent: it joins the list in a moment.	Aggiunto. MDM sta leggendo il torrent: comparirà nell'elenco tra poco.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	Aggiunto:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -1600,6 +1617,10 @@
 	File types	Tipi di file
 #. text in categories.rs
 	File types:	Tipi di file:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	File:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 	Files	File
@@ -1646,6 +1667,10 @@
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
 	Finished	Completati
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	Completato:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -1883,6 +1908,11 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Hide &categories	Nascondi &categorie
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	Nascondi riquadro di &anteprima
 #. button in a download's progress window
 	Hide tab	Nascondi scheda
 #. text in a download's progress window; text in standard windows
@@ -2080,6 +2110,10 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	impossibile scrivere i suoi file: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	Impossibile raggiungere la sua cartella
 #. text in relocate.rs
 #. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
 #, machine
@@ -2304,6 +2338,11 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Analisi della pagina...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	Ricerca in corso...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Luxembourg	Lussemburgo
@@ -2574,6 +2613,10 @@
 	Move without changing the selection	Spostati senza cambiare la selezione
 #. message or event log entry in the main window
 	Move/Rename	Sposta/Rinomina
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	Spostato o eliminato
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
 #, machine
@@ -2713,6 +2756,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	Nessun collegamento di download trovato negli Appunti. Copia un testo con collegamenti http, https, ftp o magnet e riprova.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	Nessun download selezionato
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -2822,6 +2869,10 @@
 	Not in a queue	Non in coda
 #. text in helpers.rs
 	Not installed yet	Non ancora installato
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	Non ancora noto
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -2925,6 +2976,11 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 	Online	Online
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+	Only a finished download, or one not started yet, can be moved	Si può spostare solo un download completato o non ancora avviato
+#. message or event log entry in the main window
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Si può spostare solo un download completato o non ancora avviato. Prima interrompilo e portalo a termine.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3438,6 +3494,10 @@
 	Search:	Cerca:
 #. text in the Batch download window
 	Second file:	Secondo file:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	Seleziona un download per vederne qui l'immagine e i dettagli.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 	Select all	Seleziona tutto
@@ -3554,6 +3614,11 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Show &categories	Mostra &categorie
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	Mostra riquadro di &anteprima
 #. text in the Options window
 	Show a dialog and ask what to do.	Mostra una finestra e chiedi cosa fare.
 #. checkbox in the Options window
@@ -3581,6 +3646,9 @@
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	Mostrami come
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	Mostra o nascondi il riquadro di anteprima
 #. checkbox in the Options window
 	Show queue selection panel on closing batch download dialogs	Mostra il pannello di scelta della coda alla chiusura delle finestre di download in batch
 #. checkbox in the Options window
@@ -3822,6 +3890,10 @@
 #. text in a download's Properties window
 #. label before the download's state
 	Status:	Stato:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	Ancora presente
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	Interrompi
@@ -4595,6 +4667,10 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 	torrents could not start: {error}	impossibile avviare i torrent: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	Dimensione totale:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 	Tracker	Tracker
@@ -4964,6 +5040,10 @@
 #. value in a column's filter list in the download list
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 	Web	Web
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	Pagina web:
 #. text in the Scheduler window
 	Wednesday	mercoledì
 #. text in countries.rs
@@ -5184,6 +5264,10 @@
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{done} of {size}	{done} di {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} di {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -5726,6 +5810,10 @@ extension	Downloads from {site} stay with the browser	I download da {site} resta
 #. the toolbar button's status while downloads go to another MDM
 extension	Downloads go to {address}	I download vanno a {address}
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#, machine
+extension	Drag the dots to move it along the edge	Trascina i puntini per spostarlo lungo il bordo
+#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	Trascina i puntini per spostarlo in un altro angolo o fuori dal video
@@ -6266,6 +6354,10 @@ extension	{time} left	{time} rimanenti
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Alt+Enter	Alt+Invio
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Ctrl++ / Ctrl+-	Ctrl++ / Ctrl+-
@@ -6879,6 +6971,10 @@ menubar	&Tasks	&Attività
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menubar	&View	&Visualizza
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	Anteprima
 #. toolbar button in the main window
 toolbar	Add Torrent	Aggiungi torrent
 #. toolbar button in the main window
@@ -6891,6 +6987,10 @@ toolbar	Delete Completed	Elimina completati
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 toolbar	Options	Opzioni
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	Anteprima
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 toolbar	Resume	Riprendi

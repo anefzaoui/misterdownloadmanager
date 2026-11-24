@@ -250,6 +250,11 @@ pub struct Settings {
     /// and the node last shown.
     pub show_categories: bool,
     pub branches: [bool; 4],
+    /// The preview pane beside the list (#1368, View → Preview pane, Alt+P): the selected
+    /// download's picture and details. Off unless shown.
+    pub preview_pane: bool,
+    /// Its frame's width, dragged with its splitter.
+    pub preview_width: u32,
     pub view: Option<crate::app::View>,
     /// View → Dark Mode support (IDM 6.37): follow Windows' dark app mode; off = always light.
     pub dark_mode_support: bool,
@@ -620,6 +625,8 @@ impl Default for Settings {
             window_maximized: false,
             show_categories: true,
             branches: [true, false, false, false],
+            preview_pane: false,
+            preview_width: crate::preview::DEFAULT_WIDTH,
             view: None,
             dark_mode_support: true,
             always_dark: false,
