@@ -198,17 +198,18 @@ pub fn requeue_failed(q: &mut Queue, id: u64) {
     }
 }
 
-/// Did the clock pass `t` (h, m, s) between `prev` and `now` (seconds since midnight)?
-/// `next_day`: the date moved forward since `prev` (otherwise `prev > now` is a clock that went
-/// back — a summer-time change or an NTP step — and nothing was passed).
-pub fn crossed(t: (u8, u8, u8), prev: u32, now: u32, next_day: bool) -> bool {
+/// Did the clock pass `t` (h, m, s) between `prev` and `now` (seconds since midnight)? `day`:
+/// today's date against the date at `prev`. Only a date that moved forward crosses midnight; a
+/// clock that went back (summer time's fall-back, an NTP step, the user setting it) passed
+/// nothing, on the same date or back to an earlier one.
+pub fn crossed(t: (u8, u8, u8), prev: u32, now: u32, day: std::cmp::Ordering) -> bool {
+    use std::cmp::Ordering;
     let s = t.0 as u32 * 3600 + t.1 as u32 * 60 + t.2 as u32;
-    if prev <= now {
-        prev < s && s <= now
-    } else if next_day {
-        s > prev || s <= now
-    } else {
-        false
+    match day {
+        Ordering::Less => false,
+        _ if prev <= now => prev < s && s <= now,
+        Ordering::Greater => s > prev || s <= now,
+        Ordering::Equal => false,
     }
 }
 
@@ -294,14 +295,19 @@ mod tests {
 
     #[test]
     fn schedule_time_crossing() {
+        use std::cmp::Ordering::{Equal, Greater, Less};
         let eleven_pm = (23, 0, 0);
-        assert!(crossed(eleven_pm, 82_799, 82_800, false));
-        assert!(!crossed(eleven_pm, 82_800, 82_801, false));
-        assert!(crossed((0, 0, 5), 86_398, 6, true), "across midnight");
+        assert!(crossed(eleven_pm, 82_799, 82_800, Equal));
+        assert!(!crossed(eleven_pm, 82_800, 82_801, Equal));
+        assert!(crossed((0, 0, 5), 86_398, 6, Greater), "across midnight");
         // A clock that went back (summer time's fall-back, an NTP step) crossed nothing.
         assert!(
-            !crossed(eleven_pm, 10_799, 7_200, false),
+            !crossed(eleven_pm, 10_799, 7_200, Equal),
             "3:00 back to 2:00 is not midnight"
+        );
+        assert!(
+            !crossed(eleven_pm, 1_800, 84_600, Less),
+            "0:30 back to 23:30 the day before passed nothing"
         );
     }
 }
