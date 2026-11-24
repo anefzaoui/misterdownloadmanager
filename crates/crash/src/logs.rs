@@ -181,6 +181,9 @@ impl Rolling {
     pub fn flush_within(&self, within: Duration) -> bool {
         let deadline = Instant::now() + within;
         loop {
+            if Instant::now() >= deadline {
+                return false;
+            }
             let (target, count_waits) = {
                 let mut h = self.hand();
                 if h.dropped > 0 && h.tx.try_send(Msg::Dropped(h.dropped)).is_ok() {
@@ -196,6 +199,8 @@ impl Rolling {
             if !count_waits {
                 return true;
             }
+            // The dropped count is still waiting for room: don't spin on a full queue.
+            std::thread::sleep(Duration::from_millis(1));
         }
     }
 
@@ -228,18 +233,28 @@ impl Inner {
             let _ = fs::rename(rolled(dir, name, n), rolled(dir, name, n + 1));
         }
         let _ = fs::rename(current(dir, name), rolled(dir, name, 1));
-        self.file = OpenOptions::new()
+        self.file = self.open();
+        self.size = 0;
+    }
+
+    /// The current file, to write the next lines to, or None if the disk didn't take it.
+    fn open(&self) -> Option<Box<dyn Write + Send>> {
+        OpenOptions::new()
             .create(true)
             .append(true)
-            .open(current(dir, name))
+            .open(current(&self.dir, self.name))
             .ok()
-            .map(|f| Box::new(f) as Box<dyn Write + Send>);
-        self.size = 0;
+            .map(|f| Box::new(f) as Box<dyn Write + Send>)
     }
 
     fn append(&mut self, line: &[u8]) {
         if self.size + line.len() as u64 > MAX_BYTES {
             self.roll();
+        }
+        // A roll whose open failed (the disk full, a read-only folder) is tried again with each
+        // line, not given up on for the rest of the process.
+        if self.file.is_none() {
+            self.file = self.open();
         }
         if let Some(f) = self.file.as_mut()
             && f.write_all(line).is_ok()
