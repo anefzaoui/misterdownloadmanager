@@ -624,6 +624,12 @@ pub struct Item {
     /// the last, never a second re-fetch. Memory only.
     #[serde(skip)]
     pub(crate) refetched: bool,
+    /// Its part file and resume state are being moved from this place to `dest` (#1739): set,
+    /// and the list saved with it, before a file moves; cleared once the move is done or undone.
+    /// Found at start (MDM ended during a move), the files tell where it is
+    /// (`relocate::settle`). Meanwhile it doesn't start, and the row says "Moving...".
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub move_from: Option<PathBuf>,
 }
 
 /// Adds `more` to a download's `written_files`, each path once, in order. A gallery lists up to
@@ -1237,9 +1243,11 @@ impl Item {
     /// running. Not a torrent (its pieces are checked against their hashes: Recheck files finds
     /// and fetches the damaged ones, and its data keeps seeding), a video (its file is yt-dlp's to
     /// make), a gallery (gallery-dl fetches only the files not there yet: Download Now does
-    /// that), nor a torrent through a debrid account (the service's files, #44).
+    /// that), nor a torrent through a debrid account (the service's files, #44). Nor one whose
+    /// unfinished file is being moved (`move_from`, #1739): its part file is on its way.
     pub fn can_redownload(&self) -> bool {
         self.live.is_none()
+            && self.move_from.is_none()
             && self.torrent.is_none()
             && self.video.is_none()
             && self.gallery.is_none()
@@ -1322,7 +1330,57 @@ impl Item {
             test_progress: None,
             damaged: false,
             refetched: false,
+            move_from: None,
         }
+    }
+
+    /// A download of MDM's own engine (not a video, a gallery or a torrent, whose helper or
+    /// session keeps its unfinished files): its part file and resume state are all it has on
+    /// the disk before it is finished.
+    pub fn engine_file(&self) -> bool {
+        self.video.is_none()
+            && self.gallery.is_none()
+            && self.torrent.is_none()
+            && self.remote.is_none()
+    }
+
+    /// Why Move/Rename (and File Properties → Move) can't take this download now, as a text
+    /// marked for translation; None when it can (#1739): a finished download, one not started,
+    /// or one of MDM's own engine stopped part-way (its part file and resume state go along, and
+    /// it resumes from where it was). The same answer greys the commands and says why.
+    pub fn move_refused(&self) -> Option<&'static str> {
+        if self.live.is_some() {
+            // i18n: tooltip of the greyed Move button in File Properties
+            return Some(crate::i18n::mark("Pause the download first"));
+        }
+        if self.move_from.is_some() {
+            // i18n: why a download can't be moved or renamed now: it is being moved already
+            return Some(crate::i18n::mark("The download is being moved"));
+        }
+        if self
+            .torrent
+            .as_ref()
+            .is_some_and(|t| t.shares_folder(&self.dest))
+        {
+            // i18n: shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+            return Some(crate::i18n::mark(
+                "This torrent shares its destination folder",
+            ));
+        }
+        if self.status == Status::Complete || self.downloaded == 0 || self.engine_file() {
+            return None;
+        }
+        Some(if self.torrent.is_some() || self.remote.is_some() {
+            // i18n: why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+            crate::i18n::mark(
+                "A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are",
+            )
+        } else {
+            // i18n: why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+            crate::i18n::mark(
+                "A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder",
+            )
+        })
     }
     /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
     /// holds what it held at its last save, often nothing. As read beside the window at start
@@ -1821,6 +1879,10 @@ impl Item {
     }
 
     pub fn status_text(&self) -> String {
+        if self.move_from.is_some() {
+            // i18n: a download's status: its unfinished file is being moved to another folder
+            return crate::i18n::t("Moving...").into();
+        }
         if let Some(at) = self.at_service() {
             return at;
         }
