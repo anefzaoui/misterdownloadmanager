@@ -576,6 +576,8 @@ These ship in the next version.
 - ✅ Debrid torrents: a "ready" torrent with no files listed yet is asked again
 - ✅ Real-Debrid: a download waits out the service's maintenance for up to an hour
 - ✅ Premiumize: large torrents with many folders come down
+- ✅ Click'n'Load is checked more carefully
+- ✅ Browser detection copes with letters that grow when lowercased in a browser's program name
 - ✅ Linux and macOS: the running downloads' progress on MDM's icon in the dock (Ubuntu Dock,
   Dash to Dock, KDE Plasma's task manager and others) and in the macOS Dock, as on the Windows
   taskbar ([#1777](https://github.com/anefzaoui/misterdownloadmanager/issues/1777))
