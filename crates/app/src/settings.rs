@@ -1506,10 +1506,16 @@ mod tests {
         let mut net = Net::of(&s);
         net.public_list = " https://lists.example.org/trackers.txt ".into();
         net.apply(&mut s);
-        assert_eq!(s.public_trackers_list(), "https://lists.example.org/trackers.txt");
+        assert_eq!(
+            s.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
         let again: Settings = serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
         assert!(again.torrent_public_trackers);
-        assert_eq!(again.public_trackers_list(), "https://lists.example.org/trackers.txt");
+        assert_eq!(
+            again.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
         // Emptied: the default list again.
         let mut net = Net::of(&s);
         net.public_list = "  ".into();
