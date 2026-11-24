@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ട്രാക്കർ ചേർത്തു|{n} ട്രാക്കറുകൾ ചേർത്തു
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	പൊതു ലിസ്റ്റിൽ നിന്ന് {n} ട്രാക്കർ ചേർത്തു|പൊതു ലിസ്റ്റിൽ നിന്ന് {n} ട്രാക്കറുകൾ ചേർത്തു
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	പ്ലേലിസ്റ്റിലെ വീഡിയോകൾ മുഴുവനായാണ് ഡൗൺലോഡ് ചെയ്യുന്നത്
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	ഒരു സ്വകാര്യ ടോറന്റ്: പൊതു ട്രാക്കർ ലിസ്റ്റ് ചേർത്തിട്ടില്ല
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	സൗജന്യ എക്സ്റ്റൻഷൻ ചേർക്കുക: നിങ്ങളുടെ ബ്രൗസറിൽ ഡൗൺലോഡ് ചെയ്യുന്ന ഫയലുകൾ ഇവിടെയെത്തും, വീഡിയോകൾക്ക് ഒരു ഡൗൺലോഡ് ബട്ടൺ ലഭിക്കും.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	ഈ പൊതു ലിസ്റ്റിലെ ട്രാക്കറുകൾ പൊതു ടോറന്റുകളിലേക്ക് ചേർക്കുക:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1998,6 +2010,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ഓരോ 7 ദിവസത്തിലും വീണ്ടും ലഭ്യമാക്കുന്നു. ടോറന്റ് പ്രവർത്തിക്കാത്തപ്പോൾ മാറ്റങ്ങൾ ബാധകമാകും.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	ദിവസത്തിൽ ഒരിക്കൽ ലഭ്യമാക്കുന്നു. സ്വകാര്യ ടോറന്റുകളിലേക്ക് ഒരിക്കലും ചേർക്കില്ല.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5990,6 +6006,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	ആദ്യം വിദൂര നിയന്ത്രണം ഓണാക്കുക.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	ഓഫ് ചെയ്താൽ, ഇതിനകം ചേർത്ത ട്രാക്കറുകൾ നിലനിൽക്കും.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

@@ -5295,13 +5295,23 @@ pub fn radio_light_until(
     pass_focus_on(ui, &resp, enabled);
     let resp = enter_is_not_a_click(ui, resp);
     focus_on_press(&resp);
+    if resp.clicked() && !resp.has_focus() {
+        resp.request_focus();
+    }
+    // The caller updates its choice after `radio_light_until` returns, once earlier controls and
+    // the group's other buttons have already been drawn and exposed with the old one (#1692):
+    // discard this pass so the same frame lays out, paints and publishes the tree with the new
+    // choice at once (as UI Automation's SelectionItem.Select and AT-SPI's click expect).
+    if !selected && resp.clicked() && ui.ctx().current_pass_index() == 0 {
+        ui.ctx().request_discard("radio button chosen");
+    }
     show_focus(ui, &resp, hit.expand(1.0));
     expose(
         &resp,
         egui::Role::RadioButton,
         caption,
         enabled,
-        Some(selected),
+        Some(selected || resp.clicked()),
     );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
@@ -6027,6 +6037,9 @@ pub fn radio_keys(ui: &Ui, group: &[Response]) -> Option<usize> {
         .map(|k| (at as isize + step * k).rem_euclid(n) as usize)
         .find(|&j| group[j].sense.senses_click())?;
     group[next].request_focus();
+    if ui.ctx().current_pass_index() == 0 {
+        ui.ctx().request_discard("radio group arrow");
+    }
     Some(next)
 }
 
@@ -9531,5 +9544,96 @@ example.org"; // values typed in, not texts to translate
             );
         });
         out.textures_delta.clear();
+    }
+
+    /// #1692: each round radio button is a RadioButton with Click, Focus and its checked state
+    /// (Toggled, which AccessKit maps to UI Automation's SelectionItem and AT-SPI's Checked), and
+    /// pressing an unselected one through AccessKit (or moving with the arrows) updates both
+    /// buttons' states in that same frame's tree, without waiting for a later repaint.
+    #[test]
+    fn a_radio_group_answers_assistive_select_in_the_same_frame() {
+        use egui::accesskit::{Action, Role, Toggled};
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        // Labels from variables: the catalog's extractor takes literal ones as texts to translate.
+        let (first, second) = ("Quick cut", "Exact cut");
+        let run = |choice: &mut usize, events: Vec<egui::Event>| {
+            let mut ids = [egui::Id::NULL; 2];
+            let mut out = ctx.run_ui(
+                egui::RawInput {
+                    events,
+                    focused: true,
+                    ..Default::default()
+                },
+                |ui| {
+                    let a = radio_light(ui, pos2(20.0, 20.0), *choice == 0, first, true);
+                    if a.clicked() {
+                        *choice = 0;
+                    }
+                    let b = radio_light(ui, pos2(140.0, 20.0), *choice == 1, second, true);
+                    if b.clicked() {
+                        *choice = 1;
+                    }
+                    if let Some(i) = radio_keys(ui, &[a.clone(), b.clone()]) {
+                        *choice = i;
+                    }
+                    ids = [a.id, b.id];
+                },
+            );
+            out.textures_delta.clear();
+            let tree = out
+                .platform_output
+                .accesskit_update
+                .expect("AccessKit tree");
+            let state_of = |id: egui::Id| {
+                let (_, n) = tree
+                    .nodes
+                    .iter()
+                    .find(|(nid, _)| *nid == id.accesskit_id())
+                    .expect("radio node");
+                assert_eq!(n.role(), Role::RadioButton);
+                assert!(n.supports_action(Action::Click));
+                assert!(n.supports_action(Action::Focus));
+                (n.label().unwrap_or("").to_owned(), n.toggled())
+            };
+            (
+                ids,
+                state_of(ids[0]),
+                state_of(ids[1]),
+                tree.focus,
+                out.platform_output.events,
+            )
+        };
+
+        let mut choice = 0;
+        let (ids, a, b, _, _) = run(&mut choice, vec![]);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::True)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::False)));
+
+        // UI Automation's SelectionItem.Select() (and AT-SPI's "click") sends Action::Click: in
+        // this single frame, the chosen radio turns True, the previous one False, and focus moves.
+        let (ids, a, b, focus, events) =
+            run(&mut choice, vec![ask(ids[1].accesskit_id(), Action::Click)]);
+        assert_eq!(choice, 1);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::False)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::True)));
+        assert_eq!(focus, ids[1].accesskit_id());
+        assert!(events.iter().any(|e| {
+            matches!(e, egui::output::OutputEvent::Clicked(info) if info.selected == Some(true))
+        }));
+
+        // An arrow key in the group switches back in the same frame too.
+        let left = egui::Event::Key {
+            key: egui::Key::ArrowLeft,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        };
+        let (ids, a, b, focus, _) = run(&mut choice, vec![left]);
+        assert_eq!(choice, 0);
+        assert_eq!(a, (first.to_owned(), Some(Toggled::True)));
+        assert_eq!(b, (second.to_owned(), Some(Toggled::False)));
+        assert_eq!(focus, ids[0].accesskit_id());
     }
 }

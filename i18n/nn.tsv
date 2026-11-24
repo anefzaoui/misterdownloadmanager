@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} sporar lagt til|{n} sporarar lagde til
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} sporar vart lagde til frå den offentlege lista|{n} sporar vart lagde til frå den offentlege lista
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Videoar i ei speleliste vert lasta ned i heilskap
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Ein privat torrent: den offentlege sporarlista er ikkje lagt til
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Legg til den gratis utvidinga: filer du lastar ned i nettlesaren din, kjem hit, og videoar får ein nedlastingsknapp.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Legg til sporarane frå denne offentlege lista til offentlege torrentar:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Henta på nytt kvar 7. dag. Endringar blir brukte når ingen torrent køyrer.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Henta éin gong om dagen. Blir aldri lagd til private torrentar.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2962,6 +2978,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	Slår opp sida...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	Leitar ...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -5994,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Slå på fjernstyringa først.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Når den er slått av, blir spørarane som allereie er lagde til, verande.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

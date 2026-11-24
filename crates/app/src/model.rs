@@ -2706,9 +2706,20 @@ mod stamp_tests {
 }
 
 /// An address as typed: `www.example.com/a.zip` (no scheme, as browsers take it) is read as
-/// https; anything else as written.
+/// https; a `thunder://`, `flashget://` or `qqdl://` link as the address wrapped in it (#1782);
+/// anything else as written. A wrapped link without an address MDM downloads inside stays as
+/// written, with its own scheme, so every caller refuses it as it does any other address MDM
+/// doesn't download.
 pub fn parse_address(typed: &str) -> Result<url::Url, url::ParseError> {
     let typed = typed.trim();
+    let inner;
+    let typed = match crate::transfer::unwrapped(typed) {
+        crate::transfer::Wrapped::Address(address) => {
+            inner = address;
+            inner.as_str()
+        }
+        _ => typed,
+    };
     match url::Url::parse(typed) {
         Err(url::ParseError::RelativeUrlWithoutBase)
             if !typed.contains(char::is_whitespace)
@@ -2731,6 +2742,61 @@ mod address_tests {
         assert_eq!(u.as_str(), "https://www.example.com/a.zip");
         assert_eq!(super::parse_address("ftp://h/f").unwrap().scheme(), "ftp");
         assert!(super::parse_address("not an address").is_err());
+    }
+
+    /// #1782: a wrapped link typed in Add URL is the address inside it; one with nothing MDM
+    /// downloads inside stays an address MDM doesn't download, which the windows refuse.
+    #[test]
+    fn a_wrapped_link_is_the_address_inside_it() {
+        use base64::Engine as _;
+        let b64 = |bytes: &[u8]| base64::engine::general_purpose::STANDARD.encode(bytes);
+        let wrappers = |address: &str| {
+            [
+                format!("thunder://{}", b64(format!("AA{address}ZZ").as_bytes())),
+                format!(
+                    "flashget://{}",
+                    b64(format!("[FLASHGET]{address}[FLASHGET]").as_bytes())
+                ),
+                format!("qqdl://{}", b64(address.as_bytes())),
+            ]
+        };
+        let magnet = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Show";
+        for address in [
+            "http://dl.example.org/pack/a.zip",
+            "https://dl.example.org/pack/b.rar?id=7&key=x",
+            "ftp://ftp.example.org/pub/c.iso",
+            magnet,
+        ] {
+            for wrapped in wrappers(address) {
+                let u = super::parse_address(&wrapped).expect(&wrapped);
+                assert_eq!(u.as_str(), address, "{wrapped}");
+            }
+        }
+        let [thunder, flashget, _] = wrappers("https://dl.example.org/pack/a.zip");
+        for wrapped in [
+            format!(" {} ", thunder.replacen("thunder", "Thunder", 1)),
+            format!("{flashget}&abc"),
+            format!("{}/", thunder.trim_end_matches('=')),
+            "qqdl://aHR0cHM6Ly9kbC5leGFtcGxlLm9yZy9wYWNrL2Euemlw".to_owned(),
+        ] {
+            let u = super::parse_address(&wrapped).expect(&wrapped);
+            assert_eq!(u.as_str(), "https://dl.example.org/pack/a.zip", "{wrapped}");
+        }
+        let mut not: Vec<String> = Vec::new();
+        not.extend(wrappers("ed2k://|file|a.iso|733468672|0123456789ABCDEF|/"));
+        not.extend(wrappers("file:///C:/Windows/win.ini"));
+        not.extend([
+            "thunder://not*base64".to_owned(),
+            format!("thunder://{}", b64(b"https://dl.example.org/pack/a.zip")),
+            format!("flashget://{}", b64(b"AAhttps://dl.example.org/a.zipZZ")),
+            format!("qqdl://{}", b64(b"http://dl.example.org/\xd6\xd0.zip")),
+        ]);
+        for wrapped in not {
+            // What Add URL and Download File Info ask before they take an address.
+            let taken = super::parse_address(&wrapped)
+                .is_ok_and(|u| mdm_engine::supported(&u) || u.scheme() == "magnet");
+            assert!(!taken, "{wrapped}");
+        }
     }
 }
 

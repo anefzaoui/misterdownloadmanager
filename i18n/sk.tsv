@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	Pridaný {n} tracker|Pridané {n} trackery|Pridaných {n} trackerov
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Bol pridaný {n} sledovač z verejného zoznamu|Boli pridané {n} sledovače z verejného zoznamu|Bolo pridaných {n} sledovačov z verejného zoznamu
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Videá zo zoznamu skladieb sa sťahujú celé
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Súkromný torrent: verejný zoznam sledovačov nebol pridaný
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Pridajte bezplatné rozšírenie: súbory, ktoré stiahnete v prehliadači, sa dostanú sem a videá získajú tlačidlo Stiahnuť.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Pridať sledovače z tohto verejného zoznamu k verejným torrentom:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1998,6 +2010,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Znova sa načíta každých 7 dní. Zmeny sa prejavia, keď nie je spustený žiadny torrent.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Načíta sa raz denne. Nikdy sa nepridáva k súkromným torrentom.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5989,6 +6005,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Najprv zapnite vzdialené ovládanie.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Po vypnutí zostanú sledovače, ktoré už boli pridané.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	เพิ่มตัวติดตาม {n} รายการแล้ว
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	เพิ่มตัวติดตาม {n} รายการจากรายการสาธารณะ
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	วิดีโอในเพลย์ลิสต์จะถูกดาวน์โหลดทั้งหมด
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	ทอร์เรนต์ส่วนตัว: ไม่ได้เพิ่มรายการตัวติดตามสาธารณะ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	เพิ่มส่วนขยายฟรี: ไฟล์ที่คุณดาวน์โหลดในเบราว์เซอร์จะมาที่นี่ และวิดีโอจะมีปุ่มดาวน์โหลด
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	เพิ่มตัวติดตามจากรายการสาธารณะนี้ไปยังทอร์เรนต์สาธารณะ:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1998,6 +2010,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ดึงข้อมูลอีกครั้งทุก 7 วัน การเปลี่ยนแปลงจะมีผลเมื่อไม่มีทอร์เรนต์ทำงานอยู่
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	ดึงข้อมูลวันละครั้ง ไม่เพิ่มไปยังทอร์เรนต์ส่วนตัว
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5990,6 +6006,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	เปิดการควบคุมระยะไกลก่อน
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	เมื่อปิด ตัวติดตามที่เพิ่มไว้แล้วจะยังคงอยู่
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

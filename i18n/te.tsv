@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ట్రాకర్ జోడించబడింది|{n} ట్రాకర్‌లు జోడించబడ్డాయి
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	పబ్లిక్ జాబితా నుండి {n} ట్రాకర్ జోడించబడింది|పబ్లిక్ జాబితా నుండి {n} ట్రాకర్‌లు జోడించబడ్డాయి
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	ప్లేజాబితాలోని వీడియోలు పూర్తిగా డౌన్‌లోడ్ చేయబడ్డాయి
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	ఒక ప్రైవేట్ టొరెంట్: పబ్లిక్ ట్రాకర్ జాబితా జోడించబడలేదు
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ఉచిత ఎక్స్‌టెన్షన్‌ను జోడించండి: మీ బ్రౌజర్‌లో మీరు డౌన్‌లోడ్ చేసే ఫైల్‌లు ఇక్కడికి వస్తాయి, మరియు వీడియోలకు డౌన్‌లోడ్ బటన్ వస్తుంది.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	ఈ పబ్లిక్ జాబితాలోని ట్రాకర్‌లను పబ్లిక్ టొరెంట్‌లకు జోడించండి:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ప్రతి 7 రోజులకు మళ్ళీ పొందబడుతుంది. టొరెంట్ రన్ అవనప్పుడు మార్పులు వర్తిస్తాయి.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	రోజుకు ఒకసారి పొందుపరచబడుతుంది. ప్రైవేట్ టొరెంట్‌లకు ఎప్పుడూ జోడించబడదు.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5995,6 +6011,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	ముందు రిమోట్ కంట్రోల్‌ని ఆన్ చేయండి.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	ఆఫ్ చేసినా, ఇప్పటికే జోడించిన ట్రాకర్‌లు అలాగే ఉంటాయి.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

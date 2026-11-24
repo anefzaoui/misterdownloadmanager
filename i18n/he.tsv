@@ -261,6 +261,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	סרטוני רשימת ההשמעה יורדים בשלמותם
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	טורנט פרטי: רשימת הגששים הציבורית לא נוספה
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -401,6 +404,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	הוסף את ההרחבה החינמית: קבצים שתוריד בדפדפן שלך יגיעו לכאן, וסרטונים יקבלו לחצן הורדה.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	הוסף את הגששים מהרשימה הציבורית הזו לטורנטים ציבוריים:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1928,6 +1935,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	נשלף שוב כל 7 ימים. שינויים יחולו כאשר לא פועל טורנט.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	נשלפת פעם ביום. לעולם לא תתווסף לטורנטים פרטיים.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5863,6 +5874,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	הפעל תחילה את השליטה מרחוק.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	כשהאפשרות כבויה, שרתי המעקב שכבר נוספו נשארים.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

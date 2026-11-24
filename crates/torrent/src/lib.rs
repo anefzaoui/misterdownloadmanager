@@ -25,6 +25,7 @@ use librqbit::{
 pub mod authorized_storage;
 pub mod blocklist;
 mod names;
+pub mod public_trackers;
 pub mod rename_plugin;
 pub mod trackers;
 mod watch;

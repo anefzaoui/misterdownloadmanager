@@ -504,6 +504,12 @@ pub struct Settings {
     pub torrent_proxy: bool,
     /// A blocklist's address (empty: none), fetched again every `BLOCKLIST_DAYS`.
     pub torrent_blocklist: String,
+    /// Torrent settings → "Add the trackers of a public list to public torrents" (#1776): off
+    /// by default. Torrents added while it is on get the list's trackers as last fetched (never
+    /// a private one, BEP 27); the list is fetched again once a day (`torrents::PublicTrackers`).
+    pub torrent_public_trackers: bool,
+    /// That list's address (empty: `mdm_torrent::public_trackers::DEFAULT_LIST`).
+    pub torrent_public_trackers_url: String,
     /// Stop the torrent engine when no torrent runs (it stops listening; new settings apply).
     pub torrent_stop_idle: bool,
     /// Torrent settings → "Limit uploading to [n] KBytes/sec" for all torrents together (#39;
@@ -729,6 +735,8 @@ impl Default for Settings {
             torrent_lsd: true,
             torrent_proxy: false,
             torrent_blocklist: String::new(),
+            torrent_public_trackers: false,
+            torrent_public_trackers_url: String::new(),
             torrent_stop_idle: true,
             torrent_upload_on: false,
             torrent_upload_kb: 100,
@@ -1007,6 +1015,14 @@ impl Settings {
             let _ = url.set_password(Some(&self.proxy_pass));
         }
         Some(url.as_str().trim_end_matches('/').to_owned())
+    }
+
+    /// The public tracker list's address (#1776): the one given, else the default list.
+    pub fn public_trackers_list(&self) -> &str {
+        match self.torrent_public_trackers_url.trim() {
+            "" => mdm_torrent::public_trackers::DEFAULT_LIST,
+            url => url,
+        }
     }
 
     /// The torrent engine as Torrent settings say (#40), its data in `state_dir`. None when they
@@ -1444,6 +1460,15 @@ impl Settings {
                 (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
                 (true, None) => mdm_cli::TorrentProxy::Missing,
             },
+            // The same switch, address and cache as the app's (#1776).
+            public_trackers: self
+                .torrent_public_trackers
+                .then(crate::torrents::state_dir)
+                .flatten()
+                .map(|dir| mdm_cli::PublicTrackers {
+                    url: self.public_trackers_list().to_owned(),
+                    dir,
+                }),
         }
     }
 }
@@ -1466,6 +1491,46 @@ pub fn own_net() -> mdm_engine::Options {
 #[cfg(test)]
 mod tests {
     use std::path::Path;
+
+    /// #1776: the public tracker list is off by default, its address the default list's; the
+    /// default list is saved as none given, another address as typed (trimmed).
+    #[test]
+    fn the_public_tracker_list_is_off_until_turned_on() {
+        use super::Settings;
+        use crate::torrentdlg::Net;
+        use mdm_torrent::public_trackers::DEFAULT_LIST;
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        let mut s = Settings::default();
+        for s in [&old, &s] {
+            assert!(!s.torrent_public_trackers);
+            assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+        }
+        let mut net = Net::of(&s);
+        assert!(!net.public_trackers);
+        assert_eq!(net.public_list, DEFAULT_LIST);
+        net.public_trackers = true;
+        net.apply(&mut s);
+        assert!(s.torrent_public_trackers);
+        assert_eq!(s.torrent_public_trackers_url, "");
+        let mut net = Net::of(&s);
+        net.public_list = " https://lists.example.org/trackers.txt ".into();
+        net.apply(&mut s);
+        assert_eq!(
+            s.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        let again: Settings = serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert!(again.torrent_public_trackers);
+        assert_eq!(
+            again.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        // Emptied: the default list again.
+        let mut net = Net::of(&s);
+        net.public_list = "  ".into();
+        net.apply(&mut s);
+        assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+    }
 
     /// #668: the User-Agent for links added by hand is the default browser's unless one is set.
     /// Saved before, MDM's former default (Internet Explorer 11's) or nothing reads as automatic;

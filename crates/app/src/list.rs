@@ -1271,7 +1271,7 @@ pub fn show(
         let idx = ((pos.y - body_top + shown_scroll) / row_h()).floor() as usize;
         (idx < rows.len()).then_some(idx)
     };
-    let mods = ui.input(|i| i.modifiers);
+    let mods = click_modifiers(ui);
     if let Some(on_screen) = resp.interact_pointer_pos()
         && let pos = english(on_screen)
         && body.contains(pos)
@@ -1747,9 +1747,104 @@ fn move_column(st: &mut ListState, cols: &[(usize, f32, f32)], col: usize, x: f3
     st.order = shown.into_iter().chain(hidden).collect();
 }
 
+/// Ctrl, Shift and Alt as a click had them: as the primary button went down, even when that was
+/// in an earlier frame than the release (as a Windows list view takes them on the press), else
+/// as they are now. A slow frame (software rendering, a loaded machine) can take the key going
+/// down, the click and the key going up all at once, and the frame's own modifiers then miss the
+/// key the click was made with (#1734). The press's keys are kept per window until the next
+/// press: every list that reads clicks calls this in each frame it's drawn, so it sees its own
+/// presses.
+pub(crate) fn click_modifiers(ui: &Ui) -> egui::Modifiers {
+    let id = egui::Id::unique(("list-click-press-modifiers", ui.ctx().viewport_id()));
+    let held = ui.data(|d| d.get_temp::<egui::Modifiers>(id));
+    let (mods, press) =
+        ui.input(|i| modifiers_of_click(&i.events, i.modifiers, held, i.pointer.primary_down()));
+    if let Some(press) = press {
+        ui.data_mut(|d| d.insert_temp(id, press));
+    }
+    mods
+}
+
+/// The click's modifiers from this frame's `events`, the last press's from an earlier frame
+/// (`held`) and the frame's (`now`); and the last press's in this frame, to keep.
+/// - The button went up in this frame: the keys of the press that went before it.
+/// - It went down in this frame (a drag about to start): that press's.
+/// - Nothing this frame but the button is held (a drag starting later): the held press's.
+/// - Otherwise (a key moved the selection): the keys as they are.
+fn modifiers_of_click(
+    events: &[egui::Event],
+    now: egui::Modifiers,
+    held: Option<egui::Modifiers>,
+    down: bool,
+) -> (egui::Modifiers, Option<egui::Modifiers>) {
+    let (mut press, mut fresh, mut release) = (held, None, None);
+    for e in events {
+        if let egui::Event::PointerButton {
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers,
+            ..
+        } = e
+        {
+            if *pressed {
+                press = Some(*modifiers);
+                fresh = Some(*modifiers);
+            } else {
+                release = Some(press.unwrap_or(*modifiers));
+            }
+        }
+    }
+    let mods = release.or(fresh).or(press.filter(|_| down)).unwrap_or(now);
+    (mods, fresh)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #1734: a slow frame takes Ctrl going down, the click and Ctrl going up at once: the click
+    /// still has its Ctrl.
+    #[test]
+    fn a_click_keeps_the_keys_it_was_made_with() {
+        let click = |pressed, modifiers| egui::Event::PointerButton {
+            pos: Pos2::ZERO,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers,
+        };
+        let (none, ctrl, shift) = (
+            egui::Modifiers::NONE,
+            egui::Modifiers::COMMAND,
+            egui::Modifiers::SHIFT,
+        );
+        let at =
+            |events: &[egui::Event], now, held, down| modifiers_of_click(events, now, held, down).0;
+        assert_eq!(
+            at(&[click(true, ctrl), click(false, ctrl)], none, None, false),
+            ctrl
+        );
+        // Pressed with Shift, which went up before the button: the press's.
+        assert_eq!(
+            at(&[click(true, shift), click(false, none)], none, None, false),
+            shift
+        );
+        // Pressed with Ctrl in an earlier frame, the key let go before a later frame took the
+        // release: still the press's.
+        assert_eq!(at(&[click(false, none)], none, Some(ctrl), false), ctrl);
+        // A release with no press known (the press went to another window): the release's.
+        assert_eq!(at(&[click(false, shift)], none, None, false), shift);
+        // A press in this frame is kept for the frame of its release.
+        assert_eq!(
+            modifiers_of_click(&[click(true, ctrl)], none, Some(shift), true),
+            (ctrl, Some(ctrl))
+        );
+        // A drag that starts frames after its press: the press's.
+        assert_eq!(at(&[], none, Some(ctrl), true), ctrl);
+        // No click in this frame and the button up (a key moved the selection): the keys as
+        // they are, whatever an old press had.
+        assert_eq!(at(&[], ctrl, Some(shift), false), ctrl);
+        assert_eq!(at(&[], shift, None, false), shift);
+    }
 
     #[test]
     fn data_cells_keep_their_own_direction() {

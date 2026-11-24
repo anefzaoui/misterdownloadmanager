@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} seurantaosoite lisätty|{n} seurantaosoitetta lisätty
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} seurantapalvelinta lisättiin julkisesta luettelosta|{n} seurantapalvelinta lisättiin julkisesta luettelosta
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Soittolistan videot ladataan kokonaisina
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Yksityinen torrent: julkista seuraajapalvelinluetteloa ei lisätty
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Lisää ilmainen laajennus: selaimeesi lataamasi tiedostot tulevat tänne, ja videot saavat Lataa-painikkeen.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Lisää tämän julkisen luettelon seurantapalvelimet julkisiin torrenteihin:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Haetaan uudelleen 7 päivän välein. Muutokset tulevat voimaan, kun torrentteja ei ole käynnissä.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Haetaan kerran päivässä. Ei lisätä yksityisiin torrenteihin.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5999,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Ota etäkäyttö ensin käyttöön.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Kun asetus on pois päältä, jo lisätyt seurantapalvelimet säilyvät.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

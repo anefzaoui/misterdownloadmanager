@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	Đã thêm {n} trình theo dõi
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} trình theo dõi đã được thêm từ danh sách công khai
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Video trong danh sách phát được tải xuống toàn bộ
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Torrent riêng tư: danh sách trình theo dõi công khai không được thêm
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Thêm tiện ích mở rộng miễn phí: các tệp bạn tải xuống trong trình duyệt sẽ đến đây và video sẽ có nút Tải xuống.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Thêm tracker trong danh sách công khai này vào torrent công khai:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Được tìm nạp lại sau mỗi 7 ngày. Các thay đổi sẽ được áp dụng khi không có torrent nào đang chạy.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Được tìm nạp mỗi ngày một lần. Không bao giờ thêm vào các torrent riêng tư.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5995,6 +6011,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Trước tiên, hãy bật điều khiển từ xa.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Khi tắt, các trình theo dõi đã thêm vẫn còn.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

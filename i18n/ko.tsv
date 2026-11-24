@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	트래커 {n}개를 추가했습니다.
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	공개 목록 트래커 {n}개를 추가했습니다.
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	재생 목록의 동영상은 전체가 다운로드됩니다.
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	비공개 토렌트: 공개 트래커 목록이 추가되지 않았습니다.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	무료 확장 프로그램을 추가하세요. 브라우저에서 다운로드하는 파일이 여기로 오고, 동영상에 다운로드 단추가 표시됩니다.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	이 공개 목록의 트래커를 공개 토렌트에 추가:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	7일마다 다시 가져옵니다. 토렌트가 실행되고 있지 않을 때 변경 사항이 적용됩니다.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	하루에 한 번 가져옵니다. 비공개 토렌트에는 추가되지 않습니다.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5999,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	먼저 원격 제어를 켜세요.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	비활성화해도 이미 추가된 트래커는 유지됩니다.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

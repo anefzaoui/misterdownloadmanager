@@ -3268,6 +3268,10 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	ᎥᏝ ᏗᎪᏪᎵ ᏗᏟᏍᏔᏅᎢ ᎯᎠ ᏗᎪᏪᎵ ᏗᏟᏍᏔᏅᎢ {file}.
+#. text in helpers.rs
+#. helper name and what it does (Node.js and YouTube are names)
+#, machine
+	Node.js: unlocks YouTube's qualities	Node.js: YouTube-ի ᏧᏓᎴᏅᏓ ᏚᏓᎴᏅᏔᏅ
 #. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -3328,6 +3332,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	ᎥᏝ ᎠᏏ ᏱᏚᎾᏗᏔᏂᏙᎴ
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	ᎥᏝ ᎢᎦᏙᎥᎯᏍᏗ
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3346,6 +3354,11 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	ᎯᎠ ᏗᏂᏍᏕᎵᏍᎩ ᎥᏝ ᎯᎠ ᏗᎪᏪᎶᏗ ᏗᏂᏍᏕᎵᏍᎩ ᏱᏓᏂᏍᏕᎵᏍᎪᎢ
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	ᎥᏝ ᎢᎦᏙᎥᎯᏍᏗ: {name} ᎥᏝ ᎤᏍᏆᏛᎯ ( {why} )
 #. text in archtest.rs
 #. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
 #, machine
@@ -3458,6 +3471,10 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ᎢᏗᎦᎴᏴᏔᏅᎯ
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	ᎢᎦᏛᏉ
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3475,6 +3492,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	ᎤᏓᎷᎸ {n} ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏢᏍᎬᎢ.
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	ᎢᎦᏛᏉ {files} ᏗᏟᎶᏍᏔᏅᎯ ᏗᎪᏪᎵ ᏗᎪᏍᏓᏱ ᏗᏟᎶᏍᏔᏅᎯ
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ᎠᏴᏉ ᎢᏗᏙᎯ
@@ -3610,6 +3631,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	ᏆᎳᏇ
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	ᎢᎦᏛ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	ᎤᏕᎵᏛ ᏗᎧᏃᎩᏍᏗ
@@ -3730,6 +3755,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	ᎢᎬᏱᏱ ᏗᎪᏩᏛᏗ ᏂᎨᏒᎾ
+#. message or event log entry in the main window
+#. title of the notice shown once, the first time a download comes from a browser's private (incognito) window
+#, machine
+	Private-window downloads	ᎤᏕᎵᏛ ᏗᎦᏃᎴᏍᏗ ᏗᏟᎶᏍᏔᏅᎯ
 #. text in the Download video window
 #. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
 #, machine
@@ -3802,6 +3831,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ᏗᏓᏁᏟᏴᏗ
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	ᎤᏔᎾ ᎢᏗᎦᏟᏌᏅ, ᏗᏟᎶᏍᏔᏅᎯ
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -4093,6 +4126,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	ᏔᎵᏁ ᏗᏟᎶᏍᏔᏅᎢ:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	ᎠᏑᏰᏍᏗ ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏃᎴᏍᏗ ᎾᏍᎩ ᎢᏳᎵᏍᏙᏗᏱ ᎤᏤᎵᎦ ᏗᏟᎶᏍᏔᏅᎯ ᎠᎴ ᎢᏗᎦᏟᏌᏅ.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4246,6 +4283,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	ᎬᏂᎨᏒᎢ &ᏗᎦᏃᏍᏓᏁᏗ
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	ᎬᏂᎨᏒ &ᎢᏗᎦᏟᏌᏅ
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	ᎧᏃᎮᏗ ᎬᏂᎨᏒᎢ ᎠᎴ ᎤᏛᏛᏗ ᎢᏳᏍᏗ ᎢᏯᏛᏁᏗ.
@@ -4268,6 +4310,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	ᎬᏂᎨᏒᎢ ᏗᎦᏟᏏᏍᏗ ᎦᎴᏴᏔᏅᎯ ᎦᎴᏴᏔᏅᎯ ᎢᏳᏃ ᏗᎦᏟᏏᏍᏗ ᎤᎾᎴᏅᎲᏍᎬᎢ
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	ᎬᏂᎨᏒ ᏗᎦᏃᎴᏍᏗ ᎢᏳᏃ ᏗᎦᏟᏌᏅ ᏗᏟᎶᏍᏔᏅᎯ ᏗᏟᎶᏍᏔᏅᎯ ᏗᏟᎶᏍᏔᏅᎯ
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4276,6 +4322,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	ᎢᎪᏪᎵᏍᎩ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	ᎬᏂᎨᏒ ᎠᎴ ᎤᏕᎵᏛ ᎢᏗᎦᏟᏌᏅ
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	ᎠᏂᏍᏓᏢᎢ ᏗᎪᏢᏍᏗ ᎦᏟᏗ ᎬᏂᎨᏒᎢ ᎢᏳᏃ ᏗᏓᏟᎶᏍᏔᏅᎯ ᏗᏗᏍᎪᏗ ᎦᏟᏗ ᏱᏚᏍᏚᏁᎢ
@@ -4912,6 +4961,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} ᏅᏓᎬᏩᏓᎴᏅᏛ ᏗᎦᏁᏟᏴᏍᏗ ᎤᎾᎦᏎᏍᏔᏅᎯ
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	ᏗᎦᏃᎴᏍᏗ ᎢᏗᎦᏟᏌᏅ
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5628,6 +5681,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	ᎢᎬᏱ ᎢᏅᎯᏓ ᏗᏟᎶᏍᏔᏅ ᎭᎴᏅᏓ.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	ᎠᎴᏅᏗ ᏂᎨᏒᎾ ᏱᎩ, ᎢᎬᏱ ᎢᏴᏓᏓᏁᎸᎯ ᏗᎦᏂᏴᏗ ᎨᏒᎢ.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -6305,6 +6362,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} ᎥᏝ ᏰᎵ ᏱᎪᎵᏰᏗ ᏱᎩ
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} ᎥᏝ ᎢᏗᎦᏟᏌᏅ: ᎢᏳᎾᏛᏁᏗ ᎢᏗᎦᏟᏌᏅ ᎢᏗᎦᏟᏌᏅ. ᎢᏤ ᏗᎦᏃᎴᏍᏗ ᎢᏗᎦᏟᏌᏅ {new}, ᎠᎴ ᎢᏧᎳ ᏗᏟᎶᏍᏔᏅᎯ ᎢᏗᎦᏟᏌᏅ.
 #. text in relocate.rs
 #. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
 #, machine
@@ -6715,6 +6776,10 @@ extension	Another Mister Download Manager (a server)	ᏅᏩᏓᎴ Mister Downloa
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	ᎦᏬᏂᎯᏍᏗ
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	ᎠᎾᏬᏂᏍᎬᏉ
 #. text in the browser extension
 #. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
 #, machine
@@ -8259,6 +8324,10 @@ menubar	&Tasks	&ᏗᎦᎸᏫᏍᏓᏁᏗ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&ᎬᏂᎨᏒ ᎢᎬᏁᏗ
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	ᎢᏗᎦᏟᏌᏅ
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Torrent ᏗმატᏗ
@@ -8276,6 +8345,10 @@ toolbar	Delete Completed	ᎤᎵᏍᏛ ᏗᏓᎴᏍᏗ
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	ᎦᏁᏍᏗ
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	ᎢᏗᎦᏟᏌᏅ
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

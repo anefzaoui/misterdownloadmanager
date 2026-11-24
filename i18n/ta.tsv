@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} டிராக்கர் சேர்க்கப்பட்டது|{n} டிராக்கர்கள் சேர்க்கப்பட்டன
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	பொதுப் பட்டியலிலிருந்து {n} டிராக்கர் சேர்க்கப்பட்டது|பொதுப் பட்டியலிலிருந்து {n} டிராக்கர்கள் சேர்க்கப்பட்டன
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	பிளேலிஸ்ட்டின் வீடியோக்கள் முழுமையாகப் பதிவிறக்கப்படுகின்றன
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	ஒரு தனிப்பட்ட டோரண்ட்: பொது டிராக்கர் பட்டியல் சேர்க்கப்படவில்லை
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	இலவச நீட்டிப்பைச் சேர்க்கவும்: உங்கள் உலாவியில் பதிவிறக்கும் கோப்புகள் இங்கே வரும், மேலும் வீடியோக்களுக்கு பதிவிறக்கப் பொத்தான் கிடைக்கும்.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	இந்த பொதுப் பட்டியலின் டிராக்கர்களை பொது டோரண்டுகளில் சேர்க்கவும்:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ஒவ்வொரு 7 நாட்களுக்கும் மீண்டும் பெறப்படும். எந்த டோரண்டும் இயங்காதபோது மாற்றங்கள் பொருந்தும்.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	ஒரு நாளைக்கு ஒருமுறை பெறப்படும். தனிப்பட்ட டோரண்டுகளில் ஒருபோதும் சேர்க்கப்படாது.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5995,6 +6011,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	முதலில் ரிமோட் கட்டுப்பாட்டை இயக்கவும்.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	முடக்கப்பட்டால், ஏற்கனவே சேர்க்கப்பட்ட டிராக்கர்கள் அப்படியே இருக்கும்.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

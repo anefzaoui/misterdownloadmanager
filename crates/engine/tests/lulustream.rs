@@ -60,6 +60,35 @@ fn on(e: &LogEntry, host: &str) -> bool {
     e.host.as_deref().is_some_and(|h| h.starts_with(host))
 }
 
+/// The form's posts in `log`, in the order they were sent.
+fn posts_of(log: &[LogEntry]) -> Vec<&LogEntry> {
+    let mut posts: Vec<_> = log.iter().filter(|e| e.method == "POST").collect();
+    posts.sort_by_key(|e| e.t_start_ms);
+    posts
+}
+
+/// The time from each post's answer to the next post, in milliseconds (the lab's clock).
+fn gaps(posts: &[&LogEntry]) -> Vec<u64> {
+    posts
+        .windows(2)
+        .map(|w| w[1].t_start_ms.saturating_sub(w[0].t_end_ms))
+        .collect()
+}
+
+/// Each of `gaps` is at least the pause before that repost (0.5 s, then doubling, #1593), less a
+/// little for the clocks' rounding. Never an upper bound: a busy machine only makes them longer.
+fn assert_growing_pauses(gaps: &[u64]) {
+    for (i, gap) in gaps.iter().enumerate() {
+        let pause = 500 << i;
+        assert!(
+            *gap >= pause - 20,
+            "repost {} went {gap} ms after the answer before it, sooner than its {pause} ms \
+             pause: {gaps:?}",
+            i + 1
+        );
+    }
+}
+
 /// A video's watch link and its player's give the video: its download page's best quality (high,
 /// on the mirror), its form posted once, the file from the link the answer gives, byte for byte,
 /// named by the file server. The watch page itself, and the lesser quality, are never asked.
@@ -116,7 +145,8 @@ async fn a_captcha_needs_the_browser() {
 }
 
 /// A site that answers its form with the form again now and then (the real one's "Security
-/// error"): posted again, the third post gives the file.
+/// error"): posted again, the third post gives the file. Each repost waits first, 0.5 s and then
+/// 1 s, as someone clicking again in a browser does (#1593).
 #[tokio::test]
 async fn a_form_not_taken_at_first_is_posted_again() {
     let s = server().await;
@@ -124,16 +154,14 @@ async fn a_form_not_taken_at_first_is_posted_again() {
     let (dir, out) = download(at(&s, lulustream::SITE, &format!("/{code}"))).await;
     let out = out.unwrap();
     assert_eq!(out.path, dir.path().join(lulustream::FILE_NAME));
-    let posts = log(&s)
-        .await
-        .into_iter()
-        .filter(|e| e.method == "POST")
-        .count();
-    assert_eq!(posts, 3);
+    let log = log(&s).await;
+    let posts = posts_of(&log);
+    assert_eq!(posts.len(), 3, "{posts:?}");
+    assert_growing_pauses(&gaps(&posts));
 }
 
-/// A site that never takes its form: posted a few times, then refused in the site's name (try
-/// again in a moment), nothing saved.
+/// A site that never takes its form: posted five times, a longer pause before each repost (0.5 s,
+/// 1 s, 2 s, 4 s, #1593), then refused in the site's name (try again in a moment), nothing saved.
 #[tokio::test]
 async fn a_form_never_taken_is_refused_in_the_sites_name() {
     let s = server().await;
@@ -147,12 +175,10 @@ async fn a_form_never_taken_is_refused_in_the_sites_name() {
         "{out:?}"
     );
     assert!(std::fs::read_dir(dir.path()).unwrap().next().is_none());
-    let posts = log(&s)
-        .await
-        .into_iter()
-        .filter(|e| e.method == "POST")
-        .count();
-    assert_eq!(posts, 5);
+    let log = log(&s).await;
+    let posts = posts_of(&log);
+    assert_eq!(posts.len(), 5, "{posts:?}");
+    assert_growing_pauses(&gaps(&posts));
 }
 
 /// The link the form's answer gives expires during the download (it lasts a second here; the

@@ -162,6 +162,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n}টি ট্র্যাকার যোগ করা হয়েছে|{n}টি ট্র্যাকার যোগ করা হয়েছে
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	পাবলিক তালিকা থেকে {n}টি ট্র্যাকার যোগ করা হয়েছে|পাবলিক তালিকা থেকে {n}টি ট্র্যাকার যোগ করা হয়েছে
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -306,6 +311,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	একটি প্লেলিস্টের ভিডিওগুলো সম্পূর্ণ ডাউনলোড করা হয়
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	একটি ব্যক্তিগত টরেন্ট: পাবলিক ট্র্যাকার তালিকা যোগ করা হয়নি
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -442,6 +450,10 @@
 	Add the extension to Safari	Safari-তে এক্সটেনশনটি যোগ করুন
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	বিনামূল্যে এক্সটেনশন যোগ করুন: আপনার ব্রাউজারে ডাউনলোড করা ফাইলগুলো এখানে আসে এবং ভিডিওগুলোতে একটি ডাউনলোড বোতাম পাওয়া যায়।
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	পাবলিক টরেন্টগুলোতে এই পাবলিক তালিকার ট্র্যাকারগুলো যোগ করুন:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	শুরু না করেই সেগুলোকে যোগ করুন
@@ -1877,6 +1889,10 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	প্রতি 7 দিনে আবার আনা হয়। কোনো টরেন্ট না চললে পরিবর্তনগুলো প্রযোজ্য হবে।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	দিনে একবার আনা হয়। ব্যক্তিগত টরেন্টগুলোতে কখনো যোগ করা হয় না।
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: ছবি এবং শব্দকে একত্র করে
@@ -5633,6 +5649,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	প্রথমে রিমোট কন্ট্রোল চালু করুন।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	বন্ধ করা হলেও, ইতোমধ্যে যোগ করা ট্র্যাকারগুলো থেকে যায়।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

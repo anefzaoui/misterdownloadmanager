@@ -136,6 +136,10 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker added|{n} trackers added
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} tracker added from the public list|{n} trackers added from the public list
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -255,6 +259,8 @@
 #. text in the Download video window
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 	A playlist's videos are downloaded whole	A playlist's videos are downloaded whole
+#. message or event log entry in the main window
+	A private torrent: the public tracker list isn't added	A private torrent: the public tracker list isn't added
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.
@@ -359,6 +365,9 @@
 	Add the extension to Safari	Add the extension to Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Add the free extension: files you download in your browser come here, and videos get a Download button.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+	Add the trackers of this public list to public torrents:	Add the trackers of this public list to public torrents:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	Add them without starting them
@@ -851,6 +860,7 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Choose a .torrent file
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)
 #. text in langpick.rs
 	Choose a language	Choose a language
@@ -860,6 +870,7 @@
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 	Choose the profile's folder	Choose the profile's folder
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 	Choose {name}	Choose {name}
@@ -1500,8 +1511,11 @@
 #. RSS feeds window, Download rules: the feeds the rule watches
 	Feeds:	Feeds:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 	Fetched again every 7 days. Changes apply when no torrent is running.	Fetched again every 7 days. Changes apply when no torrent is running.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+	Fetched once a day. Never added to private torrents.	Fetched once a day. Never added to private torrents.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: joins picture and sound
@@ -1742,6 +1756,10 @@
 #. Helpers: button: use the previous version of a helper again (if the new one misbehaves); {version} = that version
 #. {version} = a version number (keep the braces as they are)
 	Go back to {version}	Go back to {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+	Go back to {version} of {name}	Go back to {version} of {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	Goes on after the download finishes
@@ -4459,6 +4477,9 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Turn on the remote control first.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+	Turned off, the trackers already added stay.	Turned off, the trackers already added stay.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu
@@ -4558,6 +4579,10 @@
 #. button: download and install the new version, then restart
 	Update now	Update now
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+	Update {name}	Update {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 	Updated by you	Updated by you
 #. text in helpers.rs
@@ -4574,6 +4599,15 @@
 	Uruguay	Uruguay
 #. text in the Options window
 	Use advanced browser integration	Use advanced browser integration
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+	Use another program as the JavaScript runtime...	Use another program as the JavaScript runtime...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+	Use another program for {name}...	Use another program for {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -4590,6 +4624,11 @@
 #. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 	Use MDM's own copy	Use MDM's own copy
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+	Use MDM's own copy of {name}	Use MDM's own copy of {name}
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 	Use my yt-dlp config file	Use my yt-dlp config file
