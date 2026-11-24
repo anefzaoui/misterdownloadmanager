@@ -308,8 +308,8 @@ right-to-left window.
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
   extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
   when MDM isn't running.
-- **Downloads videos** from web pages (a button appears over the video; playlists, subtitles,
-  the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
+- **Downloads videos** from web pages (a button appears over the video, on many pages before it plays; playlists,
+  subtitles, the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
   (sequential order, RSS feeds, sharing limits).
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
   (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download

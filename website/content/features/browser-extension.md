@@ -38,8 +38,9 @@ Manager**: MDM downloads it whatever its type.
 
 Point at a video and a small **Download video** button appears at its edge. It opens MDM's
 **Download video from a page** window with the qualities on offer (see
-[video downloads](/features/video.html)). You can hide it on one video or one site, or turn it
-off in **Options**.
+[video downloads](/features/video.html)). On many pages it finds the video before it plays,
+from the stream address the page wrote for its player. You can hide it on one video or one
+site, or turn it off in **Options**.
 
 ## Installed from the store, kept up to date
 
