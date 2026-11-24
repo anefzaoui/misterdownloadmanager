@@ -118,7 +118,9 @@ pub(crate) fn fault(status: u16, body: &[u8], retry_after: Option<u64>) -> Fault
         (Some(18 | 23 | 36), _) => F::LimitReached,
         (Some(21), _) => F::TooManyActive,
         (Some(22), _) => F::IpRefused,
-        (Some(24), _) | (None, 503) => F::FileUnavailable,
+        // A 503 with no error code is the service being down, not the file being gone: retried,
+        // as every 5xx is.
+        (Some(24), _) => F::FileUnavailable,
         (Some(28 | 35), _) => F::FileRefused,
         (Some(5 | 34), _) | (None, 429) => {
             F::TooManyRequests(retry_after.map(std::time::Duration::from_secs))
@@ -338,6 +340,11 @@ mod tests {
             Fault::Service(F::TooManyRequests(Some(std::time::Duration::from_secs(30))))
         );
         assert_eq!(f(500, "not json"), Fault::Service(F::ServiceDown));
+        assert_eq!(
+            f(503, "not json"),
+            Fault::Service(F::ServiceDown),
+            "a bare 503 is the service, not the file"
+        );
         assert_eq!(
             f(400, r#"{"error":"something new"}"#),
             Fault::Service(F::Other("something new".into()))
