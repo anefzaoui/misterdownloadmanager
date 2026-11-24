@@ -570,6 +570,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ Torrents: trackers are checked more carefully.
+- ✅ Helpers installs a helper that isn't there yet (gallery-dl before the first gallery, or
+  any other): **Install** in its row downloads MDM's own copy, checked as always, with its
+  progress, then shows its version and **Update**, and automatic updates cover it; greyed, with
+  the reason, where MDM has no copy for the system
+  ([#1801](https://github.com/anefzaoui/misterdownloadmanager/issues/1801))
 - ✅ Torrents: filtering a torrent's trackers never adds one it didn't list (a torrent that
   repeats its tracker list counts the first only)
   ([#1805](https://github.com/anefzaoui/misterdownloadmanager/issues/1805))

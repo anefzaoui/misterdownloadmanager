@@ -1253,6 +1253,9 @@
 #. Video helpers: MDM's own yt-dlp is being downloaded
 #. the trailing ... means it is still going on: keep it
 	Downloading MDM's own copy...	Downloading MDM's own copy...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+	Downloading MDM's own copy... {percent}%	Downloading MDM's own copy... {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1891,16 +1894,16 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why
 	Install 7-Zip (free), then right-click the download and choose Extract.	Install 7-Zip (free), then right-click the download and choose Extract.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	Install ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 	Install gallery-dl	Install gallery-dl
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 	Install it by hand	Install it by hand
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 	Install Node.js	Install Node.js
 #. text in unix.rs
@@ -1909,7 +1912,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Install yt-dlp
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -4568,7 +4571,7 @@
 	Use existing torrent files	Use existing torrent files
 #. checkbox in the Options window
 	Use FTP in PASV mode	Use FTP in PASV mode
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 	Use MDM's own copy	Use MDM's own copy
 #. checkbox in the Options window
