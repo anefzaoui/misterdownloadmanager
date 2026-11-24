@@ -870,9 +870,10 @@ const UTF8: [&str; 2] = ["--encoding", "utf-8"];
 /// `C:\Windows\System32` when Windows starts it with the session (#1216). On Windows yt-dlp
 /// makes the small file it tries a format with (a YouTube video put online in the last two
 /// days, a stream marked as protected) in its working folder: its `get_output_path('temp')` is
-/// `.` there when MDM gives no `-P temp:`. [`spawn`] gives the same to any other program.
+/// `.` there when MDM gives no `-P temp:`. [`spawn`] gives the same to any other program. On Android
+/// the program is run as [`program`] runs it (yt-dlp through the bundled Python).
 fn helper_command(exe: &Path) -> Command {
-    let mut cmd = Command::new(exe);
+    let mut cmd = program(exe);
     cmd.env("PYTHONIOENCODING", "utf-8");
     crate::workdir::apply(&mut cmd, crate::workdir::folders());
     cmd
@@ -1139,6 +1140,11 @@ pub fn system_js_runtimes(ytdlp: Option<&Path>) -> Vec<(crate::jsruntime::Kind, 
 /// the person's choice, the computer's own, MDM's own), when there is one. Read at each run, so
 /// the one Helpers just installed or chose is used from the next look-up on.
 fn js_runtime_found(exe: &Path) -> Option<Vec<std::ffi::OsString>> {
+    // Android: the APK's QuickJS (android.rs).
+    #[cfg(target_os = "android")]
+    if let Some(args) = crate::android::js_runtime_args() {
+        return Some(args.into_iter().map(Into::into).collect());
+    }
     let dir = crate::tools_dir();
     // This crate's tests build yt-dlp's commands by the hundred, in parallel: they don't run
     // the test computer's own Node.js or Deno for it (what they'd find depends on that
@@ -1201,6 +1207,15 @@ fn takes_js_runtimes(exe: &Path) -> bool {
         .unwrap_or_else(std::sync::PoisonError::into_inner)
         .push((exe.to_owned(), takes));
     takes
+}
+
+/// The command that runs a helper `exe`: itself, or on Android the APK's Python with it when it
+/// is a Python program (yt-dlp's zipapp), with the environment the helpers need there.
+pub fn program(exe: &Path) -> Command {
+    #[cfg(target_os = "android")]
+    return crate::android::command(exe);
+    #[cfg(not(target_os = "android"))]
+    Command::new(exe)
 }
 
 /// `--js-runtimes` for this computer's runtime, when yt-dlp must be told of it and knows how to

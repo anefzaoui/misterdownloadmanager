@@ -145,6 +145,8 @@ MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, 
 and Cinnamon, on X11 and in Wayland sessions: the tray, dark mode, browser integration (Ubuntu's
 Snap Firefox included) and the packages' installs. Not there yet: screen readers (Orca) don't
 read its windows, and Flatpak browsers can't reach it ([more](docs/getting-started.md#on-linux)).
+Running downloads show their progress on MDM's icon in the dock (Ubuntu Dock, KDE Plasma and
+other docks that can show it), as they do on the Windows taskbar and in the macOS Dock.
 Up to version 0.2.4, the files' names end in `-experimental`.
 
 | File | For |
@@ -315,6 +317,8 @@ right-to-left window.
   (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site, and
   unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
+- **A list laid out your way**: show, move, resize and sort its columns, **Save To** (the folder
+  each download is in) among them, and filter any column ([how](docs/download-list.md)).
 - **Downloads overnight** with queues and a scheduler that can wake the computer, then shuts it
   down if you like.
 - **Through your VPN only**, if you want: hold every download to one network adapter, with a kill

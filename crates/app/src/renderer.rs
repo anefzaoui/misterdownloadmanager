@@ -1709,6 +1709,8 @@ struct FirstFrameClock {
 }
 
 impl FirstFrameClock {
+    // Only wgpu's ways are watched (none on Android, which draws with OpenGL ES alone).
+    #[cfg(any(gpu, test))]
     fn started(now: std::time::Instant) -> Self {
         FirstFrameClock {
             counted: std::time::Duration::ZERO,

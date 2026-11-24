@@ -788,7 +788,8 @@ impl GlobalHotkey {
             }
         }
 
-        #[cfg(target_os = "linux")]
+        // Linux and Android: no global hotkey is registered there.
+        #[cfg(any(target_os = "linux", target_os = "android"))]
         let _ = ctx;
     }
 

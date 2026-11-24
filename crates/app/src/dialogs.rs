@@ -3295,6 +3295,7 @@ impl TurnOffCountdown {
 
     /// Shut down, sleep or hibernate now.
     pub fn execute(&self) {
+        #[cfg(not(target_os = "android"))]
         use crate::queue::TurnOff;
         #[cfg(windows)]
         {
@@ -3349,6 +3350,15 @@ impl TurnOffCountdown {
             cmd.args(["-e", script]);
             run_or_tell(cmd);
             let _ = self.force;
+        }
+        // Android: no app may shut the phone down or put it to sleep.
+        #[cfg(target_os = "android")]
+        {
+            let _ = (self.mode, self.force);
+            tell_turn_off_failed(
+                // i18n: why the phone could not be turned off after the queue (fills {error}, Android)
+                crate::i18n::t("Android doesn't let apps turn the phone off").to_owned(),
+            );
         }
     }
 }
@@ -3529,7 +3539,7 @@ pub fn minimize(ctx: &egui::Context, hwnd: Option<isize>) {
 /// to nothing while it sat behind the main window.
 pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
     ctx.send_viewport_cmd_to(viewport, egui::ViewportCommand::Minimized(false));
-    // Off-screen test runs never take the focus (main.rs `offscreen`), as the other paths here.
+    // Off-screen test runs never take the focus (lib.rs `offscreen`), as the other paths here.
     if !crate::offscreen() {
         #[cfg(target_os = "macos")]
         crate::unix::macos_activate_app();
@@ -3547,7 +3557,7 @@ pub fn raise(ctx: &egui::Context, viewport: ViewportId) {
 /// to the input of the window in front; a refusal even then flashes its taskbar button, as
 /// Windows means a program in the background to ask. Linux and macOS: winit's focus, which sends
 /// no input (X11 `_NET_ACTIVE_WINDOW`, macOS `activateIgnoringOtherApps`, nothing on Wayland).
-/// Off-screen test runs never take the focus (main.rs `offscreen`).
+/// Off-screen test runs never take the focus (lib.rs `offscreen`).
 pub fn focus(ctx: &egui::Context, viewport: ViewportId) {
     if crate::offscreen() {
         return;
@@ -3637,6 +3647,7 @@ pub fn dialog_viewport(id: &str) -> ViewportId {
 
 /// Run a shut down / sleep command and say when it fails (hibernation off, a program
 /// holding it up): it did nothing, silently.
+#[cfg(not(target_os = "android"))]
 fn run_or_tell(mut cmd: std::process::Command) {
     std::thread::spawn(move || match cmd.output() {
         Ok(out) if out.status.success() => {}
