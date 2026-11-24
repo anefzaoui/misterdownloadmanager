@@ -4740,6 +4740,305 @@ pub fn idle_seconds() -> u64 {
     u64::from(now.wrapping_sub(info.dwTime) / 1000)
 }
 
+// ---- pop-ups that wait (#1773, hold.rs) ---------------------------------------------------
+
+/// The session is locked, as its lock and unlock were last heard ([`watch_session_lock`]).
+static SESSION_LOCKED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Why MDM's pop-ups wait now: the session locked, what the shell says of the user (the state
+/// Windows holds its own notifications by: `SHQueryUserNotificationState`), or a frameless
+/// window in front filling its monitor (any monitor: [`foreground_full_screen`]). None when
+/// notifications are welcome, or when the shell can't say.
+pub fn pop_ups_wait() -> Option<crate::hold::Busy> {
+    use windows_sys::Win32::UI::Shell::SHQueryUserNotificationState;
+    if SESSION_LOCKED.load(std::sync::atomic::Ordering::Relaxed) {
+        return Some(crate::hold::Busy::Away);
+    }
+    let mut state = 0;
+    // SAFETY: a plain query writing one i32 we own.
+    let hr = unsafe { SHQueryUserNotificationState(&mut state) };
+    let busy = if hr < 0 { None } else { busy_of(state) };
+    busy.or_else(|| foreground_full_screen().then_some(crate::hold::Busy::FullScreen))
+}
+
+/// Whether the window in front fills its whole monitor without a frame: a game, a video or a
+/// slide show full screen. The shell's state says so only for the main monitor (Windows 11 26200
+/// answers "accepts notifications" with a full-screen window in front on another one), and
+/// games are played on any. Not MDM's own windows, nor the desktop's or the taskbars'.
+fn foreground_full_screen() -> bool {
+    use windows_sys::Win32::Graphics::Gdi::{
+        GetMonitorInfoW, MONITOR_DEFAULTTONULL, MONITORINFO, MonitorFromWindow,
+    };
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetClassNameW, GetForegroundWindow, GetWindowRect, IsIconic, IsZoomed, WS_CAPTION,
+    };
+    // SAFETY: plain queries about the foreground window (any handle is accepted, a gone one
+    // fails), writing into structures and buffers we own, with their sizes given.
+    unsafe {
+        let fg = GetForegroundWindow();
+        if fg.is_null() {
+            return false;
+        }
+        let mut pid = 0;
+        GetWindowThreadProcessId(fg, &mut pid);
+        if pid == GetCurrentProcessId() {
+            return false;
+        }
+        let mut class = [0u16; 64];
+        let n = GetClassNameW(fg, class.as_mut_ptr(), class.len() as i32).max(0) as usize;
+        let class = String::from_utf16_lossy(&class[..n]);
+        if matches!(
+            class.as_str(),
+            "Progman" | "WorkerW" | "Shell_TrayWnd" | "Shell_SecondaryTrayWnd"
+        ) {
+            return false;
+        }
+        let mut window: RECT = zeroed();
+        if GetWindowRect(fg, &mut window) == 0 {
+            return false;
+        }
+        let monitor = MonitorFromWindow(fg, MONITOR_DEFAULTTONULL);
+        if monitor.is_null() {
+            return false;
+        }
+        let mut info: MONITORINFO = zeroed();
+        info.cbSize = size_of::<MONITORINFO>() as u32;
+        if GetMonitorInfoW(monitor, &mut info) == 0 {
+            return false;
+        }
+        let style = GetWindowLongPtrW(fg, GWL_STYLE) as u32;
+        fills_monitor(
+            window,
+            info.rcMonitor,
+            style & WS_CAPTION == WS_CAPTION,
+            IsZoomed(fg) != 0 || IsIconic(fg) != 0,
+        )
+    }
+}
+
+/// A window at `window` covers the whole monitor at `monitor`, without a title bar and not
+/// maximized (a maximized window can cover a monitor that has no taskbar).
+fn fills_monitor(window: RECT, monitor: RECT, captioned: bool, maximized: bool) -> bool {
+    !captioned
+        && !maximized
+        && monitor.right > monitor.left
+        && window.left <= monitor.left
+        && window.top <= monitor.top
+        && window.right >= monitor.right
+        && window.bottom >= monitor.bottom
+}
+
+/// The shell's notification state as a reason to wait.
+fn busy_of(state: i32) -> Option<crate::hold::Busy> {
+    use crate::hold::Busy;
+    use windows_sys::Win32::UI::Shell::{
+        QUNS_BUSY, QUNS_NOT_PRESENT, QUNS_PRESENTATION_MODE, QUNS_RUNNING_D3D_FULL_SCREEN,
+    };
+    match state {
+        // The screen saver, the locked screen, or another user's session in front.
+        QUNS_NOT_PRESENT => Some(Busy::Away),
+        // A full-screen app or video in front (borderless games too), or presentation settings.
+        QUNS_BUSY => Some(Busy::FullScreen),
+        QUNS_RUNNING_D3D_FULL_SCREEN => Some(Busy::Game),
+        QUNS_PRESENTATION_MODE => Some(Busy::Presentation),
+        // QUNS_ACCEPTS_NOTIFICATIONS; QUNS_QUIET_TIME (the first hour after a new account's
+        // first sign-in, which holds Windows' own tips, not a user at work); QUNS_APP (a Store
+        // app in front, which is windowed on Windows 10 and 11); and whatever comes later.
+        _ => None,
+    }
+}
+
+/// The subclass that hears the session's lock and unlock on the main window.
+const LOCK_SUBCLASS: usize = 0x10c;
+
+/// What a lock or an unlock runs ([`watch_session_lock`]).
+type OnLock = Box<dyn Fn()>;
+
+thread_local! {
+    /// Run when the session is locked or unlocked (wakes the window for its pop-ups).
+    static ON_LOCK: std::cell::RefCell<Option<OnLock>> = const { std::cell::RefCell::new(None) };
+}
+
+/// Hear the session's lock and unlock (WM_WTSSESSION_CHANGE) on the main window
+/// ([`set_main_window`]; call this after it, on its thread): [`pop_ups_wait`] knows at once, and
+/// `changed` runs (a frame, for the windows that waited to show as soon as the user is back).
+/// The shell's state says "not present" when locked too, but only when asked.
+///
+/// No appbar's ABN_FULLSCREENAPP either: the state is asked whenever a pop-up would open, so none
+/// is missed; it would only tell the end of a full-screen app sooner than MDM's next look
+/// (`hold::LOOK_EVERY`).
+pub fn watch_session_lock(changed: impl Fn() + 'static) {
+    use windows_sys::Win32::System::RemoteDesktop::{
+        NOTIFY_FOR_THIS_SESSION, WTSRegisterSessionNotification,
+    };
+    let hwnd = MAIN_WINDOW.load(std::sync::atomic::Ordering::Relaxed);
+    if hwnd == 0 {
+        tracing::warn!("the session's lock isn't heard: no main window");
+        return;
+    }
+    ON_LOCK.with(|c| *c.borrow_mut() = Some(Box::new(changed)));
+    // SAFETY: the main window, made on this thread (eframe's creator runs on it); the proc lives
+    // as long as the program. Windows stops the notifications when the window is destroyed.
+    unsafe {
+        SetWindowSubclass(hwnd as HWND, Some(lock_proc), LOCK_SUBCLASS, 0);
+        if WTSRegisterSessionNotification(hwnd as HWND, NOTIFY_FOR_THIS_SESSION) == 0 {
+            tracing::warn!("the session's lock isn't heard: WTSRegisterSessionNotification failed");
+        }
+    }
+}
+
+unsafe extern "system" fn lock_proc(
+    hwnd: HWND,
+    msg: u32,
+    wparam: WPARAM,
+    lparam: LPARAM,
+    _id: usize,
+    _data: usize,
+) -> LRESULT {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        WM_WTSSESSION_CHANGE, WTS_SESSION_LOCK, WTS_SESSION_UNLOCK,
+    };
+    if msg == WM_WTSSESSION_CHANGE {
+        let locked = match wparam as u32 {
+            WTS_SESSION_LOCK => Some(true),
+            WTS_SESSION_UNLOCK => Some(false),
+            _ => None,
+        };
+        if let Some(locked) = locked {
+            tracing::info!(
+                "the session is {}",
+                if locked { "locked" } else { "unlocked" }
+            );
+            SESSION_LOCKED.store(locked, std::sync::atomic::Ordering::Relaxed);
+            ON_LOCK.with(|c| {
+                if let Ok(c) = c.try_borrow()
+                    && let Some(changed) = c.as_ref()
+                {
+                    changed();
+                }
+            });
+        }
+    }
+    // SAFETY: the subclass's own arguments, passed on.
+    unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
+}
+
+#[cfg(test)]
+mod pop_ups_wait_tests {
+    use super::*;
+    use crate::hold::Busy;
+    use windows_sys::Win32::UI::Shell::{
+        QUNS_ACCEPTS_NOTIFICATIONS, QUNS_APP, QUNS_BUSY, QUNS_NOT_PRESENT, QUNS_PRESENTATION_MODE,
+        QUNS_QUIET_TIME, QUNS_RUNNING_D3D_FULL_SCREEN,
+    };
+
+    #[test]
+    fn the_shell_s_states_that_hold_pop_ups() {
+        assert_eq!(busy_of(QUNS_NOT_PRESENT), Some(Busy::Away));
+        assert_eq!(busy_of(QUNS_BUSY), Some(Busy::FullScreen));
+        assert_eq!(busy_of(QUNS_RUNNING_D3D_FULL_SCREEN), Some(Busy::Game));
+        assert_eq!(busy_of(QUNS_PRESENTATION_MODE), Some(Busy::Presentation));
+        for free in [QUNS_ACCEPTS_NOTIFICATIONS, QUNS_QUIET_TIME, QUNS_APP, 0, 99] {
+            assert_eq!(busy_of(free), None, "{free}");
+        }
+    }
+
+    #[test]
+    fn a_frameless_window_over_its_whole_monitor_is_full_screen() {
+        let rect = |left, top, right, bottom| RECT {
+            left,
+            top,
+            right,
+            bottom,
+        };
+        // A second monitor up and to the left of the main one.
+        let monitor = rect(-1919, -1083, 1, -3);
+        assert!(fills_monitor(monitor, monitor, false, false));
+        assert!(fills_monitor(
+            rect(-1925, -1090, 7, 4),
+            monitor,
+            false,
+            false
+        ));
+        // A window with a title bar, a maximized one, one short of the edge: not full screen.
+        assert!(!fills_monitor(monitor, monitor, true, false));
+        assert!(!fills_monitor(
+            rect(-1927, -1091, 9, 5),
+            monitor,
+            false,
+            true
+        ));
+        assert!(!fills_monitor(
+            rect(-1919, -1083, 1, -43),
+            monitor,
+            false,
+            false
+        ));
+    }
+
+    /// The real call answers on this computer (whatever it says).
+    #[test]
+    fn the_shell_answers() {
+        use windows_sys::Win32::UI::Shell::SHQueryUserNotificationState;
+        let mut state = 0;
+        // SAFETY: a plain query writing one i32 we own.
+        let hr = unsafe { SHQueryUserNotificationState(&mut state) };
+        assert!(hr >= 0, "{hr:#x}");
+        assert!((1..=7).contains(&state), "{state}");
+    }
+
+    /// A real hidden window of this thread, sent what Windows sends: the lock holds pop-ups and
+    /// wakes the window, the unlock lets them go.
+    #[test]
+    fn the_session_s_lock_is_heard() {
+        use std::cell::Cell;
+        use std::rc::Rc;
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            CreateWindowExW, DefWindowProcW, DestroyWindow, RegisterClassW, SendMessageW,
+            WM_WTSSESSION_CHANGE, WNDCLASSW, WS_OVERLAPPEDWINDOW, WTS_SESSION_LOCK,
+            WTS_SESSION_UNLOCK,
+        };
+        let class: Vec<u16> = "mdm-session-lock-test\0".encode_utf16().collect();
+        let woke = Rc::new(Cell::new(0));
+        // SAFETY: a class with the system's own procedure and a hidden window of it on this
+        // thread, destroyed below; NUL-terminated strings; messages sent to it.
+        unsafe {
+            let mut wc: WNDCLASSW = zeroed();
+            wc.lpfnWndProc = Some(DefWindowProcW);
+            wc.lpszClassName = class.as_ptr();
+            RegisterClassW(&wc);
+            let hwnd = CreateWindowExW(
+                0,
+                class.as_ptr(),
+                class.as_ptr(),
+                WS_OVERLAPPEDWINDOW,
+                -20000,
+                -20000,
+                200,
+                100,
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
+                std::ptr::null(),
+            );
+            assert!(!hwnd.is_null());
+            let seen = woke.clone();
+            ON_LOCK.with(|c| *c.borrow_mut() = Some(Box::new(move || seen.set(seen.get() + 1))));
+            SetWindowSubclass(hwnd, Some(lock_proc), LOCK_SUBCLASS, 0);
+            SendMessageW(hwnd, WM_WTSSESSION_CHANGE, WTS_SESSION_LOCK as WPARAM, 0);
+            assert_eq!(pop_ups_wait(), Some(Busy::Away));
+            assert_eq!(woke.get(), 1);
+            SendMessageW(hwnd, WM_WTSSESSION_CHANGE, WTS_SESSION_UNLOCK as WPARAM, 0);
+            assert!(!SESSION_LOCKED.load(std::sync::atomic::Ordering::Relaxed));
+            assert_eq!(woke.get(), 2);
+            // Other session changes (a remote connection) change nothing.
+            SendMessageW(hwnd, WM_WTSSESSION_CHANGE, 1, 0);
+            assert_eq!(woke.get(), 2);
+            DestroyWindow(hwnd);
+        }
+    }
+}
+
 // ---- taskbar progress (ITaskbarList3) -----------------------------------------------------
 //
 // windows-sys has no COM interface tables, so the three calls used are declared here in
@@ -6675,6 +6974,154 @@ unsafe fn dib_rgba(
             }
             px
         })
+    }
+}
+
+// ---- Thumbnails (preview.rs, #1368) -------------------------------------------------------------
+
+/// The start of the shell's `IShellItemImageFactory` vtable (shobjidl_core.h): IUnknown, then
+/// `GetImage`, its one method.
+#[repr(C)]
+struct ImageFactoryVtbl {
+    _query_interface: usize,
+    _add_ref: usize,
+    release: unsafe extern "system" fn(*mut c_void) -> u32,
+    get_image: unsafe extern "system" fn(
+        *mut c_void,
+        windows_sys::Win32::Foundation::SIZE,
+        i32,
+        *mut windows_sys::Win32::Graphics::Gdi::HBITMAP,
+    ) -> windows_sys::core::HRESULT,
+}
+
+/// IID_IShellItemImageFactory, {BCC18B79-BA16-442F-80C4-8A59C30C463B}.
+const IID_IMAGE_FACTORY: windows_sys::core::GUID = windows_sys::core::GUID {
+    data1: 0xBCC1_8B79,
+    data2: 0xBA16,
+    data3: 0x442F,
+    data4: [0x80, 0xC4, 0x8A, 0x59, 0xC3, 0x0C, 0x46, 0x3B],
+};
+
+/// The shell's picture of the file at `path` (the preview pane, #1368), the one Explorer shows:
+/// its thumbnail from whichever handler is registered for its type (pictures, videos, PDFs,
+/// Office documents...), fitting `px` pixels with its shape kept; where there is none, its own
+/// icon (a program's, a shortcut's), marked as an icon. A program, a shortcut or an icon file is
+/// its icon first, as Explorer draws them: the shell's "thumbnail" of one is that icon, small, on
+/// a white sheet. Run on preview.rs's pictures thread.
+pub fn thumbnail(path: &std::path::Path, px: u32) -> Option<crate::preview::Picture> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::UI::Shell::{
+        SHCreateItemFromParsingName, SIIGBF_ICONONLY, SIIGBF_RESIZETOFIT, SIIGBF_THUMBNAILONLY,
+    };
+    com_on_this_thread();
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain([0]).collect();
+    let side = px.clamp(16, 1024) as i32;
+    // SAFETY: the path is NUL-terminated; on success the factory carries a reference for us,
+    // released below. Its vtable is read only as far as GetImage, whose bitmap is ours to read
+    // and delete.
+    unsafe {
+        let mut factory: *mut c_void = std::ptr::null_mut();
+        let hr = SHCreateItemFromParsingName(
+            wide.as_ptr(),
+            std::ptr::null_mut(),
+            &IID_IMAGE_FACTORY,
+            &mut factory,
+        );
+        if hr < 0 || factory.is_null() {
+            return None;
+        }
+        let vtbl = &**(factory as *const *const ImageFactoryVtbl);
+        let size = windows_sys::Win32::Foundation::SIZE { cx: side, cy: side };
+        let mut got = None;
+        let program = path.extension().and_then(|e| e.to_str()).is_some_and(|e| {
+            [
+                "exe", "msi", "com", "scr", "lnk", "ico", "cur", "dll", "appx", "msix",
+            ]
+            .iter()
+            .any(|p| e.eq_ignore_ascii_case(p))
+        });
+        let thumbnail = (SIIGBF_RESIZETOFIT | SIIGBF_THUMBNAILONLY, false);
+        let icon = (SIIGBF_RESIZETOFIT | SIIGBF_ICONONLY, true);
+        let order = if program {
+            [icon, thumbnail]
+        } else {
+            [thumbnail, icon]
+        };
+        for (flags, icon) in order {
+            let mut bitmap: windows_sys::Win32::Graphics::Gdi::HBITMAP = std::ptr::null_mut();
+            if (vtbl.get_image)(factory, size, flags, &mut bitmap) >= 0 && !bitmap.is_null() {
+                let pixels = bitmap_rgba(bitmap);
+                DeleteObject(bitmap as _);
+                if let Some((w, h, rgba)) = pixels {
+                    got = Some(crate::preview::Picture {
+                        w,
+                        h,
+                        rgba,
+                        premultiplied: true,
+                        icon,
+                    });
+                    break;
+                }
+            }
+        }
+        (vtbl.release)(factory);
+        got
+    }
+}
+
+/// A bitmap's pixels as (width, height, RGBA), alpha premultiplied, as the shell's are; a
+/// picture without alpha (a photo's thumbnail: every pixel 0) is opaque.
+unsafe fn bitmap_rgba(
+    bitmap: windows_sys::Win32::Graphics::Gdi::HBITMAP,
+) -> Option<(u32, u32, Vec<u8>)> {
+    use windows_sys::Win32::Graphics::Gdi::{BITMAP, GetObjectW};
+    unsafe {
+        let mut bm: BITMAP = zeroed();
+        if GetObjectW(
+            bitmap as _,
+            size_of::<BITMAP>() as i32,
+            &mut bm as *mut BITMAP as *mut c_void,
+        ) == 0
+        {
+            return None;
+        }
+        let (w, h) = (bm.bmWidth, bm.bmHeight.abs());
+        if w <= 0 || h <= 0 || w > 4096 || h > 4096 {
+            return None;
+        }
+        let mut bmi: BITMAPINFO = zeroed();
+        bmi.bmiHeader = BITMAPINFOHEADER {
+            biSize: size_of::<BITMAPINFOHEADER>() as u32,
+            biWidth: w,
+            biHeight: -h, // top-down
+            biPlanes: 1,
+            biBitCount: 32,
+            biCompression: BI_RGB,
+            ..zeroed()
+        };
+        let mut px = vec![0u8; (w * h * 4) as usize];
+        let dc = GetDC(std::ptr::null_mut());
+        let lines = GetDIBits(
+            dc,
+            bitmap,
+            0,
+            h as u32,
+            px.as_mut_ptr() as *mut c_void,
+            &mut bmi,
+            DIB_RGB_COLORS,
+        );
+        ReleaseDC(std::ptr::null_mut(), dc);
+        if lines != h {
+            return None;
+        }
+        let opaque = !px.as_chunks::<4>().0.iter().any(|c| c[3] != 0);
+        for c in px.as_chunks_mut::<4>().0 {
+            c.swap(0, 2); // BGRA → RGBA
+            if opaque {
+                c[3] = 255;
+            }
+        }
+        Some((w as u32, h as u32, px))
     }
 }
 

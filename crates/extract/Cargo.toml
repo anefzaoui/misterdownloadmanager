@@ -18,6 +18,8 @@ flate2.workspace = true
 lzma-rust2 = { version = "0.23", default-features = false, features = ["std", "xz", "optimization"] }
 mdm-engine.workspace = true
 tracing.workspace = true
+# A RAR volume's end-of-archive header is checked by its CRC (is the set complete, #1661).
+crc32fast.workspace = true
 
 [dev-dependencies]
 tempfile.workspace = true

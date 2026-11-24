@@ -134,7 +134,16 @@ pub struct Faults {
     /// URL's own value is never lifted). A download can't finish meanwhile, only be stopped.
     #[serde(deserialize_with = "size_opt")]
     pub stall_at: Option<u64>,
+    /// `/files` only: the first answer for a path that carries the file's byte at this offset
+    /// sends [`GARBLED`] bytes from there inverted, as a proxy that mangled a range (#1661);
+    /// every later answer sends them right. An archive downloaded through it is damaged there,
+    /// and its damaged part downloaded again comes whole.
+    #[serde(deserialize_with = "size_opt")]
+    pub garble: Option<u64>,
 }
+
+/// How many bytes `garble` inverts.
+pub const GARBLED: u64 = 64;
 
 impl Faults {
     pub fn parse(query: &str) -> Result<Self, serde_urlencoded::de::Error> {
@@ -184,6 +193,7 @@ impl Faults {
                 .or(self.require_referer.clone()),
             once: over.once.or(self.once),
             stall_at: over.stall_at.or(self.stall_at),
+            garble: over.garble.or(self.garble),
         }
     }
 }

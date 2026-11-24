@@ -1,0 +1,37 @@
+name: NASM
+description: >-
+  NASM 2.16.03 on PATH (Windows x64 runners): BoringSSL, under the browser-like connection, and
+  AWS-LC are built with it. Taken from nasm.us and checked against its pinned SHA256; only when
+  that download fails, from Chocolatey's community feed as before (its feed was down for hours on
+  2026-11-24 and failed every Windows job).
+runs:
+  using: composite
+  steps:
+    - shell: pwsh
+      run: |
+        $ErrorActionPreference = 'Stop'
+        $version = '2.16.03'
+        # SHA256 of nasm-2.16.03-win64.zip as nasm.us serves it (2026-11-24). nasm.us publishes no
+        # checksum list; the same release's x64 installer from the same server matches the hash
+        # winget's manifest pins (NASM.NASM 2.16.03), so these files are the release's own.
+        $sha256 = '3ee4782247bcb874378d02f7eab4e294a84d3d15f3f6ee2de2f47a46aa7226e6'
+        $url = "https://www.nasm.us/pub/nasm/releasebuilds/$version/win64/nasm-$version-win64.zip"
+        $zip = Join-Path $env:RUNNER_TEMP "nasm-$version-win64.zip"
+        $fetched = $false
+        try {
+          Invoke-WebRequest -Uri $url -OutFile $zip -MaximumRetryCount 3 -RetryIntervalSec 10 -TimeoutSec 120
+          $fetched = $true
+        } catch {
+          Write-Warning "nasm.us download failed ($($_.Exception.Message)); using Chocolatey's feed"
+        }
+        if ($fetched) {
+          $got = (Get-FileHash -Algorithm SHA256 $zip).Hash.ToLowerInvariant()
+          # A different file is never used, nor replaced by another source.
+          if ($got -ne $sha256) { throw "nasm-$version-win64.zip: SHA256 $got, expected $sha256" }
+          Expand-Archive -Path $zip -DestinationPath $env:RUNNER_TEMP -Force
+          Join-Path $env:RUNNER_TEMP "nasm-$version" >> $env:GITHUB_PATH
+        } else {
+          choco install nasm --version 2.16.3 --no-progress -y
+          if ($LASTEXITCODE -ne 0) { throw "choco install nasm failed ($LASTEXITCODE)" }
+          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+        }

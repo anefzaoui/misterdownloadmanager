@@ -1742,6 +1742,7 @@ impl Run {
             server: None,
             at_service: None,
             finishing: None,
+            kept: None,
         };
         if *self.stopped.lock().unwrap() {
             s.state = State::Cancelled;

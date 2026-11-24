@@ -54,6 +54,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Hal-hazırda {n} məqalə uyğun gəlir (yalnız yenilərini əlavə edir):|Hal-hazırda {n} məqalə uyğun gəlir (yalnız yenilərini əlavə edir):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	Arxiv testi {n} zədələnmiş fayl aşkar etdi: {files}|Arxiv testi {n} zədələnmiş fayl aşkar etdi: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -96,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} endirmə tamamlandı|{n} endirmə tamamlandı
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} endirmə seçildi|{n} endirmə seçildi
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -126,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} faylın adı artıq orada olan faylın adı ilə üst-üstə düşdüyü üçün nömrələndi|{n} faylın adı artıq orada olan faylın adı ilə üst-üstə düşdüyü üçün nömrələndi
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} endirmə tamamlandı|{n} endirmə tamamlandı
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -163,11 +176,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} izləyici: {peers}|{n} izləyici: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} pəncərə qayıdana qədər gözləyir|{n} pəncərə qayıdana qədər gözləyir
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} Link grabber-ə {n} keçid göndərmək istəyir.|{site} Link grabber-ə {n} keçid göndərmək istəyir.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} və ölçüsü məlum olmayan {n} endirmə|{size} və ölçüsü məlum olmayan {n} endirmə
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -177,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} of {total} video siyahıya alınıb|{title}: {listed} of {total} video siyahıya alınıb
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	"Endirmə tamamlandı" və MDM-in özünün açdığı digər pəncərələr tam ekranlı oyun, proqram və ya video, təqdimat və ya kilidli ekran aktiv olduqda gözləyir və siz geri qayıtdıqda göstərilir. Özünüz açdığınız pəncərələr və brauzerinizdən gələn keçidlər həmişə göstərilir
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -232,6 +259,11 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-saatlıq (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	7-Zip onu yoxlaya bilmədi ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
@@ -279,6 +311,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	Maqnit keçidinin faylları axtarıla bilmədi: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM bağlanarkən köçürmə yarımçıq qaldı: endirmə {folder} qovluğundadır
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -315,6 +351,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Tək fayllı torrent öz adını saxlayır
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Torrent tamamlandıqdan sonra köçürülə bilər: o vaxta qədər torrent mühərriki hissələrini olduğu yerə yazır
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -323,10 +363,18 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	Bu kompüterdə və ya yerli şəbəkədə olan izləyici ilə heç vaxt əlaqə saxlanılmır: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Video və ya qalereya tamamlandıqdan sonra köçürülə bilər: o vaxta qədər köməkçi proqramları tamamlanmamış fayllarını öz qovluğunda saxlayır
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	arxivdəki həcmlərdən biri yoxdur
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	onun bir hissəsi hələ endirilməyib
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager haqqında
@@ -462,6 +510,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	Əlavə edildi. MDM torrenti oxuyur: bir azdan siyahıya qoşulacaq.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	Əlavə edildi:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -731,6 +783,7 @@
 #, machine
 	Austria	Avstriya
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	Avtomatik
@@ -873,7 +926,7 @@
 #, machine
 	Busy, try later	Məşğuldur, sonra cəhd edin
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	Düymə ölçüsü:
 #. message or event log entry in the main window
@@ -1119,7 +1172,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Saat:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1151,7 +1204,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Komor adaları
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	Yığcam
@@ -1269,6 +1322,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	Daha yeni {name} versiyasını axtarmaq mümkün olmadı: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	{name} yoxlanıla bilmədi: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1316,6 +1374,18 @@
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	Gündəlik
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	Zədələnib
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	Zədələnmiş arxiv
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	Zədələnib: arxiv testi xətalar aşkar etdi. Sağ klik → Yenidən endir onu təkrar endirir
 #. text in the Options window
 #, machine
 	Date order:	Tarix sırası:
@@ -1453,6 +1523,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Bir daha soruşma
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Tam ekranlı proqram və ya təqdimat işləyərkən açılan pəncərələri göstərmə
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Bu dialoq qutusunu bir daha göstərmə
@@ -1611,6 +1685,15 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	MDM-in öz nüsxəsi endirilir...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	MDM-in öz nüsxəsi endirilir... {percent}%
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	Zədələnmiş hissələr yenidən endirilir ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1962,6 +2045,10 @@
 #. text in categories.rs
 #, machine
 	File types:	Fayl növləri:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	Fayl:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2022,6 +2109,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Bitdi
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	Bitdi:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2167,7 +2258,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP endirmələri HTTP proksi vasitəsilə getmir. Onları proksi vasitəsilə göndərmək üçün SOCKS5 və ya SOCKS4 seçin.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	Tam
 #. text in countries.rs
@@ -2327,6 +2418,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Kateqoriyaları gizlət(&C)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	Önizləmə panelini gizlət(&P)
 #. button in a download's progress window
 #, machine
 	Hide tab	Nişanı gizlət
@@ -2577,6 +2673,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	faylları yazıla bilmədi: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	Qovluğa hazırda daxil olmaq mümkün deyil
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	{folder} qovluğuna çatmaq mümkün deyil
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2858,6 +2962,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	Səhifə axtarılır...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	Axtarılır...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3203,10 +3312,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Köçürüldü/Adı dəyişdirildi
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	Yeri dəyişdirilib və ya silinib
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	{folder} qovluğuna köçürüldü
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	Fayl köçürülür...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	{folder} qovluğuna köçürülür
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	Köçürülür...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3368,6 +3494,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	Bufer lövhəsində endirmə keçidləri tapılmadı. http, https, ftp və ya maqnit keçidləri olan mətni kopyalayın və yenidən cəhd edin.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	Heç bir endirmə seçilməyib
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3513,6 +3643,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	Hələ quraşdırılmayıb
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	Hələ məlum deyil
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3531,6 +3665,15 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	bu xidmət tərəfindən dəstəklənmir
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	Hələ yoxlanılmayıb: {name} tamamlanmayıb ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Yoxlanılmadı: {limit} həddindən böyükdür (Parametrlər → Arxivlər). Sağ klik → Arxivi yoxla onu yoxlayır
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	İstifadə edilmir: fayl hissələri faylın yanında yazılır
@@ -4061,10 +4204,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	Qeydə alınır...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
 	Redownload	Yenidən yükləyin
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	Yenidən endir əmri bütün cildləri əvvəldən endirir.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	Yenidən endir əmri onu əvvəldən endirir.
 #. text in a download's Properties window
 #, machine
 	Referer:	Referer:
@@ -4293,6 +4444,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	İkinci fayl:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	Şəklini və təfərrüatlarını burada görmək üçün endirmə seçin.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4446,6 +4601,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	Kateqoriyaları &göstər
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	Önizləmə panelini göstər(&P)
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	Dialoq qutusunu göstər və nə edəcəyini soruş.
@@ -4480,6 +4640,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	Mənə necə olduğunu göstər
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	Önizləmə panelini göstər və ya gizlət
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	Toplu yükləmə dialoqlarını bağlayarkən növbə seçimi panelini göstər
@@ -4628,6 +4791,10 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Bəzi
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	onun bəzi cildləri hələ də endirilir
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Torrentin bəzi faylları artıq bu qovluqda mövcuddur:
@@ -4781,6 +4948,10 @@
 #. label before the download's state
 #, machine
 	Status:	Vəziyyət:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	Hələ də oradadır
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -4931,6 +5102,13 @@
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
 	Test	Sınaq
+#. message or event log entry in the main window
+#, machine
+	Test archive	Arxivi yoxla
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	Endirmə tamamlandıqda arxivləri {gb} GB-a qədər yoxla
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -4939,6 +5117,19 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Test browser integration...	Brauzer inteqrasiyasını sınaqdan keçirin...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	Yenidən yoxlanıldı: arxivdə indi xəta yoxdur
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	Arxiv yoxlanılır...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	Arxiv yoxlanılır... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4972,6 +5163,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Trash: it was kept	Arxivi Zibil qutusuna köçürmək mümkün olmadı: arxiv saxlanıldı
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	Arxiv testi uğursuz oldu: arxiv zədələnib və ya adı göstərilən arxiv deyil
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	Arxiv testi heç bir xəta aşkar etmədi
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -5059,6 +5258,11 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	məlumat qəbul edilərkən əlaqə kəsildi
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	Zədələnmiş hissələri yenidən endirmək mümkün olmadı: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -5075,6 +5279,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} serverindən endirmə yarımçıq qaldı
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	Endirmə köçürülür
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5423,6 +5631,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	fayllar üçün kifayət qədər boş yer yoxdur, deyə HatchZip bildirir; heç nə dəyişdirilməyib
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	orada kifayət qədər boş yer yoxdur ({needed} lazımdır, {free} boşdur)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	"Yükləmə tamamlandı dialoqunu göstər" aktiv olduqda bu parametrlər mövcud deyil
@@ -5690,6 +5902,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	torrentləri başlatmaq mümkün olmadı: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	Ümumi ölçü:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6097,6 +6313,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Virus yoxlama parametrləri
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	{n} nömrəli hissə hələ endirilməyib
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -6149,6 +6370,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Veb
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	Veb səhifə:
 #. text in the Scheduler window
 #, machine
 	Wednesday	Çərşənbə
@@ -6425,6 +6650,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size} ölçüsündən {done}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{total} ölçüdən {done}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6447,6 +6676,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} yoxlamaq üçün oxuna bilmədi
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} artıq oradadır
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} əvəz edilə bilmədi: başqa proqram onu açıq saxlayır. Yeni endirmə eyni qovluqda {new} adı ilə saxlanıldı və hər iki fayl saxlanıldı.
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} artıq saxlandığı yerdə deyil (köçürülüb və ya silinib). Sağ klik menyusundakı “Yenidən endir” əmri faylı yenidən endirir.
@@ -6553,6 +6790,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} artıq endirilir: bir azdan yenidən cəhd edin
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} zədələnib: arxiv testi onda xətalar aşkar etdi.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} zədələnib: arxiv testi cildlərindən birində xətalar aşkar etdi.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6722,6 +6969,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} san
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6822,6 +7074,7 @@ extension	Added to MDM	MDM-ə əlavə edildi
 extension	Added to the queue	Növbəyə əlavə edildi
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	Hamısı
 #. text in the browser extension
@@ -6837,6 +7090,14 @@ extension	Another Mister Download Manager (a server)	Başqa bir Mister Download 
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	Audio
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	Yalnız səs
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	Öz yerinə qayıtdı, menyusu hər saytda hər şeyi göstərir
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6886,6 +7147,10 @@ extension	Clear finished	Bitənləri təmizlə
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	Bitmiş endirmələri təmizləmək istəyirsiniz?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	Kodek
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -6960,6 +7225,10 @@ extension	Download all links with Mister Download Manager	Bütün linkləri Mist
 #, machine
 extension	Download best	Ən yaxşı keyfiyyəti endir
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	Videolar üzərində endirmə düyməsi
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Seçilmiş linkləri Mister Download Manager ilə yükləyin
@@ -7006,6 +7275,10 @@ extension	Downloads go to {address}	Yükləmələr {address} ünvanına gedir
 #, machine
 extension	Drag the dots to move it along the edge	Onu kənar boyunca hərəkət etdirmək üçün nöqtələri sürüşdürün
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
+#, machine
+extension	Drag the dots to move it to another corner, or outside the video	Başqa küncə və ya videodan kənara köçürmək üçün nöqtələri sürüyün
+#. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Onun https:// ünvanını daxil edin.
@@ -7022,6 +7295,10 @@ extension	Failed: {why}	Uğursuz: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	Fayl silindi və ya köçürüldü
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	Fayl növü
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7334,9 +7611,17 @@ extension	Protected	Qorunur
 #, machine
 extension	Protected video	Qorunan video
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	Düyməni öz yerinə qaytar
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	Siyahıdan sil
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	Sıfırla
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7390,6 +7675,7 @@ extension	Share...	Paylaş...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	Göstər
 #. text in the browser extension
@@ -7540,6 +7826,10 @@ extension	Waiting	Gözləyir
 #, machine
 extension	What you download with Mister Download Manager shows up here.	Mister Download Manager ilə endirdiyiniz fayllar burada görünür.
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	Hər saytda onu köçürdüyünüz yer və menyusunun filtrləri
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	Səhifə tam ekranda olarkən, videolarında “Videonu endir” düyməsi görünməyəcək
@@ -7578,6 +7868,10 @@ extension	{time} left	{time} qaldı
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8275,6 +8569,10 @@ menu	Te&xt	&Mətn
 #, machine
 menu	Tell a &friend	Dosta &de
 #. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	Arxivi yoxla
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
 menu	The graphics card was lost twice in 10 minutes	Qrafik kartı 10 dəqiqə ərzində iki dəfə sıradan çıxdı
@@ -8349,6 +8647,10 @@ menubar	&Tasks	&Tapşırıqlar
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&Baxış
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	Önizləmə
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Torrent əlavə et
@@ -8366,6 +8668,10 @@ toolbar	Delete Completed	Tamamlanmışları sil
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	Seçimlər
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	Önizləmə
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

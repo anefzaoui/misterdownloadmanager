@@ -962,6 +962,12 @@ fn data_left(x: f32, right: f32) -> f32 {
 /// `s` broken into the lines it shows in `room` px: at its own line breaks, and where a line is
 /// too long, at spaces, or between any two characters in scripts written without spaces.
 fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
+    wrap_lines_font(p, tahoma(), s, room)
+}
+
+/// [`wrap_lines`] in any font (a bold name on several lines: the preview pane's).
+pub fn wrap_lines_font(p: &Painter, font: FontId, s: &str, room: f32) -> Vec<String> {
+    let text_width = |p: &Painter, t: &str| text_width_font(p, font.clone(), t);
     let mut lines: Vec<String> = Vec::new();
     for given in s.split('\n') {
         // A Windows line end (a report written there) breaks the line too.
@@ -1017,6 +1023,170 @@ fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
         lines.push(line.trim_end().to_owned());
     }
     lines
+}
+
+/// A file's name on up to `max` lines of `room` px (`width` measures a text): broken at its own
+/// separators (after a space, `_`, `-`, `.`, `,`, `+`, `~`; before an opening bracket), its
+/// extension never split and kept on the last line with the piece before it; a part with no
+/// separator wider than the room broken between its characters (a letter and its marks together).
+/// Longer than `max` lines: the last one is the name's end, cut at its start with "..." (so the
+/// extension still shows).
+pub fn name_lines(name: &str, room: f32, max: usize, width: impl Fn(&str) -> f32) -> Vec<String> {
+    let max = max.max(1);
+    if width(name) <= room {
+        return vec![name.to_owned()];
+    }
+    // The extension: after the last dot, short, after a stem of its own.
+    let (stem, ext) = match name.rfind('.') {
+        Some(at) if at > 0 && name.len() - at <= 17 && !name[at + 1..].contains(' ') => {
+            name.split_at(at)
+        }
+        _ => (name, ""),
+    };
+    // The stem in pieces, each ending at a separator.
+    let mut pieces: Vec<String> = Vec::new();
+    let mut cur = String::new();
+    for g in stem.graphemes(true) {
+        if matches!(g, "(" | "[" | "{") && !cur.is_empty() {
+            pieces.push(std::mem::take(&mut cur));
+        }
+        cur.push_str(g);
+        if matches!(g, " " | "_" | "-" | "." | "," | "+" | "~" | ")" | "]" | "}") {
+            pieces.push(std::mem::take(&mut cur));
+        }
+    }
+    if !cur.is_empty() {
+        pieces.push(cur);
+    }
+    // A piece wider than the room: cut between its characters.
+    let mut parts: Vec<String> = Vec::new();
+    for piece in pieces {
+        if width(&piece) <= room {
+            parts.push(piece);
+            continue;
+        }
+        let mut chunk = String::new();
+        for g in piece.graphemes(true) {
+            if !chunk.is_empty() && width(&format!("{chunk}{g}")) > room {
+                parts.push(std::mem::take(&mut chunk));
+            }
+            chunk.push_str(g);
+        }
+        if !chunk.is_empty() {
+            parts.push(chunk);
+        }
+    }
+    // The extension goes with the piece before it where they fit together, so it never ends up
+    // alone on a line of its own ("...10s_1MB" / ".mp4").
+    if !ext.is_empty() {
+        match parts.last_mut() {
+            Some(last) if width(&format!("{last}{ext}")) <= room => last.push_str(ext),
+            _ => parts.push(ext.to_owned()),
+        }
+    }
+    let mut lines: Vec<String> = Vec::new();
+    let mut line = String::new();
+    for part in parts {
+        if line.is_empty() || width(&format!("{line}{part}")) <= room {
+            line.push_str(&part);
+        } else {
+            lines.push(std::mem::take(&mut line));
+            line = part;
+        }
+    }
+    lines.push(line);
+    for l in &mut lines {
+        // A space a line ends on isn't seen.
+        let trimmed = l.trim_end_matches(' ').len();
+        l.truncate(trimmed.max(1).min(l.len()));
+    }
+    if lines.len() > max {
+        let rest: String = lines.split_off(max - 1).concat();
+        // The rest's end that fits after "...": the extension stays in sight.
+        let gs: Vec<&str> = rest.graphemes(true).collect();
+        let mut k = gs.len();
+        while k > 0 && width(&format!("...{}", gs[k - 1..].concat())) <= room {
+            k -= 1;
+        }
+        lines.push(format!("...{}", gs[k..].concat()));
+    }
+    lines
+}
+
+/// [`name_lines`] measured in `font`.
+pub fn name_lines_in(p: &Painter, font: FontId, name: &str, room: f32, max: usize) -> Vec<String> {
+    name_lines(name, room, max, |s| text_width_font(p, font.clone(), s))
+}
+
+#[cfg(test)]
+mod name_lines_tests {
+    use super::name_lines;
+
+    /// One unit per character: a room of 10 holds ten.
+    fn lines(name: &str, room: f32, max: usize) -> Vec<String> {
+        name_lines(name, room, max, |s| s.chars().count() as f32)
+    }
+
+    #[test]
+    fn a_name_breaks_at_its_separators_and_keeps_its_extension_whole() {
+        // #1368's: "Big_Buck_Bunny_360_10s_1MB.m" / "p4" before.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 20.0, 3),
+            ["Big_Buck_Bunny_360_", "10s_1MB.mp4"]
+        );
+        assert_eq!(lines("short.mp4", 20.0, 3), ["short.mp4"]);
+        // Not the extension alone on the last line: the piece before it goes down with it.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 26.0, 3),
+            ["Big_Buck_Bunny_360_10s_", "1MB.mp4"]
+        );
+        assert_eq!(
+            lines("with-a-rather-long-name.iso.torrent", 26.0, 3),
+            ["with-a-rather-long-name.", "iso.torrent"]
+        );
+        // The extension goes down whole rather than split.
+        assert_eq!(
+            lines("abcdefghij.torrent", 12.0, 3),
+            ["abcdefghij", ".torrent"]
+        );
+        // Spaces and dashes; the space a line ends on dropped.
+        assert_eq!(
+            lines("My holiday photos - final.zip", 12.0, 3),
+            ["My holiday", "photos -", "final.zip"]
+        );
+        // A bracket starts its line.
+        assert_eq!(
+            lines("Report(2026).pdf", 8.0, 3),
+            ["Report", "(2026)", ".pdf"]
+        );
+    }
+
+    #[test]
+    fn a_name_without_separators_breaks_between_letters_not_in_its_extension() {
+        let l = lines("abcdefghijklmnopqrstuvwxyz.torrent", 10.0, 5);
+        assert_eq!(l, ["abcdefghij", "klmnopqrst", "uvwxyz", ".torrent"]);
+        assert!(l.iter().all(|x| x.chars().count() <= 10));
+    }
+
+    #[test]
+    fn too_many_lines_end_with_the_names_end() {
+        let l = lines("a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p.mp4", 9.0, 3);
+        assert_eq!(l.len(), 3);
+        assert_eq!(l[2], "..._p.mp4");
+        assert_eq!(l[0], "a_b_c_d_");
+    }
+
+    #[test]
+    fn a_name_in_another_script_keeps_its_letters_and_marks() {
+        // Arabic letters with their marks, no separator: broken between whole characters.
+        let name = "مِلَفٌّطَوِيلٌجِدًّا.pdf";
+        let l = name_lines(name, 6.0, 4, |s| {
+            use unicode_segmentation::UnicodeSegmentation;
+            s.graphemes(true).count() as f32
+        });
+        assert_eq!(l.concat(), name);
+        assert_eq!(l.last().map(String::as_str), Some(".pdf"));
+    }
 }
 
 /// Where the text before a line's first input box goes in a [`sentence`].
@@ -1352,6 +1522,8 @@ impl RowList {
 pub struct RowEvents {
     /// The selection moved to this row (a click, the keys).
     pub picked: Option<usize>,
+    /// A left click on this row (even the one already selected).
+    pub clicked: Option<usize>,
     pub double_clicked: Option<usize>,
     /// Enter on the selected row (not taken: [`take_key`] it to keep it from the dialog).
     pub entered: Option<usize>,
@@ -1648,6 +1820,9 @@ pub fn row_list(
                 // the next mouse move: a screen reader's click moves no mouse.
                 ui.ctx().request_repaint();
             }
+        }
+        if r.clicked() {
+            ev.clicked = Some(i);
         }
         if r.double_clicked() {
             ev.double_clicked = Some(i);
@@ -5229,6 +5404,19 @@ pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug,
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
 }
 
+/// The window's own node in the accessibility tree carries the window's title: egui leaves the
+/// root Window node unnamed, so a screen reader met `[frame] ''` where it looks for the window's
+/// name (#1407). The title is passed in, not read back from the OS window — on X11 winit's
+/// `Window::title()` is a stub that returns `""`. Call once a frame on each window's root ui.
+pub fn name_window(ui: &Ui, title: &str) {
+    if title.is_empty() {
+        return;
+    }
+    let resp = ui.interact(ui.max_rect(), egui::accesskit_root_id(), Sense::hover());
+    let title = title.to_owned();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::Role::Window, true, &title));
+}
+
 /// A [`paragraph`] a screen reader can read too: its lines painted, then a [`readable`] Label
 /// node over them, for text that was only painted (#1407). Returns the line count, like
 /// [`paragraph`].
@@ -5324,6 +5512,61 @@ pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: boo
         info.current_text_value = Some(value.clone());
         info
     });
+}
+
+/// A download's progress as a progress bar of its own (#1190, #1406): UI Automation reads it
+/// through the RangeValue pattern, so a reader's own progress reporting — its beeps and
+/// percentages — follows it without anyone moving the focus.
+///
+/// An AccessKit node of its own rather than [`expose`]: egui's `WidgetInfo` carries a value but no
+/// range (`Response::widget_info` sets the numeric value alone), and what a reader follows is a
+/// value inside a range, 0–100 here. Unnamed on purpose: a name is read in place of the value.
+/// `frac` is the download's own fraction, 0..=1.
+pub fn expose_progress(ui: &Ui, rc: Rect, id: egui::Id, frac: f64) {
+    ui.interact(rc, id, Sense::hover());
+    ui.ctx().accesskit_node_builder(id, |n| {
+        n.set_role(egui::Role::ProgressIndicator);
+        // Its rectangle, as egui gives one to every control it makes a node of (response.rs,
+        // fill_accesskit_node_common): without it UI Automation reports the node without any
+        // bounds, so a reader's review keys have nowhere on the bar to land — only its value,
+        // through the RangeValue pattern, would reach them.
+        n.set_bounds(egui::accesskit::Rect {
+            x0: f64::from(rc.min.x),
+            y0: f64::from(rc.min.y),
+            x1: f64::from(rc.max.x),
+            y1: f64::from(rc.max.y),
+        });
+        n.set_min_numeric_value(0.0);
+        n.set_max_numeric_value(100.0);
+        n.set_numeric_value(progress_value(frac));
+    });
+}
+
+/// [`expose_progress`]'s value as UI Automation reads it, 0–100: a figure that outran its own
+/// size (a rounded-up byte count, a file that grew under it) stays inside the range, since one
+/// outside it is dropped by the reader rather than clamped by it.
+fn progress_value(frac: f64) -> f64 {
+    frac.clamp(0.0, 1.0) * 100.0
+}
+
+#[cfg(test)]
+mod progress_value_tests {
+    use super::progress_value;
+
+    #[test]
+    fn a_fraction_becomes_a_percentage() {
+        assert_eq!(progress_value(0.0), 0.0);
+        assert_eq!(progress_value(0.25), 25.0);
+        assert_eq!(progress_value(1.0), 100.0);
+        // 41.3 % through, as the "Downloaded" row says it.
+        assert!((progress_value(0.413) - 41.3).abs() < 1e-9);
+    }
+
+    #[test]
+    fn a_figure_outside_the_fraction_stays_in_the_range() {
+        assert_eq!(progress_value(-0.03), 0.0);
+        assert_eq!(progress_value(1.04), 100.0);
+    }
 }
 
 /// The click of a control that opens a popup, except the one ending the press that just closed

@@ -50,7 +50,9 @@ maker (Tonec), or as a crack or copy of it.
 
 - Static site: `tools/website/build.py` builds `website/`, `docs/` (help) and `CHANGELOG.md`
   (news) into `target/site`; GitHub Pages serves it at misterdownloadmanager.com. Plain HTML,
-  CSS and JavaScript, no framework, no external scripts except the Statcounter visit counter.
+  CSS and JavaScript, no framework, no external scripts except the Statcounter visit counter and,
+  once a visitor reaches for the rating stars, Cloudflare Turnstile. The site's own star ratings
+  are a small Cloudflare Worker over D1 (`website/ratings/`); without it the site shows none.
 - Every page exists in 21 languages (`tools/website/sitei18n.py`, catalogs in `i18n/site/`);
   layout must hold for long German words, CJK, Thai, Bengali and right-to-left Arabic/Persian.
   Text in scripts is translated through `window.MDM_I18N`.
@@ -68,8 +70,11 @@ maker (Tonec), or as a crack or copy of it.
   flag-icons, MIT), browser logos for the extension (`website/assets/browsers/`).
 - Real third-party words and figures, checked by hand: `website/content/quotes.tsv` (reviews and
   articles, quoted exactly with their source and date), `website/content/press.tsv` (independent
-  articles and videos) and `build.py` FIGURES (the browser stores' users and ratings, GitHub's
-  download count, Trendshift's ranking), each with the date it was checked. Nothing beyond these
+  articles and videos), the browser stores' users and ratings (read again at every build,
+  `tools/website/tallies.py`, kept with the day in `website/content/stores.json`) and `build.py`
+  FIGURES (GitHub's download count, Trendshift's ranking), each with the date it was checked.
+  The site's own star ratings (visitors', one each) are the only rating in its structured data;
+  the stores' never are. Nothing beyond these
   may be invented, shortened into a different meaning or combined; no customer or press logos.
   GitHub stars are shown only as the live count.
 
@@ -77,7 +82,8 @@ maker (Tonec), or as a crack or copy of it.
 
 1. Familiar first: the visitor should recognize the window before reading a word.
 2. Prove, don't claim: every speed statement points to the benchmark; every image is the real app.
-3. Free means free: no dark patterns, no upsell, no data collection beyond the visit counter.
+3. Free means free: no dark patterns, no upsell, no data collection beyond the visit counter and
+   the stars a visitor chooses to give (kept without their IP address).
 4. Every language is first-class: no page reads as a translation of an English layout.
 5. Honest about limits: experimental builds (macOS), what Linux lacks yet, missing features and IDM's own strengths are stated
    plainly.
