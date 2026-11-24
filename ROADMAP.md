@@ -576,6 +576,11 @@ These ship in the next version.
 - ✅ Debrid torrents: a "ready" torrent with no files listed yet is asked again
 - ✅ Real-Debrid: a download waits out the service's maintenance for up to an hour
 - ✅ Premiumize: large torrents with many folders come down
+- ✅ Browser add-on: each Alt+click on the same link leaves its download to the browser
+- ✅ Browser add-on: a media row whose page changed says it is gone
+- ✅ Browser add-on: Hide on this video follows the video in a reused feed player
+- ✅ Browser add-on: a full list of streams keeps each frame's first one
+- ✅ Browser add-on: the toolbar count stays while MDM is busy for a moment
 - ✅ Click'n'Load is checked more carefully
 - ✅ Browser detection copes with letters that grow when lowercased in a browser's program name
 - ✅ Linux and macOS: the running downloads' progress on MDM's icon in the dock (Ubuntu Dock,
@@ -2045,6 +2050,9 @@ These ship in the next version.
   were; choosing one now redraws and publishes the group's new checked states in that same frame,
   and the arrow keys move between **Quick cut** / **Exact cut** and **Delete category**'s choices
   too ([#1692](https://github.com/anefzaoui/misterdownloadmanager/issues/1692))
+- ✅ Tests: the check of a live stream stopped after its recording was renamed no longer fails now
+  and then on Windows: the fake yt-dlp's copy of the recording is there only once it is whole and
+  closed, so the check never reads it while the copy still holds it
 
 ## Being worked on
 

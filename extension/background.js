@@ -434,7 +434,9 @@ async function recentList(ask) {
   // the question), busy, or not reached (`why`).
   const old = reply.why === "refused";
   if (reply.why && !old) await noteStatus(reply.why);
-  await noteRunning(0);
+  // Busy is this question's timeout, not the app having no downloads: the count the badge
+  // shows and the watch that keeps it fresh stay as they were.
+  if (reply.appState !== "busy") await noteRunning(0);
   return { ok: false, remote: null, appState: reply.appState || (old ? "old" : null), why: old ? null : reply.why || null };
 }
 
@@ -936,6 +938,9 @@ const bypass = new Map(); // address -> {at, tab, page, used}
 // download its page starts, stay the browser's that long; anything else only BYPASS_MS.
 const BYPASS_CHECK_MS = 60000;
 const BYPASS_MS = 10000;
+// The press and the click that follow it: page.js says the same Alt+click twice this close
+// together, and only the first lets the browser's download through.
+const BYPASS_PRESS_MS = 2000;
 
 // `clicked`: the download is a link the user just clicked without Alt (Safari's `link`), never
 // one that follows an Alt+click.
@@ -1124,7 +1129,9 @@ function noteMedia(d, found, sent) {
       firsts.add(it.frameId);
       return false;
     });
-    tab.items.splice(Math.max(i, 0), 1);
+    // Nothing may go without taking a frame's first stream: the cap gives way.
+    if (i < 0) break;
+    tab.items.splice(i, 1);
   }
   // The tab seen last goes last; the least recent ones go past MEDIA_TABS.
   media.delete(d.tabId);
@@ -2078,7 +2085,10 @@ async function mediaDownload(tabId, url) {
   if (!shown) return { ok: false, why: "gone" };
   if (shown.drm) return { ok: false, why: "drm" };
   const kept = media.get(tabId);
-  const it = kept.items.find((x) => x.url === url);
+  const it = kept && (kept.items || []).find((x) => x.url === url);
+  // The list was rebuilt while its answer was on its way back: the page changed, or the tab
+  // closed. That is "gone", not a failure with no reason.
+  if (!it) return { ok: false, why: "gone" };
   let tab;
   try {
     tab = await ext.tabs.get(tabId);
@@ -3611,8 +3621,11 @@ async function pageMessage(m, sender) {
   }
   // Alt held on a link: as the button went down, and at the click (page.js).
   if (m.type === "bypass" && typeof m.url === "string") {
+    // The same press says itself twice (button down, then click); a later Alt+click on the
+    // same link is a new one, and lets its own download through.
     const was = bypass.get(m.url);
-    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(was && was.used) });
+    const samePress = was && Date.now() - was.at < BYPASS_PRESS_MS;
+    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(samePress && was.used) });
     return { ok: true };
   }
   if (m.type === "video" && page) {

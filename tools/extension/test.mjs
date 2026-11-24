@@ -2009,6 +2009,39 @@ const videoPageOn = (() => {
   return (location, document) => new Function("location", "document", body)(location, document);
 })();
 
+// "Hide on this video" (video.js): a player reused for the next video in a feed shows the button
+// for it again; one hidden before it had an address stays hidden once it gets one (#1879).
+{
+  const source = readText("../../extension/video.js");
+  const start = source.indexOf('  // ---- "Hide on this video": from here');
+  const end = source.indexOf('  // ---- "Hide on this video": end.');
+  assert.ok(start > 0 && end > start, "video.js has Hide on this video and its end mark");
+  const fresh = () => new Function(`${source.slice(start, end)}; return { dismiss, isDismissed };`)();
+  {
+    const { dismiss, isDismissed } = fresh();
+    const v = { currentSrc: "https://feed.test/1.mp4" };
+    dismiss(v);
+    assert.ok(isDismissed(v), "hidden");
+    v.currentSrc = "";
+    assert.ok(isDismissed(v), "between two videos");
+    v.currentSrc = "https://feed.test/2.mp4";
+    assert.ok(!isDismissed(v), "the next post's video");
+    assert.ok(isDismissed({ currentSrc: "https://feed.test/1.mp4" }), "the hidden video, in another element");
+  }
+  {
+    const { dismiss, isDismissed } = fresh();
+    const v = { currentSrc: "" };
+    dismiss(v);
+    assert.ok(isDismissed(v), "hidden before it had an address");
+    v.currentSrc = "https://feed.test/3.mp4";
+    assert.ok(isDismissed(v), "still hidden once it has one");
+    v.currentSrc = "https://feed.test/4.mp4";
+    assert.ok(!isDismissed(v), "the next post's video");
+    assert.ok(!isDismissed({ currentSrc: "" }), "another element");
+  }
+  ok("#1879: Hide on this video follows the video in a reused player");
+}
+
 // The address the button hands the app (video.js's videoPage): the video's own page, not the page
 // that plays it. YouTube's home, a search, a channel or a playlist is a list to yt-dlp, and a watch
 // page opened from a mix carries the list in its address: the button sent either, and the app
@@ -4364,6 +4397,12 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     // The click's word comes after: still the same click, nothing more is left to the browser.
     await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
     assert.ok(!(await kept({ id: 61, url: "https://site.test/b.zip", referrer: "https://site.test/files", filename: "b.zip" })), "a later plain download from the page");
+    assert.equal(natives(calls).length, 1);
+    // A new Alt+click on the same link, seconds later, is a click of its own: the download that
+    // follows it under another address is the browser's too (the link's own address always was).
+    clock.t += 3000;
+    await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
+    assert.ok(await kept({ id: 73, url: "https://site.test/c.zip", referrer: "https://site.test/files", filename: "c.zip" }), "a new press on the same link");
     assert.equal(natives(calls).length, 1);
     // A link the page's script took (the click's own download prevented): the download it
     // started instead, under another address, sent from the page (the referrer cut to the site

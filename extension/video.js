@@ -1074,11 +1074,26 @@
   const landedAt = location.href;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // "Hide on this video": the video's address (players reuse one element for the next video),
-  // else the element.
-  const dismissed = new WeakSet();
+  // ---- "Hide on this video": from here to its end mark (tools/extension/test.mjs runs it).
+  // The video's address: a player reused for the next video in a feed is a new video once its
+  // address changes. The element while it has none; one hidden before it had an address keeps
+  // the first one it gets as the hidden video's.
+  const dismissed = new WeakMap(); // element -> its address when hidden ("": none yet)
   const dismissedSrc = new Set();
-  const isDismissed = (v) => dismissed.has(v) || (v.currentSrc && dismissedSrc.has(v.currentSrc));
+  const dismiss = (v) => {
+    dismissed.set(v, v.currentSrc || "");
+    if (v.currentSrc) dismissedSrc.add(v.currentSrc);
+  };
+  const isDismissed = (v) => {
+    const src = v.currentSrc || "";
+    if (src && dismissedSrc.has(src)) return true;
+    if (!dismissed.has(v)) return false;
+    if (!src) return true;
+    if (dismissed.get(v) !== "") return false;
+    dismiss(v);
+    return true;
+  };
+  // ---- "Hide on this video": end.
   // May it show here? The app's answer (Options: the button on, the site not listed), asked
   // again when older than ASK_MS, so a change in Options reaches a page already open (#532: one
   // that never reloads, as YouTube's, kept the button for good). `never`: this page's own
@@ -2697,8 +2712,7 @@ button:focus-visible { outline: none; }
     closeMenu();
     held = null;
     if (!video) return;
-    dismissed.add(video);
-    if (video.currentSrc) dismissedSrc.add(video.currentSrc);
+    dismiss(video);
     video = null;
     hide(true);
   }
