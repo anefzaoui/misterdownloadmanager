@@ -5105,28 +5105,44 @@ fn watch_session_lock() {
                 };
                 let watch = || -> zbus::Result<()> {
                     let conn = zbus::blocking::Connection::system()?;
-                    // "auto": this program's session, or its user's graphical one when the
+                    // The user's graphical session, whose screen locks (logind's `User.Display`);
+                    // else "auto": this program's session, or its user's graphical one when the
                     // program runs outside a session (started by the desktop's systemd user
-                    // manager); "self" on a logind before "auto".
-                    let session = [
-                        "/org/freedesktop/login1/session/auto",
-                        "/org/freedesktop/login1/session/self",
-                    ]
-                    .into_iter()
-                    .find_map(|path| {
-                        let p = zbus::blocking::Proxy::new(
-                            &conn,
-                            "org.freedesktop.login1",
-                            path,
-                            "org.freedesktop.login1.Session",
-                        )
-                        .ok()?;
-                        let now = p.get_property::<bool>("LockedHint").ok()?;
-                        Some((p, now))
-                    });
-                    let Some((session, now)) = session else {
+                    // manager); "self" on a logind before "auto". The program's own session can
+                    // be another one, without a screen (a remote login that started it).
+                    let display = zbus::blocking::Proxy::new(
+                        &conn,
+                        "org.freedesktop.login1",
+                        "/org/freedesktop/login1/user/self",
+                        "org.freedesktop.login1.User",
+                    )
+                    .and_then(|user| {
+                        user.get_property::<(String, zbus::zvariant::OwnedObjectPath)>("Display")
+                    })
+                    .ok()
+                    .map(|(_, path)| path.to_string())
+                    .filter(|path| path != "/");
+                    let session = display
+                        .into_iter()
+                        .chain([
+                            "/org/freedesktop/login1/session/auto".to_owned(),
+                            "/org/freedesktop/login1/session/self".to_owned(),
+                        ])
+                        .find_map(|path| {
+                            let p = zbus::blocking::Proxy::new(
+                                &conn,
+                                "org.freedesktop.login1",
+                                path.clone(),
+                                "org.freedesktop.login1.Session",
+                            )
+                            .ok()?;
+                            let now = p.get_property::<bool>("LockedHint").ok()?;
+                            Some((p, now, path))
+                        });
+                    let Some((session, now, path)) = session else {
                         return Err(zbus::Error::Failure("no session of logind's".into()));
                     };
+                    tracing::info!("the session's lock: followed on {path}");
                     set(now);
                     for change in session.receive_property_changed::<bool>("LockedHint") {
                         set(change.get()?);

@@ -17,7 +17,9 @@
 use std::collections::HashSet;
 use std::time::{Duration, Instant};
 
-/// Why pop-ups wait now, as the system tells.
+/// Why pop-ups wait now, as the system tells. A game and presentation mode are Windows' own
+/// states; macOS tells none ([`system`]).
+#[cfg_attr(not(windows), allow(dead_code))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Busy {
     /// A full-screen app or video is in front (Windows: `QUNS_BUSY`; X11: the active window is
