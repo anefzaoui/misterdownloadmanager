@@ -244,11 +244,8 @@ fn router(on_found: OnFound) -> Router {
         move |headers: HeaderMap, body: Bytes| {
             let (on_found, rate) = (on_found.clone(), rate.clone());
             async move {
-                let form = form(&body);
-                let package = match read(path, &form) {
-                    Ok(p) => p,
-                    Err(why) => return text(why),
-                };
+                // Charged before the parse: a page that posts garbage costs the same to read
+                // and parse as a real package, and must not be free of the limit.
                 let site = site(&headers);
                 if !rate.take(&site, Instant::now()) {
                     tracing::info!("Click'n'Load: a post refused, too many this minute");
@@ -258,6 +255,11 @@ fn router(on_found: OnFound) -> Router {
                     )
                         .into_response();
                 }
+                let form = form(&body);
+                let package = match read(path, &form) {
+                    Ok(p) => p,
+                    Err(why) => return text(why),
+                };
                 let found = Found { package, site };
                 let took = tokio::task::spawn_blocking(move || on_found(found))
                     .await
