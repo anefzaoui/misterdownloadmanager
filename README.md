@@ -133,6 +133,21 @@ winget install AhmedNefzaoui.MisterDownloadManager
 winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
 
+Or from [SourceForge](https://sourceforge.net/projects/mister-download-manager.mirror/), an
+automatic, exact copy of the GitHub releases (SourceForge shows ads around its downloads), where
+MDM has SourceForge's *Users Love Us* award:
+
+<p align="center">
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/files/latest/download"><img align="middle" src="https://a.fsdn.com/con/app/sf-download-button" srcset="https://a.fsdn.com/con/app/sf-download-button?button_size=2x 2x" alt="Download Mister Download Manager from SourceForge" width="276" height="48"></a>
+  &nbsp;&nbsp;
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="website/assets/badges/sourceforge-users-love-us-dark.svg">
+    <img align="middle" src="website/assets/badges/sourceforge-users-love-us.svg" alt="SourceForge's Users Love Us award for Mister Download Manager" width="96" height="96">
+  </picture></a>
+  <br>
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/files/"><img src="https://img.shields.io/sourceforge/dt/mister-download-manager?logo=sourceforge&label=downloads%20from%20SourceForge" alt="Downloads from SourceForge"></a>
+</p>
+
 ### Code signing policy
 
 Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).

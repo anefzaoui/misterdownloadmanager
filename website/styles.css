@@ -660,6 +660,23 @@ tbody th { font-weight: 650; }
   .sheet-band + .figures > div:nth-child(-n+4) { border-top: 0; }
 }
 @media (max-width: 720px) { .sheet-band + .figures > div:nth-child(2) { border-top: 1.5px solid var(--ink); } }
+/* Awards under the figures: the giver's own seal (served from this site), then who gave it as the
+   field name and the award's name in the figures' voice. A seal is a sticker on the sheet: it
+   lifts a little when pointed at, like the crew's photos. */
+.awards { display: flex; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; border-top: 1.5px solid var(--ink); }
+.award { flex: 1 1 330px; display: flex; align-items: center; gap: clamp(14px, 2vw, 20px); min-width: 0; padding: 14px clamp(16px, 2.4vw, 22px) 16px; }
+.award-seal { flex: none; display: block; line-height: 0; transition: transform .2s cubic-bezier(.16, 1, .3, 1); }
+.award-seal img { width: 84px; height: 84px; }
+@media (max-width: 720px) { .award-seal img { width: 64px; height: 64px; } }
+.award:hover .award-seal { transform: translateY(-3px); }
+@media (prefers-reduced-motion: reduce) { .award-seal { transition: none; } .award:hover .award-seal { transform: none; } }
+.award-text { min-width: 0; }
+.award-text .field-name { margin: 0; color: var(--ink-3); }
+.award-name { margin: 2px 0 0; font-size: 19px; font-weight: 750; font-stretch: 92%; line-height: 1.35; }
+.award-name a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.award-name a:hover { text-decoration-thickness: 2px; }
+.award-fine { margin: 3px 0 0; font-size: 14px; line-height: 1.45; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.award-fine time { white-space: nowrap; }
 .said-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); margin: 0 -1px -1px 0; padding: 0; list-style: none; border-top: 1.5px solid var(--ink); }
 [dir="rtl"] .said-list { margin: 0 0 -1px -1px; }
 .said-list > li { min-width: 0; box-shadow: inset -1px -1px 0 var(--line); }

@@ -1331,6 +1331,35 @@ def figures_fields() -> str:
         for name, href, value, fine in figures()) + "</dl>"
 
 
+# Awards given to MDM, shown under the figures (home and /press.html): (who gave it, the award's
+# name, where it is shown, its light image, its dark image, its fine print, the day it was seen).
+# Only awards actually given: SourceForge's badge page shows its other badges greyed out until a
+# project earns them. The images are the givers' own, copied unchanged into website/assets/badges/
+# (SOURCES.txt says from where) and served from this site: showing them asks no other site for
+# anything (the privacy page lists the only outside requests).
+SOURCEFORGE_PROJECT = "https://sourceforge.net/projects/mister-download-manager.mirror/"
+AWARDS = [
+    ("SourceForge", "Users Love Us", SOURCEFORGE_PROJECT,
+     "/assets/badges/sourceforge-users-love-us.svg", "/assets/badges/sourceforge-users-love-us-dark.svg",
+     "Given by SourceForge, which keeps a copy of every release", "2026-11-24"),
+]
+
+
+def awards_row() -> str:
+    """AWARDS as a ruled row of seals: the badge (a day and a night version), who gave it as the
+    field name, the award's name as a link, its fine print. The seal repeats the name's link, so it
+    is hidden from screen readers and the keyboard. Names are names (translate="no")."""
+    items = "".join(
+        f'<li class="award"><a class="award-seal" href="{esc(href)}" tabindex="-1" aria-hidden="true">'
+        f'<img class="for-light-i" src="{light}" alt="" width="84" height="84" loading="lazy" decoding="async">'
+        f'<img class="for-dark-i" src="{dark}" alt="" width="84" height="84" loading="lazy" decoding="async"></a>'
+        f'<div class="award-text"><p class="field-name" translate="no">{giver}</p>'
+        f'<p class="award-name" translate="no"><a href="{esc(href)}">{name}</a></p>'
+        f'<p class="award-fine">{fine}. Seen on <time datetime="{day}" translate="no">{day}</time></p></div></li>'
+        for giver, name, href, light, dark, fine, day in AWARDS)
+    return f'<ul class="awards" role="list">{items}</ul>' if items else ""
+
+
 def checked_on(text: str = "Checked on") -> str:
     return f'{text} <time datetime="{FIGURES_CHECKED}" translate="no">{FIGURES_CHECKED}</time>'
 
@@ -1373,7 +1402,7 @@ def signed_sheet() -> str:
     """The home page's proof of delivery: the stores' figures, then what people wrote."""
     return (f'<div class="sheet sheet-labelled signed-sheet"><p class="sheet-band"><b>Proof of delivery</b>'
             f'<span>{figures_dates()} · quotes exact, linked to their source</span></p>'
-            f'{figures_fields()}{said_list()}</div>')
+            f'{figures_fields()}{awards_row()}{said_list()}</div>')
 
 
 # ---- Our own star ratings: the widget (website/rate.js) and its numbers ---------------------------
@@ -1502,6 +1531,7 @@ def build_press() -> None:
       <section class="sheet sheet-labelled press-sheet" aria-labelledby="figures-title">
         <h2 class="sheet-band" id="figures-title"><b>In figures</b><span>{figures_dates()}, rounded down</span></h2>
         {figures_fields()}
+        {awards_row()}
       </section>
       <section class="sheet sheet-labelled press-sheet" aria-labelledby="articles-title">
         <h2 class="sheet-band" id="articles-title"><b>Articles and reviews</b><span>{len(articles)}, newest first in each language</span></h2>
