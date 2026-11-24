@@ -394,6 +394,19 @@ impl ListState {
         self.sort = l.sort.filter(|(c, _)| *c < COLS);
     }
 
+    /// Set the order and which columns show (the Columns dialog). An order that doesn't name
+    /// every column exactly once is ignored; File Name always shows. Widths stay.
+    pub fn set_columns(&mut self, order: Vec<usize>, visible: [bool; COLS]) {
+        let mut seen = order.clone();
+        seen.sort_unstable();
+        if seen != (0..COLS).collect::<Vec<_>>() {
+            return;
+        }
+        self.order = order;
+        self.visible = visible;
+        self.visible[0] = true;
+    }
+
     /// Visible columns in display order.
     fn shown(&self) -> Vec<usize> {
         self.order
@@ -2011,6 +2024,21 @@ mod tests {
         assert_eq!(st.order[0], 7);
         assert!(st.order.contains(&1));
         assert_eq!(st.order.len(), COLS);
+    }
+
+    #[test]
+    fn set_columns_rejects_a_bad_order_and_keeps_file_name() {
+        let mut st = ListState::default();
+        let before = st.order.clone();
+        st.set_columns(vec![0, 0, 1], [true; COLS]);
+        assert_eq!(st.order, before, "bad order ignored");
+        let mut order = before.clone();
+        order.reverse();
+        let mut vis = [true; COLS];
+        vis[0] = false;
+        st.set_columns(order.clone(), vis);
+        assert_eq!(st.order, order);
+        assert!(st.visible[0], "File Name stays");
     }
 
     #[test]

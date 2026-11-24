@@ -544,6 +544,8 @@ enum Cmd {
     Properties,
     /// Show or hide a list column (data slot).
     ToggleColumn(usize),
+    /// Header right-click → Columns..., View → Customize URL List...: the Columns dialog.
+    ColumnsDialog,
     /// Downloads → Speed Limiter.
     LimiterOn,
     LimiterOff,
@@ -1665,6 +1667,8 @@ pub struct App {
     /// Add batch download from clipboard (#709): its read, until it answers.
     batch_clip: Option<crate::clipboard::Prefill>,
     confirm_delete: Option<dialogs::ConfirmDelete>,
+    /// The Columns dialog (header right-click).
+    columns_dialog: Option<dialogs::Columns>,
     /// Queue right-click → Delete, asking first: the queue and the question.
     confirm_queue_delete: Option<(usize, dialogs::Confirm)>,
     /// Redownload, asking first: the download and the question.
@@ -2416,6 +2420,7 @@ impl App {
             exiting: false,
             headless: false,
             confirm_delete: None,
+            columns_dialog: None,
             confirm_queue_delete: None,
             confirm_redownload: None,
             duplicate: None,
@@ -3465,6 +3470,7 @@ impl App {
             // clipboard is MDM_TEST_CLIPBOARD's file).
             "batch-clipboard" => self.run(Cmd::BatchClipboard, None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
+            "columns" => self.run(Cmd::ColumnsDialog, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
@@ -9114,6 +9120,7 @@ impl App {
                 }
             }
             Cmd::ToggleColumn(i) => self.list.visible[i] = !self.list.visible[i],
+            Cmd::ColumnsDialog => self.columns_dialog = Some(dialogs::Columns::new(&self.list)),
             Cmd::LimiterOn | Cmd::LimiterOff => {
                 self.settings.speed_limit_on = cmd == Cmd::LimiterOn;
                 self.apply_speed_limit();
@@ -9905,7 +9912,6 @@ impl App {
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let can_stop_all = self.can_stop_all();
-        let off = |label| I(label, Cmd::None, false, false);
         #[allow(unused_mut)]
         let mut menu = match index {
             0 => vec![
@@ -10064,7 +10070,8 @@ impl App {
                 // i18n: noun: the toolbar (submenu of View with its settings)
                 Sub("Toolbar", false, vec![]),
                 Sub("&Tray icon", false, vec![]),
-                off("C&ustomize URL List..."),
+                // The list's columns, as the header's Columns... (#1566).
+                I("C&ustomize URL List...", Cmd::ColumnsDialog, true, false),
                 I(
                     "Dark Mode support",
                     Cmd::ToggleDarkMode,
@@ -10556,6 +10563,13 @@ impl App {
                     })
                     .collect();
                 e.push(MenuEntry::Sep);
+                // i18n: header menu: opens the dialog that chooses the list's columns
+                e.push(MenuEntry::Item(
+                    "&Columns...",
+                    Cmd::ColumnsDialog,
+                    true,
+                    false,
+                ));
                 e.push(MenuEntry::Item(
                     "Clear all &filters",
                     Cmd::ClearFilters,
@@ -13554,6 +13568,19 @@ impl App {
                     let ids = std::mem::take(&mut d.ids);
                     self.confirm_delete = None;
                     self.confirmed_delete(&ids, files, dont_show);
+                }
+            }
+        }
+        if let Some(d) = &mut self.columns_dialog {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.columns_dialog = None,
+                Outcome::Done((order, visible, reset)) => {
+                    self.columns_dialog = None;
+                    if reset {
+                        self.list.reset_columns();
+                    }
+                    self.list.set_columns(order, visible);
                 }
             }
         }
@@ -18906,6 +18933,36 @@ mod delete_tests {
         assert!(!asked(&app).files, "the tick was not remembered");
         app.confirm_delete = None;
         assert!(files[2].exists());
+    }
+
+    #[test]
+    fn header_menu_keeps_quick_columns_filters_reset_and_adds_dialog() {
+        let dir = tempfile::tempdir().unwrap();
+        let (items, _files) = three(dir.path());
+        let app = app_from_052(items, true);
+        let (entries, _) = app.popup_entries(Popup::Columns);
+
+        assert!(
+            entries.iter().any(|entry| matches!(
+                entry,
+                MenuEntry::Item(_, Cmd::ToggleColumn(0), false, true)
+            ))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ColumnsDialog, true, false)))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ClearFilters, _, false)))
+        );
+        assert!(
+            entries
+                .iter()
+                .any(|entry| matches!(entry, MenuEntry::Item(_, Cmd::ResetColumns, true, false)))
+        );
     }
 
     #[test]

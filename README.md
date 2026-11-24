@@ -318,7 +318,8 @@ right-to-left window.
   unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
 - **A list laid out your way**: show, move, resize and sort its columns, **Save To** (the folder
-  each download is in) among them, and filter any column ([how](docs/download-list.md)).
+  each download is in) among them, choose them and their order in the **Columns** window (from
+  the keyboard too), and filter any column ([how](docs/download-list.md)).
 - **Downloads overnight** with queues and a scheduler that can wake the computer, then shuts it
   down if you like.
 - **Through your VPN only**, if you want: hold every download to one network adapter, with a kill
