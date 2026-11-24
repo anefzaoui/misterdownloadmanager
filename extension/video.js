@@ -1494,7 +1494,8 @@ button:focus-visible { outline: none; }
       // Its own entry: the words between it and the links beside it, not past a { or }.
       const before = text.slice(Math.max(i ? marks[i - 1].index + marks[i - 1][0].length : 0, m.index - 80), m.index);
       const after = text.slice(end, Math.min(i + 1 < marks.length ? marks[i + 1].index : text.length, end + 80));
-      const url = m[0].replace(/\\\//g, "/").replace(/\\u0026/gi, "&").replace(/&amp;/g, "&");
+      // "\/", "&" and "&amp;" undone in one pass: each once, never one made by another.
+      const url = m[0].replace(/\\\/|\\u0026|&amp;/gi, (e) => (e === "\\/" ? "/" : "&"));
       const entry = `${before.split(/[{}]/).pop()} ${after.split(/[{}]/)[0]}`;
       return { url, height: streamHeight(url) || streamHeight(entry, true) };
     });
