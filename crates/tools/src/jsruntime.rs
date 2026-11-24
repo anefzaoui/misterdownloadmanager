@@ -255,7 +255,7 @@ fn node_end_of_life(version: &str, day: u64) -> Option<&'static str> {
 /// line of JavaScript, its version not known).
 fn ask_now(kind: Kind, exe: &Path) -> Option<Option<String>> {
     PROBES.fetch_add(1, Ordering::Relaxed);
-    let mut cmd = std::process::Command::new(exe);
+    let mut cmd = crate::proc::program(exe);
     match kind {
         Kind::QuickJs => cmd.args(["-e", "print('mdm-js-ok')"]),
         _ => cmd.arg("--version"),

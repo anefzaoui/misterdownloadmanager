@@ -212,7 +212,7 @@ pub fn encoders(ffmpeg: &Path) -> Vec<String> {
     {
         return known.clone();
     }
-    let mut cmd = std::process::Command::new(ffmpeg);
+    let mut cmd = crate::proc::program(ffmpeg);
     cmd.args(["-hide_banner", "-encoders"])
         .stdin(std::process::Stdio::null())
         .stderr(std::process::Stdio::null());

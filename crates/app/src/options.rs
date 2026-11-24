@@ -5677,6 +5677,11 @@ fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
             // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
             crate::i18n::mark("Sign-ins and passwords are kept in the macOS keychain.")
         }
+        #[cfg(target_os = "android")]
+        // i18n: Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+        Kept::Keychain => crate::i18n::mark(
+            "Sign-ins and passwords are kept encrypted with a key in Android's keystore.",
+        ),
         #[cfg(target_os = "linux")]
         // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
         Kept::Keychain => crate::i18n::mark(

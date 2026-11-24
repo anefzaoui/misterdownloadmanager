@@ -997,7 +997,7 @@ fn remuxed(
 ) -> Result<PathBuf, String> {
     let temp = dir.join(format!("{stem}.temp.mp4"));
     let len: u64 = parts.iter().map(|(_, n)| n).sum();
-    let mut cmd = std::process::Command::new(ffmpeg);
+    let mut cmd = crate::proc::program(ffmpeg);
     cmd.args(["-nostdin", "-y"]);
     for (part, _) in parts {
         cmd.arg("-i").arg(ff_file(part));
@@ -1054,7 +1054,7 @@ struct Probed {
 /// [`Probed`] of `file`, in seconds. None when ffprobe can't tell, or only estimated it from the
 /// bitrate (a file whose timestamps it couldn't read: that length is a guess).
 fn probed(ffprobe: &Path, file: &Path) -> Option<Probed> {
-    let mut cmd = std::process::Command::new(ffprobe);
+    let mut cmd = crate::proc::program(ffprobe);
     cmd.args([
         "-v",
         "warning",

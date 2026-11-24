@@ -23,9 +23,11 @@ browser-connection = ["mdm-engine/browser-connection"]
 # opens), and MDM_TEST_UPDATE_HOLD (seconds the update waits before it's put in place, to see and
 # close the window meanwhile). tools/lab/update runs them.
 test-update = ["mdm-tools/test-update"]
+# The Android platform calls (src/android.rs) on this system too, for their tests:
+# `cargo test -p mdm-app --features android-core --lib android`.
+android-core = []
 
 [dependencies]
-arboard.workspace = true
 base64.workspace = true
 chrono.workspace = true
 craft-atomic.workspace = true
@@ -55,7 +57,8 @@ toml.workspace = true
 tokio.workspace = true
 url.workspace = true
 percent-encoding.workspace = true
-rfd = "0.18.0"
+# rfd on desktops; on Android a stand-in whose dialogs answer "cancelled" (crates/filedialog).
+rfd = { package = "mdm-filedialog", path = "../filedialog" }
 # Options → Remote → Pair a device's QR code of the address (#141; Nayuki's, no dependencies).
 qrcodegen = "1.8.0"
 # Line breaks between characters keep a letter and its marks together (Thai, Khmer, Indic).
@@ -78,6 +81,10 @@ regex = "1.13.1"
 # file's address's MD5 (preview.rs); the engine's checksums already build it.
 md-5.workspace = true
 
+# The system clipboard: on Android only the app in front may read it, through Java (lib.rs).
+[target.'cfg(not(target_os = "android"))'.dependencies]
+arboard.workspace = true
+
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
 # Windows can draw with Direct3D 12 instead of OpenGL (#89, renderer.rs): eframe's wgpu renderer
@@ -98,8 +105,8 @@ windows = { version = "0.62", default-features = false, features = ["std", "Win3
 windows-collections = { version = "0.3.2", default-features = false, features = ["std"] }
 windows-future = { version = "0.3.2", default-features = false, features = ["std"] }
 
-# The notification-area icon and its menu (tray.rs).
-[target.'cfg(not(target_os = "linux"))'.dependencies]
+# The notification-area icon and its menu (tray.rs); Android has none (tray/none.rs).
+[target.'cfg(not(any(target_os = "linux", target_os = "android")))'.dependencies]
 tray-icon = "0.26.1"
 # Windows and macOS: the system's font for a script MDM's font lists don't name (theme.rs,
 # #1125). Linux asks fontconfig for any script already (`fc-match :charset=`).
@@ -138,8 +145,9 @@ objc2 = "0.6.5"
 # .torrent files and magnet links Finder hands over as Apple events (unix.rs open_events, #698).
 objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation", "NSAppleEventDescriptor", "NSAppleEventManager", "NSNotification", "NSURL", "NSArray"] }
 # The share sheet for a downloaded file from the browser popup's list (unix.rs share_file, #1496):
-# the sharing service picker, from a window of MDM's own at the pointer.
-objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation", "NSSharingService", "NSWindow", "NSView", "NSResponder", "NSEvent", "NSColor", "NSApplication"] }
+# the sharing service picker, from a window of MDM's own at the pointer. The downloads' progress
+# on MDM's Dock icon (unix.rs dock_progress, #1777): the Dock tile, the icon and a bar on it.
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation", "NSSharingService", "NSWindow", "NSView", "NSResponder", "NSEvent", "NSColor", "NSApplication", "NSDockTile", "NSControl", "NSImageView", "NSProgressIndicator"] }
 # View → Draw with → Metal (#206, renderer.rs): eframe's wgpu renderer with wgpu's Metal backend
 # only; OpenGL stays eframe's glow, and the default. egui-wgpu's fix for windows that jitter while
 # they are resized (Core Animation presenting with the resize), as upstream egui turns it on.

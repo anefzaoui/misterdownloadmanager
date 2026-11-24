@@ -51,6 +51,9 @@ pub fn copy_file(path: &Path) -> Result<(), Refused> {
         .map_err(|e| Refused::Failed(e.to_string()));
     #[cfg(target_os = "linux")]
     let done = crate::unix::copy_files(&[&path]);
+    // Android: no file clipboard MDM can reach (the system's is Java's, for the app in front).
+    #[cfg(target_os = "android")]
+    let done: Result<(), Refused> = Err(Refused::Unsupported);
     if let Err(e) = &done {
         tracing::warn!("clipboard: {} not copied ({e:?})", path.display());
     } else {
@@ -74,8 +77,8 @@ pub fn share(path: &Path) -> Result<(), Refused> {
     let done = crate::win32::share_file(&path).map_err(Refused::Failed);
     #[cfg(target_os = "macos")]
     let done = crate::unix::share_file(&path).map_err(Refused::Failed);
-    // Linux: no share sheet (CAN_SHARE is false, see above).
-    #[cfg(target_os = "linux")]
+    // Linux: no share sheet (CAN_SHARE is false, see above); Android's is Java's.
+    #[cfg(any(target_os = "linux", target_os = "android"))]
     let done: Result<(), Refused> = Err(Refused::Unsupported);
     match &done {
         Ok(()) => tracing::info!("share: the sheet for {} asked for", path.display()),

@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux and macOS: the running downloads' progress on MDM's icon in the dock (Ubuntu Dock,
+  Dash to Dock, KDE Plasma's task manager and others) and in the macOS Dock, as on the Windows
+  taskbar ([#1777](https://github.com/anefzaoui/misterdownloadmanager/issues/1777))
 - ✅ Tests: the check that one download's IP family never changes another download of the same
   host no longer fails now and then (seen on a Windows runner): it took for granted that the
   first download, slowed down, was still running when the second one ended; the test server now
@@ -605,6 +608,12 @@ These ship in the next version.
 - ✅ CI and the release take NASM from nasm.us, checked against its pinned SHA256, and use
   Chocolatey's feed only when that download fails (its outage had stopped every Windows build)
 - ✅ Torrents: trackers are checked more carefully.
+- ✅ A **Save To** column in the download list (the folder each download is in), sorted by a click
+  on its title or **View → Arrange files → By Save Path**
+  ([#1827](https://github.com/anefzaoui/misterdownloadmanager/issues/1827))
+- ✅ The download list's downloaded bytes and % move on a steady clock, four times a second,
+  whether the mouse moves or not, and the list redraws as it ticks
+  ([#1441](https://github.com/anefzaoui/misterdownloadmanager/pull/1441))
 - ✅ A quick Ctrl- or Shift-click on a row of the download list or the Scheduler's Files list
   keeps its key on a busy computer: a click has the keys held as its button went down
   ([#1734](https://github.com/anefzaoui/misterdownloadmanager/issues/1734))
@@ -2035,6 +2044,10 @@ These ship in a later version, when they're ready.
   XWayland stays the default unless X11's windows would be scaled up (#624); Vulkan as the
   default renderer (below)
 - 🔄 The Safari extension (in 0.5.2): still to check in Safari itself, signed with a Developer ID
+- 🔄 **An Android app** on MDM's own engine and interface, landing in three parts
+  ([PR #1259](https://github.com/anefzaoui/misterdownloadmanager/pull/1259)): the shared crates
+  building for Android, the desktop unchanged (in review); the app itself, MDM's interface in a
+  phone layout with its downloads kept running in the background; then its build and releases
 
 ### Bugs being looked into
 

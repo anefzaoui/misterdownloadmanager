@@ -188,17 +188,30 @@ pub(crate) async fn install_with(
     progress: Option<&crate::update::Progress>,
     floor: Option<&str>,
 ) -> Result<crate::autoupdate::Got, Error> {
-    let Some(asset) = asset() else {
+    // Android: its wheel (pure Python, named by its version), which the APK's Python runs
+    // (android.rs); signed in the same SHA256SUMS.
+    if asset().is_none() && !cfg!(target_os = "android") {
         return Err(Error::Missing(
             "build for this system: install gallery-dl with the system's packages (Homebrew, pip) and choose it in Helpers".into(),
         ));
-    };
+    }
     let root = dir.join("gallery-dl");
     let _installing = crate::autoupdate::installing(&root, "gallery-dl")?;
     let client = crate::client(net, RELEASES)?;
     let body = crate::get_bytes(&client, RELEASES).await?;
     let release: Release =
         serde_json::from_slice(&body).map_err(|e| Error::BadRelease(e.to_string()))?;
+    let wheel = release
+        .assets
+        .iter()
+        .map(|a| a.name.clone())
+        .find(|n| n.starts_with("gallery_dl-") && n.ends_with("-py3-none-any.whl"));
+    let asset: &str = match asset() {
+        Some(a) => a,
+        None => wheel
+            .as_deref()
+            .ok_or_else(|| Error::Missing("gallery-dl's wheel in its release".into()))?,
+    };
     let version = release.tag_name.trim_start_matches('v').to_owned();
     let none = || crate::autoupdate::Got {
         latest: version.clone(),

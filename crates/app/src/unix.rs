@@ -2,7 +2,7 @@
 //! starting with the session, the browsers' host registration, sounds, showing a file in its
 //! folder, and the torrent link handler. Each runs the system's own tool, so nothing here needs
 //! a library; the exceptions are the desktop's dark mode on Linux (D-Bus through zbus, the
-//! settings daemon's XSETTINGS through x11rb) and the
+//! settings daemon's XSETTINGS through x11rb), the dock's progress (zbus; AppKit on macOS) and the
 //! crash reports (at the end): signals and Mach exceptions through crash-handler, thread and
 //! process ids through libc.
 
@@ -181,7 +181,7 @@ pub async fn terminated() {
 // ---- The session's end (Linux: logging out, shutting down; a `kill`; the display going away) ---
 
 /// Linux: why MDM's session ends, as the system says it (Windows: `win32::SessionEnd`; macOS's
-/// logout quits the app through AppKit, which `App`'s drop saves, main.rs).
+/// logout quits the app through AppKit, which `App`'s drop saves, lib.rs).
 #[cfg(target_os = "linux")]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SessionEnd {
@@ -244,7 +244,7 @@ fn ask_end(why: SessionEnd) -> bool {
 }
 
 /// Linux: the session's end that was asked for ([`on_session_end`]), for the window's thread to
-/// run at its next frame (main.rs).
+/// run at its next frame (lib.rs).
 #[cfg(target_os = "linux")]
 pub fn session_ending() -> Option<SessionEnd> {
     SessionEnd::of_code(END_ASKED.load(std::sync::atomic::Ordering::Acquire))
@@ -259,7 +259,7 @@ const END_GRACE: std::time::Duration = std::time::Duration::from_secs(10);
 /// Linux: the session's end reaches MDM as a signal: logind's SIGTERM at logout and shutdown (and
 /// a `kill`), SIGHUP and SIGINT from the terminal it was started from. Each is run as Windows'
 /// session end is: `wake` brings the window's next frame, which saves as an Exit saves and ends
-/// MDM (main.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
+/// MDM (lib.rs). A signal ignored when MDM started (`nohup`'s SIGHUP, a background job's SIGINT)
 /// stays ignored. Ctrl+C once more ends MDM at once, and so does a window that hasn't ended
 /// within [`END_GRACE`]: then each download resumes from its last save, as before. Heard on
 /// `rt`, a signal handler itself only wakes it (tokio's).
@@ -342,7 +342,7 @@ fn wait_for_the_window(wake: &dyn Fn(), grace: Option<std::time::Duration>) {
 static WAKE: std::sync::OnceLock<std::sync::Arc<dyn Fn() + Send + Sync>> =
     std::sync::OnceLock::new();
 
-/// Linux: the process ends now, once the session's end has saved (main.rs), without the
+/// Linux: the process ends now, once the session's end has saved (lib.rs), without the
 /// libraries' exit handlers: with the display gone they would only touch it again, which runs
 /// Xlib's handler (and so the end) once more.
 #[cfg(target_os = "linux")]
@@ -972,6 +972,7 @@ pub fn os_version() -> String {
 }
 
 /// What `cmd` prints, trimmed, when it succeeds within `secs` seconds (`launch::output_within`).
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 fn printed_within(cmd: &mut Command, secs: u64) -> Option<String> {
     crate::launch::output_within(cmd, std::time::Duration::from_secs(secs))
         .filter(|o| o.status.success())
@@ -2132,7 +2133,7 @@ fn xwayland_server() -> Result<bool, Box<dyn std::error::Error>> {
 static SAVED_PICK: std::sync::OnceLock<Option<crate::settings::WindowSystemPick>> =
     std::sync::OnceLock::new();
 
-/// Linux: View → Window system's saved choice (#624), for [`window_system`]: main.rs gives it
+/// Linux: View → Window system's saved choice (#624), for [`window_system`]: lib.rs gives it
 /// once the settings are read, before the first window opens.
 #[cfg(target_os = "linux")]
 pub fn set_window_system_pick(saved: Option<crate::settings::WindowSystemPick>) {
@@ -2637,6 +2638,172 @@ pub fn tray_host() -> bool {
 /// `win32::on_a_screen`: winit has no monitor list before the window exists, so a saved
 /// position is trusted (the window manager keeps windows on screen on Linux and macOS).
 pub fn on_a_screen(_x: i32, _y: i32) -> bool {
+    true
+}
+
+// ---- Dock progress (sysprogress.rs, #1777) ----------------------------------------------------
+
+/// `win32::taskbar_progress` on Linux and macOS: the running downloads' progress on MDM's icon
+/// in the dock, cleared with `None`. Linux docks that read the launcher interface show it (Ubuntu
+/// Dock and Dash to Dock, KDE Plasma's task manager, Latte, Plank); others show nothing, as
+/// before. macOS draws it on MDM's Dock icon. Called every tick; only changes reach the system.
+pub fn dock_progress(progress: Option<f64>) {
+    thread_local! {
+        static SHOWN: std::cell::RefCell<crate::sysprogress::Shown> =
+            const { std::cell::RefCell::new(crate::sysprogress::Shown::new()) };
+    }
+    // During the thread's exit the cache may already be gone: nothing left to show then.
+    let _ = SHOWN.try_with(|shown| shown.borrow_mut().update(progress, show_dock_progress));
+}
+
+#[cfg(not(any(target_os = "linux", target_os = "macos")))]
+fn show_dock_progress(_value: Option<u32>) -> bool {
+    true
+}
+
+/// Linux: Unity's launcher interface (`com.canonical.Unity.LauncherEntry`), which the docks
+/// read: an `Update` signal naming MDM's desktop entry, with `progress` (0 to 1) and
+/// `progress-visible`. Sent from a thread of its own, since a stalled bus must not hold up the
+/// window; it sends only the latest value, and sends a shown one again every few seconds for a
+/// dock that started (or restarted) after it. When MDM ends, its bus name goes away and the docks
+/// drop its progress themselves.
+#[cfg(target_os = "linux")]
+fn show_dock_progress(value: Option<u32>) -> bool {
+    use std::sync::mpsc;
+    static SENDER: std::sync::OnceLock<mpsc::Sender<Option<u32>>> = std::sync::OnceLock::new();
+    let sender = SENDER.get_or_init(|| {
+        let (tx, rx) = mpsc::channel::<Option<u32>>();
+        let _ = std::thread::Builder::new()
+            .name("dock-progress".into())
+            .spawn(move || {
+                if let Err(e) = launcher_entry_loop(&rx) {
+                    tracing::info!("dock progress: stopped ({e})");
+                }
+            });
+        tx
+    });
+    // A thread that found no bus has ended: this fails, and the next tick tries again (cheaply).
+    sender.send(value).is_ok()
+}
+
+#[cfg(target_os = "linux")]
+fn launcher_entry_loop(rx: &std::sync::mpsc::Receiver<Option<u32>>) -> zbus::Result<()> {
+    use std::sync::mpsc::RecvTimeoutError;
+    use zbus::zvariant::Value;
+    const AGAIN: std::time::Duration = std::time::Duration::from_secs(5);
+    let conn = zbus::blocking::Connection::session()?;
+    let uri = format!("application://{}", desktop_entry_id());
+    let mut last: Option<u32> = None;
+    loop {
+        let mut value = match rx.recv_timeout(AGAIN) {
+            Ok(value) => value,
+            // Nothing new: a shown bar again, for a dock that wasn't listening.
+            Err(RecvTimeoutError::Timeout) if last.is_some() => last,
+            Err(RecvTimeoutError::Timeout) => continue,
+            Err(RecvTimeoutError::Disconnected) => return Ok(()),
+        };
+        // Only the latest value matters.
+        while let Ok(newer) = rx.try_recv() {
+            value = newer;
+        }
+        let fraction = f64::from(value.unwrap_or(0)) / f64::from(crate::sysprogress::STEPS);
+        let properties: std::collections::HashMap<&str, Value> = [
+            ("progress", Value::from(fraction)),
+            ("progress-visible", Value::from(value.is_some())),
+        ]
+        .into_iter()
+        .collect();
+        conn.emit_signal(
+            None::<&str>,
+            "/com/canonical/unity/launcherentry/misterdownloadmanager",
+            "com.canonical.Unity.LauncherEntry",
+            "Update",
+            &(uri.as_str(), properties),
+        )?;
+        last = value;
+    }
+}
+
+/// The desktop entry the docks know MDM by: `misterdownloadmanager.desktop`, the one the packages
+/// install (tools/installer/build-linux.sh), unless the launcher that started this very process
+/// named another (GLib's launchers, GNOME's among them, say which entry they started: an AppImage
+/// manager's renamed copy, for one). Only for this process: a terminal opened from the dock passes
+/// its own entry on to whatever runs in it.
+#[cfg(target_os = "linux")]
+fn desktop_entry_id() -> String {
+    launched_entry(
+        std::env::var_os("GIO_LAUNCHED_DESKTOP_FILE").as_deref(),
+        std::env::var("GIO_LAUNCHED_DESKTOP_FILE_PID")
+            .ok()
+            .as_deref(),
+        std::process::id(),
+    )
+    .unwrap_or_else(|| format!("{}.desktop", crate::APP_ID))
+}
+
+#[cfg(any(target_os = "linux", test))]
+fn launched_entry(file: Option<&std::ffi::OsStr>, pid: Option<&str>, ours: u32) -> Option<String> {
+    if pid?.trim().parse::<u32>().ok()? != ours {
+        return None;
+    }
+    let name = Path::new(file?).file_name()?.to_str()?;
+    (name.len() > ".desktop".len() && name.ends_with(".desktop")).then(|| name.to_owned())
+}
+
+/// macOS: MDM's Dock icon with a bar along its bottom (the tile's content view, drawn by
+/// `display`); `None` gives the tile back its plain icon. AppKit on the main thread only, as
+/// [`ns_app`] says: elsewhere there is nothing to draw.
+#[cfg(target_os = "macos")]
+fn show_dock_progress(value: Option<u32>) -> bool {
+    use objc2::MainThreadOnly as _;
+    use objc2::rc::Retained;
+    use objc2_app_kit::{
+        NSApplication, NSImageView, NSProgressIndicator, NSProgressIndicatorStyle, NSView,
+    };
+    use objc2_foundation::{NSPoint, NSRect, NSSize};
+    type Views = Option<(Retained<NSImageView>, Retained<NSProgressIndicator>)>;
+    thread_local! {
+        static VIEWS: std::cell::RefCell<Views> = const { std::cell::RefCell::new(None) };
+    }
+    let Some(mtm) = objc2::MainThreadMarker::new() else {
+        return true;
+    };
+    let app = NSApplication::sharedApplication(mtm);
+    let tile = app.dockTile();
+    let Some(value) = value else {
+        tile.setContentView(None);
+        tile.display();
+        return true;
+    };
+    VIEWS.with_borrow_mut(|views| {
+        if views.is_none() {
+            let Some(icon) = app.applicationIconImage() else {
+                return;
+            };
+            let size = tile.size();
+            let view = NSImageView::imageViewWithImage(&icon, mtm);
+            view.setFrame(NSRect::new(NSPoint::new(0.0, 0.0), size));
+            // Along the bottom (AppKit's views count up from there), inside the icon's margin.
+            let bar_frame = NSRect::new(
+                NSPoint::new(size.width * 0.1, size.height * 0.06),
+                NSSize::new(size.width * 0.8, size.height * 0.14),
+            );
+            let bar =
+                NSProgressIndicator::initWithFrame(NSProgressIndicator::alloc(mtm), bar_frame);
+            bar.setStyle(NSProgressIndicatorStyle::Bar);
+            bar.setIndeterminate(false);
+            bar.setMinValue(0.0);
+            bar.setMaxValue(f64::from(crate::sysprogress::STEPS));
+            view.addSubview(&bar);
+            *views = Some((view, bar));
+        }
+        if let Some((view, bar)) = views.as_ref() {
+            bar.setDoubleValue(f64::from(value));
+            let view: &NSView = view;
+            tile.setContentView(Some(view));
+            tile.display();
+        }
+    });
     true
 }
 
@@ -4455,6 +4622,10 @@ pub fn rename_no_replace(from: &Path, to: &Path) -> std::io::Result<()> {
                 return Err(err);
             }
         }
+        // Android: the fallback alone (its app sandbox's system call filter isn't relied on for
+        // renameat2).
+        #[cfg(target_os = "android")]
+        let _ = (from_c, to_c);
 
         fallback_rename_no_replace(from, to)
     }
@@ -4528,9 +4699,41 @@ mod macos_focus_tests {
                 None
             );
             assert_eq!(super::macos_window_miniaturized("Download File Info"), None);
+            super::dock_progress(Some(0.5));
+            super::dock_progress(None);
         })
         .join()
         .expect("nothing traps or panics");
+    }
+}
+
+#[cfg(test)]
+mod dock_progress_tests {
+    use std::ffi::OsStr;
+
+    use super::launched_entry;
+
+    /// The entry a launcher named counts only for the process it started (#1777).
+    #[test]
+    fn the_launched_entry_is_ours_only_when_its_pid_is() {
+        let renamed = OsStr::new("/home/u/.local/share/applications/appimagekit_0f-mdm.desktop");
+        assert_eq!(
+            launched_entry(Some(renamed), Some("4242"), 4242).as_deref(),
+            Some("appimagekit_0f-mdm.desktop")
+        );
+        // A terminal started from the dock hands its own entry down to what runs in it.
+        let terminal = OsStr::new("/usr/share/applications/org.gnome.Terminal.desktop");
+        assert_eq!(launched_entry(Some(terminal), Some("4000"), 4242), None);
+        assert_eq!(launched_entry(Some(terminal), None, 4242), None);
+        assert_eq!(launched_entry(None, Some("4242"), 4242), None);
+        assert_eq!(
+            launched_entry(Some(OsStr::new("/tmp/notes.txt")), Some("4242"), 4242),
+            None
+        );
+        assert_eq!(
+            launched_entry(Some(OsStr::new("/x/.desktop")), Some("4242"), 4242),
+            None
+        );
     }
 }
 
@@ -5596,6 +5799,13 @@ mod startup_tests {
 // keyring leaves the secrets in the owner-only settings. macOS: the login keychain's generic
 // passwords (SecItemAdd / SecItemCopyMatching, through security-framework).
 
+// Android: the keystore, exact alarms and wake locks, which the Android app holds (android.rs).
+#[cfg(target_os = "android")]
+pub use crate::android::{
+    default_browser, file_icon, keep_awake, keychain_delete, keychain_list, keychain_probe,
+    keychain_read, keychain_write, thumbnail, wake_at,
+};
+
 #[cfg(target_os = "linux")]
 pub use secret_service::{
     delete as keychain_delete, list as keychain_list, probe as keychain_probe,
@@ -5921,6 +6131,11 @@ pub fn wake_support() -> crate::wake::Support {
     #[cfg(target_os = "macos")]
     {
         crate::wake::Support::MacAdmin
+    }
+    // Android: an exact alarm starts the app, once the Android app is there to set it.
+    #[cfg(target_os = "android")]
+    {
+        crate::android::wake_support()
     }
 }
 
