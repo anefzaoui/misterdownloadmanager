@@ -1914,6 +1914,13 @@ These ship in the next version.
   title
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers read the **Helpers** window: each row's name and status line were
+  painted text a reader never saw, and the buttons that repeat on every row all said the
+  same thing; every **Use another program...**, **Use MDM's own copy**, **Update** and
+  **Go back to ...** now says which helper it is for, and a row's name and status are
+  there to read
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
