@@ -269,9 +269,11 @@ mod tests {
         assert_eq!(add_to(&out, &list), None);
         assert_eq!(add_to(&t, &[]), None);
         assert_eq!(add_to(&t, &["http://192.168.0.1/a".into()]), None);
-        // One without trackers (a magnet's) gets them all.
+        // One without trackers (a magnet's) gets them all, the refused one still left out.
         let bare = torrent("", INFO);
-        assert_eq!(trackers::listed(&add_to(&bare, &list).unwrap()), KEPT);
+        let mut all = KEPT.to_vec();
+        all.push(own);
+        assert_eq!(trackers::listed(&add_to(&bare, &list).unwrap()), all);
     }
 
     /// A private torrent (BEP 27) never gets another tracker; nor one that can't be read.
