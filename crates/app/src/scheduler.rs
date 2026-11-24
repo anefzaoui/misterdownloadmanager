@@ -2397,9 +2397,10 @@ mod tests {
             Some((2026, 12, 1)),
             "the date is kept while the time is off"
         );
-        assert_eq!(Form::of(&out).date, {
+        assert_eq!(
+            Form::of(&out).date,
             NaiveDate::from_ymd_opt(2026, 12, 1).unwrap()
-        });
+        );
     }
 
     #[test]
