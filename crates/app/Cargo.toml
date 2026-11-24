@@ -74,6 +74,9 @@ brotli-decompressor = "6.2.0"
 # in the tree (resvg's SVG, the engine's dependencies).
 roxmltree = "0.20.0"
 regex = "1.13.1"
+# The preview pane's thumbnails on Linux (#1368): the freedesktop cache names them by their
+# file's address's MD5 (preview.rs); the engine's checksums already build it.
+md-5.workspace = true
 
 [target.'cfg(windows)'.dependencies]
 windows-sys.workspace = true
@@ -125,6 +128,9 @@ wayland-client = "0.31.15"
 # The Xlib display winit opened, for Xlib to return from a lost connection (unix.rs
 # on_display_lost); already in the tree through winit.
 raw-window-handle = "0.6"
+# The preview pane's pictures where the desktop's thumbnail cache has none (#1368, unix.rs
+# thumbnail): photos decoded and scaled down here, as the file managers' thumbnailers do.
+image = { workspace = true, features = ["jpeg", "gif", "webp", "bmp"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 # Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.

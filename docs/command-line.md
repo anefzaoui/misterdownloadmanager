@@ -127,7 +127,9 @@ Other programs can ask the running app what it is downloading, and pause, start,
 | `{"url": "https://…", "dir": "D:\\Files", "name": "a.zip", "silent": true}` | Adds a download, as the command line's `/d /p /f /n` do (`"later": true` is `/a`); `ok`. `"category"` (a key from the list's `categories`) puts it in that category's folder instead of the one its type picks; `"queue"` (a queue's name) is the queue it waits in with `"later"`. Also with the API off, like the command line. |
 | `{"start_queue": true}` | Starts the main download queue; `ok`. |
 
-An unknown question or action is answered `{"error": "…"}`, as is a question while the API is off (then with `"code": "api-off"`, for programs to check: the error text may change). A wrong token is answered `denied`.
+An unknown question or action is answered `{"error": "…"}`, as is a question while the API is off (then with `"code": "api-off"`, for programs to check: the error text may change). A wrong token is answered `denied`. When MDM is already handling as many requests as it takes at once, it answers `busy`: nothing was done, and the line can be sent again a moment later.
+
+A command (answered `ok`) may carry an `"id"` of your own: letters, digits and `-`, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same `id`: MDM does it once, however many of those lines reach it, and answers `ok` to each. Without an `id`, each line is a new command. A second launch of the program (`misterdownloadmanager.exe /d …`, `/exit`) does this by itself.
 
 Every request and answer is described, field by field, in a JSON Schema: [automation-api.schema.json](automation-api.schema.json) (also at `https://misterdownloadmanager.com/automation-api.schema.json`). It is made from the code the app answers with, so it stays exact; programs can check what they send and read against it, or generate their types from it.
 

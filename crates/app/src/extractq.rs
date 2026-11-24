@@ -108,7 +108,7 @@ pub fn archive_name(name: &str) -> bool {
 /// The volumes of the archive `item` is part of, among `items`: the downloads in its folder (and
 /// its package, if it has one) whose names are volumes of the same set, in volume order. One
 /// item for an archive in one file.
-fn volume_set<'a>(item: &'a Item, items: &'a [Item]) -> Vec<(u32, &'a Item)> {
+pub(crate) fn volume_set<'a>(item: &'a Item, items: &'a [Item]) -> Vec<(u32, &'a Item)> {
     let Some(v) = volume_key(&item.file_name) else {
         return vec![(1, item)];
     };
@@ -139,7 +139,8 @@ impl Extracts {
             Some(p) => p.extract,
             None => settings.extract_auto,
         };
-        if wanted {
+        // Its test found it damaged (#1661): left as it is (Extract still tries it).
+        if wanted && !item.damaged {
             self.offer(item, items, settings, false);
         }
     }
@@ -509,7 +510,20 @@ fn to_trash(files: &[PathBuf]) -> bool {
 
 /// Why `name` wasn't extracted, for its download's log.
 fn failed(name: &str, e: &Error) -> String {
-    let why = match e {
+    crate::i18n::fmt(
+        // i18n: in a download's log: {name} is the archive's file name, {why} the reason
+        crate::i18n::t("Couldn't extract {name}: {why}"),
+        &[
+            ("name", &crate::i18n::isolate(name)),
+            ("why", &reason(name, e)),
+        ],
+    )
+}
+
+/// Why archive `name` wasn't extracted (or tested, archtest.rs), the words after "Couldn't
+/// extract {name}: ".
+pub(crate) fn reason(name: &str, e: &Error) -> String {
+    match e {
         // i18n: why an archive wasn't extracted (after "Couldn't extract {name}: ")
         Error::NeedsPassword => crate::i18n::t("it needs a password").to_owned(),
         // i18n: why an archive wasn't extracted (after "Couldn't extract {name}: ")
@@ -574,12 +588,7 @@ fn failed(name: &str, e: &Error) -> String {
         Error::Io(e) => crate::errors::describe(&mdm_engine::Error::Io(Arc::new(
             std::io::Error::new(e.kind(), e.to_string()),
         ))),
-    };
-    crate::i18n::fmt(
-        // i18n: in a download's log: {name} is the archive's file name, {why} the reason
-        crate::i18n::t("Couldn't extract {name}: {why}"),
-        &[("name", &crate::i18n::isolate(name)), ("why", &why)],
-    )
+    }
 }
 
 fn start(job: Job, ctx: &egui::Context) -> Running {

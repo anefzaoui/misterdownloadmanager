@@ -463,6 +463,10 @@ pub struct Item {
     /// added before the column existed have none.
     #[serde(default)]
     pub added: Option<String>,
+    /// When it last finished (the preview pane's "Finished", #1368), as `added` is written.
+    /// Downloads finished before it was kept have none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub finished: Option<String>,
     /// Its own speed limit, bytes/s (progress window → Speed Limiter, "Remember Speed Limiter
     /// settings for this file on download stop/resume"): used again whenever it starts.
     #[serde(default)]
@@ -500,6 +504,12 @@ pub struct Item {
     /// once complete.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub replace_file: Option<PathBuf>,
+    /// The file it was to replace as it completed (`replace_file`: a Redownload, #1698, or
+    /// #1088's Replace?) that couldn't be replaced (another program had it open): it is kept,
+    /// and the new copy saved beside it, numbered (the row follows the new copy). Set as the
+    /// download completes, taken by the window, which says so. Memory only.
+    #[serde(skip)]
+    pub not_replaced: Option<PathBuf>,
     /// The Link grabber package it came in (#37): its archives are extracted together once
     /// every volume is there.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -602,6 +612,28 @@ pub struct Item {
     /// does ([`Item::holds_place`]). Memory only.
     #[serde(skip)]
     pub(crate) live_copy: bool,
+    /// Its archive is being tested before the download counts as done (#1661, archtest.rs):
+    /// queued or running; the row says "Checking..." and its queue takes it as running. Saved:
+    /// a test MDM's closing stopped runs again at the next start.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub testing: bool,
+    /// While its test runs: how far it is, in thousandths (its thread counts). Memory only.
+    #[serde(skip)]
+    pub(crate) test_progress: Option<std::sync::Arc<std::sync::atomic::AtomicU32>>,
+    /// Its archive's last test found it damaged (#1661): the row says "Damaged" until it is
+    /// downloaded again or a test finds it whole.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub damaged: bool,
+    /// Its archive's damaged parts were just downloaded again (#1661): the test that follows is
+    /// the last, never a second re-fetch. Memory only.
+    #[serde(skip)]
+    pub(crate) refetched: bool,
+    /// Its part file and resume state are being moved from this place to `dest` (#1739): set,
+    /// and the list saved with it, before a file moves; cleared once the move is done or undone.
+    /// Found at start (MDM ended during a move), the files tell where it is
+    /// (`relocate::settle`). Meanwhile it doesn't start, and the row says "Moving...".
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub move_from: Option<PathBuf>,
 }
 
 /// Adds `more` to a download's `written_files`, each path once, in order. A gallery lists up to
@@ -819,6 +851,7 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
         server: engine.server,
         at_service: None,
         finishing: p.merging.flatten(),
+        kept: None,
     }
 }
 
@@ -1210,6 +1243,21 @@ impl Item {
         self.replace_file.as_ref() == Some(&self.dest)
     }
 
+    /// Can it be downloaded again from the start (Redownload)? A file download that isn't
+    /// running. Not a torrent (its pieces are checked against their hashes: Recheck files finds
+    /// and fetches the damaged ones, and its data keeps seeding), a video (its file is yt-dlp's to
+    /// make), a gallery (gallery-dl fetches only the files not there yet: Download Now does
+    /// that), nor a torrent through a debrid account (the service's files, #44). Nor one whose
+    /// unfinished file is being moved (`move_from`, #1739): its part file is on its way.
+    pub fn can_redownload(&self) -> bool {
+        self.live.is_none()
+            && self.move_from.is_none()
+            && self.torrent.is_none()
+            && self.video.is_none()
+            && self.gallery.is_none()
+            && self.remote.is_none()
+    }
+
     /// What tells where this row's files are (its place, its kind, the files it wrote), for a
     /// look at the disk on a thread other than the window's (#743): no live download, no log.
     pub fn place_copy(&self) -> Item {
@@ -1249,6 +1297,7 @@ impl Item {
             resumable: None,
             checksum: None,
             added: Some(now_stamp()),
+            finished: None,
             own_limit: None,
             video: None,
             torrent: None,
@@ -1257,6 +1306,7 @@ impl Item {
             name_from_url: false,
             number_at_start: false,
             replace_file: None,
+            not_replaced: None,
             package: None,
             group: None,
             server: None,
@@ -1281,7 +1331,61 @@ impl Item {
             written_files: None,
             state_here: None,
             live_copy: false,
+            testing: false,
+            test_progress: None,
+            damaged: false,
+            refetched: false,
+            move_from: None,
         }
+    }
+
+    /// A download of MDM's own engine (not a video, a gallery or a torrent, whose helper or
+    /// session keeps its unfinished files): its part file and resume state are all it has on
+    /// the disk before it is finished.
+    pub fn engine_file(&self) -> bool {
+        self.video.is_none()
+            && self.gallery.is_none()
+            && self.torrent.is_none()
+            && self.remote.is_none()
+    }
+
+    /// Why Move/Rename (and File Properties → Move) can't take this download now, as a text
+    /// marked for translation; None when it can (#1739): a finished download, one not started,
+    /// or one of MDM's own engine stopped part-way (its part file and resume state go along, and
+    /// it resumes from where it was). The same answer greys the commands and says why.
+    pub fn move_refused(&self) -> Option<&'static str> {
+        if self.live.is_some() {
+            // i18n: tooltip of the greyed Move button in File Properties
+            return Some(crate::i18n::mark("Pause the download first"));
+        }
+        if self.move_from.is_some() {
+            // i18n: why a download can't be moved or renamed now: it is being moved already
+            return Some(crate::i18n::mark("The download is being moved"));
+        }
+        if self
+            .torrent
+            .as_ref()
+            .is_some_and(|t| t.shares_folder(&self.dest))
+        {
+            // i18n: shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
+            return Some(crate::i18n::mark(
+                "This torrent shares its destination folder",
+            ));
+        }
+        if self.status == Status::Complete || self.downloaded == 0 || self.engine_file() {
+            return None;
+        }
+        Some(if self.torrent.is_some() || self.remote.is_some() {
+            // i18n: why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+            crate::i18n::mark(
+                "A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are",
+            )
+        } else {
+            // i18n: why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+            crate::i18n::mark(
+                "A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder",
+            )
+        })
     }
     /// This row's resume state is at its place. `downloaded` can't say: after a crash the list
     /// holds what it held at its last save, often nothing. As read beside the window at start
@@ -1342,6 +1446,13 @@ impl Item {
             let guessed = std::mem::take(&mut self.name_from_url);
             self.number_at_start = false;
             if *f != self.dest {
+                // It was to replace the file at its place as it completed, and the engine saved
+                // it beside instead: that file couldn't be replaced (open in another program),
+                // and both stay (#1698).
+                // (`Item::replaces`, by its fields: `live` is borrowed.)
+                if s.state == State::Done && self.replace_file.as_ref() == Some(&self.dest) {
+                    self.not_replaced = Some(self.dest.clone());
+                }
                 // The file as saved (a video's real extension, a numbered duplicate, the name
                 // the server gave).
                 self.dest = f.clone();
@@ -1444,6 +1555,7 @@ impl Item {
                     v.parts = job.progress().merge_failed.unwrap_or_default();
                 }
                 if status == Status::Complete {
+                    self.finished = Some(now_stamp());
                     self.downloaded = self.size.unwrap_or(self.downloaded);
                     // Replaced (or kept, when it couldn't be): the file there now is its own.
                     self.replace_file = None;
@@ -1685,6 +1797,9 @@ impl Item {
     /// column is wide enough for them in the interface language and font ([`crate::list::status_width`]). The
     /// cell's tip and a screen reader say it whole ([`crate::list::Row::status_whole`]).
     pub fn finishing(&self, short: bool) -> Option<String> {
+        if let Some(testing) = self.archive_testing(short) {
+            return Some(testing);
+        }
         let s = self.snap.as_ref()?;
         if !matches!(s.state, State::Verifying | State::Merging) {
             return None;
@@ -1724,12 +1839,56 @@ impl Item {
         })
     }
 
+    /// While its archive is tested before the download counts as done (#1661): "Checking 45%"
+    /// (`short`, the list's Status column, as a checksum's check) or "Testing the archive...
+    /// (45%)", with how far it is once its test runs.
+    fn archive_testing(&self, short: bool) -> Option<String> {
+        if !self.testing || self.status != Status::Complete {
+            return None;
+        }
+        let percent = self.test_progress.as_ref().map(|p| {
+            let done = p.load(std::sync::atomic::Ordering::Relaxed).min(1000);
+            crate::i18n::percent(f64::from(done) / 1000.0, 0)
+        });
+        Some(match (short, percent) {
+            (true, percent) => checking(percent.as_deref().unwrap_or("...")),
+            (false, Some(percent)) => crate::i18n::fmt(
+                // i18n: a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+                crate::i18n::t("Testing the archive... ({percent})"),
+                &[("percent", &percent)],
+            ),
+            (false, None) => crate::i18n::t("Testing the archive...").to_owned(),
+        })
+    }
+
+    /// Its archive's last test found it damaged (#1661): "Damaged" in the list's Status column
+    /// (`short`), whole for its tip and a screen reader.
+    pub fn damaged_text(&self, short: bool) -> Option<String> {
+        if !self.damaged || self.status != Status::Complete || self.testing {
+            return None;
+        }
+        Some(if short {
+            // i18n: a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+            crate::i18n::t("Damaged").to_owned()
+        } else {
+            crate::i18n::t(
+                // i18n: a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+                "Damaged: its archive test found errors. Right-click → Redownload downloads it again",
+            )
+            .to_owned()
+        })
+    }
+
     /// Every byte is in (#736): no rate and no time left, as once it is complete.
     pub fn past_last_byte(&self) -> bool {
         self.torrent.is_none() && self.snap.as_ref().is_some_and(every_byte_in)
     }
 
     pub fn status_text(&self) -> String {
+        if self.move_from.is_some() {
+            // i18n: a download's status: its unfinished file is being moved to another folder
+            return crate::i18n::t("Moving...").into();
+        }
         if let Some(at) = self.at_service() {
             return at;
         }
@@ -1738,6 +1897,9 @@ impl Item {
         }
         if let Some(finishing) = self.finishing(true) {
             return finishing;
+        }
+        if let Some(damaged) = self.damaged_text(true) {
+            return damaged;
         }
         match self.status {
             // i18n: a download's status (state it is in, not a command): finished

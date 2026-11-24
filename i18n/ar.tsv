@@ -47,6 +47,11 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالان الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالات الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقالا الآن (لا تضيف إلا الجديد):|تطابق القاعدة {n} مقال الآن (لا تضيف إلا الجديد):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	وجد اختبار الأرشيف {n} ملفا تالفا: {files}|وجد اختبار الأرشيف {n} ملفا تالفا: {files}|وجد اختبار الأرشيف {n} ملفين تالفين: {files}|وجد اختبار الأرشيف {n} ملفات تالفة: {files}|وجد اختبار الأرشيف {n} ملفا تالفا: {files}|وجد اختبار الأرشيف {n} ملفا تالفا: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -84,6 +89,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	اكتمل {n} تنزيل|اكتمل {n} تنزيل|اكتمل {n} تنزيلان|اكتملت {n} تنزيلات|اكتمل {n} تنزيلا|اكتمل {n} تنزيل
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} تنزيل محدد|{n} تنزيل محدد|{n} تنزيلان محددان|{n} تنزيلات محددة|{n} تنزيلا محددا|{n} تنزيل محدد
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل|{n} قيد التنزيل
@@ -109,6 +118,10 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	كان لـ{n} ملف اسم ملف موجود بالفعل وتم ترقيمه|كان لـ{n} ملف اسم ملف موجود بالفعل وتم ترقيمه|كان لـ{n} ملفين اسم ملف موجود بالفعل وتم ترقيمهما|كان لـ{n} ملفات اسم ملف موجود بالفعل وتم ترقيمها|كان لـ{n} ملفا اسم ملف موجود بالفعل وتم ترقيمه|كان لـ{n} ملف اسم ملف موجود بالفعل وتم ترقيمه
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} مكتمل|{n} مكتمل|{n} مكتملان|{n} مكتملة|{n} مكتملة|{n} مكتمل
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -142,11 +155,21 @@
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} متتبع: {peers}|{n} متتبع: {peers}|{n} متتبعان: {peers}|{n} متتبعات: {peers}|{n} متتبعا: {peers}|{n} متتبع: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} نافذة تنتظر حتى تعود|{n} نافذة تنتظر حتى تعود|{n} نافذتان تنتظران حتى تعود|{n} نوافذ تنتظر حتى تعود|{n} نافذة تنتظر حتى تعود|{n} نافذة تنتظر حتى تعود
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	يريد {site} إرسال {n} رابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابطين إلى ملتقط الروابط.|يريد {site} إرسال {n} روابط إلى ملتقط الروابط.|يريد {site} إرسال {n} رابطا إلى ملتقط الروابط.|يريد {site} إرسال {n} رابط إلى ملتقط الروابط.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} و{n} بحجم غير معروف|{size} و{n} بحجم غير معروف|{size} و{n} بحجمين غير معروفين|{size} و{n} بأحجام غير معروفة|{size} و{n} بحجم غير معروف|{size} و{n} بحجم غير معروف
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -154,6 +177,10 @@
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} من {total} فيديو مدرج|{title}: {listed} من {total} فيديو مدرج|{title}: {listed} من {total} فيديوهان مدرجان|{title}: {listed} من {total} فيديوهات مدرجة|{title}: {listed} من {total} فيديو مدرج|{title}: {listed} من {total} فيديو مدرج
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	تنتظر نافذة «اكتمل التنزيل» والنوافذ الأخرى التي يفتحها MDM تلقائيا أثناء تشغيل لعبة أو تطبيق أو فيديو بملء الشاشة، أو عرض تقديمي، أو شاشة القفل، وتظهر عند عودتك. تظهر النوافذ التي تفتحها بنفسك، والروابط من مستعرضك، دائما
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 	"{what}" isn't an IP address.	"{what}" ليس عنوان IP صالحا.
@@ -198,6 +225,11 @@
 #. text in the Options window
 #. a 24-hour clock, with an example
 	24-hour (21:41)	نظام 24 ساعة (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	لم يتمكن 7-Zip من اختباره ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 	7-Zip needed	يلزم 7-Zip
@@ -238,6 +270,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	تعذر البحث عن ملفات الرابط المغناطيسي: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	توقف النقل عند إغلاق MDM: التنزيل موجود في {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	معرف ضبط NextDNS هو ستة أحرف وأرقام (0-9، a-f).
@@ -268,6 +304,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	يحتفظ التورنت ذو الملف الواحد باسمه
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	يمكن نقل التورنت بمجرد اكتماله: حتى ذلك الحين، يكتب محرك التورنت قطعه في مكانها
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -275,9 +315,17 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 	A tracker on this computer or the local network is never contacted: {line}	لا يتصل MDM أبدا بمتتبع على هذا الكمبيوتر أو الشبكة المحلية: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	يمكن نقل الفيديو أو المعرض بمجرد اكتماله: حتى ذلك الحين، تحتفظ برامجه المساعدة بملفاته غير المكتملة في مجلدها
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	a volume of it is missing	أحد مجلداته مفقود
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	أحد أجزائه غير موجود بعد
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	حول Mister Download Manager
 #. text in whereis.rs
@@ -386,6 +434,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	تمت الإضافة. يقرأ MDM التورنت: سينضم إلى القائمة بعد لحظة.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	أضيف في:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -600,6 +652,7 @@
 #. a country's name (where a download's server is)
 	Austria	النمسا
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	تلقائي
@@ -708,7 +761,7 @@
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 	Busy, try later	مشغول، حاول لاحقا
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	حجم الزر:
 #. message or event log entry in the main window
@@ -900,7 +953,7 @@
 	Clipboard	الحافظة
 #. text in the Options window
 	Clock:	الساعة:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -927,7 +980,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	جزر القمر
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	مدمج
@@ -1024,6 +1077,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	تعذر البحث عن إصدار أحدث من {name}: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	تعذر اختبار {name}: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1059,6 +1117,18 @@
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 	Daily	يوميا
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	تالف
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	أرشيف تالف
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	تالف: كشف اختبار الأرشيف عن أخطاء فيه. انقر بزر الماوس الأيمن ← «إعادة التنزيل» لتنزيله مرة أخرى
 #. text in the Options window
 	Date order:	ترتيب التاريخ:
 #. page title in the Options window
@@ -1160,6 +1230,10 @@
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 	Don't ask again	لا تسأل مرة أخرى
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	عدم إظهار النوافذ المنبثقة أثناء تشغيل تطبيق أو عرض تقديمي بملء الشاشة
 #. checkbox in a dialog box
 	Don't show this dialog again	عدم إظهار مربع الحوار هذا مرة أخرى
 #. text in the Options window
@@ -1283,6 +1357,15 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	قيد تنزيل نسخة MDM الخاصة...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	قيد تنزيل نسخة MDM الخاصة... {percent}%
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	قيد تنزيل الأجزاء التالفة مرة أخرى ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 	Downloading the update... {percent}	قيد تنزيل التحديث... {percent}
@@ -1561,6 +1644,10 @@
 	File types	أنواع الملفات
 #. text in categories.rs
 	File types:	أنواع الملفات:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	الملف:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 	Files	الملفات
@@ -1607,6 +1694,10 @@
 #. adjective: the downloads that are complete
 #. remote control page (on a phone): tab: downloads finished
 	Finished	مكتمل
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	اكتمل في:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -1724,7 +1815,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	لا تمر تنزيلات FTP عبر وكيل HTTP. اختر SOCKS5 أو SOCKS4 لإرسالها عبر الوكيل.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	كامل
 #. text in countries.rs
@@ -1847,6 +1938,11 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Hide &categories	إخفاء الفئات(&C)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	إخفاء جزء الم&عاينة
 #. button in a download's progress window
 	Hide tab	إخفاء علامة التبويب
 #. text in a download's progress window; text in standard windows
@@ -2046,6 +2142,14 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	تعذر كتابة ملفاته: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	لا يمكن الوصول إلى مجلده الآن
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	يتعذر الوصول إلى مجلده {folder}
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2269,6 +2373,11 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	قيد البحث عن الصفحة...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	قيد البحث...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Luxembourg	لوكسمبورغ
@@ -2550,9 +2659,26 @@
 	Move without changing the selection	نقل دون تغيير التحديد
 #. message or event log entry in the main window
 	Move/Rename	نقل/إعادة تسمية
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	نقل أو حذف
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	نقل إلى {folder}
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 	Moving the file...	نقل الملف...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	قيد النقل إلى {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	قيد النقل...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mozambique	موزمبيق
@@ -2678,6 +2804,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	لم يتم العثور على روابط تنزيل في الحافظة. انسخ نصا يحتوي على روابط http أو https أو ftp أو روابط مغناطيسية، ثم حاول مرة أخرى.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	لم يتم تحديد أي تنزيل
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -2789,6 +2919,10 @@
 	Not in a queue	ليس في قائمة انتظار
 #. text in helpers.rs
 	Not installed yet	لم يتم التثبيت بعد
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	غير معروف بعد
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -2803,6 +2937,15 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 	not supported by this service	غير مدعوم من هذه الخدمة
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	لم يتم اختباره بعد: {name} غير مكتمل ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	لم يختبر: حجمه أكبر من {limit} (الخيارات ← «الأرشيفات»). انقر بزر الماوس الأيمن ← «اختبار الأرشيف» لاختباره
 #. text in the Options window
 	Not used: file parts are written next to the file	غير مستخدم: أجزاء الملف تكتب بجانب الملف
 #. text in a dialog box
@@ -3224,9 +3367,17 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	قيد التسجيل...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 	Redownload	إعادة التنزيل
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	تعيد «إعادة التنزيل» تنزيل كل مجلد مرة أخرى من البداية.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	تعيد «إعادة التنزيل» تنزيله مرة أخرى من البداية.
 #. text in a download's Properties window
 	Referer:	المرجع:
 #. button in rssdlg.rs
@@ -3408,6 +3559,10 @@
 	Search:	بحث:
 #. text in the Batch download window
 	Second file:	الملف الثاني:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	حدد تنزيلا لرؤية صورته وتفاصيله هنا.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 	Select all	تحديد الكل
@@ -3524,6 +3679,11 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Show &categories	إظهار الفئات(&C)
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	إظهار جزء الم&عاينة
 #. text in the Options window
 	Show a dialog and ask what to do.	إظهار مربع حوار يسأل عما يجب فعله.
 #. checkbox in the Options window
@@ -3551,6 +3711,9 @@
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	أرني كيف
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	إظهار جزء المعاينة أو إخفاؤه
 #. checkbox in the Options window
 	Show queue selection panel on closing batch download dialogs	إظهار لوحة تحديد قائمة الانتظار عند إغلاق مربعات حوار التنزيل الجماعي
 #. checkbox in the Options window
@@ -3668,6 +3831,10 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 	Some	بعض
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	بعض أجزائه لا تزال قيد التنزيل
 #. text in a dialog box
 	Some of the torrent's files are already in this folder:	بعض ملفات التورنت موجودة بالفعل في هذا المجلد:
 #. text in the Options window
@@ -3789,6 +3956,10 @@
 #. text in a download's Properties window
 #. label before the download's state
 	Status:	الحالة:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	لا يزال موجودا
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	إيقاف
@@ -3905,12 +4076,32 @@
 #. button in the Options window
 #. button: asks the chosen DNS for an address, to see it works
 	Test	اختبار
+#. message or event log entry in the main window
+#, machine
+	Test archive	اختبار الأرشيف
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	اختبار الأرشيفات عند اكتمال تنزيلها، حتى {gb} غيغابايت
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 	Test browser integration	اختبار الربط بالمستعرض
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Test browser integration...	اختبار الربط بالمستعرض...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	تم اختباره مرة أخرى: الأرشيف لا يحتوي على أخطاء الآن
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	قيد اختبار الأرشيف...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	قيد اختبار الأرشيف... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 	Th	الخميس
@@ -3937,6 +4128,14 @@
 	The archive could not be moved to the Recycle Bin: it was kept	تعذر نقل الأرشيف إلى سلة المحذوفات: بقي في مكانه
 #. text in extracting archives (a download's log, the Archive password window)
 	The archive could not be moved to the Trash: it was kept	تعذر نقل الأرشيف إلى سلة المهملات: بقي في مكانه
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	فشل اختبار الأرشيف: إنه تالف، أو ليس الأرشيف الذي يشير إليه اسمه
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	لم يجد اختبار الأرشيف أي أخطاء
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 	The archive was moved to the Recycle Bin	تم نقل الأرشيف إلى سلة المحذوفات
@@ -4007,6 +4206,11 @@
 	the connection to {host} was cut: a firewall, or a network that blocks it	انقطع الاتصال بـ{host}: قد يكون السبب جدار حماية أو شبكة تمنع الاتصال
 #. text in errors.rs
 	the connection was lost while receiving data	انقطع الاتصال أثناء استلام البيانات
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	تعذر تنزيل الأجزاء التالفة مرة أخرى: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -4021,6 +4225,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	انقطع التنزيل من {host} قبل اكتماله
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	التنزيل قيد النقل
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 	The download isn't complete yet	التنزيل لم يكتمل بعد
@@ -4312,6 +4520,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	لا توجد مساحة حرة كافية لملفاته بحسب HatchZip؛ لم يتغير شيء
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	لا توجد مساحة حرة كافية هناك (مطلوب {needed}، متوفر {free})
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	هذه الإعدادات غير متاحة عند تشغيل "إظهار مربع حوار اكتمال التنزيل"
 #. text in helpers.rs
@@ -4533,6 +4745,10 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 	torrents could not start: {error}	تعذر بدء التورنت: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	الحجم الكلي:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 	Tracker	المتتبع
@@ -4857,6 +5073,11 @@
 	Virgin Islands (U.S.)	جزر فيرجن (الولايات المتحدة)
 #. text in the Options window
 	Virus checking settings	إعدادات فحص الفيروسات
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	الجزء {n} غير موجود بعد
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -4901,6 +5122,10 @@
 #. value in a column's filter list in the download list
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 	Web	الويب
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	صفحة الويب:
 #. text in the Scheduler window
 	Wednesday	الأربعاء
 #. text in countries.rs
@@ -5127,6 +5352,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} من {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} من {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -5145,6 +5374,14 @@
 	{file} could not be opened: {error}	تعذر فتح {file}: {error}
 #. text in the Checksum window
 	{file} could not be read to check it	تعذر قراءة {file} للتحقق منه
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} موجود بالفعل
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	تعذر استبدال {file}: قد يكون برنامج آخر يفتحه. تم حفظ التنزيل الجديد بجانبه باسم {new}، وتم الاحتفاظ بالملفين.
 #. text in a dialog box
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} لم يعد في مكانه المحفوظ (نقل أو حذف). «إعادة التنزيل» في قائمة النقر بزر الماوس الأيمن تجلبه من جديد.
 #. message or event log entry in the main window
@@ -5237,6 +5474,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} قيد التنزيل بالفعل: حاول مرة أخرى بعد قليل
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} تالف: وجد اختباره أخطاء فيه.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} تالف: وجد اختباره أخطاء في أحد مجلداته.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5381,6 +5628,11 @@
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 	{s} sec	{s} ثانية
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 	{title}: added by {rule}	{title}: أضيف بواسطة {rule}
@@ -5464,6 +5716,7 @@ extension	Added to MDM	أضيف إلى MDM
 extension	Added to the queue	تمت الإضافة إلى قائمة الانتظار
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	الكل
 #. text in the browser extension
@@ -5479,6 +5732,14 @@ extension	Another Mister Download Manager (a server)	Mister Download Manager آ�
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	صوت
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	صوت فقط
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	عاد إلى زاويته، وقائمته تعرض كل شيء، في كل موقع
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -5526,6 +5787,10 @@ extension	Clear finished	مسح المكتملة
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	مسح التنزيلات المكتملة؟
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	برنامج الترميز
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -5596,6 +5861,10 @@ extension	Download all links with Mister Download Manager	تنزيل جميع ا
 #, machine
 extension	Download best	تنزيل بأفضل جودة
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	زر التنزيل فوق مقاطع الفيديو
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 extension	Download selected links with Mister Download Manager	تنزيل الروابط المحددة باستخدام Mister Download Manager
 #. text in the browser extension
@@ -5638,6 +5907,10 @@ extension	Downloads go to {address}	تنتقل التنزيلات إلى {addres
 #, machine
 extension	Drag the dots to move it along the edge	اسحب النقاط لتحريكه على طول الحافة
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
+#, machine
+extension	Drag the dots to move it to another corner, or outside the video	اسحب النقاط لتحريكه إلى زاوية أخرى، أو خارج الفيديو
+#. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	أدخل عنوان https:// الخاص به.
@@ -5654,6 +5927,10 @@ extension	Failed: {why}	فشل: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	تم حذف الملف أو نقله
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	نوع الملف
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -5944,9 +6221,17 @@ extension	Protected	محمي
 #, machine
 extension	Protected video	فيديو محمي
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	أعد الزر إلى مكانه
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	إزالة من القائمة
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	إعادة الضبط
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -5998,6 +6283,7 @@ extension	Share...	مشاركة...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	إظهار
 #. text in the browser extension
@@ -6141,6 +6427,10 @@ extension	Waiting	في انتظار
 #, machine
 extension	What you download with Mister Download Manager shows up here.	ما تنزله باستخدام Mister Download Manager يظهر هنا.
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	المواضع التي نقلته إليها، وفلاتر قائمته، في كل موقع
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	أثناء وجود الصفحة في وضع ملء الشاشة، لا تعرض مقاطع الفيديو الخاصة بها زر تنزيل الفيديو
@@ -6178,6 +6468,10 @@ extension	{time} left	تبقى {time}
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6728,6 +7022,10 @@ menu	Te&xt	&نص
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	أخبر &صديقا
 #. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	اختبار الأرشيف
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 menu	The graphics card was lost twice in 10 minutes	انقطعت بطاقة الرسومات مرتين في 10 دقائق
 #. menu command in the main window
@@ -6785,6 +7083,10 @@ menubar	&Tasks	&المهام
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menubar	&View	&عرض
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	معاينة
 #. toolbar button in the main window
 toolbar	Add Torrent	إضافة تورنت
 #. toolbar button in the main window
@@ -6797,6 +7099,10 @@ toolbar	Delete Completed	حذف المكتملة
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 toolbar	Options	خيارات
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	معاينة
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 toolbar	Resume	متابعة

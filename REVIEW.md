@@ -15,6 +15,10 @@ from a diff. Items that stop earning their place are removed.
 - [ ] ROADMAP.md moves its item; CHANGELOG.md says what changed for users, in public-safe words.
 - [ ] Every visible change has screenshots (light, dark, de, ar).
 - [ ] The review and the merge are for the same commit (merge with that commit's SHA).
+- **Triggered by:** a new feature or a new thing users can do.
+  - [ ] It has its own issue (an existing one reused, never a duplicate), linked from the PR.
+  - [ ] README.md (its feature list), the website (the feature's page or help, translated) and
+        the docs under `docs/` describe it, in the same PR.
 
 ## Files and paths
 

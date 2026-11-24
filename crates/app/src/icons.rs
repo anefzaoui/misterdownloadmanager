@@ -42,6 +42,10 @@ pub enum Icon {
     HelperChecked,
     /// Node.js runs YouTube's JavaScript (#1570).
     HelperScript,
+    /// The toolbar's preview pane toggle (#1368): Lucide "panel-right", the pane at the window's
+    /// right; in a right-to-left interface "panel-left", where the pane is there.
+    PreviewPane,
+    PreviewPaneLeft,
 }
 
 impl Icon {
@@ -166,6 +170,12 @@ impl Icon {
                 r#"<path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/>"#,
                 r#"<path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/>"#,
             ),
+            Icon::PreviewPane => {
+                r#"<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="M17.5 8h1"/><path d="M17.5 11h1"/>"#
+            }
+            Icon::PreviewPaneLeft => {
+                r#"<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M5.5 8h1"/><path d="M5.5 11h1"/>"#
+            }
             Icon::PageSounds => concat!(
                 r#"<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/>"#,
                 r#"<path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>"#,
@@ -200,6 +210,8 @@ impl Icon {
             Icon::HelperMerge => ("#3d8ee6", "#2bb3a3"),
             Icon::HelperChecked => ("#3fa864", "#2f7fcf"),
             Icon::HelperScript => ("#e6a817", "#3fa864"),
+            // The Options and Scheduler buttons' blues and violets, its neighbours on the band.
+            Icon::PreviewPane | Icon::PreviewPaneLeft => ("#93b6f2", "#9b84d0"),
         }
     }
 
@@ -232,6 +244,8 @@ impl Icon {
             Icon::HelperMerge => "helper-merge",
             Icon::HelperChecked => "helper-checked",
             Icon::HelperScript => "helper-script",
+            Icon::PreviewPane => "preview-pane",
+            Icon::PreviewPaneLeft => "preview-pane-left",
         }
     }
 

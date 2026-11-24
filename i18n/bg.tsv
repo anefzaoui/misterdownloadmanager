@@ -54,6 +54,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Съвпада с {n} статия сега (добавя само нови):|Съвпада с {n} статии сега (добавя само нови):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	Тестът на архива откри {n} повреден файл: {files}|Тестът на архива откри {n} повредени файла: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
@@ -96,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} изтегляне завърши|{n} изтегляния завършиха
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} изтегляне е избрано|{n} изтегляния са избрани
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -126,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} файл имаше вече съществуващо име и беше номериран|{n} файла имаха вече съществуващо име и бяха номерирани
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} завършено изтегляне|{n} завършени изтегляния
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -163,11 +176,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} тракер: {peers}|{n} тракера: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} прозорец чака, докато се върнете|{n} прозореца чакат, докато се върнете
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} иска да изпрати {n} връзка към Link grabber.|{site} иска да изпрати {n} връзки към Link grabber.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} и {n} с неизвестен размер|{size} и {n} с неизвестен размер
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -177,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} от {total} видеоклип са изброени|{title}: {listed} от {total} видеоклипа са изброени
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	„Изтеглянето завърши“ и другите прозорци, които MDM отваря сам, изчакват, докато е активно приложение или видео на цял екран, презентация или заключен екран, и се показват, когато се върнете. Прозорците, които отваряте сами, и връзките от браузъра ви винаги се показват
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -232,6 +259,11 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-часов (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	7-Zip не можа да го тества ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
@@ -279,6 +311,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	Файловете на магнитна връзка не можаха да бъдат намерени: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	Преместването беше прекъснато при затваряне на MDM: изтеглянето е в {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -315,6 +351,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Торент с един файл запазва името си
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Торент може да бъде преместен, след като завърши: дотогава торент машината записва частите си там, където са
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -323,10 +363,18 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	С тракер на този компютър или в локалната мрежа никога не се осъществява връзка: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Видео или галерия може да бъде преместена, след като завърши: дотогава помощните програми съхраняват незавършените си файлове в папката
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	липсва един от томовете му
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	няма го един от томовете му
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Всичко за Mister Download Manager
@@ -462,6 +510,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	Добавено. MDM чете торента: той ще се присъедини към списъка след малко.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	Добавено:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -731,6 +783,7 @@
 #, machine
 	Austria	Австрия
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	Автоматично
@@ -873,7 +926,7 @@
 #, machine
 	Busy, try later	Заето, опитайте по-късно
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	Размер на бутона:
 #. message or event log entry in the main window
@@ -1114,7 +1167,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Часовник:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1146,7 +1199,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Коморски острови
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	Компактен
@@ -1264,6 +1317,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	Неуспешна проверка за по-нова версия на {name}: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	Неуспешно тестване на {name}: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1311,6 +1369,18 @@
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	Ежедневно
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	Повреден
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	Повреден архив
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	Повреден: тестът на архива откри грешки. Десен бутон → Изтегляне отново го изтегля отново
 #. text in the Options window
 #, machine
 	Date order:	Ред на датата:
@@ -1448,6 +1518,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Не питай отново
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Не показвайте изскачащи прозорци, докато работи приложение на цял екран или презентация
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Не показвайте този диалогов прозорец отново
@@ -1606,6 +1680,15 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	Изтегля се копие на MDM...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	Изтегля се собствено копие на MDM... {percent}%
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	Изтеглят се отново повредените части ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1957,6 +2040,10 @@
 #. text in categories.rs
 #, machine
 	File types:	Типове файлове:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	Файл:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2017,6 +2104,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Завършени
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	Завършено:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2162,7 +2253,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	Изтеглянията по FTP не минават през HTTP прокси. Изберете SOCKS5 или SOCKS4, за да ги изпратите през проксито.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	Пълен
 #. text in countries.rs
@@ -2322,6 +2413,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Скрийте &категориите
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	Скриване на &панела за предварителен преглед
 #. button in a download's progress window
 #, machine
 	Hide tab	Скрийте раздела
@@ -2568,6 +2664,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	файловете му не можаха да бъдат записани: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	Папката му не е достъпна сега
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	папката {folder} е недостъпна
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2849,6 +2953,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	Търсене на страницата...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	Търси се...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3194,10 +3303,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Преместване/Преименуване
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	Преместен или изтрит
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	Преместено в {folder}
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	Преместване на файла...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	Премества се в {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	Преместване...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3359,6 +3485,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	В клипборда не бяха намерени връзки за изтегляне. Копирайте текст с http, https, ftp или магнитни връзки и опитайте отново.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	Няма избрано изтегляне
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3504,6 +3634,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	Все още не е инсталирано
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	Все още не е известно
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3522,6 +3656,15 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	не се поддържа от тази услуга
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	Все още не е тестван: {name} не е завършен ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Не е тестван: по-голям е от {limit} (Опции → Архиви). Десен бутон → Тестване на архива го тества
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Не се използва: частите на файла се записват до файла
@@ -4052,10 +4195,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	Записва се...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
 	Redownload	Изтегляне отново
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	Изтегляне отново изтегля всеки том отново отначало.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	Изтегляне отново го изтегля отново отначало.
 #. text in a download's Properties window
 #, machine
 	Referer:	Реферер:
@@ -4284,6 +4435,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	Втори файл:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	Изберете изтегляне, за да видите неговата картина и подробности тук.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4437,6 +4592,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	Показване на &категориите
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	Показване на &панела за предварителен преглед
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	Показване на диалогов прозорец и запитване какво да се направи.
@@ -4471,6 +4631,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	Покажете ми как
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	Показване или скриване на панела за предварителен преглед
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	Показване на панела за избор на опашка при затваряне на диалогови прозорци за групово изтегляне
@@ -4619,6 +4782,10 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Частично
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	някои от томовете му все още се изтеглят
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Някои от файловете на торента вече са в тази папка:
@@ -4772,6 +4939,10 @@
 #. label before the download's state
 #, machine
 	Status:	Състояние:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	Все още е там
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -4922,6 +5093,13 @@
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
 	Test	Тест
+#. message or event log entry in the main window
+#, machine
+	Test archive	Тестване на архива
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	Тестване на архиви след завършване на изтеглянето им, до {gb} GB
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -4930,6 +5108,19 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Test browser integration...	Тестване на интеграцията с браузъра...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	Тестван отново: архивът вече няма грешки
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	Тестване на архива...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	Тестване на архива... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4963,6 +5154,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Trash: it was kept	Архивът не можа да бъде преместен в кошчето: той беше запазен
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	Тестът на архива не успя: той е повреден или не е архивът, който името му показва
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	Тестът на архива не откри грешки
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -5050,6 +5249,11 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	връзката беше загубена по време на получаване на данни
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	Повредените части не можаха да бъдат изтеглени отново: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -5066,6 +5270,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	Изтеглянето от {host} беше прекъснато
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	Изтеглянето се премества
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5414,6 +5622,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	няма достатъчно свободно място за файловете му според HatchZip; нищо не е променено
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	няма достатъчно свободно място там ({needed} са нужни, {free} са свободни)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Тези настройки са недостъпни, когато е включена опцията „Показване на диалоговия прозорец за завършено изтегляне“
@@ -5681,6 +5893,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	торентите не можаха да се стартират: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	Общ размер:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6088,6 +6304,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Настройки за проверка за вируси
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	том {n} все още липсва
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -6140,6 +6361,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Уеб
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	Уеб страница:
 #. text in the Scheduler window
 #, machine
 	Wednesday	сряда
@@ -6416,6 +6641,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} от {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} от {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6438,6 +6667,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} не можа да бъде прочетен за проверка
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} вече съществува
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} не можа да бъде заменен: възможно е друго приложение да го използва. Новото изтегляне е записано до него като {new} и двата файла са запазени.
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} вече не е там, където е бил записан (преместен или изтрит). „Изтеглете отново“ в контекстното му меню го изтегля отново.
@@ -6544,6 +6781,16 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} вече се изтегля: опитайте отново след малко
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} е повреден: тестът му откри грешки в него.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} е повреден: тестът му откри грешки в един от томовете му.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6713,6 +6960,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} сек
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6813,6 +7065,7 @@ extension	Added to MDM	Добавено към MDM
 extension	Added to the queue	Добавено към опашката
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	Всички
 #. text in the browser extension
@@ -6828,6 +7081,14 @@ extension	Another Mister Download Manager (a server)	Друг Mister Download Ma
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	Аудио
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	Само аудио
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	Върна се в ъгъла си, менюто му показва всичко, на всеки сайт
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6877,6 +7138,10 @@ extension	Clear finished	Изчистване на завършените
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	Да изчистя ли завършените изтегляния?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	Кодек
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -6951,6 +7216,10 @@ extension	Download all links with Mister Download Manager	Изтеглете в�
 #, machine
 extension	Download best	Изтегляне на най-доброто
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	Бутон за изтегляне над видеоклипове
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
 extension	Download selected links with Mister Download Manager	Изтеглете избрани връзки с Mister Download Manager
@@ -6997,6 +7266,10 @@ extension	Downloads go to {address}	Изтеглянията отиват на {
 #, machine
 extension	Drag the dots to move it along the edge	Плъзнете точките, за да го преместите по ръба
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
+#, machine
+extension	Drag the dots to move it to another corner, or outside the video	Плъзнете точките, за да го преместите в друг ъгъл или извън видеоклипа
+#. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Въведете неговия https:// адрес.
@@ -7013,6 +7286,10 @@ extension	Failed: {why}	Неуспешно: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	Файлът е изтрит или преместен
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	Тип файл
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7325,9 +7602,17 @@ extension	Protected	Защитено
 #, machine
 extension	Protected video	Защитено видео
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	Върнете бутона в ъгъла му
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	Премахване от списъка
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	Нулирайте
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7381,6 +7666,7 @@ extension	Share...	Споделяне...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	Покажете
 #. text in the browser extension
@@ -7531,6 +7817,10 @@ extension	Waiting	Изчаква се
 #, machine
 extension	What you download with Mister Download Manager shows up here.	Тук се показват изтеглянията с Mister Download Manager.
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	Където сте го преместили, и филтрите на менюто му, за всеки сайт
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	Докато страницата е на цял екран, нейните видеоклипове не показват бутон за изтегляне на видео
@@ -7569,6 +7859,10 @@ extension	{time} left	Остават {time}
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8256,6 +8550,10 @@ menu	Te&xt	&Текст
 #, machine
 menu	Tell a &friend	Кажете на &приятел
 #. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	Тестване на архива
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
 menu	The graphics card was lost twice in 10 minutes	Графичната карта беше изгубена два пъти за 10 минути
@@ -8330,6 +8628,10 @@ menubar	&Tasks	&Задачи
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	Из&глед
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	Предварителен преглед
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Добавяне на торент
@@ -8347,6 +8649,10 @@ toolbar	Delete Completed	Изтриване на завършени
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	Опции
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	Предварителен преглед
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine
