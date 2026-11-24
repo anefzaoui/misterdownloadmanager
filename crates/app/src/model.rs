@@ -2071,7 +2071,16 @@ pub fn size(b: u64) -> String {
     } else if b >= 1024.0 {
         format!("{:.2} KB", b / 1024.0) // not translated: English path
     } else {
-        format!("{b} Bytes") // not translated: English path
+        bytes_text(b) // not translated: English path
+    }
+}
+
+/// `1 Byte`, `2 Bytes`, `0 Bytes` - the English path's words below a kilobyte.
+fn bytes_text(n: f64) -> String {
+    if n == 1.0 {
+        "1 Byte".to_owned()
+    } else {
+        format!("{n} Bytes")
     }
 }
 
@@ -2428,6 +2437,14 @@ mod size_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_single_byte_is_written_in_the_singular() {
+        assert_eq!(super::bytes_text(0.0), "0 Bytes");
+        assert_eq!(super::bytes_text(1.0), "1 Byte");
+        assert_eq!(super::bytes_text(2.0), "2 Bytes");
+        assert_eq!(super::bytes_text(1023.0), "1023 Bytes");
+    }
+
     /// A debrid torrent's ticked files are kept with the list; a list saved before them (no
     /// `files`) means all of them.
     #[test]
