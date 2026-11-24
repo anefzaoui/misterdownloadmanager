@@ -148,7 +148,8 @@ async fn a_bare_503_is_asked_again_then_taken_as_the_file_gone() {
     let path = dl
         .wait()
         .await
-        .expect("through Real-Debrid once it answers");
+        .expect("through Real-Debrid once it answers")
+        .path;
     assert!(std::fs::read(&path).unwrap() == expected("/file/64K/busy.bin", 64 << 10));
     assert_eq!(
         said.iter()
