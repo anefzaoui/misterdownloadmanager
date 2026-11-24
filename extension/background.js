@@ -1127,7 +1127,9 @@ function noteMedia(d, found, sent) {
       firsts.add(it.frameId);
       return false;
     });
-    tab.items.splice(Math.max(i, 0), 1);
+    // Nothing may go without taking a frame's first stream: the cap gives way.
+    if (i < 0) break;
+    tab.items.splice(i, 1);
   }
   // The tab seen last goes last; the least recent ones go past MEDIA_TABS.
   media.delete(d.tabId);
