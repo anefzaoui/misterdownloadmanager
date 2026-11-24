@@ -1131,6 +1131,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Pilih fail .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Pilih fail fon
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Pilih persekitaran masa jalan JavaScript (Node.js, Deno, QuickJS atau Bun)
@@ -2148,6 +2153,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	Folder:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Fail fon
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -5691,6 +5700,10 @@
 #, machine
 	This device's name	Nama peranti ini
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Fail ini tidak boleh digunakan sebagai fon.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -8007,6 +8020,11 @@ menu	&Download Now	&Muat Turun Sekarang
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&Keluar
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	f&on
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Import	&Import
@@ -8068,6 +8086,11 @@ menu	&Stop All	&Hentikan semua
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Hentikan muat turun
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	Fo&n sistem
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	&Ikon dulang
@@ -8179,6 +8202,12 @@ menu	C&ustomize URL List...	Ses&uaikan Senarai URL...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	Semak kemas &kini...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&Pilih fail fon...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	Klasik
 #. menu command in the main window
@@ -8244,9 +8273,6 @@ menu	Find Next (F3)	Cari Seterusnya (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	Cebisan pertama dan terakhir dahulu
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	Fon
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

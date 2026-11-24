@@ -1133,6 +1133,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	ເລືອກໄຟລ໌ .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	ເລືອກໄຟລ໌ຕົວອັກສອນ
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	ເລືອກຕົວຮັນໄທມ໌ JavaScript (Node.js, Deno, QuickJS ຫຼື Bun)
@@ -2146,6 +2151,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	ໂຟນເດີ:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	ໄຟລ໌ຕົວອັກສອນ
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -5694,6 +5703,10 @@
 #, machine
 	This device's name	ຊື່ອຸປະກອນນີ້
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	ໄຟລ໌ນີ້ບໍ່ສາມາດໃຊ້ເປັນຟອນໄດ້.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -8034,6 +8047,11 @@ menu	&Download Now	ດາວໂຫຼດດຽວ&ນີ້
 #, machine
 menu	&Exit	ອ&ອກ
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&ຟອນ
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8112,6 +8130,11 @@ menu	&Stop All	ຢຸດທັງ&ໝົດ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	ຢຸດການດາວໂຫຼ&ດ
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	ຟອນລ&ະບົບ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8248,6 +8271,12 @@ menu	C&ustomize URL List...	ປັບແຕ່ງລາຍການ URL &ເອ�
 #, machine
 menu	Check for &updates...	ກວດສອບຫາການ&ອັບເດດ...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&ເລືອກໄຟລ໌ຕົວອັກສອນ...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	ຄລາສສິກ
@@ -8332,10 +8361,6 @@ menu	Find Next (F3)	ຊອກຫາຕໍ່ໄປ (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	ດາວໂຫຼດຊິ້ນສ່ວນທຳອິດ ແລະ ສຸດທ້າຍກ່ອນ
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	ແບບອັກສອນ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

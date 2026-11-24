@@ -832,6 +832,12 @@ These ship in the next version.
   their buttons ([#1495](https://github.com/anefzaoui/misterdownloadmanager/issues/1495))
 - ✅ Chinese text from a font collection (macOS's Songti) is drawn with its regular face, not its
   first one, Songti SC Black ([#1483](https://github.com/anefzaoui/misterdownloadmanager/issues/1483))
+- ✅ **View → Font** draws every window's text in a font file of your own and at its own size,
+  apart from **View → Interface size**: the file is checked before use and read beside the
+  window, **System font** stays drawn in the computer's own font even when a chosen file is
+  damaged, so the way back is always readable, and the file in use is named and checked in the
+  menu
+  ([#1489](https://github.com/anefzaoui/misterdownloadmanager/issues/1489))
 - ✅ The browser extension remembers paired servers and switches between them and this computer
   with a click without re-pairing (thanks to [@kngkatak](https://github.com/kngkatak))
 - ✅ Helpers downloads Deno, the JavaScript runtime YouTube now needs yt-dlp to have (without one a
