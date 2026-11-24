@@ -1818,7 +1818,11 @@ impl Body {
             Body::Http(r) => r.content_length(),
             Body::Ftp(t) => t.expected(),
             Body::Browser(b) => b.len(),
-            Body::Prefixed(_, rest) => rest.len(),
+            // A prefixed body's rest reports the bytes still to come; the bytes peeked out of it
+            // are part of the body too.
+            Body::Prefixed(first, rest) => rest
+                .len()
+                .map(|n| n.saturating_add(first.as_ref().map_or(0, |b| b.len() as u64))),
         }
     }
 
