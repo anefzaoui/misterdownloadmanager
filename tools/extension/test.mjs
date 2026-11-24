@@ -2408,6 +2408,12 @@ function samplePage(html) {
     "https://cdn.example.com/master.m3u8?a=1&b=2",
     "no quality named: the first, &amp; undone",
   );
+  // Each escape undone once: a script's "&amp;" is the text "&amp;", not "&".
+  assert.equal(
+    bestPageStream(`{"hls":"https:\\/\\/c.example.com\\/v\\/master.m3u8?a=1\\u0026amp;b=2"}`),
+    "https://c.example.com/v/master.m3u8?a=1&amp;b=2",
+    "\\u0026amp; undone once",
+  );
   assert.equal(bestPageStream("<p>no video here, just video.mp4</p>"), "", "none");
   // The page is read as a look-up starts, never as the button follows the pointer (describe).
   const body = (name) => {
