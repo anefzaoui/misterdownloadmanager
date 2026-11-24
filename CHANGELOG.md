@@ -96,6 +96,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Video pieces: a server's announced size is handled more carefully (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Download video: a piece that can't be saved (a full disk, a read-only folder) is tried again a few times and then fails with the reason, instead of asking yt-dlp for the video's addresses again and again (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Video playlists: an entry with an enormous number no longer stops the listing or numbers the entries after it 0 (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Download video: formats whose announced sizes are absurdly large no longer overflow the video's total size (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Galleries: a gallery saved to a folder given as a relative path (`--cli get <url> -o pictures`) is downloaded by MDM's engine, as any other, not left to gallery-dl (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - A drive too full for a download says how much space the download needs and how much the drive has, instead of a smaller need and 0 bytes free (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - FTP: the 32-bit build refuses to resume a file of 4 GB or more with a clear message, instead of resuming it at the wrong place (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - A file whose first bytes are read to see what it is (a .zip, for one), from a server without ranges that has to start over on one connection, is no longer failed as cut short (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).

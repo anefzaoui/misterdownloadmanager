@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Video pieces: a server's announced size is handled more carefully
+- ✅ Download video: a piece that can't be saved fails with the reason
+- ✅ Video playlists: enormous entry numbers no longer break the listing
+- ✅ Download video: absurd announced sizes no longer overflow the total
+- ✅ Galleries: a relative download folder no longer leaves the files to gallery-dl
 - ✅ A drive too full for a download says the space needed and the space free right
 - ✅ FTP: the 32-bit build never resumes a file over 4 GB at the wrong place
 - ✅ A file from a server without ranges is no longer failed as cut short when it starts over on one connection
