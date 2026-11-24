@@ -1380,10 +1380,27 @@ impl OptionsDialog {
             "Show download complete dialog",
             true,
         );
+        // MDM's (#1773): pop-ups wait while a full-screen app, a presentation or the locked
+        // screen is on (hold.rs). A row under Download complete; the note and the separator 19
+        // lower, the four rows after them 20 apart (were 29, 25, 24) to end where they did.
+        let hold = winui::checkbox_light(
+            ui,
+            o + vec2(24.0, 179.0),
+            &mut s.hold_popups,
+            // i18n: checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+            "Don't show pop-ups while a full-screen app or presentation is running",
+            true,
+        );
+        if hold.hovered() {
+            // i18n: tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+            hold.on_hover_text(crate::i18n::t(
+                "\"Download complete\" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show",
+            ));
+        }
         // Download complete snoozed (#741): until when, and Resume now, in the note's place
         // while it lasts (the note comes back after).
         if let Some(until) = self.snoozed_until {
-            if snooze_line(ui, &p, o, until) {
+            if snooze_line(ui, &p, o + vec2(0.0, 19.0), until) {
                 self.resume_snooze = true;
                 ui.ctx().request_repaint();
             }
@@ -1391,36 +1408,36 @@ impl OptionsDialog {
             text(
                 &p,
                 o.x + 31.0,
-                o.y + 191.0,
+                o.y + 210.0,
                 crate::i18n::t("Note: These settings don't relate to queue processing"),
                 LIGHT_TEXT(),
             );
         }
-        winui::etched_h(&p, o.x + 21.0, o.y + 198.0, 381.0);
+        winui::etched_h(&p, o.x + 21.0, o.y + 217.0, 381.0);
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 212.0),
+            o + vec2(24.0, 231.0),
             &mut s.start_immediately,
             "Start downloading immediately while displaying \"Download File Info\" dialog",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 241.0),
+            o + vec2(24.0, 251.0),
             &mut s.queue_panel_later,
             "Show queue selection panel on pressing \"Download Later\" button",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 266.0),
+            o + vec2(24.0, 271.0),
             &mut s.queue_panel_batch,
             "Show queue selection panel on closing batch download dialogs",
             true,
         );
         winui::checkbox_light(
             ui,
-            o + vec2(24.0, 290.0),
+            o + vec2(24.0, 291.0),
             &mut s.ignore_mtime,
             "Ignore file modification time changes when resuming a download",
             true,

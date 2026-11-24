@@ -323,6 +323,9 @@ right-to-left window.
 - **Works from scripts too**: IDM's command-line switches, a command-line tool, and a local API for other programs ([how](docs/command-line.md)).
 - **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.
+- **Stays out of your game**: while a full-screen game, video or presentation is on, or the screen
+  is locked, **Download complete** and MDM's other pop-ups wait, and show when you're back
+  ([how](docs/options.md#downloads)).
 - **Day and dark mode, and themes**: Classic, Native, High contrast, Metro, Adwaita, Breeze,
   Luna, Aero and Aqua, or your own in a text file ([how](docs/themes.md)). Everything larger, up
   to 200 %, with **View → Interface size**. 86 languages, and a portable version for USB sticks.
