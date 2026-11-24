@@ -168,6 +168,10 @@ pub(crate) async fn create(http: &Http, key: &str, magnet: &str) -> Result<Strin
     }
 }
 
+/// The most folders of a finished transfer `transfer_status` lists (a season pack's tree is a
+/// few dozen).
+pub(crate) const MAX_FOLDERS: usize = 1000;
+
 /// `GET transfer/list`, then for a finished one `item/details` (one file) or `folder/list`,
 /// walked (several).
 pub(crate) async fn transfer_status(
@@ -203,6 +207,9 @@ pub(crate) async fn transfer_status(
         kind: String,
     }
     let mut files = Vec::new();
+    // More folders than MDM lists: the files found are downloaded, and the event log says the
+    // rest stay in the user's cloud (deleting the transfer keeps them there).
+    let mut partial = false;
     if let Some(file) = t.file_id.as_deref() {
         let mut url = http.services.pm.join("item/details").expect("relative");
         url.query_pairs_mut()
@@ -219,14 +226,13 @@ pub(crate) async fn transfer_status(
             #[serde(default)]
             content: Vec<Item>,
         }
-        // Breadth first, a folder's path before its files'; at most 64 folders.
+        // A folder's path before its files'; at most `MAX_FOLDERS` folders.
         let mut todo = vec![(folder.to_owned(), String::new())];
         let mut seen = 0;
-        let mut cut_short = false;
         while let Some((fid, prefix)) = todo.pop() {
             seen += 1;
-            if seen > 64 {
-                cut_short = true;
+            if seen > MAX_FOLDERS {
+                partial = true;
                 break;
             }
             let mut url = http.services.pm.join("folder/list").expect("relative");
@@ -253,17 +259,11 @@ pub(crate) async fn transfer_status(
                 }
             }
         }
-        // Ready with a partial walk would download some files and delete the transfer: say it
-        // couldn't be listed whole instead.
-        if cut_short {
-            return Err(Fault::Service(mdm_engine::ServiceFault::Other(
-                "the transfer's folder has more subfolders than MDM lists (64)".into(),
-            )));
-        }
     }
     Ok(Status::Ready {
         name: t.name,
         files,
+        partial,
     })
 }
 

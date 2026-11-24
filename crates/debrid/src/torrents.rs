@@ -37,10 +37,12 @@ pub enum Status {
         progress: Option<f32>,
         what: String,
     },
-    /// Done on its servers: the torrent's name and files.
+    /// Done on its servers: the torrent's name and files; `partial` when the service's list of
+    /// them was cut short (Premiumize: more folders than MDM lists), the files found still are.
     Ready {
         name: String,
         files: Vec<RemoteFile>,
+        partial: bool,
     },
     Failed(ServiceFault),
 }
@@ -110,6 +112,7 @@ impl Session {
                     None => Ok(Status::Ready {
                         files: torbox::files(&self.http, &key, kind, n, &i).await?,
                         name: i.name,
+                        partial: false,
                     }),
                 }
             }
@@ -339,7 +342,20 @@ impl RemoteTorrent {
                         said = line;
                     }
                 }
-                Status::Ready { name, files } => break (name, files),
+                Status::Ready {
+                    name,
+                    files,
+                    partial,
+                } => {
+                    if partial {
+                        let max = premiumize::MAX_FOLDERS;
+                        self.note(format!(
+                            "{service} has more than {max} folders in the torrent: downloading the {} file(s) in the first {max}; the rest stay in your {service} cloud",
+                            files.len()
+                        ));
+                    }
+                    break (name, files);
+                }
                 Status::Failed(f) => return Err(Fault::Service(f)),
                 Status::Working { progress, what } => {
                     self.shared.lock().unwrap().working = Some(progress);
@@ -805,6 +821,7 @@ pub(crate) fn rd_status(i: RdInfo) -> Status {
             Status::Ready {
                 name: i.filename,
                 files,
+                partial: false,
             }
         }
         "magnet_error" | "dead" => Status::Failed(F::TorrentUnavailable),
@@ -1003,7 +1020,7 @@ mod tests {
             "links":["https://real-debrid.com/d/A","https://real-debrid.com/d/B"],"ended":"2026-11-06T00:00:00.000Z"}"#,
         )
         .unwrap();
-        let Status::Ready { name, files } = rd_status(ready) else {
+        let Status::Ready { name, files, .. } = rd_status(ready) else {
             panic!("ready")
         };
         assert_eq!(name, "Show");
