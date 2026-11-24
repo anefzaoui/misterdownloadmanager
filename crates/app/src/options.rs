@@ -518,9 +518,9 @@ impl OptionsDialog {
                     .parse()
                     .unwrap_or(8)
                     .clamp(1, s.connection_limit());
-                s.limits_mb = self.mb.parse().unwrap_or(200).max(1);
+                s.limits_mb = self.mb.parse().unwrap_or(s.limits_mb).max(1);
                 s.capture_min_kb = self.min_kb.parse().unwrap_or(0);
-                s.limits_hours = self.hours.parse().unwrap_or(5).max(1);
+                s.limits_hours = self.hours.parse().unwrap_or(s.limits_hours).max(1);
                 s.remote_port = self.remote_port();
                 s.test_archives_gb = self
                     .test_gb
