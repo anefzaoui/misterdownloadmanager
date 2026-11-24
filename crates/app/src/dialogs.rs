@@ -3528,8 +3528,8 @@ const COLUMNS_ROW: f32 = 17.0;
 const COLUMNS_LIST_H: f32 = COLUMNS_ROW * crate::list::COLS as f32 + 4.0;
 /// Where the list starts, under the line that says what to do.
 const COLUMNS_LIST_Y: f32 = 30.0;
-/// OK and Cancel, under the list and its hint.
-const COLUMNS_BUTTONS_Y: f32 = COLUMNS_LIST_Y + COLUMNS_LIST_H + 30.0;
+/// OK and Cancel, under the list.
+const COLUMNS_BUTTONS_Y: f32 = COLUMNS_LIST_Y + COLUMNS_LIST_H + 12.0;
 
 /// What the Columns dialog hands back on OK: the order, which columns show, and whether Reset
 /// was pressed (the caller then puts the widths back too).
@@ -3700,14 +3700,6 @@ impl Columns {
                         self.visible[slot] = !self.visible[slot];
                     }
                 }
-                winui::text(
-                    &p,
-                    o.x + 11.0,
-                    o.y + COLUMNS_LIST_Y + COLUMNS_LIST_H + 18.0,
-                    // i18n: the Columns dialog, under its list: the keys that move the selected column up and down the list
-                    crate::i18n::t("Use Alt+↑ / Alt+↓ to move the selected column"),
-                    winui::MUTED(),
-                );
                 let at = self.rows.selected;
                 let can_up = at.is_some_and(|i| i > 0);
                 let can_down = at.is_some_and(|i| i + 1 < n);
