@@ -38,6 +38,10 @@ Peers on your local network are still found: with **Find peers on the local netw
 
 **Block the addresses in this list** takes the address of a public IP blocklist, in the P2P (PeerGuardian) or eMule `.dat` format, plain or gzipped. MDM downloads it with its own downloader (your Proxy / Socks settings apply), checks it, and fetches it again every 7 days. Peers in it are refused. A list MDM can't read is left out, and the last good one stays. The engine reads the list when it starts.
 
+## A public tracker list
+
+**Add the trackers of this public list to public torrents** (off by default) fetches a list of public trackers, at most once a day, with MDM's own downloader: your Proxy / Socks settings and your network adapter apply, and while the adapter's kill switch holds downloads, the list isn't fetched either. Every tracker on it is checked like a torrent's own: none on your computer or your local network is ever asked. Those trackers then see that you have the torrents you add from then on, as any tracker of a torrent does. A private torrent never gets them, and a list MDM can't read leaves the last good one in place.
+
 ## Files from a torrent
 
 - MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.

@@ -488,6 +488,122 @@ pub fn refresh_blocklist(
     });
 }
 
+/// The public tracker list (#1776): its last good copy, read from the torrent data folder on
+/// first use (`mdm_torrent::public_trackers::Cache`), and fetched again at most once a day with
+/// MDM's own downloader, in the background. A torrent added meanwhile never waits for it: it
+/// takes the list as last fetched, or none yet.
+#[derive(Clone, Default)]
+pub struct PublicTrackers {
+    cache: Arc<Mutex<Option<mdm_torrent::public_trackers::Cache>>>,
+    busy: Arc<std::sync::atomic::AtomicBool>,
+}
+
+fn unix_now() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |d| d.as_secs())
+}
+
+impl PublicTrackers {
+    /// `f` on the cache (read from the data folder the first time) and that folder. None
+    /// without a data folder.
+    fn with<R>(
+        &self,
+        f: impl FnOnce(&mut mdm_torrent::public_trackers::Cache, &Path) -> R,
+    ) -> Option<R> {
+        let dir = state_dir()?;
+        let mut cache = self.cache.lock().unwrap();
+        let cache = cache.get_or_insert_with(|| mdm_torrent::public_trackers::Cache::load(&dir));
+        Some(f(cache, &dir))
+    }
+
+    /// The trackers last fetched from `url` (none yet: empty). Never waits for a fetch.
+    pub fn list(&self, url: &str) -> Vec<String> {
+        self.with(|c, _| c.trackers(url).to_vec())
+            .unwrap_or_default()
+    }
+
+    /// Fetch the list at `url` when it is due (`Cache::due`: once a day; another address at
+    /// once), one fetch at a time, through Options → Proxy / Socks, Connection → DNS and the
+    /// chosen network adapter (`settings::own_net`). The try is recorded before it starts, so a
+    /// fetch that fails waits a day as well, and the last good list stays. While the chosen
+    /// adapter is disconnected (its kill switch), nothing is tried.
+    pub fn refresh(&self, rt: &tokio::runtime::Handle, url: &str) {
+        use std::sync::atomic::Ordering;
+        let url = url.trim().to_owned();
+        let Ok(parsed) = url::Url::parse(&url) else {
+            return;
+        };
+        if !matches!(parsed.scheme(), "http" | "https")
+            || matches!(crate::settings::own_route(), mdm_engine::Route::Down { .. })
+            || self.busy.swap(true, Ordering::SeqCst)
+        {
+            return;
+        }
+        let now = unix_now();
+        let due = self.with(|c, dir| {
+            if !c.due(&url, now) {
+                return false;
+            }
+            c.tried(&url, now);
+            if let Err(e) = c.save(dir) {
+                tracing::warn!("public trackers: the list's cache wasn't saved: {e}");
+            }
+            true
+        });
+        if due != Some(true) {
+            self.busy.store(false, Ordering::SeqCst);
+            return;
+        }
+        let this = self.clone();
+        rt.spawn(async move {
+            let remote = Remote {
+                url: parsed,
+                parts: crate::app::RequestParts {
+                    headers: Default::default(),
+                    opts: crate::settings::own_net(),
+                },
+            };
+            match fetch_small(remote, mdm_torrent::public_trackers::MAX_LIST_BYTES).await {
+                Ok(Some(body)) => {
+                    this.with(|c, dir| match c.fetched(&url, &body, unix_now()) {
+                        Some(n) => {
+                            if let Err(e) = c.save(dir) {
+                                tracing::warn!("public trackers: the list wasn't saved: {e}");
+                            }
+                            tracing::info!("public trackers: {n} from {url}");
+                        }
+                        None => tracing::warn!(
+                            "public trackers: {url} sent no tracker MDM may contact; the last \
+                             list stays"
+                        ),
+                    });
+                }
+                Ok(None) => {
+                    tracing::warn!("public trackers: {url} is too large for a list; the last stays")
+                }
+                Err(e) => tracing::warn!("public trackers: {url}: {e}; the last list stays"),
+            }
+            this.busy.store(false, Ordering::SeqCst);
+        });
+    }
+
+    /// `torrent` as it is kept for a new download: with the list's trackers (from `url`, as
+    /// last fetched) after its own, unless it is private (BEP 27); how many were added.
+    pub fn add_to(&self, torrent: &[u8], url: &str) -> (Vec<u8>, usize) {
+        let list = self.list(url);
+        match mdm_torrent::public_trackers::add_to(torrent, &list) {
+            Some(with) => {
+                let added = mdm_torrent::trackers::listed(&with)
+                    .len()
+                    .saturating_sub(mdm_torrent::trackers::listed(torrent).len());
+                (with, added)
+            }
+            None => (torrent.to_vec(), 0),
+        }
+    }
+}
+
 /// How the torrent session is held to the network adapter as it is (#35, #143): None without
 /// one chosen; else why torrents can't start (it isn't connected).
 pub fn route_bind(route: &mdm_engine::Route) -> Result<Option<mdm_torrent::Bind>, String> {

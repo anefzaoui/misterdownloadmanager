@@ -123,7 +123,9 @@ Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
 
 - **Connect over uTP too (UDP)** — on by default. uTP is BitTorrent over UDP. Many peers (qBittorrent's, µTorrent's, Transmission's and others) take uTP, and some take nothing else: without it, MDM can't reach those, and a torrent with few peers may find almost none. MDM tries TCP first and uTP when TCP doesn't answer within a second, on the same port it listens on, so uTP needs **Accept incoming connections** on. A SOCKS5 proxy carries only TCP, so with **Use the proxy** on, uTP is off. A chosen network adapter holds uTP's socket too.
 
-The same window has the network switches (incoming connections, the port, UPnP, uTP, the DHT, a SOCKS5 proxy) and the blocklist: see [Torrents and your security](torrent-security.md).
+- **Add the trackers of this public list to public torrents** — off by default. A torrent you add while it is on also asks the trackers of a public tracker list, so it finds peers sooner, above all an old torrent whose own trackers have gone quiet. The list is [ngosang/trackerslist](https://github.com/ngosang/trackerslist)'s best trackers unless you type another address in the box (one tracker per line). MDM fetches it with its own downloader, through your proxy and network adapter, at most once a day, and keeps the last good copy: a new torrent never waits for it, and takes the list as last fetched. A **private torrent** (one from a private tracker, marked so inside the torrent) never gets them: it may only ask its own trackers. Torrents added before you turned it on keep the trackers they have; **Add trackers...** in a torrent's right-click menu adds more by hand. Each torrent's **Trackers** tab shows them, and its event log says how many were added.
+
+The same window has the network switches (incoming connections, the port, UPnP, uTP, the DHT, a SOCKS5 proxy), the blocklist and the public tracker list: see [Torrents and your security](torrent-security.md).
 
 MDM starts its torrent engine the first time you add a torrent. If you never use torrents, it never listens for peers.
 

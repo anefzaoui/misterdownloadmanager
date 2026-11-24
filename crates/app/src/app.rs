@@ -1543,6 +1543,8 @@ pub struct App {
     file_speed: (f64, Instant, u64),
     /// A blocklist is being fetched (torrents::refresh_blocklist).
     blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
+    /// The public tracker list, as last fetched (#1776, torrents::PublicTrackers).
+    public_trackers: crate::torrents::PublicTrackers,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
@@ -2330,6 +2332,7 @@ impl App {
             global_cap: None,
             file_speed: (0.0, Instant::now(), 0),
             blocklist_busy: Default::default(),
+            public_trackers: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
             remote: None,
@@ -3358,6 +3361,10 @@ impl App {
                 &self.settings.torrent_blocklist,
                 &self.blocklist_busy,
             );
+        }
+        if self.settings.torrent_public_trackers {
+            self.public_trackers
+                .refresh(&self.rt, self.settings.public_trackers_list());
         }
         let sharing = self.settings.torrent_keep_sharing
             && self
@@ -7123,12 +7130,22 @@ impl App {
             );
             return None;
         }
+        // The public tracker list's trackers (#1776), as last fetched (it isn't waited for), in
+        // the .torrent kept for it: never in a private torrent's (BEP 27).
+        let (kept, public) = if self.settings.torrent_public_trackers {
+            if mdm_torrent::trackers::private(&meta.torrent) {
+                (meta.torrent.clone(), None)
+            } else {
+                let (with, added) = self
+                    .public_trackers
+                    .add_to(&meta.torrent, self.settings.public_trackers_list());
+                (with, Some(added))
+            }
+        } else {
+            (meta.torrent.clone(), Some(0))
+        };
         if after {
-            let (hash, bytes, wake) = (
-                meta.info_hash.clone(),
-                meta.torrent.clone(),
-                self.ui_ctx.clone(),
-            );
+            let (hash, bytes, wake) = (meta.info_hash.clone(), kept, self.ui_ctx.clone());
             crate::torrents::kept_files().change(&meta.info_hash, move || {
                 if let Err(e) = crate::torrents::save_torrent(&hash, &bytes) {
                     crate::dialogs::tell(
@@ -7141,7 +7158,7 @@ impl App {
                     wake.request_repaint();
                 }
             });
-        } else if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
+        } else if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &kept) {
             self.notice = Some((
                 crate::i18n::mark("Add torrent"),
                 crate::i18n::fmt(
@@ -7194,6 +7211,19 @@ impl App {
         );
         if let Some(item) = self.item(id) {
             item.preexisting_folder = preexisting;
+            match public {
+                Some(0) => {}
+                Some(n) => item.note(crate::i18n::tn(
+                    n as u64,
+                    // i18n: event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
+                    "{n} tracker added from the public list",
+                    "{n} trackers added from the public list",
+                )),
+                // i18n: event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
+                None => item.note(crate::i18n::t(
+                    "A private torrent: the public tracker list isn't added",
+                )),
+            }
             // The shared folder is where files go, not the torrent's display name.
             if !add.create_subfolder && meta.files.iter().filter(|f| !f.padding).count() > 1 {
                 item.file_name = meta.name.clone();
