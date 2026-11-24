@@ -42,7 +42,8 @@ Hide categories** gives the list the whole window.
 The list's **Save To** column shows the folder each download is saved in, so a file you sent
 somewhere else is easy to spot. Click its title, or choose **View → Arrange files → By Save
 Path**, to sort the list by folder. Like every column, right-click any column title to show or
-hide it, and drag it where you want it.
+hide it, and drag it where you want it. **Columns...** in that menu (or **View → Customize URL
+List...**) opens a window to choose them all and their order at once, from the keyboard too.
 
 ## Make your own
 

@@ -40,6 +40,11 @@ branches and the category or queue you were looking at.
   its contents.
 - **Choose columns:** right-click any column title and tick the ones you want. **Reset columns**
   in the same menu puts them back as they first were.
+- **The Columns window:** right-click a column title → **Columns...**, or **View → Customize URL
+  List...**. Tick the columns to show and put them in order with **Move up** and **Move down**;
+  **Reset** puts them back as they first were (widths too, on **OK**). From the keyboard: **Up**,
+  **Down**, **Home**, **End** or typing a name picks a column, **Space** shows or hides it,
+  **Alt+Up** and **Alt+Down** move it, **Enter** is **OK**. **File Name** always shows.
 
 MDM remembers the columns, their widths and the sort order. A list from an earlier version gets
 **Save To** at its end; untick it there if you don't want it.
