@@ -3463,13 +3463,19 @@ impl Columns {
                         list.request_focus();
                     }
                     let name = Self::name(slot);
-                    let hit = winui::checkbox_light_until(
+                    let text_color = if i == self.selected && crate::theme::dark_surface() {
+                        winui::SELECTION_TEXT()
+                    } else {
+                        winui::LIGHT_TEXT()
+                    };
+                    let hit = winui::checkbox_light_until_with_text_color(
                         ui,
                         o + vec2(16.0, y + 3.0),
                         &mut self.visible[slot],
                         &name,
                         slot != 0,
                         Some(238.0),
+                        text_color,
                     );
                     if hit.clicked() {
                         self.selected = i;

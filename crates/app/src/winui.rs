@@ -4651,6 +4651,19 @@ pub fn checkbox_light_until(
     enabled: bool,
     until: Option<f32>,
 ) -> Response {
+    checkbox_light_until_with_text_color(ui, glyph, checked, caption, enabled, until, LIGHT_TEXT())
+}
+
+/// [`checkbox_light_until`] with an explicit caption color (for a selected list row).
+pub fn checkbox_light_until_with_text_color(
+    ui: &mut Ui,
+    glyph: Pos2,
+    checked: &mut bool,
+    caption: &str,
+    enabled: bool,
+    until: Option<f32>,
+    text_color: Color32,
+) -> Response {
     let caption = crate::i18n::t(caption);
     let p = ui.painter().clone();
     // A caption longer than its room ends in "..." at the edge, whole on hover (UI rule).
@@ -4687,7 +4700,7 @@ pub fn checkbox_light_until(
     let rc = Rect::from_min_size(glyph, vec2(13.0, 13.0));
     check_box_glyph(&p, rc, *checked, State::of(&resp, enabled));
     let color = if enabled {
-        LIGHT_TEXT()
+        text_color
     } else {
         LIGHT_DISABLED()
     };
