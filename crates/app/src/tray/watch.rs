@@ -5,12 +5,12 @@
 //! waits, and is woken when it changes. The rule of the clipboard's reads (`clipboard.rs`) and the
 //! torrents' numbers (#693).
 //!
-//! No answer is not an answer: none yet, one too old ([`STALE`]: the shell stopped answering) or
-//! one being written as the window looks ([`Icon::Unknown`]) never decides that the icon is gone.
-//! Only the shell saying so does ([`Icon::Gone`]): no taskbar at all (Explorer isn't running), or
-//! a taskbar that answers and has no icon of MDM's, in any place. A window hidden while the answer
-//! is unknown can still come back: from the icon once it answers, and a second start of MDM always
-//! brings the window back (`App::handle_command`).
+//! No answer is not an answer: none yet, one too old ([`STALE`]: the shell stopped answering), one
+//! being written as the window looks ([`Icon::Unknown`]), or no taskbar at all (Explorer isn't
+//! running, so nothing holds the icon to ask about) never decides that the icon is gone. Only
+//! the shell answering that it has no icon of MDM's, in any place, does ([`Icon::Gone`]). A window
+//! hidden while the answer is unknown can still come back: from the icon once it answers, and a
+//! second start of MDM always brings the window back (`App::handle_command`).
 
 // The watcher asks Windows' shell; elsewhere only the answers' meaning is used (macOS asks the
 // menu bar on the window's thread, which AppKit wants; Linux asks whether a tray host runs).
@@ -44,15 +44,15 @@ pub enum Shell {
 }
 
 impl Shell {
-    /// Whether this answer says the icon isn't there.
+    /// Whether this answer says the icon isn't there. No taskbar isn't such an answer: the
+    /// shell that would hold the icon isn't running, so nothing is known about where it is.
     fn says_gone(self) -> bool {
         matches!(
             self,
-            Shell::NoTaskbar
-                | Shell::Answered {
-                    placed: false,
-                    held: false
-                }
+            Shell::Answered {
+                placed: false,
+                held: false
+            }
         )
     }
 }
@@ -64,7 +64,7 @@ pub enum Icon {
     There,
     /// No answer, or none recent: nothing is concluded either way.
     Unknown,
-    /// The shell said it has no icon of MDM's, or there is no taskbar.
+    /// The shell answered that it has no icon of MDM's, in any place.
     Gone,
 }
 
@@ -86,9 +86,12 @@ pub fn icon(seen: Option<Seen>, now: Instant) -> Icon {
         return Icon::Unknown;
     }
     match seen.shell {
-        Shell::Silent => Icon::Unknown,
+        // No taskbar: nothing is known, not that the icon is gone. Hiding a window then is
+        // what the icon that comes back with Explorer restores; minimizing it would put it
+        // where there is no taskbar to bring it back from.
+        Shell::Silent | Shell::NoTaskbar => Icon::Unknown,
         Shell::Answered { placed, held } if placed || held => Icon::There,
-        Shell::NoTaskbar | Shell::Answered { .. } => Icon::Gone,
+        Shell::Answered { .. } => Icon::Gone,
     }
 }
 
@@ -310,7 +313,7 @@ mod tests {
     };
 
     /// An icon the shell holds (behind ^, maybe with no place: #750, #718, #754) or places is
-    /// there; a running shell that has neither, or no taskbar, says it is gone.
+    /// there; a running shell that has neither says it is gone, and no taskbar says nothing.
     #[test]
     fn held_or_placed_is_there_and_only_the_shell_says_gone() {
         let now = Instant::now();
@@ -325,7 +328,11 @@ mod tests {
             assert_eq!(icon(seen(shell, now), now), Icon::There, "{shell:?}");
         }
         assert_eq!(icon(seen(NONE, now), now), Icon::Gone);
-        assert_eq!(icon(seen(Shell::NoTaskbar, now), now), Icon::Gone);
+        assert_eq!(
+            icon(seen(Shell::NoTaskbar, now), now),
+            Icon::Unknown,
+            "no explorer, nothing known"
+        );
     }
 
     /// No answer yet, a shell that didn't answer, an answer too old (or a lock the watcher holds:
@@ -335,12 +342,14 @@ mod tests {
         let now = Instant::now();
         assert_eq!(icon(None, now), Icon::Unknown);
         assert_eq!(icon(seen(Shell::Silent, now), now), Icon::Unknown);
-        for shell in [HELD, NONE, Shell::NoTaskbar] {
+        for shell in [HELD, NONE] {
             let old = now.checked_sub(STALE).unwrap();
             assert_eq!(icon(seen(shell, old), now), Icon::Unknown, "{shell:?}");
             let recent = now.checked_sub(STALE - Duration::from_millis(1)).unwrap();
             assert_ne!(icon(seen(shell, recent), now), Icon::Unknown, "{shell:?}");
         }
+        // No taskbar is unknown however recent it is.
+        assert_eq!(icon(seen(Shell::NoTaskbar, now), now), Icon::Unknown);
     }
 
     /// A hidden window comes back only once a running shell has said for RESCUE_AFTER, answer
@@ -513,7 +522,7 @@ mod tests {
     }
 
     /// "Gone" is dated from the first of an unbroken run of such answers: one answer that isn't
-    /// (the icon back, or no answer) starts it again.
+    /// (the icon back, no answer, or no taskbar to answer) starts it again.
     #[test]
     fn the_run_of_gone_answers_restarts_after_any_other() {
         let (port, answer, was_asked, _tipped) = fake(false);
@@ -535,7 +544,7 @@ mod tests {
         let first = next(NONE);
         assert_eq!(first.gone_since, Some(first.asked));
         let second = next(Shell::NoTaskbar);
-        assert_eq!(second.gone_since, Some(first.asked));
+        assert_eq!(second.gone_since, None, "no taskbar is not 'gone'");
         let silent = next(Shell::Silent);
         assert_eq!(silent.gone_since, None);
         let again = next(NONE);
