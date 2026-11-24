@@ -18553,6 +18553,54 @@
   "db452c2f3779eeec": {
    "source": "Last updated 2026-11-24",
    "text": "最后更新：2026年11月24日"
+  },
+  "0c1dc5ad1b8eca48": {
+   "source": "You can install them ahead of time too: in <g1>Helpers...</g1>, a helper that isn't there yet says <g2>Not installed yet</g2>, and <g3>Install yt-dlp</g3>, <g4>Install ffmpeg</g4> or <g5>Install gallery-dl</g5> in its row downloads MDM's own copy, checked the same way, and keeps it up to date from then on. Where MDM has no copy for your system, the button is greyed out and the row says what to do instead.",
+   "text": "您也可以提前安装它们：在<g1>帮助程序...</g1>中，尚未安装的帮助程序会显示<g2>尚未安装</g2>，并且其行中的<g3>安装 yt-dlp</g3>、<g4>安装 ffmpeg</g4>或<g5>安装 gallery-dl</g5>会下载 MDM 自己的副本，并以相同方式进行检查，然后从那时起保持更新。如果 MDM 没有适用于您系统的副本，则按钮会变灰，该行会说明替代方案。"
+  },
+  "4809c370b5c131eb": {
+   "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
+   "text": "其图片：文件管理器显示的图片（Windows 中照片、视频、PDF 或文档的缩略图，程序的图标；Linux 中桌面环境的缩略图，或 MDM 为照片或视频帧生成的缩略图），否则显示其文件类型的大图标。只有已完成的文件才有图片；"
+  },
+  "64cc24a1446a1da1": {
+   "source": "Point at a video and a small <g1>Download video</g1> button appears at its edge. It opens MDM's <g2>Download video from a page</g2> window with the qualities on offer (see <g3>video downloads</g3>). On many pages it finds the video before it plays, from the stream address the page wrote for its player. You can hide it on one video or one site, or turn it off in <g4>Options</g4>.",
+   "text": "将鼠标指向视频，视频边缘会出现一个小的<g1>下载视频</g1>按钮。点击它会打开 MDM 的<g2>从页面下载视频</g2>窗口，其中显示可用的视频质量（请参阅<g3>视频下载</g3>）。在许多页面上，它会在视频播放之前，从页面为其播放器写入的流地址中找到视频。您可以在某个视频或某个网站上隐藏它，或在<g4>选项</g4>中将其关闭。"
+  },
+  "6b02d34efe8900e6": {
+   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. A video that hasn't started yet, on a site yt-dlp doesn't read, has loaded no stream: the button then takes the stream address the page wrote for its player (an HLS or DASH playlist in its scripts or the player's attributes; the master playlist, else the best quality it names), on a page with one video, so you don't need to play it first. It only asks for addresses the page names. In a feed it takes the post the video sits in. When MDM finds nothing there (a feed that names no post, a post or a site yt-dlp can't read, such as Douyin's recommended videos), the button offers what the tab played for that video instead: the file or the stream whose length is the video's, never the next video the feed loaded meanwhile. When more than one could be it, it says <g1>Can't tell which video this is</g1> rather than guess; the toolbar button's <g2>Media on this page</g2> lists what the page loaded. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. A video the site names (YouTube, Vimeo and the others yt-dlp reads) keeps its own title; a stream known by no title of its own (its address is only <x3/>) is named after the page you're on, without the site's name at its end: on a page titled <x4/>, it's <x5/>, even when the player is embedded from another site. Sound players get the button too.",
+   "text": "它会获取您点击的视频：如果视频播放的是文件，则获取其文件本身；如果播放器加载的是流（HLS 或 DASH），则获取该流；否则获取页面。如果视频尚未开始播放，且 yt-dlp 无法读取该网站，则尚未加载任何流：此时，按钮会获取页面为其播放器写入的流地址（脚本中或播放器属性中的 HLS 或 DASH 播放列表；主播放列表，否则是其命名的最佳质量），前提是页面上只有一个视频，这样您就不必先播放它。它只请求页面中命名的地址。在信息流中，它会获取视频所在的帖子。当 MDM 在那里找不到任何内容时（信息流未命名帖子，或 yt-dlp 无法读取的帖子或网站，例如抖音的推荐视频），按钮会提供该视频在当前标签页中播放的内容：文件或长度与视频相同的流，绝不是信息流同时加载的下一个视频。当有多个可能匹配时，它会显示<g1>无法判断这是哪个视频</g1>，而不是猜测；工具栏按钮的<g2>此页面上的媒体</g2>会列出页面加载的内容。嵌入式播放器也同样适用，并且您的网站登录信息、嵌入播放器的页面以及浏览器的 User-Agent 都会随之发送，因此会员视频或仅在嵌入它们的网站上播放的视频也可以下载。流会随浏览器在播放器请求时发送的内容、其 referrer、origin 和 cookie（从其他网站嵌入的播放器可能只保留浏览器为该页面保存的 cookie）一起发送，MDM 会在每个播放列表和片段中再次发送它们：只为自己页面播放器提供服务的视频服务器也会让 MDM 通过。网站命名的视频（YouTube、Vimeo 和其他 yt-dlp 可读取的网站）会保留其自己的标题；没有自己标题的流（其地址仅为<x3/>）会以您当前所在的页面命名，不带网站名称：在标题为<x4/>的页面上，即使播放器是从其他网站嵌入的，它也是<x5/>。音频播放器也同样适用此按钮。"
+  },
+  "6c8843d26db0c53c": {
+   "source": "<g1>File:</g1> whether the finished file is <g2>still there</g2>, or was <g3>moved or deleted</g3> (MDM looks again every few seconds while it is shown), or its folder can't be reached now (a drive that isn't plugged in);",
+   "text": "<g1>文件：</g1>显示已完成的文件是<g2>仍在原处</g2>，还是<g3>已被移动或删除</g3>（MDM 在显示时每隔几秒会重新检查），或者其文件夹当前无法访问（例如驱动器未插入）；"
+  },
+  "79888ca42350fa50": {
+   "source": "where it was saved, its address and the web page it came from (right-click one to copy it), when it was added and when it finished.",
+   "text": "其保存位置、地址和来源网页（右键点击可复制），以及添加时间和完成时间。"
+  },
+  "7cc4d5a613a96d5a": {
+   "source": "The preview pane",
+   "text": "预览窗格"
+  },
+  "937f0b9cb5e6b255": {
+   "source": "<g1>View → Show preview pane</g1>, the <g2>Preview</g2> button at the toolbar's end, or <g3>Alt+P</g3> opens a pane beside the list (on its left in right-to-left languages) with the selected download:",
+   "text": "通过<g1>视图 → 显示预览窗格</g1>、工具栏末尾的<g2>预览</g2>按钮或<g3>Alt+P</g3>，可以在列表旁（从右到左的语言中在其左侧）打开一个窗格，显示选定的下载任务："
+  },
+  "afb4eff929c487fb": {
+   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's helpers window offers it too, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g5>nodejs.org</g5> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x6/> program in the <x7/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g8>Keeping them up to date</g8>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g9>Use another program...</g9>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
+   "text": "最快的方法是 MDM 自己的 Node.js 副本：点击该消息旁边的<g1>安装 Node.js</g1>，或者在<g2>帮助程序...</g2>中，点击<g4>JavaScript 运行时（用于 YouTube）</g4>行中的<g3>安装 Node.js</g3>。当您的计算机没有运行时时，首次启动的帮助程序窗口也会提供此选项。MDM 会从 <g5>nodejs.org</g5> 下载适用于您系统和处理器的最新长期支持 (LTS) 版本的 Node.js，使用其自己的下载器（Windows 上约 40 MB，Linux 和 macOS 上约 60 MB；支持 Windows x64、ARM64 和 32 位，Linux x64 和 ARM64，macOS），在使用前对照 Node.js 发布者的签名密钥检查发布版本的校验和列表，并对照该列表检查下载的文件，然后只将 <x6/> 程序保存在 yt-dlp 和 ffmpeg 旁边的 <x7/> 文件夹中，并从那时起指示 yt-dlp 使用它。它会像保持 yt-dlp 更新一样保持其更新（<g8>保持更新</g8>），绝不会使用旧版本。32 位 Windows 会获得 Node.js 仍为其构建的最新 LTS 版本 22，Node.js 将支持到 2027 年四月；此后 MDM 将不再为 32 位 Windows 提供 Node.js，届时需要您自己的运行时（<g9>使用其他程序...</g9>）。MDM 绝不会安装比该 MDM 制作时当前 LTS 版本更旧的 Node.js，无论 nodejs.org 的列表如何显示。一旦 Node.js 安装完成，视频将自行重新查找。"
+  },
+  "b67c5904156464ca": {
+   "source": "its name and type, its size (how much has come while it downloads, with its progress bar) and its status;",
+   "text": "其名称和类型、大小（下载过程中已完成的部分，带有进度条）和状态；"
+  },
+  "b85da1ea5ea3889d": {
+   "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>. (Or install it before your first gallery: <g3>Helpers...</g3> → <g4>Install gallery-dl</g4>.)",
+   "text": "MDM 会打开<g1>下载图库</g1>，而不是将页面作为文件下载。首次使用时，请点击<g2>安装 gallery-dl</g2>。（或者在下载第一个图库之前安装：<g3>帮助程序...</g3> → <g4>安装 gallery-dl</g4>。）"
+  },
+  "f58ab377c140951b": {
+   "source": "With several downloads selected it says how many, how many are finished and their total size. Drag the pane's edge to make it wider or narrower; its <g1>x</g1>, the button or Alt+P again hide it. MDM remembers it shown or hidden, and its width. In a language whose menu bar has P for a menu's letter (Polish, Croatian...), Alt+P opens that menu instead, as Windows' menus do.",
+   "text": "如果选择了多个下载任务，它会显示任务数量、已完成数量及其总大小。拖动窗格边缘可调整其宽度；点击其<g1>x</g1>、按钮或再次按下 Alt+P 可将其隐藏。MDM 会记住其显示或隐藏状态以及宽度。在菜单栏中 P 字母被用作菜单快捷键的语言中（如波兰语、克罗地亚语），Alt+P 将打开该菜单，与 Windows 菜单行为一致。"
   }
  }
 }

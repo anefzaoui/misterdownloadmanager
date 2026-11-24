@@ -18549,6 +18549,54 @@
   "db452c2f3779eeec": {
    "source": "Last updated 2026-11-24",
    "text": "最終更新日: 2026-11-24"
+  },
+  "0c1dc5ad1b8eca48": {
+   "source": "You can install them ahead of time too: in <g1>Helpers...</g1>, a helper that isn't there yet says <g2>Not installed yet</g2>, and <g3>Install yt-dlp</g3>, <g4>Install ffmpeg</g4> or <g5>Install gallery-dl</g5> in its row downloads MDM's own copy, checked the same way, and keeps it up to date from then on. Where MDM has no copy for your system, the button is greyed out and the row says what to do instead.",
+   "text": "事前にインストールすることもできます。<g1>ヘルパー...</g1> で、まだインストールされていないヘルパーには <g2>まだインストールされていません</g2> と表示され、その行の <g3>yt-dlp をインストール</g3>、<g4>ffmpeg をインストール</g4>、または <g5>gallery-dl をインストール</g5> をクリックすると、MDM 独自のコピーがダウンロードされ、同じ方法でチェックされ、それ以降は最新の状態に保たれます。MDM にシステム用のコピーがない場合、ボタンはグレー表示され、その行には代わりに何をすべきかが表示されます。"
+  },
+  "4809c370b5c131eb": {
+   "source": "its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a photo or a video's frame), else its file type's large icon. Only a finished file has one;",
+   "text": "画像: ファイル マネージャーに表示される画像 (Windows の写真、ビデオ、PDF、ドキュメントのサムネイル、プログラム独自のアイコン。Linux ではデスクトップのサムネイル、または MDM が作成する写真やビデオのフレーム)。それ以外の場合は、ファイルの種類を示す大きなアイコン。完了したファイルにのみ表示されます。"
+  },
+  "64cc24a1446a1da1": {
+   "source": "Point at a video and a small <g1>Download video</g1> button appears at its edge. It opens MDM's <g2>Download video from a page</g2> window with the qualities on offer (see <g3>video downloads</g3>). On many pages it finds the video before it plays, from the stream address the page wrote for its player. You can hide it on one video or one site, or turn it off in <g4>Options</g4>.",
+   "text": "動画にポインターを合わせると、端に小さな<g1>動画をダウンロード</g1>ボタンが表示されます。これをクリックすると、MDM の<g2>ページからビデオをダウンロード</g2>ウィンドウが開き、利用可能な品質が表示されます（<g3>動画のダウンロード</g3>を参照）。多くのページでは、再生される前に、ページがプレーヤー用に書き込んだストリームアドレスから動画を検出します。特定の動画やサイトで非表示にしたり、<g4>オプション</g4>でオフにしたりできます。"
+  },
+  "6b02d34efe8900e6": {
+   "source": "It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. A video that hasn't started yet, on a site yt-dlp doesn't read, has loaded no stream: the button then takes the stream address the page wrote for its player (an HLS or DASH playlist in its scripts or the player's attributes; the master playlist, else the best quality it names), on a page with one video, so you don't need to play it first. It only asks for addresses the page names. In a feed it takes the post the video sits in. When MDM finds nothing there (a feed that names no post, a post or a site yt-dlp can't read, such as Douyin's recommended videos), the button offers what the tab played for that video instead: the file or the stream whose length is the video's, never the next video the feed loaded meanwhile. When more than one could be it, it says <g1>Can't tell which video this is</g1> rather than guess; the toolbar button's <g2>Media on this page</g2> lists what the page loaded. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. A stream goes with what the browser sent when the player asked for it, its referrer, its origin and its cookies (a player embedded from another site may have cookies the browser keeps for that page only), and MDM sends them again with each of its playlists and pieces: a site's video server that serves its own pages' players only lets MDM through as well. A video the site names (YouTube, Vimeo and the others yt-dlp reads) keeps its own title; a stream known by no title of its own (its address is only <x3/>) is named after the page you're on, without the site's name at its end: on a page titled <x4/>, it's <x5/>, even when the player is embedded from another site. Sound players get the button too.",
+   "text": "クリックした動画をダウンロードします。動画ファイルそのもの、またはプレーヤーが読み込んだストリーム（HLS または DASH）をダウンロードし、それ以外の場合はページをダウンロードします。yt-dlp が読み取れないサイトでまだ再生されていない動画は、ストリームを読み込んでいません。その場合、ボタンは、動画を最初に再生する必要がないように、ページがプレーヤー用に記述したストリームのアドレス（スクリプトまたはプレーヤーの属性にある HLS または DASH プレイリスト。マスタープレイリスト、またはそれが指定する最高の品質）を、動画が 1 つあるページで取得します。ページが指定するアドレスのみを要求します。フィードでは、動画が配置されている投稿を取得します。MDM が何も見つけられない場合（投稿を指定しないフィード、yt-dlp が読み取れない投稿やサイト、Douyin のおすすめ動画など）、ボタンは代わりに、その動画のためにタブが再生したものを提示します。動画の長さと同じ長さのファイルまたはストリームであり、その間にフィードが読み込んだ次の動画ではありません。複数の動画が該当する可能性がある場合、推測するのではなく、<g1>どの動画か特定できません</g1>と表示されます。ツールバー ボタンの<g2>このページのメディア</g2>には、ページが読み込んだものが一覧表示されます。埋め込みプレーヤーも機能し、サイトへのサインイン、プレーヤーを埋め込むページ、ブラウザーのユーザー エージェントも一緒に送信されるため、メンバー向けの動画や、埋め込み元のサイトでのみ再生される動画もダウンロードできます。ストリームは、プレーヤーが要求したときにブラウザーが送信したもの、そのリファラー、オリジン、Cookie（別のサイトから埋め込まれたプレーヤーには、ブラウザーがそのページのみに保持する Cookie がある場合があります）と一緒に送信され、MDM はそれらを各プレイリストとピースで再度送信します。独自のページのプレーヤーのみを提供するサイトの動画サーバーも、MDM を通過させます。サイトが指定する動画（YouTube、Vimeo、および yt-dlp が読み取るその他のサイト）は、独自のタイトルを保持します。独自のタイトルで知られていないストリーム（アドレスは<x3/>のみ）は、サイト名なしで、現在表示しているページの名前が付けられます。たとえば、<x4/>というタイトルのページでは、プレーヤーが別のサイトから埋め込まれている場合でも<x5/>となります。サウンド プレーヤーにもボタンが表示されます。"
+  },
+  "6c8843d26db0c53c": {
+   "source": "<g1>File:</g1> whether the finished file is <g2>still there</g2>, or was <g3>moved or deleted</g3> (MDM looks again every few seconds while it is shown), or its folder can't be reached now (a drive that isn't plugged in);",
+   "text": "<g1>ファイル:</g1> 完了したファイルが<g2>まだ存在するか</g2>、<g3>移動または削除されたか</g3> (MDM は表示中に数秒ごとに再確認します)、または現在フォルダーにアクセスできないか (接続されていないドライブなど) を示します。"
+  },
+  "79888ca42350fa50": {
+   "source": "where it was saved, its address and the web page it came from (right-click one to copy it), when it was added and when it finished.",
+   "text": "保存先、アドレス、元の Web ページ (右クリックでコピーできます)、追加日時、完了日時。"
+  },
+  "7cc4d5a613a96d5a": {
+   "source": "The preview pane",
+   "text": "プレビュー ウィンドウ"
+  },
+  "937f0b9cb5e6b255": {
+   "source": "<g1>View → Show preview pane</g1>, the <g2>Preview</g2> button at the toolbar's end, or <g3>Alt+P</g3> opens a pane beside the list (on its left in right-to-left languages) with the selected download:",
+   "text": "<g1>表示 → プレビュー ウィンドウを表示</g1>、ツールバーの右端にある<g2>プレビュー</g2>ボタン、または<g3>Alt+P</g3>を押すと、選択したダウンロードのプレビュー ウィンドウがリストの横に開きます (右から左に書く言語では左側)。表示される内容は次のとおりです。"
+  },
+  "afb4eff929c487fb": {
+   "source": "The quickest way is MDM's own copy of Node.js: click <g1>Install Node.js</g1> beside that message, or, in <g2>Helpers...</g2>, <g3>Install Node.js</g3> in the <g4>JavaScript runtime (for YouTube)</g4> row. The first start's helpers window offers it too, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from <g5>nodejs.org</g5> with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the <x6/> program in the <x7/> folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's (<g8>Keeping them up to date</g8>), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (<g9>Use another program...</g9>) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.",
+   "text": "最も簡単な方法は、MDM 独自の Node.js を使うことです。メッセージの横にある<g1>Node.js をインストール</g1>をクリックするか、<g2>ヘルパー...</g2>で<g4>JavaScript ランタイム (YouTube 用)</g4>の行にある<g3>Node.js をインストール</g3>をクリックします。コンピューターにランタイムがない場合、初回起動時のヘルパー ウィンドウでもこのオプションが表示されます。MDM は、<g5>nodejs.org</g5>からお使いのシステムとプロセッサーに合わせた Node.js の最新の長期サポート (LTS) ビルドを独自のダウンローダーでダウンロードします (Windows で約 40 MB、Linux および macOS で約 60 MB。Windows x64、ARM64、32 ビット、Linux x64 および ARM64、macOS に対応)。使用する前に、リリース チェックサム リストを Node.js リリース元の署名キーと照合し、ダウンロードしたファイルをそのリストと照合します。yt-dlp と ffmpeg の横にある<x7/>フォルダーには<x6/>プログラムのみを保持し、それ以降は yt-dlp にそれを使用するよう指示します。yt-dlp と同様に、常に最新の状態に保ちます (<g8>最新の状態に保つ</g8>)。古いバージョンを使用することはありません。32 ビット版 Windows には、Node.js がまだビルドしている最新の LTS ラインであるバージョン 22 が提供され、Node.js は 2027 年 4 月までサポートします。それ以降、MDM は 32 ビット版 Windows 用の Node.js を提供しないため、独自のランタイム (<g9>別のプログラムを選択...</g9>) が必要になります。MDM は、nodejs.org のリストがどうであれ、その MDM が作成された時点の LTS ラインよりも古い Node.js をインストールすることはありません。Node.js がインストールされると、動画は自動的に再検索されます。"
+  },
+  "b67c5904156464ca": {
+   "source": "its name and type, its size (how much has come while it downloads, with its progress bar) and its status;",
+   "text": "名前と種類、サイズ (ダウンロード中にどれだけ受信したか、進行状況バー付き) とステータス。"
+  },
+  "b85da1ea5ea3889d": {
+   "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>. (Or install it before your first gallery: <g3>Helpers...</g3> → <g4>Install gallery-dl</g4>.)",
+   "text": "MDM は、ページをファイルとしてダウンロードする代わりに、<g1>ギャラリーをダウンロード</g1>を開きます。初回は<g2>gallery-dl をインストール</g2>をクリックします。(または、最初のギャラリーをダウンロードする前に、<g3>ヘルパー...</g3> → <g4>gallery-dl をインストール</g4>でインストールすることもできます。)"
+  },
+  "f58ab377c140951b": {
+   "source": "With several downloads selected it says how many, how many are finished and their total size. Drag the pane's edge to make it wider or narrower; its <g1>x</g1>, the button or Alt+P again hide it. MDM remembers it shown or hidden, and its width. In a language whose menu bar has P for a menu's letter (Polish, Croatian...), Alt+P opens that menu instead, as Windows' menus do.",
+   "text": "複数のダウンロードが選択されている場合、選択されたダウンロードの数、完了したダウンロードの数、合計サイズが表示されます。プレビュー ウィンドウの端をドラッグして幅を調整できます。<g1>x</g1>ボタン、またはボタンをもう一度クリックするか Alt+P を押すと非表示になります。MDM は、表示/非表示の状態と幅を記憶します。メニュー バーに P の文字を持つメニューがある言語 (ポーランド語、クロアチア語など) では、Windows のメニューと同様に、Alt+P を押すとそのメニューが開きます。"
   }
  }
 }
