@@ -4365,10 +4365,12 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
     await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
     assert.ok(!(await kept({ id: 61, url: "https://site.test/b.zip", referrer: "https://site.test/files", filename: "b.zip" })), "a later plain download from the page");
     assert.equal(natives(calls).length, 1);
-    // A new Alt+click on the same link, seconds later, lets its own download through too.
+    // A new Alt+click on the same link, seconds later, is a click of its own: the download that
+    // follows it under another address is the browser's too (the link's own address always was).
     clock.t += 3000;
     await send({ type: "bypass", url: "https://site.test/get?id=7" }, page);
-    assert.ok(await kept({ id: 64, url: "https://site.test/get?id=7", finalUrl: "https://cdn.test/e.zip", referrer: "https://site.test/files", filename: "e.zip" }), "a new press on the same link");
+    assert.ok(await kept({ id: 73, url: "https://site.test/c.zip", referrer: "https://site.test/files", filename: "c.zip" }), "a new press on the same link");
+    assert.equal(natives(calls).length, 1);
     // A link the page's script took (the click's own download prevented): the download it
     // started instead, under another address, sent from the page (the referrer cut to the site
     // too, the default across sites); once.
