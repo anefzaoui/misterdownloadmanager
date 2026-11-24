@@ -41,6 +41,8 @@ import contributors  # noqa: E402  (tools/contributors.py: the people the site t
 import vitrine  # noqa: E402  (tools/website/vitrine.py: the lightbox and dialogs, website/vitrine/)
 import sitei18n  # noqa: E402
 import tallies  # noqa: E402  (tools/website/tallies.py: the stores' figures and our own ratings)
+import pagemd  # noqa: E402  (tools/website/pagemd.py: each page as Markdown)
+import agents  # noqa: E402  (tools/website/agents.py: robots.txt, the API catalog, the MCP server card)
 
 ROOT = Path(__file__).resolve().parents[2]
 WEB = ROOT / "website"
@@ -638,6 +640,7 @@ def footer() -> str:
             <li><a href="/contributors.html">Contributors</a></li>
             <li><a href="/press.html">Press and mentions</a></li>
             <li><a href="/news.xml">News feed</a></li>
+            <li><a href="/agents.html">For AI tools and agents</a></li>
           </ul>
         </div>
         <div>
@@ -2106,8 +2109,9 @@ def copy_static() -> None:
     for old in OUT.iterdir():
         shutil.rmtree(old) if old.is_dir() else old.unlink()
     for item in WEB.iterdir():
-        # content/: the pages' sources; ratings/: the ratings Worker, deployed on its own.
-        if item.name in ("content", "ratings") or item.suffix == ".html":
+        # content/: the pages' sources; ratings/ and markdown/: the site's Workers, deployed on
+        # their own.
+        if item.name in ("content", "ratings", "markdown") or item.suffix == ".html":
             continue
         if item.name == "vitrine":
             # Vitrine's scripts and stylesheets; its lock file stays home.
@@ -2147,11 +2151,45 @@ def bust_caches() -> None:
             page.write_text(new, "utf-8", newline="\n")
 
 
+def markdown_twins() -> int:
+    """Every page, in every language, gets its Markdown beside it (pagemd.twin(): /x.html ->
+    /x.md, /x/ -> /x/index.md) and names it in its <head>. The help pages' are their source
+    (build_help); the others are made from the built page. website/markdown/ is the Worker that
+    can answer `Accept: text/markdown` with them."""
+    made = 0
+    for page in sorted(OUT.rglob("*.html")):
+        rel = page.relative_to(OUT).as_posix()
+        if rel == "404.html" or rel.endswith("/404.html"):
+            continue
+        text = page.read_text("utf-8")
+        if '<meta name="robots" content="noindex">' in text:
+            continue
+        path = "/" + (rel[: -len("index.html")] if rel == "index.html" or rel.endswith("/index.html") else rel)
+        twin = pagemd.twin(path)
+        if not twin:
+            continue
+        target = OUT / twin.lstrip("/")
+        if not target.is_file():
+            target.write_text(pagemd.to_markdown(text, SITE + path), "utf-8", newline="\n")
+            made += 1
+        # The page's own twin, in its own language (a translated help page came with the English one).
+        new = re.sub(r'(<link rel="alternate" type="text/markdown" href=")[^"]*(">)', rf"\g<1>{twin}\g<2>", text, count=1)
+        if 'type="text/markdown"' not in new and "</head>" in new:
+            new = new.replace("</head>", f'  <link rel="alternate" type="text/markdown" href="{twin}">\n</head>', 1)
+        if new != text:
+            page.write_text(new, "utf-8", newline="\n")
+    return made
+
+
 def finish(available: dict[str, list[str]]) -> None:
     bust_caches()
+    markdown_twins()
     # One sitemap per language under an index, each page with its languages (sitei18n).
     sitei18n.sitemaps(OUT, SITE, PAGES, available, TODAY)
-    (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", "utf-8")
+    # For AI tools and agents (agents.py, website/content/agents.md): robots.txt with Content
+    # Signals, /.well-known/api-catalog, /.well-known/mcp/server-card.json.
+    (OUT / "robots.txt").write_text(agents.robots(SITE), "utf-8")
+    agents.write(OUT, SITE, REPO, VERSION, ROOT, ratings_on())
 
 
 def main() -> None:

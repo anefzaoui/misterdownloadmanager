@@ -49,6 +49,7 @@ mod options;
 mod pacfetch;
 mod palette;
 mod playlistdlg;
+mod preview;
 mod progress;
 mod properties;
 mod queue;

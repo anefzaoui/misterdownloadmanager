@@ -112,7 +112,7 @@ pub fn filter_magnet(magnet: &str, proxied: bool) -> String {
 /// A .torrent with only the trackers MDM may contact; everything else byte for byte, so its
 /// info hash is the same. None when it isn't a bencoded dictionary.
 pub fn filter_torrent(bytes: &[u8], proxied: bool) -> Option<Vec<u8>> {
-    let entries = top_level(bytes)?;
+    let entries = tracker_entries(bytes)?;
     // An `announce-list` replaces `announce` ([`listed`]): when none of its trackers is kept,
     // `announce` goes too, or the torrent would ask a tracker it never named for its peers.
     let list = entries
@@ -178,7 +178,7 @@ fn kept(value: &[u8], proxied: bool) -> Option<Vec<Vec<&[u8]>>> {
 /// A .torrent's trackers, each once, in its order: `announce-list`'s tiers, or `announce` when
 /// it has no list (BEP 12: a list replaces it).
 pub fn listed(bytes: &[u8]) -> Vec<String> {
-    let Some(entries) = top_level(bytes) else {
+    let Some(entries) = tracker_entries(bytes) else {
         return Vec::new();
     };
     let value = |k: &[u8]| entries.iter().find(|(key, _)| *key == k).map(|e| e.1);
@@ -201,7 +201,7 @@ pub fn listed(bytes: &[u8]) -> Vec<String> {
 /// with only `announce` gets a list holding it first; one with none gets `announce` too. None
 /// when it isn't a bencoded dictionary.
 pub fn add(bytes: &[u8], more: &[String]) -> Option<Vec<u8>> {
-    let entries = top_level(bytes)?;
+    let entries = tracker_entries(bytes)?;
     let have = listed(bytes);
     let mut fresh: Vec<&str> = Vec::new();
     for u in more.iter().map(|u| u.trim()) {
@@ -257,6 +257,24 @@ fn push_string(out: &mut Vec<u8>, s: &[u8]) {
     out.extend_from_slice(s.len().to_string().as_bytes());
     out.push(b':');
     out.extend_from_slice(s);
+}
+
+/// The top-level dictionary's entries, with `announce` and `announce-list` each where it first
+/// appears: a key a dictionary repeats (bencode doesn't allow it, a crafted file can) counts once,
+/// so what [`listed`] reads, what [`filter_torrent`] checks and what is written back are the same
+/// trackers, and a second list can't slip past the filter. Every other entry stays as it is.
+fn tracker_entries(bytes: &[u8]) -> Option<Vec<(&[u8], &[u8])>> {
+    let mut entries = top_level(bytes)?;
+    let (mut announce, mut list) = (false, false);
+    entries.retain(|(key, _)| {
+        let seen = match *key {
+            b"announce" => &mut announce,
+            b"announce-list" => &mut list,
+            _ => return true,
+        };
+        !std::mem::replace(seen, true)
+    });
+    Some(entries)
 }
 
 /// The top-level dictionary's entries: each key and its value's bytes.
@@ -531,5 +549,80 @@ mod tests {
         );
         let t = format!("d8:announce{}e", s(public));
         assert_eq!(filter_torrent(t.as_bytes(), false).unwrap(), t.as_bytes());
+    }
+
+    /// A torrent that repeats `announce-list` or `announce` (fuzzing found one): only the first
+    /// counts, for what's listed and what's written, so a second list never comes through the
+    /// filter as a tracker the torrent didn't list. The info dictionary stays byte for byte.
+    #[test]
+    fn a_repeated_tracker_key_counts_once() {
+        let info = b"d6:lengthi5e4:name1:a12:piece lengthi16384e6:pieces20:aaaaaaaaaaaaaaaaaaaae";
+        let s = |v: &str| format!("{}:{v}", v.len());
+        let with = |head: String| {
+            let mut t = format!("d{head}4:info").into_bytes();
+            t.extend(info);
+            t.push(b'e');
+            t
+        };
+        let (public, local, other) = (
+            "http://t.example/announce",
+            "http://10.0.0.1:69/announce",
+            "udp://t2.example:1337/announce",
+        );
+        let only_info = with(String::new());
+
+        // The crash's shape: the first list names only a local tracker, a second list another.
+        let lists = with(format!(
+            "8:announce{}13:announce-listll{}ee13:announce-listll{}ee",
+            s(public),
+            s(local),
+            s(other)
+        ));
+        assert_eq!(listed(&lists), [local]);
+        for proxied in [false, true] {
+            let out = filter_torrent(&lists, proxied).unwrap();
+            assert_eq!(out, only_info, "{}", String::from_utf8_lossy(&out));
+        }
+
+        // A first list with one tracker kept: that one, and the second list doesn't come along.
+        let kept = with(format!(
+            "13:announce-listll{}{}ee13:announce-listll{}ee",
+            s(public),
+            s(local),
+            s(other)
+        ));
+        let out = filter_torrent(&kept, false).unwrap();
+        assert_eq!(out, with(format!("13:announce-listll{}ee", s(public))));
+        assert_eq!(listed(&out), [public]);
+
+        // `announce` twice, no list: the first, local, is dropped; the second never counted.
+        let announces = with(format!("8:announce{}8:announce{}", s(local), s(public)));
+        assert_eq!(listed(&announces), [local]);
+        assert_eq!(filter_torrent(&announces, false).unwrap(), only_info);
+
+        // Adding trackers reads the same first list; the second is gone from what's written.
+        let more = ["https://c.example/announce".to_owned()];
+        let out = add(&kept, &more).unwrap();
+        assert_eq!(listed(&out), [public, local, more[0].as_str()]);
+        assert_eq!(
+            out,
+            with(format!(
+                "8:announce{}13:announce-listll{}{}el{}ee",
+                s(&more[0]),
+                s(public),
+                s(local),
+                s(&more[0])
+            ))
+        );
+
+        // Whatever is filtered, nothing comes from nowhere.
+        for t in [&lists, &kept, &announces] {
+            for proxied in [false, true] {
+                let out = filter_torrent(t, proxied).unwrap();
+                for u in listed(&out) {
+                    assert!(listed(t).contains(&u), "{u} came from nowhere");
+                }
+            }
+        }
     }
 }

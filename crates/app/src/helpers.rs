@@ -674,6 +674,72 @@ fn tool_of(h: Helper) -> Tool {
     }
 }
 
+/// What a row's own-copy button does (#1801), from where its program comes from now.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum OwnButton {
+    /// Forget the program the person chose: MDM's own copy is used again (installed first when
+    /// there is none).
+    Forget,
+    /// Download and install MDM's own copy: `first` where there is none yet ("Install …"), else
+    /// in place of the system's (#452, #571).
+    Install { first: bool },
+    /// Greyed: MDM's own copy is already the one used, or MDM has none for this system (the
+    /// row's status says so).
+    Off,
+}
+
+impl OwnButton {
+    /// For a row whose program is one the person chose (`chosen`), else the one found
+    /// (`found`: whether it is the system's, None when there is none), where MDM has (`has_own`)
+    /// or hasn't a copy of its own for this system and processor.
+    fn of(chosen: bool, found: Option<bool>, has_own: bool) -> OwnButton {
+        match found {
+            _ if chosen => OwnButton::Forget,
+            _ if !has_own => OwnButton::Off,
+            None => OwnButton::Install { first: true },
+            Some(true) => OwnButton::Install { first: false },
+            Some(false) => OwnButton::Off,
+        }
+    }
+
+    /// Its label (translated by the button): "Install yt-dlp" (or its tool's) where there is
+    /// nothing yet, else "Use MDM's own copy".
+    fn label(self, t: Tool) -> &'static str {
+        if self != (OwnButton::Install { first: true }) {
+            // i18n: Video helpers: button: go back to the copy MDM downloads and checks itself
+            return crate::i18n::mark("Use MDM's own copy");
+        }
+        match t {
+            // i18n: button: download and install the yt-dlp program
+            Tool::YtDlp => crate::i18n::mark("Install yt-dlp"),
+            // i18n: button: download and install the ffmpeg program
+            Tool::Ffmpeg => crate::i18n::mark("Install ffmpeg"),
+            // i18n: button: download and install the gallery-dl program
+            Tool::GalleryDl => crate::i18n::mark("Install gallery-dl"),
+            // i18n: button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+            Tool::Node => crate::i18n::mark("Install Node.js"),
+        }
+    }
+}
+
+/// A row's status while MDM's own copy of `t` downloads (#1801): how far, once its size is known,
+/// as an update says it.
+fn downloading_own(dir: Option<&std::path::Path>, tool: Tool) -> String {
+    use crate::i18n::{fmt, t};
+    match dir
+        .and_then(|d| mdm_tools::autoupdate::checking(d, tool))
+        .and_then(|p| p.fraction())
+    {
+        Some(f) => fmt(
+            // i18n: Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+            t("Downloading MDM's own copy... {percent}%"),
+            &[("percent", &format!("{:.0}", f * 100.0))],
+        ),
+        // i18n: Video helpers: MDM's own yt-dlp is being downloaded
+        None => t("Downloading MDM's own copy...").to_owned(),
+    }
+}
+
 /// How long "Updated to …" is said after an update.
 const UPDATED_SHOWN: i64 = 3 * 24 * 3600;
 
@@ -762,24 +828,14 @@ impl Programs {
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) {
-        let slot: Answer = Arc::new(Mutex::new(None));
-        let (out, wake) = (slot.clone(), ctx.clone());
-        let net = crate::settings::own_net();
-        rt.spawn(async move {
-            let res = mdm_tools::jsruntime::install_latest(&dir, &net, None).await;
-            if let Err(e) = &res {
-                tracing::warn!("Node.js download failed: {e}");
-            }
-            *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
-            wake.request_repaint();
-        });
-        self.installing_runtime = Some(slot);
+        self.installing_runtime = Some(Self::start_install(Tool::Node, dir, rt, ctx));
         self.error = None;
     }
 
-    /// MDM's own yt-dlp or gallery-dl in place of the system's (#452, #571): downloaded and
-    /// checked as usual, from then on the one used (`mdm_tools::installed`,
-    /// `mdm_tools::gallery::installed`). It goes on if the window is closed.
+    /// MDM's own yt-dlp, ffmpeg or gallery-dl, where there is none yet (#1801) or in place of
+    /// the system's (#452, #571): downloaded and checked as usual, from then on the one used
+    /// (`mdm_tools::installed` and the like) and kept up to date. It goes on if the window is
+    /// closed.
     fn install_own(
         &mut self,
         h: Helper,
@@ -787,22 +843,29 @@ impl Programs {
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
     ) {
+        self.installing = Some((h, Self::start_install(tool_of(h), dir, rt, ctx)));
+        self.error = None;
+    }
+
+    /// Every row's install of MDM's own copy of `t`, in the background
+    /// (`mdm_tools::autoupdate::install_own`: its progress shown as an update's, and the
+    /// automatic checks going on from it).
+    fn start_install(
+        t: Tool,
+        dir: std::path::PathBuf,
+        rt: &tokio::runtime::Handle,
+        ctx: &egui::Context,
+    ) -> Answer {
         let slot: Answer = Arc::new(Mutex::new(None));
         let (out, wake) = (slot.clone(), ctx.clone());
         let net = crate::settings::own_net();
         rt.spawn(async move {
-            let res = if h == Helper::GalleryDl {
-                mdm_tools::gallery::install_latest(&dir, &net, None).await
-            } else if h == Helper::Ffmpeg {
-                mdm_tools::ffmpeg::install_latest(&dir, &net, None).await
-            } else {
-                mdm_tools::install_latest(&dir, &net, None).await
-            };
+            let now = mdm_tools::autoupdate::unix_now();
+            let res = mdm_tools::autoupdate::install_own(&dir, t, &net, now).await;
             *out.lock().unwrap() = Some(res.map(|_| ()).map_err(|e| crate::errors::tools(&e)));
             wake.request_repaint();
         });
-        self.installing = Some((h, slot));
-        self.error = None;
+        slot
     }
 
     /// Check for updates (`tools`: every own copy) or one row's Update, now, in the background:
@@ -1056,15 +1119,13 @@ impl Programs {
                 Helper::GalleryDl => mdm_tools::gallery::asset().is_some(),
                 Helper::Ffmpeg => mdm_tools::ffmpeg::available(),
             };
-            // The system's copy may be the person's to keep up to date: MDM's own can replace it
-            // (#452, #571), where MDM has one for this system and processor.
-            let replaceable = has_own;
-            let system = replaceable && found.is_some_and(mdm_tools::Installed::is_system);
+            // MDM's own copy, where MDM has one for this system and processor: back from the
+            // person's own program, in place of the system's (which may be the person's to keep
+            // up to date, #452, #571), or installed where there is none yet (#1801).
+            let own_button =
+                OwnButton::of(mine, found.map(mdm_tools::Installed::is_system), has_own);
             let status = match (too_old, found) {
-                _ if downloading => {
-                    // i18n: Video helpers: MDM's own yt-dlp is being downloaded
-                    crate::i18n::t("Downloading MDM's own copy...").to_owned()
-                }
+                _ if downloading => downloading_own(self.dir.as_deref(), tool_of(h)),
                 _ if checking => {
                     // i18n: Video helpers: a program just chosen is being checked
                     crate::i18n::t("Checking the program...").to_owned()
@@ -1130,12 +1191,13 @@ impl Programs {
             };
             self.update_row(ui, &p, o, y, name_end, tool_of(h), updates, rt);
             let busy = self.busy();
+            let own_label = own_button.label(tool_of(h));
             // As wide as their labels in this language (#192), side by side from the left.
             let [other_at, own_at] = winui::button_row_from_left(
                 &p,
                 &[
                     ("Use another program...", 14.0, 180.0),
-                    ("Use MDM's own copy", 202.0, 180.0),
+                    (own_label, 202.0, 180.0),
                 ],
                 8.0,
                 486.0,
@@ -1168,9 +1230,8 @@ impl Programs {
             if winui::button(
                 ui,
                 r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
-                // i18n: Video helpers: button: go back to the copy MDM downloads and checks itself
-                "Use MDM's own copy",
-                if (mine || system) && !busy {
+                own_label,
+                if own_button != OwnButton::Off && !busy {
                     ButtonKind::Normal
                 } else {
                     ButtonKind::Disabled
@@ -1181,13 +1242,20 @@ impl Programs {
             .clicked()
                 && let Some(dir) = self.dir.clone()
             {
-                if mine {
-                    self.error = mdm_tools::chosen::forget(&dir, h)
-                        .err()
-                        .map(|e| crate::errors::tools(&e));
-                    self.look();
-                } else {
-                    self.install_own(h, dir, rt, ui.ctx());
+                match own_button {
+                    OwnButton::Forget => {
+                        self.error = mdm_tools::chosen::forget(&dir, h)
+                            .err()
+                            .map(|e| crate::errors::tools(&e));
+                        self.look();
+                        // Nothing left once the choice is gone: MDM's own comes, as the
+                        // button said.
+                        if self.error.is_none() && self.found[k].is_none() && has_own {
+                            self.install_own(h, dir, rt, ui.ctx());
+                        }
+                    }
+                    OwnButton::Install { .. } => self.install_own(h, dir, rt, ui.ctx()),
+                    OwnButton::Off => {}
                 }
             }
             // A line under each, the JavaScript runtime's row below them.
@@ -1445,7 +1513,7 @@ impl Programs {
         };
         let looking = self.probe.wanted;
         let status = if self.installing_runtime.is_some() {
-            crate::i18n::t("Downloading MDM's own copy...").to_owned()
+            downloading_own(self.dir.as_deref(), Tool::Node)
         } else if looking {
             // i18n: Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
             crate::i18n::t("Looking for a JavaScript runtime on this computer...").to_owned()
@@ -1502,19 +1570,26 @@ impl Programs {
             ("helper", k),
         );
         let chosen = runtime.as_ref().is_some_and(|r| r.from == Origin::Chosen);
-        // MDM's own copy, when it is what the button would bring: back from a chosen runtime,
-        // or downloaded where the computer has none (or only MDM's earlier Deno).
-        let own_possible = chosen
-            || (available
-                && runtime
-                    .as_ref()
-                    .is_none_or(|r| r.from == Origin::Own && r.kind != Kind::Node));
+        // MDM's own copy, as the helpers' rows bring it: back from a chosen runtime, or
+        // downloaded where the computer has none ("Install Node.js") or only MDM's earlier Deno
+        // (which it replaces, as the system's copy of a helper); never in place of the
+        // computer's own runtime.
+        let own_button = OwnButton::of(
+            chosen,
+            runtime
+                .as_ref()
+                .map(|r| r.from == Origin::Own && r.kind != Kind::Node),
+            available,
+        );
+        let own_possible = own_button != OwnButton::Off;
         let busy = self.busy() || looking;
+        // While the computer's runtimes are asked, not yet "Install".
+        let own_label = if looking { OwnButton::Off } else { own_button }.label(Tool::Node);
         let [other_at, own_at] = winui::button_row_from_left(
             p,
             &[
                 ("Use another program...", 14.0, 180.0),
-                ("Use MDM's own copy", 202.0, 180.0),
+                (own_label, 202.0, 180.0),
             ],
             8.0,
             486.0,
@@ -1547,7 +1622,7 @@ impl Programs {
         if winui::button(
             ui,
             r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
-            "Use MDM's own copy",
+            own_label,
             if own_possible && !busy {
                 ButtonKind::Normal
             } else {
@@ -1657,5 +1732,54 @@ mod tests {
         if helpers.probe.wanted {
             assert_eq!(helpers.runtime, None);
         }
+    }
+
+    /// #1801: a helper not installed yet gets "Install <it>" where MDM has a copy for this
+    /// system, greyed where it hasn't; the system's copy is replaced, a chosen program forgotten,
+    /// MDM's own copy in use leaves nothing to do.
+    #[test]
+    fn the_own_copy_button_installs_what_is_missing() {
+        use OwnButton::*;
+        // Nothing yet.
+        assert_eq!(OwnButton::of(false, None, true), Install { first: true });
+        assert_eq!(OwnButton::of(false, None, false), Off);
+        // The system's copy.
+        assert_eq!(
+            OwnButton::of(false, Some(true), true),
+            Install { first: false }
+        );
+        assert_eq!(OwnButton::of(false, Some(true), false), Off);
+        // MDM's own copy in use.
+        assert_eq!(OwnButton::of(false, Some(false), true), Off);
+        // The person's own program, wherever MDM has a copy or not.
+        for found in [None, Some(true), Some(false)] {
+            assert_eq!(OwnButton::of(true, found, true), Forget);
+            assert_eq!(OwnButton::of(true, found, false), Forget);
+        }
+        // Labels: each tool's own Install, already in the catalogs (gallery-dl's window, Download
+        // video), else Use MDM's own copy.
+        let install = Install { first: true };
+        assert_eq!(install.label(Tool::GalleryDl), "Install gallery-dl");
+        assert_eq!(install.label(Tool::YtDlp), "Install yt-dlp");
+        assert_eq!(install.label(Tool::Ffmpeg), "Install ffmpeg");
+        assert_eq!(install.label(Tool::Node), "Install Node.js");
+        for b in [Install { first: false }, Forget, Off] {
+            assert_eq!(b.label(Tool::GalleryDl), "Use MDM's own copy");
+        }
+    }
+
+    /// Before its size is known (or with no install under way here), the download's line says
+    /// only that it downloads.
+    #[test]
+    fn a_download_without_its_size_says_no_percent() {
+        let dir = tempfile::tempdir().unwrap();
+        assert_eq!(
+            downloading_own(Some(dir.path()), Tool::GalleryDl),
+            "Downloading MDM's own copy..."
+        );
+        assert_eq!(
+            downloading_own(None, Tool::Node),
+            "Downloading MDM's own copy..."
+        );
     }
 }

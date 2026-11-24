@@ -80,6 +80,27 @@ To bring the built-in categories back as they came, with their names, file types
 The top branches show how many downloads they hold. **View → Hide categories** gives the list
 the whole window.
 
+## The preview pane
+
+**View → Show preview pane**, the **Preview** button at the toolbar's end, or **Alt+P** opens a
+pane beside the list (on its left in right-to-left languages) with the selected download:
+
+- its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or
+  a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a
+  photo or a video's frame), else its file type's large icon. Only a finished file has one;
+- its name and type, its size (how much has come while it downloads, with its progress bar) and
+  its status;
+- **File:** whether the finished file is **still there**, or was **moved or deleted** (MDM looks
+  again every few seconds while it is shown), or its folder can't be reached now (a drive that
+  isn't plugged in);
+- where it was saved, its address and the web page it came from (right-click one to copy it),
+  when it was added and when it finished.
+
+With several downloads selected it says how many, how many are finished and their total size.
+Drag the pane's edge to make it wider or narrower; its **x**, the button or Alt+P again hide it.
+MDM remembers it shown or hidden, and its width. In a language whose menu bar has P for a
+menu's letter (Polish, Croatian...), Alt+P opens that menu instead, as Windows' menus do.
+
 ## Dropping links and files
 
 Drag a link from a browser (or a page's text with links in it) onto the list to add it: one
