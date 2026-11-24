@@ -18,7 +18,9 @@ impl Shown {
         Self { shown: None }
     }
 
-    /// The system lost what it showed: send the next value again, even if unchanged.
+    /// The system lost what it showed: send the next value again, even if unchanged. Windows'
+    /// taskbar buttons are recreated; a dock gets its value again on its own (unix.rs).
+    #[cfg_attr(not(any(windows, test)), allow(dead_code))]
     pub fn forget(&mut self) {
         self.shown = None;
     }
