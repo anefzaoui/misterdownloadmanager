@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ README and website: SourceForge's badges (its download button, the downloads count and its
+  *Users Love Us* award); the website serves the award's picture itself, so showing it asks
+  SourceForge for nothing
 - ✅ Scheduler: a queue's Once at date is kept while its start time is off
 - ✅ Download limits: an empty box keeps the limit in force
 - ✅ Scheduler: a clock that goes back no longer runs every schedule time at once

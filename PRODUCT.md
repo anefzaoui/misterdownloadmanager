@@ -72,7 +72,9 @@ maker (Tonec), or as a crack or copy of it.
   articles, quoted exactly with their source and date), `website/content/press.tsv` (independent
   articles and videos), the browser stores' users and ratings (read again at every build,
   `tools/website/tallies.py`, kept with the day in `website/content/stores.json`) and `build.py`
-  FIGURES (GitHub's download count, Trendshift's ranking), each with the date it was checked.
+  FIGURES (GitHub's download count, Trendshift's ranking), each with the date it was checked,
+  and `build.py` AWARDS (SourceForge's *Users Love Us*), only awards actually given, with the
+  giver's own seal served from the site (`website/assets/badges/SOURCES.txt`).
   The site's own star ratings (visitors', one each) are the only rating in its structured data;
   the stores' never are. Nothing beyond these
   may be invented, shortened into a different meaning or combined; no customer or press logos.

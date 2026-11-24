@@ -58,6 +58,7 @@
 <p align="center">
   <a href="https://github.com/anefzaoui/misterdownloadmanager/releases/latest"><img src="https://img.shields.io/github/v/release/anefzaoui/misterdownloadmanager?logo=github" alt="Latest release"></a>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/releases"><img src="https://img.shields.io/github/downloads/anefzaoui/misterdownloadmanager/total?logo=github" alt="Downloads"></a>
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/"><img src="https://img.shields.io/sourceforge/dt/mister-download-manager?logo=sourceforge&label=SourceForge%20downloads" alt="SourceForge downloads"></a>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/anefzaoui/misterdownloadmanager/ci.yml?logo=github&label=ci" alt="CI"></a>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?logo=github" alt="GitHub stars"></a>
   <a href="https://addons.mozilla.org/firefox/addon/mister-download-manager/"><img src="https://img.shields.io/amo/v/mister-download-manager?logo=firefoxbrowser&label=Firefox%20add-on" alt="Firefox add-on"></a>
@@ -132,6 +133,19 @@ manager: in a terminal, the first line installs MDM and the second updates it.
 winget install AhmedNefzaoui.MisterDownloadManager
 winget upgrade AhmedNefzaoui.MisterDownloadManager
 ```
+
+Or from [SourceForge](https://sourceforge.net/projects/mister-download-manager.mirror/), an
+automatic, exact copy of the GitHub releases (SourceForge shows ads around its downloads), where
+MDM has SourceForge's *Users Love Us* award:
+
+<p align="center">
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/files/latest/download"><img align="middle" src="https://a.fsdn.com/con/app/sf-download-button" srcset="https://a.fsdn.com/con/app/sf-download-button?button_size=2x 2x" alt="Download Mister Download Manager from SourceForge" width="276" height="48"></a>
+  &nbsp;&nbsp;
+  <a href="https://sourceforge.net/projects/mister-download-manager.mirror/"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="website/assets/badges/sourceforge-users-love-us-dark.svg">
+    <img align="middle" src="website/assets/badges/sourceforge-users-love-us.svg" alt="SourceForge's Users Love Us award for Mister Download Manager" width="96" height="96">
+  </picture></a>
+</p>
 
 ### Code signing policy
 
