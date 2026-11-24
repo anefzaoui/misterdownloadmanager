@@ -2033,6 +2033,9 @@ These ship in the next version.
   were; choosing one now redraws and publishes the group's new checked states in that same frame,
   and the arrow keys move between **Quick cut** / **Exact cut** and **Delete category**'s choices
   too ([#1692](https://github.com/anefzaoui/misterdownloadmanager/issues/1692))
+- ✅ Tests: the check of a live stream stopped after its recording was renamed no longer fails now
+  and then on Windows: the fake yt-dlp's copy of the recording is there only once it is whole and
+  closed, so the check never reads it while the copy still holds it
 
 ## Being worked on
 

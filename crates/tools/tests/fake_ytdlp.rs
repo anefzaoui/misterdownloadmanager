@@ -440,7 +440,14 @@ fn fake_ytdlp() -> ExitCode {
                 println!("MDMP {written} {written} NA 650000 96");
                 let video = template.replace("%(ext)s", "mp4").replace("%%", "%");
                 std::fs::rename(&part, &video).unwrap();
-                std::fs::copy(&video, home.join("recorded.bin")).unwrap();
+                // Copied under another name, then renamed: `recorded.bin` is there only whole
+                // and closed. The checks wait for it while the fake still runs, and stop the job
+                // then (`live-ends-gate`); a copy in progress is already there, held by
+                // Windows' CopyFile (no reader may open it, os error 32) and only partly
+                // written.
+                let kept = home.join("recorded.bin.copying");
+                std::fs::copy(&video, &kept).unwrap();
+                std::fs::rename(&kept, home.join("recorded.bin")).unwrap();
                 if mode == "live-renamed-fails" {
                     eprintln!(
                         "ERROR: [download] Got error: HTTPSConnection(host='rr1---sn-dead.googlevideo.com', port=443): Failed to resolve 'rr1---sn-dead.googlevideo.com' ([Errno 11004] getaddrinfo failed). Giving up after 10 retries"
