@@ -15,7 +15,7 @@ No. MDM is an independent program written from scratch in Rust, with no connecti
 
 ### How is MDM different from IDM? {#mdm-vs-idm}
 
-The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in [our benchmark](/benchmark.html), speaks 86 languages and has builds for Linux and macOS. IDM is the more mature product, refined over many years. See the full [comparison](/idm-alternative.html).
+The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The differences: MDM is free and open source, downloads BitTorrent and magnet links in the same list, finished faster in [our benchmark](/benchmark.html), speaks 87 languages and has builds for Linux and macOS. IDM is the more mature product, refined over many years. See the full [comparison](/idm-alternative.html).
 
 ### Why does MDM show a larger memory figure than IDM? {#memory-vs-idm}
 
@@ -135,7 +135,7 @@ No, unless you want it to. While a torrent downloads it trades pieces with other
 
 ### Is MDM available in my language? {#languages}
 
-Very likely: MDM speaks 86 languages, every display language Windows 11 offers, chosen on the first start or any time in **View → Language**. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left. See [all the languages](/languages.html) and how to help improve yours.
+Very likely: MDM speaks 87 languages, every display language Windows 11 offers, chosen on the first start or any time in **View → Language**. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left. See [all the languages](/languages.html) and how to help improve yours.
 
 ### Can other programs or scripts control MDM? {#automation}
 
