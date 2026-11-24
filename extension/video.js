@@ -1078,7 +1078,10 @@
   // else the element.
   const dismissed = new WeakSet();
   const dismissedSrc = new Set();
-  const isDismissed = (v) => dismissed.has(v) || (v.currentSrc && dismissedSrc.has(v.currentSrc));
+  const isDismissed = (v) =>
+    // A player reused for the next video in a feed is a new video once its address changes:
+    // the address is the key when there is one, the element only when there is none.
+    v.currentSrc ? dismissedSrc.has(v.currentSrc) : dismissed.has(v);
   // May it show here? The app's answer (Options: the button on, the site not listed), asked
   // again when older than ASK_MS, so a change in Options reaches a page already open (#532: one
   // that never reloads, as YouTube's, kept the button for good). `never`: this page's own
