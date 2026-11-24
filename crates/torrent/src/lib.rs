@@ -281,9 +281,10 @@ fn set_aside_broken(db: &Path, len: usize, why: &str) {
 /// in `dir`), take out the ones the name check refuses, and those saved without their .torrent
 /// (whose names it can't check): the app adds those again itself, through `add` and its own
 /// copy. The rest keep only the trackers MDM may contact (`trackers`, `proxied`), in the list and
-/// in their .torrent. Rewritten through a temporary file (`replace_file`). A list librqbit
-/// couldn't read is set aside (`set_aside_broken`, #1357); one that can't be opened is left to
-/// librqbit, whose error says why.
+/// in their .torrent; one whose .torrent can't be filtered is taken out as well. Rewritten
+/// through a temporary file (`replace_file`). A list librqbit couldn't read is set aside
+/// (`set_aside_broken`, #1357); one that can't be opened is left to librqbit, whose error says
+/// why.
 fn prepare_saved(dir: &Path, proxied: bool) {
     let db = dir.join(SESSION_FILE);
     let Ok(raw) = std::fs::read(&db) else {
@@ -315,9 +316,18 @@ fn prepare_saved(dir: &Path, proxied: bool) {
             changed = true;
             return false;
         };
-        if let Some(filtered) = trackers::filter_torrent(&bytes, proxied).filter(|f| *f != bytes) {
-            let tmp = dir.join(format!("{hash}.torrent.mdm-tmp"));
-            let _ = replace_file(&file, &tmp, &filtered);
+        // Its trackers filtered, or it is taken out (the app adds it again through `add`).
+        let kept = match trackers::filter_torrent(&bytes, proxied) {
+            Some(filtered) if filtered == bytes => true,
+            Some(filtered) => {
+                let tmp = dir.join(format!("{hash}.torrent.mdm-tmp"));
+                replace_file(&file, &tmp, &filtered).is_ok()
+            }
+            None => false,
+        };
+        if !kept {
+            changed = true;
+            return false;
         }
         if let Some(list) = entry.get_mut("trackers").and_then(|t| t.as_array_mut()) {
             let before = list.len();
@@ -1113,7 +1123,7 @@ impl Torrents {
                 AddTorrent::from_url(m)
             }
             Source::File(b) => AddTorrent::from_bytes(
-                trackers::filter_torrent(b, self.proxied).unwrap_or_else(|| b.clone()),
+                trackers::filter_torrent(b, self.proxied).ok_or(TorrentError::NotATorrent)?,
             ),
         };
         if let Some(l) = lookup {
@@ -1183,8 +1193,9 @@ impl Torrents {
             .map_err(|_| TorrentError::NotATorrent)?
             .info_hash
             .as_string();
+        // One whose trackers can't be read to be checked isn't started.
         let torrent =
-            trackers::filter_torrent(torrent, self.proxied).unwrap_or_else(|| torrent.to_vec());
+            trackers::filter_torrent(torrent, self.proxied).ok_or(TorrentError::NotATorrent)?;
         let opts = AddTorrentOptions {
             paused,
             only_files: files,

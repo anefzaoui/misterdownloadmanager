@@ -1,0 +1,20 @@
+{
+  "name": "mdm-ratings",
+  "private": true,
+  "description": "Mister Download Manager's star ratings: a Cloudflare Worker over D1 (README.md).",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "migrate:local": "wrangler d1 migrations apply mdm-ratings --local",
+    "dev": "wrangler dev --port 8787",
+    "migrate": "wrangler d1 migrations apply mdm-ratings --remote",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.160.0"
+  }
+}

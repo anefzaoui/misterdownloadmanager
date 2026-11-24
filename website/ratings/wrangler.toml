@@ -1,0 +1,27 @@
+# Mister Download Manager's star ratings (src/worker.js, src/ratings.js); README.md says how to set it up.
+name = "mdm-ratings"
+main = "src/worker.js"
+compatibility_date = "2026-11-01"
+# Served only at its own address on the site's domain (a Custom Domain: Cloudflare makes its DNS
+# record and certificate); no address on Cloudflare's shared Workers domain, no preview addresses.
+workers_dev = false
+preview_urls = false
+routes = [{ pattern = "ratings.misterdownloadmanager.com", custom_domain = true }]
+
+# No request logs on Cloudflare: they would hold visitors' addresses.
+[observability]
+enabled = false
+
+[vars]
+# The pages that may call it (CORS), and the host names a Turnstile token must come from.
+ALLOWED_ORIGINS = "https://misterdownloadmanager.com,https://www.misterdownloadmanager.com"
+TURNSTILE_HOSTNAMES = "misterdownloadmanager.com,www.misterdownloadmanager.com"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mdm-ratings"
+# The id `npx wrangler d1 create mdm-ratings` prints (README.md, step 2).
+database_id = "46c37cf9-551e-477b-8f94-927bae853b8b"
+migrations_dir = "migrations"
+
+# Secrets, never in this file: `npx wrangler secret put IP_SALT` and `TURNSTILE_SECRET`.
