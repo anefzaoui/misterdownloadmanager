@@ -2316,7 +2316,9 @@ fn build_headers_with(
 /// `progress` line per tick, then `done` or `paused`.
 async fn watch(dl: Download, json: bool) -> anyhow::Result<()> {
     let started = Instant::now();
-    let mut last = (Instant::now(), 0u64);
+    // The bytes a resumed download already has are not this run's: the first sample is the
+    // baseline, or they are counted as downloaded in the first half second.
+    let mut last = (Instant::now(), dl.snapshot().downloaded);
     let mut speed = 0.0;
     let mut tick = tokio::time::interval(Duration::from_millis(500));
     loop {
