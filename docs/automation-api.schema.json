@@ -622,6 +622,13 @@
           "description": "`/fromhost` (beyond IDM, #1333): started by the browser native messaging host:\nstarts hidden without marking an OS session login.",
           "type": "boolean"
         },
+        "id": {
+          "description": "The hand-over's own id (#1651), random, made by the one sending it: a command sent again\nwith the same id, because its answer never came (lost on the way, or later than the\nsender waited), is answered `ok` and not given to the app twice. Letters, digits and `-`,\nat most 64; none (an older sender's): taken as it comes. Questions (those answered with\nmore than `ok`) aren't sent again, and carry none.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "ids": {
           "default": [],
           "items": {
@@ -879,6 +886,15 @@
           "description": "From the browser's download button over a video: open the Download video window for this\npage (its address; an embedded player's own).",
           "type": [
             "string",
+            "null"
+          ]
+        },
+        "video_part_from": {
+          "description": "With `video_page`, from that button's \"Download a part from here...\" (#1662): the window\nopens with Part ticked, From this many seconds into the video (where its player was).",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
             "null"
           ]
         },

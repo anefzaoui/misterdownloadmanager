@@ -239,13 +239,26 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
         egui::Sense::hover(),
     );
     winui::expose(&bar, egui::Role::MenuBar, "", true, None);
+    // A screen reader can move its focus to the bar (and to the title the keys are on, below):
+    // the caller then gives the bar the keys, and Tab goes on from it (#1190).
+    if winui::focus_target(ui.ctx(), bar.id) {
+        hit = Some(MenuBarEvent::Keys);
+    }
     let titles_ui = ui.new_child(egui::UiBuilder::new().accessibility_parent(bar.id));
     let released = ui.input(|x| x.pointer.any_released());
     for (i, (label, x, w, tx)) in menus(&p).iter().enumerate() {
         // From the leading edge: the first menu at the right in RTL.
         let rc = winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H)));
-        let resp = titles_ui.interact(rc, egui::Id::unique(("menubar", i)), winui::pointer_only());
-        winui::expose(&resp, egui::Role::MenuItem, &plain(label).0, true, None);
+        let resp = titles_ui.interact(rc, menubar_title_id(i), winui::pointer_only());
+        // Its name carries the key that opens it ("Ver Alt+V", each language's own letter): the
+        // Windows adapter does not pass AccessKit's access key on to UI Automation, so a reader
+        // hears only what the name holds (#1190).
+        let (shown_name, letter_at) = plain(label);
+        let said = match letter_at.and_then(|at| shown_name.chars().nth(at)) {
+            Some(c) => format!("{shown_name} Alt+{}", c.to_uppercase().collect::<String>()),
+            None => shown_name.clone(),
+        };
+        winui::expose(&resp, egui::Role::MenuItem, &said, true, None);
         ui.ctx().accesskit_node_builder(resp.id, |n| {
             n.set_has_popup(egui::accesskit::HasPopup::Menu);
             n.set_expanded(open == Some(i));
@@ -290,6 +303,12 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
     hit
 }
 
+/// A menu-bar title's widget id (#1190): the Tab stop of its own, and what the app focuses when
+/// the bar takes the keys.
+pub fn menubar_title_id(i: usize) -> egui::Id {
+    egui::Id::unique(("menubar", i))
+}
+
 /// The menu-bar title under `pos` (main-window coordinates), as [`menu_bar`] lays them out at
 /// `o`: the first menu at the right in RTL.
 pub fn menubar_title_at(p: &egui::Painter, o: Pos2, pos: Pos2) -> Option<usize> {
@@ -314,6 +333,8 @@ pub enum MenuBarEvent {
     Chosen,
     /// Left or Right, or the keyboard (Alt, F10, an access letter), opened menu `i`.
     Open(usize),
+    /// A screen reader moved its focus to the bar: it takes the keys (Tab goes on from it).
+    Keys,
 }
 
 /// The menu bar's open menu after `event` (`open`: the one open before it).
@@ -345,6 +366,8 @@ pub fn menubar_next(open: Option<usize>, event: MenuBarEvent) -> Option<usize> {
         }
         | MenuBarEvent::Chosen => None,
         MenuBarEvent::Open(i) => Some(i),
+        // The bar took the keys: no menu of it opens or shuts by that alone.
+        MenuBarEvent::Keys => open,
     }
 }
 
@@ -380,6 +403,15 @@ const SLOT: f32 = 22.0;
 const SEP: f32 = 9.0;
 
 /// A menu title's access letter, lower case ("&Tasks": "t"; none marked: its first letter).
+/// The access letters of the menu bar's titles in the interface language (lowercase): what
+/// Alt and a letter opens. A shortcut of the window's own with Alt leaves these alone.
+pub fn menubar_letters() -> Vec<String> {
+    MENUS
+        .iter()
+        .map(|(l, ..)| menu_letter(crate::i18n::tc("menubar", l)))
+        .collect()
+}
+
 pub fn menu_letter(label: &str) -> String {
     let (shown, at) = plain(label);
     shown
@@ -539,10 +571,13 @@ fn mirror_for_screen_readers<C>(
                 MenuEntry::Sep => continue,
             };
             let (t, _) = plain(crate::i18n::tc("menu", label));
+            // Its shortcut is said with its name ("Add new download Ctrl+N"), spelled as the
+            // menu draws it in its own column, where a reader cannot reach it (#1190).
             let t = match e {
-                MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) if hint(c).is_some() => {
-                    without_shortcut(&t).to_owned()
-                }
+                MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => match hint(c) {
+                    Some(keys) => format!("{} {}", without_shortcut(&t), key_label(keys)),
+                    None => t,
+                },
                 _ => t,
             };
             let item = items.interact(
@@ -817,6 +852,21 @@ fn keyboard<C: Clone>(
         });
         keys.into_iter().map(Press::Key).collect()
     };
+    // The letter that opened this menu (this pass) is the menu's own: it must not also pick an
+    // item of it — Alt+T opened Tareas and ran "Abrir archivo torrent...", Alt+A opened Archivo
+    // and ran the Delete item's (#1190). The pass's keys are taken before the window's own code
+    // runs (MenuKeys), so the app marks that letter where it opens the menu.
+    if let Some(letter) = ctx
+        .data_mut(|d| d.remove_temp::<(String, u64)>(egui::Id::unique("menu-opened-by-letter")))
+        .filter(|(_, at)| *at == ctx.cumulative_pass_nr())
+        .map(|(letter, _)| letter)
+    {
+        // egui-winit sends a typed letter as both, its key and its text, so both go.
+        keys.retain(|press| !match press {
+            Press::Key(k) => k.name().to_lowercase() == letter,
+            Press::Text(t) => t.to_lowercase() == letter,
+        });
+    }
     // Pressed in the menu's own windows: popup_level noted them as those windows drew.
     keys.extend(
         ctx.data_mut(|d| d.remove_temp::<Vec<egui::Key>>(sub_key.with("window-keys")))
@@ -1341,6 +1391,28 @@ pub fn style_popup(title: &str, look: PopupLook) -> bool {
     false
 }
 
+/// The frame of a small floating window of ours ([`PopupLook::Floating`]: the drop target, the
+/// tray icon's panel, #1365), filling `rect`: the window's fill and the floating windows' edge
+/// (the palette's `drop_edge`, named for the first of them), one look for all of them; `over`,
+/// something dragged over it (the drop target), the shared highlight and the accent instead.
+pub fn floating_frame(p: &egui::Painter, rect: Rect, over: bool) {
+    let (fill, edge) = if over {
+        (
+            winui::highlight_fill(winui::State::Hot, crate::theme::colors()).unwrap_or(winui::BG()),
+            winui::accent(),
+        )
+    } else {
+        (winui::BG(), crate::theme::colors().drop_edge)
+    };
+    p.rect_filled(rect, 0.0, fill);
+    p.rect_stroke(
+        rect,
+        0.0,
+        egui::Stroke::new(1.0, edge),
+        egui::StrokeKind::Inside,
+    );
+}
+
 /// Show the borderless window `vid` [`style_popup`] just styled (from its parent's pass).
 pub fn show_popup(ctx: &egui::Context, vid: egui::ViewportId) {
     ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
@@ -1463,6 +1535,18 @@ fn heading_into(from: Pos2, p: Pos2, sub: Rect) -> bool {
     !(neg && pos)
 }
 
+/// The name a menu's window announces for a screen reader (#1407): a bar menu's own title
+/// ("Tasks"); a context menu or a drop-down's list has none, like a native menu's window.
+/// `id` is the caller's ("menu-{i}" for the bar's menus, from `open_menu`).
+fn menu_frame_name(kind: MenuKind, id: &str) -> Option<String> {
+    if kind != MenuKind::Bar {
+        return None;
+    }
+    let i: usize = id.strip_prefix("menu-")?.parse().ok()?;
+    let title = crate::i18n::tc("menubar", MENUS.get(i)?.0);
+    Some(plain(title).0)
+}
+
 #[allow(clippy::too_many_arguments)]
 fn popup_level<C: Clone>(
     ctx: &egui::Context,
@@ -1511,6 +1595,10 @@ fn popup_level<C: Clone>(
     ctx.show_viewport_immediate(vid, builder, |ui, _| {
         // Made a menu window in its own pass, before anything is drawn in it (style_popup).
         styled = style_popup(&title, PopupLook::Menu);
+        // The window's name is the menu's, not the window's internal id (#1407).
+        if let Some(name) = menu_frame_name(kind, id) {
+            crate::winui::name_window(ui, &name);
+        }
         // What happens in this window, for popup() and keyboard(), which run in the parent's
         // pass: they must not ask egui about a menu window by its id, which creates one when it
         // isn't open (a submenu, mostly): an untitled copy of the main window, opened and closed
@@ -1657,10 +1745,18 @@ fn popup_level<C: Clone>(
                 MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) => hint(c),
                 _ => None,
             };
-            let t = if keys.is_some() {
-                without_shortcut(&t).to_owned()
+            // Its shortcut is said with its name ("Add new download Ctrl+N"), spelled as the menu
+            // draws it in its own column (#1190). Only an item that has a shortcut drops it from
+            // the text drawn: a translation without one may end in its own access letter
+            // ("Tell a friend (&F)"), which cutting would take away with the underline it needs.
+            let t_visual: &str = if keys.is_some() {
+                without_shortcut(&t)
             } else {
-                t
+                &t
+            };
+            let t_accessibility = match keys {
+                Some(keys) => format!("{} {}", t_visual, key_label(keys)),
+                None => t.clone(),
             };
             // The entry's node: a menu item (a check or radio item when it is one), its name,
             // whether it can be used, and for a submenu that it opens one.
@@ -1674,7 +1770,7 @@ fn popup_level<C: Clone>(
                 MenuEntry::Item(..) if checked => (egui::Role::MenuItemCheckBox, Some(true)),
                 _ => (egui::Role::MenuItem, None),
             };
-            winui::expose(&item, role, &t, enabled, on);
+            winui::expose(&item, role, &t_accessibility, enabled, on);
             if let MenuEntry::Sub(..) = e {
                 let open = open_sub == Some(i);
                 ui.ctx().accesskit_node_builder(item.id, |n| {
@@ -1704,7 +1800,14 @@ fn popup_level<C: Clone>(
                 }
                 _ => {}
             }
-            let drawn = text_font(&painter, winui::segoe(), o.x + 38.0, y + 14.0, &t, color);
+            let drawn = text_font(
+                &painter,
+                winui::segoe(),
+                o.x + 38.0,
+                y + 14.0,
+                t_visual,
+                color,
+            );
             // The shortcut at the trailing edge, in the menu's quieter ink.
             if let Some(k) = keys {
                 winui::text_right(
@@ -1719,7 +1822,7 @@ fn popup_level<C: Clone>(
             if let Some(m) = mn
                 && cues(ctx)
             {
-                let (x0, x1) = winui::char_span(&painter, &winui::segoe(), &t, m, drawn);
+                let (x0, x1) = winui::char_span(&painter, &winui::segoe(), t_visual, m, drawn);
                 fill(&painter, x0, y + 16.0, x1, y + 16.0, color);
             }
             // The check box column: x 12..21 from the leading edge (the glyphs keep their
@@ -1864,7 +1967,9 @@ pub fn pane_top() -> f32 {
     70.0
 }
 
-/// The main toolbar: `buttons` (icon, English label, enabled), and `keys`, the button that has
+/// The main toolbar: `buttons` (icon, English label, enabled), `toggle` a toggle button at its
+/// trailing end (icon, English label, on: the preview pane's, #1368; after the last button when
+/// the window is too narrow), its index after the buttons', and `keys`, the button that has
 /// the keys while the toolbar has them (Tab reaches it: #1190). With the keys, Left / Right
 /// (mirrored right to left), Home and End move along the buttons, greyed ones too (a screen
 /// reader says they are unavailable); Enter or Space presses the button; Down, Alt+Down or F4
@@ -1876,8 +1981,15 @@ pub fn toolbar(
     o: Pos2,
     width: f32,
     buttons: &[(Icon, &str, bool)],
+    toggle: Option<(Icon, &str, bool)>,
     keys: Option<usize>,
 ) -> Option<ToolbarEvent> {
+    // The toggle after the buttons, with its state: (icon, label, enabled, on).
+    let all: Vec<(Icon, &str, bool, Option<bool>)> = buttons
+        .iter()
+        .map(|(i, l, e)| (*i, *l, *e, None))
+        .chain(toggle.map(|(i, l, on)| (i, l, true, Some(on))))
+        .collect();
     let p = ui.painter().clone();
     let top = o.y + MENU_H;
     let c = crate::theme::colors();
@@ -1901,9 +2013,9 @@ pub fn toolbar(
         |icon: &Icon| matches!(icon, Icon::StartQueue | Icon::StopQueue | Icon::AddTorrent);
     // A toolbar wider than the window (long translations): the longest labels give way first,
     // cut with "..." and whole on hover, so every button stays on screen.
-    let natural: Vec<(f32, f32)> = buttons
+    let natural: Vec<(f32, f32)> = all
         .iter()
-        .map(|(icon, label, _)| {
+        .map(|(icon, label, ..)| {
             let ext = text_width_font(&p, font.clone(), crate::i18n::tc("toolbar", label)).round();
             (ext, if is_dropdown(icon) { 15.0 } else { 0.0 })
         })
@@ -1929,11 +2041,10 @@ pub fn toolbar(
         event = Some(ToolbarEvent::Keys(keys.unwrap_or(0)));
     }
     let bar_ui = ui.new_child(egui::UiBuilder::new().accessibility_parent(bar.id));
-    let keys = keys.map(|k| k.min(buttons.len().saturating_sub(1)));
+    let keys = keys.map(|k| k.min(all.len().saturating_sub(1)));
     // Each button's leading x, for its drop-down menu opened from the keys.
-    let mut lefts = Vec::with_capacity(buttons.len());
-    for (i, (icon, label, enabled)) in buttons.iter().enumerate() {
-        lefts.push(x);
+    let mut lefts = Vec::with_capacity(all.len());
+    for (i, (icon, label, enabled, on)) in all.iter().enumerate() {
         let full = crate::i18n::tc("toolbar", label);
         let dropdown = is_dropdown(icon);
         // IDM's buttons are 66 px; ours grow only when a full label needs it (user
@@ -1949,6 +2060,12 @@ pub fn toolbar(
         let label = &shown;
         let ext = text_width_font(&p, font.clone(), label).round();
         let total = bw + if dropdown { 15.0 } else { 0.0 };
+        // The toggle at the band's trailing end, as Explorer's pane buttons are; right after the
+        // last button when there is no room for that.
+        if on.is_some() {
+            x = x.max(o.x + width - total);
+        }
+        lefts.push(x);
         // Laid out in English from the leading edge; each part made where it is on screen (the
         // first button at the right in RTL, a drop-down's arrow after its button).
         let rc = winui::rect(Rect::from_min_size(
@@ -1960,11 +2077,21 @@ pub fn toolbar(
         // A button named as its whole label, greyed or not; a drop-down's arrow is its Expand
         // (its menu); a screen reader can move its focus to it (the toolbar takes the keys).
         winui::expose(&resp, egui::Role::Button, full, *enabled, None);
+        // The toggle says whether it is on (a reader: "pressed" / "not pressed").
+        if let Some(on) = on {
+            use egui::accesskit::Toggled;
+            let state = if *on { Toggled::True } else { Toggled::False };
+            ui.ctx()
+                .accesskit_node_builder(resp.id, |n| n.set_toggled(state));
+        }
         if dropdown {
             use egui::accesskit::{Action, HasPopup};
             ui.ctx().accesskit_node_builder(resp.id, |n| {
                 n.set_has_popup(HasPopup::Menu);
                 n.add_action(Action::Expand);
+                // Its menu is shut: without a state, UI Automation calls the node a leaf and a
+                // reader then never says the button holds more than itself (#1190).
+                n.set_expanded(false);
             });
             if ui.input(|inp| inp.has_accesskit_action_request(resp.id, Action::Expand)) {
                 event = Some(ToolbarEvent::Drop(i, pos2(winui::mx(x), o.y + 85.0)));
@@ -1974,6 +2101,18 @@ pub fn toolbar(
             event = Some(ToolbarEvent::Keys(i));
         }
         let past_button = |q: Pos2| winui::mx(q.x) >= x + bw;
+        // The toggle while on: pushed in, as a checked toolbar button is (a hover lights it as
+        // any button's, below).
+        if *on == Some(true) && !resp.hovered() {
+            let rc = winui::rect(Rect::from_min_size(pos2(x, band.top()), vec2(bw, 65.0)));
+            p.rect_filled(rc, 0.0, c.toolbar_pressed);
+            p.rect_stroke(
+                rc,
+                0.0,
+                egui::Stroke::new(1.0, c.toolbar_hot_border),
+                egui::StrokeKind::Inside,
+            );
+        }
         if *enabled && resp.hovered() {
             // Hover (IDM 6.42, captured 2026-10-30): the button's own width, from the band's top,
             // square. Dark: a flat #33414d. Light: Windows' hot button, #e5f3ff with a 1 px
@@ -2103,10 +2242,10 @@ pub fn toolbar(
     if let Some(k) = keys
         && event.is_none()
     {
-        let enabled = buttons.get(k).is_some_and(|b| b.2);
-        let dropdown = buttons.get(k).is_some_and(|b| is_dropdown(&b.0));
+        let enabled = all.get(k).is_some_and(|b| b.2);
+        let dropdown = all.get(k).is_some_and(|b| is_dropdown(&b.0));
         let at = pos2(winui::mx(lefts.get(k).copied().unwrap_or(o.x)), o.y + 85.0);
-        event = ui.input_mut(|i| toolbar_keys(i, k, buttons.len(), enabled, dropdown, at));
+        event = ui.input_mut(|i| toolbar_keys(i, k, all.len(), enabled, dropdown, at));
     }
     event
 }
@@ -2227,6 +2366,61 @@ pub enum TreeEvent {
     Keys(Option<usize>),
 }
 
+/// A side pane's frame beside the download list (the Categories pane, the preview pane): its
+/// border from English x `left` to `right`, `top` to `bottom`, its caption and the line under
+/// it, and the close "x" at its end. Laid out in English; every part made where it is on screen
+/// (in RTL the caption at the right, the "x" at the left). `key` tells the panes apart. Returns
+/// whether the "x" was clicked.
+pub fn side_pane(
+    ui: &Ui,
+    left: f32,
+    right: f32,
+    top: f32,
+    bottom: f32,
+    caption: &str,
+    key: &str,
+) -> bool {
+    let p = ui.painter();
+    let frame = winui::rect(Rect::from_min_max(pos2(left, top), pos2(right, bottom)));
+    p.rect_stroke(
+        frame,
+        0.0,
+        Stroke::new(1.0, CAT_FRAME()),
+        egui::StrokeKind::Inside,
+    );
+    winui::fill_l(p, left, top + 18.0, right - 1.0, top + 18.0, CAT_FRAME()); // caption underline
+    // Short of the close box: in a narrow pane or a long translation, "..." and whole on hover.
+    let shown = winui::ellipsize(p, &winui::tahoma(), caption, right - 21.0 - (left + 6.0));
+    let drawn = text_font(p, winui::tahoma(), left + 6.0, top + 13.0, &shown, TEXT());
+    if shown != caption {
+        winui::full_on_hover(ui, drawn, (key, "caption"), caption);
+    }
+    let close = winui::rect(Rect::from_min_size(
+        pos2(right - 19.0, top + 2.0),
+        vec2(16.0, 15.0),
+    ));
+    let cr = ui
+        .interact(
+            close,
+            egui::Id::unique((key, "close")),
+            winui::pointer_only(),
+        )
+        // i18n: tooltip of the × that closes the Categories pane
+        .on_hover_text(crate::i18n::t("Close"));
+    if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::colors()) {
+        p.rect_filled(close, crate::theme::metrics().part_radius, c);
+    }
+    text_font(
+        p,
+        winui::arial_bold(),
+        right - 15.0,
+        top + 13.0,
+        crate::i18n::t("x"),
+        TEXT(),
+    );
+    cr.clicked()
+}
+
 /// The Categories pane: frame x 6 .. `right` (IDM: 148, resizable by the splitter), caption, close "x", tree (rows 16 px, indent 19).
 pub fn categories(
     ui: &mut Ui,
@@ -2240,55 +2434,18 @@ pub fn categories(
 ) -> Option<TreeEvent> {
     let p = ui.painter().clone();
     let y0 = o.y + pane_top() + MENU_H; // frame top
-    // Laid out in English (frame x 6 .. right); every part made where it is on screen — the pane
-    // on the right in RTL, its tree indenting from the right.
-    let frame = winui::rect(Rect::from_min_max(
-        pos2(o.x + 6.0, y0),
-        pos2(right, bottom - 5.0),
-    ));
-    p.rect_stroke(
-        frame,
-        0.0,
-        Stroke::new(1.0, CAT_FRAME()),
-        egui::StrokeKind::Inside,
-    );
-    winui::fill_l(
-        &p,
-        o.x + 6.0,
-        y0 + 18.0,
-        right - 1.0,
-        y0 + 18.0,
-        CAT_FRAME(),
-    ); // caption underline
     // i18n: title of the side pane that lists the categories
     let caption = crate::i18n::t("Categories");
-    // Short of the close box: in a narrow pane or a long translation, "..." and whole on hover.
-    let shown = winui::ellipsize(&p, &winui::tahoma(), caption, right - 21.0 - (o.x + 12.0));
-    let drawn = text_font(&p, winui::tahoma(), o.x + 12.0, y0 + 13.0, &shown, TEXT());
-    if shown != caption {
-        winui::full_on_hover(ui, drawn, "categories-caption", caption);
-    }
     let mut event = None;
-    let close = winui::rect(Rect::from_min_size(
-        pos2(right - 19.0, y0 + 2.0),
-        vec2(16.0, 15.0),
-    ));
-    let cr = ui
-        .interact(close, egui::Id::unique("cat-close"), winui::pointer_only())
-        // i18n: tooltip of the × that closes the Categories pane
-        .on_hover_text(crate::i18n::t("Close"));
-    if let Some(c) = winui::subtle_fill(winui::State::of(&cr, true), crate::theme::colors()) {
-        p.rect_filled(close, crate::theme::metrics().part_radius, c);
-    }
-    text_font(
-        &p,
-        winui::arial_bold(),
-        right - 15.0,
-        y0 + 13.0,
-        crate::i18n::t("x"),
-        TEXT(),
-    );
-    if cr.clicked() {
+    if side_pane(
+        ui,
+        o.x + 6.0,
+        right,
+        y0,
+        bottom - 5.0,
+        caption,
+        "categories",
+    ) {
         event = Some(TreeEvent::Close);
     }
     let tree = Rect::from_min_max(pos2(o.x + 8.0, y0 + 18.0), pos2(right - 3.0, bottom - 9.0));
@@ -3534,6 +3691,48 @@ mod tests {
         (node.role(), node.label().unwrap_or_default().to_owned())
     }
 
+    /// #1368: the preview pane's toggle is the toolbar's last button, at its trailing end: said
+    /// as on or off, reached with the keys after the others, and Enter presses it.
+    #[test]
+    fn the_preview_toggle_ends_the_toolbar_and_says_its_state() {
+        use super::ToolbarEvent;
+        use crate::icons::Icon;
+        use egui::accesskit::Toggled;
+        use egui::{Key, Modifiers};
+        let ctx = a11y_ctx();
+        // Labels from variables: the catalog's extractor takes literal ones as texts to translate.
+        let (add, preview) = ("Add URL", "Preview");
+        let buttons = [(Icon::AddUrl, add, true)];
+        let pass = |on: bool, keys: Option<usize>, events: Vec<egui::Event>| {
+            let mut ev = None;
+            let update = a11y_pass(&ctx, events, |ui| {
+                let toggle = Some((Icon::PreviewPane, preview, on));
+                ev = super::toolbar(ui, pos2(0.0, 0.0), 900.0, &buttons, toggle, keys);
+            });
+            (ev, update)
+        };
+        for on in [true, false] {
+            let (_, update) = pass(on, None, vec![]);
+            let toggle = update
+                .nodes
+                .iter()
+                .find(|(_, n)| n.label() == Some("Preview"))
+                .map(|(_, n)| n.toggled())
+                .expect("the toggle is there");
+            let want = if on { Toggled::True } else { Toggled::False };
+            assert_eq!(toggle, Some(want));
+        }
+        // After the last button, End reaches it, Enter presses it (its index after theirs).
+        assert_eq!(
+            pass(true, Some(0), vec![key(Key::End, Modifiers::NONE)]).0,
+            Some(ToolbarEvent::Keys(1))
+        );
+        assert_eq!(
+            pass(true, Some(1), vec![key(Key::Enter, Modifiers::NONE)]).0,
+            Some(ToolbarEvent::Click(1))
+        );
+    }
+
     /// #1190: the toolbar is a toolbar of named buttons (greyed ones said so) that a screen
     /// reader can move its focus to, which gives the toolbar the keys; with them, the arrows
     /// move along the buttons, Enter presses one (not a greyed one), Down opens a drop-down's
@@ -3555,7 +3754,7 @@ mod tests {
         let pass = |keys: Option<usize>, events: Vec<egui::Event>| {
             let mut ev = None;
             let update = a11y_pass(&ctx, events, |ui| {
-                ev = super::toolbar(ui, pos2(0.0, 0.0), 900.0, &buttons, keys);
+                ev = super::toolbar(ui, pos2(0.0, 0.0), 900.0, &buttons, None, keys);
             });
             (ev, update)
         };

@@ -45,6 +45,22 @@ if (firefox) {
   requestAnimationFrame(fitPanel);
 }
 
+// ---- a copy loaded by hand ---------------------------------------------------------------------
+
+// Says so, with the store's link for this browser (#1613, popup-ui.js installNote). Safari has no
+// management.getSelf, and its extension comes only inside the app: nothing there.
+async function showInstall() {
+  const safari = Boolean(ext.runtime.getManifest?.().browser_specific_settings?.safari);
+  const self = safari || !ext.management?.getSelf ? null : await ext.management.getSelf().catch(() => null);
+  const note = installNote(self, firefox);
+  $("by-hand").hidden = !note;
+  if (!note) return;
+  $("by-hand-text").textContent = note.text;
+  $("by-hand-store").textContent = note.link;
+  $("by-hand-store").href = note.href;
+}
+showInstall();
+
 // ---- tabs ------------------------------------------------------------------------------------
 
 const TABS = ["downloads", "page", "settings"];
@@ -317,6 +333,12 @@ ext.storage.local.get({ hideVideoFullscreen: false })
   .catch(() => {});
 hideFullscreen.addEventListener("change", () =>
   ext.storage.local.set({ hideVideoFullscreen: hideFullscreen.checked }).catch(() => {}));
+
+// #1735: the video button back in its corner and its menu listing everything, on every site
+// (video.js keeps both per site; its pages already open follow at once).
+$("video-reset").addEventListener("click", () =>
+  ext.storage.local.remove(["positions", "videoFilters"])
+    .then(() => sayBriefly(t("popup_video_reset_done"), "ok"), () => {}));
 
 // #42: reading the browser's proxy (a VPN or proxy extension's) is an opt-in, this switch, off as
 // installed. Firefox: the optional "proxy" permission, asked for on it. Chromium can't make that

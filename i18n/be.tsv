@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	An unknown site wants to send {n} link to Link grabber.|An unknown site wants to send {n} links to Link grabber.	Невядомы сайт хоча адправіць {n} спасылку ў зборшчык спасылак.|Невядомы сайт хоча адправіць {n} спасылкі ў зборшчык спасылак.|Невядомы сайт хоча адправіць {n} спасылак у зборшчык спасылак.
+#. count in traypanel.rs
+#. the notification-area icon's panel (#1365), under the downloads it lists: how many others are running; {n} a number
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	And {n} more|And {n} more	І яшчэ {n} спампоўка|І яшчэ {n} спампоўкі|І яшчэ {n} спамповак
 #. count in torrent downloads
 #. number of additional files in a list of files
 #. {n} = a number (keep the braces as they are)
@@ -49,11 +54,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Супадае з {n} артыкулам зараз (дадае толькі новыя):|Супадае з {n} артыкуламі зараз (дадае толькі новыя):|Супадае з {n} артыкуламі зараз (дадае толькі новыя):
+#. count in archtest.rs
+#. in a download's log: the archive test found files in it that don't read back whole; {n} how many, {files} their names
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	The archive test found {n} damaged file: {files}|The archive test found {n} damaged files: {files}	Тэст архіва выявіў {n} пашкоджаны файл: {files}|Тэст архіва выявіў {n} пашкоджаныя файлы: {files}|Тэст архіва выявіў {n} пашкоджаных файлаў: {files}
 #. count in a dialog box
 #. Cancel in Download File Info with downloads waiting behind it
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	There is {n} more download waiting. Cancel it too?|There are {n} more downloads waiting. Cancel them too?	Чакае яшчэ {n} спампоўка. Адмяніць яе таксама?|Чакаюць яшчэ {n} спампоўкі. Адмяніць іх таксама?|Чакаюць яшчэ {n} спамповак. Адмяніць іх таксама?
+#. count in a dialog box
+#. under "Also delete the files from disk", while it is ticked: how many of the downloads being deleted are finished, whose complete files are deleted from the disk too
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	This also deletes {n} finished file.|This also deletes {n} finished files.	Гэта таксама выдаляе з дыска {n} завершаны файл.|Гэта таксама выдаляе з дыска {n} завершаныя файлы.|Гэта таксама выдаляе з дыска {n} завершаных файлаў.
 #. count in a dialog box
 #. under the first failed downloads in the summary of a group of downloads: {n} more failed (Show in list shows them all)
 #. {n} = a number (keep the braces as they are)
@@ -86,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} спампоўка завершана|{n} спампоўкі завершаны|{n} спамповак завершана
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	Выбрана {n} спампоўка|Выбрана {n} спампоўкі|Выбрана {n} спамповак
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -116,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Імя {n} файла супадала з імем існуючага файла і было пранумаравана|Імёны {n} файлаў супадалі з імёнамі існуючых файлаў і былі пранумараваны|Імёны {n} файлаў супадалі з імёнамі існуючых файлаў і былі пранумараваны
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} завершана|{n} завершаны|{n} завершана
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -153,11 +176,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} трэкер: {peers}|{n} трэкеры: {peers}|{n} трэкераў: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	Чакае {n} акно, пакуль вы вернецеся|Чакаюць {n} акны, пакуль вы вернецеся|Чакаюць {n} вокнаў, пакуль вы вернецеся
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} хоча адправіць {n} спасылку ў зборшчык спасылак.|{site} хоча адправіць {n} спасылкі ў зборшчык спасылак.|{site} хоча адправіць {n} спасылак у зборшчык спасылак.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} і {n} невядомага памеру|{size} і {n} невядомага памеру|{size} і {n} невядомага памеру
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -167,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} з {total} відэа пералічана|{title}: {listed} з {total} відэа пералічана|{title}: {listed} з {total} відэа пералічана
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	Акно «Спампоўванне завершана» і іншыя вокны, якія MDM адкрывае самастойна, чакаюць, пакуль запушчана поўнаэкранная гульня, праграма ці відэа, прэзентацыя або экран заблакіраваны, і адлюстроўваюцца, калі вы вяртаецеся. Вокны, якія вы адкрываеце самі, і спасылкі з браўзера заўсёды адлюстроўваюцца.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -222,6 +259,11 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-гадзінны (21:41)
+#. text in archtest.rs
+#. why an archive wasn't tested (after "Couldn't test {name}: "); 7-Zip is a program's name, {error} its words, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	7-Zip couldn't test it ({error})	7-Zip не змог праверыць яго ({error})
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
@@ -269,10 +311,22 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	Не ўдалося атрымаць спіс файлаў для магнітнай спасылкі: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	Перамяшчэнне перапынілася, калі MDM закрыўся: спампоўка знаходзіцца ў папцы {folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Ідэнтыфікатар канфігурацыі NextDNS складаецца з шасці літар і лічбаў (0-9, a-f).
+#. text in the Download video window
+#. why "Embed chapters" (and the subtitles) are greyed in Download video: only a part of the video is downloaded, and its chapters and subtitles would be the whole video's
+#, machine
+	A part is saved without the video's chapters and subtitles	Частка відэа захоўваецца без яго раздзелаў і субтытраў
+#. text in the Download video window
+#. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
+#, machine
+	A playlist's videos are downloaded whole	Відэа са спісаў прайгравання спампоўваюцца цалкам
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -297,6 +351,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	Аднафайлавы торэнт захоўвае сваё імя
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	Торэнт можна перамясціць пасля завяршэння: да гэтага часу торэнт-рухавік запісвае свае часткі туды, дзе яны знаходзяцца
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -305,10 +363,18 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	Трэкер на гэтым камп’ютары або ў лакальнай сетцы ніколі не кантактуе: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	Відэа ці галерэю можна перамясціць пасля завяршэння: да гэтага часу дапаможныя праграмы захоўваюць свае незавершаныя файлы ў сваёй папцы
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
 	a volume of it is missing	адсутнічае адзін з тамоў
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": one of its files isn't downloaded yet
+#, machine
+	a volume of it isn't there yet	адзін з тамоў яшчэ не спампаваны
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Пра Mister Download Manager
@@ -317,6 +383,7 @@
 #, machine
 	about {ms} ms ({reach})	каля {ms} мс ({reach})
 #. text in the Download video window
+#. in Download video beside the part's From and To: the part's size, estimated from the whole video's; {size} is "12.3 MB"
 #. a file size that is only an estimate, as a screen reader says it in the Download video window's list of qualities; {size} is "532 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -443,6 +510,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	Дададзена. MDM чытае торэнт: ён далучыцца да спісу праз імгненне.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	Дададзена:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -509,6 +580,9 @@
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
 	All the uploader's	Усе ад загрузчыка
+#. text in helpers.rs
+#, machine
+	All three are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 140 MB, once.	Усе тры распаўсюджваюцца з адкрытым зыходным кодам. MDM спампоўвае іх з афіцыйных выпускаў з дапамогай уласнага загрузніка і правярае подпіс кожнага файла перад запускам. Каля 140 МБ — адзін раз.
 #. text in cnl.rs
 #. button in the Click'n'Load window: let this site send links (remembered)
 #, machine
@@ -680,6 +754,7 @@
 #, machine
 	Asking the service...	Запыт сэрвісу...
 #. text in the Options window
+#. Options → Proxy / Socks: Test is running
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -708,6 +783,7 @@
 #, machine
 	Austria	Аўстрыя
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	Аўтаматычна
@@ -850,7 +926,7 @@
 #, machine
 	Busy, try later	Сервер заняты, паспрабуйце пазней
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	Памер кнопкі:
 #. message or event log entry in the main window
@@ -879,7 +955,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Канада
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Скасаваць
@@ -978,6 +1054,10 @@
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Праверце злучэнне, потым паспрабуйце яшчэ раз, або атрымайце іх пазней з акна відэа.
 #. text in the Options window
+#. tooltip of "Show downloads when the notification area icon is clicked": what the click on MDM's tray icon does when it is ticked and when not
+#, machine
+	Checked, a click on MDM's icon shows what is downloading, with Pause and Cancel, and a double click opens the window; unchecked, a click shows or hides the window	Калі сцяжок усталяваны, націсканне на значок MDM паказвае бягучыя спампоўкі з кнопкамі «Прыпыніць» і «Скасаваць», а падвойнае націсканне адкрывае акно; калі сцяжок зняты, націсканне паказвае або хавае акно
+#. text in the Options window
 #. tooltip of the close-setting: checked keeps MDM running when the window closes, in the notification area when available or else the taskbar; downloads continue; unchecked closing quits
 #, machine
 	Checked, closing the window keeps MDM running: it hides in the notification area when available, or minimizes to the taskbar otherwise, and downloads continue; unchecked, closing quits MDM	Калі сцяжок усталяваны, MDM працягвае працаваць пасля закрыцця акна: ён хаваецца ў вобласці апавяшчэнняў (калі даступна) або згортваецца на панэль задач, і спампоўкі працягваюцца; калі сцяжок не ўсталяваны, MDM закрываецца.
@@ -1041,6 +1121,9 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Выберыце .torrent-файл
+#. text in helpers.rs
+#, machine
+	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Выберыце асяроддзе выканання JavaScript (Node.js, Deno, QuickJS або Bun)
 #. text in langpick.rs
 #, machine
 	Choose a language	Выберыце мову
@@ -1051,7 +1134,8 @@
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 #, machine
 	Choose the profile's folder	Выберыце папку профілю
-#. text in helpers.rs
+#. text in helpers.rs; text in the Options window
+#. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	Выберыце {name}
@@ -1083,7 +1167,7 @@
 #. text in the Options window
 #, machine
 	Clock:	Гадзіннік:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in standard windows
+#. text in archtest.rs; text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; button in rssdlg.rs; button in torrentfiles.rs; text in traypanel.rs; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
@@ -1115,7 +1199,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Каморскія астравы
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	Кампактны
@@ -1233,6 +1317,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	Couldn't look for a newer {name}: {error}	Не ўдалося знайсці новую версію {name}: {error}
+#. text in archtest.rs
+#. in a download's log: {name} is the archive's file name, {why} the reason it wasn't tested (as after "Couldn't extract {name}: ")
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't test {name}: {why}	Не ўдалося праверыць {name}: {why}
 #. checkbox in the Add torrent window
 #. Add torrent: keep a multi-file torrent inside its own outer folder; untick to use Save to directly
 #, machine
@@ -1280,6 +1369,18 @@
 #. adverb: every day (the other choice is once, on a date)
 #, machine
 	Daily	Штодзённа
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its archive's test (Options → Archives) found it damaged. One short word: the list's Status column is narrow
+#, machine
+	Damaged	Пашкоджаны
+#. window title in archtest.rs
+#. window title: an archive (zip, 7z, rar) that was downloaded is damaged
+#, machine
+	Damaged archive	Пашкоджаны архіў
+#. text in the download list (sizes, speeds, status)
+#. a download's status, whole (the Status cell's tip): its archive's test found it damaged; "Redownload" is the right-click command
+#, machine
+	Damaged: its archive test found errors. Right-click → Redownload downloads it again	Пашкоджаны: тэст архіва выявіў памылкі. Пстрыкніце правай кнопкай мышы → «Спампаваць зноў», каб спампаваць яго зноў
 #. text in the Options window
 #, machine
 	Date order:	Парадак даты:
@@ -1290,7 +1391,7 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Дзень, месяц, год
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	Debrid service accounts	Уліковыя запісы сэрвісу дэбрыда
 #. text in the Scheduler window
@@ -1417,6 +1518,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Больш не пытаць
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Не паказваць усплывальныя вокны, калі запушчана поўнаэкранная праграма або прэзентацыя
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Больш не паказваць гэтае дыялогавае акно
@@ -1555,11 +1660,6 @@
 #, machine
 	Downloading again from the start	Загрузка зноўку з пачатку
 #. text in the Download video window
-#. in Download video: MDM downloads Deno (a program's name) and checks it against its published checksum
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Downloading and verifying Deno (about 40 MB)...	Спампоўванне і праверка Deno (каля 40 МБ)...
-#. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Спампоўка і праверка ffmpeg (каля 80 МБ)...
@@ -1570,12 +1670,25 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
+	Downloading and verifying Node.js (40 to 60 MB)...	Спампоўванне і праверка Node.js (40–60 МБ)...
+#. text in the Download video window
+#. the trailing ... means it is still going on: keep it
+#, machine
 	Downloading and verifying yt-dlp...	Спампоўка і праверка yt-dlp...
 #. text in helpers.rs
 #. Video helpers: MDM's own yt-dlp is being downloaded
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	Спампоўваецца ўласная копія MDM...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	Спампоўваецца ўласная копія MDM... {percent}%
+#. text in archtest.rs
+#. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	Downloading the damaged parts again ({size})	Спампоўваюцца пашкоджаныя часткі зноў ({size})
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1585,7 +1698,7 @@
 #, machine
 	Downloading the update... {percent}%	Спампоўваецца абнаўленне... {percent}%
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
+#. {name} = yt-dlp, ffmpeg or Node.js; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
 	Downloading {name} ({n} of {total})... {percent}	Спампоўка {name} ({n} з {total})... {percent}
@@ -1601,8 +1714,13 @@
 #. Windows' Settings → Default apps: what Mister Download Manager is
 #, machine
 	Downloads files, videos and torrents	Спампоўвае файлы, відэа і торэнты
-#. text in the tray icon's menu
+#. message or event log entry in the main window
+#. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
+#, machine
+	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Спампоўкі з прыватнага акна браўзера застаюцца ў спісе MDM, як і іншыя, нават пасля перазапуску MDM; іх файлы cookie ніколі не захоўваюцца. Каб захоўваць іх толькі ў памяці, зніміце сцяжок {options} → {general} → {checkbox}.
+#. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 #, machine
 	Downloads in progress	Загрузкі ў працэсе
 #. text in a dialog box
@@ -1769,6 +1887,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Everything at its normal size (100%)	Усё ў звычайным памеры (100%)
+#. text in the Download video window
+#. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
+#, machine
+	Exact cut, encoded again	Дакладная нарэзка, перакадаванне
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1853,6 +1975,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Faroe Islands	Фарэрскія астравы
+#. text in the Download video window
+#. tooltip of "Quick cut, at keyframes" in Download video: what it does
+#, machine
+	Fast: the streams are copied as they are, so the part may start a little before From	Хутка: патокі капіруюцца як ёсць, таму частка можа пачацца крыху раней за «Ад»
 #. text in the Scheduler window
 #, machine
 	February	Люты
@@ -1914,6 +2040,10 @@
 #. text in categories.rs
 #, machine
 	File types:	Тыпы файлаў:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	Файл:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -1941,6 +2071,10 @@
 #. verb: button that starts the search
 #, machine
 	Find	Знайсці
+#. text in the Options window
+#. Options → Archives: button, shown once a 7-Zip program was chosen with "Use another program...": go back to the 7-Zip MDM finds on the computer by itself
+#, machine
+	Find 7-Zip automatically	Аўтаматычна знайсці 7-Zip
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find a download	Знайсці спампоўку
@@ -1970,6 +2104,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Завершана
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	Завершана:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2075,6 +2213,14 @@
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
 	from a playlist (yt-dlp)	з плэйліста (yt-dlp)
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and it is in memory only, gone from the list when MDM closes
+#, machine
+	From a private window: in memory only, gone from the list when MDM closes	З прыватнага акна: толькі ў памяці, знікне са спісу пасля закрыцця MDM
+#. text in the download list (sizes, speeds, status)
+#. tooltip of the mark (a mask) before a download's status in the list: it came from a browser's private (incognito) window, and MDM's list keeps it after a restart (Options → General → Keep private-window downloads in the list)
+#, machine
+	From a private window: kept in the list	З прыватнага акна: захоўваецца ў спісе
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	з торэнт-файла
@@ -2092,6 +2238,10 @@
 #. message or event log entry in the main window
 #, machine
 	from the command line	з каманднага радка
+#. text in the Download video window
+#. in Download video after "Only a part": {from} and {to} are boxes where times are typed (1:30, 1:02:03), drawn where they stand in the translation
+#, machine
+	from {from} to {to}	ад {from} да {to}
 #. text in the Batch download window
 #, machine
 	From:	Ад:
@@ -2103,7 +2253,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	Спампоўкі FTP не праходзяць праз проксі-сервер HTTP. Выберыце SOCKS5 або SOCKS4, каб адправіць іх праз проксі.
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	Поўны
 #. text in countries.rs
@@ -2132,7 +2282,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Gambia	Гамбія
-#. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
@@ -2263,6 +2413,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Схаваць &катэгорыі
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	Схаваць панэль &прагляду
 #. button in a download's progress window
 #, machine
 	Hide tab	Схаваць укладку
@@ -2395,10 +2550,6 @@
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	Усталюйце 7-Zip (бясплатна), затым пстрыкніце правай кнопкай мышы на загрузцы і выберыце «Распакаваць».
 #. text in the Download video window
-#. button in Download video: download and install Deno, the JavaScript runtime YouTube needs (Deno is a program's name)
-#, machine
-	Install Deno	Усталяваць Deno
-#. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Усталяваць ffmpeg
@@ -2410,6 +2561,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	Усталяваць уручную
+#. text in the Download video window
+#. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
+#, machine
+	Install Node.js	Усталяваць Node.js
 #. text in unix.rs
 #. Linux, after a missing library's name, on a distribution MDM doesn't know
 #, machine
@@ -2513,6 +2668,14 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	немагчыма запісаць яго файлы: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	Да яго папкі зараз няма доступу
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	яе папка {folder} недаступная
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2538,9 +2701,9 @@
 #, machine
 	Japan	Японія
 #. text in helpers.rs
-#. Video helpers: the row of the JavaScript runtime yt-dlp needs for YouTube (Deno is a program's name)
+#. Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
 #, machine
-	JavaScript runtime (Deno)	Асяроддзе выканання JavaScript (Deno)
+	JavaScript runtime (for YouTube)	Асяроддзе выканання JavaScript (для YouTube)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2566,10 +2729,10 @@
 #, machine
 	KBytes/sec	КБ/с
 #. text in helpers.rs
-#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Deno by itself
+#. Helpers: checkbox: MDM checks for and installs newer versions of its own yt-dlp, ffmpeg, gallery-dl and Node.js by itself
 #, machine
 	Keep MDM's helpers up to date automatically	Аўтаматычна абнаўляць дапаможныя праграмы MDM
-#. text in the Options window
+#. message or event log entry in the main window; text in the Options window
 #. checkbox: downloads started from a browser's private (incognito) window are saved in MDM's download list like any other, so they are still there after MDM restarts
 #, machine
 	Keep private-window downloads in the list	Захоўваць спампоўкі з прыватнага акна ў спісе
@@ -2772,6 +2935,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Спачатку знайдзіце новы адрас
+#. text in helpers.rs
+#. Video helpers: MDM is asking the JavaScript runtimes on the computer (Node.js, Deno...) for their versions, to see which one yt-dlp can use
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for a JavaScript runtime on this computer...	Пошук асяроддзя выканання JavaScript на гэтым камп’ютары...
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
@@ -2945,13 +3113,13 @@
 #, machine
 	MDM does not answer. Trying again...	MDM не адказвае. Паўторная спроба...
 #. text in helpers.rs
-#. Video helpers: MDM can't download Deno on this system (32-bit Windows, an unusual processor); Deno and Node.js are program names
-#, machine
-	MDM has no copy for this system: install Deno or Node.js	MDM не мае копіі для гэтай сістэмы: усталюйце Deno або Node.js
-#. text in helpers.rs
 #. Video helpers: MDM can't download this helper on this Windows (ffmpeg on 32-bit Windows); "Use another program" is the button below
 #, machine
 	MDM has no copy for this system: install it, or use another program	MDM не мае копіі для гэтай сістэмы: усталюйце яе або выкарыстоўвайце іншую праграму
+#. text in helpers.rs
+#. Video helpers: MDM can't download Node.js on this system (an unusual processor); Node.js and Deno are program names; "Use another program" is the button below
+#, machine
+	MDM has no copy for this system: install Node.js or Deno, or use another program	Для гэтай сістэмы ў MDM няма копіі: усталюйце Node.js або Deno ці выкарыстоўвайце іншую праграму
 #. text in remote.rs
 #. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
 #, machine
@@ -3134,10 +3302,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	Перамясціць/Перайменаваць
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	Перамешчаны або выдалены
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	Перамешчана ў {folder}
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	Перамяшчэнне файла...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	Перамяшчаецца ў {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	Перамяшчэнне...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3299,6 +3484,14 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	У буферы абмену не знойдзена спасылак для спампоўкі. Скапіруйце тэкст са спасылкамі http, https, ftp або magnet і паўтарыце спробу.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	Спампоўка не выбрана
+#. text in traypanel.rs
+#. the notification-area icon's panel (#1365) when no download is running
+#, machine
+	No downloads are running	Няма запушчаных спамповак
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -3376,6 +3569,10 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	У {file} не знойдзена вэб-адрасоў.
+#. text in helpers.rs
+#. helper name and what it does (Node.js and YouTube are names)
+#, machine
+	Node.js: unlocks YouTube's qualities	Node.js: разблакуе варыянты якасці на YouTube
 #. text in the Options window; text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -3436,6 +3633,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	Пакуль не ўсталявана
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	Пакуль невядома
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3454,6 +3655,15 @@
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
 	not supported by this service	не падтрымліваецца гэтым сэрвісам
+#. text in archtest.rs
+#. in a download's log and the Test archive message: a split archive is tested only once every volume is downloaded; {name} is its file name, {why} which volume is missing
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Not tested yet: {name} isn't complete ({why})	Яшчэ не праверана: {name} не поўны ({why})
+#. text in archtest.rs
+#. in a download's log: an archive larger than Options → Archives' limit for its test wasn't tested; {limit} like "4.00 GB"; "Test archive" is the right-click command
+#, machine
+	Not tested: it is larger than {limit} (Options → Archives). Right-click → Test archive tests it	Не правераны: памер перавышае {limit} (Параметры → Архівы). Пстрыкніце правай кнопкай мышы → «Праверыць архіў», каб праверыць яго
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Не выкарыстоўваецца: часткі файла запісваюцца побач з файлам
@@ -3569,6 +3779,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Перамясціць можна толькі завершанае спампоўванне або тое, што яшчэ не пачалося. Спачатку спыніце яго і завяршыце.
+#. text in the Download video window
+#. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
+#, machine
+	Only a part	Толькі частка
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3586,6 +3800,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Only the first {n} videos are listed.	Пералічаны толькі першыя {n} відэа.
+#. message or event log entry in the main window
+#. event log: a torrent through a debrid account gets only the files ticked in Add torrent; {files} how many ("3")
+#, machine
+	Only the {files} file(s) ticked in Add torrent	Толькі файлы ({files}), адзначаныя ў «Дадаць торэнт»
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Толькі пакуль я карыстаюся камп'ютарам
@@ -3610,7 +3828,8 @@
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	Адкрываць магнітныя спасылкі і файлы .torrent з дапамогай Mister Download Manager
-#. text in the tray icon's menu
+#. text in the tray icon's menu; text in traypanel.rs
+#. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 #, machine
 	Open Mister Download Manager	Адкрыць Mister Download Manager
 #. text in extension.rs
@@ -3648,7 +3867,7 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Open with...	Адкрыць з дапамогай...
-#. text in the tray icon's menu
+#. message or event log entry in the main window; text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 #, machine
 	Options	Параметры
@@ -3720,6 +3939,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Paraguay	Парагвай
+#. text in the Download video window
+#. label in Download video before the choice to download only a part of the video or sound (from one time to another)
+#, machine
+	Part	Частка
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Пароль
@@ -3840,6 +4063,10 @@
 #. tooltip of the greyed Preview button in Download File Info
 #, machine
 	Preview isn't available yet	Папярэдні прагляд пакуль недаступны
+#. message or event log entry in the main window
+#. title of the notice shown once, the first time a download comes from a browser's private (incognito) window
+#, machine
+	Private-window downloads	Спампоўкі з прыватнага акна
 #. text in the Download video window
 #. a private-window video's authentication failure: only cookies supplied by that private window may be used, even after restarting MDM
 #, machine
@@ -3912,6 +4139,10 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Чэргі
+#. text in the Download video window
+#. choice in Download video's Part: cut where the video has a keyframe, the streams copied as they are (fast; it may start a little before From)
+#, machine
+	Quick cut, at keyframes	Хуткая нарэзка, па ключавых кадрах
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
@@ -3963,10 +4194,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Recording...	Запісваецца...
-#. message or event log entry in the main window
+#. message or event log entry in the main window; text in archtest.rs
 #. window title, verb: download the file again from the start
 #, machine
 	Redownload	Спампаваць зноў
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads every volume again from the start.	«Спампаваць зноў» спампоўвае ўсе тамы зноў з пачатку.
+#. text in archtest.rs
+#. in the "Damaged archive" window, under what was found; "Redownload" is the button beside
+#, machine
+	Redownload downloads it again from the start.	«Спампаваць зноў» спампоўвае яго зноў з пачатку.
 #. text in a download's Properties window
 #, machine
 	Referer:	Рэферэр:
@@ -4195,6 +4434,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	Другі файл:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	Выберыце спампоўку, каб убачыць яе выяву і падрабязнасці тут.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4348,6 +4591,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	Паказаць &катэгорыі
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	Паказаць панэль &прагляду
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	Паказаць дыялогавае акно і спытаць, што рабіць.
@@ -4370,6 +4618,10 @@
 #. checkbox in the Options window
 #, machine
 	Show download progress dialog when a download starts	Паказваць дыялогавае акно ходу спампоўвання пры запуску спампоўвання
+#. text in the Options window
+#. checkbox: a click on MDM's icon in the notification area (system tray) shows a small panel over it with the downloads now running, their progress, Pause and Cancel; unticked, the click shows or hides the main window
+#, machine
+	Show downloads when the notification area icon is clicked	Паказваць спампоўкі пры націсканні на значок у вобласці апавяшчэнняў
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 #, machine
@@ -4378,6 +4630,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	Паказаць, як
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	Паказаць або схаваць панэль прагляду
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	Паказваць панэль выбару чаргі пры закрыцці дыялогавых вокнаў пакетнай загрузкі
@@ -4526,6 +4781,10 @@
 #. legend: pieces partly downloaded
 #, machine
 	Some	Некаторыя
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})": some of its files are still downloading or waiting in the list
+#, machine
+	some of its volumes are still downloading	некаторыя з тамоў яшчэ спампоўваюцца
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Некаторыя файлы торэнта ўжо знаходзяцца ў гэтай папцы:
@@ -4662,6 +4921,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Запуск...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	Пачынаецца і заканчваецца дакладна ў час «Ад» і «Да»: ffmpeg перакадуе частку яшчэ раз, што займае больш часу
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4675,6 +4938,10 @@
 #. label before the download's state
 #, machine
 	Status:	Статус:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	Усё яшчэ там
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -4825,6 +5092,13 @@
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
 	Test	Тэст
+#. message or event log entry in the main window
+#, machine
+	Test archive	Праверыць архіў
+#. text in the Options window
+#. Options → Archives check box with a number box in it: {gb} is the box (a size in gigabytes, 4 at first); the words before it are the check box's caption, those after it follow the box, on one line. A test reads the archive back whole and checks it before its download counts as done
+#, machine
+	Test archives when their download completes, up to {gb} GB	Правяраць архівы пасля завяршэння спампоўвання, да {gb} ГБ
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -4833,6 +5107,19 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Test browser integration...	Тэст інтэграцыі з браўзерам...
+#. text in archtest.rs
+#. in a download's log: the archive's damaged parts were downloaded again, and its test now finds no error
+#, machine
+	Tested again: the archive has no errors now	Праверана зноў: у архіве больш няма памылак
+#. text in archtest.rs; text in the download list (sizes, speeds, status)
+#. in a download's log: its archive is being tested (read back and checked) before the download counts as done
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Testing the archive...	Праверка архіва...
+#. text in the download list (sizes, speeds, status)
+#. a download's status while its archive (zip, 7z, rar) is read back and checked before the download counts as done; {percent} how far, e.g. "45%"
+#, machine
+	Testing the archive... ({percent})	Праверка архіва... ({percent})
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4845,6 +5132,14 @@
 #. why Batch download's OK is greyed
 #, machine
 	That is more than 100,000 files: make the range smaller	Гэта больш за 100 000 файлаў: зрабіце дыяпазон меншым
+#. text in the Options window
+#. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
+#, machine
+	That isn't 7-Zip's command line program (7z.exe).	Гэта не праграма каманднага радка 7-Zip (7z.exe).
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	Гэта ўсё відэа: змяніце «Ад» або «Да» або зніміце сцяжок «Толькі частка»
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -4858,6 +5153,14 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Trash: it was kept	Архіў не ўдалося перамясціць у Сметніцу: ён быў захаваны
+#. text in archtest.rs
+#. in a download's log: the archive's own structure doesn't read back (its headers, its end), or it isn't the archive its name says
+#, machine
+	The archive test failed: it is damaged, or not the archive its name says	Не ўдалося праверыць архіў: ён пашкоджаны або гэта не той архіў, што пазначаны ў назве
+#. text in archtest.rs
+#. in a download's log: the archive was read back whole and checked
+#, machine
+	The archive test found no errors	Тэст архіва не выявіў памылак
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -4945,6 +5248,11 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	злучэнне страчана падчас атрымання даных
+#. text in archtest.rs
+#. in a download's log: the bytes of the archive's damaged files couldn't be downloaded again; {error} why
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The damaged parts couldn't be downloaded again: {error}	Не ўдалося спампаваць пашкоджаныя часткі зноў: {error}
 #. text in torrent downloads
 #. files kept appearing while the user was confirming a torrent start; stop rather than repeat questions indefinitely
 #, machine
@@ -4961,6 +5269,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	Спампоўванне з {host} было перапынена
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	Спампоўванне перамяшчаецца
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5167,6 +5479,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	служба не паведамляе, ці з'яўляецца ўліковы запіс прэміумным
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	Сайт не паказвае працягласць гэтага відэа
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5305,6 +5621,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	недастаткова вольнага месца для яго файлаў, паводле паведамлення HatchZip; нічога не змянілася
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	недастаткова вольнага месца там ({needed} патрабуецца, {free} вольна)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	Гэтыя налады недаступныя, калі ўключана «Паказваць дыялогавае акно аб завяршэнні спампоўвання»
@@ -5409,6 +5729,7 @@
 	This name is reserved by Windows	Гэта імя зарэзервавана сістэмай Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Для гэтага патрэбны ffmpeg
@@ -5475,6 +5796,9 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	this {site} link is a web page, not the file: open it in your browser and download from there	гэта спасылка {site} — вэб-старонка, а не файл: адкрыйце яе ў браўзеры і спампуйце адтуль
+#. text in helpers.rs
+#, machine
+	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	Тры бясплатныя дапаможныя праграмы дазваляюць гэта. Атрымайце іх зараз, і захаванне відэа будзе ў адзін клік, калі вы яго знойдзеце.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5509,6 +5833,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	Каб усталяваць адсутнае: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	«Да» знаходзіцца пасля канца відэа
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	«Да» павінна быць пасля «Ад»
 #. text in the Batch download window
 #, machine
 	To:	Да:
@@ -5560,6 +5892,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	Не ўдалося запусціць торэнты: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	Агульны памер:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -5696,6 +6032,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Увядзіце назву чаргі
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	Увядзіце час у фармаце 1:30 або 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5802,8 +6142,9 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Выкарыстоўваць пашыраную інтэграцыю з браўзерам
-#. text in errors.rs; button in helpers.rs
+#. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
+#. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Use another program...	Выкарыстоўваць іншую праграму...
@@ -5867,7 +6208,7 @@
 #. Options → Add an account: label before the field for the user name at the debrid service
 #, machine
 	User name:	Імя карыстальніка:
-#. page title in the Options window
+#. page title in the Options window; text in the Options window
 #, machine
 	User names and passwords for servers/sites	Імёны карыстальнікаў і паролі для сервераў/сайтаў
 #. text in the Options window
@@ -5962,6 +6303,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Налады праверкі на вірусы
+#. text in archtest.rs
+#. why a split archive (in several files, its volumes) isn't tested yet, in "{name} isn't complete ({why})"; {n} is the number of the volume not downloaded yet
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} isn't there yet	том {n} яшчэ не спампаваны
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -6014,6 +6360,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Інтэрнэт
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	Вэб-старонка:
 #. text in the Scheduler window
 #, machine
 	Wednesday	Серада
@@ -6165,13 +6515,12 @@
 #, machine
 	Your own program: {path} ({version})	Ваша ўласная праграма: {path} ({version})
 #. text in helpers.rs
-#. Video helpers: {path} = the computer's own JavaScript runtime (node.exe, deno.exe), used as it is: MDM needn't download one
-#, machine
-	Your system's, nothing to download: {path}	Вашай сістэмы, нічога не трэба спампоўваць: {path}
-#. text in helpers.rs
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	Ваша сістэмная: {path}
+#. text in helpers.rs
+#, machine
+	YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.	Перад тым як паказаць відэа, YouTube прымушае yt-dlp выканаць фрагмент JavaScript, а на гэтым камп’ютары няма праграмы, якая магла б яго выканаць. Node.js падыходзіць для гэтага.
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
@@ -6286,11 +6635,15 @@
 #. Options → Remote → Pair a device: done; {device} = the name it was given
 #, machine
 	{device} is paired. It can control MDM now.	{device} спалучана. Цяпер яна можа кіраваць MDM.
-#. text in remote.rs
+#. text in remote.rs; text in traypanel.rs
 #. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} з {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} з {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6313,6 +6666,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Не ўдалося прачытаць {file} для праверкі
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	файл {file} ужо ёсць у гэтай папцы
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	Не ўдалося замяніць файл {file}: магчыма, ён адкрыты ў іншай праграме. Новая спампоўка захавана побач як {new}, абодва файлы захаваны.
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} больш не знаходзіцца там, дзе быў захаваны (перамешчаны або выдалены). Паўторная спампоўка ў кантэкстным меню дазваляе спампаваць яго зноў.
@@ -6405,7 +6766,7 @@
 #, machine
 	{name}  ({files}, {size})	{name} ({files}, {size})
 #. text in helpers.rs
-#. {name} = yt-dlp or ffmpeg; {error} = why
+#. {name} = yt-dlp, ffmpeg or Node.js; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	Не ўдалося спампаваць {name}: {error}
@@ -6415,10 +6776,20 @@
 #, machine
 	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — гэта архіў 7z або RAR. MDM распакоўвае іх з дапамогай 7-Zip, які не ўсталяваны.
 #. text in errors.rs
-#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Deno) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
+#. error: a helper (yt-dlp, ffmpeg, gallery-dl, Node.js) is being downloaded already, by MDM's automatic update or another copy of MDM; {name} = its name
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} is being downloaded already: try again in a moment	{name} ужо спампоўваецца: паспрабуйце яшчэ раз праз момант
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in it.	{name} пашкоджаны: тэст выявіў у ім памылкі.
+#. text in archtest.rs
+#. in the "Damaged archive" window: {name} is the archive's first volume's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is damaged: its test found errors in one of its volumes.	{name} пашкоджаны: тэст выявіў памылкі ў адным з тамоў.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -6484,6 +6855,22 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (ліміт: {limit})
+#. text in helpers.rs
+#. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
+#, machine
+	{runtime}, MDM's earlier copy: Node.js takes its place at the next update	{runtime}, ранейшая копія MDM: Node.js заменіць яе пры наступным абнаўленні
+#. text in helpers.rs
+#. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
+#, machine
+	{runtime}, Mister Download Manager's own copy	{runtime}, уласная копія Mister Download Manager
+#. text in helpers.rs
+#. Video helpers: the JavaScript runtime the person chose; {runtime} = its name and version ("Node.js 24.11.0"), {path} = where it is
+#, machine
+	{runtime}, your own program: {path}	{runtime}, ваша ўласная праграма: {path}
+#. text in helpers.rs
+#. Video helpers: the computer's own JavaScript runtime, used as it is (MDM needn't download one); {runtime} = its name and version ("Node.js 24.11.0", "Deno 2.5.6"), {path} = where it is
+#, machine
+	{runtime}, your system's, nothing to download: {path}	{runtime}, ужо ёсць у сістэме, спампоўваць нічога не трэба: {path}
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
@@ -6498,6 +6885,10 @@
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} зараз не можа атрымаць доступ да гэтага файлавага хоста; MDM паспрабуе зноў пазней
+#. text in errors.rs
+#. a torrent through a debrid service: a file ticked in Add torrent isn't among the files the service has, so nothing was downloaded (rather than every file); {service} its name, {file} the file's path in the torrent
+#, machine
+	{service} doesn't list {file}, chosen in Add torrent: nothing was downloaded. Add the torrent again with all its files, or without this one	{service} не мае {file}, выбранага ў «Дадаць торэнт»: нічога не было спампавана. Дадайце торэнт яшчэ раз з усімі файламі або без гэтага файла.
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -6541,6 +6932,11 @@
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
 	{service}: {message}	{service}: {message}
+#. text in errors.rs
+#. a download's error: a video site kept answering MDM's request for the file with its download page again; {site} = the site's name (LuluStream)
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	{site} didn't give the file this time: try again in a moment	На гэты раз файл ад {site} не атрыманы: паспрабуйце яшчэ раз праз момант
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -6563,6 +6959,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} с.
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6646,6 +7047,14 @@ column	Upload speed	Хуткасць аддачы
 #, machine
 extension	A list of videos: choose them in Mister Download Manager	Спіс відэа: выберыце іх у Mister Download Manager
 #. text in the browser extension
+#. link after popup_by_hand_firefox in the toolbar button's popup: opens the add-on's page on addons.mozilla.org (Firefox's add-ons store), whose copy Firefox keeps and updates; keep addons.mozilla.org as it is
+#, machine
+extension	Add it from addons.mozilla.org	Дадаць з addons.mozilla.org
+#. text in the browser extension
+#. link after popup_by_hand in the toolbar button's popup: opens the extension's page in the Chrome Web Store, whose copy the browser keeps up to date; keep the name Chrome Web Store as it is
+#, machine
+extension	Add it from the Chrome Web Store	Дадаць з Chrome Web Store
+#. text in the browser extension
 #. on the download button (green) over a video after the app added and started the download; a quality may follow ('· 1080p') and a 'Show' button; MDM is the app's short name, keep it; short
 #, machine
 extension	Added to MDM	Дададзена ў MDM
@@ -6655,6 +7064,7 @@ extension	Added to MDM	Дададзена ў MDM
 extension	Added to the queue	Дададзена ў чаргу
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	Усе
 #. text in the browser extension
@@ -6670,6 +7080,14 @@ extension	Another Mister Download Manager (a server)	Іншы Mister Download Ma
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	Аўдыё
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	Толькі аўдыя
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	Зноў у куце, меню паказвае ўсё, на кожным сайце
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6719,6 +7137,10 @@ extension	Clear finished	Ачысціць завершаныя
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	Ачысціць завершаныя спампоўкі?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	Кодэк
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -6776,6 +7198,11 @@ extension	Done	Гатова
 #, machine
 extension	Download	Спампаваць
 #. text in the browser extension
+#. command in the menu of the download button over a video: opens the app's Download video window with Part ticked, From set to where the video is playing now, to download only a part of it
+#. the trailing ... means it is still going on: keep it
+#, machine
+extension	Download a part from here...	Спампаваць частку адсюль...
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): downloads the file again from the start
 #, machine
 extension	Download again	Спампаваць зноў
@@ -6787,6 +7214,10 @@ extension	Download all links with Mister Download Manager	Спампаваць �
 #. first line of the list under the download button over a video: downloads the best quality at once; the quality, its file type and size follow on the same line; short
 #, machine
 extension	Download best	Спампаваць у найлепшай якасці
+#. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	Кнопка спампоўвання над відэа
 #. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
@@ -6834,6 +7265,10 @@ extension	Downloads go to {address}	Спампоўкі ідуць на {address}
 #, machine
 extension	Drag the dots to move it along the edge	Перацягніце кропкі, каб перамясціць уздоўж краю
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
+#, machine
+extension	Drag the dots to move it to another corner, or outside the video	Перацягніце кропкі, каб перамясціць яе ў іншы кут або за межы відэа
+#. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	Увядзіце яго https:// адрас.
@@ -6850,6 +7285,10 @@ extension	Failed: {why}	Не атрымалася: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	Файл выдалены або перамешчаны
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	Тып файла
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -7162,9 +7601,17 @@ extension	Protected	Абаронена
 #, machine
 extension	Protected video	Абароненае відэа
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	Вярнуць кнопку ў кут
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	Выдаліць са спіса
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	Скід
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7218,6 +7665,7 @@ extension	Share...	Падзяліцца...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 #, machine
 extension	Show	Паказаць
 #. text in the browser extension
@@ -7303,6 +7751,14 @@ extension	This browser isn't ticked in Options → General.	Гэты браўз�
 #, machine
 extension	This computer	Гэты камп’ютар
 #. text in the browser extension
+#. one line at the top of the toolbar button's popup when the extension was loaded by hand (Load unpacked, with Developer mode on) in Chrome, Edge, Brave, Opera or Vivaldi; followed by the link popup_store_chrome
+#, machine
+extension	This copy was loaded by hand and won't update itself.	Гэтая копія была ўсталявана ўручную і не будзе абнаўляцца аўтаматычна.
+#. text in the browser extension
+#. one line at the top of the toolbar button's popup when the add-on was loaded by hand in Firefox (Load Temporary Add-on, in about:debugging); followed by the link popup_store_firefox; the browser here is Firefox (or Zen, LibreWolf)
+#, machine
+extension	This copy was loaded by hand: it won't update itself, and the browser removes it when it restarts.	Гэтая копія была загружана ўручную: яна не будзе абнаўляцца самастойна, і браўзер выдаліць яе пры перазапуску.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Падрабязнасці гэтай спампоўкі былі занадта вялікія для перадачы
@@ -7360,6 +7816,10 @@ extension	Waiting	Чакае
 #, machine
 extension	What you download with Mister Download Manager shows up here.	Тое, што вы спампоўваеце з Mister Download Manager, з'явіцца тут.
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	Месца, куды вы яе перамясцілі, і фільтры яе меню для кожнага сайта
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 #, machine
 extension	While the page is in full screen, its videos show no Download video button	Калі старонка знаходзіцца ў поўнаэкранным рэжыме, на яе відэа не паказваецца кнопка «Спампаваць відэа»
@@ -7398,6 +7858,10 @@ extension	{time} left	Засталося {time}
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8085,6 +8549,10 @@ menu	Te&xt	&Тэкст
 #, machine
 menu	Tell a &friend	Расказаць &сябру
 #. menu command in the main window
+#. verb: read the downloaded archive (zip, 7z, rar) back and check that none of its files is damaged
+#, machine
+menu	Test archive	Праверыць архіў
+#. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
 menu	The graphics card was lost twice in 10 minutes	Відэакарта двойчы адключалася за 10 хвілін
@@ -8159,6 +8627,10 @@ menubar	&Tasks	&Задачы
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&Выгляд
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	Прагляд
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	Дадаць торэнт
@@ -8176,6 +8648,10 @@ toolbar	Delete Completed	Выдаліць завершаныя
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	Параметры
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	Прагляд
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

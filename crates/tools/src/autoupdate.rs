@@ -1,15 +1,15 @@
-//! Keeping MDM's own helpers up to date (#1544): yt-dlp, gallery-dl, ffmpeg and Deno, the copies
+//! Keeping MDM's own helpers up to date (#1544): yt-dlp, gallery-dl, ffmpeg and Node.js (#1570), the copies
 //! MDM downloaded and checked itself. Sites change all the time, and a newer yt-dlp (or
 //! gallery-dl) is usually what fixes a page that stopped working.
 //!
 //! - **When:** a check a few seconds after MDM starts, then again while it runs: yt-dlp and
-//!   gallery-dl at most every 6 hours, Deno once a day, ffmpeg once a week (BtbN rebuilds it each
+//!   gallery-dl at most every 6 hours, Node.js once a day, ffmpeg once a week (BtbN rebuilds it each
 //!   day, about 80 MB, for changes a merge seldom needs). When the next check is due is kept in
 //!   `<tools>/updates.json`, so starting MDM many times asks GitHub nothing more. A check that
 //!   failed is tried again an hour later; it is logged, never shown as an error.
 //! - **How:** each tool's own install (`install_latest` and the like): the release's checksum list
-//!   checked against its publisher's key (yt-dlp, gallery-dl) or its published checksums (ffmpeg,
-//!   Deno), the program against it, never an older version, installed beside the current one in
+//!   checked against its publisher's key (yt-dlp, gallery-dl, Node.js) or its published checksums
+//!   (ffmpeg), the program against it, never an older version, installed beside the current one in
 //!   its version's folder.
 //! - **The switch** to the new version happens only while no download, look-up or other run of MDM
 //!   (of any copy of MDM on this computer) is using that helper: a run holds the helper's
@@ -39,7 +39,9 @@ pub enum Tool {
     YtDlp,
     Ffmpeg,
     GalleryDl,
-    Deno,
+    /// The JavaScript runtime MDM installs for YouTube (#1570): it takes the place of the Deno
+    /// earlier versions installed (`check_with`, `jsruntime::retire_deno`).
+    Node,
 }
 
 /// How long after a failed check the next one is tried.
@@ -49,7 +51,7 @@ pub const RETRY_AFTER_FAILURE: i64 = 3600;
 pub const HEAL_EVERY: i64 = 600;
 
 impl Tool {
-    pub const ALL: [Tool; 4] = [Tool::YtDlp, Tool::Ffmpeg, Tool::GalleryDl, Tool::Deno];
+    pub const ALL: [Tool; 4] = [Tool::YtDlp, Tool::Ffmpeg, Tool::GalleryDl, Tool::Node];
 
     /// Its name, which is also its folder's in the tools folder.
     pub fn name(self) -> &'static str {
@@ -57,7 +59,7 @@ impl Tool {
             Tool::YtDlp => "yt-dlp",
             Tool::Ffmpeg => "ffmpeg",
             Tool::GalleryDl => "gallery-dl",
-            Tool::Deno => "deno",
+            Tool::Node => "node",
         }
     }
 
@@ -70,7 +72,7 @@ impl Tool {
     pub fn every(self) -> i64 {
         match self {
             Tool::YtDlp | Tool::GalleryDl => 6 * 3600,
-            Tool::Deno => 24 * 3600,
+            Tool::Node => 24 * 3600,
             Tool::Ffmpeg => 7 * 24 * 3600,
         }
     }
@@ -88,7 +90,13 @@ impl Tool {
             Tool::YtDlp => Helper::YtDlp,
             Tool::Ffmpeg => Helper::Ffmpeg,
             Tool::GalleryDl => Helper::GalleryDl,
-            Tool::Deno => return None,
+            // A runtime the person chose: MDM's own Node.js isn't used, nor updated.
+            Tool::Node => {
+                return crate::jsruntime::chosen(dir).map(|r| Installed {
+                    version: r.version.unwrap_or_default(),
+                    exe: r.exe,
+                });
+            }
         };
         crate::chosen::chosen(dir, h).filter(|c| {
             // A gallery-dl too old for MDM is passed over (#236): MDM's own is used.
@@ -279,15 +287,21 @@ impl Hold {
             .collect()
     }
 
+    /// Whether the tool whose folder is `root` is held.
+    #[cfg(test)]
+    pub(crate) fn holds(&self, root: &Path) -> bool {
+        self.held.iter().any(|(r, _)| r == root)
+    }
+
     /// Hold the helpers a command runs: its program and every argument that names one (yt-dlp's
-    /// `--ffmpeg-location`, `--js-runtimes deno:<path>`).
+    /// `--ffmpeg-location`, `--js-runtimes node:<path>`).
     pub fn of_command(cmd: &std::process::Command) -> Hold {
         let program = Path::new(cmd.get_program());
         let args: Vec<&Path> = cmd
             .get_args()
             .map(|a| {
                 let a = a.to_str().unwrap_or_default();
-                // `deno:<path>`
+                // `node:<path>`
                 Path::new(
                     a.split_once(':')
                         .filter(|(k, _)| k.len() > 1)
@@ -327,8 +341,12 @@ impl Drop for Hold {
     }
 }
 
-/// The tool's folder `path` is in: an ancestor named after one of the tools, with a
-/// `current.json`.
+/// Folders of MDM's own helpers that are no tool it updates any more, held all the same while a
+/// run uses them, so that their removal waits for it: the Deno earlier versions installed (#1570).
+const RETIRED: [&str; 1] = ["deno"];
+
+/// The tool's folder `path` is in: an ancestor named after one of the tools (or a retired one),
+/// with a `current.json`.
 fn tool_root(path: &Path) -> Option<PathBuf> {
     if !path.is_absolute() {
         return None;
@@ -338,10 +356,17 @@ fn tool_root(path: &Path) -> Option<PathBuf> {
         .find(|a| {
             a.file_name()
                 .and_then(|n| n.to_str())
-                .is_some_and(|n| Tool::of_folder(n).is_some())
+                .is_some_and(|n| Tool::of_folder(n).is_some() || RETIRED.contains(&n))
                 && a.join("current.json").is_file()
         })
         .map(Path::to_owned)
+}
+
+/// The tool in `root` held alone (no run of any copy of MDM uses it) until dropped; None while one
+/// does.
+pub(crate) fn alone(root: &Path) -> Option<Locked> {
+    let f = lock_file(root, IN_USE).ok()?;
+    f.try_lock().ok().map(|()| Locked(f))
 }
 
 /// Whether a run of this copy of MDM or another uses the tool in `root` now.
@@ -710,7 +735,7 @@ fn install_of(tool: Tool) -> Install {
         Tool::YtDlp => |d, n, p, f| Box::pin(crate::install_with(d, n, p, f)),
         Tool::Ffmpeg => |d, n, p, f| Box::pin(crate::ffmpeg::install_with(d, n, p, f)),
         Tool::GalleryDl => |d, n, p, f| Box::pin(crate::gallery::install_with(d, n, p, f)),
-        Tool::Deno => |d, n, p, f| Box::pin(crate::deno::install_with(d, n, p, f)),
+        Tool::Node => |d, n, p, f| Box::pin(crate::node::install_with(d, n, p, f)),
     }
 }
 
@@ -735,7 +760,7 @@ pub async fn check_with(
     now: i64,
     install: Install,
 ) -> Result<Checked, Error> {
-    let Some(current) = own(dir, tool) else {
+    let Some(current) = own(dir, tool).or_else(|| deno_to_replace(dir, tool)) else {
         return Ok(Checked::NotOurs);
     };
     let every = tool.every();
@@ -810,6 +835,9 @@ pub async fn check_with(
                     });
                 }
             });
+            if tool == Tool::Node {
+                crate::jsruntime::retire_deno(dir);
+            }
             match &found {
                 Checked::Updated { from, now } => {
                     tracing::info!("{} updated: {from} -> {}", tool.name(), now.version)
@@ -835,10 +863,77 @@ pub async fn check_with(
     }
 }
 
+/// MDM's own copy of `tool` installed in the tools folder `dir` at `now` (Helpers, #1801): where
+/// there is none yet, or in place of the system's (#452, #571). The tool's own install, verified
+/// as each update is, under way as a check is ([`checking`]: its download's progress, the other
+/// checks of it waiting), and written down as a check that found it, so the automatic checks go
+/// on from there. A program the person chose is theirs: it is returned, nothing installed.
+pub async fn install_own(
+    dir: &Path,
+    tool: Tool,
+    net: &mdm_engine::Options,
+    now: i64,
+) -> Result<Installed, Error> {
+    install_own_with(dir, tool, net, now, install_of(tool)).await
+}
+
+/// [`install_own`] with the tool's install given (tests: one that makes a fake program).
+pub async fn install_own_with(
+    dir: &Path,
+    tool: Tool,
+    net: &mdm_engine::Options,
+    now: i64,
+    install: Install,
+) -> Result<Installed, Error> {
+    if let Some(mine) = tool.chosen(dir) {
+        return Ok(mine);
+    }
+    let Some((_live, progress)) = Live::start(dir, tool) else {
+        return Err(Error::Busy(tool.name().to_owned()));
+    };
+    let got = match install(dir, net, Some(progress.as_ref()), None).await {
+        Ok(got) => got,
+        Err(e) => {
+            tracing::warn!("{}: installing MDM's own copy failed: {e}", tool.name());
+            return Err(e);
+        }
+    };
+    let every = tool.every();
+    change(dir, |s| {
+        let t = s.tools.entry(tool.name().to_owned()).or_default();
+        t.next = Some(now + every);
+        t.checked = Some(now);
+        t.latest = Some(got.latest.clone());
+        t.failed = None;
+    });
+    if tool == Tool::Node {
+        crate::jsruntime::retire_deno(dir);
+    }
+    let installed = ready(dir, tool)
+        .ok_or_else(|| Error::Missing(format!("{} after its install", tool.name())))?;
+    tracing::info!("{} {} installed", tool.name(), installed.version);
+    Ok(installed)
+}
+
+/// #1570: MDM's own Deno, from an earlier version, standing for its Node.js in a check of
+/// [`Tool::Node`] (`from` "Deno <version>"): the check installs Node.js as an update would, and
+/// the Deno is then removed. Not when the person chose a runtime, nor where Node.js has no build.
+fn deno_to_replace(dir: &Path, tool: Tool) -> Option<Installed> {
+    if tool != Tool::Node || tool.chosen(dir).is_some() || !crate::node::available() {
+        return None;
+    }
+    crate::deno::installed(dir).map(|d| Installed {
+        version: format!("Deno {}", d.version),
+        exe: d.exe,
+    })
+}
+
 /// The automatic checks due at `now`, one tool after the other, and the versions waiting for runs
 /// that ended elsewhere. Nothing is said: each is logged.
 pub async fn run_due(dir: &Path, net: &mdm_engine::Options, now: i64) -> Vec<(Tool, Checked)> {
     apply_all_staged(dir);
+    // A Deno of MDM's own left by a run that used it as its Node.js came (#1570).
+    crate::jsruntime::retire_deno(dir);
     let mut out = Vec::new();
     for tool in Tool::ALL {
         if let Ok(c) = check(dir, tool, net, Why::Auto, now).await
@@ -943,7 +1038,7 @@ pub fn outdated(tool: Tool, message: &str) -> bool {
             "unsupported url",
             "no suitable extractor",
         ]),
-        Tool::Ffmpeg | Tool::Deno => false,
+        Tool::Ffmpeg | Tool::Node => false,
     }
 }
 
@@ -968,7 +1063,107 @@ mod tests {
         assert!(due(&t, every, 1_000_000 + every));
         // The clock turned back a day: due, not a day late.
         assert!(due(&t, every, 1_000_000 - 24 * H));
-        assert!(Tool::Deno.every() == 24 * H && Tool::Ffmpeg.every() >= 24 * H);
+        assert!(Tool::Node.every() == 24 * H && Tool::Ffmpeg.every() >= 24 * H);
+    }
+
+    /// #1570: a copy of MDM with its own Deno (an earlier version's) gets Node.js by the
+    /// runtime's update check, its Deno kept until Node.js is in place, then removed; a Deno of
+    /// the person's own is never touched, and with a runtime the person chose nothing is
+    /// installed.
+    #[tokio::test]
+    async fn mdms_deno_is_replaced_by_its_node() {
+        if !crate::node::available() {
+            return; // no Node.js build for this system: the Deno stays
+        }
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        let deno_root = d.join("deno");
+        let deno = {
+            let exe = deno_root
+                .join("2.5.0")
+                .join(format!("deno{}", std::env::consts::EXE_SUFFIX));
+            std::fs::create_dir_all(exe.parent().unwrap()).unwrap();
+            std::fs::write(&exe, b"deno").unwrap();
+            crate::make_current(
+                &deno_root,
+                Installed {
+                    version: "2.5.0".into(),
+                    exe,
+                },
+            )
+            .unwrap()
+        };
+        // The person's own Deno, elsewhere.
+        let theirs = tempfile::tempdir().unwrap();
+        let their_deno = theirs.path().join("deno");
+        std::fs::write(&their_deno, b"theirs").unwrap();
+        fn installs_node<'a>(
+            d: &'a Path,
+            _: &'a mdm_engine::Options,
+            _: Option<&'a crate::update::Progress>,
+            _: Option<&'a str>,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<Got, Error>> + Send + 'a>>
+        {
+            Box::pin(async move {
+                // Meanwhile, the Deno is still what yt-dlp is told of.
+                assert_eq!(
+                    crate::jsruntime::own(d).unwrap().kind,
+                    crate::jsruntime::Kind::Deno
+                );
+                let root = Tool::Node.root(d);
+                let exe = root.join("26.13.1").join("node");
+                std::fs::create_dir_all(exe.parent().unwrap()).unwrap();
+                std::fs::write(&exe, b"node").unwrap();
+                let settled = settle(
+                    &root,
+                    Installed {
+                        version: "26.13.1".into(),
+                        exe,
+                    },
+                )?;
+                Ok(Got {
+                    latest: "26.13.1".into(),
+                    settled: Some(settled),
+                })
+            })
+        }
+        let net = crate::net(mdm_engine::Proxy::None);
+        // With a runtime the person chose: not MDM's to install.
+        crate::chosen::choose_runtime(
+            d,
+            crate::chosen::ChosenRuntime {
+                kind: "deno".into(),
+                version: "2.6.0".into(),
+                exe: their_deno.clone(),
+            },
+        )
+        .unwrap();
+        assert_eq!(
+            check_with(d, Tool::Node, &net, Why::Auto, 0, installs_node)
+                .await
+                .unwrap(),
+            Checked::NotOurs
+        );
+        assert!(deno.exe.is_file());
+        crate::jsruntime::forget(d).unwrap();
+        // Without: Node.js comes as an update of the runtime, and the Deno goes.
+        let found = check_with(d, Tool::Node, &net, Why::Auto, 0, installs_node)
+            .await
+            .unwrap();
+        match found {
+            Checked::Updated { from, now } => {
+                assert_eq!(from, "Deno 2.5.0");
+                assert_eq!(now.version, "26.13.1");
+            }
+            other => panic!("{other:?}"),
+        }
+        assert_eq!(
+            crate::jsruntime::own(d).unwrap().kind,
+            crate::jsruntime::Kind::Node
+        );
+        assert!(!deno_root.exists(), "MDM's own Deno removed");
+        assert_eq!(std::fs::read(&their_deno).unwrap(), b"theirs");
+        assert_eq!(own(d, Tool::Node).unwrap().version, "26.13.1");
     }
 
     /// Restarts don't ask again: what is due is read from `updates.json` each time, the clock
@@ -1081,6 +1276,144 @@ mod tests {
             check(d, Tool::YtDlp, &net, Why::Asked, 0).await.unwrap(),
             Checked::NotOurs
         );
+    }
+
+    /// #1801: Helpers installs MDM's own copy where there is none yet: under way as a check is
+    /// (its progress shown, a second install refused meanwhile), then MDM's own current copy,
+    /// written down as checked, so automatic checks go on from it (not due at once, due after
+    /// the tool's interval) and Update finds it. With a program the person chose, nothing is
+    /// installed.
+    #[tokio::test]
+    async fn a_missing_helper_is_installed_and_kept_up_to_date() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        fn installs<'a>(
+            d: &'a Path,
+            n: &'a mdm_engine::Options,
+            p: Option<&'a crate::update::Progress>,
+            _: Option<&'a str>,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<Got, Error>> + Send + 'a>>
+        {
+            Box::pin(async move {
+                // Under way: the window sees its progress, and another install waits its turn.
+                let shown = checking(d, Tool::GalleryDl).expect("under way");
+                assert!(std::ptr::eq(shown.as_ref(), p.unwrap()));
+                assert!(matches!(
+                    install_own_with(d, Tool::GalleryDl, n, 0, installs).await,
+                    Err(Error::Busy(_))
+                ));
+                let root = Tool::GalleryDl.root(d);
+                let exe = root.join("1.31.2").join("gallery-dl");
+                std::fs::create_dir_all(exe.parent().unwrap()).unwrap();
+                std::fs::write(&exe, b"gallery-dl").unwrap();
+                let settled = settle(
+                    &root,
+                    Installed {
+                        version: "1.31.2".into(),
+                        exe,
+                    },
+                )?;
+                Ok(Got {
+                    latest: "1.31.2".into(),
+                    settled: Some(settled),
+                })
+            })
+        }
+        let net = crate::net(mdm_engine::Proxy::None);
+        let t0 = 2_000_000_000;
+        assert_eq!(own(d, Tool::GalleryDl), None);
+        // Nothing of MDM's own: an update check has nothing to update.
+        assert_eq!(
+            check_with(d, Tool::GalleryDl, &net, Why::Asked, t0, installs)
+                .await
+                .unwrap(),
+            Checked::NotOurs
+        );
+        let got = install_own_with(d, Tool::GalleryDl, &net, t0, installs)
+            .await
+            .unwrap();
+        assert_eq!(got.version, "1.31.2");
+        assert_eq!(own(d, Tool::GalleryDl).unwrap(), got);
+        assert!(
+            checking(d, Tool::GalleryDl).is_none(),
+            "no longer under way"
+        );
+        let t = read(d).of(Tool::GalleryDl);
+        assert_eq!(t.latest.as_deref(), Some("1.31.2"));
+        assert_eq!(t.checked, Some(t0));
+        assert_eq!(t.next, Some(t0 + Tool::GalleryDl.every()));
+        assert_eq!(t.updated, None, "a first install is no update");
+        // Automatic updates cover it from now on.
+        assert_eq!(
+            check_with(d, Tool::GalleryDl, &net, Why::Auto, t0 + 60, installs)
+                .await
+                .unwrap(),
+            Checked::NotDue
+        );
+        assert!(matches!(
+            check_with(
+                d,
+                Tool::GalleryDl,
+                &net,
+                Why::Auto,
+                t0 + Tool::GalleryDl.every(),
+                installs
+            )
+            .await
+            .unwrap(),
+            Checked::UpToDate { .. }
+        ));
+        // The person's own program: theirs, nothing installed.
+        let other = tempfile::tempdir().unwrap();
+        let o = other.path();
+        let mine = o.join("my-gallery-dl");
+        std::fs::write(&mine, b"x").unwrap();
+        std::fs::write(
+            o.join("programs.json"),
+            serde_json::to_vec(&serde_json::json!({
+                "gallery-dl": {"version": "1.31.0", "exe": mine}
+            }))
+            .unwrap(),
+        )
+        .unwrap();
+        fn never<'a>(
+            _: &'a Path,
+            _: &'a mdm_engine::Options,
+            _: Option<&'a crate::update::Progress>,
+            _: Option<&'a str>,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<Got, Error>> + Send + 'a>>
+        {
+            panic!("nothing to install")
+        }
+        let theirs = install_own_with(o, Tool::GalleryDl, &net, t0, never)
+            .await
+            .unwrap();
+        assert_eq!(theirs.exe, mine);
+        assert!(!Tool::GalleryDl.root(o).exists());
+    }
+
+    /// A first install that fails leaves nothing behind but the failure, said once: no
+    /// helper, nothing under way.
+    #[tokio::test]
+    async fn a_failed_first_install_leaves_nothing_under_way() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        fn failing<'a>(
+            _: &'a Path,
+            _: &'a mdm_engine::Options,
+            _: Option<&'a crate::update::Progress>,
+            _: Option<&'a str>,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<Got, Error>> + Send + 'a>>
+        {
+            Box::pin(async { Err(Error::BadSignature) })
+        }
+        let net = crate::net(mdm_engine::Proxy::None);
+        assert!(matches!(
+            install_own_with(d, Tool::YtDlp, &net, 0, failing).await,
+            Err(Error::BadSignature)
+        ));
+        assert_eq!(own(d, Tool::YtDlp), None);
+        assert!(checking(d, Tool::YtDlp).is_none());
     }
 
     /// `tool`'s `version` as MDM's own current copy in the tools folder `d`.
@@ -1203,17 +1536,17 @@ mod tests {
     fn going_back_and_forth() {
         let dir = tempfile::tempdir().unwrap();
         let d = dir.path();
-        let root = Tool::Deno.root(d);
-        fake_current(d, Tool::Deno, "2.5.0");
-        let two = fake_current(d, Tool::Deno, "2.6.0");
+        let root = Tool::Node.root(d);
+        fake_current(d, Tool::Node, "2.5.0");
+        let two = fake_current(d, Tool::Node, "2.6.0");
         assert_eq!(previous_in(&root).unwrap().version, "2.5.0");
         assert!(
-            matches!(go_back(d, Tool::Deno).unwrap(), Settled::Switched(i) if i.version == "2.5.0")
+            matches!(go_back(d, Tool::Node).unwrap(), Settled::Switched(i) if i.version == "2.5.0")
         );
         assert_eq!(current_in(&root).unwrap().version, "2.5.0");
-        assert_eq!(read(d).of(Tool::Deno).skip.as_deref(), Some("2.6.0"));
+        assert_eq!(read(d).of(Tool::Node).skip.as_deref(), Some("2.6.0"));
         // Nothing older to go back to now.
-        assert!(go_back(d, Tool::Deno).is_err());
+        assert!(go_back(d, Tool::Node).is_err());
         // The newer one is still there to switch to again.
         assert_eq!(kept(&root, "2.6.0"), Some(two));
     }

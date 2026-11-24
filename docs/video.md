@@ -30,14 +30,16 @@ resumes, and uses your proxy settings:
 - **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
 - **Each processor gets its own build:** yt-dlp's for x64, ARM64 and 32-bit Windows and for Linux on ARM, and ffmpeg's for x64 and ARM64 Windows. No ffmpeg is built for 32-bit Windows that MDM can check, so there MDM offers none: choose your own in **Helpers...** (below), or download the qualities that come with their sound.
 
+You can install them ahead of time too: in **Helpers...**, a helper that isn't there yet says *Not installed yet*, and **Install yt-dlp**, **Install ffmpeg** or **Install gallery-dl** in its row downloads MDM's own copy, checked the same way, and keeps it up to date from then on. Where MDM has no copy for your system, the button is greyed out and the row says what to do instead.
+
 Both are kept in a `tools` folder in MDM's data folder. For YouTube, yt-dlp also needs a JavaScript runtime, which MDM can download too: see [A JavaScript runtime for YouTube](#javascript-runtime).
 
 ### Keeping them up to date {#helper-updates}
 
-Sites change all the time, and a newer yt-dlp is usually what makes a page that stopped working download again. So MDM keeps its own copies of yt-dlp, gallery-dl, ffmpeg and Deno up to date by itself:
+Sites change all the time, and a newer yt-dlp is usually what makes a page that stopped working download again. So MDM keeps its own copies of yt-dlp, gallery-dl, ffmpeg and Node.js up to date by itself:
 
-- **When:** a few seconds after MDM starts, then again while it runs: yt-dlp and gallery-dl at most every 6 hours, Deno once a day, ffmpeg once a week. MDM remembers when it last asked, so starting it many times doesn't ask again.
-- **How:** each new version is downloaded and checked exactly as the first install was (yt-dlp's and gallery-dl's signed checksum lists, ffmpeg's and Deno's published checksums), never an older one, and installed beside the one in use.
+- **When:** a few seconds after MDM starts, then again while it runs: yt-dlp and gallery-dl at most every 6 hours, Node.js once a day, ffmpeg once a week. MDM remembers when it last asked, so starting it many times doesn't ask again.
+- **How:** each new version is downloaded and checked exactly as the first install was (yt-dlp's, gallery-dl's and Node.js's signed checksum lists, ffmpeg's published checksums), never an older one, and installed beside the one in use.
 - **When it switches:** only while no download, look-up or other run is using that helper. A video downloading when the new yt-dlp arrives finishes with the one it started with; the new one is used from the moment the last download using it ends.
 - **The previous version stays**, so you can go back to it. Older ones are removed.
 - **A video that fails** with an error that usually means yt-dlp is out of date for the site (*Unable to extract*, *Unsupported URL*, YouTube's *Sign in to confirm you're not a bot*, *HTTP Error 403*, a failed signature or *n challenge*, *Requested format is not available*), or a gallery whose gallery-dl reports an unexpected error: MDM looks for a newer version at once, installs it if there is one, and tries that download again with it, once. Its log says so. If there is none, the error stands as before.
@@ -58,11 +60,15 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 
 ### A JavaScript runtime for YouTube {#javascript-runtime}
 
-YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: **Deno**, **Node.js** or **Bun**. Without one, a look-up is slow, the list is short (sometimes only the sound and a low quality) or it fails with *Requested format is not available*, and MDM says so: *YouTube needs a JavaScript runtime to list its video qualities*. Other sites don't need one.
+YouTube hides most of a video's qualities behind small puzzles that yt-dlp solves with a JavaScript runtime: **Node.js**, **Deno**, **QuickJS** or **Bun**. Without one, a look-up is slow, the list is short (sometimes only the sound and a low quality) or it fails with *Requested format is not available*, and MDM says so: *YouTube needs a JavaScript runtime to list its video qualities*. Other sites don't need one.
 
-The quickest way is MDM's own copy of Deno: click **Install Deno** beside that message, or, in **Helpers...**, **Use MDM's own copy** in the **JavaScript runtime (Deno)** row. MDM downloads Deno's official build for your system and processor (about 40 MB; 64-bit Windows, Linux and macOS, x64 and ARM64) from its GitHub releases with its own downloader, checks it against the SHA-256 checksum the release publishes before it uses it, keeps it in the `tools` folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's ([Keeping them up to date](#helper-updates)). The video is looked up again by itself once Deno is in.
+The quickest way is MDM's own copy of Node.js: click **Install Node.js** beside that message, or, in **Helpers...**, **Install Node.js** in the **JavaScript runtime (for YouTube)** row. The first start's helpers window offers it too, when your computer has no runtime. MDM downloads Node.js's newest long-term support (LTS) build for your system and processor from [nodejs.org](https://nodejs.org) with its own downloader (about 40 MB on Windows, 60 MB on Linux and macOS; Windows x64, ARM64 and 32-bit, Linux x64 and ARM64, macOS), checks the release's checksum list against the signing keys of Node.js's releasers and the download against that list before it uses it, keeps only the `node` program in the `tools` folder beside yt-dlp and ffmpeg, and from then on tells yt-dlp to use it. It keeps it up to date the way it keeps yt-dlp's ([Keeping them up to date](#helper-updates)), never with an older version. 32-bit Windows gets the newest LTS line Node.js still builds for it, 22, which Node.js supports until April 2027; after that MDM has no Node.js for 32-bit Windows, and a runtime of your own (**Use another program...**) is needed there. MDM never installs a Node.js older than the LTS line current when that MDM was made, whatever nodejs.org's list says. The video is looked up again by itself once Node.js is in.
 
-Already have Node.js or Deno? Then nothing needs downloading: Helpers says *Your system's, nothing to download* in that row, and yt-dlp uses it. MDM finds Deno, Node.js (also one installed with nvm), QuickJS and Bun by itself. If you'd rather install one yourself, either works; then look the video up again. If MDM still says so, the new program's folder isn't on the `PATH` MDM started with (Windows' installers add it for programs started after them): quit MDM (**Tasks → Exit**) and start it again.
+Already have one? Then nothing needs downloading: a runtime on your computer comes first. MDM finds Deno, Node.js (22 or newer, also one installed with nvm), QuickJS and Bun by itself, in the order yt-dlp prefers them, and passes over one too old for yt-dlp (Node.js 20, say) or a Node.js whose line has reached its end of life on nodejs.org's schedule (then MDM's own is used, which it keeps on a supported release). A supported Node.js of your computer's is used as it is: you or your package manager keep it up to date. Helpers says which one yt-dlp uses and where it is: *Node.js 24.11.0, your system's, nothing to download*. To use another one, a portable copy or one that isn't on the `PATH`, click **Use another program...** in that row and choose its program (`node.exe`, `deno.exe`, `qjs.exe`, `bun.exe`): MDM asks it for its version first and refuses one yt-dlp can't use. **Use MDM's own copy** goes back to the one MDM finds or downloads. (Choosing your own runtime was [YairDies](https://github.com/YairDies)' idea.)
+
+Earlier versions of MDM installed Deno. That copy keeps working until MDM's Node.js is in place (the next update check brings it, or **Use MDM's own copy**); then yt-dlp switches to Node.js and MDM removes its own Deno, once no download is using it. A Deno you installed yourself is never touched, nor MDM's own once you chose it with **Use another program...**. While MDM asks the runtimes on your computer for their versions, Helpers says *Looking for a JavaScript runtime on this computer...*.
+
+If you'd rather install one yourself, any of them works; then look the video up again. If MDM still says so, the new program's folder isn't on the `PATH` MDM started with (Windows' installers add it for programs started after them): quit MDM (**Tasks → Exit**) and start it again.
 
 - **Windows**: `winget install DenoLand.Deno`, or `winget install OpenJS.NodeJS.LTS`. The installers on [deno.com](https://deno.com) and [nodejs.org](https://nodejs.org) work too.
 - **Ubuntu and Debian**: `sudo apt install nodejs`
@@ -85,7 +91,7 @@ A distribution's yt-dlp can also be too old for YouTube: if the list stays short
    - **Audio only FLAC**: a lossless `.flac` file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.
 2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).
 3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title. A long title is shortened, at the end of a word, so that the files saved beside the video while it downloads fit the system's limit on a path's length; a name you type is kept as you typed it.
-4. Choose **Subtitles** if you want them (see below). **Embed chapters** is ticked: see [Chapters](#chapters).
+4. Choose **Subtitles** if you want them (see below). **Embed chapters** is ticked: see [Chapters](#chapters). To keep only a stretch of it, tick **Only a part**: see [Download only a part](#part).
 5. Click **Download Now**, or **Later** to add it to the list without starting.
 
 The video then downloads like any other file, with its own row in the list and its progress window.
@@ -151,13 +157,33 @@ Many videos are split into chapters on their page: YouTube's list under the play
 - They go into a video (MP4, MKV, WebM) and into the sound as the site has it (**Audio only, original**), not into an MP3, Opus or FLAC file.
 - The command line (`video-get`) puts them in too, whenever ffmpeg is there.
 
-With **Split into chapters** ticked beside **Embed chapters**, the video is also split into individual chapter files (`<filename> - <NN> - <chapter name>.<ext>`, or `<filename> - <NN>.<ext>` when untitled). The whole video is kept too.
+With **Split into chapters** ticked (beside **Embed chapters**, or under it in a long language), the video is also split into individual chapter files (`<filename> - <NN> - <chapter name>.<ext>`, or `<filename> - <NN>.<ext>` when untitled). The whole video is kept too.
 
 - It needs ffmpeg, and stays as you leave it for the next video.
 - Splitting uses stream copy without re-encoding, so it runs losslessly and near-instantly. Each cut lands on a keyframe, so a chapter can start a second or a few early (yt-dlp's `--force-keyframes-at-cuts` makes it exact, but re-encodes, so MDM does not turn it on by default).
 - A video without chapters or with a single chapter is saved as a single file without splitting.
+- A chapter's title is shortened to fit the system's limits on file names and paths; in a very deep folder a chapter is named by its number alone.
+- It isn't offered with **Only a part**: a part has no chapters.
 - The command line's `video-get` and `playlist-get` support it via `--split-chapters`.
 - Deleting the download along with its files cleans up its split chapter files too, while preserving unrelated files in the same folder.
+
+## Download only a part {#part}
+
+To save only a stretch of a video or of a sound (a scene, a song from a long mix, a few minutes of a podcast), tick **Only a part** on the **Part** row, under **Subtitles**, and type where it starts and where it ends.
+
+![The Part row of the video window: Only a part ticked, from 1:30 to 4:10, a quick cut, the part's size beside it](images/help/video-part.webp)
+*Only from 1:30 to 4:10, cut quickly; a part has no subtitles or chapters.*
+
+- **Times** are typed as `1:30` (a minute and a half), `1:02:03` (an hour, two minutes and three seconds) or in seconds (`90`). The boxes start at the whole video, from 0:00 to its end; **Up** and **Down** move a time by a second, **Page Up** and **Page Down** by ten. A box turns red while its time can't be (it isn't a time, the end comes before the start, it's past the video's end, or the part is the whole video), and **Download Now** says why.
+- **Quick cut, at keyframes**, the first choice: the picture and the sound are copied as they are, nothing is encoded again, so it's fast and loses nothing. A picture can only start cleanly at a keyframe, so the part starts at the last one before your start: a few seconds early at most, never late. A sound alone in an M4A starts where you say; in a WebM (Opus) at the last seek point before it, which can be ten seconds early.
+- **Exact cut, encoded again**: the part starts and ends where you said. ffmpeg encodes it again (H.264 and AAC in an MP4, VP9 and Opus in a WebM, the sound alone in its own format), which takes about as long as encoding that many minutes takes on your computer, and the picture may lose a little.
+- **The size** beside the times is an estimate: the part's share of the whole.
+- **File name** says the part: `My video (1m30s-4m10s).mp4`. A name you type is kept as you typed it.
+- **No subtitles and no chapters** go with a part: they'd be the whole video's, at the whole video's times. **Subtitles** and **Embed chapters** are greyed while **Only a part** is ticked.
+- It needs **ffmpeg**, which cuts the part, and a video whose length the site says (not a live stream). A playlist's videos are downloaded whole.
+- **From the browser**: the menu of the **Download video** button over a video has **Download a part from here...**. It opens this window with **Only a part** ticked and its start where the video is playing.
+
+How a part comes down: yt-dlp's ffmpeg finds the part in each stream by the stream's own index (an MP4's or a WebM's, an HLS stream's playlist) and reads only that part, never the whole file. What it reads comes in through MDM's own connections, in requests of a MB at most, several at once: a part comes about as fast as a whole video would (YouTube sends one long request at about the video's own pace), under your speed limits (a change applies at once), and through your proxy or network adapter. The progress window shows what has come against the part's estimated size. Paused and resumed, a part starts again from its beginning: ffmpeg can't go on from the middle of a cut. A stream sent another way (a DASH manifest, RTMP) is read by ffmpeg itself.
 
 ## Playlists and channels
 

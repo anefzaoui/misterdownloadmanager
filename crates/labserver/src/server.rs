@@ -59,7 +59,7 @@ use tokio::task::JoinHandle;
 
 use crate::content;
 use crate::faults::{CLEARANCE, Faults, challenge_page, every, has_cookie, parse_flag};
-use crate::{debrid, drive, mediafire, pages, rapidgator, streams};
+use crate::{debrid, drive, lulustream, mediafire, pages, rapidgator, streams};
 
 const CHUNK: u64 = 64 * 1024;
 
@@ -279,6 +279,8 @@ pub(crate) struct Shared {
     on_log: Option<LogSink>,
     /// The fake Drive's virus-scan pages' `uuid`s handed out (`drive`).
     pub(crate) drive_uuids: Mutex<HashSet<String>>,
+    /// The fake LuluStream's form posts, per video code (`lulustream`).
+    pub(crate) lulu_posts: Mutex<HashMap<String, u32>>,
     files: Option<std::path::PathBuf>,
     /// Over HTTPS: each connection's ClientHello, browser-like or not (`LogEntry::browser_tls`),
     /// by the client's address.
@@ -419,6 +421,7 @@ impl LabServer {
             log: Mutex::default(),
             on_log: cfg.on_log,
             drive_uuids: Mutex::default(),
+            lulu_posts: Mutex::default(),
             files: cfg.files,
             browser_tls: Mutex::default(),
             link_free: Mutex::new(Instant::now()),
@@ -590,6 +593,10 @@ impl LabServer {
                 post(crate::debrid_torrents::tb_control),
             )
             .route("/_debrid/torrents", get(crate::debrid_torrents::held))
+            .route(
+                "/_debrid/rd-selected/{id}",
+                get(crate::debrid_torrents::rd_selected),
+            )
             // RSS feeds for the app's RSS tests (#39, `feeds`).
             .route("/rss/shows.xml", get(crate::feeds::shows))
             .route("/rss/dir.xml", get(crate::feeds::dir))
@@ -700,13 +707,15 @@ impl Drop for LabServer {
 
 /// Every address the routes don't have, by its Host header: MediaFire's host names go to the fake
 /// MediaFire (`mediafire`), Rapidgator's to the fake Rapidgator (`rapidgator`), the rest to the
-/// fake Google Drive (`drive`, which answers 404 for any host but Google's).
+/// fake Google Drive (`drive`, which answers 404 for any host but Google's). LuluStream's go to
+/// the fake LuluStream (`lulustream`), with the request's body (its form's POST).
 async fn by_host(
     State(shared): State<Arc<Shared>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     method: Method,
     uri: Uri,
     headers: HeaderMap,
+    body: Bytes,
 ) -> Response {
     let host = header_str(&headers, header::HOST)
         .unwrap_or_default()
@@ -719,6 +728,10 @@ async fn by_host(
     if rapidgator::HOSTS.contains(&name) {
         let (name, port) = (name.to_owned(), port.to_owned());
         return rapidgator::handle(shared, peer, method, uri, headers, &name, &port).await;
+    }
+    if lulustream::HOSTS.contains(&name) {
+        let (name, port) = (name.to_owned(), port.to_owned());
+        return lulustream::handle(shared, peer, method, uri, headers, &body, &name, &port).await;
     }
     drive::handle(State(shared), ConnectInfo(peer), method, uri, headers).await
 }
@@ -741,6 +754,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     type=MIME      that Content-Type instead (none: no Content-Type at all)
     Expires= Signature= Key-Pair-Id= Policy=   ignored: a CloudFront signed address's own keys
     expires=UNIXMS 403 after that time (what /redirect?ttl_ms= adds)
+    from=UNIXMS    403 before that time (a YouTube stream before the ad played ahead of its
+                   video would end: yt-dlp's available_at, #1655)
     uses=N         403 once this path and query has served N requests (what /redirect?uses= adds,
                    with a link= of its own)
     lasts_ms=N     403 once N ms have passed since this link's first request: every address with
@@ -764,6 +779,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    instead of the waiting page: a one-time link asked a second time (#1460)
     html_chunked=1 with html=1 or html_after=N: the page chunked, without a Content-Length
     node=N        another server's copy of the same file: its own ETag and date
+    nodes=N        a CDN in front of N copies (as node=): request n gets copy (n-1) mod N
+    digest=1       x-oss-hash-crc64ecma on every answer: the file's version, the same on every
+                   copy (a stand-in value, not the bytes' CRC; etag_change_every changes it)
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     burst=SIZE     with a rate, a link: a response the client stopped reading catches up with
@@ -772,6 +790,9 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
                    connection alone takes all of it, n connections a share each
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
+    garble=SIZE    /files only: the first answer for a path that carries the byte at that
+                   offset sends 64 bytes from there inverted (a proxy that mangled a range);
+                   later answers send them right
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
     require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
     refuse_agent=TEXT                403 when the User-Agent contains TEXT
@@ -798,7 +819,8 @@ POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>
     the file, only for a POST whose form (urlencoded, multipart or text/plain) has FIELD=VALUE
     (default need=token=abc): 405 to other methods, 403 to a form without it;
     see_other=1: 303 to /gen/{size}/{name}?<the rest of the query> instead
-GET /files/{name}   a real file from --files DIR (Range too; 404 without --files)
+GET /files/{name}[?garble=SIZE]   a real file from --files DIR (Range too, its date as
+                    Last-Modified and If-Range; 404 without --files)
 GET /gh/api/*       a fake GitHub API, always refusing: 403, x-ratelimit-remaining: 0 (#1337)
 GET /gh/web/OWNER/REPO/releases/latest   302 to .../releases/tag/TAG (TAG: --files DIR/gh/OWNER/REPO/LATEST)
 GET /gh/web/OWNER/REPO/releases/download/TAG/FILE   302 to /gh/assets/OWNER/REPO/TAG/FILE (--files
@@ -930,6 +952,16 @@ RAPIDGATOR  a fake one for the engine's tests, on Rapidgator's host names (resol
                             302 to it; without, a free account's page (no link)
   s118.rapidgator.net       /download/<expiry unix ms>-<n>-ID (file params and faults as /gen):
                             the file until then, 404 Not Found after
+
+LULUSTREAM  a fake one for the engine's tests, on LuluStream's host names (resolve lplaygo.com,
+    lulustream.com and s1.lulu-files.test to this server); hand-made pages (src/lulustream.rs)
+  codes: <lab|fla|exp|cap|bad><size>t<TTL s> padded with z to 12, e.g. lab2mt600zzz (fla: its
+    form is taken on its third post only; exp: only its first post's link lasts TTL s; cap:
+    it wants a captcha; bad: it never takes the post)
+  lplaygo.com, lulustream.com  /CODE, /e/CODE: a player; /d/CODE: links to /d/CODE_n and
+                            /d/CODE_h on lulustream.com; /d/CODE_MODE: a form (op, id, mode, hash)
+                            which, posted back, answers with the file's link lasting TTL s
+  s1.lulu-files.test        /v/01/CODE_MODE/NAME?t=<expiry unix ms>: the file until then, 403 after
 
 HTTPS  --tls serves all of it over HTTPS as localhost, its certificate from a test CA made at start
   (written next to the log, or printed); --tls-cert picks a faulty one (a connection's fault,
@@ -1186,11 +1218,16 @@ async fn files(
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     method: Method,
     Path(name): Path<String>,
+    RawQuery(query): RawQuery,
     headers: HeaderMap,
 ) -> Response {
     let path = shared.file_path(&name);
     let logged = format!("/files/{name}");
-    serve_file(&shared, peer, &method, &headers, logged, path, false).await
+    // Its own faults: `garble` only (#1661). Dated as a file server dates its files: a resume
+    // asks with `If-Range`, and a file changed since is sent whole.
+    let asked = Faults::parse(query.as_deref().unwrap_or("")).unwrap_or_default();
+    let garble = shared.faults().overridden_by(&asked).garble;
+    serve_file(&shared, peer, &method, &headers, logged, path, true, garble).await
 }
 
 impl Shared {
@@ -1205,7 +1242,12 @@ impl Shared {
 }
 
 /// The file at `path` (None: 404), whole or one range of it, logged as `logged`; with
-/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it).
+/// `last_modified`, its modification time in a `Last-Modified` header (as a file host sends it),
+/// and a range asked with an `If-Range` that isn't that date answered with the whole file (RFC
+/// 9110 §13.1.5: the file changed since).
+/// `garble` (`Faults::garble`): the first answer that carries that byte sends
+/// [`crate::faults::GARBLED`] bytes from there inverted.
+#[allow(clippy::too_many_arguments)]
 pub(crate) async fn serve_file(
     shared: &Shared,
     peer: SocketAddr,
@@ -1214,7 +1256,9 @@ pub(crate) async fn serve_file(
     logged: String,
     path: Option<std::path::PathBuf>,
     last_modified: bool,
+    garble: Option<u64>,
 ) -> Response {
+    let garbled = format!("garble:{logged}");
     let entry = shared.begin(peer, method, logged, None, headers, &[]);
     let data = match &path {
         Some(path) => tokio::fs::read(path).await.ok(),
@@ -1233,9 +1277,13 @@ pub(crate) async fn serve_file(
         _ => None,
     };
     let size = data.len() as u64;
+    let changed = modified
+        .as_ref()
+        .is_some_and(|m| entry.if_range.as_ref().is_some_and(|i| i != m));
     let range = entry
         .range
         .as_deref()
+        .filter(|_| !changed)
         .and_then(|r| http_range_header::parse_range_header(r).ok())
         .and_then(|r| r.validate(size).ok())
         .filter(|v| v.len() == 1)
@@ -1262,9 +1310,23 @@ pub(crate) async fn serve_file(
     if *method == Method::HEAD {
         return builder.body(Body::empty()).unwrap();
     }
-    builder
-        .body(Body::from(data[start as usize..end as usize].to_vec()))
-        .unwrap()
+    let mut body = data[start as usize..end as usize].to_vec();
+    if let Some(at) = garble.filter(|at| (start..end).contains(at)) {
+        let key = format!("{garbled}@{at}");
+        let first = {
+            let mut served = shared.link_uses.lock().unwrap();
+            let n = served.entry(key).or_insert(0);
+            *n += 1;
+            *n == 1
+        };
+        if first {
+            let to = (at + crate::faults::GARBLED).min(end);
+            for b in &mut body[(at - start) as usize..(to - start) as usize] {
+                *b = !*b;
+            }
+        }
+    }
+    builder.body(Body::from(body)).unwrap()
 }
 
 /// `POST /form/{size}[/{name}]?need=FIELD=VALUE&see_other=1&<as /gen>`: the file, only for a
@@ -1395,6 +1457,8 @@ struct FileQuery {
     seed: u64,
     /// A signed link's end, unix ms.
     expires: Option<u64>,
+    /// When a link starts being served, unix ms: 403 before it (#1655).
+    from: Option<u64>,
     /// The requests a signed link serves (`link` tells the links apart).
     uses: Option<u64>,
     /// How long a signed link lasts from its first request, ms (`link` makes its addresses one).
@@ -1509,6 +1573,10 @@ pub(crate) async fn serve(
     if used_up || lapsed || q.expires.is_some_and(|t| unix_ms() > t) {
         shared.record(entry, 403, "expired");
         return (StatusCode::FORBIDDEN, "link expired\n").into_response();
+    }
+    if q.from.is_some_and(|t| unix_ms() < t) {
+        shared.record(entry, 403, "too early");
+        return StatusCode::FORBIDDEN.into_response();
     }
     let f = shared.faults().overridden_by(&q.faults);
 
@@ -1656,8 +1724,12 @@ pub(crate) async fn serve(
         Some("none") => None,
         _ => Some(format!("\"{seed:x}-{size:x}-{generation}\"")),
     };
-    // Another server's copy (`node`): its own ETag and date.
-    let node = f.node.unwrap_or(0);
+    // Another server's copy (`node`): its own ETag and date. Behind a CDN of several copies
+    // (`nodes`), the copy is the node's this request landed on.
+    let node = match f.nodes.filter(|k| *k > 1) {
+        Some(k) => (n - 1) % k,
+        None => f.node.unwrap_or(0),
+    };
     let etag = etag.map(|e| match node {
         0 => e,
         n => format!("{}-n{n}\"", e.trim_end_matches('"')),
@@ -1720,6 +1792,12 @@ pub(crate) async fn serve(
     }
     if let Some(etag) = &etag {
         builder = builder.header(header::ETAG, etag);
+    }
+    // The whole file's digest, whatever the range and the copy: the file's version (a stand-in
+    // for its CRC-64), not a hash of the bytes.
+    if f.digest == Some(true) {
+        let crc = seed.rotate_left(17) ^ size.wrapping_mul(0x9E37_79B9_7F4A_7C15) ^ generation;
+        builder = builder.header("x-oss-hash-crc64ecma", crc.to_string());
     }
     if status == StatusCode::PARTIAL_CONTENT {
         builder = builder.header(
@@ -1928,6 +2006,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
     let mut out = FileQuery {
         seed: 0,
         expires: None,
+        from: None,
         uses: None,
         lasts_ms: None,
         link: None,
@@ -1954,6 +2033,7 @@ fn split_query(q: &str) -> Result<FileQuery, String> {
             "expires" => {
                 out.expires = Some(v.parse().map_err(|_| format!("invalid expires `{v}`\n"))?)
             }
+            "from" => out.from = Some(v.parse().map_err(|_| format!("invalid from `{v}`\n"))?),
             "uses" => out.uses = Some(v.parse().map_err(|_| format!("invalid uses `{v}`\n"))?),
             "lasts_ms" => {
                 out.lasts_ms = Some(v.parse().map_err(|_| format!("invalid lasts_ms `{v}`\n"))?)

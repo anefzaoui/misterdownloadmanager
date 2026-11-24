@@ -47,10 +47,7 @@ pub fn info(i: &Item, remote: bool, exists: Option<bool>) -> DownloadInfo {
         // Its last event is its completion (or what came after: a rename, a check).
         finished: i.log.last().map(|(at, _)| *at).filter(|_| complete),
         kind: kind(i).map(str::to_owned),
-        redownload: i.live.is_none()
-            && i.torrent.is_none()
-            && i.video.is_none()
-            && i.remote.is_none(),
+        redownload: i.can_redownload(),
         icon: None,
     }
 }

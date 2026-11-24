@@ -254,10 +254,13 @@ pub fn banner(
     let bold = tahoma_title();
     let shown = ellipsize(p, &bold, headline, w - 18.0 - 80.0);
     let drawn = text_font(p, bold, o.x + 80.0, o.y + 36.0, &shown, TEXT());
+    // The banner's words reach a screen reader too: they were only painted before (#1407).
+    readable(ui, drawn, (key, "headline"), headline);
     if shown != headline {
         full_on_hover(ui, drawn, (key, "headline"), headline);
     }
-    let lines = paragraph(
+    let lines = readable_paragraph(
+        ui,
         p,
         o.x + 80.0,
         o.y + 57.0,
@@ -265,6 +268,7 @@ pub fn banner(
         MUTED(),
         o.x + w - 18.0,
         14.0,
+        (key, "subline"),
     );
     // As planned, two lines: the second one's baseline at 71, then 13 px of descent and margin.
     let need = 57.0 + 14.0 * (lines.max(2) as f32 - 1.0) + 13.0;
@@ -300,7 +304,7 @@ fn caption_key(ctx: &egui::Context) -> egui::Id {
 
 fn note_caption(p: &Painter, s: &str, drawn: Rect) {
     let s = s.trim();
-    if s.is_empty() || s.chars().count() > 80 {
+    if s.is_empty() || s.chars().count() > 140 {
         return;
     }
     let ctx = p.ctx();
@@ -958,6 +962,12 @@ fn data_left(x: f32, right: f32) -> f32 {
 /// `s` broken into the lines it shows in `room` px: at its own line breaks, and where a line is
 /// too long, at spaces, or between any two characters in scripts written without spaces.
 fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
+    wrap_lines_font(p, tahoma(), s, room)
+}
+
+/// [`wrap_lines`] in any font (a bold name on several lines: the preview pane's).
+pub fn wrap_lines_font(p: &Painter, font: FontId, s: &str, room: f32) -> Vec<String> {
+    let text_width = |p: &Painter, t: &str| text_width_font(p, font.clone(), t);
     let mut lines: Vec<String> = Vec::new();
     for given in s.split('\n') {
         // A Windows line end (a report written there) breaks the line too.
@@ -1015,6 +1025,170 @@ fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
     lines
 }
 
+/// A file's name on up to `max` lines of `room` px (`width` measures a text): broken at its own
+/// separators (after a space, `_`, `-`, `.`, `,`, `+`, `~`; before an opening bracket), its
+/// extension never split and kept on the last line with the piece before it; a part with no
+/// separator wider than the room broken between its characters (a letter and its marks together).
+/// Longer than `max` lines: the last one is the name's end, cut at its start with "..." (so the
+/// extension still shows).
+pub fn name_lines(name: &str, room: f32, max: usize, width: impl Fn(&str) -> f32) -> Vec<String> {
+    let max = max.max(1);
+    if width(name) <= room {
+        return vec![name.to_owned()];
+    }
+    // The extension: after the last dot, short, after a stem of its own.
+    let (stem, ext) = match name.rfind('.') {
+        Some(at) if at > 0 && name.len() - at <= 17 && !name[at + 1..].contains(' ') => {
+            name.split_at(at)
+        }
+        _ => (name, ""),
+    };
+    // The stem in pieces, each ending at a separator.
+    let mut pieces: Vec<String> = Vec::new();
+    let mut cur = String::new();
+    for g in stem.graphemes(true) {
+        if matches!(g, "(" | "[" | "{") && !cur.is_empty() {
+            pieces.push(std::mem::take(&mut cur));
+        }
+        cur.push_str(g);
+        if matches!(g, " " | "_" | "-" | "." | "," | "+" | "~" | ")" | "]" | "}") {
+            pieces.push(std::mem::take(&mut cur));
+        }
+    }
+    if !cur.is_empty() {
+        pieces.push(cur);
+    }
+    // A piece wider than the room: cut between its characters.
+    let mut parts: Vec<String> = Vec::new();
+    for piece in pieces {
+        if width(&piece) <= room {
+            parts.push(piece);
+            continue;
+        }
+        let mut chunk = String::new();
+        for g in piece.graphemes(true) {
+            if !chunk.is_empty() && width(&format!("{chunk}{g}")) > room {
+                parts.push(std::mem::take(&mut chunk));
+            }
+            chunk.push_str(g);
+        }
+        if !chunk.is_empty() {
+            parts.push(chunk);
+        }
+    }
+    // The extension goes with the piece before it where they fit together, so it never ends up
+    // alone on a line of its own ("...10s_1MB" / ".mp4").
+    if !ext.is_empty() {
+        match parts.last_mut() {
+            Some(last) if width(&format!("{last}{ext}")) <= room => last.push_str(ext),
+            _ => parts.push(ext.to_owned()),
+        }
+    }
+    let mut lines: Vec<String> = Vec::new();
+    let mut line = String::new();
+    for part in parts {
+        if line.is_empty() || width(&format!("{line}{part}")) <= room {
+            line.push_str(&part);
+        } else {
+            lines.push(std::mem::take(&mut line));
+            line = part;
+        }
+    }
+    lines.push(line);
+    for l in &mut lines {
+        // A space a line ends on isn't seen.
+        let trimmed = l.trim_end_matches(' ').len();
+        l.truncate(trimmed.max(1).min(l.len()));
+    }
+    if lines.len() > max {
+        let rest: String = lines.split_off(max - 1).concat();
+        // The rest's end that fits after "...": the extension stays in sight.
+        let gs: Vec<&str> = rest.graphemes(true).collect();
+        let mut k = gs.len();
+        while k > 0 && width(&format!("...{}", gs[k - 1..].concat())) <= room {
+            k -= 1;
+        }
+        lines.push(format!("...{}", gs[k..].concat()));
+    }
+    lines
+}
+
+/// [`name_lines`] measured in `font`.
+pub fn name_lines_in(p: &Painter, font: FontId, name: &str, room: f32, max: usize) -> Vec<String> {
+    name_lines(name, room, max, |s| text_width_font(p, font.clone(), s))
+}
+
+#[cfg(test)]
+mod name_lines_tests {
+    use super::name_lines;
+
+    /// One unit per character: a room of 10 holds ten.
+    fn lines(name: &str, room: f32, max: usize) -> Vec<String> {
+        name_lines(name, room, max, |s| s.chars().count() as f32)
+    }
+
+    #[test]
+    fn a_name_breaks_at_its_separators_and_keeps_its_extension_whole() {
+        // #1368's: "Big_Buck_Bunny_360_10s_1MB.m" / "p4" before.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 20.0, 3),
+            ["Big_Buck_Bunny_360_", "10s_1MB.mp4"]
+        );
+        assert_eq!(lines("short.mp4", 20.0, 3), ["short.mp4"]);
+        // Not the extension alone on the last line: the piece before it goes down with it.
+        assert_eq!(
+            lines("Big_Buck_Bunny_360_10s_1MB.mp4", 26.0, 3),
+            ["Big_Buck_Bunny_360_10s_", "1MB.mp4"]
+        );
+        assert_eq!(
+            lines("with-a-rather-long-name.iso.torrent", 26.0, 3),
+            ["with-a-rather-long-name.", "iso.torrent"]
+        );
+        // The extension goes down whole rather than split.
+        assert_eq!(
+            lines("abcdefghij.torrent", 12.0, 3),
+            ["abcdefghij", ".torrent"]
+        );
+        // Spaces and dashes; the space a line ends on dropped.
+        assert_eq!(
+            lines("My holiday photos - final.zip", 12.0, 3),
+            ["My holiday", "photos -", "final.zip"]
+        );
+        // A bracket starts its line.
+        assert_eq!(
+            lines("Report(2026).pdf", 8.0, 3),
+            ["Report", "(2026)", ".pdf"]
+        );
+    }
+
+    #[test]
+    fn a_name_without_separators_breaks_between_letters_not_in_its_extension() {
+        let l = lines("abcdefghijklmnopqrstuvwxyz.torrent", 10.0, 5);
+        assert_eq!(l, ["abcdefghij", "klmnopqrst", "uvwxyz", ".torrent"]);
+        assert!(l.iter().all(|x| x.chars().count() <= 10));
+    }
+
+    #[test]
+    fn too_many_lines_end_with_the_names_end() {
+        let l = lines("a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p.mp4", 9.0, 3);
+        assert_eq!(l.len(), 3);
+        assert_eq!(l[2], "..._p.mp4");
+        assert_eq!(l[0], "a_b_c_d_");
+    }
+
+    #[test]
+    fn a_name_in_another_script_keeps_its_letters_and_marks() {
+        // Arabic letters with their marks, no separator: broken between whole characters.
+        let name = "مِلَفٌّطَوِيلٌجِدًّا.pdf";
+        let l = name_lines(name, 6.0, 4, |s| {
+            use unicode_segmentation::UnicodeSegmentation;
+            s.graphemes(true).count() as f32
+        });
+        assert_eq!(l.concat(), name);
+        assert_eq!(l.last().map(String::as_str), Some(".pdf"));
+    }
+}
+
 /// Where the text before a line's first input box goes in a [`sentence`].
 #[derive(Clone, Copy, Debug)]
 pub enum Lead {
@@ -1070,6 +1244,96 @@ pub fn sentence_pieces<'a>(template: &'a str, slots: &[&str]) -> Vec<Vec<Piece<'
             out
         })
         .collect()
+}
+
+/// Each input box's name for screen readers (#1407): the words around it in the translated
+/// sentence, in the sentence's own order — "Download {files} files at the same time" names
+/// its box "Download files at the same time", so a reader says what a box's number is,
+/// whatever language the sentence is translated into (a box first on its line is named by the
+/// words after it, as the Japanese catalog runs it). Where a line holds two boxes ("from
+/// {from} to {to}", #1662), the words between them name the box after them: the first is
+/// "from", the second "to" (a first box with no words before it keeps the ones after it). A box
+/// with no words around it takes the sentence's own words, its placeholders dropped: a
+/// slot's id is code, not a language. Any leftover `{...}` (a placeholder the caller didn't
+/// name a slot) and the `&` of a keyboard letter drop out of a name, as they do out of a
+/// caption ([`caption_for`]).
+pub fn sentence_names(template: &str, slots: &[&str]) -> Vec<String> {
+    let rows = sentence_pieces(template, slots);
+    // The sentence's own words, placeholders dropped: a box alone in a translation still
+    // reads in its language.
+    let sentence = rows
+        .iter()
+        .flatten()
+        .filter_map(|p| match *p {
+            Piece::Text(s) => {
+                let words = name_words(s);
+                (!words.is_empty()).then_some(words)
+            }
+            Piece::Slot(_) => None,
+        })
+        .collect::<Vec<_>>()
+        .join(" ");
+    slots
+        .iter()
+        .map(|slot| {
+            for row in &rows {
+                // The words before the box, then the ones after it, up to another box.
+                let mut before: Vec<String> = Vec::new();
+                let mut after: Vec<String> = Vec::new();
+                let (mut seen, mut past) = (false, false);
+                for piece in row.iter().copied() {
+                    match piece {
+                        Piece::Text(s) if !past => {
+                            let words = name_words(s);
+                            if !words.is_empty() {
+                                if seen {
+                                    after.push(words);
+                                } else {
+                                    before.push(words);
+                                }
+                            }
+                        }
+                        Piece::Slot(s) if s == *slot => seen = true,
+                        Piece::Slot(_) if seen && !past => {
+                            past = true;
+                            // The words up to the next box are that box's own.
+                            if !before.is_empty() {
+                                after.clear();
+                            }
+                        }
+                        Piece::Slot(_) => before.clear(),
+                        _ => {}
+                    }
+                }
+                if seen {
+                    before.extend(after);
+                    if !before.is_empty() {
+                        return before.join(" ");
+                    }
+                    break;
+                }
+            }
+            sentence.clone()
+        })
+        .collect()
+}
+
+/// A text piece as part of a name: any leftover `{...}` (a placeholder the caller didn't
+/// name a slot) and the `&` of a keyboard letter drop out, and with them the spaces they
+/// leave behind.
+fn name_words(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    let mut brace = false;
+    for c in s.chars() {
+        match c {
+            '{' => brace = true,
+            '}' => brace = false,
+            '&' => {}
+            _ if !brace => out.push(c),
+            _ => {}
+        }
+    }
+    out.split_whitespace().collect::<Vec<_>>().join(" ")
 }
 
 /// Where [`sentence`] puts things: (x, baseline, text) for each text piece, and each slot's
@@ -1258,6 +1522,8 @@ impl RowList {
 pub struct RowEvents {
     /// The selection moved to this row (a click, the keys).
     pub picked: Option<usize>,
+    /// A left click on this row (even the one already selected).
+    pub clicked: Option<usize>,
     pub double_clicked: Option<usize>,
     /// Enter on the selected row (not taken: [`take_key`] it to keep it from the dialog).
     pub entered: Option<usize>,
@@ -1554,6 +1820,9 @@ pub fn row_list(
                 // the next mouse move: a screen reader's click moves no mouse.
                 ui.ctx().request_repaint();
             }
+        }
+        if r.clicked() {
+            ev.clicked = Some(i);
         }
         if r.double_clicked() {
             ev.double_clicked = Some(i);
@@ -3796,6 +4065,58 @@ pub fn number_in(value: &str, min: u64, max: u64) -> u64 {
     value.parse::<u64>().unwrap_or(min).clamp(min, max)
 }
 
+/// A time typed in a box (a video's part, #1662): `h:mm:ss`, `m:ss` or seconds
+/// ([`mdm_tools::part::parse_time`]), digits and colons only; Up / Down step it by a second,
+/// Page Up / Down by ten, within `0..=max` (the video's length, when known). Left, a time it can
+/// read is written as the window shows times (`hours`: `0:01:30` beside a video of an hour or
+/// more) and brought within `max`. `ok`: the caller's word on it (it may be fine alone and wrong
+/// beside another box, an end before the start): its frame is red while it isn't, as a number
+/// box's out of range.
+pub fn time_field(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &mut String,
+    max: Option<u32>,
+    hours: bool,
+    enabled: bool,
+    ok: bool,
+) -> Response {
+    edit_frame(ui.painter(), rc, enabled);
+    let resp = field_text(ui, rc, value, enabled);
+    value.retain(|c| c.is_ascii_digit() || c == ':');
+    value.truncate(10);
+    let max = max.unwrap_or(u32::MAX);
+    if resp.has_focus() {
+        keep_keys(ui, &resp, false, true, false);
+        let step: i64 = if take_key(ui, egui::Key::ArrowUp) {
+            1
+        } else if take_key(ui, egui::Key::ArrowDown) {
+            -1
+        } else if take_key(ui, egui::Key::PageUp) {
+            10
+        } else if take_key(ui, egui::Key::PageDown) {
+            -10
+        } else {
+            0
+        };
+        if step != 0 {
+            let now = i64::from(mdm_tools::part::parse_time(value).unwrap_or(0));
+            let next = (now + step).clamp(0, i64::from(max)) as u32;
+            *value = mdm_tools::part::clock(next, hours);
+        }
+    }
+    if resp.lost_focus()
+        && let Some(t) = mdm_tools::part::parse_time(value)
+    {
+        *value = mdm_tools::part::clock(t.min(max), hours);
+    }
+    if enabled && !ok {
+        error_frame(ui.painter(), rc);
+    }
+    edit_focus_line(ui, &resp, rc);
+    resp
+}
+
 /// [`edit_light`] on a surface `parent` (a disabled edit shows it: `#f9f9f9` on a tab page).
 pub fn edit_light_on(
     ui: &mut Ui,
@@ -4540,8 +4861,9 @@ pub fn checkbox_light_until(
     } else {
         LIGHT_DISABLED()
     };
-    text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
+    let drawn = text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
+        note_caption(&p, caption, drawn);
         resp.on_hover_text(caption)
     } else {
         resp
@@ -5033,8 +5355,9 @@ pub fn radio_light_until(
     } else {
         LIGHT_DISABLED()
     };
-    text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
+    let drawn = text(&p, english.x + 16.0, glyph.y + 10.0, &shown, color);
     if cut {
+        note_caption(&p, caption, drawn);
         resp.on_hover_text(caption)
     } else {
         resp
@@ -5079,6 +5402,43 @@ pub fn readable(ui: &Ui, rc: Rect, salt: impl std::hash::Hash + std::fmt::Debug,
     let resp = ui.interact(rc, widget_id(ui, ("readable", salt)), Sense::hover());
     let text = text.to_owned();
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Label, true, &text));
+}
+
+/// The window's own node in the accessibility tree carries the window's title: egui leaves the
+/// root Window node unnamed, so a screen reader met `[frame] ''` where it looks for the window's
+/// name (#1407). The title is passed in, not read back from the OS window — on X11 winit's
+/// `Window::title()` is a stub that returns `""`. Call once a frame on each window's root ui.
+pub fn name_window(ui: &Ui, title: &str) {
+    if title.is_empty() {
+        return;
+    }
+    let resp = ui.interact(ui.max_rect(), egui::accesskit_root_id(), Sense::hover());
+    let title = title.to_owned();
+    resp.widget_info(move || egui::WidgetInfo::labeled(egui::Role::Window, true, &title));
+}
+
+/// A [`paragraph`] a screen reader can read too: its lines painted, then a [`readable`] Label
+/// node over them, for text that was only painted (#1407). Returns the line count, like
+/// [`paragraph`].
+#[allow(clippy::too_many_arguments)]
+pub fn readable_paragraph(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> usize {
+    let lines = paragraph(p, x, baseline, s, color, right, line_h);
+    let rc = rect(Rect::from_min_max(
+        pos2(x, baseline - 12.0),
+        pos2(right, baseline + line_h * (lines as f32 - 1.0) + 4.0),
+    ));
+    readable(ui, rc, salt, s);
+    lines
 }
 
 pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on: Option<bool>) {
@@ -5152,6 +5512,61 @@ pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: boo
         info.current_text_value = Some(value.clone());
         info
     });
+}
+
+/// A download's progress as a progress bar of its own (#1190, #1406): UI Automation reads it
+/// through the RangeValue pattern, so a reader's own progress reporting — its beeps and
+/// percentages — follows it without anyone moving the focus.
+///
+/// An AccessKit node of its own rather than [`expose`]: egui's `WidgetInfo` carries a value but no
+/// range (`Response::widget_info` sets the numeric value alone), and what a reader follows is a
+/// value inside a range, 0–100 here. Unnamed on purpose: a name is read in place of the value.
+/// `frac` is the download's own fraction, 0..=1.
+pub fn expose_progress(ui: &Ui, rc: Rect, id: egui::Id, frac: f64) {
+    ui.interact(rc, id, Sense::hover());
+    ui.ctx().accesskit_node_builder(id, |n| {
+        n.set_role(egui::Role::ProgressIndicator);
+        // Its rectangle, as egui gives one to every control it makes a node of (response.rs,
+        // fill_accesskit_node_common): without it UI Automation reports the node without any
+        // bounds, so a reader's review keys have nowhere on the bar to land — only its value,
+        // through the RangeValue pattern, would reach them.
+        n.set_bounds(egui::accesskit::Rect {
+            x0: f64::from(rc.min.x),
+            y0: f64::from(rc.min.y),
+            x1: f64::from(rc.max.x),
+            y1: f64::from(rc.max.y),
+        });
+        n.set_min_numeric_value(0.0);
+        n.set_max_numeric_value(100.0);
+        n.set_numeric_value(progress_value(frac));
+    });
+}
+
+/// [`expose_progress`]'s value as UI Automation reads it, 0–100: a figure that outran its own
+/// size (a rounded-up byte count, a file that grew under it) stays inside the range, since one
+/// outside it is dropped by the reader rather than clamped by it.
+fn progress_value(frac: f64) -> f64 {
+    frac.clamp(0.0, 1.0) * 100.0
+}
+
+#[cfg(test)]
+mod progress_value_tests {
+    use super::progress_value;
+
+    #[test]
+    fn a_fraction_becomes_a_percentage() {
+        assert_eq!(progress_value(0.0), 0.0);
+        assert_eq!(progress_value(0.25), 25.0);
+        assert_eq!(progress_value(1.0), 100.0);
+        // 41.3 % through, as the "Downloaded" row says it.
+        assert!((progress_value(0.413) - 41.3).abs() < 1e-9);
+    }
+
+    #[test]
+    fn a_figure_outside_the_fraction_stays_in_the_range() {
+        assert_eq!(progress_value(-0.03), 0.0);
+        assert_eq!(progress_value(1.04), 100.0);
+    }
 }
 
 /// The click of a control that opens a popup, except the one ending the press that just closed
@@ -6288,6 +6703,23 @@ pub fn to_tray_button(ui: &mut Ui, rc: Rect, id: &str, tip: &str) -> Response {
     resp
 }
 
+/// The flat icon button with a × drawn in the text ink: closes a borderless window of ours that
+/// has no title bar (the tray icon's panel, #1365). `tip` is English, translated here.
+pub fn close_button(ui: &mut Ui, rc: Rect, id: &str, tip: &str) -> Response {
+    let resp = icon_button_light(ui, rc, id, true, tip);
+    let c = rc.center().round();
+    let ink = Stroke::new(1.0, LIGHT_TEXT());
+    // Close's cross, 8 px across, its strokes through pixel centres.
+    let (a, b) = (
+        c + vec2(-4.0, -4.0) + vec2(0.5, 0.5),
+        c + vec2(4.0, 4.0) + vec2(0.5, 0.5),
+    );
+    ui.painter().line_segment([a, b], ink);
+    ui.painter()
+        .line_segment([pos2(a.x, b.y), pos2(b.x, a.y)], ink);
+    resp
+}
+
 /// Our "minimize it away to the notification area" glyph (#63; our own drawing): Minimize's dash
 /// at its height, shortened to 6 of its 10 px on the start side, and from its end a 45° arrow
 /// (shaft about 5.7 px, open head) down towards the screen's corner where the tray is. No
@@ -6471,11 +6903,42 @@ pub mod caption {
 
     /// An era's bar, shaded from its top: XP's light edge on a deep colour, Windows 7's glassy
     /// halves, Mac OS X's light grey falling to the bar's colour.
-    fn bar_stops(era: Shine, bar: Color32, g: Color32) -> Vec<(f32, Color32)> {
-        use crate::derive::{mix, shade};
+    fn bar_stops(era: Shine, bar: Color32, g: Color32, active: bool) -> Vec<(f32, Color32)> {
+        use crate::derive::{mix, shade, shade_chroma};
         match era {
+            // Windows XP's active bar, row by row (#1612; measured from XP's own screens, in
+            // the bar's 32 rows at 100 %): a light band under the window's top edge, falling
+            // back to the bar's colour by the seventh row, then lighter and more vivid again
+            // toward the bottom and a dark bottom edge. Each row's colour comes from the bar's
+            // own (on Luna's #0054e3: band #3d95ff, lighter to #0069ff, bottom #0041ce), so dark
+            // Luna's bar is shaded the same way. XP's top row, a rim of about the bar's colour,
+            // is the window's edge: Windows 11 draws its own one-pixel border over that row of
+            // a dialog, and the main window's sizing strip above its bar takes the bar's first
+            // colour, so the band is first, as XP's light top edge.
+            Shine::Luna if active => {
+                let top = |row: f32| (row + 0.5) / CAPTION_H;
+                let end = |row: f32| 1.0 - (row + 0.5) / CAPTION_H;
+                let v = |dl: f32, k: f32| shade_chroma(bar, dl, k);
+                vec![
+                    (top(1.0), v(0.204, 1.11)),
+                    (top(2.0), v(0.204, 1.24)),
+                    (top(3.0), v(0.12, 1.23)),
+                    (top(4.0), v(0.031, 1.04)),
+                    (top(5.0), v(0.014, 1.02)),
+                    (top(7.0), bar),
+                    (end(18.0), bar),
+                    (end(12.0), v(0.017, 1.04)),
+                    (end(8.0), v(0.041, 1.07)),
+                    (end(6.0), v(0.084, 1.17)),
+                    (end(4.0), v(0.084, 1.17)),
+                    (end(3.0), v(0.069, 1.14)),
+                    (end(2.0), v(0.043, 1.08)),
+                    (end(1.0), v(-0.015, 1.04)),
+                    (end(0.0), v(-0.057, 0.99)),
+                ]
+            }
             // A bright rim along the top, the bar's colour, lighter again toward the bottom,
-            // then a dark bottom edge.
+            // then a dark bottom edge (the inactive bar, as #1628 set it).
             Shine::Luna => vec![
                 (0.0, shade(bar, 0.1)),
                 (0.06, shade(bar, 0.13)),
@@ -6605,6 +7068,75 @@ pub mod caption {
                 CaptionButton::ToTray => to_tray_glyph_sized(p, c, s, rtl(), size),
             }
         }
+
+        /// Windows XP's own glyph (Luna, #1612) on a 21-pixel tile whose edge's top-left pixel
+        /// is `at`, as XP's pixels sit on it: Minimize a short thick bar low and to the left,
+        /// Maximize a box with a thick top, Restore two of them, Close a thick X; all whole
+        /// pixels, so crisp (rounded to the screen's at other scales). False for our own button,
+        /// which keeps [`Self::glyph`].
+        fn xp_glyph(self, ui: &Ui, p: &Painter, at: Pos2, ink: Color32, maximized: bool) -> bool {
+            use egui::emath::GuiRounding;
+            // (left, top, right, bottom) in the tile's pixels, right and bottom excluded.
+            type Spans = &'static [(u8, u8, u8, u8)];
+            const MINIMIZE: Spans = &[(5, 13, 12, 16)];
+            const MAXIMIZE: Spans = &[
+                (5, 5, 16, 8),
+                (5, 8, 6, 15),
+                (15, 8, 16, 15),
+                (5, 15, 16, 16),
+            ];
+            // The window behind (its thick top, its right side) and the one in front.
+            const RESTORE: Spans = &[
+                (8, 5, 15, 7),
+                (14, 7, 15, 12),
+                (13, 11, 14, 12),
+                (5, 8, 12, 10),
+                (5, 10, 6, 14),
+                (11, 10, 12, 14),
+                (5, 14, 12, 15),
+            ];
+            const CLOSE: Spans = &[
+                (6, 5, 7, 6),
+                (14, 5, 15, 6),
+                (5, 6, 8, 7),
+                (13, 6, 16, 7),
+                (6, 7, 9, 8),
+                (12, 7, 15, 8),
+                (7, 8, 10, 9),
+                (11, 8, 14, 9),
+                (8, 9, 13, 10),
+                (9, 10, 12, 11),
+                (8, 11, 13, 12),
+                (7, 12, 10, 13),
+                (11, 12, 14, 13),
+                (6, 13, 9, 14),
+                (12, 13, 15, 14),
+                (5, 14, 8, 15),
+                (13, 14, 16, 15),
+                (6, 15, 7, 16),
+                (14, 15, 15, 16),
+            ];
+            let spans = match self {
+                CaptionButton::Minimize => MINIMIZE,
+                CaptionButton::Maximize if maximized => RESTORE,
+                CaptionButton::Maximize => MAXIMIZE,
+                CaptionButton::Close => CLOSE,
+                CaptionButton::ToTray => return false,
+            };
+            // One mesh of whole-pixel quads: no feathering, so no soft or doubled edges, and a
+            // single pixel (the X's tips) is drawn too.
+            let ppp = ui.ctx().pixels_per_point();
+            let mut mesh = egui::Mesh::default();
+            for &(l, t, r, b) in spans {
+                let rc = Rect::from_min_max(
+                    at + vec2(l.into(), t.into()),
+                    at + vec2(r.into(), b.into()),
+                );
+                mesh.add_colored_rect(rc.round_to_pixels(ppp), ink);
+            }
+            p.add(egui::Shape::mesh(mesh));
+            true
+        }
     }
 
     /// Windows keeps the window's own title bar in UI Automation (its "TitleBar", built from the
@@ -6728,7 +7260,8 @@ pub mod caption {
 
     /// An era theme's caption button (#45) in its place `rc`: a shaded tile with an edge, its
     /// own face at rest (Close red; Mac OS X's graphite until the pointer is on it), lighter
-    /// under the pointer and darker pressed, faded while greyed or the window inactive; the
+    /// under the pointer and darker pressed, faded while greyed or the window inactive (or the
+    /// theme's own inactive face, edge and glyph: `caption.button.inactive` and the others); the
     /// glyph light on it (Windows 7's with a shadow), or Mac OS X's dark one shown only under
     /// the pointer. There, our Hide button is a plain picture in the bar, as a toolbar's.
     fn era_button(
@@ -6778,7 +7311,27 @@ pub mod caption {
         } else {
             Rect::from_center_size(at, size)
         };
-        let base = if close && (era != Shine::Aqua || hover || pressed) {
+        // The glyph's place, from the tile as laid out (unchanged by the snap below).
+        let glyph_at = tile.center().round();
+        // The tile on whole pixels, once, and both its face and its edge drawn from it: an odd
+        // size centred on a whole point (Luna's 21, Windows 7's 27) has half-pixel sides, where
+        // the face (a mesh, filling every pixel whose centre it covers) began a pixel before
+        // the edge (rounded to whole pixels when drawn), a sliver of the face outside the
+        // button's top and left edge (#1612).
+        let tile = super::snap(ui.ctx().pixels_per_point(), tile);
+        // While the window isn't the active one, the theme's own faces for it where it has them
+        // (Windows XP: the buttons and Close half-faded into the bar, their edge and glyph
+        // still crisp), else the button's own faded into the bar, as a greyed one's.
+        let inactive = enabled && !active;
+        let own = if close {
+            c.caption_close_inactive
+        } else {
+            c.caption_button_inactive
+        };
+        let own = (inactive && own.a() > 0).then_some(own);
+        let base = if let Some(own) = own {
+            own
+        } else if close && (era != Shine::Aqua || hover || pressed) {
             CLOSE_HOVER()
         } else {
             CAPTION_BUTTON()
@@ -6790,7 +7343,7 @@ pub mod caption {
         } else {
             base
         };
-        let base = if enabled && active {
+        let base = if (enabled && active) || own.is_some() {
             base
         } else {
             mix(base, bar, 0.55)
@@ -6812,7 +7365,9 @@ pub mod caption {
         };
         fill_shaded_corners(p, tile, top, bottom, &stops);
         let edge = match era {
-            Shine::Luna => c.gloss.gamma_multiply(0.9),
+            _ if !active && c.caption_edge_inactive.a() > 0 => c.caption_edge_inactive,
+            // Windows XP's edge is the gloss itself (white), not a softened one (#1612).
+            Shine::Luna => c.gloss,
             Shine::Aero => shade(bar, -0.35),
             Shine::Aqua => shade(base, -0.2),
         };
@@ -6828,15 +7383,18 @@ pub mod caption {
             Shine::Aero => (0.9, 1.5),
             Shine::Aqua => (0.55, 1.4),
         };
-        let at = tile.center().round();
+        let at = glyph_at;
         if era == Shine::Aqua {
             // Mac OS X shows its buttons' glyphs only under the pointer.
             if hover || pressed {
                 b.glyph(ui, p, at, CAPTION_INK(), maximized, size, width);
             }
         } else {
+            let glyph = c.caption_glyph_inactive;
             let ink = if enabled && active {
                 CLOSE_INK()
+            } else if inactive && glyph.a() > 0 {
+                glyph
             } else {
                 CLOSE_INK().gamma_multiply(0.7)
             };
@@ -6844,7 +7402,10 @@ pub mod caption {
                 let shadow = Color32::from_black_alpha(110);
                 b.glyph(ui, p, at + vec2(1.0, 1.0), shadow, maximized, size, width);
             }
-            b.glyph(ui, p, at, ink, maximized, size, width);
+            // Windows XP's own glyphs, placed from the tile's edge (on whole pixels).
+            if era != Shine::Luna || !b.xp_glyph(ui, p, tile.min, ink, maximized) {
+                b.glyph(ui, p, at, ink, maximized, size, width);
+            }
         }
         show_focus(ui, resp, tile);
     }
@@ -6883,7 +7444,7 @@ pub mod caption {
         let bar = bar_colour(active);
         let top = match st.era {
             Some(era) => {
-                let stops = bar_stops(era, bar, crate::theme::colors().gloss);
+                let stops = bar_stops(era, bar, crate::theme::colors().gloss, active);
                 fill_shaded(&p, rect, 0.0, &stops);
                 stops.first().map_or(bar, |s| s.1)
             }
@@ -7021,6 +7582,42 @@ pub mod caption {
             buttons: rects,
             icon,
             top,
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        /// #1612: Luna's active bar has Windows XP's rows on Luna's own colour (each stop sits on
+        /// a row's centre at 100 %, so it is that row's colour), its light band first, and the
+        /// inactive bar keeps its stops.
+        #[test]
+        fn luna_active_bar_has_xp_rows() {
+            let near = |c: Color32, xp: u32| {
+                let [_, r, g, b] = xp.to_be_bytes();
+                let d = |x: u8, y: u8| x.abs_diff(y);
+                assert!(
+                    d(c.r(), r) <= 3 && d(c.g(), g) <= 3 && d(c.b(), b) <= 3,
+                    "{c:?} vs #{xp:06x}"
+                );
+            };
+            let bar = Color32::from_rgb(0x00, 0x54, 0xe3);
+            let stops = bar_stops(Shine::Luna, bar, Color32::WHITE, true);
+            let at = |row: f32| {
+                let t = (row + 0.5) / CAPTION_H;
+                stops.iter().find(|s| (s.0 - t).abs() < 1e-4).unwrap().1
+            };
+            near(at(1.0), 0x3d95ff); // the light band
+            near(stops[0].1, 0x3d95ff); // first: the sizing strip above takes it
+            near(at(2.0), 0x2b90ff);
+            near(at(7.0), 0x0054e3); // the bar's own colour
+            near(at(CAPTION_H - 7.0), 0x0069ff); // lighter toward the bottom
+            near(at(CAPTION_H - 1.0), 0x0041ce); // the dark bottom edge
+            let inactive = Color32::from_rgb(0x7a, 0x96, 0xdf);
+            let old = bar_stops(Shine::Luna, inactive, Color32::WHITE, false);
+            assert_eq!(old[0], (0.0, crate::derive::shade(inactive, 0.1)));
+            assert_eq!(old.len(), 8);
         }
     }
 }
@@ -8742,6 +9339,69 @@ example.org"; // values typed in, not texts to translate
     }
 
     #[test]
+    fn the_words_around_a_box_name_it() {
+        // The same sentence `english_lands_where_the_pieces_were` lays out.
+        assert_eq!(
+            sentence_names(
+                "Download no more than {mb} MBytes\nevery {hours} hours",
+                &["mb", "hours"]
+            ),
+            vec![
+                "Download no more than MBytes".to_owned(),
+                "every hours".to_owned()
+            ]
+        );
+    }
+
+    #[test]
+    fn a_translation_names_a_box_in_its_own_words() {
+        // Boxes first on each line, as `a_translation_moves_the_boxes` places them: the words
+        // between two boxes join both their names.
+        assert_eq!(
+            sentence_names("{hours} h: {mb} MB", &["mb", "hours"]),
+            vec!["h: MB".to_owned(), "h:".to_owned()]
+        );
+        // #1662: two boxes, each after its own words: the words between them are the second's.
+        assert_eq!(
+            sentence_names("from {from} to {to}", &["from", "to"]),
+            vec!["from".to_owned(), "to".to_owned()]
+        );
+        // A box alone on its line takes the sentence's own words, placeholders dropped; a
+        // sentence of nothing but the box names it with nothing.
+        assert_eq!(
+            sentence_names("{mb}\nevery {hours} hours", &["mb"]),
+            vec!["every hours".to_owned()]
+        );
+        assert_eq!(sentence_names("{mb}", &["mb"]), vec![String::new()]);
+    }
+
+    #[test]
+    fn real_translations_name_their_boxes_in_their_own_words() {
+        // Box first, as the Japanese catalog runs it.
+        assert_eq!(
+            sentence_names("{files}個のファイルを同時にダウンロード", &["files"]),
+            vec!["個のファイルを同時にダウンロード".to_owned()]
+        );
+        // Right to left, the words in the sentence's own logical order.
+        assert_eq!(
+            sentence_names("تنزيل {files} ملفا في الوقت نفسه", &["files"]),
+            vec!["تنزيل ملفا في الوقت نفسه".to_owned()]
+        );
+    }
+
+    #[test]
+    fn a_leftover_placeholder_and_an_accelerator_letter_drop_out_of_a_name() {
+        assert_eq!(
+            sentence_names("Download {files} {n} files", &["files"]),
+            vec!["Download files".to_owned()]
+        );
+        assert_eq!(
+            sentence_names("D&ownload {files} files", &["files"]),
+            vec!["Download files".to_owned()]
+        );
+    }
+
+    #[test]
     fn a_long_lead_pushes_a_left_aligned_box() {
         let line = [SentenceLine {
             lead: Lead::Left(242.0),
@@ -8852,5 +9512,24 @@ example.org"; // values typed in, not texts to translate
         assert_eq!(texts.last().unwrap().2, "c");
         assert_eq!(texts.last().unwrap().1, 364.0);
         assert!(rects[1].min.x > 170.0);
+    }
+
+    #[test]
+    fn caption_for_keeps_whole_long_caption() {
+        let ctx = egui::Context::default();
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            let p = ui.painter();
+            let long_caption =
+                "Anzahl der Wiederholungsversuche für jede Datei, wenn der Download fehlgeschlagen ist:";
+            let drawn = Rect::from_min_size(pos2(10.0, 10.0), vec2(100.0, 20.0));
+            note_caption(p, long_caption, drawn);
+            let control_rect = Rect::from_min_size(pos2(120.0, 10.0), vec2(50.0, 20.0));
+            let name = caption_for(ui.ctx(), control_rect);
+            assert_eq!(
+                name,
+                Some("Anzahl der Wiederholungsversuche für jede Datei, wenn der Download fehlgeschlagen ist".to_owned())
+            );
+        });
+        out.textures_delta.clear();
     }
 }

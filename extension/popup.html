@@ -19,6 +19,8 @@
       <p id="problem-text"></p>
       <a id="fix" class="link" data-i18n="popup_fix" target="_blank" rel="noopener"></a>
     </div>
+    <!-- A copy loaded by hand: it won't update itself; the store's will (#1613). -->
+    <p id="by-hand" class="note-bar by-hand" hidden><span data-icon="alert"></span><span><span id="by-hand-text"></span> <a id="by-hand-store" class="link" target="_blank" rel="noopener"></a></span></p>
 
     <nav class="tabs" role="tablist" data-i18n-label="popup_tabs">
       <button id="tab-downloads" class="tab" role="tab" type="button" aria-controls="panel-downloads" aria-selected="true">
@@ -105,6 +107,11 @@
             <span class="toggle-text" data-i18n="popup_video_hide_fullscreen"></span>
             <input id="video-hide-fullscreen" type="checkbox" class="toggle" role="switch">
           </label>
+          <!-- #1735: where the video button was moved, and its menu's filters, per site. -->
+          <div class="toggle-row plain" id="video-reset-row">
+            <span class="toggle-text"><span data-i18n="popup_video_reset_text"></span><span class="sub" data-i18n="popup_video_reset_sub"></span></span>
+            <button id="video-reset" type="button" class="btn" data-i18n="popup_video_reset"></button>
+          </div>
         </div>
         <section id="send" class="card send" aria-labelledby="send-title">
           <h2 id="send-title" data-i18n="popup_send_to"></h2>

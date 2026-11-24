@@ -142,11 +142,38 @@ def torrents() -> None:
     }
     seed("torrent", "single", bencode(single))
     seed("torrent", "multi", bencode(multi))
+    # Keys repeated (bencode doesn't allow it, a crafted file can): a second announce-list, whose
+    # tracker filtering once let through (fuzzing found it).
+    seed(
+        "torrent",
+        "repeated-keys",
+        b"d"
+        + bencode("announce") + bencode("http://127.0.0.1:8080/announce")
+        + bencode("announce-list") + bencode([["http://10.0.0.1/announce"]])
+        + bencode("announce-list") + bencode([["https://t2.example/a"]])
+        + bencode("info") + bencode(single["info"])
+        + b"e",
+    )
     seed(
         "torrent",
         "magnet",
         b"magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=x"
         b"&tr=udp%3A%2F%2Ftracker.example.org%3A1337&tr=http%3A%2F%2F192.168.1.2%2Fa&tr=",
+    )
+    # A host written in each of the forms an address takes.
+    forms = ["167772161", "0x0a000001", "010.0.0.1", "127.1", "10.0.0.1.", "[::ffff:a00:1]", "nas", "t.localhost."]
+    urls = [f"{s}://{h}:6969/announce" for h in forms for s in ("udp", "http")]
+    seed(
+        "torrent",
+        "tracker-forms",
+        bencode({"announce": urls[0], "announce-list": [[u] for u in urls], "info": single["info"]}),
+    )
+    seed(
+        "torrent",
+        "tracker-forms-magnet",
+        b"magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567"
+        + b"".join(b"&tr=" + u.encode() for u in urls)
+        + b"&%74r=udp://167772161:6969&t\nr=udp://127.1:6969",
     )
 
 

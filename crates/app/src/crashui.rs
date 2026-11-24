@@ -87,6 +87,18 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     // below is translated before the window exists, and Windows' caption is found by it
     // (`win32::caption_dark` in `update`).
     let settings = crate::store::load().settings;
+    // The window waits while a full-screen app, a presentation or the locked screen is on, as
+    // MDM's other windows that come up by themselves do (#1773); the dump is written already.
+    if settings.hold_popups {
+        let mut told = false;
+        while let Some(why) = crate::hold::system() {
+            if !told {
+                told = true;
+                tracing::info!("crash monitor: the report waits: {} is on", why.says());
+            }
+            std::thread::sleep(crate::hold::LOOK_EVERY);
+        }
+    }
     crate::i18n::set_lang(settings.language.as_deref());
     // And its interface size (#262): the window is made before the zoom applies, so its size is
     // given zoomed (brought inside the screen at its first frame).
@@ -261,7 +273,9 @@ fn prepare(job: &Job, shared: Arc<Mutex<Shared>>, ctx: egui::Context) {
         else {
             return;
         };
-        let Ok(http) = reqwest::Client::builder()
+        // The certificates MDM's own connections trust (the system's, Mozilla's where it lacks a
+        // root: mdm_engine::tls, #1546).
+        let Ok(http) = mdm_engine::tls::configure(reqwest::Client::builder())
             .user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
             .timeout(Duration::from_secs(120))
             .build()
@@ -375,6 +389,7 @@ impl eframe::App for ReportWindow {
         }
         // MDM's state is checked now and then (a frozen one may recover or be ended).
         ui.ctx().request_repaint_after(Duration::from_secs(1));
+        winui::name_window(ui, crate::i18n::t("Mister Download Manager crash report"));
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(winui::BG()))
             .show(ui, |ui| {
