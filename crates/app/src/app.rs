@@ -18707,6 +18707,7 @@ mod delete_tests {
             named: false,
             chapter_files: vec![chapter_1.clone()],
             duration: None,
+            part: None,
         });
 
         let mut app = app_from_052(vec![item], false);
@@ -18840,6 +18841,7 @@ mod move_unfinished_tests {
             subs: Default::default(),
             parts: Vec::new(),
             named: false,
+            chapter_files: Vec::new(),
             duration: None,
             part: None,
         });
