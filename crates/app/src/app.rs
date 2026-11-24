@@ -5017,9 +5017,8 @@ impl App {
     }
 
     /// Progress of all running downloads together (bytes done / bytes in all), None when
-    /// nothing runs or no size is known. For the taskbar button's progress, which only Windows
-    /// has (macOS and Linux docks have no common way to show one).
-    #[cfg_attr(not(windows), allow(dead_code))]
+    /// nothing runs or no size is known. For the system's progress on MDM's button or icon
+    /// (sysprogress.rs): the taskbar button on Windows, the dock on Linux and macOS (#1777).
     fn overall_progress(&self) -> Option<f64> {
         let (done, total) = self
             .items
@@ -14472,15 +14471,19 @@ impl App {
             self.watch_clipboard(ctx);
             crate::crash::step(crate::crash::Step::Tray);
             self.tray(ctx);
-            // The taskbar button's green bar: everything running, as one.
+            // The taskbar button's green bar: everything running, as one. Linux docks and the
+            // macOS Dock show the same on MDM's icon (#1777); a progress window has no icon of
+            // its own there.
+            crate::crash::step(crate::crash::Step::Taskbar);
             #[cfg(windows)]
             {
-                crate::crash::step(crate::crash::Step::Taskbar);
                 crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
                 for window in &mut self.progress {
                     window.update_taskbar(self.items.iter().find(|item| item.id == window.id));
                 }
             }
+            #[cfg(unix)]
+            crate::unix::dock_progress(self.overall_progress());
         }
         if self
             .ticked

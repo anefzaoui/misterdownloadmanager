@@ -145,6 +145,8 @@ MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, 
 and Cinnamon, on X11 and in Wayland sessions: the tray, dark mode, browser integration (Ubuntu's
 Snap Firefox included) and the packages' installs. Not there yet: screen readers (Orca) don't
 read its windows, and Flatpak browsers can't reach it ([more](docs/getting-started.md#on-linux)).
+Running downloads show their progress on MDM's icon in the dock (Ubuntu Dock, KDE Plasma and
+other docks that can show it), as they do on the Windows taskbar and in the macOS Dock.
 Up to version 0.2.4, the files' names end in `-experimental`.
 
 | File | For |

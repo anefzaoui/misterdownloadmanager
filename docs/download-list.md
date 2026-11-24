@@ -101,6 +101,16 @@ Drag the pane's edge to make it wider or narrower; its **x**, the button or Alt+
 MDM remembers it shown or hidden, and its width. In a language whose menu bar has P for a
 menu's letter (Polish, Croatian...), Alt+P opens that menu instead, as Windows' menus do.
 
+## Progress on the taskbar and the dock
+
+While downloads run, MDM's button on the Windows taskbar fills with their progress, all of them
+as one bar: how much has come of every running download whose size is known. A download's
+progress window shows its own on its taskbar button. On Linux the same bar is drawn on MDM's
+icon in docks that show apps' progress (Ubuntu Dock, Dash to Dock, KDE Plasma's task manager and
+others), and on macOS along the bottom of MDM's icon in the Dock. It goes away when nothing is
+downloading; paused and failed downloads aren't counted. Where the dock can't show progress,
+nothing changes.
+
 ## Dropping links and files
 
 Drag a link from a browser (or a page's text with links in it) onto the list to add it: one

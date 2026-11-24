@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Linux and macOS: the running downloads' progress on MDM's icon in the dock (Ubuntu Dock,
+  Dash to Dock, KDE Plasma's task manager and others) and in the macOS Dock, as on the Windows
+  taskbar ([#1777](https://github.com/anefzaoui/misterdownloadmanager/issues/1777))
 - ✅ Tests: the check that one download's IP family never changes another download of the same
   host no longer fails now and then (seen on a Windows runner): it took for granted that the
   first download, slowed down, was still running when the second one ended; the test server now
