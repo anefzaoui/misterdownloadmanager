@@ -248,7 +248,7 @@ fn read(mut next: impl FnMut() -> Option<Vec<u8>>, shared: &Mutex<Shared>, from:
         let Some((entry, total, title)) = parse_line(&buf, next_index) else {
             continue;
         };
-        next_index = entry.index + 1;
+        next_index = entry.index.saturating_add(1);
         let mut sh = shared.lock().unwrap();
         if sh.progress.done {
             return;
