@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Scheduler: a queue's Once at date is kept while its start time is off
+- ✅ Download limits: an empty box keeps the limit in force
+- ✅ Scheduler: a clock that goes back no longer runs every schedule time at once
 - ✅ Browser add-on: each Alt+click on the same link leaves its download to the browser
 - ✅ Browser add-on: a media row whose page changed says it is gone
 - ✅ Browser add-on: Hide on this video follows the video in a reused feed player

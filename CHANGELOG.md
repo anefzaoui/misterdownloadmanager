@@ -96,6 +96,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Scheduler: a queue's **Once at** date is kept while **Start download at** is unticked, so ticking it again gives the same date back instead of a daily queue (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Download limits: an empty box keeps the limit in force, in Options and in the Scheduler, instead of putting back 200 MB / 5 hours (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Scheduler: a clock that goes back (summer time's end, a time sync, setting it by hand) no longer starts and stops every scheduled queue at once (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Browser add-on: a new Alt+click on a link clicked with Alt a moment before leaves its download to the browser again, also when the download comes under another address (a page's script, a redirect) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Browser add-on: a media row whose page changed or whose tab closed while it was asked for says the video is gone, instead of a failure with no reason (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Browser add-on: **Hide on this video** follows the video in a player a feed reuses for the next post, so the next post's video shows the button again; a video hidden before it had an address stays hidden once it gets one (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
