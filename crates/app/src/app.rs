@@ -5480,7 +5480,7 @@ impl App {
         if text.contains(char::is_whitespace) {
             return;
         }
-        let Ok(url) = url::Url::parse(&text) else {
+        let Some((text, url)) = copied_address(text) else {
             return;
         };
         let name = mdm_engine::naming::file_name(None, &url);
@@ -14710,6 +14710,56 @@ fn share(cap: u64, other: f64) -> u64 {
         cap.saturating_sub(other as u64)
     };
     rest.max(half).max(1024)
+}
+
+/// The address a newly copied text is, for the clipboard watch: the text itself, or the address
+/// wrapped in a `thunder://`, `flashget://` or `qqdl://` link (#1782), so the download is
+/// offered, and stored, under the address it really comes from. `None`: not an address, or a
+/// wrapped link without an address MDM downloads inside.
+fn copied_address(text: String) -> Option<(String, url::Url)> {
+    let text = match crate::transfer::unwrapped(&text) {
+        crate::transfer::Wrapped::No => text,
+        crate::transfer::Wrapped::Address(inner) => inner,
+        crate::transfer::Wrapped::Unsupported => return None,
+    };
+    let url = url::Url::parse(&text).ok()?;
+    Some((text, url))
+}
+
+#[cfg(test)]
+mod copied_address_tests {
+    use super::copied_address;
+    use base64::Engine as _;
+
+    /// #1782: a copied wrapped link is offered as the address inside it; one with nothing MDM
+    /// downloads inside is not offered at all.
+    #[test]
+    fn a_copied_wrapped_link_is_the_address_inside() {
+        let b64 = |s: &str| base64::engine::general_purpose::STANDARD.encode(s);
+        let plain = "https://dl.example.org/pack/setup.exe";
+        let (text, url) = copied_address(plain.to_owned()).unwrap();
+        assert_eq!((text.as_str(), url.as_str()), (plain, plain));
+        for wrapped in [
+            format!("thunder://{}", b64(&format!("AA{plain}ZZ"))),
+            format!(
+                "FlashGet://{}&abc",
+                b64(&format!("[FLASHGET]{plain}[FLASHGET]"))
+            ),
+            format!("qqdl://{}", b64(plain)),
+        ] {
+            let (text, url) = copied_address(wrapped.clone()).expect(&wrapped);
+            assert_eq!((text.as_str(), url.as_str()), (plain, plain), "{wrapped}");
+        }
+        for not in [
+            format!("thunder://{}", b64("AAed2k://|file|a.iso|1|0|/ZZ")),
+            format!("qqdl://{}", b64("file:///C:/x.zip")),
+            format!("thunder://{}", b64(plain)),
+            "flashget://not base64!".to_owned(),
+            "not an address".to_owned(),
+        ] {
+            assert_eq!(copied_address(not.clone()), None, "{not}");
+        }
+    }
 }
 
 #[cfg(test)]

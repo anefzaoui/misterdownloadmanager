@@ -590,6 +590,9 @@ pub(crate) struct Resolver {
     dns: Arc<Chosen>,
     /// How long a lookup may take (`lookup_limit`); None: as long as the resolver takes.
     limit: Option<Duration>,
+    /// Hosts handed on with their addresses of one IP family only (IPv4 when true): this
+    /// client's download was refused by them over the other one (#1660, `Options::family`).
+    family: HashMap<String, bool>,
 }
 
 struct Chosen {
@@ -623,7 +626,18 @@ impl Resolver {
                 resolver: tokio::sync::OnceCell::new(),
             }),
             limit: connect_timeout.map(lookup_limit),
+            family: HashMap::new(),
         }
+    }
+
+    /// This resolver, handing on only the addresses of one IP family for the hosts in `family`
+    /// (IPv4 when true; `Options::family`).
+    pub(crate) fn kept_to(mut self, family: &[(String, bool)]) -> Self {
+        self.family = family
+            .iter()
+            .map(|(h, v4)| (h.to_ascii_lowercase(), *v4))
+            .collect();
+        self
     }
 }
 
@@ -631,6 +645,7 @@ impl Resolve for Resolver {
     fn resolve(&self, name: Name) -> Resolving {
         let host = name.as_str().to_ascii_lowercase();
         let fixed = self.hosts.get(&host).cloned();
+        let kept = self.family.get(&host).copied();
         let port = self.port;
         let dns = self.dns.clone();
         let limit = self.limit;
@@ -680,7 +695,8 @@ impl Resolve for Resolver {
                     })??,
                 };
                 // An address of the family the adapter lacks would be connected unbound (#35).
-                let ips = reachable(ips, &dns.route)?;
+                found().lock().unwrap().insert(host.clone(), ips.clone());
+                let ips = of_family(kept, reachable(ips, &dns.route)?);
                 let ips = reachable_first(&host, ips, port, &dns.route).await;
                 // Port 0: reqwest then uses the URL's port (a non-zero port here would win).
                 let addrs: Addrs = Box::new(ips.into_iter().map(|ip| SocketAddr::new(ip, 0)));
@@ -690,6 +706,64 @@ impl Resolve for Resolver {
             crate::server::dns_spent(started.elapsed());
             found
         })
+    }
+}
+
+/// `ips` of the family the host is kept to (`kept`: IPv4 when true; #1660, `Resolver::kept_to`);
+/// all of them when it is kept to none, or has no address of that family any more (its
+/// addresses changed: better the other family than no download).
+fn of_family(kept: Option<bool>, ips: Vec<IpAddr>) -> Vec<IpAddr> {
+    match kept {
+        Some(v4) if ips.iter().any(|ip| ip.is_ipv4() == v4) => {
+            ips.into_iter().filter(|ip| ip.is_ipv4() == v4).collect()
+        }
+        _ => ips,
+    }
+}
+
+/// Every address each host was found to have at its last lookup by a client's resolver, before
+/// any is left out (the adapter's family, the family a download keeps the host to): what
+/// [`other_family`] goes by.
+fn found() -> &'static Mutex<HashMap<String, Vec<IpAddr>>> {
+    static FOUND: OnceLock<Mutex<HashMap<String, Vec<IpAddr>>>> = OnceLock::new();
+    FOUND.get_or_init(Default::default)
+}
+
+/// Whether a host that refused a request can be asked over the other IP family (#1660).
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) enum OtherFamily {
+    /// It has an address of the other family, which the route reaches.
+    Has,
+    /// It has addresses of the other family, but the chosen adapter (its label) reaches none.
+    Unreachable(String),
+    /// It has none, or the address that refused isn't one of its own: a proxy's (HTTP, SOCKS,
+    /// PAC or the system's alike), which the host sees instead of this computer.
+    No,
+}
+
+/// [`OtherFamily`] for `host`, refused by its address `by`: by the addresses the client's
+/// resolver last found for it, so no lookup is made (and none could differ from the client's).
+pub(crate) fn other_family(host: &str, by: IpAddr, route: &Route) -> OtherFamily {
+    let host = host.to_ascii_lowercase();
+    let all = found()
+        .lock()
+        .unwrap()
+        .get(&host)
+        .cloned()
+        .unwrap_or_default();
+    if !all.contains(&by) {
+        return OtherFamily::No;
+    }
+    let others: Vec<IpAddr> = all
+        .into_iter()
+        .filter(|ip| ip.is_ipv4() != by.is_ipv4())
+        .collect();
+    match others.is_empty() {
+        true => OtherFamily::No,
+        false if route.keep(others).is_empty() => {
+            OtherFamily::Unreachable(route.label().unwrap_or_default().to_owned())
+        }
+        false => OtherFamily::Has,
     }
 }
 
@@ -970,5 +1044,73 @@ mod tests {
             vec![ip]
         );
         assert!(started.elapsed() < Duration::from_millis(50));
+    }
+    /// #1660: a host kept to one IP family gets its addresses of that family only; one that has
+    /// none of them any more keeps what it has.
+    #[test]
+    fn a_host_kept_to_a_family_gets_only_its_addresses() {
+        let ips =
+            |list: &[&str]| -> Vec<IpAddr> { list.iter().map(|ip| ip.parse().unwrap()).collect() };
+        let both = ips(&["2001:db8::1", "192.0.2.1", "2001:db8::2", "192.0.2.2"]);
+        assert_eq!(of_family(None, both.clone()), both);
+        assert_eq!(
+            of_family(Some(true), both.clone()),
+            ips(&["192.0.2.1", "192.0.2.2"])
+        );
+        assert_eq!(
+            of_family(Some(false), both.clone()),
+            ips(&["2001:db8::1", "2001:db8::2"])
+        );
+        assert_eq!(
+            of_family(Some(true), ips(&["2001:db8::1"])),
+            ips(&["2001:db8::1"])
+        );
+        // A resolver keeps only the hosts it was given, whatever their case.
+        let r = Resolver::new(&[], 80, &DnsChoice::default(), &[], &Route::Any, None)
+            .kept_to(&[("Kept.MDM.test".into(), true)]);
+        assert_eq!(r.family.get("kept.mdm.test"), Some(&true));
+        assert_eq!(r.family.get("other.mdm.test"), None);
+    }
+
+    /// #1660: the other family is asked only of a host the refusing address is one of, that
+    /// has an address of the other family, which the adapter reaches.
+    #[test]
+    fn the_other_family_is_the_refusing_hosts_own_and_reachable() {
+        let ips =
+            |list: &[&str]| -> Vec<IpAddr> { list.iter().map(|ip| ip.parse().unwrap()).collect() };
+        let set = |host: &str, list: &[&str]| {
+            found().lock().unwrap().insert(host.to_owned(), ips(list));
+        };
+        let (v4, v6): (IpAddr, IpAddr) =
+            ("192.0.2.1".parse().unwrap(), "2001:db8::1".parse().unwrap());
+        set("both.other.test", &["192.0.2.1", "2001:db8::1"]);
+        set("one.other.test", &["192.0.2.1", "192.0.2.2"]);
+        let any = Route::Any;
+        assert_eq!(other_family("Both.other.test", v6, &any), OtherFamily::Has);
+        assert_eq!(other_family("both.other.test", v4, &any), OtherFamily::Has);
+        assert_eq!(other_family("one.other.test", v4, &any), OtherFamily::No);
+        // Never looked up by a client (a proxy was asked), or answered by another address (a
+        // proxy's): not the host's own refusal of this computer's address.
+        assert_eq!(
+            other_family("unknown.other.test", v6, &any),
+            OtherFamily::No
+        );
+        let proxy: IpAddr = "198.51.100.7".parse().unwrap();
+        assert_eq!(
+            other_family("both.other.test", proxy, &any),
+            OtherFamily::No
+        );
+        // An adapter with an IPv4 address only can't take the IPv4 host's IPv6 refusal further.
+        let v6_only = Route::Bound(Arc::new(crate::net::Binding {
+            label: "Tunnel".into(),
+            v6: Some("2001:db8::9".parse().unwrap()),
+            ..Default::default()
+        }));
+        if !cfg!(windows) {
+            assert_eq!(
+                other_family("both.other.test", v6, &v6_only),
+                OtherFamily::Unreachable("Tunnel".into())
+            );
+        }
     }
 }
