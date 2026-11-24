@@ -3788,6 +3788,8 @@ impl App {
                     "logins" => 6,
                     "accounts" => 7,
                     "archives" => 10,
+                    #[cfg(target_os = "macos")]
+                    "menubar" => 12,
                     "sounds" => 8,
                     "regional" => 9,
                     "remote" | "pair" => 11,
@@ -5005,10 +5007,13 @@ impl App {
         crate::unix::withdraw_main_window();
         self.hidden = true;
         #[cfg(target_os = "macos")]
-        if self
-            .tray
-            .as_ref()
-            .is_some_and(|t| t.icon_now() == crate::tray::Icon::There)
+        if self.settings.hide_dock_on_close
+            && self.settings.menu_bar.enabled
+            && self.settings.menu_bar.main_window
+            && self
+                .tray
+                .as_ref()
+                .is_some_and(|t| t.icon_now() == crate::tray::Icon::There)
         {
             crate::unix::macos_show_in_dock(false);
         }
@@ -5171,6 +5176,8 @@ impl App {
         // the session shows the icon, and no window).
         let wanted =
             !crate::offscreen() || std::env::var_os("MDM_TEST_TRAY").is_some_and(|v| v == "1");
+        #[cfg(target_os = "macos")]
+        let wanted = wanted && self.settings.menu_bar.enabled;
         if self.tray.is_none() && self.tray_limiter.is_none() && wanted {
             // Linux: made beside the window, which never waits for the session bus (#828); until
             // it is, the window behaves as with no tray host.
@@ -5242,6 +5249,8 @@ impl App {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
         if let Some(t) = &self.tray {
+            #[cfg(target_os = "macos")]
+            t.configure_menu_bar(self.settings.menu_bar, self.settings.tray_panel);
             let mut tip = match self.activity() {
                 Some(a) => format!("{}\n{a}", crate::MAIN_TITLE),
                 None => crate::MAIN_TITLE.to_owned(),
@@ -5270,10 +5279,14 @@ impl App {
             }
             t.set_tooltip(&tip);
             // "Downloads in progress": each running download, to show its progress window (#63).
+            #[cfg(target_os = "macos")]
+            let show_downloads = self.settings.menu_bar.enabled && self.settings.menu_bar.downloads;
+            #[cfg(not(target_os = "macos"))]
+            let show_downloads = true;
             let running: Vec<(u64, String)> = self
                 .items
                 .iter()
-                .filter(|i| i.live.is_some())
+                .filter(|i| show_downloads && i.live.is_some())
                 .map(|i| {
                     #[cfg(target_os = "macos")]
                     let name = {
@@ -5341,6 +5354,7 @@ impl App {
                     }
                     continue;
                 }
+                TrayCmd::Click(..) if cfg!(target_os = "macos") => continue, // AppKit opened the native menu.
                 TrayCmd::Click(..) => {
                     let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
                     // Behind other windows it still reads as shown: only hide when
@@ -5387,6 +5401,14 @@ impl App {
                     continue;
                 }
             };
+            #[cfg(target_os = "macos")]
+            if matches!(
+                cmd,
+                Cmd::AddUrl | Cmd::Batch | Cmd::BatchClipboard | Cmd::Options | Cmd::Scheduler
+            ) {
+                crate::unix::macos_unhide_app();
+                ctx.request_ui_pass(egui::ViewportId::ROOT);
+            }
             self.run(cmd, None, ctx);
         }
         // Closing hides the window in the tray; downloads and queues go on. When the shell says it
@@ -5476,10 +5498,12 @@ impl App {
         if self.hidden {
             #[cfg(target_os = "macos")]
             if self.tray_wait.is_none()
-                && self
-                    .tray
-                    .as_ref()
-                    .is_some_and(|t| t.icon() == crate::tray::Icon::Gone)
+                && (!self.settings.menu_bar.enabled
+                    || !self.settings.menu_bar.main_window
+                    || self
+                        .tray
+                        .as_ref()
+                        .is_some_and(|t| t.icon() == crate::tray::Icon::Gone))
             {
                 crate::unix::macos_show_in_dock(true);
             }

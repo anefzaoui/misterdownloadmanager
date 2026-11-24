@@ -2,7 +2,7 @@
 
 [← Back to docs index](README.md)
 
-Open **Downloads → Options**, or click **Options** on the toolbar. The window has twelve pages on two rows of tabs. **OK** saves your changes; closing the window or pressing **Esc** throws them away.
+Open **Downloads → Options**, or click **Options** on the toolbar. The window has two rows of tabs. **OK** saves your changes; closing the window or pressing **Esc** throws them away.
 
 Some buttons are greyed. They belong to features that aren't built yet.
 
@@ -23,6 +23,12 @@ Some buttons are greyed. They belong to features that aren't built yet.
 - **Customize MDM Download panels in browsers → Edit...** — the download button over videos on web pages: turn it off, choose its **Button size** (**Automatic**, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; **Full**, its words wherever they fit; or **Compact**, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like `*.youtube.*`, `youtube.*` or `*.example.com` work). See [Browser integration](browser-integration.md#the-download-button-over-videos).
 
 See [Browser integration](browser-integration.md).
+
+## Menu Bar (macOS)
+
+Choose whether MDM shows an icon in the macOS menu bar, which commands appear on its menu, and whether running downloads appear above them. Right-click the icon for the menu. Turn off **Open the downloads panel on left click** to open the same menu with a left click. **Speed Limiter** turns the existing global speed limiter on or off.
+
+To hide MDM from the Dock when closing its main window, enable **Hide the Dock icon when closing the main window** in **General**. Keep the menu bar icon and its **Open Mister Download Manager** command enabled so you can return to the window.
 
 ## File types
 

@@ -205,6 +205,41 @@ impl DebridAccount {
     }
 }
 
+/// Items shown in the native macOS status menu. Older settings get the full menu.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct MenuBarSettings {
+    pub enabled: bool,
+    pub downloads: bool,
+    pub main_window: bool,
+    pub add_url: bool,
+    pub batch: bool,
+    pub batch_clipboard: bool,
+    pub limiter: bool,
+    pub scheduler: bool,
+    pub queues: bool,
+    pub options: bool,
+    pub quit: bool,
+}
+
+impl Default for MenuBarSettings {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            downloads: true,
+            main_window: true,
+            add_url: true,
+            batch: true,
+            batch_clipboard: true,
+            limiter: true,
+            scheduler: true,
+            queues: true,
+            options: true,
+            quit: true,
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Settings {
@@ -319,6 +354,8 @@ pub struct Settings {
     /// closing quits). On by default, for existing lists too, in every copy. Only where a tray
     /// shows MDM's icon.
     pub close_to_tray: bool,
+    pub hide_dock_on_close: bool,
+    pub menu_bar: MenuBarSettings,
     /// General: "Show downloads when the notification area icon is clicked" (#1365): a click on
     /// the icon shows the downloads panel (traypanel.rs), a double click the window; unticked,
     /// the click shows the window again or hides it there, as before. Ticked for a new list; a
@@ -655,6 +692,8 @@ impl Default for Settings {
             minimize_to_tray: true,
             tray_panel: true,
             close_to_tray: true,
+            hide_dock_on_close: false,
+            menu_bar: MenuBarSettings::default(),
             keep_private_downloads: true,
             private_notice_shown: false,
             show_hide_hotkey: String::new(),
@@ -1466,6 +1505,24 @@ pub fn own_net() -> mdm_engine::Options {
 #[cfg(test)]
 mod tests {
     use std::path::Path;
+
+    #[test]
+    fn older_preferences_keep_the_dock_and_the_full_menu() {
+        use super::{MenuBarSettings, Settings};
+        let old: Settings = serde_json::from_str("{}").unwrap();
+        assert!(!old.hide_dock_on_close);
+        assert_eq!(old.menu_bar, MenuBarSettings::default());
+
+        let custom: Settings = serde_json::from_value(serde_json::json!({
+            "hide_dock_on_close": true,
+            "menu_bar": { "downloads": false, "scheduler": false }
+        }))
+        .unwrap();
+        assert!(custom.menu_bar.enabled && custom.menu_bar.limiter);
+        assert!(!custom.menu_bar.downloads && !custom.menu_bar.scheduler);
+        let saved = serde_json::to_value(&custom).unwrap();
+        assert_eq!(custom, serde_json::from_value(saved).unwrap());
+    }
 
     /// #668: the User-Agent for links added by hand is the default browser's unless one is set.
     /// Saved before, MDM's former default (Internet Explorer 11's) or nothing reads as automatic;

@@ -325,9 +325,9 @@
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 	Add an account	Add an account
-#. text in the tray icon's menu
+#. text in the Options window; text in the tray icon's menu
 	Add batch download	Add batch download
-#. message or event log entry in the main window; text in the tray icon's menu
+#. message or event log entry in the main window; text in the Options window; text in the tray icon's menu
 #. title of the note when Tasks → Add batch download from clipboard finds nothing to download
 	Add batch download from clipboard	Add batch download from clipboard
 #. text in the Options window
@@ -344,7 +344,7 @@
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 	Add Mister Download Manager to your browser	Add Mister Download Manager to your browser
-#. message or event log entry in the main window; text in the tray icon's menu
+#. message or event log entry in the main window; text in the Options window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 	Add new download	Add new download
 #. text in the Options window
@@ -1292,7 +1292,7 @@
 #. message or event log entry in the main window
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.
-#. text in the tray icon's menu; text in traypanel.rs
+#. text in the Options window; text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
 	Downloads in progress	Downloads in progress
@@ -1425,7 +1425,7 @@
 	Example:	Example:
 #. text in the Options window
 	Exceptions:	Exceptions:
-#. text in the tray icon's menu
+#. text in the Options window; text in the tray icon's menu
 #. verb: quit the app
 	Exit	Exit
 #. checkbox in a download's progress window; checkbox in the Scheduler window
@@ -1811,6 +1811,8 @@
 	Hide &preview pane	Hide &preview pane
 #. button in a download's progress window
 	Hide tab	Hide tab
+#. text in the Options window
+	Hide the Dock icon when closing the main window	Hide the Dock icon when closing the main window
 #. text in a download's progress window; text in standard windows
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 	Hide to the notification area	Hide to the notification area
@@ -2340,6 +2342,8 @@
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	medium
+#. text in the Options window
+	Menu Bar	Menu Bar
 #. text in the download list (sizes, speeds, status)
 #. the list's Status column while a video's picture and sound are joined into one file (ffmpeg); {percent} how far, e.g. "45%". One short word: the column is narrow
 	Merging {percent}	Merging {percent}
@@ -2851,7 +2855,7 @@
 	Open in browser	Open in browser
 #. checkbox in the Add torrent window
 	Open magnet links and .torrent files with Mister Download Manager	Open magnet links and .torrent files with Mister Download Manager
-#. text in the tray icon's menu; text in traypanel.rs
+#. text in the Options window; text in the tray icon's menu; text in traypanel.rs
 #. the notification-area icon's panel (#1365): its button that opens the main window (also the tray menu's first item)
 	Open Mister Download Manager	Open Mister Download Manager
 #. text in extension.rs
@@ -2860,6 +2864,8 @@
 #. text in extension.rs
 #. step 1 of turning on the Safari extension
 	Open Safari.	Open Safari.
+#. text in the Options window
+	Open the downloads panel on left click	Open the downloads panel on left click
 #. text in the Scheduler window
 	Open the following file when done	Open the following file when done
 #. checkbox in the Scheduler window
@@ -2879,7 +2885,7 @@
 #. button in a dialog box
 #. the trailing ... means it opens a window: keep it
 	Open with...	Open with...
-#. message or event log entry in the main window; text in the tray icon's menu
+#. message or event log entry in the main window; text in the Options window; text in the tray icon's menu
 #. plural noun: opens the Options window (settings)
 	Options	Options
 #. text in a download's progress window
@@ -3296,7 +3302,7 @@
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 	Schedule	Schedule
-#. window title in the Scheduler window; text in the tray icon's menu
+#. text in the Options window; window title in the Scheduler window; text in the tray icon's menu
 #. noun: the tool that starts and stops queues on time
 #. noun: opens the Scheduler (the tool that starts queues on time)
 	Scheduler	Scheduler
@@ -3445,6 +3451,8 @@
 #. button in a dialog box
 #. button: shows these downloads in MDM's list, selected
 	Show in list	Show in list
+#. text in the Options window
+	Show in the menu	Show in the menu
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	Show me how
@@ -3456,6 +3464,8 @@
 	Show queue selection panel on pressing "Download Later" button	Show queue selection panel on pressing "Download Later" button
 #. checkbox in the Options window
 	Show start download dialog	Show start download dialog
+#. text in the Options window
+	Show the menu bar icon	Show the menu bar icon
 #. checkbox in the Options window; checkbox in the Scheduler window
 	Show warning before stopping downloads	Show warning before stopping downloads
 #. text in a download's progress window
@@ -3593,7 +3603,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Spain	Spain
-#. text in a download's progress window; text in the tray icon's menu
+#. text in the Options window; text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 	Speed Limiter	Speed Limiter
 #. window title in a dialog box
@@ -3643,6 +3653,8 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Start {queue}	Start {queue}
+#. text in the Options window
+	Start/stop main download queue	Start/stop main download queue
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 	Started	Started

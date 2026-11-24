@@ -570,8 +570,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ macOS: choose a running download in the menu bar to open its progress window. The menu
-  shows the file name and percentage when available, plus an entry for the main window. Closing
-  the main window hides its Dock indicator while completion dialogs can still appear. Optional
+  shows the file name and percentage when available, above the configurable tray commands. The Dock icon
+  stays visible by default and can be hidden when closing the main window while completion dialogs can still appear. Optional
   launch at login starts in the menu bar with the main window hidden
   ([#1732](https://github.com/anefzaoui/misterdownloadmanager/issues/1732)).
 

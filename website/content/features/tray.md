@@ -32,7 +32,7 @@ an arrow down to the corner. On Windows it sits in the title bar, left of Minimi
 title bar's menu (Alt+Space). On Linux and macOS it is at the end of the tab row. The download
 carries on.
 
-On macOS, click the menu bar icon and choose the file name to open its progress window. Each
+On macOS, right-click the menu bar icon and choose the file name to open its progress window. Each
 running download shows its percentage when available. **Open Mister Download Manager** opens the
 main window. On Windows and Linux, right-click the tray icon and choose the download under
 **Downloads in progress**. Double-clicking the download in the list brings its window back
