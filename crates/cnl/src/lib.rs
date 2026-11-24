@@ -267,8 +267,11 @@ fn router(on_found: OnFound) -> Router {
         }
     };
     Router::new()
-        .route("/flash/add", post(posted("add")))
-        .route("/flash/addcrypted2", post(posted("addcrypted2")))
+        .route("/flash/add", post(posted("add")).options(other))
+        .route(
+            "/flash/addcrypted2",
+            post(posted("addcrypted2")).options(other),
+        )
         .fallback(any(other))
         .layer(DefaultBodyLimit::max(MAX_BODY))
         .layer(axum::middleware::map_response(open_to_pages))
@@ -389,6 +392,25 @@ mod tests {
             );
             assert!(!check.text().await.unwrap().contains("ownloader"));
         }
+        // Chrome's Private Network Access preflight: answered, with the page's headers.
+        let pre = c
+            .request(reqwest::Method::OPTIONS, format!("{base}/flash/add"))
+            .header("access-control-request-method", "POST")
+            .header("access-control-request-private-network", "true")
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(pre.status(), StatusCode::NO_CONTENT);
+        assert_eq!(
+            pre.headers().get("access-control-allow-origin").unwrap(),
+            "*"
+        );
+        assert_eq!(
+            pre.headers()
+                .get("access-control-allow-private-network")
+                .unwrap(),
+            "true"
+        );
         let post = |path: &str, form: Vec<(&str, String)>| {
             let req = c.post(format!("{base}/flash/{path}")).body(
                 url::form_urlencoded::Serializer::new(String::new())
