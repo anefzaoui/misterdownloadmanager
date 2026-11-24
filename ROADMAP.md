@@ -603,6 +603,10 @@ These ship in the next version.
   host no longer fails now and then (seen on a Windows runner): it took for granted that the
   first download, slowed down, was still running when the second one ended; the test server now
   holds the first one's part until the second one has ended, then lets it finish
+- ✅ Tests: the check that a stream's two playlist requests share one time budget no longer fails
+  now and then on a busy machine (seen on the Linux test machine): it timed the fetch on the
+  wall clock, which a busy CPU stretches; it now runs on Tokio's paused clock, where only the
+  time the test server takes passes
 - ✅ Torrents: an optional public tracker list (ngosang/trackerslist's best, or an address you
   give) added to public torrents, those already in the list and those added, fetched once a day
   (an hour after a failed fetch) through MDM's own downloader, its last good copy kept; never

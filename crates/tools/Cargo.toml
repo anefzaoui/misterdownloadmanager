@@ -36,6 +36,8 @@ flate2.workspace = true
 [dev-dependencies]
 mdm-labserver.workspace = true
 tempfile.workspace = true
+# The manifest's budget is tested on Tokio's paused clock (src/manifest.rs).
+tokio = { workspace = true, features = ["test-util"] }
 
 [features]
 # Update now's end-to-end tests only, never in a release (tools/installer and release.yml don't
