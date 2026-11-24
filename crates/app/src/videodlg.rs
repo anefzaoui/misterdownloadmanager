@@ -1470,6 +1470,9 @@ impl VideoDialog {
         if exact.clicked() && active {
             self.part_exact = true;
         }
+        if active && let Some(i) = winui::radio_keys(ui, &[quick, exact]) {
+            self.part_exact = i == 1;
+        }
         // File name says the part while it holds the name MDM gave.
         self.name_for_part();
         can

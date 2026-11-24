@@ -45,6 +45,7 @@ From version 0.5.0, only if you choose them:
 - **Codeberg, for gallery-dl.** If you download an image gallery, MDM installs gallery-dl from its official releases on Codeberg and checks its author's signature; gallery-dl then talks to the site you asked for.
 - **Link sites, for Click'n'Load.** Off until you turn it on in **Options → Archives and Link grabber**: then MDM listens on port 9666 of this computer only. The first time a site sends links MDM asks whether to allow it; what an allowed site sends opens in Link grabber, where nothing is looked up or downloaded until you add it. Links to this computer or your own network are left out.
 - **A torrent IP blocklist**, if you give one: MDM fetches it from the address you entered, again every 7 days.
+- **A public tracker list for torrents**, if you turn it on in **Tasks → Torrent settings**: MDM fetches it from GitHub (ngosang/trackerslist), or the address you entered, once a day (an hour later when a fetch failed). Its trackers then see which public torrents you have, as a torrent's own trackers do.
 - **Your own devices, for the remote control.** Off until you turn it on in **Options → Remote**: then MDM answers, over HTTPS on your local network, only the phones and computers you paired with its code.
 
 The server's country that **Download File Info** and the progress window show comes from a table inside MDM: no address is sent anywhere to look it up.

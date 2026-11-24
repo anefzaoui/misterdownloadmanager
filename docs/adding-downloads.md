@@ -14,6 +14,8 @@ There are several ways to give MDM something to download. Most of them end in th
 
 MDM takes `http://`, `https://`, `ftp://`, `ftps://`, `ftpes://` and `magnet:` addresses. Anything else gets **Invalid address**.
 
+A `thunder://`, `flashget://` or `qqdl://` link is one of those addresses wrapped in base64, as download pages made for Thunder (Xunlei), FlashGet and QQ's downloader write them. MDM unwraps it and downloads from the address inside, here, from the clipboard and in **Link grabber**; the download is listed under that address. A link that wraps anything else, or that can't be read, gets **Invalid address** too.
+
 ![Enter new address to download, with the Address box, Use authorization and OK](images/help/add-url.webp)
 *The numbers are the steps above: 3 the address, 4 a login if the server needs one, 5 OK.*
 
@@ -131,7 +133,7 @@ More about queues in [Queues and the Scheduler](queues-and-scheduler.md).
 
 With **Options → General → Offer to download links copied to the clipboard** ticked (it is, unless you turned it off), when you copy a link to a file type in **Options → File types** (ZIP, EXE, MP4, PDF and many more), **Download File Info** opens with it filled in, ready for **Start Download**. Links to other pages are left alone. With **Options → Downloads → Show start download dialog** off, the download starts at once instead. Only links copied while MDM runs are taken, never one that was already there.
 
-Copied several links at once, a list or a whole forum post? Choose **Tasks → Add batch download from clipboard** (**Ctrl+B**, also in the tray icon's menu). MDM reads the clipboard then, and only then, and finds every download link in the text: `http`, `https`, `ftp` and magnet links, one per line or among other words, in Markdown (`[name](link)`) or between `<` and `>`. Each one is listed once in **Link grabber**, ticked and sorted into packages: pick a folder for each package, then **Start** or **Add to queue**. Downloads added together end with one **Downloads complete** summary. Magnet links are added as torrents with all their files once their files are known. A copied address with a number in its name, such as `https://example.com/show/ep01.mp4`, opens **Batch download** instead (below). If the clipboard holds no text, or no link, MDM says so.
+Copied several links at once, a list or a whole forum post? Choose **Tasks → Add batch download from clipboard** (**Ctrl+B**, also in the tray icon's menu). MDM reads the clipboard then, and only then, and finds every download link in the text: `http`, `https`, `ftp` and magnet links, one per line or among other words, in Markdown (`[name](link)`) or between `<` and `>`. Each one is listed once in **Link grabber**, ticked and sorted into packages: pick a folder for each package, then **Start** or **Add to queue**. Downloads added together end with one **Downloads complete** summary. Magnet links are added as torrents with all their files once their files are known. `thunder://`, `flashget://` and `qqdl://` links count as the address wrapped in them, here and for a single copied link. A copied address with a number in its name, such as `https://example.com/show/ep01.mp4`, opens **Batch download** instead (below). If the clipboard holds no text, or no link, MDM says so.
 
 ## Drag and drop
 

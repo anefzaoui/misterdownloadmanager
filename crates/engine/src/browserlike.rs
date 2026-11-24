@@ -367,7 +367,8 @@ mod imp {
                 &opts.extra_roots,
                 route,
                 Some(opts.connect_timeout),
-            ))));
+            )
+            .kept_to(&opts.family))));
         b = match proxy {
             Some(p) => b.proxy(p),
             None => b.no_proxy(),

@@ -60,7 +60,10 @@ fuzz_target!(|data: &[u8]| {
         let filtered = trackers::filter_torrent(data, proxied);
         // A torrent librqbit reads is one MDM can filter (one it can't is refused).
         if hash.is_some() {
-            assert!(filtered.is_some(), "a torrent librqbit reads wasn't filtered");
+            assert!(
+                filtered.is_some(),
+                "a torrent librqbit reads wasn't filtered"
+            );
         }
         if let Some(out) = filtered {
             // The same torrent: its info dictionary is kept byte for byte.
@@ -91,5 +94,33 @@ fuzz_target!(|data: &[u8]| {
             hash,
             "adding trackers changed the info hash"
         );
+    }
+
+    // The public tracker list (#1776): never added to a private torrent (BEP 27), whatever
+    // librqbit reads as private MDM reads so too, and the hash stays.
+    let private = trackers::private(data);
+    if let Ok(meta) = librqbit::torrent_from_bytes(data)
+        && meta.info.data.private
+    {
+        assert!(private, "librqbit reads it as private, MDM didn't");
+    }
+    let list = mdm_torrent::public_trackers::parse(
+        b"udp://tracker.example.org:1337/announce\nhttp://10.0.0.1/announce\n",
+    );
+    if let Some(out) = mdm_torrent::public_trackers::add_to(data, &list) {
+        assert!(!private, "a public list was added to a private torrent");
+        if hash.is_some() {
+            assert_eq!(
+                info_hash(&out),
+                hash,
+                "the public list changed the info hash"
+            );
+        }
+        for t in trackers::listed(&out) {
+            assert!(
+                listed.contains(&t) || list.contains(&t),
+                "{t} came from nowhere"
+            );
+        }
     }
 });
