@@ -99,6 +99,7 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Galleries: file paths are checked more carefully.
 - Command line: `playlist-info` and `playlist-get` refuse `--from 0` and `--count 0` instead of listing or downloading the wrong entries (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Command line: a resumed download's first speed no longer counts the bytes it already had as just downloaded (a resume showed several GB/s for its first seconds) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Command line: `video-info` shows sizes in the same unit as the rest of the command (a 950 KB quality no longer reads 0 MB) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).

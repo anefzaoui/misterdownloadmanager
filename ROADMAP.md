@@ -569,6 +569,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Galleries: file paths are checked more carefully
 - ✅ Command line: a playlist range from 0 or of 0 entries is refused
 - ✅ Command line: a resumed download's speed starts right
 - ✅ Command line: `video-info` sizes in the same unit as the rest
