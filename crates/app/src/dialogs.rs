@@ -3547,6 +3547,10 @@ pub struct Columns {
     list_focused: bool,
     reset: bool,
     focus_requested: bool,
+    /// The buttons' column, as wide as its longest label in this language (95 at least): the
+    /// window grows by what it takes beyond that, the list keeps its width. Measured as the
+    /// window is drawn (a new window is hidden until its second frame, so it opens at its size).
+    side_w: f32,
 }
 
 impl Columns {
@@ -3560,6 +3564,7 @@ impl Columns {
             list_focused: false,
             reset: false,
             focus_requested: false,
+            side_w: 95.0,
         }
     }
 
@@ -3589,11 +3594,26 @@ impl Columns {
             ctx,
             "columns",
             "Columns",
-            [360.0, COLUMNS_BUTTONS_Y + 32.0],
+            [265.0 + self.side_w, COLUMNS_BUTTONS_Y + 32.0],
             false,
             winui::BG(),
             |ui, o| {
                 let p = ui.painter().clone();
+                // i18n: button in the Columns dialog: move the selected column one place towards the start of the list
+                const UP: &str = crate::i18n::mark("Move up");
+                // i18n: button in the Columns dialog: move the selected column one place towards the end of the list
+                const DOWN: &str = crate::i18n::mark("Move down");
+                // i18n: button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
+                const RESET: &str = crate::i18n::mark("Reset");
+                let side_w = [UP, DOWN, RESET]
+                    .iter()
+                    .map(|l| winui::button_width(&p, l, 95.0))
+                    .fold(95.0, f32::max);
+                if side_w != self.side_w {
+                    self.side_w = side_w;
+                    ui.ctx().request_repaint();
+                }
+                let right = 265.0 + self.side_w;
                 winui::text(
                     &p,
                     o.x + 11.0,
@@ -3700,9 +3720,8 @@ impl Columns {
                 };
                 if winui::button(
                     ui,
-                    r(o, 254.0, COLUMNS_LIST_Y, 95.0, 21.0),
-                    // i18n: button in the Columns dialog: move the selected column one place towards the start of the list
-                    "Move up",
+                    r(o, 254.0, COLUMNS_LIST_Y, self.side_w, 21.0),
+                    UP,
                     state(can_up),
                     false,
                     None,
@@ -3713,9 +3732,8 @@ impl Columns {
                 }
                 if winui::button(
                     ui,
-                    r(o, 254.0, COLUMNS_LIST_Y + 27.0, 95.0, 21.0),
-                    // i18n: button in the Columns dialog: move the selected column one place towards the end of the list
-                    "Move down",
+                    r(o, 254.0, COLUMNS_LIST_Y + 27.0, self.side_w, 21.0),
+                    DOWN,
                     state(can_down),
                     false,
                     None,
@@ -3726,9 +3744,8 @@ impl Columns {
                 }
                 if winui::button(
                     ui,
-                    r(o, 254.0, COLUMNS_LIST_Y + 62.0, 95.0, 21.0),
-                    // i18n: button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
-                    "Reset",
+                    r(o, 254.0, COLUMNS_LIST_Y + 62.0, self.side_w, 21.0),
+                    RESET,
                     ButtonKind::Normal,
                     false,
                     None,
@@ -3744,7 +3761,7 @@ impl Columns {
                 self.visible[0] = true;
                 let ok = winui::button(
                     ui,
-                    r(o, 188.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
+                    r(o, right - 172.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
@@ -3753,7 +3770,7 @@ impl Columns {
                 .clicked();
                 let cancel = winui::button(
                     ui,
-                    r(o, 272.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
+                    r(o, right - 88.0, COLUMNS_BUTTONS_Y, 73.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
