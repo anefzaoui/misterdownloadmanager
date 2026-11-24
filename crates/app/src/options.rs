@@ -95,6 +95,18 @@ enum Sub {
 const REMOTE_PAGE: usize = 11;
 /// Test browser integration: from a check's line to the path under it (#818).
 const DETAIL_H: f32 = 18.0;
+/// What the Sites Logins list shows in place of a password: the same for every one; nothing
+/// for a login without one.
+const PASSWORD_MASK: &str = "********";
+
+/// The Sites Logins list's Password column for `pass`.
+fn password_shown(pass: &str) -> String {
+    if pass.is_empty() {
+        String::new()
+    } else {
+        PASSWORD_MASK.to_owned()
+    }
+}
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -2436,9 +2448,7 @@ impl OptionsDialog {
             .s
             .site_logins
             .iter()
-            .map(|(site, user, pass)| {
-                vec![site.clone(), user.clone(), "*".repeat(pass.chars().count())]
-            })
+            .map(|(site, user, pass)| vec![site.clone(), user.clone(), password_shown(pass)])
             .collect();
         // The list leaves the page's foot to Cookies for video sites (#229).
         // Named for screen readers by the page's title (#1407).
@@ -5758,6 +5768,15 @@ fn snooze_line(ui: &mut Ui, p: &egui::Painter, o: Pos2, until: crate::finish::Un
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Sites Logins' Password column: the same mask for every saved password, nothing without
+    /// one.
+    #[test]
+    fn the_logins_list_shows_one_mask_for_every_password() {
+        assert_eq!(password_shown("a"), PASSWORD_MASK);
+        assert_eq!(password_shown("a longer one"), PASSWORD_MASK);
+        assert_eq!(password_shown(""), "");
+    }
 
     /// #1448: Manual proxy/socks configuration with no protocol ticked gets http and https
     /// ticked, when Options opens on it as when it is chosen; a choice of one is kept, and the

@@ -576,6 +576,11 @@ These ship in the next version.
 - ✅ Debrid torrents: a "ready" torrent with no files listed yet is asked again
 - ✅ Real-Debrid: a download waits out the service's maintenance for up to an hour
 - ✅ Premiumize: large torrents with many folders come down
+- ✅ Find: Sites searches the parent web page too
+- ✅ Sites Logins: a saved login is matched more carefully
+- ✅ Sites Logins: saved passwords are shown more discreetly
+- ✅ Sizes: a size that rounds up to the next unit is shown in it; 1 Byte in the singular
+- ✅ Tray panel: it stays on the screen its icon is on
 - ✅ Scheduler: a queue's Once at date is kept while its start time is off
 - ✅ Download limits: an empty box keeps the limit in force
 - ✅ Scheduler: a clock that goes back no longer runs every schedule time at once

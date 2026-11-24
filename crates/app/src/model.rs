@@ -2125,30 +2125,63 @@ fn unit(n: f64, decimals: usize, template: &str) -> String {
     crate::i18n::i18n().measure(crate::i18n::lang(), n, decimals, template)
 }
 
+/// A size's or speed's unit: the largest whose number stays under 1024 as it is shown.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Measure {
+    Bytes,
+    Kb,
+    Mb,
+    Gb,
+}
+
+/// `v` in `step`s, rounded as `decimals` digits show it: a value that would print as 1024 of a
+/// unit belongs in the next one (1048575 bytes is "1.00 MB", not "1024.00 KB").
+fn shown(v: f64, step: f64, decimals: usize) -> f64 {
+    let scale = 10f64.powi(decimals as i32);
+    (v / step * scale).round() / scale
+}
+
+/// The unit `size` and `size3` show `v` in, at `decimals` digits.
+fn measure(v: f64, decimals: usize) -> Measure {
+    let k = 1024.0;
+    if shown(v, k * k * k, decimals) >= 1024.0 || shown(v, k * k, decimals) >= 1024.0 {
+        Measure::Gb
+    } else if shown(v, k, decimals) >= 1024.0 {
+        Measure::Mb
+    } else if v >= k {
+        Measure::Kb
+    } else {
+        Measure::Bytes
+    }
+}
+
 /// `7.05 MB`, `412.20 KB`, `1.97 GB` — IDM shows two decimals.
 pub fn size(b: u64) -> String {
+    let k = 1024.0;
     if !english() {
         let v = b as f64;
-        let k = 1024.0;
-        return if v >= k * k * k {
-            unit(v / (k * k * k), 2, "{n} GB")
-        } else if v >= k * k {
-            unit(v / (k * k), 2, "{n} MB")
-        } else if v >= k {
-            unit(v / k, 2, "{n} KB")
-        } else {
-            crate::i18n::tn(b, "{n} byte", "{n} bytes")
+        return match measure(v, 2) {
+            Measure::Gb => unit(v / (k * k * k), 2, "{n} GB"),
+            Measure::Mb => unit(v / (k * k), 2, "{n} MB"),
+            Measure::Kb => unit(v / k, 2, "{n} KB"),
+            Measure::Bytes => crate::i18n::tn(b, "{n} byte", "{n} bytes"),
         };
     }
     let b = b as f64;
-    if b >= 1024.0 * 1024.0 * 1024.0 {
-        format!("{:.2} GB", b / (1024.0 * 1024.0 * 1024.0)) // not translated: English path
-    } else if b >= 1024.0 * 1024.0 {
-        format!("{:.2} MB", b / (1024.0 * 1024.0)) // not translated: English path
-    } else if b >= 1024.0 {
-        format!("{:.2} KB", b / 1024.0) // not translated: English path
+    match measure(b, 2) {
+        Measure::Gb => format!("{:.2} GB", b / (k * k * k)), // not translated: English path
+        Measure::Mb => format!("{:.2} MB", b / (k * k)),     // not translated: English path
+        Measure::Kb => format!("{:.2} KB", b / k),           // not translated: English path
+        Measure::Bytes => bytes_text(b),                     // not translated: English path
+    }
+}
+
+/// `1 Byte`, `2 Bytes`, `0 Bytes` - the English path's words below a kilobyte.
+fn bytes_text(n: f64) -> String {
+    if n == 1.0 {
+        "1 Byte".to_owned()
     } else {
-        format!("{b} Bytes") // not translated: English path
+        format!("{n} Bytes")
     }
 }
 
@@ -2156,34 +2189,32 @@ pub fn size(b: u64) -> String {
 pub fn size3(b: u64) -> String {
     let v = b as f64;
     let k = 1024.0;
+    let measure = measure(v, 3);
     if !english() {
-        return if v >= k * k * k {
-            unit(v / (k * k * k), 3, "{n} GB")
-        } else if v >= k * k {
-            unit(v / (k * k), 3, "{n} MB")
-        } else {
-            unit(v / k, 3, "{n} KB")
+        return match measure {
+            Measure::Gb => unit(v / (k * k * k), 3, "{n} GB"),
+            Measure::Mb => unit(v / (k * k), 3, "{n} MB"),
+            Measure::Kb | Measure::Bytes => unit(v / k, 3, "{n} KB"),
         };
     }
-    if v >= k * k * k {
-        format!("{:.3} GB", v / (k * k * k)) // not translated: English path
-    } else if v >= k * k {
-        format!("{:.3} MB", v / (k * k)) // not translated: English path
-    } else {
-        format!("{:.3} KB", v / k) // not translated: English path
+    match measure {
+        Measure::Gb => format!("{:.3} GB", v / (k * k * k)), // not translated: English path
+        Measure::Mb => format!("{:.3} MB", v / (k * k)),     // not translated: English path
+        Measure::Kb | Measure::Bytes => format!("{:.3} KB", v / k), // not translated: English path
     }
 }
 
 /// `11.623 MB/sec`, `512.000 KB/sec` (IDM's progress dialog uses three decimals).
 pub fn rate(bps: f64) -> String {
+    let mb = shown(bps, 1024.0, 3) >= 1024.0;
     if !english() {
-        return if bps >= 1024.0 * 1024.0 {
+        return if mb {
             unit(bps / (1024.0 * 1024.0), 3, "{n} MB/sec")
         } else {
             unit(bps / 1024.0, 3, "{n} KB/sec")
         };
     }
-    if bps >= 1024.0 * 1024.0 {
+    if mb {
         format!("{:.3} MB/sec", bps / (1024.0 * 1024.0)) // not translated: English path
     } else {
         format!("{:.3} KB/sec", bps / 1024.0) // not translated: English path
@@ -2505,6 +2536,29 @@ mod size_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_single_byte_is_written_in_the_singular() {
+        assert_eq!(super::bytes_text(0.0), "0 Bytes");
+        assert_eq!(super::bytes_text(1.0), "1 Byte");
+        assert_eq!(super::bytes_text(2.0), "2 Bytes");
+        assert_eq!(super::bytes_text(1023.0), "1023 Bytes");
+    }
+
+    #[test]
+    fn a_size_that_rounds_to_1024_moves_up_a_unit() {
+        use super::{Measure, measure, shown};
+        assert_eq!(measure(1023.0, 2), Measure::Bytes);
+        assert_eq!(measure(1024.0, 2), Measure::Kb);
+        // 1 MiB - 1 byte, at two decimals: 1023.999... KB would print as 1024.00 KB.
+        assert_eq!(measure(1024.0 * 1024.0 - 1.0, 2), Measure::Mb);
+        assert_eq!(measure(1024.0 * 1024.0 * 1024.0 - 1.0, 2), Measure::Gb);
+        // Three decimals: the same MiB boundary still prints 1023.999 KB...
+        assert_eq!(measure(1024.0 * 1024.0 - 1.0, 3), Measure::Kb);
+        // ...but 1 GiB - 1 would print 1024.000 MB, so it is GB.
+        assert_eq!(measure(1024.0 * 1024.0 * 1024.0 - 1.0, 3), Measure::Gb);
+        assert_eq!(shown(1024.0 * 1024.0 - 1.0, 1024.0, 2), 1024.0);
+    }
+
     /// A debrid torrent's ticked files are kept with the list; a list saved before them (no
     /// `files`) means all of them.
     #[test]
