@@ -936,6 +936,9 @@ const bypass = new Map(); // address -> {at, tab, page, used}
 // download its page starts, stay the browser's that long; anything else only BYPASS_MS.
 const BYPASS_CHECK_MS = 60000;
 const BYPASS_MS = 10000;
+// The press and the click that follow it: page.js says the same Alt+click twice this close
+// together, and only the first lets the browser's download through.
+const BYPASS_PRESS_MS = 2000;
 
 // `clicked`: the download is a link the user just clicked without Alt (Safari's `link`), never
 // one that follows an Alt+click.
@@ -3611,8 +3614,11 @@ async function pageMessage(m, sender) {
   }
   // Alt held on a link: as the button went down, and at the click (page.js).
   if (m.type === "bypass" && typeof m.url === "string") {
+    // The same press says itself twice (button down, then click); a later Alt+click on the
+    // same link is a new one, and lets its own download through.
     const was = bypass.get(m.url);
-    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(was && was.used) });
+    const samePress = was && Date.now() - was.at < BYPASS_PRESS_MS;
+    bypass.set(m.url, { at: Date.now(), tab: tab.id, page: page || "", used: Boolean(samePress && was.used) });
     return { ok: true };
   }
   if (m.type === "video" && page) {
