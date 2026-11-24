@@ -901,6 +901,11 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Pilih file .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Pilih file font
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Pilih runtime JavaScript (Node.js, Deno, QuickJS, atau Bun)
@@ -1686,6 +1691,10 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC mempertahankan suara persis seperti aslinya, tetapi tidak dapat menambahkan kualitas yang tidak dimiliki suara situs: ukuran file hanya akan lebih besar.
 #. text in categories.rs
 	Folder:	Folder:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	File font
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 	For 1 hour	Selama 1 jam
@@ -4442,6 +4451,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	Nama perangkat ini
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	File ini tidak dapat digunakan sebagai font.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 	This file can't be used as a theme: {error}	File ini tidak dapat digunakan sebagai tema: {error}
@@ -6363,6 +6376,11 @@ menu	&Download Now	&Unduh Sekarang
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&Keluar
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&huruf
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Import	&Impor
@@ -6424,6 +6442,11 @@ menu	&Stop All	&Hentikan Semua
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Hentikan Unduhan
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&Font sistem
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	Ikon &baki
@@ -6538,6 +6561,12 @@ menu	C&ustomize URL List...	K&ustomisasi Daftar URL...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	Periksa &pembaruan...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&Pilih file font...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	Klasik
 #. menu command in the main window
@@ -6603,9 +6632,6 @@ menu	Find Next (F3)	Cari Berikutnya (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	Potongan pertama dan terakhir dulu
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	Font
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

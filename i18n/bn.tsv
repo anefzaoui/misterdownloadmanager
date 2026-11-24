@@ -1074,6 +1074,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	একটি .torrent ফাইল বেছে নিন
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	একটি ফন্ট ফাইল নির্বাচন করুন
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	একটি জাভাস্ক্রিপ্ট রানটাইম বেছে নিন (Node.js, Deno, QuickJS অথবা Bun)
@@ -2018,6 +2023,10 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC শব্দকে হুবহু রাখে, কিন্তু সাইটের শব্দের যে গুণমান নেই তা যোগ করতে পারে না: ফাইলটি কেবল বড় হয়।
 #. text in categories.rs
 	Folder:	ফোল্ডার:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	ফন্ট ফাইল
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -5355,6 +5364,10 @@
 #, machine
 	This device's name	এই ডিভাইসের নাম
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	এই ফাইলটি একটি ফন্ট হিসাবে ব্যবহার করা যাবে না.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -7590,6 +7603,11 @@ menu	&Download Now	এখনই ডাউনলোড করুন(&D)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	প্রস্থান করুন(&E)
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&হরফ
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Import	ইম্পোর্ট করুন(&I)
@@ -7651,6 +7669,11 @@ menu	&Stop All	সব ডাউনলোড থামান(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	ডাউনলোড থামান(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&সিস্টেম ফন্ট
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	ট্রে আইকন(&T)
@@ -7760,6 +7783,12 @@ menu	C&ustomize URL List...	URL তালিকা কাস্টমাইজ �
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	আপডেট খুঁজুন(&U)...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&একটি ফন্ট ফাইল নির্বাচন করুন...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	ক্লাসিক
 #. menu command in the main window
@@ -7825,9 +7854,6 @@ menu	Find Next (F3)	পরবর্তী খুঁজুন (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	প্রথম ও শেষ খণ্ড আগে
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	ফন্ট
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

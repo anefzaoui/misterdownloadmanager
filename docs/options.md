@@ -203,7 +203,7 @@ A few settings live outside this window:
 
 - **Downloads → Speed Limiter → Settings...** — speed limits. See [Connections and speed](connections-and-speed.md#speed-limiter).
 - **Tasks → Torrent settings...** — sharing and file associations, and whether the browser hands `.torrent` downloads to MDM. See [Torrents](torrents.md#torrent-settings).
-- **View → Dark Mode support**, **Always dark**, **Theme**, **Draw with**, **Interface size** and **Language**. See [Getting started](getting-started.md#themes) and [Troubleshooting](troubleshooting.md).
+- **View → Dark Mode support**, **Always dark**, **Theme**, **Draw with**, **Interface size**, **Font** (the interface's own font file and text size) and **Language**. See [Getting started](getting-started.md#themes) and [Troubleshooting](troubleshooting.md).
 - **Help → Check for updates...** — **Check for updates at every start** is in that window.
 
 ## Next steps

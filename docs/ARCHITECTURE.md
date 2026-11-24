@@ -152,6 +152,16 @@ View → Interface size (`scale.rs`, #262) is egui's zoom factor over the displa
 every window is laid out in points, so it opens that much larger; one larger than the screen
 scrolls.
 
+View → Font (`theme.rs`, #1489) is separate: the font file the interface's text is drawn in
+(`interface_font` in `settings.json`; Segoe UI, the system's own, unless chosen) and
+`interface_text_size`,
+the percent of the theme's sizes the text is drawn at. `theme::font_size` is the one place the
+sizes come from, for egui's text styles and for the custom-drawn Win32 controls alike
+(`winui::tahoma`); the layout's own measurements don't change, so text can overflow where a
+window is tight, but nothing moves. On Windows the DirectWrite rasterizer
+(`win32::classic_text`) draws the chosen file too, and the glyph atlas is rebuilt when the font
+changes.
+
 ### Data
 
 The download list and settings are saved atomically to the data folder (`downloads.json`):

@@ -1133,6 +1133,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	Pasirinkite .torrent failą
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Pasirinkite šrifto failą
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Pasirinkite „JavaScript“ vykdymo aplinką („Node.js“, „Deno“, „QuickJS“ arba „Bun“)
@@ -2151,6 +2156,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	Aplankas:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	Šrifto failai
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -5703,6 +5712,10 @@
 #, machine
 	This device's name	Šio įrenginio pavadinimas
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	Šis failas negali būti naudojamas kaip šriftas.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -8043,6 +8056,11 @@ menu	&Download Now	&Atsisiųsti dabar
 #, machine
 menu	&Exit	&Išeiti
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&Šriftas
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8121,6 +8139,11 @@ menu	&Stop All	&Stabdyti visus
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	&Stabdyti atsisiuntimą
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	Sistem&os šriftas
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8267,6 +8290,12 @@ menu	C&ustomize URL List...	Tinkinti URL są&rašą...
 #, machine
 menu	Check for &updates...	Tikrinti, ar yra nauji&nių...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	Pasirinkite šrifto fail&ą...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	Klasikinė
@@ -8355,10 +8384,6 @@ menu	Find Next (F3)	Rasti kitą (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	Pirmos ir paskutinės dalys pirmiausia
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	Šriftas
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
