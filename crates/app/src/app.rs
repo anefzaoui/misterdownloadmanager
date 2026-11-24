@@ -3430,6 +3430,7 @@ impl App {
             // clipboard is MDM_TEST_CLIPBOARD's file).
             "batch-clipboard" => self.run(Cmd::BatchClipboard, None, ctx),
             "find" => self.run(Cmd::Find, None, ctx),
+            "columns" => self.run(Cmd::ColumnsDialog, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
             // Update now's end-to-end tests (feature `test-update`, never in a release): Update
