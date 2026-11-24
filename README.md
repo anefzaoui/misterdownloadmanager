@@ -312,7 +312,8 @@ right-to-left window.
   the sound alone), **image galleries** with gallery-dl, and **torrents and magnet links**
   (sequential order, RSS feeds, sharing limits, an optional public tracker list for more peers).
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
-  (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
+  (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site, and
+  unwraps `thunder://`, `flashget://` and `qqdl://` links to the address inside them. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
 - **Downloads overnight** with queues and a scheduler that can wake the computer, then shuts it
   down if you like.

@@ -1091,7 +1091,7 @@ impl Programs {
         let p = ui.painter().clone();
         for (k, h) in HELPERS.into_iter().enumerate() {
             let y = o.y + 8.0 + k as f32 * 78.0;
-            winui::text_font(
+            let name_rc = winui::text_font(
                 &p,
                 winui::tahoma_bold(),
                 o.x + 14.0,
@@ -1099,6 +1099,8 @@ impl Programs {
                 h.name(),
                 winui::TEXT(),
             );
+            // Painted text a screen reader couldn't see before (#1407).
+            winui::readable(ui, name_rc, ("helper-name", k), h.name());
             let found = self.found[k].as_ref();
             let chosen = self
                 .dir
@@ -1170,7 +1172,7 @@ impl Programs {
                 )
                 .to_owned(),
             };
-            winui::fit(
+            let status_rc = winui::fit(
                 ui,
                 &p,
                 o.x + 14.0,
@@ -1180,6 +1182,7 @@ impl Programs {
                 o.x + 486.0,
                 ("helper", k),
             );
+            winui::readable(ui, status_rc, ("helper-status", k), &status);
             // Its updates: MDM's own copy's, or the person's to make (#1544).
             let name_end =
                 o.x + 14.0 + winui::text_width_font(&p, winui::tahoma_bold(), h.name()) + 10.0;
@@ -1205,7 +1208,9 @@ impl Programs {
             )[..] else {
                 unreachable!("two buttons")
             };
-            if winui::button(
+            // i18n: file picker title; {name} = yt-dlp or ffmpeg
+            let choose = crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", h.name())]);
+            let other = winui::button(
                 ui,
                 r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
                 // i18n: Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
@@ -1217,17 +1222,23 @@ impl Programs {
                 },
                 false,
                 None,
-            )
-            .clicked()
-            {
-                // i18n: file picker title; {name} = yt-dlp or ffmpeg
-                let title =
-                    crate::i18n::fmt(crate::i18n::t("Choose {name}"), &[("name", h.name())]);
+            );
+            // The same label on every row: said with its helper's name (#1407), the visible
+            // label first so voice control finds it by what it shows.
+            winui::name(
+                &other,
+                &crate::i18n::fmt(
+                    // i18n: Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+                    crate::i18n::t("Use another program for {name}..."),
+                    &[("name", h.name())],
+                ),
+            );
+            if other.clicked() {
                 winui::start_pick(ui.ctx(), &format!("helper-{}", h.name()), move || {
-                    crate::winui::file_dialog(&title).pick_file()
+                    crate::winui::file_dialog(&choose).pick_file()
                 });
             }
-            if winui::button(
+            let own_b = winui::button(
                 ui,
                 r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
                 own_label,
@@ -1238,8 +1249,20 @@ impl Programs {
                 },
                 false,
                 None,
-            )
-            .clicked()
+            );
+            // "Use MDM's own copy" on every row: said with its helper's name (#1407); the
+            // Install labels already carry it.
+            if own_label == "Use MDM's own copy" {
+                winui::name(
+                    &own_b,
+                    &crate::i18n::fmt(
+                        // i18n: Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+                        crate::i18n::t("Use MDM's own copy of {name}"),
+                        &[("name", h.name())],
+                    ),
+                );
+            }
+            if own_b.clicked()
                 && let Some(dir) = self.dir.clone()
             {
                 match own_button {
@@ -1303,7 +1326,7 @@ impl Programs {
         let y = 370.0;
         // What failed, left of the buttons.
         if let Some(e) = &self.error {
-            winui::fit(
+            let rc = winui::fit(
                 ui,
                 &p,
                 o.x + 14.0,
@@ -1313,6 +1336,7 @@ impl Programs {
                 o.x + check_at.0 - 8.0,
                 "helper-error",
             );
+            winui::readable(ui, rc, ("helpers", "error"), e);
         }
         if winui::button(
             ui,
@@ -1374,6 +1398,12 @@ impl Programs {
             });
             // i18n: Helpers: button: check for a newer version of this helper now and install it
             let update_label = crate::i18n::t("Update");
+            // "Update" and "Go back to ..." repeat on every row: a screen reader says each
+            // with its helper's name (#1407); the runtime's is "Node.js", not "node".
+            let for_tool = match t {
+                Tool::Node => mdm_tools::jsruntime::Kind::Node.label(),
+                _ => t.name(),
+            };
             let mut row: Vec<(&str, f32, f32)> = Vec::new();
             if let Some(l) = &back_label {
                 row.push((l.as_str(), 270.0, 130.0));
@@ -1395,23 +1425,40 @@ impl Programs {
                 && let Some(&(x, w)) = at.next()
             {
                 right = right.min(o.x + x - 8.0);
-                if winui::button(ui, r(o, x, y - o.y + 4.0, w, 21.0), l, kind, false, None)
-                    .clicked()
-                {
+                let resp = winui::button(ui, r(o, x, y - o.y + 4.0, w, 21.0), l, kind, false, None);
+                if let Some(prev) = &own.previous {
+                    winui::name(
+                        &resp,
+                        &crate::i18n::fmt(
+                            // i18n: Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+                            crate::i18n::t("Go back to {version} of {name}"),
+                            &[("version", &prev.version), ("name", for_tool)],
+                        ),
+                    );
+                }
+                if resp.clicked() {
                     back = Some(t);
                 }
             }
             if let Some(&(x, w)) = at.next() {
                 right = right.min(o.x + x - 8.0);
-                if winui::button(
+                let resp = winui::button(
                     ui,
                     r(o, x, y - o.y + 4.0, w, 21.0),
                     update_label,
                     kind,
                     false,
                     None,
-                )
-                .clicked()
+                );
+                winui::name(
+                    &resp,
+                    &crate::i18n::fmt(
+                        // i18n: Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+                        crate::i18n::t("Update {name}"),
+                        &[("name", for_tool)],
+                    ),
+                );
+                if resp.clicked()
                     && let Some(dir) = self.dir.clone()
                 {
                     self.update(vec![t], dir, rt, ui.ctx());
@@ -1419,7 +1466,7 @@ impl Programs {
             }
         }
         if let Some(s) = &status {
-            winui::fit(
+            let rc = winui::fit(
                 ui,
                 p,
                 from,
@@ -1429,6 +1476,7 @@ impl Programs {
                 right,
                 ("helper-update", t as usize),
             );
+            winui::readable(ui, rc, ("helper-update", t as usize), s);
         }
         if let (Some(t), Some(dir)) = (back, self.dir.clone()) {
             self.go_back(t, dir, ui.ctx());
@@ -1471,7 +1519,7 @@ impl Programs {
         let y = o.y + 8.0 + k as f32 * 78.0;
         // i18n: Video helpers: the row of the JavaScript runtime (Node.js, Deno...) yt-dlp needs for YouTube's videos
         let title = crate::i18n::t("JavaScript runtime (for YouTube)");
-        winui::text_font(
+        let title_rc = winui::text_font(
             p,
             winui::tahoma_bold(),
             o.x + 14.0,
@@ -1479,6 +1527,8 @@ impl Programs {
             title,
             winui::TEXT(),
         );
+        // Painted text a screen reader couldn't see before (#1407).
+        winui::readable(ui, title_rc, ("helper-name", k), title);
         let runtime = self.runtime.clone();
         // MDM's own Node.js, the one in use.
         let own_node = runtime
@@ -1492,17 +1542,19 @@ impl Programs {
         if own_node {
             self.update_row(ui, p, o, y, o.x + 14.0 + after, Tool::Node, None, rt);
         } else {
-            winui::fit(
+            // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
+            let what = crate::i18n::t("lets yt-dlp list all of YouTube's qualities");
+            let what_rc = winui::fit(
                 ui,
                 p,
                 o.x + 14.0 + after,
                 y + 16.0,
-                // i18n: Video helpers: what the JavaScript runtime is for, after its name (yt-dlp is a program's name)
-                crate::i18n::t("lets yt-dlp list all of YouTube's qualities"),
+                what,
                 winui::MUTED(),
                 o.x + 486.0,
                 ("helper-what", k),
             );
+            winui::readable(ui, what_rc, ("helper-what", k), what);
         }
         let available = mdm_tools::jsruntime::available();
         let path_of =
@@ -1559,7 +1611,7 @@ impl Programs {
             )
             .to_owned()
         };
-        winui::fit(
+        let status_rc = winui::fit(
             ui,
             p,
             o.x + 14.0,
@@ -1569,6 +1621,7 @@ impl Programs {
             o.x + 486.0,
             ("helper", k),
         );
+        winui::readable(ui, status_rc, ("helper-status", k), &status);
         let chosen = runtime.as_ref().is_some_and(|r| r.from == Origin::Chosen);
         // MDM's own copy, as the helpers' rows bring it: back from a chosen runtime, or
         // downloaded where the computer has none ("Install Node.js") or only MDM's earlier Deno
@@ -1597,7 +1650,10 @@ impl Programs {
         )[..] else {
             unreachable!("two buttons")
         };
-        if winui::button(
+        // i18n: file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
+        let choose = crate::i18n::t("Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)")
+            .to_owned();
+        let other = winui::button(
             ui,
             r(o, other_at.0, y - o.y + 46.0, other_at.1, 21.0),
             "Use another program...",
@@ -1608,18 +1664,20 @@ impl Programs {
             },
             false,
             None,
-        )
-        .clicked()
-        {
-            // i18n: file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
-            let title =
-                crate::i18n::t("Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)")
-                    .to_owned();
+        );
+        // The same label on every row: said with what it chooses (#1407), the visible label
+        // first so voice control finds it by what it shows.
+        winui::name(
+            &other,
+            // i18n: Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+            crate::i18n::t("Use another program as the JavaScript runtime..."),
+        );
+        if other.clicked() {
             winui::start_pick(ui.ctx(), "helper-js-runtime", move || {
-                crate::winui::file_dialog(&title).pick_file()
+                crate::winui::file_dialog(&choose).pick_file()
             });
         }
-        if winui::button(
+        let own_b = winui::button(
             ui,
             r(o, own_at.0, y - o.y + 46.0, own_at.1, 21.0),
             own_label,
@@ -1630,8 +1688,20 @@ impl Programs {
             },
             false,
             None,
-        )
-        .clicked()
+        );
+        // "Use MDM's own copy" on every row: said with its helper's name (#1407); the
+        // Install labels already carry it.
+        if own_label == "Use MDM's own copy" {
+            winui::name(
+                &own_b,
+                &crate::i18n::fmt(
+                    // i18n: Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+                    crate::i18n::t("Use MDM's own copy of {name}"),
+                    &[("name", Kind::Node.label())],
+                ),
+            );
+        }
+        if own_b.clicked()
             && let Some(dir) = self.dir.clone()
         {
             if chosen {
