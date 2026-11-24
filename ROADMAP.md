@@ -573,6 +573,10 @@ These ship in the next version.
   pages, read again at every build; visitors rate MDM from one to five stars on the site (change
   or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
   that keeps no IP address; only these ratings go into the structured data
+- ✅ Tests: the check that a finished file's damaged part is downloaded again no longer fails now
+  and then (seen on a Linux runner): the test server damages only the first answer that carries
+  those bytes, and the first download, on several connections, could split that answer off
+  before it got there, so the file came out whole; the first download now takes one connection
 - ✅ Move a paused or stopped download to another folder: **Move/Rename** and File Properties'
   **Move** take a download stopped part-way too, its part file and resume state along (copied
   then deleted on another drive, after a free space check), and it resumes there from where it
