@@ -491,7 +491,12 @@ async fn retr(
     from: u64,
 ) -> Result<TransferStream<AsyncRustlsStream>, Error> {
     let lost = |e| failure(e, NetKind::Lost);
-    s.resume_transfer(from as usize).await.map_err(lost)?;
+    // suppaftp's REST takes a usize: on a 32-bit build a file of 4 GB or more has no offset
+    // it can ask for, and truncating one would resume at the wrong place in the file.
+    let offset = usize::try_from(from).map_err(|_| {
+        Error::BadState("the file is over 4 GB, which this 32-bit build can't resume".into())
+    })?;
+    s.resume_transfer(offset).await.map_err(lost)?;
     s.retr_as_stream(path).await.map_err(lost)
 }
 
