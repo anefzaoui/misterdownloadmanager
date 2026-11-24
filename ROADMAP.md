@@ -576,6 +576,9 @@ These ship in the next version.
 - ✅ CI and the release take NASM from nasm.us, checked against its pinned SHA256, and use
   Chocolatey's feed only when that download fails (its outage had stopped every Windows build)
 - ✅ Torrents: trackers are checked more carefully.
+- ✅ A quick Ctrl- or Shift-click on a row of the download list or the Scheduler's Files list
+  keeps its key on a busy computer: a click has the keys held as its button went down
+  ([#1734](https://github.com/anefzaoui/misterdownloadmanager/issues/1734))
 - ✅ Helpers installs a helper that isn't there yet (gallery-dl before the first gallery, or
   any other): **Install** in its row downloads MDM's own copy, checked as always, with its
   progress, then shows its version and **Update**, and automatic updates cover it; greyed, with
