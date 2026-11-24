@@ -570,6 +570,13 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 These ship in the next version.
 
 - ✅ Torrents: trackers are checked more carefully.
+- ✅ Torrents: filtering a torrent's trackers never adds one it didn't list (a torrent that
+  repeats its tracker list counts the first only)
+  ([#1805](https://github.com/anefzaoui/misterdownloadmanager/issues/1805))
+- ✅ A preview pane beside the download list (View, the toolbar, Alt+P): the selected download's
+  picture (the system's thumbnail, else its type's icon) and details, whether its file is still
+  there, resizable, on the left in right-to-left languages
+  ([discussion #1368](https://github.com/anefzaoui/misterdownloadmanager/discussions/1368))
 - ✅ The browser add-on's video button on Facebook's feed sends the video it is over, by the id
   Facebook gives its player (as its /reel/ address), else the video's links in its post, the post's
   permalink last; a comment's link to another video is never taken
@@ -586,9 +593,14 @@ These ship in the next version.
   [#1786](https://github.com/anefzaoui/misterdownloadmanager/issues/1786),
   [#1788](https://github.com/anefzaoui/misterdownloadmanager/issues/1788),
   [#1789](https://github.com/anefzaoui/misterdownloadmanager/issues/1789))
-- 🔄 Website: `Link` headers on the home page for the API catalog, the sitemap and its Markdown
-  ([#1787](https://github.com/anefzaoui/misterdownloadmanager/issues/1787)); a page asked for with
-  `Accept: text/markdown` answered in Markdown (the Worker is written, not switched on)
+- ✅ Website: `Link` headers on the home page for the API catalog, the sitemap and its Markdown
+  ([#1787](https://github.com/anefzaoui/misterdownloadmanager/issues/1787))
+- 🔄 Website: a page asked for with `Accept: text/markdown` answered in Markdown (the Worker is
+  written, not switched on)
+- ✅ Website: a star rating shows as given the moment it's picked (thanks and numbers included),
+  then follows the ratings service's answer, or goes back and says why if it couldn't be sent;
+  the check that a person is rating starts as the visitor reaches for the stars, and the service
+  answers in fewer steps
 - ✅ Tests: the check that a finished file's damaged part is downloaded again no longer fails now
   and then (seen on a Linux runner): the test server damages only the first answer that carries
   those bytes, and the first download, on several connections, could split that answer off

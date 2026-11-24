@@ -18529,6 +18529,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "主页和下载页面显示两种评分，绝不混淆："
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>星级评分</g1>，仅当您在主页或下载页面上评价 MDM 时：您的评分会发送到我们的评分服务，这是一个在 Cloudflare 上运行的小程序（Workers，数据库位于 Cloudflare 的 D1）。它会保存两项内容：星级数量，以及您 IP 地址的加盐哈希值，这是一个使用密钥生成的一次性代码，无法从中反向读取地址。哈希值允许您更改或移除评分，而不是添加新的评分；您的 IP 地址本身绝不会被存储或写入日志。为了防止自动投票，评分首先会通过 <g2>Cloudflare Turnstile</g2> 进行检查，以确认是真人正在评分：只有当您开始选择星级时（以便您选择后评分即可发送），其脚本才会加载并开始检查，Cloudflare 会根据<g3>Cloudflare 的隐私政策</g3>查看您的 IP 地址和浏览器详细信息以进行此检查。您的评分及其哈希值会一直保留，直到网站不再显示评分，或者您使用<g4>移除我的评分</g4>将其移除；为了限制同一连接的评分频率，每次尝试（相同的哈希值及其时间）会保留一小时，然后删除。网站仅显示平均分、评分数量以及每个星级获得的评分数量。您的浏览器也会在本地存储中记住您自己的评分，以便向您显示；它绝不会发送到任何地方。"
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新于 2026-11-24 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "最后更新：2026年11月24日"
   }
  }
 }

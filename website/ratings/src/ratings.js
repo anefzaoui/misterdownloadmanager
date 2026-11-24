@@ -57,15 +57,21 @@ async function handle(request, env, cors) {
 }
 
 // Counts an attempt to rate or remove; a reply when the visitor is over the limit, else null.
+// One trip to the database: the attempt is written only while the visitor is under the limit
+// (the count and the write are one statement, so attempts sent at once can't both slip in), and
+// attempts older than ATTEMPTS_KEEP_S go.
 async function overLimit(env, voter, cors) {
   const now = Math.floor(Date.now() / 1000);
-  const recent = await env.DB.prepare("SELECT COUNT(*) AS n FROM attempts WHERE voter = ?1 AND at > ?2")
-    .bind(voter, now - WINDOW_S).first("n");
-  if (recent >= MAX_POSTS) return reply({ error: "rate-limit" }, 429, cors, { "Retry-After": String(WINDOW_S) });
-  await env.DB.batch([
-    env.DB.prepare("INSERT INTO attempts (voter, at) VALUES (?1, ?2)").bind(voter, now),
+  const [counted] = await env.DB.batch([
+    env.DB.prepare(
+      "INSERT INTO attempts (voter, at) SELECT ?1, ?2 " +
+        "WHERE (SELECT COUNT(*) FROM attempts WHERE voter = ?1 AND at > ?3) < ?4",
+    ).bind(voter, now, now - WINDOW_S, MAX_POSTS),
     env.DB.prepare("DELETE FROM attempts WHERE at < ?1").bind(now - ATTEMPTS_KEEP_S),
   ]);
+  if (!counted || !counted.meta || counted.meta.changes !== 1) {
+    return reply({ error: "rate-limit" }, 429, cors, { "Retry-After": String(WINDOW_S) });
+  }
   return null;
 }
 
@@ -77,10 +83,14 @@ async function remove(request, env, cors) {
   const voter = await voterId(env, ip);
   const limited = await overLimit(env, voter, cors);
   if (limited) return limited;
-  const previous = await env.DB.prepare("SELECT stars FROM ratings WHERE voter = ?1").bind(voter).first("stars");
-  await env.DB.prepare("DELETE FROM ratings WHERE voter = ?1").bind(voter).run();
-  const out = await summary(env, voter);
-  out.previous = previous ?? null;
+  // The rating it was, the removal and the numbers after it: one trip, one transaction.
+  const [previous, , ...reads] = await env.DB.batch([
+    env.DB.prepare("SELECT stars FROM ratings WHERE voter = ?1").bind(voter),
+    env.DB.prepare("DELETE FROM ratings WHERE voter = ?1").bind(voter),
+    ...summaryReads(env, voter),
+  ]);
+  const out = summaryOf(...reads);
+  out.previous = starsOf(previous);
   return reply(out, 200, cors);
 }
 
@@ -116,22 +126,37 @@ async function rate(request, env, cors) {
   if (check === "unreachable") return reply({ error: "turnstile-unreachable" }, 502, cors);
   if (check !== "ok") return reply({ error: "turnstile" }, 403, cors);
 
-  const previous = await env.DB.prepare("SELECT stars FROM ratings WHERE voter = ?1").bind(voter).first("stars");
-  // One row per visitor; the totals follow it in the same statement (the schema's triggers).
-  await env.DB.prepare(
-    "INSERT INTO ratings (voter, stars) VALUES (?1, ?2) " +
-      "ON CONFLICT (voter) DO UPDATE SET stars = excluded.stars WHERE stars <> excluded.stars",
-  ).bind(voter, stars).run();
-  const out = await summary(env, voter);
-  out.previous = previous ?? null;
+  // The rating it was, the new one and the numbers after it: one trip, one transaction. One row
+  // per visitor; the totals follow it in the same statement (the schema's triggers).
+  const [previous, , ...reads] = await env.DB.batch([
+    env.DB.prepare("SELECT stars FROM ratings WHERE voter = ?1").bind(voter),
+    env.DB.prepare(
+      "INSERT INTO ratings (voter, stars) VALUES (?1, ?2) " +
+        "ON CONFLICT (voter) DO UPDATE SET stars = excluded.stars WHERE stars <> excluded.stars",
+    ).bind(voter, stars),
+    ...summaryReads(env, voter),
+  ]);
+  const out = summaryOf(...reads);
+  out.previous = starsOf(previous);
   return reply(out, 200, cors);
 }
 
-// The numbers everyone sees, and the asking visitor's own rating.
+// The numbers everyone sees, and the asking visitor's own rating, in one trip to the database.
 export async function summary(env, voter) {
-  const { results } = await env.DB.prepare("SELECT stars, n FROM totals").all();
+  return summaryOf(...(await env.DB.batch(summaryReads(env, voter))));
+}
+
+// What summary reads (the totals, then the visitor's rating when there is a visitor), for a batch.
+function summaryReads(env, voter) {
+  const reads = [env.DB.prepare("SELECT stars, n FROM totals")];
+  if (voter) reads.push(env.DB.prepare("SELECT stars FROM ratings WHERE voter = ?1").bind(voter));
+  return reads;
+}
+
+// summary's answer from the results of summaryReads.
+function summaryOf(totals, mine) {
   const distribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-  for (const row of results || []) {
+  for (const row of (totals && totals.results) || []) {
     if (row.stars >= 1 && row.stars <= 5) distribution[row.stars] = Math.max(0, Number(row.n) || 0);
   }
   let count = 0;
@@ -140,15 +165,18 @@ export async function summary(env, voter) {
     count += distribution[s];
     sum += s * distribution[s];
   }
-  const mine = voter
-    ? await env.DB.prepare("SELECT stars FROM ratings WHERE voter = ?1").bind(voter).first("stars")
-    : null;
   return {
     average: count ? Math.round((sum / count) * 100) / 100 : 0,
     count,
     distribution,
-    mine: mine ?? null,
+    mine: starsOf(mine),
   };
+}
+
+// The stars of a batch's "SELECT stars ..." result, or null when it found no rating.
+function starsOf(result) {
+  const row = result && result.results && result.results[0];
+  return row && row.stars != null ? row.stars : null;
 }
 
 function configured(env) {

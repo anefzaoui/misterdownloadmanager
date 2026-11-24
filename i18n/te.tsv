@@ -101,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} డౌన్‌లోడ్ పూర్తయింది|{n} డౌన్‌లోడ్‌లు పూర్తయ్యాయి
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} డౌన్‌లోడ్ ఎంపికైంది|{n} డౌన్‌లోడ్‌లు ఎంపికయ్యాయి
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ఫైల్‌కు ఇప్పటికే ఉన్న ఫైల్ పేరు ఉండటంతో దానికి నంబర్ జోడించబడింది|{n} ఫైల్‌లకు ఇప్పటికే ఉన్న ఫైల్ పేర్లు ఉండటంతో వాటికి నంబర్‌లు జోడించబడ్డాయి
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} డౌన్‌లోడ్ పూర్తయింది|{n} డౌన్‌లోడ్‌లు పూర్తయ్యాయి
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -173,6 +181,11 @@
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} లింక్ గ్రాబర్‌కు {n} లింక్‌ను పంపాలనుకుంటుంది.|{site} లింక్ గ్రాబర్‌కు {n} లింక్‌లను పంపాలనుకుంటుంది.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} మరియు {n} తెలియని పరిమాణం|{size} మరియు {n} తెలియని పరిమాణం
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -488,6 +501,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	జోడించబడింది. MDM టొరెంట్‌ను చదువుతోంది: అది క్షణంలో జాబితాలో చేరుతుంది.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	జోడించబడింది:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -2011,6 +2028,10 @@
 #. text in categories.rs
 #, machine
 	File types:	ఫైల్ రకాలు:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	ఫైల్:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2071,6 +2092,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	పూర్తయినవి
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	పూర్తయింది:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2376,6 +2401,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	వర్గాలను దాచండి(&c)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	ప్రివ్యూ పేన్‌ను దాచండి(&P)
 #. button in a download's progress window
 #, machine
 	Hide tab	ట్యాబ్‌ను దాచండి
@@ -2622,6 +2652,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	దాని ఫైల్‌లను వ్రాయడం సాధ్యం కాలేదు: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	దీని ఫోల్డర్‌ను ఇప్పుడు చేరుకోలేము
 #. text in relocate.rs
 #. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
 #, machine
@@ -2907,6 +2941,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	పేజీని వెతుకుతోంది...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	చూస్తోంది...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3252,6 +3291,10 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	తరలించు/పేరు మార్చు
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	తరలించబడింది లేదా తొలగించబడింది
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
 #, machine
@@ -3430,6 +3473,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	క్లిప్‌బోర్డ్‌లో డౌన్‌లోడ్ లింక్‌లు కనుగొనబడలేదు. http, https, ftp లేదా మాగ్నెట్ లింక్‌లతో కూడిన వచనాన్ని కాపీ చేసి, మళ్లీ ప్రయత్నించండి.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	డౌన్‌లోడ్ ఏదీ ఎంపిక కాలేదు
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3575,6 +3622,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	ఇంకా ఇన్‌స్టాల్ చేయబడలేదు
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	ఇంకా తెలియదు
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3710,6 +3761,13 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ఆన్‌లైన్
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	పూర్తయిన డౌన్‌లోడ్‌ను లేదా ఇంకా ప్రారంభించని డౌన్‌లోడ్‌ను మాత్రమే తరలించవచ్చు
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	పూర్తయిన డౌన్‌లోడ్‌ను లేదా ఇంకా ప్రారంభించని డౌన్‌లోడ్‌ను మాత్రమే తరలించవచ్చు. ముందుగా దాన్ని ఆపి, పూర్తయ్యేలా చేయండి.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4365,6 +4423,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	రెండవ ఫైల్:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	దాని చిత్రం మరియు వివరాలను ఇక్కడ చూడటానికి డౌన్‌లోడ్‌ను ఎంచుకోండి.
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4518,6 +4580,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	వర్గాలను &చూపించు
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	ప్రివ్యూ పేన్‌ను చూపండి(&P)
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	డైలాగ్‌ను చూపించి ఏమి చేయాలో అడగండి.
@@ -4552,6 +4619,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	నాకు ఎలా చేయాలో చూపించండి
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	ప్రివ్యూ పేన్‌ను చూపండి లేదా దాచండి
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	బ్యాచ్ డౌన్‌లోడ్ డైలాగ్‌లను మూసివేసేటప్పుడు క్యూ ఎంపిక ప్యానెల్‌ను చూపించు
@@ -4857,6 +4927,10 @@
 #. label before the download's state
 #, machine
 	Status:	స్థితి:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	ఇంకా అక్కడే ఉంది
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -5807,6 +5881,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	టొరెంట్‌లు ప్రారంభం కాలేదు: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	మొత్తం పరిమాణం:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6271,6 +6349,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	వెబ్
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	వెబ్ పేజీ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	బుధవారం
@@ -6547,6 +6629,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size}లో {done}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{total}లో {done}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -7164,6 +7250,10 @@ extension	Downloads from {site} stay with the browser	{site} నుండి డ
 #, machine
 extension	Downloads go to {address}	డౌన్‌లోడ్‌లు {address}కి వెళ్తాయి
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#, machine
+extension	Drag the dots to move it along the edge	అంచు వెంట దాన్ని తరలించడానికి చుక్కలను లాగండి
+#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	దానిని మరొక మూలకు లేదా వీడియో వెలుపల తరలించడానికి చుక్కలను లాగండి
@@ -7757,6 +7847,10 @@ extension	{time} left	{time} మిగిలి ఉంది
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8527,6 +8621,10 @@ menubar	&Tasks	&పనులు
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&వీక్షణ
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	ప్రివ్యూ
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	టొరెంట్‌ను జోడించండి
@@ -8544,6 +8642,10 @@ toolbar	Delete Completed	పూర్తయిన వాటిని తొల�
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	ఎంపికలు
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	ప్రివ్యూ
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

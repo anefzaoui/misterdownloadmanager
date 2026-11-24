@@ -142,6 +142,18 @@ def torrents() -> None:
     }
     seed("torrent", "single", bencode(single))
     seed("torrent", "multi", bencode(multi))
+    # Keys repeated (bencode doesn't allow it, a crafted file can): a second announce-list, whose
+    # tracker filtering once let through (fuzzing found it).
+    seed(
+        "torrent",
+        "repeated-keys",
+        b"d"
+        + bencode("announce") + bencode("http://127.0.0.1:8080/announce")
+        + bencode("announce-list") + bencode([["http://10.0.0.1/announce"]])
+        + bencode("announce-list") + bencode([["https://t2.example/a"]])
+        + bencode("info") + bencode(single["info"])
+        + b"e",
+    )
     seed(
         "torrent",
         "magnet",

@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "홈페이지와 다운로드 페이지에는 두 가지 종류의 평점이 표시되며, 절대 혼합되지 않습니다."
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>별점</g1>은 홈페이지나 다운로드 페이지에서 MDM을 평가하는 경우에만 해당됩니다. 귀하의 평가는 당사의 평가 서비스(Cloudflare의 D1 데이터베이스를 사용하는 Cloudflare Workers의 작은 프로그램)로 전송됩니다. 여기에는 두 가지가 보관됩니다. 별점 수와 IP 주소의 솔트 해시(비밀 키로 생성된 단방향 코드이며, 이 코드로는 주소를 다시 읽을 수 없습니다). 이 해시는 귀하가 다른 평가를 추가하는 대신 평가를 변경하거나 제거할 수 있도록 하는 것입니다. 귀하의 IP 주소 자체는 저장되거나 로그에 기록되지 않습니다. 자동 투표를 방지하기 위해 평가는 먼저 <g2>Cloudflare Turnstile</g2>을 통해 진행되며, 이는 사람이 평가하는지 확인합니다. 스크립트는 별점을 선택할 때만 로드되고 확인이 시작됩니다(선택 즉시 평가가 전송될 수 있도록). Cloudflare는 <g3>Cloudflare의 개인정보 처리방침</g3>에 따라 해당 확인을 위해 귀하의 IP 주소와 브라우저 세부 정보를 확인합니다. 귀하의 평가와 해시는 사이트에서 평가를 표시하는 동안 또는 <g4>내 평가 제거</g4>를 통해 제거할 때까지 보관됩니다. 단일 연결이 평가할 수 있는 빈도를 제한하기 위해 각 시도(동일한 해시 및 시간)는 1시간 동안 보관된 후 삭제됩니다. 사이트에는 평균, 평가 수 및 각 별점 수에 대한 평가 수만 표시됩니다. 귀하의 브라우저는 귀하의 평가를 로컬 저장소에 기억하여 귀하에게 표시하며, 이는 어디로도 전송되지 않습니다."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "최종 업데이트: 2026-11-24 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "최종 업데이트: 2026-11-24"
   }
  }
 }

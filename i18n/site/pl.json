@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "Strony główne i pobierania pokazują dwa rodzaje ocen, nigdy nie mieszane:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>Oceny w gwiazdkach</g1>, tylko jeśli oceniasz MDM na stronie głównej lub stronie pobierania: Twoja ocena trafia do naszej usługi ocen, małego programu na Cloudflare (Workers, z bazą danych w Cloudflare D1). Przechowuje on dwie rzeczy: liczbę gwiazdek oraz zasolony skrót Twojego adresu IP, jednokierunkowy kod utworzony z tajnym kluczem, z którego adresu nie można odczytać. Skrót pozwala Ci zmienić lub usunąć swoją ocenę zamiast dodawać kolejną; Twój adres IP nigdy nie jest przechowywany ani zapisywany w dzienniku. Aby wyeliminować automatyczne głosy, ocena najpierw przechodzi przez <g2>Cloudflare Turnstile</g2>, który sprawdza, czy ocenia osoba: jego skrypt ładuje się, a jego sprawdzenie rozpoczyna się, dopiero gdy sięgniesz po gwiazdki (aby Twoja ocena mogła zostać wysłana, gdy tylko ją wybierzesz), a Cloudflare widzi Twój adres IP i szczegóły przeglądarki dla tego sprawdzenia, zgodnie z <g3>polityką prywatności Cloudflare</g3>. Twoja ocena i jej skrót są przechowywane tak długo, jak strona wyświetla oceny, lub dopóki nie usuniesz jej za pomocą <g4>Usuń moją ocenę</g4>; aby ograniczyć częstotliwość oceniania z jednego połączenia, każda próba (ten sam skrót i jego czas) jest przechowywana przez godzinę, a następnie usuwana. Strona pokazuje tylko średnią, liczbę ocen i ile osób przyznało każdą liczbę gwiazdek. Twoja przeglądarka również zapamiętuje Twoją własną ocenę w swoim lokalnym magazynie, aby Ci ją pokazać; nigdy nie jest ona nigdzie wysyłana."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Ostatnia aktualizacja: 2026-11-24 · dotyczy aplikacji, rozszerzenia przeglądarki i strony misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "Ostatnia aktualizacja: 24.11.2026"
   }
  }
 }

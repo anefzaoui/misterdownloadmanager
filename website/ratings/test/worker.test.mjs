@@ -16,44 +16,56 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SITE = "https://misterdownloadmanager.com";
 const SALT = "test-salt-0123456789abcdef0123456789abcdef";
 
-// D1's binding over node:sqlite: prepare/bind/first/all/run, and batch in one transaction.
+// D1's binding over node:sqlite: prepare/bind/first/all/run, and batch in one transaction, each
+// statement's result as D1 gives it ({results, meta: {changes}}: rows for a read, none for a write).
+// `trips` counts the calls that would each be a trip to D1.
 class Statement {
-  constructor(db, sql, args = []) {
-    this.db = db;
+  constructor(d1, sql, args = []) {
+    this.d1 = d1;
+    this.db = d1.db;
     this.sql = sql;
     this.args = args;
   }
   bind(...args) {
-    return new Statement(this.db, this.sql, args);
+    return new Statement(this.d1, this.sql, args);
   }
   async first(column) {
+    this.d1.trips++;
     const row = this.db.prepare(this.sql).get(...this.args);
     if (!row) return null;
     return column ? row[column] : { ...row };
   }
   async all() {
-    return { success: true, results: this.db.prepare(this.sql).all(...this.args).map((r) => ({ ...r })) };
+    this.d1.trips++;
+    return { success: true, results: this.db.prepare(this.sql).all(...this.args).map((r) => ({ ...r })), meta: { changes: 0 } };
   }
   async run() {
+    this.d1.trips++;
     return this.runNow();
   }
   runNow() {
-    const info = this.db.prepare(this.sql).run(...this.args);
-    return { success: true, meta: { changes: Number(info.changes) } };
+    const statement = this.db.prepare(this.sql);
+    if (/^\s*SELECT\b/i.test(this.sql)) {
+      return { success: true, results: statement.all(...this.args).map((r) => ({ ...r })), meta: { changes: 0 } };
+    }
+    const info = statement.run(...this.args);
+    return { success: true, results: [], meta: { changes: Number(info.changes) } };
   }
 }
 
 class D1 {
   constructor() {
+    this.trips = 0;
     this.db = new DatabaseSync(":memory:");
     for (const f of fs.readdirSync(path.join(HERE, "..", "migrations")).sort()) {
       this.db.exec(fs.readFileSync(path.join(HERE, "..", "migrations", f), "utf-8"));
     }
   }
   prepare(sql) {
-    return new Statement(this.db, sql);
+    return new Statement(this, sql);
   }
   async batch(statements) {
+    this.trips++;
     this.db.exec("BEGIN");
     try {
       const out = statements.map((s) => s.runNow());
@@ -342,6 +354,66 @@ describe("the limit", () => {
     env.DB.db.prepare("INSERT INTO attempts (voter, at) VALUES ('someone', ?)").run(old);
     await vote(4);
     assert.deepEqual(env.DB.rows("SELECT COUNT(*) AS n FROM attempts WHERE voter = 'someone'"), [{ n: 0 }]);
+  });
+
+  it("keeps no attempt over the limit", async () => {
+    for (let i = 0; i < MAX_POSTS + 3; i++) await vote(4);
+    assert.deepEqual(env.DB.rows("SELECT COUNT(*) AS n FROM attempts"), [{ n: MAX_POSTS }]);
+  });
+
+  it("counts attempts sent at once", async () => {
+    const all = await Promise.all(Array.from({ length: MAX_POSTS + 4 }, (_, i) => vote(1 + (i % 5))));
+    assert.equal(all.filter((r) => r.status === 200).length, MAX_POSTS);
+    assert.equal(all.filter((r) => r.status === 429).length, 4);
+    assert.equal(verified.length, MAX_POSTS, "Turnstile isn't asked over the limit");
+  });
+});
+
+describe("trips to the database", () => {
+  // What the Worker waits for, in order: "db" a trip to D1, "turnstile" Turnstile's check.
+  let order;
+  beforeEach(() => {
+    order = [];
+    const batch = env.DB.batch.bind(env.DB);
+    env.DB.batch = (statements) => { order.push("db"); return batch(statements); };
+    const answer = turnstileAnswer;
+    turnstileAnswer = (token) => { order.push("turnstile"); return answer(token); };
+  });
+
+  it("reads the numbers in one trip", async () => {
+    await call("GET");
+    await call("GET", { origin: null, ip: null });
+    assert.deepEqual(order, ["db", "db"]);
+    assert.equal(env.DB.trips, 2);
+  });
+
+  it("rates in two: the limit, Turnstile's check, then the rating and the numbers", async () => {
+    const first = await (await vote(4)).json();
+    assert.deepEqual(order, ["db", "turnstile", "db"]);
+    assert.equal(env.DB.trips, 2);
+    assert.deepEqual([first.mine, first.previous, first.count], [4, null, 1]);
+    order.length = 0;
+    const changed = await (await vote(2)).json();
+    assert.deepEqual(order, ["db", "turnstile", "db"]);
+    assert.deepEqual([changed.mine, changed.previous, changed.count, changed.distribution[2]], [2, 4, 1, 1]);
+  });
+
+  it("writes nothing after a refused check or over the limit", async () => {
+    await vote(4, { token: "bad" });
+    assert.deepEqual(order, ["db", "turnstile"]);
+    for (let i = 1; i < MAX_POSTS; i++) await vote(4, { token: "bad" });
+    order.length = 0;
+    assert.equal((await vote(4)).status, 429);
+    assert.deepEqual(order, ["db"], "over the limit: no check, no rating");
+    assert.deepEqual(env.DB.rows("SELECT COUNT(*) AS n FROM ratings"), [{ n: 0 }]);
+  });
+
+  it("removes in two: the limit, then the removal and the numbers", async () => {
+    await vote(3);
+    order.length = 0;
+    const res = await (await call("DELETE")).json();
+    assert.deepEqual(order, ["db", "db"]);
+    assert.deepEqual([res.mine, res.previous, res.count], [null, 3, 0]);
   });
 });
 

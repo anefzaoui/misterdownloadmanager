@@ -18533,6 +18533,18 @@
   "fd2634470a1624af": {
    "source": "The home and download pages show two kinds of ratings, never mixed:",
    "text": "De start- en downloadpagina's tonen twee soorten beoordelingen, nooit gemengd:"
+  },
+  "54c537bae9a75c3f": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads, and its check starts, only once you reach for the stars (so that your rating can go as soon as you pick it), and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>Sterbeoordelingen</g1>, alleen als u MDM beoordeelt op de startpagina of downloadpagina: uw beoordeling gaat naar onze beoordelingsservice, een klein programma op Cloudflare (Workers, met zijn database in Cloudflare's D1). Het bewaart twee dingen: het aantal sterren en een gehashte versie van uw IP-adres, een eenrichtingscode gemaakt met een geheime sleutel, waaruit het adres niet kan worden teruggelezen. De hash is wat u in staat stelt uw beoordeling te wijzigen of te verwijderen in plaats van een nieuwe toe te voegen; uw IP-adres zelf wordt nooit opgeslagen of in een logboek geschreven. Om geautomatiseerde stemmen te weren, gaat een beoordeling eerst door <g2>Cloudflare Turnstile</g2>, dat controleert of een persoon beoordeelt: het script wordt geladen en de controle start pas zodra u naar de sterren reikt (zodat uw beoordeling kan worden verzonden zodra u deze kiest), en Cloudflare ziet uw IP-adres en browsergegevens voor die controle, onder <g3>het privacybeleid van Cloudflare</g3>. Uw beoordeling en de hash ervan worden bewaard zolang de site beoordelingen toont, of totdat u deze verwijdert met <g4>Mijn beoordeling verwijderen</g4>; om te beperken hoe vaak één verbinding kan beoordelen, wordt elke poging (dezelfde hash en de tijd ervan) een uur bewaard en daarna verwijderd. De site toont alleen het gemiddelde, het aantal beoordelingen en hoeveel mensen elk aantal sterren hebben gegeven. Uw browser onthoudt ook uw eigen beoordeling in de lokale opslag, om deze aan u te tonen; deze wordt nooit ergens naartoe verzonden."
+  },
+  "62f5bbe49b55d01c": {
+   "source": "Last updated 2026-11-24 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Laatst bijgewerkt op 24-11-2026 · geldt voor de app, de browserextensie en misterdownloadmanager.com"
+  },
+  "db452c2f3779eeec": {
+   "source": "Last updated 2026-11-24",
+   "text": "Laatst bijgewerkt op 24-11-2026"
   }
  }
 }

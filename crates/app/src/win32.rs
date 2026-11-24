@@ -6678,6 +6678,154 @@ unsafe fn dib_rgba(
     }
 }
 
+// ---- Thumbnails (preview.rs, #1368) -------------------------------------------------------------
+
+/// The start of the shell's `IShellItemImageFactory` vtable (shobjidl_core.h): IUnknown, then
+/// `GetImage`, its one method.
+#[repr(C)]
+struct ImageFactoryVtbl {
+    _query_interface: usize,
+    _add_ref: usize,
+    release: unsafe extern "system" fn(*mut c_void) -> u32,
+    get_image: unsafe extern "system" fn(
+        *mut c_void,
+        windows_sys::Win32::Foundation::SIZE,
+        i32,
+        *mut windows_sys::Win32::Graphics::Gdi::HBITMAP,
+    ) -> windows_sys::core::HRESULT,
+}
+
+/// IID_IShellItemImageFactory, {BCC18B79-BA16-442F-80C4-8A59C30C463B}.
+const IID_IMAGE_FACTORY: windows_sys::core::GUID = windows_sys::core::GUID {
+    data1: 0xBCC1_8B79,
+    data2: 0xBA16,
+    data3: 0x442F,
+    data4: [0x80, 0xC4, 0x8A, 0x59, 0xC3, 0x0C, 0x46, 0x3B],
+};
+
+/// The shell's picture of the file at `path` (the preview pane, #1368), the one Explorer shows:
+/// its thumbnail from whichever handler is registered for its type (pictures, videos, PDFs,
+/// Office documents...), fitting `px` pixels with its shape kept; where there is none, its own
+/// icon (a program's, a shortcut's), marked as an icon. A program, a shortcut or an icon file is
+/// its icon first, as Explorer draws them: the shell's "thumbnail" of one is that icon, small, on
+/// a white sheet. Run on preview.rs's pictures thread.
+pub fn thumbnail(path: &std::path::Path, px: u32) -> Option<crate::preview::Picture> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::UI::Shell::{
+        SHCreateItemFromParsingName, SIIGBF_ICONONLY, SIIGBF_RESIZETOFIT, SIIGBF_THUMBNAILONLY,
+    };
+    com_on_this_thread();
+    let wide: Vec<u16> = path.as_os_str().encode_wide().chain([0]).collect();
+    let side = px.clamp(16, 1024) as i32;
+    // SAFETY: the path is NUL-terminated; on success the factory carries a reference for us,
+    // released below. Its vtable is read only as far as GetImage, whose bitmap is ours to read
+    // and delete.
+    unsafe {
+        let mut factory: *mut c_void = std::ptr::null_mut();
+        let hr = SHCreateItemFromParsingName(
+            wide.as_ptr(),
+            std::ptr::null_mut(),
+            &IID_IMAGE_FACTORY,
+            &mut factory,
+        );
+        if hr < 0 || factory.is_null() {
+            return None;
+        }
+        let vtbl = &**(factory as *const *const ImageFactoryVtbl);
+        let size = windows_sys::Win32::Foundation::SIZE { cx: side, cy: side };
+        let mut got = None;
+        let program = path.extension().and_then(|e| e.to_str()).is_some_and(|e| {
+            [
+                "exe", "msi", "com", "scr", "lnk", "ico", "cur", "dll", "appx", "msix",
+            ]
+            .iter()
+            .any(|p| e.eq_ignore_ascii_case(p))
+        });
+        let thumbnail = (SIIGBF_RESIZETOFIT | SIIGBF_THUMBNAILONLY, false);
+        let icon = (SIIGBF_RESIZETOFIT | SIIGBF_ICONONLY, true);
+        let order = if program {
+            [icon, thumbnail]
+        } else {
+            [thumbnail, icon]
+        };
+        for (flags, icon) in order {
+            let mut bitmap: windows_sys::Win32::Graphics::Gdi::HBITMAP = std::ptr::null_mut();
+            if (vtbl.get_image)(factory, size, flags, &mut bitmap) >= 0 && !bitmap.is_null() {
+                let pixels = bitmap_rgba(bitmap);
+                DeleteObject(bitmap as _);
+                if let Some((w, h, rgba)) = pixels {
+                    got = Some(crate::preview::Picture {
+                        w,
+                        h,
+                        rgba,
+                        premultiplied: true,
+                        icon,
+                    });
+                    break;
+                }
+            }
+        }
+        (vtbl.release)(factory);
+        got
+    }
+}
+
+/// A bitmap's pixels as (width, height, RGBA), alpha premultiplied, as the shell's are; a
+/// picture without alpha (a photo's thumbnail: every pixel 0) is opaque.
+unsafe fn bitmap_rgba(
+    bitmap: windows_sys::Win32::Graphics::Gdi::HBITMAP,
+) -> Option<(u32, u32, Vec<u8>)> {
+    use windows_sys::Win32::Graphics::Gdi::{BITMAP, GetObjectW};
+    unsafe {
+        let mut bm: BITMAP = zeroed();
+        if GetObjectW(
+            bitmap as _,
+            size_of::<BITMAP>() as i32,
+            &mut bm as *mut BITMAP as *mut c_void,
+        ) == 0
+        {
+            return None;
+        }
+        let (w, h) = (bm.bmWidth, bm.bmHeight.abs());
+        if w <= 0 || h <= 0 || w > 4096 || h > 4096 {
+            return None;
+        }
+        let mut bmi: BITMAPINFO = zeroed();
+        bmi.bmiHeader = BITMAPINFOHEADER {
+            biSize: size_of::<BITMAPINFOHEADER>() as u32,
+            biWidth: w,
+            biHeight: -h, // top-down
+            biPlanes: 1,
+            biBitCount: 32,
+            biCompression: BI_RGB,
+            ..zeroed()
+        };
+        let mut px = vec![0u8; (w * h * 4) as usize];
+        let dc = GetDC(std::ptr::null_mut());
+        let lines = GetDIBits(
+            dc,
+            bitmap,
+            0,
+            h as u32,
+            px.as_mut_ptr() as *mut c_void,
+            &mut bmi,
+            DIB_RGB_COLORS,
+        );
+        ReleaseDC(std::ptr::null_mut(), dc);
+        if lines != h {
+            return None;
+        }
+        let opaque = !px.as_chunks::<4>().0.iter().any(|c| c[3] != 0);
+        for c in px.as_chunks_mut::<4>().0 {
+            c.swap(0, 2); // BGRA → RGBA
+            if opaque {
+                c[3] = 255;
+            }
+        }
+        Some((w as u32, h as u32, px))
+    }
+}
+
 /// Windows' own "open folder" (Download complete's, as IDM shows), as its system image list index.
 fn open_folder_index() -> Option<i32> {
     use windows_sys::Win32::UI::Shell::{

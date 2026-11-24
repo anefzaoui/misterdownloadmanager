@@ -101,6 +101,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} download finished|{n} downloads finished	{n} ᏗᎦᎴᏴᏔᏅᎢ|{n} ᏗᎦᎴᏴᏔᏅᎢ
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} ᎠᏯᎷᎪᎢ ᎦᎴᏅᏔᏅ|{n} ᎠᏯᎷᎪᎢ ᎦᎴᏅᏔᏅ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -131,6 +135,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ᎢᏗᎦᎴᏴᏔᏅᎯ ᏚᏙᎥ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎾᎿ ᎠᎴ ᏚᎾᏎᏍᏔᏅᎢ|{n} ᎢᏗᎦᎴᏴᏔᏅᎯ ᏚᏙᎥ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎾᎿ ᎠᎴ ᏚᎾᏎᏍᏔᏅᎢ
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} ᎠᏍᏆᏙᏅ|{n} ᎠᏍᏆᏙᏅ
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -173,6 +181,11 @@
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} ᎤᏚᎵᎭ {n} ᎠᏕᎳᏗᏗᏍᏙᏗ ᎦᏟᏐᏗᏱ ᎦᏟᏐᏗᏍᎩ.|{site} ᎤᏚᎵᎭ {n} ᎠᏕᎳᏗᏗᏍᏙᏗ ᎦᏟᏐᏗᏱ ᎦᏟᏐᏗᏍᎩ.
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} ᎠᎴ {n} ᏂᎦᏔᎲᎾ ᎤᏍᎪᎯᏳᏗ|{size} ᎠᎴ {n} ᏂᎦᏔᎲᎾ ᎤᏍᎪᎯᏳᏗ
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -460,7 +473,7 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	ᎤᏃᎴᎢ ᎠᎴ ᎤᏃᎴᎢ ᎢᏗᏢ
-#. text in the Options window; text in a download's Properties window
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ:
@@ -4029,7 +4042,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	ᏕᏣᏍᏆᏂᎪᏙᏗ...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ᏕᏣᏍᏆᏂᎪᏙᏗ:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4362,7 +4375,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	ᎦᏟᏗ ᏂᎦᏔᎲᎾ
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	ᎦᏟᏗ:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4538,6 +4551,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ᎠᎴᏅᏗᏍᎬᎢ...
+#. text in the Download video window
+#. tooltip of "Exact cut, encoded again" in Download video: what it does
+#, machine
+	Starts and ends exactly at From and To: ffmpeg encodes the part again, which takes longer	ᎠᎴᏅᏗᏍᎪᎢ ᎠᎴ ᎠᏍᏆᏗᏍᎪᎢ ᎾᏍᎩᏯ From ᎠᎴ To: ffmpeg ᏔᎵᏁ ᎪᏪᎵᏍᎪᎢ ᎾᏍᎩ ᎢᎦᏛ, ᎾᏍᎩᏃ ᎪᎯᏗᏍᎪᎢ
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -4547,10 +4564,14 @@
 #. column title: the download's state
 #, machine
 	Status	ᎦᏟᏗ
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	ᎦᏟᏗ:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	ᎠᏏᏃ ᎠᎭᏂ
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -4741,6 +4762,14 @@
 #. why Batch download's OK is greyed
 #, machine
 	That is more than 100,000 files: make the range smaller	ᎾᏍᎩ 100,000 ᏗᏓᏟᎶᏍᏗ ᎤᏟᎯ: ᎢᎦᎢᏍᏗ ᎢᏗᎪᏩᏛᏗ
+#. text in the Options window
+#. Options → Archives, in red: the program chosen with "Use another program..." isn't 7-Zip's command line program (an archiver's window was picked instead); 7z.exe is that program's file name
+#, machine
+	That isn't 7-Zip's command line program (7z.exe).	ᎾᏍᎩ ᎥᏝ 7-Zip ᎤᏤᎵ ᏗᎧᎾᏩᏛᏍᏗ ᏱᎩ (7z.exe).
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's times are the whole video's (untick Only a part to download it whole)
+#, machine
+	That's the whole video: change From or To, or untick Only a part	ᎾᏍᎩ ᏂᎦᏛ ᏗᎧᏃᎩᏍᏗ: From ᎠᎴ To ᏗᎦᏁᏟᏴᏓ, ᎠᎴ ᎤᎪᏗᏗᏍᎪ Only a part
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -5076,6 +5105,10 @@
 #. Options → Accounts: the service doesn't say whether the account is premium (Mega-Debrid, signed in with an API key); a free account's links are refused when downloading
 #, machine
 	the service doesn't say whether it is premium	ᏗᎦᏛᏗ ᎥᏝ ᏱᏚᎭ ᎾᏍᎩ ᎤᏟ ᎢᎦᎢ ᎢᏳᏍᏗ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Part is greyed in Download video: the site doesn't say how long the video is (a live stream, for one)
+#, machine
+	The site doesn't say how long this video is	ᎾᎿᎢ ᎥᏝ ᏯᏂᏃᎮᎭ ᎢᎦᎢ ᎪᎯᏗᏗᏒᎢ ᎯᎠ ᏗᎧᏃᎩᏍᏗ
 #. text in errors.rs
 #. why a download failed (#701): a file host answered with its own web page (a countdown before the link, a captcha, a sign-in) where the file was expected. The browser gets past it; MDM's browser extension then hands the real file back to MDM
 #, machine
@@ -5389,6 +5422,9 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	this {site} link is a web page, not the file: open it in your browser and download from there	ᎯᎠ {site} ᏗᎪᏪᎵ ᏗᎪᏪᎵ ᏗᎪᏪᎵ, ᎥᏝ ᏗᎪᏪᎵ: ᎤᎵᏍᏚᎢᏒᎢ ᏗᏣᏃᏟᏍᏙᏗ ᎠᎴ ᏗᎪᏪᎵ ᎾᎿ.
+#. text in helpers.rs
+#, machine
+	Three free helpers make it work. Get them now, and saving a video is one click away when you find one.	ᏦᎢ ᎢᏯᏂᏛ ᎢᎦᎫᏴᏗ-ᏂᎨᏒᎾ ᏗᎾᏓᏍᏕᎵᏍᎩ ᎾᏍᎩ ᎢᏳᏩᏁᏗ ᎨᏐᎢ. ᏙᏥᎩᏏ ᎪᎯ, ᎠᎴ ᏗᎧᏃᎩᏍᏗ ᏗᏓᏍᏆᏂᎪᏙᏗ ᏌᏉᏉ ᎢᏯᏓᎳᏏᏓᏍᏗ ᎨᏐᎢ ᎢᏳᏃ ᎯᏩᏛᎲᎭ.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -5423,6 +5459,14 @@
 #. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
 #, machine
 	To install what's missing: {command}	ᎾᏍᎩ ᏂᎨᏒᎾ ᎨᏒᎢ ᎤᏁᎳᏗᏍᏗ: {command}
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time is past the video's end
+#, machine
+	To is past the end of the video	To ᎤᎶᏐᏅᎯ ᏗᎧᏃᎩᏍᏗ ᎤᎵᏍᏆᏗᏒᎢ
+#. text in the Download video window
+#. why Download Now is greyed in Download video: Part's To time isn't after its From time
+#, machine
+	To must come after From	To ᎤᎶᏐᏅᎯ From ᎢᏳᎵᏍᏙᏗᎢ
 #. text in the Batch download window
 #, machine
 	To:	ᎢᏗ:
@@ -5474,6 +5518,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	torrent-s ᎥᏝ ᏴᏓᏂᎴᏅᏓ: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	ᏂᎦᏛ ᎠᏟᎶᏍᏗ:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -5574,6 +5622,10 @@
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ᏔᎵ ᏂᏚᎾᏓᏁᎸᎾ ᏓᏓᏁᏟᏴᏍᎪᎢ. ᎪᎯ ᎭᏓᏂᏱᏍᎩ, ᎠᎴ ᏗᏓᏂᏱᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᏌᏉ ᎭᏓᏂᏱᏍᎩ ᎢᏳᏃ ᎭᏩᏛᏍᏗ.
+#. label in the Options window; text in the Options window
+#. Options → Proxy / Socks → Manual: label before the kind of proxy (HTTP, HTTPS, SOCKS5, SOCKS4)
+#, machine
+	Type	ᎢᏯᏓᏛᏁᎯ
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -5606,6 +5658,10 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	ᎪᏪᎸ ᎤᎾᏓᏟᏌᏅᎯ ᏚᏙᎥ
+#. text in the Download video window
+#. why Download Now is greyed in Download video: a Part box holds something that isn't a time
+#, machine
+	Type the times as 1:30 or 1:02:03	ᎪᏪᎵ ᎢᏳᎵᏍᏔᏅᎯ 1:30 ᎠᎴ 1:02:03
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -5930,6 +5986,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	WEB
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	ᎠᎴᏅᏔᏅᎯ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	ᏦᎢᏁᎢᎦ
@@ -6084,6 +6144,9 @@
 #. Video helpers: {path} = the system's yt-dlp, ffmpeg or gallery-dl
 #, machine
 	Your system's: {path}	ᏂᎯ ᎢᎬᎾᎯᏍᏗᏍᎩ: {path}
+#. text in helpers.rs
+#, machine
+	YouTube makes yt-dlp run a piece of JavaScript before it lists its videos, and this computer has nothing to run it with. Node.js does.	YouTube ᎾᏍᎩ yt-dlp ᎤᎾᎴᏅᏗᏍᎪᎢ JavaScript ᎤᎾᏓᏡᎬᎢ ᎢᎬᏱ ᏂᎪᏪᎵᏍᎬᎾ ᏧᏃᎩᏍᏗ, ᎠᎴ ᎯᎠ ᎢᏗᏓᏟᎶᏍᏗ ᎥᏝ ᎪᎱᏍᏗ ᏱᏓᎭ ᎾᏍᎩ ᎢᏳᏩᏁᏗ. Node.js ᎾᏍᎩ ᎢᏳᏩᏁᏗ.
 #. text in the Download video window
 #. in Download video and the browser's video menu: yt-dlp had no JavaScript runtime, so YouTube listed only some qualities (often only the sound); Node.js and Deno are program names
 #, machine
@@ -6203,6 +6266,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} ᎤᎾᏓᏟᏍᏔᏅ {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} of {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6410,6 +6477,10 @@
 #. {rate} = a speed such as "1.2 MB/sec" (keep the braces as they are)
 #, machine
 	{rate} (limit: {limit})	{rate} (ᏂᎦᏗᏳ ᎢᏳᎢ: {limit})
+#. text in helpers.rs
+#. Video helpers: the Deno an earlier version of MDM installed, still used until MDM's own Node.js replaces it (by the next update, or Use MDM's own copy); {runtime} = "Deno" and its version
+#, machine
+	{runtime}, MDM's earlier copy: Node.js takes its place at the next update	{runtime}, MDM ᎤᏤᎵ ᎢᎬᏱᏱ ᎪᏪᎵ: Node.js ᎾᏍᎩ ᎤᏓᏁᏟᏴᏍᎪᎢ ᎤᎵᏍᏆᎸᏗ ᎢᎦᏁᏟᏴᏍᏗ ᎨᏒᎢ
 #. text in helpers.rs
 #. Video helpers: MDM's own Node.js is the JavaScript runtime; {runtime} = "Node.js" and its version
 #, machine
@@ -7401,6 +7472,10 @@ extension	{time} left	{time} ᎢᏴᏛ ᏩᏍᎦᎸᏓ
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

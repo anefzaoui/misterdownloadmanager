@@ -85,6 +85,10 @@
 #. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download finished|{n} downloads finished	{n} 个下载已完成
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n} 个下载任务已选中
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} downloading|{n} downloading	{n} 个下载中
@@ -111,6 +115,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	已为 {n} 个同名文件重新编号
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n} 个已完成
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -144,6 +152,11 @@
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} 要向链接抓取器发送 {n} 个链接。
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size}，其中 {n} 个大小未知
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -404,6 +417,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	已添加。MDM 正在读取种子，稍后加入列表。
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	添加时间:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -1921,6 +1938,10 @@
 #. text in categories.rs
 #, machine
 	File types:	文件类型：
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	文件:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -1981,6 +2002,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	已完成
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	完成时间:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2286,6 +2311,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	隐藏类别(&C)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	隐藏预览窗格(&P)
 #. button in a download's progress window
 #, machine
 	Hide tab	隐藏选项卡
@@ -2532,6 +2562,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	无法写入其文件：{error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	其文件夹当前无法访问
 #. text in relocate.rs
 #. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
 #, machine
@@ -2817,6 +2851,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	正在查找页面...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	正在查找...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3162,6 +3201,10 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	移动/重命名
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	已移动或删除
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
 #, machine
@@ -3340,6 +3383,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	剪贴板中未找到下载链接。请复制包含 http、https、ftp 或 magnet 链接的文本，然后重试。
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	未选择下载任务
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3485,6 +3532,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	尚未安装
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	大小未知
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3620,6 +3671,13 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	在线
+#. text in a download's Properties window
+#. tooltip of the greyed Move button in File Properties
+#, machine
+	Only a finished download, or one not started yet, can be moved	只有已完成或尚未开始的下载任务才能移动
+#. message or event log entry in the main window
+#, machine
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	只有已完成或尚未开始的下载任务才能移动。请先停止并完成该任务。
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4274,6 +4332,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	第二个文件：
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	选择一个下载任务以在此处查看其图片和详细信息。
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4425,6 +4487,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	显示类别(&C)
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	显示预览窗格(&P)
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	显示对话框并询问如何操作。
@@ -4459,6 +4526,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	查看教程
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	显示或隐藏预览窗格
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	关闭批量下载对话框时显示队列选择面板
@@ -4764,6 +4834,10 @@
 #. label before the download's state
 #, machine
 	Status:	状态：
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	仍在原处
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -5708,6 +5782,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	种子无法启动：{error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	总大小:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6172,6 +6250,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Web
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	网页:
 #. text in the Scheduler window
 #, machine
 	Wednesday	星期三
@@ -6447,6 +6529,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} / {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} / {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -7064,6 +7150,10 @@ extension	Downloads from {site} stay with the browser	来自 {site} 的下载任
 #, machine
 extension	Downloads go to {address}	下载任务发送到 {address}
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
+#, machine
+extension	Drag the dots to move it along the edge	拖动圆点可沿边缘移动
+#. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
 extension	Drag the dots to move it to another corner, or outside the video	拖动圆点可将其移动到另一个角落，或视频外部
@@ -7656,6 +7746,10 @@ extension	{time} left	剩余 {time}
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -8420,6 +8514,10 @@ menubar	&Tasks	任务(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	视图(&V)
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	预览
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	添加种子
@@ -8437,6 +8535,10 @@ toolbar	Delete Completed	删除已完成任务
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	选项
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	预览
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine

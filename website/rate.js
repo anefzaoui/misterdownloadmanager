@@ -2,10 +2,15 @@
 // keeps them is website/ratings/). The sheet shows this build's numbers; once it comes near, they
 // are read again, with the visitor's own rating. A visitor picks one to five stars: a click sends
 // at once, the keyboard moves along the stars (a radio group) and Enter or Space sends. Sending
-// asks Cloudflare Turnstile for a token first (its script loads only once the visitor reaches for
-// the stars; it asks the visitor something only when it must); the Worker counts one rating per
-// visitor, so picking again changes theirs. The average and the bars follow, a stamp says thanks,
-// and the status line (a live region) says it all in words. Reduced motion: everything at rest.
+// needs a token from Cloudflare Turnstile: its script loads, and its check starts in the
+// background, only once the visitor reaches for the stars (it asks the visitor something only
+// when it must), so the token is usually ready by the click; after each rating the next one is
+// made the same way, for a change. A pick shows as given at once: the stars, a stamp saying
+// thanks, the average and the bars with it counted. The Worker's answer then sets the numbers
+// (it counts one rating per visitor, so picking again changes theirs); if the rating couldn't be
+// sent, everything goes back as it was and says why. While Turnstile asks the visitor something,
+// or after a try that failed, the stars wait for the answer instead. The status line (a live
+// region) says it all in words. Reduced motion: everything at rest.
 (function () {
   "use strict";
   var sheet = document.querySelector("[data-rate]");
@@ -36,17 +41,24 @@
   var restWord = word.textContent;
   var restHint = hint.textContent;
 
-  var saved = null;   // the visitor's rating, as the Worker knows it
+  var data = readSheet(); // the numbers shown
+  var confirmed = { mine: null, data: data }; // what the Worker said last (at first, this build)
+  var desired = null; // the rating the visitor gave last: sent, on its way or to send
+  var saved = null;   // the visitor's rating as the stars show it
   var pending = null; // picked with the keyboard, not sent yet
   var hover = null;
   var resting = null; // the star just picked, still under the pointer
-  var sending = false;
-  var data = readSheet();
+  var flight = null;  // a rating on its way to the Worker
+  var removing = false;
+  var epoch = 0;      // counts sends, so an older reading of the numbers never shows over one
 
   try {
     var local = +localStorage.getItem(KEY);
-    if (local >= 1 && local <= 5) saved = local;
+    if (local >= 1 && local <= 5) confirmed.mine = desired = saved = local;
   } catch (e) { /* none */ }
+  function keep(mine) {
+    try { mine ? localStorage.setItem(KEY, String(mine)) : localStorage.removeItem(KEY); } catch (e) { /* not kept */ }
+  }
 
   // ---- Numbers ---------------------------------------------------------------------------------
 
@@ -76,6 +88,16 @@
     return el ? +el.getAttribute("data-num") : 0;
   }
 
+  // The numbers with one visitor's rating moved from `from` stars to `to` (either may be none).
+  function project(base, from, to) {
+    var dist = {}, count = 0, sum = 0;
+    for (var s = 1; s <= 5; s++) dist[s] = +(base.distribution || {})[s] || 0;
+    if (from) dist[from] = Math.max(0, dist[from] - 1);
+    if (to) dist[to] += 1;
+    for (s = 1; s <= 5; s++) { count += dist[s]; sum += s * dist[s]; }
+    return { average: count ? sum / count : 0, distribution: dist };
+  }
+
   // A number counting from what it shows to what it is now, damped (at once with reduced motion).
   function roll(el, from, to, dec) {
     el.setAttribute("data-num", to);
@@ -90,7 +112,7 @@
     requestAnimationFrame(step);
   }
 
-  // The average, its stars, the count and the bars, from the Worker's numbers.
+  // The average, its stars, the count and the bars, from these numbers.
   function render(next) {
     var dist = next.distribution || {};
     var count = 0, top = 1;
@@ -138,8 +160,19 @@
     removeBtn.hidden = !saved;
   }
 
+  // The stars, the bars and the numbers with `rating` as the visitor's: the Worker's numbers, the
+  // visitor's rating moved to it while the Worker doesn't have it yet.
+  function show(rating) {
+    saved = rating;
+    mark();
+    paint();
+    render(rating === confirmed.mine ? confirmed.data : project(confirmed.data, confirmed.mine, rating));
+  }
+
   // The status line (a live region): `text` shown, `quiet` for screen readers only.
+  var said = "";
   function say(text, error, quiet) {
+    said = text + "\n" + (quiet || "");
     status.textContent = text;
     if (quiet) {
       var sr = document.createElement("span");
@@ -162,6 +195,28 @@
     setTimeout(function () { for (var j = 0; j < stars.length; j++) stars[j].classList.remove("is-pop"); }, 1100);
   }
 
+  // The stars pop and the stamp says thanks.
+  function thank() {
+    pop(saved);
+    pick.classList.remove("is-thanked");
+    void pick.offsetWidth;
+    pick.classList.add("is-thanked");
+  }
+
+  function averageSaid() {
+    return t("Average: {avg} out of 5, from {count}.").replace("{avg}", fmt(oneDecimal(data.average), 1)).replace("{count}", countText(data.count));
+  }
+
+  // Thanks in words; `again`: said even when the line already says it (a new pick).
+  function thanks(changed, again) {
+    var text = changed ? t("Thank you! Your rating is changed.") : t("Thank you! Your rating is in.");
+    var quiet = averageSaid();
+    if (again || said !== text + "\n" + quiet) say(text, false, quiet);
+  }
+
+  // The stars wait for the Worker's answer (a removal, or Turnstile asking something).
+  function waits() { return removing || (!!flight && !flight.optimistic); }
+
   for (var i = 0; i < stars.length; i++) {
     (function (star, n) {
       var input = star.querySelector("input");
@@ -177,8 +232,9 @@
       input.addEventListener("click", function (e) {
         if (e.detail > 0 || e.pointerType) send(n);
       });
+      // (A click's own change comes after it, with the rating already on its way: nothing to do.)
       input.addEventListener("change", function () {
-        if (sending) return;
+        if (waits() || flight) return;
         pending = n === saved ? null : n;
         pick.classList.remove("is-thanked");
         paint();
@@ -194,10 +250,10 @@
     })(stars[i], i + 1);
   }
   pick.querySelector("[data-rate-stars]").addEventListener("pointerleave", function () { hover = null; resting = null; paint(); });
-  // Turnstile's script comes only when the visitor reaches for the stars.
-  function prepare() { widget().catch(function () { /* said when the visitor picks */ }); }
-  pick.addEventListener("pointerenter", prepare, { once: true });
-  pick.addEventListener("focusin", prepare, { once: true });
+  // Turnstile's script comes, and its check starts, only when the visitor reaches for the stars.
+  function prepare() { if (!trouble) presolve(); }
+  pick.addEventListener("pointerenter", prepare);
+  pick.addEventListener("focusin", prepare);
 
   function mark() {
     for (var i = 0; i < inputs.length; i++) inputs[i].checked = saved !== null && i + 1 === saved;
@@ -205,7 +261,14 @@
 
   // ---- Turnstile -------------------------------------------------------------------------------
 
-  var turnstileLoad = null, widgetId = null, waiting = null;
+  // A token lives 300 s and is good once: one older than 4.5 minutes is never sent.
+  var FRESH_MS = 270000;
+  var turnstileLoad = null, widgetId = null;
+  var ready = null;     // a token made and not sent yet, and when
+  var solving = null;   // the check under way
+  var asking = false;   // Turnstile is asking the visitor something
+  var trouble = false;  // the last check or rating failed: the next pick waits for its answer
+
   function loadTurnstile() {
     if (turnstileLoad) return turnstileLoad;
     turnstileLoad = new Promise(function (resolve, reject) {
@@ -219,9 +282,10 @@
     });
     return turnstileLoad;
   }
-  function settle(fn, value) {
-    if (!waiting) return;
-    var w = waiting; waiting = null; clearTimeout(w.timer); w[fn](value);
+  function solved(err) {
+    if (!solving) return;
+    var s = solving; solving = null; clearTimeout(s.timer);
+    if (err) { trouble = true; s.reject(err); } else s.resolve();
   }
   function widget() {
     return loadTurnstile().then(function (ts) {
@@ -229,24 +293,58 @@
         widgetId = ts.render(check, {
           sitekey: sheet.getAttribute("data-sitekey"), action: "rate", appearance: "interaction-only", execution: "execute",
           theme: "auto", language: "auto", "refresh-expired": "manual",
-          callback: function (token) { settle("resolve", token); },
-          "error-callback": function () { settle("reject", { status: 403 }); return true; },
-          "expired-callback": function () { settle("reject", { status: 403 }); },
-          "timeout-callback": function () { settle("reject", { status: 403 }); },
+          callback: function (tok) { asking = false; ready = { token: tok, at: Date.now() }; solved(null); },
+          "error-callback": function () { asking = false; solved({ status: 403 }); return true; },
+          "expired-callback": function () { ready = null; solved({ status: 403 }); },
+          "timeout-callback": function () { asking = false; solved({ status: 403 }); },
+          "before-interactive-callback": asked,
+          "after-interactive-callback": function () { asking = false; },
         });
       }
       return ts;
     });
   }
-  function token() {
-    return widget().then(function (ts) {
-      return new Promise(function (resolve, reject) {
-        // A question Turnstile asks gets a minute; then the visitor can pick again.
-        waiting = { resolve: resolve, reject: reject, timer: setTimeout(function () { settle("reject", { status: 403 }); }, 60000) };
-        try { ts.reset(widgetId); } catch (e) { /* new */ }
-        ts.execute(widgetId);
-      });
+  // Turnstile's check (its script first, once): settles once a token is ready.
+  function solve() {
+    if (solving) return solving.promise;
+    var s = solving = {};
+    s.promise = new Promise(function (resolve, reject) { s.resolve = resolve; s.reject = reject; });
+    widget().then(function (ts) {
+      if (solving !== s) return;
+      // A question Turnstile asks gets a minute; then the visitor can pick again.
+      s.timer = setTimeout(function () { if (solving === s) solved({ status: 403 }); }, 60000);
+      ready = null;
+      try { ts.reset(widgetId); } catch (e) { /* new */ }
+      ts.execute(widgetId);
+    }, function (err) {
+      if (solving !== s) return;
+      solving = null;
+      trouble = true;
+      s.reject(err);
     });
+    return s.promise;
+  }
+  function fresh() { return !!ready && Date.now() - ready.at < FRESH_MS; }
+  // A token made in the background, so that a pick can go at once.
+  function presolve() {
+    if (!fresh() && !solving) solve().catch(function () { /* said when the visitor picks */ });
+  }
+  // The token to send: the one made in the background while it's fresh, else a new one.
+  function token() {
+    return (fresh() ? Promise.resolve() : solve()).then(function () {
+      if (!fresh()) throw { status: 403 };
+      var tok = ready.token;
+      ready = null;
+      return tok;
+    });
+  }
+  // Turnstile asks the visitor something: a pick shown as given waits for it instead.
+  function asked() {
+    asking = true;
+    if (flight && flight.optimistic && !flight.posted) {
+      flight.optimistic = false;
+      wait(desired);
+    }
   }
 
   // ---- Sending ---------------------------------------------------------------------------------
@@ -268,36 +366,42 @@
       : t("Your rating couldn't be sent. Please try again later."), true);
   }
 
-  function averageSaid() {
-    return t("Average: {avg} out of 5, from {count}.").replace("{avg}", fmt(oneDecimal(data.average), 1)).replace("{count}", countText(data.count));
-  }
-
   // The visitor takes their rating back.
   removeBtn.addEventListener("click", function () {
-    if (sending || !saved) return;
-    sending = true;
+    if (flight || removing || !saved) return;
+    removing = true;
+    epoch++;
     pick.classList.add("is-sending");
     say(t("Sending…"));
     fetch(api, { method: "DELETE", credentials: "omit" }).then(answer).then(function (body) {
-      sending = false;
-      saved = null;
+      removing = false;
+      confirmed = { mine: null, data: body };
+      desired = null;
       pending = null;
-      try { localStorage.removeItem(KEY); } catch (e) { /* none */ }
+      keep(null);
       pick.classList.remove("is-sending", "is-thanked");
-      mark();
-      paint();
-      render(body);
+      show(null);
       say(t("Your rating is removed."), false, averageSaid());
       stars[0].querySelector("input").focus();
     }).catch(function (err) {
-      sending = false;
+      removing = false;
       pick.classList.remove("is-sending");
       failed(err);
     });
   });
 
+  // The stars wait for the answer, as `n` (the look while Turnstile asks, or after a failed try).
+  function wait(n) {
+    show(confirmed.mine);
+    pending = n;
+    pick.classList.add("is-sending");
+    pick.classList.remove("is-thanked");
+    paint();
+    say(t("Sending…"));
+  }
+
   function send(n) {
-    if (sending) return;
+    if (waits()) return;
     if (hover) resting = n;
     hover = null;
     if (n === saved) {
@@ -305,37 +409,61 @@
       say(t("That is already your rating. Pick another number of stars to change it."));
       return;
     }
-    var before = saved;
-    sending = true;
-    pending = n;
-    pick.classList.add("is-sending");
-    pick.classList.remove("is-thanked");
-    paint();
-    say(t("Sending…"));
+    var changed = saved !== null;
+    desired = n;
+    pending = null;
+    if (!flight && (asking || trouble)) {
+      wait(n);
+      fly(changed, false);
+      return;
+    }
+    // Shown as given now. With a rating already on its way, this one goes when it is answered
+    // (or in its place, if it hasn't left yet): one request at a time, the last pick last.
+    show(n);
+    thank();
+    thanks(changed, true);
+    if (!flight) fly(changed, true);
+  }
+
+  // Sends `desired` (read when its token is ready). `optimistic`: it shows as given already.
+  function fly(changed, optimistic) {
+    var f = flight = { optimistic: optimistic, changed: changed, posted: false, stars: desired };
+    epoch++;
+    removeBtn.disabled = true;
     token().then(function (tok) {
+      f.posted = true;
+      f.stars = desired;
       return fetch(api, {
         method: "POST", credentials: "omit", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stars: n, turnstileToken: tok }),
+        body: JSON.stringify({ stars: f.stars, turnstileToken: tok }),
       });
     }).then(answer).then(function (body) {
-      sending = false;
+      flight = null;
+      trouble = false;
+      var mine = +body.mine || f.stars;
+      confirmed = { mine: mine, data: body };
+      keep(mine);
+      // The next token, made in the background, for a change of mind.
+      setTimeout(presolve, 1500);
+      if (desired !== mine) {
+        show(desired);
+        fly(true, true);
+        return;
+      }
+      removeBtn.disabled = false;
       pending = null;
-      saved = +body.mine || n;
-      try { localStorage.setItem(KEY, String(saved)); } catch (e) { /* not kept */ }
       pick.classList.remove("is-sending");
-      mark();
-      paint();
-      pop(saved);
-      void pick.offsetWidth;
-      pick.classList.add("is-thanked");
-      render(body);
-      say(before || body.previous ? t("Thank you! Your rating is changed.") : t("Thank you! Your rating is in."), false, averageSaid());
+      show(mine);
+      if (!f.optimistic) thank();
+      thanks(f.changed || body.previous != null, !f.optimistic);
     }).catch(function (err) {
-      sending = false;
+      flight = null;
+      trouble = true;
+      desired = confirmed.mine;
+      removeBtn.disabled = false;
       pending = null;
-      pick.classList.remove("is-sending");
-      mark();
-      paint();
+      pick.classList.remove("is-sending", "is-thanked");
+      show(confirmed.mine);
       failed(err);
     });
   }
@@ -343,16 +471,17 @@
   // ---- When the sheet comes near: fresh numbers; in view: the bars fill in ---------------------
 
   function refresh() {
+    var since = epoch;
     fetch(api, { credentials: "omit" }).then(function (res) {
       if (!res.ok) throw new Error(String(res.status));
       return res.json();
     }).then(function (body) {
-      if (sending) return;
-      saved = body.mine >= 1 && body.mine <= 5 ? +body.mine : null;
-      try { saved ? localStorage.setItem(KEY, String(saved)) : localStorage.removeItem(KEY); } catch (e) { /* not kept */ }
-      mark();
-      paint();
-      render(body);
+      if (flight || removing || since !== epoch) return;
+      var mine = body.mine >= 1 && body.mine <= 5 ? +body.mine : null;
+      confirmed = { mine: mine, data: body };
+      desired = mine;
+      keep(mine);
+      show(mine);
     }).catch(function () { /* this build's numbers stay */ });
   }
 
