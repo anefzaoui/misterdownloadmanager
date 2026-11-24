@@ -572,6 +572,10 @@ These ship in the next version.
 - ✅ Linux and macOS: the running downloads' progress on MDM's icon in the dock (Ubuntu Dock,
   Dash to Dock, KDE Plasma's task manager and others) and in the macOS Dock, as on the Windows
   taskbar ([#1777](https://github.com/anefzaoui/misterdownloadmanager/issues/1777))
+- ✅ Tests: the check that one download's IP family never changes another download of the same
+  host no longer fails now and then (seen on a Windows runner): it took for granted that the
+  first download, slowed down, was still running when the second one ended; the test server now
+  holds the first one's part until the second one has ended, then lets it finish
 - ✅ Torrents: an optional public tracker list (ngosang/trackerslist's best, or an address you
   give) added to public torrents, those already in the list and those added, fetched once a day
   (an hour after a failed fetch) through MDM's own downloader, its last good copy kept; never
@@ -604,6 +608,9 @@ These ship in the next version.
 - ✅ CI and the release take NASM from nasm.us, checked against its pinned SHA256, and use
   Chocolatey's feed only when that download fails (its outage had stopped every Windows build)
 - ✅ Torrents: trackers are checked more carefully.
+- ✅ A quick Ctrl- or Shift-click on a row of the download list or the Scheduler's Files list
+  keeps its key on a busy computer: a click has the keys held as its button went down
+  ([#1734](https://github.com/anefzaoui/misterdownloadmanager/issues/1734))
 - ✅ Helpers installs a helper that isn't there yet (gallery-dl before the first gallery, or
   any other): **Install** in its row downloads MDM's own copy, checked as always, with its
   progress, then shows its version and **Update**, and automatic updates cover it; greyed, with

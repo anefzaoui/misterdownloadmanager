@@ -3507,10 +3507,13 @@ async fn the_other_family_is_asked_once_without_retries() {
 /// #1660: the family is the choice of the download that met the 403, never the host's for
 /// every download. While a download whose link works over IPv6 only runs, another one of the
 /// same host switches to IPv4: the first one's new connections (it loses its own again and
-/// again here) still go over IPv6, and none of them meets a 403.
+/// again here) still go over IPv6, and none of them meets a 403. The first one's byte at 2 MiB
+/// (past the second one's end) is held back until the second one has ended: on a slow machine
+/// the first one could otherwise end first, and its new connections after the switch go
+/// untested.
 #[tokio::test]
 async fn one_downloads_family_never_changes_another_download_of_the_host() {
-    let s = on_both_families("").await;
+    let s = on_both_families("stall_at=2M").await;
     let (host, ips) = ("two-links.mdm.test", ["::1", "127.0.0.1"]);
     let dir = tempfile::tempdir().unwrap();
     let start = |path: &str| {
@@ -3535,6 +3538,7 @@ async fn one_downloads_family_never_changes_another_download_of_the_host() {
         still.downloaded < 4 << 20,
         "the first one was still running"
     );
+    s.set_faults(Faults::default());
     assert_eq!(over_v6.wait().await.expect("over IPv6").size, 4 << 20);
     tokio::time::timeout(SETTLE, s.settled())
         .await
