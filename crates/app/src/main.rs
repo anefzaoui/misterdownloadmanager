@@ -70,6 +70,7 @@ mod secrets;
 mod selection;
 mod settings;
 mod store;
+mod sysprogress;
 mod theme;
 mod themefile;
 mod themeicons;

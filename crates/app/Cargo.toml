@@ -138,8 +138,9 @@ objc2 = "0.6.5"
 # .torrent files and magnet links Finder hands over as Apple events (unix.rs open_events, #698).
 objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation", "NSAppleEventDescriptor", "NSAppleEventManager", "NSNotification", "NSURL", "NSArray"] }
 # The share sheet for a downloaded file from the browser popup's list (unix.rs share_file, #1496):
-# the sharing service picker, from a window of MDM's own at the pointer.
-objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation", "NSSharingService", "NSWindow", "NSView", "NSResponder", "NSEvent", "NSColor", "NSApplication"] }
+# the sharing service picker, from a window of MDM's own at the pointer. The downloads' progress
+# on MDM's Dock icon (unix.rs dock_progress, #1777): the Dock tile, the icon and a bar on it.
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation", "NSSharingService", "NSWindow", "NSView", "NSResponder", "NSEvent", "NSColor", "NSApplication", "NSDockTile", "NSControl", "NSImageView", "NSProgressIndicator"] }
 # View → Draw with → Metal (#206, renderer.rs): eframe's wgpu renderer with wgpu's Metal backend
 # only; OpenGL stays eframe's glow, and the default. egui-wgpu's fix for windows that jitter while
 # they are resized (Core Animation presenting with the resize), as upstream egui turns it on.
