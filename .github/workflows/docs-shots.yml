@@ -50,10 +50,8 @@ jobs:
       # built with NASM on Windows; the runner has CMake and LLVM's libclang already.
       - name: NASM
         if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          choco install nasm --version 2.16.3 --no-progress -y
-          "C:\Program Files\NASM" >> $env:GITHUB_PATH
+        # nasm.us at a pinned SHA256, Chocolatey's feed only if that download fails.
+        uses: ./.github/actions/nasm
 
       - name: Build
         run: |
