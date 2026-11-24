@@ -330,10 +330,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Darmowy i open source. Interfejs, który już znasz, szybszy silnik pod spodem, wbudowane torrenty i wideo."
   },
-  "048d941554aedc04": {
-   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
-   "text": "Każdy link otwiera własne okno <g1>Informacje o pliku do pobrania</g1>, więc możesz otworzyć kilka obok siebie, aby porównać rozmiary przed wyborem. Każde nowe okno otwiera się nieco poniżej i obok poprzedniego, a następnie wysuwa się na pierwszy plan; od drugiego okna jego tytuł zawiera numer: <g2>Informacje o pliku do pobrania (2)</g2>, <g3>(3)</g3> i tak dalej. Klawisz <g4>Esc</g4> zamyka tylko aktywne okno. Jednocześnie może być otwartych do sześciu okien: więcej linków przekazanych jednocześnie (przeglądarka przekazująca kilka pobrań) czeka i otwiera się pojedynczo, gdy zamykasz okna; <g5>Anuluj</g5> pyta, czy anulować te, które jeszcze czekają. Ten sam link przekazany ponownie wysuwa jego otwarte okno na pierwszy plan. Jeśli zamkniesz MDM z otwartymi oknami, ich pobrania trafią do <g6>Głównej kolejki pobierania</g6>, tak jak w przypadku <g7>Pobierz później</g7>."
-  },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
    "text": "Kanały RSS"
@@ -9910,10 +9906,6 @@
    "source": "The next choice of a drop-down list or radio group; a number up or down",
    "text": "Wybierz następną opcję na liście rozwijanej lub w grupie przycisków opcji; zwiększ lub zmniejsz liczbę"
   },
-  "89dc61d40cb5073a": {
-   "source": "<g1>Also delete the file from disk</g1> removes the files MDM made for the torrent, each recognised by its file index and the time it was created, so a file that took the same name later is never taken for the torrent's. Files that were already there, files another download claims and files you agreed to use stay. MDM creates every ticked file of a torrent itself, empty, before it starts, so they are removed with it. Unticked files aren't made in the folder: the parts of the pieces they share with ticked files are kept in MDM's own torrent data, and go with the torrent; a file ticked later is made then, and gets them. Only empty folders MDM created are removed; existing folders and a shared <g2>Save to</g2> folder stay. A torrent with its own outer folder, added before this version, is deleted the way it always was. An older one-file torrent is deleted by name, from its own folder. Another older torrent (saved without an outer folder) has no record of its files: MDM keeps them and says why, so check and remove them yourself. A filesystem that gives no reliable creation time (FAT and exFAT, some network and Linux filesystems) keeps its files: MDM never deletes what it cannot recognise. Whenever <g3>Also delete the file from disk</g3> leaves files on the disk, MDM lists them. A <g4>Save to</g4> folder that does not exist yet is made, with its parents, when the torrent starts. A torrent added before this version, with its own folder or one file, takes the files already there as its own once, so resuming it or sharing it again does not ask about files MDM itself downloaded.",
-   "text": "<g1>Usuń również plik z dysku</g1> usuwa pliki utworzone przez MDM dla torrenta, każdy rozpoznawany po indeksie pliku i czasie utworzenia, dzięki czemu plik, który później przyjął tę samą nazwę, nigdy nie jest brany za plik torrenta. Pliki, które już istniały, pliki przypisane do innego pobierania i pliki, których użycie zostało zaakceptowane, pozostają. MDM tworzy każdy zaznaczony plik torrenta jako pusty, zanim rozpocznie pobieranie, więc są one usuwane razem z nim. Niezaznaczone pliki nie są tworzone w folderze: części kawałków, które współdzielą z zaznaczonymi plikami, są przechowywane we własnych danych torrenta MDM i są usuwane razem z torrentem; plik zaznaczony później jest tworzony wtedy i je otrzymuje. Usuwane są tylko puste foldery utworzone przez MDM; istniejące foldery i współdzielony folder <g2>Zapisz w</g2> pozostają. Torrent z własnym zewnętrznym folderem, dodany przed tą wersją, jest usuwany w taki sposób, jak zawsze. Starszy torrent jednoplikowy jest usuwany według nazwy, z własnego folderu. Inny starszy torrent (zapisany bez zewnętrznego folderu) nie ma zapisu swoich plików: MDM je zachowuje i podaje powód, więc sprawdź i usuń je samodzielnie. System plików, który nie zapewnia wiarygodnego czasu utworzenia (FAT i exFAT, niektóre sieciowe i Linuxowe systemy plików), zachowuje swoje pliki: MDM nigdy nie usuwa tego, czego nie może rozpoznać. Zawsze, gdy <g3>Usuń również plik z dysku</g3> pozostawia pliki na dysku, MDM je wyświetla. Folder <g4>Zapisz w</g4>, który jeszcze nie istnieje, jest tworzony wraz z jego folderami nadrzędnymi, gdy torrent się uruchamia. Torrent dodany przed tą wersją, z własnym folderem lub jednym plikiem, traktuje już istniejące pliki jako własne raz, więc wznowienie go lub ponowne udostępnienie nie pyta o pliki pobrane przez sam MDM."
-  },
   "89f549746c4017f3": {
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>Zbudowane przez GitHub Actions</g1><g2>nigdy na czyimś laptopie</g2>"
@@ -18461,6 +18453,62 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "adresów pobierania ani nazw plików;"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "Każdy link otwiera własne okno <g1>Informacje o pliku do pobrania</g1>, więc możesz otworzyć kilka obok siebie, aby porównać rozmiary przed wyborem. Każde nowe okno otwiera się nieco poniżej i obok poprzedniego, a następnie wysuwa się na pierwszy plan; od drugiego okna jego tytuł zawiera numer: <g2>Informacje o pliku do pobrania (2)</g2>, <g3>(3)</g3> i tak dalej. Klawisz <g4>Esc</g4> zamyka tylko aktywne okno. Jednocześnie może być otwartych do sześciu okien: więcej linków przekazanych jednocześnie (przeglądarka przekazująca kilka pobrań) czeka i otwiera się pojedynczo, gdy zamykasz okna; <g5>Anuluj</g5> pyta, czy anulować te, które jeszcze czekają. Ten sam link przekazany ponownie wysuwa jego otwarte okno na pierwszy plan. Jeśli zamkniesz MDM z otwartymi oknami, ich pobrania trafią do <g6>Głównej kolejki pobierania</g6>, tak jak w przypadku <g7>Pobierz później</g7>."
+  },
+  "7297ca101de5145e": {
+   "source": "The list couldn't be read from GitHub when this page was built. Everyone is on GitHub meanwhile, in the project's <g1>pull requests</g1> and <g2>issues</g2>.",
+   "text": "Nie udało się odczytać listy z GitHub podczas tworzenia tej strony. Wszyscy są tymczasem na GitHub, w <g1>pull requestach</g1> i <g2>issues</g2> projektu."
+  },
+  "89dc61d40cb5073a": {
+   "source": "<g1>Also delete the file from disk</g1> removes the files MDM made for the torrent, each recognised by its file index and the time it was created, so a file that took the same name later is never taken for the torrent's. Files that were already there, files another download claims and files you agreed to use stay. MDM creates every ticked file of a torrent itself, empty, before it starts, so they are removed with it. Unticked files aren't made in the folder: the parts of the pieces they share with ticked files are kept in MDM's own torrent data, and go with the torrent; a file ticked later is made then, and gets them. Only empty folders MDM created are removed; existing folders and a shared <g2>Save to</g2> folder stay. A torrent with its own outer folder, added before this version, is deleted the way it always was. An older one-file torrent is deleted by name, from its own folder. Another older torrent (saved without an outer folder) has no record of its files: MDM keeps them and says why, so check and remove them yourself. A filesystem that gives no reliable creation time (FAT and exFAT, some network and Linux filesystems) keeps its files: MDM never deletes what it cannot recognise. Whenever <g3>Also delete the file from disk</g3> leaves files on the disk, MDM lists them. A <g4>Save to</g4> folder that does not exist yet is made, with its parents, when the torrent starts. A torrent added before this version, with its own folder or one file, takes the files already there as its own once, so resuming it or sharing it again does not ask about files MDM itself downloaded.",
+   "text": "<g1>Usuń również plik z dysku</g1> usuwa pliki utworzone przez MDM dla torrenta, każdy rozpoznawany po indeksie pliku i czasie utworzenia, dzięki czemu plik, który później przyjął tę samą nazwę, nigdy nie jest brany za plik torrenta. Pliki, które już istniały, pliki przypisane do innego pobierania i pliki, których użycie zostało zaakceptowane, pozostają. MDM tworzy każdy zaznaczony plik torrenta jako pusty, zanim rozpocznie pobieranie, więc są one usuwane razem z nim. Niezaznaczone pliki nie są tworzone w folderze: części kawałków, które współdzielą z zaznaczonymi plikami, są przechowywane we własnych danych torrenta MDM i są usuwane razem z torrentem; plik zaznaczony później jest tworzony wtedy i je otrzymuje. Usuwane są tylko puste foldery utworzone przez MDM; istniejące foldery i współdzielony folder <g2>Zapisz w</g2> pozostają. Torrent z własnym zewnętrznym folderem, dodany przed tą wersją, jest usuwany w taki sposób, jak zawsze. Starszy torrent jednoplikowy jest usuwany według nazwy, z własnego folderu. Inny starszy torrent (zapisany bez zewnętrznego folderu) nie ma zapisu swoich plików: MDM je zachowuje i podaje powód, więc sprawdź i usuń je samodzielnie. System plików, który nie zapewnia wiarygodnego czasu utworzenia (FAT i exFAT, niektóre sieciowe i Linuxowe systemy plików), zachowuje swoje pliki: MDM nigdy nie usuwa tego, czego nie może rozpoznać. Zawsze, gdy <g3>Usuń również plik z dysku</g3> pozostawia pliki na dysku, MDM je wyświetla. Folder <g4>Zapisz w</g4>, który jeszcze nie istnieje, jest tworzony wraz z jego folderami nadrzędnymi, gdy torrent się uruchamia. Torrent dodany przed tą wersją, z własnym folderem lub jednym plikiem, traktuje już istniejące pliki jako własne raz, więc wznowienie go lub ponowne udostępnienie nie pyta o pliki pobrane przez sam MDM."
+  },
+  "49b4a645676f1c52": {
+   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
+   "text": "Wersja skrócona: aplikacja Mister Download Manager i jej rozszerzenie do przeglądarki nie zbierają żadnych danych o Tobie. Bez kont, bez analityki, bez telemetrii, bez reklam. Ta strona internetowa zlicza swoje wizyty za pomocą Statcounter."
+  },
+  "616c286a43aec83e": {
+   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
+   "text": "<g1>Ponad 3800 użytkowników dziennie</g1><g2>4,7 na 5, z 7 ocen</g2>"
+  },
+  "84829118b707c58c": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com to strona statyczna. Trzy firmy uczestniczą w jej wyświetlaniu, a czwarta, jeśli odtworzysz film na stronie głównej:"
+  },
+  "8ccaf02f36376582": {
+   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
+   "text": "<g1>W liczbach</g1><g2>Sprawdzono <x3/>, zaokrąglono w dół</g2>"
+  },
+  "9fe595ed623618bf": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>Dowód dostawy</g1><g2>Dane sprawdzone na <x3/> · cytaty dokładne, z linkami do źródła</g2>"
+  },
+  "b3192a3bf72c5c3b": {
+   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
+   "text": "Aplikacja i rozszerzenie nie zbierają żadnych danych osobowych, także od dzieci. Licznik odwiedzin witryny nie wie, kim jesteś ani ile masz lat."
+  },
+  "c9da130585eae7fa": {
+   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
+   "text": "Witryna nie zawiera reklam ani innych trackerów. Jej czcionki i skrypty są serwowane z samej witryny. Twój wybór trybu jasnego lub ciemnego jest zapamiętywany w lokalnej pamięci przeglądarki i nigdy nie jest nigdzie wysyłany."
+  },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> Dodaj do Firefox</g1><g3><x4/> Dodaj do Chrome</g3>"
+  },
+  "d325a1b1c8ab0caa": {
+   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
+   "text": "Jak Mister Download Manager, jego rozszerzenie przeglądarki i ta witryna przetwarzają Twoje dane: aplikacja i rozszerzenie niczego nie zbierają; witryna zlicza wizyty za pomocą Statcounter."
+  },
+  "d7a59305d1341d4e": {
+   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
+   "text": "Aplikacja i rozszerzenie nie przechowują Twoich danych osobowych, więc nie mamy żadnych danych, które moglibyśmy Ci udostępnić, poprawić lub usunąć. Statystyki odwiedzin witryny przechowuje Statcounter. Aby usunąć zapis wizyty, zgłoś problem z datą i godziną wizyty albo skontaktuj się bezpośrednio ze Statcounter. Danymi wysłanymi do GitHub (na przykład w zgłoszeniu problemu) zarządza GitHub. Można je tam edytować lub usunąć."
+  },
+  "f40a78a2a7aa4f18": {
+   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
+   "text": "<g1>Ponad 50 000 użytkowników</g1><g2>4,9 na 5, z 43 ocen</g2>"
   }
  }
 }
