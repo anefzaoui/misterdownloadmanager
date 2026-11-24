@@ -49,6 +49,12 @@ pub fn file_icon(_what: &crate::fileicons::What, _px: u32) -> Option<crate::file
     None
 }
 
+/// The system's picture of a file, for the preview pane: none asked of Android yet (the pane
+/// shows the type's icon).
+pub fn thumbnail(_path: &std::path::Path, _px: u32) -> Option<crate::preview::Picture> {
+    None
+}
+
 /// The Scheduler's start time, as an exact alarm (the host's).
 pub fn wake_at(at: Option<i64>) -> Result<(), String> {
     match host() {

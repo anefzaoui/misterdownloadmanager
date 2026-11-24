@@ -5605,7 +5605,7 @@ mod startup_tests {
 #[cfg(target_os = "android")]
 pub use crate::android::{
     default_browser, file_icon, keep_awake, keychain_delete, keychain_list, keychain_probe,
-    keychain_read, keychain_write, wake_at,
+    keychain_read, keychain_write, thumbnail, wake_at,
 };
 
 #[cfg(target_os = "linux")]
