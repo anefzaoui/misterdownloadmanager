@@ -199,12 +199,16 @@ pub fn requeue_failed(q: &mut Queue, id: u64) {
 }
 
 /// Did the clock pass `t` (h, m, s) between `prev` and `now` (seconds since midnight)?
-pub fn crossed(t: (u8, u8, u8), prev: u32, now: u32) -> bool {
+/// `next_day`: the date moved forward since `prev` (otherwise `prev > now` is a clock that went
+/// back — a summer-time change or an NTP step — and nothing was passed).
+pub fn crossed(t: (u8, u8, u8), prev: u32, now: u32, next_day: bool) -> bool {
     let s = t.0 as u32 * 3600 + t.1 as u32 * 60 + t.2 as u32;
     if prev <= now {
         prev < s && s <= now
-    } else {
+    } else if next_day {
         s > prev || s <= now
+    } else {
+        false
     }
 }
 
@@ -291,8 +295,13 @@ mod tests {
     #[test]
     fn schedule_time_crossing() {
         let eleven_pm = (23, 0, 0);
-        assert!(crossed(eleven_pm, 82_799, 82_800));
-        assert!(!crossed(eleven_pm, 82_800, 82_801));
-        assert!(crossed((0, 0, 5), 86_398, 6), "across midnight");
+        assert!(crossed(eleven_pm, 82_799, 82_800, false));
+        assert!(!crossed(eleven_pm, 82_800, 82_801, false));
+        assert!(crossed((0, 0, 5), 86_398, 6, true), "across midnight");
+        // A clock that went back (summer time's fall-back, an NTP step) crossed nothing.
+        assert!(
+            !crossed(eleven_pm, 10_799, 7_200, false),
+            "3:00 back to 2:00 is not midnight"
+        );
     }
 }

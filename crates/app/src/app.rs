@@ -1741,8 +1741,9 @@ pub struct App {
     /// aside (never over it).
     saved_by_hand: std::collections::HashSet<u64>,
     /// Seconds since local midnight at the last scheduler tick (`None` until the clock's first
-    /// answer, #536).
+    /// answer, #536), and the local date then (a clock that goes back is not midnight).
     clock: Option<u32>,
+    clock_day: Option<chrono::NaiveDate>,
     /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
     wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
@@ -2454,6 +2455,7 @@ impl App {
             stopped_by_hand: Default::default(),
             saved_by_hand: Default::default(),
             clock: None,
+            clock_day: None,
             wake: Default::default(),
             commands,
         }
@@ -8597,6 +8599,14 @@ impl App {
         // window for 8 s (#536). Until its first answer, schedules wait.
         let local = crate::clock::now_known();
         let now_s = local.map(|t| t.num_seconds_from_midnight());
+        let day = local.map(|t| t.date_naive());
+        // Only a date that moved forward is midnight crossed: a clock that went back (summer
+        // time's fall-back, an NTP step, the user setting it) is not a day's worth of schedule
+        // times coming due at once.
+        let next_day = matches!((self.clock_day, day), (Some(before), Some(now)) if now > before);
+        if day.is_some() {
+            self.clock_day = day;
+        }
         let prev = std::mem::replace(&mut self.clock, now_s).or(now_s);
         if let (Some(local), Some(now_s), Some(prev)) = (local, now_s, prev) {
             let today = local.date_naive();
@@ -8606,12 +8616,12 @@ impl App {
                 let sch = self.queues[q].schedule.clone();
                 if let Some(t) = sch.start_at
                     && sch.starts_on(date, weekday)
-                    && queue::crossed(t, prev, now_s)
+                    && queue::crossed(t, prev, now_s, next_day)
                 {
                     self.queues[q].running = true;
                 }
                 if let Some(t) = sch.stop_at
-                    && queue::crossed(t, prev, now_s)
+                    && queue::crossed(t, prev, now_s, next_day)
                 {
                     self.stop_queue(q);
                 }
