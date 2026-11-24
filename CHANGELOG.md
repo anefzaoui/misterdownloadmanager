@@ -99,6 +99,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- Command line: `playlist-info` and `playlist-get` refuse `--from 0` and `--count 0` instead of listing or downloading the wrong entries (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Command line: a resumed download's first speed no longer counts the bytes it already had as just downloaded (a resume showed several GB/s for its first seconds) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Command line: `video-info` shows sizes in the same unit as the rest of the command (a 950 KB quality no longer reads 0 MB) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Command line and automation: an MDM busy for a moment answers that it timed out, instead of being taken for an MDM that isn't running (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- MCP: a request MDM is too busy to take, or one too large, is reported as an error instead of a success (an `add_download` that added nothing said it had) (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Logs: after the disk refused the log file once (full, read-only), MDM writes its log again as soon as it can, instead of not at all for the rest of the session (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
+- Crash reports: `mdm-symbolicate` reads a symbols file named `.ZIP`, and refuses a path that is neither a zip nor a folder instead of leaving every frame unnamed (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Extracting: a damaged entry of a zip encrypted with AES is reported as damaged, not as a wrong password (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Extracting: an entry under a file of the same archive (a file `a`, then `a/b`) is left out and the rest of the archive extracts, instead of nothing at all; the download's log counts it with the other entries left out (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
 - Video pieces: a server's announced size is handled more carefully (thanks to [@riyazalsodie](https://github.com/riyazalsodie)).
