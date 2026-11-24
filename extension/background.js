@@ -2078,7 +2078,10 @@ async function mediaDownload(tabId, url) {
   if (!shown) return { ok: false, why: "gone" };
   if (shown.drm) return { ok: false, why: "drm" };
   const kept = media.get(tabId);
-  const it = kept.items.find((x) => x.url === url);
+  const it = kept && (kept.items || []).find((x) => x.url === url);
+  // The list was rebuilt while its answer was on its way back: the page changed, or the tab
+  // closed. That is "gone", not a failure with no reason.
+  if (!it) return { ok: false, why: "gone" };
   let tab;
   try {
     tab = await ext.tabs.get(tabId);
