@@ -1021,17 +1021,31 @@ fn a_damaged_aes_entry_is_reported_as_damaged_not_as_a_wrong_password() {
 }
 
 /// An entry that cannot be written because a file of the archive is in the way is skipped, not
-/// fatal: the rest of the archive still extracts.
+/// fatal: the rest of the archive still extracts. Deeper under the file too (`a/b/c`, where
+/// neither `a/b` nor `a` is a folder), and a folder entry of the file's name.
 #[test]
 fn an_entry_under_a_file_is_skipped_not_fatal() {
     let t = tempfile::tempdir().unwrap();
     let zip = t.path().join("a.zip");
-    zip_of(&zip, &[("a", b"1"), ("a/b", b"2"), ("c.txt", b"3")], None);
+    {
+        let opts = zip::write::SimpleFileOptions::default;
+        let mut z = zip::ZipWriter::new(std::fs::File::create(&zip).unwrap());
+        for (name, data) in [("a", b"1"), ("a/b", b"2"), ("a/b/c", b"4"), ("c.txt", b"3")] {
+            z.start_file(name, opts()).unwrap();
+            z.write_all(data).unwrap();
+        }
+        // A folder entry where the file is.
+        z.add_directory("a/", opts()).unwrap();
+        z.finish().unwrap();
+    }
     let dest = t.path().join("out");
     std::fs::create_dir(&dest).unwrap();
     let (r, _) = run(&zip, &dest, None, Subfolder::Never);
-    assert!(r.is_ok(), "{r:?}");
+    let report = r.expect("the rest extracts");
     assert_eq!(std::fs::read(dest.join("a")).unwrap(), b"1");
     assert!(!dest.join("a/b").exists());
     assert_eq!(std::fs::read(dest.join("c.txt")).unwrap(), b"3");
+    let mut left: Vec<_> = report.skipped.iter().map(|(n, _)| n.as_str()).collect();
+    left.sort_unstable();
+    assert_eq!(left, ["a/", "a/b", "a/b/c"], "{:?}", report.skipped);
 }
