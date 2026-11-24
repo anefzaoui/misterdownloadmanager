@@ -3377,16 +3377,12 @@ impl Columns {
                     &p,
                     o.x + 11.0,
                     o.y + 12.0,
-                    crate::i18n::t("Choose the columns to show in the list of downloads"),
+                    crate::i18n::t("Choose columns to show"),
                     winui::LIGHT_TEXT(),
                     o.x + 348.0,
                     13.0,
                 );
-                let reorder_hint = format!(
-                    "{} (Alt+↑)   {} (Alt+↓)",
-                    crate::i18n::t("Move up"),
-                    crate::i18n::t("Move down")
-                );
+                let reorder_hint = crate::i18n::t("Use Alt+↑ / Alt+↓ to move the selected column");
                 winui::paragraph(
                     &p,
                     o.x + 11.0,
