@@ -5089,7 +5089,7 @@ fn taskbar_button_created_message() -> u32 {
 #[derive(Default)]
 pub struct TaskbarProgress {
     window: isize,
-    shown: Option<Option<u32>>,
+    shown: crate::sysprogress::Shown,
     button_generation: u64,
 }
 
@@ -5097,7 +5097,7 @@ impl TaskbarProgress {
     pub const fn new() -> Self {
         Self {
             window: 0,
-            shown: None,
+            shown: crate::sysprogress::Shown::new(),
             button_generation: 0,
         }
     }
@@ -5110,7 +5110,7 @@ impl TaskbarProgress {
     /// window of this process, so do not send to it while forgetting the binding.
     pub fn window_gone(&mut self) {
         self.window = 0;
-        self.shown = None;
+        self.shown.forget();
         self.button_generation = 0;
     }
 
@@ -5122,7 +5122,7 @@ impl TaskbarProgress {
         if self.window != window {
             self.update_with(None, &mut send);
             self.window = window;
-            self.shown = None;
+            self.shown.forget();
             self.button_generation = 0;
         }
     }
@@ -5142,13 +5142,13 @@ impl TaskbarProgress {
             .try_with(|buttons| buttons.borrow().1.get(&self.window).copied().unwrap_or(0))
             .unwrap_or(0);
         if self.button_generation != generation {
-            self.shown = None;
+            self.shown.forget();
             // Take the generation before send: a notification during COM must survive it.
             self.button_generation = generation;
         }
-        let value = progress.map(|p| (p.clamp(0.0, 1.0) * 1000.0).round() as u32);
-        if self.window != 0 && self.shown != Some(value) && send(self.window, value) {
-            self.shown = Some(value);
+        if self.window != 0 {
+            let window = self.window;
+            self.shown.update(progress, |value| send(window, value));
         }
     }
 }
@@ -5222,8 +5222,9 @@ fn write_taskbar_progress(window: isize, value: Option<u32>) -> bool {
                 let this = tb.obj as *mut c_void;
                 match value {
                     Some(v) => {
+                        let steps = u64::from(crate::sysprogress::STEPS);
                         ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NORMAL) >= 0
-                            && ((**tb.obj).set_progress_value)(this, hwnd, u64::from(v), 1000) >= 0
+                            && ((**tb.obj).set_progress_value)(this, hwnd, u64::from(v), steps) >= 0
                     }
                     None => ((**tb.obj).set_progress_state)(this, hwnd, TBPF_NOPROGRESS) >= 0,
                 }

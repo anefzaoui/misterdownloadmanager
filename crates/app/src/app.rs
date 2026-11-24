@@ -1978,7 +1978,7 @@ fn file_icon(name: &str) -> IconKey {
 /// Sort key for list column col: numbers where IDM sorts numerically, else text.
 /// `queued`: the download is in a queue (the Q column's mark).
 fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
-    let frac = it.fraction().unwrap_or(0.0);
+    let frac = it.list_fraction().unwrap_or(0.0);
     match col {
         0 => (0.0, it.file_name.to_lowercase()),
         // As the column shows it: in a queue or not.
@@ -2696,7 +2696,7 @@ impl App {
             queued: queued.contains(&it.id),
             // A progress bar only while the download is in flight: a finished file is whole, and
             // a bar at 100% on every row would only add words to it (#1190).
-            progress: it.fraction().filter(|frac| *frac < 1.0),
+            progress: it.list_fraction().filter(|frac| *frac < 1.0),
             cells: [
                 it.file_name.clone(),
                 String::new(),
@@ -5020,9 +5020,8 @@ impl App {
     }
 
     /// Progress of all running downloads together (bytes done / bytes in all), None when
-    /// nothing runs or no size is known. For the taskbar button's progress, which only Windows
-    /// has (macOS and Linux docks have no common way to show one).
-    #[cfg_attr(not(windows), allow(dead_code))]
+    /// nothing runs or no size is known. For the system's progress on MDM's button or icon
+    /// (sysprogress.rs): the taskbar button on Windows, the dock on Linux and macOS (#1777).
     fn overall_progress(&self) -> Option<f64> {
         let (done, total) = self
             .items
@@ -9474,7 +9473,10 @@ impl App {
             ctx.request_repaint_after(progress::SHOWN_WHOLE.saturating_sub(now.duration_since(at)));
         }
         if any_live {
-            ctx.request_repaint_after(Duration::from_millis(250));
+            // The list redraws as its progress clock ticks (every 250 ms), not a fixed
+            // 250 ms after this frame: a figure read on one tick is never left waiting
+            // for the next tick after the one it missed (#1441).
+            ctx.request_repaint_after(model::until_progress_tick(now));
             // The speeds shown change on their own clock (#1176): a frame as it ticks.
             ctx.request_repaint_after(model::until_shown(now));
             // The list's progress figures, every 30 s while something runs: after a crash the
@@ -14475,15 +14477,19 @@ impl App {
             self.watch_clipboard(ctx);
             crate::crash::step(crate::crash::Step::Tray);
             self.tray(ctx);
-            // The taskbar button's green bar: everything running, as one.
+            // The taskbar button's green bar: everything running, as one. Linux docks and the
+            // macOS Dock show the same on MDM's icon (#1777); a progress window has no icon of
+            // its own there.
+            crate::crash::step(crate::crash::Step::Taskbar);
             #[cfg(windows)]
             {
-                crate::crash::step(crate::crash::Step::Taskbar);
                 crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
                 for window in &mut self.progress {
                     window.update_taskbar(self.items.iter().find(|item| item.id == window.id));
                 }
             }
+            #[cfg(unix)]
+            crate::unix::dock_progress(self.overall_progress());
         }
         if self
             .ticked
