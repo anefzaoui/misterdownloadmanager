@@ -241,6 +241,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	לא ניתן היה למצוא את הקבצים של קישור המגנט: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	ההעברה נקטעה כש־MDM נסגר: ההורדה נמצאת ב־{folder}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -277,6 +281,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	טורנט של קובץ יחיד שומר על שמו
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	ניתן להעביר טורנט לאחר השלמתו: עד אז מנוע הטורנט כותב את החלקים שלו היכן שהם נמצאים
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -285,6 +293,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	גשש במחשב זה או ברשת המקומית לעולם לא ייצור קשר: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	ניתן להעביר סרטון או גלריה לאחר השלמתם: עד אז תוכניות העזר שלהם שומרות את הקבצים שעדיין לא הושלמו בתיקייה שלהם
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2561,6 +2573,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	לא ניתן היה לכתוב את הקבצים שלו: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	לא ניתן להגיע לתיקייה {folder}
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3188,9 +3204,22 @@
 #, machine
 	Move/Rename	הזז/שנה שם
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	הועבר אל {folder}
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	מעביר את הקובץ...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	מתבצעת העברה לתיקייה {folder}
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	מועבר...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3632,13 +3661,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	מקוון
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	ניתן להעביר רק הורדה שהסתיימה או שעדיין לא התחילה
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ניתן להעביר רק הורדה שהסתיימה או שעדיין לא התחילה. עצור אותה וסיים אותה תחילה.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -5113,6 +5135,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	ההורדה מ־{host} נקטעה
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	ההורדה מועברת
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5461,6 +5487,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	אין מספיק מקום פנוי עבור הקבצים שלו, אומר HatchZip; שום דבר לא שונה
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	אין מספיק מקום פנוי שם ({needed} נדרש, {free} פנוי)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	הגדרות אלה אינן זמינות כאשר "הצג תיבת דו-שיח של השלמת הורדה" מופעלת
@@ -6486,6 +6516,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	לא ניתן היה לקרוא את {file} כדי לבדוק אותו
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} כבר קיימת
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine

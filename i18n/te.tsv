@@ -289,6 +289,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	A magnet link's files could not be looked up: {error}	మాగ్నెట్ లింక్ ఫైల్‌లను చూడలేకపోయింది: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM మూసివేయడంతో తరలింపు మధ్యలో ఆగిపోయింది: డౌన్‌లోడ్ {folder}లో ఉంది
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -325,6 +329,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	సింగిల్-ఫైల్ టొరెంట్ తన పేరును అలాగే ఉంచుకుంటుంది
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	టొరెంట్ పూర్తయిన తర్వాత తరలించవచ్చు: అప్పటి వరకు టొరెంట్ ఇంజిన్ దాని భాగాలను అవి ఉన్న ఫైల్‌లలోకి వ్రాస్తుంది
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -333,6 +341,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	ఈ కంప్యూటర్‌లోని లేదా స్థానిక నెట్‌వర్క్‌లోని ట్రాకర్‌ను ఎప్పుడూ సంప్రదించరు: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	వీడియో లేదా గ్యాలరీ పూర్తయిన తర్వాత తరలించవచ్చు: అప్పటి వరకు దాని సహాయక ప్రోగ్రామ్‌లు వాటి అసంపూర్తి ఫైల్‌లను దాని ఫోల్డర్‌లోనే ఉంచుతాయి
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2610,6 +2622,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	దాని ఫైల్‌లను వ్రాయడం సాధ్యం కాలేదు: {error}
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	దాని ఫోల్డర్ {folder}కి చేరుకోలేము
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3237,9 +3253,22 @@
 #, machine
 	Move/Rename	తరలించు/పేరు మార్చు
 #. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	{folder}కి తరలించబడింది
+#. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ఫైల్‌ను తరలిస్తోంది...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	{folder}కి తరలిస్తోంది
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	తరలిస్తోంది...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3681,13 +3710,6 @@
 #. Link grabber, a link's status: the server has the file
 #, machine
 	Online	ఆన్‌లైన్
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	పూర్తయిన డౌన్‌లోడ్‌ను లేదా ఇంకా ప్రారంభించని డౌన్‌లోడ్‌ను మాత్రమే తరలించవచ్చు
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	పూర్తయిన డౌన్‌లోడ్‌ను లేదా ఇంకా ప్రారంభించని డౌన్‌లోడ్‌ను మాత్రమే తరలించవచ్చు. ముందుగా దాన్ని ఆపి, పూర్తయ్యేలా చేయండి.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -5162,6 +5184,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} నుండి డౌన్‌లోడ్ మధ్యలో ఆగిపోయింది
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	డౌన్‌లోడ్ తరలించబడుతోంది
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5510,6 +5536,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	దాని ఫైల్‌లకు తగినంత ఖాళీ స్థలం లేదు, HatchZip చెబుతోంది; ఏమీ మార్చబడలేదు
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	అక్కడ తగినంత ఖాళీ స్థలం లేదు ({needed} అవసరం, {free} ఖాళీ)
 #. text in a download's progress window
 #, machine
 	These settings are unavailable when "Show download complete dialog" is turned on	“డౌన్‌లోడ్ పూర్తయినప్పుడు డైలాగ్‌ను చూపించు” ఎంపిక ఆన్‌లో ఉన్నప్పుడు ఈ సెట్టింగ్‌లు అందుబాటులో ఉండవు
@@ -6539,6 +6569,10 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	తనిఖీ చేయడానికి {file}ను చదవడం సాధ్యం కాలేదు
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ఇప్పటికే అక్కడ ఉంది
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine

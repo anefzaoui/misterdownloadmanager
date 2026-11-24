@@ -314,10 +314,42 @@ pub struct Saver {
 
 #[derive(Default)]
 struct SaverState {
-    waiting: Option<(std::path::PathBuf, Vec<u8>)>,
+    /// What to write next, and its number ([`SaverState::queued`] then).
+    waiting: Option<(std::path::PathBuf, Vec<u8>, u64)>,
     writing: bool,
     /// The last write's outcome, not yet taken.
     outcome: Option<Result<(), String>>,
+    /// How many lists were handed over; the number of the last one written, and how that went
+    /// ([`Written`]: a list handed over later is written in its place, and holds what it held).
+    queued: u64,
+    written: u64,
+    written_error: Option<String>,
+}
+
+/// The list as handed to the saver at one moment ([`Saver::last_queued`]): whether it (or a newer
+/// one, written in its place) is on the disk now. A download's files move only once the list
+/// that names their new place is saved (#1739).
+pub struct Written {
+    shared: std::sync::Arc<(std::sync::Mutex<SaverState>, std::sync::Condvar)>,
+    number: u64,
+}
+
+impl Written {
+    /// Wait until that list, or a newer one, is written: how its write went. A saver that
+    /// writes nothing for two minutes counts as failed (its thread gone, a disk that holds it).
+    pub fn wait(&self) -> Result<(), String> {
+        let (lock, cv) = &*self.shared;
+        let s = lock.lock().unwrap_or_else(|e| e.into_inner());
+        let (s, timeout) = cv
+            .wait_timeout_while(s, std::time::Duration::from_secs(120), |s| {
+                s.written < self.number
+            })
+            .unwrap_or_else(|e| e.into_inner());
+        if timeout.timed_out() && s.written < self.number {
+            return Err("the download list was not saved in time".into());
+        }
+        s.written_error.clone().map_or(Ok(()), Err)
+    }
 }
 
 impl Saver {
@@ -339,7 +371,7 @@ impl Saver {
             .spawn(move || {
                 let (lock, cv) = &*worker;
                 loop {
-                    let (p, json) = {
+                    let (p, json, number) = {
                         let mut s = lock.lock().unwrap_or_else(|e| e.into_inner());
                         while s.waiting.is_none() {
                             s = cv.wait(s).unwrap_or_else(|e| e.into_inner());
@@ -350,6 +382,8 @@ impl Saver {
                     let r = write(&p, &json).map_err(|e| e.to_string());
                     let mut s = lock.lock().unwrap_or_else(|e| e.into_inner());
                     s.writing = false;
+                    s.written = number;
+                    s.written_error = r.clone().err();
                     s.outcome = Some(r);
                     cv.notify_all();
                 }
@@ -375,8 +409,24 @@ impl Saver {
     /// Hand `json` to the saver thread, to be written as `p`.
     pub fn queue(&self, p: std::path::PathBuf, json: Vec<u8>) {
         let (lock, cv) = &*self.shared;
-        lock.lock().unwrap_or_else(|e| e.into_inner()).waiting = Some((p, json));
+        let mut s = lock.lock().unwrap_or_else(|e| e.into_inner());
+        s.queued += 1;
+        s.waiting = Some((p, json, s.queued));
         cv.notify_all();
+    }
+
+    /// The list handed over last ([`Saver::save`]), to wait for on another thread.
+    pub fn last_queued(&self) -> Written {
+        let number = self
+            .shared
+            .0
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .queued;
+        Written {
+            shared: self.shared.clone(),
+            number,
+        }
     }
 
     /// The outcome of the last write, once.
@@ -441,6 +491,35 @@ mod tests {
         assert!(saver.flush_until(None));
         assert_eq!(saver.outcome(), Some(Ok(())));
         assert_eq!(load_from(&p, empty()).next_id, 5);
+    }
+
+    /// #1739: a list handed over can be waited for on another thread, until it (or a newer one)
+    /// is on the disk; a write that failed says so.
+    #[test]
+    fn a_list_handed_over_can_be_waited_for() {
+        let dir = tempfile::tempdir().unwrap();
+        let p = dir.path().join("downloads.json");
+        let layout = crate::list::ListState::default().layout();
+        let saver = Saver::new();
+        let json = encode(&p, 7, &[], &layout, &Settings::default(), &[]).unwrap();
+        saver.queue(p.clone(), json);
+        let written = saver.last_queued();
+        std::thread::spawn(move || written.wait())
+            .join()
+            .unwrap()
+            .unwrap();
+        assert_eq!(
+            load_from(&p, empty()).next_id,
+            7,
+            "on the disk once waited for"
+        );
+        fn refused(_: &Path, _: &[u8]) -> std::io::Result<()> {
+            Err(std::io::Error::other("disk full"))
+        }
+        let failing = Saver::writing("failing saver", refused);
+        failing.queue(p.clone(), b"{}".to_vec());
+        let e = failing.last_queued().wait().unwrap_err();
+        assert!(e.contains("disk full"), "{e}");
     }
 
     /// #513: handing a file to a saver never waits for the disk (Windows held every write on C:
