@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Підпис коду дозволяє Windows показувати, хто опублікував програму, і перевіряти, що її не було змінено після створення. Коли випуск Mister Download Manager («MDM») підписаний, його підпис охоплює файли Windows, що походять з цього проєкту:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> запитів на злиття"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Так. MDM записує дані про перебіг завантаження, тож після втрати з’єднання, збою або перезапуску продовжує з того місця, де зупинилося. Перед відновленням MDM перевіряє, чи не змінився файл на сервері. Якщо термін дії адреси завантаження закінчився, за допомогою <g1>Оновити адресу завантаження</g1> можна вказати нову адресу й зберегти завантажені дані. Дивіться <g2>Відновити перерване завантаження</g2>."
@@ -230,10 +226,6 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Довідка → Про Mister Download Manager</g1> показує версію, яку ви маєте."
   },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>Запити на злиття</g1><g2><x3/> осіб</g2>"
-  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "Усе, що може Планувальник →"
@@ -305,10 +297,6 @@
   "043086b485508c73": {
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Якщо деякі файли торрента вже є в папці, MDM запитає, чи використовувати їх. Виберіть <g1>Так</g1>, щоб використати їх для торрента: MDM перевірить файли, залишить ті, що відповідають торренту, і завантажить решту. Так можна продовжити завантаження, розпочате в іншому місці, або поділитися файлами, які у вас уже є. Виберіть <g2>Ні</g2> (за замовчуванням), щоб повернутися й вибрати іншу папку. Ваші файли не буде перезаписано."
-  },
-  "04347ca0f5af1b11": {
-   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
-   "text": "<g1>API автоматизації MDM</g1>, якого взагалі немає на цьому сайті: він працює всередині програми, на власному комп'ютері користувача, вимкнений, доки користувач його не ввімкне, і відповідає лише там, із секретним токеном. Його <g2>документація</g2> та його <g3>JSON Schema</g3>."
   },
   "043f6ef7d8d6d597": {
    "source": "Mister Download Manager is an interesting option for anyone looking for a modern, free and open-source download manager.",
@@ -826,10 +814,6 @@
    "source": "<g1>Cancel</g1> stops the download and closes the window. The download stays in the list and can be resumed.",
    "text": "<g1>Скасувати</g1> зупиняє завантаження та закриває вікно. Завантаження залишається у списку і може бути відновлене."
   },
-  "0af7f5cd6adffe8b": {
-   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
-   "text": "Mister Download Manager постачається з сервером <g1>MCP</g1>, <x2/>, тому помічник ШІ (Claude, Cursor, VS Code та інші) може перераховувати, додавати, призупиняти, відновлювати та видаляти завантаження в запущеному MDM користувача. Це <g3>локальний</g3> сервер: помічник запускає його на комп'ютері користувача, поруч із програмою, і він спілкується лише з MDM там. На цьому веб-сайті немає сервера MCP. Його <g4>картка сервера</g4> описує його, а <g5>помічники ШІ</g5> розповідають, як його налаштувати."
-  },
   "0afe7d2cb5cea1a9": {
    "source": "Portable mode — Mister Download Manager help",
    "text": "Портативний режим — довідка Mister Download Manager"
@@ -958,10 +942,6 @@
    "source": "<g1>Proxy auto-config scripts (PAC) run in QuickJS</g1>, a much smaller JavaScript engine, with limits on memory and running time: a script that loops or grows forever now fails, as a broken script does (the download goes on with the default proxy settings), instead of holding it.",
    "text": "<g1>Скрипти автоматичної конфігурації проксі (PAC) виконуються в QuickJS</g1>, набагато меншому рушії JavaScript, з обмеженнями на пам’ять та час виконання: скрипт, який зациклюється або зростає нескінченно, тепер завершується з помилкою, як і зламаний скрипт (завантаження продовжується з налаштуваннями проксі за замовчуванням), замість того, щоб утримувати його."
   },
-  "0c9da169d64e8998": {
-   "source": "MDM's MCP server",
-   "text": "Сервер MCP MDM"
-  },
   "0cd4a41b7875f510": {
    "source": "Options → Archives: extract every archive, or only the packages that ask.",
    "text": "Параметри → Архіви: розпаковувати кожен архів або лише ті пакети, що просять."
@@ -1065,10 +1045,6 @@
   "0e703708311ea645": {
    "source": "The thin edge around a country's flag",
    "text": "Тонкий край навколо прапора країни"
-  },
-  "0e8cf57250a871ec": {
-   "source": "Read the site",
-   "text": "Читати сайт"
   },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
@@ -1590,10 +1566,6 @@
    "source": "If it says <g1>the file changed on the server</g1>, the file isn't the one MDM started with. Right-click → <g2>Redownload</g2> to start again from the beginning.",
    "text": "Якщо написано <g1>файл змінився на сервері</g1>, файл не є тим, з якого почав MDM. Клацніть правою кнопкою миші → <g2>Перезавантажити</g2>, щоб почати знову з початку."
   },
-  "1599478b71f60890": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
-   "text": "На невідоме запитання або дію надсилається відповідь <x1/>, так само як і на запитання, коли API вимкнено (тоді з <x2/>, для перевірки програмами: текст помилки може змінитися). На неправильний токен надсилається відповідь <x3/>. Коли MDM вже обробляє стільки запитів, скільки може одночасно, він відповідає <x4/>: нічого не було зроблено, і рядок можна надіслати знову через мить."
-  },
   "15b2bf48d7547b61": {
    "source": "Opened 480, done in 15.9 s<g1><g2>2</g2></g1>",
    "text": "Відкриває 480 з’єднань, завершує за 15,9 с<g1><g2>2</g2></g1>"
@@ -1718,10 +1690,6 @@
    "source": "<g1>Scheduler and queues</g1><g2>Queues started and stopped by the clock, a few files at a time, the computer off at the end.</g2>",
    "text": "<g1>Планувальник і черги</g1><g2>Черги запускаються та зупиняються за розкладом, по кілька файлів за раз, комп’ютер вимикається після завершення.</g2>"
   },
-  "1777ec4563260032": {
-   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
-   "text": "<g1><g2>sitemap.xml</g2></g1>: кожна сторінка, кожною мовою."
-  },
   "17834855ff83a05b": {
    "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> can't ask for that permission at the switch, so the extension has it from the install (Chrome counts it under the access to every site the extension already asks for, so it adds no line to the install prompt and the update asks for nothing new). The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy extension, a policy, the command line): a fixed server for the download's scheme (<x2/>, <x3/>, <x4/>, <x5/>), unless the address is on its bypass list, or its proxy auto-config script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes by its own Options. A QUIC proxy can't be shared.",
    "text": "<g1>Chrome, Edge, Brave, Opera та Vivaldi</g1> не можуть запитувати цей дозвіл під час увімкнення, тому розширення має його з моменту встановлення (Chrome враховує це в доступі до кожного сайту, який розширення вже запитує, тому воно не додає рядок до запиту на встановлення, а оновлення не запитує нічого нового). Перемикач нічого не запитує. MDM отримує ефективний проксі-сервер браузера, незалежно від того, хто його встановив (розширення VPN або проксі-сервера, політика, командний рядок): фіксований сервер для схеми завантаження (<x2/>, <x3/>, <x4/>, <x5/>), якщо адреса не знаходиться в його списку обходу, або його сценарій автоматичної конфігурації проксі-сервера (за його адресою або вбудований). Без проксі-сервера або з системним проксі-сервером нічого не надсилається, і MDM діє відповідно до власних параметрів. Проксі-сервер QUIC не може бути спільним."
@@ -1801,10 +1769,6 @@
   "18b71bddc92d0eb7": {
    "source": "<g1>A Linux test machine, scripted</g1> (part of <g2>#164</g2>): <x3/> sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host (<x4/>: hardware, headless start, linked clones; <x5/>: packages, Rust, Node, the browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a quick test profile (<x6/>), and checks pull requests on it: windows shot and compared pixel by pixel (<x7/>, <x8/>, <x9/>), HLS and DASH hand-overs from the Snap Firefox and Google Chrome (<x10/>, <x11/>), the extension's proxy switch (<x12/>), hand-overs and the Scheduler while minimized, torrents without a network, and MDM's start-up time (<x13/>). Every change is now checked on Linux as on Windows. The machine also has copies on KDE Plasma, Cinnamon and XFCE (<x14/>), which get a build copied over instead of making one (<x15/>); a window harness shoots many windows from one running MDM in any language, mode and theme, with real clicks and keys inside the machine (<x16/>, <x17/>); and a store package is checked before it ships (<x18/>, <x19/>).",
    "text": "<g1>Тестова машина Linux, скриптована</g1> (частина <g2>#164</g2>): <x3/> налаштовує робочий стіл Ubuntu 24.04 у VirtualBox з хоста Windows (<x4/>: апаратне забезпечення, безголовий запуск, зв'язані клони; <x5/>: пакети, Rust, Node, браузери, автоматизація інтерфейсу користувача, розблокований зв'язок ключів), створює будь-яку гілку або запит на злиття з швидким тестовим профілем (<x6/>) і перевіряє запити на злиття на ній: знімки вікон порівнюються піксель за пікселем (<x7/>, <x8/>, <x9/>), передачі HLS та DASH з Snap Firefox та Google Chrome (<x10/>, <x11/>), перемикач проксі розширення (<x12/>), передачі та Планувальник у згорнутому стані, торренти без мережі та час запуску MDM (<x13/>). Кожна зміна тепер перевіряється на Linux, як і на Windows. Машина також має копії на KDE Plasma, Cinnamon та XFCE (<x14/>), які отримують скопійовану збірку замість створення (<x15/>); віконний каркас знімає багато вікон з одного запущеного MDM будь-якою мовою, режимом та темою, з реальними кліками та клавішами всередині машини (<x16/>, <x17/>); і пакет магазину перевіряється перед відправкою (<x18/>, <x19/>)."
-  },
-  "18bc8bff0f9a1963": {
-   "source": "For AI tools that read the website",
-   "text": "Для інструментів ШІ, що читають вебсайт"
   },
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
@@ -2390,10 +2354,6 @@
    "source": "<g1>Direct3D 12, Vulkan and Metal support:</g1> MDM draws with Direct3D 12 on Windows; Vulkan on Linux and Metal on macOS are options.",
    "text": "<g1>Підтримка Direct3D 12, Vulkan і Metal:</g1> MDM малює за допомогою Direct3D 12 на Windows; Vulkan на Linux і Metal на macOS є опціями."
   },
-  "20fc39a14685c9a2": {
-   "source": "<g1><x2/></g1> lists them (RFC 9727):",
-   "text": "<g1><x2/></g1> перераховує їх (RFC 9727):"
-  },
   "2115eb23face270b": {
    "source": "beside the program",
    "text": "поруч із програмою"
@@ -2437,10 +2397,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "У macOS лише адміністратор може запланувати пробудження, тому параметр неактивний. MDM не запитує пароль адміністратора. Адміністратор може налаштувати Mac на пробудження щодня за хвилину до початку черги, наприклад, о 22:59 для черги, яка починається о 23:00:"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "Усім, хто надсилав запити на злиття, відкривав проблеми або коментував на GitHub з моменту виходу версії <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -4214,10 +4170,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "Натисніть <g1>OK</g1>."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>Проблеми</g1><g2><x3/> осіб</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "Виберіть <g1>Завантаження → Обмежувач швидкості → Увімкнути</g1>."
@@ -4821,10 +4773,6 @@
   "42719c02fcae1f7c": {
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "Копія розширення з Chrome Web Store не показувала кнопку <g1>Завантажити відео</g1> на YouTube до версії 0.5.1. Починаючи з 0.5.1, вона відображається. Ваш браузер оновлює розширення самостійно; щоб отримати оновлення швидше, відкрийте сторінку розширень і оновіть їх там."
-  },
-  "427253cb798cd6a1": {
-   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
-   "text": "<g1>Власні рейтинги магазинів браузерів</g1>: рейтинг, кількість оцінок та користувачів, які <g2>магазин доповнень Firefox</g2> та <g3>Chrome Web Store</g3> показують для розширення MDM, зчитуються знову під час кожної збірки сайту, із зазначенням дня зчитування. Вони залишаються лише як текст сторінки."
   },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
@@ -6114,10 +6062,6 @@
    "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
    "text": "Захоплення посилань, що перелічує посилання сторінки в пакетах, з їхніми назвами, розмірами та статусом онлайн"
   },
-  "5586e9c27d735100": {
-   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
-   "text": "Як помічники ШІ, агенти та пошукові інструменти можуть читати misterdownloadmanager.com: кожна сторінка у форматі Markdown, llms.txt, що дозволяє сайт, його каталог API, власний сервер MCP MDM та як працюють рейтинги зірок сайту."
-  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "Воно зберігає адреси відеопотоків (списки відтворення HLS і DASH), які завантажує плеєр сторінки, у пам'яті для цієї вкладки, щоб кнопка <g1>Завантажити відео</g1> могла передати потік. Її кнопка читає сторінку лише для того, щоб знайти відеоплеєри та аудіоплеєри та розмістити себе. Натискання на неї передає адресу сторінки, адресу відео, заголовок сторінки, файли cookie сайту, сторінку, яка вбудовує плеєр, і User-Agent вашого браузера до MDM."
@@ -6133,10 +6077,6 @@
   "55a4316a9df511bb": {
    "source": "A small file",
    "text": "Невеликий файл"
-  },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "Подяки"
   },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
@@ -6269,10 +6209,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 та Linux; macOS (експериментально)"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "Цей проєкт став можливим завдяки цим чудовим людям"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -7258,10 +7194,6 @@
    "source": "Tasks → Add new download, with a gallery's address",
    "text": "Завдання → Додати нове завантаження, з адресою галереї"
   },
-  "652c15b8e485c357": {
-   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6><x7/></g6> is <g8><x9/></g8>, <g10><x11/></g10> is <g12><x13/></g12>, and the German home page <g14><x15/></g14> is <g16><x17/></g16>. Each page names its own in its <x18/> (<x19/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
-   "text": "<g1>Кожна сторінка у форматі Markdown.</g1> Кожна сторінка має версію Markdown поруч: адреса з <x2/> замість <x3/>, або <x4/> для адреси, що закінчується на <x5/>. Отже, <g6><x7/></g6> це <g8><x9/></g8>, <g10><x11/></g10> це <g12><x13/></g12>, а німецька домашня сторінка <g14><x15/></g14> це <g16><x17/></g16>. Кожна сторінка називає свою у своєму <x18/> (<x19/>). Markdown сторінок довідки є їхнім джерелом; інші створюються зі сторінки під час кожної збірки, тому вони ніколи не відхиляються від неї."
-  },
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "Портативна копія запускається безпосередньо з USB-флешки та зберігає там свій список і налаштування. З кількома налаштуваннями вона також зберігає ваші завантаження на флешку."
@@ -7381,10 +7313,6 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "Щоб спрямувати <g1>весь</g1> трафік через іншу мережу, використовуйте VPN для всього комп’ютера."
-  },
-  "678b5f7a1583e7d1": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
-   "text": "<g1>Її меню</g1> (стрілка поруч із нею або <g2>↓</g2>, коли кнопка має фокус клавіатури): назва відео, тривалість та сайт; її фільтри, коли якості відрізняються: <g3>Усі</g3>, <g4>Відео</g4> (зображення зі звуком) або <g5>Лише аудіо</g5>, та тип файлу (MP4, WEBM, M4A, MP3...) або кодек зображення (AV1, VP9, H.264), збережений для сайту; спочатку <g6>Завантажити найкраще</g6> (найкраще з того, що зберігають фільтри), потім один пронумерований рядок для кожної якості під <g7>ВІДЕО</g7> та <g8>АУДІО</g8>, з типом файлу, кодеком, частотою кадрів або бітрейтом та розміром (<x9/> <x10/>, як вказано у вікні «Завантажити відео»), найкращий позначений, та <g11>Найсумісніший (H.264 + AAC)</g11> поруч із роздільною здатністю того, що відтворюється скрізь (<g12>Виберіть якість</g12>); <g13>Усі якості та субтитри...</g13>, що відкриває вікно <g14>Завантажити відео зі сторінки</g14>; потім <g15>Повернути кнопку на місце</g15> (як тільки ви перемістили її на сайті), <g16>Приховати для цього відео</g16> (<g17>Esc</g17>), <g18>Ніколи на</g18> сайті (MDM запам'ятовує сайт), та <g19>Налаштування кнопки...</g19>, що відкриває Параметри MDM. Клавіші зі стрілками переміщуються по ньому, <g20>Enter</g20> вибирає, <g21>Esc</g21> закриває його."
   },
   "67b09013b9c7d05d": {
    "source": "Yes downloads both helpers in the background, once.",
@@ -7986,10 +7914,6 @@
    "source": "<g1>A window closed with its title bar's × no longer turns black first</g1> (<g2>#207</g2>): every dialog and the progress window turned black for a moment when closed with the × or Alt+F4, rather than with Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on Windows. The window now keeps its contents until it goes.",
    "text": "<g1>Вікно, закрите кнопкою × у рядку заголовка, більше не стає чорним спочатку</g1> (<g2>#207</g2>): кожне діалогове вікно та вікно прогресу на мить ставали чорними при закритті кнопкою × або Alt+F4, а не Esc або однією з його кнопок: від однієї до кількох секунд у Linux, кілька сотих секунди у Windows. Тепер вікно зберігає свій вміст, доки не зникне."
   },
-  "6f6dde6f363e5240": {
-   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
-   "text": "<g1>Рейтинги цього сайту</g1>: відвідувачі оцінюють MDM від однієї до п'яти зірок, можуть змінити свою оцінку, вибравши знову, або видалити її. Поруч із зірками: середнє значення, кількість оцінок та скільки користувачів поставили кожну кількість зірок. Лише ці дані потрапляють у структуровані дані сторінки для пошукових систем."
-  },
   "6f6f84e7ad3660d6": {
    "source": "Numbers and dates",
    "text": "Числа та дати"
@@ -8046,17 +7970,9 @@
    "source": "<g1>Torrents: file names are checked more strictly</g1> (<g2>#40</g2>): a torrent with names the system can't write safely is refused, saying which name, and so are torrents kept from an earlier run.",
    "text": "<g1>Торренти: імена файлів перевіряються суворіше</g1> (<g2>#40</g2>): торент з іменами, які система не може безпечно записати, відхиляється із зазначенням імені, так само як і торенти, збережені з попереднього запуску."
   },
-  "703d892a5281778d": {
-   "source": "What you may do with it",
-   "text": "Що ви можете з цим робити"
-  },
   "70424cf3215714b2": {
    "source": "A button's text",
    "text": "Текст кнопки"
-  },
-  "704b09ba9997e7dc": {
-   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
-   "text": "Окремо від сервера в застосунку, вебсайт описує його для інструментів ШІ в картці сервера MCP, <g1>/.well-known/mcp/server-card.json</g1>, і має кожну сторінку в Markdown (<x2/> поруч із <x3/>), щоб помічник міг прочитати, як налаштувати MDM: дивіться <g4>Для інструментів та агентів ШІ</g4>. На вебсайті немає сервера MCP: сервер завжди працює на вашому комп’ютері, поруч із застосунком."
   },
   "70950300e88df4b7": {
    "source": "An API for the running app",
@@ -8474,10 +8390,6 @@
    "source": "Download acceleration and crash-safe resume — Mister Download Manager",
    "text": "Прискорення завантаження та безпечне відновлення після збою — Mister Download Manager"
   },
-  "7691b6b987bd0ca0": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "Вона не заважає: з'являється лише тоді, коли ви наводите вказівник на відео (або програвач має фокус клавіатури; <g1>Tab</g1> потім переміщує до кнопки), стає ледь помітною через 1,5 секунди після зупинки вказівника або через мить після того, як він залишає відео, і зникає через 3 секунди; ледь помітна, вона все ще там, щоб її знайти, і наведення на неї повертає її повністю. Вона ніколи не зникає, поки її меню відкрите, а зі зменшеним рухом системи вона змінюється без згасання. Вона не відображається на маленьких відео та коротких зациклених беззвучних роликах (анімовані зображення, фони). Вона не закриває власні кнопки сторінки: коли одна з них знаходиться під будь-якою частиною її кута (кнопка зворотного зв'язку або налаштувань програвача, кнопка «дивитися пізніше» мініатюри), вона займає наступний вільний кут і залишається там, поки програвач показує та приховує свої кнопки, тому вона залишається на місці, коли ви до неї тягнетеся. Над попереднім переглядом, який відтворюється, поки вказівник знаходиться на мініатюрі (домашня сторінка YouTube, пошук, канал), сторінка зупиняє попередній перегляд, коли вказівник досягає кнопки; кнопка залишається там, де була, поки вказівник знаходиться на ній, і натискання завантажує відео цього попереднього перегляду. Відтворення або призупинення відео не повертає її. Після встановлення (<g2>Розмір кнопки: Автоматично</g2> в Параметрах, нижче) це лише її логотип, стрілка та <g3>✕</g3> над відео у стрічці (Facebook, X, LinkedIn, Instagram, Reddit, домашня сторінка YouTube тощо) та над невеликим програвачем, а вся кнопка, зі словами, над великим програвачем, таким як сторінка перегляду; на відео шириною менше 360 пікселів або там, де її слова не помістилися б, це завжди кругла кнопка. <g4>Повний</g4> зберігає її слова скрізь, де вони поміщаються; <g5>Компактний</g5> робить її круглою кнопкою на кожному відео. У повноекранному режимі вона слідує за відео, коли програвач дозволяє це, і вхід у повноекранний режим залишає її осторонь, доки ви знову не перемістите вказівник."
-  },
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>Вимкнено</g1> (за замовчуванням) — yt-dlp отримує файли cookie лише з розширення браузера, коли ви використовуєте кнопку над відео."
@@ -8590,10 +8502,6 @@
    "source": "Translated from Turkish",
    "text": "Перекладено з турецької"
   },
-  "784a58b4ccb32fc0": {
-   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
-   "text": "<g1>Перезавантажити</g1> завантажує файл знову з самого початку, по одному завантаженню. Завершений файл залишається як є, поки надходить нова копія, і нова копія займає його місце під тим самим ім'ям лише після завершення: якщо нове завантаження не вдається або ви його зупиняєте, ваш файл залишається у вас. Якщо інша програма відкрила файл у цей момент (у Windows), MDM зберігає обидва, зберігає нову копію поруч із номером (<x2/>) і повідомляє вам про це. Торренти, відео та галереї зображень не мають цієї функції: <g3>Повторна перевірка файлів</g3> торрента знаходить і завантажує його пошкоджені частини, а <g4>Відновити завантаження</g4> завершеної галереї завантажує відсутні файли."
-  },
   "7868f11f6b965f60": {
    "source": "<g1>Windows on ARM</g1> (PCs with a Snapdragon or another ARM processor). On Windows 11 the x64 files run there too, translated by Windows, more slowly. The ARM64 setup installed over the x64 one replaces it; your list and settings stay, as they are kept in your profile, not with the program.",
    "text": "<g1>Windows на ARM</g1> (ПК з процесором Snapdragon або іншим ARM). На Windows 11 файли x64 також працюють там, перекладені Windows, але повільніше. Інсталяція ARM64 поверх x64 замінює її; ваш список і налаштування залишаються, оскільки вони зберігаються у вашому профілі, а не з програмою."
@@ -8641,10 +8549,6 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Вам потрібен власний платний обліковий запис в одному з цих сервісів: MDM не продає і не включає його. Спільне використання облікового запису або його посилань порушує умови сервісів і може призвести до блокування облікового запису."
-  },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>Усі, хто допоміг</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -9170,10 +9074,6 @@
    "source": "<g1>Downloads</g1>: MDM's newest downloads (see <g2>Recent downloads</g2>, below).",
    "text": "<g1>Завантаження</g1>: найновіші завантаження MDM (див. <g2>Останні завантаження</g2>, нижче)."
   },
-  "7fc30b1ddac6d981": {
-   "source": "For AI tools and agents — Mister Download Manager",
-   "text": "Для інструментів та агентів ШІ — Mister Download Manager"
-  },
   "7fc6f4be3515bc1a": {
    "source": "<g1>Help → Check for updates...</g1> — <g2>Check for updates at every start</g2> is in that window.",
    "text": "<g1>Довідка → Перевірити наявність оновлень...</g1> — <g2>Перевіряти наявність оновлень під час кожного запуску</g2> знаходиться в цьому вікні."
@@ -9237,6 +9137,10 @@
   "806bd0646731ef21": {
    "source": "Fields (besides <x1/>)",
    "text": "Поля (крім <x1/>)"
+  },
+  "807205b219bcd9d5": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
+   "text": "<g1>Його меню</g1> (стрілка поруч або <g2>↓</g2>, коли кнопка у фокусі клавіатури): назва, тривалість і сайт відео; спочатку <g3>Завантажити найкраще</g3>, потім один пронумерований рядок для кожної якості під <g4>ВІДЕО</g4> та <g5>АУДІО</g5>, з типом файлу, кодеком, частотою кадрів або бітрейтом та розміром (<x6/> <x7/>, як зазначено у вікні «Завантажити відео»), найкращий варіант позначено, а <g8>Найсумісніший (H.264 + AAC)</g8> поруч із роздільною здатністю того, що відтворюється скрізь (<g9>Виберіть якість</g9>); <g10>Усі якості та субтитри...</g10>, що відкриває вікно <g11>Завантажити відео зі сторінки</g11>; потім <g12>Приховати для цього відео</g12> (<g13>Esc</g13>), <g14>Ніколи на</g14> сайті (MDM запам'ятовує сайт) та <g15>Налаштування кнопки...</g15>, що відкриває Параметри MDM. Клавіші зі стрілками переміщуються по ньому, <g16>Enter</g16> вибирає, <g17>Esc</g17> закриває його."
   },
   "808ac1f47da4b1bc": {
    "source": "A download's progress.",
@@ -9822,10 +9726,6 @@
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "Натисніть <g1>Установити</g1>, а потім <g2>Завершити</g2>, щоб запустити MDM."
   },
-  "888c81b1f49716a1": {
-   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
-   "text": "<g1><g2>Оцініть MDM</g2></g1> — від однієї до п’яти зірок на головній сторінці або сторінці завантаження вебсайту; виберіть ще раз, щоб змінити або видалити свою оцінку."
-  },
   "888f93dc8f248ae4": {
    "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
    "text": "<g1>Файл даних про збій (<x2/>)</g1> – це знімок того, що виконував MDM у той момент. Він найбільше допомагає розробникам, але може містити фрагменти того, що MDM мав у пам’яті, наприклад, адреси завантажень, файли cookie та збережені паролі. Він додається лише тоді, коли ви поставите прапорець <g3>Також додати дані про збій</g3>."
@@ -10134,10 +10034,6 @@
    "source": "The harness",
    "text": "Система тестування"
   },
-  "8d0ba2eee06a5511": {
-   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
-   "text": "<g1>Перемістити її</g1>: перетягніть її за крапки в інший кут або вздовж краю відео, або за межі програвача, над, під або поруч із ним (для сайту, який закриває свій програвач або малює власні елементи керування там, де мала б бути кнопка); під час перетягування відображаються край та місця, до яких вона прив'язується (кути та середина). За межами програвача вона залишається всередині на цьому краю, коли у вікні немає місця (програвач у верхній частині вікна, повноекранний режим). Вона залишається там, де ви її розмістили на цьому сайті; <g2>Повернути кнопку на місце</g2> в меню повертає її, а спливаюче вікно доповнення має <g3>Налаштування → Кнопка завантаження над відео → Скинути</g3> для кожного сайту (також її фільтри)."
-  },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
    "text": "Коли завантаження надходять до іншого MDM (сервера), список є списком цього сервера: <g1>Пауза</g1>, <g2>Відновити</g2>, <g3>Видалити зі списку</g3> та <g4>Копіювати посилання</g4> працюють, а кнопки, які потребують файлу на цьому комп'ютері (відкрити його, його папку, копіювати, поділитися, видалити), не відображаються; рядок угорі повідомляє про це."
@@ -10442,10 +10338,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Прискорення та відновлення</g1><g2>Файл розбивається на 32 з’єднання, перерозбивається до останнього байта та відновлюється після будь-якого збою.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> людям, які надіслали запит на злиття, повідомили про проблему або приєдналися до обговорення на GitHub. <g2>Зустріньте їх усіх</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Рядок заголовка, намальований MDM, коли його вікно неактивне (прозорий: як при активному)"
@@ -10650,6 +10542,10 @@
    "source": "Where there is no tray",
    "text": "Де немає трея"
   },
+  "94d1eda28d7a14bb": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
+   "text": "<g1>Налаштувати панелі завантаження MDM у браузерах → Змінити...</g1> — кнопка завантаження над відео на вебсторінках: вимкніть її, виберіть <g2>Розмір кнопки</g2> (<g3>Повний</g3>, її слова, де вони поміщаються, або <g4>Компактний</g4>, лише логотип, стрілка та ✕ на кожному відео), або перерахуйте сайти, на яких вона ніколи не відображається (розділіть їх пробілами; працюють символи підстановки, такі як <x5/>, <x6/> або <x7/>). Дивіться <g8>Інтеграція з браузером</g8>."
+  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>Вікно зависало на секунди під час запису великого завантаження</g1>: MDM зберігав свій список у потоці вікна, і збереження чекало на диск. Тепер воно зберігається у власному потоці (нові звіти про збої це виявили)."
@@ -10765,10 +10661,6 @@
   "96305159e842a657": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45). A theme is a light and a dark palette, metrics, control styles and an icon style (<x1/>):",
    "text": "Кожен колір і розмір, яким малюється елемент керування, походить від активної теми (#45). Тема — це світла та темна палітра, метрики, стилі елементів керування та стиль іконок (<x1/>):"
-  },
-  "9632de50273e0f02": {
-   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
-   "text": "<g1>Рейтинги зірок сайту</g1>, за адресою <x2/>, описані в <g3>OpenAPI</g3>. Будь-хто може читати цифри; оцінювання призначене для сторінок цього сайту (нижче)."
   },
   "963552ab075ccbdb": {
    "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
@@ -11366,10 +11258,6 @@
    "source": "Send downloads from your browser",
    "text": "Надсилання завантажень з браузера"
   },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> коментар"
-  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "Відчуття Windows 7: глянцеві кнопки, скляна панель заголовка та глянцева зелена смуга прогресу."
@@ -11385,10 +11273,6 @@
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Сім завантажень, кожне з яких обидві програми запускали щонайменше сім разів. Стовпчик показує середню половину результатів, лінія — медіану."
-  },
-  "9e42b66c081a9f75": {
-   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
-   "text": "<g1><g2>llms.txt</g2></g1>: що таке Mister Download Manager, у кількох рядках, та основні сторінки. <g3><g4>llms-full.txt</g4></g3>: сторінки довідки та відповіді на поширені запитання в одному файлі."
   },
   "9e4744c9b576debc": {
    "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
@@ -11742,10 +11626,6 @@
    "source": "480 connections against 2.",
    "text": "480 з'єднань проти 2."
   },
-  "a2f672d1532ccb2b": {
-   "source": "Star ratings",
-   "text": "Рейтинги зірок"
-  },
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Ознайомтеся зі списком завантажень →"
@@ -12009,10 +11889,6 @@
   "a61e186132bdafc0": {
    "source": "If the browser doesn't hand downloads over →",
    "text": "Якщо браузер не передає завантаження →"
-  },
-  "a64c37b28be78aa0": {
-   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
-   "text": "Одна оцінка на відвідувача, і без вільного тексту. Оцінка перевіряється Cloudflare Turnstile (людина, а не скрипт), і відвідувач може оцінити або видалити не більше восьми разів за десять хвилин. Служба оцінок зберігає зірки та хеш IP-адреси відвідувача з «сіллю», тому той самий відвідувач змінює свою оцінку замість додавання нової; вона ніколи не зберігає саму адресу. <g1>Політика конфіденційності</g1> говорить те саме."
   },
   "a656f8bb2618d9d8": {
    "source": "<g1>Choose columns:</g1> right-click any column title and tick the ones you want. <g2>Reset columns</g2> in the same menu puts them back as they first were.",
@@ -13106,10 +12982,6 @@
    "source": "Deleting downloads",
    "text": "Видалення завантажень"
   },
-  "b4b12e00de9fb265": {
-   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
-   "text": "Команда (відповідь <x1/>) може містити ваш власний <x2/>: літери, цифри та <x3/>, максимум 64, різні для кожної команди. Якщо відповідь не повертається (рядок закрито або час очікування вичерпано), надішліть той самий рядок знову з тим самим <x4/>: MDM виконує його один раз, незалежно від того, скільки таких рядків до нього надійде, і відповідає <x5/> на кожен. Без <x6/> кожен рядок є новою командою. Другий запуск програми (<x7/>, <x8/>) робить це самостійно."
-  },
   "b4c6b4d600e8fca1": {
    "source": "The code that draws the windows is optimised for size (the engine stays optimised for speed), and the programs are optimised as a whole.",
    "text": "Код, що малює вікна, оптимізовано за розміром (рушій залишається оптимізованим за швидкістю), а програми оптимізовано в цілому."
@@ -13806,10 +13678,6 @@
    "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
    "text": "Завантажити відео. Без <x1/> або <x2/>, найкраща якість, та, з якої починається вікно «Завантажити відео»: з ffmpeg найкраще зображення з найкращим звуком, об'єднані разом (сайт, де зображення та звуки розділені, наприклад Bilibili, потребує ffmpeg для відео), інакше найкращий файл з обома. <x3/> (або <x4/>) бере цю висоту або найближчу нижчу, яку пропонує сторінка (інакше найближчу вищу), і повідомляє про це. <x5/> бере найсуміснішу якість, як <g6>Найсумісніший (H.264 + AAC)</g6> у вікні: найкраще зображення H.264 зі звуком AAC у форматі MP4, який відтворюється в кожному редакторі, телевізорі та телефоні; сторінка без такого формату повідомляє про це (нічого не конвертується). <x7/> бере селектор якості з <x8/> (<x9/> = найкращий окремий файл; <x10/> = лише звук, як він є на сайті, без конвертації; <x11/>, <x12/>, <x13/> або <x14/> = звук як MP3 з такою швидкістю передачі, <x15/> з найкращою змінною; <x16/> = як Opus; <x17/> = як FLAC, без втрат, але не краще, ніж звук сайту; для конвертації потрібен ffmpeg). <x18/>: власний завантажувач MDM завантажує кожен потік, знайдений yt-dlp, через таку кількість з'єднань (8 за замовчуванням, від 1 до 128), потік частинами (HLS, DASH) такою кількістю частин одночасно. <x19/> зберігає субтитри поруч: коди мов з <x20/> (<x21/>), або <x22/> для всіх, які надав завантажувач; <x23/> замість цього бере автоматичні субтитри сайту; <x24/> вбудовує їх у відео (потрібен ffmpeg, MP4 або MKV). З ffmpeg розділи відео також потрапляють у файл, як це робить <g25>Вбудувати розділи</g25> у вікні «Завантажити відео». <x26/> надсилає з'єднання завантажень, а також yt-dlp (і ffmpeg), через один мережевий адаптер, як для <x27/>; якщо він не підключений, нічого не починається. Якщо жоден формат сторінки не відповідає, помилка перераховує ті, які вона пропонує, як це робить <x28/>."
   },
-  "bf1c4ba30d7b2674": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
-   "text": "<g1>Налаштувати панелі завантаження MDM у браузерах → Змінити...</g1> — кнопка завантаження над відео на вебсторінках: вимкніть її, виберіть <g2>Розмір кнопки</g2> (<g3>Автоматично</g3>, як встановлено: лише логотип, стрілка та ✕ у стрічці та над невеликим програвачем, її слова над великим; <g4>Повний</g4>, її слова скрізь, де вони поміщаються; або <g5>Компактний</g5>, лише логотип, стрілка та ✕ на кожному відео), або перерахуйте сайти, на яких вона ніколи не відображається (розділіть їх пробілами; працюють символи підстановки, такі як <x6/>, <x7/> або <x8/>). Дивіться <g9>Інтеграція з браузером</g9>."
-  },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
    "text": "MDM розмовляє 86 мовами, усіма мовами інтерфейсу, які пропонує Windows 11, від африкаанс до в’єтнамської. Арабською, івритом, перською, урду та уйгурською мовами все вікно відображається справа наліво."
@@ -13825,6 +13693,10 @@
   "bf425fd0bffea85c": {
    "source": "<g1>HatchZip</g1> is another free extractor (MIT or Apache-2.0), optional. MDM uses its command line program, <x2/>, when it is on the PATH (its installers and packages put it there; the desktop app alone isn't enough):",
    "text": "<g1>HatchZip</g1> — це ще один безкоштовний розпаковувач (MIT або Apache-2.0), необов’язковий. MDM використовує його програму командного рядка, <x2/>, коли вона є в PATH (її інсталятори та пакети розміщують її там; лише настільної програми недостатньо):"
+  },
+  "bf65e2eb8f9aed86": {
+   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
+   "text": "<g1>Перемістити його</g1>: перетягніть його за крапки вздовж краю відео; під час перетягування відображається край та місця, до яких він прилипає (кути та середина). Він залишається там на цьому сайті."
   },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
@@ -14142,10 +14014,6 @@
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "Завантаження розміром 180 ГБ, яке розпаковується до 200 ГБ, зазвичай потребує 380 ГБ: архів та його файли одночасно. З встановленим <g1>HatchZip</g1>, безкоштовним розпаковувачем, встановіть прапорець <g2>Розпакувати на місці за допомогою HatchZip</g2> у <g3>Параметри → Архіви</g3>: архів зменшується, коли його файли виходять, тому трохи більше 200 ГБ достатньо. HatchZip перевіряє, чи все поміщається і чи правильний пароль, перш ніж щось змінювати. Якщо він зупиняється на півдорозі, файли, що були розпаковані, залишаються поруч з архівом, і <g4>Видобути</g4> продовжує роботу."
   },
-  "c45503a700d34859": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>Вимкнути її, зробити меншою або переглянути сайти, на яких вона не відображається</g1>: <g2>Параметри → Загальні → Налаштувати панелі завантаження MDM у браузерах → Змінити...</g2>. <g3>Розмір кнопки</g3> за замовчуванням <g4>Автоматично</g4> (кругла у стрічці та над невеликим програвачем, зі словами над великим), <g5>Повний</g5> (зі словами скрізь, де вони поміщаються) або <g6>Компактний</g6> (лише логотип MDM, стрілка та <g7>✕</g7>, на кожному відео, як на невеликому); після натискання вона все ще словами повідомляє, що сталося. Вже відкриті сторінки слідують за зміною протягом кількох секунд, без перезавантаження."
-  },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
    "text": "WinGet завантажує інсталятор і встановлює MDM без запитань інсталятора."
@@ -14401,10 +14269,6 @@
   "c7e58bdb0724078c": {
    "source": "Download torrents and magnet links — Mister Download Manager",
    "text": "Завантажуйте торренти та magnet-посилання — Mister Download Manager"
-  },
-  "c7eb011b0c201b7e": {
-   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
-   "text": "Запит сторінки з <x1/> поки що отримує її HTML: замість цього прочитайте її <x2/> адресу."
   },
   "c804d97a6c6b59ba": {
    "source": "The page adds a download's address, a magnet link or a <x1/> file from the phone, with a <g2>Category</g2> and <g3>When</g3>: start now, or wait in a queue. It lists every download with its progress, speed and size, pauses and starts each one, and removes it, with its file if you ask. It starts and stops the queues too. The bar at the top shows the total speed and the free space where your downloads go.",
@@ -14866,10 +14730,6 @@
    "source": "AI assistants",
    "text": "Помічники зі штучним інтелектом"
   },
-  "ce26147ce708b51e": {
-   "source": "For AI tools and agents",
-   "text": "Для інструментів та агентів ШІ"
-  },
   "ce3d5af083f413b7": {
    "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
    "text": "Головне вікно: рядок меню, панель інструментів, категорії ліворуч та список завантажень праворуч"
@@ -14881,10 +14741,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Захоплення посилань і архіви — довідка Mister Download Manager"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>Коментарі</g1><g2><x3/> осіб</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -15322,10 +15178,6 @@
    "source": "<g1><g2>Catch downloads from your browser</g2></g1> — set up the extension so clicked downloads go to MDM.",
    "text": "<g1><g2>Перехоплювати завантаження з браузера</g2></g1> — налаштуйте розширення так, щоб завантаження, на які ви натискаєте, переходили до MDM."
   },
-  "d4ad3bf9b2a8e7ad": {
-   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
-   "text": "Пошукові системи можуть індексувати його, інструменти ШІ можуть використовувати його для відповідей на запитання, і його можна використовувати для навчання моделей ШІ. Mister Download Manager — це безкоштовне програмне забезпечення з відкритим вихідним кодом (GPL-3.0); його сайт створений для того, щоб його знаходили та розуміли."
-  },
   "d4c9212e6107e470": {
    "source": "Playlists and channels",
    "text": "Списки відтворення та канали"
@@ -15477,10 +15329,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager та IDM, поруч."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> проблема"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16078,10 +15926,6 @@
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge та інші"
   },
-  "e07c144638064536": {
-   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
-   "text": "<g1>robots.txt</g1> сайту дозволяє всім краулерам, і зазначає це для ШІ в <g2>Content Signals</g2>:"
-  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "Для <x1/> файлу: <g2>Відкривати magnet-посилання та .torrent-файли за допомогою Mister Download Manager</g2> увімкнено в <g3>Завдання → Налаштування торрентів</g3>."
@@ -16230,6 +16074,10 @@
    "source": "The system's DNS looks names up its own way, and Windows may ask over every adapter. To keep the names inside the VPN as well, choose a DNS in <g1>Options → Connection → DNS</g1>: MDM then asks it through the adapter. See <g2>DNS and proxies</g2>.",
    "text": "Системна DNS шукає імена власним способом, і Windows може запитувати через кожен адаптер. Щоб імена також залишалися всередині VPN, виберіть DNS у <g1>Параметри → Підключення → DNS</g1>: MDM тоді запитуватиме її через адаптер. Дивіться <g2>DNS та проксі</g2>."
   },
+  "e2b2bd857e845dd3": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Вимкнути її, зменшити або переглянути сайти, на яких вона не відображається</g1>: <g2>Параметри → Загальні → Налаштувати панелі завантаження MDM у браузерах → Змінити...</g2>. <g3>Розмір кнопки</g3> є <g4>Повний</g4> як встановлено (її слова там, де вони поміщаються) або <g5>Компактний</g5> (лише логотип MDM, стрілка та <g6>✕</g6>, на кожному відео, як на маленькому); після натискання вона все ще говорить, що сталося словами. Вже відкриті сторінки слідують за зміною протягом кількох секунд, без перезавантаження."
+  },
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "Край цілі перетягування в стані спокою"
@@ -16361,10 +16209,6 @@
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
    "text": "Де отримати допомогу?"
-  },
-  "e4b94379cc8e1a72": {
-   "source": "APIs",
-   "text": "API"
   },
   "e4cc9bf3454d9b53": {
    "source": "Click <g1>Add URL</g1> and paste a gallery's address. Instead of saving the page as a file, MDM opens <g2>Download a gallery</g2>. When its line reads <g3>gallery-dl can download this gallery's files</g3>, check <g4>Save to</g4> and click <g5>Download Now</g5>, or <g6>Later</g6> to add it without starting.",
@@ -16517,10 +16361,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Ні, якщо ви завантажили його з цього сайту або GitHub Releases. Деякі антивірусні програми оцінюють невідому програму за припущенням, а не за відомим вірусом…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> запит на злиття"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -16677,10 +16517,6 @@
   "e88a839b4e8d456b": {
    "source": "<g1>Command line</g1><g2>IDM's command-line switches, a terminal downloader with JSON output, and a local API for other programs.</g2>",
    "text": "<g1>Командний рядок</g1><g2>Параметри командного рядка IDM, термінальний завантажувач із виведенням JSON та локальний API для інших програм.</g2>"
-  },
-  "e895e3e3d267de25": {
-   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
-   "text": "Цей сайт написаний насамперед для людей, а також для інструментів ШІ, яким вони ставлять запитання про менеджери завантажень. Тут є все, що може прочитати програма, і що вона може з цим зробити."
   },
   "e8a02996d2b8ca17": {
    "source": "<g1>A pasted address</g1> (Add URL, Download video from a page, a playlist): choose your browser in <g2>Options → Sites Logins → Cookies for video sites</g2>. yt-dlp then reads that browser's cookies on this computer for every video it looks up or downloads. When the extension passed the page's own cookies, those are used instead: they are that page's and that session's.",
@@ -17790,10 +17626,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Зупинити розповсюдження після розповсюдження протягом … хвилин</g1> — або коли загальний час роздачі досягне цього значення за всі запуски. За замовчуванням вимкнено."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> коментарів"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "імена, крім його адрес, за якими сторінка може бути відкрита"
@@ -17893,10 +17725,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Що нового у версії 0.5.0 <g1>08.11.2026</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> проблем"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18021,6 +17849,10 @@
   "fb0e18326bfc6b12": {
    "source": "Download for Linux",
    "text": "Завантажити для Linux"
+  },
+  "fb140a625b84ac20": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
+   "text": "На невідоме запитання або дію надходить відповідь <x1/>. Так само відповідає на запитання, коли API вимкнено: у цьому разі з <x2/>, щоб програми могли перевірити відповідь (текст помилки може змінитися). На неправильний токен надходить відповідь <x3/>."
   },
   "fb1900915c99672a": {
    "source": "After a cut connection",
@@ -18210,10 +18042,6 @@
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>Не починати завантаження автоматично з наступних сайтів</g1> — сайти, завантаження з яких залишаються в браузері, розділені пробілами. Назва охоплює також піддомени сайту (<x2/> охоплює <x3/> та <x4/>, як і <x5/>), <x6/> відповідає будь-чому, як у списку панелей завантаження (<x7/>), а також файлам, на які посилаються його сторінки на іншому сервері (сервер завантаження або CDN), визначеним за сторінкою, з якої надійшло завантаження. Завантаження без відомої сторінки відповідає його власній адресі. <g8>Типово</g8> повертає початковий список."
   },
-  "fd2634470a1624af": {
-   "source": "The home and download pages show two kinds of ratings, never mixed:",
-   "text": "Домашня сторінка та сторінки завантажень показують два види рейтингів, які ніколи не змішуються:"
-  },
   "fd2f8ecc1dec89a7": {
    "source": "Does it keep uploading after a torrent finishes? — Mister Download Manager",
    "text": "Чи продовжує він роздачу після завершення торренту? — Mister Download Manager"
@@ -18281,6 +18109,10 @@
   "fdb42bc6bffd138a": {
    "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
    "text": "<g1>Як він запитує:</g1> gallery-dl та завантажувач MDM запитують сайти як MDM; MDM завантажує 4 зображення одночасно, а gallery-dl, для того, що йому залишилося, не більше одного на секунду. Сервери Wikimedia відмовляють інструментам, які запитують набагато швидше або без імені. gallery-dl не використовує ваш файл конфігурації."
+  },
+  "fdbec569d3b4740e": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Він не заважає: з'являється лише тоді, коли ви наводите вказівник на відео (або програвач має фокус клавіатури; <g1>Tab</g1> потім переміщується до кнопки), зникає через 1,5 секунди після зупинки вказівника і відразу, коли він залишає відео, і пропускає невеликі відео та короткі зациклені беззвучні відео (анімовані зображення, фони). Він не закриває власні кнопки сторінки: коли одна з них знаходиться під будь-якою частиною його кута (кнопка зворотного зв'язку або налаштувань програвача, кнопка «дивитися пізніше» мініатюри), він займає наступний вільний кут і утримує його, поки програвач показує та приховує свої кнопки, тому він залишається на місці, коли ви до нього тягнетеся. Над попереднім переглядом, який відтворюється, поки вказівник знаходиться на мініатюрі (домашня сторінка YouTube, пошук, канал), сторінка зупиняє попередній перегляд, коли вказівник досягає кнопки; кнопка залишається там, де була, поки вказівник знаходиться на ній, і клацання завантажує відео цього попереднього перегляду. Відтворення або призупинення відео не повертає його. На відео шириною менше 360 пікселів, або там, де його слова не помістилися б, це лише його логотип, його стрілка та <g2>✕</g2>; з <g3>Розмір кнопки</g3>, встановленим на <g4>Компактний</g4> у Параметрах (нижче), це та кругла кнопка на кожному відео. У повноекранному режимі він слідує за відео, коли програвач це дозволяє, а вхід у повноекранний режим залишає його осторонь, доки ви знову не перемістите вказівник."
   },
   "fdc70071f8979731": {
    "source": "Warnings",
@@ -18505,6 +18337,198 @@
   "f40a78a2a7aa4f18": {
    "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
    "text": "<g1>50 000+ користувачів</g1><g2>4,9 з 5, на основі 43 оцінок</g2>"
+  },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> запитів на злиття"
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>Запити на злиття</g1><g2><x3/> осіб</g2>"
+  },
+  "04347ca0f5af1b11": {
+   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
+   "text": "<g1>API автоматизації MDM</g1>, якого взагалі немає на цьому сайті: він працює всередині програми, на власному комп'ютері користувача, вимкнений, доки користувач його не ввімкне, і відповідає лише там, із секретним токеном. Його <g2>документація</g2> та його <g3>JSON Schema</g3>."
+  },
+  "0af7f5cd6adffe8b": {
+   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
+   "text": "Mister Download Manager постачається з сервером <g1>MCP</g1>, <x2/>, тому помічник ШІ (Claude, Cursor, VS Code та інші) може перераховувати, додавати, призупиняти, відновлювати та видаляти завантаження в запущеному MDM користувача. Це <g3>локальний</g3> сервер: помічник запускає його на комп'ютері користувача, поруч із програмою, і він спілкується лише з MDM там. На цьому веб-сайті немає сервера MCP. Його <g4>картка сервера</g4> описує його, а <g5>помічники ШІ</g5> розповідають, як його налаштувати."
+  },
+  "0c9da169d64e8998": {
+   "source": "MDM's MCP server",
+   "text": "Сервер MCP MDM"
+  },
+  "0e8cf57250a871ec": {
+   "source": "Read the site",
+   "text": "Читати сайт"
+  },
+  "1599478b71f60890": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
+   "text": "На невідоме запитання або дію надсилається відповідь <x1/>, так само як і на запитання, коли API вимкнено (тоді з <x2/>, для перевірки програмами: текст помилки може змінитися). На неправильний токен надсилається відповідь <x3/>. Коли MDM вже обробляє стільки запитів, скільки може одночасно, він відповідає <x4/>: нічого не було зроблено, і рядок можна надіслати знову через мить."
+  },
+  "1777ec4563260032": {
+   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
+   "text": "<g1><g2>sitemap.xml</g2></g1>: кожна сторінка, кожною мовою."
+  },
+  "18bc8bff0f9a1963": {
+   "source": "For AI tools that read the website",
+   "text": "Для інструментів ШІ, що читають вебсайт"
+  },
+  "20fc39a14685c9a2": {
+   "source": "<g1><x2/></g1> lists them (RFC 9727):",
+   "text": "<g1><x2/></g1> перераховує їх (RFC 9727):"
+  },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "Усім, хто надсилав запити на злиття, відкривав проблеми або коментував на GitHub з моменту виходу версії <x1/>."
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>Проблеми</g1><g2><x3/> осіб</g2>"
+  },
+  "427253cb798cd6a1": {
+   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
+   "text": "<g1>Власні рейтинги магазинів браузерів</g1>: рейтинг, кількість оцінок та користувачів, які <g2>магазин доповнень Firefox</g2> та <g3>Chrome Web Store</g3> показують для розширення MDM, зчитуються знову під час кожної збірки сайту, із зазначенням дня зчитування. Вони залишаються лише як текст сторінки."
+  },
+  "5586e9c27d735100": {
+   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
+   "text": "Як помічники ШІ, агенти та пошукові інструменти можуть читати misterdownloadmanager.com: кожна сторінка у форматі Markdown, llms.txt, що дозволяє сайт, його каталог API, власний сервер MCP MDM та як працюють рейтинги зірок сайту."
+  },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "Подяки"
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "Цей проєкт став можливим завдяки цим чудовим людям"
+  },
+  "652c15b8e485c357": {
+   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6><x7/></g6> is <g8><x9/></g8>, <g10><x11/></g10> is <g12><x13/></g12>, and the German home page <g14><x15/></g14> is <g16><x17/></g16>. Each page names its own in its <x18/> (<x19/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
+   "text": "<g1>Кожна сторінка у форматі Markdown.</g1> Кожна сторінка має версію Markdown поруч: адреса з <x2/> замість <x3/>, або <x4/> для адреси, що закінчується на <x5/>. Отже, <g6><x7/></g6> це <g8><x9/></g8>, <g10><x11/></g10> це <g12><x13/></g12>, а німецька домашня сторінка <g14><x15/></g14> це <g16><x17/></g16>. Кожна сторінка називає свою у своєму <x18/> (<x19/>). Markdown сторінок довідки є їхнім джерелом; інші створюються зі сторінки під час кожної збірки, тому вони ніколи не відхиляються від неї."
+  },
+  "678b5f7a1583e7d1": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
+   "text": "<g1>Її меню</g1> (стрілка поруч із нею або <g2>↓</g2>, коли кнопка має фокус клавіатури): назва відео, тривалість та сайт; її фільтри, коли якості відрізняються: <g3>Усі</g3>, <g4>Відео</g4> (зображення зі звуком) або <g5>Лише аудіо</g5>, та тип файлу (MP4, WEBM, M4A, MP3...) або кодек зображення (AV1, VP9, H.264), збережений для сайту; спочатку <g6>Завантажити найкраще</g6> (найкраще з того, що зберігають фільтри), потім один пронумерований рядок для кожної якості під <g7>ВІДЕО</g7> та <g8>АУДІО</g8>, з типом файлу, кодеком, частотою кадрів або бітрейтом та розміром (<x9/> <x10/>, як вказано у вікні «Завантажити відео»), найкращий позначений, та <g11>Найсумісніший (H.264 + AAC)</g11> поруч із роздільною здатністю того, що відтворюється скрізь (<g12>Виберіть якість</g12>); <g13>Усі якості та субтитри...</g13>, що відкриває вікно <g14>Завантажити відео зі сторінки</g14>; потім <g15>Повернути кнопку на місце</g15> (як тільки ви перемістили її на сайті), <g16>Приховати для цього відео</g16> (<g17>Esc</g17>), <g18>Ніколи на</g18> сайті (MDM запам'ятовує сайт), та <g19>Налаштування кнопки...</g19>, що відкриває Параметри MDM. Клавіші зі стрілками переміщуються по ньому, <g20>Enter</g20> вибирає, <g21>Esc</g21> закриває його."
+  },
+  "6f6dde6f363e5240": {
+   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
+   "text": "<g1>Рейтинги цього сайту</g1>: відвідувачі оцінюють MDM від однієї до п'яти зірок, можуть змінити свою оцінку, вибравши знову, або видалити її. Поруч із зірками: середнє значення, кількість оцінок та скільки користувачів поставили кожну кількість зірок. Лише ці дані потрапляють у структуровані дані сторінки для пошукових систем."
+  },
+  "703d892a5281778d": {
+   "source": "What you may do with it",
+   "text": "Що ви можете з цим робити"
+  },
+  "704b09ba9997e7dc": {
+   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
+   "text": "Окремо від сервера в застосунку, вебсайт описує його для інструментів ШІ в картці сервера MCP, <g1>/.well-known/mcp/server-card.json</g1>, і має кожну сторінку в Markdown (<x2/> поруч із <x3/>), щоб помічник міг прочитати, як налаштувати MDM: дивіться <g4>Для інструментів та агентів ШІ</g4>. На вебсайті немає сервера MCP: сервер завжди працює на вашому комп’ютері, поруч із застосунком."
+  },
+  "7691b6b987bd0ca0": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Вона не заважає: з'являється лише тоді, коли ви наводите вказівник на відео (або програвач має фокус клавіатури; <g1>Tab</g1> потім переміщує до кнопки), стає ледь помітною через 1,5 секунди після зупинки вказівника або через мить після того, як він залишає відео, і зникає через 3 секунди; ледь помітна, вона все ще там, щоб її знайти, і наведення на неї повертає її повністю. Вона ніколи не зникає, поки її меню відкрите, а зі зменшеним рухом системи вона змінюється без згасання. Вона не відображається на маленьких відео та коротких зациклених беззвучних роликах (анімовані зображення, фони). Вона не закриває власні кнопки сторінки: коли одна з них знаходиться під будь-якою частиною її кута (кнопка зворотного зв'язку або налаштувань програвача, кнопка «дивитися пізніше» мініатюри), вона займає наступний вільний кут і залишається там, поки програвач показує та приховує свої кнопки, тому вона залишається на місці, коли ви до неї тягнетеся. Над попереднім переглядом, який відтворюється, поки вказівник знаходиться на мініатюрі (домашня сторінка YouTube, пошук, канал), сторінка зупиняє попередній перегляд, коли вказівник досягає кнопки; кнопка залишається там, де була, поки вказівник знаходиться на ній, і натискання завантажує відео цього попереднього перегляду. Відтворення або призупинення відео не повертає її. Після встановлення (<g2>Розмір кнопки: Автоматично</g2> в Параметрах, нижче) це лише її логотип, стрілка та <g3>✕</g3> над відео у стрічці (Facebook, X, LinkedIn, Instagram, Reddit, домашня сторінка YouTube тощо) та над невеликим програвачем, а вся кнопка, зі словами, над великим програвачем, таким як сторінка перегляду; на відео шириною менше 360 пікселів або там, де її слова не помістилися б, це завжди кругла кнопка. <g4>Повний</g4> зберігає її слова скрізь, де вони поміщаються; <g5>Компактний</g5> робить її круглою кнопкою на кожному відео. У повноекранному режимі вона слідує за відео, коли програвач дозволяє це, і вхід у повноекранний режим залишає її осторонь, доки ви знову не перемістите вказівник."
+  },
+  "784a58b4ccb32fc0": {
+   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
+   "text": "<g1>Перезавантажити</g1> завантажує файл знову з самого початку, по одному завантаженню. Завершений файл залишається як є, поки надходить нова копія, і нова копія займає його місце під тим самим ім'ям лише після завершення: якщо нове завантаження не вдається або ви його зупиняєте, ваш файл залишається у вас. Якщо інша програма відкрила файл у цей момент (у Windows), MDM зберігає обидва, зберігає нову копію поруч із номером (<x2/>) і повідомляє вам про це. Торренти, відео та галереї зображень не мають цієї функції: <g3>Повторна перевірка файлів</g3> торрента знаходить і завантажує його пошкоджені частини, а <g4>Відновити завантаження</g4> завершеної галереї завантажує відсутні файли."
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>Усі, хто допоміг</g2>"
+  },
+  "7fc30b1ddac6d981": {
+   "source": "For AI tools and agents — Mister Download Manager",
+   "text": "Для інструментів та агентів ШІ — Mister Download Manager"
+  },
+  "888c81b1f49716a1": {
+   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
+   "text": "<g1><g2>Оцініть MDM</g2></g1> — від однієї до п’яти зірок на головній сторінці або сторінці завантаження вебсайту; виберіть ще раз, щоб змінити або видалити свою оцінку."
+  },
+  "8d0ba2eee06a5511": {
+   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>Перемістити її</g1>: перетягніть її за крапки в інший кут або вздовж краю відео, або за межі програвача, над, під або поруч із ним (для сайту, який закриває свій програвач або малює власні елементи керування там, де мала б бути кнопка); під час перетягування відображаються край та місця, до яких вона прив'язується (кути та середина). За межами програвача вона залишається всередині на цьому краю, коли у вікні немає місця (програвач у верхній частині вікна, повноекранний режим). Вона залишається там, де ви її розмістили на цьому сайті; <g2>Повернути кнопку на місце</g2> в меню повертає її, а спливаюче вікно доповнення має <g3>Налаштування → Кнопка завантаження над відео → Скинути</g3> для кожного сайту (також її фільтри)."
+  },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> людям, які надіслали запит на злиття, повідомили про проблему або приєдналися до обговорення на GitHub. <g2>Зустріньте їх усіх</g2>"
+  },
+  "9632de50273e0f02": {
+   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
+   "text": "<g1>Рейтинги зірок сайту</g1>, за адресою <x2/>, описані в <g3>OpenAPI</g3>. Будь-хто може читати цифри; оцінювання призначене для сторінок цього сайту (нижче)."
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> коментар"
+  },
+  "9e42b66c081a9f75": {
+   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
+   "text": "<g1><g2>llms.txt</g2></g1>: що таке Mister Download Manager, у кількох рядках, та основні сторінки. <g3><g4>llms-full.txt</g4></g3>: сторінки довідки та відповіді на поширені запитання в одному файлі."
+  },
+  "a2f672d1532ccb2b": {
+   "source": "Star ratings",
+   "text": "Рейтинги зірок"
+  },
+  "a64c37b28be78aa0": {
+   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
+   "text": "Одна оцінка на відвідувача, і без вільного тексту. Оцінка перевіряється Cloudflare Turnstile (людина, а не скрипт), і відвідувач може оцінити або видалити не більше восьми разів за десять хвилин. Служба оцінок зберігає зірки та хеш IP-адреси відвідувача з «сіллю», тому той самий відвідувач змінює свою оцінку замість додавання нової; вона ніколи не зберігає саму адресу. <g1>Політика конфіденційності</g1> говорить те саме."
+  },
+  "b4b12e00de9fb265": {
+   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
+   "text": "Команда (відповідь <x1/>) може містити ваш власний <x2/>: літери, цифри та <x3/>, максимум 64, різні для кожної команди. Якщо відповідь не повертається (рядок закрито або час очікування вичерпано), надішліть той самий рядок знову з тим самим <x4/>: MDM виконує його один раз, незалежно від того, скільки таких рядків до нього надійде, і відповідає <x5/> на кожен. Без <x6/> кожен рядок є новою командою. Другий запуск програми (<x7/>, <x8/>) робить це самостійно."
+  },
+  "bf1c4ba30d7b2674": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
+   "text": "<g1>Налаштувати панелі завантаження MDM у браузерах → Змінити...</g1> — кнопка завантаження над відео на вебсторінках: вимкніть її, виберіть <g2>Розмір кнопки</g2> (<g3>Автоматично</g3>, як встановлено: лише логотип, стрілка та ✕ у стрічці та над невеликим програвачем, її слова над великим; <g4>Повний</g4>, її слова скрізь, де вони поміщаються; або <g5>Компактний</g5>, лише логотип, стрілка та ✕ на кожному відео), або перерахуйте сайти, на яких вона ніколи не відображається (розділіть їх пробілами; працюють символи підстановки, такі як <x6/>, <x7/> або <x8/>). Дивіться <g9>Інтеграція з браузером</g9>."
+  },
+  "c45503a700d34859": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Вимкнути її, зробити меншою або переглянути сайти, на яких вона не відображається</g1>: <g2>Параметри → Загальні → Налаштувати панелі завантаження MDM у браузерах → Змінити...</g2>. <g3>Розмір кнопки</g3> за замовчуванням <g4>Автоматично</g4> (кругла у стрічці та над невеликим програвачем, зі словами над великим), <g5>Повний</g5> (зі словами скрізь, де вони поміщаються) або <g6>Компактний</g6> (лише логотип MDM, стрілка та <g7>✕</g7>, на кожному відео, як на невеликому); після натискання вона все ще словами повідомляє, що сталося. Вже відкриті сторінки слідують за зміною протягом кількох секунд, без перезавантаження."
+  },
+  "c7eb011b0c201b7e": {
+   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
+   "text": "Запит сторінки з <x1/> поки що отримує її HTML: замість цього прочитайте її <x2/> адресу."
+  },
+  "ce26147ce708b51e": {
+   "source": "For AI tools and agents",
+   "text": "Для інструментів та агентів ШІ"
+  },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>Коментарі</g1><g2><x3/> осіб</g2>"
+  },
+  "d4ad3bf9b2a8e7ad": {
+   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
+   "text": "Пошукові системи можуть індексувати його, інструменти ШІ можуть використовувати його для відповідей на запитання, і його можна використовувати для навчання моделей ШІ. Mister Download Manager — це безкоштовне програмне забезпечення з відкритим вихідним кодом (GPL-3.0); його сайт створений для того, щоб його знаходили та розуміли."
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> проблема"
+  },
+  "e07c144638064536": {
+   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
+   "text": "<g1>robots.txt</g1> сайту дозволяє всім краулерам, і зазначає це для ШІ в <g2>Content Signals</g2>:"
+  },
+  "e4b94379cc8e1a72": {
+   "source": "APIs",
+   "text": "API"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> запит на злиття"
+  },
+  "e895e3e3d267de25": {
+   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
+   "text": "Цей сайт написаний насамперед для людей, а також для інструментів ШІ, яким вони ставлять запитання про менеджери завантажень. Тут є все, що може прочитати програма, і що вона може з цим зробити."
+  },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> коментарів"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> проблем"
+  },
+  "fd2634470a1624af": {
+   "source": "The home and download pages show two kinds of ratings, never mixed:",
+   "text": "Домашня сторінка та сторінки завантажень показують два види рейтингів, які ніколи не змішуються:"
   }
  }
 }

@@ -70,10 +70,6 @@
    "source": "A code signature lets Windows show who published a program and check that it wasn't changed after it was built. When a release of Mister Download Manager (\"MDM\") is signed, its signature covers the Windows files that come from this project:",
    "text": "Podpis cyfrowy pozwala systemowi Windows wyświetlić wydawcę programu i sprawdzić, czy nie został on zmieniony po skompilowaniu. Gdy wydanie Mister Download Manager („MDM”) jest podpisane, jego podpis obejmuje pliki Windows pochodzące z tego projektu:"
   },
-  "01579d403b821195": {
-   "source": "<x1/> pull requests",
-   "text": "<x1/> żądań ściągnięcia"
-  },
   "015f73be8184c2cb": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the file on the server hasn't changed. When a download address has expired, <g1>Refresh download address</g1> lets you give it a fresh one and keep the data. See <g2>Resume a broken download</g2>.",
    "text": "Tak. MDM na bieżąco zapisuje postęp pobierania, więc po utracie połączenia, awarii lub ponownym uruchomieniu wznawia je od miejsca, w którym zostało przerwane. Przed wznowieniem sprawdza, czy plik na serwerze się nie zmienił. Gdy adres pobierania wygaśnie, <g1>Odśwież adres pobierania</g1> pozwala podać nowy adres i zachować pobrane dane. Zobacz <g2>Wznawianie przerwanego pobierania</g2>."
@@ -230,10 +226,6 @@
    "source": "<g1>Help → About Mister Download Manager</g1> shows the version you have.",
    "text": "<g1>Pomoc → Informacje o Mister Download Manager</g1> pokazuje posiadaną wersję."
   },
-  "030e42728ee6a418": {
-   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
-   "text": "<g1>Żądania ściągnięcia</g1><g2><x3/> osób</g2>"
-  },
   "031da5c20d1881e4": {
    "source": "Everything the Scheduler can do →",
    "text": "Wszystko, co możesz zrobić za pomocą Harmonogramu →"
@@ -305,10 +297,6 @@
   "043086b485508c73": {
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Jeśli niektóre pliki torrenta znajdują się już w folderze, MDM zapyta, czy ich użyć. Wybranie opcji <g1>Tak</g1> pozwala użyć ich w torrencie: MDM sprawdzi pliki, zachowa te, które pasują do torrenta, i pobierze resztę. Dzięki temu można kontynuować pobieranie rozpoczęte na innym urządzeniu lub udostępniać posiadane już pliki. Wybranie opcji <g2>Nie</g2> (domyślnej) pozwala wrócić i wybrać inny folder, nie nadpisując żadnych plików."
-  },
-  "04347ca0f5af1b11": {
-   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
-   "text": "<g1>API automatyzacji MDM</g1>, które w ogóle nie znajduje się na tej stronie: działa w aplikacji, na komputerze użytkownika, jest wyłączone, dopóki użytkownik go nie włączy, i odpowiada tylko tam, z tajnym tokenem. Jego <g2>dokumentacja</g2> i <g3>schemat JSON</g3>."
   },
   "043f6ef7d8d6d597": {
    "source": "Mister Download Manager is an interesting option for anyone looking for a modern, free and open-source download manager.",
@@ -826,10 +814,6 @@
    "source": "<g1>Cancel</g1> stops the download and closes the window. The download stays in the list and can be resumed.",
    "text": "<g1>Anuluj</g1> zatrzymuje pobieranie i zamyka okno. Pobieranie pozostaje na liście i można je wznowić."
   },
-  "0af7f5cd6adffe8b": {
-   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
-   "text": "Mister Download Manager jest dostarczany z serwerem <g1>MCP</g1>, <x2/>, dzięki czemu asystent AI (Claude, Cursor, VS Code i inne) może wyświetlać, dodawać, wstrzymywać, wznawiać i usuwać pobieranie w działającym MDM użytkownika. Jest to serwer <g3>lokalny</g3>: asystent uruchamia go na komputerze użytkownika, obok aplikacji, i komunikuje się tylko z MDM tam. Na tej stronie nie ma serwera MCP. Jego <g4>karta serwera</g4> go opisuje, a <g5>asystenci AI</g5> mówią, jak go skonfigurować."
-  },
   "0afe7d2cb5cea1a9": {
    "source": "Portable mode — Mister Download Manager help",
    "text": "Tryb przenośny — pomoc Mister Download Manager"
@@ -958,10 +942,6 @@
    "source": "<g1>Proxy auto-config scripts (PAC) run in QuickJS</g1>, a much smaller JavaScript engine, with limits on memory and running time: a script that loops or grows forever now fails, as a broken script does (the download goes on with the default proxy settings), instead of holding it.",
    "text": "<g1>Skrypty automatycznej konfiguracji proxy (PAC) działają w QuickJS</g1>, znacznie mniejszym silniku JavaScript, z ograniczeniami pamięci i czasu działania: skrypt, który zapętla się lub rośnie w nieskończoność, teraz zawodzi, tak jak uszkodzony skrypt (pobieranie kontynuuje się z domyślnymi ustawieniami proxy), zamiast go blokować."
   },
-  "0c9da169d64e8998": {
-   "source": "MDM's MCP server",
-   "text": "Serwer MCP MDM"
-  },
   "0cd4a41b7875f510": {
    "source": "Options → Archives: extract every archive, or only the packages that ask.",
    "text": "Opcje → Archiwa: wyodrębnij każde archiwum lub tylko pakiety, które o to proszą."
@@ -1065,10 +1045,6 @@
   "0e703708311ea645": {
    "source": "The thin edge around a country's flag",
    "text": "Cienka krawędź wokół flagi kraju"
-  },
-  "0e8cf57250a871ec": {
-   "source": "Read the site",
-   "text": "Czytaj stronę"
   },
   "0ea74b188ec2ca88": {
    "source": "If it says <g1>the site sent a web page instead of the file</g1>, the link led to the site's own page: a file host's countdown, a captcha, a <g2>Download</g2> button to press, or a sign-in. MDM never saves that page as your file. Click <g3>Open in browser</g3> in the download's progress window (or open the link yourself), finish there, and when the browser starts the real download, MDM's extension hands it to MDM. Without the extension, let the browser download it.",
@@ -1590,10 +1566,6 @@
    "source": "If it says <g1>the file changed on the server</g1>, the file isn't the one MDM started with. Right-click → <g2>Redownload</g2> to start again from the beginning.",
    "text": "Jeśli pojawi się komunikat <g1>plik zmienił się na serwerze</g1>, plik nie jest tym, od którego MDM zaczął. Kliknij prawym przyciskiem myszy → <g2>Pobierz ponownie</g2>, aby zacząć od początku."
   },
-  "1599478b71f60890": {
-   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
-   "text": "Na nieznane pytanie lub działanie odpowiedź brzmi <x1/>, podobnie jak na pytanie, gdy API jest wyłączone (wtedy z <x2/>, do sprawdzenia przez programy: tekst błędu może się zmienić). Na błędny token odpowiedź brzmi <x3/>. Gdy MDM obsługuje już tyle żądań, ile przyjmuje jednocześnie, odpowiada <x4/>: nic nie zostało zrobione, a linię można wysłać ponownie chwilę później."
-  },
   "15b2bf48d7547b61": {
    "source": "Opened 480, done in 15.9 s<g1><g2>2</g2></g1>",
    "text": "Otwarto 480 połączeń, pobieranie ukończono w 15,9 s<g1><g2>2</g2></g1>"
@@ -1718,10 +1690,6 @@
    "source": "<g1>Scheduler and queues</g1><g2>Queues started and stopped by the clock, a few files at a time, the computer off at the end.</g2>",
    "text": "<g1>Harmonogram i kolejki</g1><g2>Kolejki uruchamiane i zatrzymywane o określonej godzinie, kilka plików naraz, komputer wyłączony na koniec.</g2>"
   },
-  "1777ec4563260032": {
-   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
-   "text": "<g1><g2>sitemap.xml</g2></g1>: każda strona, w każdym języku."
-  },
   "17834855ff83a05b": {
    "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> can't ask for that permission at the switch, so the extension has it from the install (Chrome counts it under the access to every site the extension already asks for, so it adds no line to the install prompt and the update asks for nothing new). The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy extension, a policy, the command line): a fixed server for the download's scheme (<x2/>, <x3/>, <x4/>, <x5/>), unless the address is on its bypass list, or its proxy auto-config script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes by its own Options. A QUIC proxy can't be shared.",
    "text": "<g1>Chrome, Edge, Brave, Opera i Vivaldi</g1> nie mogą prosić o to zezwolenie przy włączeniu, więc rozszerzenie ma je od momentu instalacji (Chrome zalicza to do dostępu do każdej witryny, o który rozszerzenie już prosi, więc nie dodaje żadnej linii do monitu instalacji, a aktualizacja nie prosi o nic nowego). Przełącznik nic nie pyta. MDM pobiera efektywny serwer proxy przeglądarki, niezależnie od tego, kto go ustawił (rozszerzenie VPN lub proxy, zasady, wiersz poleceń): stały serwer dla schematu pobierania (<x2/>, <x3/>, <x4/>, <x5/>), chyba że adres znajduje się na liście wykluczeń lub w skrypcie automatycznej konfiguracji proxy (według adresu lub wbudowany). Bez serwera proxy lub z systemowym serwerem proxy nic nie jest wysyłane, a MDM działa zgodnie z własnymi opcjami. Serwer proxy QUIC nie może być współdzielony."
@@ -1801,10 +1769,6 @@
   "18b71bddc92d0eb7": {
    "source": "<g1>A Linux test machine, scripted</g1> (part of <g2>#164</g2>): <x3/> sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host (<x4/>: hardware, headless start, linked clones; <x5/>: packages, Rust, Node, the browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a quick test profile (<x6/>), and checks pull requests on it: windows shot and compared pixel by pixel (<x7/>, <x8/>, <x9/>), HLS and DASH hand-overs from the Snap Firefox and Google Chrome (<x10/>, <x11/>), the extension's proxy switch (<x12/>), hand-overs and the Scheduler while minimized, torrents without a network, and MDM's start-up time (<x13/>). Every change is now checked on Linux as on Windows. The machine also has copies on KDE Plasma, Cinnamon and XFCE (<x14/>), which get a build copied over instead of making one (<x15/>); a window harness shoots many windows from one running MDM in any language, mode and theme, with real clicks and keys inside the machine (<x16/>, <x17/>); and a store package is checked before it ships (<x18/>, <x19/>).",
    "text": "<g1>Maszyna testowa Linux, ze skryptami</g1> (część <g2>#164</g2>): <x3/> konfiguruje pulpit Ubuntu 24.04 w VirtualBox z hosta Windows (<x4/>: sprzęt, uruchamianie bezgłowe, połączone klony; <x5/>: pakiety, Rust, Node, przeglądarki, automatyzacja interfejsu, odblokowany pęk kluczy), kompiluje tam dowolną gałąź lub żądanie ściągnięcia z szybkim profilem testowym (<x6/>) i sprawdza na niej żądania ściągnięcia: okna są fotografowane i porównywane piksel po pikselu (<x7/>, <x8/>, <x9/>), przekazywanie HLS i DASH ze Snap Firefox i Google Chrome (<x10/>, <x11/>), przełącznik proxy rozszerzenia (<x12/>), przekazywanie i Harmonogram podczas minimalizacji, torrenty bez sieci oraz czas uruchamiania MDM (<x13/>). Każda zmiana jest teraz sprawdzana na Linux tak jak na Windows. Maszyna ma również kopie na KDE Plasma, Cinnamon i XFCE (<x14/>), które otrzymują skopiowaną kompilację zamiast tworzyć nową (<x15/>); uprząż okien fotografuje wiele okien z jednego działającego MDM w dowolnym języku, trybie i motywie, z prawdziwymi kliknięciami i klawiszami wewnątrz maszyny (<x16/>, <x17/>); a pakiet sklepowy jest sprawdzany przed wysyłką (<x18/>, <x19/>)."
-  },
-  "18bc8bff0f9a1963": {
-   "source": "For AI tools that read the website",
-   "text": "Dla narzędzi AI, które czytają stronę"
   },
   "18bca0e419aafc22": {
    "source": "<g1>Browser integration</g1> for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): downloads hand over to MDM with their cookies and referrer, right-click <g2>Download with Mister Download Manager</g2>, and a <g3>Download video</g3> button over videos on any page, which can be dragged along the video's edge, hidden on a video or a site, or turned off in Options.",
@@ -2266,10 +2230,6 @@
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with the help of…",
    "text": "MDM pobiera zdjęcia z galerii (kategorii Wikimedia Commons, albumu Flickr, galerii DeviantArt, albumu Imgur i wielu innych) za pomocą..."
   },
-  "1ee84bf12d233371": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: choose <g1>Manual proxy/socks configuration</g1> with <g2>Type</g2> <g3>SOCKS5</g3> in <g4>Options → Proxy / Socks</g4> and turn on <g5>Use the proxy</g5> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections, uTP and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Ustawienia serwera proxy/SOCKS w MDM dotyczą pobierania z sieci i FTP. Torrenty również mogą używać SOCKS5: wybierz <g1>Ręczna konfiguracja proxy/SOCKS</g1> z <g2>Typ</g2> <g3>SOCKS5</g3> w <g4>Opcje → Serwer proxy / Socks</g4> i włącz <g5>Użyj serwera proxy</g5> w Ustawieniach torrenta. Serwer proxy obejmuje tylko połączenia z peerami i trackerami sieciowymi, więc MDM wyłącza DHT, lokalne wykrywanie peerów, połączenia przychodzące, uTP i trackery UDP; w ogóle nie otwiera gniazda UDP w kierunku sieci. Jeśli serwer proxy zniknie z Serwer proxy / Socks, gdy ten przełącznik jest włączony, torrenty nie uruchomią się, zamiast go omijać."
-  },
   "1f027261405d774d": {
    "source": "Know where your data goes",
    "text": "Wiedz, dokąd trafiają Twoje dane"
@@ -2390,10 +2350,6 @@
    "source": "<g1>Direct3D 12, Vulkan and Metal support:</g1> MDM draws with Direct3D 12 on Windows; Vulkan on Linux and Metal on macOS are options.",
    "text": "<g1>Obsługa Direct3D 12, Vulkan i Metal:</g1> MDM rysuje za pomocą Direct3D 12 w systemie Windows; Vulkan w systemie Linux i Metal w systemie macOS to opcje."
   },
-  "20fc39a14685c9a2": {
-   "source": "<g1><x2/></g1> lists them (RFC 9727):",
-   "text": "<g1><x2/></g1> wymienia je (RFC 9727):"
-  },
   "2115eb23face270b": {
    "source": "beside the program",
    "text": "obok programu"
@@ -2437,10 +2393,6 @@
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "W systemie macOS tylko administrator może zaplanować wybudzenie, dlatego opcja jest nieaktywna. MDM nie prosi o hasło administratora. Administrator może ustawić codzienne wybudzanie Maca minutę przed rozpoczęciem kolejki, na przykład o 22:59 dla kolejki rozpoczynającej się o 23:00:"
-  },
-  "216eae12c95fa610": {
-   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
-   "text": "Wszystkim, którzy wysłali pull request, zgłosili problem lub skomentowali na GitHubie od wersji <x1/>."
   },
   "2171be975f40efe2": {
    "source": "<g1>Moving from IDM</g1><g2>Your IDM list comes over in one file, each download with its address, referrer and cookies.</g2>",
@@ -4214,10 +4166,6 @@
    "source": "Click <g1>OK</g1>.",
    "text": "Kliknij <g1>OK</g1>."
   },
-  "39f69afa6e85f9d1": {
-   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
-   "text": "<g1>Zgłoszenia</g1><g2><x3/> osób</g2>"
-  },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
    "text": "Wybierz <g1>Pobrane pliki → Ogranicznik prędkości → Włącz</g1>."
@@ -4401,10 +4349,6 @@
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "Instalator lub MDM nie uruchamia się"
-  },
-  "3c89d1c70832ff5f": {
-   "source": "MDM checks a secure server's certificate the way your browser does: with your system's trusted certificates (Windows', macOS's, or the Linux CA bundle), and with Mozilla's, the ones Firefox carries. On Windows, Mozilla's are used only when Windows' own don't complete the chain; on macOS and Linux they are added to the system's. A Windows 10 or 11 that hasn't been updated for a while fetches the roots it trusts from Windows Update only when a site first needs one, and behind a proxy that can fail: MDM then goes by Firefox's list, so such a site still downloads. One consequence: a root you removed from the system's store, or marked as not trusted, is still trusted by MDM when Mozilla's list has it, as Firefox trusts it.",
-   "text": "MDM sprawdza certyfikat bezpiecznego serwera w taki sam sposób jak przeglądarka: za pomocą zaufanych certyfikatów systemowych (Windows, macOS lub pakiet CA dla Linuxa) oraz certyfikatów Mozilli, tych używanych przez Firefoxa. W systemie Windows certyfikaty Mozilli są używane tylko wtedy, gdy certyfikaty Windows nie uzupełniają łańcucha; w systemach macOS i Linux są one dodawane do certyfikatów systemowych. Windows 10 lub 11, który nie był aktualizowany przez pewien czas, pobiera zaufane certyfikaty główne z Windows Update tylko wtedy, gdy strona po raz pierwszy ich potrzebuje, i może to się nie udać za serwerem proxy: MDM korzysta wtedy z listy Firefoxa, więc taka strona nadal się pobiera. Jedna z konsekwencji: certyfikat główny usunięty z magazynu systemowego lub oznaczony jako niezaufany, jest nadal zaufany przez MDM, jeśli znajduje się na liście Mozilli, tak jak ufa mu Firefox."
   },
   "3c93282916bbcea9": {
    "source": "1.11.4<g1>3 Nov 2026</g1>",
@@ -4821,10 +4765,6 @@
   "42719c02fcae1f7c": {
    "source": "The copy of the extension from the Chrome Web Store showed no <g1>Download video</g1> button on YouTube before version 0.5.1. From 0.5.1 it shows it. Your browser updates extensions by itself; to get it sooner, open its extensions page and update them there.",
    "text": "Kopia rozszerzenia z Chrome Web Store nie wyświetlała przycisku <g1>Pobierz wideo</g1> na YouTube przed wersją 0.5.1. Od wersji 0.5.1 jest on widoczny. Twoja przeglądarka aktualizuje rozszerzenia automatycznie; aby przyspieszyć ten proces, otwórz stronę rozszerzeń i zaktualizuj je tam."
-  },
-  "427253cb798cd6a1": {
-   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
-   "text": "<g1>Własne oceny sklepów przeglądarek</g1>: ocena, liczba ocen i użytkownicy, które <g2>sklep z dodatkami Firefox</g2> i <g3>Chrome Web Store</g3> pokazują dla rozszerzenia MDM, odczytywane ponownie przy każdej kompilacji strony, z datą ich odczytu. Pozostają tylko jako tekst strony."
   },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
@@ -6114,10 +6054,6 @@
    "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
    "text": "Link grabber wyświetlający listę linków ze strony w pakietach, z ich nazwami, rozmiarami i informacją, czy są dostępne online"
   },
-  "5586e9c27d735100": {
-   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
-   "text": "Jak asystenci AI, agenci i narzędzia wyszukiwania mogą czytać misterdownloadmanager.com: każda strona w Markdown, llms.txt, co strona zezwala, jej katalog API, własny serwer MCP MDM i jak działają oceny w gwiazdkach strony."
-  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "Zapisuje adresy strumieni wideo (listy odtwarzania HLS i DASH) ładowanych przez odtwarzacz na stronie, w pamięci dla tej karty, aby przycisk <g1>Pobierz wideo</g1> mógł przekazać strumień. Jego przycisk odczytuje stronę tylko po to, aby znaleźć odtwarzacze wideo i dźwięku i umieścić się. Kliknięcie go przekazuje do MDM adres strony, adres wideo, tytuł strony, pliki cookie witryny, stronę, która osadza odtwarzacz, oraz User-Agent Twojej przeglądarki."
@@ -6133,10 +6069,6 @@
   "55a4316a9df511bb": {
    "source": "A small file",
    "text": "Mały plik"
-  },
-  "55a523d7ca4b905f": {
-   "source": "Thanks to",
-   "text": "Podziękowania"
   },
   "55ecea9df3d3ed23": {
    "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
@@ -6269,10 +6201,6 @@
   "57d8abd136298ad0": {
    "source": "Windows 10/11 and Linux; macOS to try",
    "text": "Windows 10/11 i Linux; macOS do wypróbowania"
-  },
-  "57df30288a29fe94": {
-   "source": "Made possible by these amazing humans",
-   "text": "Umożliwili to ci wspaniali ludzie"
   },
   "57e101e4403fd046": {
    "source": "Command",
@@ -7258,10 +7186,6 @@
    "source": "Tasks → Add new download, with a gallery's address",
    "text": "Zadania → Dodaj nowe pobieranie, z adresem galerii"
   },
-  "652c15b8e485c357": {
-   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6><x7/></g6> is <g8><x9/></g8>, <g10><x11/></g10> is <g12><x13/></g12>, and the German home page <g14><x15/></g14> is <g16><x17/></g16>. Each page names its own in its <x18/> (<x19/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
-   "text": "<g1>Każda strona w Markdown.</g1> Obok każdej strony jest jej wersja Markdown: adres z <x2/> zamiast <x3/> lub <x4/> dla adresu kończącego się na <x5/>. Zatem <g6><x7/></g6> to <g8><x9/></g8>, <g10><x11/></g10> to <g12><x13/></g12>, a niemiecka strona główna <g14><x15/></g14> to <g16><x17/></g16>. Każda strona podaje swój adres w <x18/> (<x19/>). Markdown stron pomocy jest ich źródłem; pozostałe są tworzone ze strony przy każdej kompilacji, więc nigdy się od niej nie różnią."
-  },
   "65405b254c9c07bd": {
    "source": "The portable copy runs straight from a USB stick and keeps its list and settings there. With a few settings, it saves your downloads to the stick too.",
    "text": "Przenośna kopia działa bezpośrednio z pendrive’a, a jej lista i ustawienia są tam przechowywane. Po zmianie kilku ustawień pobrane pliki również będą zapisywane na pendrive."
@@ -7381,10 +7305,6 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "Aby przekierować <g1>cały ruch</g1> przez inną sieć, użyj VPN na całym komputerze."
-  },
-  "678b5f7a1583e7d1": {
-   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
-   "text": "<g1>Jego menu</g1> (strzałka obok niego lub <g2>↓</g2>, gdy przycisk ma fokus klawiatury): tytuł filmu, długość i witryna; jego filtry, gdy jakości się różnią: <g3>Wszystkie</g3>, <g4>Wideo</g4> (obraz z dźwiękiem) lub <g5>Tylko dźwięk</g5>, oraz typ pliku (MP4, WEBM, M4A, MP3...) lub kodek obrazu (AV1, VP9, H.264), zachowany dla witryny; najpierw <g6>Pobierz najlepszą jakość</g6> (najlepsze z tego, co zachowują filtry), następnie jedna numerowana linia na jakość pod <g7>WIDEO</g7> i <g8>DŹWIĘK</g8>, z typem pliku, kodekiem, liczbą klatek na sekundę lub bitrate i rozmiarem (<x9/> <x10/>, jak podaje okno Pobierz wideo), najlepsza oznaczona, oraz <g11>Najbardziej zgodny (H.264 + AAC)</g11> obok rozdzielczości tego, który odtwarza się wszędzie (<g12>Wybierz jakość</g12>); <g13>Wszystkie jakości i napisy...</g13>, co otwiera okno <g14>Pobierz wideo ze strony</g14>; następnie <g15>Umieść przycisk z powrotem w rogu</g15> (po przeniesieniu go na witrynie), <g16>Ukryj na tym wideo</g16> (<g17>Esc</g17>), <g18>Nigdy na</g18> witrynie (MDM zapamiętuje witrynę) i <g19>Ustawienia przycisku...</g19>, co otwiera Opcje MDM. Klawisze strzałek poruszają się po nim, <g20>Enter</g20> wybiera, <g21>Esc</g21> zamyka go."
   },
   "67b09013b9c7d05d": {
    "source": "Yes downloads both helpers in the background, once.",
@@ -7986,10 +7906,6 @@
    "source": "<g1>A window closed with its title bar's × no longer turns black first</g1> (<g2>#207</g2>): every dialog and the progress window turned black for a moment when closed with the × or Alt+F4, rather than with Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on Windows. The window now keeps its contents until it goes.",
    "text": "<g1>Okno zamknięte przyciskiem × na pasku tytułowym nie staje się już najpierw czarne</g1> (<g2>#207</g2>): każde okno dialogowe i okno postępu stawało się na chwilę czarne po zamknięciu przyciskiem × lub Alt+F4, a nie klawiszem Esc lub jednym z jego przycisków: od jednej do kilku sekund w systemie Linux, kilkaset milisekund w systemie Windows. Okno zachowuje teraz swoją zawartość, dopóki nie zniknie."
   },
-  "6f6dde6f363e5240": {
-   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
-   "text": "<g1>Oceny tej strony</g1>: odwiedzający oceniają MDM od jednej do pięciu gwiazdek, mogą zmienić swoją ocenę, wybierając ponownie, lub ją usunąć. Obok gwiazdek: średnia, liczba ocen i ilu użytkowników przyznało każdą liczbę gwiazdek. Tylko te trafiają do danych strukturalnych strony dla wyszukiwarek."
-  },
   "6f6f84e7ad3660d6": {
    "source": "Numbers and dates",
    "text": "Liczby i daty"
@@ -8046,17 +7962,9 @@
    "source": "<g1>Torrents: file names are checked more strictly</g1> (<g2>#40</g2>): a torrent with names the system can't write safely is refused, saying which name, and so are torrents kept from an earlier run.",
    "text": "<g1>Torrenty: nazwy plików są sprawdzane bardziej rygorystycznie</g1> (<g2>#40</g2>): torrent z nazwami, których system nie może bezpiecznie zapisać, jest odrzucany, z podaniem nazwy, podobnie jak torrenty zachowane z wcześniejszego uruchomienia."
   },
-  "703d892a5281778d": {
-   "source": "What you may do with it",
-   "text": "Co możesz z tym zrobić"
-  },
   "70424cf3215714b2": {
    "source": "A button's text",
    "text": "Tekst przycisku"
-  },
-  "704b09ba9997e7dc": {
-   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
-   "text": "Niezależnie od serwera w aplikacji, strona opisuje go dla narzędzi AI w karcie serwera MCP, <g1>/.well-known/mcp/server-card.json</g1>, i ma każdą stronę w Markdown (<x2/> obok <x3/>), dzięki czemu asystent może przeczytać, jak skonfigurować MDM: zobacz <g4>Dla narzędzi i agentów AI</g4>. Na stronie nie ma serwera MCP: serwer zawsze działa na twoim komputerze, obok aplikacji."
   },
   "70950300e88df4b7": {
    "source": "An API for the running app",
@@ -8474,10 +8382,6 @@
    "source": "Download acceleration and crash-safe resume — Mister Download Manager",
    "text": "Przyspieszanie pobierania i wznawianie po awarii — Mister Download Manager"
   },
-  "7691b6b987bd0ca0": {
-   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
-   "text": "Nie przeszkadza: pokazuje się tylko, gdy przesuniesz wskaźnik nad filmem (lub odtwarzacz ma fokus klawiatury; <g1>Tab</g1> przenosi wtedy do przycisku), blednie 1,5 sekundy po zatrzymaniu wskaźnika lub chwilę po opuszczeniu filmu, a znika 3 sekundy później; blady, nadal jest tam, by go znaleźć, a wskazanie na niego przywraca go w całości. Nigdy nie blednie, gdy jego menu jest otwarte, a przy zmniejszonym ruchu systemu zmienia się bez blaknięcia. Pomija małe filmy i krótkie wyciszone pętle (animowane obrazy, tła). Nie zakrywa własnych przycisków strony: gdy jeden leży pod jakąkolwiek częścią jego rogu (przycisk opinii lub ustawień odtwarzacza, przycisk „obejrzyj później” miniatury), zajmuje następny wolny róg i utrzymuje go, gdy odtwarzacz pokazuje i ukrywa swoje przyciski, więc pozostaje na miejscu, gdy po niego sięgasz. Nad podglądem, który odtwarza się, gdy wskaźnik znajduje się na miniaturze (strona główna YouTube, wyszukiwanie, kanał), strona zatrzymuje podgląd, gdy wskaźnik dotrze do przycisku; przycisk pozostaje tam, gdzie był, gdy wskaźnik jest na nim, a kliknięcie pobiera film z tego podglądu. Odtwarzanie lub pauzowanie filmu nie przywraca go. Po zainstalowaniu (<g2>Rozmiar przycisku: Automatyczne</g2> w Opcjach, poniżej) jest to tylko jego logo, strzałka i <g3>✕</g3> nad filmem w kanale (Facebook, X, LinkedIn, Instagram, Reddit, strona główna YouTube i tym podobne) oraz nad małym odtwarzaczem, a cały przycisk, ze słowami, nad dużym odtwarzaczem, takim jak na stronie oglądania; na filmie o szerokości poniżej 360 pikseli lub tam, gdzie jego słowa by się nie zmieściły, zawsze jest to ten okrągły przycisk. <g4>Pełny</g4> zachowuje swoje słowa wszędzie tam, gdzie się mieszczą; <g5>Kompaktowy</g5> sprawia, że jest to okrągły przycisk na każdym filmie. W trybie pełnoekranowym podąża za filmem, gdy odtwarzacz na to pozwala, a wejście w tryb pełnoekranowy pozostawia go z dala, dopóki ponownie nie przesuniesz wskaźnika."
-  },
   "76bbb49f8701559e": {
    "source": "<g1>Off</g1> (the default) — yt-dlp gets cookies only from the browser's extension, when you use the button over a video.",
    "text": "<g1>Wyłączone</g1> (domyślnie) — yt-dlp pobiera pliki cookie tylko z rozszerzenia przeglądarki, gdy używasz przycisku nad filmem."
@@ -8590,10 +8494,6 @@
    "source": "Translated from Turkish",
    "text": "Przetłumaczono z tureckiego"
   },
-  "784a58b4ccb32fc0": {
-   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
-   "text": "<g1>Pobierz ponownie</g1> pobiera plik od nowa, jeden po drugim. Ukończony plik pozostaje bez zmian, dopóki nie zostanie pobrana nowa kopia. Nowa kopia zastępuje stary plik pod tą samą nazwą dopiero po całkowitym pobraniu: jeśli nowe pobieranie się nie powiedzie lub je zatrzymasz, nadal masz swój plik. Jeśli w tym momencie inny program ma otwarty plik (w systemie Windows), MDM zachowuje oba, zapisuje nową kopię obok z numerem (<x2/>) i informuje o tym. Torrenty, filmy i galerie obrazów nie mają tej opcji: <g3>Ponownie sprawdź pliki</g3> torrenta znajduje i pobiera uszkodzone fragmenty, a <g4>Wznów pobieranie</g4> ukończonej galerii pobiera brakujące pliki."
-  },
   "7868f11f6b965f60": {
    "source": "<g1>Windows on ARM</g1> (PCs with a Snapdragon or another ARM processor). On Windows 11 the x64 files run there too, translated by Windows, more slowly. The ARM64 setup installed over the x64 one replaces it; your list and settings stay, as they are kept in your profile, not with the program.",
    "text": "<g1>Windows na ARM</g1> (komputery PC z procesorem Snapdragon lub innym procesorem ARM). W systemie Windows 11 pliki x64 również działają, tłumaczone przez system Windows, ale wolniej. Instalacja ARM64 nad x64 zastępuje ją; Twoja lista i ustawienia pozostają, ponieważ są przechowywane w Twoim profilu, a nie z programem."
@@ -8641,10 +8541,6 @@
   "79298af691e8bdd2": {
    "source": "You need your own paid account with one of these services: MDM doesn't sell or include one. Sharing an account or its links breaks the services' terms and can get the account suspended.",
    "text": "Potrzebujesz własnego płatnego konta w jednej z tych usług: MDM nie sprzedaje ani nie zawiera konta. Udostępnianie konta lub jego linków narusza warunki usług i może skutkować zawieszeniem konta."
-  },
-  "7931468b8d7d517a": {
-   "source": "<x1/> <g2>Everyone who helped</g2>",
-   "text": "<x1/> <g2>Wszyscy, którzy pomogli</g2>"
   },
   "7957b18548166390": {
    "source": "Questions and answers — Mister Download Manager",
@@ -9170,10 +9066,6 @@
    "source": "<g1>Downloads</g1>: MDM's newest downloads (see <g2>Recent downloads</g2>, below).",
    "text": "<g1>Pobrane pliki</g1>: najnowsze pobrania MDM (zobacz <g2>Ostatnie pobrania</g2>, poniżej)."
   },
-  "7fc30b1ddac6d981": {
-   "source": "For AI tools and agents — Mister Download Manager",
-   "text": "Dla narzędzi i agentów AI — Mister Download Manager"
-  },
   "7fc6f4be3515bc1a": {
    "source": "<g1>Help → Check for updates...</g1> — <g2>Check for updates at every start</g2> is in that window.",
    "text": "<g1>Pomoc → Sprawdź aktualizacje...</g1> — <g2>Sprawdzaj aktualizacje przy każdym uruchomieniu</g2> znajduje się w tym oknie."
@@ -9237,6 +9129,10 @@
   "806bd0646731ef21": {
    "source": "Fields (besides <x1/>)",
    "text": "Pola (oprócz <x1/>)"
+  },
+  "807205b219bcd9d5": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; <g3>Download best</g3> first, then one numbered line per quality under <g4>VIDEO</g4> and <g5>AUDIO</g5>, with its file type, codec, frame rate or bitrate and size (<x6/> <x7/>, as the Download video window says it), the best one marked, and <g8>Most compatible (H.264 + AAC)</g8> beside the resolution of the one that plays everywhere (<g9>Choose the quality</g9>); <g10>All qualities and subtitles...</g10>, which opens the <g11>Download video from a page</g11> window; then <g12>Hide on this video</g12> (<g13>Esc</g13>), <g14>Never on</g14> the site (MDM remembers the site), and <g15>Button settings...</g15>, which opens MDM's Options. The arrow keys move through it, <g16>Enter</g16> picks, <g17>Esc</g17> closes it.",
+   "text": "<g1>Jego menu</g1> (strzałka obok lub <g2>↓</g2>, gdy przycisk ma fokus klawiatury): tytuł, długość i witryna wideo; najpierw <g3>Pobierz najlepszą jakość</g3>, następnie jedna numerowana linia dla każdej jakości w sekcjach <g4>WIDEO</g4> i <g5>AUDIO</g5>, z typem pliku, kodekiem, liczbą klatek na sekundę lub szybkością transmisji i rozmiarem (<x6/> <x7/>, jak podaje okno Pobierz wideo), najlepsza oznaczona, oraz <g8>Najbardziej zgodny (H.264 + AAC)</g8> obok rozdzielczości tej, która odtwarza się wszędzie (<g9>Wybierz jakość</g9>); <g10>Wszystkie jakości i napisy...</g10>, co otwiera okno <g11>Pobierz wideo ze strony</g11>; następnie <g12>Ukryj na tym wideo</g12> (<g13>Esc</g13>), <g14>Nigdy na</g14> tej witrynie (MDM zapamiętuje witrynę) i <g15>Ustawienia przycisku...</g15>, co otwiera Opcje MDM. Klawisze strzałek poruszają się po menu, <g16>Enter</g16> wybiera, <g17>Esc</g17> zamyka je."
   },
   "808ac1f47da4b1bc": {
    "source": "A download's progress.",
@@ -9822,10 +9718,6 @@
    "source": "Click <g1>Install</g1>, then <g2>Finish</g2> to start MDM.",
    "text": "Kliknij <g1>Zainstaluj</g1>, a następnie <g2>Zakończ</g2>, aby uruchomić MDM."
   },
-  "888c81b1f49716a1": {
-   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
-   "text": "<g1><g2>Oceń MDM</g2></g1> — od jednej do pięciu gwiazdek na stronie głównej lub stronie pobierania; wybierz ponownie, aby zmienić ocenę lub ją usunąć."
-  },
   "888f93dc8f248ae4": {
    "source": "<g1>The crash data file (<x2/>)</g1> is a snapshot of what MDM was running at that moment. It helps the developers most, but it can hold pieces of what MDM had in memory, such as download addresses, cookies and saved passwords. It is only attached when you tick <g3>Also attach the crash data</g3>.",
    "text": "<g1>Plik danych o awarii (<x2/>)</g1> to zrzut tego, co MDM wykonywał w danym momencie. Jest najbardziej pomocny dla programistów, ale może zawierać fragmenty tego, co MDM miał w pamięci, takie jak adresy pobierania, pliki cookie i zapisane hasła. Jest dołączany tylko po zaznaczeniu opcji <g3>Dołącz również dane o awarii</g3>."
@@ -10129,10 +10021,6 @@
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "Uprząż"
-  },
-  "8d0ba2eee06a5511": {
-   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
-   "text": "<g1>Przenieś</g1>: przeciągnij go za kropki do innego rogu lub wzdłuż krawędzi filmu, albo poza odtwarzacz, powyżej, poniżej lub obok niego (dla witryny, która zakrywa swój odtwarzacz lub rysuje własne kontrolki tam, gdzie byłby przycisk); podczas przeciągania pokazują się krawędź i miejsca, do których się przyczepia (rogi i środek). Poza odtwarzaczem pozostaje wewnątrz na tej krawędzi, gdy okno nie ma tam miejsca (odtwarzacz na górze okna, pełny ekran). Pozostaje tam, gdzie go umieścisz na tej witrynie; <g2>Umieść przycisk z powrotem w rogu</g2> w menu przywraca go, a wyskakujące okienko dodatku ma <g3>Ustawienia → Przycisk pobierania nad filmami → Resetuj</g3> dla każdej witryny (również jej filtry)."
   },
   "8d2bf24dd985e649": {
    "source": "When downloads go to another MDM (a server), the list is that server's: <g1>Pause</g1>, <g2>Resume</g2>, <g3>Remove from list</g3> and <g4>Copy link</g4> work, and the buttons that need the file on this computer (open it, its folder, copy, share, delete) aren't shown; a line at the top says so.",
@@ -10438,10 +10326,6 @@
    "source": "<g1>Acceleration and resume</g1><g2>A file split over up to 32 connections, re-split until the last byte, and resumed after any crash.</g2>",
    "text": "<g1>Przyspieszanie i wznawianie</g1><g2>Plik dzielony na maksymalnie 32 połączenia, ponownie dzielony aż do ostatniego bajtu i wznawiany po każdej awarii.</g2>"
   },
-  "92055d4da1d101c5": {
-   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
-   "text": "<x1/> osoby, które wysłały pull request, zgłosiły problem lub dołączyły do rozmowy na GitHubie. <g2>Poznaj ich wszystkich</g2>"
-  },
   "92078a4a178bf949": {
    "source": "A title bar MDM draws, while its window isn't the active one (transparent: as when active)",
    "text": "Pasek tytułu rysowany przez MDM, gdy okno jest nieaktywne (przezroczysty: jak przy aktywnym)"
@@ -10646,6 +10530,10 @@
    "source": "Where there is no tray",
    "text": "Gdzie nie ma zasobnika"
   },
+  "94d1eda28d7a14bb": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Full</g3>, its words where they fit, or <g4>Compact</g4>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x5/>, <x6/> or <x7/> work). See <g8>Browser integration</g8>.",
+   "text": "<g1>Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g1> — przycisk pobierania nad filmami na stronach internetowych: wyłącz go, wybierz <g2>Rozmiar przycisku</g2> (<g3>Pełny</g3>, z tekstem, jeśli się mieści, lub <g4>Kompaktowy</g4>, tylko logo, strzałka i ✕ na każdym filmie) lub utwórz listę witryn, na których nigdy się nie wyświetla (oddziel je spacjami; działają symbole wieloznaczne, takie jak <x5/>, <x6/> lub <x7/>). Zobacz <g8>Integracja z przeglądarką</g8>."
+  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>Okno zawieszało się na sekundy podczas zapisu dużego pobierania</g1>: MDM zapisywał swoją listę w wątku okna, a zapis czekał na dysk. Teraz zapisuje w osobnym wątku (nowe raporty o awariach to wykryły)."
@@ -10761,10 +10649,6 @@
   "96305159e842a657": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45). A theme is a light and a dark palette, metrics, control styles and an icon style (<x1/>):",
    "text": "Każdy kolor i rozmiar, z jakim rysowany jest element sterujący, pochodzi z aktywnego motywu (#45). Motyw to jasna i ciemna paleta, metryki, style elementów sterujących i styl ikon (<x1/>):"
-  },
-  "9632de50273e0f02": {
-   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
-   "text": "<g1>Oceny w gwiazdkach strony</g1>, pod <x2/>, opisane w <g3>OpenAPI</g3>. Każdy może odczytać liczby; ocenianie dotyczy stron tej witryny (poniżej)."
   },
   "963552ab075ccbdb": {
    "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
@@ -11362,10 +11246,6 @@
    "source": "Send downloads from your browser",
    "text": "Wysyłanie pobranych plików z przeglądarki"
   },
-  "9e23173a22cf615a": {
-   "source": "<x1/> comment",
-   "text": "<x1/> komentarz"
-  },
   "9e2414e7eb93b062": {
    "source": "Windows 7's feel: glossy buttons, a glassy title bar and a glossy green progress bar.",
    "text": "Styl Windows 7: błyszczące przyciski, szklany pasek tytułu i błyszczący zielony pasek postępu."
@@ -11381,10 +11261,6 @@
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Siedem pobrań, każde uruchomione co najmniej siedem razy w obu aplikacjach. Słupek pokazuje środkową połowę wyników, a linia — medianę."
-  },
-  "9e42b66c081a9f75": {
-   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
-   "text": "<g1><g2>llms.txt</g2></g1>: czym jest Mister Download Manager, w kilku wierszach, oraz główne strony. <g3><g4>llms-full.txt</g4></g3>: strony pomocy i odpowiedzi na często zadawane pytania w jednym pliku."
   },
   "9e4744c9b576debc": {
    "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
@@ -11738,10 +11614,6 @@
    "source": "480 connections against 2.",
    "text": "480 połączeń kontra 2."
   },
-  "a2f672d1532ccb2b": {
-   "source": "Star ratings",
-   "text": "Oceny w gwiazdkach"
-  },
   "a30bd98d3fe7b728": {
    "source": "Learn the download list →",
    "text": "Poznaj listę pobierania →"
@@ -12005,10 +11877,6 @@
   "a61e186132bdafc0": {
    "source": "If the browser doesn't hand downloads over →",
    "text": "Jeśli przeglądarka nie przekazuje pobieranych plików →"
-  },
-  "a64c37b28be78aa0": {
-   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
-   "text": "Jedna ocena na odwiedzającego i brak wolnego tekstu. Ocena jest sprawdzana przez Cloudflare Turnstile (osoba, a nie skrypt), a odwiedzający może ocenić lub usunąć maksymalnie osiem razy w ciągu dziesięciu minut. Usługa ocen przechowuje gwiazdki i zasolony skrót adresu IP odwiedzającego, dzięki czemu ten sam odwiedzający zmienia swoją ocenę zamiast dodawać nową; nigdy nie przechowuje samego adresu. <g1>Polityka prywatności</g1> mówi to samo."
   },
   "a656f8bb2618d9d8": {
    "source": "<g1>Choose columns:</g1> right-click any column title and tick the ones you want. <g2>Reset columns</g2> in the same menu puts them back as they first were.",
@@ -13102,10 +12970,6 @@
    "source": "Deleting downloads",
    "text": "Usuwanie pobrań"
   },
-  "b4b12e00de9fb265": {
-   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
-   "text": "Polecenie (odpowiedź <x1/>) może zawierać własny <x2/>: litery, cyfry i <x3/>, maksymalnie 64, różne dla każdego polecenia. Jeśli odpowiedź nie wróci (linia została zamknięta lub skończył się czas oczekiwania), wyślij tę samą linię ponownie z tym samym <x4/>: MDM wykona ją raz, niezależnie od tego, ile takich linii do niego dotrze, i odpowie <x5/> na każdą. Bez <x6/> każda linia jest nowym poleceniem. Drugie uruchomienie programu (<x7/>, <x8/>) robi to samo."
-  },
   "b4c6b4d600e8fca1": {
    "source": "The code that draws the windows is optimised for size (the engine stays optimised for speed), and the programs are optimised as a whole.",
    "text": "Kod rysujący okna jest zoptymalizowany pod kątem rozmiaru (silnik pozostaje zoptymalizowany pod kątem szybkości), a programy są zoptymalizowane jako całość."
@@ -13802,10 +13666,6 @@
    "source": "Download a video. Without <x1/> or <x2/>, the best quality, the one the Download video window starts on: with ffmpeg the best picture with the best sound joined to it (a site whose pictures and sounds come apart, such as Bilibili, needs ffmpeg for a video), else the best file with both. <x3/> (or <x4/>) takes that height, or the nearest below it the page offers (else the nearest above), and says so. <x5/> takes the most compatible quality, as the window's <g6>Most compatible (H.264 + AAC)</g6>: the best H.264 picture with AAC sound, in an MP4 that plays in every editor, TV and phone; a page without one says so (nothing is converted). <x7/> takes a quality's selector from <x8/> (<x9/> = the best single file; <x10/> = the sound alone as the site has it, not converted; <x11/>, <x12/>, <x13/> or <x14/> = the sound as an MP3 at that bitrate, <x15/> at its best variable one; <x16/> = as Opus; <x17/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x18/>: MDM's own downloader brings each stream yt-dlp finds over this many connections (8 by default, 1 to 128), a stream in pieces (HLS, DASH) this many pieces at once. <x19/> saves subtitles beside it: language codes from <x20/> (<x21/>), or <x22/> for every one the uploader gave; <x23/> takes the site's automatic captions instead; <x24/> puts them into the video (needs ffmpeg, MP4 or MKV). With ffmpeg, the video's chapters go into the file too, as Download video's <g25>Embed chapters</g25> does. <x26/> sends the downloads' connections, and yt-dlp's (and ffmpeg's), through one network adapter, as for <x27/>; when it isn't connected, nothing starts. When no format of the page matches, the error lists the ones it offers, as <x28/> does.",
    "text": "Pobierz wideo. Bez <x1/> ani <x2/>, w najlepszej jakości, takiej jak w oknie Pobierz wideo: z ffmpeg najlepszy obraz z najlepszym dźwiękiem (strona, której obrazy i dźwięki są oddzielne, np. Bilibili, wymaga ffmpeg do wideo), w przeciwnym razie najlepszy plik z obrazem i dźwiękiem. <x3/> (lub <x4/>) wybiera tę wysokość lub najbliższą niższą, którą oferuje strona (w przeciwnym razie najbliższą wyższą) i informuje o tym. <x5/> wybiera najbardziej zgodną jakość, tak jak <g6>Najbardziej zgodny (H.264 + AAC)</g6> w oknie: najlepszy obraz H.264 z dźwiękiem AAC, w formacie MP4, który odtwarza się w każdym edytorze, telewizorze i telefonie; strona bez takiego formatu informuje o tym (nic nie jest konwertowane). <x7/> pobiera selektor jakości z <x8/> (<x9/> = najlepszy pojedynczy plik; <x10/> = sam dźwięk w oryginalnym formacie, bez konwersji; <x11/>, <x12/>, <x13/> lub <x14/> = dźwięk jako MP3 z tą przepływnością, <x15/> z najlepszą zmienną; <x16/> = jako Opus; <x17/> = jako FLAC, bezstratny, ale nie lepszy niż dźwięk ze strony; konwersje wymagają ffmpeg). <x18/>: własny program pobierający MDM pobiera każdy strumień znaleziony przez yt-dlp za pomocą tylu połączeń (domyślnie 8, od 1 do 128), a strumień w częściach (HLS, DASH) w tylu częściach jednocześnie. <x19/> zapisuje napisy obok: kody języków z <x20/> (<x21/>) lub <x22/> dla wszystkich podanych przez przesyłającego; <x23/> pobiera zamiast tego automatyczne napisy ze strony; <x24/> umieszcza je w wideo (wymaga ffmpeg, MP4 lub MKV). Z ffmpeg, rozdziały wideo również trafiają do pliku, tak jak robi to <g25>Osadź rozdziały</g25> w oknie Pobierz wideo. <x26/> wysyła połączenia pobierania, a także yt-dlp (i ffmpeg), przez jeden adapter sieciowy, tak jak dla <x27/>; gdy nie jest podłączony, nic się nie rozpoczyna. Gdy żaden format strony nie pasuje, błąd wyświetla oferowane formaty, tak jak robi to <x28/>."
   },
-  "bf1c4ba30d7b2674": {
-   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
-   "text": "<g1>Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g1> — przycisk pobierania nad filmami na stronach internetowych: wyłącz go, wybierz jego <g2>Rozmiar przycisku</g2> (<g3>Automatyczne</g3>, jak zainstalowano: tylko logo, strzałka i ✕ w kanale i nad małym odtwarzaczem, jego słowa nad dużym; <g4>Pełny</g4>, jego słowa wszędzie tam, gdzie się mieszczą; lub <g5>Kompaktowy</g5>, tylko logo, strzałka i ✕ na każdym filmie) lub wymień witryny, na których nigdy się nie wyświetla (oddziel je spacjami; działają symbole wieloznaczne, takie jak <x6/>, <x7/> lub <x8/>). Zobacz <g9>Integracja z przeglądarką</g9>."
-  },
   "bf1dc65a3b1fff6a": {
    "source": "MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.",
    "text": "MDM mówi w 86 językach, we wszystkich językach wyświetlania oferowanych przez Windows 11, od afrikaans po wietnamski. W językach arabskim, hebrajskim, perskim, urdu i ujgurskim całe okno działa od prawej do lewej."
@@ -13821,6 +13681,10 @@
   "bf425fd0bffea85c": {
    "source": "<g1>HatchZip</g1> is another free extractor (MIT or Apache-2.0), optional. MDM uses its command line program, <x2/>, when it is on the PATH (its installers and packages put it there; the desktop app alone isn't enough):",
    "text": "<g1>HatchZip</g1> to inny darmowy ekstraktor (MIT lub Apache-2.0), opcjonalny. MDM używa jego programu wiersza poleceń, <x2/>, gdy znajduje się on w PATH (instalatory i pakiety go tam umieszczają; sama aplikacja desktopowa nie wystarczy):"
+  },
+  "bf65e2eb8f9aed86": {
+   "source": "<g1>Move it</g1>: drag it by its dots along the video's edge; while you drag, the edge and the spots it snaps to (the corners and the middle) show. It stays there on that site.",
+   "text": "<g1>Przenieś</g1>: przeciągnij go za kropki wzdłuż krawędzi wideo; podczas przeciągania widoczna jest krawędź i miejsca, do których się przyczepia (narożniki i środek). Pozostaje tam na tej stronie."
   },
   "bf6c448169dc52d7": {
    "source": "<g1>A magnet link could wait minutes for its file list</g1> (<g2>#92</g2>): in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest of the session once a computer it asked was gone, so a magnet its trackers didn't serve never got its file list. The updated torrent library keeps going, and a test keeps it that way. <g3>Add torrent</g3> now shows the wait: the peers found, from the trackers, the DHT or the local network, and how many answered. After 30 seconds without an answer, it says what may be in the way.",
@@ -14138,10 +14002,6 @@
    "source": "A 180 GB download that unpacks to 200 GB normally needs 380 GB: the archive and its files at once. With <g1>HatchZip</g1>, a free extractor, installed, tick <g2>Extract in place with HatchZip</g2> in <g3>Options → Archives</g3>: the archive shrinks as its files come out, so a little over 200 GB is enough. HatchZip checks that everything fits and that the password is right before it changes anything. If it stops partway, the files so far stay beside the archive and <g4>Extract</g4> continues.",
    "text": "Pobieranie pliku o rozmiarze 180 GB, który po rozpakowaniu zajmuje 200 GB, normalnie wymaga 380 GB: archiwum i jego pliki jednocześnie. Po zainstalowaniu <g1>HatchZip</g1>, darmowego programu do rozpakowywania, zaznacz opcję <g2>Wyodrębnij na miejscu za pomocą HatchZip</g2> w <g3>Opcje → Archiwa</g3>: archiwum zmniejsza się w miarę wyodrębniania plików, więc wystarczy nieco ponad 200 GB. HatchZip sprawdza, czy wszystko się zmieści i czy hasło jest poprawne, zanim cokolwiek zmieni. Jeśli proces zostanie przerwany, dotychczasowe pliki pozostają obok archiwum, a <g4>Wyodrębnij</g4> kontynuuje."
   },
-  "c45503a700d34859": {
-   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
-   "text": "<g1>Wyłącz, zmniejsz lub zobacz witryny, na których pozostaje wyłączony</g1>: <g2>Opcje → Ogólne → Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g2>. <g3>Rozmiar przycisku</g3> jest <g4>Automatyczne</g4> po zainstalowaniu (okrągły w kanale i nad małym odtwarzaczem, jego słowa nad dużym), <g5>Pełny</g5> (jego słowa wszędzie tam, gdzie się mieszczą) lub <g6>Kompaktowy</g6> (tylko logo MDM, strzałka i <g7>✕</g7>, na każdym filmie, jak na małym); po kliknięciu nadal mówi, co się stało, słowami. Strony już otwarte podążają za zmianą w ciągu kilku sekund, bez przeładowania."
-  },
   "c45a317f4447914b": {
    "source": "WinGet downloads the setup and installs MDM without the setup's questions.",
    "text": "WinGet pobiera instalator i instaluje MDM bez zadawania pytań."
@@ -14398,10 +14258,6 @@
    "source": "Download torrents and magnet links — Mister Download Manager",
    "text": "Pobieraj torrenty i linki magnet — Mister Download Manager"
   },
-  "c7eb011b0c201b7e": {
-   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
-   "text": "Pytanie o stronę z <x1/> nadal zwraca jej HTML: zamiast tego przeczytaj jej adres <x2/>."
-  },
   "c804d97a6c6b59ba": {
    "source": "The page adds a download's address, a magnet link or a <x1/> file from the phone, with a <g2>Category</g2> and <g3>When</g3>: start now, or wait in a queue. It lists every download with its progress, speed and size, pauses and starts each one, and removes it, with its file if you ask. It starts and stops the queues too. The bar at the top shows the total speed and the free space where your downloads go.",
    "text": "Strona dodaje adres pobierania, link magnetyczny lub plik <x1/> z telefonu, z <g2>Kategorią</g2> i <g3>Kiedy</g3>: rozpocznij teraz lub poczekaj w kolejce. Wyświetla każde pobieranie z jego postępem, prędkością i rozmiarem, wstrzymuje i uruchamia każde z nich oraz usuwa je wraz z plikiem, jeśli sobie tego życzysz. Uruchamia i zatrzymuje również kolejki. Pasek u góry pokazuje całkowitą prędkość i wolne miejsce, gdzie trafiają Twoje pobrane pliki."
@@ -14634,10 +14490,6 @@
    "source": "Show a new code to pair a phone or remote browser with the running app's remote control: its web addresses, pairing code and a QR code.",
    "text": "Pokaż nowy kod do sparowania telefonu lub zdalnej przeglądarki ze zdalnym sterowaniem uruchomionej aplikacji: jej adresy internetowe, kod parowania i kod QR."
   },
-  "cb3fee6871e1183d": {
-   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
-   "text": "<g1>0.5.2</g1> <g2>17,1 MB</g2>"
-  },
   "cb4ebdffdae9d416": {
    "source": "<g1>The previous version stays</g1>, so you can go back to it. Older ones are removed.",
    "text": "<g1>Poprzednia wersja pozostaje</g1>, więc możesz do niej wrócić. Starsze wersje są usuwane."
@@ -14862,10 +14714,6 @@
    "source": "AI assistants",
    "text": "Asystenci AI"
   },
-  "ce26147ce708b51e": {
-   "source": "For AI tools and agents",
-   "text": "Dla narzędzi i agentów AI"
-  },
   "ce3d5af083f413b7": {
    "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
    "text": "Główne okno: pasek menu, pasek narzędzi, kategorie po lewej i lista pobierania po prawej"
@@ -14877,10 +14725,6 @@
   "ce429dd626934c96": {
    "source": "Link grabber and archives — Mister Download Manager help",
    "text": "Link grabber i archiwa — pomoc Mister Download Manager"
-  },
-  "ce5bf471e6fccfb8": {
-   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
-   "text": "<g1>Komentarze</g1><g2><x3/> osób</g2>"
   },
   "ce6720d5953dad4f": {
    "source": "The previous / next button (greyed ones too: a screen reader says they are unavailable)",
@@ -15318,10 +15162,6 @@
    "source": "<g1><g2>Catch downloads from your browser</g2></g1> — set up the extension so clicked downloads go to MDM.",
    "text": "<g1><g2>Przechwytywanie pobierania z przeglądarki</g2></g1> — skonfiguruj rozszerzenie tak, aby kliknięte pobierania trafiały do MDM."
   },
-  "d4ad3bf9b2a8e7ad": {
-   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
-   "text": "Wyszukiwarki mogą ją indeksować, narzędzia AI mogą jej używać do odpowiadania na pytania i może być używana do trenowania modeli AI. Mister Download Manager to darmowe oprogramowanie open-source (GPL-3.0); jego strona jest tutaj, aby można ją było znaleźć i zrozumieć."
-  },
   "d4c9212e6107e470": {
    "source": "Playlists and channels",
    "text": "Listy odtwarzania i kanały"
@@ -15473,10 +15313,6 @@
   "d6470f6add1181a2": {
    "source": "Mister Download Manager and IDM, side by side.",
    "text": "Mister Download Manager i IDM, obok siebie."
-  },
-  "d65efc937a364b03": {
-   "source": "<x1/> issue",
-   "text": "<x1/> zgłoszenie"
   },
   "d663f408764b1150": {
    "source": "Replay",
@@ -16074,10 +15910,6 @@
    "source": "Chrome, Firefox, Edge and more",
    "text": "Chrome, Firefox, Edge i inne"
   },
-  "e07c144638064536": {
-   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
-   "text": "Plik <g1>robots.txt</g1> strony zezwala wszystkim robotom indeksującym i informuje o tym AI w <g2>Content Signals</g2>:"
-  },
   "e0a6f19ecc901965": {
    "source": "For a <x1/> file: <g2>Open magnet links and .torrent files with Mister Download Manager</g2> is on in <g3>Tasks → Torrent settings</g3>.",
    "text": "Dla pliku <x1/>: opcja <g2>Otwieraj linki magnet i pliki .torrent za pomocą Mister Download Manager</g2> jest włączona w <g3>Zadania → Ustawienia torrenta</g3>."
@@ -16226,6 +16058,10 @@
    "source": "The system's DNS looks names up its own way, and Windows may ask over every adapter. To keep the names inside the VPN as well, choose a DNS in <g1>Options → Connection → DNS</g1>: MDM then asks it through the adapter. See <g2>DNS and proxies</g2>.",
    "text": "Systemowy DNS wyszukuje nazwy na swój sposób, a Windows może pytać przez każdy adapter. Aby zachować nazwy również wewnątrz VPN, wybierz DNS w <g1>Opcje → Połączenie → DNS</g1>: MDM zapyta go wtedy przez adapter. Zobacz <g2>DNS i serwery proxy</g2>."
   },
+  "e2b2bd857e845dd3": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Full</g4> as installed (its words where they fit) or <g5>Compact</g5> (only MDM's logo, the arrow and <g6>✕</g6>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Wyłącz go, zmniejsz lub zobacz witryny, na których pozostaje wyłączony</g1>: <g2>Opcje → Ogólne → Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g2>. <g3>Rozmiar przycisku</g3> jest <g4>Pełny</g4> po instalacji (jego słowa tam, gdzie pasują) lub <g5>Kompaktowy</g5> (tylko logo MDM, strzałka i <g6>✕</g6>, na każdym wideo, jak na małym); po kliknięciu nadal mówi, co się stało, słowami. Strony już otwarte reagują na zmianę w ciągu kilku sekund, bez przeładowania."
+  },
   "e2b96614efaa036c": {
    "source": "The drop target's edge at rest",
    "text": "Krawędź obszaru docelowego w spoczynku"
@@ -16357,10 +16193,6 @@
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
    "text": "Gdzie mogę uzyskać pomoc?"
-  },
-  "e4b94379cc8e1a72": {
-   "source": "APIs",
-   "text": "API"
   },
   "e4cc9bf3454d9b53": {
    "source": "Click <g1>Add URL</g1> and paste a gallery's address. Instead of saving the page as a file, MDM opens <g2>Download a gallery</g2>. When its line reads <g3>gallery-dl can download this gallery's files</g3>, check <g4>Save to</g4> and click <g5>Download Now</g5>, or <g6>Later</g6> to add it without starting.",
@@ -16513,10 +16345,6 @@
   "e6b85e1428494d1c": {
    "source": "No, if it came from this site or GitHub Releases. Some antivirus programs judge a program they don't know by an educated guess, not by a known virus…",
    "text": "Nie, jeśli pochodzi z tej witryny lub wydań GitHub. Niektóre programy antywirusowe oceniają nieznany program na podstawie przypuszczeń, a nie znanych wirusów…"
-  },
-  "e6e4ffbd1a17c7e8": {
-   "source": "<x1/> pull request",
-   "text": "<x1/> żądanie ściągnięcia"
   },
   "e6e9f590b183bea4": {
    "source": "Link grabber: paste many links, MDM groups them, checks which are online, and extracts archives when they arrive.",
@@ -16673,10 +16501,6 @@
   "e88a839b4e8d456b": {
    "source": "<g1>Command line</g1><g2>IDM's command-line switches, a terminal downloader with JSON output, and a local API for other programs.</g2>",
    "text": "<g1>Wiersz poleceń</g1><g2>Przełączniki wiersza poleceń IDM, terminalowy program do pobierania z wyjściem JSON oraz lokalne API dla innych programów.</g2>"
-  },
-  "e895e3e3d267de25": {
-   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
-   "text": "Ta strona jest napisana przede wszystkim dla ludzi, a także dla narzędzi AI, o które pytają menedżerów pobierania. Oto wszystko, co program może odczytać i co może z tym zrobić."
   },
   "e8a02996d2b8ca17": {
    "source": "<g1>A pasted address</g1> (Add URL, Download video from a page, a playlist): choose your browser in <g2>Options → Sites Logins → Cookies for video sites</g2>. yt-dlp then reads that browser's cookies on this computer for every video it looks up or downloads. When the extension passed the page's own cookies, those are used instead: they are that page's and that session's.",
@@ -17786,10 +17610,6 @@
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Zatrzymaj udostępnianie po udostępnianiu przez … minut</g1> — lub gdy łączny czas udostępniania osiągnie ten limit. Domyślnie wyłączone."
   },
-  "f821c9c149c3e050": {
-   "source": "<x1/> comments",
-   "text": "<x1/> komentarzy"
-  },
   "f82dc8051d1faab0": {
    "source": "names besides its addresses the page may be opened by",
    "text": "nazwy, oprócz jego adresów, za pomocą których strona może być otwarta"
@@ -17889,10 +17709,6 @@
   "f99db8564b0343d7": {
    "source": "What's new in version 0.5.0 <g1>2026-11-08</g1>",
    "text": "Co nowego w wersji 0.5.0 <g1>2026-11-08</g1>"
-  },
-  "f9a8db1326e07676": {
-   "source": "<x1/> issues",
-   "text": "<x1/> zgłoszeń"
   },
   "f9b1393934105e30": {
    "source": "Yes. The portable download is a zip: unzip it anywhere, a USB stick included, and run it. Your downloads list and settings stay in its own <x1/> folder, so nothing is written to the computer. See <g2>Portable mode</g2>.",
@@ -18017,6 +17833,10 @@
   "fb0e18326bfc6b12": {
    "source": "Download for Linux",
    "text": "Pobierz dla Linux"
+  },
+  "fb140a625b84ac20": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>.",
+   "text": "Na nieznane pytanie lub działanie zwracana jest odpowiedź <x1/>. Tak samo dzieje się w przypadku pytania, gdy API jest wyłączone (wtedy zwracana jest odpowiedź <x2/>, którą programy mogą sprawdzać; tekst błędu może się zmienić). Na nieprawidłowy token zwracana jest odpowiedź <x3/>."
   },
   "fb1900915c99672a": {
    "source": "After a cut connection",
@@ -18206,10 +18026,6 @@
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. A name covers the site's subdomains too (<x2/> covers <x3/> and <x4/>, as does <x5/>), <x6/> matches anything as in the Download panels' list (<x7/>), and the files its pages link to on another server (a download server or a CDN), told by the page the download came from. A download with no page known is matched by its own address. <g8>Default</g8> puts the original list back.",
    "text": "<g1>Nie rozpoczynaj automatycznego pobierania z następujących witryn</g1> — witryny, których pobieranie pozostaje w przeglądarce, oddzielone spacjami. Nazwa obejmuje również subdomeny witryny (<x2/> obejmuje <x3/> i <x4/>, podobnie jak <x5/>), <x6/> pasuje do wszystkiego, tak jak na liście paneli pobierania (<x7/>), oraz do plików, do których linkują jej strony na innym serwerze (serwer pobierania lub CDN), określonych przez stronę, z której pochodzi pobieranie. Pobieranie bez znanej strony jest dopasowywane przez własny adres. <g8>Przywróć domyślne</g8> przywraca oryginalną listę."
   },
-  "fd2634470a1624af": {
-   "source": "The home and download pages show two kinds of ratings, never mixed:",
-   "text": "Strony główne i pobierania pokazują dwa rodzaje ocen, nigdy nie mieszane:"
-  },
   "fd2f8ecc1dec89a7": {
    "source": "Does it keep uploading after a torrent finishes? — Mister Download Manager",
    "text": "Czy program wysyła dane po zakończeniu pobierania torrenta? — Mister Download Manager"
@@ -18277,6 +18093,10 @@
   "fdb42bc6bffd138a": {
    "source": "<g1>How it asks:</g1> gallery-dl and MDM's downloader ask sites as MDM; MDM brings 4 pictures at a time, and gallery-dl, for what's left to it, one a second at most. Wikimedia's servers refuse tools that ask much faster or without a name. gallery-dl uses no configuration file of yours.",
    "text": "<g1>Jak pyta:</g1> gallery-dl i program pobierający MDM wysyłają zapytania do witryn jako MDM; MDM pobiera 4 zdjęcia jednocześnie, a gallery-dl, w przypadku pozostałych, maksymalnie jedno na sekundę. Serwery Wikimedia odmawiają obsługi narzędzi, które wysyłają zapytania znacznie szybciej lub bez nazwy. gallery-dl nie używa Twojego pliku konfiguracyjnego."
+  },
+  "fdbec569d3b4740e": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades 1.5 seconds after the pointer stops and at once when it leaves the video, and leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. On a video under 360 pixels wide, or where its words wouldn't fit, it is only its logo, its arrow and <g2>✕</g2>; with <g3>Button size</g3> set to <g4>Compact</g4> in Options (below), it is that round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Pozostaje niewidoczny: pojawia się tylko, gdy przesuwasz wskaźnik nad wideo (lub odtwarzacz ma fokus klawiatury; <g1>Tab</g1> przenosi wtedy do przycisku), zanika 1,5 sekundy po zatrzymaniu wskaźnika i natychmiast po opuszczeniu wideo, a pomija małe filmy i krótkie wyciszone pętle (animowane obrazy, tła). Nie zakrywa własnych przycisków strony: gdy jeden leży pod jakąkolwiek częścią jego rogu (przycisk opinii lub ustawień odtwarzacza, przycisk „obejrzyj później” miniatury), zajmuje następny wolny róg i utrzymuje go, gdy odtwarzacz pokazuje i ukrywa swoje przyciski, więc pozostaje na miejscu, gdy do niego sięgasz. Nad podglądem, który odtwarza się, gdy wskaźnik znajduje się na miniaturze (strona główna YouTube, wyszukiwanie, kanał), strona zatrzymuje podgląd, gdy wskaźnik dotrze do przycisku; przycisk pozostaje tam, gdzie był, gdy wskaźnik się na nim znajduje, a kliknięcie pobiera wideo z tego podglądu. Odtwarzanie lub wstrzymywanie wideo nie przywraca go. Na wideo o szerokości poniżej 360 pikseli lub tam, gdzie jego słowa by się nie zmieściły, jest to tylko jego logo, strzałka i <g2>✕</g2>; z <g3>Rozmiar przycisku</g3> ustawionym na <g4>Kompaktowy</g4> w Opcjach (poniżej), jest to ten okrągły przycisk na każdym wideo. W trybie pełnoekranowym podąża za wideo, gdy odtwarzacz na to pozwala, a wejście w tryb pełnoekranowy pozostawia go niewidocznym, dopóki ponownie nie przesuniesz wskaźnika."
   },
   "fdc70071f8979731": {
    "source": "Warnings",
@@ -18509,6 +18329,210 @@
   "f40a78a2a7aa4f18": {
    "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
    "text": "<g1>Ponad 50 000 użytkowników</g1><g2>4,9 na 5, z 43 ocen</g2>"
+  },
+  "01579d403b821195": {
+   "source": "<x1/> pull requests",
+   "text": "<x1/> żądań ściągnięcia"
+  },
+  "030e42728ee6a418": {
+   "source": "<g1>Pull requests</g1><g2><x3/> people</g2>",
+   "text": "<g1>Żądania ściągnięcia</g1><g2><x3/> osób</g2>"
+  },
+  "04347ca0f5af1b11": {
+   "source": "<g1>MDM's automation API</g1>, which isn't on this site at all: it runs inside the app, on the user's own computer, off until they turn it on, and answers only there, with a secret token. Its <g2>documentation</g2> and its <g3>JSON Schema</g3>.",
+   "text": "<g1>API automatyzacji MDM</g1>, które w ogóle nie znajduje się na tej stronie: działa w aplikacji, na komputerze użytkownika, jest wyłączone, dopóki użytkownik go nie włączy, i odpowiada tylko tam, z tajnym tokenem. Jego <g2>dokumentacja</g2> i <g3>schemat JSON</g3>."
+  },
+  "0af7f5cd6adffe8b": {
+   "source": "Mister Download Manager comes with an <g1>MCP</g1> server, <x2/>, so an AI assistant (Claude, Cursor, VS Code and others) can list, add, pause, resume and remove downloads in the user's running MDM. It is a <g3>local</g3> server: the assistant starts it on the user's computer, next to the app, and it talks only to the MDM there. There is no MCP server on this website. Its <g4>server card</g4> describes it, and <g5>AI assistants</g5> says how to set it up.",
+   "text": "Mister Download Manager jest dostarczany z serwerem <g1>MCP</g1>, <x2/>, dzięki czemu asystent AI (Claude, Cursor, VS Code i inne) może wyświetlać, dodawać, wstrzymywać, wznawiać i usuwać pobieranie w działającym MDM użytkownika. Jest to serwer <g3>lokalny</g3>: asystent uruchamia go na komputerze użytkownika, obok aplikacji, i komunikuje się tylko z MDM tam. Na tej stronie nie ma serwera MCP. Jego <g4>karta serwera</g4> go opisuje, a <g5>asystenci AI</g5> mówią, jak go skonfigurować."
+  },
+  "0c9da169d64e8998": {
+   "source": "MDM's MCP server",
+   "text": "Serwer MCP MDM"
+  },
+  "0e8cf57250a871ec": {
+   "source": "Read the site",
+   "text": "Czytaj stronę"
+  },
+  "1599478b71f60890": {
+   "source": "An unknown question or action is answered <x1/>, as is a question while the API is off (then with <x2/>, for programs to check: the error text may change). A wrong token is answered <x3/>. When MDM is already handling as many requests as it takes at once, it answers <x4/>: nothing was done, and the line can be sent again a moment later.",
+   "text": "Na nieznane pytanie lub działanie odpowiedź brzmi <x1/>, podobnie jak na pytanie, gdy API jest wyłączone (wtedy z <x2/>, do sprawdzenia przez programy: tekst błędu może się zmienić). Na błędny token odpowiedź brzmi <x3/>. Gdy MDM obsługuje już tyle żądań, ile przyjmuje jednocześnie, odpowiada <x4/>: nic nie zostało zrobione, a linię można wysłać ponownie chwilę później."
+  },
+  "1777ec4563260032": {
+   "source": "<g1><g2>sitemap.xml</g2></g1>: every page, in every language.",
+   "text": "<g1><g2>sitemap.xml</g2></g1>: każda strona, w każdym języku."
+  },
+  "18bc8bff0f9a1963": {
+   "source": "For AI tools that read the website",
+   "text": "Dla narzędzi AI, które czytają stronę"
+  },
+  "1ee84bf12d233371": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: choose <g1>Manual proxy/socks configuration</g1> with <g2>Type</g2> <g3>SOCKS5</g3> in <g4>Options → Proxy / Socks</g4> and turn on <g5>Use the proxy</g5> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections, uTP and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Ustawienia serwera proxy/SOCKS w MDM dotyczą pobierania z sieci i FTP. Torrenty również mogą używać SOCKS5: wybierz <g1>Ręczna konfiguracja proxy/SOCKS</g1> z <g2>Typ</g2> <g3>SOCKS5</g3> w <g4>Opcje → Serwer proxy / Socks</g4> i włącz <g5>Użyj serwera proxy</g5> w Ustawieniach torrenta. Serwer proxy obejmuje tylko połączenia z peerami i trackerami sieciowymi, więc MDM wyłącza DHT, lokalne wykrywanie peerów, połączenia przychodzące, uTP i trackery UDP; w ogóle nie otwiera gniazda UDP w kierunku sieci. Jeśli serwer proxy zniknie z Serwer proxy / Socks, gdy ten przełącznik jest włączony, torrenty nie uruchomią się, zamiast go omijać."
+  },
+  "20fc39a14685c9a2": {
+   "source": "<g1><x2/></g1> lists them (RFC 9727):",
+   "text": "<g1><x2/></g1> wymienia je (RFC 9727):"
+  },
+  "216eae12c95fa610": {
+   "source": "Everyone who sent a pull request, opened an issue or commented on GitHub since version <x1/>.",
+   "text": "Wszystkim, którzy wysłali pull request, zgłosili problem lub skomentowali na GitHubie od wersji <x1/>."
+  },
+  "39f69afa6e85f9d1": {
+   "source": "<g1>Issues</g1><g2><x3/> people</g2>",
+   "text": "<g1>Zgłoszenia</g1><g2><x3/> osób</g2>"
+  },
+  "3c89d1c70832ff5f": {
+   "source": "MDM checks a secure server's certificate the way your browser does: with your system's trusted certificates (Windows', macOS's, or the Linux CA bundle), and with Mozilla's, the ones Firefox carries. On Windows, Mozilla's are used only when Windows' own don't complete the chain; on macOS and Linux they are added to the system's. A Windows 10 or 11 that hasn't been updated for a while fetches the roots it trusts from Windows Update only when a site first needs one, and behind a proxy that can fail: MDM then goes by Firefox's list, so such a site still downloads. One consequence: a root you removed from the system's store, or marked as not trusted, is still trusted by MDM when Mozilla's list has it, as Firefox trusts it.",
+   "text": "MDM sprawdza certyfikat bezpiecznego serwera w taki sam sposób jak przeglądarka: za pomocą zaufanych certyfikatów systemowych (Windows, macOS lub pakiet CA dla Linuxa) oraz certyfikatów Mozilli, tych używanych przez Firefoxa. W systemie Windows certyfikaty Mozilli są używane tylko wtedy, gdy certyfikaty Windows nie uzupełniają łańcucha; w systemach macOS i Linux są one dodawane do certyfikatów systemowych. Windows 10 lub 11, który nie był aktualizowany przez pewien czas, pobiera zaufane certyfikaty główne z Windows Update tylko wtedy, gdy strona po raz pierwszy ich potrzebuje, i może to się nie udać za serwerem proxy: MDM korzysta wtedy z listy Firefoxa, więc taka strona nadal się pobiera. Jedna z konsekwencji: certyfikat główny usunięty z magazynu systemowego lub oznaczony jako niezaufany, jest nadal zaufany przez MDM, jeśli znajduje się na liście Mozilli, tak jak ufa mu Firefox."
+  },
+  "427253cb798cd6a1": {
+   "source": "<g1>The browser stores' own</g1>: the rating, the number of ratings and the users that the <g2>Firefox add-ons store</g2> and the <g3>Chrome Web Store</g3> show for MDM's extension, read again at every build of the site, with the day they were read. They stay as page text only.",
+   "text": "<g1>Własne oceny sklepów przeglądarek</g1>: ocena, liczba ocen i użytkownicy, które <g2>sklep z dodatkami Firefox</g2> i <g3>Chrome Web Store</g3> pokazują dla rozszerzenia MDM, odczytywane ponownie przy każdej kompilacji strony, z datą ich odczytu. Pozostają tylko jako tekst strony."
+  },
+  "5586e9c27d735100": {
+   "source": "How AI assistants, agents and search tools can read misterdownloadmanager.com: every page in Markdown, llms.txt, what the site allows, its API catalog, MDM's own MCP server, and how the site's star ratings work.",
+   "text": "Jak asystenci AI, agenci i narzędzia wyszukiwania mogą czytać misterdownloadmanager.com: każda strona w Markdown, llms.txt, co strona zezwala, jej katalog API, własny serwer MCP MDM i jak działają oceny w gwiazdkach strony."
+  },
+  "55a523d7ca4b905f": {
+   "source": "Thanks to",
+   "text": "Podziękowania"
+  },
+  "57df30288a29fe94": {
+   "source": "Made possible by these amazing humans",
+   "text": "Umożliwili to ci wspaniali ludzie"
+  },
+  "652c15b8e485c357": {
+   "source": "<g1>Every page in Markdown.</g1> Each page has a Markdown version beside it: the address with <x2/> in place of <x3/>, or <x4/> for an address that ends in <x5/>. So <g6><x7/></g6> is <g8><x9/></g8>, <g10><x11/></g10> is <g12><x13/></g12>, and the German home page <g14><x15/></g14> is <g16><x17/></g16>. Each page names its own in its <x18/> (<x19/>). The help pages' Markdown is their source; the others are made from the page at each build, so they never drift from it.",
+   "text": "<g1>Każda strona w Markdown.</g1> Obok każdej strony jest jej wersja Markdown: adres z <x2/> zamiast <x3/> lub <x4/> dla adresu kończącego się na <x5/>. Zatem <g6><x7/></g6> to <g8><x9/></g8>, <g10><x11/></g10> to <g12><x13/></g12>, a niemiecka strona główna <g14><x15/></g14> to <g16><x17/></g16>. Każda strona podaje swój adres w <x18/> (<x19/>). Markdown stron pomocy jest ich źródłem; pozostałe są tworzone ze strony przy każdej kompilacji, więc nigdy się od niej nie różnią."
+  },
+  "678b5f7a1583e7d1": {
+   "source": "<g1>Its menu</g1> (the arrow next to it, or <g2>↓</g2> when the button has the keyboard's focus): the video's title, length and site; its filters, when the qualities differ: <g3>All</g3>, <g4>Video</g4> (the picture with its sound) or <g5>Audio only</g5>, and the file type (MP4, WEBM, M4A, MP3...) or the picture's codec (AV1, VP9, H.264), kept for the site; <g6>Download best</g6> first (the best of what the filters keep), then one numbered line per quality under <g7>VIDEO</g7> and <g8>AUDIO</g8>, with its file type, codec, frame rate or bitrate and size (<x9/> <x10/>, as the Download video window says it), the best one marked, and <g11>Most compatible (H.264 + AAC)</g11> beside the resolution of the one that plays everywhere (<g12>Choose the quality</g12>); <g13>All qualities and subtitles...</g13>, which opens the <g14>Download video from a page</g14> window; then <g15>Put the button back in its corner</g15> (once you moved it on the site), <g16>Hide on this video</g16> (<g17>Esc</g17>), <g18>Never on</g18> the site (MDM remembers the site), and <g19>Button settings...</g19>, which opens MDM's Options. The arrow keys move through it, <g20>Enter</g20> picks, <g21>Esc</g21> closes it.",
+   "text": "<g1>Jego menu</g1> (strzałka obok niego lub <g2>↓</g2>, gdy przycisk ma fokus klawiatury): tytuł filmu, długość i witryna; jego filtry, gdy jakości się różnią: <g3>Wszystkie</g3>, <g4>Wideo</g4> (obraz z dźwiękiem) lub <g5>Tylko dźwięk</g5>, oraz typ pliku (MP4, WEBM, M4A, MP3...) lub kodek obrazu (AV1, VP9, H.264), zachowany dla witryny; najpierw <g6>Pobierz najlepszą jakość</g6> (najlepsze z tego, co zachowują filtry), następnie jedna numerowana linia na jakość pod <g7>WIDEO</g7> i <g8>DŹWIĘK</g8>, z typem pliku, kodekiem, liczbą klatek na sekundę lub bitrate i rozmiarem (<x9/> <x10/>, jak podaje okno Pobierz wideo), najlepsza oznaczona, oraz <g11>Najbardziej zgodny (H.264 + AAC)</g11> obok rozdzielczości tego, który odtwarza się wszędzie (<g12>Wybierz jakość</g12>); <g13>Wszystkie jakości i napisy...</g13>, co otwiera okno <g14>Pobierz wideo ze strony</g14>; następnie <g15>Umieść przycisk z powrotem w rogu</g15> (po przeniesieniu go na witrynie), <g16>Ukryj na tym wideo</g16> (<g17>Esc</g17>), <g18>Nigdy na</g18> witrynie (MDM zapamiętuje witrynę) i <g19>Ustawienia przycisku...</g19>, co otwiera Opcje MDM. Klawisze strzałek poruszają się po nim, <g20>Enter</g20> wybiera, <g21>Esc</g21> zamyka go."
+  },
+  "6f6dde6f363e5240": {
+   "source": "<g1>This site's</g1>: visitors rate MDM from one to five stars, can change their rating by picking again, or remove it. Beside the stars: the average, the number of ratings and how many gave each number of stars. Only these go into the page's structured data for search engines.",
+   "text": "<g1>Oceny tej strony</g1>: odwiedzający oceniają MDM od jednej do pięciu gwiazdek, mogą zmienić swoją ocenę, wybierając ponownie, lub ją usunąć. Obok gwiazdek: średnia, liczba ocen i ilu użytkowników przyznało każdą liczbę gwiazdek. Tylko te trafiają do danych strukturalnych strony dla wyszukiwarek."
+  },
+  "703d892a5281778d": {
+   "source": "What you may do with it",
+   "text": "Co możesz z tym zrobić"
+  },
+  "704b09ba9997e7dc": {
+   "source": "Separately from the server in the app, the website describes it for AI tools in an MCP server card, <g1>/.well-known/mcp/server-card.json</g1>, and has every page in Markdown (<x2/> beside <x3/>), so an assistant can read how to set MDM up: see <g4>For AI tools and agents</g4>. There is no MCP server on the website: the server always runs on your computer, next to the app.",
+   "text": "Niezależnie od serwera w aplikacji, strona opisuje go dla narzędzi AI w karcie serwera MCP, <g1>/.well-known/mcp/server-card.json</g1>, i ma każdą stronę w Markdown (<x2/> obok <x3/>), dzięki czemu asystent może przeczytać, jak skonfigurować MDM: zobacz <g4>Dla narzędzi i agentów AI</g4>. Na stronie nie ma serwera MCP: serwer zawsze działa na twoim komputerze, obok aplikacji."
+  },
+  "7691b6b987bd0ca0": {
+   "source": "It stays out of the way: it shows only while you move the pointer over a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), turns faint 1.5 seconds after the pointer stops, or a moment after it leaves the video, and goes 3 seconds later; faint, it is still there to find, and pointing at it brings it back whole. It never fades while its menu is open, and with the system's reduced motion it changes without the fade. It leaves out small videos and short muted loops (animated pictures, backgrounds). It doesn't cover the page's own buttons: when one lies under any part of its corner (a player's feedback or settings button, a thumbnail's watch-later button), it takes the next free corner and keeps it while the player shows and hides its buttons, so it stays put as you reach for it. Over a preview that plays while the pointer is on a thumbnail (YouTube's home page, a search, a channel), the page stops the preview as the pointer reaches the button; the button stays where it was while the pointer is on it, and a click downloads that preview's video. Playing or pausing the video doesn't bring it back. As installed (<g2>Button size: Automatic</g2> in Options, below), it is only its logo, its arrow and <g3>✕</g3> over a video in a feed (Facebook, X, LinkedIn, Instagram, Reddit, YouTube's home and the like) and over a small player, and the whole button, with its words, over a big player such as a watch page's; on a video under 360 pixels wide, or where its words wouldn't fit, it is always that round button. <g4>Full</g4> keeps its words wherever they fit; <g5>Compact</g5> makes it the round button on every video. In fullscreen it follows the video when the player allows it, and entering full screen leaves it out of the way until you move the pointer again.",
+   "text": "Nie przeszkadza: pokazuje się tylko, gdy przesuniesz wskaźnik nad filmem (lub odtwarzacz ma fokus klawiatury; <g1>Tab</g1> przenosi wtedy do przycisku), blednie 1,5 sekundy po zatrzymaniu wskaźnika lub chwilę po opuszczeniu filmu, a znika 3 sekundy później; blady, nadal jest tam, by go znaleźć, a wskazanie na niego przywraca go w całości. Nigdy nie blednie, gdy jego menu jest otwarte, a przy zmniejszonym ruchu systemu zmienia się bez blaknięcia. Pomija małe filmy i krótkie wyciszone pętle (animowane obrazy, tła). Nie zakrywa własnych przycisków strony: gdy jeden leży pod jakąkolwiek częścią jego rogu (przycisk opinii lub ustawień odtwarzacza, przycisk „obejrzyj później” miniatury), zajmuje następny wolny róg i utrzymuje go, gdy odtwarzacz pokazuje i ukrywa swoje przyciski, więc pozostaje na miejscu, gdy po niego sięgasz. Nad podglądem, który odtwarza się, gdy wskaźnik znajduje się na miniaturze (strona główna YouTube, wyszukiwanie, kanał), strona zatrzymuje podgląd, gdy wskaźnik dotrze do przycisku; przycisk pozostaje tam, gdzie był, gdy wskaźnik jest na nim, a kliknięcie pobiera film z tego podglądu. Odtwarzanie lub pauzowanie filmu nie przywraca go. Po zainstalowaniu (<g2>Rozmiar przycisku: Automatyczne</g2> w Opcjach, poniżej) jest to tylko jego logo, strzałka i <g3>✕</g3> nad filmem w kanale (Facebook, X, LinkedIn, Instagram, Reddit, strona główna YouTube i tym podobne) oraz nad małym odtwarzaczem, a cały przycisk, ze słowami, nad dużym odtwarzaczem, takim jak na stronie oglądania; na filmie o szerokości poniżej 360 pikseli lub tam, gdzie jego słowa by się nie zmieściły, zawsze jest to ten okrągły przycisk. <g4>Pełny</g4> zachowuje swoje słowa wszędzie tam, gdzie się mieszczą; <g5>Kompaktowy</g5> sprawia, że jest to okrągły przycisk na każdym filmie. W trybie pełnoekranowym podąża za filmem, gdy odtwarzacz na to pozwala, a wejście w tryb pełnoekranowy pozostawia go z dala, dopóki ponownie nie przesuniesz wskaźnika."
+  },
+  "784a58b4ccb32fc0": {
+   "source": "<g1>Redownload</g1> downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (<x2/>) and tells you. Torrents, videos and image galleries don't have it: a torrent's <g3>Recheck files</g3> finds and fetches its damaged pieces, and a finished gallery's <g4>Resume Download</g4> fetches the files it is missing.",
+   "text": "<g1>Pobierz ponownie</g1> pobiera plik od nowa, jeden po drugim. Ukończony plik pozostaje bez zmian, dopóki nie zostanie pobrana nowa kopia. Nowa kopia zastępuje stary plik pod tą samą nazwą dopiero po całkowitym pobraniu: jeśli nowe pobieranie się nie powiedzie lub je zatrzymasz, nadal masz swój plik. Jeśli w tym momencie inny program ma otwarty plik (w systemie Windows), MDM zachowuje oba, zapisuje nową kopię obok z numerem (<x2/>) i informuje o tym. Torrenty, filmy i galerie obrazów nie mają tej opcji: <g3>Ponownie sprawdź pliki</g3> torrenta znajduje i pobiera uszkodzone fragmenty, a <g4>Wznów pobieranie</g4> ukończonej galerii pobiera brakujące pliki."
+  },
+  "7931468b8d7d517a": {
+   "source": "<x1/> <g2>Everyone who helped</g2>",
+   "text": "<x1/> <g2>Wszyscy, którzy pomogli</g2>"
+  },
+  "7fc30b1ddac6d981": {
+   "source": "For AI tools and agents — Mister Download Manager",
+   "text": "Dla narzędzi i agentów AI — Mister Download Manager"
+  },
+  "888c81b1f49716a1": {
+   "source": "<g1><g2>Rate MDM</g2></g1> — one to five stars on the website's home or download page; pick again to change your rating, or remove it.",
+   "text": "<g1><g2>Oceń MDM</g2></g1> — od jednej do pięciu gwiazdek na stronie głównej lub stronie pobierania; wybierz ponownie, aby zmienić ocenę lub ją usunąć."
+  },
+  "8d0ba2eee06a5511": {
+   "source": "<g1>Move it</g1>: drag it by its dots to another corner or along the video's edge, or outside the player, above, under or beside it (for a site that covers its player or draws its own controls where the button would be); while you drag, the edge and the spots it snaps to (the corners and the middle) show. Outside the player it stays inside on that edge when the window has no room there (a player at the top of the window, full screen). It stays where you put it on that site; the menu's <g2>Put the button back in its corner</g2> brings it back, and the add-on's popup has <g3>Settings → Download button over videos → Reset</g3> for every site (its filters too).",
+   "text": "<g1>Przenieś</g1>: przeciągnij go za kropki do innego rogu lub wzdłuż krawędzi filmu, albo poza odtwarzacz, powyżej, poniżej lub obok niego (dla witryny, która zakrywa swój odtwarzacz lub rysuje własne kontrolki tam, gdzie byłby przycisk); podczas przeciągania pokazują się krawędź i miejsca, do których się przyczepia (rogi i środek). Poza odtwarzaczem pozostaje wewnątrz na tej krawędzi, gdy okno nie ma tam miejsca (odtwarzacz na górze okna, pełny ekran). Pozostaje tam, gdzie go umieścisz na tej witrynie; <g2>Umieść przycisk z powrotem w rogu</g2> w menu przywraca go, a wyskakujące okienko dodatku ma <g3>Ustawienia → Przycisk pobierania nad filmami → Resetuj</g3> dla każdej witryny (również jej filtry)."
+  },
+  "92055d4da1d101c5": {
+   "source": "<x1/> people who sent a pull request, reported a problem or joined a conversation on GitHub. <g2>Meet them all</g2>",
+   "text": "<x1/> osoby, które wysłały pull request, zgłosiły problem lub dołączyły do rozmowy na GitHubie. <g2>Poznaj ich wszystkich</g2>"
+  },
+  "9632de50273e0f02": {
+   "source": "<g1>The site's star ratings</g1>, at <x2/>, described in <g3>OpenAPI</g3>. Anyone may read the numbers; rating is for this site's pages (below).",
+   "text": "<g1>Oceny w gwiazdkach strony</g1>, pod <x2/>, opisane w <g3>OpenAPI</g3>. Każdy może odczytać liczby; ocenianie dotyczy stron tej witryny (poniżej)."
+  },
+  "9e23173a22cf615a": {
+   "source": "<x1/> comment",
+   "text": "<x1/> komentarz"
+  },
+  "9e42b66c081a9f75": {
+   "source": "<g1><g2>llms.txt</g2></g1>: what Mister Download Manager is, in a few lines, and the main pages. <g3><g4>llms-full.txt</g4></g3>: the help pages and the answers to common questions in one file.",
+   "text": "<g1><g2>llms.txt</g2></g1>: czym jest Mister Download Manager, w kilku wierszach, oraz główne strony. <g3><g4>llms-full.txt</g4></g3>: strony pomocy i odpowiedzi na często zadawane pytania w jednym pliku."
+  },
+  "a2f672d1532ccb2b": {
+   "source": "Star ratings",
+   "text": "Oceny w gwiazdkach"
+  },
+  "a64c37b28be78aa0": {
+   "source": "One rating per visitor, and no free text. A rating is checked by Cloudflare Turnstile (a person, not a script), and a visitor can rate or remove at most eight times in ten minutes. The ratings service keeps the stars and a salted hash of the visitor's IP address, so the same visitor changes their rating instead of adding one; it never keeps the address itself. The <g1>privacy policy</g1> says the same.",
+   "text": "Jedna ocena na odwiedzającego i brak wolnego tekstu. Ocena jest sprawdzana przez Cloudflare Turnstile (osoba, a nie skrypt), a odwiedzający może ocenić lub usunąć maksymalnie osiem razy w ciągu dziesięciu minut. Usługa ocen przechowuje gwiazdki i zasolony skrót adresu IP odwiedzającego, dzięki czemu ten sam odwiedzający zmienia swoją ocenę zamiast dodawać nową; nigdy nie przechowuje samego adresu. <g1>Polityka prywatności</g1> mówi to samo."
+  },
+  "b4b12e00de9fb265": {
+   "source": "A command (answered <x1/>) may carry an <x2/> of your own: letters, digits and <x3/>, at most 64, different for each command. If its answer doesn't come back (the line closed, or a wait ran out), send the same line again with the same <x4/>: MDM does it once, however many of those lines reach it, and answers <x5/> to each. Without an <x6/>, each line is a new command. A second launch of the program (<x7/>, <x8/>) does this by itself.",
+   "text": "Polecenie (odpowiedź <x1/>) może zawierać własny <x2/>: litery, cyfry i <x3/>, maksymalnie 64, różne dla każdego polecenia. Jeśli odpowiedź nie wróci (linia została zamknięta lub skończył się czas oczekiwania), wyślij tę samą linię ponownie z tym samym <x4/>: MDM wykona ją raz, niezależnie od tego, ile takich linii do niego dotrze, i odpowie <x5/> na każdą. Bez <x6/> każda linia jest nowym poleceniem. Drugie uruchomienie programu (<x7/>, <x8/>) robi to samo."
+  },
+  "bf1c4ba30d7b2674": {
+   "source": "<g1>Customize MDM Download panels in browsers → Edit...</g1> — the download button over videos on web pages: turn it off, choose its <g2>Button size</g2> (<g3>Automatic</g3>, as installed: only the logo, the arrow and ✕ in a feed and over a small player, its words over a big one; <g4>Full</g4>, its words wherever they fit; or <g5>Compact</g5>, only the logo, the arrow and ✕ on every video), or list the sites it never shows on (separate them by spaces; wildcards like <x6/>, <x7/> or <x8/> work). See <g9>Browser integration</g9>.",
+   "text": "<g1>Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g1> — przycisk pobierania nad filmami na stronach internetowych: wyłącz go, wybierz jego <g2>Rozmiar przycisku</g2> (<g3>Automatyczne</g3>, jak zainstalowano: tylko logo, strzałka i ✕ w kanale i nad małym odtwarzaczem, jego słowa nad dużym; <g4>Pełny</g4>, jego słowa wszędzie tam, gdzie się mieszczą; lub <g5>Kompaktowy</g5>, tylko logo, strzałka i ✕ na każdym filmie) lub wymień witryny, na których nigdy się nie wyświetla (oddziel je spacjami; działają symbole wieloznaczne, takie jak <x6/>, <x7/> lub <x8/>). Zobacz <g9>Integracja z przeglądarką</g9>."
+  },
+  "c45503a700d34859": {
+   "source": "<g1>Turn it off, make it smaller, or see the sites it stays off</g1>: <g2>Options → General → Customize MDM Download panels in browsers → Edit...</g2>. <g3>Button size</g3> is <g4>Automatic</g4> as installed (round in a feed and over a small player, its words over a big one), <g5>Full</g5> (its words wherever they fit) or <g6>Compact</g6> (only MDM's logo, the arrow and <g7>✕</g7>, on every video, as on a small one); after a click it still says what happened in words. Pages already open follow a change within a few seconds, without a reload.",
+   "text": "<g1>Wyłącz, zmniejsz lub zobacz witryny, na których pozostaje wyłączony</g1>: <g2>Opcje → Ogólne → Dostosuj panele pobierania MDM w przeglądarkach → Edytuj...</g2>. <g3>Rozmiar przycisku</g3> jest <g4>Automatyczne</g4> po zainstalowaniu (okrągły w kanale i nad małym odtwarzaczem, jego słowa nad dużym), <g5>Pełny</g5> (jego słowa wszędzie tam, gdzie się mieszczą) lub <g6>Kompaktowy</g6> (tylko logo MDM, strzałka i <g7>✕</g7>, na każdym filmie, jak na małym); po kliknięciu nadal mówi, co się stało, słowami. Strony już otwarte podążają za zmianą w ciągu kilku sekund, bez przeładowania."
+  },
+  "c7eb011b0c201b7e": {
+   "source": "Asking for a page with <x1/> still gets its HTML for now: read its <x2/> address instead.",
+   "text": "Pytanie o stronę z <x1/> nadal zwraca jej HTML: zamiast tego przeczytaj jej adres <x2/>."
+  },
+  "cb3fee6871e1183d": {
+   "source": "<g1>0.5.2</g1> <g2>17.1 MB</g2>",
+   "text": "<g1>0.5.2</g1> <g2>17,1 MB</g2>"
+  },
+  "ce26147ce708b51e": {
+   "source": "For AI tools and agents",
+   "text": "Dla narzędzi i agentów AI"
+  },
+  "ce5bf471e6fccfb8": {
+   "source": "<g1>Comments</g1><g2><x3/> people</g2>",
+   "text": "<g1>Komentarze</g1><g2><x3/> osób</g2>"
+  },
+  "d4ad3bf9b2a8e7ad": {
+   "source": "Search engines may index it, AI tools may use it to answer questions, and it may be used to train AI models. Mister Download Manager is free, open-source software (GPL-3.0); its site is here to be found and understood.",
+   "text": "Wyszukiwarki mogą ją indeksować, narzędzia AI mogą jej używać do odpowiadania na pytania i może być używana do trenowania modeli AI. Mister Download Manager to darmowe oprogramowanie open-source (GPL-3.0); jego strona jest tutaj, aby można ją było znaleźć i zrozumieć."
+  },
+  "d65efc937a364b03": {
+   "source": "<x1/> issue",
+   "text": "<x1/> zgłoszenie"
+  },
+  "e07c144638064536": {
+   "source": "The site's <g1>robots.txt</g1> lets every crawler in, and says so for AI in <g2>Content Signals</g2>:",
+   "text": "Plik <g1>robots.txt</g1> strony zezwala wszystkim robotom indeksującym i informuje o tym AI w <g2>Content Signals</g2>:"
+  },
+  "e4b94379cc8e1a72": {
+   "source": "APIs",
+   "text": "API"
+  },
+  "e6e4ffbd1a17c7e8": {
+   "source": "<x1/> pull request",
+   "text": "<x1/> żądanie ściągnięcia"
+  },
+  "e895e3e3d267de25": {
+   "source": "This site is written to be read by people first, and by the AI tools they ask about download managers too. Here is everything a program can read, and what it may do with it.",
+   "text": "Ta strona jest napisana przede wszystkim dla ludzi, a także dla narzędzi AI, o które pytają menedżerów pobierania. Oto wszystko, co program może odczytać i co może z tym zrobić."
+  },
+  "f821c9c149c3e050": {
+   "source": "<x1/> comments",
+   "text": "<x1/> komentarzy"
+  },
+  "f9a8db1326e07676": {
+   "source": "<x1/> issues",
+   "text": "<x1/> zgłoszeń"
+  },
+  "fd2634470a1624af": {
+   "source": "The home and download pages show two kinds of ratings, never mixed:",
+   "text": "Strony główne i pobierania pokazują dwa rodzaje ocen, nigdy nie mieszane:"
   }
  }
 }
