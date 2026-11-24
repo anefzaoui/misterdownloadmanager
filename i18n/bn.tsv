@@ -94,6 +94,10 @@
 #. the summary of downloads added together (the Downloads complete window; the tip of the tray icon): {n} of them finished
 #. {n} = a number (keep the braces as they are)
 @plural	{n} download finished|{n} downloads finished	{n}টি ডাউনলোড সম্পূর্ণ হয়েছে|{n}টি ডাউনলোড সম্পূর্ণ হয়েছে
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} download selected|{n} downloads selected	{n}টি ডাউনলোড নির্বাচিত|{n}টি ডাউনলোড নির্বাচিত
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -122,6 +126,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n}টি ফাইলের একই নামের একটি ফাইল আগে থেকেই ছিল এবং সেগুলোকে সংখ্যায়িত করা হয়েছে|{n}টি ফাইলের একই নামের ফাইল আগে থেকেই ছিল এবং সেগুলোকে সংখ্যায়িত করা হয়েছে
+#. count in preview.rs
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} finished|{n} finished	{n}টি সম্পূর্ণ হয়েছে|{n}টি সম্পূর্ণ হয়েছে
 #. count in the main window's messages (deleting downloads' files)
 #. the message's next line: how many more deleted files stayed on the disk
 #. {n} = a number (keep the braces as they are)
@@ -159,11 +167,21 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ট্র্যাকার: {peers}|{n} ট্র্যাকার: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n}টি উইন্ডো আপনি ফিরে না আসা পর্যন্ত অপেক্ষা করছে|{n}টি উইন্ডো আপনি ফিরে না আসা পর্যন্ত অপেক্ষা করছে
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
 @plural	{site} wants to send {n} link to Link grabber.|{site} wants to send {n} links to Link grabber.	{site} লিংক গ্র্যাবাবে {n}টি লিংক পাঠাতে চায়।|{site} লিংক গ্র্যাবাবে {n}টি লিংক পাঠাতে চায়।
+#. count in preview.rs
+#. the preview pane, several downloads selected: their total size, then how many of them have no known size yet; {size} e.g. "4.20 GB"
+#. {size} = a file size such as "4.2 MB"; {n} = a number (keep the braces as they are)
+#, machine
+@plural	{size} and {n} of unknown size|{size} and {n} of unknown size	{size} এবং {n}টির আকার অজানা|{size} এবং {n}টির আকার অজানা
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -173,6 +191,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {total} ভিডিওর মধ্যে {listed}টি তালিকাভুক্ত|{title}: {total} ভিডিওর মধ্যে {listed}টি তালিকাভুক্ত
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	"ডাউনলোড সম্পূর্ণ হয়েছে" এবং MDM নিজে থেকে যে অন্যান্য উইন্ডো খোলে, সেগুলো একটি ফুল-স্ক্রিন গেম, অ্যাপ বা ভিডিও, একটি প্রেজেন্টেশন বা লক করা স্ক্রিন চালু থাকা অবস্থায় অপেক্ষা করে এবং আপনি ফিরে এলে দেখায়। আপনি নিজে যে উইন্ডোগুলো খোলেন এবং আপনার ব্রাউজার থেকে আসা লিংকগুলো সবসময় দেখায়
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -268,6 +290,10 @@
 #. Link grabber added a magnet link whose torrent could not be found; {error} says why
 #. {error} = an error message (keep the braces as they are)
 	A magnet link's files could not be looked up: {error}	একটি ম্যাগনেট লিংকের ফাইলগুলো দেখা যায়নি: {error}
+#. message or event log entry in the main window
+#. event log, at start: MDM was closed while this download was being moved to another folder; {folder} is where its file is now
+#, machine
+	A move was cut short when MDM closed: the download is in {folder}	MDM বন্ধ হওয়ার সময় একটি সরানো কাজ অসম্পূর্ণ ছিল: ডাউনলোডটি এখন {folder}-এ আছে
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -303,6 +329,10 @@
 #. tooltip on the disabled Rename box for a single-file torrent
 #, machine
 	A single-file torrent keeps its name	একক-ফাইল টরেন্ট নিজের নাম অপরিবর্তিত রাখে
+#. text in the download list (sizes, speeds, status)
+#. why a torrent that isn't finished can't be moved or renamed: the torrent engine writes its pieces into the files where they are
+#, machine
+	A torrent can be moved once it's finished: until then the torrent engine writes its pieces where they are	টরেন্ট সম্পূর্ণ হলে সরানো যাবে: ততক্ষণ পর্যন্ত টরেন্ট ইঞ্জিন খণ্ডগুলো যেখানে আছে সেখানেই লিখবে
 #. text in torrent_ownership.rs
 #. a torrent's folder is a link or junction leading outside its destination
 #, machine
@@ -311,6 +341,10 @@
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
 	A tracker on this computer or the local network is never contacted: {line}	এই কম্পিউটার বা স্থানীয় নেটওয়ার্কে থাকা কোনো ট্র্যাকারের সাথে কখনো যোগাযোগ করা হয় না: {line}
+#. text in the download list (sizes, speeds, status)
+#. why a video or an image gallery that isn't finished can't be moved or renamed: yt-dlp, ffmpeg or gallery-dl keep their unfinished files in its folder
+#, machine
+	A video or a gallery can be moved once it's finished: until then its helper programs keep their unfinished files in its folder	একটি ভিডিও বা গ্যালারি সম্পূর্ণ হলে সরানো যাবে: ততক্ষণ পর্যন্ত এর সহায়ক প্রোগ্রামগুলো অসম্পূর্ণ ফাইলগুলো ওই ফোল্ডারেই রাখবে
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -448,6 +482,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	যোগ করা হয়েছে। MDM টরেন্টটি পড়ছে: এটি কিছুক্ষণের মধ্যে তালিকায় যোগ হবে।
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	যোগ করা হয়েছে:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -702,6 +740,7 @@
 #, machine
 	Austria	অস্ট্রিয়া
 #. checkbox in the Options window; text in the Options window
+#. Options → Download panels → Button size: the round button in a feed and over a small video, the button with its words over a big one (the default)
 #. checkbox: the User-Agent is the default browser's, which MDM finds itself
 #, machine
 	Automatic	স্বয়ংক্রিয়
@@ -840,7 +879,7 @@
 #, machine
 	Busy, try later	ব্যস্ত, পরে চেষ্টা করুন
 #. text in the Options window
-#. Options → Download panels: the size of the download button over videos, chosen after it (Full / Compact)
+#. Options → Download panels: the size of the download button over videos, chosen under it (Automatic / Full / Compact)
 #, machine
 	Button size:	বোতামের আকার:
 #. message or event log entry in the main window
@@ -1098,7 +1137,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	কোমোরোস
-#. option (radio button) in the Options window
+#. text in the Options window
 #. Options → Download panels → Button size: only the round button (the logo, the arrow, the close mark) over every video
 #, machine
 	Compact	কমপ্যাক্ট
@@ -1401,6 +1440,10 @@
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 	Don't ask again	আবার জিজ্ঞাসা করবেন না
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	ফুল-স্ক্রিন অ্যাপ বা প্রেজেন্টেশন চলার সময় পপ-আপ দেখাবেন না
 #. checkbox in a dialog box
 	Don't show this dialog again	এই ডায়ালগটি আবার দেখাবেন না
 #. text in the Options window
@@ -1543,6 +1586,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading MDM's own copy...	MDM-এর নিজস্ব কপি ডাউনলোড হচ্ছে...
+#. text in helpers.rs
+#. Helpers: MDM's own copy of a helper is being downloaded (where there was none, or in place of the system's); {percent} = how far, a number
+#, machine
+	Downloading MDM's own copy... {percent}%	MDM-এর নিজস্ব কপি ডাউনলোড করা হচ্ছে... {percent}%
 #. text in archtest.rs
 #. in a download's log: after its archive test found damaged files, only their bytes are downloaded again from the same server; {size} like "1.20 MB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -1868,6 +1915,10 @@
 	File types	ফাইলের ধরন
 #. text in categories.rs
 	File types:	ফাইলের ধরন:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	ফাইল:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -1927,6 +1978,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	সম্পন্ন হয়েছে
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	সম্পূর্ণ হয়েছে:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2065,7 +2120,7 @@
 #, machine
 	FTP downloads don't go through an HTTP proxy. Choose SOCKS5 or SOCKS4 to send them through the proxy.	FTP ডাউনলোডগুলো HTTP প্রক্সির মাধ্যমে যায় না। সেগুলোকে প্রক্সির মাধ্যমে পাঠাতে SOCKS5 বা SOCKS4 বেছে নিন।
 #. text in the Options window
-#. Options → Download panels → Button size: the button with its words ("Download video", the quality) where they fit (the default)
+#. Options → Download panels → Button size: the button with its words ("Download video", the quality) wherever they fit
 #, machine
 	Full	সম্পূর্ণ
 #. text in countries.rs
@@ -2217,6 +2272,11 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Hide &categories	শ্রেণি লুকান(&C)
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	প্রিভিউ প্যান লুকান(&P)
 #. button in a download's progress window
 #, machine
 	Hide tab	ট্যাব লুকান
@@ -2450,6 +2510,14 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	এর ফাইলগুলো লেখা যায়নি: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	এর ফোল্ডারে এখন পৌঁছানো যাচ্ছে না
+#. text in relocate.rs
+#. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
+#, machine
+	its folder {folder} can't be reached	এর ফোল্ডার {folder} পৌঁছানো যাচ্ছে না
 #. text in the download list (sizes, speeds, status)
 #. why a video download failed: ffmpeg couldn't join its picture and sound into one file; {error} = ffmpeg's reason, in English
 #. {error} = an error message (keep the braces as they are)
@@ -2719,6 +2787,11 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	পেজটি খুঁজছে...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	খোঁজা হচ্ছে...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3050,10 +3123,27 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	সরান/নাম পরিবর্তন করুন
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	সরানো হয়েছে বা মুছে ফেলা হয়েছে
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
+#, machine
+	Moved to {folder}	{folder}-এ সরানো হয়েছে
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ফাইল সরানো হচ্ছে...
+#. message or event log entry in the main window
+#. event log: an unfinished download's part file is being moved to another folder; {folder} is that folder
+#, machine
+	Moving to {folder}	{folder}-এ সরানো হচ্ছে
+#. text in the download list (sizes, speeds, status)
+#. a download's status: its unfinished file is being moved to another folder
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Moving...	সরানো হচ্ছে...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3209,6 +3299,10 @@
 	No day is ticked: the queue will not start	কোনো দিন টিক করা হয়নি: সারি শুরু হবে না
 #. message or event log entry in the main window
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	ক্লিপবোর্ডে কোনো ডাউনলোড লিংক পাওয়া যায়নি। http, https, ftp বা ম্যাগনেট লিংক সহ একটি টেক্সট কপি করুন এবং আবার চেষ্টা করুন।
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	কোনো ডাউনলোড নির্বাচিত নেই
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3347,6 +3441,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	এখনও ইনস্টল করা হয়নি
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	এখনো জানা নেই
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -4091,6 +4189,10 @@
 #. text in the Batch download window
 #, machine
 	Second file:	দ্বিতীয় ফাইল:
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	এর ছবি ও বিস্তারিত দেখতে একটি ডাউনলোড নির্বাচন করুন।
 #. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -4236,6 +4338,11 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 	Show &categories	শ্রেণি দেখান(&C)
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	প্রিভিউ প্যান দেখান(&P)
 #. text in the Options window
 	Show a dialog and ask what to do.	একটি ডায়ালগ দেখান এবং কী করতে হবে জিজ্ঞাসা করুন।
 #. checkbox in the Options window
@@ -4261,6 +4368,9 @@
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 	Show me how	আমাকে দেখান কিভাবে
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	প্রিভিউ প্যান দেখান বা লুকান
 #. checkbox in the Options window
 	Show queue selection panel on closing batch download dialogs	ব্যাচ ডাউনলোডের ডায়ালগ বন্ধ করলে সারি নির্বাচন প্যানেল দেখান
 #. checkbox in the Options window
@@ -4547,6 +4657,10 @@
 #. label before the download's state
 #, machine
 	Status:	স্ট্যাটাস:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	এখনো আছে
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 	Stop	থামান
@@ -4849,6 +4963,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	the download from {host} was cut short	{host} থেকে ডাউনলোড অসম্পূর্ণ ছিল
+#. text in the download list (sizes, speeds, status)
+#. why a download can't be moved or renamed now: it is being moved already
+#, machine
+	The download is being moved	ডাউনলোডটি সরানো হচ্ছে
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
@@ -5169,6 +5287,10 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); HatchZip is a program's name
 #, machine
 	there isn't enough free space for its files, HatchZip says; nothing was changed	এর ফাইলগুলোর জন্য পর্যাপ্ত খালি জায়গা নেই, HatchZip বলছে; কিছুই পরিবর্তন করা হয়নি
+#. text in relocate.rs
+#. why a download's file could not be moved to another drive (after "The file could not be moved: "); {needed} and {free} are sizes ("1.2 GB")
+#, machine
+	there isn't enough free space there ({needed} needed, {free} free)	সেখানে পর্যাপ্ত খালি জায়গা নেই ({needed} প্রয়োজন, {free} খালি)
 #. text in a download's progress window
 	These settings are unavailable when "Show download complete dialog" is turned on	“ডাউনলোড সম্পূর্ণ হলে ডায়ালগ দেখান” চালু থাকলে এই সেটিংস ব্যবহার করা যায় না
 #. text in helpers.rs
@@ -5421,6 +5543,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	টরেন্ট শুরু করা যায়নি: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	মোট আকার:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 	Tracker	ট্র্যাকার
@@ -5865,6 +5991,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	ওয়েব
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	ওয়েব পেজ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	বুধবার
@@ -6125,6 +6255,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{size} এর মধ্যে {done}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{total}টির মধ্যে {done}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6146,6 +6280,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	যাচাই করার জন্য {file} পড়া যায়নি
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ইতোমধ্যে সেখানে আছে
+#. message or event log entry in the main window
+#. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
+#, machine
+	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} প্রতিস্থাপন করা যায়নি: অন্য কোনো প্রোগ্রাম এটি খুলে রাখতে পারে। নতুন ডাউনলোডটি এর পাশে {new} হিসেবে সংরক্ষণ করা হয়েছে এবং উভয় ফাইলই রাখা হয়েছে।
 #. text in a dialog box
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} যেখানে সংরক্ষণ করা হয়েছিল সেখানে আর নেই (সরানো বা মুছে ফেলা হয়েছে)। ডান-ক্লিক মেনুর “আবার ডাউনলোড করুন” দিয়ে এটি আবার পাবেন।
 #. message or event log entry in the main window
@@ -6419,6 +6561,11 @@
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 	{s} sec	{s} সেকেন্ড
+#. text in a dialog box
+#. the title of another window of a kind while the first is open (several Download File Info windows, one per link): {title} the window's own title, {n} its number, "Download File Info (2)"
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{title} ({n})	{title} ({n})
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -6503,6 +6650,7 @@ extension	Added to MDM	MDM-এ যোগ করা হয়েছে
 extension	Added to the queue	সারিতে যোগ করা হয়েছে
 #. text in the browser extension
 #. filter in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): every download; short
+#. chip in the menu of the download button over a video, filtering the list of qualities: show every quality (or any file type, any codec); short, one word
 #, machine
 extension	All	সব
 #. text in the browser extension
@@ -6518,6 +6666,14 @@ extension	Another Mister Download Manager (a server)	অন্য একটি M
 #. tab above the list of qualities in the menu under the download button over a video: the choices that are sound only (MP3, Opus and the like); short, one word
 #, machine
 extension	Audio	অডিও
+#. text in the browser extension
+#. chip in the menu of the download button over a video, filtering the list of qualities: show only the sound-only choices (MP3, Opus and the like); short
+#, machine
+extension	Audio only	শুধু অডিও
+#. text in the browser extension
+#. toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site
+#, machine
+extension	Back in its corner, its menu showing everything, on every site	তার কোণায় ফিরে এসেছে, তার মেনু সবকিছু দেখাচ্ছে, প্রতিটি সাইটে
 #. text in the browser extension
 #. after the best quality in the menu of the download button over a video, after a star (★ best); lower case; one word
 #, machine
@@ -6566,6 +6722,10 @@ extension	Clear finished	সম্পূর্ণ হওয়াগুলো �
 #. title of the question in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) before the finished downloads are taken off the list
 #, machine
 extension	Clear finished downloads?	আপনি কি সত্যিই সম্পন্ন ডাউনলোডগুলো তালিকা থেকে বাদ দিতে চান?
+#. text in the browser extension
+#. label before the row of chips (All, AV1, VP9, H.264...) that filters the list of video qualities by the picture's codec in the menu of the download button over a video; short
+#, machine
+extension	Codec	কোডেক
 #. text in the browser extension
 #. under the extension's name in the toolbar button's popup: the browser reaches the app; short
 #, machine
@@ -6639,6 +6799,10 @@ extension	Download all links with Mister Download Manager	Mister Download Manage
 #, machine
 extension	Download best	সেরাটি ডাউনলোড করুন
 #. text in the browser extension
+#. toolbar button's popup, Settings: the name of the row with the Reset button for the download button the extension shows over videos
+#, machine
+extension	Download button over videos	ভিডিওর উপর ডাউনলোড বোতাম
+#. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 extension	Download selected links with Mister Download Manager	Mister Download Manager দিয়ে নির্বাচিত লিংকগুলো ডাউনলোড করুন
 #. text in the browser extension
@@ -6683,6 +6847,10 @@ extension	Downloads go to {address}	ডাউনলোডগুলো {address}-
 #, machine
 extension	Drag the dots to move it along the edge	প্রান্ত বরাবর সরাতে বিন্দুগুলো টেনে আনুন
 #. text in the browser extension
+#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
+#, machine
+extension	Drag the dots to move it to another corner, or outside the video	অন্য কোণায় বা ভিডিওর বাইরে সরাতে ডটগুলো টেনে আনুন
+#. text in the browser extension
 #. the address typed isn't an https:// address
 #, machine
 extension	Enter its https:// address.	এর https:// ঠিকানা লিখুন।
@@ -6699,6 +6867,10 @@ extension	Failed: {why}	ব্যর্থ হয়েছে: {why}
 #. a finished download's line in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) when its file is no longer where it was saved
 #, machine
 extension	File deleted or moved	ফাইলটি মুছে ফেলা হয়েছে বা সরানো হয়েছে
+#. text in the browser extension
+#. label before the row of chips (All, MP4, WEBM, M4A...) that filters the list of qualities by file type in the menu of the download button over a video; short
+#, machine
+extension	File type	ফাইলের ধরন
 #. text in the browser extension
 #. said briefly in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) after Clear finished
 #, machine
@@ -6999,9 +7171,17 @@ extension	Protected	সুরক্ষিত
 #, machine
 extension	Protected video	সুরক্ষিত ভিডিও
 #. text in the browser extension
+#. menu command of the download button over a video, shown after the user dragged the button elsewhere on this site: moves it back to its usual corner of the video
+#, machine
+extension	Put the button back in its corner	বোতামটি তার কোণায় ফিরিয়ে আনুন
+#. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): takes the download off the list, its file stays
 #, machine
 extension	Remove from list	তালিকা থেকে বাদ দিন
+#. text in the browser extension
+#. toolbar button's popup, Settings: button that puts the download button over videos back in its corner and clears its menu's filters, on every web site; a verb, short
+#, machine
+extension	Reset	রিসেট করুন
 #. text in the browser extension
 #. command in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): goes on with a paused, waiting or failed download; verb
 #, machine
@@ -7054,6 +7234,7 @@ extension	Share...	শেয়ার করুন...
 #. text in the browser extension
 #. button on the download button over a video after a download was added: shows that download in the app's window; verb; very short
 #. name of the row of filters in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads) (All, Running, Done, Failed), read by screen readers; verb
+#. label read by screen readers for the row of chips (All, Video, Audio only) that filters the list of qualities in the menu of the download button over a video; a verb, short
 extension	Show	দেখান
 #. text in the browser extension
 #. button in the Downloads tab of the toolbar button's popup (the list of Mister Download Manager's newest downloads): clears the search and the filter
@@ -7201,6 +7382,10 @@ extension	Waiting	অপেক্ষা করছে
 #, machine
 extension	What you download with Mister Download Manager shows up here.	Mister Download Manager দিয়ে আপনি যা ডাউনলোড করেন তা এখানে দেখা যায়।
 #. text in the browser extension
+#. toolbar button's popup, Settings: second line under 'Download button over videos', saying what Reset puts back: the places the user dragged the button to, and the filters chosen in its menu, remembered per web site
+#, machine
+extension	Where you moved it, and its menu's filters, on each site	যেখানে আপনি এটি সরিয়েছিলেন এবং প্রতিটি সাইটে এর মেনুর ফিল্টারগুলো
+#. text in the browser extension
 #. Tooltip of the Hide the download button in full screen option in the toolbar button's popup; Download video is the name of the button over videos
 extension	While the page is in full screen, its videos show no Download video button	পেজ পূর্ণ স্ক্রিনে থাকা অবস্থায়, এর ভিডিওগুলোতে কোনো ডাউনলোড ভিডিও বাটন দেখাবে না
 #. text in the browser extension
@@ -7238,6 +7423,10 @@ extension	{time} left	{time} বাকি
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
 key	Alt+Enter	Alt+Enter
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Alt+P	Alt+P
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -7854,6 +8043,10 @@ menubar	&Tasks	কাজ(&T)
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menubar	&View	দেখুন(&V)
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	প্রিভিউ
 #. toolbar button in the main window
 toolbar	Add Torrent	টরেন্ট যোগ করুন
 #. toolbar button in the main window
@@ -7866,6 +8059,10 @@ toolbar	Delete Completed	সম্পূর্ণগুলো মুছুন
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 toolbar	Options	বিকল্প
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	প্রিভিউ
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 toolbar	Resume	পুনরায় শুরু করুন

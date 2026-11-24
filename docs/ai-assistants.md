@@ -89,6 +89,10 @@ claude mcp add misterdownloadmanager -- "C:\Users\you\AppData\Local\Programs\Mis
 
 Use the path from step 2 (in JSON, every `\` is written `\\`). Other assistants take the same thing: a command to start, no arguments.
 
+## For AI tools that read the website
+
+Separately from the server in the app, the website describes it for AI tools in an MCP server card, [/.well-known/mcp/server-card.json](https://misterdownloadmanager.com/.well-known/mcp/server-card.json), and has every page in Markdown (`/download.md` beside `/download.html`), so an assistant can read how to set MDM up: see [For AI tools and agents](https://misterdownloadmanager.com/agents.html). There is no MCP server on the website: the server always runs on your computer, next to the app.
+
 ## Privacy
 
 MDM itself still sends nothing anywhere: the server talks only to the MDM on this computer, over the token-protected local channel. But what the assistant reads, it passes to its own AI service: when it lists your downloads, their file names, addresses and folders go to that service, under that service's privacy terms. Turn the automation API off, or remove the server from the assistant, when you don't want that.
