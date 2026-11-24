@@ -1,10 +1,10 @@
 ---
-name: 86 languages
-title: Download manager in 86 languages, right to left included
+name: 87 languages
+title: Download manager in 87 languages, right to left included
 headline: Your language, from the first window.
 line: Every display language Windows 11 offers, picked by flag, with Arabic, Hebrew and Persian right to left.
-lede: MDM speaks 86 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.
-description: Mister Download Manager in 86 languages: picked by flag, switched at once, right to left for Arabic, Hebrew, Persian, Urdu and Uyghur.
+lede: MDM speaks 87 languages, every display language Windows 11 offers, from Afrikaans to Vietnamese. In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window runs from right to left.
+description: Mister Download Manager in 87 languages: picked by flag, switched at once, right to left for Arabic, Hebrew, Persian, Urdu and Uyghur.
 group: app
 order: 330
 since: 0.1.0

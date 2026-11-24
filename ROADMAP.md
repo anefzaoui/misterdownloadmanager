@@ -574,6 +574,8 @@ These ship in the next version.
 - ✅ Video playlists: enormous entry numbers no longer break the listing
 - ✅ Download video: absurd announced sizes no longer overflow the total
 - ✅ Galleries: a relative download folder no longer leaves the files to gallery-dl
+- ✅ Sinhala, the 87th language: the app, its setup and uninstaller, Sri Lanka's flag,
+  Windows' Nirmala UI for its script (machine translated, open to a native speaker's review)
 - ✅ A drive too full for a download says the space needed and the space free right
 - ✅ FTP: the 32-bit build never resumes a file over 4 GB at the wrong place
 - ✅ A file from a server without ranges is no longer failed as cut short when it starts over on one connection

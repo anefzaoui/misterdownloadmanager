@@ -288,7 +288,7 @@ const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
         "indic",
         &["Nirmala.ttc", "Nirmala.ttf"],
         &[
-            "as", "bn", "gu", "hi", "kn", "kok", "ml", "mr", "ne", "or", "pa", "ta", "te",
+            "as", "bn", "gu", "hi", "kn", "kok", "ml", "mr", "ne", "or", "pa", "ta", "te", "si",
         ],
     ),
     ("southeast-asian", &["LeelawUI.ttf"], &["km", "lo", "th"]),
@@ -406,7 +406,7 @@ const SCRIPT_FONTS: &[(&str, &[&str], &[&str])] = &[
         &["Supplemental/Arial Unicode.ttf"],
         &[
             "ar", "fa", "ur", "ug", "he", "hy", "ka", "as", "bn", "gu", "hi", "kn", "kok", "ml",
-            "mr", "ne", "or", "pa", "ta", "te", "th", "ja", "ko", "zh-hans", "zh-hant",
+            "mr", "ne", "or", "pa", "ta", "te", "th", "ja", "ko", "zh-hans", "zh-hant", "si",
         ],
     ),
 ];
@@ -445,6 +445,7 @@ const SCRIPT_LANGS: &[(&str, &str)] = &[
     ("te", "te"),
     ("kn", "kn"),
     ("ml", "ml"),
+    ("si", "si"),
 ];
 
 /// Marks that neither the interface font nor the script fonts have (✔ ✖ ↩ ⇧ ⌘ ⌥ ⌦, and → on
