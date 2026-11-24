@@ -1181,7 +1181,7 @@ impl Settings {
 
     /// The Sites Logins entry for `url`: its site/path is a prefix of the address (without the
     /// scheme), on whole path segments; `*.` matches subdomains. Of several entries that match,
-    /// the longest (the most specific) gives the login.
+    /// the longest (the most specific) gives the login, the first of them when they are as long.
     pub fn site_login(&self, url: &url::Url) -> Option<(String, String)> {
         let host = url.host_str()?.to_ascii_lowercase();
         let path = url.path().trim_start_matches('/');
@@ -1200,7 +1200,9 @@ impl Settings {
                             .is_some_and(|rest| rest.starts_with('/')));
                 matched.then(|| (site_path.len(), (user.clone(), pass.clone())))
             })
-            .max_by_key(|(len, _)| *len)
+            // The first of the longest: `max_by_key` would take the last of equal ones, and the
+            // list's own order decides between them, as it did before.
+            .min_by_key(|(len, _)| std::cmp::Reverse(*len))
             .map(|(_, login)| login)
     }
 
@@ -1967,7 +1969,7 @@ mod tests {
             s.site_login(&url("http://dl.corp.net/y")),
             Some(("b".into(), "2".into()))
         );
-        // Whole path segments only: a login saved for /private is not sent to /private-backup.
+        // Whole path segments only.
         assert_eq!(
             s.site_login(&url("https://files.example.com/private-backup/x.zip")),
             None
@@ -1998,6 +2000,26 @@ mod tests {
             s.site_login(&url("https://files.example.com/other/x.zip")),
             Some(("c".into(), "3".into())),
             "the host alone, for the rest"
+        );
+        // As long as each other: the first in the list, as before.
+        let s = Settings {
+            site_logins: vec![
+                ("files.example.com/private".into(), "a".into(), "1".into()),
+                ("files.example.com/private/".into(), "d".into(), "4".into()),
+                ("*.example.com".into(), "e".into(), "5".into()),
+                ("files.example.com".into(), "c".into(), "3".into()),
+            ],
+            ..Settings::default()
+        };
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/private/x.zip")),
+            Some(("a".into(), "1".into())),
+            "the first of two equal paths"
+        );
+        assert_eq!(
+            s.site_login(&url("https://files.example.com/other/x.zip")),
+            Some(("e".into(), "5".into())),
+            "the first of two hosts alone"
         );
     }
 
