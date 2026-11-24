@@ -170,6 +170,10 @@
    "source": "<g1>Your local network only</g1>: MDM listens on the computer's private addresses, one by one, never on every address at once.",
    "text": "<g1>ローカルネットワークのみ</g1>: MDMは、コンピューターのプライベートアドレスを1つずつリッスンし、すべてのアドレスを一度にリッスンすることはありません。"
   },
+  "02b2d6b276c7cc11": {
+   "source": "Your rating is removed.",
+   "text": "あなたの評価は削除されました。"
+  },
   "02b5c8ba8b04167b": {
    "source": "AppImage",
    "text": "AppImage"
@@ -313,10 +317,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
-  },
-  "048d941554aedc04": {
-   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
-   "text": "各リンクはそれぞれ独自の<g1>ダウンロード ファイル情報</g1>を開くため、サイズを比較して選択する際に、複数並べて開くことができます。新しいウィンドウは、前のウィンドウの少し下と横に開いて前面に表示されます。2 番目以降のウィンドウのタイトルには、<g2>ダウンロード ファイル情報 (2)</g2>、<g3>(3)</g3> のように番号が付きます。<g4>Esc</g4> キーを押すと、現在アクティブなウィンドウのみが閉じます。最大 6 つのウィンドウを同時に開くことができます。複数のリンクが同時に渡された場合 (ブラウザーが複数のダウンロードを渡す場合など) は、ウィンドウを閉じるにつれて 1 つずつ開きます。<g5>キャンセル</g5>をクリックすると、待機中のダウンロードをキャンセルするかどうかを確認するメッセージが表示されます。同じリンクが再度渡されると、開いているウィンドウが前面に表示されます。MDM を終了する際にまだ開いているウィンドウがある場合、それらのダウンロードは<g6>メインのダウンロード キュー</g6>に移動します。<g7>後でダウンロード</g7>を選択した場合と同様です。"
   },
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
@@ -738,6 +738,10 @@
    "source": "Click the tray icon to see what is downloading: a small panel over the icon lists each running download with its progress bar, how much has come of how much, its speed and the time left, and the progress window's <g1>Pause</g1> (then <g2>Resume</g2>; <g3>Stop and save</g3> for a live stream being recorded) and <g4>Cancel</g4> beside it. <g5>Open Mister Download Manager</g5> at its bottom brings the window back. Its <g6>×</g6>, <g7>Esc</g7>, a click elsewhere or another click on the icon closes it.",
    "text": "通知領域のアイコンをクリックすると、ダウンロードの状況を確認できます。アイコンの上に小さなパネルが表示され、実行中のダウンロードごとに進行状況バー、ダウンロード済みサイズと合計サイズ、速度、残り時間、そして進行状況ウィンドウの［<g1>一時停止</g1>］（その後［<g2>再開</g2>］、ライブ ストリームの録画中は［<g3>停止して保存</g3>］）と［<g4>キャンセル</g4>］が表示されます。パネル下部の［<g5>Mister Download Manager を開く</g5>］をクリックすると、ウィンドウが再び表示されます。パネルは［<g6>×</g6>］、<g7>Esc</g7> キー、パネル以外の場所をクリック、またはアイコンをもう一度クリックすると閉じます。"
   },
+  "09ff9a34f990cbe7": {
+   "source": "Too many tries from your connection. Please try again in a few minutes.",
+   "text": "接続からの試行回数が多すぎます。数分後にもう一度お試しください。"
+  },
   "0a15fc764eba9ef6": {
    "source": "Some servers drop the connection when the speed is very low. Avoid a tight limit for a server that can't resume: the progress window shows <g1>Resume capability: No</g1> for those.",
    "text": "一部のサーバーは、速度が非常に低いと接続を切断します。再開できないサーバーに対しては、厳しい制限を避けてください。進行状況ウィンドウには、そのようなサーバーの場合 <g1>再開機能: なし</g1> と表示されます。"
@@ -958,6 +962,10 @@
    "source": "Archives (zip, 7z, rar, tar, gz, xz), and <g1>Link grabber</g1>.",
    "text": "アーカイブ (zip, 7z, rar, tar, gz, xz) と<g1>リンク グラバー</g1>。"
   },
+  "0d03d14add627780": {
+   "source": "That is already your rating. Pick another number of stars to change it.",
+   "text": "すでにその評価です。変更するには別の星の数を選択してください。"
+  },
   "0d046fd75b859a4c": {
    "source": "<g1>Don't show this dialog again</g1> — MDM stops asking: <g2>Delete</g2> then only takes downloads off the list and keeps their files. To be asked again, tick <g3>Options → General → Confirm before deleting downloads</g3>.",
    "text": "<g1>今後このダイアログを表示しない</g1> — MDM は質問しなくなります。<g2>削除</g2>はダウンロードをリストから削除し、ファイルは保持するだけになります。再度質問されるようにするには、<g3>オプション → 一般 → ダウンロードを削除する前に確認する</g3>をオンにします。"
@@ -1021,6 +1029,10 @@
   "0e346def80145897": {
    "source": "Your feeds, in one window",
    "text": "フィードを 1 つのウィンドウで管理"
+  },
+  "0e402416fd7bb010": {
+   "source": "4 stars, very good",
+   "text": "4 つ星: 満足"
   },
   "0e48754aa3fa3ac3": {
    "source": "Connection",
@@ -1314,6 +1326,10 @@
    "source": "How MDM uses connections",
    "text": "MDMが接続を使用する方法"
   },
+  "12a413812ab160c9": {
+   "source": "One rating per visitor: pick again any time to change yours.",
+   "text": "訪問者 1 人につき 1 回評価できます。いつでも変更可能です。"
+  },
   "12b0b0ed9c364592": {
    "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. The ones already there are skipped.",
    "text": "完了したギャラリーをもう一度 <g1>再開</g1> すると、まだフォルダーにない画像のみが取得されます。既に存在する画像はスキップされます。"
@@ -1493,6 +1509,10 @@
   "14ca42cba15b46ce": {
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>ブラウザー。</g1>ページを右クリックして<g2>Mister Download Manager で全リンクをダウンロード</g2>を選択するか、ページの一部を選択して<g3>Mister Download Manager で選択したリンクをダウンロード</g3>を選択します。各リンクには、ページの参照元と Cookie が引き継がれます。"
+  },
+  "14e7836612ab8734": {
+   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter and its star ratings don't know who you are or how old you are.",
+   "text": "アプリと拡張機能は、子供を含む誰からも個人データを収集しません。ウェブサイトの訪問カウンターと評価は、お客様が誰であるか、何歳であるかを知りません。"
   },
   "14f5075ea65c51c0": {
    "source": "<g1>Image galleries</g1><g2>Mister Download Manager</g2>",
@@ -2370,6 +2390,10 @@
    "source": "<g1>Cookies for video sites</g1> (<g2>#229</g2>): <g3>Options → Sites Logins</g3> can let yt-dlp read a browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera, Vivaldi, Chromium, Whale; Safari on macOS), with a profile by name or folder, so a pasted link to a video that needs you signed in (YouTube's \"Sign in to confirm you're not a bot\") works. Off by default. When the browser's extension passes the page's own cookies, those are used instead. When the browser's cookies can't be read (Chrome, Edge and Brave lock them on Windows; a locked keyring on Linux), the Download video window says so in plain words.",
    "text": "<g1>動画サイトの Cookie</g1> (<g2>#229</g2>): <g3>オプション → サイトのログイン</g3> で、yt-dlp がこのコンピューター上のブラウザーの Cookie (Firefox、Chrome、Edge、Brave、Opera、Vivaldi、Chromium、Whale、macOS の Safari) を、プロファイル名またはフォルダーで読み取れるようになります。これにより、サインインが必要な動画へのリンク (YouTube の「ボットではないことを確認するためにサインインしてください」) が機能します。既定ではオフです。ブラウザーの拡張機能がページの Cookie を渡す場合、それらが代わりに使用されます。ブラウザーの Cookie を読み取れない場合 (Chrome、Edge、Brave は Windows でロックします。Linux ではキーリングがロックされています)、ダウンロード動画ウィンドウにその旨が明記されます。"
   },
+  "215c25fe9daf0df2": {
+   "source": "No ratings yet. Yours can be the first.",
+   "text": "まだ評価はありません。あなたが最初の評価者になれます。"
+  },
   "216583d42da33e52": {
    "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
    "text": "macOSでは、管理者のみがスリープ解除をスケジュールできるため、このオプションはグレー表示になります。MDMが管理者のパスワードを求めることはありません。管理者は、キューの開始1分前にMacを毎日起動するよう設定できます。たとえば、午後11時に開始するキューの場合、毎日午後10時59分に起動するよう設定できます。"
@@ -2926,6 +2950,10 @@
    "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "ブラウザ拡張機能は、各ブラウザのストアから入手できます。Chrome ウェブストアのものは、Edge、Brave、Opera、Vivaldi でも利用できます。また、アプリに同梱されているほか、<g1>単独でダウンロード</g1>して手動で追加することも可能です。すべてのファイルは、GitHub Actions によって公開ソースからビルドされ、SHA-256 チェックサムとともにリストされています。"
   },
+  "2853aef8c3261b3e": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you (Cloudflare also keeps its star ratings), and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com は静的サイトです。サイトを表示するために 3 社が関与しており (Cloudflare も評価を保持します)、ホームページの動画を再生する場合は 4 社目が関与します。"
+  },
   "285bca50f6f03a0a": {
    "source": "Start Download: the progress window shows it coming in.",
    "text": "「ダウンロード開始」をクリックすると、進行状況ウィンドウにダウンロードの進み具合が表示されます。"
@@ -3334,6 +3362,10 @@
    "source": "What you see",
    "text": "表示される内容"
   },
+  "2ddac256742055c3": {
+   "source": "Press Enter to give it {n} out of 5.",
+   "text": "Enter キーを押して 5 段階中 {n} を評価します。"
+  },
   "2de602677cb62226": {
    "source": "Open the selected download's menu",
    "text": "選択したダウンロードのメニューを開く"
@@ -3597,6 +3629,10 @@
   "31c727cb512fbff6": {
    "source": "<g1>Download all links</g1> and <g2>Download selected links</g2> send a page's links to <g3>Link grabber</g3>.",
    "text": "<g1>すべてのリンクをダウンロード</g1>と<g2>選択したリンクをダウンロード</g2>は、ページのリンクを<g3>リンク グラバー</g3>に送信します。"
+  },
+  "31cb0ccc424fdf1d": {
+   "source": "<g1><x2/> users</g1><g3><x4/> out of 5, from <x5/> ratings</g3>",
+   "text": "<g1><x2/> 人のユーザー</g1><g3><x5/> 件の評価で 5 段階中 <x4/></g3>"
   },
   "31cd6fb308737763": {
    "source": "<g1>With WinGet</g1>, Windows' package manager: in a terminal, the first line installs MDM and the second updates it.",
@@ -3878,6 +3914,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "速度制限は、MDMが接続帯域をすべて使用するのを防ぎます。"
   },
+  "36e1bd69a35cad56": {
+   "source": "Sending…",
+   "text": "送信中…"
+  },
   "36e51409041d8610": {
    "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the most compatible, H.264 with AAC; <x6/> = the original sound; <x7/>, <x8/>, <x9/> as for <x10/>). <x11/> as for <x12/>.",
    "text": "<x1/> 内のリストと同じ名前のフォルダーに、プレイリストまたはチャンネルの動画を次々にダウンロードします。<x2/> は <x3/> と同様に、すべての動画に 1 つの品質を設定します (既定では各動画の最高品質。<x4/> = 最大 720p。<x5/> = 最も互換性のある形式、AAC 付き H.264。<x6/> = オリジナルサウンド。<x7/>、<x8/>、<x9/> は <x10/> と同様)。<x11/> は <x12/> と同様。"
@@ -4010,6 +4050,10 @@
    "source": "<g1><x2/></g1> — the theme yours starts from: <x3/> (the default when it's left out), a built-in theme's id (<x4/>, <x5/>, <x6/>, <x7/>, <x8/>, <x9/>, <x10/>), or another theme file in the same folder, by its file name without <x11/>. A file that inherits another can be inherited in turn; a theme can't inherit itself.",
    "text": "<g1><x2/></g1> — 自分のテーマが開始するテーマ: <x3/> (省略された場合の既定)、組み込みテーマの ID (<x4/>、<x5/>、<x6/>、<x7/>、<x8/>、<x9/>、<x10/>)、または同じフォルダー内の別のテーマ ファイル (拡張子 <x11/> なしのファイル名)。別のテーマを継承するファイルは、さらに継承されることがあります。テーマが自分自身を継承することはできません。"
   },
+  "38416b0d540e010a": {
+   "source": "Thank you! Your rating is in.",
+   "text": "ありがとうございます！評価が送信されました。"
+  },
   "385890444f5eb85e": {
    "source": "Decide exactly how MDM reaches the internet, and see where your files come from.",
    "text": "MDM がインターネットに接続する方法を正確に決定し、ファイルの取得元を確認できます。"
@@ -4025,6 +4069,10 @@
   "38aa0b67fa9ddfff": {
    "source": "Before it continues, MDM checks that the file on the server is still the same one, so a changed file never gets stitched onto an old half. When a server can't send a file in parts, the progress window says <g1>Resume capability: No</g1> before you rely on it.",
    "text": "続行する前に、MDM はサーバー上のファイルがまだ同じものであることを確認するため、変更されたファイルが古い半分に結合されることはありません。サーバーがファイルをパートに分けて送信できない場合、進行状況ウィンドウには、ユーザーがそれに頼る前に<g1>再開機能: なし</g1>と表示されます。"
+  },
+  "38af5302dccf8631": {
+   "source": "Average",
+   "text": "平均"
   },
   "38c2835e2c5124e2": {
    "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>. Tick or untick a file's box to change what is downloaded, even while the torrent runs. At least one file stays ticked. If you untick everything still missing, the torrent finishes. If a finished torrent that isn't running gets a file back, it waits as stopped until you resume it, so nothing downloads unseen.",
@@ -4573,6 +4621,10 @@
   "40381e64ad055deb": {
    "source": "<g1>from the button over them</g1>: the button's cookies reached the Download video window's look-up but not the download's own, which then failed with \"Sign in to confirm you're not a bot\";",
    "text": "<g1>動画上のボタンから</g1>: ボタンの Cookie はダウンロード動画ウィンドウの参照には届きましたが、ダウンロード自身の参照には届かず、「ロボットではないことを確認するためにサインインしてください」で失敗していました。"
+  },
+  "404ec60f78303395": {
+   "source": "Ratings are closed for a moment. Please try again later.",
+   "text": "現在、評価は受け付けておりません。しばらくしてからもう一度お試しください。"
   },
   "40633c27b9a902b5": {
    "source": "The main window in Arabic: the menus, toolbar and categories run from right to left.",
@@ -5206,10 +5258,6 @@
    "source": "Queues and the Scheduler",
    "text": "キューとスケジューラ"
   },
-  "49b4a645676f1c52": {
-   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
-   "text": "概要: Mister Download Manager アプリとブラウザー拡張機能は、お客様に関する情報を一切収集しません。アカウント、分析機能、テレメトリー、広告はありません。このウェブサイトでは Statcounter を使って訪問数を数えています。"
-  },
   "49cf385ddabeea71": {
    "source": "<g1>PAC</g1><g2>proxy scripts</g2>",
    "text": "<g1>PAC</g1><g2>プロキシスクリプト</g2>"
@@ -5526,6 +5574,10 @@
    "source": "The files go next to the archive, into a folder named after it when it holds several things (or always, or never: you choose in Options). A file that is already there is kept, and the new one is numbered: <x1/>.",
    "text": "ファイルはアーカイブの隣に保存され、複数のファイルが含まれている場合はアーカイブと同じ名前のフォルダーに保存されます (常に、または決して保存しないかはオプションで選択できます)。既に存在するファイルは保持され、新しいファイルには番号が付けられます: <x1/>。"
   },
+  "4e311b6cdc315380": {
+   "source": "<g1><x2/><x3/></g1><g4>4 stars:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>Yours</g9>",
+   "text": "<g1><x2/><x3/></g1><g4>4 つ星:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>あなたの評価</g9>"
+  },
   "4e3145230d389879": {
    "source": "Video downloads →",
    "text": "ビデオのダウンロード →"
@@ -5561,6 +5613,10 @@
   "4f07dda13d242d23": {
    "source": "Options on its Connection page: connections per download, per-server exceptions, Download limits and the DNS list",
    "text": "接続ページのオプション: ダウンロードごとの接続数、サーバーごとの例外、ダウンロード制限、DNS リスト"
+  },
+  "4f234d9d578eebb9": {
+   "source": "<g1><x2/><x3/></g1><g4>1 star:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>Yours</g9>",
+   "text": "<g1><x2/><x3/></g1><g4>1 つ星:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>あなたの評価</g9>"
   },
   "4f23b5962ea59819": {
    "source": "<g1>ffmpeg</g1><g2>merges picture and sound</g2>",
@@ -6454,6 +6510,10 @@
    "source": "Limit seeding and upload, recheck files, reannounce, add trackers, and block IPs with a blocklist.",
    "text": "シーディングとアップロードの制限、ファイルの再確認、再アナウンス、トラッカーの追加、ブロックリストによる IP のブロック。"
   },
+  "5c4194d6ed360e8b": {
+   "source": "Good",
+   "text": "良い"
+  },
   "5c4282dcd31a167d": {
    "source": "Why IDM users switch",
    "text": "IDMユーザーが乗り換える理由"
@@ -6477,6 +6537,10 @@
   "5c9c99027a5f9d00": {
    "source": "Dragging files out of the list",
    "text": "リストからファイルをドラッグする"
+  },
+  "5caec767ed374f29": {
+   "source": "<g1><x2/></g1><g3>out of 5</g3>",
+   "text": "<g1><x2/></g1><g3> / 5</g3>"
   },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
@@ -6874,10 +6938,6 @@
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
    "text": "<g1>それ以外の場合:</g1> MDMは言語リストを表示します。各言語には旗と独自の言語名が表示されます。お使いの言語を選択してください。"
   },
-  "616c286a43aec83e": {
-   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
-   "text": "<g1>3,800 人以上のデイリー ユーザー</g1><g2>7 件の評価で 5 段階中 4.7</g2>"
-  },
   "617b3af69a12514a": {
    "source": "works the same way, and follows <x1/> too.",
    "text": "も同様に機能し、<x1/> にも従います。"
@@ -7045,6 +7105,10 @@
   "63f14dc462397998": {
    "source": "Get MDM <g1>only from this site or the project's GitHub releases</g1>. Copies elsewhere may be altered.",
    "text": "MDMは<g1>このサイトまたはプロジェクトのGitHubリリースからのみ</g1>入手してください。他の場所のコピーは改ざんされている可能性があります。"
+  },
+  "640086e3ffe3ee47": {
+   "source": "Thank you",
+   "text": "ありがとうございます"
   },
   "640ceca3e229adc2": {
    "source": "Make every window larger, up to 200 %: <g1>View → Interface size</g1>, or Ctrl + and Ctrl −.",
@@ -7277,6 +7341,10 @@
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows、macOS"
+  },
+  "67ed9c925b364106": {
+   "source": "From one star to five",
+   "text": "1 つ星から 5 つ星まで"
   },
   "67f71066401d978a": {
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
@@ -7517,6 +7585,10 @@
   "6b6f3ca5090700e9": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's new bug report form with your MDM version, your system and its version, how MDM was installed and its language filled in. Every report now says which system and version it comes from.",
    "text": "<g1>ヘルプ → 問題の報告</g1>を開くと、MDM のバージョン、システムとそのバージョン、MDM のインストール方法、言語が入力された状態で GitHub の新しいバグ報告フォームが開くようになりました。すべての報告に、使用しているシステムとそのバージョンが記載されるようになりました。"
+  },
+  "6b726e82737656da": {
+   "source": "Very good",
+   "text": "とても良い"
   },
   "6b7f693b4a3ad080": {
    "source": "<g1><g2></g2></g1> <g3>Torrents, built in</g3> <g4>Magnet links and .torrent files in the same list. Pick the files you want, then watch the swarm piece by piece.</g4>",
@@ -8086,6 +8158,10 @@
    "source": "Everything at its normal size (100 %)",
    "text": "すべてを通常のサイズ (100 %) に戻します。"
   },
+  "73017561887d4ea2": {
+   "source": "<g1><x2/><x3/></g1><g4>5 stars:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>Yours</g9>",
+   "text": "<g1><x2/><x3/></g1><g4>5 つ星:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>あなたの評価</g9>"
+  },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
    "text": "それを選択し、<g1>再開</g1>をクリックします。"
@@ -8189,6 +8265,10 @@
   "748527d82a020ea4": {
    "source": "<g1>Help → Check for updates → Update now</g1> downloads a new version, checks its signature, puts it in place and restarts, for the setup and both zips.",
    "text": "<g1>ヘルプ → 更新プログラムの確認 → 今すぐ更新</g1> を選択すると、新しいバージョンがダウンロードされ、署名が確認され、配置されて再起動されます。これはセットアップ版と両方の zip 版で利用できます。"
+  },
+  "74aa94a355fe1dab": {
+   "source": "1 rating",
+   "text": "1 件の評価"
   },
   "74add29cec32be22": {
    "source": "<g1><g2>Resume a broken download</g2></g1> — continue after a cut connection, a crash or an expired link.",
@@ -8694,6 +8774,10 @@
    "source": "Vivaldi",
    "text": "Vivaldi"
   },
+  "7c952678b9e18c05": {
+   "source": "Your rating: {n} out of 5. Pick again any time to change it.",
+   "text": "あなたの評価: 5 段階中 {n}。いつでも変更できます。"
+  },
   "7ca97bd5e93217a8": {
    "source": "Its progress window: each file and how much of it is here.",
    "text": "その進捗ウィンドウ：各ファイルと、そのうちどれだけがここにあるか。"
@@ -8881,6 +8965,10 @@
   "7e7bffb22a4c1aa5": {
    "source": "<g1>Adwaita</g1>: GNOME's look: round corners, flat grey buttons, a rounded focus ring, GNOME's check boxes, a header bar with the title in bold and round buttons (on Windows, where MDM draws it), and GNOME's Adwaita icons, in colour for files and categories, one colour in the toolbar.",
    "text": "<g1>Adwaita</g1>: GNOME の外観です。角は丸く、ボタンはフラットなグレーです。フォーカス リングは丸く、チェック ボックスは GNOME のデザインです。ヘッダー バーはタイトルが太字で、丸いボタンが並びます（MDM が描画する Windows 上）。アイコンは GNOME の Adwaita アイコンで、ファイルとカテゴリにはカラー、ツールバーには単色のものが使われます。"
+  },
+  "7e8354fec680ea23": {
+   "source": "<g1><x2/><x3/></g1><g4>2 stars:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>Yours</g9>",
+   "text": "<g1><x2/><x3/></g1><g4>2 つ星:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>あなたの評価</g9>"
   },
   "7e92ca3591a44f50": {
    "source": "Helium installs it from the same page, as long as Helium may download extensions: see <g1>Helium</g1>.",
@@ -9146,6 +9234,10 @@
    "source": "Tick <g1>Extract archives when their download completes</g1> in <g2>Options → Archives</g2> (it is off by default), and every archive is extracted as soon as it is in. Or right-click a finished archive and choose <g3>Extract</g3>. A split archive, such as <x4/> and the parts after it, is extracted once, when its last volume arrives.",
    "text": "<g2>オプション → アーカイブ</g2>で<g1>ダウンロード完了後にアーカイブを抽出する</g1>にチェックを入れると (既定ではオフ)、すべてのアーカイブは受信後すぐに抽出されます。または、完了したアーカイブを右クリックして<g3>展開</g3>を選択します。<x4/>とその後の部分のような分割されたアーカイブは、最後のボリュームが到着したときに一度だけ抽出されます。"
   },
+  "818537ee7cad2e69": {
+   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. A star rating can be changed or removed from the same connection at any time (<g1>Remove my rating</g1> under the stars); we can't tell which rating is whose, so we can't find one for you. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
+   "text": "アプリと拡張機能は、お客様に関する個人データを保持しないため、表示、修正、削除できるものはありません。ウェブサイトの訪問統計は Statcounter が保持しています。訪問記録を削除するには、訪問日時を添えて問題を報告するか、Statcounter に直接お問い合わせください。評価は、同じ接続からいつでも変更または削除できます (星の下の<g1>評価を削除</g1>)。どの評価が誰のものであるかを判断できないため、お客様の評価を見つけることはできません。GitHub に送信されたデータ (問題など) は GitHub が処理し、そこで編集または削除できます。"
+  },
   "818a189cf94962b0": {
    "source": "Does MDM collect my data? — Mister Download Manager",
    "text": "MDMは私のデータを収集しますか？ — Mister Download Manager"
@@ -9161,6 +9253,10 @@
   "81ce8b1ef8bffcb0": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for…",
    "text": "MDMのインターフェースは86言語に対応しています。Windows 11が提供する表示言語すべて、アフリカーンス語からベトナム語まで、中国語の2つの表記、スペイン語などを含みます。"
+  },
+  "81cf2799caa6a740": {
+   "source": "Thank you! Your rating is changed.",
+   "text": "ありがとうございます！評価が変更されました。"
   },
   "81e129770ec4dcbd": {
    "source": "a stream sent over RTMP, RTSP, MMS or FTP;",
@@ -9238,6 +9334,10 @@
    "source": "A limit per file, or for one download",
    "text": "ファイルごと、またはダウンロードごとの制限"
   },
+  "82d3c8c4aeda47f3": {
+   "source": "The check that you are a person couldn't start: a content blocker may be stopping challenges.cloudflare.com.",
+   "text": "本人確認を開始できませんでした: コンテンツブロッカーが challenges.cloudflare.com をブロックしている可能性があります。"
+  },
   "82d6ded95ec8b5ce": {
    "source": "In <g1>Downloads → Speed Limiter → Settings...</g1>, tick <g2>Limit all downloads together to</g2> and type a speed in KBytes/sec. However many files are downloading, together they stay under it. It works on its own: there is nothing else to turn on. About two thirds of your connection's speed is a good start.",
    "text": "<g1>ダウンロード → 速度制限 → 設定...</g1> で、<g2>すべてのダウンロードを合計で制限する</g2> にチェックを入れ、KB/秒で速度を入力します。ダウンロード中のファイルがいくつあっても、合計速度はこの制限値を超えません。これだけで機能し、他にオンにするものはありません。接続速度の約 3 分の 2 から始めるのが良いでしょう。"
@@ -9293,6 +9393,10 @@
   "8396ee0083abb976": {
    "source": "A filtered column's funnel turns blue. To remove every filter, right-click a column title and choose <g1>Clear all filters</g1>. Filters last until you close MDM.",
    "text": "フィルターが適用されている列では、漏斗アイコンが青色になります。すべてのフィルターを解除するには、列見出しを右クリックして<g1>すべてのフィルターをクリア</g1>を選びます。フィルターはMDMを閉じるまで有効です。"
+  },
+  "83b1cef8dec11dba": {
+   "source": "{n} ratings",
+   "text": "{n} 件の評価"
   },
   "83b7e1529c1cbdec": {
    "source": "0.00 s",
@@ -9358,6 +9462,10 @@
    "source": "Height of the download list's column headers",
    "text": "ダウンロード リストの列ヘッダーの高さ"
   },
+  "846d618bc8202b36": {
+   "source": "Poor",
+   "text": "悪い"
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "トレントとセキュリティ"
@@ -9365,10 +9473,6 @@
   "847919d6970d2f79": {
    "source": "View → Draw with: the other way of drawing.",
    "text": "表示 → 描画方法：別の描画方法。"
-  },
-  "84829118b707c58c": {
-   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
-   "text": "misterdownloadmanager.com は静的サイトです。このサイトの表示には 3 社が関与しており、ホームページの動画を再生した場合はさらに 1 社が加わります。"
   },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
@@ -9474,6 +9578,10 @@
    "source": "One <x1/> per helper; <x2/> is <x3/>, <x4/>, <x5/> (in use once its downloads end), <x6/> (you went back from the newest), <x7/>, <x8/> or <x9/> (with <x10/>).",
    "text": "ヘルパーごとに <x1/>。 <x2/> は <x3/>、<x4/>、<x5/> (ダウンロードが終了すると使用中)、<x6/> (最新バージョンから戻った場合)、<x7/>、<x8/>、または <x9/> (<x10/> と共に) です。"
   },
+  "860a609c6c79d794": {
+   "source": "3 stars, good",
+   "text": "3 つ星: 普通"
+  },
   "863c349998a9b962": {
    "source": "No mouse needed",
    "text": "マウス不要"
@@ -9537,6 +9645,10 @@
   "870fea57c82097f9": {
    "source": "<x1/><g2>Arch Linux, from the release's .tar.gz</g2>",
    "text": "<x1/><g2>Arch Linux、リリースの .tar.gz から</g2>"
+  },
+  "872f2b25f5963081": {
+   "source": "<g1><x2/><x3/></g1><g4>3 stars:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>Yours</g9>",
+   "text": "<g1><x2/><x3/></g1><g4>3 つ星:</g4><g5><g6></g6></g5><g7><x8/></g7><g9>あなたの評価</g9>"
   },
   "874b7331989b01ca": {
    "source": "Can I bring my download list over from IDM? — Mister Download Manager",
@@ -9905,10 +10017,6 @@
   "8cb163cde329bcf4": {
    "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
    "text": "<g1>Mister Download Manager</g1>が一覧に表示されます。オンのままにします。ブラウザーが MDM に接続できているかすぐに確認できるよう、ボタンをツールバーにピン留めします。"
-  },
-  "8ccaf02f36376582": {
-   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
-   "text": "<g1>数字で見る</g1><g2><x3/> に確認、切り捨て</g2>"
   },
   "8ccfea341db37ac1": {
    "source": "The automation API's list also gives the queues, the categories and the free space; it starts and stops a queue by name, and an added address can choose its category and queue.",
@@ -10317,6 +10425,10 @@
   "931872eeef27a13d": {
    "source": "<g1><g2>Your first download</g2></g1> — a two-minute walk-through from copied link to opened file.",
    "text": "<g1><g2>最初のダウンロード</g2></g1> — リンクをコピーしてからファイルを開くまでを、2分で順を追って説明します。"
+  },
+  "932b790b65031717": {
+   "source": "<x1/><g2><x3/></g2><g4> out of 5, </g4><g5><x6/> ratings · <x7/> users</g5>",
+   "text": "<x1/><g2><x3/></g2><g4> / 5、</g4><g5><x6/> 件の評価 · ユーザー数 <x7/></g5>"
   },
   "932bdecbc746c3d4": {
    "source": "<g1>Port</g1>: <x2/> unless another program uses it; then pick another (1024 to 65535).",
@@ -10858,6 +10970,10 @@
    "source": "Later, the program is built for size (<g1>#158</g1>), which takes the installer from 16.1 to 13.6 MB and the zips from 19.3 to 15.6 MB, with the same features and the same download speed.",
    "text": "その後、プログラムはサイズに合わせてビルドされ (<g1>#158</g1>)、インストーラーは 16.1 MB から 13.6 MB に、zip ファイルは 19.3 MB から 15.6 MB になり、同じ機能とダウンロード速度を維持します。"
   },
+  "99be0cd3ef12ab23": {
+   "source": "How people rated it",
+   "text": "評価の内訳"
+  },
   "99c3f60a725ee399": {
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>ビデオのダウンロード</g2></g1> — yt-dlp を使って、ページからビデオ（YouTube、Vimeo など）をダウンロードする方法。"
@@ -11206,6 +11322,10 @@
    "source": "<g1>YouTube</g1> (Google) plays the home page's film, only once you start it: the player then comes from youtube-nocookie.com, and YouTube sees your IP address and browser details and may store data in your browser, under <g2>Google's privacy policy</g2>. Until then, nothing is loaded from YouTube: the picture you see is served from this site.",
    "text": "<g1>YouTube</g1> (Google) は、ホームページの動画を、再生を開始したときにのみ再生します。その際、プレーヤーは youtube-nocookie.com から読み込まれ、YouTube はお客様の IP アドレスとブラウザの詳細を認識し、<g2>Google のプライバシー ポリシー</g2>に基づき、お客様のブラウザにデータを保存する場合があります。それまでは、YouTube から何も読み込まれません。表示される画像は、このサイトから提供されています。"
   },
+  "9ecd24fe76a8565c": {
+   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself, except Statcounter's and, once you reach for the rating stars, Turnstile's. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
+   "text": "このサイトには広告やその他のトラッカーはありません。フォントとスクリプトは、Statcounter のものと、評価の星に到達したときに読み込まれる Turnstile のものを除き、サイト自体から提供されます。ライト モードまたはダーク モードの選択は、ブラウザーのローカル ストレージに記憶され、どこにも送信されません。"
+  },
   "9ed24f4107645a20": {
    "source": "Fixed",
    "text": "修正点"
@@ -11285,10 +11405,6 @@
   "9fe363ab929197a2": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded.",
    "text": "DRMで保護されたビデオ（ほとんどの有料ストリーミングサービス）はダウンロードできません。"
-  },
-  "9fe595ed623618bf": {
-   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
-   "text": "<g1>納品証明</g1><g2><x3/> で確認された数値 · 引用は正確で、出典にリンクされています</g2>"
   },
   "9fed4ee943ba5a3f": {
    "source": "Tooltips' background",
@@ -11581,6 +11697,10 @@
   "a3fad5053e035413": {
    "source": "Torrents and your security — Mister Download Manager help",
    "text": "トレントとセキュリティ — Mister Download Manager ヘルプ"
+  },
+  "a40812e719ece398": {
+   "source": "Your rating",
+   "text": "あなたの評価"
   },
   "a40fd1b32ee9d4fd": {
    "source": "The video then downloads like any other file, with its own row in the list and its progress window.",
@@ -12141,6 +12261,10 @@
   "ab100241dc57cf32": {
    "source": "Ctrl+F",
    "text": "Ctrl+F"
+  },
+  "ab123090999f0ac9": {
+   "source": "<x1/><g2><x3/></g2><g4> out of 5, </g4><g5><x6/> ratings · <x7/> daily users</g5>",
+   "text": "<x1/><g2><x3/></g2><g4> / 5、</g4><g5><x6/> 件の評価 · 1 日あたりのユーザー数 <x7/></g5>"
   },
   "ab1368844dd3a2f6": {
    "source": "a file that is already there is kept, and the new one is numbered: <x1/>.",
@@ -12749,10 +12873,6 @@
   "b316129fd0c0323b": {
    "source": "<g1>Menus open where they belong</g1>: in a Wayland session they opened in the middle of the screen (<g2>#50</g2>), as Wayland lets no program place its windows, and MDM's menus and drop-down lists are windows it places; MDM now runs through XWayland when it is there (<x3/> keeps Wayland). Under tiling compositors such as sway (<g4>#267</g4>), through XWayland, the menu bar's menus, their submenus, the right-click menus and the drop-down lists still opened in the middle of the screen, as the compositor placed them like windows. They are now menu windows no window manager places, as X11 menus are, so they open where MDM puts them, on every window manager.",
    "text": "<g1>メニューが適切な場所に開くように</g1>: Wayland セッションでは画面の中央に開いていました (<g2>#50</g2>)。Wayland はプログラムがウィンドウを配置することを許可せず、MDM のメニューとドロップダウン リストは MDM が配置するウィンドウであるためです。MDM は Wayland が存在する場合は XWayland を介して実行されるようになりました (<x3/> は Wayland を保持します)。sway (<g4>#267</g4>) などのタイリング コンポジターの下では、XWayland を介して、メニュー バーのメニュー、そのサブメニュー、右クリック メニュー、ドロップダウン リストが依然として画面の中央に開いていました。これはコンポジターがそれらをウィンドウとして配置していたためです。これらは X11 メニューと同様に、ウィンドウ マネージャーが配置しないメニュー ウィンドウになったため、すべてのウィンドウ マネージャーで MDM が配置する場所に開きます。"
-  },
-  "b3192a3bf72c5c3b": {
-   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
-   "text": "アプリと拡張機能は、子どもを含め、誰からも個人データを収集しません。ウェブサイトの訪問カウンターは、訪問者が誰なのか、何歳なのかを把握しません。"
   },
   "b319608137eb0e1c": {
    "source": "A kill switch built in",
@@ -13662,6 +13782,10 @@
    "source": "More of the browser, in version 0.5.0",
    "text": "ブラウザーの機能拡張 (バージョン 0.5.0)"
   },
+  "c059d32a6c521964": {
+   "source": "<x1/> ratings",
+   "text": "<x1/> 件の評価"
+  },
   "c067f04376c32e9a": {
    "source": "When the queue is done",
    "text": "キューが完了したら"
@@ -13741,6 +13865,10 @@
   "c1b6b2d311bbe187": {
    "source": "Already installed? Open MDM, then <g1>Options → General → Test browser integration</g1>, and click <g2>Set it up</g2> if it offers to.",
    "text": "すでにインストール済みの場合は、MDMを開いて<g1>オプション → 一般 → ブラウザー統合のテスト</g1>を選び、セットアップを促されたら<g2>セットアップ</g2>をクリックします。"
+  },
+  "c1b73d42b4330315": {
+   "source": "If you <g1>rate MDM on the website</g1>, we keep your stars and a salted hash of your IP address (never the address itself), so that you can change your rating instead of adding another; <g2>Cloudflare Turnstile</g2> checks that a person is rating.",
+   "text": "ウェブサイトで MDM を<g1>評価</g1>した場合、お客様の評価と IP アドレスのソルト付きハッシュ (アドレス自体ではありません) を保持します。これにより、別の評価を追加する代わりに評価を変更できます。<g2>Cloudflare Turnstile</g2> は、評価しているのが人間であることを確認します。"
   },
   "c1d77bb835bb6ef4": {
    "source": "Debrid service accounts",
@@ -13905,10 +14033,6 @@
   "c491b3c690e9a139": {
    "source": "On a queue's <g1>Schedule</g1> tab, tick <g2>Start download at</g2> and choose a time, <g3>Once at</g3> a date or <g4>Daily</g4> on the days you tick. <g5>Stop download at</g5> halts whatever is left, for example before work in the morning. A queue can also start whenever MDM starts.",
    "text": "キューの<g1>スケジュール</g1>タブで、<g2>ダウンロード開始時刻</g2>をオンにして時刻を選択し、日付の<g3>一度だけ</g3>、またはチェックした曜日の<g4>毎日</g4>を選択します。<g5>ダウンロードを停止する時刻</g5>は、たとえば朝の仕事の前に残っているものをすべて停止します。キューは MDM の開始時にも開始できます。"
-  },
-  "c493485e5f202b58": {
-   "source": "Before you click <g1>OK</g1>, the window shows the <g2>First file</g2>, <g3>Second file</g3> and <g4>Last file</g4>, so a typo shows up before anything downloads. If the server needs a login, tick <g5>Use authorization</g5>. Copied one address with a number in it, such as <x6/>? <g7>Tasks → Add batch download from clipboard</g7> (Ctrl+B) puts the asterisk where the number was and waits for the last one in <g8>To</g8>. Copied a whole list of links, or a forum post with links in it? The same command lists every one of them in Link grabber, ticked and ready to start.",
-   "text": "［<g1>OK</g1>］をクリックする前に、ウィンドウに<g2>最初のファイル</g2>、<g3>2 番目のファイル</g3>、<g4>最後のファイル</g4>が表示されるため、ダウンロードが開始される前にタイプミスがわかります。サーバーにログインが必要な場合は、［<g5>認証を使用する</g5>］にチェックを入れます。<x6/> のように、数字を含むアドレスを 1 つコピーしましたか？ <g7>タスク → クリップボードからバッチ ダウンロードを追加</g7> (Ctrl+B) を選択すると、数字があった場所にアスタリスクが配置され、［<g8>終了</g8>］で最後の数字を待ちます。リンクのリスト全体、またはリンクを含むフォーラムの投稿をコピーしましたか？ 同じコマンドで、リンク グラバーにすべてのリンクが一覧表示され、チェックが入って開始準備が整います。"
   },
   "c493cf1e8ba7e4c3": {
    "source": "Ctrl+N",
@@ -14226,6 +14350,10 @@
    "source": "Send every download through one network adapter, such as your VPN's. If it drops, nothing goes out through your normal connection.",
    "text": "すべてのダウンロードを VPN など 1 つのネットワーク アダプター経由で送信します。接続が切断されても、通常の接続経由でデータが送信されることはありません。"
   },
+  "c90ac2e56c9f8dcc": {
+   "source": "2 stars, fair",
+   "text": "2 つ星: やや不満"
+  },
   "c90c15394277aafe": {
    "source": "Proxy, SOCKS, PAC and DNS settings — Mister Download Manager",
    "text": "プロキシ、SOCKS、PAC、DNS の設定 — Mister Download Manager"
@@ -14281,10 +14409,6 @@
   "c9c8b8dc1476c206": {
    "source": "<g1>View → Theme → Open themes folder</g1>, and make a new <x2/> file there (any text editor).",
    "text": "<g1>表示 → テーマ → テーマ フォルダーを開く</g1> をクリックし、そこに新しい <x2/> ファイルを作成します (任意のテキスト エディターを使用)。"
-  },
-  "c9da130585eae7fa": {
-   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
-   "text": "このサイトには広告や他のトラッカーはありません。フォントとスクリプトはサイト自体から配信されます。ライトモードまたはダークモードの選択はブラウザのローカルストレージに保存され、外部に送信されることはありません。"
   },
   "c9de754399e8b628": {
    "source": "Found a security problem? Please tell us privately first, so it can be fixed before it's public.",
@@ -14381,10 +14505,6 @@
   "cb4ebdffdae9d416": {
    "source": "<g1>The previous version stays</g1>, so you can go back to it. Older ones are removed.",
    "text": "<g1>以前のバージョンは残る</g1>ため、元に戻すことができます。古いバージョンは削除されます。"
-  },
-  "cb565e5b28b1036b": {
-   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
-   "text": "<g1><x2/> Firefox に追加</g1><g3><x4/> Chrome に追加</g3>"
   },
   "cb5b5cded4982e90": {
    "source": "Closing MDM stops a test; the archive is tested again at the next start.",
@@ -14882,6 +15002,10 @@
    "source": "No. MDM needs Windows 10 or 11. The Rust toolchain it is built with no longer supports Windows 7 and 8, and neither does Microsoft.",
    "text": "いいえ。MDM は Windows 10 または 11 が必要です。MDM のビルドに使用されている Rust ツールチェーンは Windows 7 および 8 をサポートしておらず、Microsoft もサポートしていません。"
   },
+  "d29a7b052989ea0c": {
+   "source": "<g1>In figures</g1><g2>Store figures as of <x3/>, the others checked on <x4/>, rounded down</g2>",
+   "text": "<g1>数字で見る MDM</g1><g2><x3/> 時点のストアの数字。その他は <x4/> に確認し、切り捨てて表示。</g2>"
+  },
   "d2a15d4e9d4e0387": {
    "source": "To add every link in a text file:",
    "text": "テキストファイル内のすべてのリンクを追加するには："
@@ -14929,10 +15053,6 @@
   "d319d72c656458a2": {
    "source": "1 the start time, 2 once or daily, 3 a stop time if you want one.",
    "text": "1 開始時刻、2 一度だけまたは毎日、3 必要であれば停止時刻。"
-  },
-  "d325a1b1c8ab0caa": {
-   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
-   "text": "Mister Download Manager、そのブラウザ拡張機能、およびこのウェブサイトによるデータの取り扱い：アプリと拡張機能はデータを一切収集しません。ウェブサイトでは Statcounter を使って訪問数を集計します。"
   },
   "d32ec5dc098dcc58": {
    "source": "10 built-in looks for Mister Download Manager, each light and dark: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua, Emerald. Or make your own in a text file.",
@@ -15178,6 +15298,10 @@
    "source": "<g1>The queues</g1>: start and stop each one.",
    "text": "<g1>キュー</g1>：それぞれを開始および停止します。"
   },
+  "d5f572f1d13e144c": {
+   "source": "Fair",
+   "text": "まあまあ"
+  },
   "d60723c7c9e52c17": {
    "source": "Site grabber",
    "text": "サイトグラバー"
@@ -15290,10 +15414,6 @@
    "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back. The list starts with the usual archives, programs and installers (Windows, macOS and Linux ones: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), music and videos, PDF and Office files, AI models and datasets (GGUF, SAFETENSORS, CKPT, PT, ONNX, PARQUET), 3D and CAD files (GLB, FBX, OBJ, STL, BLEND, STEP), design and camera RAW files, ebooks, disk images and split archives. Pages, scripts, plain text and web images are left out on purpose, so saving a picture or a page stays with the browser; add any type you need, or put a single <x5/> in the box to take every file that has an extension. A list you never changed gains the types a new version adds; one you edited stays as it is.",
    "text": "<g1>次のファイルの種類を自動的にダウンロードする</g1>: ブラウザーが引き渡す（およびクリップボードが取得する）ファイルの種類です。スペースで区切ります。<x2/>は<x3/>のように任意の文字に一致します。<g4>既定</g4>をクリックすると、元のリストに戻ります。リストは、一般的なアーカイブ、プログラム、インストーラー（Windows、macOS、Linuxのもの：DMG、PKG、DEB、RPM、APPIMAGE、MSIX）、音楽、ビデオ、PDF、Officeファイル、AIモデルとデータセット（GGUF、SAFETENSORS、CKPT、PT、ONNX、PARQUET）、3DおよびCADファイル（GLB、FBX、OBJ、STL、BLEND、STEP）、デザインおよびカメラRAWファイル、電子書籍、ディスク イメージ、分割アーカイブから始まります。ページ、スクリプト、プレーン テキスト、Web画像は意図的に除外されているため、写真やページの保存はブラウザーで行われます。必要な種類を追加するか、ボックスに単一の<x5/>を入力して、拡張子を持つすべてのファイルを取得します。変更されていないリストには新しいバージョンが追加する種類が追加されます。編集したリストはそのまま残ります。"
   },
-  "d7a59305d1341d4e": {
-   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
-   "text": "アプリと拡張機能はお客様の個人データを保持しないため、表示、訂正、削除できるデータはありません。ウェブサイトの訪問統計は Statcounter が保持しています。訪問記録の削除を希望する場合は、訪問日時を添えて issue を作成するか、Statcounter に直接お問い合わせください。GitHub に送信したデータ（issue など）は GitHub が管理し、GitHub 上で編集または削除できます。"
-  },
   "d7ad52efba6eea3e": {
    "source": "Is it safe? Does it contain adware or spyware?",
    "text": "安全ですか？アドウェアやスパイウェアは含まれていますか？"
@@ -15321,6 +15441,10 @@
   "d7e47d8cb056d141": {
    "source": "<g1>Download in order</g1>, to watch a video while it downloads, with each file's first and last pieces early. Other torrents fetch the rarest pieces first.",
    "text": "<g1>順番にダウンロード</g1>すると、ダウンロード中にビデオを視聴でき、各ファイルの最初のピースと最後のピースが早く取得されます。他のトレントは、最も希少なピースを最初に取得します。"
+  },
+  "d7eb27ead59a4dbb": {
+   "source": "1 star, poor",
+   "text": "1 つ星: 不満"
   },
   "d7f9cef5e47dc35e": {
    "source": "<g1>86 languages</g1><g2>Mister Download Manager</g2>",
@@ -15618,6 +15742,10 @@
    "source": "An import opens <g1>Link grabber</g1>, which sorts the links into packages: the volumes of one archive together, the links of one page together, the rest in <g2>Various files</g2>. Each link is looked up for its real name, its size and whether the server still has it, and the ones that are gone come unticked. A link already in your list goes under <g3>Already in the list</g3>, unticked.",
    "text": "インポートすると<g1>リンク グラバー</g1>が開き、リンクがパッケージに分類されます。1 つのアーカイブのボリュームはまとめられ、1 つのページのリンクもまとめられ、残りは<g2>その他のファイル</g2>に分類されます。各リンクは、実際の名前、サイズ、サーバーにまだ存在するかどうかが確認され、存在しないものはチェックが外されます。すでにリストにあるリンクは、チェックが外された状態で<g3>既にリストにあります</g3>の下に表示されます。"
   },
+  "dceb6dd190df0fec": {
+   "source": "Average: {avg} out of 5, from {count}.",
+   "text": "平均: 5 段階中 {avg} ({count} 件の評価)。"
+  },
   "dcfc39a9dd2666ad": {
    "source": "Releases",
    "text": "リリース"
@@ -15629,6 +15757,10 @@
   "dd01dd825c77080a": {
    "source": "Browser extensions",
    "text": "ブラウザ拡張機能"
+  },
+  "dd1c92e08d06efee": {
+   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter and keeps star ratings without your IP address.",
+   "text": "Mister Download Manager、そのブラウザー拡張機能、およびこのウェブサイトがお客様のデータをどのように扱うか: アプリと拡張機能は何も収集しません。ウェブサイトは Statcounter で訪問数をカウントし、IP アドレスなしで評価を保持します。"
   },
   "dd3d19ce5f7ff8f5": {
    "source": "<g1>Windows, Mac and Linux</g1><g2>Stable on Windows 10 and 11, installed or portable, and on Linux; macOS builds to try with every release.</g2>",
@@ -15669,6 +15801,10 @@
   "dde227a8b042b6b0": {
    "source": "A copy loaded with <g1>Load unpacked</g1> (Chrome, Edge, Brave, Opera, Vivaldi) or <g2>Load Temporary Add-on</g2> (Firefox) doesn't update itself, and its toolbar button's popup says so, with a link to the browser's store. Add the extension from that link, then remove the copy loaded by hand on the browser's extensions page (<x3/>, <x4/>, <x5/>...), so the browser doesn't run two. The store's copy is the same extension, and the browser keeps it up to date.",
    "text": "<g1>パッケージ化されていない拡張機能を読み込む</g1> (Chrome、Edge、Brave、Opera、Vivaldi) または <g2>一時的なアドオンを読み込む</g2> (Firefox) で読み込まれたコピーは自動更新されず、ツールバー ボタンのポップアップにその旨とブラウザのストアへのリンクが表示されます。そのリンクから拡張機能を追加し、ブラウザの拡張機能ページ (<x3/>、<x4/>、<x5/>...) で手動で読み込まれたコピーを削除してください。これにより、ブラウザが 2 つのコピーを実行するのを防ぎます。ストアのコピーは同じ拡張機能であり、ブラウザが常に最新の状態に保ちます。"
+  },
+  "ddfa0b2cc5cf9dd1": {
+   "source": "<g1>Rate it yourself</g1><g2>Ratings given on this site, one per visitor</g2>",
+   "text": "<g1>評価してください</g1><g2>このサイトでの訪問者 1 人あたりの評価</g2>"
   },
   "de05be78a1ac8ebe": {
    "source": "Can it resume broken downloads? — Mister Download Manager",
@@ -16122,6 +16258,10 @@
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
    "text": "本ソフトウェアは<g1>いかなる保証もなく</g1>提供されます。ご自身の責任でご使用ください。"
   },
+  "e56416a24fbe8feb": {
+   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter, and if you rate MDM there, it keeps your stars with a code made from your IP address, never the address itself.",
+   "text": "要約: Mister Download Manager アプリとそのブラウザー拡張機能は、お客様に関する情報を一切収集しません。アカウント、分析、テレメトリ、広告もありません。このウェブサイトは Statcounter で訪問数をカウントし、MDM を評価した場合、お客様の IP アドレスから作成されたコード (アドレス自体ではありません) で評価を保持します。"
+  },
   "e568fd104b5e2ebf": {
    "source": "About Mister Download Manager: its version, licence and links",
    "text": "Mister Download Manager について：バージョン、ライセンス、リンク"
@@ -16186,6 +16326,10 @@
    "source": "Which browsers work with it?",
    "text": "どのブラウザで動作しますか？"
   },
+  "e64319429b984877": {
+   "source": "Your rating couldn't be sent. Please try again later.",
+   "text": "評価を送信できませんでした。しばらくしてからもう一度お試しください。"
+  },
   "e644e4fe10f056ce": {
    "source": "Opening a download",
    "text": "ダウンロードを開く"
@@ -16237,6 +16381,10 @@
   "e70f4ddad4e54ab0": {
    "source": "Press <g1>F3</g1> to jump to the next match. The search wraps round to the top.",
    "text": "<g1>F3</g1>を押すと、次の一致にジャンプします。検索は先頭に戻ります。"
+  },
+  "e71e353456afec5e": {
+   "source": "Rating needs JavaScript. The numbers here are from this page's last update.",
+   "text": "評価には JavaScript が必要です。ここに表示されている数値は、このページの最終更新時のものです。"
   },
   "e71e432fdd540d5b": {
    "source": "Turn the look-ups off in <g1>Options → Archives → Look links up when they arrive</g1>. Some file hosts count a look-up as a download. With the look-ups off, MDM asks nothing of the network until you start, so a web page's address isn't read for its links either.",
@@ -16361,6 +16509,10 @@
   "e87dda35b116dcd8": {
    "source": "Add to Firefox",
    "text": "Firefoxに追加"
+  },
+  "e885e3d15d37b6d1": {
+   "source": "Remove my rating",
+   "text": "評価を削除"
   },
   "e88a839b4e8d456b": {
    "source": "<g1>Command line</g1><g2>IDM's command-line switches, a terminal downloader with JSON output, and a local API for other programs.</g2>",
@@ -16597,6 +16749,10 @@
   "ebe70dff5e0f1598": {
    "source": "MDM downloads videos from their web pages: YouTube, Vimeo, Dailymotion, Twitch, TikTok, X, Instagram, Facebook, Reddit, SoundCloud and well over a thousand other sites. <g1>yt-dlp</g1>, an open-source program whose community keeps it working as sites change, finds the video on the page; MDM's own downloader then brings it in, the way it downloads any file.",
    "text": "MDM は、YouTube、Vimeo、Dailymotion、Twitch、TikTok、X、Instagram、Facebook、Reddit、SoundCloud など、1,000 を超えるサイトのウェブページから動画をダウンロードします。<g1>yt-dlp</g1> は、サイトの変更に合わせてコミュニティが更新し続けるオープンソース プログラムで、ページ上の動画を見つけます。その後、MDM 独自のダウンローダーが、他のファイルをダウンロードするのと同じ方法で動画を取り込みます。"
+  },
+  "ebf308b85fc9a4cb": {
+   "source": "<g1><x2/> daily users</g1><g3><x4/> out of 5, from <x5/> ratings</g3>",
+   "text": "<g1>1 日あたり <x2/> 人のユーザー</g1><g3><x5/> 件の評価で 5 段階中 <x4/></g3>"
   },
   "ebff1dbcb6e4abb3": {
    "source": "A menu title under the pointer",
@@ -17274,10 +17430,6 @@
    "source": "Tick <g1>Remember Speed Limiter settings for this file on download stop/resume</g1> to keep this limit for the file: it applies again when you resume it later, even after restarting MDM.",
    "text": "<g1>このファイルのスピード リミッター設定をダウンロード停止/再開時に記憶する</g1>にチェックを入れると、このファイルにこの制限が保持されます。MDMを再起動した後でも、後で再開したときに再び適用されます。"
   },
-  "f40a78a2a7aa4f18": {
-   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
-   "text": "<g1>50,000 人以上のユーザー</g1><g2>43 件の評価で 5 段階中 4.9</g2>"
-  },
   "f43b6e23ff05315a": {
    "source": "Switches can start with <x1/> or <x2/>, in any case. If MDM is running, the command goes to it; if not, MDM starts and carries it out. For example:",
    "text": "スイッチは<x1/>または<x2/>で始まり、大文字と小文字は区別されません。MDMの実行中はコマンドがMDMに送られ、実行中でない場合はMDMが起動してコマンドを実行します。例:"
@@ -17302,6 +17454,10 @@
    "source": "The Part row of the video window: Only a part ticked, from 1:30 to 4:10, a quick cut, the part's size beside it",
    "text": "動画ウィンドウの「一部」行: 「一部のみ」にチェックが入っており、1:30 から 4:10 まで、クイックカット、その横に部分のサイズが表示されています"
   },
+  "f4811a4c69b644e2": {
+   "source": "The check that you are a person didn't pass. Please try again.",
+   "text": "本人確認に失敗しました。もう一度お試しください。"
+  },
   "f481370a8fc74096": {
    "source": "<g1>The Linux files are named without <x2/></g1>: the AppImage, .deb, .rpm and .tar.gz are <x3/>, and the .deb's and .rpm's descriptions no longer call them an experimental build. Update now, the AppImage tools and the website find them by either name. The macOS .dmg files keep <x4/>.",
    "text": "<g1>Linux ファイルは<x2/>なしで命名される</g1>: AppImage、.deb、.rpm、.tar.gz は<x3/>であり、.deb と .rpm の説明では実験的なビルドとは呼ばれなくなりました。今すぐ更新、AppImage ツール、ウェブサイトはどちらの名前でもそれらを見つけます。macOS の .dmg ファイルは<x4/>を保持します。"
@@ -17309,6 +17465,10 @@
   "f49f917284b99ba1": {
    "source": "<g1>Once at</g1> a date, or",
    "text": "日付を指定して<g1>一度だけ</g1>、または"
+  },
+  "f4a438a5f0fbbdf2": {
+   "source": "Excellent",
+   "text": "素晴らしい"
   },
   "f4cb21e3d3b5a953": {
    "source": "<g1>Delivery options</g1><g2>Version 0.5.2 · free for everyone</g2>",
@@ -17545,6 +17705,10 @@
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>「一般」カテゴリの既定のダウンロードディレクトリ</g1>で、<g2>参照</g2>をクリックし、スティック上のフォルダー（例：<x3/>）を選択します。"
+  },
+  "f977da8680d0bd79": {
+   "source": "Ratings and users as the stores showed them on <x1/>",
+   "text": "<x1/> 時点でのストアに表示された評価とユーザー数"
   },
   "f9879eeaec84a45a": {
    "source": "Portable",
@@ -17798,6 +17962,10 @@
    "source": "86 languages",
    "text": "86 言語"
   },
+  "fc35860e84bc1b7f": {
+   "source": "5 stars, excellent",
+   "text": "5 つ星: 大変満足"
+  },
   "fc3c995e8b5aa1ad": {
    "source": "Ctrl+B",
    "text": "Ctrl+B"
@@ -17861,6 +18029,10 @@
   "fcdfbb0df0f8e29c": {
    "source": "Help pages",
    "text": "ヘルプページ"
+  },
+  "fce67521282cd495": {
+   "source": "<g1>Star ratings</g1>, only if you rate MDM on the home or download page: your rating goes to our ratings service, a small program on Cloudflare (Workers, with its database in Cloudflare's D1). It keeps two things: the number of stars, and a salted hash of your IP address, a one-way code made with a secret key, from which the address can't be read back. The hash is what lets you change or remove your rating instead of adding another; your IP address itself is never stored or written to a log. To keep automated votes out, a rating first goes through <g2>Cloudflare Turnstile</g2>, which checks that a person is rating: its script loads only once you reach for the stars, and Cloudflare sees your IP address and browser details for that check, under <g3>Cloudflare's privacy policy</g3>. Your rating and its hash are kept for as long as the site shows ratings, or until you remove it with <g4>Remove my rating</g4>; to limit how often one connection can rate, each attempt (the same hash and its time) is kept for an hour, then deleted. The site shows only the average, the number of ratings and how many gave each number of stars. Your browser also remembers your own rating in its local storage, to show it to you; it is never sent anywhere.",
+   "text": "<g1>評価</g1> (ホームページまたはダウンロード ページで MDM を評価した場合のみ): お客様の評価は、Cloudflare 上の小さなプログラム (Cloudflare の D1 にデータベースを持つ Workers) である評価サービスに送信されます。このサービスは 2 つの情報を保持します。星の数と、IP アドレスのソルト付きハッシュです。これは秘密鍵で作成された一方向のコードで、アドレスを読み戻すことはできません。このハッシュにより、別の評価を追加する代わりに評価を変更または削除できます。お客様の IP アドレス自体が保存されたりログに書き込まれたりすることはありません。自動投票を防ぐため、評価はまず<g2>Cloudflare Turnstile</g2> を経由して、評価しているのが人間であることを確認します。このスクリプトは、評価の星に到達したときにのみ読み込まれ、Cloudflare はその確認のためにお客様の IP アドレスとブラウザーの詳細を<g3>Cloudflare のプライバシー ポリシー</g3> に基づいて確認します。お客様の評価とそのハッシュは、サイトが評価を表示している間、または<g4>評価を削除</g4> で削除するまで保持されます。1 つの接続が評価できる頻度を制限するため、各試行 (同じハッシュとその時間) は 1 時間保持され、その後削除されます。サイトには、平均、評価数、各星の評価数のみが表示されます。お客様のブラウザーも、お客様自身の評価をローカル ストレージに記憶して表示します。これはどこにも送信されません。"
   },
   "fcf964e16b9ad4f2": {
    "source": "Then:",
@@ -18062,6 +18234,10 @@
    "source": "Check MDM's own helpers (yt-dlp, ffmpeg, gallery-dl, Node.js) for newer versions now, install them (each checked as its first install was), and print their versions. A helper a download is using switches to its new version once that download ends. Programs you chose in Helpers, and your system's, are yours to update.",
    "text": "MDM 独自のヘルパー (yt-dlp、ffmpeg、gallery-dl、Node.js) の新しいバージョンを今すぐ確認し、インストールし (それぞれ最初のインストール時と同様にチェックされます)、そのバージョンを表示します。ダウンロードが使用しているヘルパーは、そのダウンロードが終了すると新しいバージョンに切り替わります。ヘルパーで選択したプログラムとシステムのプログラムは、ユーザーが更新します。"
   },
+  "ff442f775d7b9907": {
+   "source": "<g1>Proof of delivery</g1><g2>Store figures as of <x3/>, the others checked on <x4/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>信頼性の証</g1><g2><x3/> 時点での数値、その他は <x4/> に確認済み · 引用は正確で、出典にリンクされています</g2>"
+  },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",
    "text": "<g1>AIアシスタント、接続した場合のみ。</g1>MDMのMCPサーバー（<x2/>）は、お客様のコンピューター上のMDMとのみ通信します。ただし、AIアシスタント（Claude、Cursor、VS Codeなど）に追加し、自動化APIをオンにすると、アシスタントはダウンロードリストを読み取ることができ、読み取った情報（ファイル名、アドレス、フォルダー）は、そのアシスタントのAIサービスに、そのプライバシー規約に基づいて送信されます。これを設定しない限り、何も起こりません。<g3>AIアシスタント</g3>を参照してください。"
@@ -18113,6 +18289,58 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "ダウンロードアドレスまたはファイル名。"
+  },
+  "048d941554aedc04": {
+   "source": "Each link opens a <g1>Download File Info</g1> of its own, so several can be open side by side, to compare their sizes before you choose. Each new one opens a little below and beside the one before and comes to the front; from the second on, its title carries its number: <g2>Download File Info (2)</g2>, <g3>(3)</g3> and so on. <g4>Esc</g4> closes only the window you're in. Up to six are open at once: more links handed over together (a browser passing on several downloads) wait, and open one by one as you close windows; <g5>Cancel</g5> asks whether to cancel the ones still waiting. The same link handed over again brings its open window to the front. If you quit MDM with some still open, their downloads go to the <g6>Main download queue</g6>, as with <g7>Download Later</g7>.",
+   "text": "各リンクはそれぞれ独自の<g1>ダウンロード ファイル情報</g1>を開くため、サイズを比較して選択する際に、複数並べて開くことができます。新しいウィンドウは、前のウィンドウの少し下と横に開いて前面に表示されます。2 番目以降のウィンドウのタイトルには、<g2>ダウンロード ファイル情報 (2)</g2>、<g3>(3)</g3> のように番号が付きます。<g4>Esc</g4> キーを押すと、現在アクティブなウィンドウのみが閉じます。最大 6 つのウィンドウを同時に開くことができます。複数のリンクが同時に渡された場合 (ブラウザーが複数のダウンロードを渡す場合など) は、ウィンドウを閉じるにつれて 1 つずつ開きます。<g5>キャンセル</g5>をクリックすると、待機中のダウンロードをキャンセルするかどうかを確認するメッセージが表示されます。同じリンクが再度渡されると、開いているウィンドウが前面に表示されます。MDM を終了する際にまだ開いているウィンドウがある場合、それらのダウンロードは<g6>メインのダウンロード キュー</g6>に移動します。<g7>後でダウンロード</g7>を選択した場合と同様です。"
+  },
+  "c493485e5f202b58": {
+   "source": "Before you click <g1>OK</g1>, the window shows the <g2>First file</g2>, <g3>Second file</g3> and <g4>Last file</g4>, so a typo shows up before anything downloads. If the server needs a login, tick <g5>Use authorization</g5>. Copied one address with a number in it, such as <x6/>? <g7>Tasks → Add batch download from clipboard</g7> (Ctrl+B) puts the asterisk where the number was and waits for the last one in <g8>To</g8>. Copied a whole list of links, or a forum post with links in it? The same command lists every one of them in Link grabber, ticked and ready to start.",
+   "text": "［<g1>OK</g1>］をクリックする前に、ウィンドウに<g2>最初のファイル</g2>、<g3>2 番目のファイル</g3>、<g4>最後のファイル</g4>が表示されるため、ダウンロードが開始される前にタイプミスがわかります。サーバーにログインが必要な場合は、［<g5>認証を使用する</g5>］にチェックを入れます。<x6/> のように、数字を含むアドレスを 1 つコピーしましたか？ <g7>タスク → クリップボードからバッチ ダウンロードを追加</g7> (Ctrl+B) を選択すると、数字があった場所にアスタリスクが配置され、［<g8>終了</g8>］で最後の数字を待ちます。リンクのリスト全体、またはリンクを含むフォーラムの投稿をコピーしましたか？ 同じコマンドで、リンク グラバーにすべてのリンクが一覧表示され、チェックが入って開始準備が整います。"
+  },
+  "49b4a645676f1c52": {
+   "source": "Short version: the Mister Download Manager app and its browser extension don't collect anything about you. No accounts, no analytics, no telemetry, no ads. This website counts its visits with Statcounter.",
+   "text": "概要: Mister Download Manager アプリとブラウザー拡張機能は、お客様に関する情報を一切収集しません。アカウント、分析機能、テレメトリー、広告はありません。このウェブサイトでは Statcounter を使って訪問数を数えています。"
+  },
+  "616c286a43aec83e": {
+   "source": "<g1>3,800+ daily users</g1><g2>4.7 out of 5, from 7 ratings</g2>",
+   "text": "<g1>3,800 人以上のデイリー ユーザー</g1><g2>7 件の評価で 5 段階中 4.7</g2>"
+  },
+  "84829118b707c58c": {
+   "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you, and a fourth if you play the home page's film:",
+   "text": "misterdownloadmanager.com は静的サイトです。このサイトの表示には 3 社が関与しており、ホームページの動画を再生した場合はさらに 1 社が加わります。"
+  },
+  "8ccaf02f36376582": {
+   "source": "<g1>In figures</g1><g2>Checked on <x3/>, rounded down</g2>",
+   "text": "<g1>数字で見る</g1><g2><x3/> に確認、切り捨て</g2>"
+  },
+  "9fe595ed623618bf": {
+   "source": "<g1>Proof of delivery</g1><g2>Figures checked on <x3/> · quotes exact, linked to their source</g2>",
+   "text": "<g1>納品証明</g1><g2><x3/> で確認された数値 · 引用は正確で、出典にリンクされています</g2>"
+  },
+  "b3192a3bf72c5c3b": {
+   "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
+   "text": "アプリと拡張機能は、子どもを含め、誰からも個人データを収集しません。ウェブサイトの訪問カウンターは、訪問者が誰なのか、何歳なのかを把握しません。"
+  },
+  "c9da130585eae7fa": {
+   "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
+   "text": "このサイトには広告や他のトラッカーはありません。フォントとスクリプトはサイト自体から配信されます。ライトモードまたはダークモードの選択はブラウザのローカルストレージに保存され、外部に送信されることはありません。"
+  },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> Firefox に追加</g1><g3><x4/> Chrome に追加</g3>"
+  },
+  "d325a1b1c8ab0caa": {
+   "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
+   "text": "Mister Download Manager、そのブラウザ拡張機能、およびこのウェブサイトによるデータの取り扱い：アプリと拡張機能はデータを一切収集しません。ウェブサイトでは Statcounter を使って訪問数を集計します。"
+  },
+  "d7a59305d1341d4e": {
+   "source": "The app and the extension hold no personal data about you, so there is nothing for us to show, correct or delete there. The website's visit statistics are held by Statcounter; to have records of your visits removed, open an issue with the date and time of your visit, or ask Statcounter directly. Data that you send to GitHub (an issue, for example) is handled by GitHub and can be edited or deleted there.",
+   "text": "アプリと拡張機能はお客様の個人データを保持しないため、表示、訂正、削除できるデータはありません。ウェブサイトの訪問統計は Statcounter が保持しています。訪問記録の削除を希望する場合は、訪問日時を添えて issue を作成するか、Statcounter に直接お問い合わせください。GitHub に送信したデータ（issue など）は GitHub が管理し、GitHub 上で編集または削除できます。"
+  },
+  "f40a78a2a7aa4f18": {
+   "source": "<g1>50,000+ users</g1><g2>4.9 out of 5, from 43 ratings</g2>",
+   "text": "<g1>50,000 人以上のユーザー</g1><g2>43 件の評価で 5 段階中 4.9</g2>"
   }
  }
 }

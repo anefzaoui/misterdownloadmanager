@@ -55,6 +55,7 @@ mod queue;
 mod quota;
 mod recent;
 mod regional;
+mod relocate;
 mod remote;
 mod renderer;
 mod resumeread;
