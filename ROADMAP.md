@@ -569,6 +569,11 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Helpers installs a helper that isn't there yet (gallery-dl before the first gallery, or
+  any other): **Install** in its row downloads MDM's own copy, checked as always, with its
+  progress, then shows its version and **Update**, and automatic updates cover it; greyed, with
+  the reason, where MDM has no copy for the system
+  ([#1801](https://github.com/anefzaoui/misterdownloadmanager/issues/1801))
 - ✅ Website: the browser stores' ratings and users under their buttons on the home and download
   pages, read again at every build; visitors rate MDM from one to five stars on the site (change
   or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
