@@ -1223,8 +1223,16 @@ impl Programs {
                 false,
                 None,
             );
-            // The same label on every row: said with its helper's name (#1407).
-            winui::name(&other, &choose);
+            // The same label on every row: said with its helper's name (#1407), the visible
+            // label first so voice control finds it by what it shows.
+            winui::name(
+                &other,
+                &crate::i18n::fmt(
+                    // i18n: Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+                    crate::i18n::t("Use another program for {name}..."),
+                    &[("name", h.name())],
+                ),
+            );
             if other.clicked() {
                 winui::start_pick(ui.ctx(), &format!("helper-{}", h.name()), move || {
                     crate::winui::file_dialog(&choose).pick_file()
@@ -1657,8 +1665,13 @@ impl Programs {
             false,
             None,
         );
-        // The same label on every row: said with what it chooses (#1407).
-        winui::name(&other, &choose);
+        // The same label on every row: said with what it chooses (#1407), the visible label
+        // first so voice control finds it by what it shows.
+        winui::name(
+            &other,
+            // i18n: Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+            crate::i18n::t("Use another program as the JavaScript runtime..."),
+        );
         if other.clicked() {
             winui::start_pick(ui.ctx(), "helper-js-runtime", move || {
                 crate::winui::file_dialog(&choose).pick_file()
