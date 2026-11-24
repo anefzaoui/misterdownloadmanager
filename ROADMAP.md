@@ -569,6 +569,9 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Torrents: filtering a torrent's trackers never adds one it didn't list (a torrent that
+  repeats its tracker list counts the first only)
+  ([#1805](https://github.com/anefzaoui/misterdownloadmanager/issues/1805))
 - ✅ Website: the browser stores' ratings and users under their buttons on the home and download
   pages, read again at every build; visitors rate MDM from one to five stars on the site (change
   or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
