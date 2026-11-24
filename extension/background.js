@@ -100,7 +100,6 @@ const REMOTE_LINKS_CAP = 100;
 
 function formatLinksNotice(r) {
   if (r.why === "unreachable") return t("status_unreachable");
-  if (r.sent === 1 && r.refused === 0 && r.leftOut === 0) return t("status_links_sent_one");
   if (r.sent > 0 && r.refused === 0 && r.leftOut === 0) return t("status_links_sent", String(r.sent));
   if (r.sent > 0 && r.refused === 0 && r.leftOut > 0) return t("status_links_cut", String(r.sent), String(r.leftOut));
   if (r.sent > 0 && r.refused > 0 && r.leftOut > 0) return t("status_links_partial_cut", String(r.sent), String(r.refused), String(r.leftOut));

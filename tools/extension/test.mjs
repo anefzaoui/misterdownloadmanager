@@ -5021,9 +5021,9 @@ for (const here of [true, false]) {
     await settle();
     const adds = fetched.slice(from).filter(([u]) => u.includes("api/add"));
     assert.equal(adds.length, 100, "capped at 100 remote links");
-    assert.equal(store.status.notice, "Sent 100 links, 10 left out");
+    assert.equal(store.status.notice, "Links sent: 100, 10 left out");
     assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge count left out on remote send");
-    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Sent 100 links, 10 left out"), "title shows notice");
+    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Links sent: 100, 10 left out"), "title shows notice");
     // Nice to have: cookies not read for remote MDM
     assert.equal(calls.filter((c) => c[0] === "cookies").length, 0, "cookies omitted for remote links");
   }
@@ -5045,9 +5045,9 @@ for (const here of [true, false]) {
     };
     await listeners.menu({ menuItemId: "mdm-all", pageUrl: film }, tab);
     await settle();
-    assert.equal(store.status.notice, "Sent 2 links (2 refused)");
+    assert.equal(store.status.notice, "Links sent: 2, refused: 2");
     assert.ok(calls.some((c) => c[0] === "badge" && c[1] === ""), "badge count left out on partial send");
-    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Sent 2 links (2 refused)"), "title shows notice");
+    assert.ok(calls.some((c) => c[0] === "title" && c[1] === "Links sent: 2, refused: 2"), "title shows notice");
   }
 
   // 3. Unreachable server (status 0): stops on the very first link and reports unreachable.
@@ -5122,9 +5122,9 @@ for (const here of [true, false]) {
 
     // Notice dropped at next download, singular for 1 link
     await ctx.noteLinksNotice({ sent: 1, refused: 0, leftOut: 0 });
-    assert.equal(store.status.notice, "Sent 1 link", "singular for 1 link");
+    assert.equal(store.status.notice, "Links sent: 1", "holds for 1 link");
     await ctx.noteLinksNotice({ sent: 10, refused: 0, leftOut: 0 });
-    assert.equal(store.status.notice, "Sent 10 links");
+    assert.equal(store.status.notice, "Links sent: 10");
     await ctx.download("file", { file: true });
     await settle();
     assert.equal(store.status.notice, "", "notice dropped at next download");

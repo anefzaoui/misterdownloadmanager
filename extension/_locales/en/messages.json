@@ -1067,12 +1067,8 @@
     "message": "Back in its corner, its menu showing everything, on every site",
     "description": "toolbar button's popup: said for a moment after Reset: the download button over videos is in its usual corner again and its menu lists every quality, on every web site"
   },
-  "status_links_sent_one": {
-    "message": "Sent 1 link",
-    "description": "the toolbar button's status: one link sent to another MDM"
-  },
   "status_links_sent": {
-    "message": "Sent $count$ links",
+    "message": "Links sent: $count$",
     "description": "the toolbar button's status: links sent to another MDM",
     "placeholders": {
       "count": {
@@ -1082,7 +1078,7 @@
     }
   },
   "status_links_cut": {
-    "message": "Sent $sent$ links, $left$ left out",
+    "message": "Links sent: $sent$, $left$ left out",
     "description": "the toolbar button's status: links sent to another MDM, some left out by cap or filter",
     "placeholders": {
       "sent": {
@@ -1096,7 +1092,7 @@
     }
   },
   "status_links_partial": {
-    "message": "Sent $sent$ links ($refused$ refused)",
+    "message": "Links sent: $sent$, refused: $refused$",
     "description": "the toolbar button's status: some links refused by another MDM",
     "placeholders": {
       "sent": {
@@ -1110,7 +1106,7 @@
     }
   },
   "status_links_partial_cut": {
-    "message": "Sent $sent$ links ($refused$ refused, $left$ left out)",
+    "message": "Links sent: $sent$, refused: $refused$, $left$ left out",
     "description": "the toolbar button's status: some links refused and some left out",
     "placeholders": {
       "sent": {
@@ -1128,7 +1124,7 @@
     }
   },
   "status_links_refused": {
-    "message": "$count$ links refused",
+    "message": "Links refused: $count$",
     "description": "the toolbar button's status: all links refused by another MDM",
     "placeholders": {
       "count": {
