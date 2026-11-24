@@ -1426,6 +1426,16 @@ pub struct App {
     /// Download complete snoozed (#741), and how many finished meanwhile (the tray icon's tip).
     snooze: crate::finish::Snooze,
     snoozed_finished: u64,
+    /// The windows that wait while a full-screen app, a presentation or the locked screen is on
+    /// (#1773, hold.rs).
+    hold: crate::hold::Hold,
+    /// Links copied to the clipboard meanwhile (#1773): each with its number, offered (its
+    /// Download File Info) in turn once the user is back.
+    copied_waiting: std::collections::VecDeque<(u64, String)>,
+    copied_serial: u64,
+    /// The Updates window open is the automatic check's (it waits during a full-screen app,
+    /// #1773), not one asked for from the Help menu.
+    updates_auto: bool,
     settings: Settings,
     speed_settings: Option<dialogs::SpeedSettings>,
     scheduler: Option<crate::scheduler::Scheduler>,
@@ -2257,6 +2267,10 @@ impl App {
             summaries: Vec::new(),
             snooze: crate::finish::Snooze::from_saved(settings.complete_snoozed_until, unix_now()),
             snoozed_finished: 0,
+            hold: crate::hold::Hold::new(settings.hold_popups),
+            copied_waiting: Default::default(),
+            copied_serial: 0,
+            updates_auto: false,
             settings,
             speed_settings: None,
             scheduler: None,
@@ -5220,6 +5234,18 @@ impl App {
                 tip.push('\n');
                 tip.push_str(&dialogs::finished_count(self.snoozed_finished));
             }
+            // Windows waiting for the user to be back from a full-screen app (#1773).
+            let waiting = self.hold.waiting();
+            if waiting > 0 {
+                tip.push('\n');
+                // i18n: the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+                let line = crate::i18n::tn(
+                    waiting as u64,
+                    "{n} window waits until you're back",
+                    "{n} windows wait until you're back",
+                );
+                tip.push_str(&line);
+            }
             t.set_tooltip(&tip);
             // "Downloads in progress": each running download, to show its progress window (#63).
             let running: Vec<(u64, String)> = self
@@ -5461,6 +5487,14 @@ impl App {
         if mdm_engine::supported(&url) && self.settings.clipboard_type(&name) {
             // Where a Download File Info came from, without the address (#1157).
             tracing::info!("clipboard: a newly copied link, offered for download");
+            // Its Download File Info waits during a full-screen app, as every window that comes
+            // up by itself does (#1773), behind those already waiting.
+            if self.hold.busy().is_some() || self.hold.waiting() > 0 {
+                tracing::info!("clipboard: the link waits until the user is back");
+                self.copied_serial += 1;
+                self.copied_waiting.push_back((self.copied_serial, text));
+                return;
+            }
             let cmd = ipc::Command {
                 url: Some(text),
                 ..Default::default()
@@ -8987,6 +9021,8 @@ impl App {
                 if self.updates.is_none() {
                     self.updates = Some(crate::help::Updates::check(&self.rt, ctx));
                 }
+                // The automatic check's, waiting (#1773): asked for now, it shows at once.
+                self.updates_auto = false;
             }
             Cmd::About => self.about = Some(crate::help::About),
             Cmd::Support => crate::help::support(),
@@ -12880,7 +12916,10 @@ impl App {
             self.auto_update = Some(crate::help::check(&self.rt, ctx));
         }
         if self.updates.is_some() {
-            if self.raise_updates && crate::dialogs::focus_when_shown(ctx, "updates") {
+            if self.raise_updates
+                && !self.hold.is_waiting(&crate::hold::PopUp::Update)
+                && crate::dialogs::focus_when_shown(ctx, "updates")
+            {
                 self.raise_updates = false;
             }
         } else {
@@ -12907,6 +12946,7 @@ impl App {
                 tracing::info!("update available: {}", rel.version);
                 self.updates = Some(crate::help::Updates::found(rel));
                 self.raise_updates = true;
+                self.updates_auto = true;
             }
         }
     }
@@ -12967,7 +13007,13 @@ impl App {
                 self.extension = Some(crate::extension::Extension::new());
             }
         }
-        if let Some(d) = &mut self.extension {
+        // It offers itself at start: it waits during a full-screen app (#1773).
+        if self.extension.is_some()
+            && self
+                .hold
+                .lets(crate::hold::PopUp::Extension, Instant::now())
+            && let Some(d) = &mut self.extension
+        {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Done(()) => {
@@ -12985,7 +13031,12 @@ impl App {
         }
         let mut weekly = self.settings.update_check;
         let mut close_for_update = false;
-        if let Some(d) = &mut self.updates {
+        // The automatic check's new version waits during a full-screen app (#1773); the one asked
+        // for from the Help menu shows at once.
+        if self.updates.is_some()
+            && (!self.updates_auto || self.hold.lets(crate::hold::PopUp::Update, Instant::now()))
+            && let Some(d) = &mut self.updates
+        {
             match d.show(ctx, &self.rt, &mut weekly) {
                 Outcome::Open => {}
                 // Update now: the new copy is going in place; MDM saves and closes for it.
@@ -13016,7 +13067,31 @@ impl App {
     }
 
     fn dialogs(&mut self, ctx: &egui::Context) {
+        // The windows that come up by themselves wait while a full-screen app, a presentation or
+        // the locked screen is on (#1773): the system asked, each such window below asks whether
+        // it may show, and those no longer asked for leave the line at the end.
+        let now = Instant::now();
+        self.hold.on = self.settings.hold_popups;
+        self.hold.begin(now, crate::hold::system);
         self.help_dialogs(ctx);
+        // Links copied to the clipboard meanwhile, offered in turn once the user is back.
+        let ready: Vec<u64> = self
+            .copied_waiting
+            .iter()
+            .map(|(n, _)| *n)
+            .filter(|n| self.hold.lets(crate::hold::PopUp::CopiedLink(*n), now))
+            .collect();
+        for n in ready {
+            if let Some(at) = self.copied_waiting.iter().position(|(m, _)| *m == n)
+                && let Some((_, text)) = self.copied_waiting.remove(at)
+            {
+                let cmd = ipc::Command {
+                    url: Some(text),
+                    ..Default::default()
+                };
+                self.handle_command(cmd, ctx);
+            }
+        }
         // The next question in turn; one about a download that has left the list meanwhile is
         // checked afresh instead (it may ask again, about another).
         while self.duplicate.is_none()
@@ -13089,13 +13164,20 @@ impl App {
                 self.show_import(links, "Click'n'Load".into());
             }
         }
-        if let Some(d) = &mut self.extracts.needs_7zip
+        // These four follow a finished download by themselves: they wait during a full-screen
+        // app (#1773).
+        if self.extracts.needs_7zip.is_some()
+            && self.hold.lets(crate::hold::PopUp::SevenZip, now)
+            && let Some(d) = &mut self.extracts.needs_7zip
             && !matches!(d.show(ctx), Outcome::Open)
         {
             self.extracts.needs_7zip = None;
         }
         // A damaged archive (#1661): Redownload downloads it (every volume) again.
-        if let Some(d) = &mut self.tests.damaged {
+        if self.tests.damaged.is_some()
+            && self.hold.lets(crate::hold::PopUp::ArchiveDamaged, now)
+            && let Some(d) = &mut self.tests.damaged
+        {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed | Outcome::Done(false) => self.tests.damaged = None,
@@ -13109,12 +13191,17 @@ impl App {
             }
         }
         // Test archive's outcome, when it found no damage (one at a time).
-        if self.notice.is_none()
+        if self.tests.told.is_some()
+            && self.hold.lets(crate::hold::PopUp::ArchiveTested, now)
+            && self.notice.is_none()
             && let Some(text) = self.tests.told.take()
         {
             self.notice = Some((crate::i18n::mark("Test archive"), text));
         }
-        if let Some(d) = &mut self.extracts.ask {
+        if self.extracts.ask.is_some()
+            && self.hold.lets(crate::hold::PopUp::ArchivePassword, now)
+            && let Some(d) = &mut self.extracts.ask
+        {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed => self.extracts.answer(None),
@@ -13261,7 +13348,12 @@ impl App {
                 }
             }
         }
-        if let Some(n) = &mut self.limit_notice
+        // The download limit's warning comes by itself: it waits during a full-screen app
+        // (#1773). Not the Turn off countdown below: the computer turns off at its end, and its
+        // Cancel must stay within reach.
+        if self.limit_notice.is_some()
+            && self.hold.lets(crate::hold::PopUp::LimitReached, now)
+            && let Some(n) = &mut self.limit_notice
             && !matches!(n.show(ctx), Outcome::Open)
         {
             self.limit_notice = None;
@@ -13904,8 +13996,14 @@ impl App {
                 }
             }
         }
+        // Download complete and Downloads complete wait during a full-screen app (#1773), and
+        // show when the user is back, in the order they came.
         let mut keep = Vec::new();
         for mut c in std::mem::take(&mut self.complete) {
+            if !self.hold.lets(crate::hold::PopUp::Complete(c.id), now) {
+                keep.push(c);
+                continue;
+            }
             match c.show(ctx) {
                 Outcome::Open => keep.push(c),
                 Outcome::Done(()) | Outcome::Closed => {
@@ -13923,6 +14021,10 @@ impl App {
         // Groups' summaries (#766).
         let mut keep = Vec::new();
         for mut g in std::mem::take(&mut self.summaries) {
+            if !self.hold.lets(crate::hold::PopUp::Summary(g.group), now) {
+                keep.push(g);
+                continue;
+            }
             let outcome = g.show(ctx);
             if matches!(outcome, Outcome::Open) {
                 keep.push(g);
@@ -13940,6 +14042,7 @@ impl App {
             }
         }
         self.summaries = keep;
+        self.hold.end();
     }
 }
 
@@ -14176,6 +14279,16 @@ impl App {
             // UI, which egui runs then only when asked: every 2 s, as the clock repaints.
             if ctx.input(|i| i.viewport().minimized == Some(true)) {
                 ctx.request_ui_pass(egui::ViewportId::ROOT);
+            }
+        }
+        // Windows waiting for the user (#1773): the system is asked again, and once back they
+        // show one by one, by passes of the main window's UI (asked for: a minimized or hidden
+        // window runs none by itself).
+        if let Some(after) = self.hold.next_pass(Instant::now()) {
+            if after.is_zero() {
+                ctx.request_ui_pass(egui::ViewportId::ROOT);
+            } else {
+                ctx.request_repaint_after(after);
             }
         }
         ctx.request_repaint_after(Duration::from_secs(2));

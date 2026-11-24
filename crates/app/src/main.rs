@@ -33,6 +33,7 @@ mod grabber;
 mod headless;
 mod help;
 mod helpers;
+mod hold;
 mod hotkey;
 mod i18n;
 mod icons;
@@ -647,6 +648,10 @@ fn app() -> eframe::Result {
         {
             let app = std::rc::Rc::downgrade(&app);
             win32::on_session_end(move |why| end_session(&app, why));
+            // The session's lock and unlock (#1773): pop-ups that waited show once it is
+            // unlocked, at the frame this asks for.
+            let ctx = cc.egui_ctx.clone();
+            win32::watch_session_lock(move || ctx.request_repaint());
         }
         #[cfg(target_os = "linux")]
         {

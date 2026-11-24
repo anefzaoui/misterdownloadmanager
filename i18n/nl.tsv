@@ -176,6 +176,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} tracker: {peers}|{n} trackers: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} venster wacht totdat u terug bent|{n} vensters wachten totdat u terug bent
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -195,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} van {total} video vermeld|{title}: {listed} van {total} video's vermeld
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	De vensters 'Download voltooid' en de andere vensters die MDM zelf opent, wachten zolang een game, app of video op volledig scherm, een presentatie of het vergrendelde scherm actief is en worden weergegeven zodra u terug bent. De vensters die u zelf opent en koppelingen vanuit uw browser worden altijd weergegeven.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -1514,6 +1523,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Niet meer vragen
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Geen pop-ups weergeven terwijl een app op volledig scherm of een presentatie wordt uitgevoerd
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Dit dialoogvenster niet meer weergeven

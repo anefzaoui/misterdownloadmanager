@@ -569,6 +569,12 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Pop-ups wait while a full-screen game, app or video, a presentation or the locked screen is
+  on, and show when you're back, in the order they came; links from the browser and windows you
+  open still show at once; **Options → Downloads** turns it off
+  ([#1773](https://github.com/anefzaoui/misterdownloadmanager/issues/1773))
+- ✅ CI and the release take NASM from nasm.us, checked against its pinned SHA256, and use
+  Chocolatey's feed only when that download fails (its outage had stopped every Windows build)
 - ✅ Torrents: trackers are checked more carefully.
 - ✅ Helpers installs a helper that isn't there yet (gallery-dl before the first gallery, or
   any other): **Install** in its row downloads MDM's own copy, checked as always, with its
@@ -1964,6 +1970,13 @@ These ship in the next version.
   without anyone moving the focus
   ([#1406](https://github.com/anefzaoui/misterdownloadmanager/issues/1406); thanks to
   [@YairDies](https://github.com/YairDies))
+- ✅ Screen readers and voice control press MDM's round radio buttons at once: **Quick cut** /
+  **Exact cut** in **Download video**, the **Duplicate download link** choices, and every other
+  radio group published the old choice in the frame that answered UI Automation's
+  `SelectionItem.Select` (or AT-SPI's `click`), so the selection and the dot stayed where they
+  were; choosing one now redraws and publishes the group's new checked states in that same frame,
+  and the arrow keys move between **Quick cut** / **Exact cut** and **Delete category**'s choices
+  too ([#1692](https://github.com/anefzaoui/misterdownloadmanager/issues/1692))
 
 ## Being worked on
 

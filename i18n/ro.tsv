@@ -176,6 +176,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} tracker: {peers}|{n} trackere: {peers}|{n} trackere: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} fereastră așteaptă până reveniți|{n} ferestre așteaptă până reveniți|{n} ferestre așteaptă până reveniți
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -195,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} din {total} videoclipuri listate|{title}: {listed} din {total} videoclipuri listate|{title}: {listed} din {total} videoclipuri listate
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	Ferestrele „Descărcare finalizată” și celelalte ferestre pe care MDM le deschide automat așteaptă până când nu mai rulează un joc, o aplicație sau un videoclip pe ecran complet, nu mai este activă o prezentare și ecranul nu mai este blocat, apoi se afișează când reveniți. Ferestrele pe care le deschideți dvs. și linkurile din browserul dvs. se afișează întotdeauna.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -1514,6 +1523,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Nu mai întreba
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Nu afișați ferestre pop-up în timp ce rulează o aplicație pe ecran complet sau o prezentare
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Nu mai afișați acest dialog

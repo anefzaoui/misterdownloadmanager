@@ -4341,15 +4341,18 @@ impl DeleteCategory {
                     // i18n: choice in Delete category: its downloads leave the list (not their files; running ones move to General)
                     "Remove its downloads from the list (running ones move to General)",
                 );
-                if winui::radio_light(ui, o + vec2(14.0, 52.0), !self.remove, to_general, true)
-                    .clicked()
-                {
+                let keep =
+                    winui::radio_light(ui, o + vec2(14.0, 52.0), !self.remove, to_general, true);
+                if keep.clicked() {
                     self.remove = false;
                 }
-                if winui::radio_light(ui, o + vec2(14.0, 75.0), self.remove, off_list, true)
-                    .clicked()
-                {
+                let remove =
+                    winui::radio_light(ui, o + vec2(14.0, 75.0), self.remove, off_list, true);
+                if remove.clicked() {
                     self.remove = true;
+                }
+                if let Some(i) = winui::radio_keys(ui, &[keep, remove]) {
+                    self.remove = i == 1;
                 }
                 // As wide as their labels in this language (#192).
                 let [delete_at, cancel_at] = winui::buttons_to_right(

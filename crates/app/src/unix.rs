@@ -5260,6 +5260,171 @@ mod host_copy_tests {
     }
 }
 
+// ---- pop-ups that wait (#1773, hold.rs) ---------------------------------------------------
+
+/// The session's lock as logind last said it (`LockedHint`): 0 not known, 1 unlocked, 2 locked.
+#[cfg(target_os = "linux")]
+static SESSION_LOCKED: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+
+/// Linux: why MDM's pop-ups wait now: the session locked (logind's `LockedHint`, which GNOME's
+/// and KDE's lock screens set), or the active X11 window full screen (`_NET_WM_STATE_FULLSCREEN`:
+/// a game, a video, a presentation; on Wayland, the programs that run on XWayland, as most games
+/// do). A Wayland program's own full screen can't be seen: Wayland tells no program about
+/// another's windows. Nor is the desktop's idle inhibition taken for "busy": a video playing in a
+/// window, or music, holds it too. None where neither can be known: pop-ups show as before.
+#[cfg(target_os = "linux")]
+pub fn pop_ups_wait() -> Option<crate::hold::Busy> {
+    watch_session_lock();
+    if SESSION_LOCKED.load(std::sync::atomic::Ordering::Relaxed) == 2 {
+        return Some(crate::hold::Busy::Away);
+    }
+    active_window_full_screen().then_some(crate::hold::Busy::FullScreen)
+}
+
+/// Follows logind's `LockedHint` for this session on a thread of its own, from the first call.
+#[cfg(target_os = "linux")]
+fn watch_session_lock() {
+    static WATCH: std::sync::Once = std::sync::Once::new();
+    WATCH.call_once(|| {
+        let _ = std::thread::Builder::new()
+            .name("session-lock".into())
+            .spawn(|| {
+                let set = |locked: bool| {
+                    let v = if locked { 2 } else { 1 };
+                    if SESSION_LOCKED.swap(v, std::sync::atomic::Ordering::Relaxed) != v {
+                        tracing::info!(
+                            "the session is {}",
+                            if locked { "locked" } else { "unlocked" }
+                        );
+                    }
+                };
+                let watch = || -> zbus::Result<()> {
+                    let conn = zbus::blocking::Connection::system()?;
+                    // The user's graphical session, whose screen locks (logind's `User.Display`);
+                    // else "auto": this program's session, or its user's graphical one when the
+                    // program runs outside a session (started by the desktop's systemd user
+                    // manager); "self" on a logind before "auto". The program's own session can
+                    // be another one, without a screen (a remote login that started it).
+                    let display = zbus::blocking::Proxy::new(
+                        &conn,
+                        "org.freedesktop.login1",
+                        "/org/freedesktop/login1/user/self",
+                        "org.freedesktop.login1.User",
+                    )
+                    .and_then(|user| {
+                        user.get_property::<(String, zbus::zvariant::OwnedObjectPath)>("Display")
+                    })
+                    .ok()
+                    .map(|(_, path)| path.to_string())
+                    .filter(|path| path != "/");
+                    let session = display
+                        .into_iter()
+                        .chain([
+                            "/org/freedesktop/login1/session/auto".to_owned(),
+                            "/org/freedesktop/login1/session/self".to_owned(),
+                        ])
+                        .find_map(|path| {
+                            let p = zbus::blocking::Proxy::new(
+                                &conn,
+                                "org.freedesktop.login1",
+                                path.clone(),
+                                "org.freedesktop.login1.Session",
+                            )
+                            .ok()?;
+                            let now = p.get_property::<bool>("LockedHint").ok()?;
+                            Some((p, now, path))
+                        });
+                    let Some((session, now, path)) = session else {
+                        return Err(zbus::Error::Failure("no session of logind's".into()));
+                    };
+                    tracing::info!("the session's lock: followed on {path}");
+                    set(now);
+                    for change in session.receive_property_changed::<bool>("LockedHint") {
+                        set(change.get()?);
+                    }
+                    Ok(())
+                };
+                if let Err(e) = watch() {
+                    tracing::info!("the session's lock isn't known: {e}");
+                }
+            });
+    });
+}
+
+/// The X server's connection for [`active_window_full_screen`], and the atoms it asks with.
+#[cfg(target_os = "linux")]
+struct FullScreenLook {
+    conn: x11rb::rust_connection::RustConnection,
+    root: u32,
+    active: u32,
+    state: u32,
+    full: u32,
+}
+
+/// Whether the X server's active window is full screen (EWMH). False without an X server.
+#[cfg(target_os = "linux")]
+fn active_window_full_screen() -> bool {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{AtomEnum, ConnectionExt};
+    // Not tried yet: None; no X server: Some(None).
+    static X11: std::sync::Mutex<Option<Option<FullScreenLook>>> = std::sync::Mutex::new(None);
+    if std::env::var_os("DISPLAY").is_none_or(|d| d.is_empty()) {
+        return false;
+    }
+    let Ok(mut x11) = X11.lock() else {
+        return false;
+    };
+    let connect = || -> Result<FullScreenLook, Box<dyn std::error::Error>> {
+        let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+        let atom = |name: &[u8]| -> Result<u32, Box<dyn std::error::Error>> {
+            Ok(conn.intern_atom(false, name)?.reply()?.atom)
+        };
+        let (active, state, full) = (
+            atom(b"_NET_ACTIVE_WINDOW")?,
+            atom(b"_NET_WM_STATE")?,
+            atom(b"_NET_WM_STATE_FULLSCREEN")?,
+        );
+        let root = conn.setup().roots[screen].root;
+        Ok(FullScreenLook {
+            conn,
+            root,
+            active,
+            state,
+            full,
+        })
+    };
+    let look = x11.get_or_insert_with(|| connect().ok());
+    let Some(x) = look.as_ref() else {
+        return false;
+    };
+    let ask = || -> Result<bool, Box<dyn std::error::Error>> {
+        let active = x
+            .conn
+            .get_property(false, x.root, x.active, AtomEnum::WINDOW, 0, 1)?
+            .reply()?;
+        let Some(window) = active.value32().and_then(|mut v| v.next()) else {
+            return Ok(false);
+        };
+        if window == x11rb::NONE {
+            return Ok(false);
+        }
+        let state = x
+            .conn
+            .get_property(false, window, x.state, AtomEnum::ATOM, 0, 64)?
+            .reply()?;
+        Ok(state.value32().is_some_and(|mut v| v.any(|a| a == x.full)))
+    };
+    match ask() {
+        Ok(full) => full,
+        Err(_) => {
+            // A window gone between the two questions, or the connection lost: asked again
+            // next time, over a new connection.
+            *x11 = None;
+            false
+        }
+    }
+}
+
 #[cfg(test)]
 mod startup_tests {
     use super::{DELETED, StartupState, entry_program, present, startup_entry, startup_state};

@@ -6090,6 +6090,10 @@
    "source": "Previous image",
    "text": "이전 이미지"
   },
+  "562bf428e9def662": {
+   "source": "Never over your game or your slides",
+   "text": "게임이나 슬라이드 위에 뜨지 않음"
+  },
   "5634c00f6562f001": {
    "source": "MDM can open a file, such as a sound or a script, exit, or turn the computer off with <g1>Shut down</g1>, <g2>Sleep</g2> or <g3>Hibernate</g3>. A 30-second countdown comes first, so if you are still at the computer, <g4>Cancel</g4> stops it.",
    "text": "MDM은 소리나 스크립트와 같은 파일을 열거나, 종료하거나, <g1>시스템 종료</g1>, <g2>절전</g2> 또는 <g3>최대 절전 모드</g3>로 컴퓨터를 끌 수 있습니다. 30초 카운트다운이 먼저 시작되므로, 컴퓨터를 사용 중이라면 <g4>취소</g4>를 눌러 중지할 수 있습니다."
@@ -6477,6 +6481,10 @@
   "5b861078d85d52f5": {
    "source": "Downloads → Speed Limiter → Settings...",
    "text": "다운로드 → 속도 제한 → 설정..."
+  },
+  "5b8be941eea2d791": {
+   "source": "While a full-screen game, a film or a presentation is on, or the screen is locked, <g1>Download complete</g1> and MDM's other windows that come up by themselves wait. The download finishes as usual; its window shows when you're back, and several show one after the other, in the order they came. The tray icon's tip says how many wait. A link you click in the browser still opens at once. To have them show at once anyway, untick <g2>Don't show pop-ups while a full-screen app or presentation is running</g2> in <g3>Options → Downloads</g3>.",
+   "text": "전체 화면 게임, 영화 또는 프레젠테이션이 실행 중이거나 화면이 잠겨 있을 때, <g1>다운로드 완료</g1> 및 MDM의 다른 자동 팝업 창은 대기합니다. 다운로드는 평소처럼 완료되며, 사용자가 돌아오면 해당 창이 표시되고, 여러 창이 발생한 순서대로 차례로 나타납니다. 트레이 아이콘의 팁에는 대기 중인 창의 개수가 표시됩니다. 브라우저에서 클릭한 링크는 즉시 열립니다. 창이 즉시 표시되도록 하려면 <g3>옵션 → 다운로드</g3>에서 <g2>전체 화면 앱 또는 프레젠테이션 실행 중에는 팝업 표시 안 함</g2>을 선택 해제하세요."
   },
   "5bbe458adfedffc9": {
    "source": "1 must be on, and 2 your browser ticked.",
@@ -14841,6 +14849,10 @@
   "cff5ebbbf76816bf": {
    "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). The fork's eframe tells MDM through its viewport hooks (<x2/>, #1448).",
    "text": "창은 OpenGL(eframe의 glow) 또는 eframe의 wgpu를 통해 시스템 자체 그래픽 API로 그려지며, 해당 백엔드만 사용합니다. Windows에서는 Direct3D 12(기본값), Linux에서는 Vulkan, macOS에서는 Metal(선택 사항, 실제 그래픽 카드가 시도될 때까지 OpenGL이 기본값으로 유지됨, #206)입니다. 보기 → 다음으로 그리기는 다음 시작부터 하나를 선택합니다. 모든 시스템에서 하나의 코드 경로로 처리됩니다(<x1/>). 선택한 것이 시작되지 않으면 다른 것이 시도되므로 창은 항상 열립니다. 시스템 API로 시작을 감시하면 첫 프레임이 그려질 때까지 마커를 남깁니다. 그 전에 끝나는 시작(드라이버 내부 충돌), 첫 프레임이 10초 이내에 오지 않는 시작(MDM은 OpenGL로 다시 시작), 또는 10분 내에 그래픽 카드가 두 번 손실된 경우 그 이유와 함께 기억되며, 메뉴에 표시됩니다. OpenGL의 경우 eframe이 그릴 수 없는 창(컨텍스트를 현재로 만들 수 없거나 프레임을 표시할 수 없는 경우)은 건너뛰고 100ms 후에 다시 그려집니다. 몇 초 동안 계속해서 그리기가 실패하는 창도 장치 손실로 간주됩니다(MDM이 다시 시작되며, 10분 내에 두 번 발생하면 Windows에서 OpenGL이 실패한 것으로 기억됨). 포크된 eframe은 뷰포트 후크(<x2/>, #1448)를 통해 MDM에 알립니다."
+  },
+  "d00db779505eaf02": {
+   "source": "<g1>Don't show pop-ups while a full-screen app or presentation is running</g1> — on by default. While a full-screen game, app or video, a presentation or the locked screen is on, <g2>Download complete</g2> and the other windows MDM opens by itself wait, and show when you're back, one after the other in the order they came: <g3>Downloads complete</g3>, a new version found by the weekly check, the download limit's warning, an archive's test result, its password question or its call for 7-Zip, the browser extension's offer, a link copied to the clipboard, and the crash report. The downloads carry on as usual, and the tray icon's tip says how many windows wait. The windows you open yourself, links you click in the browser and the <g4>Turn off computer</g4> countdown (so you can still cancel it) show at once. On Windows MDM goes by the state Windows holds its own notifications by (games, presentation mode, full-screen apps and videos), by a frameless window that fills its whole screen in front (on any of your screens), and by the screen's lock; on Linux by the session's lock, and by a full-screen window under X11 or XWayland (on Wayland, a native program's full screen can't be seen). On macOS a full-screen app has a Space of its own, which MDM's windows never open over. Untick it and the windows show at once, as before.",
+   "text": "<g1>전체 화면 앱 또는 프레젠테이션 실행 중 팝업 표시 안 함</g1> — 기본적으로 켜져 있습니다. 전체 화면 게임, 앱 또는 비디오, 프레젠테이션 또는 잠금 화면이 켜져 있는 동안 <g2>다운로드 완료</g2> 및 MDM이 자체적으로 여는 다른 창들은 기다렸다가, 사용자가 돌아오면 발생한 순서대로 하나씩 표시됩니다. 여기에는 <g3>다운로드 완료</g3>, 주간 확인으로 찾은 새 버전, 다운로드 제한 경고, 압축 파일 테스트 결과, 암호 요청 또는 7-Zip 호출, 브라우저 확장 프로그램 제안, 클립보드에 복사된 링크, 충돌 보고서가 포함됩니다. 다운로드는 평소와 같이 진행되며, 트레이 아이콘의 팁에는 대기 중인 창 수가 표시됩니다. 사용자가 직접 여는 창, 브라우저에서 클릭하는 링크, <g4>컴퓨터 끄기</g4> 카운트다운(취소할 수 있도록)은 즉시 표시됩니다. Windows에서 MDM은 Windows가 자체 알림을 유지하는 상태(게임, 프레젠테이션 모드, 전체 화면 앱 및 비디오), 화면 전체를 채우는 프레임 없는 창(모든 화면에서), 화면 잠금 상태를 따릅니다. Linux에서는 세션 잠금 상태와 X11 또는 XWayland의 전체 화면 창을 따릅니다(Wayland에서는 기본 프로그램의 전체 화면을 볼 수 없습니다). macOS에서는 전체 화면 앱이 자체 Space를 가지며, MDM 창은 그 위에 열리지 않습니다. 이 옵션을 선택 해제하면 창이 이전처럼 즉시 표시됩니다."
   },
   "d012d3cc3e38b306": {
    "source": "<g1>Start Queue</g1> and <g2>Stop Queue</g2> on the toolbar start and stop the <g3>Main download queue</g3>. The arrow next to each button lists every queue.",

@@ -6090,6 +6090,10 @@
    "source": "Previous image",
    "text": "上一张图片"
   },
+  "562bf428e9def662": {
+   "source": "Never over your game or your slides",
+   "text": "不打扰游戏或演示"
+  },
   "5634c00f6562f001": {
    "source": "MDM can open a file, such as a sound or a script, exit, or turn the computer off with <g1>Shut down</g1>, <g2>Sleep</g2> or <g3>Hibernate</g3>. A 30-second countdown comes first, so if you are still at the computer, <g4>Cancel</g4> stops it.",
    "text": "MDM 可以打开一个文件（例如声音或脚本），退出，或通过<g1>关机</g1>、<g2>睡眠</g2>或<g3>休眠</g3>关闭计算机。在此之前会有 30 秒倒计时，如果您仍在计算机旁，可以点击<g4>取消</g4>来停止。"
@@ -6477,6 +6481,10 @@
   "5b861078d85d52f5": {
    "source": "Downloads → Speed Limiter → Settings...",
    "text": "下载 → 速度限制器 → 设置..."
+  },
+  "5b8be941eea2d791": {
+   "source": "While a full-screen game, a film or a presentation is on, or the screen is locked, <g1>Download complete</g1> and MDM's other windows that come up by themselves wait. The download finishes as usual; its window shows when you're back, and several show one after the other, in the order they came. The tray icon's tip says how many wait. A link you click in the browser still opens at once. To have them show at once anyway, untick <g2>Don't show pop-ups while a full-screen app or presentation is running</g2> in <g3>Options → Downloads</g3>.",
+   "text": "当您在玩全屏游戏、看电影或进行演示时，或者屏幕被锁定时，“<g1>下载完成</g1>”以及 MDM 其他自动弹出的窗口会等待。下载会照常完成；当您返回时，其窗口会显示，多个窗口会按出现的顺序依次显示。托盘图标的提示会显示有多少个窗口在等待。您在浏览器中点击的链接仍然会立即打开。如果希望它们立即显示，请在<g3>选项 → 下载</g3>中取消勾选“<g2>全屏应用或演示运行时不显示弹出窗口</g2>”。"
   },
   "5bbe458adfedffc9": {
    "source": "1 must be on, and 2 your browser ticked.",
@@ -14841,6 +14849,10 @@
   "cff5ebbbf76816bf": {
    "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default until real graphics cards have tried them, #206). View → Draw with picks one, from the next start. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open. A watched start with the system's API leaves a marker until its first frame is drawn: a start that ends before it (a crash inside the driver), one whose first frame doesn't come within 10 seconds (MDM then starts again with OpenGL), or a graphics card lost twice in 10 minutes is remembered with its reason, which the menu shows. With OpenGL, a window eframe can't paint (its context can't be made current on it, its frame can't be shown) is skipped and painted again 100 ms later; one whose paints keep failing for seconds is a lost device too (MDM starts again; twice in 10 minutes, OpenGL is remembered as failing on Windows). The fork's eframe tells MDM through its viewport hooks (<x2/>, #1448).",
    "text": "窗口通过 OpenGL（eframe 的 glow）或通过 eframe 的 wgpu 使用系统自己的图形 API 绘制，且仅使用该后端：Windows 上的 Direct3D 12（默认），Linux 上的 Vulkan，macOS 上的 Metal（这些是选项；OpenGL 仍是它们的默认设置，直到真正的显卡尝试过它们，#206）。“视图”→“绘制方式”选择一个，从下次启动开始生效。一个代码路径在每个系统上都这样做（<x1/>）：当选择的那个无法启动时，会尝试另一个，因此窗口总是能打开。使用系统 API 的受监控启动会留下一个标记，直到其第一帧被绘制：如果启动在此之前结束（驱动程序内部崩溃），如果第一帧在 10 秒内未出现（MDM 随后会使用 OpenGL 重新启动），或者显卡在 10 分钟内丢失两次，则会记住其原因，并在菜单中显示。使用 OpenGL 时，eframe 无法绘制的窗口（其上下文无法在其上设置为当前，其帧无法显示）会被跳过，并在 100 毫秒后再次绘制；如果一个窗口的绘制持续失败数秒，它也被视为丢失设备（MDM 重新启动；如果在 10 分钟内发生两次，OpenGL 在 Windows 上被记住为失败）。fork 的 eframe 通过其视口钩子通知 MDM（<x2/>，#1448）。"
+  },
+  "d00db779505eaf02": {
+   "source": "<g1>Don't show pop-ups while a full-screen app or presentation is running</g1> — on by default. While a full-screen game, app or video, a presentation or the locked screen is on, <g2>Download complete</g2> and the other windows MDM opens by itself wait, and show when you're back, one after the other in the order they came: <g3>Downloads complete</g3>, a new version found by the weekly check, the download limit's warning, an archive's test result, its password question or its call for 7-Zip, the browser extension's offer, a link copied to the clipboard, and the crash report. The downloads carry on as usual, and the tray icon's tip says how many windows wait. The windows you open yourself, links you click in the browser and the <g4>Turn off computer</g4> countdown (so you can still cancel it) show at once. On Windows MDM goes by the state Windows holds its own notifications by (games, presentation mode, full-screen apps and videos), by a frameless window that fills its whole screen in front (on any of your screens), and by the screen's lock; on Linux by the session's lock, and by a full-screen window under X11 or XWayland (on Wayland, a native program's full screen can't be seen). On macOS a full-screen app has a Space of its own, which MDM's windows never open over. Untick it and the windows show at once, as before.",
+   "text": "<g1>全屏应用或演示运行时不显示弹窗</g1> — 默认开启。当全屏游戏、应用或视频、演示文稿或锁屏界面开启时，<g2>下载完成</g2>及MDM自动打开的其他窗口会等待，并在您返回时按出现的顺序依次显示：<g3>下载已完成</g3>、每周检查发现的新版本、下载限制警告、压缩包测试结果、密码请求或7-Zip调用、浏览器扩展推荐、复制到剪贴板的链接以及崩溃报告。下载会照常进行，托盘图标提示会显示有多少窗口正在等待。您自己打开的窗口、在浏览器中点击的链接以及<g4>关闭计算机</g4>倒计时（以便您仍可取消）会立即显示。在 Windows 上，MDM 会根据 Windows 自身通知的状态（游戏、演示模式、全屏应用和视频）、一个填满整个屏幕的无边框窗口（在您的任何屏幕上）以及屏幕锁定来判断；在 Linux 上，则根据会话锁定以及 X11 或 XWayland 下的全屏窗口来判断（在 Wayland 上，无法看到原生程序的全屏）。在 macOS 上，全屏应用有自己的空间，MDM 的窗口绝不会在其上方打开。取消勾选此项，窗口将立即显示，与之前一样。"
   },
   "d012d3cc3e38b306": {
    "source": "<g1>Start Queue</g1> and <g2>Stop Queue</g2> on the toolbar start and stop the <g3>Main download queue</g3>. The arrow next to each button lists every queue.",

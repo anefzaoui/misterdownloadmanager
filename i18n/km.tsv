@@ -176,6 +176,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ត្រេគឃ័រ: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	បង្អួចចំនួន {n} កំពុងរង់ចាំរហូតដល់អ្នកត្រឡប់មកវិញ
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -195,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}៖ វីដេអូ {listed} ក្នុងចំណោម {total} ត្រូវបានរាយបញ្ជី
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	បង្អួច «ការទាញយកបានបញ្ចប់» និងបង្អួចផ្សេងទៀតដែល MDM បើកដោយខ្លួនឯង នឹងរង់ចាំនៅពេលហ្គេមពេញអេក្រង់ កម្មវិធី ឬវីដេអូ ការបង្ហាញ ឬអេក្រង់ចាក់សោរកំពុងដំណើរការ ហើយនឹងបង្ហាញនៅពេលអ្នកត្រឡប់មកវិញ។ បង្អួចដែលអ្នកបើកដោយខ្លួនឯង និងតំណពីកម្មវិធីរុករករបស់អ្នក តែងតែបង្ហាញ។
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -1509,6 +1518,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	កុំសួរម្ដងទៀត
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	កុំបង្ហាញផ្ទាំងលោតនៅពេលកម្មវិធីពេញអេក្រង់ ឬការបង្ហាញកំពុងដំណើរការ
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	កុំបង្ហាញប្រអប់នេះម្តងទៀត

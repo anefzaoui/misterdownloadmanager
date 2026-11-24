@@ -176,6 +176,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} Tracker: {peers}|{n} Tracker: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	{n} Fenster wartet, bis Sie zurück sind|{n} Fenster warten, bis Sie zurück sind
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -195,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} von {total} Video aufgelistet|{title}: {listed} von {total} Videos aufgelistet
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	„Download abgeschlossen“ und die anderen Fenster, die MDM von selbst öffnet, warten, während ein Spiel, eine App oder ein Video im Vollbildmodus, eine Präsentation oder der Sperrbildschirm aktiv ist, und werden angezeigt, wenn Sie zurück sind. Die Fenster, die Sie selbst öffnen, und Links aus Ihrem Browser werden immer angezeigt.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -1514,6 +1523,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Nicht mehr fragen
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Pop-ups nicht anzeigen, während eine Vollbild-App oder Präsentation ausgeführt wird
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Diesen Dialog nicht wieder anzeigen

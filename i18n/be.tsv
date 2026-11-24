@@ -176,6 +176,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} трэкер: {peers}|{n} трэкеры: {peers}|{n} трэкераў: {peers}
+#. count in the main window
+#. the tip of MDM's notification area (tray) icon: {n} windows of MDM (Download complete...) wait while a full-screen game, app or presentation is on, and show when the user is back
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} window waits until you're back|{n} windows wait until you're back	Чакае {n} акно, пакуль вы вернецеся|Чакаюць {n} акны, пакуль вы вернецеся|Чакаюць {n} вокнаў, пакуль вы вернецеся
 #. count in cnl.rs
 #. Click'n'Load window: {site} is a web site's name such as "example.com"
 #. {site} = a web site's name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -195,6 +200,10 @@
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
 @plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} з {total} відэа пералічана|{title}: {listed} з {total} відэа пералічана|{title}: {listed} з {total} відэа пералічана
+#. text in the Options window
+#. tooltip of "Don't show pop-ups while a full-screen app or presentation is running"
+#, machine
+	"Download complete" and the other windows MDM opens by itself wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when you're back. The windows you open yourself, and links from your browser, always show	Акно «Спампоўванне завершана» і іншыя вокны, якія MDM адкрывае самастойна, чакаюць, пакуль запушчана поўнаэкранная гульня, праграма ці відэа, прэзентацыя або экран заблакіраваны, і адлюстроўваюцца, калі вы вяртаецеся. Вокны, якія вы адкрываеце самі, і спасылкі з браўзера заўсёды адлюстроўваюцца.
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -1509,6 +1518,10 @@
 #. button in the browser extension's window: stop offering it at each start
 #, machine
 	Don't ask again	Больш не пытаць
+#. text in the Options window
+#. checkbox, Options → Downloads: Download complete and MDM's other windows that open by themselves wait while a full-screen game, app or video, a presentation or the locked screen is on, and show when the user is back
+#, machine
+	Don't show pop-ups while a full-screen app or presentation is running	Не паказваць усплывальныя вокны, калі запушчана поўнаэкранная праграма або прэзентацыя
 #. checkbox in a dialog box
 #, machine
 	Don't show this dialog again	Больш не паказваць гэтае дыялогавае акно

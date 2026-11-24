@@ -87,6 +87,18 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     // below is translated before the window exists, and Windows' caption is found by it
     // (`win32::caption_dark` in `update`).
     let settings = crate::store::load().settings;
+    // The window waits while a full-screen app, a presentation or the locked screen is on, as
+    // MDM's other windows that come up by themselves do (#1773); the dump is written already.
+    if settings.hold_popups {
+        let mut told = false;
+        while let Some(why) = crate::hold::system() {
+            if !told {
+                told = true;
+                tracing::info!("crash monitor: the report waits: {} is on", why.says());
+            }
+            std::thread::sleep(crate::hold::LOOK_EVERY);
+        }
+    }
     crate::i18n::set_lang(settings.language.as_deref());
     // And its interface size (#262): the window is made before the zoom applies, so its size is
     // given zoomed (brought inside the screen at its first frame).
