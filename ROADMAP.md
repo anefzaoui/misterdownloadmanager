@@ -569,6 +569,8 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Click'n'Load is checked more carefully
+- ✅ Browser detection copes with letters that grow when lowercased in a browser's program name
 - ✅ Linux and macOS: the running downloads' progress on MDM's icon in the dock (Ubuntu Dock,
   Dash to Dock, KDE Plasma's task manager and others) and in the macOS Dock, as on the Windows
   taskbar ([#1777](https://github.com/anefzaoui/misterdownloadmanager/issues/1777))
