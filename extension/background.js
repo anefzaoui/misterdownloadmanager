@@ -434,7 +434,9 @@ async function recentList(ask) {
   // the question), busy, or not reached (`why`).
   const old = reply.why === "refused";
   if (reply.why && !old) await noteStatus(reply.why);
-  await noteRunning(0);
+  // Busy is this question's timeout, not the app having no downloads: the count the badge
+  // shows and the watch that keeps it fresh stay as they were.
+  if (reply.appState !== "busy") await noteRunning(0);
   return { ok: false, remote: null, appState: reply.appState || (old ? "old" : null), why: old ? null : reply.why || null };
 }
 
