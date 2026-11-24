@@ -317,8 +317,28 @@ impl RemoteTorrent {
         // The service at work: asked every `poll`, the event log told when its word or the
         // percentage (by tens) changes.
         let mut said = String::new();
+        // A "ready" with no files yet is not a finished torrent: asking again a few times gives
+        // the service time to list them, and a list that never comes fails without deleting the
+        // torrent (which was the only handle to try it again).
+        let mut empty = 0;
         let (name, files) = loop {
             match s.torrent_status(&id, order.files.as_deref()).await? {
+                Status::Ready { files, .. } if files.is_empty() && empty >= 5 => {
+                    return Err(Fault::Service(ServiceFault::Other(
+                        "the service listed no files for the torrent".into(),
+                    )));
+                }
+                Status::Ready { files, .. } if files.is_empty() => {
+                    empty += 1;
+                    let line = format!(
+                        "{service} says the torrent is ready but lists no files yet ({} of 5)",
+                        empty
+                    );
+                    if line != said {
+                        self.note(line.clone());
+                        said = line;
+                    }
+                }
                 Status::Ready { name, files } => break (name, files),
                 Status::Failed(f) => return Err(Fault::Service(f)),
                 Status::Working { progress, what } => {
