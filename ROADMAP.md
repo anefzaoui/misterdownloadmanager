@@ -569,6 +569,88 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Pop-ups wait while a full-screen game, app or video, a presentation or the locked screen is
+  on, and show when you're back, in the order they came; links from the browser and windows you
+  open still show at once; **Options → Downloads** turns it off
+  ([#1773](https://github.com/anefzaoui/misterdownloadmanager/issues/1773))
+- ✅ CI and the release take NASM from nasm.us, checked against its pinned SHA256, and use
+  Chocolatey's feed only when that download fails (its outage had stopped every Windows build)
+- ✅ Torrents: trackers are checked more carefully.
+- ✅ A **Save To** column in the download list (the folder each download is in), sorted by a click
+  on its title or **View → Arrange files → By Save Path**
+  ([#1827](https://github.com/anefzaoui/misterdownloadmanager/issues/1827))
+- ✅ Helpers installs a helper that isn't there yet (gallery-dl before the first gallery, or
+  any other): **Install** in its row downloads MDM's own copy, checked as always, with its
+  progress, then shows its version and **Update**, and automatic updates cover it; greyed, with
+  the reason, where MDM has no copy for the system
+  ([#1801](https://github.com/anefzaoui/misterdownloadmanager/issues/1801))
+- ✅ Torrents: filtering a torrent's trackers never adds one it didn't list (a torrent that
+  repeats its tracker list counts the first only)
+  ([#1805](https://github.com/anefzaoui/misterdownloadmanager/issues/1805))
+- ✅ A preview pane beside the download list (View, the toolbar, Alt+P): the selected download's
+  picture (the system's thumbnail, else its type's icon) and details, whether its file is still
+  there, resizable, on the left in right-to-left languages
+  ([discussion #1368](https://github.com/anefzaoui/misterdownloadmanager/discussions/1368))
+- ✅ The browser add-on's video button on Facebook's feed sends the video it is over, by the id
+  Facebook gives its player (as its /reel/ address), else the video's links in its post, the post's
+  permalink last; a comment's link to another video is never taken
+  ([#643](https://github.com/anefzaoui/misterdownloadmanager/issues/643))
+- ✅ Website: the browser stores' ratings and users under their buttons on the home and download
+  pages, read again at every build; visitors rate MDM from one to five stars on the site (change
+  or remove their rating, keyboard and screen readers too), served by a small Cloudflare Worker
+  that keeps no IP address; only these ratings go into the structured data
+  ([#1784](https://github.com/anefzaoui/misterdownloadmanager/issues/1784))
+- ✅ Website for AI tools and agents: every page in Markdown at its `.md` address, Content Signals in
+  robots.txt (search, AI input and AI training allowed), an API catalog, a server card for MDM's
+  local MCP server, and a page that explains them
+  ([#1785](https://github.com/anefzaoui/misterdownloadmanager/issues/1785),
+  [#1786](https://github.com/anefzaoui/misterdownloadmanager/issues/1786),
+  [#1788](https://github.com/anefzaoui/misterdownloadmanager/issues/1788),
+  [#1789](https://github.com/anefzaoui/misterdownloadmanager/issues/1789))
+- ✅ Website: `Link` headers on the home page for the API catalog, the sitemap and its Markdown
+  ([#1787](https://github.com/anefzaoui/misterdownloadmanager/issues/1787))
+- 🔄 Website: a page asked for with `Accept: text/markdown` answered in Markdown (the Worker is
+  written, not switched on)
+- ✅ Website: a star rating shows as given the moment it's picked (thanks and numbers included),
+  then follows the ratings service's answer, or goes back and says why if it couldn't be sent;
+  the check that a person is rating starts as the visitor reaches for the stars, and the service
+  answers in fewer steps
+- ✅ Tests: the check that a finished file's damaged part is downloaded again no longer fails now
+  and then (seen on a Linux runner): the test server damages only the first answer that carries
+  those bytes, and the first download, on several connections, could split that answer off
+  before it got there, so the file came out whole; the first download now takes one connection
+- ✅ Move a paused or stopped download to another folder: **Move/Rename** and File Properties'
+  **Move** take a download stopped part-way too, its part file and resume state along (copied
+  then deleted on another drive, after a free space check), and it resumes there from where it
+  stopped; a move cut short by MDM closing is settled at the next start. Videos, galleries and
+  torrents still move once they're finished, and say so
+  ([#1739](https://github.com/anefzaoui/misterdownloadmanager/issues/1739))
+- ✅ Several Download File Info windows at once, one for each link, side by side: each opens a
+  step from the one before and comes to the front, its title numbered from the second on; up to
+  six, more links waiting their turn
+  ([#1741](https://github.com/anefzaoui/misterdownloadmanager/issues/1741))
+- ✅ The browser add-on's Download video button out of the way: **Automatic** size, the new
+  default (round in a feed and over a small player, whole over a big one), faint as the pointer
+  rests or leaves before it goes, movable outside the player and kept for each site, with
+  **Put the button back in its corner** in its menu and **Reset** in the add-on's popup; its
+  menu filters what it lists (all, video, audio only; the file type or the codec where they
+  differ), kept for each site ([#1735](https://github.com/anefzaoui/misterdownloadmanager/issues/1735))
+- ✅ Tests: the browser add-on's real-browser tests no longer hang on a browser that stops
+  answering: each command has a deadline, past which that browser is stopped and its test fails
+  with the command's name; stopping a run (Ctrl+C) or an error in the test tool still cleans up
+  what it started. Each run takes free ports of its own (`E2E_PORT` fixes them from one base), so
+  two runs on one computer no longer meet
+- ✅ `/exit` from a second launch quits MDM every time, with a dialog open or the main window
+  minimized too, and a link handed over by one is added once, never twice
+  ([#1651](https://github.com/anefzaoui/misterdownloadmanager/issues/1651))
+- ✅ Redownload replaces the finished file under its name once the new copy is complete, as its
+  question says, instead of saving `name (1)` beside it; one that fails or is stopped keeps the
+  file, and one whose file another program holds keeps both and says so
+  ([#1698](https://github.com/anefzaoui/misterdownloadmanager/issues/1698))
+- ✅ Tests: the check of a video part's progress no longer fails now and then on a fast machine
+  (seen on macOS): the test tool held nothing back, so the whole part could come in between two
+  looks at the progress; it now waits half-way until the test has seen the progress, and the
+  stop-and-start-again check stops it there for certain too
 - ✅ Resume after a crash or a kill continues the download instead of starting it over as
   "name (1)" (#1705): a row whose name was still to be numbered at start resumes the resume
   state at that name when it is its own (the same address, no other row at the name), looked at
@@ -1835,6 +1917,12 @@ These ship in the next version.
   (recommended)**, instead of on the frame, and **Close** takes it when Yes goes away
   ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
   [@Seyamalam](https://github.com/Seyamalam))
+- ✅ Screen readers name every window's frame: the tree showed "[frame] ''" where a reader
+  looks for the window's title, so the main window, every dialog, the menus, the progress
+  window and the drop target all said nothing; each frame now carries the window's own
+  title
+  ([#1407](https://github.com/anefzaoui/misterdownloadmanager/issues/1407); thanks to
+  [@Seyamalam](https://github.com/Seyamalam))
 - ✅ Tests: the video checks of an address that expires while downloading (a stream's, and DASH
   pieces') no longer fail now and then on a busy computer: the test server times such a link from
   its first request, not from the look-up that gave it, so a slow start can't kill it before the
@@ -1870,6 +1958,14 @@ These ship in the next version.
 - ✅ Dialogs show their file icons while the main window is minimized, and the log no longer
   fills with `Failed to find texture` / `Missing texture` lines, with OpenGL and Direct3D
   ([#1639](https://github.com/anefzaoui/misterdownloadmanager/issues/1639))
+- ✅ Screen readers read a download's progress window: its **Download status** page painted its
+  address and its six rows (status, file size, downloaded with the percentage, transfer rate, time
+  left and resume capability), so only the buttons and the tabs were in the tree; each row is a
+  label named by its caption and carrying its whole value now (never the "..." the page cuts it
+  to), and the page's own progress bar is a value within a range (0–100) that a reader follows
+  without anyone moving the focus
+  ([#1406](https://github.com/anefzaoui/misterdownloadmanager/issues/1406); thanks to
+  [@YairDies](https://github.com/YairDies))
 
 ## Being worked on
 
@@ -1878,7 +1974,6 @@ These ship in a later version, when they're ready.
 ### Being built
 
 - 🔄 **The tray icon's downloads panel**: a click on the icon shows what is downloading, with the progress window's Pause/Resume (Stop and save for a recording) and Cancel for each download and a button for the main window; a double click opens the window; **Options → General → Show downloads when the notification area icon is clicked** (ticked in a new copy, unticked in one set up before it) ([#1365](https://github.com/anefzaoui/misterdownloadmanager/issues/1365)): draft, in review
-- ✅ **Save To column**: shown by default in the download list and available as **Arrange files → By Save Path**
 - 🔄 **Add torrent**: choose whether a multi-file torrent gets an outer folder, with shared-destination ownership and deletion safeguards ([discussion #965](https://github.com/anefzaoui/misterdownloadmanager/discussions/965), [PR #1121](https://github.com/anefzaoui/misterdownloadmanager/pull/1121)): in review
 - 🔄 **Add torrent**: a **Rename** row (main name and extension) to rename a single-file torrent or a multi-file torrent's folder before the download starts ([#517](https://github.com/anefzaoui/misterdownloadmanager/issues/517)): in review
 - 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):

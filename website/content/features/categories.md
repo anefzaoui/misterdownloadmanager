@@ -37,6 +37,13 @@ folder.
 MDM opens where you left it, with the same branches open and the same category shown. **View →
 Hide categories** gives the list the whole window.
 
+## See where each one went
+
+The list's **Save To** column shows the folder each download is saved in, so a file you sent
+somewhere else is easy to spot. Click its title, or choose **View → Arrange files → By Save
+Path**, to sort the list by folder. Like every column, right-click any column title to show or
+hide it, and drag it where you want it.
+
 ## Make your own
 
 Right-click → **Add category** makes one for what you collect, say **Books** for `EPUB MOBI`:

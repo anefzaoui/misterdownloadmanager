@@ -2737,9 +2737,8 @@ fn icon_theme(kde: bool) -> Option<String> {
 #[allow(unsafe_code)]
 pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
     use crate::fileicons::{Native, What};
-    use objc2::AllocAnyThread as _;
-    use objc2_app_kit::{NSBitmapImageRep, NSDeviceRGBColorSpace, NSGraphicsContext, NSWorkspace};
-    use objc2_foundation::{NSPoint, NSRect, NSSize, NSString};
+    use objc2_app_kit::NSWorkspace;
+    use objc2_foundation::NSString;
     // An extension, or a type identifier where there is none.
     let ty = match what {
         // Finder has no open folder of its own: its folder.
@@ -2751,6 +2750,24 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
     objc2::rc::autoreleasepool(|_| {
         #[allow(deprecated)] // iconForContentType needs a UTType; this takes the extension as is.
         let image = NSWorkspace::sharedWorkspace().iconForFileType(&NSString::from_str(&ty));
+        let rgba = ns_image_rgba(&image, side)?;
+        Some(Native::Rgba {
+            side: side as u32,
+            rgba,
+            premultiplied: true,
+        })
+    })
+}
+
+/// `image` drawn at `side` pixels square into a bitmap of our own (AppKit picks its picture made
+/// for that size), as premultiplied RGBA.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn ns_image_rgba(image: &objc2_app_kit::NSImage, side: usize) -> Option<Vec<u8>> {
+    use objc2::AllocAnyThread as _;
+    use objc2_app_kit::{NSBitmapImageRep, NSDeviceRGBColorSpace, NSGraphicsContext};
+    use objc2_foundation::{NSPoint, NSRect, NSSize};
+    {
         // SAFETY: no planes, so the bitmap allocates and owns its pixels: 8-bit RGBA, packed rows
         // (0 lets it choose the row length and bits per pixel). The colour space name is AppKit's
         // own constant.
@@ -2788,11 +2805,189 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
                 std::slice::from_raw_parts(data.add(y * row), side * 4)
             });
         }
-        Some(Native::Rgba {
-            side: side as u32,
+        Some(rgba)
+    }
+}
+
+// ---- Thumbnails (preview.rs, #1368) -------------------------------------------------------------
+
+/// `win32::thumbnail` on macOS: Finder's icon for the file itself (NSWorkspace `iconForFile`: a
+/// program's own, a folder's custom one), drawn at `px` pixels, marked as an icon. Not Quick
+/// Look's picture of the file's content: that is QuickLookThumbnailing's QLThumbnailGenerator,
+/// which answers later through a completion block, a framework MDM's macOS code doesn't bind
+/// (it would bring objc2's QuickLookThumbnailing and block2 bindings), with no Mac at hand to
+/// try it on. The pane shows the file's icon there instead.
+#[cfg(target_os = "macos")]
+pub fn thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    use objc2_app_kit::NSWorkspace;
+    use objc2_foundation::NSString;
+    let side = px.clamp(16, 512) as usize;
+    let path = path.to_str()?;
+    objc2::rc::autoreleasepool(|_| {
+        let image = NSWorkspace::sharedWorkspace().iconForFile(&NSString::from_str(path));
+        let rgba = ns_image_rgba(&image, side)?;
+        Some(crate::preview::Picture {
+            w: side as u32,
+            h: side as u32,
             rgba,
             premultiplied: true,
+            icon: true,
         })
+    })
+}
+
+/// `win32::thumbnail` on Linux: the picture the desktop's file manager made of the file (the
+/// freedesktop thumbnail cache, GNOME's and KDE's), else one made here: a photo decoded and
+/// scaled down, a video's frame through the ffmpeg MDM uses for videos. None: the type's icon.
+#[cfg(target_os = "linux")]
+pub fn thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    cached_thumbnail(path, px)
+        .or_else(|| decoded_picture(path, px))
+        .or_else(|| video_frame(path, px))
+}
+
+/// The Thumbnail Managing Standard's cache (`$XDG_CACHE_HOME/thumbnails`, `~/.cache/thumbnails`):
+/// the file's picture at the smallest size there at least `px`, else the largest, only one made
+/// from the file as it is now (its `Thumb::MTime` the file's date).
+#[cfg(target_os = "linux")]
+fn cached_thumbnail(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    use std::os::unix::ffi::OsStrExt;
+    let path = if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        std::env::current_dir().ok()?.join(path)
+    };
+    let mtime = std::fs::metadata(&path)
+        .ok()?
+        .modified()
+        .ok()?
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()?
+        .as_secs();
+    let cache = std::env::var_os("XDG_CACHE_HOME")
+        .map(PathBuf::from)
+        .filter(|p| p.is_absolute())
+        .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".cache")))?
+        .join("thumbnails");
+    let name =
+        crate::preview::thumbnail_name(&crate::preview::thumbnail_uri(path.as_os_str().as_bytes()));
+    let mut sizes = [
+        ("normal", 128u32),
+        ("large", 256),
+        ("x-large", 512),
+        ("xx-large", 1024),
+    ];
+    // The smallest at least as large as asked first, then the larger ones, then the smaller.
+    sizes.sort_by_key(|(_, s)| {
+        if *s >= px {
+            (0, *s)
+        } else {
+            (1, u32::MAX - *s)
+        }
+    });
+    sizes.iter().find_map(|(dir, _)| {
+        let file = cache.join(dir).join(&name);
+        if std::fs::metadata(&file).ok()?.len() > 16 << 20 {
+            return None;
+        }
+        let bytes = std::fs::read(&file).ok()?;
+        let made = crate::preview::png_text(&bytes, "Thumb::MTime")?;
+        // Seconds; some writers add a fraction.
+        if made.trim().parse::<f64>().ok()? as u64 != mtime {
+            return None;
+        }
+        let img = image::load_from_memory_with_format(&bytes, image::ImageFormat::Png).ok()?;
+        rgba_picture(img.to_rgba8())
+    })
+}
+
+/// A photo the desktop has no thumbnail of, decoded here and made `px` on its longer side, within
+/// limits (a huge picture is left to its icon).
+#[cfg(target_os = "linux")]
+fn decoded_picture(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    let ext = path.extension()?.to_str()?.to_ascii_lowercase();
+    if !matches!(
+        ext.as_str(),
+        "jpg" | "jpeg" | "png" | "gif" | "webp" | "bmp"
+    ) {
+        return None;
+    }
+    if std::fs::metadata(path).ok()?.len() > 200 << 20 {
+        return None;
+    }
+    let mut reader = image::ImageReader::open(path)
+        .ok()?
+        .with_guessed_format()
+        .ok()?;
+    let mut limits = image::Limits::default();
+    limits.max_image_width = Some(20_000);
+    limits.max_image_height = Some(20_000);
+    limits.max_alloc = Some(512 << 20);
+    reader.limits(limits);
+    let img = reader.decode().ok()?;
+    rgba_picture(img.thumbnail(px, px).to_rgba8())
+}
+
+/// A video's frame a few seconds in (its first when it is shorter), made by ffmpeg (the person's
+/// own, MDM's or the system's, as videos use) as a PNG on its output, `px` on its longer side.
+#[cfg(target_os = "linux")]
+fn video_frame(path: &Path, px: u32) -> Option<crate::preview::Picture> {
+    let ext = path.extension()?.to_str()?.to_ascii_lowercase();
+    if !matches!(
+        ext.as_str(),
+        "mp4"
+            | "mkv"
+            | "webm"
+            | "mov"
+            | "avi"
+            | "m4v"
+            | "wmv"
+            | "flv"
+            | "mpg"
+            | "mpeg"
+            | "ts"
+            | "3gp"
+            | "ogv"
+    ) {
+        return None;
+    }
+    let ffmpeg = mdm_tools::tools_dir()
+        .as_deref()
+        .and_then(mdm_tools::ffmpeg::installed)?;
+    let scale = format!("scale={px}:{px}:force_original_aspect_ratio=decrease");
+    ["3", "0"].iter().find_map(|at| {
+        let mut cmd = Command::new(&ffmpeg.exe);
+        cmd.args(["-nostdin", "-v", "error", "-ss", at, "-i"])
+            .arg(path)
+            .args([
+                "-frames:v",
+                "1",
+                "-vf",
+                &scale,
+                "-f",
+                "image2pipe",
+                "-c:v",
+                "png",
+                "-",
+            ]);
+        let out = crate::launch::output_within(&mut cmd, std::time::Duration::from_secs(15))?;
+        if !out.stdout.starts_with(b"\x89PNG") {
+            return None;
+        }
+        let img = image::load_from_memory_with_format(&out.stdout, image::ImageFormat::Png).ok()?;
+        rgba_picture(img.to_rgba8())
+    })
+}
+
+#[cfg(target_os = "linux")]
+fn rgba_picture(img: image::RgbaImage) -> Option<crate::preview::Picture> {
+    let (w, h) = img.dimensions();
+    (w > 0 && h > 0).then(|| crate::preview::Picture {
+        w,
+        h,
+        rgba: img.into_raw(),
+        premultiplied: false,
+        icon: false,
     })
 }
 
@@ -3737,22 +3932,36 @@ fn set_xattr(path: &Path, name: &str, value: &str) {
     };
 }
 
+/// macOS: `NSApp` (`NSApplication.sharedApplication`), or `None` off the main thread. AppKit is
+/// used from the main thread only, and the first `sharedApplication` makes the application: made
+/// on another thread it traps (SIGTRAP) and the whole program ends. The windows' thread is the
+/// main one; a unit test's thread isn't, and the app's logic it runs may still bring a window
+/// forward (Download File Info's same address again, #1741), so every AppKit call here starts
+/// from this and does nothing elsewhere.
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+fn ns_app() -> Option<*mut objc2::runtime::AnyObject> {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject};
+    objc2::MainThreadMarker::new()?;
+    let cls = AnyClass::get(c"NSApplication")?;
+    // SAFETY: on the main thread (just checked); the class method that gives the application.
+    let app: *mut AnyObject = unsafe { msg_send![cls, sharedApplication] };
+    (!app.is_null()).then_some(app)
+}
+
 /// macOS: whether `NSApplication.sharedApplication` is currently the active foreground app with a
 /// visible, non-minimized titled window (#558).
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub fn macos_is_active_and_visible() -> bool {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); queries `NSApplication.sharedApplication`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return false;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return false;
-        }
         let active: Bool = msg_send![app, isActive];
         if !active.as_bool() {
             return false;
@@ -3795,17 +4004,13 @@ pub fn macos_is_active_and_visible() -> bool {
 #[allow(unsafe_code)]
 pub fn macos_unhide_app() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; reads `isHidden` of, and sends
+    use objc2::runtime::Bool;
+    // SAFETY: on the main thread (`ns_app`); reads `isHidden` of, and sends
     // `unhideWithoutActivation` to, `NSApplication.sharedApplication`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let hidden: Bool = msg_send![app, isHidden];
         if hidden.as_bool() {
             let _: () = msg_send![app, unhideWithoutActivation];
@@ -3819,16 +4024,12 @@ pub fn macos_unhide_app() {
 #[allow(unsafe_code)]
 pub fn macos_hide_window() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; orders out titled windows and hides `NSApp`.
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); orders out titled windows and hides `NSApp`.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
         let windows: *mut AnyObject = msg_send![app, windows];
         let mut visible_titled = 0usize;
@@ -3890,15 +4091,9 @@ unsafe fn activate_nsapp(app: *mut objc2::runtime::AnyObject, all_windows: bool)
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
 pub fn macos_activate_app() {
-    use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject};
-    // SAFETY: called on the main UI thread; queries `NSApplication.sharedApplication`.
+    // SAFETY: `ns_app` gives `NSApp` on the main thread only.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
-            return;
-        };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if !app.is_null() {
+        if let Some(app) = ns_app() {
             activate_nsapp(app, false);
         }
     }
@@ -3913,17 +4108,13 @@ pub fn macos_activate_app() {
 #[allow(unsafe_code)]
 pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2::runtime::{AnyObject, Bool};
     use objc2_foundation::NSString;
     let want = NSString::from_str(&crate::i18n::os_text(title));
-    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and orders the matching
+    // SAFETY: on the main thread (`ns_app`); iterates `[NSApp windows]` and orders the matching
     // visible, non-miniaturized titled window to the front.
     unsafe {
-        let cls = AnyClass::get(c"NSApplication")?;
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return None;
-        }
+        let app = ns_app()?;
         let windows: *mut AnyObject = msg_send![app, windows];
         if windows.is_null() {
             return None;
@@ -3978,17 +4169,13 @@ pub fn macos_bring_window_forward(title: &str) -> Option<bool> {
 #[allow(unsafe_code)]
 pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
+    use objc2::runtime::{AnyObject, Bool};
     use objc2_foundation::NSString;
     let want = NSString::from_str(&crate::i18n::os_text(title));
-    // SAFETY: called on the main UI thread; iterates `[NSApp windows]` and reads the matching
+    // SAFETY: on the main thread (`ns_app`); iterates `[NSApp windows]` and reads the matching
     // titled window's `isMiniaturized`, changing nothing.
     unsafe {
-        let cls = AnyClass::get(c"NSApplication")?;
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return None;
-        }
+        let app = ns_app()?;
         let windows: *mut AnyObject = msg_send![app, windows];
         if windows.is_null() {
             return None;
@@ -4023,17 +4210,13 @@ pub fn macos_window_miniaturized(title: &str) -> Option<bool> {
 #[allow(unsafe_code)]
 pub fn macos_activate_and_show() {
     use objc2::msg_send;
-    use objc2::runtime::{AnyClass, AnyObject, Bool};
-    // SAFETY: called on the main UI thread; activates `NSRunningApplication.currentApplication` and
+    use objc2::runtime::{AnyObject, Bool};
+    // SAFETY: on the main thread (`ns_app`); activates `NSRunningApplication.currentApplication` and
     // `NSApplication.sharedApplication`, and orders all titled windows to the front.
     unsafe {
-        let Some(cls) = AnyClass::get(c"NSApplication") else {
+        let Some(app) = ns_app() else {
             return;
         };
-        let app: *mut AnyObject = msg_send![cls, sharedApplication];
-        if app.is_null() {
-            return;
-        }
         let null_obj: *mut AnyObject = std::ptr::null_mut();
         activate_nsapp(app, true);
         let windows: *mut AnyObject = msg_send![app, windows];
@@ -4325,6 +4508,29 @@ mod macos_focus_tests {
         assert!(super::macos_window_needs_lift(true, true, true));
         assert!(super::macos_window_needs_lift(true, false, false));
         assert!(super::macos_window_needs_lift(false, true, false));
+    }
+
+    /// AppKit off the main thread does nothing (`ns_app`): Download File Info's same address
+    /// again brought its window forward from a test's thread, and the first `NSApp` made there
+    /// trapped and ended the whole macOS test run (#1741).
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn appkit_off_the_main_thread_does_nothing() {
+        std::thread::spawn(|| {
+            assert!(super::ns_app().is_none());
+            super::macos_activate_app();
+            super::macos_unhide_app();
+            super::macos_hide_window();
+            super::macos_activate_and_show();
+            assert!(!super::macos_is_active_and_visible());
+            assert_eq!(
+                super::macos_bring_window_forward("Download File Info"),
+                None
+            );
+            assert_eq!(super::macos_window_miniaturized("Download File Info"), None);
+        })
+        .join()
+        .expect("nothing traps or panics");
     }
 }
 
@@ -5050,6 +5256,171 @@ mod host_copy_tests {
         );
         if cfg!(target_os = "linux") {
             assert_eq!(registration_in(dirs(), false), Registration::Missing);
+        }
+    }
+}
+
+// ---- pop-ups that wait (#1773, hold.rs) ---------------------------------------------------
+
+/// The session's lock as logind last said it (`LockedHint`): 0 not known, 1 unlocked, 2 locked.
+#[cfg(target_os = "linux")]
+static SESSION_LOCKED: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(0);
+
+/// Linux: why MDM's pop-ups wait now: the session locked (logind's `LockedHint`, which GNOME's
+/// and KDE's lock screens set), or the active X11 window full screen (`_NET_WM_STATE_FULLSCREEN`:
+/// a game, a video, a presentation; on Wayland, the programs that run on XWayland, as most games
+/// do). A Wayland program's own full screen can't be seen: Wayland tells no program about
+/// another's windows. Nor is the desktop's idle inhibition taken for "busy": a video playing in a
+/// window, or music, holds it too. None where neither can be known: pop-ups show as before.
+#[cfg(target_os = "linux")]
+pub fn pop_ups_wait() -> Option<crate::hold::Busy> {
+    watch_session_lock();
+    if SESSION_LOCKED.load(std::sync::atomic::Ordering::Relaxed) == 2 {
+        return Some(crate::hold::Busy::Away);
+    }
+    active_window_full_screen().then_some(crate::hold::Busy::FullScreen)
+}
+
+/// Follows logind's `LockedHint` for this session on a thread of its own, from the first call.
+#[cfg(target_os = "linux")]
+fn watch_session_lock() {
+    static WATCH: std::sync::Once = std::sync::Once::new();
+    WATCH.call_once(|| {
+        let _ = std::thread::Builder::new()
+            .name("session-lock".into())
+            .spawn(|| {
+                let set = |locked: bool| {
+                    let v = if locked { 2 } else { 1 };
+                    if SESSION_LOCKED.swap(v, std::sync::atomic::Ordering::Relaxed) != v {
+                        tracing::info!(
+                            "the session is {}",
+                            if locked { "locked" } else { "unlocked" }
+                        );
+                    }
+                };
+                let watch = || -> zbus::Result<()> {
+                    let conn = zbus::blocking::Connection::system()?;
+                    // The user's graphical session, whose screen locks (logind's `User.Display`);
+                    // else "auto": this program's session, or its user's graphical one when the
+                    // program runs outside a session (started by the desktop's systemd user
+                    // manager); "self" on a logind before "auto". The program's own session can
+                    // be another one, without a screen (a remote login that started it).
+                    let display = zbus::blocking::Proxy::new(
+                        &conn,
+                        "org.freedesktop.login1",
+                        "/org/freedesktop/login1/user/self",
+                        "org.freedesktop.login1.User",
+                    )
+                    .and_then(|user| {
+                        user.get_property::<(String, zbus::zvariant::OwnedObjectPath)>("Display")
+                    })
+                    .ok()
+                    .map(|(_, path)| path.to_string())
+                    .filter(|path| path != "/");
+                    let session = display
+                        .into_iter()
+                        .chain([
+                            "/org/freedesktop/login1/session/auto".to_owned(),
+                            "/org/freedesktop/login1/session/self".to_owned(),
+                        ])
+                        .find_map(|path| {
+                            let p = zbus::blocking::Proxy::new(
+                                &conn,
+                                "org.freedesktop.login1",
+                                path.clone(),
+                                "org.freedesktop.login1.Session",
+                            )
+                            .ok()?;
+                            let now = p.get_property::<bool>("LockedHint").ok()?;
+                            Some((p, now, path))
+                        });
+                    let Some((session, now, path)) = session else {
+                        return Err(zbus::Error::Failure("no session of logind's".into()));
+                    };
+                    tracing::info!("the session's lock: followed on {path}");
+                    set(now);
+                    for change in session.receive_property_changed::<bool>("LockedHint") {
+                        set(change.get()?);
+                    }
+                    Ok(())
+                };
+                if let Err(e) = watch() {
+                    tracing::info!("the session's lock isn't known: {e}");
+                }
+            });
+    });
+}
+
+/// The X server's connection for [`active_window_full_screen`], and the atoms it asks with.
+#[cfg(target_os = "linux")]
+struct FullScreenLook {
+    conn: x11rb::rust_connection::RustConnection,
+    root: u32,
+    active: u32,
+    state: u32,
+    full: u32,
+}
+
+/// Whether the X server's active window is full screen (EWMH). False without an X server.
+#[cfg(target_os = "linux")]
+fn active_window_full_screen() -> bool {
+    use x11rb::connection::Connection;
+    use x11rb::protocol::xproto::{AtomEnum, ConnectionExt};
+    // Not tried yet: None; no X server: Some(None).
+    static X11: std::sync::Mutex<Option<Option<FullScreenLook>>> = std::sync::Mutex::new(None);
+    if std::env::var_os("DISPLAY").is_none_or(|d| d.is_empty()) {
+        return false;
+    }
+    let Ok(mut x11) = X11.lock() else {
+        return false;
+    };
+    let connect = || -> Result<FullScreenLook, Box<dyn std::error::Error>> {
+        let (conn, screen) = x11rb::rust_connection::RustConnection::connect(None)?;
+        let atom = |name: &[u8]| -> Result<u32, Box<dyn std::error::Error>> {
+            Ok(conn.intern_atom(false, name)?.reply()?.atom)
+        };
+        let (active, state, full) = (
+            atom(b"_NET_ACTIVE_WINDOW")?,
+            atom(b"_NET_WM_STATE")?,
+            atom(b"_NET_WM_STATE_FULLSCREEN")?,
+        );
+        let root = conn.setup().roots[screen].root;
+        Ok(FullScreenLook {
+            conn,
+            root,
+            active,
+            state,
+            full,
+        })
+    };
+    let look = x11.get_or_insert_with(|| connect().ok());
+    let Some(x) = look.as_ref() else {
+        return false;
+    };
+    let ask = || -> Result<bool, Box<dyn std::error::Error>> {
+        let active = x
+            .conn
+            .get_property(false, x.root, x.active, AtomEnum::WINDOW, 0, 1)?
+            .reply()?;
+        let Some(window) = active.value32().and_then(|mut v| v.next()) else {
+            return Ok(false);
+        };
+        if window == x11rb::NONE {
+            return Ok(false);
+        }
+        let state = x
+            .conn
+            .get_property(false, window, x.state, AtomEnum::ATOM, 0, 64)?
+            .reply()?;
+        Ok(state.value32().is_some_and(|mut v| v.any(|a| a == x.full)))
+    };
+    match ask() {
+        Ok(full) => full,
+        Err(_) => {
+            // A window gone between the two questions, or the connection lost: asked again
+            // next time, over a new connection.
+            *x11 = None;
+            false
         }
     }
 }

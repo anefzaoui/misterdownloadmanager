@@ -598,6 +598,7 @@ impl Progress {
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
         let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
             crate::dialogs::keyboard_to_click(ui.ctx());
+            winui::name_window(ui, &title_now);
             // Painted in the pass that closes it too (see dialogs::close_requested).
             let close = crate::dialogs::close_requested(ui);
             if !close && minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true))
@@ -784,9 +785,19 @@ impl Progress {
         // the file is checked or a video joined (#736), it starts again in the accent colour and
         // shows how far that is.
         let bar = r(lower, 17.0, 180.0, 513.0, 16.0);
-        match finishing_fraction(snap) {
+        let finishing = finishing_fraction(snap);
+        match finishing {
             Some(f) => winui::meter_in(&p, bar, f as f32, crate::theme::colors().accent),
             None => winui::meter(&p, bar, drawn.0 as f32),
+        }
+        // The same bar for a screen reader (#1406): the value it fills towards, which is what the
+        // page's own text says (the download's fraction; while the last bytes are checked or a
+        // video's streams joined, how far that is). Unnamed, as the list's rows are: a name is
+        // read in place of the value. A download whose size isn't known has no percentage to tell
+        // and gets no node, and neither has one that is finished (the bar is full, the text says
+        // Complete).
+        if let Some(f) = finishing.or(frac) {
+            winui::expose_progress(ui, bar, egui::Id::unique(("progress", item.id, "bar")), f);
         }
 
         let mut action = if hide { Action::Hide } else { Action::None };
@@ -1374,6 +1385,26 @@ impl Progress {
                 winui::text_fit(p, o.x + x, o.y + base, s, color, o.x + PAGE_TEXT_RIGHT);
             winui::copyable(ui, rect, key, s, cut);
         };
+
+        // Each row as a node of its own, named by its caption and carrying its value (#1406):
+        // the page paints them, and painted text is invisible to a reader on its own. The whole
+        // value is said, even where the row itself shows it cut with "..." ([fit] draws the cut
+        // one). A focusable label, as the help windows' blocks are (#1407): read with Tab, or
+        // from the reader's own review keys, without touching the copy menu the value keeps
+        // (Sense::focusable_noninteractive senses no clicks).
+        let spoken = |ui: &Ui, label: &str, base: f32, value: &str| {
+            let name = spoken_name(crate::i18n::t(label), value);
+            let rc = winui::rect(egui::Rect::from_min_max(
+                egui::pos2(o.x + 33.0, o.y + base - 12.0),
+                egui::pos2(o.x + PAGE_TEXT_RIGHT, o.y + base + 4.0),
+            ));
+            let resp = ui.interact(
+                rc,
+                egui::Id::unique(("status-row", item.id, label)),
+                egui::Sense::focusable_noninteractive(),
+            );
+            winui::expose(&resp, egui::Role::Label, &name, true, None);
+        };
         let web_page = item.got_web_page();
         // A failure that takes a paragraph to explain: the reason under "Error", in the rows of
         // the sizes and times, which say nothing then (a site's page, #701; an answer far smaller
@@ -1446,6 +1477,12 @@ impl Progress {
             // A video's stream, not its page (#795).
             &crate::i18n::ltr(item.file_address().as_str()),
             winui::TEXT(),
+        );
+        spoken(
+            ui,
+            "Address",
+            44.0,
+            &crate::i18n::ltr(item.file_address().as_str()),
         );
         let rows: [(&str, f32, f32, String); 6] = [
             // i18n: noun: label before the download's state
@@ -1542,6 +1579,7 @@ impl Progress {
                 winui::TEXT()
             };
             fit(ui, label, vx, base, &value, vc);
+            spoken(ui, label, base, &value);
         }
         if explained {
             winui::paragraph(
@@ -2541,9 +2579,46 @@ fn connections(ui: &mut Ui, p: &egui::Painter, o: Pos2, snap: Option<&Snapshot>)
     );
 }
 
+/// A status row's name for a screen reader: its caption, then its whole value, with every `&`
+/// doubled. [`winui::expose`] reads a single `&` as a keyboard mnemonic and drops it — right for a
+/// button's own label, and wrong here, where the row draws its caption and its value as they are:
+/// an address with a query string (`?seed=1406&rate=24K`) has to be read whole, and a file name
+/// with one too (#1406, the review's fix: `expose` turns `&&` back into one `&`).
+fn spoken_name(caption: &str, value: &str) -> String {
+    let name = if value.is_empty() {
+        caption.to_owned()
+    } else {
+        format!("{caption}: {value}")
+    };
+    name.replace('&', "&&")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The name a row is said with: caption, then value, and the value's own `&` doubled so that
+    /// `winui::expose` (which reads `&&` as one `&`) says the address whole.
+    #[test]
+    fn a_row_with_a_query_string_is_said_whole() {
+        assert_eq!(
+            spoken_name(
+                "Address",
+                "http://127.0.0.1:8099/gen/2G/a.bin?seed=1406&rate=24K&Expires=7"
+            ),
+            "Address: http://127.0.0.1:8099/gen/2G/a.bin?seed=1406&&rate=24K&&Expires=7"
+        );
+        // A file name with one, in any row's value (and the caption as it is drawn: no `&` there).
+        assert_eq!(
+            spoken_name("File size", "2.000 GB & more"),
+            "File size: 2.000 GB && more"
+        );
+    }
+
+    #[test]
+    fn a_row_without_a_value_is_its_caption_alone() {
+        assert_eq!(spoken_name("Time left", ""), "Time left");
+    }
 
     /// A live stream being recorded: its Pause button stops and saves it; while it is saved
     /// the button waits; every other download's is Pause or Resume as before. Only a live

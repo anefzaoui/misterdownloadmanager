@@ -32,15 +32,17 @@ branches and the category or queue you were looking at.
 | **Last Try Date** | When it last ran. |
 | **Added** | When you added it. |
 | **Description** | Your note from **Download File Info** or **Properties**. |
+| **Save To** | The folder the download is saved in (a torrent's or a gallery's own folder is in it). |
 
-- **Sort:** click a column title. Click again to reverse the order, and a third time to go back to the order of addition. **View → Arrange files** does the same from the menu.
+- **Sort:** click a column title. Click again to reverse the order, and a third time to go back to the order of addition. **View → Arrange files** does the same from the menu (**By Save Path** sorts by the **Save To** column's folder).
 - **Move a column:** drag its title sideways.
 - **Resize a column:** drag the line between two titles; double-click it to fit the column to
   its contents.
 - **Choose columns:** right-click any column title and tick the ones you want. **Reset columns**
   in the same menu puts them back as they first were.
 
-MDM remembers the columns, their widths and the sort order.
+MDM remembers the columns, their widths and the sort order. A list from an earlier version gets
+**Save To** at its end; untick it there if you don't want it.
 
 ## Filters
 
@@ -79,6 +81,27 @@ To bring the built-in categories back as they came, with their names, file types
 
 The top branches show how many downloads they hold. **View → Hide categories** gives the list
 the whole window.
+
+## The preview pane
+
+**View → Show preview pane**, the **Preview** button at the toolbar's end, or **Alt+P** opens a
+pane beside the list (on its left in right-to-left languages) with the selected download:
+
+- its picture: the one your file manager shows (Windows' thumbnail of a photo, a video, a PDF or
+  a document, a program's own icon; on Linux your desktop's thumbnail, or one MDM makes of a
+  photo or a video's frame), else its file type's large icon. Only a finished file has one;
+- its name and type, its size (how much has come while it downloads, with its progress bar) and
+  its status;
+- **File:** whether the finished file is **still there**, or was **moved or deleted** (MDM looks
+  again every few seconds while it is shown), or its folder can't be reached now (a drive that
+  isn't plugged in);
+- where it was saved, its address and the web page it came from (right-click one to copy it),
+  when it was added and when it finished.
+
+With several downloads selected it says how many, how many are finished and their total size.
+Drag the pane's edge to make it wider or narrower; its **x**, the button or Alt+P again hide it.
+MDM remembers it shown or hidden, and its width. In a language whose menu bar has P for a
+menu's letter (Polish, Croatian...), Alt+P opens that menu instead, as Windows' menus do.
 
 ## Dropping links and files
 
@@ -120,6 +143,8 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 *File Properties: change the address or the folder of a download.*
 
 **Move/Rename** (**Ctrl+M**) moves or renames the file of a finished download, or of one that hasn't started yet. With several downloads selected it asks for a folder and moves them all there, each under its own name.
+
+**Redownload** downloads a file again from the start, one download at a time. A finished file stays as it is while the new copy comes in, and the new copy takes its place, under the same name, only once it is complete: if the new download fails or you stop it, you still have your file. If another program has the file open at that moment (on Windows), MDM keeps both, saves the new copy beside it with a number (`name (1).ext`) and tells you. Torrents, videos and image galleries don't have it: a torrent's **Recheck files** finds and fetches its damaged pieces, and a finished gallery's **Resume Download** fetches the files it is missing.
 
 ## Verify checksum
 

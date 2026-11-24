@@ -6,7 +6,7 @@
 
 <h3 align="center">Downloads faster than IDM. Free, forever.</h3>
 
-<p align="center">🌐 <a href="https://misterdownloadmanager.com"><b>misterdownloadmanager.com</b></a>: the official website, with the downloads, help and news</p>
+<p align="center">🌐 <a href="https://misterdownloadmanager.com"><b>misterdownloadmanager.com</b></a>: the official website, with the downloads, help and news. Liked MDM? <a href="https://misterdownloadmanager.com/#rate">Rate it there</a>, one to five stars.</p>
 
 <p align="center">
   <a href="https://github.com/anefzaoui/misterdownloadmanager/releases/latest"><img src="https://img.shields.io/badge/Download%20for-Windows-2a78d6?style=flat-square&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0yIDMuNWw4LjUtMS4ydjguMkgyek0xMS41IDIuMkwyMiAuOHY5LjdIMTEuNXpNMiAxMS41aDguNXY4LjJMMiAxOC41ek0xMS41IDExLjVIMjJ2OS43bC0xMC41LTEuNHoiLz48L3N2Zz4%3D" alt="Download for Windows" height="34"></a>
@@ -314,6 +314,8 @@ right-to-left window.
 - **Many links at once**: the Link grabber sorts them into packages and extracts the archives
   (zip, 7z, rar) when they're in. It takes Click'n'Load from link sites, asking once per site. Debrid accounts (Real-Debrid, AllDebrid, Premiumize, TorBox, Mega-Debrid; experimental) download
   file-host links through your own account.
+- **A list laid out your way**: show, move, resize and sort its columns, **Save To** (the folder
+  each download is in) among them, and filter any column ([how](docs/download-list.md)).
 - **Downloads overnight** with queues and a scheduler that can wake the computer, then shuts it
   down if you like.
 - **Through your VPN only**, if you want: hold every download to one network adapter, with a kill
@@ -323,6 +325,9 @@ right-to-left window.
 - **Works from scripts too**: IDM's command-line switches, a command-line tool, and a local API for other programs ([how](docs/command-line.md)).
 - **Works with your AI assistant**: an MCP server lets Claude, Cursor or VS Code list, add, pause and remove your downloads ([set it up](docs/ai-assistants.md)).
 - **Leaves you some speed**: limit one download or all of them, only while you're at the computer.
+- **Stays out of your game**: while a full-screen game, video or presentation is on, or the screen
+  is locked, **Download complete** and MDM's other pop-ups wait, and show when you're back
+  ([how](docs/options.md#downloads)).
 - **Day and dark mode, and themes**: Classic, Native, High contrast, Metro, Adwaita, Breeze,
   Luna, Aero and Aqua, or your own in a text file ([how](docs/themes.md)). Everything larger, up
   to 200 %, with **View → Interface size**. 86 languages, and a portable version for USB sticks.
@@ -448,6 +453,7 @@ pieces fit.
 | `tools/lab/wsl/` | A WSL2 machine that builds MDM for Linux in minutes and shoots its windows on a virtual screen ([README](tools/lab/wsl/README.md)) |
 | `tools\lab\progress-shots.ps1` | The progress window of a video (yt-dlp) and of a torrent, from a swarm on this computer (`cargo run -p mdm-torrent --example swarm`) |
 | `python tools/website/build.py --serve` | misterdownloadmanager.com into `target/site` (help pages from `docs/`, news from the CHANGELOG, FAQ and legal pages from `website/content/`), served on http://127.0.0.1:8765; GitHub Pages publishes it (`pages.yml`) |
+| `website/ratings/`, `website/markdown/` | The website's two Cloudflare Workers: the visitors' star ratings ([README](website/ratings/README.md)), and Markdown for AI tools and agents ([README](website/markdown/README.md)). Every page of the site also has a Markdown version (`/download.md` beside `/download.html`), and the site publishes `llms.txt`, an API catalog and an MCP server card: [For AI tools and agents](https://misterdownloadmanager.com/agents.html) |
 | `python tools/readme/social.py` | The repository's social preview card (`docs/images/social-preview.png`) |
 | `MDM_FIT_AUDIT=<file>` | Lists every text that doesn't fit its window or runs over another, for checking a translation |
 | `MDM_OFFSCREEN=1` | Opens every window off the screen, without focus, tray icon or sound (screenshots and checks) |

@@ -3386,8 +3386,8 @@ async fn a_name_to_be_numbered_resumes_the_downloads_own_state() {
     assert_eq!(left, saved, "the other download's state is as it was");
 }
 
-/// A file served from `--files` through `garble` (#1661): downloaded with `keep_state`, its
-/// last resume state handed back, and the download's server.
+/// A file served from `--files` through `garble` (#1661): downloaded on one connection with
+/// `keep_state`, its last resume state handed back, and the download's server.
 async fn garbled_download(
     data: &[u8],
     garble: u64,
@@ -3425,8 +3425,13 @@ async fn garbled_download(
         headers: Default::default(),
         dest: Destination::Dir(dir.path().to_owned()),
     };
+    // One connection: the one answer that carries the garbled bytes is the one written. The lab
+    // garbles only the first answer that carries the byte, and with more connections the first
+    // one (the whole file, garbled) can be split off before it reads that far: the byte then
+    // comes, right, from a later range, and the file is whole (seen now and then, in CI too).
     let opts = Options {
         keep_state: true,
+        max_connections: 1,
         ..fast_opts()
     };
     let dl = Download::start(req, opts);
@@ -3441,7 +3446,13 @@ async fn garbled_download(
             "{:?}",
             v.error
         );
-        assert!(std::time::Instant::now() < until, "no end: {:?}", v.state);
+        assert!(
+            std::time::Instant::now() < until,
+            "no end: {:?}, {:?}, {:?}",
+            v.state,
+            v.connections,
+            v.events
+        );
         tokio::time::sleep(std::time::Duration::from_millis(5)).await;
     };
     let path = dl.wait().await.unwrap().path;
