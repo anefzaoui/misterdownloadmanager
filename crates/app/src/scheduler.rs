@@ -266,8 +266,8 @@ impl Scheduler {
             f.apply_to(q);
         }
         let mut limits = self.limits.clone();
-        limits.mb = self.limits_mb.parse().unwrap_or(200).max(1);
-        limits.hours = self.limits_hours.parse().unwrap_or(5).max(1);
+        limits.mb = self.limits_mb.parse().unwrap_or(limits.mb).max(1);
+        limits.hours = self.limits_hours.parse().unwrap_or(limits.hours).max(1);
         (queues, limits)
     }
 
@@ -2400,6 +2400,27 @@ mod tests {
         assert_eq!(Form::of(&out).date, {
             NaiveDate::from_ymd_opt(2026, 12, 1).unwrap()
         });
+    }
+
+    #[test]
+    fn a_cleared_limit_box_keeps_the_limit_in_force() {
+        let settings = Settings {
+            limits_on: true,
+            limits_mb: 500,
+            limits_hours: 12,
+            ..Settings::default()
+        };
+        let mut s = Scheduler::new(&[], &settings);
+        // A box left empty (or unreadable) as OK is pressed keeps the limit that was in force.
+        s.limits_mb.clear();
+        s.limits_hours.clear();
+        let (_, limits) = s.state();
+        assert_eq!((limits.mb, limits.hours), (500, 12));
+        // A typed number is taken.
+        s.limits_mb = "700".into();
+        s.limits_hours = "8".into();
+        let (_, limits) = s.state();
+        assert_eq!((limits.mb, limits.hours), (700, 8));
     }
 
     #[test]
