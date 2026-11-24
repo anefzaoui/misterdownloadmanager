@@ -119,6 +119,8 @@ impl Properties {
     fn address_editable(&self, item: &Item) -> bool {
         item.status != Status::Complete
             && item.live.is_none()
+            // Its resume state is being moved (#1739): rewritten once it is at its place.
+            && item.move_from.is_none()
             && !self.stream
             && item.torrent.is_none()
     }
@@ -255,12 +257,10 @@ impl Properties {
             r(o, col, 140.0, 383.0 - col, 23.0),
             &dest.display().to_string(),
         );
-        // Moving: a finished file is moved; one that hasn't started gets a new destination.
-        let shared = item
-            .torrent
-            .as_ref()
-            .is_some_and(|t| t.shares_folder(&item.dest));
-        let movable = !shared && !running && (complete || item.downloaded == 0);
+        // Moving: a finished file is moved; one that hasn't started gets a new destination; one
+        // stopped part-way takes its part file and resume state along (#1739).
+        let refused = item.move_refused();
+        let movable = refused.is_none();
         let pick = winui::button_light(
             ui,
             r(o, 393.0, 141.0, 73.0, 21.0),
@@ -273,21 +273,7 @@ impl Properties {
             },
             false,
         );
-        let pick = winui::why_disabled(
-            pick,
-            !movable,
-            if shared {
-                // i18n: shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
-                crate::i18n::mark("This torrent shares its destination folder")
-            } else if running {
-                // i18n: tooltip of the greyed Move button in File Properties
-                crate::i18n::mark("Pause the download first")
-            } else {
-                // i18n: tooltip of the greyed Move button in File Properties
-                crate::i18n::mark("Only a finished download, or one not started yet, can be moved")
-            },
-        )
-        .clicked();
+        let pick = winui::why_disabled(pick, !movable, refused.unwrap_or_default()).clicked();
         if pick && movable {
             let title = crate::i18n::t("Move to folder").to_owned();
             let from = item.dest.parent().unwrap_or(Path::new(".")).to_path_buf();

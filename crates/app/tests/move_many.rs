@@ -2,7 +2,7 @@
 //! folder and a download folder of its own: every row selected (`/show context:all`), then the
 //! command (`/show move-rename`), the folder dialog answered by MDM_TEST_MOVE_TO. What can go goes
 //! there under its own name (two not started under one name get a free one each), a part-way
-//! download stays where its pieces are.
+//! download with its part file and resume state (#1739).
 //!
 //! It opens windows, which needs OpenGL or Direct3D, so it runs on request:
 //! `cargo test -p mdm-app --test move_many -- --ignored`.
@@ -72,6 +72,14 @@ fn a_selection_moves_to_one_folder() {
     for name in ["done-1.bin", "done-2.bin"] {
         std::fs::write(dl.join(name), [b'x'; 1000]).unwrap();
     }
+    // Stopped at 300 of 1000 bytes: its part file and resume state.
+    std::fs::write(dl.join("partial.bin.mdm.part"), [b'p'; 1000]).unwrap();
+    let state = serde_json::json!({
+        "version": 1, "url": "https://files.example/partial.bin",
+        "final_url": "https://files.example/partial.bin", "dest": dl.join("partial.bin"),
+        "size": 1000, "segments": [{ "start": 0, "cursor": 300, "end": 1000 }],
+    });
+    std::fs::write(dl.join("partial.bin.mdm.json"), state.to_string()).unwrap();
     let items = [
         item(1, "waiting.zip", "Queued", 0, &dl),
         item(2, "same.zip", "Queued", 0, &dl),
@@ -107,12 +115,20 @@ fn a_selection_moves_to_one_folder() {
         });
         second_launch(&data, &dl, "move-rename");
         wait_for("finished files in the new folder", &data, || {
-            to.join("done-1.bin").exists() && to.join("done-2.bin").exists()
+            to.join("done-1.bin").exists()
+                && to.join("done-2.bin").exists()
+                && to.join("partial.bin.mdm.json").exists()
         });
-        // Saved within a second or so of the change.
+        // Saved within a second or so of the change: every row in the new folder, none still
+        // moving (a part-way download's move saves the list as it begins, before the finished
+        // files' moves are done).
         wait_for("the new places saved", &data, || {
-            std::fs::read_to_string(data.join("downloads.json"))
-                .is_ok_and(|t| t.contains("same (1).zip"))
+            std::fs::read_to_string(data.join("downloads.json")).is_ok_and(|t| {
+                serde_json::from_str::<serde_json::Value>(&t).is_ok_and(|j| {
+                    !t.contains("move_from")
+                        && (1..=6).all(|id| saved_place(&j, id, root).starts_with("to/"))
+                })
+            })
         });
     }));
     let _ = app.kill();
@@ -130,8 +146,19 @@ fn a_selection_moves_to_one_folder() {
     assert_eq!(saved_place(&j, 5, root), "to/done-2.bin");
     assert_eq!(
         saved_place(&j, 6, root),
-        "dl/partial.bin",
-        "part-way: it stays"
+        "to/partial.bin",
+        "part-way: it goes too"
     );
+    assert_eq!(
+        std::fs::read(to.join("partial.bin.mdm.part")).unwrap(),
+        [b'p'; 1000]
+    );
+    let state: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(to.join("partial.bin.mdm.json")).unwrap()).unwrap();
+    assert_eq!(
+        state["dest"].as_str().map(Path::new),
+        Some(to.join("partial.bin").as_path())
+    );
+    assert!(!dl.join("partial.bin.mdm.part").exists() && !dl.join("partial.bin.mdm.json").exists());
     assert!(!dl.join("done-1.bin").exists());
 }

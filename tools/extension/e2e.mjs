@@ -66,7 +66,11 @@
 // headless MDM; E2E_REMOTE_URL for one running elsewhere, such as the Docker image: remoteServer),
 // byhand (the copy loaded here by hand says so in its popup, with its browser's store, #1613),
 // part (the button's menu's "Download a part from here...": the Download video window, its part
-// starting where the player is, #1662).
+// starting where the player is, #1662), calm (the button round in a feed and whole over a big
+// player by default, faint as the pointer rests or leaves, dragged outside the player and kept for
+// the site, back in its corner from its menu and from the popup's Reset; #1735 and the feedback
+// of 2026-11-23; E2E_SHOTS: <lang>-<scheme>-feed.png, -player.png, -faint.png, -outside.png,
+// -popup-reset.png).
 //
 // Screenshots for a pull request (Chromium only): E2E_LANG=de (or ar, ...) starts the browser in that
 // language, so the extension shows its _locales text of it; with E2E_SHOTS=<folder> the `qualities`
@@ -362,6 +366,10 @@ const PICKS = (reveal = "") => `function () {
       return out; })(),
     open: { text: open.textContent, ...at(open) },
     part: (() => { const e = m.querySelector('[data-act="part"]'); return e ? { text: e.textContent, ...at(e) } : null; })(),
+    // #1735: the filters' chips (what it lists, its file types, its codecs), and "Put the button
+    // back in its corner" when it shows.
+    filters: [...m.querySelectorAll(".filters .fc")].map((e) => ({ dim: e.dataset.filter, value: e.dataset.value, on: e.getAttribute("aria-checked") === "true", text: e.textContent, ...at(e) })),
+    home: (() => { const e = m.querySelector('[data-act="home"]'); return e && !e.hidden ? { text: e.textContent, ...at(e) } : null; })(),
   });
 }`;
 // Where the button's arrow (its menu) is.
@@ -404,6 +412,7 @@ const PILL_STATE = `function () {
     text: this.querySelector(".label").textContent,
     chip: this.querySelector(".chip").textContent,
     compact: p.classList.contains("compact"),
+    faint: p.classList.contains("faint"),
     acts: [...this.querySelectorAll(".act")].map((b) => ({ act: b.dataset.act, text: b.textContent, ...at(b) })),
   });
 }`;
@@ -566,8 +575,17 @@ async function chromium(bin, profile, dl, page, ready, name = "Chromium") {
       const r = await cdp.send("Runtime.callFunctionOn", { objectId: object.objectId, functionDeclaration: fn, returnByValue: true }, sessionId);
       return r.result.value ? JSON.parse(r.result.value) : null;
     };
-    const pill = (fn = PILL_STYLE) => inShadow(fn);
-    const picks = (reveal) => inShadow(PICKS(reveal));
+    // One at a time: DOM.getDocument gives the whole tree new node ids, so a second call between
+    // another's getDocument and its resolveNode left that one with an id that no longer exists
+    // ("No node with given id found"; the feeds case watches the button's words while it clicks).
+    let shadowQueue = Promise.resolve();
+    const inShadowOnce = (fn) => {
+      const run = shadowQueue.then(() => inShadow(fn));
+      shadowQueue = run.catch(() => {});
+      return run;
+    };
+    const pill = (fn = PILL_STYLE) => inShadowOnce(fn);
+    const picks = (reveal) => inShadowOnce(PICKS(reveal));
     // Another tab at `url` (the extension's own pages too): its `evaluate` and `close`.
     const tab = async (url) => {
       const { targetId: tid } = await cdp.send("Target.createTarget", { url });
@@ -1077,7 +1095,11 @@ async function requests(p) {
   const log = await (await fetch(`${LAB}/_log`)).json();
   return log.filter((e) => e.path === p).sort((a, b) => a.req - b.req);
 }
-const clearLog = () => fetch(`${LAB}/_log`, { method: "DELETE" });
+// What a failed fetch says: undici's "fetch failed" names its cause only there.
+const clearLog = () =>
+  fetch(`${LAB}/_log`, { method: "DELETE" }).catch((e) => {
+    throw new Error(`the lab server's log: ${e.message} (${(e.cause && (e.cause.code || e.cause.message)) || "no cause"})`);
+  });
 const brief = (e) => `${e.method} ${e.status} ${e.outcome} ${e.range || "-"}`;
 
 // ---- another Mister Download Manager (the remote case, #157) -------------------------------------
@@ -1323,6 +1345,15 @@ const rect = (session, sel) =>
     if (!e || (e.localName === "mdm-video-button" && e.style.display !== "block")) return null;
     const r = e.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; })()`);
 
+// The button shown whole: there, and not faint (it goes faint as the pointer rests over the video
+// or leaves it, and goes some seconds later: video.js fadeState).
+const whole = async (session) => {
+  const b = await rect(session, "mdm-video-button");
+  if (!b) return null;
+  const p = await session.pill(PILL_STATE).catch(() => null);
+  return p && p.faint ? null : b;
+};
+
 // #480: a mouse-focused player must still fade, including after entering fullscreen. Run
 // against a local player so YouTube's network, sign-in and changing layout aren't involved.
 export async function videoFocus(session) {
@@ -1345,8 +1376,9 @@ export async function videoFocus(session) {
   })()`);
   const focused = (id) => session.evaluate(`document.activeElement?.id === ${JSON.stringify(id)}`);
   const keyboard = () => session.evaluate('document.querySelector("#focus-player").matches(":focus-visible")');
-  const shown = () => rect(session, "mdm-video-button");
-  const idle = () => sleep(3100); // 2600 ms idle + the 180 ms fade, with room for a slow frame.
+  // Whole: faint is faded (it rests faint a few seconds before it goes).
+  const shown = () => whole(session);
+  const idle = () => sleep(3100); // 1500 ms idle + the 400 ms fade to faint, with room for a slow frame.
   const v = await rect(session, "#video");
   await session.mouse((v.l + v.r) / 2, (v.t + v.b) / 2, "click");
   if (!(await focused("focus-player")) || await keyboard()) throw new Error("player did not receive mouse focus");
@@ -1569,6 +1601,255 @@ async function videoButton(session, never) {
   return "shown, clicked (its file downloaded, Show), its menu's window, dragged, kept, never on the site, turned on, never again";
 }
 
+// ---- the button kept out of the way (#1735, the feedback of 2026-11-23) -----------------------
+
+// Our own sample pages, drawn into the lab's page (nothing of a real site's): a feed of posts, each
+// a small video in its card, as on a social site; and a video site's watch page, its big player
+// with the title and a column of other videos beside it. Light and dark as the browser is.
+const SAMPLE_CSS = `
+  :root { color-scheme: light dark; --bg: #eef0f3; --card: #fff; --tx: #15181d; --tx2: #5d6470; --line: #dde1e6; --top: #fff; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #17191c; --card: #23262a; --tx: #e8eaed; --tx2: #a3a9b3; --line: #33373c; --top: #1d2023; } }
+  html, body { margin: 0; background: var(--bg); color: var(--tx); font: 14px/1.4 "Segoe UI", system-ui, sans-serif; }
+  .top { height: 52px; display: flex; align-items: center; gap: 14px; padding: 0 20px; background: var(--top); border-bottom: 1px solid var(--line); }
+  .mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, #4f7cff, #22b8a7); }
+  .find { flex: 0 1 420px; height: 32px; border-radius: 16px; background: var(--bg); border: 1px solid var(--line); }
+  .feed { width: 540px; margin: 18px auto; display: flex; flex-direction: column; gap: 14px; }
+  .post { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 0 4px; }
+  .who { display: flex; gap: 10px; align-items: center; padding: 0 14px 10px; }
+  .face { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700; }
+  .name { font-weight: 600; } .when { color: var(--tx2); font-size: 12px; }
+  .text { padding: 0 14px 10px; }
+  .post video { display: block; width: 540px; height: 304px; background: #000; }
+  .acts { display: flex; justify-content: space-around; padding: 8px 0; color: var(--tx2); font-weight: 600; border-top: 1px solid var(--line); margin-top: 4px; }
+  .watch { display: flex; gap: 24px; padding: 20px 24px; }
+  .watch .main { width: 896px; }
+  .watch video { display: block; width: 896px; height: 504px; background: #000; border-radius: 12px; }
+  .watch h1 { font-size: 19px; margin: 12px 0 6px; }
+  .side { display: flex; flex-direction: column; gap: 10px; width: 300px; }
+  .thumb { display: flex; gap: 8px; } .thumb i { width: 150px; height: 84px; border-radius: 8px; background: var(--line); flex: none; }
+  .thumb b { display: block; font-size: 13px; } .thumb span { color: var(--tx2); font-size: 12px; }
+`;
+const samplePage = (kind, clip) => `(() => {
+  const css = ${JSON.stringify(SAMPLE_CSS)};
+  const clip = ${JSON.stringify(clip)};
+  document.head.innerHTML = '<meta charset="utf-8"><title>Sample</title>';
+  const style = document.createElement("style");
+  style.textContent = css;
+  document.head.append(style);
+  const top = '<div class="top"><i class="mark"></i><b>Sample site</b><span class="find"></span></div>';
+  if (${JSON.stringify(kind)} === "feed") {
+    const post = (face, color, name, text) =>
+      '<article class="post"><div class="who"><span class="face" style="background:' + color + '">' + face + '</span><div><div class="name">' + name + '</div><div class="when">2 h</div></div></div>' +
+      '<div class="text">' + text + '</div><video controls preload="metadata" src="' + clip + '"></video><div class="acts"><span>Like</span><span>Comment</span><span>Share</span></div></article>';
+    document.body.innerHTML = top + '<div class="feed" role="feed">' +
+      post("RA", "#5b7cfa", "River Atlas", "Morning light over the harbour, one minute of calm.") +
+      post("NW", "#1fa38a", "North Woods Club", "Trail run, the last kilometre.") + "</div>";
+  } else {
+    const thumbs = ["Mountain lake at dawn", "City at night, time-lapse", "How bread rises", "A walk by the sea"]
+      .map((t) => '<div class="thumb"><i></i><div><b>' + t + '</b><span>Sample channel</span></div></div>').join("");
+    document.body.innerHTML = top + '<div class="watch"><div class="main"><video id="player" controls preload="metadata" src="' + clip + '"></video>' +
+      '<h1>Sample clip: a calm minute</h1><div class="when">Sample channel · 1,204 views</div></div><div class="side">' + thumbs + '</div></div>';
+  }
+  return document.querySelectorAll("video").length;
+})()`;
+
+// Where an item of the button's menu is ("home": Put the button back in its corner), or null.
+const MENU_ITEM_AT = (act) => `function () {
+  const e = this.querySelector('.menu.open [data-act="${act}"]');
+  const r = e && !e.hidden && e.getBoundingClientRect();
+  return JSON.stringify(r && r.width ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null);
+}`;
+// The button's own direction (its language's): its corner is the top's end.
+const PILL_DIR = `function () { const p = this.querySelector(".pill"); return JSON.stringify(p ? p.dir : null); }`;
+
+async function calmButton(session) {
+  const shots = process.env.E2E_SHOTS && session.shot ? path.resolve(process.env.E2E_SHOTS) : "";
+  const tag = `${process.env.E2E_LANG || "en"}-${process.env.E2E_COLOR_SCHEME || "system"}`;
+  const shoot = async (name, box) => {
+    if (!shots) return;
+    await sleep(450);
+    await session.shot(path.join(shots, `${tag}-${name}.png`), { l: Math.max(0, box.l), t: Math.max(0, box.t), r: box.r, b: box.b });
+  };
+  const clip = `${LAB}/gen/1M/clip.mp4`;
+  const page = `${LAB}/page?link=none`;
+  const done = [];
+  const draw = async (kind) => {
+    await session.mouse(5, 5);
+    await session.navigate(page);
+    await session.evaluate(samplePage(kind, clip));
+    await sleep(300);
+  };
+  const form = () => session.pill(PILL_STATE);
+  // A drag of the button's main part from where it is to (x, y), as a person makes it.
+  const drag = async (b, x, y) => {
+    const from = { x: await mainPart(session, b), y: (b.t + b.b) / 2 };
+    await session.mouse(from.x, from.y, "down");
+    await session.mouse(from.x + 6, from.y + 6);
+    await session.mouse((from.x + x) / 2, (from.y + y) / 2);
+    await session.mouse(x, y);
+    await session.mouse(x, y, "up");
+    await sleep(300);
+    return rect(session, "mdm-video-button");
+  };
+  // E2E_CALM_BEFORE=1 (pictures for a pull request): the feed as it was before Automatic, with
+  // Full, the old default, chosen: the whole button over the post's video.
+  const before = process.env.E2E_CALM_BEFORE === "1";
+  if (before) {
+    await panelSettings({ video_panel_full: true });
+    await sleep(PANEL_KEPT_MS);
+  }
+  // Where an earlier case put the button on this site (the video case drags it), forgotten: the
+  // popup's own storage, as its Reset does.
+  const forget = async () => {
+    const popup = await session.tab(`${session.base}popup.html`);
+    try {
+      await until("the button's places forgotten", 10000, () =>
+        popup.evaluate("(globalThis.browser ?? chrome).storage.local.remove(['positions', 'videoFilters']).then(() => true)").catch(() => false),
+      );
+    } finally {
+      await popup.close();
+    }
+  };
+  await forget();
+  // The video case's "Never on the site" (in the last browser) leaves the lab's site listed.
+  const listed = () => {
+    try {
+      const saved = JSON.parse(fs.readFileSync(path.join(data, "downloads.json"), "utf8").replace(/^﻿/, "")).settings;
+      return (saved.video_panel_sites || "").split(" ").includes("127.0.0.1");
+    } catch {
+      return false;
+    }
+  };
+  if (listed()) {
+    await panelSettings({ video_panel_sites: "" });
+    await sleep(PANEL_KEPT_MS);
+  }
+  try {
+    // 1. A feed: a post's video gets the round button (Automatic, the default).
+    await draw("feed");
+    const post = await session.evaluate('JSON.stringify(document.querySelector(".post").getBoundingClientRect())').then(JSON.parse);
+    const fv = await rect(session, ".post video");
+    let b = await hover(session, fv);
+    if (!b) throw new Error("no button over the feed's video");
+    if (before) {
+      await until("the whole button in the feed (Full)", 15000, async () => {
+        await session.mouse((fv.l + fv.r) / 2 + (Date.now() % 2), (fv.t + fv.b) / 2);
+        const p = await form();
+        return p && !p.compact ? p : null;
+      });
+      await shoot("feed-before", { l: post.left - 16, t: post.top - 16, r: post.right + 16, b: post.bottom + 16 });
+      return "the feed with Full (as before): the whole button";
+    }
+    const inFeed = await until("the round button in the feed", 5000, async () => {
+      const p = await form();
+      return p && p.compact ? p : null;
+    }).catch(async (e) => {
+      throw new Error(`${e.message} (the button: ${JSON.stringify(await form())})`);
+    });
+    const rtl = (await session.pill(PILL_DIR)) === "rtl";
+    // Its corner: the top's end (the top left, right to left).
+    if (rtl) near(b.l, fv.l + 8, "feed: the button's left edge (right to left)");
+    else near(b.r, fv.r - 8, "feed: the button's right edge");
+    await shoot("feed", { l: post.left - 16, t: post.top - 16, r: post.right + 16, b: post.bottom + 16 });
+    done.push(`feed: round (${Math.round(b.r - b.l)} px)`);
+
+    // 2. A big player: the whole button, its words.
+    await draw("watch");
+    const v = await rect(session, "#player");
+    b = await hover(session, v);
+    if (!b) throw new Error("no button over the big player");
+    const big = await until("the whole button over the big player", 5000, async () => {
+      await session.mouse((v.l + v.r) / 2 + (Date.now() % 2), (v.t + v.b) / 2);
+      const p = await form();
+      return p && !p.compact ? p : null;
+    });
+    b = await rect(session, "mdm-video-button");
+    await shoot("player", { l: v.l - 16, t: v.t - 16, r: v.r + 16, b: Math.min(v.b, v.t + 200) });
+    done.push(`big player: whole ("${big.text}", ${Math.round(b.r - b.l)} px)`);
+
+    // 3. Faint as the pointer rests, then gone; whole again as it moves.
+    await session.mouse((v.l + v.r) / 2 + 3, (v.t + v.b) / 2 + 3);
+    await until("the whole button", 3000, () => whole(session));
+    const rested = Date.now();
+    const faint = await until("the faint button, the pointer resting", 4000, async () => {
+      const p = await form();
+      return p && p.faint && (await rect(session, "mdm-video-button")) ? p : null;
+    });
+    const faintMs = Date.now() - rested;
+    await shoot("faint", { l: v.l - 16, t: v.t - 16, r: v.r + 16, b: Math.min(v.b, v.t + 200) });
+    await until("the button gone, the pointer still resting", 6000, async () => !(await rect(session, "mdm-video-button")));
+    const goneMs = Date.now() - rested;
+    if (faintMs < 1200) throw new Error(`faint ${faintMs} ms after the pointer rested, not about 1.5 s`);
+    if (goneMs < 4000) throw new Error(`gone ${goneMs} ms after the pointer rested, not about 4.5 s`);
+    await session.mouse((v.l + v.r) / 2, (v.t + v.b) / 2 + 9);
+    await until("the whole button again, the pointer moving", 3000, () => whole(session));
+    done.push(`faint ${faintMs} ms after the pointer rested (${faint.state}), gone ${goneMs} ms, whole again as it moved`);
+
+    // 4. Dragged outside the player, above its corner: it snaps there, and stays whole while the
+    // pointer goes to it across the gap.
+    b = await hover(session, v);
+    const corner = rtl ? v.l + 20 : v.r - 20;
+    b = await drag(b, corner, v.t - 30);
+    if (!b) throw new Error("the button went with the drag");
+    near(b.b, v.t - 6, "outside: its bottom, 6 px above the player");
+    if (rtl) near(b.l, v.l, "outside: at the player's left end");
+    else near(b.r, v.r, "outside: at the player's right end");
+    if (await session.picks()) throw new Error("a drag opened the qualities' menu");
+    await session.mouse((v.l + v.r) / 2, (v.t + v.b) / 2);
+    await sleep(200);
+    await session.mouse((b.l + b.r) / 2, v.t + 2);
+    await session.mouse((b.l + b.r) / 2, (b.t + b.b) / 2);
+    await sleep(700);
+    if (!(await whole(session))) throw new Error("the button outside the player faded as the pointer went to it");
+    await shoot("outside", { l: v.l - 16, t: Math.max(0, b.t - 40), r: v.r + 16, b: Math.min(v.b, v.t + 200) });
+    done.push(`dragged outside: above the player's ${rtl ? "left" : "right"} end, whole as the pointer reached it`);
+    // Kept for the site.
+    await draw("watch");
+    b = await hover(session, v);
+    if (!b) throw new Error("no button after a reload");
+    near(b.b, v.t - 6, "after a reload: outside, above the player");
+    done.push("kept after a reload");
+
+    // 5. Its menu's "Put the button back in its corner".
+    await clickArrow(session);
+    const home = await until("Put the button back in its corner, in its menu", 5000, () => session.pill(MENU_ITEM_AT("home")));
+    await session.mouse(home.x, home.y, "click");
+    await sleep(300);
+    b = await hover(session, v);
+    near(b.t, v.t + 8, "back in its corner: its top");
+    if (rtl) near(b.l, v.l + 8, "back in its corner: its left edge");
+    else near(b.r, v.r - 8, "back in its corner: its right edge");
+    done.push("back in its corner from its menu");
+
+    // 6. Outside again, then the popup's Reset: back in its corner in the open tab, no reload.
+    b = await drag(b, corner, v.t - 30);
+    near(b.b, v.t - 6, "outside again");
+    await session.mouse(5, 5);
+    const popup = await session.tab(`${session.base}popup.html`);
+    try {
+      await until("the popup's Reset", 10000, () => popup.evaluate('Boolean(document.querySelector("#video-reset"))').catch(() => false));
+      if (shots && popup.shot) {
+        await popup.evaluate('(() => { const t = document.querySelector("#tab-settings"); if (t) t.click(); return 0; })()');
+        await sleep(300);
+        await popup.shot(path.join(shots, `${tag}-popup-reset.png`));
+      }
+      await popup.evaluate('(() => { document.querySelector("#video-reset").click(); return 0; })()');
+      await until("the button's places forgotten", 10000, () =>
+        popup.evaluate("(globalThis.browser ?? chrome).storage.local.get({ positions: null, videoFilters: null }).then((v) => v.positions === null && v.videoFilters === null)"),
+      );
+    } finally {
+      await popup.close();
+    }
+    b = await hover(session, v);
+    near(b.t, v.t + 8, "after Reset: its top, in its corner");
+    done.push("the popup's Reset: back in its corner in the open tab");
+    return done.join("; ");
+  } finally {
+    await session.mouse(5, 5);
+    if (before) await panelSettings({ video_panel_full: false });
+  }
+}
+
 // ---- #689: a video in a feed sends its post ----------------------------------------------------
 
 // The sample feeds (our own pages, reduced to what names a post on each site), served at their
@@ -1750,7 +2031,8 @@ const PILL_COMPACT = `function () {
 
 // #532: the button follows Options in a tab already open (no reload: YouTube never reloads),
 // switched off, on again, and off on the site; and after a reload. #1278: Button size Compact
-// makes it the round button over a large video in the open tab, Full puts its words back.
+// makes it the round button over a large video in the open tab, Automatic puts its words back;
+// Automatic is round over a smaller player, where Full keeps its words.
 // E2E_SHOTS (Chromium): <lang>-<scheme>-button-full.png and -button-compact.png, the video with it.
 async function videoButtonFollowsOptions(session) {
   const page = `${LAB}/page?video=${encodeURIComponent("/gen/1M/clip.mp4")}`;
@@ -1807,14 +2089,26 @@ async function videoButtonFollowsOptions(session) {
     await panelSettings({ video_panel_compact: false });
     await away();
     await size(false);
-    done.push("Full again: its words back in the open tab");
+    done.push("Automatic again: its words back in the open tab over the 640 px video");
+    // Automatic (the default) over a smaller player: the round button; Full chosen: its words
+    // there too (the feedback of 2026-11-23).
+    await session.evaluate('(() => { const e = document.querySelector("#video"); e.style.width = "560px"; e.style.height = "315px"; return 0; })()');
+    await size(true);
+    done.push("Automatic over a 560 px player: round");
+    await panelSettings({ video_panel_full: true });
+    await away();
+    await size(false);
+    done.push("Full chosen: its words there too");
+    await panelSettings({ video_panel_full: false });
+    await away();
+    await session.evaluate('(() => { const e = document.querySelector("#video"); e.style.width = ""; e.style.height = ""; return 0; })()');
     await panelSettings({ video_panel_sites: "127.0.0.1" });
     await away();
     if (await hover(session, v)) throw new Error("the site listed in Options: the button still shows in the open tab");
     done.push("the site listed: gone in the open tab");
   } finally {
     await session.mouse(5, 5);
-    await panelSettings({ video_panel: true, video_panel_sites: "", video_panel_compact: false });
+    await panelSettings({ video_panel: true, video_panel_sites: "", video_panel_compact: false, video_panel_full: false });
   }
   return done.join("; ");
 }
@@ -2945,7 +3239,7 @@ const CASES = {
       if (address !== `${LAB}/gen/1M/clip.mp4`) throw new Error(`${stop}: the video window got ${address}`);
       // The pointer leaves: it fades, as over any video.
       await t.session.mouse(5, 5);
-      await until(`${stop}: the button gone after the pointer left`, 3000, async () => !(await rect(t.session, "mdm-video-button")));
+      await until(`${stop}: the button gone after the pointer left`, 6000, async () => !(await rect(t.session, "mdm-video-button")));
       done.push(`${stop}: kept, sent ${address.replace(LAB, "")}, gone after`);
     }
     return done.join("; ");
@@ -3077,7 +3371,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
     if (address === `https://www.youtube.com/watch?v=${WATCHED}`) throw new Error("the video window got the video watched last, not the preview's");
     if (address !== `https://www.youtube.com/watch?v=${PREVIEW}`) throw new Error(`the video window got ${address}`);
     await t.session.mouse(5, 5);
-    await until("the button gone after the pointer left", 3000, async () => !(await rect(t.session, "mdm-video-button")));
+    await until("the button gone after the pointer left", 6000, async () => !(await rect(t.session, "mdm-video-button")));
     return `kept over the stopped preview, sent watch?v=${PREVIEW} (not the main player's ${WATCHED}), gone after`;
   },
 
@@ -4065,8 +4359,38 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       if (pictures.rows.some((r) => !r.size.startsWith("~"))) throw new Error(`a stream's estimate not marked as about: ${JSON.stringify(pictures.rows.map((r) => r.size))}`);
       await sleep(500);
       if (shots) await snap("list", await t.session.picks());
+      // #1735: the menu's filters. "Audio only" lists the sound's lines alone ("Download best" the
+      // best of them), kept for the site (the menu closed and opened again); "All" lists every
+      // line again.
+      const chip = (p, dim, value) => (p && p.filters ? p.filters.find((f) => f.dim === dim && f.value === value) : null);
+      const atFirst = await t.session.picks();
+      const audioChip = chip(atFirst, "kind", "audio");
+      if (!audioChip) throw new Error(`no "Audio only" chip: ${JSON.stringify(atFirst && atFirst.filters)}`);
+      const types = atFirst.filters.filter((f) => f.dim === "type").map((f) => f.text);
+      await t.session.mouse(audioChip.x, audioChip.y, "click");
+      const onlySound = await until("only the sound's lines", 5000, async () => {
+        const p = await t.session.picks();
+        return p && p.rows.length > 1 && p.rows.every((r) => r.kind === "top" || r.kind === "audio") ? p : null;
+      });
+      if (picture.test(onlySound.rows[0].name)) throw new Error(`"Download best" under Audio only is a picture: ${onlySound.rows[0].name}`);
+      await sleep(300);
+      if (shots) await snap("filter-audio", await t.session.picks());
+      await clickArrow(t.session);
+      await until("the menu closed", 3000, async () => !(await t.session.picks()));
+      await clickArrow(t.session);
+      const again = await until("the menu again, its filter kept", 5000, async () => {
+        const p = await t.session.picks();
+        return p && p.rows.length > 1 ? p : null;
+      });
+      if (!chip(again, "kind", "audio")?.on || again.rows.some((r) => r.kind === "video")) throw new Error(`the filter wasn't kept: ${JSON.stringify(again.filters)}`);
+      await t.session.mouse(chip(again, "kind", "all").x, chip(again, "kind", "all").y, "click");
+      const everything = await until("every line again", 5000, async () => {
+        const p = await t.session.picks("row");
+        return p && p.rows.some((r) => r.kind === "video") && p.rows.some((r) => r.kind === "audio") ? p : null;
+      });
+      const filtered = `filters: kinds ${atFirst.filters.filter((f) => f.dim === "kind").map((f) => f.text).join("/")}${types.length ? `, types ${types.join("/")}` : ""}; Audio only: ${onlySound.rows.length - 1} lines, kept as the menu opened again; All: ${everything.rows.length - 1}`;
       // 360p from VIDEO (the click later takes the best, 720p: not the same download).
-      const row = pictures.rows.find((r) => /\b360p\b/.test(r.name));
+      const row = everything.rows.filter((r) => r.kind === "video").find((r) => /\b360p\b/.test(r.name));
       if (!row) throw new Error(`no 360p in the Video tab: ${JSON.stringify(pictures.rows.map((r) => r.name))}`);
       const picked = Date.now();
       await t.session.mouse(row.x, row.y, "click");
@@ -4095,7 +4419,7 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
       if (!green.acts.some((a) => a.act === "show")) throw new Error(`no "Show": ${JSON.stringify(green)}`);
       if (appWindows(pid).includes(VIDEO_WINDOW)) throw new Error("the click opened the Download video window");
       const list = (rs) => rs.map((r) => `${r.name}${r.size ? ` ${r.size}` : ""}`).join(", ");
-      return `chip "${chipped.chip}"; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms; a pass over the button asked nothing, resting on it asked ${restMs} ms later, once`;
+      return `chip "${chipped.chip}"; ${filtered}; the click: ${best.file} (${green.text} · Show); ${looked ? "looking, then " : ""}VIDEO ${pictures.rows.length} (${list(pictures.rows)}), AUDIO ${sounds.rows.length} (${list(sounds.rows)}); "${row.name}" picked: ${item.file} (${item.status}) with its progress window "${opened}" only, the main window hidden; click to rows ${rowsMs} ms, pick to first progress ${startMs} ms; a pass over the button asked nothing, resting on it asked ${restMs} ms later, once`;
     } finally {
       // The next case starts MDM as usual.
       await stopApp();
@@ -4570,6 +4894,12 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
 
   async video(t) {
     return videoButton(t.session, t.last);
+  },
+
+  // #1735 and the feedback of 2026-11-23: round in a feed, whole over a big player, faint as the
+  // pointer rests, dragged outside the player and kept, back from its menu and the popup's Reset.
+  async calm(t) {
+    return calmButton(t.session);
   },
 
   // #474: a tab opened while the browser can't reach MDM's host (MDM being installed or updated,

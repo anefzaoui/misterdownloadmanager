@@ -1,0 +1,32 @@
+# The site's star ratings service (website/ratings/: a Cloudflare Worker over D1): its tests, on
+# every change to it. They run the Worker against SQLite (node:sqlite) with Turnstile stood in
+# for, so they need no packages and no Cloudflare account. Deploying is by hand (its README.md).
+name: Ratings service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "website/ratings/**"
+      - ".github/workflows/ratings.yml"
+  pull_request:
+    paths:
+      - "website/ratings/**"
+      - ".github/workflows/ratings.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Test the Worker
+        working-directory: website/ratings
+        run: node --test test/*.test.mjs
