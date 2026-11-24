@@ -2172,7 +2172,16 @@ pub fn size(b: u64) -> String {
         Measure::Gb => format!("{:.2} GB", b / (k * k * k)), // not translated: English path
         Measure::Mb => format!("{:.2} MB", b / (k * k)),     // not translated: English path
         Measure::Kb => format!("{:.2} KB", b / k),           // not translated: English path
-        Measure::Bytes => format!("{b} Bytes"),              // not translated: English path
+        Measure::Bytes => bytes_text(b),                     // not translated: English path
+    }
+}
+
+/// `1 Byte`, `2 Bytes`, `0 Bytes` - the English path's words below a kilobyte.
+fn bytes_text(n: f64) -> String {
+    if n == 1.0 {
+        "1 Byte".to_owned()
+    } else {
+        format!("{n} Bytes")
     }
 }
 
@@ -2527,6 +2536,14 @@ mod size_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn a_single_byte_is_written_in_the_singular() {
+        assert_eq!(super::bytes_text(0.0), "0 Bytes");
+        assert_eq!(super::bytes_text(1.0), "1 Byte");
+        assert_eq!(super::bytes_text(2.0), "2 Bytes");
+        assert_eq!(super::bytes_text(1023.0), "1023 Bytes");
+    }
+
     #[test]
     fn a_size_that_rounds_to_1024_moves_up_a_unit() {
         use super::{Measure, measure, shown};
