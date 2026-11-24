@@ -45,6 +45,19 @@ Plainly: everyone sharing the same torrent sees your IP address. That is how Bit
 and no setting changes it. To hide it, use a VPN for the whole computer.
 [Torrents and your security](torrent-security.md) says what others can see.
 
+## More peers, from a public tracker list
+
+<!--@coming 0.5.3-->
+
+An old torrent whose trackers went quiet can sit at zero peers. Turn on **Add the trackers of
+this public list to public torrents** in **Tasks → Torrent settings...**, and your public
+torrents, those already in your list and each one you add, also ask the trackers of
+[ngosang/trackerslist](https://github.com/ngosang/trackerslist)'s best list, or of a list at an
+address you choose. MDM fetches the list once a day, through your proxy and network adapter,
+and keeps the last good copy, so adding a torrent never waits for it. Private torrents never get
+them: they may only ask their own trackers. The command line's `torrent-get` follows the same
+switch.
+
 ## More control in version 0.5.0
 
 <!--@coming 0.5-->

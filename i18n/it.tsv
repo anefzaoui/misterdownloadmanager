@@ -151,6 +151,11 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker aggiunto|{n} tracker aggiunti
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Aggiunto {n} tracker dall'elenco pubblico|Aggiunti {n} tracker dall'elenco pubblico
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -284,6 +289,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	I video di una playlist vengono scaricati per intero
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Un torrent privato: l'elenco pubblico dei tracker non viene aggiunto
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Il nome di un profilo o la sua cartella. Vuoto: l'ultimo profilo usato. Per un browser basato su Chromium non elencato (Helium, Thorium...), scegli Chromium e la cartella del suo profilo.
@@ -397,6 +405,10 @@
 	Add the extension to Safari	Aggiungi l'estensione a Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Aggiungi l'estensione gratuita: i file che scarichi nel browser arriveranno qui e sui video comparirà un pulsante di download.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Aggiungi i tracker di questo elenco pubblico ai torrent pubblici:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	Aggiungili senza avviarli
@@ -1602,6 +1614,10 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	Viene scaricato di nuovo ogni 7 giorni. Le modifiche si applicano quando nessun torrent è in esecuzione.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Recuperato una volta al giorno. Mai aggiunto ai torrent privati.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: unisce video e audio
@@ -4764,6 +4780,10 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Attiva prima il controllo remoto.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Quando è disattivata, i tracker già aggiunti restano.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu

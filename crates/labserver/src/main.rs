@@ -49,6 +49,10 @@ struct Args {
     /// With --tls, offer HTTP/2 too (ALPN h2), as most sites do.
     #[arg(long, requires = "tls")]
     http2: bool,
+    /// Listen on the loopback address of the other IP family too, at the same port (with the
+    /// `refuse_family` fault: a link signed for one family's address).
+    #[arg(long)]
+    both_families: bool,
     /// Also be a SOCKS5 / SOCKS4(a) proxy on this address, printing where each connection
     /// asked to go (a name: socks5h, socks4a; an address: socks5, socks4) as a JSON line.
     #[arg(long)]
@@ -90,6 +94,7 @@ async fn main() -> anyhow::Result<()> {
     });
     let mut server = LabServer::start(Config {
         bind: args.bind,
+        both_families: args.both_families,
         faults,
         on_log: Some(on_log),
         files: args.files.clone(),

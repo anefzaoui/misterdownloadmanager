@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} वटा ट्र्याकर थपियो|{n} वटा ट्र्याकर थपियो
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	सार्वजनिक सूचीबाट {n} ट्र्याकर थपियो|सार्वजनिक सूचीबाट {n} ट्र्याकरहरू थपियो
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	प्लेलिस्टका भिडियोहरू पूर्ण रूपमा डाउनलोड हुन्छन्
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	एक निजी टोरेन्ट: सार्वजनिक ट्र्याकर सूची थपिएको छैन
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	नि:शुल्क एक्सटेन्सन थप्नुहोस्: तपाईंले आफ्नो ब्राउजरमा डाउनलोड गर्नुभएका फाइलहरू यहाँ आउँछन्, र भिडियोहरूमा डाउनलोड बटन आउँछ।
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	यो सार्वजनिक सूचीका ट्र्याकरहरू सार्वजनिक टोरेन्टहरूमा थप्नुहोस्:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	प्रत्येक 7 दिनमा फेरि ल्याइयो। कुनै टोरेन्ट चलिरहेको छैन भने परिवर्तनहरू लागू हुन्छन्।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	दिनमा एक पटक ल्याइन्छ। निजी टोरेन्टहरूमा कहिल्यै थपिँदैन।
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5994,6 +6010,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	पहिले रिमोट नियन्त्रण अन गर्नुहोस्।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	बन्द गर्दा, पहिले नै थपिएका ट्र्याकरहरू रहन्छन्।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

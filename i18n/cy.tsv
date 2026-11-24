@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} traciwr wedi'i ychwanegu|{n} traciwr wedi'i ychwanegu|{n} traciwr wedi'i ychwanegu|{n} traciwr wedi'i ychwanegu|{n} traciwr wedi'i ychwanegu|{n} traciwr wedi'i ychwanegu
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} traciwr wedi'i ychwanegu o'r rhestr gyhoeddus|{n} draciwr wedi'i ychwanegu o'r rhestr gyhoeddus|{n} draciwr wedi'i ychwanegu o'r rhestr gyhoeddus|{n} thraciwr wedi'i ychwanegu o'r rhestr gyhoeddus|{n} thraciwr wedi'i ychwanegu o'r rhestr gyhoeddus|{n} thraciwr wedi'i ychwanegu o'r rhestr gyhoeddus
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Caiff fideos rhestr chwarae eu lawrlwytho'n gyfan
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Cofnod preifat: nid yw'r rhestr dracwyr cyhoeddus wedi'i hychwanegu
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Ychwanegu'r estyniad am ddim: daw ffeiliau rydych chi'n eu lawrlwytho yn eich porwr yma, ac mae fideos yn cael botwm Lawrlwytho.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Ychwanegu traciau'r rhestr gyhoeddus hon at gofnodion cyhoeddus:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Wedi’i nôl eto bob 7 diwrnod. Mae newidiadau’n berthnasol pan nad oes cenllif yn rhedeg.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Wedi'i nôl unwaith y dydd. Ni chaiff ei ychwanegu at ffeiliau torrent preifat byth.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5999,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Trowch y rheolaeth bell ymlaen yn gyntaf.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Os caiff ei ddiffodd, bydd y tracwyr sydd eisoes wedi'u hychwanegu yn aros.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

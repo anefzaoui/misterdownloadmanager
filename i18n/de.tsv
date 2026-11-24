@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} Tracker hinzugefügt|{n} Tracker hinzugefügt
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} Tracker aus der öffentlichen Liste hinzugefügt|{n} Tracker aus der öffentlichen Liste hinzugefügt
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Die Videos einer Wiedergabeliste werden vollständig heruntergeladen
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Privater Torrent: Die öffentliche Tracker-Liste wird nicht hinzugefügt
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Fügen Sie die kostenlose Erweiterung hinzu: Dateien, die Sie in Ihrem Browser herunterladen, kommen hierher, und Videos erhalten eine Schaltfläche zum Herunterladen.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Tracker dieser öffentlichen Liste zu öffentlichen Torrents hinzufügen:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Wird alle 7 Tage erneut abgerufen. Änderungen werden angewendet, wenn kein Torrent läuft.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Einmal täglich abgerufen. Wird niemals zu privaten Torrents hinzugefügt.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5992,6 +6008,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Schalten Sie zuerst die Fernsteuerung ein.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Wenn deaktiviert, bleiben die bereits hinzugefügten Tracker erhalten.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

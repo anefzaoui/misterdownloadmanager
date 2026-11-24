@@ -1751,13 +1751,80 @@ function playedCandidates(tab, frameId) {
   return out;
 }
 
+// The query parameters a video server signs an address with for one load of its page (until when,
+// from where, its signature), lowercase; `x-amz-` and `x-goog-` ones too. As the app's
+// (app.rs SIGNATURE_PARAMS): a short name (`t`, `e`, `s`) may well name the video, so never.
+const SIGNATURE_PARAMS = new Set(["hash", "expires", "expire", "exp", "ip", "token", "sig", "signature", "st", "md5", "auth", "policy", "key-pair-id", "hdnts", "hdnea", "__token__", "validfrom", "validto", "ttl", "secure", "wmsauthsign", "nva"]);
+
+// A player asks for its stream again only long after (its signature runs out: an hour or more);
+// a feed's player loads its next video within seconds. Two loads closer than this are two videos.
+const LOADED_AGAIN_AFTER_MS = 10 * 60 * 1000;
+
+// Whether `older` and `newer` (playedCandidates) are one video's media loaded again, for the video
+// `v` the button is over: a player asks for its stream once more long after, signed anew for that
+// load, in one part of its path (`/<signature>/…/hls.m3u8`) or in its query
+// (`?hash=…&expires=…`), often from another of the site's servers. All of: the same kind, the very
+// same length (a playlist read again gives it to the hundredth), the same picture height and, a
+// file, the same size; loaded LOADED_AGAIN_AFTER_MS apart or more, the newer before any other
+// player of the page began to load (`v.nextBegan`: a feed's next video); an address of the same
+// shape: the same site (its host but for its first label), as many path parts ending in the same
+// file with one other part changed at most (`/<sig-a>/<id>/` and `/<sig-b>/<id>/` are one video,
+// `/<sig-a>/<id-a>/` and `/<sig-b>/<id-b>/` two), and the same query but for the signature
+// (`master.m3u8?id=1` and `?id=2` are two videos). A length or a size not known tells nothing.
+function loadedAgain(older, newer, v) {
+  if (older.stream !== newer.stream || older.kind !== newer.kind || older.live || newer.live) return false;
+  if (!(older.duration > 0) || Math.abs(older.duration - newer.duration) > 0.05 || older.height !== newer.height) return false;
+  if (!older.stream && !(older.size > 0 && older.size === newer.size)) return false;
+  if (!(newer.at - older.at >= LOADED_AGAIN_AFTER_MS) || (v.nextBegan > 0 && newer.at >= v.nextBegan)) return false;
+  let ua, ub;
+  try {
+    ua = new URL(older.url);
+    ub = new URL(newer.url);
+  } catch {
+    return false;
+  }
+  // The host but for its first label: `hls-cdn1.cdn.test` and `hls-cdn7.cdn.test` are one site. It
+  // knows no public suffixes, so `a.co.uk` and `b.co.uk` are one "site" (`co.uk`) too: the same
+  // file at the end, the same path but one part, the query and the length still have to match, so
+  // two videos from there are never taken for one.
+  const site = (u) => {
+    const labels = u.hostname.split(".");
+    return /^[\d.]+$|:/.test(u.hostname) || labels.length < 3 ? u.hostname : labels.slice(1).join(".");
+  };
+  const parts = (u) => u.pathname.split("/").filter(Boolean);
+  const unsigned = (u) =>
+    [...u.searchParams]
+      .filter(([k]) => !SIGNATURE_PARAMS.has(k.toLowerCase()) && !/^x-(amz|goog)-/i.test(k))
+      .map(([k, val]) => `${k}=${val}`)
+      .sort()
+      .join("&");
+  const [pa, pb] = [parts(ua), parts(ub)];
+  return (
+    ua.protocol === ub.protocol &&
+    ua.port === ub.port &&
+    site(ua) === site(ub) &&
+    pa.length === pb.length &&
+    pa.length > 0 &&
+    pa[pa.length - 1] === pb[pb.length - 1] &&
+    pa.slice(0, -1).filter((part, i) => part !== pb[i]).length <= 1 &&
+    unsigned(ua) === unsigned(ub)
+  );
+}
+
+// `cands` with each video's media loaded again (loadedAgain) once, its newest load: the older
+// one's signature may have run out, and two loads of one video are not two videos to choose from.
+function newestLoads(cands, v) {
+  return cands.filter((c) => !cands.some((o) => o !== c && o.at > c.at && loadedAgain(c, o, v)));
+}
+
 // Which of `cands` (playedCandidates) is the video `v` the button is over ({duration, live,
 // height, audio (a sound player), began, nextBegan, alone}): {pick} for one, {several: n} when more
 // than one fits and none is clearly it (said, never guessed), {} for none. Never a protected
 // stream, a picture or a sound alone (one of a video's tracks), nor anything whose length isn't
 // the video's. One whose length isn't known fits only where the frame plays nothing else, or when
 // it came while this video loaded, before the next one began to (a feed's player loads the next
-// video while this one plays).
+// video while this one plays). A video its player loaded again (signed anew) counts once, its
+// newest load (newestLoads).
 function playedChoice(cands, v) {
   const kindFits = (c) => {
     if (c.drm) return false;
@@ -1779,7 +1846,7 @@ function playedChoice(cands, v) {
     const tall = pool.filter((c) => c.height && c.height === v.height);
     return tall.length === 1 ? tall[0] : null;
   };
-  const ok = cands.filter(kindFits);
+  const ok = newestLoads(cands.filter(kindFits), v);
   const sure = ok.filter((c) => lengthFits(c) === "yes");
   if (sure.length) {
     const c = one(sure);

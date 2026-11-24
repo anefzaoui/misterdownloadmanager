@@ -169,6 +169,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ردیاب اضافه شد|{n} ردیاب اضافه شدند
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} ردیاب از فهرست عمومی اضافه شد|{n} ردیاب از فهرست عمومی اضافه شدند
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -323,6 +328,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	ویدئوهای لیست پخش به‌طور کامل بارگیری می‌شوند
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	تورنت خصوصی است؛ فهرست ردیاب‌های عمومی اضافه نمی‌شود
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -458,6 +466,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	افزونه رایگان را اضافه کنید: فایل‌هایی که در مرورگر خود بارگیری می‌کنید به اینجا می‌آیند و ویدیوها دکمه بارگیری دریافت می‌کنند.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	ردیاب‌های این فهرست عمومی را به تورنت‌های عمومی اضافه کن:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1975,6 +1987,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	هر 7 روز یک‌بار دوباره واکشی می‌شود. تغییرات زمانی اعمال می‌شوند که هیچ تورنتی در حال اجرا نباشد.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	روزانه یک‌بار دریافت می‌شود. هرگز به تورنت‌های خصوصی اضافه نمی‌شود.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5962,6 +5978,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	ابتدا کنترل از راه دور را روشن کنید.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	در صورت خاموش بودن، ردیاب‌های از قبل اضافه شده باقی می‌مانند.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

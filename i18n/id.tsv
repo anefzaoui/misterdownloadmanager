@@ -145,6 +145,11 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} pelacak ditambahkan
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} pelacak ditambahkan dari daftar publik
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -275,6 +280,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Video dalam daftar putar diunduh secara utuh
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Torrent privat: daftar pelacak publik tidak ditambahkan
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Nama profil atau foldernya. Kosong: profil yang terakhir digunakan. Untuk browser berbasis Chromium yang tidak terdaftar (Helium, Thorium...), pilih Chromium dan folder profilnya.
@@ -384,6 +392,10 @@
 	Add the extension to Safari	Tambahkan ekstensi ke Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Tambahkan ekstensi gratis: file yang Anda unduh di browser akan masuk ke sini, dan video akan mendapatkan tombol Unduh.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Tambahkan pelacak dari daftar publik ini ke torrent publik:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	Tambahkan tanpa memulai
@@ -1570,6 +1582,10 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	Diambil ulang setiap 7 hari. Perubahan berlaku saat tidak ada torrent yang berjalan.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Diambil sekali sehari. Tidak pernah ditambahkan ke torrent privat.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: menggabungkan gambar dan suara
@@ -4668,6 +4684,10 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Aktifkan kontrol jarak jauh terlebih dahulu.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Saat dimatikan, pelacak yang sudah ditambahkan akan tetap ada.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu

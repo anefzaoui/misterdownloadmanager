@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	U shtua {n} gjurmues|U shtuan {n} gjurmues
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	U shtua {n} gjurmues nga lista publike|U shtuan {n} gjurmues nga lista publike
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Videot e një liste luajtjeje shkarkohen të plota
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Një torrent privat: lista publike e gjurmuesve nuk shtohet
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Shtoni zgjerimin falas: skedarët që shkarkoni në shfletuesin tuaj vijnë këtu dhe videot marrin një buton Shkarko.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Shto gjurmuesit e kësaj liste publike në torrentet publike:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Merret sërish çdo 7 ditë. Ndryshimet zbatohen kur nuk ekzekutohet asnjë torrent.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Merret një herë në ditë. Nuk shtohet kurrë në torrentet private.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5999,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Aktivizo fillimisht kontrollin në distancë.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Kur çaktivizohet, gjurmuesit e shtuar tashmë mbeten.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

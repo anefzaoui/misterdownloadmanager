@@ -67,8 +67,9 @@ an address it then refused; Rapidgator's page is the browser's tab the download 
 `Options::page`), with pure functions tested without a network. A page whose file comes only once
 its form is sent back (LuluStream's quality page) says so with `PageSays::Form`: `get` posts that
 form's fields (`application/x-www-form-urlencoded`) with its next request only and reads the
-answer as a page; a site that answers with its form again is posted again, up to
-`MAX_FORM_POSTS`, and then refuses in the site's name (`sites::form_refused`). The lab server
+answer as a page; a site that answers with its form again is posted again after a short, growing
+pause (`FORM_REPOST_PAUSE`), up to `MAX_FORM_POSTS`, and then refuses in the site's name
+(`sites::form_refused`). The lab server
 plays such a site on its real host names for the end-to-end tests (`labserver/src/drive.rs`,
 `labserver/src/mediafire.rs`, `labserver/src/rapidgator.rs`, `labserver/src/lulustream.rs`).
 

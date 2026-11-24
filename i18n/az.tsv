@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} izləyici əlavə edildi|{n} izləyici əlavə edildi
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Açıq siyahıdan {n} izləyici əlavə edildi|Açıq siyahıdan {n} izləyici əlavə edildi
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Pleylistdəki videolar tam endirilir
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Şəxsi torrent: açıq izləyici siyahısı əlavə edilmədi
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Pulsuz genişləndirməni əlavə edin: brauzerinizdə endirdiyiniz fayllar bura gəlir və videolar üçün Endir düyməsi göstərilir.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Bu açıq siyahının izləyicilərini açıq torrentlərə əlavə et:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Hər 7 gündən bir yenidən əldə edilir. Dəyişikliklər heç bir torrent işləmədikdə tətbiq olunur.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Gündə bir dəfə əldə edilir. Şəxsi torrentlərə heç vaxt əlavə edilmir.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5999,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Əvvəlcə uzaqdan idarəetməni yandırın.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Deaktivləşdirildikdə, əlavə edilmiş izləyicilər qalır.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

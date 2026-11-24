@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	Kua tāpirihia te kaiwhai {n}
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} kaiwhaiwhai i tāpirihia mai i te rārangi tūmatanui
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Ka tikiakehia ngā ataata o te rārangipāpāho katoa
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	He torrent tūmataiti: kāore i tāpirihia te rārangi kaiwhaiwhai tūmatanui
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Tāpiri i te toronga koreutu: ka tae mai ngā kōnae ka tikiakehia e koe i tō pūtirotiro ki konei, ā, ka whiwhi ngā ataata i te pātene Tikiake.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Tāpirihia ngā tracker o tēnei rārangi tūmatanui ki ngā torrent tūmatanui:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Ka tiki anō ia 7 rā. Ka whai mana ngā panoni ina kāore he awa e rere ana.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Ka tikiakehia kotahi i te rā. Kāore rawa i tāpirihia ki ngā torrent tūmataiti.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5999,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Whakakāhia te mana mamao i te tuatahi.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Ka whakaweto, ka noho tonu ngā kaiwhaiwhai kua tāpirihia.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} tracker miżjud|{n} trackers miżjuda|{n} trackers miżjuda|{n} trackers miżjuda|{n} trackers miżjuda
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	Żdied {n} tracker mil-lista pubblika|Żdiedu {n} trackers mil-lista pubblika|Żdiedu {n} trackers mil-lista pubblika|Żdiedu {n} trackers mil-lista pubblika|Żdiedu {n} trackers mil-lista pubblika
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Il-videos ta' playlist jitniżżlu kollha
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Torrent privat: il-lista pubblika tat-trackers ma ġietx miżjuda
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Żid l-estensjoni b’xejn: il-fajls li tniżżel fil-brawżer tiegħek jiġu hawn, u l-vidjows ikollhom buttuna Niżżel.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Żid it-trackers ta’ din il-lista pubblika ma’ torrents pubbliċi:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -2003,6 +2015,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Miġbura mill-ġdid kull 7 ijiem. Il-bidliet japplikaw meta ma jkun hemm l-ebda torrent għaddej.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Miġjuba darba kuljum. Qatt ma tiżdied ma’ torrents privati.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -5995,6 +6011,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Ixgħel il-kontroll mill-bogħod l-ewwel.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Meta tkun mitfija, it-trackers li diġà żdiedu jibqgħu.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
