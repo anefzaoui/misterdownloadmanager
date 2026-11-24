@@ -151,6 +151,11 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} متتبع تمت إضافته|{n} متتبع تمت إضافته|{n} متتبعان تمت إضافتهما|{n} متتبعات تمت إضافتها|{n} متتبعا تمت إضافته|{n} متتبع تمت إضافته
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} متتبع تمت إضافته من القائمة العامة|{n} متتبع تمت إضافته من القائمة العامة|{n} متتبعان تمت إضافتهما من القائمة العامة|{n} متتبعات تمت إضافتها من القائمة العامة|{n} متتبعا تمت إضافته من القائمة العامة|{n} متتبع تمت إضافته من القائمة العامة
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -285,6 +290,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	يتم تنزيل مقاطع فيديو قائمة التشغيل بالكامل
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	تورنت خاص: لم تضف قائمة المتتبعات العامة
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	اسم ملف تعريف أو مجلده. اتركه فارغا لاستخدام آخر ملف تعريف. إذا كان المستعرض مبنيا على Chromium وغير مدرج (Helium، Thorium...)، فاختر Chromium ثم مجلد ملف التعريف الخاص به.
@@ -400,6 +408,10 @@
 	Add the extension to Safari	إضافة الملحق إلى Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	أضف الملحق المجاني: الملفات التي تجلبها في مستعرضك تأتي إلى هنا، وتحصل مقاطع الفيديو على زر تنزيل.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	أضف متتبعات هذه القائمة العامة إلى التورنتات العامة:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	إضافتها دون بدء تشغيلها
@@ -915,6 +927,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	اختر ملف .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	اختر ملف الخط
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	اختيار وقت تشغيل JavaScript (Node.js أو Deno أو QuickJS أو Bun)
@@ -1612,6 +1629,10 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	يتم جلبها مرة أخرى كل 7 أيام. تسري التغييرات عندما لا يكون هناك أي تورنت قيد التشغيل.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	يجلب مرة واحدة يوميا. لا يضاف أبدا إلى التورنتات الخاصة.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: يجمع بين الصورة والصوت
@@ -1715,6 +1736,10 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	يحتفظ FLAC بالصوت تماما، ولكنه لا يمكنه إضافة جودة لا يمتلكها صوت الموقع: الملف أكبر فقط.
 #. text in categories.rs
 	Folder:	المجلد:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	ملفات الخطوط
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -4569,6 +4594,10 @@
 #, machine
 	This device's name	اسم هذا الجهاز
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	لا يمكن استخدام هذا الملف كخط.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4826,6 +4855,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	قم بتشغيل التحكم عن بعد أولا.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	عند إيقاف التشغيل، تبقى المتتبعات التي تمت إضافتها بالفعل.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	توفالو
@@ -6595,6 +6628,11 @@ menu	&Download Now	&تنزيل الآن
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&إنهاء
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	الخ&ط
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Import	&استيراد
@@ -6659,6 +6697,11 @@ menu	&Stop All	&إيقاف الكل
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	إيقاف الت&نزيل
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	خط الن&ظام
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	أيقونة &علبة النظام
@@ -6766,6 +6809,12 @@ menu	C&ustomize URL List...	ت&خصيص قائمة URL...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	التحقق من ال&تحديثات...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&اختر ملف الخط...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	كلاسيكي
 #. menu command in the main window
@@ -6835,9 +6884,6 @@ menu	Find Next (F3)	بحث عن التالي (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	القطع الأولى والأخيرة أولا
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	الخط
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

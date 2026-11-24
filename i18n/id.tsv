@@ -145,6 +145,11 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} pelacak ditambahkan
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} pelacak ditambahkan dari daftar publik
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -275,6 +280,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	Video dalam daftar putar diunduh secara utuh
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	Torrent privat: daftar pelacak publik tidak ditambahkan
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Nama profil atau foldernya. Kosong: profil yang terakhir digunakan. Untuk browser berbasis Chromium yang tidak terdaftar (Helium, Thorium...), pilih Chromium dan folder profilnya.
@@ -384,6 +392,10 @@
 	Add the extension to Safari	Tambahkan ekstensi ke Safari
 #. text in extension.rs
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Tambahkan ekstensi gratis: file yang Anda unduh di browser akan masuk ke sini, dan video akan mendapatkan tombol Unduh.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	Tambahkan pelacak dari daftar publik ini ke torrent publik:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 	Add them without starting them	Tambahkan tanpa memulai
@@ -889,6 +901,11 @@
 #. text in remote.rs
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 	Choose a .torrent file	Pilih file .torrent
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	Pilih file font
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Pilih runtime JavaScript (Node.js, Deno, QuickJS, atau Bun)
@@ -1570,6 +1587,10 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 	Fetched again every 7 days. Changes apply when no torrent is running.	Diambil ulang setiap 7 hari. Perubahan berlaku saat tidak ada torrent yang berjalan.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	Diambil sekali sehari. Tidak pernah ditambahkan ke torrent privat.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: menggabungkan gambar dan suara
@@ -1670,6 +1691,10 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC mempertahankan suara persis seperti aslinya, tetapi tidak dapat menambahkan kualitas yang tidak dimiliki suara situs: ukuran file hanya akan lebih besar.
 #. text in categories.rs
 	Folder:	Folder:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	File font
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 	For 1 hour	Selama 1 jam
@@ -4426,6 +4451,10 @@
 #. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
 	This device's name	Nama perangkat ini
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	File ini tidak dapat digunakan sebagai font.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 	This file can't be used as a theme: {error}	File ini tidak dapat digunakan sebagai tema: {error}
@@ -4668,6 +4697,10 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Aktifkan kontrol jarak jauh terlebih dahulu.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Saat dimatikan, pelacak yang sudah ditambahkan akan tetap ada.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu
@@ -6343,6 +6376,11 @@ menu	&Download Now	&Unduh Sekarang
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Exit	&Keluar
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	&huruf
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Import	&Impor
@@ -6404,6 +6442,11 @@ menu	&Stop All	&Hentikan Semua
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Stop Download	&Hentikan Unduhan
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	&Font sistem
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	&Tray icon	Ikon &baki
@@ -6518,6 +6561,12 @@ menu	C&ustomize URL List...	K&ustomisasi Daftar URL...
 #. the trailing ... means it opens a window: keep it
 menu	Check for &updates...	Periksa &pembaruan...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	&Pilih file font...
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 menu	Classic	Klasik
 #. menu command in the main window
@@ -6583,9 +6632,6 @@ menu	Find Next (F3)	Cari Berikutnya (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 menu	First and last pieces first	Potongan pertama dan terakhir dulu
-#. menu command in the main window
-#. noun: the list's font (submenu)
-menu	Font	Font
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

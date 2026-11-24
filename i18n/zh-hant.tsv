@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	已新增 {n} 個追蹤器
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	已從公開清單新增 {n} 個追蹤器
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	播放清單中的影片會完整下載
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	私人 torrent：未新增公開追蹤器清單
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	新增免費擴充功能：在瀏覽器中下載的檔案會傳送到這裡，影片也會顯示「下載」按鈕。
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	將此公開清單的追蹤器新增至公開 torrent：
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,6 +1133,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	選擇 .torrent 檔案
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	選擇字型文件
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	選擇 JavaScript 執行階段 (Node.js、Deno、QuickJS 或 Bun)
@@ -1994,6 +2011,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	每 7 天重新擷取一次。變更會在沒有 torrent 執行時套用。
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	每天擷取一次。絕不新增至私人 torrent。
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2126,6 +2147,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	資料夾:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	字型文件
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -5668,6 +5693,10 @@
 #, machine
 	This device's name	此裝置的名稱
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	該文件不能用作字體。
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5980,6 +6009,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	請先開啟遠端控制。
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	關閉後，已新增的追蹤器會保留。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -8004,6 +8037,11 @@ menu	&Download Now	立即下載(&D)
 #, machine
 menu	&Exit	結束(&X)
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	字體(&F)
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8082,6 +8120,11 @@ menu	&Stop All	全部停止(&T)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	停止下載(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	系統字體(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8218,6 +8261,12 @@ menu	C&ustomize URL List...	自訂 URL 清單(&U)...
 #, machine
 menu	Check for &updates...	檢查更新(&U)...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	選擇字型文件...(&F)
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	傳統
@@ -8306,10 +8355,6 @@ menu	Find Next (F3)	尋找下一個 (F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	優先下載首尾區塊
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	字型
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

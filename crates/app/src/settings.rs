@@ -282,6 +282,15 @@ pub struct Settings {
     /// View → Interface size (#262), percent: one of `crate::scale::STEPS` (100 to 200). Every
     /// window drawn that much larger than the display's own scale makes it.
     pub interface_size: u16,
+    /// View → Font (#1489): the font file the interface's text is drawn in (a path to a
+    /// TrueType or OpenType file), or none for the computer's own font (Segoe UI on Windows).
+    /// It changes the letters only: View → Interface size still sizes every window.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub interface_font: Option<std::path::PathBuf>,
+    /// View → Font (#1489), percent: one of `crate::theme::TEXT_SIZES`. The interface's
+    /// text drawn that much larger or smaller than the theme's sizes; the layout keeps its own
+    /// (View → Interface size zooms all of it).
+    pub interface_text_size: u16,
     /// View → Text (Windows): smooth text as Windows' modern apps draw it, or the classic
     /// controls' hinted, whole-pixel look, the default (`crate::theme::set_smooth_text`): text
     /// doesn't change look on an update; a dense screen can choose Smooth.
@@ -504,6 +513,12 @@ pub struct Settings {
     pub torrent_proxy: bool,
     /// A blocklist's address (empty: none), fetched again every `BLOCKLIST_DAYS`.
     pub torrent_blocklist: String,
+    /// Torrent settings → "Add the trackers of a public list to public torrents" (#1776): off
+    /// by default. Torrents added while it is on get the list's trackers as last fetched (never
+    /// a private one, BEP 27); the list is fetched again once a day (`torrents::PublicTrackers`).
+    pub torrent_public_trackers: bool,
+    /// That list's address (empty: `mdm_torrent::public_trackers::DEFAULT_LIST`).
+    pub torrent_public_trackers_url: String,
     /// Stop the torrent engine when no torrent runs (it stops listening; new settings apply).
     pub torrent_stop_idle: bool,
     /// Torrent settings → "Limit uploading to [n] KBytes/sec" for all torrents together (#39;
@@ -641,6 +656,8 @@ impl Default for Settings {
             renderer: None,
             window_system: None,
             interface_size: 100,
+            interface_font: None,
+            interface_text_size: 100,
             smooth_text: false,
             limits_on: false,
             limits_mb: 200,
@@ -729,6 +746,8 @@ impl Default for Settings {
             torrent_lsd: true,
             torrent_proxy: false,
             torrent_blocklist: String::new(),
+            torrent_public_trackers: false,
+            torrent_public_trackers_url: String::new(),
             torrent_stop_idle: true,
             torrent_upload_on: false,
             torrent_upload_kb: 100,
@@ -1007,6 +1026,14 @@ impl Settings {
             let _ = url.set_password(Some(&self.proxy_pass));
         }
         Some(url.as_str().trim_end_matches('/').to_owned())
+    }
+
+    /// The public tracker list's address (#1776): the one given, else the default list.
+    pub fn public_trackers_list(&self) -> &str {
+        match self.torrent_public_trackers_url.trim() {
+            "" => mdm_torrent::public_trackers::DEFAULT_LIST,
+            url => url,
+        }
     }
 
     /// The torrent engine as Torrent settings say (#40), its data in `state_dir`. None when they
@@ -1444,6 +1471,15 @@ impl Settings {
                 (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
                 (true, None) => mdm_cli::TorrentProxy::Missing,
             },
+            // The same switch, address and cache as the app's (#1776).
+            public_trackers: self
+                .torrent_public_trackers
+                .then(crate::torrents::state_dir)
+                .flatten()
+                .map(|dir| mdm_cli::PublicTrackers {
+                    url: self.public_trackers_list().to_owned(),
+                    dir,
+                }),
         }
     }
 }
@@ -1466,6 +1502,46 @@ pub fn own_net() -> mdm_engine::Options {
 #[cfg(test)]
 mod tests {
     use std::path::Path;
+
+    /// #1776: the public tracker list is off by default, its address the default list's; the
+    /// default list is saved as none given, another address as typed (trimmed).
+    #[test]
+    fn the_public_tracker_list_is_off_until_turned_on() {
+        use super::Settings;
+        use crate::torrentdlg::Net;
+        use mdm_torrent::public_trackers::DEFAULT_LIST;
+        let old: Settings = serde_json::from_value(serde_json::json!({})).unwrap();
+        let mut s = Settings::default();
+        for s in [&old, &s] {
+            assert!(!s.torrent_public_trackers);
+            assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+        }
+        let mut net = Net::of(&s);
+        assert!(!net.public_trackers);
+        assert_eq!(net.public_list, DEFAULT_LIST);
+        net.public_trackers = true;
+        net.apply(&mut s);
+        assert!(s.torrent_public_trackers);
+        assert_eq!(s.torrent_public_trackers_url, "");
+        let mut net = Net::of(&s);
+        net.public_list = " https://lists.example.org/trackers.txt ".into();
+        net.apply(&mut s);
+        assert_eq!(
+            s.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        let again: Settings = serde_json::from_value(serde_json::to_value(&s).unwrap()).unwrap();
+        assert!(again.torrent_public_trackers);
+        assert_eq!(
+            again.public_trackers_list(),
+            "https://lists.example.org/trackers.txt"
+        );
+        // Emptied: the default list again.
+        let mut net = Net::of(&s);
+        net.public_list = "  ".into();
+        net.apply(&mut s);
+        assert_eq!(s.public_trackers_list(), DEFAULT_LIST);
+    }
 
     /// #668: the User-Agent for links added by hand is the default browser's unless one is set.
     /// Saved before, MDM's former default (Internet Explorer 11's) or nothing reads as automatic;
@@ -1497,6 +1573,40 @@ mod tests {
         assert_eq!(own.own_user_agent(), Some("MyAgent/1.0"));
         let again: Settings = serde_json::from_value(serde_json::to_value(&own).unwrap()).unwrap();
         assert_eq!(again.own_user_agent(), Some("MyAgent/1.0"));
+    }
+
+    /// #1489: a settings file written before View → Font existed reads as the computer's own
+    /// font at the theme's sizes, and nothing chosen is saved as nothing.
+    #[test]
+    fn view_font_keeps_its_defaults_in_older_settings() {
+        use super::Settings;
+        let saved = serde_json::json!({ "interface_size": 125 });
+        let s: Settings = serde_json::from_value(saved).unwrap();
+        assert_eq!(s.interface_font, None);
+        assert_eq!(s.interface_text_size, 100);
+        let again = serde_json::to_value(&s).unwrap();
+        assert!(again.get("interface_font").is_none(), "nothing chosen");
+        assert_eq!(again["interface_text_size"], 100);
+    }
+
+    /// #1489: the chosen font is saved as its path, not as the text `display()` makes of it,
+    /// which names another file when the path isn't Unicode on Windows (`serde` refuses such a
+    /// path rather than save that name, so the choice stays as made in memory); the test's path
+    /// is the one a person can have, with a space.
+    #[test]
+    fn the_chosen_font_is_saved_as_its_path() {
+        use super::Settings;
+        let s = Settings {
+            interface_font: Some(std::path::PathBuf::from(r"C:\Fonts\my font.ttf")),
+            ..Default::default()
+        };
+        let saved = serde_json::to_value(&s).unwrap();
+        assert_eq!(
+            saved["interface_font"],
+            serde_json::json!(r"C:\Fonts\my font.ttf")
+        );
+        let again: Settings = serde_json::from_value(saved).unwrap();
+        assert_eq!(again.interface_font, s.interface_font);
     }
 
     /// #475: a folder chosen for a video is the Video category's next time; the category's own

@@ -190,6 +190,9 @@ pub type LogSink = Arc<dyn Fn(&LogEntry) + Send + Sync>;
 
 pub struct Config {
     pub bind: SocketAddr,
+    /// Listen on the loopback address of the other IP family too, at the same port (#1660: a
+    /// host name with an IPv4 and an IPv6 address, `refuse_family`).
+    pub both_families: bool,
     pub faults: Faults,
     /// Called for every finished request (e.g. print JSON lines).
     pub on_log: Option<LogSink>,
@@ -241,6 +244,7 @@ impl Default for Config {
     fn default() -> Self {
         Config {
             bind: SocketAddr::from(([127, 0, 0, 1], 0)),
+            both_families: false,
             faults: Faults::default(),
             on_log: None,
             files: None,
@@ -402,7 +406,7 @@ pub struct LabServer {
 
 impl LabServer {
     pub async fn start(cfg: Config) -> io::Result<Self> {
-        let listener = TcpListener::bind(cfg.bind).await?;
+        let (listener, other) = listeners(cfg.bind, cfg.both_families).await?;
         let addr = listener.local_addr()?;
         let http2 = cfg.http2;
         let shared = Arc::new(Shared {
@@ -608,16 +612,39 @@ impl LabServer {
         let ca = tls.as_ref().map(|(_, ca)| ca.clone());
         let task = match tls {
             None => tokio::spawn(async move {
-                let svc = app.into_make_service_with_connect_info::<SocketAddr>();
-                if let Err(e) = axum::serve(listener, svc).await {
-                    eprintln!("labserver: {e}");
+                let serve = |listener: TcpListener| {
+                    let svc = app
+                        .clone()
+                        .into_make_service_with_connect_info::<SocketAddr>();
+                    async move {
+                        if let Err(e) = axum::serve(listener, svc).await {
+                            eprintln!("labserver: {e}");
+                        }
+                    }
+                };
+                match other {
+                    Some(other) => {
+                        tokio::join!(serve(listener), serve(other));
+                    }
+                    None => serve(listener).await,
                 }
             }),
             Some((mut config, _)) => {
                 if http2 {
                     config.alpn_protocols = vec![b"h2".to_vec(), b"http/1.1".to_vec()];
                 }
-                tokio::spawn(serve_tls(listener, app, Arc::new(config), shared.clone()))
+                let (config, shared) = (Arc::new(config), shared.clone());
+                tokio::spawn(async move {
+                    match other {
+                        Some(other) => {
+                            tokio::join!(
+                                serve_tls(listener, app.clone(), config.clone(), shared.clone()),
+                                serve_tls(other, app, config, shared),
+                            );
+                        }
+                        None => serve_tls(listener, app, config, shared).await,
+                    }
+                })
             }
         };
         Ok(LabServer {
@@ -796,6 +823,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
     require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
     refuse_agent=TEXT                403 when the User-Agent contains TEXT
+    refuse_family=4|6                403 when the request came over that IP family (a link signed
+                                     for the page's address of the other one; --both-families)
     refuse=STATUS  every request answered with that 4xx or 5xx status, before any byte (a site
                    that turns away whatever isn't a browser: FileHippo's 412, #630)
     browser_only=1 a bot check: 403 with cf-mitigated: challenge and a challenge page unless the
@@ -1480,6 +1509,30 @@ struct FileQuery {
     faults: Faults,
 }
 
+/// The server's listener at `bind`, and with `both` one on the loopback address of the other IP
+/// family at the same port. A port the system picked (port 0) that is taken in the other family
+/// is left for another one, a few times.
+async fn listeners(bind: SocketAddr, both: bool) -> io::Result<(TcpListener, Option<TcpListener>)> {
+    let mut tries = 0;
+    loop {
+        let listener = TcpListener::bind(bind).await?;
+        if !both {
+            return Ok((listener, None));
+        }
+        let ip: IpAddr = match bind {
+            SocketAddr::V4(_) => std::net::Ipv6Addr::LOCALHOST.into(),
+            SocketAddr::V6(_) => std::net::Ipv4Addr::LOCALHOST.into(),
+        };
+        match TcpListener::bind((ip, listener.local_addr()?.port())).await {
+            Ok(other) => return Ok((listener, Some(other))),
+            Err(e) if e.kind() == io::ErrorKind::AddrInUse && bind.port() == 0 && tries < 8 => {
+                tries += 1;
+            }
+            Err(e) => return Err(e),
+        }
+    }
+}
+
 /// The lab server over HTTPS (`Config::tls`): each connection's ClientHello is read first, and
 /// whether it is a browser's noted for `browser_only` (`LogEntry::browser_tls`), then its
 /// requests are served as over HTTP (HTTP/1.1; HTTP/2 too with `Config::http2`).
@@ -1655,6 +1708,12 @@ pub(crate) async fn serve(
     {
         shared.record(entry, 403, "fault:refuse_agent");
         return (StatusCode::FORBIDDEN, format!("agent {want} refused\n")).into_response();
+    }
+    if let Some(family) = f.refuse_family
+        && family == if entry.peer.is_ipv4() { 4 } else { 6 }
+    {
+        shared.record(entry, 403, "fault:refuse_family");
+        return (StatusCode::FORBIDDEN, format!("IPv{family} refused\n")).into_response();
     }
     if let Some(status) = f
         .refuse

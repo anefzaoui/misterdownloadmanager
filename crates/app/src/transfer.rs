@@ -220,7 +220,9 @@ fn downloadable(url: &str) -> bool {
 /// http(s), ftp(s) and magnet links, one per line or inside sentences, Markdown links
 /// (`[name](address)`), angle brackets (`<address>`) or HTML (`href="address"`). What ends a
 /// sentence (`.`, `,`, `!`…), a closing bracket the address didn't open and Markdown's `**` are
-/// not part of the address; a pair of brackets inside it is (`…/wiki/Name_(film)`).
+/// not part of the address; a pair of brackets inside it is (`…/wiki/Name_(film)`). A
+/// `thunder://`, `flashget://` or `qqdl://` link is the address wrapped in it ([`unwrapped`],
+/// #1782), so a link found wrapped and plain is one download.
 fn addresses(text: &str) -> Vec<String> {
     // ASCII lower case keeps every byte where it was.
     let lower = text.to_ascii_lowercase();
@@ -250,7 +252,11 @@ fn addresses(text: &str) -> Vec<String> {
         let found = if is_magnet {
             magnet_link(cand)
         } else {
-            web_address(cand)
+            match unwrapped(cand) {
+                Wrapped::No => web_address(cand),
+                Wrapped::Address(inner) => Some(inner),
+                Wrapped::Unsupported => None,
+            }
         };
         out.extend(found);
         at = (start + len).max(pos + 3);
@@ -347,6 +353,67 @@ fn web_address(cand: &str) -> Option<String> {
 fn magnet_link(cand: &str) -> Option<String> {
     let cand = cand.replace("&amp;", "&");
     (mdm_torrent::Source::magnet(&cand).is_some() && magnet_hash(&cand).is_some()).then_some(cand)
+}
+
+/// What [`unwrapped`] made of a link.
+#[derive(Clone, Debug, PartialEq)]
+pub enum Wrapped {
+    /// Not a `thunder://`, `flashget://` or `qqdl://` link: read as it is written.
+    No,
+    /// One of them: the address inside, which MDM downloads.
+    Address(String),
+    /// One of them without an address MDM downloads inside: nothing to download.
+    Unsupported,
+}
+
+/// How a wrapped link's base64 is read (#1782): with or without its `=` at the end, and with
+/// the spare bits some programs leave in the last letter. These links are written by many
+/// programs, not all of them careful.
+const WRAPPED_BASE64: base64::engine::GeneralPurpose = base64::engine::GeneralPurpose::new(
+    &base64::alphabet::STANDARD,
+    base64::engine::GeneralPurposeConfig::new()
+        .with_decode_padding_mode(base64::engine::DecodePaddingMode::Indifferent)
+        .with_decode_allow_trailing_bits(true),
+);
+
+/// The address inside a `thunder://`, `flashget://` or `qqdl://` link (#1782). Each is an
+/// ordinary address in base64: Thunder writes `AA<address>ZZ`, FlashGet
+/// `[FLASHGET]<address>[FLASHGET]` (and sometimes `&<something>` after the base64), QQ the
+/// address alone. The scheme is read in any case; a `/` after the base64 is left out.
+///
+/// Only an address MDM downloads comes out (http, https, ftp, a magnet link to a torrent).
+/// Base64 that can't be read, missing marks, bytes that are not UTF-8 (old links hold GBK
+/// text) and any other address inside are [`Wrapped::Unsupported`]. A wrapped link inside
+/// another is one of those too: a link is unwrapped once and never again, so no link can make
+/// MDM unwrap for ever.
+pub fn unwrapped(link: &str) -> Wrapped {
+    let link = link.trim();
+    let Some((scheme, rest)) = link.split_once("://") else {
+        return Wrapped::No;
+    };
+    let (head, tail) = match scheme.to_ascii_lowercase().as_str() {
+        "thunder" => ("AA", "ZZ"),
+        "flashget" => ("[FLASHGET]", "[FLASHGET]"),
+        "qqdl" => ("", ""),
+        _ => return Wrapped::No,
+    };
+    // `&` is no base64 letter: what follows it (FlashGet's) is not part of the address.
+    let code = rest.split('&').next().unwrap_or(rest).trim();
+    // `/` is a base64 letter, so the base64 is read as written first, and without its last
+    // `/` only when that gave nothing.
+    let inside = |code: &str| {
+        use base64::Engine as _;
+        let text = String::from_utf8(WRAPPED_BASE64.decode(code).ok()?).ok()?;
+        let inner = text.strip_prefix(head)?.strip_suffix(tail)?.trim();
+        if inner.to_ascii_lowercase().starts_with("magnet:?") {
+            magnet_link(inner)
+        } else {
+            web_address(inner)
+        }
+    };
+    inside(code)
+        .or_else(|| code.strip_suffix('/').and_then(inside))
+        .map_or(Wrapped::Unsupported, Wrapped::Address)
 }
 
 /// A magnet link's torrent hash (`xt=urn:btih:<hash>`), in lower case.
@@ -474,6 +541,188 @@ mod tests {
         );
         assert_eq!(found(""), Vec::<String>::new());
         assert_eq!(found("no links here, only words."), Vec::<String>::new());
+    }
+
+    fn b64(bytes: impl AsRef<[u8]>) -> String {
+        use base64::Engine as _;
+        base64::engine::general_purpose::STANDARD.encode(bytes)
+    }
+
+    /// The three ways an address is wrapped (#1782), as each program writes it.
+    fn wrappers(address: &str) -> [String; 3] {
+        [
+            format!("thunder://{}", b64(format!("AA{address}ZZ"))),
+            format!(
+                "flashget://{}",
+                b64(format!("[FLASHGET]{address}[FLASHGET]"))
+            ),
+            format!("qqdl://{}", b64(address)),
+        ]
+    }
+
+    const MAGNET: &str = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Show";
+
+    /// #1782: each wrapper round each kind of address MDM downloads gives that address, alone
+    /// and inside a sentence.
+    #[test]
+    fn a_wrapped_link_is_the_address_inside() {
+        for address in [
+            "http://dl.example.org/pack/a.zip",
+            "https://dl.example.org/pack/b.rar?id=7&key=x",
+            "ftp://ftp.example.org/pub/c.iso",
+            MAGNET,
+        ] {
+            for wrapped in wrappers(address) {
+                assert_eq!(
+                    unwrapped(&wrapped),
+                    Wrapped::Address(address.into()),
+                    "{wrapped}"
+                );
+                assert_eq!(found(&wrapped), [address], "{wrapped}");
+                let post = format!("Mirror: **{wrapped}**, or <a href=\"{wrapped}\">here</a>.");
+                assert_eq!(found(&post), [address], "{post}");
+            }
+        }
+        // As they are met on a page.
+        let page = "thunder://QUFodHRwOi8vZGwuZXhhbXBsZS5jb20vZmlsZXMvc2V0dXAuZXhlWlo=\n\
+            flashget://W0ZMQVNIR0VUXWh0dHBzOi8vZGwuZXhhbXBsZS5jb20vZmlsZXMvbW92aWUubWt2W0ZMQVNIR0VUXQ==&abc\n\
+            qqdl://ZnRwOi8vZnRwLmV4YW1wbGUuY29tL3B1Yi9kaXNrMS5pc28=";
+        assert_eq!(
+            found(page),
+            [
+                "http://dl.example.com/files/setup.exe",
+                "https://dl.example.com/files/movie.mkv",
+                "ftp://ftp.example.com/pub/disk1.iso",
+            ]
+        );
+        // Not one of them: left to the callers, as before.
+        for plain in ["https://a.org/x.zip", MAGNET, "thunder", "no links here"] {
+            assert_eq!(unwrapped(plain), Wrapped::No, "{plain}");
+        }
+    }
+
+    /// #1782: the scheme in any case, a `/` after the base64, no `=` at its end, FlashGet's
+    /// `&…` after it.
+    #[test]
+    fn a_wrapped_link_as_other_programs_write_it() {
+        let address = "https://dl.example.org/pack/a.zip";
+        let is = Wrapped::Address(address.into());
+        let [thunder, flashget, qqdl] = wrappers(address);
+        for wrapped in [
+            thunder.replacen("thunder", "Thunder", 1),
+            flashget.replacen("flashget", "FLASHGET", 1),
+            qqdl.replacen("qqdl", "QQdl", 1),
+            format!("{thunder}/"),
+            format!("{qqdl}/"),
+            format!("{flashget}&aGVsbG8="),
+            format!("{flashget}/&aGVsbG8="),
+            format!("  {thunder}\r\n"),
+        ] {
+            assert_eq!(unwrapped(&wrapped), is, "{wrapped}");
+            assert_eq!(found(&wrapped), [address], "{wrapped}");
+        }
+        // Without its padding (this address has some in each wrapper).
+        for wrapped in [
+            format!("thunder://{}", b64(format!("AA{address}ZZ"))),
+            format!("qqdl://{}", b64(format!("{address}?"))),
+        ] {
+            assert!(wrapped.ends_with('='), "{wrapped}");
+            let bare = wrapped.trim_end_matches('=');
+            assert_eq!(unwrapped(bare), unwrapped(&wrapped), "{bare}");
+            assert_ne!(unwrapped(bare), Wrapped::Unsupported, "{bare}");
+        }
+        // A `/` that ends the base64 itself is part of it, with or without one more after it.
+        let ends = "http://a.example/xyz?";
+        let wrapped = format!("qqdl://{}", b64(ends));
+        assert!(wrapped.ends_with('/'), "{wrapped}");
+        assert_eq!(unwrapped(&wrapped), Wrapped::Address(ends.into()));
+        assert_eq!(
+            unwrapped(&format!("{wrapped}/")),
+            Wrapped::Address(ends.into())
+        );
+    }
+
+    /// #1782: a wrapper with nothing MDM downloads inside is not a download, and is not read
+    /// as some other address either.
+    #[test]
+    fn a_wrapped_link_mdm_cannot_download_is_not_supported() {
+        let address = "https://dl.example.org/pack/a.zip";
+        let mut not: Vec<String> = Vec::new();
+        // Another kind of address inside.
+        for inner in [
+            "ed2k://|file|a.iso|733468672|0123456789ABCDEF0123456789ABCDEF|/",
+            "file:///C:/Windows/win.ini",
+            "mailto:a@b.example",
+            "magnet:?dn=no-hash",
+            "https://",
+            "",
+        ] {
+            not.extend(wrappers(inner));
+        }
+        // A wrapped link inside a wrapped link: unwrapped once, never again.
+        for inner in wrappers(address) {
+            not.extend(wrappers(&inner));
+        }
+        // Base64 that can't be read.
+        not.extend(
+            ["thunder://", "flashget://", "qqdl://"].map(|s| format!("{s}not*base64*at*all")),
+        );
+        not.extend(["thunder://", "flashget://&abc", "qqdl:///"].map(String::from));
+        // Its marks missing: none, only the first, only the last, another program's.
+        not.extend([
+            format!("thunder://{}", b64(address)),
+            format!("thunder://{}", b64(format!("AA{address}"))),
+            format!("thunder://{}", b64(format!("{address}ZZ"))),
+            format!(
+                "thunder://{}",
+                b64(format!("[FLASHGET]{address}[FLASHGET]"))
+            ),
+            format!("flashget://{}", b64(address)),
+            format!("flashget://{}", b64(format!("[FLASHGET]{address}"))),
+            format!("flashget://{}", b64(format!("{address}[FLASHGET]"))),
+            format!("flashget://{}", b64(format!("AA{address}ZZ"))),
+            format!("qqdl://{}", b64(format!("AA{address}ZZ"))),
+        ]);
+        // Bytes that are not UTF-8: a file name in GBK, as old links have.
+        let gbk = b"http://dl.example.org/\xd6\xd0\xce\xc4.zip";
+        not.extend([
+            format!("thunder://{}", b64([b"AA", &gbk[..], b"ZZ"].concat())),
+            format!(
+                "flashget://{}",
+                b64([b"[FLASHGET]", &gbk[..], b"[FLASHGET]"].concat())
+            ),
+            format!("qqdl://{}", b64(gbk)),
+        ]);
+        for wrapped in not {
+            assert_eq!(unwrapped(&wrapped), Wrapped::Unsupported, "{wrapped}");
+            assert_eq!(found(&wrapped), Vec::<String>::new(), "{wrapped}");
+        }
+    }
+
+    /// #1782: the address inside is what is kept, so the same download wrapped, wrapped
+    /// another way and plain is one download.
+    #[test]
+    fn a_wrapped_and_a_plain_link_to_the_same_file_are_one() {
+        let address = "https://dl.example.org/pack/a.zip";
+        let [thunder, flashget, qqdl] = wrappers(address);
+        let [magnet, ..] = wrappers(MAGNET);
+        let list = format!(
+            "{thunder}\n{address}\n{flashget}\n{qqdl}\nhttps://other.example.org/b.zip\n\
+             {MAGNET}\n{magnet}\nTHUNDER://{}",
+            thunder.trim_start_matches("thunder://")
+        );
+        assert_eq!(
+            found(&list),
+            [address, "https://other.example.org/b.zip", MAGNET]
+        );
+        // The plain one first, or the wrapped one: the same.
+        assert_eq!(found(&format!("{address} {qqdl}")), [address]);
+        // Only wrapped, each another way: still the one download, under its own address.
+        assert_eq!(found(&format!("{thunder}\n{flashget}\n{qqdl}")), [address]);
+        assert_eq!(
+            found(&format!("{magnet}\n{}", wrappers(MAGNET)[2])),
+            [MAGNET]
+        );
     }
 
     fn temp(name: &str) -> PathBuf {

@@ -13,10 +13,13 @@
 //! A watch or player link is asked at its download page (`sites::rewrite`), the best quality the
 //! page lists is followed, its form posted (`PageSays::Form`) and the file's link taken from the
 //! answer. The site answers about one post in three with the form again ("Security error"),
-//! whatever the request's headers: posted again, it gives the link. Those links expire: a download given one by the browser has the quality's page as
-//! its origin when the tab it came from (or its Referer) is one of the video's pages, and a
-//! download given the video's link asks that link again (`download::origin_of`). A form with a
-//! captcha (`data-sitekey`) needs the browser: refused as such, never posted.
+//! whatever the request's headers: posted again, it gives the link. A repost waits first, 0.5 s
+//! and then twice as long each time, as someone clicking again in a browser does: five posts
+//! within 2.6 s were all refused, twice in a row (#1593, `download::FORM_REPOST_PAUSE`). Those
+//! links expire: a download given one by the browser has the quality's page as its origin when
+//! the tab it came from (or its Referer) is one of the video's pages, and a download given the
+//! video's link asks that link again (`download::origin_of`). A form with a captcha
+//! (`data-sitekey`) needs the browser: refused as such, never posted.
 //!
 //! Learned from LuluStream's public pages, a free video's, without signing in. Pages are matched
 //! on their structure (paths, the form's fields, a link's path), never on their words.

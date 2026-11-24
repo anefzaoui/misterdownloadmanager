@@ -171,6 +171,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	트래커 {n}개를 추가했습니다.
+#. count in the main window
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added from the public list|{n} trackers added from the public list	공개 목록 트래커 {n}개를 추가했습니다.
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -327,6 +332,9 @@
 #. why Part is greyed in Download video: the page is a playlist, whose videos are downloaded whole
 #, machine
 	A playlist's videos are downloaded whole	재생 목록의 동영상은 전체가 다운로드됩니다.
+#. message or event log entry in the main window
+#, machine
+	A private torrent: the public tracker list isn't added	비공개 토렌트: 공개 트래커 목록이 추가되지 않았습니다.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -467,6 +475,10 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	무료 확장 프로그램을 추가하세요. 브라우저에서 다운로드하는 파일이 여기로 오고, 동영상에 다운로드 단추가 표시됩니다.
+#. text in the Add torrent window
+#. Torrent settings: add the trackers of a public tracker list (its address in the box below) to torrents that aren't private, so they find more peers
+#, machine
+	Add the trackers of this public list to public torrents:	이 공개 목록의 트래커를 공개 토렌트에 추가:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -1121,6 +1133,11 @@
 #. remote control page (on a phone): what the ".torrent file" button does (screen readers)
 #, machine
 	Choose a .torrent file	.torrent 파일 선택
+#. message or event log entry in the main window
+#. title of the file dialog of View → Font → Choose a font file
+#. title of the message when the font picked in View → Font can't be used
+#, machine
+	Choose a font file	글꼴 파일을 선택하세요
 #. text in helpers.rs
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	JavaScript 런타임 선택 (Node.js, Deno, QuickJS 또는 Bun)
@@ -2003,6 +2020,10 @@
 #. Torrent settings, at the bottom
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	7일마다 다시 가져옵니다. 토렌트가 실행되고 있지 않을 때 변경 사항이 적용됩니다.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address
+#, machine
+	Fetched once a day. Never added to private torrents.	하루에 한 번 가져옵니다. 비공개 토렌트에는 추가되지 않습니다.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -2135,6 +2156,10 @@
 #. text in categories.rs
 #, machine
 	Folder:	폴더:
+#. message or event log entry in the main window
+#. the kind of file View → Font → Choose a font file lists: TrueType and OpenType font files
+#, machine
+	Font files	글꼴 파일
 #. text in finish.rs
 #. Snooze menu of the Download complete window: show no Download complete window for this long
 #, machine
@@ -5687,6 +5712,10 @@
 #, machine
 	This device's name	이 장치의 이름
 #. message or event log entry in the main window
+#. the message when a file picked in View → Font isn't a TrueType or OpenType font MDM can read
+#, machine
+	This file can't be used as a font.	이 파일은 글꼴로 사용할 수 없습니다.
+#. message or event log entry in the main window
 #. {error} is why, in English (a file that isn't a theme or a colour scheme, a colour missing)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -5999,6 +6028,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	먼저 원격 제어를 켜세요.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	비활성화해도 이미 추가된 트래커는 유지됩니다.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -8023,6 +8056,11 @@ menu	&Download Now	지금 다운로드(&D)
 #, machine
 menu	&Exit	끝내기(&E)
 #. menu command in the main window
+#. View menu: submenu choosing the interface's own font and text size
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&Font	세례반(&F)
+#. menu command in the main window
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8101,6 +8139,11 @@ menu	&Stop All	모두 중지(&S)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Stop Download	다운로드 중지(&S)
+#. menu command in the main window
+#. View → Font: the computer's own font, the default (Segoe UI on Windows)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	&System font	시스템 글꼴(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -8237,6 +8280,12 @@ menu	C&ustomize URL List...	URL 목록 &사용자 지정...
 #, machine
 menu	Check for &updates...	&업데이트 확인...
 #. menu command in the main window
+#. View → Font: a TrueType or OpenType font file on disk to draw the interface's text in
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Choose a font &file...	글꼴 파일을 선택하세요...(&F)
+#. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
 menu	Classic	클래식
@@ -8325,10 +8374,6 @@ menu	Find Next (F3)	다음 찾기(F3)
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
 menu	First and last pieces first	처음과 마지막 조각 먼저
-#. menu command in the main window
-#. noun: the list's font (submenu)
-#, machine
-menu	Font	글꼴
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

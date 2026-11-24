@@ -22,7 +22,8 @@ link. You can also import a text file or an `.ef2` export with **Tasks → Impor
 the download list, or open **Tasks → Link grabber...** and paste any text with **Ctrl+V**: every
 web address in it is added. Copied a list of links, or a forum post with links in it?
 **Tasks → Add batch download from clipboard** (Ctrl+B) opens Link grabber with every http, ftp and
-magnet link in the text, each once, ticked.
+magnet link in the text, each once, ticked. A `thunder://`, `flashget://` or `qqdl://` link is
+unwrapped to the address inside it.
 
 A link that is already in your download list goes under **Already in the list**, unticked.
 

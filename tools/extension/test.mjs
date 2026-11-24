@@ -5197,6 +5197,49 @@ const MP4 = (() => {
   // A known length beats an unknown one.
   assert.equal(choose([...loaded, file("https://v.test/c.mp4", 30)], { duration: 30, alone: true }), "https://v.test/c.mp4");
   ok("#1092: what the tab played is offered for the video of its length, never the next one, a track alone or a guess");
+
+  // A stream its player asked for again long after, signed anew for that load (in one part of its
+  // path or in its query, from another of the site's servers): one video, its newest load (the
+  // older one's signature may have run out), never "several".
+  const HOUR = 3600 * 1000;
+  const signed = (sig, at, host = "hls-cdn1", id = "ab") => stream(`https://${host}.cdn.test/${sig}-1700000000/videos/${id}/hls.m3u8`, 600, { at });
+  assert.equal(
+    choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR, "hls-cdn7")], { duration: 600 }),
+    "https://hls-cdn7.cdn.test/z9x8-1700000000/videos/ab/hls.m3u8",
+    "signed in its path, hours later, from another server",
+  );
+  const query = (h, at) => stream(`https://cdn.v.test/hls/123/master.m3u8?hash=${h}&expires=${at}`, 600, { at });
+  assert.equal(choose([query("b", 2 * HOUR), query("a", 1000)], { duration: 600 }), `https://cdn.v.test/hls/123/master.m3u8?hash=b&expires=${2 * HOUR}`, "signed in its query");
+  // Two videos, never one: loaded seconds apart (a feed's next one), or after the page's next
+  // player began to load; the video named in the path besides the signature; the query naming
+  // each; another file; another picture height; a few hundredths apart in length.
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 4000)], { duration: 600 }), "several 2", "seconds apart");
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR)], { duration: 600, began: 900, nextBegan: 5000 }), "several 2", "after the next player began");
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR, "hls-cdn1", "cd")], { duration: 600 }), "several 2", "another video's part");
+  // The same path on another site: two videos.
+  assert.equal(choose([signed("q1w2", 1000), stream("https://hls.other.test/z9x8-1700000000/videos/ab/hls.m3u8", 600, { at: 3 * HOUR })], { duration: 600 }), "several 2", "another site");
+  // Signed in its query the way S3 and Google Cloud Storage sign (X-Amz-…, X-Goog-…): one video.
+  const s3 = (sig, at) => stream(`https://b.s3.test/v/ab/hls.m3u8?X-Amz-Date=${at}&X-Amz-Signature=${sig}`, 600, { at });
+  assert.equal(choose([s3("a", 1000), s3("b", 3 * HOUR)], { duration: 600 }), `https://b.s3.test/v/ab/hls.m3u8?X-Amz-Date=${3 * HOUR}&X-Amz-Signature=b`, "S3-signed");
+  const byId = (id, at) => stream(`https://cdn.v.test/master.m3u8?id=${id}&hash=x`, 600, { at });
+  assert.equal(choose([byId(1, 1000), byId(2, 3 * HOUR)], { duration: 600 }), "several 2");
+  const index = stream("https://hls-cdn1.cdn.test/z9-1/videos/ab/index.m3u8", 600, { at: 3 * HOUR });
+  assert.equal(choose([signed("q1w2", 1000), index], { duration: 600 }), "several 2");
+  assert.equal(choose([signed("q1w2", 1000), signed("z9x8", 3 * HOUR, "hls-cdn7")].map((c, i) => ({ ...c, height: i ? 1080 : 720 })), { duration: 600, height: 480 }), "several 2");
+  assert.equal(choose([signed("q1w2", 1000), { ...signed("z9x8", 3 * HOUR), duration: 600.4 }], { duration: 600 }), "several 2");
+  // A file: its size too.
+  const mp4 = (sig, at, size) => file(`https://f.cdn.test/${sig}/v/clip.mp4`, 600, { at, size });
+  assert.equal(choose([mp4("a1", 1000, 5e7), mp4("b2", 3 * HOUR, 5e7)], { duration: 600 }), "https://f.cdn.test/b2/v/clip.mp4");
+  assert.equal(choose([mp4("a1", 1000, 5e7), mp4("b2", 3 * HOUR, 4e7)], { duration: 600 }), "several 2", "another size");
+  // A newer load that isn't a video (protected): the older one stays.
+  assert.equal(choose([signed("q1w2", 1000), { ...signed("z9x8", 3 * HOUR), drm: true }], { duration: 600 }), "https://hls-cdn1.cdn.test/q1w2-1700000000/videos/ab/hls.m3u8");
+  // The signature's parameters are the app's (app.rs SIGNATURE_PARAMS), the same list.
+  const listed = (text, start) => [...text.slice(text.indexOf(start)).split(/[\]\)];/)[0].matchAll(/"([^"]+)"/g)].map((m) => m[1]).sort();
+  const js = listed(readText("../../extension/background.js"), "const SIGNATURE_PARAMS = new Set([");
+  const rust = listed(readText("../../crates/app/src/app.rs"), "const SIGNATURE_PARAMS: [&str;");
+  assert.ok(js.length > 10);
+  assert.deepEqual(js, rust, "the extension's and the app's signature parameters");
+  ok("#1092: a video its player loaded again, signed anew, is one video: its newest load");
 }
 
 // #1092, from the button's question to the app: a feed's player fetched files in ranges (kept
