@@ -569,6 +569,7 @@ Bug fixes from the first days of 0.5.0, a Safari extension, and more file types.
 
 These ship in the next version.
 
+- ✅ Torrents: trackers are checked more carefully.
 - ✅ The browser add-on's video button on Facebook's feed sends the video it is over, by the id
   Facebook gives its player (as its /reel/ address), else the video's links in its post, the post's
   permalink last; a comment's link to another video is never taken

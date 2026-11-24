@@ -29,6 +29,12 @@ fuzz_target!(|data: &[u8]| {
             for t in trackers::in_magnet(&filtered) {
                 assert!(kept.contains(&t), "{t} came from nowhere");
             }
+            // What librqbit reads from it is only what MDM may contact.
+            if let Ok(m) = librqbit::Magnet::parse(&filtered) {
+                for t in m.trackers {
+                    assert!(trackers::allowed(&t, proxied), "{t} was kept");
+                }
+            }
         }
     }
 
@@ -51,13 +57,25 @@ fuzz_target!(|data: &[u8]| {
     let hash = info_hash(data);
     let listed = trackers::listed(data);
     for proxied in [false, true] {
-        if let Some(out) = trackers::filter_torrent(data, proxied) {
+        let filtered = trackers::filter_torrent(data, proxied);
+        // A torrent librqbit reads is one MDM can filter (one it can't is refused).
+        if hash.is_some() {
+            assert!(filtered.is_some(), "a torrent librqbit reads wasn't filtered");
+        }
+        if let Some(out) = filtered {
             // The same torrent: its info dictionary is kept byte for byte.
             if hash.is_some() {
                 assert_eq!(info_hash(&out), hash, "filtering changed the info hash");
             }
             for t in trackers::listed(&out) {
                 assert!(listed.contains(&t), "{t} came from nowhere");
+            }
+            // What librqbit reads from it is only what MDM may contact.
+            if let Ok(meta) = librqbit::torrent_from_bytes(&out) {
+                for t in meta.iter_announce() {
+                    let t = std::str::from_utf8(t.as_ref()).expect("kept trackers are text");
+                    assert!(trackers::allowed(t, proxied), "{t} was kept");
+                }
             }
         }
     }
