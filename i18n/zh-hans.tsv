@@ -145,7 +145,7 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	已添加 {n} 个 Tracker
 #. count in the main window
-#. event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added from the public list|{n} trackers added from the public list	已从公共列表中添加 {n} 个跟踪器
@@ -278,7 +278,6 @@
 #, machine
 	A playlist's videos are downloaded whole	播放列表中的视频将完整下载
 #. message or event log entry in the main window
-#. event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
 #, machine
 	A private torrent: the public tracker list isn't added	私有种子：未添加公共跟踪器列表
 #. text in the Options window
@@ -5610,6 +5609,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	请先开启远程控制。
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	关闭后，已添加的跟踪器将保留。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	图瓦卢

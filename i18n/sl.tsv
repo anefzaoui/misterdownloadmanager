@@ -172,7 +172,7 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	Dodan je {n} sledilnik|Dodana sta {n} sledilnika|Dodani so {n} sledilniki|Dodanih je {n} sledilnikov
 #. count in the main window
-#. event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added from the public list|{n} trackers added from the public list	{n} sledilnik dodan z javnega seznama|{n} sledilnika dodana z javnega seznama|{n} sledilniki dodani z javnega seznama|{n} sledilnikov dodanih z javnega seznama
@@ -333,7 +333,6 @@
 #, machine
 	A playlist's videos are downloaded whole	Videoposnetki s seznama predvajanja se prenesejo v celoti
 #. message or event log entry in the main window
-#. event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
 #, machine
 	A private torrent: the public tracker list isn't added	Zasebni torrent: javni seznam sledilnikov ni dodan
 #. text in the Options window
@@ -6012,6 +6011,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	Najprej vklopite daljinsko upravljanje.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Ko je izklopljeno, dodani sledilniki ostanejo.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

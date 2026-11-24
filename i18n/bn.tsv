@@ -163,7 +163,7 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n}টি ট্র্যাকার যোগ করা হয়েছে|{n}টি ট্র্যাকার যোগ করা হয়েছে
 #. count in the main window
-#. event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added from the public list|{n} trackers added from the public list	পাবলিক তালিকা থেকে {n}টি ট্র্যাকার যোগ করা হয়েছে|পাবলিক তালিকা থেকে {n}টি ট্র্যাকার যোগ করা হয়েছে
@@ -312,7 +312,6 @@
 #, machine
 	A playlist's videos are downloaded whole	একটি প্লেলিস্টের ভিডিওগুলো সম্পূর্ণ ডাউনলোড করা হয়
 #. message or event log entry in the main window
-#. event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
 #, machine
 	A private torrent: the public tracker list isn't added	একটি ব্যক্তিগত টরেন্ট: পাবলিক ট্র্যাকার তালিকা যোগ করা হয়নি
 #. text in the Options window
@@ -5650,6 +5649,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	প্রথমে রিমোট কন্ট্রোল চালু করুন।
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	বন্ধ করা হলেও, ইতোমধ্যে যোগ করা ট্র্যাকারগুলো থেকে যায়।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

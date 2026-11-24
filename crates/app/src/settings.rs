@@ -1460,6 +1460,15 @@ impl Settings {
                 (true, Some(p)) => mdm_cli::TorrentProxy::Through(p),
                 (true, None) => mdm_cli::TorrentProxy::Missing,
             },
+            // The same switch, address and cache as the app's (#1776).
+            public_trackers: self
+                .torrent_public_trackers
+                .then(crate::torrents::state_dir)
+                .flatten()
+                .map(|dir| mdm_cli::PublicTrackers {
+                    url: self.public_trackers_list().to_owned(),
+                    dir,
+                }),
         }
     }
 }

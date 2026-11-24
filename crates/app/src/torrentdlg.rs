@@ -1231,7 +1231,7 @@ impl TorrentSettings {
             ctx,
             "torrent-settings",
             "Torrent settings",
-            [470.0, 594.0],
+            [470.0, 610.0],
             false,
             winui::BG(),
             |ui, o| {
@@ -1558,9 +1558,20 @@ impl TorrentSettings {
                     o.x + 456.0,
                     ("torrent-settings", 9),
                 );
+                winui::fit(
+                    ui,
+                    &p,
+                    o.x + 32.0,
+                    o.y + 542.0,
+                    // i18n: Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+                    crate::i18n::t("Turned off, the trackers already added stay."),
+                    winui::MUTED(),
+                    o.x + 456.0,
+                    ("torrent-settings", 10),
+                );
                 let ok = winui::button(
                     ui,
-                    r(o, 298.0, 562.0, 77.0, 21.0),
+                    r(o, 298.0, 578.0, 77.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
@@ -1569,7 +1580,7 @@ impl TorrentSettings {
                 .clicked();
                 let cancel = winui::button(
                     ui,
-                    r(o, 381.0, 562.0, 77.0, 21.0),
+                    r(o, 381.0, 578.0, 77.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,

@@ -172,7 +172,7 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	트래커 {n}개를 추가했습니다.
 #. count in the main window
-#. event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added from the public list|{n} trackers added from the public list	공개 목록 트래커 {n}개를 추가했습니다.
@@ -333,7 +333,6 @@
 #, machine
 	A playlist's videos are downloaded whole	재생 목록의 동영상은 전체가 다운로드됩니다.
 #. message or event log entry in the main window
-#. event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
 #, machine
 	A private torrent: the public tracker list isn't added	비공개 토렌트: 공개 트래커 목록이 추가되지 않았습니다.
 #. text in the Options window
@@ -6016,6 +6015,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	먼저 원격 제어를 켜세요.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	비활성화해도 이미 추가된 트래커는 유지됩니다.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

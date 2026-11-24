@@ -152,7 +152,7 @@
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker aggiunto|{n} tracker aggiunti
 #. count in the main window
-#. event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added from the public list|{n} trackers added from the public list	Aggiunto {n} tracker dall'elenco pubblico|Aggiunti {n} tracker dall'elenco pubblico
@@ -290,7 +290,6 @@
 #, machine
 	A playlist's videos are downloaded whole	I video di una playlist vengono scaricati per intero
 #. message or event log entry in the main window
-#. event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
 #, machine
 	A private torrent: the public tracker list isn't added	Un torrent privato: l'elenco pubblico dei tracker non viene aggiunto
 #. text in the Options window
@@ -4781,6 +4780,10 @@
 #. tooltip (why a control is greyed) in the Options window
 #. why Options → Remote → Pair a device... is greyed
 	Turn on the remote control first.	Attiva prima il controllo remoto.
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	Quando è disattivata, i tracker già aggiunti restano.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu

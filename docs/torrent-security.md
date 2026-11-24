@@ -40,7 +40,7 @@ Peers on your local network are still found: with **Find peers on the local netw
 
 ## A public tracker list
 
-**Add the trackers of this public list to public torrents** (off by default) fetches a list of public trackers, at most once a day, with MDM's own downloader: your Proxy / Socks settings and your network adapter apply, and while the adapter's kill switch holds downloads, the list isn't fetched either. Every tracker on it is checked like a torrent's own: none on your computer or your local network is ever asked. Those trackers then see that you have the torrents you add from then on, as any tracker of a torrent does. A private torrent never gets them, and a list MDM can't read leaves the last good one in place.
+**Add the trackers of this public list to public torrents** (off by default) fetches a list of public trackers with MDM's own downloader, once a day (an hour later when a fetch failed): your Proxy / Socks settings and your network adapter apply, and while the adapter's kill switch holds downloads, the list isn't fetched either. Every tracker on it is checked like a torrent's own: none on your computer or your local network is ever asked. Those trackers then see that you have your public torrents, those already in your list too, as any tracker of a torrent does. A private torrent never gets them, a list MDM can't read leaves the last good one in place, and turning the switch off doesn't take away the trackers already added.
 
 ## Files from a torrent
 

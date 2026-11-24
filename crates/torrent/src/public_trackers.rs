@@ -1,9 +1,10 @@
 //! A public tracker list (#1776): an option that adds the trackers of a well-known list (or one
 //! at an address the user gives) to public torrents, so they find peers sooner. The list is
-//! fetched again once a day, by the app with MDM's own downloader; this is what it does with it:
-//! read it ([`parse`]), keep it with the time it was tried and fetched ([`Cache`], a file in the
-//! torrent data folder, the last good list kept when a fetch fails), and add it to a torrent
-//! ([`add_to`]), never to a private one (BEP 27).
+//! fetched with MDM's own downloader ([`download`]) once a day, again after an hour when a fetch
+//! failed; this is what is done with it: read it ([`parse`]), keep it with the time it was tried
+//! and fetched ([`Cache`], a file in the torrent data folder, the last good list kept when a
+//! fetch fails), and add it to a torrent ([`add_to`]), never to a private one (BEP 27). The app
+//! and the command line ([`refresh_file`]) share all of it.
 //!
 //! Every tracker of a list goes through [`trackers::allowed`], as it is read and again as it is
 //! added, and is added with [`trackers::add`]: the info dictionary, and so the hash, stays byte
@@ -29,6 +30,9 @@ const MAX_LINE: usize = 512;
 
 /// How often the list is fetched: at most once a day.
 pub const EVERY: Duration = Duration::from_secs(24 * 60 * 60);
+
+/// How soon a fetch that failed (or never ended: MDM was closed meanwhile) is tried again.
+pub const RETRY: Duration = Duration::from_secs(60 * 60);
 
 /// The cache's file, in the torrent data folder.
 pub const CACHE_FILE: &str = "public-trackers.json";
@@ -132,14 +136,21 @@ impl Cache {
         std::fs::rename(&tmp, dir.join(CACHE_FILE))
     }
 
-    /// Whether the list at `source` is to be fetched now: never tried from there, or last tried
-    /// a day ago or more. A last try more than a day ahead of `now` (the clock was put back)
-    /// doesn't hold it off for good.
+    /// Whether the list at `source` is to be fetched now: never tried from there, last fetched
+    /// a day ago or more, or last tried an hour ago or more without a list coming of it (the try
+    /// is recorded before it starts, so one that never ended counts as failed: a crash at each
+    /// start still asks at most once an hour). A last try more than a day ahead of `now` (the
+    /// clock was put back) doesn't hold it off for good.
     pub fn due(&self, source: &str, now: u64) -> bool {
-        let every = EVERY.as_secs();
+        let wait = if self.fetched >= self.tried {
+            EVERY
+        } else {
+            RETRY
+        }
+        .as_secs();
         self.source != source.trim()
-            || now >= self.tried.saturating_add(every)
-            || self.tried > now.saturating_add(every)
+            || now >= self.tried.saturating_add(wait)
+            || self.tried > now.saturating_add(EVERY.as_secs())
     }
 
     /// A fetch from `source` starts at `now`. Another address than before: the old list's
@@ -184,6 +195,113 @@ impl Cache {
     pub fn fetched_at(&self) -> Option<u64> {
         (self.fetched != 0).then_some(self.fetched)
     }
+
+    /// What a torrent records once the list from `source` was added to it (a stamp of the
+    /// address and its trackers; None while there is no list): another list (a newer fetch that
+    /// changed it, another address) has another stamp, and is added again (only its new trackers
+    /// are new to the torrent). FNV-1a, the same in every build.
+    pub fn stamp(&self, source: &str) -> Option<u64> {
+        let list = self.trackers(source);
+        if list.is_empty() {
+            return None;
+        }
+        let mut h: u64 = 0xcbf2_9ce4_8422_2325;
+        for part in std::iter::once(self.source.as_str()).chain(list.iter().map(String::as_str)) {
+            for b in part.bytes().chain(std::iter::once(b'\n')) {
+                h ^= u64::from(b);
+                h = h.wrapping_mul(0x0100_0000_01b3);
+            }
+        }
+        // 0 is what a torrent that never got a list records.
+        Some(h.max(1))
+    }
+}
+
+/// Fetch the list at `url` with MDM's engine (`opts`: the proxy, DNS and network adapter the
+/// caller uses for its own downloads), into memory, through a temporary file in `dir` that is
+/// removed after (with its resume state). Stopped, and an error, past [`MAX_LIST_BYTES`].
+pub async fn download(url: &str, dir: &Path, opts: mdm_engine::Options) -> Result<Vec<u8>, String> {
+    use mdm_engine::download::State;
+    let url = url::Url::parse(url.trim()).map_err(|e| e.to_string())?;
+    if !matches!(url.scheme(), "http" | "https") {
+        return Err(format!("{url}: not a web address"));
+    }
+    std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
+    let path = dir.join(format!(
+        "public-trackers-{}.part-of-mdm",
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_nanos())
+    ));
+    let dl = mdm_engine::Download::start(
+        mdm_engine::Request {
+            url,
+            headers: Default::default(),
+            dest: mdm_engine::Destination::File(path.clone()),
+        },
+        opts,
+    );
+    let too_big = loop {
+        let s = dl.snapshot();
+        if s.size.is_some_and(|z| z > MAX_LIST_BYTES) || s.downloaded > MAX_LIST_BYTES {
+            dl.cancel();
+            break true;
+        }
+        if matches!(s.state, State::Done | State::Failed | State::Cancelled) {
+            break false;
+        }
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    };
+    let res = dl.wait().await;
+    let body = if too_big {
+        Err(format!("larger than {MAX_LIST_BYTES} bytes: not a list"))
+    } else {
+        match res {
+            Ok(_) => std::fs::read(&path).map_err(|e| e.to_string()),
+            Err(e) => Err(e.to_string()),
+        }
+    };
+    let _ = std::fs::remove_file(&path);
+    let _ = std::fs::remove_file(mdm_engine::state::state_path(&path));
+    let _ = std::fs::remove_file(mdm_engine::naming::part_path(&path));
+    body.and_then(|b| {
+        if b.len() as u64 > MAX_LIST_BYTES {
+            Err(format!("larger than {MAX_LIST_BYTES} bytes: not a list"))
+        } else {
+            Ok(b)
+        }
+    })
+}
+
+/// The cache in `dir`, fetched again first when it is due ([`Cache::due`]), for a process that
+/// keeps no copy of its own (the command line): the try recorded before the fetch, what came
+/// kept, both saved. `fetch` fetches the list (the engine's [`download`], or a test's fixture).
+pub async fn refresh_file<F, Fut>(dir: &Path, url: &str, now: impl Fn() -> u64, fetch: F) -> Cache
+where
+    F: FnOnce() -> Fut,
+    Fut: std::future::Future<Output = Result<Vec<u8>, String>>,
+{
+    let mut cache = Cache::load(dir);
+    if !cache.due(url, now()) {
+        return cache;
+    }
+    cache.tried(url, now());
+    if let Err(e) = cache.save(dir) {
+        tracing::warn!("public trackers: the list's cache wasn't saved: {e}");
+    }
+    match fetch().await {
+        Ok(body) => match cache.fetched(url, &body, now()) {
+            Some(n) => {
+                tracing::info!("public trackers: {n} from {url}");
+                if let Err(e) = cache.save(dir) {
+                    tracing::warn!("public trackers: the list wasn't saved: {e}");
+                }
+            }
+            None => tracing::warn!("public trackers: {url} sent no tracker; the last list stays"),
+        },
+        Err(e) => tracing::warn!("public trackers: {url}: {e}; the last list stays"),
+    }
+    cache
 }
 
 #[cfg(test)]
@@ -320,13 +438,15 @@ mod tests {
     /// for good.
     #[test]
     fn the_list_is_fetched_at_most_once_a_day() {
-        let day = EVERY.as_secs();
+        let (day, hour) = (EVERY.as_secs(), RETRY.as_secs());
         let t0 = 1_800_000_000;
         let mut c = Cache::default();
         assert!(c.due(DEFAULT_LIST, t0), "never fetched");
+        // A good fetch: the next a day later.
         c.tried(DEFAULT_LIST, t0);
-        assert!(!c.due(DEFAULT_LIST, t0));
+        c.fetched(DEFAULT_LIST, FIXTURE.as_bytes(), t0 + 2).unwrap();
         assert!(!c.due(DEFAULT_LIST, t0 + 60));
+        assert!(!c.due(DEFAULT_LIST, t0 + hour + 60));
         assert!(!c.due(&format!(" {DEFAULT_LIST} "), t0 + day - 1));
         assert!(c.due(DEFAULT_LIST, t0 + day));
         // Another address: at once.
@@ -334,8 +454,112 @@ mod tests {
         // A clock put back by an hour still waits; by more than a day, it doesn't.
         assert!(!c.due(DEFAULT_LIST, t0 - 3600));
         assert!(c.due(DEFAULT_LIST, t0 - day - 1));
-        // A failed fetch counts as one: the next is a day later, and the list is still empty.
-        assert!(c.trackers(DEFAULT_LIST).is_empty());
+    }
+
+    /// A fetch that failed, brought no list, or never ended (the try is recorded before it
+    /// starts) is tried again an hour later, not sooner, and the last list stays meanwhile.
+    #[test]
+    fn a_failed_fetch_is_tried_again_after_an_hour() {
+        let (day, hour) = (EVERY.as_secs(), RETRY.as_secs());
+        let t0 = 1_800_000_000;
+        let mut c = Cache::default();
+        // Never ended (MDM closed, or crashed, during it): an hour.
+        c.tried(DEFAULT_LIST, t0);
+        assert!(!c.due(DEFAULT_LIST, t0 + 60));
+        assert!(!c.due(DEFAULT_LIST, t0 + hour - 1));
+        assert!(c.due(DEFAULT_LIST, t0 + hour));
+        // Then a good one: a day again.
+        let t1 = t0 + hour;
+        c.tried(DEFAULT_LIST, t1);
+        c.fetched(DEFAULT_LIST, FIXTURE.as_bytes(), t1 + 1).unwrap();
+        assert!(!c.due(DEFAULT_LIST, t1 + hour + 1));
+        // A day later an error page: the list stays, the next try an hour after that one.
+        let t2 = t1 + day;
+        assert!(c.due(DEFAULT_LIST, t2));
+        c.tried(DEFAULT_LIST, t2);
+        assert_eq!(c.fetched(DEFAULT_LIST, b"<html>502</html>", t2 + 1), None);
+        assert_eq!(c.trackers(DEFAULT_LIST), KEPT);
+        assert!(!c.due(DEFAULT_LIST, t2 + hour - 1));
+        assert!(c.due(DEFAULT_LIST, t2 + hour));
+    }
+
+    /// A torrent records the list it got by a stamp: the same list, the same stamp; a list that
+    /// changed, or another address's, another one; no list, none.
+    #[test]
+    fn a_list_is_stamped_for_the_torrents_that_got_it() {
+        let mut c = Cache::default();
+        assert_eq!(c.stamp(DEFAULT_LIST), None);
+        c.tried(DEFAULT_LIST, 10);
+        assert_eq!(c.stamp(DEFAULT_LIST), None, "tried, nothing yet");
+        c.fetched(DEFAULT_LIST, FIXTURE.as_bytes(), 11).unwrap();
+        let first = c.stamp(DEFAULT_LIST).unwrap();
+        assert_ne!(first, 0);
+        assert_eq!(c.stamp(&format!(" {DEFAULT_LIST}")), Some(first));
+        // The same list fetched again: the same stamp (nothing is added again).
+        c.tried(DEFAULT_LIST, 20);
+        c.fetched(DEFAULT_LIST, FIXTURE.as_bytes(), 21).unwrap();
+        assert_eq!(c.stamp(DEFAULT_LIST), Some(first));
+        // A list that changed: another stamp.
+        let more = format!("{FIXTURE}udp://tracker.new.example.org:6969/announce\n");
+        c.fetched(DEFAULT_LIST, more.as_bytes(), 22).unwrap();
+        assert_ne!(c.stamp(DEFAULT_LIST), Some(first));
+        // Another address: none until its list comes, then its own.
+        assert_eq!(c.stamp("https://lists.example.org/t.txt"), None);
+        let mut other = Cache::default();
+        other.tried("https://lists.example.org/t.txt", 30);
+        other
+            .fetched("https://lists.example.org/t.txt", FIXTURE.as_bytes(), 31)
+            .unwrap();
+        assert_ne!(other.stamp("https://lists.example.org/t.txt"), Some(first));
+    }
+
+    /// The command line's refresh (`refresh_file`): fetched only when due, the try saved before
+    /// the fetch, the last good list kept when it fails. The fetch is a fixture: no network.
+    #[tokio::test]
+    async fn the_command_line_refreshes_the_same_cache() {
+        use std::cell::Cell;
+        let dir = tempfile::tempdir().unwrap();
+        let t = Cell::new(1_800_000_000u64);
+        let fetches = Cell::new(0);
+        let ok = || {
+            fetches.set(fetches.get() + 1);
+            async { Ok(FIXTURE.as_bytes().to_vec()) }
+        };
+        let c = refresh_file(dir.path(), DEFAULT_LIST, || t.get(), ok).await;
+        assert_eq!(c.trackers(DEFAULT_LIST), KEPT);
+        assert_eq!(fetches.get(), 1);
+        assert_eq!(Cache::load(dir.path()), c, "saved");
+        // An hour later: not due, the cache as it is, no fetch.
+        t.set(t.get() + RETRY.as_secs());
+        let again = refresh_file(dir.path(), DEFAULT_LIST, || t.get(), ok).await;
+        assert_eq!(again, c);
+        assert_eq!(fetches.get(), 1);
+        // A day later the fetch fails: the list stays, the try is saved, the next is an hour on.
+        t.set(t.get() + EVERY.as_secs());
+        let failed = refresh_file(
+            dir.path(),
+            DEFAULT_LIST,
+            || t.get(),
+            || async { Err("connection refused".to_owned()) },
+        )
+        .await;
+        assert_eq!(failed.trackers(DEFAULT_LIST), KEPT);
+        assert!(!Cache::load(dir.path()).due(DEFAULT_LIST, t.get() + 60));
+        assert!(Cache::load(dir.path()).due(DEFAULT_LIST, t.get() + RETRY.as_secs()));
+        // The try is on disk before the fetch ends: a fetch that never returns still counts.
+        let seen = Cell::new(0u64);
+        t.set(t.get() + RETRY.as_secs());
+        refresh_file(
+            dir.path(),
+            DEFAULT_LIST,
+            || t.get(),
+            || {
+                seen.set(Cache::load(dir.path()).tried);
+                async { Err("stopped".to_owned()) }
+            },
+        )
+        .await;
+        assert_eq!(seen.get(), t.get());
     }
 
     /// A fetch that fails, or brings no list, keeps the last good one; another address drops it.

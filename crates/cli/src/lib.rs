@@ -897,6 +897,18 @@ pub struct Net {
     /// The network adapter by name ("" any), looked for when the command starts.
     pub adapter: String,
     pub torrent_proxy: TorrentProxy,
+    /// Torrent settings' public tracker list (#1776), when it is on: `torrent-get` adds it to a
+    /// public torrent as the app does.
+    pub public_trackers: Option<PublicTrackers>,
+}
+
+/// The public tracker list the app's Torrent settings turned on (#1776): its address, and the
+/// folder of the cache the app keeps (the app's torrent data folder), which the command line
+/// reads and fetches again when it is due, with MDM's own downloader.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PublicTrackers {
+    pub url: String,
+    pub dir: std::path::PathBuf,
 }
 
 /// Torrent settings' "Use the proxy" (#40), for `torrent-info` and `torrent-get`.
@@ -918,6 +930,7 @@ struct Conn {
     dns: mdm_engine::DnsChoice,
     route: mdm_engine::Route,
     torrent_proxy: TorrentProxy,
+    public_trackers: Option<PublicTrackers>,
 }
 
 static CONN: std::sync::RwLock<Option<Conn>> = std::sync::RwLock::new(None);
@@ -968,6 +981,7 @@ impl Conn {
             dns: dns.cloned().unwrap_or_else(|| net.dns.clone()),
             route,
             torrent_proxy: net.torrent_proxy.clone(),
+            public_trackers: net.public_trackers.clone(),
         }
     }
 
@@ -1608,8 +1622,9 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
                 );
             }
             let folder = m.folder_in(&output);
+            let torrent = with_public_list(&m.torrent).await;
             let hash = t
-                .add(&m.torrent, &folder, files, m.peers.clone(), false)
+                .add(&torrent, &folder, files, m.peers.clone(), false)
                 .await?;
             let started = std::time::Instant::now();
             loop {
@@ -2418,6 +2433,51 @@ async fn torrents() -> anyhow::Result<(mdm_torrent::Torrents, tempfile::TempDir)
     Ok((t, dir))
 }
 
+/// `torrent` with Torrent settings' public tracker list (#1776) when it is on, as the app adds
+/// it to a torrent: from the app's cache, fetched again first (this command's connection, MDM's
+/// downloader) when it is due; never to a private torrent. Said on stderr.
+async fn with_public_list(torrent: &[u8]) -> Vec<u8> {
+    let Some(p) = conn().public_trackers else {
+        return torrent.to_vec();
+    };
+    let now = || {
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs())
+    };
+    let cache = mdm_torrent::public_trackers::refresh_file(&p.dir, &p.url, now, || {
+        mdm_torrent::public_trackers::download(&p.url, &p.dir, own_net())
+    })
+    .await;
+    let (out, said) = public_list_added(torrent, cache.trackers(&p.url));
+    if let Some(said) = said {
+        eprintln!("{said}");
+    }
+    out
+}
+
+/// [`with_public_list`] once the list is in hand: the bytes, and what to say (nothing when the
+/// list added nothing).
+fn public_list_added(torrent: &[u8], list: &[String]) -> (Vec<u8>, Option<String>) {
+    if mdm_torrent::trackers::private(torrent) {
+        let said = "a private torrent: the public tracker list isn't added";
+        return (
+            torrent.to_vec(),
+            (!list.is_empty()).then(|| said.to_owned()),
+        );
+    }
+    match mdm_torrent::public_trackers::add_to(torrent, list) {
+        Some(with) => {
+            let n = mdm_torrent::trackers::listed(&with)
+                .len()
+                .saturating_sub(mdm_torrent::trackers::listed(torrent).len());
+            let said = format!("{n} tracker(s) added from the public list");
+            (with, Some(said))
+        }
+        None => (torrent.to_vec(), None),
+    }
+}
+
 fn torrent_source(s: &str) -> anyhow::Result<mdm_torrent::Source> {
     match mdm_torrent::Source::magnet(s) {
         Some(m) => Ok(m),
@@ -2469,6 +2529,57 @@ mod tests {
         assert!(proxy_arg("socks5://", None).is_err());
     }
 
+    /// #1776: `torrent-get` adds the public list as the app does: to a public torrent, after its
+    /// own tracker, the hash the same; never to a private one; nothing said when nothing is new.
+    #[test]
+    fn torrent_get_adds_the_public_list_to_public_torrents_only() {
+        let info = |private: bool| {
+            format!(
+                "d6:lengthi5e4:name1:a12:piece lengthi16384e6:pieces20:aaaaaaaaaaaaaaaaaaaa{}e",
+                if private { "7:privatei1e" } else { "" }
+            )
+        };
+        let torrent = |private: bool| {
+            let own = "http://own.example/announce";
+            format!("d8:announce{}:{own}4:info{}e", own.len(), info(private)).into_bytes()
+        };
+        let list: Vec<String> = [
+            "udp://tracker.opentrackr.org:1337/announce",
+            "http://127.0.0.1:6969/announce",
+        ]
+        .map(String::from)
+        .to_vec();
+        let hash = |t: &[u8]| {
+            mdm_torrent::librqbit::torrent_from_bytes(t)
+                .unwrap()
+                .info_hash
+        };
+        let public = torrent(false);
+        let (out, said) = public_list_added(&public, &list);
+        assert_eq!(
+            mdm_torrent::trackers::listed(&out),
+            [
+                "http://own.example/announce",
+                "udp://tracker.opentrackr.org:1337/announce"
+            ]
+        );
+        assert_eq!(hash(&out), hash(&public));
+        assert_eq!(
+            said.as_deref(),
+            Some("1 tracker(s) added from the public list")
+        );
+        // Again: nothing new, nothing said.
+        assert_eq!(public_list_added(&out, &list), (out.clone(), None));
+        // Private: as it was.
+        let private = torrent(true);
+        let (out, said) = public_list_added(&private, &list);
+        assert_eq!(out, private);
+        assert!(said.unwrap().contains("private"));
+        // No list yet: as it was, nothing said.
+        assert_eq!(public_list_added(&public, &[]), (public.clone(), None));
+        assert_eq!(public_list_added(&private, &[]), (private, None));
+    }
+
     /// #1556: a command goes through the app's network settings, its own switches over them.
     #[test]
     fn a_command_takes_the_apps_network_and_its_own_switches() {
@@ -2477,6 +2588,7 @@ mod tests {
             dns: parse_dns("quad9-tls").unwrap(),
             adapter: String::new(),
             torrent_proxy: TorrentProxy::Through("socks5://127.0.0.1:1080".into()),
+            public_trackers: None,
         };
         let cmd = |args: &[&str]| {
             Cli::try_parse_from(std::iter::once(NAME).chain(args.iter().copied()))

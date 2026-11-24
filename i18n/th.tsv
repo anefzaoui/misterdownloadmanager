@@ -172,7 +172,7 @@
 #, machine
 @plural	{n} tracker added|{n} trackers added	เพิ่มตัวติดตาม {n} รายการแล้ว
 #. count in the main window
-#. event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
+#. event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added from the public list|{n} trackers added from the public list	เพิ่มตัวติดตาม {n} รายการจากรายการสาธารณะ
@@ -333,7 +333,6 @@
 #, machine
 	A playlist's videos are downloaded whole	วิดีโอในเพลย์ลิสต์จะถูกดาวน์โหลดทั้งหมด
 #. message or event log entry in the main window
-#. event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
 #, machine
 	A private torrent: the public tracker list isn't added	ทอร์เรนต์ส่วนตัว: ไม่ได้เพิ่มรายการตัวติดตามสาธารณะ
 #. text in the Options window
@@ -6007,6 +6006,10 @@
 #. why Options → Remote → Pair a device... is greyed
 #, machine
 	Turn on the remote control first.	เปิดการควบคุมระยะไกลก่อน
+#. text in the Add torrent window
+#. Torrent settings, under the public tracker list's address: turning the switch off doesn't take away the trackers it added to torrents
+#, machine
+	Turned off, the trackers already added stay.	เมื่อปิด ตัวติดตามที่เพิ่มไว้แล้วจะยังคงอยู่
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine

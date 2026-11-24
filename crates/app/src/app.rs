@@ -1760,6 +1760,25 @@ pub struct RequestParts {
     pub opts: Options,
 }
 
+/// A torrent's event log line once the public tracker list (#1776) was added to it: how many of
+/// its trackers were new (none: no line); None, a private torrent, which never gets them. The
+/// same for a torrent being added and one already in the list.
+fn public_list_note(added: Option<usize>) -> Option<String> {
+    match added {
+        Some(0) => None,
+        Some(n) => Some(crate::i18n::tn(
+            n as u64,
+            // i18n: event log entry: trackers from the public tracker list (Torrent settings) were added to a torrent
+            "{n} tracker added from the public list",
+            "{n} trackers added from the public list",
+        )),
+        // i18n: event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
+        None => Some(
+            crate::i18n::t("A private torrent: the public tracker list isn't added").to_owned(),
+        ),
+    }
+}
+
 /// The Referer a browser would send for `url` from page `referrer` (its default policy,
 /// strict-origin-when-cross-origin): the whole address on the same site, only the site's origin
 /// to another, nothing from https to http.
@@ -3365,6 +3384,7 @@ impl App {
         if self.settings.torrent_public_trackers {
             self.public_trackers
                 .refresh(&self.rt, self.settings.public_trackers_list());
+            self.public_list_to_torrents();
         }
         let sharing = self.settings.torrent_keep_sharing
             && self
@@ -7131,18 +7151,22 @@ impl App {
             return None;
         }
         // The public tracker list's trackers (#1776), as last fetched (it isn't waited for), in
-        // the .torrent kept for it: never in a private torrent's (BEP 27).
-        let (kept, public) = if self.settings.torrent_public_trackers {
-            if mdm_torrent::trackers::private(&meta.torrent) {
-                (meta.torrent.clone(), None)
-            } else {
-                let (with, added) = self
-                    .public_trackers
-                    .add_to(&meta.torrent, self.settings.public_trackers_list());
-                (with, Some(added))
-            }
-        } else {
-            (meta.torrent.clone(), Some(0))
+        // the .torrent kept for it: never in a private torrent's (BEP 27). With no list yet, it
+        // gets the list once one comes (`public_list_to_torrents`).
+        let (kept, public, public_list) = match self
+            .settings
+            .torrent_public_trackers
+            .then(|| {
+                self.public_trackers
+                    .current(self.settings.public_trackers_list())
+            })
+            .flatten()
+        {
+            Some((stamp, list)) => match crate::torrents::with_public_list(&meta.torrent, &list) {
+                Some((with, added)) => (with, Some(added), stamp),
+                None => (meta.torrent.clone(), None, stamp),
+            },
+            None => (meta.torrent.clone(), Some(0), 0),
         };
         if after {
             let (hash, bytes, wake) = (meta.info_hash.clone(), kept, self.ui_ctx.clone());
@@ -7211,18 +7235,8 @@ impl App {
         );
         if let Some(item) = self.item(id) {
             item.preexisting_folder = preexisting;
-            match public {
-                Some(0) => {}
-                Some(n) => item.note(crate::i18n::tn(
-                    n as u64,
-                    // i18n: event log entry: trackers from the public tracker list (Torrent settings) were added to a new torrent
-                    "{n} tracker added from the public list",
-                    "{n} trackers added from the public list",
-                )),
-                // i18n: event log entry: the torrent is private (only its own trackers may be asked), so the public tracker list wasn't added
-                None => item.note(crate::i18n::t(
-                    "A private torrent: the public tracker list isn't added",
-                )),
+            if let Some(note) = public_list_note(public) {
+                item.note(note);
             }
             // The shared folder is where files go, not the torrent's display name.
             if !add.create_subfolder && meta.files.iter().filter(|f| !f.padding).count() > 1 {
@@ -7241,6 +7255,7 @@ impl App {
                 upload_limit: None,
                 in_order: add.in_order,
                 ends_first: true,
+                public_list,
             });
         }
         if let Some(item) = self.items.iter().find(|i| i.id == id)
@@ -7573,6 +7588,39 @@ impl App {
         }
     }
 
+    /// The public tracker list (#1776) added to every torrent in the list that hasn't got this
+    /// list yet (`TorrentSpec::public_list`), while Torrent settings' switch is on: once it is
+    /// turned on, at start, and when a fetch brings a list that changed (only its new trackers
+    /// are new then). Through the same code as a torrent being added
+    /// (`torrents::with_public_list`), one action per torrent; a private one is only recorded,
+    /// and one busy with another action waits for the next tick. Turning the switch off takes
+    /// nothing away.
+    fn public_list_to_torrents(&mut self) {
+        let Some((stamp, list)) = self
+            .public_trackers
+            .current(self.settings.public_trackers_list())
+        else {
+            return;
+        };
+        let due: Vec<u64> = self
+            .items
+            .iter()
+            .filter(|i| {
+                i.torrent
+                    .as_ref()
+                    .is_some_and(|t| t.public_list != stamp && !self.torrent_host.busy(&t.hash))
+            })
+            .map(|i| i.id)
+            .collect();
+        for id in due {
+            if let Some(spec) = self.item(id).and_then(|i| i.torrent.as_mut()) {
+                spec.public_list = stamp;
+            }
+            self.torrent_act(id, crate::torrents::Act::AddPublicList(list.clone()));
+            self.dirty = true;
+        }
+    }
+
     fn torrent_act(&mut self, id: u64, act: crate::torrents::Act) {
         let known = self.session_hashes();
         let Some(spec) = self
@@ -7665,6 +7713,10 @@ impl App {
                     // i18n: event log entry: trackers were added to the torrent
                     crate::i18n::tn(n as u64, "{n} tracker added", "{n} trackers added")
                 }
+                (_, Ok(Done::PublicListAdded(added))) => match public_list_note(added) {
+                    Some(note) => note,
+                    None => continue,
+                },
                 (_, Ok(Done::Chosen)) => {
                     self.torrent_resync.insert(o.hash.clone(), false);
                     continue;
@@ -7676,7 +7728,7 @@ impl App {
                         // i18n: event log entry: Reannounce failed, with the reason
                         Act::Reannounce => crate::i18n::t("Reannounce failed: {error}"),
                         // i18n: event log entry: Add trackers failed, with the reason
-                        Act::AddTrackers(_) => {
+                        Act::AddTrackers(_) | Act::AddPublicList(_) => {
                             crate::i18n::t("The trackers could not be added: {error}")
                         }
                         // i18n: event log entry: the files chosen in the Files tab could not be applied, with the reason
@@ -16242,6 +16294,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: true,
+            public_list: 0,
         });
         assert!(
             !can_move(&item),
@@ -16299,6 +16352,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
 
         let pack_dir = downloads.join("PackFolder");
@@ -16317,6 +16371,7 @@ mod deferred_rename_guard_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
 
         let items = vec![part1, standalone_rar, single_torrent, folder_torrent];
@@ -18825,6 +18880,7 @@ mod move_unfinished_tests {
             upload_limit: None,
             in_order: false,
             ends_first: false,
+            public_list: 0,
         });
         assert!(torrent.move_refused().unwrap().starts_with("A torrent"));
         let file = stopped(3, &dir.path().join("f.bin"));
