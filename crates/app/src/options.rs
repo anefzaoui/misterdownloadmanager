@@ -95,6 +95,8 @@ enum Sub {
 const REMOTE_PAGE: usize = 11;
 /// Test browser integration: from a check's line to the path under it (#818).
 const DETAIL_H: f32 = 18.0;
+/// What the Sites Logins list shows in place of a password: a fixed mask, never its length.
+const PASSWORD_MASK: &str = "********";
 
 /// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
 struct DnsEdit {
@@ -2436,9 +2438,7 @@ impl OptionsDialog {
             .s
             .site_logins
             .iter()
-            .map(|(site, user, pass)| {
-                vec![site.clone(), user.clone(), "*".repeat(pass.chars().count())]
-            })
+            .map(|(site, user, _)| vec![site.clone(), user.clone(), PASSWORD_MASK.to_owned()])
             .collect();
         // The list leaves the page's foot to Cookies for video sites (#229).
         // Named for screen readers by the page's title (#1407).
