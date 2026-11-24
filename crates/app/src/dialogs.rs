@@ -3531,13 +3531,12 @@ pub struct Columns {
 
 impl Columns {
     pub fn new(list: &crate::list::ListState) -> Self {
+        let mut rows = winui::RowList::default();
+        rows.selected = Some(0);
         Columns {
             order: list.order.clone(),
             visible: list.visible,
-            rows: winui::RowList {
-                selected: Some(0),
-                ..Default::default()
-            },
+            rows,
             list_focused: false,
             reset: false,
             focus_requested: false,

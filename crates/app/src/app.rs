@@ -9784,7 +9784,6 @@ impl App {
         let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let can_stop_all = self.can_stop_all();
-        let off = |label| I(label, Cmd::None, false, false);
         #[allow(unused_mut)]
         let mut menu = match index {
             0 => vec![
