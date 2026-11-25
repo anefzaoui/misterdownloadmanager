@@ -3783,6 +3783,20 @@ impl App {
             }
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
+            // Its Connection... window too (#1778's screenshots and checks).
+            "properties-connection" if first.is_some() => {
+                self.run(Cmd::Properties, first, ctx);
+                let now = self
+                    .items
+                    .first()
+                    .map_or(self.settings.max_connections, |i| {
+                        self.settings.connections_for(&i.url)
+                    });
+                let limit = self.settings.connection_limit();
+                if let Some(pr) = self.properties.iter_mut().find(|p| Some(p.id) == first) {
+                    pr.open_request(now, limit);
+                }
+            }
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
             // Remove with files on every download (screenshots: the finished files it counts).
             "delete-files" => {
@@ -3810,6 +3824,7 @@ impl App {
                         address: Some(url),
                         move_to: None,
                         direct: None,
+                        own: None,
                     };
                     self.apply_properties(c);
                 }
@@ -3913,7 +3928,7 @@ impl App {
                     "types" => 1,
                     "saveto" => 2,
                     "downloads" => 3,
-                    "connection" => 4,
+                    "connection" | "siterules" | "siterule" => 4,
                     "proxy" => 5,
                     "logins" => 6,
                     "accounts" => 7,
@@ -4222,11 +4237,17 @@ impl App {
                 headers.insert(name, v);
             }
         }
+        // A site rule's headers (#1778): each replaces the browser's of its name. A User-Agent
+        // among them, or the rule's own, is the download's.
+        let site = self.settings.site_settings(url);
+        let mut chosen = None;
+        crate::requestedit::add_headers(&mut headers, &mut chosen, &site.headers);
+        let chosen = site.user_agent.clone().or(chosen);
         // The browser's own User-Agent when it handed the download over, else the one set in
         // Options, else the automatic one (the default browser's, #668).
         let own = self.settings.own_user_agent();
         let given = context.user_agent.as_deref().or(own);
-        let opts = Options {
+        let mut opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy_for(context),
             dns: self.settings.dns(),
@@ -4281,8 +4302,15 @@ impl App {
                 .page_url
                 .as_deref()
                 .and_then(|p| url::Url::parse(p).ok()),
+            // A site rule: the way a browser connects from the first request (#1778).
+            browser_first: site.browser_like,
             ..Options::default()
         };
+        // A site rule's User-Agent is the user's choice for that site, above the browser's and
+        // Options': no other is tried in its place.
+        if let Some(agent) = chosen {
+            crate::requestedit::choose_agent(&mut opts, agent);
+        }
         RequestParts { headers, opts }
     }
 
@@ -4553,8 +4581,20 @@ impl App {
             self.dirty = true;
             return;
         }
-        let RequestParts { headers, mut opts } =
-            self.request_parts(&url, login.as_ref(), &context, direct);
+        let RequestParts {
+            mut headers,
+            mut opts,
+        } = self.request_parts(&url, login.as_ref(), &context, direct);
+        // Its own settings, from its Properties (#1778): above the site rules' and Options'.
+        if let Some(own) = self
+            .items
+            .iter()
+            .find(|i| i.id == id)
+            .map(|i| i.own.clone())
+        {
+            let limit = self.settings.connection_limit();
+            crate::requestedit::apply_own(&own, &mut headers, &mut opts, limit);
+        }
         // Download File Info's open answer for it, if it has one (#28); used once.
         let kept = self.kept_answers.remove(&id);
         // The file's own remembered limit, else the Speed Limiter's.
@@ -5709,6 +5749,13 @@ impl App {
                 // i18n: event log: File Properties: the download goes through the debrid account again
                 crate::i18n::t("Set to download through the debrid account").to_owned()
             });
+        }
+        // Connection... (#1778): its own User-Agent, headers, proxy and connections, from its
+        // next start. The engine still checks it is the same file as it resumes.
+        if let Some(own) = c.own {
+            item.own = own;
+            // i18n: event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+            item.note(crate::i18n::t("Connection settings changed").to_owned());
         }
         let readdressed = c.address.clone();
         if let Some(url) = c.address {
@@ -13839,6 +13886,7 @@ impl App {
         let mut files_requested = Vec::new();
         let items = &self.items;
         let icons = &mut self.icons;
+        let settings = &self.settings;
         self.properties.retain_mut(|pr| {
             let Some(item) = items.iter().find(|i| i.id == pr.id) else {
                 return false;
@@ -13847,6 +13895,13 @@ impl App {
                 Outcome::Open => {
                     if pr.take_files_requested() {
                         files_requested.push(pr.id);
+                    }
+                    // Connection... (#1778): from what the download gets now.
+                    if pr.take_request_wanted() {
+                        pr.open_request(
+                            settings.connections_for(&item.url),
+                            settings.connection_limit(),
+                        );
                     }
                     true
                 }
@@ -18143,6 +18198,7 @@ mod start_disk_tests {
             address: Some(new.clone()),
             move_to: None,
             direct: None,
+            own: None,
         });
         assert!(at.elapsed() < AT_ONCE, "the window doesn't wait");
         assert_eq!(get(&app, 1).url, new);

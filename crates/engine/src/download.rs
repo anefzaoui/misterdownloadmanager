@@ -230,6 +230,11 @@ pub struct Options {
     /// removing its file: an archive test that finds damage downloads those parts again from it,
     /// under the same validators (#1661, [`crate::repair`]). The state file still goes.
     pub keep_state: bool,
+    /// A site rule says so (#1778): the first request goes the way a browser connects (#668,
+    /// `crate::browserlike`) at once, not only once the site has refused MDM's own connection.
+    /// When that fails (a build without it, a site that refuses it too), MDM's own connection is
+    /// asked as usual. Never for a form's POST or through a service account.
+    pub browser_first: bool,
 }
 
 /// A callback given the path of a file the engine created (`Options::on_file_created`).
@@ -316,6 +321,7 @@ impl Default for Options {
             request_cap: None,
             slow_disk: None,
             keep_state: false,
+            browser_first: false,
         }
     }
 }
@@ -1046,98 +1052,113 @@ pub async fn probe_kept(
     );
     // Where the look asked, and with what: asked again there if the site refuses (#668).
     let (asked_at, asked_with) = (target.clone(), headers.clone());
-    let (asked, by) = noting_refuser(get(
-        &client,
-        target.clone(),
-        headers.clone(),
-        opts.post.as_ref(),
-        first_opts.site_agent(),
-        expects,
-        &CancellationToken::new(),
-    ))
-    .await;
-    // #1660: a 403 that may be this IP family's is asked once over the other one, as the
-    // download's first request is (`FirstAsk::at`).
-    let look = Look {
-        url: &target,
-        headers: &headers,
-        as_get: &as_get,
-        seen: &seen,
-        expects,
+    // #1778: a site rule asks the way a browser connects from the first request.
+    let early = match unlocked.is_none() {
+        true => {
+            let cancel = CancellationToken::new();
+            browser_at_once(opts, &target, &headers, expects, |_| {}, &cancel).await?
+        }
+        false => None,
     };
     let mut family = None;
-    let (client, asked) = look
-        .over_other_family(first_opts, client, asked, by, &mut family)
-        .await?;
-    // A browser's User-Agent refused (#372): asked once more as MDM, and over the other family
-    // too when it is refused so again (a site that refuses both at once).
-    let (client, asked) = match asked {
-        Err(e) if agent_refused(&e) && first_opts.agent_fallback.is_some() => {
-            let mut plain = opts.clone();
-            plain.user_agent = opts.agent_fallback.clone().unwrap_or_default();
-            let client = self::client(&plain, &target, &as_get, &seen)?;
-            let (asked, by) = noting_refuser(get(
-                &client,
-                target.clone(),
-                headers.clone(),
-                opts.post.as_ref(),
-                plain.site_agent(),
-                expects,
-                &CancellationToken::new(),
-            ))
-            .await;
-            let _ = e;
-            look.over_other_family(&plain, client, asked, by, &mut family)
-                .await?
-        }
-        asked => (client, asked),
-    };
     let (mut client, mut own_agent) = (client, remembered);
-    let (head, body, browser, headers, took) = match asked {
-        Ok((resp, headers, took)) => (Head::of(&resp), Body::Http(resp), None, headers, took),
-        // #668: the site refused MDM's connection as a program's (`refused_as_a_program`):
-        // looked at once more the way a browser connects, its answer kept for the download
-        // (which then asks no more).
-        Err(e) if refused_as_a_program(&e) && unlocked.is_none() && opts.post.is_none() => {
-            if own_agent.take().is_some() {
-                // Remembered, but no longer let through: learnt again next time.
-                crate::agent::forget_own(&asked_at);
+    let (head, body, browser, headers, took) = if let Some((b, answer, switch)) = early {
+        family = switch;
+        let (head, body, headers, took) = answer;
+        (head, body, Some(b), headers, took)
+    } else {
+        let (asked, by) = noting_refuser(get(
+            &client,
+            target.clone(),
+            headers.clone(),
+            opts.post.as_ref(),
+            first_opts.site_agent(),
+            expects,
+            &CancellationToken::new(),
+        ))
+        .await;
+        // #1660: a 403 that may be this IP family's is asked once over the other one, as the
+        // download's first request is (`FirstAsk::at`).
+        let look = Look {
+            url: &target,
+            headers: &headers,
+            as_get: &as_get,
+            seen: &seen,
+            expects,
+        };
+        let (looked, asked) = look
+            .over_other_family(first_opts, client.clone(), asked, by, &mut family)
+            .await?;
+        // A browser's User-Agent refused (#372): asked once more as MDM, and over the other family
+        // too when it is refused so again (a site that refuses both at once).
+        let (got, asked) = match asked {
+            Err(e) if agent_refused(&e) && first_opts.agent_fallback.is_some() => {
+                let mut plain = opts.clone();
+                plain.user_agent = opts.agent_fallback.clone().unwrap_or_default();
+                let client = self::client(&plain, &target, &as_get, &seen)?;
+                let (asked, by) = noting_refuser(get(
+                    &client,
+                    target.clone(),
+                    headers.clone(),
+                    opts.post.as_ref(),
+                    plain.site_agent(),
+                    expects,
+                    &CancellationToken::new(),
+                ))
+                .await;
+                let _ = e;
+                look.over_other_family(&plain, client, asked, by, &mut family)
+                    .await?
             }
-            let cancel = CancellationToken::new();
-            match browser_ask(opts, &asked_at, &asked_with, expects, &cancel).await {
-                Ok((b, (head, body, headers, took), switch)) => {
-                    family = switch;
-                    (head, body, Some(b), headers, took)
+            asked => (looked, asked),
+        };
+        client = got;
+        match asked {
+            Ok((resp, headers, took)) => (Head::of(&resp), Body::Http(resp), None, headers, took),
+            // #668: the site refused MDM's connection as a program's (`refused_as_a_program`):
+            // looked at once more the way a browser connects, its answer kept for the download
+            // (which then asks no more).
+            Err(e) if refused_as_a_program(&e) && unlocked.is_none() && opts.post.is_none() => {
+                if own_agent.take().is_some() {
+                    // Remembered, but no longer let through: learnt again next time.
+                    crate::agent::forget_own(&asked_at);
                 }
-                Err(other @ (Error::Cancelled | Error::Adapter(_))) => return Err(other),
-                // #1422: refused that way too; once more under MDM's own name, the last try.
-                Err(_) => match own.filter(|_| as_own.is_none()) {
-                    Some(own) => {
-                        let o = speaking_own(opts, own.clone());
-                        client = self::client(&o, &asked_at, &as_get, &seen)?;
-                        let (resp, headers, took) = get(
-                            &client,
-                            asked_at.clone(),
-                            asked_with,
-                            None,
-                            o.site_agent(),
-                            expects,
-                            &cancel,
-                        )
-                        .await
-                        .map_err(|other| match other {
-                            Error::Cancelled | Error::Adapter(_) => other,
-                            _ => e,
-                        })?;
-                        crate::agent::remember_own(&asked_at);
-                        own_agent = Some(own);
-                        (Head::of(&resp), Body::Http(resp), None, headers, took)
+                let cancel = CancellationToken::new();
+                match browser_ask(opts, &asked_at, &asked_with, expects, &cancel).await {
+                    Ok((b, (head, body, headers, took), switch)) => {
+                        family = switch;
+                        (head, body, Some(b), headers, took)
                     }
-                    None => return Err(e),
-                },
+                    Err(other @ (Error::Cancelled | Error::Adapter(_))) => return Err(other),
+                    // #1422: refused that way too; once more under MDM's own name, the last try.
+                    Err(_) => match own.filter(|_| as_own.is_none()) {
+                        Some(own) => {
+                            let o = speaking_own(opts, own.clone());
+                            client = self::client(&o, &asked_at, &as_get, &seen)?;
+                            let (resp, headers, took) = get(
+                                &client,
+                                asked_at.clone(),
+                                asked_with,
+                                None,
+                                o.site_agent(),
+                                expects,
+                                &cancel,
+                            )
+                            .await
+                            .map_err(|other| match other {
+                                Error::Cancelled | Error::Adapter(_) => other,
+                                _ => e,
+                            })?;
+                            crate::agent::remember_own(&asked_at);
+                            own_agent = Some(own);
+                            (Head::of(&resp), Body::Http(resp), None, headers, took)
+                        }
+                        None => return Err(e),
+                    },
+                }
             }
+            Err(e) => return Err(e),
         }
-        Err(e) => return Err(e),
     };
     // Whichever connection it came through, the browser-like one too (#954).
     seen.answered(&head);
@@ -2357,7 +2378,7 @@ async fn run_fresh(
             }
             (k.as_get, k.client, (k.head, k.body), k.headers, k.took)
         }
-        None => {
+        None => 'first: {
             // Through a service account (#44): its direct link, without the host's cookies
             // or logins. The host's link stays the download's origin, asked again (through the
             // service) when the direct link dies.
@@ -2399,6 +2420,20 @@ async fn run_fresh(
                 shared,
                 cancel,
             };
+            // #1778: a site rule asks the way a browser connects from the first request.
+            if unlocked.is_none()
+                && let Some((b, answer, switch)) =
+                    browser_at_once(&opts, &target, &asked, expects, |e| shared.event(e), cancel)
+                        .await?
+            {
+                if let Some(switch) = switch {
+                    switch.keep(&mut opts);
+                }
+                browser = Some(b);
+                let (head, body, headers, ttfb) = answer;
+                let client0 = client(&opts, &target, &as_get, &seen)?;
+                break 'first (as_get, client0, (head, body), headers, ttfb);
+            }
             let (mut client0, mut first, as_mdm) = ask.at(&mut opts, &target, &asked).await?;
             asked_as_mdm = as_mdm;
             // #630: the link refused, where the browser's own download of it ended is asked
@@ -2981,7 +3016,9 @@ async fn run_resume(
     // Only the browser-like connection got past the site's bot check (#668): it goes on with
     // it, at the address it had (MDM's own connection would be refused); its first connection
     // asks for its part before the others follow (`wait_for_ranges`).
-    let browser = match saved.browser_like && crate::browserlike::AVAILABLE {
+    // So does one whose site rule asks for it (#1778).
+    let browser_like = saved.browser_like || opts.browser_first && opts.post.is_none();
+    let browser = match browser_like && crate::browserlike::AVAILABLE {
         true => Some(Arc::new(crate::browserlike::Browser::new(
             &opts,
             &saved.final_url,
@@ -2990,7 +3027,11 @@ async fn run_resume(
         false => None,
     };
     if browser.is_some() {
-        shared.event("Going on the way a browser connects, as the site's bot check asked");
+        shared.event(if saved.browser_like {
+            "Going on the way a browser connects, as the site's bot check asked"
+        } else {
+            "Going on the way a browser connects, as its site rule says"
+        });
     }
     // Through a service account (#44), the service is asked for today's link even when the
     // state holds none of its links (the download went directly until now).
@@ -4023,6 +4064,49 @@ async fn browser_first(
         "{host}: the browser-like connection got through; downloading on it"
     ));
     Ok((b, head, body, headers, took, switch))
+}
+
+/// A first request and its answer through the browser-like connection.
+type BrowserAnswer = (
+    Arc<crate::browserlike::Browser>,
+    (Head, Body, HeaderMap, Duration),
+    Option<FamilySwitch>,
+);
+
+/// #1778: the first request the way a browser connects at once, when a site rule asks for it
+/// (`Options::browser_first`), with its answer (the file's: `check_first`). None when it isn't
+/// asked for, can't be (a build without it, a form's POST) or didn't get the file: the request
+/// then goes on MDM's own connection as any other, the reason told to `event`.
+async fn browser_at_once(
+    opts: &Options,
+    url: &Url,
+    headers: &HeaderMap,
+    expects: bool,
+    event: impl Fn(String),
+    cancel: &CancellationToken,
+) -> Result<Option<BrowserAnswer>, Error> {
+    if !opts.browser_first || !crate::browserlike::AVAILABLE || opts.post.is_some() {
+        return Ok(None);
+    }
+    let host = url.host_str().unwrap_or("?");
+    match browser_ask(opts, url, headers, expects, cancel).await {
+        Ok(got) => {
+            event(format!(
+                "{host}: asked the way a browser connects from the start, as its site rule says"
+            ));
+            if let Some(switch) = &got.2 {
+                event(switch.said());
+            }
+            Ok(Some(got))
+        }
+        Err(e @ (Error::Cancelled | Error::Adapter(_))) => Err(e),
+        Err(e) => {
+            event(format!(
+                "{host}, asked the way a browser connects as its site rule says: {e}; asking on                  Mister Download Manager's own connection"
+            ));
+            Ok(None)
+        }
+    }
 }
 
 /// The browser-like connection for `url`, and its answer to the first request (`browser_first`,

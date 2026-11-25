@@ -102,6 +102,10 @@ pub struct LogEntry {
     /// The `Accept-Encoding` header.
     #[serde(default)]
     pub accept_encoding: Option<String>,
+    /// The request's own `X-…` headers (name in lower case, value), in the order sent: what a
+    /// site rule or a download's own headers added (#1778).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub x_headers: Vec<(String, String)>,
     /// Over HTTPS (`Config::tls`): whether the connection's TLS ClientHello was a browser's as
     /// `browser_only` tells it, with GREASE values among its cipher suites (as Chrome's and
     /// every Chromium browser's are; programs' TLS libraries send none). None over plain HTTP.
@@ -363,6 +367,16 @@ impl Shared {
             origin: header_str(headers, header::ORIGIN),
             sec_fetch_mode: header_str(headers, header::HeaderName::from_static("sec-fetch-mode")),
             accept_encoding: header_str(headers, header::ACCEPT_ENCODING),
+            x_headers: headers
+                .iter()
+                .filter(|(n, _)| n.as_str().starts_with("x-"))
+                .map(|(n, v)| {
+                    (
+                        n.as_str().to_owned(),
+                        String::from_utf8_lossy(v.as_bytes()).into_owned(),
+                    )
+                })
+                .collect(),
             browser_tls: self.browser_tls.lock().unwrap().get(&peer).copied(),
             req_content_type: header_str(headers, header::CONTENT_TYPE),
             req_body_len: has_body.then_some(body.len() as u64),

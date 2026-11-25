@@ -323,6 +323,10 @@ right-to-left window.
 - **Speeds up every download** by fetching parts of the file at the same time, and keeps
   re-balancing until the last byte.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
+- **Site rules**: a User-Agent, extra request headers, a number of connections and "connect the
+  way a browser does" for every download from a site (`*.example.com`). A stopped download's
+  Properties change its own headers, proxy and connections, and MDM checks it is still the same
+  file before it goes on ([how](docs/connections-and-speed.md#site-rules)).
 - **Catches downloads from Firefox, Chrome, Edge, Brave, Opera, Vivaldi and Helium** (the
   extension is on Firefox Add-ons and the Chrome Web Store), and gives them back to the browser
   when MDM isn't running. Its toolbar button finds **all the images on a page**, at the largest

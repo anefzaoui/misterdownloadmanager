@@ -59,6 +59,7 @@ mod regional;
 mod relocate;
 mod remote;
 mod renderer;
+mod requestedit;
 mod resumeread;
 mod rss;
 mod rssdlg;

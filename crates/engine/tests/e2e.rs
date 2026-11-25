@@ -3992,3 +3992,90 @@ async fn changed_on_the_server(dated: bool) {
         );
     }
 }
+
+/// #1778: what a paused download's Properties change (its headers and User-Agent, a proxy, the
+/// number of connections), as the app gives them to its resume.
+fn edited(proxy: &LabServer, connections: u32) -> (reqwest::header::HeaderMap, Options) {
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert("x-edited", "after-pause".parse().unwrap());
+    let opts = Options {
+        max_connections: connections,
+        user_agent: "Edited/1.0".into(),
+        proxy: mdm_engine::Proxy::Manual {
+            url: proxy.url("").trim_end_matches('/').to_owned(),
+            login: None,
+            http: true,
+            https: true,
+        },
+        ..fast_opts()
+    };
+    (headers, opts)
+}
+
+/// #1778: a paused download resumed after its settings changed goes on with them, for the same
+/// file: every request of the resume carries the new header and User-Agent, goes through the new
+/// proxy (the lab answers as one, by the address's path) on at most the new number of
+/// connections, and the file is whole.
+#[tokio::test]
+async fn a_resume_after_an_edit_goes_on_with_the_new_settings() {
+    let s = server("rate=1M").await;
+    let (dir, state) = paused(&s, "/gen/8M/edited.bin?seed=1778").await;
+    s.clear_log();
+    let proxy = server("rate=1M").await;
+    let (headers, opts) = edited(&proxy, 2);
+    let out = Download::resume(state, headers, opts)
+        .unwrap()
+        .wait()
+        .await
+        .expect("the same file goes on");
+    assert_eq!(out.path, dir.path().join("edited.bin"));
+    assert!(std::fs::read(&out.path).unwrap() == generated(1778, 8 << 20));
+    tokio::time::timeout(SETTLE, proxy.settled()).await.unwrap();
+    let log = proxy.log();
+    assert!(!log.is_empty());
+    for e in &log {
+        assert_eq!(e.user_agent.as_deref(), Some("Edited/1.0"), "{e:?}");
+        assert_eq!(
+            e.x_headers,
+            vec![("x-edited".to_owned(), "after-pause".to_owned())],
+            "{e:?}"
+        );
+        assert!(
+            e.range.is_some(),
+            "a part of the file, not all of it again: {e:?}"
+        );
+    }
+    assert!(max_concurrent(&log) <= 2, "{}", max_concurrent(&log));
+    tokio::time::timeout(SETTLE, s.settled()).await.unwrap();
+    assert!(s.log().is_empty(), "nothing asked around the new proxy");
+}
+
+/// #1778: changed settings never join two files. Resumed through a proxy that now gives another
+/// version of the file (its ETag and date changed, `etag_change_every=1`), the download stops on
+/// `FileChanged` before writing anything: what was on the disk stays as it was, for the user to
+/// keep or start over.
+#[tokio::test]
+async fn a_resume_after_an_edit_refuses_a_changed_file() {
+    let s = server("rate=1M").await;
+    let (dir, state) = paused(&s, "/gen/8M/edited.bin?seed=1779").await;
+    let part = mdm_engine::naming::part_path(&dir.path().join("edited.bin"));
+    let before = std::fs::read(&part).unwrap();
+    let proxy = server("rate=1M&etag_change_every=1").await;
+    let (headers, opts) = edited(&proxy, 4);
+    let err = Download::resume(state.clone(), headers, opts)
+        .unwrap()
+        .wait()
+        .await
+        .unwrap_err();
+    assert!(matches!(err, mdm_engine::Error::FileChanged), "{err}");
+    assert!(std::fs::read(&part).unwrap() == before, "nothing written");
+    assert!(state.exists(), "kept, as any stopped download's");
+    tokio::time::timeout(SETTLE, proxy.settled()).await.unwrap();
+    assert!(
+        proxy
+            .log()
+            .iter()
+            .all(|e| e.user_agent.as_deref() == Some("Edited/1.0")),
+        "asked with the new settings"
+    );
+}
