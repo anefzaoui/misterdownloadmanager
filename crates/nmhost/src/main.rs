@@ -2996,19 +2996,19 @@ mod tests {
         assert_eq!(cmd.links, ["https://x.test/a.zip", "ftp://x.test/b.iso"]);
         assert_eq!(cmd.links_part, None);
         assert!(cmd.page_images.is_empty(), "an older extension's says none");
+        assert_eq!(
+            (cmd.referer.as_deref(), cmd.cookies.as_deref()),
+            (Some("https://x.test/files/"), Some("sid=1"))
+        );
         // #1781: the pictures located on the page, marked among the links: only those that are
         // links handed over, each once.
         let marked: Message = serde_json::from_str(
             r#"{"links":["https://x.test/a.zip","https://x.test/p.jpg","https://x.test/q.png"],"pageImages":["https://x.test/p.jpg","https://x.test/p.jpg","https://x.test/elsewhere.png","data:image/png;base64,AA"],"referrer":"https://x.test/files/"}"#,
         )
         .unwrap();
-        let cmd = links_command(&marked).ok().unwrap();
-        assert_eq!(cmd.links.len(), 3);
-        assert_eq!(cmd.page_images, ["https://x.test/p.jpg"]);
-        assert_eq!(
-            (cmd.referer.as_deref(), cmd.cookies.as_deref()),
-            (Some("https://x.test/files/"), Some("sid=1"))
-        );
+        let images = links_command(&marked).ok().unwrap();
+        assert_eq!(images.links.len(), 3);
+        assert_eq!(images.page_images, ["https://x.test/p.jpg"]);
         let part: Message = serde_json::from_str(
             r#"{"links":["https://x.test/c.zip"],"linksPart":{"batch":"6f1c2a9e-5b7d","index":1,"count":3},"referrer":"https://x.test/files/","cookies":"sid=1","private":true}"#,
         )

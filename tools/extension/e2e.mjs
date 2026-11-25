@@ -4349,9 +4349,12 @@ thumb.addEventListener("mouseleave", () => { preview.classList.add("off"); docum
         throw e;
       });
       if (`${marked[1]} ${marked[2]}` !== `${links.length + pictures.length} ${pictures.length}`) throw new Error(`MDM: ${marked[0]}, not ${links.length + pictures.length} links, ${pictures.length} pictures`);
-      const others = ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif", "/gen/512K/photo3.png", "/gen/1K/notes.pdf"].filter((x) => !pictures.includes(x) && !links.includes(x));
+      // The look-ups, by the round's seed: the PDF's address has none (one address in every
+      // round), so it is counted in MDM's line above but not looked for here.
+      const seeded = (list) => list.filter((x) => !x.endsWith(".pdf"));
+      const others = ["/gen/1K/icon.png", "/gen/128K/photo2.webp", "/gen/8K/photo3-thumb.png", "/gen/32K/photo4@2x.gif", "/gen/64K/photo5.avif", "/gen/512K/photo3.png"].filter((x) => !pictures.includes(x) && !links.includes(x));
       const left = ["/gen/8K/photo4.gif", "/gen/16K/photo1-small.jpg", "/gen/32K/photo2-600.webp", "/gen/32K/photo2.jpg", ...GALLERY_BACKGROUNDS, ...others];
-      const windows = await galleryLookups(seed, [...links, ...pictures], left);
+      const windows = await galleryLookups(seed, seeded([...links, ...pictures]), left);
       return `${selected ? "selected" : "all"}: ${String(clicked).split(" {")[0]}; MDM: ${marked[0]}; looked up ${links.length} links and ${pictures.length} pictures, none of the ${left.length} others${windows} (${shown})`;
     };
     return `${await round(false)}; ${await round(true)}`;

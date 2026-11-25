@@ -323,6 +323,14 @@ impl Grabber {
         // every other one, and its packages' defaults were worked out again for each (#805).
         let mut here: std::collections::HashSet<Url> =
             self.links.iter().map(|l| address_key(&l.url)).collect();
+        // The pictures on the page here, by address: one a link names becomes a link.
+        let mut pictures: std::collections::HashMap<Url, usize> = self
+            .links
+            .iter()
+            .enumerate()
+            .filter(|(_, l)| l.found.page_image)
+            .map(|(i, l)| (address_key(&l.url), i))
+            .collect();
         let mut settle = std::collections::BTreeSet::new();
         for d in found {
             let Ok(url) = Url::parse(&d.url) else {
@@ -330,17 +338,15 @@ impl Grabber {
             };
             if !here.insert(address_key(&url)) {
                 // Here already as a picture on the page, and now a link: a link (shown).
-                if !d.page_image {
-                    let key = address_key(&url);
-                    if let Some(l) = self
-                        .links
-                        .iter_mut()
-                        .find(|l| l.found.page_image && address_key(&l.url) == key)
-                    {
-                        l.found.page_image = false;
-                    }
+                if !d.page_image
+                    && let Some(i) = pictures.remove(&address_key(&url))
+                {
+                    self.links[i].found.page_image = false;
                 }
                 continue;
+            }
+            if d.page_image {
+                pictures.insert(address_key(&url), self.links.len());
             }
             let magnet = url.scheme() == "magnet";
             let name = mdm_engine::naming::sanitize(&if magnet {
