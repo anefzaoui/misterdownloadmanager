@@ -1975,8 +1975,6 @@ mod tests {
             Recorder { addr, from }
         }
 
-        // Its tests bind 127.0.0.2, which macOS hasn't.
-        #[cfg(not(target_os = "macos"))]
         async fn tcp(reply: &'static [u8]) -> Recorder {
             let l = tokio::net::TcpListener::bind((Ipv4Addr::LOCALHOST, 0))
                 .await
