@@ -80,7 +80,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	{n} נכשלה|{n} נכשלו|{n} נכשלו
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -446,6 +446,10 @@
 #. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
 #, machine
 	Added. MDM is reading the torrent: it joins the list in a moment.	נוסף. MDM קורא את הטורנט: הוא יצטרף לרשימה בעוד רגע.
+#. text in preview.rs
+#. label in the preview pane: when the download was added to the list
+#, machine
+	Added:	נוסף:
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -459,7 +463,7 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	כתובת או קישור מגנט
-#. text in the Options window; text in a download's Properties window
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	כתובת:
@@ -553,6 +557,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	Alt+לחץ על הקישור
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	תמיד התחבר כמו דפדפן
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -576,6 +584,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	אנדורה
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Android לא מאפשר לאפליקציות לכבות את הטלפון
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -601,6 +613,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	תוכנית אחרת הגדירה את אזעקת ההתעוררות של המחשב
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	קיים כבר כלל אחר עבור אתר זה: שנה אותו
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -670,6 +686,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	ארובה
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	כמו בהגדרות
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	כפי שהאזור של המערכת כותב אותם
@@ -831,6 +851,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	עיון...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	דפדפן
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	שילוב הדפדפן אינו מוגדר במחשב זה, כך שאף דפדפן עדיין אינו יכול להגיע אל Mister Download Manager.
@@ -887,7 +911,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	קנדה
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	ביטול
@@ -1059,6 +1083,7 @@
 #, machine
 	Choose a font file	בחר קובץ גופן
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	בחר סביבת זמן ריצה של JavaScript (Node.js, Deno, QuickJS או Bun)
 #. text in langpick.rs
@@ -1076,6 +1101,7 @@
 #, machine
 	Choose the profile's folder	בחר את תיקיית הפרופיל
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1194,6 +1220,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	חיבור
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	הגדרות חיבור
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	הגדרות החיבור שונו
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	הגדרות חיבור...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	חיבורים
 #. page title in the Options window
 #, machine
 	Connections and Limits	חיבורים ומגבלות
@@ -1663,6 +1706,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	הורדות מחלון פרטי של דפדפן נשארות ברשימת MDM כמו כל הורדה אחרת, גם לאחר הפעלה מחדש של MDM; קובצי ה־Cookie שלהן לעולם אינם נשמרים. כדי לשמור אותן בזיכרון בלבד, בטל את הסימון של {options} → {general} → {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	הורדות מאתרים אלה מקבלות הגדרות אלה. כל אחת מגיעה מהכלל הראשון ברשימה ששמו תואם לאתר ומגדיר אותו; * מייצג כל טקסט: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1735,6 +1782,10 @@
 #. text in the Options window
 #, machine
 	Edit login	ערוך כניסה
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	ערוך כלל אתר
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1751,7 +1802,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	דוא"ל
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	הטמעת פרקים
@@ -1759,6 +1810,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	ריק: כולם. ברוב האתרים החדשים ביותר מופיעים ראשונים.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	ריק: של הדפדפן, או זה שהוגדר בהגדרות
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1836,6 +1891,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	חיתוך מדויק, קידוד מחדש
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, או *.example.com עבור תת־הדומיינים שלו
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1940,7 +1999,7 @@
 #, machine
 	Feeds:	פידים:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	נשלף שוב כל 7 ימים. שינויים יחולו כאשר לא פועל טורנט.
 #. text in the Add torrent window
@@ -1967,7 +2026,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	מנהלי קבצים מציגים את המקור של קבצים המסומנים באופן זה. אם לא מסומן, אף הורדה לא תסומן.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	שם קובץ
 #. text in the Download video window
@@ -1989,6 +2049,10 @@
 #. text in categories.rs
 #, machine
 	File types:	סוגי קבצים:
+#. text in preview.rs
+#. label in the preview pane: whether the downloaded file is still where it was saved
+#, machine
+	File:	קובץ:
 #. text in a download's progress window; text in the Add torrent window
 #. tab title: the torrent's files
 #, machine
@@ -2053,6 +2117,10 @@
 #. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	הושלמו
+#. text in preview.rs
+#. label in the preview pane: when the download finished
+#, machine
+	Finished:	הושלם:
 #. text in a download's progress window
 #. a download's status: every byte is in, the file is being written out and given its name
 #. the trailing ... means it is still going on: keep it
@@ -2278,6 +2346,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	חזור לגרסה {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	חזור לגרסה {version} של {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2341,6 +2414,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	יש
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	כותרות בקשה
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2366,6 +2443,15 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	הסתר &קטגוריות
+#. message or event log entry in the main window
+#. View menu: hides the pane beside the download list that shows the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Hide &preview pane	הסתר חלונית &תצוגה מקדימה
+#. text in the Link grabber window
+#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
+#, machine
+	Hide images located on this web page	הסתר תמונות הממוקמות בדף אינטרנט זה
 #. button in a download's progress window
 #, machine
 	Hide tab	הסתר כרטיסייה
@@ -2497,11 +2583,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	התקן את 7-Zip (חינם), ולאחר מכן לחץ באמצעות לחצן העכבר הימני על ההורדה ובחר חלץ.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	התקן את ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	התקן את gallery-dl
@@ -2509,7 +2595,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	התקן אותו באופן ידני
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	התקן את Node.js
@@ -2521,7 +2607,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	התקן את חבילת 7zip (או p7zip) של המערכת שלך, ואז לחץ לחיצה ימנית על ההורדה ובחר חלץ.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	התקן את yt-dlp
@@ -2616,6 +2702,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	its files could not be written: {error}	לא ניתן היה לכתוב את הקבצים שלו: {error}
+#. text in preview.rs
+#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
+#, machine
+	Its folder can't be reached now	לא ניתן לגשת לתיקייה שלו כעת
 #. text in relocate.rs
 #. why an unfinished download could not be moved (after "The file could not be moved: "): its folder isn't there now (a drive taken out); {folder} is that folder
 #, machine
@@ -2807,6 +2897,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	הגבלת העלאה עבור כל הטורנטים ל-
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	שורה {line}: שם כותרת מכיל רק אותיות, ספרות ומקפים
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	שורה {line}: Mister Download Manager מגדיר את {name} בעצמו
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	שורה {line}: הערך מכיל תו שכותרת לא יכולה להכיל
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	שורה {line}: כתוב כותרת בתור שם: ערך
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2910,6 +3017,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	מחפש את הדף...
+#. text in preview.rs
+#. the preview pane: still looking whether the file is there
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking...	מתבצע חיפוש...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3255,7 +3367,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	עבור בין סרגל הכלים, הקטגוריות ורשימת ההורדות
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	הזז למטה
 #. text in a dialog box
@@ -3271,7 +3384,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	העבר לתור
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	הזז למעלה
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3280,6 +3395,10 @@
 #. message or event log entry in the main window
 #, machine
 	Move/Rename	הזז/שנה שם
+#. text in preview.rs
+#. the preview pane: a finished download's file is no longer where it was saved
+#, machine
+	Moved or deleted	הועבר או נמחק
 #. message or event log entry in the main window
 #. event log: an unfinished download's part file was moved to another folder; it resumes there; {folder} is that folder
 #, machine
@@ -3405,6 +3524,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	כלל חדש
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	כלל אתר חדש
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3458,6 +3581,10 @@
 #. message or event log entry in the main window
 #, machine
 	No download links were found in the clipboard. Copy a text with http, https, ftp or magnet links in it, and try again.	לא נמצאו קישורי הורדה בלוח. העתק טקסט עם קישורי http, https, ftp או magnet, ונסה שוב.
+#. text in preview.rs
+#. the preview pane (beside the download list) when no download is selected: its title
+#, machine
+	No download selected	לא נבחרה הורדה
 #. text in traypanel.rs
 #. the notification-area icon's panel (#1365) when no download is running
 #, machine
@@ -3514,6 +3641,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	אין עמיתים עדיין. ייתכן שמעט אנשים משתפים טורנט זה, או שחומת אש, VPN או הרשת חוסמים את BitTorrent.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	ללא שרת proxy
 #. text in the Options window
 #, machine
 	No proxy/socks	ללא Proxy/SOCKS
@@ -3603,6 +3734,10 @@
 #. text in helpers.rs
 #, machine
 	Not installed yet	עדיין לא מותקן
+#. text in preview.rs
+#. the preview pane: the size of a download is not known yet
+#, machine
+	Not known yet	לא ידוע עדיין
 #. text in the Link grabber window
 #. Link grabber, a link's status: a web page sent it (Click'n'Load), so it isn't looked up (name, size, online) before it is added
 #, machine
@@ -3649,6 +3784,10 @@
 #. text in the Options window
 #, machine
 	Number	מספר
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	מספר חיבורים:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	מספר ניסיונות חוזרים לכל קובץ אם ההורדה נכשלה:
@@ -3684,7 +3823,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	לא מקוון ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	אישור
 #. text in countries.rs
@@ -3946,10 +4085,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	השהה
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	השהה את ההורדה תחילה
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	השהה את ההורדה כדי לשנות את אופן החיבור שלה
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -4026,8 +4169,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	הקש מקשים...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	תצוגה מקדימה
 #. text in a dialog box
@@ -4070,6 +4213,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	כתובת שרת Proxy
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	שרת Proxy:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4247,7 +4394,11 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	החלף כוכבית ב-
-#. button in a dialog box
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	כותרות בקשה, אחת בכל שורה (שם: ערך):
+#. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
 	Reset	איפוס
@@ -4376,7 +4527,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	שמור אל...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	שמור אל:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4414,7 +4565,11 @@
 #. text in the Batch download window
 #, machine
 	Second file:	קובץ שני:
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. text in preview.rs
+#. the preview pane when no download is selected, under its title
+#, machine
+	Select a download to see its picture and details here.	בחר הורדה כדי לראות את התמונה והפרטים שלה כאן.
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	בחר הכל
@@ -4567,6 +4722,11 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Show &categories	הצג &קטגוריות
+#. message or event log entry in the main window
+#. View menu: shows a pane beside the download list with the selected download's picture and details
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+	Show &preview pane	הצג חלונית &תצוגה מקדימה
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	הצג תיבת דו-שיח ושאל מה לעשות.
@@ -4601,6 +4761,9 @@
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	הראה לי כיצד
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Show or hide the preview pane	הצג או הסתר את חלונית התצוגה המקדימה
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	הצג חלונית בחירת תור בעת סגירת תיבות דו-שיח של הורדת אצווה
@@ -4632,6 +4795,10 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	התחבר בדפדפן
+#. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	פרטי כניסה וסיסמאות נשמרים מוצפנים באמצעות מפתח במאגר המפתחות של Android.
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -4684,9 +4851,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	סנט מארטן
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	אתר
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	שם אתר/קישור הורדה/דף אינטרנט הורה/מפנה
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	כללי אתרים
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	כללי אתרים...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4694,6 +4875,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	אתר/נתיב:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	אתר:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4713,7 +4898,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	גודל לא ידוע
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	גודל:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4911,10 +5096,14 @@
 #. column title: the download's state
 #, machine
 	Status	מצב
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	מצב:
+#. text in preview.rs
+#. the preview pane: a finished download's file is still where it was saved
+#, machine
+	Still there	עדיין שם
 #. text in remote.rs; text in the Add torrent window
 #. remote control page (on a phone): button: stop a queue
 #, machine
@@ -5055,10 +5244,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	טנזניה
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	משימות ← לוכד קישורים, או "הורד את כל הקישורים" בדפדפן: כרכי ארכיון\nמפוצל הם חבילה אחת, שאר הקישורים בדף הם חבילה אחרת.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ספר לחבר
@@ -5382,6 +5567,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	מתאם הרשת {adapter} אינו מחובר
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	מספר החיבורים חייב להיות בין 1 ל- {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5584,6 +5773,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	העדכון פתוח במתקין החבילות של המערכת שלך.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	הערך של User-Agent כולל תו שאסור בכותרת
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	דף האינטרנט שממנו הושג קובץ זה:
@@ -5746,6 +5939,7 @@
 	This name is reserved by Windows	שם זה שמור על ידי Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5767,6 +5961,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	תוכנית זו אינה {name}
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	שרת Proxy זה:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5796,7 +5994,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	טורנט זה זקוק להרשאה כדי להשתמש ב־{file} לפני שיוכל להתחיל.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	טורנט זה חולק את תיקיית היעד שלו
@@ -5926,6 +6124,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	torrents could not start: {error}	לא ניתן היה להפעיל טורנטים: {error}
+#. text in preview.rs
+#. label in the preview pane: the size of the selected downloads added up
+#, machine
+	Total size:	גודל כולל:
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -6046,6 +6248,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	הקלד מספר בשדה 'מאת' ובשדה 'אל'
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	הקלד אתר, כגון example.com או *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -6062,6 +6268,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	הקלד את השם כפי שהוא מופיע בתעודת השרת.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	הקלד את שרת ה- Proxy כ- host:port, http://host:port או socks5://host:port
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6154,6 +6364,11 @@
 #, machine
 	Update now	עדכן עכשיו
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	עדכן את {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	עודכן על ידך
@@ -6176,6 +6391,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	השתמש בשילוב דפדפן מתקדם
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	השתמש בתוכנית אחרת כסביבת זמן הריצה של JavaScript...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	השתמש בתוכנית אחרת עבור {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6194,10 +6420,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	השתמש ב-FTP במצב PASV
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	השתמש בעותק של MDM
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	השתמש בעותק של MDM עבור {name}
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6248,6 +6480,10 @@
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	User-Agent עבור הורדות שנוספו ידנית:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	User-Agent, כותרות וחיבורים לפי אתר
 #. text in the Options window
 #, machine
 	User:	משתמש:
@@ -6394,6 +6630,10 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	אינטרנט
+#. text in preview.rs
+#. label in the preview pane: the web page the download was found on
+#, machine
+	Web page:	דף אינטרנט:
 #. text in the Scheduler window
 #, machine
 	Wednesday	יום רביעי
@@ -6442,6 +6682,10 @@
 #. why the computer could not be put to sleep (fills {error})
 #, machine
 	Windows refused	Windows סירב
+#. message or event log entry in the main window
+#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
+#, machine
+	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows עדיין פותח קישורי magnet או קובצי torrent עם {apps}, שנבחרו ב'יישומי ברירת המחדל' של Windows, שם רק אתה יכול לשנות זאת. ההגדרות נפתחות שם כעת: בחר את Mister Download Manager עבור MAGNET ו־.torrent.
 #. text in langpick.rs
 #, machine
 	Windows' language	שפת Windows
@@ -6491,7 +6735,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	תימן
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	כן
 #. button in helpers.rs
@@ -6670,6 +6914,10 @@
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{done} of {size}	{done} מתוך {size}
+#. text in preview.rs
+#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
+#, machine
+	{done} of {total}	{done} מתוך {total}
 #. text in deferred_rename.rs
 #. appended to an OS error when a case-only rename could not move the temporary file back to its original name; {error} = first OS error, {path} = temporary path left on disk, {rollback_error} = second OS error
 #. {error} = an error message (keep the braces as they are)
@@ -6692,14 +6940,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	לא ניתן היה לקרוא את {file} כדי לבדוק אותו
-#. text in relocate.rs
-#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
-#, machine
-	{file} is already there	{file} כבר קיימת
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
 	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	לא ניתן היה להחליף את {file}: ייתכן שתוכנית אחרת פתחה אותו. ההורדה החדשה נשמרה לידו בתור {new}, ושני הקבצים נשמרו.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} כבר קיימת
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} כבר לא נמצא במקום שבו נשמר (הועבר או נמחק). האפשרות ״הורד מחדש״ בתפריט לחיצה ימנית מורידה אותו שוב.
@@ -7048,7 +7296,7 @@ column	Peers	עמיתים
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	ת
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	תור
@@ -7954,6 +8202,10 @@ key	Alt+Enter	Alt+Enter
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Alt+P	Alt+P
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Ctrl++ / Ctrl+-	Ctrl++ / Ctrl+-
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
@@ -8734,6 +8986,10 @@ menubar	&Tasks	&משימות
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menubar	&View	&תצוגה
+#. text in preview.rs
+#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
+#, machine
+pane	Preview	תצוגה מקדימה
 #. toolbar button in the main window
 #, machine
 toolbar	Add Torrent	הוסף טורנט
@@ -8751,6 +9007,10 @@ toolbar	Delete Completed	מחק שהושלמו
 #. plural noun: opens the Options window (settings)
 #, machine
 toolbar	Options	אפשרויות
+#. toolbar button in the main window
+#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
+#, machine
+toolbar	Preview	תצוגה מקדימה
 #. toolbar button in the main window
 #. verb: continue the selected downloads
 #, machine
@@ -8792,89 +9052,3 @@ unit	{n} MB	{n} מ"ב
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} מ"ב/שנייה
-#. text in preview.rs
-#. label in the preview pane: when the download was added to the list
-#, machine
-	Added:	נוסף:
-#. text in preview.rs
-#. label in the preview pane: whether the downloaded file is still where it was saved
-#, machine
-	File:	קובץ:
-#. text in preview.rs
-#. label in the preview pane: when the download finished
-#, machine
-	Finished:	הושלם:
-#. message or event log entry in the main window
-#. View menu: hides the pane beside the download list that shows the selected download's picture and details
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-	Hide &preview pane	הסתר חלונית &תצוגה מקדימה
-#. text in the Link grabber window
-#. Link grabber check box, ticked when it opens: the pictures shown on the browser's page (its images, not links to pictures), which "Download all links" sends with the links, are not shown
-#, machine
-	Hide images located on this web page	הסתר תמונות הממוקמות בדף אינטרנט זה
-#. text in preview.rs
-#. the preview pane: neither the file nor its folder can be found now (an unplugged drive, a network folder away)
-#, machine
-	Its folder can't be reached now	לא ניתן לגשת לתיקייה שלו כעת
-#. text in preview.rs
-#. the preview pane: still looking whether the file is there
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Looking...	מתבצע חיפוש...
-#. text in preview.rs
-#. the preview pane: a finished download's file is no longer where it was saved
-#, machine
-	Moved or deleted	הועבר או נמחק
-#. text in preview.rs
-#. the preview pane (beside the download list) when no download is selected: its title
-#, machine
-	No download selected	לא נבחרה הורדה
-#. text in preview.rs
-#. the preview pane: the size of a download is not known yet
-#, machine
-	Not known yet	לא ידוע עדיין
-#. text in preview.rs
-#. the preview pane when no download is selected, under its title
-#, machine
-	Select a download to see its picture and details here.	בחר הורדה כדי לראות את התמונה והפרטים שלה כאן.
-#. message or event log entry in the main window
-#. View menu: shows a pane beside the download list with the selected download's picture and details
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#, machine
-	Show &preview pane	הצג חלונית &תצוגה מקדימה
-#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
-	Show or hide the preview pane	הצג או הסתר את חלונית התצוגה המקדימה
-#. text in preview.rs
-#. the preview pane: a finished download's file is still where it was saved
-#, machine
-	Still there	עדיין שם
-#. text in preview.rs
-#. label in the preview pane: the size of the selected downloads added up
-#, machine
-	Total size:	גודל כולל:
-#. text in preview.rs
-#. label in the preview pane: the web page the download was found on
-#, machine
-	Web page:	דף אינטרנט:
-#. message or event log entry in the main window
-#. after ticking "Open magnet links and .torrent files with Mister Download Manager", when Windows' Default apps keeps another app; {apps}: their names. "MAGNET" as Windows' Default apps lists it
-#, machine
-	Windows still opens magnet links or .torrent files with {apps}, chosen in Windows' Default apps, where only you can change it. Settings opens there now: pick Mister Download Manager for MAGNET and .torrent.	Windows עדיין פותח קישורי magnet או קובצי torrent עם {apps}, שנבחרו ב'יישומי ברירת המחדל' של Windows, שם רק אתה יכול לשנות זאת. ההגדרות נפתחות שם כעת: בחר את Mister Download Manager עבור MAGNET ו־.torrent.
-#. text in preview.rs
-#. the preview pane: how much of a download has come; {done} and {total} sizes, e.g. "12.5 MB of 40.0 MB"
-#, machine
-	{done} of {total}	{done} מתוך {total}
-#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
-#, machine
-key	Alt+P	Alt+P
-#. text in preview.rs
-#. noun: title of the side pane beside the download list that shows the selected download's picture and details (#1368)
-#, machine
-pane	Preview	תצוגה מקדימה
-#. toolbar button in the main window
-#. toolbar toggle button: shows or hides the preview pane (the selected download's picture and details)
-#, machine
-toolbar	Preview	תצוגה מקדימה

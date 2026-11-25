@@ -119,7 +119,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	Methodd {n} o lawrlwythiadau|Methodd {n} lawrlwythiad|Methodd {n} o lawrlwythiadau|Methodd {n} o lawrlwythiadau|Methodd {n} o lawrlwythiadau|Methodd {n} o lawrlwythiadau
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -539,7 +539,7 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	Cyfeiriad neu ddolen magnet
-#. text in the Options window; text in a download's Properties window
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Cyfeiriad:
@@ -633,6 +633,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	Alt+cliciwch y ddolen
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	Cysylltu bob amser fel y bydd porwr yn gwneud
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -656,6 +660,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	Andorra
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Nid yw Android yn gadael i apiau ddiffodd y ffôn
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -681,6 +689,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	Mae rhaglen arall wedi gosod larwm deffro'r cyfrifiadur
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	Mae rheol arall eisoes ar gyfer y wefan hon: newidiwch honno
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -750,6 +762,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	Aruba
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	Fel yn yr Opsiynau
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Fel y mae rhanbarth y system yn eu hysgrifennu
@@ -911,6 +927,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	Pori...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	Porwr
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Nid yw integreiddio porwr wedi'i sefydlu ar y cyfrifiadur hwn, felly ni all unrhyw borwr gyrraedd Mister Download Manager eto.
@@ -967,7 +987,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Canada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	Canslo
@@ -1139,6 +1159,7 @@
 #, machine
 	Choose a font file	Dewiswch ffeil ffont
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Dewiswch amgylchedd rhedeg JavaScript (Node.js, Deno, QuickJS neu Bun)
 #. text in langpick.rs
@@ -1156,6 +1177,7 @@
 #, machine
 	Choose the profile's folder	Dewiswch ffolder y proffil
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1279,6 +1301,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	Cysylltiad
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	Gosodiadau cysylltiad
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	Gosodiadau cysylltiad wedi'u newid
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	Gosodiadau cysylltiad...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	Cysylltiadau
 #. page title in the Options window
 #, machine
 	Connections and Limits	Cysylltiadau a Therfynau
@@ -1748,6 +1787,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Mae lawrlwythiadau o ffenestr breifat porwr yn aros yn rhestr MDM fel unrhyw lawrlwythiad arall, hyd yn oed ar ôl ailgychwyn MDM; ni chaiff eu cwcis byth eu cadw. I'w cadw yn y cof yn unig, dad-diciwch {options} → {general} → {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	Mae lawrlwythiadau o'r safleoedd hyn yn cael y gosodiadau hyn. Daw pob un o'r rheol gyntaf yn y rhestr sy'n enwi'r safle ac yn ei gosod; mae * yn sefyll am unrhyw destun: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1820,6 +1863,10 @@
 #. text in the Options window
 #, machine
 	Edit login	Golygu mewngofnod
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	Golygu rheol safle
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1836,7 +1883,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	E-bost
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	Ymgorffori penodau
@@ -1844,6 +1891,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	Gadewch yn wag: pob un ohonynt. Ar y rhan fwyaf o safleoedd, y rhai mwyaf newydd sy'n dod gyntaf.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	Gwag: eiddo'r porwr, neu'r un a osodwyd yn Opsiynau
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1921,6 +1972,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	Torri'n union, wedi'i hamgodio eto
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, neu *.example.com ar gyfer ei is-barthau
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -2025,7 +2080,7 @@
 #, machine
 	Feeds:	Porthiannau:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Wedi’i nôl eto bob 7 diwrnod. Mae newidiadau’n berthnasol pan nad oes cenllif yn rhedeg.
 #. text in the Add torrent window
@@ -2052,7 +2107,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	Mae rheolwyr ffeiliau yn dangos o ble y daeth y ffeiliau sydd wedi'u marcio fel hyn. Os nad yw'r opsiwn wedi'i dicio, ni chaiff unrhyw lawrlwythiad ei farcio.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	Enw Ffeil
 #. text in the Download video window
@@ -2371,6 +2427,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	Mynd yn ôl i {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	Mynd yn ôl i fersiwn {version} o {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2434,6 +2495,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	Wedi'i gael
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	Penynnau
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2599,11 +2664,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	Gosodwch 7-Zip (am ddim), yna cliciwch y lawrlwythiad gyda botwm dde'r llygoden a dewiswch Echdynnu.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Gosod ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	Gosod gallery-dl
@@ -2611,7 +2676,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	Gosodwch ef â llaw
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	Gosod Node.js
@@ -2623,7 +2688,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Gosodwch becyn 7zip (neu p7zip) eich system, yna de-gliciwch y lawrlwythiad a dewis Tynnu.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Gosod yt-dlp
@@ -2913,6 +2978,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	Cyfyngu uwchlwytho ar gyfer pob cenllif i
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	Llinell {line}: dim ond llythrennau, digidau a chysylltnodau sydd gan enw pennyn
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	Llinell {line}: mae Mister Download Manager yn gosod {name} ei hun
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	Llinell {line}: mae gan y gwerth gymeriad na all pennyn ei ddal
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	Llinell {line}: ysgrifennwch bennyn fel Enw: gwerth
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -3366,7 +3448,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	Symud rhwng y bar offer, y categorïau a'r rhestr lawrlwytho
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	Symud i lawr
 #. text in a dialog box
@@ -3382,7 +3465,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Symud i'r ciw
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	Symud i fyny
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3520,6 +3605,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	Rheol newydd
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	Rheol safle newydd
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3633,6 +3722,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Dim cyfoedion eto. Efallai mai ychydig o bobl sy'n rhannu'r cenllif hwn, neu efallai bod wal dân, VPN neu'r rhwydwaith yn rhwystro BitTorrent.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	Dim dirprwy
 #. text in the Options window
 #, machine
 	No proxy/socks	Dim dirprwy/SOCKS
@@ -3772,6 +3865,10 @@
 #. text in the Options window
 #, machine
 	Number	Rhif
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	Nifer y cysylltiadau:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	Nifer yr ailgynigion ar gyfer pob ffeil os methodd y lawrlwythiad:
@@ -3807,7 +3904,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	All-lein ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	Iawn
 #. text in countries.rs
@@ -3865,13 +3962,6 @@
 #. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
 	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Dim ond ffeiliau'r ffolder o'r mathau hyn, wedi'u hysgrifennu fel ar y dudalen Mathau o ffeiliau (ISO ZIP R0*). Gwag: pob math.
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	Dim ond lawrlwythiad sydd wedi'i orffen, neu un heb ei ddechrau eto, y gellir ei symud
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Dim ond lawrlwythiad sydd wedi'i orffen, neu un heb ei ddechrau eto, y gellir ei symud. Stopiwch ef a'i orffen yn gyntaf.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4076,10 +4166,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	Oedi
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	Oedwch y lawrlwythiad yn gyntaf
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	Oedi'r lawrlwythiad i newid sut mae'n cysylltu
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -4156,8 +4250,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	Pwyswch allweddi...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	Rhagolwg
 #. text in a dialog box
@@ -4200,6 +4294,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Cyfeiriad gweinydd dirprwy
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	Dirprwy:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4377,7 +4475,11 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Amnewid seren i
-#. button in a dialog box
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	Penynnau cais, un ar bob llinell (Enw: gwerth):
+#. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
 	Reset	Ailosod
@@ -4506,7 +4608,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	Cadw I...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Cadw I:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4548,7 +4650,7 @@
 #. the preview pane when no download is selected, under its title
 #, machine
 	Select a download to see its picture and details here.	Dewiswch lawrlwythiad i weld ei lun a'i fanylion yma.
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Dewis popeth
@@ -4775,6 +4877,10 @@
 #, machine
 	Sign in in the browser	Mewngofnodi yn y porwr
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Cedwir manylion mewngofnodi a chyfrineiriau wedi'u hamgryptio ag allwedd yn storfa allweddi Android.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
 	Sign-ins and passwords are kept in the macOS keychain.	Cedwir mewngofnodion a chyfrineiriau yn y cylch allweddi macOS.
@@ -4826,9 +4932,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	Sint Maarten
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	Safle
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Enw safle/Dolen lawrlwytho/Tudalen we rhiant/Cyfeirydd
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	Rheolau safle
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	Rheolau safle...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4836,6 +4956,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	Safle/llwybr:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	Safle:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4855,7 +4979,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	maint anhysbys
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	Maint:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -5053,7 +5177,7 @@
 #. column title: the download's state
 #, machine
 	Status	Statws
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	Statws:
@@ -5201,10 +5325,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	Tansania
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Tasgau → Cipio cysylltiadau, neu “Lawrlwytho pob cyswllt” y porwr: mae cyfrolau archif hollt yn un pecyn, a chysylltiadau eraill tudalen yn un arall.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Dywedwch wrth ffrind
@@ -5528,6 +5648,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	nid yw’r addasydd rhwydwaith {adapter} wedi’i gysylltu
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	Rhaid i nifer y cysylltiadau fod rhwng 1 a {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5730,6 +5854,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	Mae'r diweddariad ar agor yn gosodwr pecynnau eich system.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	Mae gan yr Asiant Defnyddiwr gymeriad na all pennyn ei ddal
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Y dudalen we y cafwyd y ffeil hon ohoni:
@@ -5892,6 +6020,7 @@
 	This name is reserved by Windows	Mae'r enw hwn wedi'i gadw gan Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5913,6 +6042,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	nid {name} yw'r rhaglen hon
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	Y dirprwy hwn:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5942,7 +6075,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	Mae angen caniatâd ar y cenllif hwn i ddefnyddio {file} cyn y gall ddechrau.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	Mae'r cenllif hwn yn rhannu ei ffolder cyrchfan
@@ -6196,6 +6329,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Teipiwch rif yn O ac yn I
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	Teipiwch safle, fel example.com neu *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -6212,6 +6349,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	Teipiwch yr enw y mae tystysgrif y gweinydd yn ei ddangos.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	Teipiwch y dirprwy fel gwesteiwr:porth, http://gwesteiwr:porth neu socks5://gwesteiwr:porth
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6304,6 +6445,11 @@
 #, machine
 	Update now	Diweddaru nawr
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	Diweddaru {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	Wedi'i ddiweddaru gennych chi
@@ -6326,6 +6472,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Defnyddio integreiddio porwr uwch
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	Defnyddio rhaglen arall fel yr amser rhedeg JavaScript...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	Defnyddio rhaglen arall ar gyfer {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6344,10 +6501,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Defnyddio FTP yn y modd PASV
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	Defnyddio copi MDM ei hun
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	Defnyddio copi MDM ei hun o {name}
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6396,8 +6559,20 @@
 #, machine
 	User names and passwords for servers/sites	Enwau defnyddwyr a chyfrineiriau ar gyfer gweinyddion/safleoedd
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	Asiant Defnyddiwr
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	Asiant Defnyddiwr ar gyfer lawrlwythiadau a ychwanegwyd â llaw:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	Asiant Defnyddiwr, penynnau a chysylltiadau yn ôl safle
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	Asiant Defnyddiwr:
 #. text in the Options window
 #, machine
 	User:	Defnyddiwr:
@@ -6649,7 +6824,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	Yemen
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	Ie
 #. button in helpers.rs
@@ -6854,14 +7029,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Ni ellid darllen {file} i'w wirio
-#. text in relocate.rs
-#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
-#, machine
-	{file} is already there	mae {file} eisoes yno
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
 	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	Ni ellid disodli {file}: efallai bod rhaglen arall yn ei gadw ar agor. Mae'r lawrlwythiad newydd wedi'i gadw wrth ei ymyl fel {new}, a chaiff y ddwy ffeil eu cadw.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	mae {file} eisoes yno
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Nid yw {file} lle cafodd ei gadw mwyach (wedi'i symud neu ei ddileu). Mae Ail-lawrlwytho, yn ei ddewislen clicio-dde, yn ei gael eto.
@@ -7210,7 +7385,7 @@ column	Peers	Cymheiriaid
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	C
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	Ciw
@@ -7462,10 +7637,6 @@ extension	Downloads from {site} stay with the browser	Mae lawrlwythiadau o {site
 #. the toolbar button's status while downloads go to another MDM
 #, machine
 extension	Downloads go to {address}	Mae lawrlwythiadau'n mynd i {address}
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	Llusgwch y dotiau i'w symud ar hyd yr ymyl
 #. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine

@@ -119,7 +119,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	{n} എണ്ണം പരാജയപ്പെട്ടു|{n} എണ്ണം പരാജയപ്പെട്ടു
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -539,7 +539,7 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	വിലാസം അല്ലെങ്കിൽ മാഗ്നറ്റ് ലിങ്ക്
-#. text in the Options window; text in a download's Properties window
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	വിലാസം:
@@ -633,6 +633,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	ലിങ്കിൽ Alt+ക്ലിക്ക് ചെയ്യുക
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	ഒരു ബ്രൗസർ ചെയ്യുന്നതുപോലെ എല്ലായ്പ്പോഴും കണക്റ്റുചെയ്യുക
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -656,6 +660,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	അൻഡോറ
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	ആപ്പുകൾക്ക് ഫോൺ ഓഫ് ചെയ്യാൻ Android അനുവദിക്കുന്നില്ല
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -681,6 +689,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	മറ്റൊരു പ്രോഗ്രാം കമ്പ്യൂട്ടറിന്റെ വേക്ക് അലാറം സജ്ജീകരിച്ചിട്ടുണ്ട്
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	ഈ സൈറ്റിനായി മറ്റൊരു നിയമം ഇതിനകം ഉണ്ട്: അത് മാറ്റുക
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -750,6 +762,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	അറൂബ
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	ഓപ്ഷനുകളിലേതുപോലെ
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	സിസ്റ്റത്തിന്റെ പ്രദേശ ക്രമീകരണം അനുസരിച്ച്
@@ -911,6 +927,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	ബ്രൗസ് ചെയ്യുക...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	ബ്രൗസർ
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	ഈ കമ്പ്യൂട്ടറിൽ ബ്രൗസർ സംയോജനം സജ്ജീകരിച്ചിട്ടില്ല, അതിനാൽ ഒരു ബ്രൗസറിനും Mister Download Manager ഇതുവരെ എത്തിച്ചേരാൻ കഴിയില്ല.
@@ -967,7 +987,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	കാനഡ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	റദ്ദാക്കുക
@@ -1139,6 +1159,7 @@
 #, machine
 	Choose a font file	ഒരു ഫോണ്ട് ഫയൽ തിരഞ്ഞെടുക്കുക
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	ഒരു JavaScript റൺടൈം തിരഞ്ഞെടുക്കുക (Node.js, Deno, QuickJS അല്ലെങ്കിൽ Bun)
 #. text in langpick.rs
@@ -1156,6 +1177,7 @@
 #, machine
 	Choose the profile's folder	പ്രൊഫൈലിന്റെ ഫോൾഡർ തിരഞ്ഞെടുക്കുക
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1274,6 +1296,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	കണക്ഷൻ
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	കണക്ഷൻ ക്രമീകരണങ്ങൾ
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	കണക്ഷൻ ക്രമീകരണങ്ങൾ മാറ്റി
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	കണക്ഷൻ...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	കണക്ഷനുകൾ
 #. page title in the Options window
 #, machine
 	Connections and Limits	കണക്ഷനുകളും പരിധികളും
@@ -1743,6 +1782,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ഒരു ബ്രൗസറിന്റെ സ്വകാര്യ വിൻഡോയിൽ നിന്നുള്ള ഡൗൺലോഡുകൾ MDM-ന്റെ ലിസ്റ്റിൽ മറ്റേതൊരു ഡൗൺലോഡും പോലെ നിലനിൽക്കും, MDM പുനരാരംഭിച്ച ശേഷവും; അവയുടെ കുക്കികൾ ഒരിക്കലും സംരക്ഷിക്കപ്പെടുന്നില്ല. അവ മെമ്മറിയിൽ മാത്രം സൂക്ഷിക്കാൻ, {options} → {general} → {checkbox} എന്നതിലെ ടിക്ക് നീക്കുക.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	ഈ സൈറ്റുകളിൽ നിന്നുള്ള ഡൗൺലോഡുകൾക്ക് ഈ ക്രമീകരണങ്ങൾ ബാധകമാകും. സൈറ്റിനെ പരാമർശിക്കുകയും ക്രമീകരണം സജ്ജീകരിക്കുകയും ചെയ്യുന്ന ലിസ്റ്റിലെ ആദ്യ നിയമത്തിൽ നിന്നാണ് ഓരോ ക്രമീകരണവും വരുന്നത്; * എന്നത് ഏതെങ്കിലും ടെക്സ്റ്റിനെ സൂചിപ്പിക്കുന്നു: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1815,6 +1858,10 @@
 #. text in the Options window
 #, machine
 	Edit login	ലോഗിൻ എഡിറ്റ് ചെയ്യുക
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	സൈറ്റ് നിയമം എഡിറ്റ് ചെയ്യുക
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1831,7 +1878,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ഇമെയിൽ
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	അധ്യായങ്ങൾ ഉൾച്ചേർക്കുക
@@ -1839,6 +1886,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	ഒഴിഞ്ഞത്: എല്ലാം. മിക്ക സൈറ്റുകളിലും ഏറ്റവും പുതിയവ ആദ്യം വരുന്നു.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	ഒഴിഞ്ഞത്: ബ്രൗസറിന്റേത്, അല്ലെങ്കിൽ ഓപ്ഷനുകളിൽ സജ്ജീകരിച്ചിരിക്കുന്നത്
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1916,6 +1967,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	കൃത്യമായ കട്ട്, വീണ്ടും എൻകോഡ് ചെയ്തു
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, അല്ലെങ്കിൽ അതിന്റെ സബ്ഡൊമെയ്‌നുകൾക്കായി *.example.com
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -2020,7 +2075,7 @@
 #, machine
 	Feeds:	ഫീഡുകൾ:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	ഓരോ 7 ദിവസത്തിലും വീണ്ടും ലഭ്യമാക്കുന്നു. ടോറന്റ് പ്രവർത്തിക്കാത്തപ്പോൾ മാറ്റങ്ങൾ ബാധകമാകും.
 #. text in the Add torrent window
@@ -2047,7 +2102,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	ഈ രീതിയിൽ അടയാളപ്പെടുത്തിയ ഫയലുകൾ എവിടെ നിന്ന് വന്നുവെന്ന് ഫയൽ മാനേജർമാർ കാണിക്കുന്നു. തിരഞ്ഞെടുത്തിട്ടില്ലെങ്കിൽ, ഡൗൺലോഡ് ചെയ്ത ഫയലുകളൊന്നും അടയാളപ്പെടുത്തില്ല.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	ഫയലിന്റെ പേര്
 #. text in the Download video window
@@ -2366,6 +2422,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	{version} ലേക്ക് തിരികെ പോകുക
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	{name} ന്റെ {version} ലേക്ക് തിരികെ പോകുക
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2429,6 +2490,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	ഉണ്ട്
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	ഹെഡറുകൾ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2590,11 +2655,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (സൗജന്യം) ഇൻസ്റ്റാൾ ചെയ്യുക, തുടർന്ന് ഡൗൺലോഡിൽ റൈറ്റ്-ക്ലിക്ക് ചെയ്ത് എക്‌സ്‌ട്രാക്‌റ്റ് തിരഞ്ഞെടുക്കുക.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ഇൻസ്റ്റാൾ ചെയ്യുക
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	gallery-dl ഇൻസ്റ്റാൾ ചെയ്യുക
@@ -2602,7 +2667,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	സ്വയമായി ഇൻസ്റ്റാൾ ചെയ്യുക
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	Node.js ഇൻസ്റ്റാൾ ചെയ്യുക
@@ -2614,7 +2679,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ 7zip (അല്ലെങ്കിൽ p7zip) പാക്കേജ് ഇൻസ്റ്റാൾ ചെയ്യുക, തുടർന്ന് ഡൗൺലോഡിൽ വലത്-ക്ലിക്ക് ചെയ്ത് എക്സ്ട്രാക്റ്റ് തിരഞ്ഞെടുക്കുക.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ഇൻസ്റ്റാൾ ചെയ്യുക
@@ -2904,6 +2969,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	എല്ലാ ടോറന്റുകൾക്കുമുള്ള അപ്‌ലോഡിംഗ് ഇതിലേക്ക് പരിമിതപ്പെടുത്തുക
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	വരി {line}: ഒരു ഹെഡറിന്റെ പേരിൽ അക്ഷരങ്ങൾ, അക്കങ്ങൾ, ഡാഷുകൾ എന്നിവ മാത്രമേ പാടുള്ളൂ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	വരി {line}: Mister Download Manager {name} സ്വയം സജ്ജീകരിക്കുന്നു
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	വരി {line}: മൂല്യത്തിൽ ഒരു ഹെഡറിന് ഉൾക്കൊള്ളാൻ കഴിയാത്ത ഒരു പ്രതീകമുണ്ട്
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	വരി {line}: ഹെഡർ Name: value എന്ന രൂപത്തിൽ എഴുതുക
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -3357,7 +3439,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	ടൂൾബാർ, വിഭാഗങ്ങൾ, ഡൗൺലോഡ് ലിസ്റ്റ് എന്നിവയ്ക്കിടയിൽ നീങ്ങുക
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	താഴേക്ക് നീക്കുക
 #. text in a dialog box
@@ -3373,7 +3456,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	ക്യൂവിലേക്ക് നീക്കുക
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	മുകളിലേക്ക് നീക്കുക
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3511,6 +3596,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	പുതിയ നിയമം
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	പുതിയ സൈറ്റ് നിയമം
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3624,6 +3713,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	ഇതുവരെ പിയറുകളൊന്നുമില്ല. കുറച്ച് ആളുകൾ ഈ ടോറന്റ് പങ്കിട്ടേക്കാം, അല്ലെങ്കിൽ ഒരു ഫയർവാൾ, VPN അല്ലെങ്കിൽ നെറ്റ്‌വർക്ക് BitTorrent തടയുന്നുണ്ടാകാം.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	പ്രോക്സി ഇല്ല
 #. text in the Options window
 #, machine
 	No proxy/socks	പ്രോക്സി/SOCKS ഇല്ല
@@ -3763,6 +3856,10 @@
 #. text in the Options window
 #, machine
 	Number	നമ്പർ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	കണക്ഷനുകളുടെ എണ്ണം:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	ഡൗൺലോഡ് പരാജയപ്പെട്ടാൽ ഓരോ ഫയലിനും എത്ര തവണ വീണ്ടും ശ്രമിക്കണം:
@@ -3798,7 +3895,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	ഓഫ്‌ലൈൻ ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	ശരി
 #. text in countries.rs
@@ -3856,13 +3953,6 @@
 #. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
 	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	ഈ തരത്തിലുള്ള ഫോൾഡറിലെ ഫയലുകൾ മാത്രം, ഫയൽ തരങ്ങൾ പേജിൽ എഴുതിയിരിക്കുന്നത് പോലെ (ISO ZIP R0*). ശൂന്യം: എല്ലാ തരങ്ങളും.
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	പൂർത്തിയാക്കിയ ഡൗൺലോഡ് അല്ലെങ്കിൽ ഇതുവരെ ആരംഭിക്കാത്ത ഡൗൺലോഡ് മാത്രമേ നീക്കാൻ കഴിയൂ
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	പൂർത്തിയാക്കിയ ഡൗൺലോഡ് അല്ലെങ്കിൽ ഇതുവരെ ആരംഭിക്കാത്ത ഡൗൺലോഡ് മാത്രമേ നീക്കാൻ കഴിയൂ. ആദ്യം അത് നിർത്തി പൂർത്തിയാക്കുക.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4067,10 +4157,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	താൽക്കാലികമായി നിർത്തുക
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	ആദ്യം ഡൗൺലോഡ് താൽക്കാലികമായി നിർത്തുക
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	കണക്റ്റുചെയ്യുന്ന രീതി മാറ്റാൻ ഡൗൺലോഡ് താൽക്കാലികമായി നിർത്തുക
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -4147,8 +4241,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	കീകൾ അമർത്തുക...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	പ്രിവ്യൂ
 #. text in a dialog box
@@ -4191,6 +4285,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	പ്രോക്സി സെർവർ വിലാസം
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	പ്രോക്സി:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4368,7 +4466,11 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	നക്ഷത്രചിഹ്നം ഇതിലേക്ക് മാറ്റുക
-#. button in a dialog box
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	അഭ്യർത്ഥന ഹെഡറുകൾ, ഓരോ വരിയിലും ഒന്ന് (Name: value):
+#. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
 	Reset	പുനഃസജ്ജമാക്കുക
@@ -4497,7 +4599,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	ഇതിലേക്ക് സംരക്ഷിക്കുക...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ഇതിലേക്ക് സംരക്ഷിക്കുക:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4539,7 +4641,7 @@
 #. the preview pane when no download is selected, under its title
 #, machine
 	Select a download to see its picture and details here.	അതിന്റെ ചിത്രവും വിശദാംശങ്ങളും ഇവിടെ കാണാൻ ഒരു ഡൗൺലോഡ് തിരഞ്ഞെടുക്കുക.
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	എല്ലാം തിരഞ്ഞെടുക്കുക
@@ -4766,6 +4868,10 @@
 #, machine
 	Sign in in the browser	ബ്രൗസറിൽ സൈൻ ഇൻ ചെയ്യുക
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും Android-ന്റെ കീസ്റ്റോറിലെ ഒരു കീ ഉപയോഗിച്ച് എൻക്രിപ്റ്റ് ചെയ്ത് സൂക്ഷിക്കുന്നു.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
 	Sign-ins and passwords are kept in the macOS keychain.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും macOS കീചെയിനിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
@@ -4817,9 +4923,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	സിന്റ് മാർട്ടൻ
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	സൈറ്റ്
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	സൈറ്റിന്റെ പേര്/ഡൗൺലോഡ് ലിങ്ക്/മാതൃ വെബ് പേജ്/റഫറർ
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	സൈറ്റ് നിയമങ്ങൾ
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	സൈറ്റ് നിയമങ്ങൾ...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4827,6 +4947,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	സൈറ്റ്/പാത:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	സൈറ്റ്:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4846,7 +4970,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	വലുപ്പം അജ്ഞാതം
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	വലുപ്പം:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -5044,7 +5168,7 @@
 #. column title: the download's state
 #, machine
 	Status	നില
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	നില:
@@ -5192,10 +5316,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	ടാൻസാനിയ
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ടാസ്ക്കുകൾ → ലിങ്ക് ഗ്രാബർ, അല്ലെങ്കിൽ ബ്രൗസറിന്റെ "എല്ലാ ലിങ്കുകളും ഡൗൺലോഡ് ചെയ്യുക": ഒരു സ്പ്ലിറ്റ്\nആർക്കൈവിന്റെ വോള്യങ്ങൾ ഒരു പാക്കേജാണ്; ഒരു പേജിലെ മറ്റ് ലിങ്കുകൾ മറ്റൊരു പാക്കേജാണ്.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ഒരു സുഹൃത്തിനോട് പറയുക
@@ -5519,6 +5639,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	{adapter} എന്ന നെറ്റ്‌വർക്ക് അഡാപ്റ്റർ കണക്റ്റ് ചെയ്തിട്ടില്ല
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	കണക്ഷനുകളുടെ എണ്ണം 1 മുതൽ {max} വരെ ആയിരിക്കണം
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5721,6 +5845,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	നിങ്ങളുടെ സിസ്റ്റത്തിൻ്റെ പാക്കേജ് ഇൻസ്റ്റാളറിൽ അപ്‌ഡേറ്റ് തുറന്നിരിക്കുന്നു.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	User-Agent-ൽ ഒരു ഹെഡറിന് ഉൾക്കൊള്ളാൻ കഴിയാത്ത ഒരു പ്രതീകമുണ്ട്
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ഈ ഫയൽ ലഭിച്ച വെബ് പേജ്:
@@ -5883,6 +6011,7 @@
 	This name is reserved by Windows	ഈ പേര് Windows റിസർവ് ചെയ്തിട്ടുള്ളതാണ്
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5904,6 +6033,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	ഈ പ്രോഗ്രാം {name} അല്ല
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	ഈ പ്രോക്സി:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5933,7 +6066,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	ഈ ടോറന്റ് ആരംഭിക്കുന്നതിന് മുമ്പ് {file} ഉപയോഗിക്കാനുള്ള അനുമതി ആവശ്യമാണ്.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	ഈ ടോറന്റ് മറ്റുള്ളവയുമായി ലക്ഷ്യസ്ഥാന ഫോൾഡർ പങ്കിടുന്നു
@@ -6187,6 +6320,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	From, To എന്നിവയിൽ ഒരു നമ്പർ ടൈപ്പ് ചെയ്യുക
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	example.com അല്ലെങ്കിൽ *.example.com പോലുള്ള ഒരു സൈറ്റ് ടൈപ്പ് ചെയ്യുക
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -6203,6 +6340,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	സെർവറിന്റെ സർട്ടിഫിക്കറ്റ് കാണിക്കുന്ന പേര് ടൈപ്പ് ചെയ്യുക.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	പ്രോക്സി host:port, http://host:port അല്ലെങ്കിൽ socks5://host:port എന്ന രൂപത്തിൽ ടൈപ്പ് ചെയ്യുക
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6295,6 +6436,11 @@
 #, machine
 	Update now	ഇപ്പോൾ അപ്‌ഡേറ്റ് ചെയ്യുക
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	{name} അപ്ഡേറ്റ് ചെയ്യുക
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	നിങ്ങൾ അപ്‌ഡേറ്റ് ചെയ്തത്
@@ -6317,6 +6463,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	വിപുലമായ ബ്രൗസർ സംയോജനം ഉപയോഗിക്കുക
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	JavaScript റൺടൈമായി മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുക...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	{name} നായി മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുക...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6335,10 +6492,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV മോഡിൽ FTP ഉപയോഗിക്കുക
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM-ന്റെ സ്വന്തം പകർപ്പ് ഉപയോഗിക്കുക
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	MDM-ന്റെ സ്വന്തം {name} പകർപ്പ് ഉപയോഗിക്കുക
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6387,8 +6550,20 @@
 #, machine
 	User names and passwords for servers/sites	സെർവറുകൾ/സൈറ്റുകൾക്കായുള്ള ഉപയോക്തൃനാമങ്ങളും പാസ്‌വേഡുകളും
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	ഉപയോക്തൃ-ഏജന്റ്
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	സ്വമേധയാ ചേർത്ത ഡൗൺലോഡുകൾക്കുള്ള യൂസർ-ഏജന്റ്:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	സൈറ്റ് അനുസരിച്ചുള്ള ഉപയോക്തൃ-ഏജന്റ്, ഹെഡറുകൾ, കണക്ഷനുകൾ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	ഉപയോക്തൃ-ഏജന്റ്:
 #. text in the Options window
 #, machine
 	User:	ഉപയോക്താവ്:
@@ -6636,7 +6811,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	യെമൻ
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	അതെ
 #. button in helpers.rs
@@ -6841,14 +7016,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	{file} പരിശോധിക്കുന്നതിനായി വായിക്കാനായില്ല
-#. text in relocate.rs
-#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
-#, machine
-	{file} is already there	{file} ഇതിനകം അവിടെയുണ്ട്
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
 	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} മാറ്റിവെക്കാൻ കഴിഞ്ഞില്ല: മറ്റൊരു പ്രോഗ്രാം അത് തുറന്നിരിക്കാം. പുതിയ ഡൗൺലോഡ് {new} എന്ന പേരിൽ അതിനടുത്ത് സംരക്ഷിച്ചു, രണ്ട് ഫയലുകളും സൂക്ഷിച്ചിരിക്കുന്നു.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ഇതിനകം അവിടെയുണ്ട്
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} സംരക്ഷിച്ച സ്ഥലത്ത് ഇപ്പോൾ ഇല്ല (മാറ്റുകയോ ഇല്ലാതാക്കുകയോ ചെയ്തു). വലത്-ക്ലിക്ക് മെനുവിലെ വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക എന്ന ഓപ്ഷൻ ഉപയോഗിച്ച് അത് വീണ്ടും ഡൗൺലോഡ് ചെയ്യാം.
@@ -7197,7 +7372,7 @@ column	Peers	പിയറുകൾ
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	ക്യൂ
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	ക്യൂ
@@ -7449,10 +7624,6 @@ extension	Downloads from {site} stay with the browser	{site} എന്നതി�
 #. the toolbar button's status while downloads go to another MDM
 #, machine
 extension	Downloads go to {address}	ഡൗൺലോഡുകൾ {address} എന്നതിലേക്ക് പോകുന്നു
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	അരികിലൂടെ നീക്കാൻ ഡോട്ടുകൾ വലിച്ചിടുക
 #. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine

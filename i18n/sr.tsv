@@ -119,7 +119,7 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} failed|{n} failed	{n} није успело|{n} нису успела|{n} није успело
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -539,7 +539,7 @@
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 #, machine
 	Address or magnet link	Адреса или магнетна веза
-#. text in the Options window; text in a download's Properties window
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Адреса:
@@ -633,6 +633,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	Alt+кликните на везу
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	Увек се повежи као прегледач
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -656,6 +660,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	Андора
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Android не дозвољава апликацијама да искључе телефон
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -681,6 +689,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	Други програм је подесио аларм за буђење рачунара
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	Већ постоји правило за овај сајт: измените то правило
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -750,6 +762,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	Аруба
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	Као у Подешавањима
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Како их пише регионални систем
@@ -911,6 +927,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	Прегледај...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	Прегледач
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Интеграција прегледача није подешена на овом рачунару, тако да ниједан прегледач још не може да досегне Mister Download Manager.
@@ -967,7 +987,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Канада
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	Откажи
@@ -1139,6 +1159,7 @@
 #, machine
 	Choose a font file	Изаберите датотеку фонта
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	Изаберите окружење за извршавање JavaScript-а (Node.js, Deno, QuickJS или Bun)
 #. text in langpick.rs
@@ -1156,6 +1177,7 @@
 #, machine
 	Choose the profile's folder	Изаберите фасциклу профила
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1274,6 +1296,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	Веза
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	Подешавања везе
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	Подешавања везе су промењена
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	Веза...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	Везе
 #. page title in the Options window
 #, machine
 	Connections and Limits	Везе и ограничења
@@ -1739,6 +1778,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	Преузимања из приватног прозора прегледача остају на MDM листи као и сва друга, чак и након поновног покретања MDM-а; њихови колачићи се никада не чувају. Да бисте их задржали само у меморији, опозовите избор {options} → {general} → {checkbox}.
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	Преузимања са ових сајтова добијају ова подешавања. Свако потиче из првог правила на листи које именује сајт и подешава га; * означава било који текст: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1811,6 +1854,10 @@
 #. text in the Options window
 #, machine
 	Edit login	Уреди пријаву
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	Уређивање правила за сајт
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1827,7 +1874,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Е-пошта
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 #, machine
 	Embed chapters	Угради поглавља
@@ -1835,6 +1882,10 @@
 #. in Download a gallery, after the "Files at most" box
 #, machine
 	Empty: all of them. On most sites the newest come first.	Празна вредност: све. На већини сајтова најновије долазе прве.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	Празан: прегледачев, или онај подешен у опцијама
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1912,6 +1963,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	Тачно сечење, поново кодирано
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, или *.example.com за његове поддомене
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -2016,7 +2071,7 @@
 #, machine
 	Feeds:	Фидови:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 #, machine
 	Fetched again every 7 days. Changes apply when no torrent is running.	Поново се преузима сваких 7 дана. Промене се примењују када ниједан торент није активан.
 #. text in the Add torrent window
@@ -2043,7 +2098,8 @@
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 #, machine
 	File managers show where the files marked this way came from. Unticked, no download is marked.	Менаџери датотека приказују одакле потичу датотеке означене на овај начин. Ако опција није означена, ниједна преузета датотека није означена.
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	Назив датотеке
 #. text in the Download video window
@@ -2362,6 +2418,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	Врати се на {version}
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	Вратите се на {version} програма {name}
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -2425,6 +2486,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	Има
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	Заглавља
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2586,11 +2651,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	Инсталирајте 7-Zip (бесплатно), затим кликните десним тастером миша на преузимање и изаберите Екстрахуј.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Инсталирај ffmpeg
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	Инсталирај gallery-dl
@@ -2598,7 +2663,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	Инсталирајте ручно
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	Инсталирај Node.js
@@ -2610,7 +2675,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	Инсталирајте системски пакет 7zip (или p7zip), затим кликните десним тастером миша на преузимање и изаберите „Издвоји“.
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Инсталирај yt-dlp
@@ -2900,6 +2965,23 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	Ограничи отпремање за све торенте на
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	Ред {line}: назив заглавља садржи само слова, цифре и цртице
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	Ред {line}: Mister Download Manager сам подешава {name}
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	Ред {line}: вредност садржи знак који заглавље не може да садржи
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	Ред {line}: напишите заглавље као Назив: вредност
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -3353,7 +3435,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	Премештање између траке са алаткама, категорија и листе преузимања
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	Помери надоле
 #. text in a dialog box
@@ -3369,7 +3452,9 @@
 #. message or event log entry in the main window
 #, machine
 	Move to queue	Премести у ред чекања
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	Помери горе
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3507,6 +3592,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	Ново правило
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	Ново правило за сајт
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3620,6 +3709,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Још нема учесника. Можда мало људи дели овај торент, или заштитни зид, VPN или мрежа блокирају BitTorrent.
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	Без проксија
 #. text in the Options window
 #, machine
 	No proxy/socks	Без проксија/SOCKS-а
@@ -3759,6 +3852,10 @@
 #. text in the Options window
 #, machine
 	Number	Број
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	Број веза:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	Број покушаја за сваку датотеку ако преузимање није успело:
@@ -3794,7 +3891,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	Ван мреже ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	У реду
 #. text in countries.rs
@@ -3852,13 +3949,6 @@
 #. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
 	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	Само датотеке ових типова из фасцикле, написано као на страници „Типови датотека“ (ISO ZIP R0*). Празно: сви типови.
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	Може се преместити само завршено преузимање или оно које још није започето
-#. message or event log entry in the main window
-#, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Може се преместити само завршено преузимање или оно које још није започето. Прво га зауставите и завршите.
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -4063,10 +4153,14 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	Паузирај
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 #, machine
 	Pause the download first	Прво паузирајте преузимање
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	Паузирајте преузимање да бисте променили начин повезивања
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -4143,8 +4237,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	Притисните тастере...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 #, machine
 	Preview	Преглед
 #. text in a dialog box
@@ -4187,6 +4281,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Адреса прокси сервера
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	Прокси:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4364,7 +4462,11 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	Замени звездицу са
-#. button in a dialog box
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	Заглавља захтева, једно по реду (Име: вредност):
+#. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
 	Reset	Ресетуј
@@ -4493,7 +4595,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	Сачувај у...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Сачувај у:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4535,7 +4637,7 @@
 #. the preview pane when no download is selected, under its title
 #, machine
 	Select a download to see its picture and details here.	Изаберите преузимање да бисте овде видели његову слику и детаље.
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Изабери све
@@ -4762,6 +4864,10 @@
 #, machine
 	Sign in in the browser	Пријавите се у прегледачу
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	Пријаве и лозинке се чувају шифроване кључем у Android-овом складишту кључева.
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
 	Sign-ins and passwords are kept in the macOS keychain.	Пријаве и лозинке се чувају у macOS привеску за кључеве.
@@ -4813,9 +4919,23 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	Синт Мартен
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	Сајт
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Назив сајта/Веза за преузимање/Родитељска веб страница/Реферер
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	Правила за сајтове
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	Правила за сајтове...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4823,6 +4943,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	Сајт/путања:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	Сајт:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4842,7 +4966,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	непозната величина
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	Величина:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -5040,7 +5164,7 @@
 #. column title: the download's state
 #, machine
 	Status	Статус
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	Статус:
@@ -5188,10 +5312,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	Танзанија
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Задаци → Преузимач веза или „Преузми све везе“ у прегледачу: томови\nподељене архиве су један пакет, а остале везе на страници други.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Реците пријатељу
@@ -5515,6 +5635,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	мрежни адаптер {adapter} није повезан
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	Број веза мора бити од 1 до {max}
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5717,6 +5841,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	Ажурирање је отворено у инсталатеру пакета вашег система.
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	User-Agent садржи знак који заглавље не може да садржи
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Веб страница са које је ова датотека добијена:
@@ -5879,6 +6007,7 @@
 	This name is reserved by Windows	Овај назив је резервисао Windows
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5900,6 +6029,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	овај програм није {name}
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	Овај прокси:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5929,7 +6062,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	Овом торенту је потребна дозвола за коришћење „{file}“ пре него што може да почне.
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	Овај торент дели своју одредишну фасциклу
@@ -6183,6 +6316,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Унесите број у поља „Од“ и „До“
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	Унесите сајт, на пример example.com или *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -6199,6 +6336,10 @@
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
 	Type the name the server's certificate shows.	Унесите назив наведен у сертификату сервера.
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	Унесите прокси као хост:порт, http://хост:порт или socks5://хост:порт
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -6291,6 +6432,11 @@
 #, machine
 	Update now	Ажурирај сада
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	Ажурирајте {name}
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	Ажурира их корисник
@@ -6313,6 +6459,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Користи напредну интеграцију прегледача
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	Користите други програм као JavaScript окружење за извршавање...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	Користите други програм за {name}...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -6331,10 +6488,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Користи FTP у PASV режиму
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	Користи MDM-ову сопствену копију
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	Користите MDM-ову копију програма {name}
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6383,8 +6546,20 @@
 #, machine
 	User names and passwords for servers/sites	Корисничка имена и лозинке за сервере/сајтове
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	Кориснички агент
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	User-Agent за ручно додата преузимања:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	Кориснички агент, заглавља и везе по сајту
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	Кориснички агент:
 #. text in the Options window
 #, machine
 	User:	Корисник:
@@ -6636,7 +6811,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	Јемен
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	Да
 #. button in helpers.rs
@@ -6841,14 +7016,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	Није могуће прочитати датотеку {file} ради провере
-#. text in relocate.rs
-#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
-#, machine
-	{file} is already there	{file} је већ тамо
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
 	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	Датотеку {file} није било могуће заменити: можда је отворена у другом програму. Ново преузимање је сачувано поред ње под називом {new}, а обе датотеке су задржане.
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} је већ тамо
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Датотека {file} више није на месту на ком је сачувана (премештена је или избрисана). Опција Поново преузми у контекстном менију датотеке преузима је поново.
@@ -7197,7 +7372,7 @@ column	Peers	Вршњаци
 #. column title: one letter for Queue (the column is narrow)
 #, machine
 column	Q	Р
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	Ред
@@ -7449,10 +7624,6 @@ extension	Downloads from {site} stay with the browser	Преузимања са 
 #. the toolbar button's status while downloads go to another MDM
 #, machine
 extension	Downloads go to {address}	Преузимања иду на {address}
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	Превуците тачкице да бисте померили дугме дуж ивице
 #. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine

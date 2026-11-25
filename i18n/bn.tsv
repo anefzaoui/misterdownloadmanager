@@ -111,7 +111,7 @@
 #. the summary of downloads added together; after "12 downloads finished": {n} of them failed
 #. {n} = a number (keep the braces as they are)
 @plural	{n} failed|{n} failed	{n}টি ব্যর্থ হয়েছে|{n}টি ব্যর্থ হয়েছে
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs
+#. count in the main window; count in the Batch download window; count in a dialog box; count in the Link grabber window; count in the Add torrent window; count in torrentfiles.rs; count in zippreview.rs
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
@@ -511,7 +511,7 @@
 #. text in remote.rs
 #. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
 	Address or magnet link	ঠিকানা বা ম্যাগনেট লিংক
-#. text in the Options window; text in a download's Properties window
+#. text in the Options window; text in preview.rs; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	ঠিকানা:
@@ -597,6 +597,10 @@
 #. Link grabber, a link's status: the remedy from the failure's sentence, for a site whose bot check lets only browsers through. The sentence, with the same advice, is the cell's hover tip
 #, machine
 	Alt+click the link	লিংকটিতে Alt+ক্লিক করুন
+#. text in requestedit.rs
+#. Site rule: check box; on, MDM connects the way a browser does from the first request to these sites, instead of only after a site turned it away ("this site lets only browsers through")
+#, machine
+	Always connect the way a browser does	ব্রাউজারের মতো করে সবসময় সংযোগ করুন
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -620,6 +624,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Andorra	অ্যান্ডোরা
+#. text in a dialog box
+#. why the phone could not be turned off after the queue (fills {error}, Android)
+#, machine
+	Android doesn't let apps turn the phone off	Android অ্যাপগুলোকে ফোন বন্ধ করতে দেয় না
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -645,6 +653,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
 	Another program has set the computer's wake alarm	অন্য একটি প্রোগ্রাম কম্পিউটারের ওয়েক অ্যালার্ম সেট করেছে
+#. text in the Options window
+#. Site rule: OK with a site another rule already has
+#, machine
+	Another rule is for this site already: change that one	এই সাইটের জন্য ইতোমধ্যে অন্য একটি নিয়ম আছে: সেটি পরিবর্তন করুন
 #. text in the Options window
 #. Options → Proxy / Socks: Test's answer; {ms} milliseconds; {ip} the internet address the site saw (the proxy's, or this computer's without one)
 #, machine
@@ -711,6 +723,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Aruba	আরুবা
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy set in Options → Proxy / Socks
+#, machine
+	As in Options	বিকল্প-এর মতো
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	সিস্টেমের অঞ্চল যেভাবে লেখে
@@ -865,6 +881,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Browse...	ব্রাউজ করুন...
+#. text in the Options window
+#. Site rules: column title: "Yes" when the rule asks the way a browser connects from the first request
+#, machine
+	Browser	ব্রাউজার
 #. text in extension.rs
 #, machine
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	এই কম্পিউটারে ব্রাউজার ইন্টিগ্রেশন সেট আপ করা হয়নি, তাই কোনো ব্রাউজার এখনও Mister Download Manager-এ পৌঁছাতে পারবে না।
@@ -920,7 +940,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	কানাডা
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in traypanel.rs; button in the Download video window; text in zippreview.rs
 #. button: stop downloading the update
 #, machine
 	Cancel	বাতিল করুন
@@ -1081,6 +1101,7 @@
 #, machine
 	Choose a font file	একটি ফন্ট ফাইল নির্বাচন করুন
 #. text in helpers.rs
+#. file picker title: choose a JavaScript runtime's program (node.exe, deno.exe, qjs.exe, bun.exe)
 #, machine
 	Choose a JavaScript runtime (Node.js, Deno, QuickJS or Bun)	একটি জাভাস্ক্রিপ্ট রানটাইম বেছে নিন (Node.js, Deno, QuickJS অথবা Bun)
 #. text in langpick.rs
@@ -1096,6 +1117,7 @@
 #, machine
 	Choose the profile's folder	প্রোফাইলের ফোল্ডারটি বেছে নিন
 #. text in helpers.rs; text in the Options window
+#. file picker title; {name} = yt-dlp or ffmpeg
 #. file picker title; {name} = the program to choose (yt-dlp, ffmpeg, 7-Zip)
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1208,6 +1230,23 @@
 #. tab title: connection settings
 #, machine
 	Connection	সংযোগ
+#. text in a download's Properties window
+#. window title: a download's own request settings (User-Agent, headers, connections, proxy), from File Properties → Connection...
+#, machine
+	Connection settings	সংযোগ সেটিংস
+#. message or event log entry in the main window
+#. event log: File Properties → Connection settings changed the download's own User-Agent, headers, proxy or connections
+#, machine
+	Connection settings changed	সংযোগ সেটিংস পরিবর্তন করা হয়েছে
+#. text in a download's Properties window
+#. File Properties button: opens the download's own request settings (User-Agent, headers, connections, proxy)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Connection...	সংযোগ...
+#. text in the Options window
+#. Site rules: column title: the number of connections (empty: the default)
+#, machine
+	Connections	সংযোগ
 #. page title in the Options window
 #, machine
 	Connections and Limits	সংযোগ এবং সীমা
@@ -1648,6 +1687,10 @@
 #. the notice shown once, the first time a download comes from a browser's private (incognito) window: it stays in MDM's list like any other, after a restart too; where to turn that off. {options} = the Options window, {general} = its General tab, {checkbox} = the checkbox "Keep private-window downloads in the list"
 #, machine
 	Downloads from a browser's private window stay in MDM's list like any other, also after MDM restarts; their cookies are never saved. To keep them in memory only, untick {options} → {general} → {checkbox}.	ব্রাউজারের প্রাইভেট উইন্ডো থেকে ডাউনলোডগুলো MDM-এর তালিকায় অন্য ডাউনলোডগুলোর মতোই থাকে, MDM পুনরায় চালু হওয়ার পরেও; সেগুলোর কুকিজ কখনো সংরক্ষণ করা হয় না। সেগুলোকে শুধু মেমরিতে রাখতে, {options} → {general} → {checkbox}-এর টিক তুলে দিন।
+#. text in the Options window
+#. Site rules window: how the rules apply; *.example.com stays as it is
+#, machine
+	Downloads from these sites get these settings. Each one comes from the first rule in the list that names the site and sets it; * stands for any text: *.example.com	এই সাইটগুলো থেকে ডাউনলোডগুলো এই সেটিংস পাবে। প্রতিটি তালিকা থেকে প্রথম নিয়ম থেকে আসে যা সাইটটির নাম দেয় এবং এটি সেট করে; * যেকোনো টেক্সটের জন্য: *.example.com
 #. text in the tray icon's menu; text in traypanel.rs
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #. the notification-area icon's panel (#1365): its title, over the downloads now running (also the tray menu's submenu)
@@ -1713,6 +1756,10 @@
 #. text in the Options window
 #, machine
 	Edit login	লগইন সম্পাদনা করুন
+#. text in the Options window
+#. window title: changing one site rule
+#, machine
+	Edit site rule	সাইট নিয়ম সম্পাদনা করুন
 #. button in the Options window
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
@@ -1729,12 +1776,16 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ইমেল
-#. text in the Download video window
+#. checkbox in the Download video window; text in the Download video window
 #. checkbox in Download video: the chapters a video's page lists (YouTube's, for one) go into the video file, where players show them and skip between them
 	Embed chapters	অধ্যায়গুলো এম্বেড করুন
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 	Empty: all of them. On most sites the newest come first.	খালি: সবগুলো। বেশিরভাগ সাইটে নতুনগুলো প্রথমে আসে।
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the hint under the User-Agent box
+#, machine
+	Empty: the browser's, or the one set in Options	খালি: ব্রাউজারের, অথবা বিকল্প-এ সেট করা
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -1807,6 +1858,10 @@
 #. choice in Download video's Part: the part is encoded again so it starts and ends exactly at From and To (slower)
 #, machine
 	Exact cut, encoded again	সঠিক কাট, আবার এনকোড করা হয়েছে
+#. text in the Options window
+#. Site rule: the hint under the site box; the examples stay as they are
+#, machine
+	example.com, or *.example.com for its subdomains	example.com, অথবা এর সাবডোমেইনগুলোর জন্য *.example.com
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1901,7 +1956,7 @@
 #. RSS feeds window, Download rules: the feeds the rule watches
 	Feeds:	ফিডগুলো:
 #. text in the Add torrent window
-#. Torrent settings, at the bottom
+#. Torrent settings, under the blocklist's address
 	Fetched again every 7 days. Changes apply when no torrent is running.	প্রতি 7 দিনে আবার আনা হয়। কোনো টরেন্ট না চললে পরিবর্তনগুলো প্রযোজ্য হবে।
 #. text in the Add torrent window
 #. Torrent settings, under the public tracker list's address
@@ -1925,7 +1980,8 @@
 #. text in the Options window
 #. tooltip of "Mark downloaded files as coming from the internet" on Linux
 	File managers show where the files marked this way came from. Unticked, no download is marked.	ফাইল ম্যানেজারগুলো এভাবে চিহ্নিত ফাইলগুলো কোথা থেকে এসেছে তা দেখায়। টিক চিহ্ন না থাকলে, কোনো ডাউনলোড চিহ্নিত করা হয় না।
-#. text in the Scheduler window
+#. text in a download's progress window; text in the Scheduler window
+#. Zip preview's column: the file's name (its path inside the ZIP)
 #, machine
 	File Name	ফাইলের নাম
 #. text in the Download video window
@@ -2231,6 +2287,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Go back to {version}	{version}-এ ফিরে যান
+#. text in helpers.rs
+#. Helpers: the "Go back" button's name for a screen reader; {version} = the earlier version, {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {version} = a version number; {name} = a file name (keep the braces as they are)
+#, machine
+	Go back to {version} of {name}	{name}-এর {version}-এ ফিরে যান
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	ডাউনলোড শেষ হওয়ার পরেও চলতে থাকে
@@ -2291,6 +2352,10 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	আছে
+#. text in the Options window
+#. Site rules: column title: how many request headers the rule adds
+#, machine
+	Headers	হেডার
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2441,11 +2506,11 @@
 #. in the "7-Zip needed" window, under why
 #, machine
 	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (বিনামূল্যে) ইনস্টল করুন, তারপর ডাউনলোডে ডান-ক্লিক করে এক্সট্র্যাক্ট নির্বাচন করুন।
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ইনস্টল করুন
-#. button in gallerydlg.rs
+#. button in gallerydlg.rs; text in helpers.rs
 #. button: download and install the gallery-dl program
 #, machine
 	Install gallery-dl	gallery-dl ইনস্টল করুন
@@ -2453,7 +2518,7 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	ম্যানুয়ালি ইনস্টল করুন
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button in Download video: download and install Node.js, the JavaScript runtime YouTube needs (Node.js is a program's name)
 #, machine
 	Install Node.js	Node.js ইনস্টল করুন
@@ -2465,7 +2530,7 @@
 #. in the "7-Zip needed" window, under why (Linux: 7-Zip comes from the distribution's packages, named 7zip or p7zip)
 #, machine
 	Install your system's 7zip (or p7zip) package, then right-click the download and choose Extract.	আপনার সিস্টেমের 7zip (বা p7zip) প্যাকেজ ইনস্টল করুন, তারপর ডাউনলোডটিতে ডান-ক্লিক করে এক্সট্র্যাক্ট বেছে নিন।
-#. text in the Download video window
+#. text in helpers.rs; text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ইনস্টল করুন
@@ -2744,6 +2809,23 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 	Limit uploading for all torrents to	সব টরেন্টের জন্য আপলোড সীমিত করুন
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's name has a space or another character names can't have; {line} is the line's number
+#, machine
+	Line {line}: a header's name has letters, digits and dashes only	লাইন {line}: একটি হেডারের নামে শুধুমাত্র অক্ষর, সংখ্যা এবং ড্যাশ থাকতে পারে
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header MDM sets itself for each request (Range, Host…) can't be typed; {line} is the line's number, {name} the header's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Line {line}: Mister Download Manager sets {name} itself	লাইন {line}: Mister Download Manager নিজেই {name} সেট করে
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a header's value (or the User-Agent) holds a control character; {line} is the line's number
+#, machine
+	Line {line}: the value has a character a header can't hold	লাইন {line}: মানের মধ্যে এমন একটি অক্ষর আছে যা একটি হেডারে থাকতে পারে না
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: a line of request headers isn't "Name: value"; {line} is its number
+#, machine
+	Line {line}: write a header as Name: value	লাইন {line}: একটি হেডারকে Name: value হিসেবে লিখুন
 #. message or event log entry in the main window; window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 	Link grabber	লিংক গ্র্যাবার
@@ -3180,7 +3262,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the toolbar, the categories and the download list	টুলবার, শ্রেণি এবং ডাউনলোড তালিকার মধ্যে সরান
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the end of the list
 #, machine
 	Move down	নিচে সরান
 #. text in a dialog box
@@ -3194,7 +3277,9 @@
 	Move to folder	ফোল্ডারে সরান
 #. message or event log entry in the main window
 	Move to queue	সারিতে সরান
-#. text in the Scheduler window
+#. text in a dialog box; text in the Scheduler window
+#. button in the Columns dialog: move the selected column one place towards the start of the list
+#. tooltip of an icon button in the Scheduler's list of files
 #, machine
 	Move up	উপরে সরান
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -3328,6 +3413,10 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	নতুন নিয়ম
+#. text in the Options window
+#. window title: adding a site rule
+#, machine
+	New site rule	নতুন সাইট নিয়ম
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3436,6 +3525,10 @@
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	এখনও কোনো পিয়ার নেই। খুব কম লোক এই টরেন্টটি শেয়ার করে থাকতে পারে, অথবা ফায়ারওয়াল, VPN বা নেটওয়ার্ক BitTorrent ব্লক করতে পারে।
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: straight to the server, no proxy
+#, machine
+	No proxy	কোনো প্রক্সি নেই
 #. text in the Options window
 #, machine
 	No proxy/socks	কোনো প্রক্সি/SOCKS নেই
@@ -3567,6 +3660,10 @@
 #. text in the Options window
 #, machine
 	Number	সংখ্যা
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: check box before the number box; unticked, the number set in Options → Connection applies
+#, machine
+	Number of connections:	সংযোগের সংখ্যা:
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	ডাউনলোড ব্যর্থ হলে প্রতিটি ফাইলের জন্য পুনরায় চেষ্টার সংখ্যা:
@@ -3601,7 +3698,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	অফলাইন ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; text in zippreview.rs
 #, machine
 	OK	ঠিক আছে
 #. text in countries.rs
@@ -3655,12 +3752,6 @@
 #. Options → Archives → Link grabber: the hover tip of the types box in "Folders: {depth} levels deep, types: {types}": only a folder's files of these types go into Link grabber; written as the File types page writes them
 #, machine
 	Only a folder's files of these types, written as on the File types page (ISO ZIP R0*). Empty: every type.	শুধুমাত্র এই ধরনের ফোল্ডারের ফাইলগুলো, ফাইল টাইপস পেজে যেমন লেখা আছে (ISO ZIP R0*)। খালি: সব ধরন।
-#. text in a download's Properties window
-#. tooltip of the greyed Move button in File Properties
-#, machine
-	Only a finished download, or one not started yet, can be moved	শুধুমাত্র একটি সম্পূর্ণ ডাউনলোড, অথবা যেটি এখনো শুরু হয়নি, সেটি সরানো যেতে পারে
-#. message or event log entry in the main window
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	শুধুমাত্র একটি সম্পূর্ণ ডাউনলোড, অথবা যেটি এখনো শুরু হয়নি, সেটি সরানো যেতে পারে। প্রথমে এটি থামান এবং শেষ করুন।
 #. text in the Download video window
 #. checkbox in Download video: download only a part of the video or sound; the From and To boxes follow it
 #, machine
@@ -3852,9 +3943,13 @@
 #. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	বিরতি দিন
-#. text in a download's Properties window
+#. text in the download list (sizes, speeds, status)
 #. tooltip of the greyed Move button in File Properties
 	Pause the download first	প্রথমে ডাউনলোডটি বিরতি দিন
+#. tooltip (why a control is greyed) in a download's Properties window
+#. tooltip of File Properties' greyed Connection... button while the download runs
+#, machine
+	Pause the download to change how it connects	ডাউনলোডটি বিরতি দিন যাতে আপনি এটি কীভাবে সংযোগ করে তা পরিবর্তন করতে পারেন
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 	Paused	বিরতি দেওয়া হয়েছে
@@ -3927,8 +4022,8 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Press keys...	কী চাপুন...
-#. button in a dialog box
-#. verb: open the part already downloaded
+#. button in a dialog box; text in a dialog box
+#. verb: Download File Info's button; for a ZIP, it lists the files inside it to pick those to download (#1775)
 	Preview	প্রিভিউ দেখুন
 #. text in a dialog box
 #. tooltip of the greyed Preview button in Download File Info
@@ -3967,6 +4062,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	প্রক্সি সার্ভারের ঠিকানা
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the proxy choice
+#, machine
+	Proxy:	প্রক্সি:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4135,7 +4234,11 @@
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
 	Replace asterisk to	তারকাচিহ্ন প্রতিস্থাপন করুন
-#. button in a dialog box
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label above the box of request headers, one a line ("X-Token: abc")
+#, machine
+	Request headers, one a line (Name: value):	অনুরোধ হেডার, প্রতি লাইনে একটি (Name: value):
+#. text in a dialog box
 #. button in the Columns dialog: put the columns back as they first were (order, widths, all shown)
 #, machine
 	Reset	রিসেট করুন
@@ -4256,7 +4359,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Save To...	এতে সংরক্ষণ করুন...
-#. text in a download's progress window; text in a download's Properties window
+#. text in preview.rs; text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	এতে সংরক্ষণ করুন:
 #. text in the Batch download window; text in the Link grabber window; text in rssdlg.rs
@@ -4294,7 +4397,7 @@
 #. the preview pane when no download is selected, under its title
 #, machine
 	Select a download to see its picture and details here.	এর ছবি ও বিস্তারিত দেখতে একটি ডাউনলোড নির্বাচন করুন।
-#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs
+#. button in playlistdlg.rs; button in the Add torrent window; text in torrentfiles.rs; text in zippreview.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	সব নির্বাচন করুন
@@ -4499,6 +4602,10 @@
 #, machine
 	Sign in in the browser	ব্রাউজারে সাইন ইন করুন
 #. text in the Options window
+#. Options → Accounts (Android): where the debrid accounts' sign-ins and the other passwords are kept (encrypted with a key held by Android's keystore)
+#, machine
+	Sign-ins and passwords are kept encrypted with a key in Android's keystore.	সাইন-ইন এবং পাসওয়ার্ডগুলো Android-এর কীস্টোরে একটি কী দিয়ে এনক্রিপ্ট করে রাখা হয়।
+#. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 	Sign-ins and passwords are kept in the macOS keychain.	সাইন-ইন এবং পাসওয়ার্ডগুলো macOS কীচেইনে রাখা হয়েছে।
 #. text in the Options window
@@ -4547,8 +4654,22 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sint Maarten	সিন্ট মার্টেন
+#. text in the Options window
+#. Site rules: column title: the site pattern
+#, machine
+	Site	সাইট
 #. checkbox in the Find window
 	Site name/Download link/Parent web page/Referer	সাইটের নাম/ডাউনলোড লিংক/মূল ওয়েব পেজ/রেফারার
+#. window title in the Options window; text in the Options window
+#. window title: per-site settings (User-Agent, headers, connections, the browser-like connection) by site pattern
+#. Site rules window: the list's name for screen readers
+#, machine
+	Site rules	সাইট নিয়ম
+#. text in the Options window
+#. Options → Connection: button: opens the per-site settings (User-Agent, headers, connections)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Site rules...	সাইট নিয়ম...
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -4556,6 +4677,10 @@
 #. text in the Options window
 #, machine
 	Site/path:	সাইট/পাথ:
+#. text in the Options window
+#. Site rule: label before the site pattern box (example.com, *.example.com)
+#, machine
+	Site:	সাইট:
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
@@ -4575,7 +4700,7 @@
 #. the video's file size is not known
 #, machine
 	size unknown	আকার অজানা
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #, machine
 	Size:	আকার:
 #. text in a download's progress window; text in torrentfiles.rs
@@ -4763,7 +4888,7 @@
 #. column title: the download's state
 #, machine
 	Status	স্ট্যাটাস
-#. text in a download's Properties window
+#. text in preview.rs; text in a download's Properties window
 #. label before the download's state
 #, machine
 	Status:	স্ট্যাটাস:
@@ -4896,9 +5021,6 @@
 #. a country's name (where a download's server is)
 #, machine
 	Tanzania	তানজানিয়া
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	টাস্ক → লিংক গ্র্যাবার, অথবা ব্রাউজারের "সব লিংক ডাউনলোড করুন": একটি বিভক্ত\nআর্কাইভের ভলিউমগুলো একটি প্যাকেজ, আর পেজের অন্যান্য লিংকগুলো আরেকটি।
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	একজন বন্ধুকে বলুন
@@ -5201,6 +5323,10 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	নেটওয়ার্ক অ্যাডাপ্টার {adapter} সংযুক্ত নয়
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the number of connections typed is out of range; {max} is 32 (or 128)
+#, machine
+	The number of connections must be from 1 to {max}	সংযোগের সংখ্যা 1 থেকে {max} এর মধ্যে হতে হবে
 #. text in torrent_ownership.rs
 #. error when a torrent's output folder path cannot be used
 #, machine
@@ -5392,6 +5518,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	আপডেটটি আপনার সিস্টেমের প্যাকেজ ইনস্টলারে খোলা আছে।
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: the User-Agent typed holds a control character
+#, machine
+	The User-Agent has a character a header can't hold	User-Agent-এ এমন একটি অক্ষর আছে যা একটি হেডারে থাকতে পারে না
 #. text in a download's Properties window
 	The web page from which this file was obtained:	যে ওয়েব পেজ থেকে এই ফাইলটি পাওয়া গেছে:
 #. text in errors.rs
@@ -5541,6 +5671,7 @@
 	This name is reserved by Windows	এই নামটি Windows নিজের জন্য রেখেছে
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Embed chapters" is greyed: ffmpeg (a helper program) is not installed
+#. why "Split into chapters" is greyed: ffmpeg (a helper program) is not installed
 #. why Part is greyed in Download video: ffmpeg (a helper program) is not installed
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -5561,6 +5692,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this program isn't {name}	এটি {name} প্রোগ্রাম নয়
+#. text in requestedit.rs
+#. a download's Connection settings → Proxy: the proxy typed in the box beside
+#, machine
+	This proxy:	এই প্রক্সি:
 #. text in the Options window
 #. Options → General: shown when the chosen global shortcut is already registered by another program (#558)
 #, machine
@@ -5587,7 +5722,7 @@
 #. torrent start needs explicit write permission; {file} is the first existing file without a matching grant
 #, machine
 	This torrent needs permission to use {file} before it can start.	এই টরেন্ট শুরু করার আগে {file} ব্যবহার করার অনুমতি প্রয়োজন।
-#. message or event log entry in the main window; text in a download's Properties window
+#. message or event log entry in the main window; text in the download list (sizes, speeds, status)
 #. shown when Move or Rename is refused: a torrent saved straight in Save to shares that folder with other files
 #, machine
 	This torrent shares its destination folder	এই টরেন্টটি তার গন্তব্য ফোল্ডার শেয়ার করে
@@ -5831,6 +5966,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	শুরু এবং শেষ ঘরে একটি করে সংখ্যা লিখুন
+#. text in the Options window
+#. Site rule: OK with no site, or one with a space in it
+#, machine
+	Type a site, such as example.com or *.example.com	একটি সাইট টাইপ করুন, যেমন example.com অথবা *.example.com
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -5844,6 +5983,10 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 	Type the name the server's certificate shows.	সার্ভারের শংসাপত্র যে নামটি দেখায় সেটি টাইপ করুন।
+#. text in requestedit.rs
+#. a download's Connection settings: the proxy typed isn't an address MDM takes; the examples stay as they are
+#, machine
+	Type the proxy as host:port, http://host:port or socks5://host:port	প্রক্সিটিকে host:port, http://host:port অথবা socks5://host:port হিসেবে টাইপ করুন
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -5936,6 +6079,11 @@
 #, machine
 	Update now	এখনই আপডেট করুন
 #. text in helpers.rs
+#. Helpers: the Update button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl, Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Update {name}	{name} আপডেট করুন
+#. text in helpers.rs
 #. Helpers: a program the person chose, or the system's copy: MDM doesn't update it, the person (or their package manager) does
 #, machine
 	Updated by you	আপনার দ্বারা আপডেট করা হয়েছে
@@ -5957,6 +6105,17 @@
 #. text in the Options window
 #, machine
 	Use advanced browser integration	উন্নত ব্রাউজার ইন্টিগ্রেশন ব্যবহার করুন
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader, on the JavaScript runtime's row (Node.js, Deno, QuickJS or Bun)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program as the JavaScript runtime...	JavaScript রানটাইম হিসেবে অন্য একটি প্রোগ্রাম ব্যবহার করুন...
+#. text in helpers.rs
+#. Helpers: the "Use another program..." button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. {name} = a file name (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Use another program for {name}...	{name}-এর জন্য অন্য একটি প্রোগ্রাম ব্যবহার করুন...
 #. text in errors.rs; button in helpers.rs; text in the Options window
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. Options → Archives: button: pick the 7-Zip command line program to extract 7z and RAR archives with (PeaZip's own 7z.exe, a portable copy), instead of the one MDM finds
@@ -5975,10 +6134,16 @@
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	PASV মোডে FTP ব্যবহার করুন
-#. button in helpers.rs
+#. text in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
 	Use MDM's own copy	MDM-এর নিজস্ব কপি ব্যবহার করুন
+#. text in helpers.rs
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (yt-dlp, ffmpeg, gallery-dl)
+#. Helpers: the "Use MDM's own copy" button's name for a screen reader; {name} = the helper (Node.js)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Use MDM's own copy of {name}	MDM-এর নিজস্ব {name}-এর কপি ব্যবহার করুন
 #. checkbox in the Options window
 #. Options → Sites Logins: checkbox under Cookies for video sites: yt-dlp also reads the person's own yt-dlp config file
 #, machine
@@ -6024,8 +6189,20 @@
 #. page title in the Options window; text in the Options window
 	User names and passwords for servers/sites	সার্ভার/সাইটগুলোর জন্য ব্যবহারকারীর নাম এবং পাসওয়ার্ড
 #. text in the Options window
+#. Site rules: column title: the User-Agent the rule sends (the name a browser or program gives itself to sites)
+#, machine
+	User-Agent	ইউজার-এজেন্ট
+#. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	ম্যানুয়ালি যোগ করা ডাউনলোডের জন্য ইউজার-এজেন্ট:
+#. text in the Options window
+#. Options → Connection: beside the Site rules... button: what it sets
+#, machine
+	User-Agent, headers and connections by site	সাইট অনুযায়ী ইউজার-এজেন্ট, হেডার এবং সংযোগ
+#. text in requestedit.rs
+#. Site rule / a download's Connection settings: label before the User-Agent box (the name the browser or program gives itself to sites)
+#, machine
+	User-Agent:	ইউজার-এজেন্ট:
 #. text in the Options window
 #, machine
 	User:	ব্যবহারকারী:
@@ -6264,7 +6441,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Yemen	ইয়েমেন
-#. button in a dialog box; text in a download's progress window
+#. button in a dialog box; text in the Options window; text in a download's progress window
 #, machine
 	Yes	হ্যাঁ
 #. button in helpers.rs
@@ -6459,14 +6636,14 @@
 #. text in the Checksum window
 #, machine
 	{file} could not be read to check it	যাচাই করার জন্য {file} পড়া যায়নি
-#. text in relocate.rs
-#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
-#, machine
-	{file} is already there	{file} ইতোমধ্যে সেখানে আছে
 #. message or event log entry in the main window
 #. a message after a download (Redownload) was to replace the file it had: {file} = that file's name, still there; {new} = the name the new copy was saved under, in the same folder
 #, machine
 	{file} could not be replaced: another program may have it open. The new download is saved beside it as {new}, and both files are kept.	{file} প্রতিস্থাপন করা যায়নি: অন্য কোনো প্রোগ্রাম এটি খুলে রাখতে পারে। নতুন ডাউনলোডটি এর পাশে {new} হিসেবে সংরক্ষণ করা হয়েছে এবং উভয় ফাইলই রাখা হয়েছে।
+#. text in relocate.rs
+#. why a download could not be moved (after "The file could not be moved: "): a file of that name came into the new folder meanwhile; {file} is its name
+#, machine
+	{file} is already there	{file} ইতোমধ্যে সেখানে আছে
 #. text in a dialog box
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} যেখানে সংরক্ষণ করা হয়েছিল সেখানে আর নেই (সরানো বা মুছে ফেলা হয়েছে)। ডান-ক্লিক মেনুর “আবার ডাউনলোড করুন” দিয়ে এটি আবার পাবেন।
 #. message or event log entry in the main window
@@ -6795,7 +6972,7 @@ column	Peers	পিয়ার
 #. column title in the download list in the download list
 #. column title: one letter for Queue (the column is narrow)
 column	Q	সারি
-#. column title in the main window; column title in the download list
+#. column title in the main window; column title in a dialog box; column title in the download list
 #. tooltip of the narrow "Q" column's title
 #, machine
 column	Queue	সারি
@@ -7035,10 +7212,6 @@ extension	Downloads from {site} stay with the browser	{site} থেকে ডা
 #. text in the browser extension
 #. the toolbar button's status while downloads go to another MDM
 extension	Downloads go to {address}	ডাউনলোডগুলো {address}-এ যায়
-#. text in the browser extension
-#. second line of the tooltip of the download button over a video: dragging its dotted grip moves it along the video's edge
-#, machine
-extension	Drag the dots to move it along the edge	প্রান্ত বরাবর সরাতে বিন্দুগুলো টেনে আনুন
 #. text in the browser extension
 #. second line of the tooltip of the download button over a video: dragging its dotted grip moves it to another corner or edge of the video, or outside the video next to it
 #, machine
