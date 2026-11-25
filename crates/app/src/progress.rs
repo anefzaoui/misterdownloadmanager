@@ -363,6 +363,10 @@ pub struct Progress {
 pub enum Action {
     None,
     Pause,
+    /// Stop and keep (#1780): an endless stream's button ends it and keeps what arrived as its
+    /// finished file (`App::keep_by_hand`). The only way to keep one: every other stop keeps
+    /// nothing, as for any download a server can't resume.
+    Keep,
     Resume,
     /// Stop the download and close the dialog.
     Cancel,
@@ -893,11 +897,7 @@ impl Progress {
         )
         .clicked()
         {
-            action = if running {
-                Action::Pause
-            } else {
-                Action::Resume
-            };
+            action = pause_action(running, live, endless);
         }
         if winui::button(
             ui,
@@ -2413,9 +2413,23 @@ fn segment_bar(p: &egui::Painter, o: Pos2, item: &Item, segments: &[(u64, f64)])
     }
 }
 
+/// What the Pause button does (`pause_button` says it): resume a stopped download, keep an
+/// endless stream (#1780, its only way to be kept), else pause (a live recording is saved by
+/// the app's `halt`).
+fn pause_action(running: bool, live: Option<mdm_tools::video::LiveState>, endless: bool) -> Action {
+    if !running {
+        Action::Resume
+    } else if endless && live.is_none() {
+        Action::Keep
+    } else {
+        Action::Pause
+    }
+}
+
 /// The Pause button's label and kind: a live stream being recorded is stopped and saved (still
 /// `Action::Pause`, the app's `halt` saves it), and while it is saved the button waits. An
-/// endless stream (`Item::endless`, #1780) is stopped and kept the same way.
+/// endless stream (`Item::endless`, #1780) is stopped and kept (`Action::Keep`): only by this
+/// button, its other stops keep nothing.
 pub(crate) fn pause_button(
     status: Status,
     live: Option<mdm_tools::video::LiveState>,
@@ -2732,6 +2746,24 @@ mod tests {
         }
         assert!(!pause_labels(false, false).contains(&"Stop and keep"));
         assert!(!pause_labels(true, false).contains(&"Stop and keep"));
+    }
+
+    /// The button keeps only an endless stream it shows "Stop and keep" for (the app's
+    /// `keep_by_hand`); every other running download pauses (a recording saves), a stopped one
+    /// resumes.
+    #[test]
+    fn only_an_endless_streams_button_keeps_it() {
+        use mdm_tools::video::LiveState;
+        assert!(matches!(pause_action(true, None, true), Action::Keep));
+        assert!(matches!(pause_action(true, None, false), Action::Pause));
+        let recording = Some(LiveState::Recording);
+        assert!(matches!(
+            pause_action(true, recording, false),
+            Action::Pause
+        ));
+        for endless in [false, true] {
+            assert!(matches!(pause_action(false, None, endless), Action::Resume));
+        }
     }
 
     /// A live stream's status says it is saved, else that it records, before anything else

@@ -580,9 +580,9 @@ These ship in the next version.
   kept under the download folder; never above the folder or onto another site
   ([#1774](https://github.com/anefzaoui/misterdownloadmanager/issues/1774))
 - ✅ **Stop and keep** for a download that never ends (an internet radio, a camera feed: no size,
-  no resume): the progress window's pause button, Stop, Stop All, a queue's stop and the phone
-  page's pause end it and keep what arrived as the finished file; Cancel keeps nothing, and every
-  other download pauses as before
+  no resume): the progress window's pause button ends it and keeps what arrived as the finished
+  file; Stop, Stop All, a queue's stop, the tray panel, the phone page's pause and Cancel keep
+  nothing (the button is the only way), and every other download pauses as before
   ([#1780](https://github.com/anefzaoui/misterdownloadmanager/issues/1780))
 - ✅ The browser add-on finds all the images on a page when asked (**This page → Find images**),
   at the largest size listed, filtered by size and type, and sends them to Link grabber;

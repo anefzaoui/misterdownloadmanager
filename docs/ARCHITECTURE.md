@@ -50,9 +50,9 @@ place; the file's date can follow the server's.
 
 An answer with no size and no ranges goes on one connection, written in order (`single_stream`),
 and may never end (an internet radio, a camera feed: `Snapshot::endless`). `Download::keep` ends
-it where it is, and what arrived is finished as if the server had ended it there (#1780); the
-app's stops by hand call it (`Job::save`), as they save a live recording, and Cancel still
-cancels.
+it where it is, and what arrived is finished as if the server had ended it there (#1780); only
+the progress window's Stop and keep calls it (`App::keep_by_hand`, `Job::keep`). Every other
+stop cancels it, as any download a server can't resume.
 
 A finished file whose archive test found damage it could place (a ZIP's entries, #1661: the app's
 `archtest.rs`) is made a part file again (`repair.rs`): its last resume state, handed back by a

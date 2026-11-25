@@ -269,7 +269,7 @@ On Linux this needs a tray, which most desktops have (KDE Plasma, Xfce, Cinnamon
 ![MDM's icon in the top bar of Ubuntu's GNOME, its menu open: Open Mister Download Manager, Add new download, Add batch download, Downloads in progress, Speed Limiter, Scheduler, the main queue, Options and Exit](images/tray-linux.webp)
 *The tray icon's menu on Ubuntu's GNOME.*
 
-- Click the tray icon to see what is downloading: a small panel over the icon lists each running download with its progress bar, how much has come of how much, its speed and the time left, and the progress window's **Pause** (then **Resume**; **Stop and save** for a live stream being recorded, **Stop and keep** for a download that never ends by itself) and **Cancel** beside it. **Open Mister Download Manager** at its bottom brings the window back. Its **×**, **Esc**, a click elsewhere or another click on the icon closes it.
+- Click the tray icon to see what is downloading: a small panel over the icon lists each running download with its progress bar, how much has come of how much, its speed and the time left, and the progress window's **Pause** (then **Resume**; **Stop and save** for a live stream being recorded) and **Cancel** beside it. **Open Mister Download Manager** at its bottom brings the window back. Its **×**, **Esc**, a click elsewhere or another click on the icon closes it.
 - Double-click the tray icon to bring the window back straight away (Windows).
 - Right-click it for **Add new download**, **Add batch download**, **Downloads in progress**, **Speed Limiter**, **Scheduler**, the main download queue, **Options** and **Exit**.
 - **Downloads in progress** lists the running downloads. Choose one to see its progress window.

@@ -4795,18 +4795,28 @@ impl App {
 
     /// The user's Stop (or Pause): it stays stopped, even in a queue that is running (#341).
     fn stop_by_hand(&mut self, id: u64) {
-        self.halt(id);
+        self.halt(id, false);
+        self.stopped_by_hand.insert(id);
+    }
+
+    /// The progress window's Stop and keep (#1780): an endless stream (no length, no resume: an
+    /// internet radio, a camera feed) ends where it is and what arrived is its finished file
+    /// (`Job::keep`). The only stop that keeps one: Stop, Stop All, a queue's stop, the tray
+    /// panel's and the automation API's pause stop it as `stop_by_hand` does, keeping nothing, as
+    /// for any download its server can't resume. A download that isn't endless (any more) is
+    /// stopped as Pause stops it.
+    fn keep_by_hand(&mut self, id: u64) {
+        self.halt(id, true);
         self.stopped_by_hand.insert(id);
     }
 
     /// Stop, and not start again by itself for a network adapter, a speed limit or the
     /// download limit (#1164): the user's Stop, Stop All and a queue's stop. A live stream being
     /// recorded is stopped and saved (`Job::save`): what it recorded is kept as a video, the
-    /// download then done, as one that ended by itself. An endless stream (no length, no resume:
-    /// an internet radio, a camera feed, #1780) is stopped and kept the same way: what arrived
-    /// is its finished file. Cancel (`stop`) and MDM's own stops kill them as before (a later
-    /// start sets a recording aside, never over it; an endless stream starts over).
-    fn halt(&mut self, id: u64) {
+    /// download then done, as one that ended by itself. Cancel (`stop`) and MDM's own stops
+    /// kill it as before (a later start sets its recording aside, never over it). With `keep`
+    /// (`keep_by_hand`), an endless stream is kept instead (`Job::keep`).
+    fn halt(&mut self, id: u64, keep: bool) {
         // A video waiting for its place doesn't start.
         self.video_places.unwait(id);
         self.stop_healing(id);
@@ -4815,7 +4825,12 @@ impl App {
             let before = l.dl.live_state();
             // A kept stream whose file then can't be named is held as a recording is: a retry
             // would start it over in place of what arrived.
-            let kept = l.dl.save();
+            let kept = if keep {
+                l.dl.keep()
+            } else {
+                l.dl.save();
+                false
+            };
             if kept || halt_saved(before, l.dl.live_state()) {
                 self.saved_by_hand.insert(id);
             }
@@ -8722,7 +8737,7 @@ impl App {
     fn stop_queue(&mut self, q: usize) {
         self.queues[q].running = false;
         for id in self.queues[q].items.clone() {
-            self.halt(id);
+            self.halt(id, false);
         }
     }
 
@@ -14398,6 +14413,7 @@ impl App {
             match a {
                 progress::Action::None => {}
                 progress::Action::Pause => self.stop_by_hand(id),
+                progress::Action::Keep => self.keep_by_hand(id),
                 progress::Action::Resume => self.start(id, true),
                 progress::Action::Cancel => self.cancel_download(id),
                 progress::Action::Rename(name) => {
@@ -19463,5 +19479,144 @@ mod move_unfinished_tests {
                 .iter()
                 .any(|(_, l)| l.contains("cut short"))
         );
+    }
+}
+
+/// Stop and keep (#1780), end to end against the lab server: an endless stream (no length, no
+/// ranges) is kept as a finished file only by its progress window's button (`keep_by_hand`).
+/// Stop, Stop All and a queue's stop keep nothing, as for any download a server can't resume
+/// (as IDM's do).
+#[cfg(test)]
+mod stop_and_keep_tests {
+    use super::*;
+    use mdm_labserver::{Config, LabServer};
+
+    fn runtime() -> &'static tokio::runtime::Runtime {
+        Box::leak(Box::new(
+            tokio::runtime::Builder::new_multi_thread()
+                .worker_threads(2)
+                .enable_all()
+                .build()
+                .unwrap(),
+        ))
+    }
+
+    fn app_with(
+        rt: &tokio::runtime::Runtime,
+        items: Vec<Item>,
+        queues: Vec<Queue>,
+    ) -> std::mem::ManuallyDrop<App> {
+        let loaded = store::Loaded {
+            next_id: 100,
+            items,
+            columns: None,
+            settings: Settings {
+                // No windows: the test looks at the rows.
+                show_progress: false,
+                show_complete: false,
+                ..Settings::default()
+            },
+            queues,
+        };
+        let (_, commands) = std::sync::mpsc::channel();
+        // Never dropped: an App saves its list as it goes.
+        std::mem::ManuallyDrop::new(App::assemble(
+            &egui::Context::default(),
+            rt.handle().clone(),
+            commands,
+            loaded,
+            crate::Start::Shown,
+        ))
+    }
+
+    fn get(app: &App, id: u64) -> &Item {
+        app.items.iter().find(|i| i.id == id).unwrap()
+    }
+
+    /// The window's frames until `done` (at most 30 s).
+    fn until(app: &mut App, done: impl Fn(&Item) -> bool) {
+        let ctx = egui::Context::default();
+        let end = Instant::now() + Duration::from_secs(30);
+        while !done(get(app, 1)) {
+            let i = get(app, 1);
+            assert!(
+                Instant::now() < end,
+                "never came: {:?} {:?} {}",
+                i.status,
+                i.error,
+                i.downloaded
+            );
+            app.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    /// The lab's endless stream (a radio's MP3, paced) at `dir/radio.mp3`, not started yet.
+    fn stream(s: &LabServer, dir: &std::path::Path) -> Item {
+        let port = s.addr().port();
+        let url = format!("http://127.0.0.1:{port}/gen/1M/radio.mp3?endless=1&seed=41&rate=256K");
+        let mut item = Item::new(
+            1,
+            url.parse().unwrap(),
+            dir.join("radio.mp3"),
+            Category::General,
+        );
+        item.status = Status::Stopped;
+        item
+    }
+
+    /// `stop` on a running endless stream: it ends stopped, its file never finished.
+    fn stopped_keeps_nothing(how: &str, stop: impl FnOnce(&mut App)) {
+        let rt = runtime();
+        let s = rt.block_on(LabServer::start(Config::default())).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut app = app_with(rt, vec![stream(&s, dir.path())], Vec::new());
+        // In the main queue (the app's first), as a download added to it.
+        app.queues[0].items = vec![1];
+        app.start(1, false);
+        until(&mut app, Item::endless);
+        stop(&mut app);
+        until(&mut app, |i| i.live.is_none());
+        let row = get(&app, 1);
+        assert_eq!(row.status, Status::Stopped, "{how}");
+        assert!(
+            !dir.path().join("radio.mp3").exists(),
+            "{how}: nothing kept"
+        );
+    }
+
+    #[test]
+    fn stop_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("Stop", |app| app.stop_by_hand(1));
+    }
+
+    #[test]
+    fn stop_all_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("Stop All", |app| app.stop_all());
+    }
+
+    #[test]
+    fn a_queues_stop_keeps_nothing_of_an_endless_stream() {
+        stopped_keeps_nothing("the queue's stop", |app| app.stop_queue(0));
+    }
+
+    /// The progress window's Stop and keep: the stream is Complete, what arrived its file.
+    #[test]
+    fn the_button_keeps_an_endless_stream() {
+        let rt = runtime();
+        let s = rt.block_on(LabServer::start(Config::default())).unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let mut app = app_with(rt, vec![stream(&s, dir.path())], Vec::new());
+        app.start(1, false);
+        until(&mut app, Item::endless);
+        app.keep_by_hand(1);
+        until(&mut app, |i| i.live.is_none());
+        let row = get(&app, 1);
+        assert_eq!(row.status, Status::Complete);
+        let kept = std::fs::metadata(dir.path().join("radio.mp3"))
+            .unwrap()
+            .len();
+        assert!(kept > 0);
+        assert_eq!(row.size, Some(kept));
     }
 }
