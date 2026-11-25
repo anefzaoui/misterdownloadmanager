@@ -886,11 +886,21 @@ impl Job {
     }
 
     /// Stop and save: a live stream yt-dlp records is stopped and what it recorded kept
-    /// as a video, the download then done; anything else is cancelled as [`Job::cancel`] does.
-    pub fn save(&self) {
+    /// as a video, the download then done; an endless stream (an internet radio, a camera feed:
+    /// no length, no resume, #1780) is stopped and kept, what arrived its finished file
+    /// (`Download::keep`); anything else is cancelled as [`Job::cancel`] does. Whether an endless
+    /// stream was kept.
+    pub fn save(&self) -> bool {
         match self {
-            Job::Video { job, .. } => job.save(),
-            _ => self.cancel(),
+            Job::Video { job, .. } => {
+                job.save();
+                false
+            }
+            Job::File(d) => d.keep(),
+            _ => {
+                self.cancel();
+                false
+            }
         }
     }
 
@@ -1761,6 +1771,22 @@ impl Item {
     /// ([`Job::live_state`]); `None` when nothing runs.
     pub fn live_state(&self) -> Option<mdm_tools::video::LiveState> {
         self.live.as_ref().and_then(|l| l.dl.live_state())
+    }
+
+    /// Running, an answer with no length that can't be resumed (an internet radio, a camera
+    /// feed, #1780): the user's stop keeps what arrived as its finished file (`Job::save`), and
+    /// its Pause button says so ("Stop and keep"). As its last snapshot says.
+    pub fn endless(&self) -> bool {
+        matches!(
+            self.live,
+            Some(Live {
+                dl: Job::File(_),
+                ..
+            })
+        ) && self
+            .snap
+            .as_ref()
+            .is_some_and(mdm_engine::Snapshot::endless)
     }
 
     /// Resume / Download Now may start it: not running, and not finished (a gallery finished

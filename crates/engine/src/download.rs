@@ -911,6 +911,19 @@ pub struct Snapshot {
     pub kept: Option<Arc<ResumeState>>,
 }
 
+impl Snapshot {
+    /// Downloading an answer that says no length and can't be resumed (#1780): an internet
+    /// radio, a camera feed, which may never end. Once something has arrived,
+    /// [`Download::keep`] ends it where it is and keeps that as the finished file; a pause would
+    /// throw it away. Before, there is nothing to keep, and a stop only stops it.
+    pub fn endless(&self) -> bool {
+        self.state == State::Downloading
+            && self.size.is_none()
+            && self.resumable == Some(false)
+            && self.downloaded > 0
+    }
+}
+
 /// One entry of a download's event log; `seq` counts up within one `Download`.
 #[derive(Clone, Debug)]
 pub struct Event {
@@ -1498,6 +1511,8 @@ impl Download {
             held: Default::default(),
             checked: Default::default(),
             settle: Default::default(),
+            keep: CancellationToken::new(),
+            kept: Default::default(),
         });
         let task = tokio::spawn(f(shared.clone(), cancel.clone()));
         Download {
@@ -1513,6 +1528,20 @@ impl Download {
 
     pub fn cancel(&self) {
         self.cancel.cancel();
+    }
+
+    /// Stop and keep (#1780): an endless answer ([`Snapshot::endless`]) ends where it is, and
+    /// what arrived becomes the finished file, as if the server had ended it there (named, in its
+    /// folder, `Done`). Any other download is stopped as [`Download::cancel`] stops it. Whether
+    /// it keeps.
+    pub fn keep(&self) -> bool {
+        if self.shared.view.lock().unwrap().endless() {
+            self.shared.keep.cancel();
+            true
+        } else {
+            self.cancel();
+            false
+        }
     }
 
     /// Change this download's speed limit (bytes/s, None = unlimited) while it runs.
@@ -1623,6 +1652,10 @@ struct Shared {
     /// Stopped and still writing (`State::Stopping`): its place waits for it until `run` has
     /// let go of everything (#1328).
     settle: Mutex<Option<naming::Settling>>,
+    /// [`Download::keep`]: an endless answer ends where it is (`single_stream`).
+    keep: CancellationToken,
+    /// It did: what arrived is the file, short of whatever a checksum was for.
+    kept: std::sync::atomic::AtomicBool,
 }
 
 impl Shared {
@@ -3170,6 +3203,12 @@ async fn verify_part(
     let Some(hash) = hash.cloned() else {
         return Ok(());
     };
+    // Stopped and kept (#1780): the part of the stream that arrived, never what a checksum
+    // was given for.
+    if shared.kept.load(Ordering::Relaxed) {
+        shared.event("Not checked against its checksum: stopped and kept before its end");
+        return Ok(());
+    }
     shared.set_state(State::Verifying);
     let _slot = SLOTS.acquire().await.map_err(|_| Error::Cancelled)?;
     let part = naming::part_path(dest);
@@ -6442,6 +6481,9 @@ fn too_slow(speed: u64, on_net: Duration, best: u64, left: u64, held: Option<Dur
 }
 
 /// Servers without range support: one connection, written in order. Returns the size.
+///
+/// An answer that says no length ends where it is on [`Download::keep`] (#1780), its last
+/// chunk received written first: what arrived is the file.
 async fn single_stream(
     mut body: Body,
     file: &Arc<File>,
@@ -6451,14 +6493,27 @@ async fn single_stream(
 ) -> Result<u64, Error> {
     shared.conn(0, |c| c.status = ConnStatus::Receiving);
     let expected = body.len();
+    let endless = expected.is_none();
     let mut pos = 0u64;
     loop {
         let next = tokio::select! {
+            biased;
             _ = cancel.cancelled() => return Err(Error::Cancelled),
+            _ = shared.keep.cancelled(), if endless => {
+                // Nothing arrived yet (`Download::keep` asks only once something has): nothing
+                // to keep, stopped as Pause stops it.
+                if pos == 0 {
+                    return Err(Error::Cancelled);
+                }
+                shared.kept.store(true, Ordering::Relaxed);
+                shared.event(format!("Stopped and kept what arrived: {}", disk::human(pos)));
+                break;
+            }
             n = body.chunk() => n,
         };
         let Some(chunk) = next? else { break };
-        // Stop ends a limiter's wait too (under a low limit it is seconds long).
+        // Stop ends a limiter's wait too (under a low limit it is seconds long); so does Stop
+        // and keep, the chunk received still written.
         let paid = async {
             shared.limiter.acquire(chunk.len() as u64).await;
             if let Some(g) = global {
@@ -6466,7 +6521,9 @@ async fn single_stream(
             }
         };
         tokio::select! {
+            biased;
             _ = cancel.cancelled() => return Err(Error::Cancelled),
+            _ = shared.keep.cancelled(), if endless => {}
             _ = paid => {}
         }
         let (f, at, n) = (file.clone(), pos, chunk.len() as u64);

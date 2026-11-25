@@ -24,6 +24,7 @@ The **Download status** tab shows:
 The buttons:
 
 - **Pause** stops the download and keeps what it has; **Resume** continues it.
+- **Stop and keep** takes **Pause**'s place for a download that may never end by itself: an internet radio, a camera feed, any server that sends no size and can't resume (**Resume capability: No**). Pausing it would throw away what arrived; **Stop and keep** ends it there and keeps what arrived as a finished file, in its folder and listed as **Complete**. See [Downloads that never end](#downloads-that-never-end).
 - **Cancel** stops the download and closes the window. The download stays in the list and can be resumed.
 - Closing the window with its close box keeps the download running.
 - **Hide to the notification area** (a short dash with an arrow down to the corner; on Windows in
@@ -86,6 +87,28 @@ A download resumes where it stopped: after you stop it, after the connection dro
 - If **Resume capability** is **No**, the server can't send a file in parts. MDM then downloads it over one connection, and a download that stops has to start over.
 
 [Resume a broken download](guide-resume-broken-download.md) covers expired links too.
+
+### Downloads that never end
+
+Some addresses never finish on their own: an internet radio station, a camera's live picture, a
+server that keeps sending. Their server says no size and can't send parts, so the progress window
+shows **Resume capability: No**, **Downloaded** grows with no percentage, and its **Pause** button
+reads **Stop and keep**.
+
+- **Stop and keep** ends the download where it is and keeps everything that arrived as the
+  finished file: named, in its folder, **Complete** in the list, with the **Download complete**
+  window as for any other file.
+- **Stop** on the toolbar, **Stop All**, a queue's stop (by hand or at its stop time), the tray
+  panel's button and the phone page's pause do the same, as they save a live video stream
+  that is being recorded.
+- **Cancel** stops it without keeping anything: a later **Resume** starts it over, as before.
+- A checksum you gave for the download isn't checked against a file kept this way: it can only
+  be for a whole file.
+- Closing MDM while such a download runs, and the command line, don't keep it.
+
+The same goes for any download whose server sends no size and takes no ranges, a file a site
+makes as you ask for it among them: stopping it keeps what arrived so far as its file. To get
+such a file whole, let it finish.
 
 ## Through your VPN only: the network adapter and its kill switch
 
